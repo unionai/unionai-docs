@@ -1,0 +1,30 @@
+# AWS SageMaker inference agent
+
+The AWS SageMaker inference agent allows you to deploy models, and create and trigger inference endpoints. You can also fully remove the SageMaker deployment.
+
+## Installation
+
+To use the AWS SageMaker inference agent, run the following command:
+
+```
+pip install flytekitplugins-awssagemaker
+```
+
+## Example usage
+
+For a usage example, see [AWS SageMaker inference agent example](sagemaker-agent-example).
+
+## Local testing
+
+To test the SageMaker inference agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/master/flytekit/extend/backend/base_agent.py#L259-L354). This mixin can handle synchronous tasks and allows Flytekit to mimic FlytePropeller's behavior in calling the agent.
+
+## Union cluster deployment
+
+After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+
+```{toctree}
+:maxdepth: 2
+:hidden:
+
+sagemaker-agent-example
+```

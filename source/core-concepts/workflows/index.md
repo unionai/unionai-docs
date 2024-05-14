@@ -1,0 +1,16 @@
+# Workflows
+
+So far in our discussion of workflows, we have focused on top-level workflows decorated with `@workflow`.
+These are, in fact, more accurately termed [standard workflows](standard-workflows) to differentiate them from the other types of workflows that exist in Union: [subworkflows](subworkflows-and-sub-launch-plans), [dynamic workflows](dynamic-workflows), and [eager workflows](eager-workflows).
+
+In this section, we will delve deeper into the fundamentals of all of these workflow types, including their syntax, structure, and behavior.
+
+```{toctree}
+:maxdepth: 2
+:hidden:
+
+standard-workflows
+subworkflows-and-sub-launch-plans
+dynamic-workflows
+eager-workflows
+```
