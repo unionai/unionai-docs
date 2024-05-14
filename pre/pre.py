@@ -57,7 +57,8 @@ def process_directory(directory_path, bool_vars, sub_vars):
                     output_path = os.path.join(root, f"processed_{file}")
                     render_template(template_path, output_path, bool_vars, sub_vars)
 
-def process_project():
+def process_project(source_dir, subs, variants, current_variant):
+
     processed_content = process_conditionals(template_content)
     processed_content = process_substitutions(processed_content)
 
@@ -72,24 +73,31 @@ def process_project():
 # Example usage
 if __name__ == '__main__':
 
-    # Call the function to process the directory
-    process_directory('../source', bool_vars, sub_vars)
+    union_docs_variants = ['serverless', 'byoc']
 
-    sub_vars = {
-        'value1': 'Hello, World!',
-        'value2': 'Python Programming',
+    union_docs_subs = {
+        'product_name': {
+            'common': 'Union',
+            'serverless': 'Union Serverless',
+            'byoc': 'Union BYOC',
+        },
+        'product_url': {
+            'common': 'https://union.ai',
+            'serverless': 'https://union.ai/serverless',
+            'byoc': 'https://union.ai/byoc',
+        },
     }
 
-    render_template('template.txt', 'output.txt', bool_vars, sub_vars)
+    current_union_doc_variant = 'serverless'
+
+    process_project('../source', union_docs_subs, union_docs_variants, current_union_doc_variant)
 
 
 
 
 
 def render_template(template_path, output_path, variant, subs):
-    # Read the template content
-    with open(template_path, 'r') as file:
-        template_content = file.read()
+
 
 
 # Example usage:
