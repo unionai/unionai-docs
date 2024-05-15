@@ -2,7 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 import os
 
 source_dir = './source'
-dest_dir_prefix = './build/html'
+dest_dir_prefix = './temp'
 variants = ['byoc', 'serverless']
 substitutions = {
     'product_name': {

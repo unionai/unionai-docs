@@ -1,9 +1,7 @@
 build:
-	sphinx-build ./source ./build/serverless --tag serverless
-	sphinx-build ./source ./build/byoc --tag byoc
 	mkdir ./build/html
-	mv ./build/serverless ./build/html
-	mv ./build/byoc ./build/html
+	sphinx-build ./temp/serverless ./build/html/serverless
+	sphinx-build ./temp/byoc ./build/html/byoc
 	cp ./source/_static/index.html ./build/html/index.html
 clean:
 	rm -rf ./build
