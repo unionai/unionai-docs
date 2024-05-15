@@ -1,106 +1,54 @@
-# Pre-processor for markdown files
-
-import re
+from jinja2 import Environment, FileSystemLoader
 import os
 
-
-def evaluate_boolean(boolean_expression, context):
-    # Create a dictionary to hold the boolean values for the variables
-    variables = {}
-
-    # Extract variable names from the boolean expression
-    for var in boolean_expression.split():
-        if var.isidentifier() and var not in ["and", "or", "not", "True", "False"]:
-            variables[var] = var in context
-
-    # Evaluate the boolean expression in a restricted environment
-    try:
-        result = eval(E, {"__builtins__": None}, variables)
-    except Exception as e:
-        return str(e)  # Return the error message if evaluation fails
-
-    return result
+source_dir = './source'
+dest_dir_prefix = './build/html'
+variants = ['byoc', 'serverless']
+substitutions = {
+    'product_name': {
+        'byoc': 'Union BYOC',
+        'serverless': 'Union Serverless',
+    },
+    'cli_name': 'uctl',
+}
 
 
-# Process conditional blocks
-def process_conditionals(content, context):
-    # RE that gets the boolean expression and if block from each if statement
-    pattern = re.compile(r'{{ if (.*?) }}(.*?){{ end if }}', re.DOTALL)
-    while True:
-        # Get each if block
-        match = pattern.search(content)
-        if not match:
-            break
-        boolean_expression = match.group(1).strip()
-        if_block = match.group(2)
-        if evaluate_boolean(boolean_expression, context):
-            content = content[:match.start()] + if_block + content[match.end():]
-        else:
-            content = content[:match.start()] + content[match.end():]
-    return content
+def process_template(template_path, variables, output_path):
+    env = Environment(loader=FileSystemLoader('/'))
+    template = env.get_template(template_path)
+    output = template.render(variables)
+
+    with open(output_path, 'w') as file:
+        file.write(output)
 
 
-# Process substitutions
-def process_substitutions(content, substitutions, context):
-    pattern = re.compile(r'{{ sub (.*?) }}')
-    content = pattern.sub(lambda match: substitutions[context].get(match.group(1).strip(), ''), content)
-    return content
-
-# Apply the pre-processing steps
-
-
-def process_directory(directory_path, bool_vars, sub_vars):
-        for root, dirs, files in os.walk(directory_path):
-            for file in files:
-                if file.endswith(".md"):
-                    template_path = os.path.join(root, file)
-                    output_path = os.path.join(root, f"processed_{file}")
-                    render_template(template_path, output_path, bool_vars, sub_vars)
-
-def process_project(source_dir, subs, variants, current_variant):
-
-    processed_content = process_conditionals(template_content)
-    processed_content = process_substitutions(processed_content)
-
-    # Check if content is only whitespace or empty
-    if not processed_content.strip():
-        print(f"After processing {template_path} is empty or only whitespace. Skipping.")
-    else:
-        # Write the processed content to the output file
-        with open(output_path, 'w') as file:
-            file.write(processed_content)
-
-# Example usage
-if __name__ == '__main__':
-
-    union_docs_variants = ['serverless', 'byoc']
-
-    union_docs_subs = {
-        'product_name': {
-            'common': 'Union',
-            'serverless': 'Union Serverless',
-            'byoc': 'Union BYOC',
-        },
-        'product_url': {
-            'common': 'https://union.ai',
-            'serverless': 'https://union.ai/serverless',
-            'byoc': 'https://union.ai/byoc',
-        },
-    }
-
-    current_union_doc_variant = 'serverless'
-
-    process_project('../source', union_docs_subs, union_docs_variants, current_union_doc_variant)
+def get_var_list(variant) -> dict:
+    var_list = {}
+    for key, value in substitutions:
+        if isinstance(value, dict):
+            var_list[key] = value[variant]
+        elif isinstance(value, str):
+            var_list[key] = value
+    var_list[variant] = True
+    return var_list
 
 
+def process_directory(input_dir, output_dir, variables):
+    os.makedirs(output_dir, exist_ok=True)
+    for root, dirs, files in os.walk(input_dir):
+        for name in files:
+            if name.endswith('.md'):  # Check for markdown files
+                file_path = os.path.join(root, name)
+                rel_path = os.path.relpath(file_path, input_dir)
+                output_file_path = os.path.join(output_dir, rel_path)
+                os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+                process_template(file_path, variables, output_file_path)
 
 
+def process_project():
+    for variant in variants:
+        process_directory(source_dir, os.path.join(dest_dir_prefix, variant), get_var_list(variant))
 
-def render_template(template_path, output_path, variant, subs):
 
-
-
-# Example usage:
-E = "A and B or not C"
-L = ["A", "B"]
-print(evaluate_boolean_expression(E, L))  # Output: True
+if __name__ == "__main__":
+    process_project()
