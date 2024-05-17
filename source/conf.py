@@ -22,7 +22,7 @@ html_logo = '_static/public/logo.svg'
 html_theme_options = {
     'switcher': {
         'json_url': 'https://docs.union.ai/switcher.json',
-        'version_match': version,
+        'version_match': release,
         'check_switcher': False,
     }
 }

@@ -50,12 +50,14 @@ def process_directory(variant, input_dir, output_dir, variables):
     os.makedirs(output_dir, exist_ok=True)
     for root, dirs, files in os.walk(input_dir):
         for name in files:
+            file_path = os.path.join(root, name)
+            rel_path = os.path.relpath(file_path, input_dir)
+            output_file_path = os.path.join(output_dir, rel_path)
+            os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
             if name.endswith('.md'):  # Check for markdown files
-                file_path = os.path.join(root, name)
-                rel_path = os.path.relpath(file_path, input_dir)
-                output_file_path = os.path.join(output_dir, rel_path)
-                os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
                 process_template(variant, file_path, variables, output_file_path)
+            else:
+                subprocess.run(shlex.split(f'cp {file_path} {output_file_path}'))
 
 
 def process_project():
