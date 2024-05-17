@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Serverless",
+        "version": "serverless",
+        "url": "https://docs.union.ai/serverless/"
+    },
+    {
+        "name": "BYOC",
+        "version": "byoc",
+        "url": "https://docs.union.ai/byoc/"
+    }
+]

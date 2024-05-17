@@ -17,8 +17,15 @@ myst_enable_extensions = ['colon_fence']
 myst_heading_anchors = 6
 
 # Sphinx book theme
-## Union logo
+# Union logo
 html_logo = '_static/public/logo.svg'
+html_theme_options = {
+    'switcher': {
+        'json_url': 'https://docs.union.ai/switcher.json',
+        'version_match': version,
+        'check_switcher': False,
+    }
+}
 
 # Redirects
 redirects = {
