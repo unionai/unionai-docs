@@ -18,7 +18,6 @@ SUBS = {
 
 
 def process_template(variant, template_path, variables, output_path):
-    print(f'{os.getcwd()}/{template_path}')
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
         block_start_string='{@@',

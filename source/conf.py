@@ -19,13 +19,14 @@ myst_heading_anchors = 6
 # Sphinx book theme
 # Union logo
 html_logo = '_static/public/logo.svg'
-html_theme_options = {
-    'switcher': {
-        'json_url': 'https://docs.union.ai/switcher.json',
-        'version_match': release,
-        'check_switcher': False,
-    }
-}
+
+# html_theme_options = {
+#    'switcher': {
+#        'json_url': 'https://docs.union.ai/switcher.json',
+#        'version_match': release,
+#        'check_switcher': False,
+#    }
+# }
 
 # Redirects
 redirects = {
