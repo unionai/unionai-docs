@@ -284,4 +284,5 @@ workflows/index
 tasks/index
 launch-plans/index
 artifacts/index
+caching
 ```

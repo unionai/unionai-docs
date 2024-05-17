@@ -1,13 +1,5 @@
 # Introduction
 
-```{only} serverless
-This applies to Union Serverless
-```
-
-```{only} byoc
-This applies to Union BYOC
-```
-
 Union is a workflow orchestration platform based on the Flyte open-source project hosted by Union in your cloud account.
 
 Flyte is already used by hundreds of major organizations to run machine learning and data pipelines.

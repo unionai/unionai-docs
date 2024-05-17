@@ -7,7 +7,7 @@ Tasks are the fundamental units of compute in Union. They are independently exec
 Tasks are designed to be independently executable, meaning that they can be run in isolation from other tasks.
 And since most tasks are just Python functions, they can be executed on your local machine, making it easy to unit test and debug tasks locally before deploying them to Union.
 
-Because they are independently executable, tasks can also be shared and reused across multiple workflows and, as long as their logic is deterministic, their input and outputs can be [cached](task-caching) to save compute resources and execution time.
+Because they are independently executable, tasks can also be shared and reused across multiple workflows and, as long as their logic is deterministic, their input and outputs can be [cached](../caching) to save compute resources and execution time.
 
 ## Tasks are strongly typed
 
@@ -36,6 +36,8 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 * Is it a pure function? That is, does it have side effects that are unknown to the system?
     * It is recommended to avoid side-effects in tasks.
     * When side-effects are unavoidable, ensure that the operations are idempotent.
+
+For details on task caching, see [Caching](../caching).
 
 ## Workflows can contain many types of tasks
 
@@ -98,7 +100,6 @@ The `@task` decorator can take a number of parameters that allow you to configur
 
 task-types
 task-parameters
-task-caching
 task-software-environment/index
 task-hardware-environment/index
 ```

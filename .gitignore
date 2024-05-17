@@ -161,3 +161,7 @@ cython_debug/
 
 # Union build specific
 temp/
+
+# macOS
+.DS_Store
+.localized

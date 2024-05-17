@@ -10,15 +10,15 @@ The accelerator to use for this task. For more information, see [Specifying acce
 
 ## `cache`
 
-See [Task caching](task-caching).
+See [Caching](../caching).
 
 ## `cache_serialize`
 
-See [Task caching](task-caching).
+See [Caching](../caching).
 
 ## `cache_version`
 
-See [Task caching](task-caching).
+See [Caching](../caching).
 
 ## `cache_ignore_input_vars`
 

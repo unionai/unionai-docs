@@ -23,9 +23,8 @@ def process_template(variant, template_path, variables, output_path):
     template = env.get_template(template_path)
     output = template.render(variables)
     if output.strip() != '':
-        output = f'<html><head><meta http-equiv="refresh" content="0; url={variant}/index.html"></head></html>'
-    with open(output_path, 'w') as file:
-        file.write(output)
+        with open(output_path, 'w') as file:
+            file.write(output)
 
 
 def get_var_list(variant) -> dict:

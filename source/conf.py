@@ -121,18 +121,3 @@ redirects = {
     'core-concepts/launch-plans/activating-and-deactivating-launch-plans': '../../core-concepts/launch-plans/activating-and-deactivating.html',
     'core-concepts/workflows/subworkflows': '../../core-concepts/workflows/subworkflows-and-sub-launch-plans.html',
 }
-
-union_docs_variants = ['serverless', 'byoc']
-
-union_docs_substitutions = {
-    'product_name': {
-        'common': 'Union',
-        'serverless': 'Union Serverless',
-        'byoc': 'Union BYOC',
-    },
-    'product_url': {
-        'common': 'https://union.ai',
-        'serverless': 'https://union.ai/serverless',
-        'byoc': 'https://union.ai/byoc',
-    },
-}
