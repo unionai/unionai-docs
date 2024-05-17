@@ -1,5 +1,4 @@
 {% extends "!page.html" %}
-
 {{ super() }}
 
 {% block extrahead %}
@@ -10,7 +9,14 @@
 
 {% block body %}
 {{ super() }}
+
+{% block docs_navbar %}
+{{ super() }}
+<div>HELLO</div>
+{% endblock docs_navbar %}
+
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WC8V9XS" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
 {% endblock %}
