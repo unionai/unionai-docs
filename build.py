@@ -18,7 +18,8 @@ SUBS = {
 
 
 def process_template(variant, template_path, variables, output_path):
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader('/'))
+    print(f'{os.getcwd()}/{template_path}')
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.getcwd()))
     template = env.get_template(template_path)
     output = template.render(variables)
     if output.strip() != '':
