@@ -29,8 +29,10 @@ def process_template(variant, template_path, variables, output_path):
     )
     template = env.get_template(template_path)
     output = template.render(variables)
-    if output.strip() != '':
-        with open(output_path, 'w') as file:
+    with open(output_path, 'w') as file:
+        if output.strip() == '':
+            file.write(f'<html><head></head><body>{output_path} is an empty page</body></html>')
+        else:
             file.write(output)
 
 
@@ -66,8 +68,6 @@ def process_project():
         process_directory(variant, SOURCE_DIR, os.path.join(TEMP_DIR, variant), get_var_list(variant))
         subprocess.run(shlex.split(f'sphinx-build {TEMP_DIR}/{variant} {BUILD_DIR}/{variant}'))
     subprocess.run(shlex.split(f'cp {SOURCE_DIR}/_static/index.html {BUILD_DIR}/index.html'))
-    subprocess.run(shlex.split(f'cp {SOURCE_DIR}/_static/switcher.json {BUILD_DIR}/switcher.json'))
-
 
 if __name__ == "__main__":
     process_project()
