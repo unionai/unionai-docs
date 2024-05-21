@@ -21,7 +21,7 @@ Each update creates a new version of the launch plan.
 Additional launch plans, other than the default one, can be defined for any workflow.
 In general, a given workflow can be associated with multiple launch plans, but a given launch plan is always associated with exactly one workflow.
 
-## Viewing launch plans in the web console
+## Viewing launch plans for a workflow
 
 To view the launch plans for a given workflow, in the Union console, navigate to the workflow's page and click **Launch Workflow**.
 You can choose which launch plan to use to launch the workflow from the **Launch Plan** dropdown menu.
@@ -62,9 +62,9 @@ When a launch plan with the same project, domain, and name as a preexisting one 
 :hidden:
 
 defining-launch-plans
+viewing-launch-plans
 notifications
 schedules
-inspecting-launch-plans
 activating-and-deactivating
 running-launch-plans
 reactive-workflows

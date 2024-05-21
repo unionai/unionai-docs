@@ -100,6 +100,8 @@ The `@task` decorator can take a number of parameters that allow you to configur
 
 task-types
 task-parameters
+viewing-tasks
+viewing-cloudwatch-logs-for-a-task
 task-software-environment/index
 task-hardware-environment/index
 ```

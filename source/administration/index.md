@@ -7,6 +7,7 @@ This section covers the administration of Union.
 :hidden:
 
 user-management
+usage
 applications
 cli-authentication
 ```

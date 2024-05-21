@@ -1,4 +1,22 @@
-# Task view
+# Viewing tasks in the web console
+
+## Tasks list
+
+Selecting **Tasks** in the sidebar displays a list of all the registered tasks:
+
+![Task list](/_static/images/task-list.png)
+
+You can search the tasks by name and filter for only those that are archived.
+
+Each task in the list displays some basic information about the task:
+
+* **Inputs**: The input type for the task.
+* **Outputs**: The output type for the task.
+* **Description**: A description of the task.
+
+Select an entry on the list to go to that [specific task](task-view).
+
+## Task view
 
 Selecting an individual task from the [task list](task-list) will take you to the task view:
 
@@ -10,7 +28,7 @@ Here you can see:
 * Recent task versions. Selecting one of these takes you to the [task version view](#task-version-list)
 * Recent executions of this task. Selecting one of these takes you to the [execution view](execution-view).
 
-## Task version list
+### Task version list
 
 The task version list give you detailed information about a specific version of a task:
 

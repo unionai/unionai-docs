@@ -17,16 +17,8 @@ myst_enable_extensions = ['colon_fence']
 myst_heading_anchors = 6
 
 # Sphinx book theme
-# Union logo
+## Union logo
 html_logo = '_static/public/logo.svg'
-
-# html_theme_options = {
-#    'switcher': {
-#        'json_url': 'https://docs.union.ai/switcher.json',
-#        'version_match': release,
-#        'check_switcher': False,
-#    }
-# }
 
 # Redirects
 redirects = {
@@ -121,4 +113,17 @@ redirects = {
     'web-console/usage-view': '../web-console/usage.html',
     'core-concepts/launch-plans/activating-and-deactivating-launch-plans': '../../core-concepts/launch-plans/activating-and-deactivating.html',
     'core-concepts/workflows/subworkflows': '../../core-concepts/workflows/subworkflows-and-sub-launch-plans.html',
+    'web-console/index': '../getting-started/index.html',
+    'web-console/artifact-list': '../core-concepts/artifacts/viewing-artifacts.html',
+    'web-console/artifact-view': '../core-concepts/artifacts/viewing-artifacts.html',
+    'web-console/execution-list': '../core-concepts/workflows/viewing-workflow-executions.html',
+    'web-console/execution-view': '../core-concepts/workflows/viewing-workflow-executions.html',
+    'web-console/launch-plan-list': '../core-concepts/launch-plans/inspecting-launch-plans.html',
+    'web-console/launch-plan-view': '../core-concepts/launch-plans/inspecting-launch-plans.html',
+    'web-console/logging': '../core-concepts/tasks/viewing-cloudwatch-logs-for-a-task.html',
+    'web-console/task-level-monitoring': '../core-concepts/tasks/task-hardware-environment/task-level-monitoring.html',
+    'web-console/task-list': '../core-concepts/tasks/viewing-tasks.html',
+    'web-console/task-view': '../core-concepts/tasks/viewing-tasks.html',
+    'web-console/launching-workflows-and-tasks': '../core-concepts/workflows/launching-workflows.html',
+    'core-concepts/launch-plans/inspecting-launch-plans': '../../core-concepts/viewing-launch-plans.html'
 }

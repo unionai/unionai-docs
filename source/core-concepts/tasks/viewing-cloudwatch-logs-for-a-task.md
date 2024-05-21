@@ -1,4 +1,4 @@
-# Logging
+# Viewing Cloudwatch logs for a task
 
 :::{note}
 
@@ -6,7 +6,7 @@ This section applies to Union instances on AWS.
 
 :::
 
-In the [Execution view](execution-view), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.
+In the [Execution view](../workflows/viewing-workflow-executions), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.
 
 Within that panel, in the **Execution** tab, under **Logs**, you will find a link labeled **Cloudwatch Logs**.
 

@@ -1,12 +1,13 @@
-# Inspecting launch plans
+# Viewing launch plans
 
-## Inspecting launch plans in the Union console
+## Viewing launch plans in the Union console
 
 Select **Launch Plans** in the sidebar to display a list of all the registered launch plans in the project and domain:
 
 ![Launch plan list](/_static/images/launch-plans-list-view.png)
 
-You can search the launch plans by name.
+You can search the launch plans by name and filter for only those that are archived.
+
 The columns in the launch plans table are defined as follows:
 
 * **Name**: The name of the launch plan. Click to inspect a specific launch plan in detail.
@@ -30,7 +31,7 @@ Here you can see:
 In the top right you can see if this launch plan is active (and if it is, which version, specifically, is active). There is also a control for changing the active version or deactivating the launch plan entirely.
 See [Activating and deactivating](activating-and-deactivating) for more details.
 
-## Inspecting launch plans on the command line with `uctl`
+## Viewing launch plans on the command line with `uctl`
 
 To view all launch plans within a project and domain:
 
@@ -53,7 +54,7 @@ $ uctl get launchplan \
 See the [`uctl` reference]() for more details.
 -->
 
-## Inspecting launch plans in Python with `UnionRemote`
+## Viewing launch plans in Python with `UnionRemote`
 
 Use the method `UnionRemote.client.list_launch_plans_paginated` to get the list of launch plans.
 

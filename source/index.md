@@ -20,6 +20,5 @@ development-cycle/index
 data-input-output/index
 administration/index
 integrations/index
-web-console/index
 faq
 ```

@@ -43,4 +43,5 @@ For details see [Configuring task pods with K8s PodTemplates&#x2B00;](https://do
 customizing-task-resources
 accelerators
 interruptible-instances
+task-level-monitoring
 ```

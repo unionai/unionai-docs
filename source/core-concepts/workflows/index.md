@@ -13,4 +13,6 @@ standard-workflows
 subworkflows-and-sub-launch-plans
 dynamic-workflows
 eager-workflows
+viewing-workflows
+viewing-workflow-executions
 ```

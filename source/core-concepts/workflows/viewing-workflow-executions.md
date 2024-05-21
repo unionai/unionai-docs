@@ -1,4 +1,40 @@
-# Execution view
+# Viewing workflow executions in the web console
+
+## Execution list
+
+The **Execution list** shows all executions in a project and domain combination.
+An execution represents a single run of all or part of a workflow (including subworkflows and individual tasks).
+
+This is the default view when you select a project and domain from the [**Projects list**](index).
+You can also access it from the **Executions** link in the left navigation.
+
+![Execution list](/_static/images/execution-list.png)
+
+### Domain Settings
+
+This section displays any domain-level settings that have been configured for this project-domain combination. They are:
+
+* Security Context
+* Labels
+* Annotations
+* Raw output data config
+* Max parallelism
+
+### All Executions in the Project
+
+For each execution in this project and domain you can see the following:
+
+* **Start time**: Select to view the [individual execution](execution-view).
+* **Workflow/Task**: The [individual workflow](workflow-view) or [individual task](task-view) that ran in this execution.
+* **Version**: The version of the workflow or task that ran in this execution.
+* **Launch Plan**: The [Launch Plan](launch-plan-view) that was used to launch this execution.
+* **Schedule**: The schedule that was used to launch this execution (if any).
+* **Execution ID**: The ID of the execution.
+* **Status**: The status of the execution. One of **QUEUED**, **RUNNING**, **SUCCEEDED**, **FAILED** or **UNKNOWN**.
+* **Duration**: The duration of the execution.
+
+
+## Execution view
 
 The execution view appears when you launch a workflow or task or select an already completed execution (in, for example, the [execution list](execution-list)).
 
@@ -41,7 +77,7 @@ Below the top bar, details on the execution (domain, cluster, time, etc.) are di
 
 And below that, three tabs provide access to the **Nodes**, **Graph**, and **Timeline** views:
 
-## Nodes
+### Nodes
 
 The default tab within the execution view is the **Nodes** tab.
 It shows a list of the Flyte nodes that make up this execution (A node in Flyte is either a task or a (sub-)workflow):
@@ -63,47 +99,47 @@ Within the right panel, we can see
 
 Below that, you have the tabs **Executions**, **Inputs**, **Outputs**, and **Task**.
 
-### Executions
+#### Executions
 
 This tab gives you details on the execution of this particular node.
 
 ![](/_static/images/execution-view-right-panel-executions.png)
 
-#### Task level monitoring
+##### Task level monitoring
 
 You can access the [task-level monitoring](task-level-monitoring) information by selecting **View Utilization**.
 
-#### Logs
+##### Logs
 
 You can access logs by clicking the text under **Logs**.
 In AWS-based systems this will say **CloudWatch Logs**.
 In GCP-based system this will say **StackDriver Logs**. See [Logging](logging).
 
-### Inputs
+#### Inputs
 
 This tab displays the input to this node.:
 
 ![](/_static/images/execution-view-right-panel-inputs.png)
 
-### Outputs
+#### Outputs
 
 This tab displays the output of this node:
 
 ![](/_static/images/execution-view-right-panel-outputs.png)
 
-### Task
+#### Task
 
 If this node is Task (as opposed to a subworkflow) this tab displays the Task definition:
 
 ![](/_static/images/execution-view-right-panel-task.png)
 
-## Graph
+### Graph
 
 The Graph tab displays a visual representation of the execution as a directed acyclic graph:
 
 ![](/_static/images/execution-view-graph.png)
 
-## Timeline
+### Timeline
 
 The Timeline tab displays a visualization showing the timing of each task in the execution:
 
