@@ -13,7 +13,9 @@ Union abstracts away the required infrastructure, providing a turnkey platform t
 
 union-and-flyte
 platform-architecture
+{@@ if byoc @@}
 data-plane-setup/index
+{@@ endif @@}
 getting-started/index
 core-concepts/index
 development-cycle/index

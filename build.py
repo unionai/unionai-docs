@@ -25,7 +25,9 @@ def process_template(variant, template_path, variables, output_path):
         variable_start_string='{@=',
         variable_end_string='=@}',
         comment_start_string='{@#',
-        comment_end_string='#@}'
+        comment_end_string='#@}',
+        trim_blocks=True,
+        lstrip_blocks=True
     )
     template = env.get_template(template_path)
     output = template.render(variables)
@@ -68,6 +70,7 @@ def process_project():
         process_directory(variant, SOURCE_DIR, os.path.join(TEMP_DIR, variant), get_var_list(variant))
         subprocess.run(shlex.split(f'sphinx-build {TEMP_DIR}/{variant} {BUILD_DIR}/{variant}'))
     subprocess.run(shlex.split(f'cp {SOURCE_DIR}/_static/index.html {BUILD_DIR}/index.html'))
+    
 
 if __name__ == "__main__":
     process_project()
