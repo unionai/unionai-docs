@@ -16,6 +16,54 @@ SUBS = {
     'cli_name': 'uctl',
 }
 
+NAVIGATION = {
+    'union-and-flyte': {
+        'title': 'Union and Flyte',
+        'variants': ['serverless', 'byoc'],
+    },
+    'platform-architecture': {
+        'title': 'Platform architecture',
+        'variants': ['serverless', 'byoc'],
+    },
+    'data-plane-setup': {
+        'title': 'Data plane setup',
+        'variants': ['byoc'],
+        'children': {
+            'data-plane-setup-on-aws': {},
+            'data-plane-setup-on-gcp': {},
+            'single-sign-on-setup': {
+                'children': {
+                    'microsoft_entra_id': {},
+                    'other-identity-providers': {},
+                },
+            },
+            'configuring-your-data-plane': {},
+            'multi-cluster': {},
+        },
+    },
+    getting-started/index
+        installing-development-tools
+        creating-the-project
+        looking-at-the-dependencies
+        looking-at-the-workflow-code
+        running-in-a-local-python-environment
+        running-in-a-local-cluster
+        setting-up-the-project-on-union
+        deploying-the-project-on-union
+        more-resources
+    core-concepts/index
+    development-cycle/index
+    data-input-output/index
+    administration/index
+    integrations/index
+    faq
+}
+
+
+NAVIGATION = [
+
+}
+
 
 def process_template(variant, template_path, variables, output_path):
     env = jinja2.Environment(
@@ -69,8 +117,8 @@ def process_project():
     for variant in VARIANTS:
         process_directory(variant, SOURCE_DIR, os.path.join(TEMP_DIR, variant), get_var_list(variant))
         subprocess.run(shlex.split(f'sphinx-build {TEMP_DIR}/{variant} {BUILD_DIR}/{variant}'))
-    subprocess.run(shlex.split(f'cp {SOURCE_DIR}/_static/index.html {BUILD_DIR}/index.html'))
-    
+    subprocess.run(shlex.split(f'cp ./index.html {BUILD_DIR}/index.html'))
+
 
 if __name__ == "__main__":
     process_project()

@@ -65,7 +65,7 @@ databricks-agent/index
 file-sensor-agent/index
 bigquery-agent/index
 mmcloud-agent/index
-dgx-agent/index
+dgx-agent
 chatgpt-agent/index
 snowflake-agent/index
 ```
