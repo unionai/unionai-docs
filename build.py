@@ -16,49 +16,6 @@ SUBS = {
     'cli_name': 'uctl',
 }
 
-NAVIGATION = {
-    'union-and-flyte': {
-        'title': 'Union and Flyte',
-        'variants': ['serverless', 'byoc'],
-    },
-    'platform-architecture': {
-        'title': 'Platform architecture',
-        'variants': ['serverless', 'byoc'],
-    },
-    'data-plane-setup': {
-        'title': 'Data plane setup',
-        'variants': ['byoc'],
-        'children': {
-            'data-plane-setup-on-aws': {},
-            'data-plane-setup-on-gcp': {},
-            'single-sign-on-setup': {
-                'children': {
-                    'microsoft_entra_id': {},
-                    'other-identity-providers': {},
-                },
-            },
-            'configuring-your-data-plane': {},
-            'multi-cluster': {},
-        },
-    },
-    getting-started/index
-        installing-development-tools
-        creating-the-project
-        looking-at-the-dependencies
-        looking-at-the-workflow-code
-        running-in-a-local-python-environment
-        running-in-a-local-cluster
-        setting-up-the-project-on-union
-        deploying-the-project-on-union
-        more-resources
-    core-concepts/index
-    development-cycle/index
-    data-input-output/index
-    administration/index
-    integrations/index
-    faq
-}
-
 
 def process_template(variant, template_path, variables, output_path):
     env = jinja2.Environment(
