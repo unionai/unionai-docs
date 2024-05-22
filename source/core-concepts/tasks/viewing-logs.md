@@ -1,4 +1,4 @@
-# Viewing Cloudwatch logs for a task
+# Viewing logs
 
 :::{note}
 

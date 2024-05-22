@@ -1,6 +1,6 @@
 # Launching tasks
 
-From the [individual task view](viewing-tasks#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](viewing-tasks#tasks-list)) you can select **Launch Task** in the top right:
+From the [individual task view](viewing-tasks.md#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](viewing-tasks.md#tasks-list)) you can select **Launch Task** in the top right:
 
 ![](/_static/images/launching-a-task.png)
 

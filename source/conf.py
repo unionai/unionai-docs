@@ -125,5 +125,6 @@ redirects = {
     'web-console/task-list': '../core-concepts/tasks/viewing-tasks.html',
     'web-console/task-view': '../core-concepts/tasks/viewing-tasks.html',
     'web-console/launching-workflows-and-tasks': '../core-concepts/workflows/launching-workflows.html',
-    'core-concepts/launch-plans/inspecting-launch-plans': '../../core-concepts/viewing-launch-plans.html'
+    'core-concepts/launch-plans/inspecting-launch-plans': '../../core-concepts/viewing-launch-plans.html',
+    'core-concepts/tasks/viewing-cloudwatch-logs-for-a-task': '../../core-concepts/tasks/viewing-logs.html',
 }

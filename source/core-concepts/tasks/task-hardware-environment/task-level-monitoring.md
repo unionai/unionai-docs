@@ -1,6 +1,6 @@
 # Task-level monitoring
 
-In the [Execution view](execution-view), selecting a task within the list will open the right panel.
+In the [Execution view](../../workflows/viewing-workflow-executions), selecting a task within the list will open the right panel.
 In that panel, you will find the **View Utilization** button:
 
 ![View Utilization](/_static/images/execution-view-right-panel-executions-view-util.png)

@@ -1,8 +1,8 @@
-# Viewing artifacts in the web console
+# Viewing artifacts
 
 ## Artifacts list
 
-[Artifacts](../core-concepts/artifacts/index) can be viewed in the Union console by navigating to the artifacts app in the left sidebar:
+[Artifacts](index) can be viewed in the Union console by navigating to the artifacts app in the left sidebar:
 
 ![Artifacts navigation](/_static/images/artifacts/artifacts_navigation.png)
 
@@ -10,7 +10,7 @@
 
 ## Artifact view
 
-Selecting a specific artifact from the [artifact list](artifact-list) will take you to that artifact's **Overview** page:
+Selecting a specific artifact from the artifact list will take you to that artifact's **Overview** page:
 
 ![Single artifact overview](/_static/images/artifacts/single_artifact_overview.png)
 
@@ -20,7 +20,7 @@ Here you can see relevant metadata about the artifact, including:
 * The task or workflow that produced it
 * Its creation time
 * Its object store URI
-* Code for accessing the artifact via [UnionRemote](../development-cycle/unionremote)
+* Code for accessing the artifact via [UnionRemote](../../development-cycle/unionremote)
 
 You can also view the artifact's object structure, model card, and lineage graph.
 

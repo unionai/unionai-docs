@@ -102,7 +102,7 @@ task-types
 task-parameters
 launching-tasks
 viewing-tasks
-viewing-cloudwatch-logs-for-a-task
+viewing-logs
 task-software-environment/index
 task-hardware-environment/index
 ```

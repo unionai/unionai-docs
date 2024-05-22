@@ -1,6 +1,6 @@
-# Launching workflows in the web console
+# Launching workflows
 
-From the [individual workflow view](viewing-workflows#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](viewing-workflows#workflow-list)) you can select **Launch Workflow** in the top right:
+From the [individual workflow view](viewing-workflows.md#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](viewing-workflows.md#workflows-list)) you can select **Launch Workflow** in the top right:
 
 ![](/_static/images/launching-a-workflow.png)
 

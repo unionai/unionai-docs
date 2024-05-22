@@ -1,4 +1,4 @@
-# Viewing tasks in the web console
+# Viewing tasks
 
 ## Tasks list
 
@@ -14,11 +14,11 @@ Each task in the list displays some basic information about the task:
 * **Outputs**: The output type for the task.
 * **Description**: A description of the task.
 
-Select an entry on the list to go to that [specific task](task-view).
+Select an entry on the list to go to that specific task.
 
 ## Task view
 
-Selecting an individual task from the [task list](task-list) will take you to the task view:
+Selecting an individual task from the task list will take you to the task view:
 
 ![Task view](/_static/images/task-view.png)
 
@@ -26,7 +26,7 @@ Here you can see:
 
 * **Inputs & Outputs**: The input and output types for the task.
 * Recent task versions. Selecting one of these takes you to the [task version view](#task-version-list)
-* Recent executions of this task. Selecting one of these takes you to the [execution view](execution-view).
+* Recent executions of this task. Selecting one of these takes you to the [execution view](../workflows/viewing-workflow-executions).
 
 ### Task version list
 

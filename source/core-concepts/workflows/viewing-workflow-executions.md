@@ -1,4 +1,4 @@
-# Viewing workflow executions in the web console
+# Viewing workflow executions
 
 ## Execution list
 
@@ -24,10 +24,10 @@ This section displays any domain-level settings that have been configured for th
 
 For each execution in this project and domain you can see the following:
 
-* **Start time**: Select to view the [individual execution](execution-view).
-* **Workflow/Task**: The [individual workflow](workflow-view) or [individual task](task-view) that ran in this execution.
+* **Start time**: Select to view the [individual execution](#execution-view).
+* **Workflow/Task**: The [individual workflow](viewing-workflows) or [individual task](../tasks/viewing-tasks) that ran in this execution.
 * **Version**: The version of the workflow or task that ran in this execution.
-* **Launch Plan**: The [Launch Plan](launch-plan-view) that was used to launch this execution.
+* **Launch Plan**: The [Launch Plan](../launch-plans/viewing-launch-plans) that was used to launch this execution.
 * **Schedule**: The schedule that was used to launch this execution (if any).
 * **Execution ID**: The ID of the execution.
 * **Status**: The status of the execution. One of **QUEUED**, **RUNNING**, **SUCCEEDED**, **FAILED** or **UNKNOWN**.
@@ -36,7 +36,7 @@ For each execution in this project and domain you can see the following:
 
 ## Execution view
 
-The execution view appears when you launch a workflow or task or select an already completed execution (in, for example, the [execution list](execution-list)).
+The execution view appears when you launch a workflow or task or select an already completed execution (in, for example, the [execution list](#execution-list)).
 
 An execution represents a single run of all or part of a workflow (including subworkflows and individual tasks).
 
@@ -107,13 +107,13 @@ This tab gives you details on the execution of this particular node.
 
 ##### Task level monitoring
 
-You can access the [task-level monitoring](task-level-monitoring) information by selecting **View Utilization**.
+You can access the [task-level monitoring](../tasks/task-hardware-environment/task-level-monitoring) information by selecting **View Utilization**.
 
 ##### Logs
 
 You can access logs by clicking the text under **Logs**.
 In AWS-based systems this will say **CloudWatch Logs**.
-In GCP-based system this will say **StackDriver Logs**. See [Logging](logging).
+In GCP-based system this will say **StackDriver Logs**. See [Logging](../tasks/viewing-logs).
 
 #### Inputs
 

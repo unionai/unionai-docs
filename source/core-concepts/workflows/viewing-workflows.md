@@ -22,7 +22,7 @@ The output type for the workflow.
 * **Description**:
  The description of the workflow.
 
-Select an entry on the list to go to that [specific workflow](workflow-view).
+Select an entry on the list to go to that [specific workflow](#workflow-view).
 
 ## Workflow view
 
@@ -34,7 +34,7 @@ This view provides:
 * A list of recent workflow versions:
   Selecting a version will take you to the [workflow version list](#workflow-version-list).
 * A list of recent executions:
-  Selecting an execution will take you to the [execution view](execution-view).
+  Selecting an execution will take you to the [execution view](./viewing-workflow-executions).
 
 ### Workflow version list
 

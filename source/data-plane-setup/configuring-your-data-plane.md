@@ -184,7 +184,7 @@ Values provided by you are in single quotes (').
 
 ## After deployment
 
-Once Union has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../web-console/usage.md#compute).
+Once Union has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../administration/usage.md#compute).
 
 ## Adjusting your configuration
 
