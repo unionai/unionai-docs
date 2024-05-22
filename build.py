@@ -60,11 +60,6 @@ NAVIGATION = {
 }
 
 
-NAVIGATION = [
-
-}
-
-
 def process_template(variant, template_path, variables, output_path):
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
