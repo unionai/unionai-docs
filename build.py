@@ -3,10 +3,11 @@ import os
 import subprocess
 import shlex
 
+
 SOURCE_DIR = './source'
 TEMP_DIR = './temp'
 BUILD_DIR = './build/html'
-
+SITEMAP = './sitemap.md'
 VARIANTS = ['serverless', 'byoc']
 SUBS = {
     'product_name': {
@@ -17,7 +18,16 @@ SUBS = {
 }
 
 
-def process_template(variant, template_path, variables, output_path):
+# Call a shell command.
+# Supports interpolation of global variables.
+def shell_command(command):
+    subprocess.run(shlex.split(command))
+
+
+# Process a single unionai-docs Markdown file.
+# A unionai-docs file is a Sphinx/Myst Markdown file augmented
+# with Jinja2 templating but without any `toctree` directives.
+def process_md_file(input_path, variables, output_path):
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
         block_start_string='{@@',
@@ -27,9 +37,9 @@ def process_template(variant, template_path, variables, output_path):
         comment_start_string='{@#',
         comment_end_string='#@}',
         trim_blocks=True,
-        lstrip_blocks=True
+        lstrip_blocks=True,
     )
-    template = env.get_template(template_path)
+    template = env.get_template(input_path)
     output = template.render(variables)
     with open(output_path, 'w') as file:
         if output.strip() == '':
@@ -38,6 +48,9 @@ def process_template(variant, template_path, variables, output_path):
             file.write(output)
 
 
+# Returns a dictionary of variables based on the global SUBS dictionary,
+# filtered for the specified variant and augmented with the variant itself
+# as a boolean variable set to True.
 def get_var_list(variant) -> dict:
     var_list = {}
     for key, value in SUBS.items():
@@ -49,28 +62,63 @@ def get_var_list(variant) -> dict:
     return var_list
 
 
-def process_directory(variant, input_dir, output_dir, variables):
-    os.makedirs(output_dir, exist_ok=True)
-    for root, dirs, files in os.walk(input_dir):
-        for name in files:
-            file_path = os.path.join(root, name)
-            rel_path = os.path.relpath(file_path, input_dir)
-            output_file_path = os.path.join(output_dir, rel_path)
-            os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
-            if name.endswith('.md'):  # Check for markdown files
-                process_template(variant, file_path, variables, output_file_path)
-            else:
-                subprocess.run(shlex.split(f'cp {file_path} {output_file_path}'))
+def get_indent(line):
+    return len(line) - len(line.lstrip(' ')) // 4
+
+
+# Parses a single line of the sitemap file
+def get_tuple(line):
+    stripped_line = line.lstrip(line)
+    parts = stripped_line.split('<')
+    if len(parts) < 2:
+        raise ValueError('Error in sitemap. Expected `<`')
+    title_part = parts[0].strip()
+    title = title_part if title_part else None
+    slug_and_tags = parts[1].split('>')
+    if len(slug_and_tags) < 2:
+        raise ValueError('Error in sitemap. Expected `>`')
+    slug = slug_and_tags[0].strip()
+    if slug == '':
+        raise ValueError('Error in sitemap. Slug must be non-empty')
+    tags_part = slug_and_tags[1].strip(' `')
+    tags = VARIANTS
+    if tags_part != '':
+        tags = tags_part.split()
+    return title, slug, tags
+
+
+# Processes the lines of the sitemap file starting at the current index.
+# Return a list holding a tree structure of the sitemap.
+def get_tree(lines: list, current_indent: int)-> list:
+    tree: list = []
+    while lines:
+        line: str = lines[0]
+        line_indent: int = get_indent(line)
+        stripped: str = line
+        if line_indent < current_indent:
+            break
+        lines.pop(0)
+        if line_indent == current_indent:
+            tree.append(stripped)
+        elif line_indent > current_indent:
+            tree.append([stripped].append(get_tree(lines, line_indent + 1)))
+    return tree
 
 
 def process_project():
-    subprocess.run(shlex.split(f'rm -rf {BUILD_DIR}'))
-    subprocess.run(shlex.split(f'rm -rf {TEMP_DIR}'))
+    shell_command(f'rm -rf {BUILD_DIR}')
+    shell_command(f'rm -rf {TEMP_DIR}')
+    with open(SITEMAP, 'r') as file:
+        lines = file.readlines()
+    tree = get_tree(lines)
     for variant in VARIANTS:
-        process_directory(variant, SOURCE_DIR, os.path.join(TEMP_DIR, variant), get_var_list(variant))
-        subprocess.run(shlex.split(f'sphinx-build {TEMP_DIR}/{variant} {BUILD_DIR}/{variant}'))
-    subprocess.run(shlex.split(f'cp ./index.html {BUILD_DIR}/index.html'))
+        shell_command(f'sphinx-build {TEMP_DIR}/{variant} {BUILD_DIR}/{variant}')
+    shell_command(f'cp ./index.html {BUILD_DIR}/index.html')
 
 
 if __name__ == "__main__":
-    process_project()
+    with open(SITEMAP, 'r') as file:
+        lines = file.readlines()
+    tree = get_tree(lines, 0)
+    print(tree)
+
