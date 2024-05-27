@@ -84,14 +84,15 @@ def process_page(page, parent_path=None, parent_tags=None):
 
     # If the page has children then its file location is {parent_path}/{name}/index.md
     else:
-        for tag in tags:
-            var_list = get_var_list(tag)
-            process_md_file(
-                f'{SOURCE_DIR}/{path}/index.md',
-                f'{TEMP_DIR}/{tag}/{path}.md',
-                var_list,
-                toctree
-            )
+        for child in children:
+            
+        var_list = get_var_list(tag)
+        process_md_file(
+            f'{SOURCE_DIR}/{path}/index.md',
+            f'{TEMP_DIR}/{tag}/{path}.md',
+            var_list,
+            toctree
+        )
 
 
 def process_project():
