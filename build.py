@@ -72,19 +72,20 @@ def process_page(page, parent_path=None, parent_tags=None):
     if not set(tags) > set(parent_tags):
         raise ValueError(f'Error processing {path}: tags of current page include element not present in parent page tags. A page for a variant cannot exist unless its parent page also exists for that variant.')
 
-    for tag in tags:
-        var_list = get_var_list(tag)
-
-        # If the page has no children then its file location is {path}.md and it has no toctree
-        if not children:
+    # If the page has no children then its file location is {path}.md and it has no toctree
+    if not children:
+        for tag in tags:
+            var_list = get_var_list(tag)
             process_md_file(
                 f'{SOURCE_DIR}/{path}.md',
                 f'{TEMP_DIR}/{tag}/{path}.md',
                 var_list
             )
 
-        # If the page has children then its file location is {parent_path}/{name}/index.md
-        else:
+    # If the page has children then its file location is {parent_path}/{name}/index.md
+    else:
+        for tag in tags:
+            var_list = get_var_list(tag)
             process_md_file(
                 f'{SOURCE_DIR}/{path}/index.md',
                 f'{TEMP_DIR}/{tag}/{path}.md',
