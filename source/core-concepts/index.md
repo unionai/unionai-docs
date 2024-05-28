@@ -275,14 +275,3 @@ $ pyflyte run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 To run a workflow remotely in Python, use the method [`FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute). See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
 
 To run a task remotely in Python, use the method [`FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute). See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-workflows/index
-tasks/index
-launch-plans/index
-artifacts/index
-caching
-```

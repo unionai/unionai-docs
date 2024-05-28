@@ -12,11 +12,3 @@ To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](m
 ## Other identity providers
 
 To configure other identity providers, see [Other identity providers](other-identity-providers.md).
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-microsoft-entra-id
-other-identity-providers
-```

@@ -57,12 +57,3 @@ A variety of agents and plugins enable you to integrate Union with additional ex
 ### Misc
 
 * [File sensor agent](agents/file-sensor-agent/index) Detect files appearing in your local or remote filesystem.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-enabling-aws-resources/index
-enabling-gcp-resources/index
-agents/index
-```

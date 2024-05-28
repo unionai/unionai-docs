@@ -67,18 +67,3 @@ Hello, Ada!
 ## Next steps
 
 In the following sections, we will walk through setting up a simple but production-level Union project and deploying it to your Union instance in the cloud.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-installing-development-tools
-creating-the-project
-looking-at-the-dependencies
-looking-at-the-workflow-code
-running-in-a-local-python-environment
-running-in-a-local-cluster
-setting-up-the-project-on-union
-deploying-the-project-on-union
-more-resources
-```

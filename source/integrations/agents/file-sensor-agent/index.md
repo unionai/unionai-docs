@@ -11,10 +11,3 @@ pyflyte run --remote file_sensor_example.py wf
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-file-sensor-agent-example
-```

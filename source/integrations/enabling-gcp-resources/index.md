@@ -123,13 +123,3 @@ To find the actual name of this GSA do the following:
 
 * Copy this name to document in an editor.
 You will need it later to configure each specific resource.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-enabling-google-cloud-storage
-enabling-google-secret-manager
-enabling-google-artifact-registry
-enabling-bigquery
-```

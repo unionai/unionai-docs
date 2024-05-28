@@ -93,16 +93,3 @@ Not all parameters are compatible. For example, with specialized plugin task typ
 ## Task configuration
 
 The `@task` decorator can take a number of parameters that allow you to configure the task's behavior. For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more. For more information, see [Task parameters](task-parameters).
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-task-types
-task-parameters
-launching-tasks
-viewing-tasks
-viewing-logs
-task-software-environment/index
-task-hardware-environment/index
-```

@@ -7,14 +7,3 @@ Your data and the actual computation involved in executing your Flyte tasks and 
 To enable the administration and management of your data plane, you grant Union the required permissions when you set up your data plane.
 
 Union supports data planes on Amazon WebServices (AWS) or Google Cloud Platform (GCP).
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-data-plane-setup-on-aws
-data-plane-setup-on-gcp
-single-sign-on-setup/index
-configuring-your-data-plane
-multi-cluster
-```

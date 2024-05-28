@@ -51,10 +51,3 @@ $ pyflyte run bigquery_task.py bigquery_doge_coin --version 10
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-bigquery-agent-example
-```

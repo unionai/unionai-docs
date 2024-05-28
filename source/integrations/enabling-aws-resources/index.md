@@ -231,12 +231,3 @@ Repeat the following steps for each project-domain pair:
     ```
 
 **At this point, only Flyte code in your chosen project-domain pairs will have access to the cloud resource as defined by your custom policy.**
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-enabling-aws-s3
-enabling-aws-secrets-manager
-enabling-aws-ecr
-```

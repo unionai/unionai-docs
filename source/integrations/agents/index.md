@@ -54,18 +54,3 @@ For testing examples, see the [BigQuery agent](bigquery-agent/index.md#local-tes
 ### Enabling your agent in your Union deployment
 
 After you have finished testing your agent locally, you can contact the Union team to enable the agent in your Union deployment to use it in production.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-airflow-agent/index
-sagemaker-agent/index
-databricks-agent/index
-file-sensor-agent/index
-bigquery-agent/index
-mmcloud-agent/index
-dgx-agent
-chatgpt-agent/index
-snowflake-agent/index
-```

@@ -21,10 +21,3 @@ To test the SageMaker inference agent locally, create a class for the agent task
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-sagemaker-agent-example
-```

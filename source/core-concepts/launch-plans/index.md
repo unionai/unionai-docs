@@ -55,17 +55,3 @@ When the code above is registered to Union, it results in the creation of four o
 
 Launch plans are changed by altering their definition in code and re-registering.
 When a launch plan with the same project, domain, and name as a preexisting one is re-registered, a new version of that launch plan is created.
-
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-defining-launch-plans
-viewing-launch-plans
-notifications
-schedules
-activating-and-deactivating
-running-launch-plans
-reactive-workflows
-```
