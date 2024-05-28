@@ -5,9 +5,11 @@
         {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc", "serverless"],
             "children": [{"name": "data-plane-setup-on-aws", "tags": ["byoc", "serverless"]},
                 {"name": "data-plane-setup-on-gcp", "tags": ["byoc", "serverless"]},
-                {"name": "single-sign-on-setup", "tags": ["byoc", "serverless"]},
-                {"name": "microsoft_entra_id", "tags": ["byoc", "serverless"]},
-                {"name": "other-identity-providers", "tags": ["byoc", "serverless"]},
+                {"name": "single-sign-on-setup", "tags": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "microsoft-entra-id", "tags": ["byoc", "serverless"]},
+                        {"name": "other-identity-providers", "tags": ["byoc", "serverless"]}
+                    ]},
                 {"name": "configuring-your-data-plane", "tags": ["byoc", "serverless"]},
                 {"name": "multi-cluster", "tags": ["byoc", "serverless"]}
             ]},
@@ -41,7 +43,7 @@
                         {"name": "task-parameters", "tags": ["byoc", "serverless"]},
                         {"name": "launching-tasks", "tags": ["byoc", "serverless"]},
                         {"name": "viewing-tasks", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-cloudwatch-logs-for-a-task", "tags": ["byoc", "serverless"]},
+                        {"name": "viewing-logs", "tags": ["byoc", "serverless"]},
                         {"name": "task-software-environment", "tags": ["byoc", "serverless"],
                             "children": [
                                 {"name": "imagespec", "tags": ["byoc", "serverless"]},

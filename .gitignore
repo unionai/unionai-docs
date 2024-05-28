@@ -160,7 +160,7 @@ cython_debug/
 .idea/
 
 # Union build specific
-temp/
+sphinx_source/
 
 # macOS
 .DS_Store
