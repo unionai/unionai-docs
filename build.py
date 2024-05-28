@@ -20,9 +20,22 @@ SUBS: dict[str: dict[str: str] | str: str] = {
 
 
 # Call a shell command.
-# Supports interpolation of global variables.
 def shell(command: str) -> None:
     subprocess.run(shlex.split(command))
+
+
+# Returns a dictionary of variables based on the global SUBS dictionary,
+# filtered for the specified variant and augmented with the variant itself
+# as a boolean variable set to True.
+def get_vars(variant: str) -> dict:
+    vl = {}
+    for key, value in SUBS.items():
+        if isinstance(value, dict):
+            vl[key] = value[variant]
+        elif isinstance(value, str):
+            vl[key] = value
+    vl[variant] = True
+    return vl
 
 
 # Process a single unionai-docs Markdown file.
@@ -47,23 +60,9 @@ def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = 
 
     # TODO: figure out how to add the tags to the top of the output
     output = tags + output + toctree
-    
+
     with open(output_path, 'w') as f:
         f.write(output)
-
-
-# Returns a dictionary of variables based on the global SUBS dictionary,
-# filtered for the specified variant and augmented with the variant itself
-# as a boolean variable set to True.
-def get_vars(variant: str) -> dict:
-    vl = {}
-    for key, value in SUBS.items():
-        if isinstance(value, dict):
-            vl[key] = value[variant]
-        elif isinstance(value, str):
-            vl[key] = value
-    vl[variant] = True
-    return vl
 
 
 def process_page_node(page_node: dict, variant: str, path: str = None, parent_tags: str = None) -> str:
