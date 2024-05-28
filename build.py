@@ -135,6 +135,8 @@ def process_project():
     for tag in ALL_TAGS:
         process_page_node(page_node, tag, "", ALL_TAGS)
     for tag in ALL_TAGS:
+        shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{tag}')
+    for tag in ALL_TAGS:
         shell(f'sphinx-build {SPHINX_SOURCE_DIR}/{tag} {BUILD_DIR}/{tag}')
     shell(f'cp ./index.html {BUILD_DIR}/index.html')
 
