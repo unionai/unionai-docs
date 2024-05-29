@@ -71,8 +71,8 @@ def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = 
 
     output: str = template.render(get_vars(variant)).strip()
 
-    tags_directive = '```{tags} ' + variant + '\n```\n\n'
-    output = tags_directive + output + toctree
+    frontmatter = f'---\n variants: {str(tags)}\n---\n\n'
+    output = frontmatter + output + toctree
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, 'w') as f:
