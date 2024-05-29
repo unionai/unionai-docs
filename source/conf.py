@@ -9,7 +9,7 @@ master_doc = 'index'
 html_static_path = ['_static']
 templates_path = ['_templates']
 exclude_patterns = []
-extensions = ['myst_parser', 'sphinx_design', 'sphinx_reredirects']
+extensions = ['myst_parser', 'sphinx_design', 'sphinx_reredirects', 'sphinx_tags']
 html_theme = 'sphinx_book_theme'
 
 # Myst
@@ -17,7 +17,6 @@ myst_enable_extensions = ['colon_fence']
 myst_heading_anchors = 6
 
 # Sphinx book theme
-## Union logo
 html_logo = '_static/public/logo.svg'
 
 # Redirects

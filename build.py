@@ -42,7 +42,10 @@ def get_vars(variant: str) -> dict:
 # A unionai-docs file is a Sphinx/Myst Markdown file augmented
 # with Jinja2 templating but without any `toctree` directives.
 def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = '') -> None:
-    print(f'creating sphinx file for variant: {variant}')
+    n = path.count('/')
+    n = n - 1 if n > 0 else 0
+    indent = "    " * n
+    print(f'{indent}Creating sphinx file for variant: {variant}')
     env: jinja2.Environment = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
         block_start_string='{@@',
@@ -55,21 +58,21 @@ def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = 
         lstrip_blocks=True,
     )
     input_path: str = f'{SOURCE_DIR}/{path}'
-    print(f'input_path: {input_path}')
+    print(f'{indent}input_path: {input_path}')
 
     output_path: str = f'{SPHINX_SOURCE_DIR}/{variant}/{path}'
-    print(f'output_path: {output_path}')
+    print(f'{indent}output_path: {output_path}')
 
     template: jinja2.Template = None
     try:
         template = env.get_template(input_path)
     except jinja2.exceptions.TemplateNotFound:
-        print(f'File not found at {input_path}')
+        print(f'{indent}File not found at {input_path}')
 
-    output: str = template.render(get_vars(variant))
+    output: str = template.render(get_vars(variant)).strip()
 
-    # TODO: figure out how to add the tags to the top of the output
-    output = str(tags) + output + toctree
+    tags_directive = '```{tags} ' + variant + '\n```\n\n'
+    output = tags_directive + output + toctree
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, 'w') as f:
@@ -81,10 +84,11 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
     title = page_node.get('title', None)
     tags = page_node.get('tags')
     children = page_node.get('children', None)
-    print(f'node: [{name} {title} {tags} {"... " if children else ""}]')
-
+    indent = parent_path.count('/') * "    "
     path = os.path.join(parent_path, name).rstrip(' /')
-    print(f'path: [{path}]')
+
+    print(f'\n{indent}node: [{name} {title} {tags} {"... " if children else ""}]')
+    print(f'{indent}path: [{path}]')
 
     # If tree is malformed, exit.
     if set(tags) > set(parent_tags):
@@ -101,11 +105,10 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
     # Do not add a toctree to this page.
     # Return the toctree entry of this page in its parent page: `{name}`.
     if not children:
-        print('This page has no children')
+        print(f'{indent}This page has no children')
         create_sphinx_file(f'{path}.md', variant, tags)
         toc_entry = title + '<' + name + '>' if title else name
-        print(f'toc_entry: [{toc_entry}]')
-        print()
+        print(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 
     # This page does have children:
@@ -115,15 +118,14 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
     # Add the assembled toctree to this page.
     # Return the toctree entry of this page in its parent page: `{name}/index`
     else:
-        print('This page has children')
-        print()
-        toctree: str = '```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
+        print(f'{indent}This page has children')
+        toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
         for child_page_node in children:
             toctree += process_page_node(child_page_node, variant, path, tags) + '\n'
         toctree += '```\n'
         create_sphinx_file(f'{path}/index.md', variant, tags, toctree)
         toc_entry = title + '<' + name + '/index' + '>' if title else name + '/index'
-        print(f'toc_entry: [{toc_entry}]')
+        print(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 
 
@@ -136,6 +138,8 @@ def process_project():
         process_page_node(page_node, tag, "", ALL_TAGS)
     for tag in ALL_TAGS:
         shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{tag}')
+        shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{tag}')
+        shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{tag}')
     for tag in ALL_TAGS:
         shell(f'sphinx-build {SPHINX_SOURCE_DIR}/{tag} {BUILD_DIR}/{tag}')
     shell(f'cp ./index.html {BUILD_DIR}/index.html')
