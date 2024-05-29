@@ -10,7 +10,7 @@ SPHINX_SOURCE_DIR: str = './sphinx_source'
 BUILD_DIR: str = './build/html'
 SITEMAP: str = './sitemap.json'
 ALL_TAGS: list[str] = ['serverless', 'byoc']
-SUBS: dict[str: dict[str: str] | str: str] = {
+SUBS: dict[str, dict[str, str] | str] = {
     'product_name': {
         'byoc': 'Union BYOC',
         'serverless': 'Union Serverless',
@@ -28,14 +28,14 @@ def shell(command: str) -> None:
 # filtered for the specified variant and augmented with the variant itself
 # as a boolean variable set to True.
 def get_vars(variant: str) -> dict:
-    vl = {}
+    vd: dict = {}
     for key, value in SUBS.items():
         if isinstance(value, dict):
-            vl[key] = value[variant]
+            vd[key] = value[variant]
         elif isinstance(value, str):
-            vl[key] = value
-    vl[variant] = True
-    return vl
+            vd[key] = value
+    vd[variant] = True
+    return vd
 
 
 # Process a single unionai-docs Markdown file.
@@ -44,7 +44,7 @@ def get_vars(variant: str) -> dict:
 def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = '') -> None:
     n = path.count('/')
     n = n - 1 if n > 0 else 0
-    indent = "    " * n
+    indent: str = "    " * n
     print(f'{indent}Creating sphinx file for variant: {variant}')
     env: jinja2.Environment = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
@@ -63,30 +63,27 @@ def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = 
     output_path: str = f'{SPHINX_SOURCE_DIR}/{variant}/{path}'
     print(f'{indent}output_path: {output_path}')
 
-    template: jinja2.Template = None
     try:
-        template = env.get_template(input_path)
+        template: jinja2.Template = env.get_template(input_path)
     except jinja2.exceptions.TemplateNotFound:
         print(f'{indent}File not found at {input_path}')
-
-    output: str = template.render(get_vars(variant)).strip()
-
-    frontmatter = f'---\n variants: {str(tags)}\n---\n\n'
-    tags_directive = '```{tags} ' + variant + '\n```\n\n'
-    output = frontmatter + tags_directive + output + toctree
-
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, 'w') as f:
-        f.write(output)
+    else:
+        output: str = template.render(get_vars(variant)).strip()
+        frontmatter = f'---\n variants: {str(tags)}\n---\n\n'
+        tags_directive = '```{tags} ' + variant + '\n```\n\n'
+        output = frontmatter + tags_directive + output + toctree
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        with open(output_path, 'w') as f:
+            f.write(output)
 
 
 def process_page_node(page_node: dict, variant: str, parent_path: str, parent_tags: list) -> str:
-    name = page_node.get('name')
-    title = page_node.get('title', None)
-    tags = page_node.get('tags')
-    children = page_node.get('children', None)
-    indent = parent_path.count('/') * "    "
-    path = os.path.join(parent_path, name).rstrip(' /')
+    name: str = page_node.get('name', '')
+    title: str = page_node.get('title', '')
+    tags: list = page_node.get('tags', '')
+    children: list = page_node.get('children', None)
+    indent: str = parent_path.count('/') * "    "
+    path: str = os.path.join(parent_path, name).rstrip(' /')
 
     print(f'\n{indent}node: [{name} {title} {tags} {"... " if children else ""}]')
     print(f'{indent}path: [{path}]')
@@ -98,7 +95,7 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
     # If this page does not appear in the current variant site return `None`.
     if variant not in tags:
         print(f'This page has no variant [{variant}]')
-        return None
+        return ''
 
     # If this page has no children:
     # The file path for this page `{path}.md`.
