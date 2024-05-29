@@ -2,16 +2,17 @@
     "children": [
         {"name": "union-and-flyte", "title": "Union and Flyte", "tags": ["byoc", "serverless"]},
         {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc", "serverless"]},
-        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc", "serverless"],
-            "children": [{"name": "data-plane-setup-on-aws", "tags": ["byoc", "serverless"]},
-                {"name": "data-plane-setup-on-gcp", "tags": ["byoc", "serverless"]},
-                {"name": "single-sign-on-setup", "tags": ["byoc", "serverless"],
+        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc"],
+            "children": [
+                {"name": "data-plane-setup-on-aws", "tags": ["byoc"]},
+                {"name": "data-plane-setup-on-gcp", "tags": ["byoc"]},
+                {"name": "single-sign-on-setup", "tags": ["byoc"],
                     "children": [
-                        {"name": "microsoft-entra-id", "tags": ["byoc", "serverless"]},
-                        {"name": "other-identity-providers", "tags": ["byoc", "serverless"]}
+                        {"name": "microsoft-entra-id", "tags": ["byoc"]},
+                        {"name": "other-identity-providers", "tags": ["byoc"]}
                     ]},
-                {"name": "configuring-your-data-plane", "tags": ["byoc", "serverless"]},
-                {"name": "multi-cluster", "tags": ["byoc", "serverless"]}
+                {"name": "configuring-your-data-plane", "tags": ["byoc"]},
+                {"name": "multi-cluster", "tags": ["byoc"]}
             ]},
         {"name": "getting-started", "tags": ["byoc", "serverless"],
             "children": [

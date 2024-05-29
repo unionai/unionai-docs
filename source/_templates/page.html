@@ -1,7 +1,7 @@
 {% extends "!page.html" %}
 {{ super() }}
 
-{% block extrahead %}
+{% block extrahead %}=
 <!-- Google Tag Manager -->
 <script>
 (function (w, d, s, l, i) {
@@ -16,74 +16,89 @@
 })(window, document, "script", "dataLayer", "GTM-WC8V9XS");
 </script>
 <!-- End Google Tag Manager -->
+<!-- UnionAI docs variant switcher -->
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-
-    // Get the current URL
-    const currentUrl = new URL(window.location.href);
-    const variant1 = 'serverless';
-    const variant2 = 'byoc';
-
-    // Function to replace all instances of a string in a URL path
-    function replaceAllInstances(url, searchValue, newValue) {
-        return url.split(searchValue).join(newValue);
+function getAvailableVariants() {
+    var div = document.getElementById('unionai-docs-variants');
+    var content = div.textContent || div.innerText;
+    var array;
+    try {
+        array = JSON.parse(content);
+    } catch (e) {
+        console.error('Error parsing content to array:', e);
+        return null;
     }
-
-    // Determine the variant present in the URL, if any
-    const containsVariant1 = currentUrl.href.includes(variant1);
-    const containsVariant2 = currentUrl.href.includes(variant2);
-    let serverlessUrl, byocUrl;
-
-    if (containsVariant1) {
-        // Generate new URLs by replacing "variant1"
-        serverlessUrl = replaceAllInstances(currentUrl.href, variant1, variant1);
-        byocUrl = replaceAllInstances(currentUrl.href, variant1, variant2);
-    } else if (containsVariant2) {
-        // Generate new URLs by replacing "variant2"
-        serverlessUrl = replaceAllInstances(currentUrl.href, variant2, variant1);
-        byocUrl = replaceAllInstances(currentUrl.href, variant2, variant2);
+    if (Array.isArray(array) && array.every(item => typeof item === 'string')) {
+        return array;
     } else {
-        // If neither variant is present, do nothing
-        return;
+        console.error('Parsed content is not an array of strings');
+        return null;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var variants = getAvailableVariants();
+
+    // Get the current page URL
+    var currentUrl = new URL(window.location.href);
+
+    // Extract the path segments
+    var pathSegments = currentUrl.pathname.split('/').filter(Boolean);
+
+    // Find the index of the path segment that matches one of the variants
+    var matchedIndex = -1;
+    for (var i = 0; i < pathSegments.length; i++) {
+        if (variants.includes(pathSegments[i])) {
+            matchedIndex = i;
+            break;
+        }
     }
 
-    // Create a list to display the new URLs
-    const linkList = document.createElement('ul');
+    // If a matching path segment is found
+    if (matchedIndex !== -1) {
+        // Create the list container
+        var listContainer = document.createElement('ul');
 
-    // Create the list items and links
-    const serverlessListItem = document.createElement('li');
-    const serverlessLink = document.createElement('a');
-    serverlessLink.href = serverlessUrl;
-    serverlessLink.textContent = 'Serverless';
-    serverlessListItem.appendChild(serverlessLink);
+        // Iterate over the variants array
+        variants.forEach(function(variant) {
+            // Create a new URL with the matched path segment replaced by the variant
+            var newUrl = new URL(currentUrl);
+            var newPathSegments = pathSegments.slice();
+            newPathSegments[matchedIndex] = variant;
+            newUrl.pathname = '/' + newPathSegments.join('/');
 
-    const byocListItem = document.createElement('li');
-    const byocLink = document.createElement('a');
-    byocLink.href = byocUrl;
-    byocLink.textContent = 'BYOC';
-    byocListItem.appendChild(byocLink);
+            // Create the list item and anchor elements
+            var listItem = document.createElement('li');
+            var anchor = document.createElement('a');
 
-    // Append the list items to the list
-    linkList.appendChild(serverlessListItem);
-    linkList.appendChild(byocListItem);
+            // Set the anchor text and href
+            anchor.textContent = variant;
+            anchor.href = newUrl.href;
 
-    // Find the div with the class 'variantList'
-    const variantListDiv = document.querySelector('.variantList');
+            // Append the anchor to the list item, and the list item to the list container
+            listItem.appendChild(anchor);
+            listContainer.appendChild(listItem);
+        });
 
-    // Append the list to the div
-    if (variantListDiv) {
-        variantListDiv.appendChild(linkList);
+        const variantListDiv = document.getElementById('unionai-docs-variant-switcher');
+        if (variantListDiv) {
+            variantListDiv.appendChild(listContainer);
+        }
     }
-});
+})
 </script>
+<!-- End UnionAI docs variant switcher -->
 {% endblock %}
 
 {% block body %}
+{%- if meta is mapping %}
+    <div id="unionai-docs-variants">{{ meta.get("variants") }}</div>
+{%- endif %}
 {{ super() }}
 
 {% block docs_navbar %}
 {{ super() }}
-<div class="variantList"></div>
+<div id="unionai-docs-variant-switcher"></div>
 {% endblock docs_navbar %}
 
 <!-- Google Tag Manager (noscript) -->

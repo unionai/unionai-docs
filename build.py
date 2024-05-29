@@ -72,7 +72,8 @@ def create_sphinx_file(path: str, variant: str, tags: list[str], toctree: str = 
     output: str = template.render(get_vars(variant)).strip()
 
     frontmatter = f'---\n variants: {str(tags)}\n---\n\n'
-    output = frontmatter + output + toctree
+    tags_directive = '```{tags} ' + variant + '\n```\n\n'
+    output = frontmatter + tags_directive + output + toctree
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, 'w') as f:
@@ -121,7 +122,9 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
         print(f'{indent}This page has children')
         toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
         for child_page_node in children:
-            toctree += process_page_node(child_page_node, variant, path, tags) + '\n'
+            toc_entry = process_page_node(child_page_node, variant, path, tags)
+            if toc_entry:
+                toctree += toc_entry + '\n'
         toctree += '```\n'
         create_sphinx_file(f'{path}/index.md', variant, tags, toctree)
         toc_entry = title + '<' + name + '/index' + '>' if title else name + '/index'
