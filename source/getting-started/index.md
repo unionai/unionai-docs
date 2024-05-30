@@ -111,7 +111,7 @@ Running Execution on local.
 Hello, Ada!
 ```
 
-(@@ if serverless @@}
+{@@ if serverless @@}
 
 To run the workflow remotely on Union:
 

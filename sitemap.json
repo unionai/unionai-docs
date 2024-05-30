@@ -17,7 +17,6 @@
             ]},
         {"name": "getting-started", "tags": ["byoc", "serverless"],
             "children": [
-                {"name": "quick-start", "title": "Quick start", "tags": ["serverless"]},
                 {"name": "machine-learning-example", "tags": ["serverless"]},
                 {"name": "adding-custom-dependencies", "tags": ["serverless"]},
                 {"name": "managing-secrets", "tags": ["serverless"]},
