@@ -1,6 +1,6 @@
 {"name": "", "title": "Introduction", "tags": ["byoc", "serverless"],
     "children": [
-        {"name": "quick-start", "title": "Quick start", "tags": ["byoc", "serverless"]},
+
         {"name": "union-and-flyte", "title": "Union and Flyte", "tags": ["byoc", "serverless"]},
         {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc", "serverless"]},
         {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc", "serverless"],
@@ -17,6 +17,7 @@
             ]},
         {"name": "getting-started", "tags": ["byoc", "serverless"],
             "children": [
+                {"name": "quick-start", "title": "Quick start", "tags": ["byoc", "serverless"]},
                 {"name": "getting-started-with-serverless", "tags": ["byoc", "serverless"]},
                 {"name": "installing-development-tools", "tags": ["byoc", "serverless"]},
                 {"name": "creating-the-project", "tags": ["byoc", "serverless"]},
