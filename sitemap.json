@@ -2,18 +2,18 @@
     "children": [
 
         {"name": "union-and-flyte", "title": "Union and Flyte", "tags": ["byoc", "serverless"]},
-        {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc", "serverless"]},
-        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc", "serverless"],
+        {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc"]},
+        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc"],
             "children": [
-                {"name": "data-plane-setup-on-aws", "tags": ["byoc", "serverless"]},
-                {"name": "data-plane-setup-on-gcp", "tags": ["byoc", "serverless"]},
-                {"name": "single-sign-on-setup", "tags": ["byoc", "serverless"],
+                {"name": "data-plane-setup-on-aws", "tags": ["byoc"]},
+                {"name": "data-plane-setup-on-gcp", "tags": ["byoc"]},
+                {"name": "single-sign-on-setup", "tags": ["byoc"],
                     "children": [
-                        {"name": "microsoft-entra-id", "tags": ["byoc", "serverless"]},
-                        {"name": "other-identity-providers", "tags": ["byoc", "serverless"]}
+                        {"name": "microsoft-entra-id", "tags": ["byoc"]},
+                        {"name": "other-identity-providers", "tags": ["byoc"]}
                     ]},
-                {"name": "configuring-your-data-plane", "tags": ["byoc", "serverless"]},
-                {"name": "multi-cluster", "tags": ["byoc", "serverless"]}
+                {"name": "configuring-your-data-plane", "tags": ["byoc"]},
+                {"name": "multi-cluster", "tags": ["byoc"]}
             ]},
         {"name": "getting-started", "tags": ["byoc", "serverless"],
             "children": [
@@ -101,27 +101,27 @@
                 {"name": "flytefile", "tags": ["byoc", "serverless"]},
                 {"name": "accelerated-datasets", "tags": ["byoc", "serverless"]}
             ]},
-        {"name": "administration", "tags": ["byoc", "serverless"],
+        {"name": "administration", "tags": ["byoc"],
             "children": [
-                {"name": "user-management", "tags": ["byoc", "serverless"]},
-                {"name": "usage", "tags": ["byoc", "serverless"]},
-                {"name": "applications", "tags": ["byoc", "serverless"]},
-                {"name": "cli-authentication", "tags": ["byoc", "serverless"]}
+                {"name": "user-management", "tags": ["byoc"]},
+                {"name": "usage", "tags": ["byoc"]},
+                {"name": "applications", "tags": ["byoc"]},
+                {"name": "cli-authentication", "tags": ["byoc"]}
             ]},
         {"name": "integrations", "tags": ["byoc", "serverless"],
             "children": [
-                {"name": "enabling-aws-resources", "tags": ["byoc", "serverless"],
+                {"name": "enabling-aws-resources", "tags": ["byoc"],
                     "children": [
-                        {"name": "enabling-aws-s3", "tags": ["byoc", "serverless"]},
-                        {"name": "enabling-aws-secrets-manager", "tags": ["byoc", "serverless"]},
-                        {"name": "enabling-aws-ecr", "tags": ["byoc", "serverless"]}
+                        {"name": "enabling-aws-s3", "tags": ["byoc"]},
+                        {"name": "enabling-aws-secrets-manager", "tags": ["byoc"]},
+                        {"name": "enabling-aws-ecr", "tags": ["byoc"]}
                     ]},
-                {"name": "enabling-gcp-resources", "tags": ["byoc", "serverless"],
+                {"name": "enabling-gcp-resources", "tags": ["byoc"],
                     "children": [
-                        {"name": "enabling-google-cloud-storage", "tags": ["byoc", "serverless"]},
-                        {"name": "enabling-google-secret-manager", "tags": ["byoc", "serverless"]},
-                        {"name": "enabling-google-artifact-registry", "tags": ["byoc", "serverless"]},
-                        {"name": "enabling-bigquery", "tags": ["byoc", "serverless"]}
+                        {"name": "enabling-google-cloud-storage", "tags": ["byoc"]},
+                        {"name": "enabling-google-secret-manager", "tags": ["byoc"]},
+                        {"name": "enabling-google-artifact-registry", "tags": ["byoc"]},
+                        {"name": "enabling-bigquery", "tags": ["byoc"]}
                     ]},
                 {"name": "agents", "tags": ["byoc", "serverless"],
                     "children": [
