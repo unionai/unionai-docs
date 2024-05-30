@@ -1,6 +1,5 @@
 {"name": "", "title": "Introduction", "tags": ["byoc", "serverless"],
     "children": [
-
         {"name": "union-and-flyte", "title": "Union and Flyte", "tags": ["byoc", "serverless"]},
         {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc"]},
         {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc"],
