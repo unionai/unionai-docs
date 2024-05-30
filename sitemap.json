@@ -1,29 +1,35 @@
 {"name": "", "title": "Introduction", "tags": ["byoc", "serverless"],
     "children": [
+        {"name": "quick-start", "title": "Quick start", "tags": ["byoc", "serverless"]},
         {"name": "union-and-flyte", "title": "Union and Flyte", "tags": ["byoc", "serverless"]},
         {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc", "serverless"]},
-        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc"],
+        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc", "serverless"],
             "children": [
-                {"name": "data-plane-setup-on-aws", "tags": ["byoc"]},
-                {"name": "data-plane-setup-on-gcp", "tags": ["byoc"]},
-                {"name": "single-sign-on-setup", "tags": ["byoc"],
+                {"name": "data-plane-setup-on-aws", "tags": ["byoc", "serverless"]},
+                {"name": "data-plane-setup-on-gcp", "tags": ["byoc", "serverless"]},
+                {"name": "single-sign-on-setup", "tags": ["byoc", "serverless"],
                     "children": [
-                        {"name": "microsoft-entra-id", "tags": ["byoc"]},
-                        {"name": "other-identity-providers", "tags": ["byoc"]}
+                        {"name": "microsoft-entra-id", "tags": ["byoc", "serverless"]},
+                        {"name": "other-identity-providers", "tags": ["byoc", "serverless"]}
                     ]},
-                {"name": "configuring-your-data-plane", "tags": ["byoc"]},
-                {"name": "multi-cluster", "tags": ["byoc"]}
+                {"name": "configuring-your-data-plane", "tags": ["byoc", "serverless"]},
+                {"name": "multi-cluster", "tags": ["byoc", "serverless"]}
             ]},
         {"name": "getting-started", "tags": ["byoc", "serverless"],
             "children": [
+                {"name": "getting-started-with-serverless", "tags": ["byoc", "serverless"]},
                 {"name": "installing-development-tools", "tags": ["byoc", "serverless"]},
                 {"name": "creating-the-project", "tags": ["byoc", "serverless"]},
                 {"name": "looking-at-the-dependencies", "tags": ["byoc", "serverless"]},
+                {"name": "adding-custom-dependencies", "tags": ["byoc", "serverless"]},
                 {"name": "looking-at-the-workflow-code", "tags": ["byoc", "serverless"]},
                 {"name": "running-in-a-local-python-environment", "tags": ["byoc", "serverless"]},
                 {"name": "running-in-a-local-cluster", "tags": ["byoc", "serverless"]},
                 {"name": "setting-up-the-project-on-union", "tags": ["byoc", "serverless"]},
                 {"name": "deploying-the-project-on-union", "tags": ["byoc", "serverless"]},
+                {"name": "managing-secrets", "tags": ["byoc", "serverless"]},
+                {"name": "managing-apps", "tags": ["byoc", "serverless"]},
+                {"name": "access-aws-s3", "tags": ["byoc", "serverless"]},
                 {"name": "more-resources", "tags": ["byoc", "serverless"]}
             ]},
         {"name": "core-concepts", "tags": ["byoc", "serverless"],
