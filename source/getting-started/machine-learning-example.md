@@ -1,4 +1,4 @@
-# Getting started with Serverless
+# Machine learning example
 
 In this tutorial, we learn about UnionAI's Serverless features by reviewing a
 machine learning workflow using `flytekit`, `scikit-learn`, and `pandas`. Before starting this tutorial,
