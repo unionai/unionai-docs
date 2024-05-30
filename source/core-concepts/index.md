@@ -69,12 +69,12 @@ See [Workflows](workflows/index) for more details.
 
 ## Registering tasks and workflows
 
-### Registering on the command line with `pyflyte` or `uctl`
+### Registering on the command line with `unionai` or `uctl`
 
-In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `pyflyte` or `uctl` For example:
+In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `unionai` or `uctl` For example:
 
 ```{code-block} shell
-pyflyte register ./workflows --project my_project --domain development
+unionai register ./workflows --project my_project --domain development
 ```
 
 Tasks can also be registered individually, but it is more common to register alongside the workflow that uses them.
@@ -235,7 +235,7 @@ To run a workflow in the Union console, click the **Launch Workflow** button in 
 
 You can also run individual tasks in the Union console by clicking the **Launch Task** button in the task view.
 
-### Running a task or workflow locally on the command line with `pyflyte` or `python`
+### Running a task or workflow locally on the command line with `unionai` or `python`
 
 You can execute a Flyte workflow or task locally simply by calling it just like any regular Python function.
 For example, you can add the following to the above code:
@@ -251,23 +251,23 @@ If the file is saved as `my_example.py`, you can run it locally using the follow
 $ python my_example.py
 ```
 
-Alternatively, you can run the task locally with the `flytekit` command line tool `pyflyte`:
+Alternatively, you can run the task locally with the `unionai` command line tool:
 
-To run it locally, you can use the following `pyflyte run` command:
+To run it locally, you can use the following `unionai run` command:
 
 ```{code-block} shell
-$ pyflyte run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
+$ unionai run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
 
 This has the advantage of allowing you to specify the input values as command line arguments.
 For more details on running workflows and tasks, see [Development cycle](../development-cycle/index).
 
-### Running a task or workflow remotely on the command line with `pyflyte`
+### Running a task or workflow remotely on the command line with `unionai`
 
 To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../getting-started/setting-up-the-project-on-union)):
 
 ```{code-block} shell
-$ pyflyte run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
+$ unionai run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
 
 ### Running a task or workflow remotely in Python with `FlyteRemote`

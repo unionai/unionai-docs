@@ -5,7 +5,11 @@ In this section, we give a quick introduction to writing and running Union workf
 To get started with **Union.ai**, you will need to do the following:
 
 * Install [Python 3.8 or higher](https://www.python.org/downloads/)
-* Install [Flytekit](https://github.com/flyteorg/flytekit) with `pip install -U flytekit`.
+* Install [`unionai`](https://pypi.org/project/unionai/) with `pip install -U unionai`
+
+```{note}
+Installing `unionai` will install both the `unionai` and `flytekit` SDKs, along with the `unionai` command-line tool.
+```
 
 ## Create a "Hello, world!" workflow
 
@@ -32,16 +36,16 @@ The workflow is the top-level construct which you run. The workflow, in turn, in
 
 ### Run the example workflow in a local Python environment
 
-Run the workflow with `pyflyte run`. The syntax is:
+Run the workflow with `unionai run`. The syntax is:
 
 ```{code-block} shell
-$ pyflyte run <script_path> <task_or_workflow_name>
+$ unionai run <script_path> <task_or_workflow_name>
 ```
 
 In this case:
 
 ```{code-block} shell
-$ pyflyte run example.py hello_world_wf
+$ unionai run example.py hello_world_wf
 ```
 
 You should see the following output:
@@ -54,7 +58,7 @@ Hello, world!
 Since the `@workflow` function takes an argument called `name`, you can also pass that in:
 
 ```{code-block} shell
-$ pyflyte run example.py hello_world_wf --name Ada
+$ unionai run example.py hello_world_wf --name Ada
 ```
 
 Then, you should see the following output:

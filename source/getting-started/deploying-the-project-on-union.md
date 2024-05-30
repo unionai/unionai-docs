@@ -8,7 +8,7 @@ The phrase "register your workflow" means the same things as "deploy your workfl
 ## Register the workflow
 
 ```{code-block} shell
-$ pyflyte register workflows --project wine-classification
+$ unionai register workflows --project wine-classification
 ```
 
 This command does the following:

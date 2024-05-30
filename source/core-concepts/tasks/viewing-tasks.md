@@ -14,11 +14,11 @@ Each task in the list displays some basic information about the task:
 * **Outputs**: The output type for the task.
 * **Description**: A description of the task.
 
-Select an entry on the list to go to that specific task.
+Select an entry on the list to go to that [specific task](#task-view).
 
 ## Task view
 
-Selecting an individual task from the task list will take you to the task view:
+Selecting an individual task from the [task list](#tasks-list) will take you to the task view:
 
 ![Task view](/_static/images/task-view.png)
 

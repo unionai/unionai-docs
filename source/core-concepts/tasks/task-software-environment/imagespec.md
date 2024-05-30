@@ -32,7 +32,7 @@ pandas
 ### local-requirements.txt
 
 ```
-flytekit
+unionai
 flytekitplugins-envd
 -r image-requirements.txt
 ```
@@ -58,7 +58,7 @@ def get_pandas_dataframe() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return df[["age", "thalach", "trestbps", "chol", "oldpeak"]], df.pop("target")
 
 @workflow()
-def wf() --> typing.Tuple[pd.DataFrame, pd.Series]:
+def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```
 
@@ -84,7 +84,7 @@ For an example using Google Artifact Registry see [ImageSpec with GAR](./imagesp
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GHCR. This is needed for `pyflyte` to be able to push the image built according to the `ImageSpec` to GHCR.
+You will need to set up your local Docker client to authenticate with GHCR. This is needed for `unionai` to be able to push the image built according to the `ImageSpec` to GHCR.
 
 Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 
@@ -102,7 +102,7 @@ This setup is not mandatory, but it is a good practice to follow since it makes 
 
 The `local-requirements.txt` includes the `flytekit` and `flytekitplugins-env` packages as well as the contents of the `image-requirements.txt` file.
 
-The `flytekit` package is, of course, needed in your local requirements to define workflows and to provide the `pyflyte` CLI.
+The `unionai` package is, of course, needed in your local requirements to define workflows and to provide the `unionai` SDK, the `flytekit` SDK, and the `unionai` CLI.
 It is not need in the `image-requirements.txt` file because the task container image is based on an image that already includes `flytekit` (specifically the image `flytekit:py3.11-latest`).
 
 The `flytekitplugins-env` package is needed in your local requirements because it provides (together with your local Docker install) the functionality to build and push the container image defined by the `ImageSpec`.
@@ -118,7 +118,7 @@ Assuming you are in the local project root, run `pip install -r local-requiremen
 ## Run the workflow locally
 
 You can now run the workflow locally.
-In the project root directory, run: `pyflyte run workflows/imagespec-simple-example.py wf`.
+In the project root directory, run: `unionai run workflows/imagespec-simple-example.py wf`.
 See [Running Workflows Locally](../../../getting-started/running-in-a-local-python-environment.md) for more details.
 
 :::{note}
@@ -130,10 +130,10 @@ When you run the workflow in your local Python environment, the image is not bui
 To register the workflow to Union, in the local project root, run:
 
 ```{code-block} shell
-$ pyflyte register workflows/imagespec-simple-example.py
+$ unionai register workflows/imagespec-simple-example.py
 ```
 
-`pyflyte` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
+`unionai` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
 It will then register the workflow to Union.
 
 To see the registered workflow, go to the Union console and navigate to the project and domain that you created above.

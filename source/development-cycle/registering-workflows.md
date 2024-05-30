@@ -5,7 +5,7 @@ The numerous ways in which workflows can be deployed and run can be somewhat con
 ## Local Python
 
 ```{code-block} shell
-$ pyflyte run my_file.py my_workflow
+$ unionai run my_file.py my_workflow
 ```
 
 * Task code runs in your local Python environment.
@@ -17,10 +17,10 @@ $ pyflyte run my_file.py my_workflow
 ## Local cluster with default image
 
 ```{code-block} shell
-$ pyflyte run --remote my_file.py my_workflow
+$ unionai run --remote my_file.py my_workflow
 ```
 
-_Where `pyflyte` is configured to point to the local cluster started with `uctl demo start`._
+_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
 
 * Task code runs in the environment of the default image in your local cluster.
 * Python code is dynamically overlaid into the container at runtime.
@@ -34,13 +34,13 @@ _Where `pyflyte` is configured to point to the local cluster started with `uctl 
 ## Local cluster with custom image
 
 ```{code-block} shell
-$ pyflyte run --remote \
+$ unionai run --remote \
               --image my_cr.io/my_org/my_image:latest \
               my_file.py \
               my_workflow
 ```
 
-_Where `pyflyte` is configured to point to the local cluster started with `uctl demo start`._
+_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
 
 * Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in your local cluster.
 * Python code is dynamically overlaid into the container at runtime
@@ -54,31 +54,31 @@ _Where `pyflyte` is configured to point to the local cluster started with `uctl 
 ## Remote cluster with custom image
 
 ```{code-block} shell
-$ pyflyte run --remote \
+$ unionai run --remote \
               --image my_cr.io/my_org/my_image:latest \
               my_file.py \
               my_workflow
 ```
 
-_Where `pyflyte` is configured to point to your Union data plane._
+_Where `unionai` is configured to point to your Union data plane._
 
 * Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in Union.
 * Python code is dynamically overlaid into the container at runtime.
 * Supports any Python dependencies you wish, since you have full control of the image.
 * Full support for all features (S3, all plugins, etc.).
-* Single workflow runs immediately on invocation of `pyflyte` command.
+* Single workflow runs immediately on invocation of `unionai` command.
 * Workflow is registered to a default project.
 * Useful for advanced testing during the development cycle.
 
 ## Remote cluster using fast registration
 
 ```{code-block} shell
-$ pyflyte register workflows \
+$ unionai register workflows \
        --project my_project \
        --image my_cr.io/my_org/my_image:latest
 ```
 
-_Where `pyflyte` is configured to point to your Union data plane._
+_Where `unionai` is configured to point to your Union data plane._
 
 * Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in Union.
 * Python code is dynamically overlaid into the container at runtime.
@@ -94,7 +94,7 @@ _Where `pyflyte` is configured to point to your Union data plane._
 First, package your workflows:
 
 ```{code-block} shell
-$ pyflyte --pkgs workflows \
+$ unionai --pkgs workflows \
           package \
           --image my_cr.io/my_org/my_image:latest
 ```
@@ -109,7 +109,7 @@ $ uctl register files \
        --version 1.0
 ```
 
-_Where `pyflyte` and `uctl` are configured to point to your Union data plane._
+_Where `unionai` and `uctl` are configured to point to your Union data plane._
 
 * Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in Union.
 * Python code is built into the image and not dynamically overlaid into the container, thus preserving immutability.

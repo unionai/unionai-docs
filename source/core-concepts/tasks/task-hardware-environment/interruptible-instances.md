@@ -1,8 +1,8 @@
 # Interruptible instances
 
 :::{note}
-In AWS the terms *interruptible instance* and  *spot instance* are used.
-In GCP the equivalent term is *preemptible instance*.
+In AWS, the term *spot instance* is used.
+In GCP, the equivalent term is *spot vm*.
 Here we use the term *interruptible instance* generically for both providers.
 :::
 

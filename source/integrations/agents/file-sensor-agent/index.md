@@ -5,7 +5,7 @@
 To execute the provided example in a [local cluster](/getting-started/running-in-a-local-cluster), copy the [file sensor agent example](file-sensor-agent-example) to a file called "file_sensor_example.py" and run the following command:
 
 ```
-pyflyte run --remote file_sensor_example.py wf
+unionai run --remote file_sensor_example.py wf
 ```
 
 ## Union cluster deployment

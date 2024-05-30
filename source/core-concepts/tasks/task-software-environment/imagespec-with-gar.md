@@ -56,7 +56,7 @@ Your GAR repository is now created.
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GAR. This is needed for `pyflyte` to be able to push the image built according to the `ImageSpec` to GAR.
+You will need to set up your local Docker client to authenticate with GAR. This is needed for `unionai` to be able to push the image built according to the `ImageSpec` to GAR.
 
 Directions can be found in the GAR console interface. Click on **Setup Instructions**:
 

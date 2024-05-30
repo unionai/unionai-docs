@@ -36,4 +36,4 @@ To query for artifacts programmatically in a Python script using `UnionRemote`, 
 
 ## Lineage
 
-Once an artifact is materialized, its lineage is visible in the Union console. For more information, see [Viewing artifacts in the web console](viewing-artifacts).
+Once an artifact is materialized, its lineage is visible in the Union console. For more information, see [Artifact view](viewing-artifacts).

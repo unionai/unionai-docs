@@ -326,20 +326,20 @@ invoked inside of the eager workflow.
 
 Assuming that your `flytekit` code is configured correctly, you will need to
 register all of the task and subworkflows that are used with your eager
-workflow with `pyflyte register`:
+workflow with `unionai register`:
 
 ```{code-block} shell
-pyflyte --config <path/to/config.yaml> register \
+unionai --config <path/to/config.yaml> register \
  --project <project> \
  --domain <domain> \
  --image <image> \
  path/to/eager_workflows.py
 ```
 
-And then run it with `pyflyte run`:
+And then run it with `unionai run`:
 
 ```{code-block} shell
-pyflyte --config <path/to/config.yaml> run \
+unionai --config <path/to/config.yaml> run \
  --project <project> \
  --domain <domain> \
  --image <image> \
@@ -347,7 +347,7 @@ pyflyte --config <path/to/config.yaml> run \
 ```
 
 :::{note}
-You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood, which means that `pyflyte run` has no way of knowing what tasks and subworkflows are invoked inside of it.
+You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood, which means that `unionai run` has no way of knowing what tasks and subworkflows are invoked inside of it.
 :::
 
 ## Eager workflows on Flyte console

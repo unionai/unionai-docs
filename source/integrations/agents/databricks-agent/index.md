@@ -43,7 +43,7 @@ The Spark task will run locally if the `raw-output-data-prefix` is not set.
 
 :::
 ```{code-block} shell
-$ pyflyte run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_task.py hello_spark
+$ unionai run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_task.py hello_spark
 ```
 
 ## Union cluster deployment

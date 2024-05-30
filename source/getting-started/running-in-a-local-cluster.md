@@ -32,11 +32,11 @@ logger:
 
 Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your Union cluster.
 
-Later invocations of `uctl` or `pyflyte` will need to know the location of the target cluster. This can be provided in two ways:
+Later invocations of `uctl` or `unionai` will need to know the location of the target cluster. This can be provided in two ways:
 
 1. Explicitly passing the location of the config file on the command line
    * `uctl --config ~/.uctl/config-sandbox.yaml <command>`
-   * `pyflyte --config ~/.uctl/config-sandbox.yaml <command>`
+   * `unionai --config ~/.uctl/config-sandbox.yaml <command>`
 2. Setting the environment variable `FLYTECTL_CONFIG`to the location of the config file:
    * `export FLYTECTL_CONFIG=~/.uctl/config-sandbox.yaml`
 
@@ -48,11 +48,11 @@ In this guide, we assume that you have set the`FLYTECTL_CONFIG` environment vari
 
 ### Start the workflow
 
-Now you can run your workflow in the local cluster simply by adding the `--remote` flag to your `pyflyte` command:
+Now you can run your workflow in the local cluster simply by adding the `--remote` flag to your `unionai` command:
 
 ```{code-block} shell
 [~/wine-classification]:wine-classification
-$ pyflyte run --remote \
+$ unionai run --remote \
           workflows/example.py \
           training_workflow \
           --hyperparameters '{"C": 0.1}'
@@ -66,11 +66,11 @@ Go to http://localhost:30080/console/projects/flytesnacks/domains/development/ex
 
 ### Inspect the results
 
-Navigate to the URL produced by `pyflyte run`. This will take you to the Flyte console, the web UI used to manage Flyte entities such as tasks, workflows, and executions:
+Navigate to the URL produced by `unionai run`. This will take you to the Flyte web console, the web interface used to manage Flyte entities such as tasks, workflows, and executions:
 
 ![](/_static/images/getting-started-console.png)
 
-There are a few features of the Flyte console worth pointing out:
+There are a few features of the Union console worth pointing out:
 
 * The **Nodes** view shows the list of tasks executing in sequential order.
 * The right-hand panel shows metadata about the task execution, including logs, inputs, outputs, and task metadata.

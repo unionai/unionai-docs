@@ -9,16 +9,16 @@ It consists of three steps:
 2. Process the data that simplifies the 3-class prediction problem into a binary classification problem by consolidating class labels `1` and `2` into a single class.
 3. Train a `LogisticRegression` model to learn a binary classifier.
 
-## Create the project using pyflyte init
+## Create the project using `unionai init`
 
-We will use the `pyflyte` (the CLI tool that ships with `flytekit`) to quickly initialize the project, from a template.
+We will use the `unionai` (the CLI tool that ships with `unionai`) to quickly initialize the project, from a template.
 The `wine-classification` example is among the installable examples published in the GitHub repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
 Install the example, and `cd` into it:
 
 ```{code-block} shell
 [~]:wine-classification
-$ pyflyte init --template wine-classification wine-classification
+$ unionai init --template wine-classification wine-classification
 
 [~]:wine-classification
 $ cd wine-classification
@@ -31,7 +31,7 @@ $
 If you need to use a Dockerfile in your project instead of ImageSpec, you can use the Dockerfile template:
 
 ```{code-block} shell
-pyflyte init --template basic-template-dockerfile my_project
+unionai init --template basic-template-dockerfile my_project
 ```
 :::
 
@@ -54,7 +54,7 @@ $ tree
 
 :::{note}
 You can create your own conventions and file structure for your Union projects.
-The `pyflyte init` command just provides a good starting point.
+The `unionai init` command just provides a good starting point.
 :::
 
 ## Install the local dependencies
@@ -67,4 +67,6 @@ Make sure that you have activated your `wine-classification` conda environment, 
 [~/wine-classification]:wine-classification
 $ pip install -r local-requirements.txt
 ```
+
+
 

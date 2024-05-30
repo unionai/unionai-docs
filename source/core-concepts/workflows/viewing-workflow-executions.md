@@ -1,4 +1,4 @@
-# Viewing workflow executions
+# Viewing workflow executions in the web console
 
 ## Execution list
 

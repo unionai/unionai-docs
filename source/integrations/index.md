@@ -34,7 +34,7 @@ A variety of agents and plugins enable you to integrate Union with additional ex
 * [Databricks agent](agents/databricks-agent/index) Run Databricks jobs in your workflows.
 * [dbt plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/dbt_plugin/index.html) Run and test your `dbt` pipelines in Flyte.
 * [MemVerge Memory Machine Cloud agent](agents/mmcloud-agent/index) Execute tasks using the MemVerge Memory Machine Cloud agent
-* [NVIDIA DGX agent](agents/dgx-agent) Run jobs on the NVIDIA DGX platform.
+* [NVIDIA DGX agent](agents/dgx-agent/index) Run jobs on the NVIDIA DGX platform.
 * [Snowflake agent](agents/snowflake-agent/index) Run Snowflake jobs in your workflow.
 
 ### Data science tooling integrations

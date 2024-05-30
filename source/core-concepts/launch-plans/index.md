@@ -34,9 +34,9 @@ For more details, see [Running Launch Plans](running-launch-plans).
 
 ## Registering a launch plan
 
-### Registering a launch plan on the command line with `pyflyte` or `uctl`
+### Registering a launch plan on the command line with `unionai` or `uctl`
 
-In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `pyflyte` or `uctl`( See [Registering workflows](../../development-cycle/registering-workflows)).
+In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `unionai` or `uctl`( See [Registering workflows](../../development-cycle/registering-workflows)).
 
 ### Registering a launch plan in Python with `UnionRemote`
 

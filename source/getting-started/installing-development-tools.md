@@ -87,7 +87,7 @@ We will call out the need to do this at that time.
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GHCR in order for `pyflyte` to be able to push the image built according to the `ImageSpec` to GHCR.
+You will need to set up your local Docker client to authenticate with GHCR in order for `unionai` to be able to push the image built according to the `ImageSpec` to GHCR.
 
 Follow the directions in [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 
@@ -120,13 +120,13 @@ You are free to use other tools such as [`pyenv`](https://github.com/pyenv) and 
 
 :::
 
-## Install the Flytekit SDK used by Union.ai
+## Install the `unionai` SDK used by Union.ai
 
-Finally, install [`flytekit`](https://pypi.org/project/flytekit/), the Flyte Python SDK, within the virtual environment that you just set up:
+Finally, install [`unionai`](https://pypi.org/project/unionai/), the Flyte Python SDK, within the virtual environment that you just set up:
 
 ```{code-block} shell
 [~]:wine-classification
-$ pip install -U flytekit
+$ pip install -U unionai
 ```
 
-This installs both the `flytekit` library and the `pyflyte` command-line tool.
+This installs both the `unionai` and `flytekit` libraries, along with `unionai` command-line tool.

@@ -43,7 +43,7 @@ Yes. There are a number of ways to do this:
 
 * When registering your workflow:
   * With [`uctl register`](https://docs.flyte.org/en/latest/flytectl/gen/flytectl_register.html), use the flag `--files.outputLocationPrefix`.
-  * With [`pyflyte register`](https://docs.flyte.org/en/latest/api/flytekit/pyflyte.html#pyflyte-register), use the flag `--raw-data-prefix`.
+  * With [`unionai register`](https://docs.flyte.org/en/latest/api/flytekit/pyflyte.html#pyflyte-register), use the flag `--raw-data-prefix`.
 * At the execution level:
   * In the web UI, set the **Raw output data config** parameter in the execution dialog.
 
@@ -202,9 +202,19 @@ The aliased version of the classes do not perform any checks on the actual conte
 
 ## Building and running workflows
 
-### How do I authenticate `uctl` and `pyflyte` to Union?
+### What SDK should I download and use in workflow code?
 
-The command-line tools `uctl` and `pyflyte` need to authenticate in order to connect with your Union instance (for example, when registering a workflow).
+You should install the `unionai` SDK, which will install the `unionai` and `flytekit` SDKs and the `unionai` command-line tool. You will need to use the `flytekit` SDK the majority of the time in the code to import core features and use the `unionai` SDK for Union-specific features, such as Artifacts.
+
+To install the `unionai` SDK, `flytekit SDK`, and `unionai` CLI, run the following command:
+
+```{code-block} shell
+pip install unionai
+```
+
+### How do I authenticate `uctl` and `unionai` to Union?
+
+The command-line tools `uctl` and `unionai` need to authenticate in order to connect with your Union instance (for example, when registering a workflow).
 There are three ways to set up authentication.
 
 1. **PKCE**: This is the default method.
@@ -215,7 +225,7 @@ Navigate to it in your browser and follow the directions.
 It can be used, for example, by CI bots.
 With this method, you create a Union application and configure your tools to pass the Client ID and App Secret to Union.
 
-These methods are all configured in the `config.yaml` that your `uctl` or `pyflyte` command uses. See [cli-authentication.md](administration/cli-authentication) for full details.
+These methods are all configured in the `config.yaml` that your `uctl` or `unionai` command uses. See [cli-authentication.md](administration/cli-authentication) for full details.
 
 ### How do I specify resource requirements for a task?
 
@@ -228,6 +238,16 @@ You can also override the settings in the `@task` in a for more fine-grained con
 See also:
 
 * [Customizing task resources](core-concepts/tasks/task-hardware-environment/customizing-task-resources)
+
+### What command-line tools should I use to register and run workflows?
+
+You should use the `unionai` CLI to register and run workflows and perform other operations on the command line. The `unionai` CLI is installed when you `pip install unionai`, which will also install the `unionai` SDK and `flytekit` SDK.
+
+To install the `unionai` SDK, `flytekit SDK`, and `unionai` CLI, run the following command:
+
+```{code-block} shell
+pip install unionai
+```
 
 ### What happens if an automated process launches a very large number of workflows?
 
