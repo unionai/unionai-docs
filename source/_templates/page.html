@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // If a matching path segment is found
     if (matchedIndex !== -1) {
         // Create the list container
-        var listContainer = document.createElement('ul');
+        var list = [];
 
         // Iterate over the variants array
         variants.forEach(function(variant) {
@@ -68,22 +68,24 @@ document.addEventListener("DOMContentLoaded", function() {
             newUrl.pathname = '/' + newPathSegments.join('/');
 
             // Create the list item and anchor elements
-            var listItem = document.createElement('li');
-            var anchor = document.createElement('a');
-
-            // Set the anchor text and href
-            anchor.textContent = variant;
-            anchor.href = newUrl.href;
-
-            // Append the anchor to the list item, and the list item to the list container
-            listItem.appendChild(anchor);
-            listContainer.appendChild(listItem);
+            var listItem = {}
+            listItem.text = variant;
+            listItem.url = newUrl.href;
+            list.push(listItem);
         });
 
         const variantListDiv = document.getElementById('unionai-docs-variant-switcher');
         if (variantListDiv) {
             variantListDiv.appendChild(listContainer);
         }
+
+        const dropdownLinks = document.getElementById('dropdown-links');
+        list.forEach(link => {
+            const anchor = document.createElement('a');
+            anchor.href = link.url;
+            anchor.textContent = link.text;
+            dropdownLinks.appendChild(anchor);
+        });
     }
 })
 </script>
@@ -92,14 +94,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 {% block body %}
 {%- if meta is mapping %}
-    <div id="unionai-docs-variants">{{ meta.get("variants") }}</div>
+    <div id="unionai-docs-variants" style="display: none;">{{ meta.get("all-variants") }}</div>
+    <div id="unionai-docs-variants" style="display: none;">{{ meta.get("this-variant") }}</div>
 {%- endif %}
 {{ super() }}
-
-{% block docs_navbar %}
-{{ super() }}
-<div id="unionai-docs-variant-switcher"></div>
-{% endblock docs_navbar %}
 
 <!-- Google Tag Manager (noscript) -->
 <noscript
