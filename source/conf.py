@@ -21,7 +21,7 @@ myst_heading_anchors = 6
 html_logo = '_static/public/logo.svg'
 
 html_sidebars = {
-    "**": ['navbar-logo.html', 'variant-selector.html', 'search-button-field.html', 'sbt-sidebar-nav.html']
+    "**": ['navbar-logo.html', 'search-button-field.html', 'variant-selector.html', 'sbt-sidebar-nav.html']
 }
 
 # Redirects
