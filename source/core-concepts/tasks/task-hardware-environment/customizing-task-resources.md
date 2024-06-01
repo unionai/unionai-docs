@@ -59,12 +59,13 @@ This may be a GPU, a specific variation of a GPU, a fractional GPU, or a differe
 
 See [Accelerators](accelerators) for more information.
 
+{@@ if byoc @@}
 ## Task resource validation
 
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
 
 To remedy such a failure, you should make sure that the appropriate node types are:
-*  Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane).
+* Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 Go to the **Usage > Compute** dashboard to find the available node types and their resource profiles.
@@ -74,6 +75,7 @@ This portal also accessible from **Usage > Compute** through the **Adjust Config
 ![]/_static/images/adjust-configuration.png)
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
+{@@ endif @@}
 
 ## The `with_overrides` method
 

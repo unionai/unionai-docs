@@ -1,6 +1,6 @@
 # Artifacts
 
-Union produces a large number of user outputs when running tasks and workflows. While these outputs are contained and referenced in various databases and blob stores used by the [Union control plane](../../platform-architecture.md#control-plane) and forever accessible through the relevant execution, they are not directly accessible to users.
+Union produces a large number of intermediate outputs when running tasks and workflows. These outputs are stored internally in Union and are accessible through the relevant executions, but are not normallydirectly accessible to users.
 
 The Artifact Service indexes and adds semantic meaning to outputs of all Union task and workflow executions, such as models, files, or any other kinds of data, enabling you to directly access, track, and orchestrate pipelines through the outputs themselves. Artifacts allow you to store additional metadata for these outputs in the form of [partitions](#partitions), which are key-value pairs that describe the artifact and which can be used to query the Artifact Service to locate artifacts. Artifacts allow for loose coupling of workflows—for example, a downstream workflow can be configured to consume the latest result of an upstream workflow. With this higher-order abstraction, Union aims to ease collaboration across teams, provide for reactivity and automation, and give you a broader view of how artifacts move across executions.
 

@@ -134,6 +134,7 @@ When a node's behavior does change though, you can bump `cache_version` to inval
 If you modify the signature of a node by adding, removing, or editing input parameters or output return types, Union invalidates the cache entries for that node.
 During the next execution, Union executes the process again and caches the outputs as new values stored under an updated key.
 
+{@@ if byoc @@}
 ### Caching when running locally
 
 The description above applies to caching when executing a node remotely on your Union cluster.
@@ -151,6 +152,7 @@ $ unionai local-cache clear
 ```
 
 which essentially removes the contents of the `~/.flyte/local-cache/` directory.
+{@@ endif @@}
 
 ## Cache serialization
 
