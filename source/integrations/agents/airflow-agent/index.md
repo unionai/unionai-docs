@@ -43,6 +43,8 @@ In some cases, you will need to store credentials in your local environment when
 
 :::
 
+{@@ if byoc @@}
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+{@@ endif @@}

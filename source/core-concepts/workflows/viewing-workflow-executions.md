@@ -105,6 +105,7 @@ This tab gives you details on the execution of this particular node.
 
 ![](/_static/images/execution-view-right-panel-executions.png)
 
+{@@ if byoc @@}
 ##### Task level monitoring
 
 You can access the [task-level monitoring](../tasks/task-hardware-environment/task-level-monitoring) information by selecting **View Utilization**.
@@ -114,6 +115,7 @@ You can access the [task-level monitoring](../tasks/task-hardware-environment/ta
 You can access logs by clicking the text under **Logs**.
 In AWS-based systems this will say **CloudWatch Logs**.
 In GCP-based system this will say **StackDriver Logs**. See [Logging](../tasks/viewing-logs).
+{@@ endif @@}
 
 #### Inputs
 

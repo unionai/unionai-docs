@@ -1,8 +1,8 @@
 {"name": "", "title": "Introduction", "tags": ["byoc", "serverless"],
     "children": [
-        {"name": "union-and-flyte", "title": "Union and Flyte", "tags": ["byoc", "serverless"]},
-        {"name": "platform-architecture", "title": "Platform architecture", "tags": ["byoc"]},
-        {"name": "data-plane-setup", "title": "Data plane setup", "tags": ["byoc"],
+        {"name": "union-overview", "tags": ["byoc", "serverless"]},
+        {"name": "platform-architecture", "tags": ["byoc"]},
+        {"name": "data-plane-setup", "tags": ["byoc"],
             "children": [
                 {"name": "data-plane-setup-on-aws", "tags": ["byoc"]},
                 {"name": "data-plane-setup-on-gcp", "tags": ["byoc"]},
@@ -46,24 +46,24 @@
                 {"name": "tasks", "tags": ["byoc", "serverless"],
                     "children": [
                         {"name": "task-types", "tags": ["byoc", "serverless"]},
-                        {"name": "task-parameters", "tags": ["byoc", "serverless"]},
+                        {"name": "task-parameters", "tags": ["byoc"]},
                         {"name": "launching-tasks", "tags": ["byoc", "serverless"]},
                         {"name": "viewing-tasks", "tags": ["byoc", "serverless"]},
                         {"name": "viewing-logs", "tags": ["byoc", "serverless"]},
-                        {"name": "task-software-environment", "tags": ["byoc", "serverless"],
+                        {"name": "task-software-environment", "tags": ["byoc"],
                             "children": [
-                                {"name": "imagespec", "tags": ["byoc", "serverless"]},
-                                {"name": "imagespec-with-ecr", "tags": ["byoc", "serverless"]},
-                                {"name": "imagespec-with-gar", "tags": ["byoc", "serverless"]},
-                                {"name": "environment-variables", "tags": ["byoc", "serverless"]},
-                                {"name": "secrets", "tags": ["byoc", "serverless"]}
+                                {"name": "imagespec", "tags": ["byoc"]},
+                                {"name": "imagespec-with-ecr", "tags": ["byoc"]},
+                                {"name": "imagespec-with-gar", "tags": ["byoc"]},
+                                {"name": "environment-variables", "tags": ["byoc"]},
+                                {"name": "secrets", "tags": ["byoc"]}
                             ]},
-                        {"name": "task-hardware-environment", "tags": ["byoc", "serverless"],
+                        {"name": "task-hardware-environment", "tags": ["byoc"],
                             "children": [
-                                {"name": "customizing-task-resources", "tags": ["byoc", "serverless"]},
-                                {"name": "accelerators", "tags": ["byoc", "serverless"]},
-                                {"name": "interruptible-instances", "tags": ["byoc", "serverless"]},
-                                {"name": "task-level-monitoring", "tags": ["byoc", "serverless"]}
+                                {"name": "customizing-task-resources", "tags": ["byoc"]},
+                                {"name": "accelerators", "tags": ["byoc"]},
+                                {"name": "interruptible-instances", "tags": ["byoc"]},
+                                {"name": "task-level-monitoring", "tags": ["byoc"]}
                             ]}
                     ]},
                 {"name": "launch-plans", "tags": ["byoc", "serverless"],
@@ -91,13 +91,13 @@
                 {"name": "registering-workflows", "tags": ["byoc", "serverless"]},
                 {"name": "task-resource-validation", "tags": ["byoc", "serverless"]},
                 {"name": "interactive-tasks", "tags": ["byoc", "serverless"]},
-                {"name": "setting-up-ci-cd-deployment", "tags": ["byoc", "serverless"]},
+                {"name": "setting-up-ci-cd-deployment", "tags": ["byoc"]},
                 {"name": "unionremote", "tags": ["byoc", "serverless"]}
             ]},
         {"name": "data-input-output", "tags": ["byoc", "serverless"],
             "children": [
                 {"name": "flytefile", "tags": ["byoc", "serverless"]},
-                {"name": "accelerated-datasets", "tags": ["byoc", "serverless"]}
+                {"name": "accelerated-datasets", "tags": ["byoc"]}
             ]},
         {"name": "administration", "tags": ["byoc"],
             "children": [
@@ -135,9 +135,9 @@
                             "children": [
                                 {"name": "databricks-agent-example", "tags": ["byoc", "serverless"]}
                             ]},
-                        {"name": "file-sensor-agent", "tags": ["byoc", "serverless"],
+                        {"name": "file-sensor-agent", "tags": ["byoc"],
                             "children": [
-                                {"name": "file-sensor-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "file-sensor-agent-example", "tags": ["byoc"]}
                             ]},
                         {"name": "bigquery-agent", "tags": ["byoc", "serverless"],
                             "children": [
@@ -147,7 +147,7 @@
                             "children": [
                                 {"name": "mmcloud-agent-example", "tags": ["byoc", "serverless"]}
                             ]},
-                        {"name": "dgx-agent", "tags": ["byoc", "serverless"]},
+                        {"name": "dgx-agent", "tags": ["byoc"]},
                         {"name": "chatgpt-agent", "tags": ["byoc", "serverless"],
                             "children": [
                                 {"name": "chatgpt-agent-example", "tags": ["byoc", "serverless"]}
@@ -158,5 +158,5 @@
                             ]}
                     ]}
             ]},
-        {"name": "faq", "tags": ["byoc", "serverless"]}
+        {"name": "faq", "tags": ["byoc"]}
     ]}

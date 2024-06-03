@@ -14,8 +14,13 @@ The syntax of a standard workflow definition can only include the following:
 
 ## Evaluation of a standard workflow
 
+{@@ if byoc @@}
 When a standard workflow is [run locally in a Python environment](../../getting-started/running-in-a-local-python-environment) it is executed as a normal Python function.
 However, when it is registered to Union (or your [local demo cluster](../../getting-started/running-in-a-local-cluster)), the top level `@workflow`-decorated function is evaluated as follows:
+{@@ elif serverless @@}
+When a standard workflow is run locally in a Python environment it is executed as a normal Python function.
+However, when it is registered to Union, the top level `@workflow`-decorated function is evaluated as follows:
+{@@ endif @@}
 
 * Inputs to the workflow are materialized as lazily-evaluated promises which are propagated to downstream tasks and subworkflows.
 * All values returned by calls to functions decorated with `@task` , `@dynamic`and `@eager` are also materialized as lazily-evaluated promises.
@@ -44,7 +49,9 @@ The `@workflow` decorator can take the following parameters:
 
 * `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.WorkflowFailurePolicy.html#flytekit.WorkflowFailurePolicy).
 
+{@@ if byoc @@}
 * `interruptible`: Whether or not tasks launched from this workflow are by default interruptible. See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances).
+{@@ endif @@}
 
 * `on_failure`: Invoke this workflow or task on failure. The workflow specified must have the same parameter signature as the current workflow, with an additional parameter called `error`.
 

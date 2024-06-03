@@ -2,6 +2,7 @@
 
 You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/data-center/dgx-platform/) with the DGX agent.
 
+
 ## Installation
 
 To install the DGX agent and have it enabled in your deployment, contact the Union team.

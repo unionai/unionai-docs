@@ -1,12 +1,11 @@
-# Union and Flyte
+# Union Overview
 
-The Union AI platform was created by the team behind [Flyte](http://flyte.org). Union's intuitive end-to-end platform was developed with the Flyte open-source orchestration system at its core.
-All workflows and tasks built for Flyte are seamlessly portable to Union's platform.
-Union is Kubernetes native and runs in your infrastructure, so you can run it on the cloud platform of your choosing.
+Union was created by the team behind [Flyte](http://flyte.org), the emerging standard in AI orchestration.
+Union includes all the features and advantages of Flyte, and adds additional capabilities.
 
 ## Union includes Flyte
 
-Union includes all the features and advantages of Flyte:
+Union includes all the features of Flyte:
 
 * Reusable, immutable tasks and workflows
 * Declarative task-level resource provisioning
@@ -16,12 +15,18 @@ Union includes all the features and advantages of Flyte:
 * Mass task parallelism ("map tasks")
 * Dynamic workflows created at runtime for process flexibility
 
-## Union adds further capabilities
+## Union deployment options
 
-In addition to the features of Flyte, Union adds the following features:
+Union offers two deployment options: Serverless and BYOC (Bring Your Own Compute).
+Both of these options greatly simplify infrastructure management and provide additional features on top of Flyte.
 
-* Your infrastructure managed by Union
-    * Your data and workflow code stays on your infrastructure (and all processing happens there) but it is all managed by Union.
+## Union Serverless
+
+Union Serverless is a turnkey solution that take care of all the infrastricure for you.
+All you need to do is sign up through your GitHub account and start running your workflows.
+This option gives you:
+
+* All the features of Flyte
 * Granular, task-level resource monitoring
 * Fine-grained role-based access control (RBAC)
 * Faster performance
@@ -37,15 +42,19 @@ In addition to the features of Flyte, Union adds the following features:
 * Reactive workflows
     * Launch plans trigger (and kick off workflows) on artifact creation
 * Smart defaults and automatic linking
+* UI based Workflow Builder
+
+## Union BYOC
+
+Union BYOC (Bring Your Own Compute) let's you keep your data and workflow code on your infrastructure,
+but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+This option gives you:
+
+* All the features of Flyte and Union Serverless
+* Your infrastructure managed by Union
+    * Your data and workflow code stays on your infrastructure (and all processing happens there) but it is all managed by Union.
 * Accelerators and GPUs (including fractional GPUs)
 * Managed Ray and Spark
-* UI based Workflow Builder
 * Multi-cluster and multi-cloud
 * Single sign-on (SSO)
 * SOC-2 Type 2 compliance.
-
-## Moving from Flyte to Union
-
-Moving your project from a self-hosted Flyte setup to Union is easy.
-All you have to do is change the deployment target of your project.
-See [Setting up the project on Union](getting-started/setting-up-the-project-on-union).

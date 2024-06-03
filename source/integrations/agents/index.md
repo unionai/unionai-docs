@@ -1,8 +1,11 @@
 # Agents
 
-Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services. Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task (e.g. the DGX agent handles DGX tasks). The agent service then initiates a job with the appropriate external service. Agents can be run locally as long as the appropriate connection secrets are locally available, since they are spawned in process.
+Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
+Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task (e.g. the DGX agent handles DGX tasks).
+The agent service then initiates a job with the appropriate external service. Agents can be run locally as long as the appropriate connection secrets are locally available, since they are spawned in process.
 
-Agents are designed to be scalable and can handle large workloads efficiently, and decrease load on FlytePropeller, since they run outside of it. You can also test agents locally without having to change the Flyte backend configuration, streamlining workflow development.
+Agents are designed to be scalable and can handle large workloads efficiently, and decrease load on FlytePropeller, since they run outside of it.
+You can also test agents locally without having to change the Flyte backend configuration, streamlining workflow development.
 
 Agents enable two key workflows:
 
@@ -11,14 +14,18 @@ Agents enable two key workflows:
 
 ## Using existing agents in tasks
 
-For a list of agents you can use in your tasks with example usage and local testing guidelines for each, see the main [Integrations page](/integrations/index) or the list in the left sidebar. If you do not see the agent you need, see "Creating a new agent" below for steps on creating an agent.
+For a list of agents you can use in your tasks with example usage and local testing guidelines for each, see the main [Integrations page](/integrations/index) or the list in the left sidebar.
+If you do not see the agent you need, see "Creating a new agent" below for steps on creating an agent.
 
 ## Creating a new agent
 
-You can implement an agent as a Python class, test it locally, and have the Union team enable it in your Union deployment. Your teammates will then be able to create tasks of the corresponding task type to connect to the external service.
+You can implement an agent as a Python class, test it locally, and have the Union team enable it in your Union deployment.
+Your teammates will then be able to create tasks of the corresponding task type to connect to the external service.
 
 There are two types of agents: **async** and **sync**.
-* **Async agents** enable long-running jobs that execute on an external platform over time. They communicate with external services that have asynchronous APIs that support `create`, `get`, and `delete` operations. The vast majority of agents are async agents.
+* **Async agents** enable long-running jobs that execute on an external platform over time.
+  They communicate with external services that have asynchronous APIs that support `create`, `get`, and `delete` operations.
+  The vast majority of agents are async agents.
 * **Sync agents** enable request/response services that return immediate outputs (e.g. calling an internal API to fetch data or communicating with the OpenAI API).
 
 :::{note}
@@ -51,6 +58,8 @@ To test your agent locally, create a class for the agent task that inherits from
 
 For testing examples, see the [BigQuery agent](bigquery-agent/index.md#local-testing) and [Databricks agent](databricks-agent/index.md#local-testing) documentation.
 
+{@@ if byoc @@}
 ### Enabling your agent in your Union deployment
 
 After you have finished testing your agent locally, you can contact the Union team to enable the agent in your Union deployment to use it in production.
+{@@ endif @@}

@@ -268,6 +268,8 @@ For more details on running workflows and tasks, see [Development cycle](../deve
 To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../getting-started/setting-up-the-project-on-union)):
 {@@ elif serverless @@}
 To run a workflow remotely on your Union installation, use the following command:
+{@@ endif @@}
+To run a workflow remotely o
 
 ```{code-block} shell
 $ unionai run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5

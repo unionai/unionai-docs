@@ -104,7 +104,7 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
     if not children:
         print(f'{indent}This page has no children')
         create_sphinx_file(f'{path}.md', variant, tags)
-        toc_entry = title + '<' + name + '>' if title else name
+        toc_entry = title + ' <' + name + '>' if title else name
         print(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 
@@ -123,7 +123,7 @@ def process_page_node(page_node: dict, variant: str, parent_path: str, parent_ta
                 toctree += toc_entry + '\n'
         toctree += '```\n'
         create_sphinx_file(f'{path}/index.md', variant, tags, toctree)
-        toc_entry = title + '<' + name + '/index' + '>' if title else name + '/index'
+        toc_entry = title + ' <' + name + '/index' + '>' if title else name + '/index'
         print(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 

@@ -18,6 +18,8 @@ For a usage example, see [AWS SageMaker inference agent example](sagemaker-agent
 
 To test the SageMaker inference agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/master/flytekit/extend/backend/base_agent.py#L259-L354). This mixin can handle synchronous tasks and allows Flytekit to mimic FlytePropeller's behavior in calling the agent.
 
+{@@ if byoc @@}
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+{@@ endif @@}

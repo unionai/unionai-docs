@@ -72,7 +72,7 @@ Go to the **Usage > Compute** dashboard to find the available node types and the
 To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button:
 
-![]/_static/images/adjust-configuration.png)
+![](/_static/images/adjust-configuration.png)
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
 {@@ endif @@}
