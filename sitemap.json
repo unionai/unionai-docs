@@ -160,15 +160,14 @@
             ]},
         {"name": "api", "tags": ["byoc", "serverless"],
             "children": [
-                {"name": "config", "tags": ["byoc", "serverless"]},
                 {"name": "sdk", "tags": ["byoc", "serverless"],
                     "children": [
                         {"name": "artifacts", "tags": ["byoc", "serverless"]},
                         {"name": "actor", "tags": ["byoc", "serverless"]}
                     ]},
                 {"name": "unionai-cli", "tags": ["byoc", "serverless"]},
-                {"name": "test", "tags": ["byoc", "serverless"]},
-                {"name": "unionremote", "tags": ["byoc", "serverless"]}
+                {"name": "unionremote", "tags": ["byoc", "serverless"]},
+                {"name": "config", "tags": ["byoc", "serverless"]},
             ]},
         {"name": "faq", "tags": ["byoc"]}
     ]}
