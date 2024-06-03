@@ -39,3 +39,26 @@ copybutton_prompt_text = "$ "
 
 # prevent css style tags from being copied by the copy button
 copybutton_exclude = 'style[type="text/css"]'
+
+
+# replace flyte-specific text in docstrings pulled in
+# with autodoc (automodule, autoclass, etc)
+def unionize_docs(app, what, name, obj, options, lines):
+    for str in lines:
+        idx = lines.index(str)
+        str = str.replace('FlyteRemote ', 'UnionRemote ')\
+            .replace('FlyteRemote(', 'UnionRemote(')\
+            .replace('flyte_workflow', 'union_workflow')\
+            .replace('Flyte remote backend', 'Union remote backend')\
+            .replace('Flyte platform', 'Union platform')\
+            .replace('Flyte Admin', 'Union Admin')\
+            .replace('Flyte backend', 'Union backend')\
+            .replace('flyte backend', 'union backend')\
+            .replace('flyte config', 'union config')\
+            .replace('Flyte UI', 'web console')
+        del lines[idx]
+        lines.insert(idx, str)
+
+
+def setup(app):
+    app.connect('autodoc-process-docstring', unionize_docs)
