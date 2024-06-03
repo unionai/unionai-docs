@@ -43,7 +43,7 @@ copybutton_exclude = 'style[type="text/css"]'
 
 # replace flyte-specific text in docstrings pulled in
 # with autodoc (automodule, autoclass, etc)
-def unionize_docs(app, what, name, obj, options, lines):
+def process_docstring(app, what, name, obj, options, lines):
     for str in lines:
         idx = lines.index(str)
         str = str.replace('FlyteRemote ', 'UnionRemote ')\
@@ -60,5 +60,34 @@ def unionize_docs(app, what, name, obj, options, lines):
         lines.insert(idx, str)
 
 
+def process_description(app, ctx, lines):
+    for str in lines:
+        idx = lines.index(str)
+        str = str.replace("Flyte UI", "web console")\
+            .replace("Flyte's execution system", "Union's execution system")\
+            .replace("Flyte Execution", "Union execution")\
+            .replace("Flyte Console", "web console")\
+            .replace("Flyte Python CLI environment", "Union Python CLI environment")\
+            .replace("flyte-ready", "Union-ready")\
+            .replace("Flyte backend registrable", "Union backend registrable")\
+            .replace("entities in Flyte", "entities in Union")\
+            .replace("remote flyte instance", "remote Union instance")
+        del lines[idx]
+        lines.insert(idx, str)
+
+
+def process_options(app, ctx, lines):
+    for str in lines:
+        idx = lines.index(str)
+        str = str.replace("flyteremote", "UnionRemote")\
+            .replace("Flyte deployment", "Union deployment")\
+            .replace("pyflyte serialize", "unionai serialize")\
+            .replace("pyflyte utility", "unionai utility")
+        del lines[idx]
+        lines.insert(idx, str)
+
+
 def setup(app):
-    app.connect('autodoc-process-docstring', unionize_docs)
+    app.connect('autodoc-process-docstring', process_docstring)
+    app.connect("sphinx-click-process-description", process_description)
+    app.connect("sphinx-click-process-options", process_options)
