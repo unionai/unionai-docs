@@ -19,7 +19,7 @@
 <!-- UnionAI docs variant switcher -->
 <script>
 function getAvailableVariants() {
-    var div = document.getElementById('unionai-docs-variants');
+    var div = document.getElementById('unionai-docs-all-variants');
     var content = div.textContent || div.innerText;
     var array;
     try {
@@ -89,8 +89,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 {% block body %}
 {%- if meta is mapping %}
-    <div id="unionai-docs-variants" style="display: none;">{{ meta.get("all-variants") }}</div>
-    <div id="unionai-docs-variants" style="display: none;">{{ meta.get("this-variant") }}</div>
+    <div id="unionai-docs-all-variants" style="display: none;">{{ meta.get("all-variants") }}</div>
+    <div id="unionai-docs-this-variant" style="display: none;">{{ meta.get("this-variant") }}</div>
 {%- endif %}
 {{ super() }}
 
