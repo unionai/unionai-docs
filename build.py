@@ -9,7 +9,7 @@ SOURCE_DIR: str = './source'
 SPHINX_SOURCE_DIR: str = './sphinx_source'
 BUILD_DIR: str = './build/html'
 SITEMAP: str = './sitemap.json'
-ALL_TAGS: list[str] = ['serverless', 'byoc']
+ALL_VARIANTS: list[dict[str, str]] = ['serverless', 'byoc']
 SUBS: dict[str, dict[str, str] | str] = {
     'product_name': {
         'byoc': 'Union BYOC',
@@ -133,14 +133,14 @@ def process_project():
     shell(f'rm -rf {SPHINX_SOURCE_DIR}')
     with open(SITEMAP, "r") as sm:
         page_node = json.load(sm)
-    for tag in ALL_TAGS:
-        process_page_node(page_node, tag, "", ALL_TAGS)
-    for tag in ALL_TAGS:
-        shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{tag}')
-        shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{tag}')
-        shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{tag}')
-    for tag in ALL_TAGS:
-        shell(f'sphinx-build {SPHINX_SOURCE_DIR}/{tag} {BUILD_DIR}/{tag}')
+    for variant in ALL_VARIANTS:
+        process_page_node(page_node, variant, "", ALL_VARIANTS)
+    for variant in ALL_VARIANTS:
+        shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
+        shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
+        shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
+    for variant in ALL_VARIANTS:
+        shell(f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}')
     shell(f'cp ./index.html {BUILD_DIR}/index.html')
 
 
