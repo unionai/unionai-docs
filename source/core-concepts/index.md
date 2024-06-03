@@ -269,7 +269,6 @@ To run a workflow remotely on your Union installation, use the following command
 {@@ elif serverless @@}
 To run a workflow remotely on your Union installation, use the following command:
 {@@ endif @@}
-To run a workflow remotely o
 
 ```{code-block} shell
 $ unionai run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
