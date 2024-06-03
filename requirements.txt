@@ -2,7 +2,6 @@ sphinx
 myst-parser
 sphinx-design
 sphinx-book-theme
-sphinx-reredirects
-sphinx-tags
+sphinx-copybutton
 unionai
 jinja2
