@@ -145,7 +145,7 @@ When re-arranging the content of the site, it may be necessary to create redirec
 These are defined in the `cloudflare-redirects.json` file which is checked in at the
 root of this repo.
 
-However, that file's presence in this repo is not sufficient to iomplment the redirects
+However, that file's presence in this repo is not sufficient to implement the redirects.
 
 This file must be manually applied in Cloudflare under the **Bulk redirects** section
 in order to take effect.
