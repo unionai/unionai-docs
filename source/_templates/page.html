@@ -110,19 +110,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 })
 
-document.addEventListener('DOMContentLoaded', function () {
-    const dropdownButton = document.getElementById('dropdownButton');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-    const dropdownItems = dropdownMenu.getElementsByTagName('a');
-
-    for (let i = 0; i < dropdownItems.length; i++) {
-        dropdownItems[i].addEventListener('click', function (event) {
-            event.preventDefault();
-            dropdownButton.textContent = this.textContent;
-        });
-    }
-});
-
 </script>
 <!-- End UnionAI docs variant switcher -->
 {% endblock %}
