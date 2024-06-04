@@ -30,7 +30,7 @@ project in Cloudflare Pages.
 
 ## How it works
 
-The content in `source/` is written in [Sphinx](https://www.sphinx-doc.org)[Myst Markdown](https://mystmd.org/) format
+The content in `source/` is written in [Sphinx](https://www.sphinx-doc.org)/[Myst Markdown](https://mystmd.org/) format
 augmented with [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/) templating syntax.
 
 The site is engineered to present content for multiple **variants** of the Union product.
