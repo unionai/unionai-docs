@@ -52,6 +52,7 @@ function getVariantDisplayNames() {
 document.addEventListener("DOMContentLoaded", function() {
     var variants = getAvailableVariants();
     var variantDisplayNames = getVariantDisplayNames();
+    var thisVariantDisplayName = variantDisplayNames[document.getElementById('unionai-docs-this-variant').textContent];
 
     // Get the current page URL
     var currentUrl = new URL(window.location.href);
@@ -98,16 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const dropdownTextContainer = document.getElementById('dropdown-text');
-    const dropdownLinks = document.getElementById('dropdown-links');
-    const dropdownItems = dropdownLinks.getElementsByTagName('a');
-
-    for (let i = 0; i < dropdownItems.length; i++) {
-        dropdownItems[i].addEventListener('click', function (event) {
-            event.preventDefault();
-            const selectedItemText = this.getAttribute('');
-            dropdownTextContainer.textContent = selectedItemText;
-        });
-    }
+    dropdownTextContainer.textContent = thisVariantDisplayName;
 })
 
 </script>
