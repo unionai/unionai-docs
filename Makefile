@@ -1,2 +1,0 @@
-build:
-    python ./build.py
