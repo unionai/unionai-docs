@@ -1,6 +1,6 @@
 # Managing apps
 
-If you need to create a serverless application to allow external systems to run compute
+You need to create an application to allow external systems to run compute
 on Union, e.g. a Github action that registers or runs workflows.
 
 ## Creating an API key
@@ -10,7 +10,7 @@ To create an API key, run the following with the `unionai` CLI with any name.
 ```{code-block} shell
 unionai create app custom_name
 
-Client ID: serverless-gcp-cosmicbboy-custom-name
+Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
 Configure your headless CLI by setting the following environment variable:
 
@@ -29,7 +29,7 @@ from flytekit import task, workflow
 
 @task
 def welcome(name: str) -> str:
-    return f"Welcome to Serverless! {name}"
+    return f"Welcome to Union! {name}"
 
 @workflow
 def main(name: str) -> str:
@@ -53,11 +53,11 @@ unionai get app
 ```
 
 ```{code-block} shell
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ client_id                              ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ serverless-gcp-cosmicbboy-custom-name  │
-└────────────────────────────────────────┘
+┏━━━━━━━━━━━━━━━━┓
+┃ client_id      ┃
+┡━━━━━━━━━━━━━━━━┩
+│ my-custom-name │
+└────────────────┘
 ```
 
 The `client_id` contains your custom application name and a prefix that contains your
@@ -66,5 +66,5 @@ user name.
 Finally, you can delete your application by running:
 
 ```{code-block} shell
-unionai delete app serverless-gcp-cosmicbboy-custom-name
+unionai delete app my-custom-name
 ```

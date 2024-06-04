@@ -1,8 +1,9 @@
 # Access AWS S3 buckets
 
-In this guide, we learn how to access data on AWS S3 Buckets from Union Serverless. As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+Here we will take a look at how to access data on AWS S3 Buckets from Union.
+As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 
-## Creating secrets on Union Serverless
+## Creating secrets on Union
 
 First, we create secrets on Union by running the following command:
 
