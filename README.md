@@ -34,7 +34,7 @@ The content in `source/` is written in [Sphinx](https://www.sphinx-doc.org) [Mys
 augmented with [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/) templating syntax.
 
 The site is engineered to present content for multiple **variants** of the Union product.
-The current variants are: **Serverless** and **BYOC**. Other variants can be easily added.
+The current variants are **Serverless** and **BYOC**. Other variants can be easily added.
 
 The single source tree contains the content for all variants.
 Which content is to be displayed for a specific variant can be controlled
@@ -69,22 +69,21 @@ For example, consider the following section of the `sitemap.json`:
 ```
 
 Here we see that the `getting-started` page is included in both the `byoc` and `serverless` variants.
-But among its subpages the `machine-learning-example` page is only included in the `serverless` variant.
+But among its subpages, the `machine-learning-example` page is only included in the `serverless` variant
 and the `installing-development-tools` page is only included in the `byoc` variant.
 Other pages are similarly included in only one or the other variant.
 
-Note that it a subpage cannot be included in variant in which its parent page is not included.
-In other words, the scope of sub-pages is always either equicvalent to or a subset of the scope
-of their parent page. A processing error will be raised by `build.py` if this rule is violated.
+Note that a subpage cannot be included in a variant in which its parent page is not included.
+In other words, the scope of a sub-page is always either equivalent to, or a subset of, the scope
+of its parent page. A processing error will be raised by `build.py` if this rule is violated.
 
-Note also that the `sitemap.json` file is used to automatically generate `toctree` entries
-in the intermediate Sphinx markdown, so you must not add your own toctrees.
+Note also that the `sitemap.json` file is used to automatically generate `toctree` directives
+in the intermediate Sphinx Markdown, so you must not add your own `toctree` directives.
 The `sitemap.json` defines the hierarchy of the pages.
 
 ### Controlling content at the block level
 
-The content of a part of a page can be conditionally included
-using Jinja templating syntax like this:
+The content of part of a page can be conditionally included using Jinja templating syntax like this:
 
 ```
 Content for all variants of the page as per its entry in the `sitemap.json`
@@ -98,7 +97,7 @@ Content for all variants of the page as per its entry in the `sitemap.json`
 
 ### Variables
 
-Variables can be used in the content of a page using Jinja templating syntax like this:
+Variables can be used in the content of a page using Jinja2 templating syntax like this:
 
 ```
 {@= my_variable =@}
@@ -108,7 +107,7 @@ The variable values are defined in the `build.py` file in the `SUBS` constant.
 
 ### Comments
 
-Comments can be included using the Jinja templating syntax like this:
+Comments can be included using the Jinja2 templating syntax like this:
 
 ```
 {@# This is a comment #@}
@@ -116,7 +115,7 @@ Comments can be included using the Jinja templating syntax like this:
 
 ### Jinja2 syntax
 
-Note that this system uses a cusomized version of the syntax for Jinja templating
+Note that this system uses a cusomized version of the syntax for Jinja2 templating
 
 * `{@@ ... @@}` for block statements
 * `{@= ... =@}` for expressions.
