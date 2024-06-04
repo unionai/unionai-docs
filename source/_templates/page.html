@@ -19,7 +19,7 @@
 <!-- UnionAI docs variant switcher -->
 <script>
 function getAvailableVariants() {
-    var div = document.getElementById('unionai-docs-all-variants');
+    var div = document.getElementById('unionai-docs-available-variants');
     var content = div.textContent || div.innerText;
     var array;
     try {
@@ -36,8 +36,22 @@ function getAvailableVariants() {
     }
 }
 
+function getVariantDisplayNames() {
+    var div = document.getElementById('unionai-docs-variant-display-names');
+    var content = div.textContent || div.innerText;
+    var displayNames;
+    try {
+        displayNames = JSON.parse(content);
+    } catch (e) {
+        console.error('Error parsing content to array:', e);
+        return null;
+    }
+    return displayNames;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     var variants = getAvailableVariants();
+    var variantDisplayNames = getVariantDisplayNames();
 
     // Get the current page URL
     var currentUrl = new URL(window.location.href);
@@ -68,8 +82,8 @@ document.addEventListener("DOMContentLoaded", function() {
             newUrl.pathname = '/' + newPathSegments.join('/');
 
             // Create the list item and anchor elements
-            var listItem = {}
-            listItem.text = variant;
+            var listItem = {};
+            listItem.text = variantDisplayNames[variant];
             listItem.url = newUrl.href;
             list.push(listItem);
         });
@@ -82,14 +96,41 @@ document.addEventListener("DOMContentLoaded", function() {
             dropdownLinks.appendChild(anchor);
         });
     }
+
+    const dropdownTextContainer = document.getElementById('dropdown-text');
+    const dropdownLinks = document.getElementById('dropdown-links');
+    const dropdownItems = dropdownLinks.getElementsByTagName('a');
+
+    for (let i = 0; i < dropdownItems.length; i++) {
+        dropdownItems[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            const selectedItemText = this.getAttribute('');
+            dropdownTextContainer.textContent = selectedItemText;
+        });
+    }
 })
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const dropdownItems = dropdownMenu.getElementsByTagName('a');
+
+    for (let i = 0; i < dropdownItems.length; i++) {
+        dropdownItems[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            dropdownButton.textContent = this.textContent;
+        });
+    }
+});
+
 </script>
 <!-- End UnionAI docs variant switcher -->
 {% endblock %}
 
 {% block body %}
 {%- if meta is mapping %}
-    <div id="unionai-docs-all-variants" style="display: none;">{{ meta.get("all-variants") }}</div>
+    <div id="unionai-docs-variant-display-names" style="display: none;">{{ meta.get("variant-display-names") }}</div>
+    <div id="unionai-docs-available-variants" style="display: none;">{{ meta.get("available-variants") }}</div>
     <div id="unionai-docs-this-variant" style="display: none;">{{ meta.get("this-variant") }}</div>
 {%- endif %}
 {{ super() }}

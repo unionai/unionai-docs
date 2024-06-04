@@ -1,162 +1,162 @@
-{"name": "", "title": "Introduction", "tags": ["byoc", "serverless"],
+{"name": "", "title": "Introduction", "variants": ["byoc", "serverless"],
     "children": [
-        {"name": "union-overview", "tags": ["byoc", "serverless"]},
-        {"name": "platform-architecture", "tags": ["byoc"]},
-        {"name": "data-plane-setup", "tags": ["byoc"],
+        {"name": "union-overview", "variants": ["byoc", "serverless"]},
+        {"name": "platform-architecture", "variants": ["byoc"]},
+        {"name": "data-plane-setup", "variants": ["byoc"],
             "children": [
-                {"name": "data-plane-setup-on-aws", "tags": ["byoc"]},
-                {"name": "data-plane-setup-on-gcp", "tags": ["byoc"]},
-                {"name": "single-sign-on-setup", "tags": ["byoc"],
+                {"name": "data-plane-setup-on-aws", "variants": ["byoc"]},
+                {"name": "data-plane-setup-on-gcp", "variants": ["byoc"]},
+                {"name": "single-sign-on-setup", "variants": ["byoc"],
                     "children": [
-                        {"name": "microsoft-entra-id", "tags": ["byoc"]},
-                        {"name": "other-identity-providers", "tags": ["byoc"]}
+                        {"name": "microsoft-entra-id", "variants": ["byoc"]},
+                        {"name": "other-identity-providers", "variants": ["byoc"]}
                     ]},
-                {"name": "configuring-your-data-plane", "tags": ["byoc"]},
-                {"name": "multi-cluster", "tags": ["byoc"]}
+                {"name": "configuring-your-data-plane", "variants": ["byoc"]},
+                {"name": "multi-cluster", "variants": ["byoc"]}
             ]},
-        {"name": "getting-started", "tags": ["byoc", "serverless"],
+        {"name": "getting-started", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "machine-learning-example", "tags": ["serverless"]},
-                {"name": "adding-custom-dependencies", "tags": ["serverless"]},
-                {"name": "managing-secrets", "tags": ["serverless"]},
-                {"name": "managing-apps", "tags": ["serverless"]},
-                {"name": "access-aws-s3", "tags": ["serverless"]},
-                {"name": "installing-development-tools", "tags": ["byoc"]},
-                {"name": "creating-the-project", "tags": ["byoc"]},
-                {"name": "looking-at-the-dependencies", "tags": ["byoc"]},
-                {"name": "looking-at-the-workflow-code", "tags": ["byoc"]},
-                {"name": "running-in-a-local-python-environment", "tags": ["byoc"]},
-                {"name": "running-in-a-local-cluster", "tags": ["byoc"]},
-                {"name": "setting-up-the-project-on-union", "tags": ["byoc"]},
-                {"name": "deploying-the-project-on-union", "tags": ["byoc"]},
-                {"name": "more-resources", "tags": ["byoc"]}
+                {"name": "machine-learning-example", "variants": ["serverless"]},
+                {"name": "adding-custom-dependencies", "variants": ["serverless"]},
+                {"name": "managing-secrets", "variants": ["serverless"]},
+                {"name": "managing-apps", "variants": ["serverless"]},
+                {"name": "access-aws-s3", "variants": ["serverless"]},
+                {"name": "installing-development-tools", "variants": ["byoc"]},
+                {"name": "creating-the-project", "variants": ["byoc"]},
+                {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
+                {"name": "looking-at-the-workflow-code", "variants": ["byoc"]},
+                {"name": "running-in-a-local-python-environment", "variants": ["byoc"]},
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
+                {"name": "setting-up-the-project-on-union", "variants": ["byoc"]},
+                {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
+                {"name": "more-resources", "variants": ["byoc"]}
             ]},
-        {"name": "core-concepts", "tags": ["byoc", "serverless"],
+        {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "workflows", "tags": ["byoc", "serverless"],
+                {"name": "workflows", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "standard-workflows", "tags": ["byoc", "serverless"]},
-                        {"name": "subworkflows-and-sub-launch-plans", "tags": ["byoc", "serverless"]},
-                        {"name": "dynamic-workflows", "tags": ["byoc", "serverless"]},
-                        {"name": "eager-workflows", "tags": ["byoc", "serverless"]},
-                        {"name": "launching-workflows", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-workflows", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-workflow-executions", "tags": ["byoc", "serverless"]}
+                        {"name": "standard-workflows", "variants": ["byoc", "serverless"]},
+                        {"name": "subworkflows-and-sub-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "dynamic-workflows", "variants": ["byoc", "serverless"]},
+                        {"name": "eager-workflows", "variants": ["byoc", "serverless"]},
+                        {"name": "launching-workflows", "variants": ["byoc", "serverless"]},
+                        {"name": "viewing-workflows", "variants": ["byoc", "serverless"]},
+                        {"name": "viewing-workflow-executions", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "tasks", "tags": ["byoc", "serverless"],
+                {"name": "tasks", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "task-types", "tags": ["byoc", "serverless"]},
-                        {"name": "task-parameters", "tags": ["byoc"]},
-                        {"name": "launching-tasks", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-tasks", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-logs", "tags": ["byoc", "serverless"]},
-                        {"name": "task-software-environment", "tags": ["byoc"],
+                        {"name": "task-types", "variants": ["byoc", "serverless"]},
+                        {"name": "task-parameters", "variants": ["byoc"]},
+                        {"name": "launching-tasks", "variants": ["byoc", "serverless"]},
+                        {"name": "viewing-tasks", "variants": ["byoc", "serverless"]},
+                        {"name": "viewing-logs", "variants": ["byoc", "serverless"]},
+                        {"name": "task-software-environment", "variants": ["byoc"],
                             "children": [
-                                {"name": "imagespec", "tags": ["byoc"]},
-                                {"name": "imagespec-with-ecr", "tags": ["byoc"]},
-                                {"name": "imagespec-with-gar", "tags": ["byoc"]},
-                                {"name": "environment-variables", "tags": ["byoc"]},
-                                {"name": "secrets", "tags": ["byoc"]}
+                                {"name": "imagespec", "variants": ["byoc"]},
+                                {"name": "imagespec-with-ecr", "variants": ["byoc"]},
+                                {"name": "imagespec-with-gar", "variants": ["byoc"]},
+                                {"name": "environment-variables", "variants": ["byoc"]},
+                                {"name": "secrets", "variants": ["byoc"]}
                             ]},
-                        {"name": "task-hardware-environment", "tags": ["byoc"],
+                        {"name": "task-hardware-environment", "variants": ["byoc"],
                             "children": [
-                                {"name": "customizing-task-resources", "tags": ["byoc"]},
-                                {"name": "accelerators", "tags": ["byoc"]},
-                                {"name": "interruptible-instances", "tags": ["byoc"]},
-                                {"name": "task-level-monitoring", "tags": ["byoc"]}
+                                {"name": "customizing-task-resources", "variants": ["byoc"]},
+                                {"name": "accelerators", "variants": ["byoc"]},
+                                {"name": "interruptible-instances", "variants": ["byoc"]},
+                                {"name": "task-level-monitoring", "variants": ["byoc"]}
                             ]}
                     ]},
-                {"name": "launch-plans", "tags": ["byoc", "serverless"],
+                {"name": "launch-plans", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "defining-launch-plans", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-launch-plans", "tags": ["byoc", "serverless"]},
-                        {"name": "notifications", "tags": ["byoc", "serverless"]},
-                        {"name": "schedules", "tags": ["byoc", "serverless"]},
-                        {"name": "activating-and-deactivating", "tags": ["byoc", "serverless"]},
-                        {"name": "running-launch-plans", "tags": ["byoc", "serverless"]},
-                        {"name": "reactive-workflows", "tags": ["byoc", "serverless"]}
+                        {"name": "defining-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "viewing-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "notifications", "variants": ["byoc", "serverless"]},
+                        {"name": "schedules", "variants": ["byoc", "serverless"]},
+                        {"name": "activating-and-deactivating", "variants": ["byoc", "serverless"]},
+                        {"name": "running-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "artifacts", "tags": ["byoc", "serverless"],
+                {"name": "artifacts", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "declaring-artifacts", "tags": ["byoc", "serverless"]},
-                        {"name": "materializing-artifacts", "tags": ["byoc", "serverless"]},
-                        {"name": "consuming-artifacts-in-workflows", "tags": ["byoc", "serverless"]},
-                        {"name": "connecting-workflows-with-artifact-event-triggers", "tags": ["byoc", "serverless"]},
-                        {"name": "viewing-artifacts", "tags": ["byoc", "serverless"]}
+                        {"name": "declaring-artifacts", "variants": ["byoc", "serverless"]},
+                        {"name": "materializing-artifacts", "variants": ["byoc", "serverless"]},
+                        {"name": "consuming-artifacts-in-workflows", "variants": ["byoc", "serverless"]},
+                        {"name": "connecting-workflows-with-artifact-event-triggers", "variants": ["byoc", "serverless"]},
+                        {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "caching", "tags": ["byoc", "serverless"]}
+                {"name": "caching", "variants": ["byoc", "serverless"]}
             ]},
-        {"name": "development-cycle", "tags": ["byoc", "serverless"],
+        {"name": "development-cycle", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "registering-workflows", "tags": ["byoc", "serverless"]},
-                {"name": "task-resource-validation", "tags": ["byoc", "serverless"]},
-                {"name": "interactive-tasks", "tags": ["byoc", "serverless"]},
-                {"name": "setting-up-ci-cd-deployment", "tags": ["byoc"]},
-                {"name": "unionremote", "tags": ["byoc", "serverless"]}
+                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
+                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
+                {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
+                {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
+                {"name": "unionremote", "variants": ["byoc", "serverless"]}
             ]},
-        {"name": "data-input-output", "tags": ["byoc", "serverless"],
+        {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "flytefile", "tags": ["byoc", "serverless"]},
-                {"name": "accelerated-datasets", "tags": ["byoc"]}
+                {"name": "flytefile", "variants": ["byoc", "serverless"]},
+                {"name": "accelerated-datasets", "variants": ["byoc"]}
             ]},
-        {"name": "administration", "tags": ["byoc"],
+        {"name": "administration", "variants": ["byoc"],
             "children": [
-                {"name": "user-management", "tags": ["byoc"]},
-                {"name": "usage", "tags": ["byoc"]},
-                {"name": "applications", "tags": ["byoc"]},
-                {"name": "cli-authentication", "tags": ["byoc"]}
+                {"name": "user-management", "variants": ["byoc"]},
+                {"name": "usage", "variants": ["byoc"]},
+                {"name": "applications", "variants": ["byoc"]},
+                {"name": "cli-authentication", "variants": ["byoc"]}
             ]},
-        {"name": "integrations", "tags": ["byoc", "serverless"],
+        {"name": "integrations", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "enabling-aws-resources", "tags": ["byoc"],
+                {"name": "enabling-aws-resources", "variants": ["byoc"],
                     "children": [
-                        {"name": "enabling-aws-s3", "tags": ["byoc"]},
-                        {"name": "enabling-aws-secrets-manager", "tags": ["byoc"]},
-                        {"name": "enabling-aws-ecr", "tags": ["byoc"]}
+                        {"name": "enabling-aws-s3", "variants": ["byoc"]},
+                        {"name": "enabling-aws-secrets-manager", "variants": ["byoc"]},
+                        {"name": "enabling-aws-ecr", "variants": ["byoc"]}
                     ]},
-                {"name": "enabling-gcp-resources", "tags": ["byoc"],
+                {"name": "enabling-gcp-resources", "variants": ["byoc"],
                     "children": [
-                        {"name": "enabling-google-cloud-storage", "tags": ["byoc"]},
-                        {"name": "enabling-google-secret-manager", "tags": ["byoc"]},
-                        {"name": "enabling-google-artifact-registry", "tags": ["byoc"]},
-                        {"name": "enabling-bigquery", "tags": ["byoc"]}
+                        {"name": "enabling-google-cloud-storage", "variants": ["byoc"]},
+                        {"name": "enabling-google-secret-manager", "variants": ["byoc"]},
+                        {"name": "enabling-google-artifact-registry", "variants": ["byoc"]},
+                        {"name": "enabling-bigquery", "variants": ["byoc"]}
                     ]},
-                {"name": "agents", "tags": ["byoc", "serverless"],
+                {"name": "agents", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "airflow-agent", "tags": ["byoc", "serverless"],
+                        {"name": "airflow-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "airflow-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "airflow-agent-example", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "sagemaker-agent", "tags": ["byoc", "serverless"],
+                        {"name": "sagemaker-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "sagemaker-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "sagemaker-agent-example", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "databricks-agent", "tags": ["byoc", "serverless"],
+                        {"name": "databricks-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "databricks-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "databricks-agent-example", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "file-sensor-agent", "tags": ["byoc"],
+                        {"name": "file-sensor-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "file-sensor-agent-example", "tags": ["byoc"]}
+                                {"name": "file-sensor-agent-example", "variants": ["byoc"]}
                             ]},
-                        {"name": "bigquery-agent", "tags": ["byoc", "serverless"],
+                        {"name": "bigquery-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "bigquery-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "bigquery-agent-example", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "mmcloud-agent", "tags": ["byoc", "serverless"],
+                        {"name": "mmcloud-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "mmcloud-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "mmcloud-agent-example", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "dgx-agent", "tags": ["byoc"]},
-                        {"name": "chatgpt-agent", "tags": ["byoc", "serverless"],
+                        {"name": "dgx-agent", "variants": ["byoc"]},
+                        {"name": "chatgpt-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "chatgpt-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "chatgpt-agent-example", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "snowflake-agent", "tags": ["byoc", "serverless"],
+                        {"name": "snowflake-agent", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "snowflake-agent-example", "tags": ["byoc", "serverless"]}
+                                {"name": "snowflake-agent-example", "variants": ["byoc", "serverless"]}
                             ]}
                     ]}
             ]},
-        {"name": "faq", "tags": ["byoc"]}
+        {"name": "faq", "variants": ["byoc"]}
     ]}
