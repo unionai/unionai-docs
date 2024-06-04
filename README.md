@@ -156,5 +156,5 @@ The file is present here in this repo simply for purposes of version control and
 
 Just like any other repository, you can create a pull request with your changes.
 
-If you make changes that would move the URL-location of an exisitng page, you must
+If you make changes that would move the URL-location of an existing page, you must
 create the appropriate redirect.
