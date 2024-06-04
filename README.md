@@ -6,17 +6,17 @@ The site is built using a combination of the [Jinja2](https://jinja.palletsproje
 templating system and the [Sphinx](https://www.sphinx-doc.org) static site generator.
 
 The site is hosted on Cloudflare Pages in the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
-project:
+project.
 
 ## Set up your local Python environment
 
-* Create a virtual Python environment with Python 3.11 installed
+* Create a virtual Python environment with Python 3.11 installed.
 * Activate that virtual environment.
-* Install the dependencies with `pip install -r requirements.txt`
+* Install the dependencies with `pip install -r requirements.txt`.
 
 ## Build the site
 
-* Run the build with `python build.py`
+* Run the build with `python build.py`.
 
 The resulting HTML files will be in the directory `build/html`.
 
@@ -37,8 +37,8 @@ The site is engineered to present content for multiple **variants** of the Union
 The current variants are: **Serverless** and **BYOC**. Other variants can be easily added.
 
 The single source tree contains the content for all variants.
-But which content is to be displayed for a specific variant can be controlled
-at two levels: the whole-page level and the in-page block level.
+Which content is to be displayed for a specific variant can be controlled
+at two levels: the whole-page level and the block level.
 
 ### Controlling content at the whole-page level
 
