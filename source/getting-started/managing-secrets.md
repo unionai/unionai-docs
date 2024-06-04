@@ -1,7 +1,7 @@
 # Managing secrets
 
 We frequently use secrets for interacting with external services through API keys.
-In this example, we learn how to manage secrets on Union Serverless.
+In this example, we learn how to manage secrets on Union.
 
 Create a secret with the CLI:
 

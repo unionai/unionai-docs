@@ -24,10 +24,16 @@ myst_enable_extensions = ['colon_fence']
 myst_heading_anchors = 6
 
 # Sphinx book theme
+
+# Union logo
 html_logo = '_static/public/logo.svg'
 
+# Add variant selector to sidebar
 html_sidebars = {
-    "**": ['navbar-logo.html', 'search-button-field.html', 'variant-selector.html', 'sbt-sidebar-nav.html']
+    "**": ['navbar-logo.html',
+           'search-button-field.html',
+           'variant-selector.html',
+           'sbt-sidebar-nav.html']
 }
 
 # autodoc config
@@ -67,7 +73,8 @@ def process_description(app, ctx, lines):
             .replace("Flyte's execution system", "Union's execution system")\
             .replace("Flyte Execution", "Union execution")\
             .replace("Flyte Console", "web console")\
-            .replace("Flyte Python CLI environment", "Union Python CLI environment")\
+            .replace("Flyte Python CLI environment",
+                     "Union Python CLI environment")\
             .replace("flyte-ready", "Union-ready")\
             .replace("Flyte backend registrable", "Union backend registrable")\
             .replace("entities in Flyte", "entities in Union")\

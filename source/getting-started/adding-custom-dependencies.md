@@ -1,7 +1,7 @@
 # Adding custom dependencies
 
-With image builder, Docker images are built in the cloud on Union Serverless! For this
-example, save the following as `image_build.py`:
+With image builder, the Docker images used by your tasks are built in the cloud on Union.
+For this example, save the following as `image_build.py`
 
 ```{code-block} python
 from flytekit import ImageSpec, task, workflow

@@ -1,8 +1,8 @@
 # Machine learning example
 
-In this tutorial, we learn about Union Serverless features by reviewing a
-machine learning workflow using `flytekit`, `scikit-learn`, and `pandas`. Before starting this tutorial,
-onboard to the Union Serverless platform by following the [Getting started ](index) section.
+In this tutorial, we learn about Union features by reviewing a
+machine learning workflow using `flytekit`, `scikit-learn`, and `pandas`.
+Before starting this tutorial, onboard to the Union platform by following the [Getting started ](index) section.
 
 ## Downloading the material
 
@@ -186,6 +186,5 @@ visualizations into the deck.
 
 ## Conclusion
 
-You can learn more about Union specific capabilities by exploring this site or Flyte by
-visiting [docs.flyte.org](https://docs.flyte.org/en/latest/). Thank you for learning
-about the Union Serverless platform!
+You can learn more about Union-specific capabilities by exploring this site or Flyte by
+visiting [docs.flyte.org](https://docs.flyte.org/en/latest/).

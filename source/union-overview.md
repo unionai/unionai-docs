@@ -12,12 +12,12 @@ Union includes all the features of Flyte:
 * GitOps-style versioning and branching
 * Strongly-typed interfaces between tasks enabling more reliable code
 * Caching, intra-task checkpointing, and spot instance provisioning
-* Mass task parallelism ("map tasks")
+* Task parallelism at scale with *map tasks*
 * Dynamic workflows created at runtime for process flexibility
 
 ## Union deployment options
 
-Union offers two deployment options: Serverless and BYOC (Bring Your Own Compute).
+Union offers two deployment options: Serverless and BYOC (Bring Your Own Cloud).
 Both of these options greatly simplify infrastructure management and provide additional features on top of Flyte.
 
 ## Union Serverless
