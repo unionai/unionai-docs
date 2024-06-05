@@ -12,6 +12,7 @@ button#dropdown-text::before {
 .dropdown {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 
 .dropdown-content {
@@ -39,12 +40,13 @@ button#dropdown-text::before {
 }
 
 .dropdown-button {
-    background-color: var(--pst-color-surface);
     border: 1px solid var(--pst-color-border);
-    border-radius: 1em;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
     color: var(--pst-color-text-muted);
     display: inline-flex;
-    padding: .5em;
+    padding: 1em .5em;
     margin-top: 8px;
     margin-bottom: 8px;
     width: 100%;
@@ -52,6 +54,22 @@ button#dropdown-text::before {
 
 .dropdown-button:hover {
     box-shadow: 0 0 0 .1875rem var(--pst-color-link-hover);
-
 }
 
+/* update styling for links to use yellow */
+a,
+.prev-next-area a p.prev-next-title,
+nav.bd-links .current>a,
+.toc-entry a.nav-link.active
+{
+    color: var(--pst-color-link-hover);
+}
+
+nav.bd-links .current>a,
+.toc-entry a.nav-link.active {
+    box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--pst-color-link-hover);
+}
+
+a:active, a:visited {
+    color: #551A8B;
+}

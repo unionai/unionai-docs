@@ -24,7 +24,7 @@ html_logo = '_static/public/logo.svg'
 
 # Add variant selector to sidebar
 html_sidebars = {
-    "**": ['navbar-logo.html', 'search-button-field.html', 'variant-selector.html', 'sbt-sidebar-nav.html']
+    "**": ['navbar-logo.html', 'variant-selector.html', 'search-button-field.html', 'sbt-sidebar-nav.html']
 }
 
 # Sphinx copybutton
