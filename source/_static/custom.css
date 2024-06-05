@@ -40,7 +40,7 @@ button#dropdown-text::after {
 }
 
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: var(--pst-color-on-background);
 }
 
 .dropdown:hover .dropdown-content {
