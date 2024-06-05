@@ -102,3 +102,13 @@ a:active, a:visited {
 .bd-content .sd-tab-set .sd-tab-content {
     border: .125rem solid var(--pst-color-border);
 }
+
+/* make the scroll bar sleeker */
+::-webkit-scrollbar {
+    width: 3px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--pst-color-border);
+}
