@@ -53,6 +53,8 @@ def process_docstring(app, what, name, obj, options, lines):
     for str in lines:
         idx = lines.index(str)
         str = str.replace('FlyteRemote ', 'UnionRemote ')\
+            .replace('flyteremote', 'UnionRemote')\
+            .replace('Flyte remote', 'Union remote')\
             .replace('FlyteRemote(', 'UnionRemote(')\
             .replace('flyte_workflow', 'union_workflow')\
             .replace('Flyte remote backend', 'Union remote backend')\
@@ -78,7 +80,10 @@ def process_description(app, ctx, lines):
             .replace("flyte-ready", "Union-ready")\
             .replace("Flyte backend registrable", "Union backend registrable")\
             .replace("entities in Flyte", "entities in Union")\
-            .replace("remote flyte instance", "remote Union instance")
+            .replace("remote flyte instance", "remote Union instance")\
+            .replace("pyflyte package", "unionai package")\
+            .replace("flytectl register", "uctl register")\
+            .replace("pyflyte run", "unionai run")
         del lines[idx]
         lines.insert(idx, str)
 
@@ -94,7 +99,7 @@ def process_options(app, ctx, lines):
         lines.insert(idx, str)
 
 
-# def setup(app):
-    # app.connect('autodoc-process-docstring', process_docstring)
-    # app.connect("sphinx-click-process-description", process_description)
-    # app.connect("sphinx-click-process-options", process_options)
+def setup(app):
+    app.connect('autodoc-process-docstring', process_docstring)
+    app.connect("sphinx-click-process-description", process_description)
+    app.connect("sphinx-click-process-options", process_options)
