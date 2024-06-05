@@ -1,3 +1,8 @@
+/* Make sure article takes full page */
+article.bd-article {
+    height: 100%;
+}
+
 /* Basic styling for the dropdown menu */
 button#dropdown-text::before {
     content: "Version:";
@@ -106,6 +111,7 @@ a:active, a:visited {
 /* make the scroll bar sleeker */
 ::-webkit-scrollbar {
     width: 3px;
+    height: 3px;
     background: transparent;
 }
 

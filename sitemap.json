@@ -33,7 +33,11 @@
             ]},
         {"name": "tutorials", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "sentiment-classifier", "variants": ["byoc", "serverless"]}
+                {"name": "language-models", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "sentiment-classifier", "variants": ["byoc", "serverless"]}
+                    ]
+                }
             ]
         },
         {"name": "core-concepts", "variants": ["byoc", "serverless"],

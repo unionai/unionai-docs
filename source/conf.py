@@ -9,8 +9,15 @@ master_doc = 'index'
 html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['custom.css']
+html_js_files = ["custom.js"]
+
 exclude_patterns = []
-extensions = ['myst_parser', 'sphinx_design', 'sphinx_copybutton']
+extensions = [
+    'myst_parser',
+    'sphinx_design',
+    'sphinx_copybutton',
+    'sphinxext.remoteliteralinclude',
+]
 html_theme = 'sphinx_book_theme'
 
 # Myst

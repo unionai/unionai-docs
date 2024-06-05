@@ -20,6 +20,11 @@ project.
 
 The resulting HTML files will be in the directory `build/html`.
 
+```bash
+open build/html/serverless/index.html  # serverless variant
+open build/html/byoc/index.html  # byoc variant
+```
+
 ## Publish the site
 
 To publish a change to the site, create a pull request here in `unionai/docs` against the `main` branch.
