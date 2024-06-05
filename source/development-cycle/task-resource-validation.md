@@ -10,7 +10,8 @@ Request failed with status code 400 rpc error: code = InvalidArgument desc = no 
 
 While we have ongoing work to improve user-facing information here, we may need to help debug why the execution could not placed.
 
-Using logs
+{@@ if byoc @@}
+## Using logs
 Ensure that executions service logs are configured for debug level
 
 Find failing 400 requests using this query. Update the env (i.e., production) and time range as needed. Can also add a filter for the tenant (i.e., flawlessai)
@@ -18,3 +19,4 @@ Find failing 400 requests using this query. Update the env (i.e., production) an
 Choose the one you care about and copy the request id from the message -- the long hex string at the end, i.e., 0c195ae8ce3aded38d90777c9dc33382
 
 Copy that into this query. This will filter for all logs corresponding to that request in executions service (which handles validation). You should find debug messages indicating what constraints could not be met by various nodegroups.
+{@@ endif @@}
