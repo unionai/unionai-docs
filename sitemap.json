@@ -166,7 +166,13 @@
                         {"name": "actor", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "unionai-cli", "variants": ["byoc", "serverless"]},
-                {"name": "unionremote", "variants": ["byoc", "serverless"]},
+                {"name": "unionremote", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "entrypoint", "variants": ["byoc", "serverless"]},
+                        {"name": "entities", "variants": ["byoc", "serverless"]},
+                        {"name": "entity-components", "variants": ["byoc", "serverless"]},
+                        {"name": "execution-objects", "variants": ["byoc", "serverless"]}
+                    ]},
                 {"name": "config", "variants": ["byoc", "serverless"]}
             ]},
         {"name": "faq", "variants": ["byoc"]}
