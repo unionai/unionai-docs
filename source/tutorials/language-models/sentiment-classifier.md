@@ -12,7 +12,7 @@ You can run this example on Union serverless.
 :::{button-link} https://signup.union.ai/
 :color: secondary
 
-Join the waitlist
+Create an account
 :::
 
 Once you have a Union account, install `unionai`
