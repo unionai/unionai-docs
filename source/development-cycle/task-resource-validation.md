@@ -8,9 +8,9 @@ We intercept execution creation requests in executions service to validate that 
 Request failed with status code 400 rpc error: code = InvalidArgument desc = no node satisfies task 'workflows.fotd.fotd_directory' resource requests
 ```
 
+{@@ if byoc @@}
 While we have ongoing work to improve user-facing information here, we may need to help debug why the execution could not placed.
 
-{@@ if byoc @@}
 ## Using logs
 Ensure that executions service logs are configured for debug level
 
