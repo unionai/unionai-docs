@@ -7,6 +7,7 @@ button#dropdown-text::before {
 
 .navbar-brand img {
     max-width: 80%;
+    padding-top: 20px;
 }
 
 .dropdown {
@@ -71,5 +72,5 @@ nav.bd-links .current>a,
 }
 
 a:active, a:visited {
-    color: #551A8B;
+    color: #7652a2;
 }
