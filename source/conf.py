@@ -94,7 +94,7 @@ def process_options(app, ctx, lines):
         lines.insert(idx, str)
 
 
-def setup(app):
-    app.connect('autodoc-process-docstring', process_docstring)
-    app.connect("sphinx-click-process-description", process_description)
-    app.connect("sphinx-click-process-options", process_options)
+# def setup(app):
+    # app.connect('autodoc-process-docstring', process_docstring)
+    # app.connect("sphinx-click-process-description", process_description)
+    # app.connect("sphinx-click-process-options", process_options)
