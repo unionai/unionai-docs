@@ -20,8 +20,9 @@ button#dropdown-text::before {
     display: none;
     position: absolute;
     background-color: var(--pst-color-surface);
+    width: 100%;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 6px 3px rgba(0,0,0,0.1);
     z-index: 1;
 }
 
@@ -75,6 +76,7 @@ a:active, a:visited {
     color: #7652a2;
 }
 
+#dropdown-links a,
 #dropdown-links a:visited {
-    color: var(--pst-color-link-hover);
+    color: var(--pst-color-text-muted);
 }
