@@ -64,7 +64,7 @@ a,
 nav.bd-links .current>a,
 .toc-entry a.nav-link.active
 {
-    color: var(--pst-color-link-hover);
+    color: var(--pst-color-secondary);
 }
 
 nav.bd-links .current>a,
@@ -79,4 +79,19 @@ a:active, a:visited {
 #dropdown-links a,
 #dropdown-links a:visited {
     color: var(--pst-color-text-muted);
+}
+
+#dropdown-links a:visited:hover {
+    color: var(--pst-color-link-hover);
+}
+
+
+/* update styling for tabs */
+.bd-content .sd-tab-set>input:checked+label {
+    border-color: var(--pst-color-border) var(--pst-color-border) transparent;
+    color: var(--pst-color-secondary);
+}
+
+.bd-content .sd-tab-set .sd-tab-content {
+    border: .125rem solid var(--pst-color-border);
 }
