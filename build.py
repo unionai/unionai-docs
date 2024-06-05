@@ -106,6 +106,7 @@ def process_page_node(page_node: dict, current_variant: str, parent_path: str, p
     indent: str = parent_path.count('/') * "    "
     path: str = os.path.join(parent_path, name).rstrip(' /')
 
+    variants = [*reversed(variants)]  # make sure that serverless is the first element
     print(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
     print(f'{indent}path: [{path}]')
 

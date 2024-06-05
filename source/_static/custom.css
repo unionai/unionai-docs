@@ -1,4 +1,14 @@
 /* Basic styling for the dropdown menu */
+button#dropdown-text::before {
+    content: "Version:";
+    margin-right: 0.3em;
+    font-weight: bold;
+}
+
+.navbar-brand img {
+    max-width: 80%;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -26,11 +36,6 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
-}
-
-/* Additional styling for customization */
-.variant-picker-caption {
-    color: var(--pst-color-text-muted);
 }
 
 .dropdown-button {
