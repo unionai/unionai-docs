@@ -1,14 +1,14 @@
 # API reference
 
-You can interact with the Union backend in the following ways:
+You can interact with your Union deployment in the following ways:
 
-* Use the [`unionai`](sdk/index) and [`flytekit`](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html) SDKs in your workflow code.
-* Use the [`unionai` CLI](unionai-cli) to interact with the Union backend via the command line.
-* Use [`UnionRemote`](unionremote) in a Python runtime environment.
+* Use the [`flytekit`](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html) and [`unionai`](sdk/index) Python SDKs in your workflow code.
+* Use the [`unionai` CLI](unionai-cli) to register, run, and retrieve workflows and other entities, and more, via the command line.
+* Use [`UnionRemote`](unionremote) in a Python runtime environment to programmatically access your Union deployment.
 
-To get started, run the following command:
+To get started, install `unionai`:
 
 ```
 pip install -U unionai
 ```
-This will install the `unionai` and `flytekit` SDKs, the `unionai` CLI, and `UnionRemote`.
+This will install the `flytekit` and `unionai` SDKs, the `unionai` CLI, and `UnionRemote`.
