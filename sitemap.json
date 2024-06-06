@@ -171,8 +171,10 @@
             "children": [
                 {"name": "sdk", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "artifacts", "variants": ["byoc", "serverless"]},
-                        {"name": "actor", "variants": ["byoc", "serverless"]}
+                        {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]},
+                        {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
+                        {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},
+                        {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "unionai-cli", "variants": ["byoc", "serverless"]},
                 {"name": "unionremote", "variants": ["byoc", "serverless"],
