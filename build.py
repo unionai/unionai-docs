@@ -165,6 +165,7 @@ def process_project():
     for variant in ALL_VARIANTS:
         shell(f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}')
     shell(f'cp ./index.html {BUILD_DIR}/index.html')
+    shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 
 if __name__ == "__main__":
