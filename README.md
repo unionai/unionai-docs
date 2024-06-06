@@ -38,9 +38,9 @@ The current variants are **Serverless** and **BYOC**. Other variants can be easi
 
 The single source tree contains the content for all variants.
 Which content is to be displayed for a specific variant can be controlled
-at two levels: the whole-page level and the block level.
+at two levels: the page level and the block level.
 
-### Controlling content at the whole-page level
+### Controlling content at the page level
 
 The configuration file `sitemap.json` defines the hierarchical structure of the site
 and specifies which pages are to be included in each variant using the `variants` key
@@ -69,9 +69,9 @@ For example, consider the following section of the `sitemap.json`:
 ```
 
 Here we see that the `getting-started` page is included in both the `byoc` and `serverless` variants.
-But among its subpages, the `machine-learning-example` page is only included in the `serverless` variant
+But its subpages are either in one or the other variant, but never both.
+For example, the `machine-learning-example` page is only included in the `serverless` variant
 and the `installing-development-tools` page is only included in the `byoc` variant.
-Other pages are similarly included in only one or the other variant.
 
 Note that a subpage cannot be included in a variant in which its parent page is not included.
 In other words, the scope of a sub-page is always either equivalent to, or a subset of, the scope
@@ -79,7 +79,7 @@ of its parent page. A processing error will be raised by `build.py` if this rule
 
 Note also that the `sitemap.json` file is used to automatically generate `toctree` directives
 in the intermediate Sphinx Markdown, so you must not add your own `toctree` directives.
-The `sitemap.json` defines the hierarchy of the pages.
+The `sitemap.json` is the single source that defines the hierarchy of the pages.
 
 ### Controlling content at the block level
 
@@ -115,29 +115,25 @@ Comments can be included using the Jinja2 templating syntax like this:
 
 ### Jinja2 syntax
 
-Note that this system uses a cusomized version of the syntax for Jinja2 templating
+Note that this system uses a customized version of the syntax for Jinja2 templating:
 
 * `{@@ ... @@}` for block statements
 * `{@= ... =@}` for expressions.
 * `{@# ... #@}` for comments.
 
-This is done avoid conflict with documentation content that might include the standard Jinja syntax.
+This is done to avoid conflict with documentation content that includes the standard Jinja syntax.
 
 ### The processing pipeline
 
-The `build.py` script processes the content in the `source/` directory and applies the
-Jinja2 templating logic as well as adding toctree directives to procduce proper Sphinx
-markdopwn in the `sphinx_source` directory.
+The `build.py` script processes the contents in the `source/` directory,
+and builds a separate Sphinx project for each variant in the `sphinx_source/` directory.
 
-In that directory one entire self-contined sphinc project is created for each variant
-(BYOC, Serverless, etc.).
+It uses the `sitemap.json` to determine which files are copied into which variant's Sphinx project.
+and also applies the Jinja2 templating logic to each page to determine it's content based on the variant.
+Addionally, it adds toctree directives to each `index.md` page based on the hierarchy defined the `sitemap.json`.
 
-These pseparate trees rojects are then built by Sphinx to produce the final HTML output in the `build/html` directory.
-
-There the output for each variant is placed in a separate subdirectory.
-
-A top level index page is then copied in at the very top that redirect to
-the default variant's index page (currently Serverless).
+The resulting Sphinx projects in the `sphinx_source` directory are then each proecessed by `sphinx-build` to produce the final HTML output in the `build/html` directory.
+Again, each variant is placed in a separate subdirectory.
 
 ## Redirects
 
@@ -157,4 +153,4 @@ The file is present here in this repo simply for purposes of version control and
 Just like any other repository, you can create a pull request with your changes.
 
 If you make changes that would move the URL-location of an existing page, you must
-create the appropriate redirect.
+create the appropriate redirect and apply it in Cloudflare as described above.
