@@ -35,6 +35,7 @@ flytekitplugins-flyteinteractive
 
 ### example.py
 
+{@@ if byoc @@}
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode)"""
 
@@ -59,6 +60,32 @@ def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
 ```
+{@@ elif serverless @@}
+
+```{code-block} python
+"""Union workflow example of interactive tasks (@vscode)"""
+
+from flytekit import task, workflow, ImageSpec
+from flytekitplugins.flyteinteractive import vscode
+
+image = ImageSpec(
+   builder="unionai",
+   name="interactive-tasks-example",
+   requirements="requirements.txt"
+)
+
+@task(container_image=image)
+@vscode
+def say_hello(name: str) -> str:
+   s = f"Hello, {name}!"
+   return s
+
+@workflow
+def wf(name: str = "world") -> str:
+   greeting = say_hello(name=name)
+   return greeting
+```
+{@@ endif @@}
 
 ## Register and run the workflow
 
@@ -156,6 +183,8 @@ Additional extensions can be added by defining a configuration object and passin
 
 ### example-extensions.py
 
+{@@ if byoc @@}
+
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with extensions"""
 
@@ -187,6 +216,38 @@ def wf(name: str = "world") -> str:
    return greeting
 ```
 
+{@@ elif serverless @@}
+```{code-block} python
+"""Union workflow example of interactive tasks (@vscode) with extensions"""
+
+from flytekit import task, workflow, ImageSpec
+from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
+
+image = ImageSpec(
+   builder="unionai",
+   name="interactive-tasks-example",
+   requirements="requirements.txt"
+)
+
+config = VscodeConfig()
+config.add_extensions(COPILOT_EXTENSION)  # Use predefined URL
+config.add_extensions(
+    "https://open-vsx.org/api/vscodevim/vim/1.27.0/file/vscodevim.vim-1.27.0.vsix"
+)  # Copy raw URL from Open VSX
+
+@task(container_image=image)
+@vscode(config=config)
+def say_hello(name: str) -> str:
+   s = f"Hello, {name}!"
+   return s
+
+@workflow
+def wf(name: str = "world") -> str:
+   greeting = say_hello(name=name)
+   return greeting
+```
+{@@ endif @@}
+
 ## Manage resources
 
 To manage resources, the VSCode server is terminated after a period of idleness (no active HTTP connections).
@@ -195,6 +256,8 @@ Idleness is monitored via a heartbeat file.
 The `max_idle_seconds` parameter can be used to set the maximum number of seconds the VSCode server can be idle before it is terminated.
 
 ### example-manage-resources.py
+
+{@@ if byoc @@}
 
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with max_idle_seconds"""
@@ -221,12 +284,41 @@ def wf(name: str = "world") -> str:
    return greeting
 ```
 
+{@@ elif serverless @@}
+
+```{code-block} python
+"""Union workflow example of interactive tasks (@vscode) with max_idle_seconds"""
+
+from flytekit import task, workflow, ImageSpec
+from flytekitplugins.flyteinteractive import vscode
+
+image = ImageSpec(
+   builder="unionai",
+   name="interactive-tasks-example",
+   requirements="requirements.txt"
+)
+
+@task(container_image=image)
+@vscode(max_idle_seconds=60000)
+def say_hello(name: str) -> str:
+   s = f"Hello, {name}!"
+   return s
+
+@workflow
+def wf(name: str = "world") -> str:
+   greeting = say_hello(name=name)
+   return greeting
+```
+{@@ endif @@}
+
 ## Pre and post hooks
 
 Interactive tasks also allow the registration of functions to be executed both before and after VSCode starts.
 This can be used for tasks requiring setup or cleanup.
 
 ### example-pre-post-hooks.py
+
+{@@ if byoc @@}
 
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with pre and post hooks"""
@@ -259,12 +351,47 @@ def wf(name: str = "world") -> str:
    return greeting
 ```
 
+{@@ elif serverless @@}
+
+```{code-block} python
+"""Union workflow example of interactive tasks (@vscode) with pre and post hooks"""
+
+from flytekit import task, workflow, ImageSpec
+from flytekitplugins.flyteinteractive import vscode
+
+image = ImageSpec(
+   builder="unionai",
+   name="interactive-tasks-example",
+   requirements="requirements.txt"
+)
+
+def set_up_proxy():
+    print("set up")
+
+def push_code():
+    print("push code")
+
+@task(container_image=image)
+@vscode(pre_execute=set_up_proxy, post_execute=push_code)
+def say_hello(name: str) -> str:
+   s = f"Hello, {name}!"
+   return s
+
+@workflow
+def wf(name: str = "world") -> str:
+   greeting = say_hello(name=name)
+   return greeting
+```
+{@@ endif @@}
+
 ## Only initiate VSCode on task failure
 
 The system can also be set to only initiate VSCode *after a task failure*, preventing task termination and thus enabling inspection.
 This is done by setting the `run_task_first` parameter to `True`.
 
 ### example-run-task-first.py
+
+{@@ if byoc @@}
 
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with run_task_first"""
@@ -290,3 +417,30 @@ def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
 ```
+
+{@@ elif serverless @@}
+
+```{code-block} python
+"""Union workflow example of interactive tasks (@vscode) with run_task_first"""
+
+from flytekit import task, workflow, ImageSpec
+from flytekitplugins.flyteinteractive import vscode
+
+image = ImageSpec(
+   builder="unionai",
+   name="interactive-tasks-example",
+   requirements="requirements.txt"
+)
+
+@task(container_image=image)
+@vscode(run_task_first=True)
+def say_hello(name: str) -> str:
+   s = f"Hello, {name}!"
+   return s
+
+@workflow
+def wf(name: str = "world") -> str:
+   greeting = say_hello(name=name)
+   return greeting
+```
+{@@ endif @@}

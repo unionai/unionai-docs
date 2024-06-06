@@ -57,10 +57,10 @@ the second URL is the workflow execution:
 
 ```{code-block} shell
 👍 Build submitted!
-⏳ Waiting for build to finish at: https://serverless-1.us-east-2.s.union.ai/org/...
+⏳ Waiting for build to finish at: https://serverless.union.ai/org/...
 ✅ Build completed in 0:01:57!
 
-[✔] Go to https://serverless-1.us-east-2.s.union.ai/org/... to see execution in the console.
+[✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
 When we run the workflow, it launches a Union hosted image builder that creates a image

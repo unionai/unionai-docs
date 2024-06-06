@@ -1,6 +1,6 @@
 # Introduction
 
-Union is a workflow orchestration platform based on the Flyte open-source project hosted by Union in your cloud account.
+Union is a workflow orchestration platform based on the Flyte open-source project.
 
 Flyte is already used by hundreds of major organizations to run machine learning and data pipelines.
 However, it does require platform engineers to maintain, extend, and scale.

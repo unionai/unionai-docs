@@ -35,7 +35,7 @@ This command will start up an image builder task on Flyte:
 
 ```{code-block} shell
 👍 Build submitted!
-⏳ Waiting for build to finish at: https://serverless-1.us-east-2.s.union.ai/org/cosmicbboy/projects/default/domains/development/executions/EXECUTION_ID
+⏳ Waiting for build to finish at: https://serverless.union.ai/org/cosmicbboy/projects/default/domains/development/executions/EXECUTION_ID
 ```
 
 After the build is complete, then the original workflow will run with the newly created image!

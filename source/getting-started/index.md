@@ -7,8 +7,8 @@ In this section, we give a quick introduction to writing and running Union workf
 ## Signing up for a Union Serverless account
 
 * Sign up for Union Serverless at: [signup.union.ai](https://signup.union.ai).
-* Once you've received confirmation that you're off the waitlist:
-    * Navigate to [serverless-1.us-east-2.s.union.ai](https://serverless-1.us-east-2.s.union.ai) to see the dashboard:
+* Once you've received confirmation that you're off the wait list:
+    * Navigate to [serverless.union.ai](https://serverless.union.ai) to see the dashboard:
 
 ![Dashboard](/_static/images/dashboard.png)
 
@@ -122,7 +122,7 @@ $ unionai run --remote hello.py hello_world_wf --name "Ada"
 This command prints an URL that links to the execution on Union's web console:
 
 ```{code-block} shell
-[✔] Go to https://serverless-1.us-east-2.s.union.ai/org/... to see execution in the console.
+[✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
 Congratulations, you have just run your first workflow on Union!

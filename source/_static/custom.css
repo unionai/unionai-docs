@@ -1,42 +1,120 @@
+/* Make sure article takes full page */
+article.bd-article {
+    height: 100%;
+}
+
 /* Basic styling for the dropdown menu */
+button#dropdown-text::before {
+    content: "Version:";
+    margin-right: 0.3em;
+    font-weight: bold;
+}
+
+button#dropdown-text::after {
+    content: "⌄";
+    margin-left: 0.5em;
+    font-size: 1.25em;
+    line-height: 0.6em;
+}
+
+.navbar-brand img {
+    max-width: 80%;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: var(--pst-color-surface);
+    width: 100%;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 1px 6px 3px rgba(0,0,0,0.1);
     z-index: 1;
 }
 
 .dropdown-content a {
-    color: #545F71;
+    color: var(--pst-color-text-muted);
     padding: 8px;
     text-decoration: none;
     display: block;
 }
 
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: var(--pst-color-on-background);
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-/* Additional styling for customization */
 .dropdown-button {
-    background-color: #F2F3F4;
-    color: #545F71;
-    padding: 8px;
-    border: 1px solid #E2E4E7;
-    cursor: pointer;
+    border: 1px solid var(--pst-color-border);
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+    color: var(--pst-color-text-muted);
+    display: inline-flex;
+    justify-content: center;
+    padding: 1em .5em;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 100%;
 }
 
 .dropdown-button:hover {
-    background-color: #F2F3F4;
+    box-shadow: 0 0 0 .1875rem var(--pst-color-link-hover);
+}
+
+/* update styling for links to use yellow */
+a,
+.prev-next-area a p.prev-next-title,
+nav.bd-links .current>a,
+.toc-entry a.nav-link.active
+{
+    color: var(--pst-color-secondary);
+}
+
+nav.bd-links .current>a,
+.toc-entry a.nav-link.active {
+    box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--pst-color-link-hover);
+}
+
+a:active, a:visited {
+    color: #7652a2;
+}
+
+#dropdown-links a,
+#dropdown-links a:visited {
+    color: var(--pst-color-text-muted);
+}
+
+#dropdown-links a:visited:hover {
+    color: var(--pst-color-link-hover);
+}
+
+
+/* update styling for tabs */
+.bd-content .sd-tab-set>input:checked+label {
+    border-color: var(--pst-color-border) var(--pst-color-border) transparent;
+    color: var(--pst-color-secondary);
+}
+
+.bd-content .sd-tab-set .sd-tab-content {
+    border: .125rem solid var(--pst-color-border);
+}
+
+/* make the scroll bar sleeker */
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--pst-color-border);
 }

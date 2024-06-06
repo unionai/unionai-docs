@@ -9,14 +9,19 @@ master_doc = 'index'
 html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['custom.css']
+html_js_files = ["custom.js"]
+
 exclude_patterns = []
-extensions = ['myst_parser',
-              'sphinx_design',
-              'sphinx_copybutton',
-              'sphinx.ext.autodoc',
-              'sphinx.ext.autosummary',
-              'sphinx.ext.autosectionlabel',
-              'sphinx_click']
+extensions = [
+    'myst_parser',
+    'sphinx_design',
+    'sphinx_copybutton',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.autosectionlabel',
+    'sphinxext.remoteliteralinclude',
+    'sphinx_click',
+]
 html_theme = 'sphinx_book_theme'
 
 # Myst
@@ -30,10 +35,12 @@ html_logo = '_static/public/logo.svg'
 
 # Add variant selector to sidebar
 html_sidebars = {
-    "**": ['navbar-logo.html',
-           'search-button-field.html',
-           'variant-selector.html',
-           'sbt-sidebar-nav.html']
+    "**": [
+        'navbar-logo.html',
+        'variant-selector.html',
+        'search-button-field.html',
+        'sbt-sidebar-nav.html',
+    ]
 }
 
 # autodoc config

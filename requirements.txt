@@ -1,9 +1,11 @@
-sphinx
+jinja2
 myst-parser
+sphinx
 sphinx-design
 sphinx-book-theme
 sphinx-copybutton
 sphinx-tags
+sphinxext-remoteliteralinclude
 unionai
 jinja2
 sphinx-click

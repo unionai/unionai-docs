@@ -31,6 +31,15 @@
                 {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
                 {"name": "more-resources", "variants": ["byoc"]}
             ]},
+        {"name": "tutorials", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "language-models", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "sentiment-classifier", "variants": ["byoc", "serverless"]}
+                    ]
+                }
+            ]
+        },
         {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "workflows", "variants": ["byoc", "serverless"],
@@ -106,7 +115,7 @@
                 {"name": "applications", "variants": ["byoc"]},
                 {"name": "cli-authentication", "variants": ["byoc"]}
             ]},
-        {"name": "integrations", "variants": ["byoc", "serverless"],
+        {"name": "integrations", "variants": ["byoc"],
             "children": [
                 {"name": "enabling-aws-resources", "variants": ["byoc"],
                     "children": [
@@ -121,40 +130,40 @@
                         {"name": "enabling-google-artifact-registry", "variants": ["byoc"]},
                         {"name": "enabling-bigquery", "variants": ["byoc"]}
                     ]},
-                {"name": "agents", "variants": ["byoc", "serverless"],
+                {"name": "agents", "variants": ["byoc"],
                     "children": [
-                        {"name": "airflow-agent", "variants": ["byoc", "serverless"],
+                        {"name": "airflow-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "airflow-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "airflow-agent-example", "variants": ["byoc"]}
                             ]},
-                        {"name": "sagemaker-agent", "variants": ["byoc", "serverless"],
+                        {"name": "sagemaker-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "sagemaker-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "sagemaker-agent-example", "variants": ["byoc"]}
                             ]},
-                        {"name": "databricks-agent", "variants": ["byoc", "serverless"],
+                        {"name": "databricks-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "databricks-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "databricks-agent-example", "variants": ["byoc"]}
                             ]},
                         {"name": "file-sensor-agent", "variants": ["byoc"],
                             "children": [
                                 {"name": "file-sensor-agent-example", "variants": ["byoc"]}
                             ]},
-                        {"name": "bigquery-agent", "variants": ["byoc", "serverless"],
+                        {"name": "bigquery-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "bigquery-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "bigquery-agent-example", "variants": ["byoc"]}
                             ]},
-                        {"name": "mmcloud-agent", "variants": ["byoc", "serverless"],
+                        {"name": "mmcloud-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "mmcloud-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "mmcloud-agent-example", "variants": ["byoc"]}
                             ]},
                         {"name": "dgx-agent", "variants": ["byoc"]},
-                        {"name": "chatgpt-agent", "variants": ["byoc", "serverless"],
+                        {"name": "chatgpt-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "chatgpt-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "chatgpt-agent-example", "variants": ["byoc"]}
                             ]},
-                        {"name": "snowflake-agent", "variants": ["byoc", "serverless"],
+                        {"name": "snowflake-agent", "variants": ["byoc"],
                             "children": [
-                                {"name": "snowflake-agent-example", "variants": ["byoc", "serverless"]}
+                                {"name": "snowflake-agent-example", "variants": ["byoc"]}
                             ]}
                     ]}
             ]},

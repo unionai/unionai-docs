@@ -72,7 +72,7 @@ The `Config` class can be directly used to construct the `Config` object if addi
 | `PlatformConfig` | Settings to talk to a Flyte backend.     |
 | `DataConfig`     | Any data storage specific configuration. |
 | `SecretsConfig`  | Configuration for secrets.               |
-| `StatsConfig`    | Configuration for sending statsd.        |
+| `StatsConfig`    | Configuration for sending statistics.        |
 
 For example:
 
