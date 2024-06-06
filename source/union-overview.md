@@ -46,7 +46,7 @@ This option gives you:
 
 ## Union BYOC
 
-Union BYOC (Bring Your Own Compute) let's you keep your data and workflow code on your infrastructure,
+Union BYOC (Bring Your Own Cloud) let's you keep your data and workflow code on your infrastructure,
 but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 This option gives you:
 
