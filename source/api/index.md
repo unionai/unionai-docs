@@ -3,8 +3,8 @@
 You can interact with your Union deployment in the following ways:
 
 * Use the [`flytekit`](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html) and [`unionai`](sdk/index) Python SDKs in your workflow code.
-* Use the [`unionai` CLI](unionai-cli) to register, run, and retrieve workflows and other entities, and more, via the command line.
-* Use [`UnionRemote`](unionremote) in a Python runtime environment to programmatically access your Union deployment.
+* Use the [`unionai` CLI](unionai-cli) to access your Union deployment via the command line.
+* Use [`UnionRemote`](unionremote) to access your Union deployment from a Python script or runtime environment.
 
 To get started, install `unionai`:
 
