@@ -31,6 +31,15 @@
                 {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
                 {"name": "more-resources", "variants": ["byoc"]}
             ]},
+        {"name": "tutorials", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "language-models", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "sentiment-classifier", "variants": ["byoc", "serverless"]}
+                    ]
+                }
+            ]
+        },
         {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "workflows", "variants": ["byoc", "serverless"],
