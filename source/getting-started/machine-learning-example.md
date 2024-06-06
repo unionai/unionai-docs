@@ -6,14 +6,14 @@ the Union onboarding guide in the [Getting started](index) section first.
 ## Overview
 
 The model training workflow that we're going to run is composed of three steps.
-- Getting the `pengiuns` dataset from [openml](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
-- Training a `HistGradientBoostingClassifier` model using `scikit-learn`
+- Getting the `pengiuns` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
+- Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
 - Evaluating the model by creating a confusion matrix, displayed as a Flyte `Deck`.
 
 
-## Setting up the Environment
+## Setting up the environment
 
-First, we setup our Python environment and install the dependencies for this tutorial.
+First, we set up our Python environment and install the dependencies for this tutorial.
 
 ::::{tab-set}
 
@@ -37,7 +37,7 @@ source .venv/bin/activate
 
 ::::
 
-After setting up an environment clone the examples repository containing the
+After setting up an environment, clone the examples repository containing the
 workflow:
 
 ```{code-block} shell
@@ -50,13 +50,13 @@ This will install `unionai`, `scikit-learn`, `pandas`, and `matplotlib`.
 
 ## Executing the workflow
 
-Then run the following command to run the workflow:
+Then run the following command to execute the workflow:
 
 ```{code-block} shell
 unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
-Which outputs the following to the console, where the first URL points to the image builder and
+This will outputs the following to the console, where the first URL points to the image builder and
 the second URL is the workflow execution:
 
 ```{code-block} shell
@@ -140,16 +140,16 @@ The task requires custom dependencies, which we specify with an `ImageSpec`:
 ```
 
 The `requirements.txt` contain the same dependencies we used to configure our local development environment. The Union hosted image builder builds the image based
-on the `ImageSpec` specification and use that image for the machine learning workflow.
+on the `ImageSpec` specification and uses that image for the machine learning workflow.
 
-The `get_dataset` task uses a cache the data outputs of the task:
+The `get_dataset` task uses a cache of the data outputs of the task:
 
 ```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
 :language: python
 :lines: 41-52
 ```
 
-`get_dataset` returns the train and test data as pandas DataFrames which gets cached by Union.
+`get_dataset` returns the training and test data as pandas DataFrames which gets cached by Union.
 With caching, future executions of the workflow will use the cached data instead of running
 the task again.
 
