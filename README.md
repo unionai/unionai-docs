@@ -138,19 +138,12 @@ Again, each variant is placed in a separate subdirectory.
 ## Redirects
 
 When re-arranging the content of the site, it may be necessary to create redirects.
-These are defined in the `cloudflare-redirects.json` file which is checked in at the
-root of this repo.
-
-However, that file's presence in this repo is not sufficient to implement the redirects.
-
-This file must be manually applied in Cloudflare under the **Bulk redirects** section
-in order to take effect.
-
-The file is present here in this repo simply for purposes of version control and storage.
+These are defined in the `_redirects` file which is checked in at the
+root of this repo. They are enabled automatically when the project is deployed.
 
 ## Contributing
 
 Just like any other repository, you can create a pull request with your changes.
 
 If you make changes that would move the URL-location of an existing page, you must
-create the appropriate redirect and apply it in Cloudflare as described above.
+create the appropriate redirect.
