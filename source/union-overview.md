@@ -22,7 +22,7 @@ Both of these options greatly simplify infrastructure management and provide add
 
 ## Union Serverless
 
-Union Serverless is a turnkey solution that take care of all the infrastructure for you.
+Union Serverless is a turnkey solution that takes care of all the infrastructure for you.
 All you need to do is sign up through your GitHub account and start running your workflows.
 This option gives you:
 
