@@ -50,5 +50,5 @@ def full_bigquery_wf(version: int) -> pd.DataFrame:
     return convert_bq_table_to_pandas_dataframe(sd=sd)
 ```
 
-After running the worklflow, check the query result on [BigQuery console](https://console.cloud.google.com/bigquery).
+After running the workflow, check the query result on [BigQuery console](https://console.cloud.google.com/bigquery).
 

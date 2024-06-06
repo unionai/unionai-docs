@@ -7,7 +7,7 @@ In this section, we give a quick introduction to writing and running Union workf
 ## Signing up for a Union Serverless account
 
 * Sign up for Union Serverless at: [signup.union.ai](https://signup.union.ai).
-* Once you've received confirmation that you're off the waitlist:
+* Once you've received confirmation that you're off the wait list:
     * Navigate to [serverless.union.ai](https://serverless.union.ai) to see the dashboard:
 
 ![Dashboard](/_static/images/dashboard.png)

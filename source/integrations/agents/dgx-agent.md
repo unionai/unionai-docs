@@ -17,9 +17,9 @@ from flytekitplugins.dgx import DGXConfig
 
 
 dgx_image_spec = ImageSpec(
-    base_image="pingsutw/dgx:v24",
+    base_image="my-image/dgx:v24",
     packages=["torch", "transformers", "accelerate", "bitsandbytes"],
-    registry="nielsbantilan",
+    registry="my-registry",
 )
 
 

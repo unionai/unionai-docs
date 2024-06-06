@@ -19,7 +19,7 @@ Dynamic workflows become essential when you need to do the following:
 
 You can define a dynamic workflow using the `@dynamic` decorator.
 
-Within the `@dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@dynamic` and `@workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interac with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
+Within the `@dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@dynamic` and `@workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
 
 The example below uses a dynamic workflow to count the common characters between any two strings.
 
@@ -138,7 +138,7 @@ the Kubernetes database. This database maintains Union workflow CRDs as key-valu
 
 However, `etcd` has a hard limit on data size, encompassing the workflow and node status sizes, so it is important to ensure that static workflows don't excessively consume memory.
 
-In contrast, dynamic workflows offload the workflow specification (including node/task definitions and connections) to the blobstore. Still, the statuses of nodes are stored in the workflow CRD within `etcd`.
+In contrast, dynamic workflows offload the workflow specification (including node/task definitions and connections) to the object store. Still, the statuses of nodes are stored in the workflow CRD within `etcd`.
 
 Dynamic workflows help alleviate some of the pressure on `etcd` storage space, providing a solution to mitigate storage constraints.
 
