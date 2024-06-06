@@ -2,7 +2,7 @@
 
 The Union workflow orchestration platform is based on the [Flyte](https://flyte.org) open-source project.
 
-Flyte is already used by hundreds of major organizations to run machine learning and data pipelines. It handles everything from simple processing jobs to complex multi-step workflows that span multiple teams, use specialized hardware and infrastructure.
+Flyte is already used by hundreds of major organizations to run machine learning and data pipelines. It handles everything from simple processing jobs to complex multi-step workflows that span multiple teams and use specialized hardware and infrastructure.
 
 However, Flyte requires a team of platform engineers to maintain, extend, and scale.
 
