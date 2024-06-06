@@ -1,45 +1,48 @@
 # Project
-project = 'union-docs'
-copyright = '2024, Union'
-author = 'Union'
-release = '1.0'
+project = "union-docs"
+copyright = "2024, Union"
+author = "Union"
+release = "1.0"
 
 # Sphinx basic
-master_doc = 'index'
-html_static_path = ['_static']
-templates_path = ['_templates']
-html_css_files = ['custom.css']
+master_doc = "index"
+html_static_path = ["_static"]
+templates_path = ["_templates"]
+html_css_files = [
+    "custom.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
+]
 html_js_files = ["custom.js"]
 
 exclude_patterns = []
 extensions = [
-    'myst_parser',
-    'sphinx_design',
-    'sphinx_copybutton',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.autosectionlabel',
-    'sphinxext.remoteliteralinclude',
-    'sphinx_click',
+    "myst_parser",
+    "sphinx_design",
+    "sphinx_copybutton",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.autosectionlabel",
+    "sphinxext.remoteliteralinclude",
+    "sphinx_click",
 ]
-html_theme = 'sphinx_book_theme'
+html_theme = "sphinx_book_theme"
 
 # Myst
-myst_enable_extensions = ['colon_fence']
+myst_enable_extensions = ["colon_fence"]
 myst_heading_anchors = 6
 
 # Sphinx book theme
 
 # Union logo
-html_logo = '_static/public/logo.svg'
+html_logo = "_static/public/logo.svg"
 
 # Add variant selector to sidebar
 html_sidebars = {
     "**": [
-        'navbar-logo.html',
-        'variant-selector.html',
-        'search-button-field.html',
-        'sbt-sidebar-nav.html',
+        "navbar-logo.html",
+        "variant-selector.html",
+        "search-button-field.html",
+        "sbt-sidebar-nav.html",
     ]
 }
 

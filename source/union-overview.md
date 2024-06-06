@@ -1,4 +1,4 @@
-# Union Overview
+# Union overview
 
 Union was created by the team behind [Flyte](http://flyte.org), the emerging standard in AI orchestration.
 Union includes all the features and advantages of Flyte, and adds additional capabilities.
@@ -20,7 +20,7 @@ Union includes all the features of Flyte:
 Union offers two deployment options: Serverless and BYOC (Bring Your Own Cloud).
 Both of these options greatly simplify infrastructure management and provide additional features on top of Flyte.
 
-## Union Serverless
+### Union Serverless
 
 Union Serverless is a turnkey solution that takes care of all the infrastructure for you.
 All you need to do is sign up through your GitHub account and start running your workflows.
@@ -44,7 +44,7 @@ This option gives you:
 * Smart defaults and automatic linking
 * UI based Workflow Builder
 
-## Union BYOC
+### Union BYOC
 
 Union BYOC (Bring Your Own Cloud) let's you keep your data and workflow code on your infrastructure,
 but has Union manage it for you. It also offers more control over your hardware and other advanced features.
