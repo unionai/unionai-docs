@@ -8,4 +8,4 @@ However, Flyte requires a team of platform engineers to maintain, extend, and sc
 
 Union abstracts away the infrastructure, providing a turnkey system that lets your ML engineers and data scientists focus on what they do best without the need for a dedicated team to manage the platform.
 
-Union also extends Flyte by adding features that improve the development experience, enhance performance and scalability, and enable more efficient use of compute resources. See [Union overview](union-overview) for more details.
+Union also extends Flyte with features that improve the development experience, enhance performance and scalability, and enable more efficient use of compute resources. See [Union overview](union-overview) for more details.
