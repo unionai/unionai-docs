@@ -6,9 +6,16 @@ In this section, we give a quick introduction to writing and running Union workf
 
 ## Signing up for a Union Serverless account
 
-* Sign up for Union Serverless at: [signup.union.ai](https://signup.union.ai).
-* Once you've received confirmation that you're off the wait list:
-    * Navigate to [serverless.union.ai](https://serverless.union.ai) to see the dashboard:
+First, sign up for Union Serverless:
+
+:::{button-link} https://signup.union.ai/
+:color: secondary
+
+Create an account
+:::
+
+Once you've received confirmation that you're off the waitlist, navigate to
+[serverless.union.ai](https://serverless.union.ai) to see the dashboard:
 
 ![Dashboard](/_static/images/dashboard.png)
 
@@ -49,10 +56,8 @@ After setting up your virtual environment and activating it, install the `uniona
 pip install unionai
 ```
 
-This will install:
-* `unionai` SDK
-* `flytekit` SDK
-* `unionai` command-line tool
+This will install the `unionai` SDK, which ships with the `unionai` CLI tool,
+and the `flytekit` SDK.
 
 ## Create a "Hello, world!" workflow
 
