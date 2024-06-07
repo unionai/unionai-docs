@@ -85,21 +85,23 @@ This will install:
 
 ### Set up configuration for the `unionai` CLI tool
 
-In your home directory:
+To configure the `unionai` CLI tool to connect to your Union instance you will need to copy the part of your `<union-host-url>` after the `https://`.
+We will call this string `<union-host-domain>`.
 
-* Create a directory called `.unionai`
-* Within that directory, create a file called `config.yaml` with the following content,
-substituting `<union-host-url>` with the URL of your Union instance:
+For example, if your `<union-host-url>` is `https://my-union-instance.com`, then `<union-host-domain>` is `my-union-instance.com`.
+
+Now, create you configuration file at `~/.unionai/config.yaml` as below, with the `<union-host-url>` substituted appropriately.
+Note that there are two `host` values to substitute and the resulting URLs are prefixed with `dns:///` (with three slashes):
 
 ```{code-block} yaml
 union:
   connection:
-    host: <union-host-url>
+    host: dns:///<union-host-domain>
     insecure: true
   auth:
     type: Pkce
 admin:
-  endpoint: <union-host-url>
+  endpoint: dns:///<union-host-domain>
   insecure: true
   authType: Pkce
 ```
@@ -134,6 +136,27 @@ def hello_world_wf(name: str = 'world') -> str:
 The file `hello.py` contains a task and a workflow.
 These are simply Python functions decorated with the `@task` and `@workflow` decorators, respectively.
 The workflow is the top-level construct that, in turn, invokes the task.
+
+{@@ if serverless@@}
+
+```{warning}
+If you have previously used Union BYOC (the version of Union that runs in your own cloud) or Flyte,
+you may have configuration files left over that will interfere with access to Union Serverless through the `unionai` CLI tool.
+
+Make sure that you do not have any of the following environment variables set:
+* `UNIONAI_CONFIG`
+* `UCTL_CONFIG`
+* `FLYTECTL_CONFIG`
+
+Typically, the configuration files would be located in the following locations:
+* `~/.unionai/<some-config>.yaml`
+* `~/.uctl/<some-config>.yaml`
+* `~/.flyte/<some-config>.yaml`
+
+You can remove any such files or unset the environment variables (or both) to avoid conflicts.
+```
+
+{@@ endif @@}
 
 ## Run the workflow in Python locally
 
@@ -180,4 +203,4 @@ The output displays a URL that links to the workflow execution on the Union web 
 
 Go to the Union console to see the execution:
 
-![Dashboard](/_static/images/first-execution.png)
+![Dashboard](/_static/images/first-execution-byoc.png)
