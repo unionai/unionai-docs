@@ -14,8 +14,8 @@ First, sign up for Union Serverless:
 Create an account
 :::
 
-Once you've received confirmation that you're off the waitlist, navigate to
-[serverless.union.ai](https://serverless.union.ai) to see the dashboard:
+Once you've received confirmation that your sign up succeeded, navigate to
+Union console at [serverless.union.ai](https://serverless.union.ai):
 
 ![Dashboard](/_static/images/dashboard.png)
 
@@ -84,13 +84,7 @@ The workflow is the top-level construct which you run. The workflow, in turn, in
 
 ### Run the workflow in Python locally
 
-Run the workflow with `unionai run`. The syntax is:
-
-```{code-block} shell
-$ unionai run <script_path> <task_or_workflow_name>
-```
-
-In this case:
+Run the workflow with `unionai run` like this:
 
 ```{code-block} shell
 $ unionai run hello.py hello_world_wf
@@ -118,7 +112,7 @@ Hello, Ada!
 
 ### Run the workflow on Union in the cloud
 
-To run the workflow remotely on Union:
+To run the workflow remotely on Union,
 
 ```{code-block} shell
 $ unionai run --remote hello.py hello_world_wf --name "Ada"
@@ -130,8 +124,6 @@ This command prints an URL that links to the execution on Union's web console:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
-Congratulations, you have just run your first workflow on Union!
+Go to the Union console to see the workflow execution:
 
-## Next steps
-
-In the following sections, we will walk through setting up a simple but production-level Union project and deploying it to your Union instance in the cloud.
+![Dashboard](/_static/images/first-execution.png)
