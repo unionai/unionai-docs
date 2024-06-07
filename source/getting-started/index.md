@@ -82,7 +82,7 @@ In this example, the file `hello.py` contains a task and a workflow.
 These are simply Python functions decorated with the `@task` and `@workflow` decorators, respectively.
 The workflow is the top-level construct which you run. The workflow, in turn, invokes the task.
 
-### Run the example workflow in your local Python environment
+### Run the workflow in Python locally
 
 Run the workflow with `unionai run`. The syntax is:
 
@@ -116,7 +116,7 @@ Running Execution on local.
 Hello, Ada!
 ```
 
-{@@ if serverless @@}
+### Run the workflow on Union in the cloud
 
 To run the workflow remotely on Union:
 
@@ -132,10 +132,6 @@ This command prints an URL that links to the execution on Union's web console:
 
 Congratulations, you have just run your first workflow on Union!
 
-{@@ elif byoc @@}
-
 ## Next steps
 
 In the following sections, we will walk through setting up a simple but production-level Union project and deploying it to your Union instance in the cloud.
-
-{@@ endif @@}
