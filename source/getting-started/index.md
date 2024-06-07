@@ -35,6 +35,8 @@ Once you have logged in you should see the Union console:
 
 ![Union console](/_static/images/union-byoc-home.png)
 
+{@@ endif @@}
+
 ## Set up your local environment
 
 ### Set up your Python environment
@@ -78,6 +80,8 @@ This will install:
 * The `unionai` command-line tool
 * The `unionai` SDK
 * The `flytekit` SDK
+
+{@@ if byoc @@}
 
 ### Set up configuration for the `unionai` CLI tool
 
