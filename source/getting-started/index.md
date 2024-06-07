@@ -26,11 +26,11 @@ the Union console at [serverless.union.ai](https://serverless.union.ai):
 After your administrator has onboarded you to Union, you should have the following at hand:
 
 * Your Union credentials.
-* The URL of your Union instance. We will refer to this as <union-host-url> below.
+* The URL of your Union instance. We will refer to this as `<union-host-url>` below.
 
 ## Log into Union
 
-Navigate to the Union console at <union-host-url> and log in with your credentials.
+Navigate to the Union console at `<union-host-url>` and log in with your credentials.
 Once you have logged in you should see the Union console:
 
 ![Union console](/_static/images/union-byoc-home.png)
@@ -135,7 +135,7 @@ The file `hello.py` contains a task and a workflow.
 These are simply Python functions decorated with the `@task` and `@workflow` decorators, respectively.
 The workflow is the top-level construct that, in turn, invokes the task.
 
-### Run the workflow in Python locally
+## Run the workflow in Python locally
 
 You can run the workflow in your local Python environment like this:
 
@@ -164,7 +164,7 @@ Running Execution on local.
 Hello, Ada!
 ```
 
-### Run the workflow on Union in the cloud
+## Run the workflow on Union in the cloud
 
 To run the workflow remotely on Union, add the `--remote` flag:
 
