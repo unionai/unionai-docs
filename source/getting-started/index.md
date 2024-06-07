@@ -197,10 +197,24 @@ $ unionai run --remote hello.py hello_world_wf --name "Ada"
 
 The output displays a URL that links to the workflow execution on the Union web console:
 
+{@@ if serverless @@}
+
 ```{code-block} shell
 [✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
 Go to the Union console to see the execution:
 
+![Dashboard](/_static/images/first-execution.png)
+
+{@@ elif byoc @@}
+
+```{code-block} shell
+[✔] Go to https://<union-host-url>/org/... to see execution in the console.
+```
+
+Go to the Union console to see the execution:
+
 ![Dashboard](/_static/images/first-execution-byoc.png)
+
+{@@ endif @@}
