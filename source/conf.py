@@ -1,3 +1,5 @@
+import re
+
 # Project
 project = "union-docs"
 copyright = "2024, Union"
@@ -98,15 +100,36 @@ def process_description(app, ctx, lines):
         lines.insert(idx, str)
 
 
+def process_str(my_str):
+    my_str = my_str.replace("flyteremote", "UnionRemote")\
+        .replace("Flyte deployment", "Union deployment")\
+        .replace("pyflyte serialize", "unionai serialize")\
+        .replace("pyflyte utility", "unionai utility")\
+        .replace("install flytekit", "install unionai and flytekit")
+    return my_str
+
+
 def process_options(app, ctx, lines):
-    for str in lines:
-        idx = lines.index(str)
-        str = str.replace("flyteremote", "UnionRemote")\
-            .replace("Flyte deployment", "Union deployment")\
-            .replace("pyflyte serialize", "unionai serialize")\
-            .replace("pyflyte utility", "unionai utility")
+    # process option docstrings to replace flyte-specific
+    # language with union-specific language
+    # and change str representations of functions
+    # to default image and project values
+    counter = 5
+    default_project = "'flytesnacks'"
+    default_image = "'cr.flyte.org/flyteorg/flytekit:py3.9-latest'"
+    for line in lines:
+        idx = lines.index(line)
+        if ctx.command.name == 'build' or ctx.command.name == 'run':
+            if "--image" in line:
+                counter = 0
+        if counter == 4:
+            line = re.sub(r"<function.*>", default_image, line)
+        else:
+            line = re.sub(r"<function.*>", default_project, line)
+        line = process_str(line)
         del lines[idx]
-        lines.insert(idx, str)
+        lines.insert(idx, line)
+        counter += 1
 
 
 def setup(app):
