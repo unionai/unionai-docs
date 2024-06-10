@@ -4,7 +4,7 @@
 
 Ultimately you will be running your workflows in a Kubernetes cluster in Union. But it can be handy to try out a workflow in a cluster on your local machine. Flyte enables this.
 
-First, ensure that you have [Docker ](https://www.docker.com/products/docker-desktop/)(or a similar OCI-compliant container engine) installed locally and that _the daemon is running_.
+First, ensure that you have [Docker](https://www.docker.com/products/docker-desktop/)(or a similar OCI-compliant container engine) installed locally and that _the daemon is running_.
 
 Then start the demo cluster using `uctl`:
 
