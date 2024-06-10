@@ -64,8 +64,8 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 
 ## Install and configure uctl and Docker
 
-Ensure that you have Docker and `uctl` installed and have configure `uctl` to connect to your Union instance.
-See [Installing Development Tools](../../../getting-started/installing-development-tools).
+Ensure that you have Docker and `unionai` installed and have configure `unionai` to connect to your Union instance.
+See [Setting up container image handling](../../../getting-started/setting-up-container-image-handling).
 
 ## Set up an image registry
 

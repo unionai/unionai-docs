@@ -21,7 +21,7 @@
                 {"name": "managing-secrets", "variants": ["serverless"]},
                 {"name": "managing-apps", "variants": ["serverless"]},
                 {"name": "access-aws-s3", "variants": ["serverless"]},
-                {"name": "installing-development-tools", "variants": ["byoc"]},
+                {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
                 {"name": "creating-the-project", "variants": ["byoc"]},
                 {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
                 {"name": "looking-at-the-workflow-code", "variants": ["byoc"]},
@@ -110,6 +110,7 @@
             ]},
         {"name": "administration", "variants": ["byoc"],
             "children": [
+                {"name": "install-uctl", "variants": ["byoc"]},
                 {"name": "user-management", "variants": ["byoc"]},
                 {"name": "usage", "variants": ["byoc"]},
                 {"name": "applications", "variants": ["byoc"]},
