@@ -135,7 +135,7 @@ and builds a separate Sphinx project for each variant in the `sphinx_source/` di
 
 It uses the `sitemap.json` to determine which files are copied into which variant's Sphinx project.
 and also applies the Jinja2 templating logic to each page to determine it's content based on the variant.
-Addionally, it adds toctree directives to each `index.md` page based on the hierarchy defined the `sitemap.json`.
+Additionally, it adds toctree directives to each `index.md` page based on the hierarchy defined the `sitemap.json`.
 
 The resulting Sphinx projects in the `sphinx_source` directory are then each proecessed by `sphinx-build` to produce the final HTML output in the `build/html` directory.
 Again, each variant is placed in a separate subdirectory.
