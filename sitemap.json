@@ -167,5 +167,24 @@
                             ]}
                     ]}
             ]},
+        {"name": "api", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "sdk", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]},
+                        {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
+                        {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},
+                        {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
+                    ]},
+                {"name": "unionai-cli", "variants": ["byoc", "serverless"]},
+                {"name": "unionremote", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {"name": "entrypoint", "variants": ["byoc", "serverless"]},
+                        {"name": "entities", "variants": ["byoc", "serverless"]},
+                        {"name": "entity-components", "variants": ["byoc", "serverless"]},
+                        {"name": "execution-objects", "variants": ["byoc", "serverless"]}
+                    ]},
+                {"name": "config", "variants": ["byoc", "serverless"]}
+            ]},
         {"name": "faq", "variants": ["byoc"]}
     ]}
