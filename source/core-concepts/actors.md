@@ -1,6 +1,6 @@
 # Actors
 
-Actors allow you to reuse containers between functions that need to maintain state. You can create an actor by instantiating the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then use the actor name as a decorator on functions that require that environment.
+Actors allow you to reuse containers between functions that need to maintain state. You can create an actor by instantiating the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then use `@actor` decorator on functions or classes that require that environment.
 
 ## Examples
 
