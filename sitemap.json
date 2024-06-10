@@ -72,7 +72,6 @@
                                 {"name": "customizing-task-resources", "variants": ["byoc"]},
                                 {"name": "accelerators", "variants": ["byoc"]},
                                 {"name": "interruptible-instances", "variants": ["byoc"]},
-                                {"name": "actors", "variants": ["byoc"]},
                                 {"name": "task-level-monitoring", "variants": ["byoc"]}
                             ]}
                     ]},
@@ -86,6 +85,7 @@
                         {"name": "running-launch-plans", "variants": ["byoc", "serverless"]},
                         {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                     ]},
+                {"name": "actors", "variants": ["byoc"]},
                 {"name": "artifacts", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "declaring-artifacts", "variants": ["byoc", "serverless"]},

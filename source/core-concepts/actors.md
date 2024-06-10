@@ -1,6 +1,6 @@
 # Actors
 
-The Actors feature allows you to reuse containers between tasks that need to maintain state. You can create an actor by instantiating the `ActorEnvironment` class, then use the actor name as a decorator on functions that require that environment.
+Actors allow you to reuse containers between functions that need to maintain state. You can create an actor by instantiating the [`ActorEnvironment`](../api/sdk/actor.actorenvironment.md) class, then use the actor name as a decorator on functions that require that environment.
 
 ## Examples
 
@@ -17,4 +17,3 @@ The Actors feature allows you to reuse containers between tasks that need to mai
 :caption: plus_one.py
 
 ```
-
