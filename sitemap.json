@@ -85,7 +85,7 @@
                         {"name": "running-launch-plans", "variants": ["byoc", "serverless"]},
                         {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "actors", "variants": ["byoc"]},
+                {"name": "actors", "variants": ["byoc", "serverless"]},
                 {"name": "artifacts", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "declaring-artifacts", "variants": ["byoc", "serverless"]},
