@@ -16,7 +16,7 @@ The syntax of a standard workflow definition can only include the following:
 
 {@@ if byoc @@}
 When a standard workflow is [run locally in a Python environment](../../getting-started/running-in-a-local-python-environment) it is executed as a normal Python function.
-However, when it is registered to Union (or your [local demo cluster](../../getting-started/running-in-a-local-cluster)), the top level `@workflow`-decorated function is evaluated as follows:
+However, when it is registered to Union, the top level `@workflow`-decorated function is evaluated as follows:
 {@@ elif serverless @@}
 When a standard workflow is run locally in a Python environment it is executed as a normal Python function.
 However, when it is registered to Union, the top level `@workflow`-decorated function is evaluated as follows:
