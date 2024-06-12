@@ -72,10 +72,25 @@ $ source .venv/bin/activate
 
 After setting up your virtual environment and activating it, install the `unionai` Python package:
 
+{@@ if serverless @@}
+
 ```{code-block} shell
 $ pip install -U unionai
 ```
 
+{@@ elif byoc @@}
+
+```{code-block} shell
+$ pip install -U unionai[byoc]
+```
+
+:::{note}
+The `[byoc]` package extra installs configuration defaults specific to Union BYOC that differ from those needed for Serverless.
+:::
+
+{@@ endif @@}
+
+```{code-block} shell
 This will install:
 * The [`unionai` command-line tool](../api/unionai-cli)
 * The [`unionai` SDK](../api/sdk/index)
@@ -172,7 +187,7 @@ You can remove any such files or unset the environment variables (or both) to av
 
 {@@ endif @@}
 
-## Run the workflow in Python locally
+## Run the workflow locally in Python
 
 You can run the workflow in your local Python environment with the [`unionai run` command](../api/unionai-cli.md#unionai-run):
 
@@ -200,6 +215,8 @@ You should see the following output:
 Running Execution on local.
 Hello, Ada!
 ```
+
+## Run the workflow remotely on Union
 
 To run the workflow remotely on Union, add the [`--remote` flag](../api/unionai-cli.md#cmdoption-unionai-run-r):
 
