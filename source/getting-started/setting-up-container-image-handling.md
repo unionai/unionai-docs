@@ -30,7 +30,6 @@ differs. It uses the built-in `ImageBuilder` feature.
 ## Install Docker
 
 We assume here that you have already installed Python and the `unionai` SDK and CLI.
-If not, go back to [Getting started](index) and complete that process first.
 
 Next, you need to install [Docker](https://docs.docker.com/get-docker/) on your local machine.
 Any [OCI-compatible](https://opencontainers.org/) container engine like [Podman](https://podman.io/), [LXD](https://linuxcontainers.org/lxd/introduction/), or [Containerd](https://containerd.io/) should also work.
