@@ -1,6 +1,4 @@
-/ /serverless 301
-/test /byoc/faq 301
-/test/ /byoc/faq 301
+/ /byoc 301
 /_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt /byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt 301
 /administration/ /byoc/administration 301
 /administration /byoc/administration 301
