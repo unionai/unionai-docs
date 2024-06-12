@@ -6,7 +6,7 @@ the Union onboarding guide in the [Getting started](index) section first.
 ## Overview
 
 The model training workflow that we're going to run is composed of three steps.
-- Getting the `pengiuns` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
+- Getting the `penguins` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
 - Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
 - Evaluating the model by creating a confusion matrix, displayed as a Flyte `Deck`.
 
