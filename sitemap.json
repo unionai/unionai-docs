@@ -110,7 +110,7 @@
             ]},
         {"name": "administration", "variants": ["byoc"],
             "children": [
-                {"name": "install-uctl", "variants": ["byoc"]},
+                {"name": "uctl-cli", "variants": ["byoc"]},
                 {"name": "user-management", "variants": ["byoc"]},
                 {"name": "usage", "variants": ["byoc"]},
                 {"name": "applications", "variants": ["byoc"]},
