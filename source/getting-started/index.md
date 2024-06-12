@@ -4,7 +4,7 @@ In this section, we give a quick introduction to writing and running Union workf
 
 {@@ if serverless @@}
 
-## Signing up for a Union Serverless account
+## Sign up for Union Serverless
 
 First, sign up for Union Serverless:
 
@@ -14,14 +14,32 @@ First, sign up for Union Serverless:
 Create an account
 :::
 
-Once you've received confirmation that you're off the waitlist, navigate to
-[serverless.union.ai](https://serverless.union.ai) to see the dashboard:
+Once you've received confirmation that your sign up succeeded, navigate to
+the Union console at [serverless.union.ai](https://serverless.union.ai).
+This is where you will be able to see your workflow executions and manage your projects:
 
-![Dashboard](/_static/images/dashboard.png)
+![Union console](/_static/images/dashboard.png)
+
+{@@ elif byoc@@}
+
+## Gather your credentials
+
+After your administrator has onboarded you to Union, you should have the following at hand:
+
+* Your Union credentials.
+* The URL of your Union instance. We will refer to this as `<union-host-url>` below.
+
+## Log into Union
+
+Navigate to the web console at `<union-host-url>` and log in with your credentials.
+Once you have logged in you should see the Union console.
+This is where you will be able to see your workflow executions and and manage your projects:
+
+![Union console](/_static/images/union-byoc-home.png)
 
 {@@ endif @@}
 
-## Setting up your local environment
+## Set up your Python environment
 
 Set up a Python virtual environment with `conda`, `venv` or a similar tool.
 
@@ -34,8 +52,8 @@ Install `conda` using [Miniconda](https://docs.anaconda.com/free/miniconda/index
 a new Python environment:
 
 ```{code-block} shell
-conda create -n quick-start python=3.11
-conda activate quick-start
+$ conda create -n union-env python=3.11
+$ conda activate union-env
 ```
 :::
 
@@ -43,21 +61,94 @@ conda activate quick-start
 Install Python 3.11 from your package manager or from [Python.org](https://www.python.org/downloads/), then run the following to create a virtual environment:
 
 ```{code-block} shell
-python -m venv .venv
-source .venv/bin/activate
+$ python -m venv .venv
+$ source .venv/bin/activate
 ```
 :::
 
 ::::
 
-After setting up your virtual environment and activating it, install the `unionai` Python package::
+After setting up your virtual environment and activating it, install the `unionai` Python package:
+
+{@@ if serverless @@}
 
 ```{code-block} shell
-pip install unionai
+$ pip install -U unionai
 ```
 
-This will install the `unionai` SDK, which ships with the `unionai` CLI tool,
-and the `flytekit` SDK.
+{@@ elif byoc @@}
+
+```{code-block} shell
+$ pip install -U unionai[byoc]
+```
+
+:::{note}
+The `[byoc]` package extra installs configuration defaults specific to Union BYOC that differ from those needed for Serverless.
+:::
+
+{@@ endif @@}
+
+This will install:
+* The [`unionai` command-line tool](../api/unionai-cli)
+* The [`unionai` SDK](../api/sdk/index)
+* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
+
+{@@ if serverless @@}
+
+```{warning}
+If you have previously used Union BYOC or Flyte,
+you may have configuration files left over that will interfere with access to Union Serverless through the `unionai` CLI tool.
+Make sure to remove any files in `~/.flyte/` or `~/.unionai/` and unset the environment variables `FLYTECTL_CONFIG` and `UNIONAI_CONFIG` to avoid conflicts.
+```
+
+{@@ endif @@}
+
+{@@ if byoc @@}
+
+## Set up configuration for the `unionai` CLI
+
+To run and register tasks, workflows, and launch plans from your local machine to your Union instance, you will need to create a Union connection configuration file that contains your Union host domain.
+Your Union host domain is the part of your `<union-host-url>` after the `https://`.
+For example, if your `<union-host-url>` is `https://my-union-instance.com`, then your Union host domain is `my-union-instance.com`.
+We will refer to this as `<union-host-domain>` below.
+
+Create you configuration file at `~/.unionai/config.yaml` as below, with `<union-host-domain>` substituted appropriately.
+Note that there are two `host` values to substitute and the resulting URLs are prefixed with `dns:///` (with three slashes):
+
+```{code-block} yaml
+:emphasize-lines: 3,8
+
+union:
+  connection:
+    host: dns:///<union-host-domain>
+    insecure: true
+  auth:
+    type: Pkce
+admin:
+  endpoint: dns:///<union-host-domain>
+  insecure: true
+  authType: Pkce
+```
+
+By default, the `unionai` CLI will look for a configuration file at `~/.unionai/config.yaml`.
+You can override this behavior to specify a different configuration file by setting the `UNIONAI_CONFIG` environment variable:
+
+```{code-block} shell
+export UNIONAI_CONFIG=~/.my-config-location/my-config.yaml
+```
+
+Alternatively, you can always specify the configuration file on the command line when invoking `unionai` by using the `--config` flag:
+
+```{code-block} shell
+$ unionai --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
+```
+
+```{warning}
+If you have previously used Flyte, you may have configuration files left over that will interfere with access to Union BYOC through the `unionai` CLI tool.
+Make sure to remove any files in `~/.flyte/` or unset the environment variable `FLYTECTL_CONFIG` to avoid conflicts.
+```
+
+{@@ endif @@}
 
 ## Create a "Hello, world!" workflow
 
@@ -78,19 +169,13 @@ def hello_world_wf(name: str = 'world') -> str:
 
 ## Tasks and workflows
 
-In this example, the file `hello.py` contains a task and a workflow.
-These are simply Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-The workflow is the top-level construct which you run. The workflow, in turn, invokes the task.
+The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
+Typically, the corresponding configuration files would be located in the following locations:
+For more information, see the [task](../core-concepts/tasks/index) and [workflow](../core-concepts/workflows/index) documentation.
 
-### Run the example workflow in your local Python environment
+## Run the workflow locally in Python
 
-Run the workflow with `unionai run`. The syntax is:
-
-```{code-block} shell
-$ unionai run <script_path> <task_or_workflow_name>
-```
-
-In this case:
+You can run the workflow in your local Python environment with the [`unionai run` command](../api/unionai-cli.md#unionai-run):
 
 ```{code-block} shell
 $ unionai run hello.py hello_world_wf
@@ -103,39 +188,48 @@ Running Execution on local.
 Hello, world!
 ```
 
-Since the `@workflow` function takes an argument called `name`, you can also pass that in:
+Since the `@workflow` function takes an argument called `name`, you can also pass that in
+as a command-line argument like this:
 
 ```{code-block} shell
 $ unionai run hello.py hello_world_wf --name Ada
 ```
 
-Then, you should see the following output:
+You should see the following output:
 
 ```{code-block} shell
 Running Execution on local.
 Hello, Ada!
 ```
 
-{@@ if serverless @@}
+## Run the workflow remotely on Union
 
-To run the workflow remotely on Union:
+To run the workflow remotely on Union, add the [`--remote` flag](../api/unionai-cli.md#cmdoption-unionai-run-r):
 
 ```{code-block} shell
 $ unionai run --remote hello.py hello_world_wf --name "Ada"
 ```
 
-This command prints an URL that links to the execution on Union's web console:
+The output displays a URL that links to the workflow execution on the Union web console:
+
+{@@ if serverless @@}
 
 ```{code-block} shell
 [✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
-Congratulations, you have just run your first workflow on Union!
+Go to the Union console to see the execution:
+
+![Dashboard](/_static/images/first-execution.png)
 
 {@@ elif byoc @@}
 
-## Next steps
+```{code-block} shell
+[✔] Go to https://<union-host-url>/org/... to see execution in the console.
+```
 
-In the following sections, we will walk through setting up a simple but production-level Union project and deploying it to your Union instance in the cloud.
+Go to the Union console to see the execution:
+
+![Dashboard](/_static/images/first-execution-byoc.png)
 
 {@@ endif @@}

@@ -94,7 +94,7 @@ def process_description(app, ctx, lines):
             .replace("entities in Flyte", "entities in Union")\
             .replace("remote flyte instance", "remote Union instance")\
             .replace("pyflyte package", "unionai package")\
-            .replace("flytectl register", "uctl register")\
+            .replace("flytectl", "uctl")\
             .replace("pyflyte run", "unionai run")
         del lines[idx]
         lines.insert(idx, str)
@@ -115,8 +115,8 @@ def process_options(app, ctx, lines):
     # and change str representations of functions
     # to default image and project values
     counter = 5
-    default_project = "'flytesnacks'"
-    default_image = "'cr.flyte.org/flyteorg/flytekit:py3.9-latest'"
+    default_project = "'default' (Serverless), 'flytesnacks' (BYOC)"
+    default_image = "'cr.union.ai/union/unionai:py3.11-latest' (Serverless), 'cr.flyte.org/flyteorg/flytekit:py3.9-latest' (BYOC)"
     for line in lines:
         idx = lines.index(line)
         if ctx.command.name == 'build' or ctx.command.name == 'run':
@@ -125,7 +125,8 @@ def process_options(app, ctx, lines):
         if counter == 4:
             line = re.sub(r"<function.*>", default_image, line)
         else:
-            line = re.sub(r"<function.*>", default_project, line)
+            line = re.sub(r"functools.partial.*'flytesnacks'\)",
+                          default_project, line)
         line = process_str(line)
         del lines[idx]
         lines.insert(idx, line)

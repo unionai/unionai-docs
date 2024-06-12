@@ -21,12 +21,11 @@
                 {"name": "managing-secrets", "variants": ["serverless"]},
                 {"name": "managing-apps", "variants": ["serverless"]},
                 {"name": "access-aws-s3", "variants": ["serverless"]},
-                {"name": "installing-development-tools", "variants": ["byoc"]},
+                {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
                 {"name": "creating-the-project", "variants": ["byoc"]},
                 {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
                 {"name": "looking-at-the-workflow-code", "variants": ["byoc"]},
                 {"name": "running-in-a-local-python-environment", "variants": ["byoc"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
                 {"name": "setting-up-the-project-on-union", "variants": ["byoc"]},
                 {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
                 {"name": "more-resources", "variants": ["byoc"]}
@@ -102,7 +101,8 @@
                 {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                 {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
-                {"name": "unionremote", "variants": ["byoc", "serverless"]}
+                {"name": "unionremote", "variants": ["byoc", "serverless"]},
+                {"name": "running-in-a-local-cluster", "variants": ["byoc", "serverless"]}
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
@@ -111,6 +111,7 @@
             ]},
         {"name": "administration", "variants": ["byoc"],
             "children": [
+                {"name": "uctl-cli", "variants": ["byoc"]},
                 {"name": "user-management", "variants": ["byoc"]},
                 {"name": "usage", "variants": ["byoc"]},
                 {"name": "applications", "variants": ["byoc"]},
