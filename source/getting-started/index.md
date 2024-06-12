@@ -93,6 +93,16 @@ This will install:
 * The [`unionai` SDK](../api/sdk/index)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
+{@@ if serverless @@}
+
+```{warning}
+If you have previously used Union BYOC or Flyte,
+you may have configuration files left over that will interfere with access to Union Serverless through the `unionai` CLI tool.
+Make sure to remove any files in `~/.flyte/` or `~/.unionai/` and unset the environment variables `FLYTECTL_CONFIG` and `UNIONAI_CONFIG` to avoid conflicts.
+```
+
+{@@ endif @@}
+
 {@@ if byoc @@}
 
 ## Set up configuration for the `unionai` CLI
@@ -162,27 +172,6 @@ def hello_world_wf(name: str = 'world') -> str:
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
 Typically, the corresponding configuration files would be located in the following locations:
 For more information, see the [task](../core-concepts/tasks/index) and [workflow](../core-concepts/workflows/index) documentation.
-
-{@@ if serverless@@}
-
-```{warning}
-If you have previously used Union BYOC (the version of Union that runs in your own cloud) or Flyte,
-you may have configuration files left over that will interfere with access to Union Serverless through the `unionai` CLI tool.
-
-Make sure that you do not have any of the following environment variables set:
-* `UNIONAI_CONFIG`
-* `UCTL_CONFIG`
-* `FLYTECTL_CONFIG`
-
-Typically, the configuration files would be located in the following locations:
-* `~/.unionai/<some-config>.yaml`
-* `~/.uctl/<some-config>.yaml`
-* `~/.flyte/<some-config>.yaml`
-
-You can remove any such files or unset the environment variables (or both) to avoid conflicts.
-```
-
-{@@ endif @@}
 
 ## Run the workflow locally in Python
 
