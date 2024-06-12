@@ -138,7 +138,7 @@ During the next execution, Union executes the process again and caches the outpu
 ### Caching when running locally
 
 The description above applies to caching when executing a node remotely on your Union cluster.
-Caching is also available [when running on a local cluster](../getting-started/running-in-a-local-cluster).
+Caching is also available [when running on a local cluster](../development-cycle/running-in-a-local-cluster).
 
 When running locally the caching mechanism is the same except that the cache key does not include **project** or **domain** (since there are none).
 The cache key is composed only of **cache version**, **signature**, and **inputs**.

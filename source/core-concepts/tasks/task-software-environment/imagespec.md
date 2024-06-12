@@ -62,10 +62,10 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```
 
-## Install and configure uctl and Docker
+## Install and configure `unionai` and Docker
 
-Ensure that you have Docker and `uctl` installed and have configure `uctl` to connect to your Union instance.
-See [Installing Development Tools](../../../getting-started/installing-development-tools).
+To install Docker, see [Setting up container image handling](../../../getting-started/setting-up-container-image-handling).
+To configure `unionai` to connect to your Union instance, see [Getting started](../../../getting-started/index.md#set-up-configuration-for-the-unionai-cli).
 
 ## Set up an image registry
 
