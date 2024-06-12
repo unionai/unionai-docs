@@ -15,7 +15,8 @@ Create an account
 :::
 
 Once you've received confirmation that your sign up succeeded, navigate to
-the Union console at [serverless.union.ai](https://serverless.union.ai):
+the Union console at [serverless.union.ai](https://serverless.union.ai).
+This is where you will be able to see your workflow executions and manage your projects:
 
 ![Union console](/_static/images/dashboard.png)
 
@@ -30,8 +31,9 @@ After your administrator has onboarded you to Union, you should have the followi
 
 ## Log into Union
 
-Navigate to the Union console at `<union-host-url>` and log in with your credentials.
-Once you have logged in you should see the Union console:
+Navigate to the web console at `<union-host-url>` and log in with your credentials.
+Once you have logged in you should see the Union console.
+This is where you will be able to see your workflow executions and and manage your projects:
 
 ![Union console](/_static/images/union-byoc-home.png)
 
@@ -68,32 +70,32 @@ $ source .venv/bin/activate
 
 ::::
 
-### Install the `unionai` Python package
-
-After setting up your virtual environment and activating it, install the `unionai` Python package::
+After setting up your virtual environment and activating it, install the `unionai` Python package:
 
 ```{code-block} shell
-$ pip install unionai
+$ pip install -U unionai
 ```
 
 This will install:
-* The `unionai` command-line tool
-* The `unionai` SDK
-* The `flytekit` SDK
+* The [`unionai` command-line tool](../api/unionai-cli)
+* The [`unionai` SDK](../api/sdk/index)
+* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
 {@@ if byoc @@}
 
 ### Set up configuration for the `unionai` CLI tool
 
-To configure the `unionai` CLI tool to connect to your Union instance you will need to copy the part of your `<union-host-url>` after the `https://`.
-We will call this string `<union-host-domain>`.
+To run and register tasks, workflows, and launch plans from your local machine to your Union instance, you will need to create a Union connection configuration file that contains your Union host domain.
+Your Union host domain is the part of your `<union-host-url>` after the `https://`.
+For example, if your `<union-host-url>` is `https://my-union-instance.com`, then your Union host domain is `my-union-instance.com`.
+We will refer to this as `<union-host-domain>` below.
 
-For example, if your `<union-host-url>` is `https://my-union-instance.com`, then `<union-host-domain>` is `my-union-instance.com`.
-
-Now, create you configuration file at `~/.unionai/config.yaml` as below, with the `<union-host-url>` substituted appropriately.
+Create you configuration file at `~/.unionai/config.yaml` as below, with `<union-host-domain>` substituted appropriately.
 Note that there are two `host` values to substitute and the resulting URLs are prefixed with `dns:///` (with three slashes):
 
 ```{code-block} yaml
+:emphasize-lines: 3,8
+
 union:
   connection:
     host: dns:///<union-host-domain>
@@ -106,10 +108,22 @@ admin:
   authType: Pkce
 ```
 
-Add the following environment variable export to your shell profile and make sure the profile takes effect:
+By default, the `unionai` CLI will look for a configuration file at `~/.unionai/config.yaml`.
+You can override this behavior to specify a different configuration file by setting the `UNIONAI_CONFIG` environment variable:
 
 ```{code-block} shell
-export UNIONAI_CONFIG=~/.unionai/config.yaml
+export UNIONAI_CONFIG=~/.my-config-location/my-config.yaml
+```
+
+Alternatively, you can always specify the configuration file on the command line when invoking `unionai` by using the `--config` flag:
+
+```{code-block} shell
+$ unionai --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
+```
+
+```{warning}
+If you have previously used Flyte, you may have configuration files left over that will interfere with access to Union BYOC through the `unionai` CLI tool.
+Make sure to remove any files in `~/.flyte/` or unset the environment variable `FLYTECTL_CONFIG` to avoid conflicts.
 ```
 
 {@@ endif @@}
@@ -133,9 +147,9 @@ def hello_world_wf(name: str = 'world') -> str:
 
 ## Tasks and workflows
 
-The file `hello.py` contains a task and a workflow.
-These are simply Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-The workflow is the top-level construct that, in turn, invokes the task.
+The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
+Typically, the corresponding configuration files would be located in the following locations:
+For more information, see the [task](../core-concepts/tasks/index) and [workflow](../core-concepts/workflows/index) documentation.
 
 {@@ if serverless@@}
 
@@ -160,7 +174,7 @@ You can remove any such files or unset the environment variables (or both) to av
 
 ## Run the workflow in Python locally
 
-You can run the workflow in your local Python environment like this:
+You can run the workflow in your local Python environment with the [`unionai run` command](../api/unionai-cli.md#unionai-run):
 
 ```{code-block} shell
 $ unionai run hello.py hello_world_wf
@@ -187,9 +201,7 @@ Running Execution on local.
 Hello, Ada!
 ```
 
-## Run the workflow on Union in the cloud
-
-To run the workflow remotely on Union, add the `--remote` flag:
+To run the workflow remotely on Union, add the [`--remote` flag](../api/unionai-cli.md#cmdoption-unionai-run-r):
 
 ```{code-block} shell
 $ unionai run --remote hello.py hello_world_wf --name "Ada"
