@@ -65,7 +65,7 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 ## Install and configure `unionai` and Docker
 
 To install Docker, see [Setting up container image handling](../../../getting-started/setting-up-container-image-handling).
-To configure `unionai` to connect to your Union instance, see [Getting started](../../../getting-started/#set-up-configuration-for-the-unionai-cli-tool).
+To configure `unionai` to connect to your Union instance, see [Getting started](../../../getting-started/index.md#set-up-configuration-for-the-unionai-cli).
 
 ## Set up an image registry
 

@@ -90,7 +90,6 @@ The `[byoc]` package extra installs configuration defaults specific to Union BYO
 
 {@@ endif @@}
 
-```{code-block} shell
 This will install:
 * The [`unionai` command-line tool](../api/unionai-cli)
 * The [`unionai` SDK](../api/sdk/index)
@@ -98,7 +97,7 @@ This will install:
 
 {@@ if byoc @@}
 
-### Set up configuration for the `unionai` CLI tool
+### Set up configuration for the `unionai` CLI
 
 To run and register tasks, workflows, and launch plans from your local machine to your Union instance, you will need to create a Union connection configuration file that contains your Union host domain.
 Your Union host domain is the part of your `<union-host-url>` after the `https://`.
