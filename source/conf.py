@@ -125,7 +125,8 @@ def process_options(app, ctx, lines):
         if counter == 4:
             line = re.sub(r"<function.*>", default_image, line)
         else:
-            line = re.sub(r"<function.*>", default_project, line)
+            line = re.sub(r"functools.partial.*'flytesnacks'\)",
+                          default_project, line)
         line = process_str(line)
         del lines[idx]
         lines.insert(idx, line)
