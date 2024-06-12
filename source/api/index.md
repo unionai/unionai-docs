@@ -8,7 +8,19 @@ You can interact with your Union deployment in the following ways:
 
 To get started, install `unionai`:
 
+{@@ if serverless @@}
+
 ```
 pip install -U unionai
 ```
+
+{@@ elif byoc @@}
+
+```
+pip install -U unionai[byoc]
+```
+
+{@@ endif @@}
+
+
 This will install the `flytekit` and `unionai` SDKs, the `unionai` CLI, and `UnionRemote`.
