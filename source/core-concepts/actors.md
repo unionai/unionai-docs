@@ -1,6 +1,17 @@
 # Actors
 
-Actors allow you to reuse containers between functions that need to maintain state. You can create an actor by instantiating the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then use `@actor` decorator on functions or classes that require that environment.
+Actors allow you to reuse containers between functions or classes that need to maintain state. You can create an actor by instantiating the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then add the `@actor` decorator to the function or class that requires a stateful environment every time it's invoked. 
+
+## `ActorEnvironment` parameters
+
+* **backlog_length**
+* **container_image**
+* **environment**
+* **parallelism**: The number of tasks that can execute in parallel, per worker.
+* **replica_count:** The number of workers to provision that are able to accept tasks.
+* **requests**
+* **secret_request**
+* **ttl_seconds** How long to keep the Actor alive while no tasks are being run.
 
 ## Examples
 
