@@ -39,9 +39,7 @@ This is where you will be able to see your workflow executions and and manage yo
 
 {@@ endif @@}
 
-## Set up your local environment
-
-### Set up your Python environment
+## Set up your Python environment
 
 Set up a Python virtual environment with `conda`, `venv` or a similar tool.
 
@@ -97,7 +95,7 @@ This will install:
 
 {@@ if byoc @@}
 
-### Set up configuration for the `unionai` CLI
+## Set up configuration for the `unionai` CLI
 
 To run and register tasks, workflows, and launch plans from your local machine to your Union instance, you will need to create a Union connection configuration file that contains your Union host domain.
 Your Union host domain is the part of your `<union-host-url>` after the `https://`.
