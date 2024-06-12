@@ -44,7 +44,6 @@ For more information, see [Working with the Container registry](https://docs.git
 
 You may use another container registry if you prefer, such as [Docker Hub](https://hub.docker.com/), [Amazon Elastic Container Registry (ECR)](../integrations/enabling-aws-resources/enabling-aws-ecr), or [Google Artifact Registry (GAR)](../integrations/enabling-gcp-resources/enabling-google-artifact-registry).
 
-
 :::{admonition} Specifying your registry in the `ImageSpec`
 Later in the process, you will need to specify the name of your registry (in this case, the name of your GitHub organization) in the `ImageSpec` object in your Python code.
 We will call out the need to do this at that time.
