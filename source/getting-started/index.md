@@ -68,6 +68,8 @@ $ source .venv/bin/activate
 
 ::::
 
+## Install the `unionai` package
+
 After setting up your virtual environment and activating it, install the `unionai` Python package:
 
 {@@ if serverless @@}
