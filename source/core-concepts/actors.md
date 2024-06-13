@@ -1,16 +1,16 @@
 # Actors
 
-Actors allow you to reuse containers between tasks that need to maintain state. You can create an actor by instantiating the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then add the `@actor` decorator to thet task that requires a stateful environment every time it's invoked.
+Actors allow you to reuse containers between tasks that need to maintain state. To create an actor, instantiate the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then add the `@actor` decorator to the task that requires a stateful environment every time it's invoked.
 
 ## `ActorEnvironment` parameters
 
-* **backlog_length:**
+* **backlog_length:** The number of tasks to keep in the worker queue on the backend. Setting `backlog_length` ensures that the worker executing actor tasks immediately executes the next task after completing the previous one instead of waiting for the scheduler to complete other operations before scheduling the next task.
 {@@ if serverless @@}
 * **container_image:** The container image to use for the task. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
 {@@ elif byoc @@}
 * **container_image:** The container image to use for the task. Defaults to `cr.flyte.org/flyteorg/flytekit:py3.9-latest`.
 {@@ endif @@}
-* **environment:**
+* **environment:** Environment variables as key, value pairs in a Python dictionary.
 * **limits:** Compute resource limits.
 * **parallelism:** The number of tasks that can execute in parallel, per worker.
 * **replica_count:** The number of workers to provision that are able to accept tasks.
