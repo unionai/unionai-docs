@@ -1,63 +1,35 @@
-# Train your first model
+# Running the workflow
 
-In this guide, we learn how to train a simple model on Union using `flytekit`, `scikit-learn`, and `pandas`. Before starting this tutorial, make sure to follow
-the Union onboarding guide in the [Getting started](index) section first.
+## Run the workflow locally in Python
 
-## Overview
-
-The model training workflow that we're going to run is composed of three steps.
-- Getting the `penguins` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
-- Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
-- Evaluating the model by creating a confusion matrix, displayed as a Flyte `Deck`.
-
-
-## Setting up the environment
-
-First, we set up our Python environment and install the dependencies for this tutorial.
-
-::::{tab-set}
-
-:::{tab-item} conda
-Install `conda` using [Miniconda](https://docs.anaconda.com/free/miniconda/index.html), then run the following to create a new Python environment:
-
-```shell
-conda create -n ml-workflow python=3.11
-conda activate ml-workflow
-```
-:::
-
-:::{tab-item} venv
-Install Python 3.8 or higher from your package manager or from [Python.org](https://www.python.org/downloads/), then run the following to create a virtual environment:
-
-```shell
-python -m venv .venv
-source .venv/bin/activate
-```
-:::
-
-::::
-
-After setting up an environment, clone the examples repository containing the
-workflow:
+Often it helps to do a quick check by first running your code in your local Python environment first.
+You can do that with the following command:
 
 ```{code-block} shell
-git clone https://github.com/unionai/examples
-cd examples
-pip install -r guides/01_getting_started/ml_workflow/requirements.txt
+$ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
-This will install `unionai`, `scikit-learn`, `pandas`, and `matplotlib`.
-
-## Executing the workflow
-
-Then run the following command to execute the workflow:
+If the code runs successfully, you should see output like this:
 
 ```{code-block} shell
-unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+Running Execution on local.
+0.9767441860465116
 ```
 
-This will outputs the following to the console, where the first URL points to the image builder and
+## Run the workflow remotely on Union
+
+To run workflow in the cloud on Union, just add the `--remote` options:
+
+```{code-block} shell
+$ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+```
+
+This will output the following to the console, where the first URL points to the image builder and
 the second URL is the workflow execution:
+
+{@# DONE TO HERE #@}
+
+{@@ if serverless @@}
 
 ```{code-block} shell
 👍 Build submitted!
@@ -68,8 +40,14 @@ the second URL is the workflow execution:
 ```
 
 When we run the workflow, it launches a Union hosted image builder that creates a image
-with the Python dependencies required for the workflow. Afterwards, the machine learning
-workflow executes with the image built from the previous step.
+with the Python dependencies required for the workflow.
+Afterwards, the machine learning workflow executes with the image built from the previous step.
+
+{@@ elif byoc @@}
+
+
+
+{@@ endif @@}
 
 Open the second link to view the execution in Union's user interface and click on the "Graph" tab
 to see a visualization of the workflow:

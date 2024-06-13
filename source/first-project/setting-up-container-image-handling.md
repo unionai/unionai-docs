@@ -15,7 +15,7 @@ For now, we will just cover setting up the necessary tools and access.
 
 :::{admonition} Default image
 If no image is specified for a task, Union will use a default image that is provided by the system.
-For example, the code in [Getting started](index) did not explicitly specify an image.
+For example, the code in [Quickstart](../quickstart) did not explicitly specify an image.
 :::
 
 ## Prerequisites
@@ -25,10 +25,18 @@ You will need to have:
 * A container engine, like Docker, installed locally.
 * Access to a container registry, like GitHub Container Registry.
 
+## Install flytekitplugins-env
+
+In order to build and push container images on your local machine, you will need to install the `flytekitplugins-env` package.
+Make sure you have activated the Python environment for this example [`ml-workflow`](setting-up-the-local-environment.md#create-a-python-virtual-environment) before running the following command:
+
+```{code-block} shell
+$ pip install flytekitplugins-env
+```
+
 ## Install Docker
 
-First, make sure you have installed Python and the `unionai` SDK and CLI. If not, see [Getting started](index).
-Next, install [Docker](https://docs.docker.com/get-docker/) on your local machine and ensure that the associated client daemon is up and running.
+Install [Docker](https://docs.docker.com/get-docker/) on your local machine and ensure that the associated client daemon is up and running.
 
 :::{note}
 Any [OCI-compatible](https://opencontainers.org/) container engine like [Podman](https://podman.io/),
@@ -58,3 +66,7 @@ In addition to making sure your registry is accessible from your local machine, 
 However, this step can ony be done once the image *has been* pushed, which comes later in the process.
 We will call out the need to make the image publicly accessible at that time.
 :::
+
+## Next step
+
+The next step is [Running the workflow](running-the-workflow).

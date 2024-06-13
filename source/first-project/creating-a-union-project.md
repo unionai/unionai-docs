@@ -1,4 +1,6 @@
-# Setting up the project on Union
+# Creating a Union project
+
+Projects in Union are used to organize and manage your workflows.
 
 You can create a new project in the Union web console that you can specify when you register workflows to Union.
 
