@@ -6,5 +6,4 @@ sphinx-book-theme
 sphinx-copybutton
 sphinxext-remoteliteralinclude
 unionai
-jinja2
 sphinx-click
