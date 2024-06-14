@@ -68,6 +68,8 @@ $ source .venv/bin/activate
 
 ::::
 
+## Install the `unionai` package
+
 After setting up your virtual environment and activating it, install the `unionai` Python package:
 
 {@@ if serverless @@}
@@ -78,12 +80,28 @@ $ pip install -U unionai
 
 {@@ elif byoc @@}
 
+::::{tab-set}
+
+:::{tab-item} Unix/macOS
+
 ```{code-block} shell
-$ pip install -U unionai[byoc]
+pip install -U 'unionai[byoc]'
 ```
 
+:::
+
+
+:::{tab-item} Windows
+
+```{code-block} shell
+pip install -U "unionai[byoc]"
+```
+
+:::
+::::
+
 :::{note}
-The `[byoc]` package extra installs configuration defaults specific to Union BYOC that differ from those needed for Serverless.
+The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless.
 :::
 
 {@@ endif @@}
