@@ -16,7 +16,7 @@ project.
 
 ## Build the site
 
-* Run the build with `python build.py`.
+* Run the build with `make build`.
 
 The resulting HTML files will be in the directory `build/html`.
 
@@ -24,6 +24,10 @@ The resulting HTML files will be in the directory `build/html`.
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
 ```
+
+The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
+
+To delete both the `sphinx_source` and `build` directories, run `make clean`.
 
 ## Publish the site
 
