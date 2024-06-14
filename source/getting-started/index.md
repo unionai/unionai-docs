@@ -80,9 +80,25 @@ $ pip install -U unionai
 
 {@@ elif byoc @@}
 
+::::{tab-set}
+
+:::{tab-item} Unix/macOS
+
 ```{code-block} shell
-$ pip install -U "unionai[byoc]"
+pip install -U 'unionai[byoc]'
 ```
+
+:::
+
+
+:::{tab-item} Windows
+
+```{code-block} shell
+pip install -U "unionai[byoc]"
+```
+
+:::
+::::
 
 :::{note}
 The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless.

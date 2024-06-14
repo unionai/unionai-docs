@@ -16,11 +16,26 @@ pip install -U unionai
 
 {@@ elif byoc @@}
 
+::::{tab-set}
+
+:::{tab-item} Unix/macOS
+
+```{code-block} shell
+pip install -U 'unionai[byoc]'
 ```
+
+:::
+
+
+:::{tab-item} Windows
+
+```{code-block} shell
 pip install -U "unionai[byoc]"
 ```
 
-{@@ endif @@}
+:::
+::::
 
+{@@ endif @@}
 
 This will install the `flytekit` and `unionai` SDKs, the `unionai` CLI, and `UnionRemote`.
