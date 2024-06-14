@@ -18,9 +18,6 @@
             "children": [
                 {"name": "machine-learning-example", "variants": ["serverless"]},
                 {"name": "adding-custom-dependencies", "variants": ["serverless"]},
-                {"name": "managing-secrets", "variants": ["serverless"]},
-                {"name": "managing-apps", "variants": ["serverless"]},
-                {"name": "access-aws-s3", "variants": ["serverless"]},
                 {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
                 {"name": "creating-the-project", "variants": ["byoc"]},
                 {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
@@ -28,6 +25,9 @@
                 {"name": "running-in-a-local-python-environment", "variants": ["byoc"]},
                 {"name": "setting-up-the-project-on-union", "variants": ["byoc"]},
                 {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
+                {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
+                {"name": "managing-apps", "variants": ["serverless"]},
+                {"name": "access-aws-s3", "variants": ["serverless"]},
                 {"name": "more-resources", "variants": ["byoc"]}
             ]},
         {"name": "tutorials", "variants": ["byoc", "serverless"],
