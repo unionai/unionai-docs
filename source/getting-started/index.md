@@ -85,7 +85,7 @@ $ pip install -U unionai[byoc]
 ```
 
 :::{note}
-The `[byoc]` package extra installs configuration defaults specific to Union BYOC that differ from those needed for Serverless.
+The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless.
 :::
 
 {@@ endif @@}
