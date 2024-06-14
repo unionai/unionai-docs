@@ -1,4 +1,4 @@
-# Quickstart
+# Quick start
 
 In this section, we give a quick introduction to writing and running Union workflows.
 

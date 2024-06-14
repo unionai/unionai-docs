@@ -50,7 +50,7 @@ This will install `unionai`, `scikit-learn`, `pandas`, and `matplotlib`.
 
 {@@ if serverless @@}
 
-The next step is [Executing the workflow](executing-the-workflow).
+The next step is [Running the workflow](running-the-workflow).
 
 {@@ elif byoc @@}
 

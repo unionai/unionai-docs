@@ -1,4 +1,4 @@
-# Access AWS S3 buckets
+# Accessing AWS S3 buckets
 
 Here we will take a look at how to access data on AWS S3 Buckets from Union.
 As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.

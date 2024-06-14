@@ -1,4 +1,4 @@
-# Adding custom dependencies
+# Image builder
 
 With image builder, the Docker images used by your tasks are built in the cloud on Union.
 For this example, save the following as `image_build.py`

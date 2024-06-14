@@ -4,7 +4,7 @@ This section walks through building your first Union project, exploring the majo
 
 ## Prerequisites
 
-If you have not already done so, follow the [Quickstart guide](quickstart) to sign into the Union web console,
+If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union web console,
 set up your local Python environment, and install the `unionai` command line tool.
 
 ## Your project on Union
@@ -13,13 +13,13 @@ set up your local Python environment, and install the `unionai` command line too
 
 Each Union Serverless (which is tied to your GitHub account) provides a default project (called **default**) where all your workflows will be registered unless you specify otherwise.
 We will use this default project for the rest of this guide.
-For information on creating additional projects, see the [Creating a Union project](creating-a-union-project).
+For information on creating additional projects, see the [Creating a Union project](../moving-onward/creating-a-union-project).
 
 {@@ elif byoc @@}
 
 Each Union BYOC organization comes pre-configured with a default project (called **flytesnacks**) where all your workflows will be registered unless you specify otherwise.
 We will use this default project for the rest of this guide.
-For information on creating additional projects, see the [Creating projects](creating-projects).
+For information on creating additional projects, see the [Creating projects](../moving-onward/creating-a-union-project).
 
 {@@ elif byoc @@}
 

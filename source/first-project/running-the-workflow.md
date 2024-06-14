@@ -2,8 +2,7 @@
 
 ## Run the workflow locally in Python
 
-Often it helps to do a quick check by first running your code in your local Python environment first.
-You can do that with the following command:
+If you want to do a quick check that you code runs, run the code in your local Python environment with the following command:
 
 ```{code-block} shell
 $ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
@@ -16,20 +15,17 @@ Running Execution on local.
 0.9767441860465116
 ```
 
+{@@ if serverless @@}
+
 ## Run the workflow remotely on Union
 
-To run workflow in the cloud on Union, just add the `--remote` options:
+To run workflow in the cloud on Union, just add the `--remote` option:
 
 ```{code-block} shell
 $ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
-This will output the following to the console, where the first URL points to the image builder and
-the second URL is the workflow execution:
-
-{@# DONE TO HERE #@}
-
-{@@ if serverless @@}
+You should see the following output in your terminal:
 
 ```{code-block} shell
 👍 Build submitted!
@@ -39,18 +35,75 @@ the second URL is the workflow execution:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
-When we run the workflow, it launches a Union hosted image builder that creates a image
-with the Python dependencies required for the workflow.
-Afterwards, the machine learning workflow executes with the image built from the previous step.
+When you invoke `unionai run --remote`, the system first launches a Union hosted image builder that creates the container images
+with the Python dependencies required for the tasks in your workflow.
+Then, the code is uploaded to Union (we call this step *registration*),
+the images are used to initialize the containers for each task, and the workflow is executed.
+
+The first URL in the output above points to the image builder and the second URL points to the workflow execution.
+
+Open the second link to view the execution in Union's user interface and click on the **Graph** tab
+to see a visualization of the workflow:
 
 {@@ elif byoc @@}
 
+## Register the workflow on Union
 
+When starting with a new workflow that requires a new container image not previously built
+You must start by registering you workflow code with `unionai register`, not immediately running it with `unionai run --remote`
+
+To register this example, perform the following command:
+
+```{code-block} shell
+$ unionai register guides/01_getting_started/ml_workflow
+```
+
+This command does the following:
+
+* Builds the images defined by the `ImageSpec` objects in your code and pushes them to the specified container registry.
+* Pushes the workflow code to Union.
+* Sets up the workflow DAG and its constituent task containers.
+* Registers the workflow in the default domain (`development`) of the default project (`flytesnacks`) in Union.
+
+You should see the following output (or similar) in your terminal:
+
+```{code-block} shell
+Running pyflyte register from /Users/me/repos/unionai/examples with images ImageConfig(default_image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/ppiegaze/repos/unionai/examples/guides/01_getting_started/ml_workflow',)
+Registering against union.my-company.com
+Detected Root /Users/me/repos/unionai/examples/guides/01_getting_started, using this to create deployable package...
+No output path provided, using a temporary directory at /var/folders/vh/5cnb0p254xv44zpn2ntj_0ch0000gn/T/tmp4a9iqzqt instead
+Computed version is nuHakW_PUV5uk71n-to7bg
+Loading packages ['ml_workflow'] under source root /Users/me/repos/unionai/examples/guides/01_getting_started
+Image flytekit:Jg0osJpciXDDf5amjsBDAw not found. building...
+Run command: envd build --path /var/folders/vh/5cnb0p254xv44zpn2ntj_0ch0000gn/T/flyte3i9ry6kc/control_plane_metadata/local_flytekit/03f65b09b7ea32403f5e7673ebae1993  --platform linux/amd64 --tag flytekit:Jg0osJpciXDDf5amjsBDAw
+#1 docker-image://cr.flyte.org/flyteorg/flytekit:py3.11-1.12.2
+...
+#9 DONE 9.0s
+
+Successfully serialized 5 flyte objects
+[✔] Registration ml_workflow.ml_workflow.evaluate_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.train_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.get_dataset type TASK successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.main type WORKFLOW successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.main type LAUNCH_PLAN successful with version nuHakW_PUV5uk71n-to7bg
+Successfully registered 5 entities
+```
+
+## Make your image accessible to Union
+
+Before you can run the workflow from the Union interface, you must make sure that the image defined in your `ImageSpec` is public.
+
+In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
+
+At this point, you can run the workflow from the Union interface.
+
+TOD: Explain how to run the workflow from the Union interface
 
 {@@ endif @@}
 
-Open the second link to view the execution in Union's user interface and click on the "Graph" tab
+Open the link to view the execution in Union's user interface and click on the **Graph** tab
 to see a visualization of the workflow:
+{@@ endif @@}
 
 ![Graph](/_static/images/getting-started-graph.jpg)
 
@@ -73,78 +126,6 @@ by the task:
 Now that we are familiar with the UI, let's jump into the code and see how to build the
 workflow!
 
-## Diving into the code
+## Next step
 
-You can find the full example code on [{fab}`github` Github](https://github.com/unionai/examples/blob/main/guides/01_getting_started/ml_workflow/ml_workflow.py)
-
-### Defining a workflow
-
-The overall [workflow](https://docs.union.ai/core-concepts/workflows/) is a collection
-of tasks that manages the data flow between tasks. Our standard workflow is defined using
-a `@workflow` decorator the wraps a Python function:
-
-
-```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 100-103
-```
-
-The workflow's `max_bins` parameter is automatically added to the `unionai run` CLI allowing
-us to run `--max_bins 64` to configure the parameter.
-
-### Defining a task
-
-Each task is defined with a Python function that is decorated with a `@task` decorator.
-For example, the `train_model` task is defined as follows:
-
-```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 55-64
-```
-
-We highlight some of features used to define the task:
-
-1. Python typing is required for all inputs and outputs. Union uses the types for serialization
-   and to validate workflows.
-2. The `Resources(cpu="3", mem="2Gi")` is **declarative infrastructure** that allocates 3 CPUs
-   and `2Gi` of memory for the task.
-3. The `container_image=image` sets an image that has all the dependencies required by the task.
-
-The task requires custom dependencies, which we specify with an `ImageSpec`:
-
-```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 36-38
-```
-
-The `requirements.txt` contain the same dependencies we used to configure our local development environment. The Union hosted image builder builds the image based
-on the `ImageSpec` specification and uses that image for the machine learning workflow.
-
-The `get_dataset` task uses a cache of the data outputs of the task:
-
-```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 41-52
-```
-
-`get_dataset` returns the training and test data as pandas DataFrames which gets cached by Union.
-With caching, future executions of the workflow will use the cached data instead of running
-the task again.
-
-### Visualizations
-
-The Flyte Deck feature enables us to show custom visualizations in Union's user interface.
-The visualizations is enabled with a single `enable_deck=True`:
-
-```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 67-96
-```
-
-Enabling the deck adds the "Flyte Deck" button in the UI and task's code places the
-visualizations into the deck.
-
-## Conclusion
-
-You can learn more about Union-specific capabilities by exploring the
-[Core Concepts](../core-concepts/index) section.
+The next step is [Understanding the workflow code](understanding-the-workflow-code).

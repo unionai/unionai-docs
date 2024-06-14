@@ -14,21 +14,22 @@
                 {"name": "configuring-your-data-plane", "variants": ["byoc"]},
                 {"name": "multi-cluster", "variants": ["byoc"]}
             ]},
-        {"name": "getting-started", "variants": ["byoc", "serverless"],
+        {"name": "quick-start", "variants": ["byoc", "serverless"]},
+        {"name": "first-project", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "machine-learning-example", "variants": ["serverless"]},
-                {"name": "adding-custom-dependencies", "variants": ["serverless"]},
-                {"name": "managing-secrets", "variants": ["serverless"]},
-                {"name": "managing-apps", "variants": ["serverless"]},
-                {"name": "access-aws-s3", "variants": ["serverless"]},
+                {"name": "setting-up-the-local-environment", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
-                {"name": "creating-the-project", "variants": ["byoc"]},
-                {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
-                {"name": "looking-at-the-workflow-code", "variants": ["byoc"]},
-                {"name": "running-in-a-local-python-environment", "variants": ["byoc"]},
-                {"name": "setting-up-the-project-on-union", "variants": ["byoc"]},
-                {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
-                {"name": "more-resources", "variants": ["byoc"]}
+                {"name": "running-the-workflow", "variants": ["byoc", "serverless"]},
+                {"name": "understanding-the-workflow-code", "variants": ["byoc", "serverless"]}
+            ]},
+        {"name": "moving-onward", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "image-builder", "variants": ["serverless"]},
+                {"name": "image-spec", "variants": ["byoc"]},
+                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
+                {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
+                {"name": "managing-apps", "variants": ["byoc", "serverless"]},
+                {"name": "accessing-aws-s3", "variants": ["byoc", "serverless"]}
             ]},
         {"name": "tutorials", "variants": ["byoc", "serverless"],
             "children": [

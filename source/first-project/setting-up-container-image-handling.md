@@ -25,13 +25,13 @@ You will need to have:
 * A container engine, like Docker, installed locally.
 * Access to a container registry, like GitHub Container Registry.
 
-## Install flytekitplugins-env
+## Install flytekitplugins-envd
 
-In order to build and push container images on your local machine, you will need to install the `flytekitplugins-env` package.
+In order to build and push container images on your local machine, you will need to install the `flytekitplugins-envd` package.
 Make sure you have activated the Python environment for this example [`ml-workflow`](setting-up-the-local-environment.md#create-a-python-virtual-environment) before running the following command:
 
 ```{code-block} shell
-$ pip install flytekitplugins-env
+$ pip install flytekitplugins-envd
 ```
 
 ## Install Docker
