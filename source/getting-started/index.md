@@ -81,7 +81,7 @@ $ pip install -U unionai
 {@@ elif byoc @@}
 
 ```{code-block} shell
-$ pip install -U unionai[byoc]
+$ pip install -U "unionai[byoc]"
 ```
 
 :::{note}

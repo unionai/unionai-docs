@@ -17,7 +17,7 @@ pip install -U unionai
 {@@ elif byoc @@}
 
 ```
-pip install -U unionai[byoc]
+pip install -U "unionai[byoc]"
 ```
 
 {@@ endif @@}
