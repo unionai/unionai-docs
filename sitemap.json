@@ -34,7 +34,11 @@
             "children": [
                 {"name": "language-models", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "sentiment-classifier", "variants": ["byoc", "serverless"]}
+                        {
+                            "name": "sentiment-classifier",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+                        }
                     ]
                 }
             ]

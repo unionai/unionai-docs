@@ -1,8 +1,12 @@
-import jinja2
 import os
 import subprocess
 import shlex
 import json
+from pathlib import Path
+
+import jinja2
+import jupytext
+import yaml
 
 # Source directory containing content in the Markdown augmented with Jinja2 templating.
 # These files also lack toctree directives, as the `sitemap.json` defines the structure of the documentation
@@ -40,6 +44,32 @@ SUBS: dict[str, dict[str, str] | str] = {
     'cli_name': 'uctl',
 }
 
+RUN_COMMAND_TEMPLATE = """
+::::{{dropdown}} Run on Union Serverless
+
+You can run this example on Union serverless.
+
+:::{{button-link}} https://signup.union.ai/
+:color: secondary
+
+Create an account
+:::
+
+Once you have a Union account, install `unionai`
+
+```{{code}}
+pip install unionai
+```
+
+Then run the following commands to run the workflow:
+
+```{{code}}
+{run_commands}
+```
+
+::::
+"""
+
 
 # Call a shell command.
 def shell(command: str) -> None:
@@ -58,6 +88,30 @@ def get_vars(variant: str) -> dict:
             vd[key] = value
     vd[variant] = True
     return vd
+
+
+def contains_metadata(src: str):
+    return src.startswith('"""\n---') and src.endswith('---\n"""')
+
+
+def get_run_command_src(src: str) -> str:
+    src = src.strip('"""').strip().strip("---").strip()
+    metadata = yaml.safe_load(src)
+    assert "run_commands" in metadata, "run_commands is required in metadata"
+    return RUN_COMMAND_TEMPLATE.format(run_commands="\n".join(metadata["run_commands"]))
+
+
+def convert_example_py_file_to_md(from_path: Path, to_path: Path) -> None:
+    print(f"converting {from_path} to {to_path}")
+    notebook = jupytext.read(from_path, fmt="py:light")
+    if contains_metadata(notebook["cells"][0]["source"]):
+        run_command_cell = notebook["cells"].pop(0)
+        run_command_src = get_run_command_src(run_command_cell["source"])
+        run_command_cell.source = run_command_src
+        run_command_cell.cell_type = "markdown"
+        # insert the run command cell after the first cell containing the title
+        notebook["cells"].insert(1, run_command_cell)
+    jupytext.write(notebook, to_path, fmt="md")
 
 
 # Process a single Markdown/Jinja2 file.
@@ -99,12 +153,19 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
 
 
 def process_page_node(page_node: dict, current_variant: str, parent_path: str, parent_variants: list) -> str:
+    """Recursively process a page node in the sitemap from jinja template into sphinx format."""
     name: str = page_node.get('name', '')
     title: str = page_node.get('title', '')
     variants: list = page_node.get('variants', '')
     children: list = page_node.get('children', None)
     indent: str = parent_path.count('/') * "    "
     path: str = os.path.join(parent_path, name).rstrip(' /')
+
+    py_file = page_node.get("from_py_file", None)
+    if py_file is not None:
+        py_file = Path(py_file)
+        md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
+        convert_example_py_file_to_md(py_file, md_path)
 
     variants = [*reversed(variants)]  # make sure that serverless is the first element
     print(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
