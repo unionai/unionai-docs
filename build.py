@@ -7,6 +7,7 @@ from pathlib import Path
 import jinja2
 import jupytext
 import yaml
+from nbformat.notebooknode import NotebookNode
 
 # Source directory containing content in the Markdown augmented with Jinja2 templating.
 # These files also lack toctree directives, as the `sitemap.json` defines the structure of the documentation
@@ -27,6 +28,12 @@ BUILD_DIR: str = './build/html'
 # The Sphinx toctrees are generated based on this sitemap and added to the Sphinx files in SPHINX_SOURCE_DIR.
 SITEMAP: str = './sitemap.json'
 
+# path of the examples submodule repository in the docs repo.
+EXAMPLES_REPO: str = "./examples"
+
+# The run commands defines how to run the example code.
+RUN_COMMANDS: str = './examples/run_commands.yaml'
+
 # The set of variants.
 ALL_VARIANTS: list[str] = ['serverless', 'byoc']
 
@@ -44,10 +51,24 @@ SUBS: dict[str, dict[str, str] | str] = {
     'cli_name': 'uctl',
 }
 
-RUN_COMMAND_TEMPLATE = """
-::::{{dropdown}} Run on Union Serverless
+INSTALL_SDK_PACKAGES: dict[str, str] = {
+    "byoc": "'unionai[byoc]'",
+    "serverless": "unionai",
+}
 
-You can run this example on Union serverless.
+BYOC_RUN_COMMANDS = """Export the following environment variable to build and push
+images to your own container registry:
+
+```{code}
+# replace with your registry name
+export IMAGE_SPEC_REGISTRY="<your-container-registry>"
+```
+"""
+
+RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+:color: warning
+
+You can run this example on Union {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 :color: secondary
@@ -55,11 +76,13 @@ You can run this example on Union serverless.
 Create an account
 :::
 
-Once you have a Union account, install `unionai`
+Once you have a Union account, install `{sdk_package_variant}`
 
 ```{{code}}
-pip install unionai
+{pip_install_command}
 ```
+
+{byoc_commands}
 
 Then run the following commands to run the workflow:
 
@@ -94,23 +117,44 @@ def contains_metadata(src: str):
     return src.startswith('"""\n---') and src.endswith('---\n"""')
 
 
-def get_run_command_src(src: str) -> str:
-    src = src.strip('"""').strip().strip("---").strip()
-    metadata = yaml.safe_load(src)
-    assert "run_commands" in metadata, "run_commands is required in metadata"
-    return RUN_COMMAND_TEMPLATE.format(run_commands="\n".join(metadata["run_commands"]))
+def create_run_command_node(run_commands: list[str], current_variant: str) -> NotebookNode:
+    variant_display = SUBS["product_name"][current_variant]
+    sdk_package_variant = INSTALL_SDK_PACKAGES[current_variant]
+    pip_install_command = f"pip install {sdk_package_variant}"
+
+    if current_variant == "byoc":
+        byoc_commands = BYOC_RUN_COMMANDS
+        pip_install_command += " flytekitplugins-envd"
+    else:
+        byoc_commands = ""
+    src = RUN_COMMAND_TEMPLATE.format(
+        variant=variant_display,
+        sdk_package_variant=sdk_package_variant,
+        pip_install_command=pip_install_command,
+        byoc_commands=byoc_commands,
+        run_commands="\n".join(run_commands)
+    )
+    return NotebookNode(cell_type="markdown", source=src, metadata={})
 
 
-def convert_example_py_file_to_md(from_path: Path, to_path: Path) -> None:
+def convert_example_py_file_to_md(
+    from_path: Path,
+    to_path: Path,
+    current_variant: str,
+    run_commands: dict[str, list[str]],
+):
     print(f"converting {from_path} to {to_path}")
     notebook = jupytext.read(from_path, fmt="py:light")
-    if contains_metadata(notebook["cells"][0]["source"]):
-        run_command_cell = notebook["cells"].pop(0)
-        run_command_src = get_run_command_src(run_command_cell["source"])
-        run_command_cell.source = run_command_src
-        run_command_cell.cell_type = "markdown"
-        # insert the run command cell after the first cell containing the title
-        notebook["cells"].insert(1, run_command_cell)
+
+    key = from_path.relative_to(Path(EXAMPLES_REPO))
+    run_cmd_src = run_commands.get(str(key), None)
+    assert run_cmd_src is not None, \
+        f"run_commands not found for {from_path}. Please add an entry in " \
+        "./examples/run_commands.yaml"
+
+    run_command_node = create_run_command_node(run_cmd_src, current_variant)
+    notebook["cells"].insert(1, run_command_node)
+
     jupytext.write(notebook, to_path, fmt="md")
 
 
@@ -152,7 +196,13 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
             f.write(output)
 
 
-def process_page_node(page_node: dict, current_variant: str, parent_path: str, parent_variants: list) -> str:
+def process_page_node(
+    page_node: dict,
+    current_variant: str,
+    parent_path: str,
+    parent_variants: list,
+    run_commands: dict,
+) -> str:
     """Recursively process a page node in the sitemap from jinja template into sphinx format."""
     name: str = page_node.get('name', '')
     title: str = page_node.get('title', '')
@@ -165,7 +215,7 @@ def process_page_node(page_node: dict, current_variant: str, parent_path: str, p
     if py_file is not None:
         py_file = Path(py_file)
         md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
-        convert_example_py_file_to_md(py_file, md_path)
+        convert_example_py_file_to_md(py_file, md_path, current_variant, run_commands)
 
     variants = [*reversed(variants)]  # make sure that serverless is the first element
     print(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
@@ -202,7 +252,13 @@ def process_page_node(page_node: dict, current_variant: str, parent_path: str, p
         print(f'{indent}This page has children')
         toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
         for child_page_node in children:
-            toc_entry = process_page_node(child_page_node, current_variant, path, variants)
+            toc_entry = process_page_node(
+                child_page_node,
+                current_variant,
+                path,
+                variants,
+                run_commands,
+            )
             if toc_entry:
                 toctree += toc_entry + '\n'
         toctree += '```\n'
@@ -215,10 +271,15 @@ def process_page_node(page_node: dict, current_variant: str, parent_path: str, p
 def process_project():
     shell(f'rm -rf {BUILD_DIR}')
     shell(f'rm -rf {SPHINX_SOURCE_DIR}')
+
     with open(SITEMAP, "r") as sm:
         page_node = json.load(sm)
+
+    with open(RUN_COMMANDS, "r") as rc:
+        run_commands = yaml.safe_load(rc)
+
     for variant in ALL_VARIANTS:
-        process_page_node(page_node, variant, "", ALL_VARIANTS)
+        process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
     for variant in ALL_VARIANTS:
         shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
         shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
