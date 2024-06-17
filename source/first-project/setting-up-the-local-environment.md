@@ -1,4 +1,4 @@
-# Setting up the local environment
+# Setting up your local environment
 
 Here we will set up your local Python environment and install the required dependencies.
 
