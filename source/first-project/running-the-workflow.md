@@ -2,7 +2,7 @@
 
 ## Run the workflow locally in Python
 
-If you want to do a quick check that you code runs, run the code in your local Python environment with the following command:
+To quickly check your workflow code, you can run it in your local Python environment with the following command:
 
 ```{code-block} shell
 $ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
@@ -19,7 +19,7 @@ Running Execution on local.
 
 ## Run the workflow remotely on Union
 
-To run workflow in the cloud on Union, just add the `--remote` option:
+To run the workflow in the cloud on Union, add the `--remote` option:
 
 ```{code-block} shell
 $ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
@@ -35,10 +35,10 @@ You should see the following output in your terminal:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the console.
 ```
 
-When you invoke `unionai run --remote`, the system first launches a Union hosted image builder that creates the container images
-with the Python dependencies required for the tasks in your workflow.
-Then, the code is uploaded to Union (we call this step *registration*),
-the images are used to initialize the containers for each task, and the workflow is executed.
+When you invoke `unionai run --remote`, the system first launches a Union hosted image builder that creates the container images with the Python dependencies required for the tasks in your workflow.
+
+Next, the workflow code is registered to Union (meaning that it is serialized uploaded to Union),
+the images defined in `ImageSpec` blocks are used to initialize the containers for each task, and the workflow is executed.
 
 The first URL in the output above points to the image builder and the second URL points to the workflow execution.
 
@@ -49,10 +49,7 @@ to see a visualization of the workflow:
 
 ## Register the workflow on Union
 
-When starting with a new workflow that requires a new container image not previously built
-You must start by registering you workflow code with `unionai register`, not immediately running it with `unionai run --remote`
-
-To register this example, perform the following command:
+When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `unionai register`. To register the `ml_workflow` example, run the following command:
 
 ```{code-block} shell
 $ unionai register guides/01_getting_started/ml_workflow
@@ -97,7 +94,7 @@ In the GitHub Container Registry, switch the visibility of your container image 
 
 At this point, you can run the workflow from the Union interface.
 
-TOD: Explain how to run the workflow from the Union interface
+TODO: Explain how to run the workflow from the Union interface
 
 {@@ endif @@}
 
