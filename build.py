@@ -148,12 +148,10 @@ def convert_example_py_file_to_md(
 
     key = from_path.relative_to(Path(EXAMPLES_REPO))
     run_cmd_src = run_commands.get(str(key), None)
-    assert run_cmd_src is not None, \
-        f"run_commands not found for {from_path}. Please add an entry in " \
-        "./examples/run_commands.yaml"
 
-    run_command_node = create_run_command_node(run_cmd_src, current_variant)
-    notebook["cells"].insert(1, run_command_node)
+    if run_cmd_src is not None:
+        run_command_node = create_run_command_node(run_cmd_src, current_variant)
+        notebook["cells"].insert(1, run_command_node)
 
     jupytext.write(notebook, to_path, fmt="md")
 

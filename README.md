@@ -132,6 +132,32 @@ Note that this system uses a customized version of the syntax for Jinja2 templat
 
 This is done to avoid conflict with documentation content that includes the standard Jinja syntax.
 
+### Pulling in Tutorial Examples Content
+
+This repo uses the [examples](https://github.com/unionai/examples) as a submodule
+to pull in the content for the tutorial examples. Calling `make build` automatically
+updates the submodule to the latest commit, but if you want to update it manually,
+you can run `make update-examples`.
+
+To specify pull in a page from the examples repo, you can specify a `from_py_file`
+key in the `sitemap.json` file. For example:
+
+```
+"children": [
+    {
+        "name": "sentiment-classifier",
+        "variants": ["byoc", "serverless"],
+        "from_py_file": "./examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+    }
+]
+```
+
+When you run `make build`, the content specified in the python file will be
+converted to a markdown file using `jupytext`.
+
+It will also use the yaml file in the `./examples/run_commands.yaml` repo to
+generate metadata about how to run that example.
+
 ### The processing pipeline
 
 The `build.py` script processes the contents in the `source/` directory,
