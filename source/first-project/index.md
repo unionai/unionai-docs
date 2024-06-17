@@ -4,7 +4,7 @@ This section walks through building your first Union project, exploring the majo
 
 ## Prerequisites
 
-If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union web console,
+If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union UI,
 set up your local Python environment, and install the `unionai` command line tool.
 
 ## Your project on Union

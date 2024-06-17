@@ -17,7 +17,7 @@ Running Execution on local.
 
 {@@ if serverless @@}
 
-## Run the workflow remotely on Union
+## Run and view the workflow on Union
 
 To run the workflow in the cloud on Union, add the `--remote` option:
 
@@ -32,7 +32,7 @@ You should see the following output in your terminal:
 ⏳ Waiting for build to finish at: https://serverless.union.ai/org/...
 ✅ Build completed in 0:01:57!
 
-[✔] Go to https://serverless.union.ai/org/... to see execution in the console.
+[✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
 When you invoke `unionai run --remote`, the system first launches a Union hosted image builder that creates the container images with the Python dependencies required for the tasks in your workflow.
