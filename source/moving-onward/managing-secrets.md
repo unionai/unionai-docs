@@ -21,7 +21,7 @@ You can list existing secrets by running:
 unionai get secret
 ```
 
-You can now use this secret in your flytekit code and save it as `using_secrets.py`:
+You can now use this secret in your workflow code. To run the following example, copy it to a new file and save it as `using_secrets.py`:
 
 ```{code-block} python
 from flytekit import Secret, current_context, task, workflow

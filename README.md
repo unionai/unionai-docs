@@ -16,7 +16,7 @@ project.
 
 ## Build the site
 
-* Run the build with `python build.py`.
+* Run the build with `make build`.
 
 The resulting HTML files will be in the directory `build/html`.
 
@@ -24,6 +24,10 @@ The resulting HTML files will be in the directory `build/html`.
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
 ```
+
+The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
+
+To delete both the `sphinx_source` and `build` directories, run `make clean`.
 
 ## Publish the site
 
@@ -127,6 +131,31 @@ Note that this system uses a customized version of the syntax for Jinja2 templat
 * `{@# ... #@}` for comments.
 
 This is done to avoid conflict with documentation content that includes the standard Jinja syntax.
+
+### Pulling in tutorial examples content
+
+This repo uses the [examples](https://github.com/unionai/examples) repo as a git submodule
+to pull in the content for the tutorial examples. Calling `make build` automatically
+updates the submodule to the latest commit, but if you want to update it manually,
+you can run `make update-examples`.
+
+To pull in a specific page from the examples repo, you can specify a `from_py_file`
+key in the `sitemap.json` file. For example:
+
+```
+"children": [
+    {
+        "name": "sentiment-classifier",
+        "variants": ["byoc", "serverless"],
+        "from_py_file": "./examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+    }
+]
+```
+
+When you run `make build`, `update-examples` will pull in the latest changes from the `examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
+
+It will also use the YAML file in the `./examples/run_commands.yaml` repo to
+generate metadata about how to run that example.
 
 ### The processing pipeline
 

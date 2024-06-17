@@ -1,9 +1,12 @@
 jinja2
+jupytext
 myst-parser
+nbformat
+pyyaml
 sphinx
+sphinx-click
 sphinx-design
 sphinx-book-theme
 sphinx-copybutton
 sphinxext-remoteliteralinclude
 unionai
-sphinx-click

@@ -35,7 +35,11 @@
             "children": [
                 {"name": "language-models", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "sentiment-classifier", "variants": ["byoc", "serverless"]}
+                        {
+                            "name": "sentiment-classifier",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+                        }
                     ]
                 }
             ]
@@ -85,6 +89,7 @@
                         {"name": "running-launch-plans", "variants": ["byoc", "serverless"]},
                         {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                     ]},
+                {"name": "actors", "variants": ["byoc", "serverless"]},
                 {"name": "artifacts", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "declaring-artifacts", "variants": ["byoc", "serverless"]},
