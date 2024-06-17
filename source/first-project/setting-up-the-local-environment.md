@@ -26,13 +26,12 @@ source .venv/bin/activate
 
 ::::
 
-## Clone the `examples` repository
+## Clone the `unionai/unionai-examples` repository
 
-After setting up an environment, clone the examples repository containing the
-workflow
+After setting up a virtual environment, clone the `unionai/unionai-examples` repository:
 
 ```{code-block} shell
-$ git clone https://github.com/unionai/examples
+$ git clone git@github.com:unionai/unionai-examples.git
 ```
 
 ## Install the dependencies
