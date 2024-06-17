@@ -21,7 +21,7 @@ Each Union BYOC organization comes pre-configured with a default project (called
 We will use this default project for the rest of this guide.
 For information on creating additional projects, see the [Creating projects](../moving-onward/creating-a-union-project).
 
-{@@ elif byoc @@}
+{@@ endif @@}
 
 ## Your local project
 

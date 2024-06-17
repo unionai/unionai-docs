@@ -103,7 +103,6 @@ TOD: Explain how to run the workflow from the Union interface
 
 Open the link to view the execution in Union's user interface and click on the **Graph** tab
 to see a visualization of the workflow:
-{@@ endif @@}
 
 ![Graph](/_static/images/getting-started-graph.jpg)
 
