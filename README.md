@@ -132,7 +132,7 @@ Note that this system uses a customized version of the syntax for Jinja2 templat
 
 This is done to avoid conflict with documentation content that includes the standard Jinja syntax.
 
-### Pulling in Tutorial Examples Content
+### Pulling in tutorial examples content
 
 This repo uses the [examples](https://github.com/unionai/examples) as a submodule
 to pull in the content for the tutorial examples. Calling `make build` automatically
