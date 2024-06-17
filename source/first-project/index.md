@@ -31,7 +31,7 @@ and putting those under version control.
 
 ## Our example local project
 
-In this section, we will use a project from Union's examples GitHub repository, [`unionai/examples`](https://github.com/unionai/examples), that illustrates training a simple model using `flytekit`, `scikit-learn`, and `pandas`.
+In this section, we will use a project from Union's examples GitHub repository, [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples), that illustrates training a simple model using `flytekit`, `scikit-learn`, and `pandas`.
 
 The model training workflow that we're going to run has three steps:
 - Getting the `penguins` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
