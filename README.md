@@ -154,7 +154,7 @@ key in the `sitemap.json` file. For example:
 
 When you run `make build`, `update-examples` will pull in the latest changes from the `examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
 
-It will also use the yaml file in the `./examples/run_commands.yaml` repo to
+It will also use the YAML file in the `./examples/run_commands.yaml` repo to
 generate metadata about how to run that example.
 
 ### The processing pipeline
