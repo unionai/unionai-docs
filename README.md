@@ -152,7 +152,7 @@ key in the `sitemap.json` file. For example:
 ]
 ```
 
-When you run `make build`, the content specified in the python file will be
+When you run `make build`, `update-examples` will pull in the latest changes from the `examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
 converted to a markdown file using `jupytext`.
 
 It will also use the yaml file in the `./examples/run_commands.yaml` repo to
