@@ -139,7 +139,7 @@ to pull in the content for the tutorial examples. Calling `make build` automatic
 updates the submodule to the latest commit, but if you want to update it manually,
 you can run `make update-examples`.
 
-To specify pull in a page from the examples repo, you can specify a `from_py_file`
+To pull in a specific page from the examples repo, you can specify a `from_py_file`
 key in the `sitemap.json` file. For example:
 
 ```
