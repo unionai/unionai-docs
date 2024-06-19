@@ -47,6 +47,11 @@
                             "name": "reddit-slack-bot",
                             "variants": ["byoc", "serverless"],
                             "from_py_file": "./unionai-examples/tutorials/redit_slack_bot/redit_slack_bot.py"
+                        },
+                        {
+                            "name": "time-series-forecaster-comparison",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/time_series_forecasting/time_series_workflow.py"
                         }
                     ]
                 }

@@ -23,4 +23,12 @@ Securely store Reddit and Slack authentication data while pushing relevant
 Reddit posts to slack on a consistent basis.
 :::
 
+:::{grid-item-card} {octicon}`graph-up` Time Series Forecaster Comparison
+:link: parallel-processing-and-job-scheduling/time-series-forecaster-comparison
+:link-type: doc
+
+Visually compare the output of various time series forecasters while
+maintaining lineage of the training and forecasted data.
+:::
+
 ::::
