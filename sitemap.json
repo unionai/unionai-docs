@@ -40,6 +40,15 @@
                             "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
                         }
                     ]
+                },
+                {"name": "parallel-processing-and-job-scheduling", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "reddit-slack-bot",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/redit_slack_bot/redit_slack_bot.py"
+                        }
+                    ]
                 }
             ]
         },

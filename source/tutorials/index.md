@@ -15,4 +15,12 @@ Fine-tune a pre-trained language model in the IMDB dataset for sentiment
 classification.
 :::
 
+:::{grid-item-card} {octicon}`robot` Reddit Slack Bot on a Schedule
+:link: parallel-processing-and-job-scheduling/reddit-slack-bot
+:link-type: doc
+
+Securely store Reddit and Slack authentication data while pushing relevant 
+Reddit posts to slack on a consistent basis.
+:::
+
 ::::
