@@ -105,7 +105,7 @@ When a task or workflow with the same project, domain, and name as a preexisting
 
 ## Inspecting tasks and workflows
 
-### Inspecting workflows in the Union UI
+### Inspecting workflows in the UI
 
 Select **Workflows** in the sidebar to display a list of all the registered workflows in the project and domain:
 
@@ -135,7 +135,7 @@ A list of all executions of this workflow. Click on an execution to go to the ex
 
 In the top right of the workflow view, you can click the **Launch Workflow** button to run the task with the default inputs.
 
-### Inspecting tasks in the Union UI
+### Inspecting tasks in the UI
 
 Select **Tasks** in the sidebar to display a list of all the registered tasks in the project and domain:
 
@@ -229,11 +229,11 @@ See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_p
 
 ## Running tasks and workflows
 
-### Running a task or workflow in the Union UI
+### Running a task or workflow in the UI
 
-To run a workflow in the Union UI, click the **Launch Workflow** button in the workflow view.
+To run a workflow in the UI, click the **Launch Workflow** button in the workflow view.
 
-You can also run individual tasks in the Union UI by clicking the **Launch Task** button in the task view.
+You can also run individual tasks in the UI by clicking the **Launch Task** button in the task view.
 
 ### Running a task or workflow locally on the command line with `unionai` or `python`
 
