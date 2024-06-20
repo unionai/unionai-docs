@@ -69,7 +69,7 @@ RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 :open:
 :color: warning
 
-You can run this example on Union {variant}.
+You can run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 :color: secondary
