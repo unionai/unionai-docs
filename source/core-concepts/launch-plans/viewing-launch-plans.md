@@ -1,6 +1,6 @@
 # Viewing launch plans
 
-## Viewing launch plans in the Union console
+## Viewing launch plans in the UI
 
 Select **Launch Plans** in the sidebar to display a list of all the registered launch plans in the project and domain:
 

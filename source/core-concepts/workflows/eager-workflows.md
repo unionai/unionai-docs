@@ -350,9 +350,9 @@ unionai --config <path/to/config.yaml> run \
 You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood, which means that `unionai run` has no way of knowing what tasks and subworkflows are invoked inside of it.
 :::
 
-## Eager workflows on Flyte console
+## Eager workflows in the UI
 
-Since eager workflows are an experimental feature, there is currently no first-class representation of them on the console. When you register an eager workflow, you'll be able to see it in the task view.
+Since eager workflows are an experimental feature, there is currently no first-class representation of them in the UI. When you register an eager workflow, you'll be able to see it in the task view.
 
 When you execute an eager workflow, the tasks and subworkflows invoked within it **won't show up** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually Flyte tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
 
@@ -368,4 +368,4 @@ As eager workflows are still experimental, there are a few limitations to keep i
 - All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.experimental.EagerException.html#flytekit.experimental.EagerException) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
 - Flyte entities that are invoked inside of an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
-- Union console currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.
+- The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.

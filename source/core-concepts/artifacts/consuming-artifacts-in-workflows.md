@@ -22,7 +22,7 @@ For a full list of Artifact class methods, see the [Flytekit Artifact documentat
 
 ## Launching a workflow that consumes an artifact
 
-To launch a workflow that consumes an artifact as one of its inputs, navigate to the workflow in the Union console and click **Launch Workflow**:
+To launch a workflow that consumes an artifact as one of its inputs, navigate to the workflow in the UI and click **Launch Workflow**:
 
 ![Launch workflow UI with artifact query](/_static/images/artifacts/launch_workflow_artifact_query.png)
 

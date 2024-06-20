@@ -23,7 +23,7 @@ In general, a given workflow can be associated with multiple launch plans, but a
 
 ## Viewing launch plans for a workflow
 
-To view the launch plans for a given workflow, in the Union console, navigate to the workflow's page and click **Launch Workflow**.
+To view the launch plans for a given workflow, in the UI, navigate to the workflow's page and click **Launch Workflow**.
 You can choose which launch plan to use to launch the workflow from the **Launch Plan** dropdown menu.
 The default launch plan will be selected by default. If you have not defined any custom launch plans for the workflow, only the default plan will be available.
 If you have defined one or more custom launch plans, they will be available in the dropdown menu along with the default launch plan.

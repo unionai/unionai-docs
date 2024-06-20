@@ -11,7 +11,7 @@ Here's a video with a brief explanation and demo, focused on task caching:
 ```{note}
 Caching is implemented at the node level of the workflow directed acyclic graph (DAG). Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
 
-Caching is not enabled for top-level workflows or launch plans (which are not invoked from within a parent workflow but rather via web console or CLI).
+Caching is not enabled for top-level workflows or launch plans (which are not invoked from within a parent workflow but rather via the UI or CLI).
 ```
 
 ## Caching parameters
@@ -82,7 +82,7 @@ In the above example, caching is enabled at multiple levels:
 
 In each case, the result of the execution is cached and reused in subsequent executions.
 Here the reuse is demonstrated by calling the `child_wf` and `child_lp` workflows multiple times with the same inputs.
-Additionally, if the same node is invoked again with the same inputs, even externally through the web console or CLI,
+Additionally, if the same node is invoked again with the same inputs, even externally through the UI or CLI,
 the cached result is returned immediately instead of re-executing the process.
 
 ## How caching works

@@ -17,9 +17,9 @@ Upon registration of a new launch plan, the first version is automatically inact
 If it has a schedule attached, the schedule is also inactive.
 Once activated, a launch plan version remains active even as new, later, versions are registered.
 
-A launch plan version with a schedule attached can be activated through either the Union console, `uctl`, or [`UnionRemote`](../../development-cycle/unionremote).
+A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../development-cycle/unionremote).
 
-## Activating and deactivating a launch plan in the console
+## Activating and deactivating a launch plan in the UI
 
 To activate a launch plan, go to the launch plan view and click **Add active launch plan** in the top right corner of the screen:
 
@@ -36,8 +36,8 @@ Selecting the launch plan version and clicking **Update** activates the launch p
 The launch plan version and schedule are now activated. The launch plan will be triggered according to the schedule going forward.
 
 :::{warning}
-Non-scheduled launch plans cannot be activated via the Union console.
-The Union console does not support activating launch plans that do not have schedules attached.
+Non-scheduled launch plans cannot be activated via the UI.
+The UI does not support activating launch plans that do not have schedules attached.
 You can activate them with `uctl` or `UnionRemote`.
 :::
 
@@ -48,8 +48,8 @@ To deactivate a launch plan, navigate to a launch plan with an active schedule, 
 A confirmation modal will appear, allowing you to deactivate the launch plan and its schedule.
 
 :::{warning}
-Non-scheduled launch plans cannot be deactivated via the Union console.
-The Union console does not support deactivating launch plans that do not have schedules attached.
+Non-scheduled launch plans cannot be deactivated via the UI.
+The UI does not support deactivating launch plans that do not have schedules attached.
 You can deactivate them with `uctl` or `UnionRemote`.
 :::
 

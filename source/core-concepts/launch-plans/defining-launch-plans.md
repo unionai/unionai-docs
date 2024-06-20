@@ -23,11 +23,11 @@ A launch plan can be defined with:
 
 * Some (or all) workflow inputs unspecified.
   These must be provided at execution time.
-  In the web console, they appear in the **Launch Workflow** dialog as empty input fields.
+  In the UI, they appear in the **Launch Workflow** dialog as empty input fields.
 
 * Some (or all) workflow inputs specified as default, with values.
   These may be provided as overrides at execution time, but if not, the default values are used.
-  In the web console, they appear in the **Launch Workflow** dialog as pre-filled input fields that can be changed.
+  In the UI, they appear in the **Launch Workflow** dialog as pre-filled input fields that can be changed.
 
 * Some (or all) workflow inputs specified as fixed, with values.
   These cannot be overridden at execution time.

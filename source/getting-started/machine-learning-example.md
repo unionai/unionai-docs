@@ -56,7 +56,7 @@ Then run the following command to execute the workflow:
 unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
-This will outputs the following to the console, where the first URL points to the image builder and
+This will outputs the following to the UI, where the first URL points to the image builder and
 the second URL is the workflow execution:
 
 ```{code-block} shell
@@ -64,7 +64,7 @@ the second URL is the workflow execution:
 ⏳ Waiting for build to finish at: https://serverless.union.ai/org/...
 ✅ Build completed in 0:01:57!
 
-[✔] Go to https://serverless.union.ai/org/... to see execution in the console.
+[✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
 When we run the workflow, it launches a Union hosted image builder that creates a image
