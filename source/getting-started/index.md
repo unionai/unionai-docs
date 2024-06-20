@@ -139,12 +139,12 @@ Note that there are two `host` values to substitute and the resulting URLs are p
 union:
   connection:
     host: dns:///<union-host-domain>
-    insecure: true
+    insecure: false
   auth:
     type: Pkce
 admin:
   endpoint: dns:///<union-host-domain>
-  insecure: true
+  insecure: false
   authType: Pkce
 ```
 
