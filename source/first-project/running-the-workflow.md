@@ -15,9 +15,9 @@ Running Execution on local.
 0.9767441860465116
 ```
 
-{@@ if serverless @@}
+## Run the workflow remotely on Union
 
-## Run and view the workflow on Union
+{@@ if serverless @@}
 
 To run the workflow in the cloud on Union, add the `--remote` option:
 
@@ -42,12 +42,11 @@ the images defined in `ImageSpec` blocks are used to initialize the containers f
 
 The first URL in the output above points to the image builder and the second URL points to the workflow execution.
 
-Open the second link to view the execution in Union's user interface and click on the **Graph** tab
-to see a visualization of the workflow:
-
 {@@ elif byoc @@}
 
-## Register the workflow on Union
+To run the workflow on Union, you will need to register the workflow, make your container image accessible to Union, and finally, run the workflow from the Union interface.
+
+### Register the workflow on Union
 
 When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `unionai register`. To register the `ml_workflow` example, run the following command:
 
@@ -86,7 +85,7 @@ Successfully serialized 5 flyte objects
 Successfully registered 5 entities
 ```
 
-## Make your image accessible to Union
+### Make your image accessible to Union
 
 Before you can run the workflow from the Union interface, you must make sure that the image defined in your `ImageSpec` is public.
 
@@ -94,12 +93,24 @@ In the GitHub Container Registry, switch the visibility of your container image 
 
 At this point, you can run the workflow from the Union interface.
 
-TODO: Explain how to run the workflow from the Union interface
+### Run the workflow from the Union interface
+
+To run the workflow from the Union interface:
+
+1. Navigate to the Union dashboard.
+2. In the left sidebar, click **Workflows**.
+3. Search for your workflow, then select the workflow from the search results.
+4. On the workflow page, click **Launch Workflow**.
+5. In the "Create New Execution" dialog, you can change the workflow version, Launch Plan, and inputs (if present). Click "Advanced options" to change the security context, labels, annotations, max parallelism, override the interruptible flag, and overwrite cached inputs.
+6. To execute the workflow, click **Launch**. You should see the workflow status change to "Running", then "Succeeded" as the execution progresses.
+
+To view the workflow execution graph, click the **Graph** tab above the running workflow.
 
 {@@ endif @@}
 
-Open the link to view the execution in Union's user interface and click on the **Graph** tab
-to see a visualization of the workflow:
+## View the workflow execution on Union
+
+When you view the workflow execution graph, you will see the following:
 
 ![Graph](/_static/images/getting-started-graph.jpg)
 
