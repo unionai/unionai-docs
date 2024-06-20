@@ -107,7 +107,7 @@
                 {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
                 {"name": "unionremote", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc", "serverless"]}
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]}
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
@@ -191,7 +191,7 @@
                         {"name": "entity-components", "variants": ["byoc", "serverless"]},
                         {"name": "execution-objects", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "config", "variants": ["byoc", "serverless"]}
+                {"name": "config", "variants": ["byoc"]}
             ]},
         {"name": "faq", "variants": ["byoc"]}
     ]}
