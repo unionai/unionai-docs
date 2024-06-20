@@ -75,7 +75,7 @@ def process_docstring(app, what, name, obj, options, lines):
             .replace('Flyte backend', 'Union backend')\
             .replace('flyte backend', 'union backend')\
             .replace('flyte config', 'union config')\
-            .replace('Flyte UI', 'Union UI')
+            .replace('Flyte UI', 'UI')
         del lines[idx]
         lines.insert(idx, str)
 
@@ -83,10 +83,10 @@ def process_docstring(app, what, name, obj, options, lines):
 def process_description(app, ctx, lines):
     for str in lines:
         idx = lines.index(str)
-        str = str.replace("Flyte UI", "Union UI")\
+        str = str.replace("Flyte UI", "UI")\
             .replace("Flyte's execution system", "Union's execution system")\
             .replace("Flyte Execution", "Union execution")\
-            .replace("Flyte Console", "Union UI")\
+            .replace("Flyte Console", "UI")\
             .replace("Flyte Python CLI environment",
                      "Union Python CLI environment")\
             .replace("flyte-ready", "Union-ready")\
