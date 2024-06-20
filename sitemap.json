@@ -38,7 +38,7 @@
                         {
                             "name": "sentiment-classifier",
                             "variants": ["byoc", "serverless"],
-                            "from_py_file": "./examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+                            "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
                         }
                     ]
                 }

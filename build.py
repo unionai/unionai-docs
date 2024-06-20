@@ -29,10 +29,10 @@ BUILD_DIR: str = './build/html'
 SITEMAP: str = './sitemap.json'
 
 # path of the examples submodule repository in the docs repo.
-EXAMPLES_REPO: str = "./examples"
+EXAMPLES_REPO: str = "./unionai-examples"
 
 # The run commands defines how to run the example code.
-RUN_COMMANDS: str = './examples/run_commands.yaml'
+RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
 # The set of variants.
 ALL_VARIANTS: list[str] = ['serverless', 'byoc']
