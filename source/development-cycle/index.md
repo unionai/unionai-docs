@@ -14,8 +14,8 @@ This section covers developing production-ready workflows for Union.
   - Create a project on Union to organize your workflows.
 * - [Registering workflows](registering-workflows)
   - Register workflows from your local machine to Union.
-* - {doc}`Image Builder <image-builder>`
-  - Use Image Builder to create custom container images.
+* - {doc}`ImageSpec <image-spec>`
+  - Use ImageSpec to specify custom container images that will be built and hosted by the Union Serverless image builder.
 * - {doc}`Managing secrets <managing-secrets>`
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
@@ -43,7 +43,7 @@ This section covers developing production-ready workflows for Union.
 * - [Registering workflows](registering-workflows)
   - Register workflows from your local machine to Union.
 * - {doc}`ImageSpec <image-spec>`
-  - Use ImageSpec to create custom container images.
+  - Use ImageSpec to specify custom container images that you build locally and push to a container registry.
 * - {doc}`Managing secrets <managing-secrets>`
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
