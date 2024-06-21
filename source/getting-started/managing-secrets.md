@@ -28,7 +28,7 @@ from flytekit import Secret, current_context, task, workflow
 
 @task(secret_requests=[Secret(key="my_secret")])
 def fn() -> str:
-    secret_value = current_context().secrets.get("my_secret")
+    secret_value = current_context().secrets.get(key="my_secret")
     # do something with the secret. For example, communication with an external API.
     # For this example, we'll just return it.
     return f"Hello: {secret_value}!"
