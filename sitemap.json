@@ -24,8 +24,8 @@
             ]},
         {"name": "development-cycle", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "initializing-a-local-project", "variants": ["byoc", "serverless"]},
-                {"name": "creating-a-project-on-union", "variants": ["byoc", "serverless"]},
+                {"name": "initializing-local-projects", "variants": ["byoc", "serverless"]},
+                {"name": "creating-projects-on-union", "variants": ["byoc", "serverless"]},
                 {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
                 {"name": "image-builder", "variants": ["serverless"]},
                 {"name": "image-spec", "variants": ["byoc"]},

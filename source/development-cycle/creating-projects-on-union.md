@@ -1,4 +1,4 @@
-# Creating a project on Union
+# Creating projects on Union
 
 In this section, we will explore some of the features Union that you are likely to need as you
 move on from your first project and the best practices that you should follow
