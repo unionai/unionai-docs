@@ -134,7 +134,7 @@ This is done to avoid conflict with documentation content that includes the stan
 
 ### Pulling in tutorial examples content
 
-This repo uses the [examples](https://github.com/unionai/examples) repo as a git submodule
+This repo uses the [unionai-examples](https://github.com/unionai/unionai-examples) repo as a git submodule
 to pull in the content for the tutorial examples. Calling `make build` automatically
 updates the submodule to the latest commit, but if you want to update it manually,
 you can run `make update-examples`.
@@ -147,14 +147,14 @@ key in the `sitemap.json` file. For example:
     {
         "name": "sentiment-classifier",
         "variants": ["byoc", "serverless"],
-        "from_py_file": "./examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+        "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
     }
 ]
 ```
 
-When you run `make build`, `update-examples` will pull in the latest changes from the `examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
+When you run `make build`, `update-examples` will pull in the latest changes from the `unionai-examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
 
-It will also use the YAML file in the `./examples/run_commands.yaml` repo to
+It will also use the YAML file in the `./unionai-examples/run_commands.yaml` repo to
 generate metadata about how to run that example.
 
 ### The processing pipeline
