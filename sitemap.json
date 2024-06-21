@@ -30,7 +30,7 @@
                 {"name": "image-spec", "variants": ["byoc", "serverless"]},
                 {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
                 {"name": "managing-apps", "variants": ["byoc", "serverless"]},
-                {"name": "accessing-aws-s3", "variants": ["byoc", "serverless"]},
+                {"name": "accessing-aws-s3", "variants": ["serverless"]},
                 {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                 {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},

@@ -48,8 +48,6 @@ This section covers developing production-ready workflows for Union.
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
   - Create applications to allow external systems to run compute on Union.
-* - {doc}`Accessing AWS S3 buckets <accessing-aws-s3>`
-  - Access data in AWS S3 Buckets from Union.
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
 * - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
