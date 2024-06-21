@@ -1,6 +1,6 @@
 # Running launch plans
 
-## Running a launch plan in the web console
+## Running a launch plan in the UI
 
 In the [Launch Plans section](index), we defined `my_workflow_custom_lp` with fixed input `a=3` and default inputs `b=4` and `c=5`:
 

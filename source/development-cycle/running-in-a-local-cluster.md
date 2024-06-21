@@ -70,7 +70,7 @@ Navigate to the URL produced by `unionai run`. This will take you to the Flyte w
 
 ![](/_static/images/getting-started-console.png)
 
-There are a few features of the Union console worth pointing out:
+There are a few features of the console worth pointing out:
 
 * The **Nodes** view shows the list of tasks executing in sequential order.
 * The right-hand panel shows metadata about the task execution, including logs, inputs, outputs, and task metadata.
