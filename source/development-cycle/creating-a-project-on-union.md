@@ -1,9 +1,9 @@
-# Moving onward
+# Creating a project on Union
 
-In this section, we will explore the some the features Union that you are likely to need as you
+In this section, we will explore some of the features Union that you are likely to need as you
 move on from your first project and the best practices that you should follow
 
-# Creating a Union project
+## Creating a Union project
 
 Projects in Union are used to organize and manage your workflows.
 
@@ -17,9 +17,9 @@ You can create a new project in the Union web console that you can specify when 
 ![Project creation modal](/_static/images/project-creation-modal.png)
 4. Click **Create Project**.
 
-## Create the project using `unionai init`
+## Creating a project locally using `unionai init`
 
-We will use the `unionai` (the CLI tool that ships with `unionai`) to quickly initialize the project, from a template.
+We will use the `unionai` (the CLI tool that ships with `unionai`) to quickly initialize the local project from a template.
 The `wine-classification` example is among the installable examples published in the GitHub repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
 Install the example, and `cd` into it:
@@ -43,7 +43,7 @@ unionai init --template basic-template-imagespec my_project
 ```
 :::
 
-## Project structure
+### Project structure
 
 If you examine the `wine-classification` directory you’ll see the following file structure:
 
@@ -65,7 +65,7 @@ You can create your own conventions and file structure for your Union projects.
 The `unionai init` command just provides a good starting point.
 :::
 
-## Install the local dependencies
+### Install the local dependencies
 
 We will explain the significance of the two requirements files later.
 For now, you just need to install the local dependencies.
@@ -77,7 +77,7 @@ $ pip install -r local-requirements.txt
 ```
 
 
-# Running in a local Python environment
+## Running the project in a local Python environment
 
 To quickly try out the code, you can run it in your local Python environment using `unionai run`:
 
@@ -100,7 +100,7 @@ LogisticRegression(C=0.1, max_iter=3000)
 This output above tells you that your workflow was executed successfully, but little else.
 To see actual results, we will need to run the workflow in a local Kubernetes cluster (see below).
 
-## Passing parameters
+### Passing parameters
 
 `unionai run` enables you to execute a specific workflow using the syntax:
 
@@ -130,7 +130,7 @@ $ unionai run foo.py bar --baz-luhrmann 'qux'
 
 would pass the value `qux` for the parameter `baz_luhrmann`.
 
-## Why `unionai run` rather than `python`?
+### Why `unionai run` rather than `python`?
 
 You could add a `main` guard at the end of the script like this:
 

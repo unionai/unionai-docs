@@ -1,6 +1,6 @@
-# First project
+# First workflow
 
-This section walks through building your first Union project, exploring the major features of the platform along the way.
+This section walks through building your first Union workflow, exploring the major features of the platform along the way.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ set up your local Python environment, and install the `unionai` command line too
 
 Union Serverless provides a default project (called **default**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
 
-To create additional projects, see [Creating a Union project](../moving-onward/creating-a-union-project).
+To create additional projects, see [Creating a Union project](../development-cycle/creating-a-project).
 
 {@@ elif byoc @@}
 
@@ -23,15 +23,9 @@ To create additional projects, see [Creating projects](../moving-onward/creating
 
 {@@ endif @@}
 
-## Your local project
+## Our example workflow
 
-When developing workflows on Union, you can organize your code as you wish.
-However, as your workflows grow in complexity, we recommend structuring them into projects on your local machine
-and putting those under version control.
-
-## Our example local project
-
-In this section, we will use a project from Union's examples GitHub repository, [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples), that illustrates training a simple model using `flytekit`, `scikit-learn`, and `pandas`.
+In this section, we will use a workflow from Union's examples GitHub repository, [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples), that illustrates training a simple model using `flytekit`, `scikit-learn`, and `pandas`.
 
 The model training workflow that we're going to run has three steps:
 - Getting the `penguins` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)

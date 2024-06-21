@@ -15,35 +15,29 @@
                 {"name": "multi-cluster", "variants": ["byoc"]}
             ]},
         {"name": "quick-start", "variants": ["byoc", "serverless"]},
-        {"name": "first-project", "variants": ["byoc", "serverless"],
+        {"name": "first-workflow", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "setting-up-your-local-environment", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
                 {"name": "running-the-workflow", "variants": ["byoc", "serverless"]},
                 {"name": "understanding-the-workflow-code", "variants": ["byoc", "serverless"]}
             ]},
-        {"name": "moving-onward", "variants": ["byoc", "serverless"],
+        {"name": "development-cycle", "variants": ["byoc", "serverless"],
             "children": [
+                {"name": "initializing-a-local-project", "variants": ["byoc", "serverless"]},
+                {"name": "creating-a-project-on-union", "variants": ["byoc", "serverless"]},
+                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
                 {"name": "image-builder", "variants": ["serverless"]},
                 {"name": "image-spec", "variants": ["byoc"]},
-                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
                 {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
                 {"name": "managing-apps", "variants": ["byoc", "serverless"]},
-                {"name": "accessing-aws-s3", "variants": ["byoc", "serverless"]}
+                {"name": "accessing-aws-s3", "variants": ["byoc", "serverless"]},
+                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
+                {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
+                {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
+                {"name": "unionremote", "variants": ["byoc", "serverless"]},
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]}
             ]},
-        {"name": "tutorials", "variants": ["byoc", "serverless"],
-            "children": [
-                {"name": "language-models", "variants": ["byoc", "serverless"],
-                    "children": [
-                        {
-                            "name": "sentiment-classifier",
-                            "variants": ["byoc", "serverless"],
-                            "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
-                        }
-                    ]
-                }
-            ]
-        },
         {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "workflows", "variants": ["byoc", "serverless"],
@@ -99,15 +93,6 @@
                         {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "caching", "variants": ["byoc", "serverless"]}
-            ]},
-        {"name": "development-cycle", "variants": ["byoc", "serverless"],
-            "children": [
-                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
-                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
-                {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
-                {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
-                {"name": "unionremote", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc"]}
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
@@ -174,6 +159,19 @@
                             ]}
                     ]}
             ]},
+        {"name": "tutorials", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "language-models", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "sentiment-classifier",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+                        }
+                    ]
+                }
+            ]
+        },
         {"name": "api", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "sdk", "variants": ["byoc", "serverless"],
