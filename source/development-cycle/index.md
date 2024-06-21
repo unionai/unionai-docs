@@ -8,9 +8,9 @@ This section covers developing production-ready workflows for Union.
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`Initializing a local project <initializing-a-local-project>`
+* - {doc}`Initializing local projects <initializing-local-projects>`
   - Use `unionai init` to initialize production-ready projects on your local machine.
-* - {doc}`Creating a project on Union <creating-a-project-on-union>`
+* - {doc}`Creating projects on Union <creating-projects-on-union>`
   - Create a project on Union to organize your workflows.
 * - [Registering workflows](registering-workflows)
   - Register workflows from your local machine to Union.
@@ -36,14 +36,14 @@ This section covers developing production-ready workflows for Union.
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`Initializing a local project <initializing-a-local-project>`
+* - {doc}`Initializing local projects <initializing-local-projects>`
   - Use `unionai init` to initialize production-ready projects on your local machine.
-* - {doc}`Creating a project on Union <creating-a-project-on-union>`
+* - {doc}`Creating projects on Union <creating-projects-on-union>`
   - Create a project on Union to organize your workflows.
 * - [Registering workflows](registering-workflows)
   - Register workflows from your local machine to Union.
 * - {doc}`ImageSpec <image-spec>`
-  - Use ImageSpec to specify custom container images that you build locally and push to a container registry.
+  - Use ImageSpec to specify custom container images that you build and push to a container registry.
 * - {doc}`Managing secrets <managing-secrets>`
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
