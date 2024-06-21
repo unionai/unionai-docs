@@ -15,7 +15,7 @@ Create an account
 :::
 
 Once you've received confirmation that your sign up succeeded, navigate to
-the Union UI at [serverless.union.ai](https://serverless.union.ai).
+the UI at [serverless.union.ai](https://serverless.union.ai).
 This is where you will be able to see your workflow executions and manage your projects:
 
 ![Union UI](/_static/images/dashboard.png)
@@ -230,7 +230,7 @@ To run the workflow remotely on Union, add the [`--remote` flag](../api/unionai-
 $ unionai run --remote hello.py hello_world_wf --name "Ada"
 ```
 
-The output displays a URL that links to the workflow execution in the Union UI:
+The output displays a URL that links to the workflow execution in the UI:
 
 {@@ if serverless @@}
 
@@ -238,7 +238,7 @@ The output displays a URL that links to the workflow execution in the Union UI:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-Go to the Union UI to see the execution:
+Go to the UI to see the execution:
 
 ![Dashboard](/_static/images/first-execution.png)
 
@@ -248,7 +248,7 @@ Go to the Union UI to see the execution:
 [✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
 
-Go to the Union UI to see the execution:
+Go to the UI to see the execution:
 
 ![Dashboard](/_static/images/first-execution-byoc.png)
 

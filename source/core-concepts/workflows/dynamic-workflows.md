@@ -100,7 +100,7 @@ def count_characters(s1: str, s2: str) -> int:
 
 A dynamic workflow is modeled as a task in the Union backend, but the body of the function is executed to produce a workflow at runtime. In both dynamic and static workflows, the output of tasks are Promise objects.
 
-FlytePropeller executes the dynamic task within its Kubernetes pod, resulting in a compiled DAG, which is then accessible in the console. It uses the information acquired during the dynamic task's execution to schedule and execute each node within the dynamic task. Visualization of the dynamic workflow's graph in the console is only available after the dynamic task has completed its execution.
+FlytePropeller executes the dynamic task within its Kubernetes pod, resulting in a compiled DAG, which is then accessible in the UI. It uses the information acquired during the dynamic task's execution to schedule and execute each node within the dynamic task. Visualization of the dynamic workflow's graph in the UI is only available after the dynamic task has completed its execution.
 
 When a dynamic task is executed, it generates the entire workflow as its output, termed the *futures file*.
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.

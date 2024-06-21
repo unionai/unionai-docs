@@ -122,7 +122,7 @@ Any user or application to which this policy is assigned will be granted **Contr
 
 #### Assign the policy to a user
 
-Once the policy is created you can assign it to a user using the **User Management** interface in the web console (see [Changing assigned policies](#changing-assigned-policies) below) or using the command line:
+Once the policy is created you can assign it to a user using the **User Management** interface in the UI (see [Changing assigned policies](#changing-assigned-policies) below) or using the command line:
 
 ```{code-block} shell
 $ uctl append identityassignments \
@@ -130,7 +130,7 @@ $ uctl append identityassignments \
        --policy "Workflow Developer Policy"
 ```
 
-Similarly, you can assign the policy to an application through the command line (there is currently no facility to assign policies to applications in the web console):
+Similarly, you can assign the policy to an application through the command line (there is currently no facility to assign policies to applications in the UI):
 
 ```{code-block} shell
 $ uctl append identityassignments \
@@ -164,7 +164,7 @@ In the **Add User** dialog, fill in the name and email of the new user and selec
 ![](/_static/images/add-user.png)
 
 The new user should expect to see an email invite from Okta after they have been added through this dialog.
-They should accept the invite and set up a password. At that point, they will be able to access the Union console.
+They should accept the invite and set up a password. At that point, they will be able to access the Union UI.
 
 ### Changing assigned policies
 
