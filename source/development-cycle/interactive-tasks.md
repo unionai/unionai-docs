@@ -1,4 +1,4 @@
-# Interactive tasks
+# Debugging with interactive tasks
 
 With interactive tasks you can inspect and debug live task code directly in the UI in an embedded Visual Studio Code IDE.
 

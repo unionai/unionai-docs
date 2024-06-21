@@ -24,7 +24,7 @@ This section covers developing production-ready workflows for Union.
   - Access data in AWS S3 Buckets from Union.
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
-* - {doc}`Interactive tasks <interactive-tasks>`
+* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
   - Inspect and debug live task code directly in the Union console.
 * - {doc}`UnionRemote <unionremote>`
   - Programmatically perform certain operations on the Union control plane in Python.
@@ -52,7 +52,7 @@ This section covers developing production-ready workflows for Union.
   - Access data in AWS S3 Buckets from Union.
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
-* - {doc}`Interactive tasks <interactive-tasks>`
+* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
   - Inspect and debug live task code directly in the Union console.
 * - {doc}`Setting up CI/CD deployment <setting-up-ci-cd-deployment>`
   - Automate workflow registration and execution.
