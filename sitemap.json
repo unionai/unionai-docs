@@ -46,7 +46,7 @@
                         {
                             "name": "reddit-slack-bot",
                             "variants": ["byoc", "serverless"],
-                            "from_py_file": "./unionai-examples/tutorials/redit_slack_bot/redit_slack_bot.py"
+                            "from_py_file": "./unionai-examples/tutorials/reddit_slack_bot/reddit_slack_bot.py"
                         },
                         {
                             "name": "time-series-forecaster-comparison",
@@ -120,7 +120,7 @@
                 {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
                 {"name": "unionremote", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc", "serverless"]}
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]}
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
@@ -204,7 +204,7 @@
                         {"name": "entity-components", "variants": ["byoc", "serverless"]},
                         {"name": "execution-objects", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "config", "variants": ["byoc", "serverless"]}
+                {"name": "config", "variants": ["byoc"]}
             ]},
         {"name": "faq", "variants": ["byoc"]}
     ]}

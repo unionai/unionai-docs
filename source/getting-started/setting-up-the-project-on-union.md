@@ -1,6 +1,6 @@
 # Setting up the project on Union
 
-You can create a new project in the Union web console that you can specify when you register workflows to Union.
+You can create a new project in the UI that you can specify when you register workflows to Union.
 
 1. Navigate to the Projects page.
 ![Projects page navigation](/_static/images/projects-nav.png)

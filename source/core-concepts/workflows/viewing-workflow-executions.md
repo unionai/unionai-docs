@@ -1,6 +1,4 @@
-# Viewing workflow executions in the web console
-
-## Execution list
+# Viewing workflow executions in the UI
 
 The **Execution list** shows all executions in a project and domain combination.
 An execution represents a single run of all or part of a workflow (including subworkflows and individual tasks).

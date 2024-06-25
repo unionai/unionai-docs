@@ -15,10 +15,10 @@ Create an account
 :::
 
 Once you've received confirmation that your sign up succeeded, navigate to
-the Union console at [serverless.union.ai](https://serverless.union.ai).
+the UI at [serverless.union.ai](https://serverless.union.ai).
 This is where you will be able to see your workflow executions and manage your projects:
 
-![Union console](/_static/images/dashboard.png)
+![Union UI](/_static/images/dashboard.png)
 
 {@@ elif byoc@@}
 
@@ -31,11 +31,11 @@ After your administrator has onboarded you to Union, you should have the followi
 
 ## Log into Union
 
-Navigate to the web console at `<union-host-url>` and log in with your credentials.
-Once you have logged in you should see the Union console.
+Navigate to the UI at `<union-host-url>` and log in with your credentials.
+Once you have logged in you should see the Union UI.
 This is where you will be able to see your workflow executions and and manage your projects:
 
-![Union console](/_static/images/union-byoc-home.png)
+![Union UI](/_static/images/union-byoc-home.png)
 
 {@@ endif @@}
 
@@ -139,12 +139,10 @@ Note that there are two `host` values to substitute and the resulting URLs are p
 union:
   connection:
     host: dns:///<union-host-domain>
-    insecure: true
   auth:
     type: Pkce
 admin:
   endpoint: dns:///<union-host-domain>
-  insecure: true
   authType: Pkce
 ```
 
@@ -228,25 +226,25 @@ To run the workflow remotely on Union, add the [`--remote` flag](../api/unionai-
 $ unionai run --remote hello.py hello_world_wf --name "Ada"
 ```
 
-The output displays a URL that links to the workflow execution on the Union web console:
+The output displays a URL that links to the workflow execution in the UI:
 
 {@@ if serverless @@}
 
 ```{code-block} shell
-[✔] Go to https://serverless.union.ai/org/... to see execution in the console.
+[✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-Go to the Union console to see the execution:
+Go to the UI to see the execution:
 
 ![Dashboard](/_static/images/first-execution.png)
 
 {@@ elif byoc @@}
 
 ```{code-block} shell
-[✔] Go to https://<union-host-url>/org/... to see execution in the console.
+[✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
 
-Go to the Union console to see the execution:
+Go to the UI to see the execution:
 
 ![Dashboard](/_static/images/first-execution-byoc.png)
 

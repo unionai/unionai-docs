@@ -136,7 +136,7 @@ $ unionai register workflows/imagespec-simple-example.py
 `unionai` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
 It will then register the workflow to Union.
 
-To see the registered workflow, go to the Union console and navigate to the project and domain that you created above.
+To see the registered workflow, go to the UI and navigate to the project and domain that you created above.
 
 ## Ensure that the image is publicly accessible
 

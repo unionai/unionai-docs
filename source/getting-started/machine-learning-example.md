@@ -56,7 +56,7 @@ Then run the following command to execute the workflow:
 unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
-This will outputs the following to the console, where the first URL points to the image builder and
+This will outputs the following to the UI, where the first URL points to the image builder and
 the second URL is the workflow execution:
 
 ```{code-block} shell

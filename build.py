@@ -56,6 +56,19 @@ INSTALL_SDK_PACKAGES: dict[str, str] = {
     "serverless": "unionai",
 }
 
+DOCSEARCH_CREDENTIALS = {
+    "byoc": {
+        "DOCSEARCH_APP_ID": "IG23OUCJRL",
+        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
+        "DOCSEARCH_INDEX_NAME": "union",
+    },
+    "serverless": {
+        "DOCSEARCH_APP_ID": "DQDAK9LPRV",
+        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_SERVERLESS", ""),
+        "DOCSEARCH_INDEX_NAME": "union",
+    },
+}
+
 BYOC_RUN_COMMANDS = """Export the following environment variable to build and push
 images to your own container registry:
 
@@ -66,9 +79,10 @@ export IMAGE_SPEC_REGISTRY="<your-container-registry>"
 """
 
 RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+:open:
 :color: warning
 
-You can run this example on Union {variant}.
+You can run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 :color: secondary
@@ -95,8 +109,11 @@ Then run the following commands to run the workflow:
 
 
 # Call a shell command.
-def shell(command: str) -> None:
-    subprocess.run(shlex.split(command))
+def shell(command: str, env: dict | None = None) -> None:
+    _env = os.environ.copy()
+    if env:
+        _env.update(env)
+    subprocess.run(shlex.split(command), env=_env)
 
 
 # Returns a dictionary of variables based on the global SUBS dictionary,
@@ -283,7 +300,10 @@ def process_project():
         shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
         shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
     for variant in ALL_VARIANTS:
-        shell(f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}')
+        shell(
+            f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
+            env=DOCSEARCH_CREDENTIALS[variant],
+        )
     shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 

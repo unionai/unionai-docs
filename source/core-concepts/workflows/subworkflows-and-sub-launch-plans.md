@@ -10,7 +10,7 @@ The DAG of the subworkflow is embedded directly into the DAG of the parent and e
 
 On the other hand, if the child workflow is invoked from within the parent [**by calling the child's launch plan**](../launch-plans/index), this is called a **sub-launch plan** and it results in a new top-level workflow execution being invoked with its own execution ID and execution context.
 It also appears as a separate top-level entity in the system.
-The only difference is that it happens to have been kicked off from within another workflow instead of from the command line or the web console.
+The only difference is that it happens to have been kicked off from within another workflow instead of from the command line or the UI.
 
 Here is an example:
 

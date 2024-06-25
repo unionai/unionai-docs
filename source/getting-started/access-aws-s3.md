@@ -45,8 +45,8 @@ def read_s3_data() -> str:
     secrets = current_context().secrets
 
     s3 = s3fs.S3FileSystem(
-        secret=secrets.get("AWS_SECRET_ACCESS_KEY"),
-        key=secrets.get("AWS_ACCESS_KEY_ID"),
+        secret=secrets.get(key="AWS_SECRET_ACCESS_KEY"),
+        key=secrets.get(key="AWS_ACCESS_KEY_ID"),
     )
 
     with s3.open("test_bucket/my_file.txt") as f:

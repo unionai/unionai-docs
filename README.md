@@ -37,6 +37,32 @@ Once the pull request is merged, the changes will be published to `docs.union.ai
 PR builds are also automatically deployed to preview URLs on the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
 project in Cloudflare Pages.
 
+## Build the site with Algolia DocSearch
+
+To build the site with Algolia DocSearch, you need to provide the API keys associated with the
+BYOC and Serverless DocSearch indexes. You can do this by creating a `secrets.txt`
+file (which will be ignored by git), and putting the following content into it:
+
+```
+DOCSEARCH_API_KEY_BYOC=<DOCSEARCH_API_KEY_BYOC>
+DOCSEARCH_API_KEY_SERVERLESS=<DOCSEARCH_API_KEY_SERVERLESS>
+```
+
+> [!NOTE]
+> You can obtain the credentials from LastPass by contacting niels@union.ai.
+
+Export the environment variables and run the docs build process:
+
+```bash
+export $(cat secrets.txt | xargs)
+make build
+```
+
+> [!NOTE]
+> When you view the local docs, the search bar will surface results that will
+> redirect to the corresponding `docs.union.ai` page. This is because Algolia
+> DocSearch does not index local pages.
+
 ## How it works
 
 The content in `source/` is written in [Sphinx](https://www.sphinx-doc.org) [Myst Markdown](https://mystmd.org/) format
@@ -134,7 +160,7 @@ This is done to avoid conflict with documentation content that includes the stan
 
 ### Pulling in tutorial examples content
 
-This repo uses the [union-examples](https://github.com/unionai/examples) repo as a git submodule
+This repo uses the [unionai-examples](https://github.com/unionai/unionai-examples) repo as a git submodule
 to pull in the content for the tutorial examples. Calling `make build` automatically
 updates the submodule to the latest commit, but if you want to update it manually,
 you can run `make update-examples`.
@@ -147,14 +173,14 @@ key in the `sitemap.json` file. For example:
     {
         "name": "sentiment-classifier",
         "variants": ["byoc", "serverless"],
-        "from_py_file": "./union-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+        "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
     }
 ]
 ```
 
-When you run `make build`, `update-examples` will pull in the latest changes from the `examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
+When you run `make build`, `update-examples` will pull in the latest changes from the `unionai-examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
 
-It will also use the YAML file in the `./examples/run_commands.yaml` repo to
+It will also use the YAML file in the `./unionai-examples/run_commands.yaml` repo to
 generate metadata about how to run that example.
 
 ### The processing pipeline
