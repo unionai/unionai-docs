@@ -3,6 +3,10 @@ article.bd-article {
     height: 100%;
 }
 
+div.bd-header-article {
+    background-color: inherit;
+}
+
 /* Basic styling for the dropdown menu */
 button#dropdown-text::before {
     content: "Version:";
@@ -117,4 +121,37 @@ a:active, a:visited {
 
 ::-webkit-scrollbar-thumb {
     background: var(--pst-color-border);
+}
+
+/* hide default search bar */
+div.search-button__wrapper.show {
+    display: none;
+}
+
+/* docsearch button */
+button.DocSearch {
+    width: 100%;
+    margin: 0;
+}
+
+kbd.DocSearch-Commands-Key:not(.compound) {
+    padding: 0;
+}
+
+:root {
+    --docsearch-primary-color: #edab1c;
+}
+
+div.DocSearch-Hit-content-wrapper {
+    /* prevent scrollbar from showing up */
+    overflow-y: hidden;
+}
+
+div.DocSearch-Logo .cls-1,
+div.DocSearch-Logo .cls-2 {
+    fill: #414c70 !important;
+}
+
+.DocSearch-Hits mark {
+    padding: 0;
 }
