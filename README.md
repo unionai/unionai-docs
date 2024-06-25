@@ -37,7 +37,7 @@ Once the pull request is merged, the changes will be published to `docs.union.ai
 PR builds are also automatically deployed to preview URLs on the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
 project in Cloudflare Pages.
 
-## Build the site with algolia docsearch
+## Build the site with Algolia DocSearch
 
 To build the site with, you need to provide the api keys associated with the
 byoc and serverless docsearch indexes. You can do this by creating a `secrets.txt`
