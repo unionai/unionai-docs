@@ -39,7 +39,7 @@ project in Cloudflare Pages.
 
 ## Build the site with Algolia DocSearch
 
-To build the site with, you need to provide the api keys associated with the
+To build the site with Algolia DocSearch, you need to provide the API keys associated with the
 byoc and serverless docsearch indexes. You can do this by creating a `secrets.txt`
 file (which will be ignored by git), and putting the following content into it:
 
