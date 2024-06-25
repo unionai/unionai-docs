@@ -61,7 +61,7 @@ make build
 > [!NOTE]
 > When you view the local docs, the search bar will surface results that will
 > redirect to the corresponding `www.union.ai` page. This is because Algolia
-> docssearch does not index local pages.
+> DocSearch does not index local pages.
 
 ## How it works
 
