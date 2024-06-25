@@ -39,6 +39,7 @@ myst_heading_anchors = 6
 
 # Union logo
 html_logo = "_static/public/logo.svg"
+html_favicon = "_static/public/favicon.ico"
 
 # Add variant selector to sidebar
 html_sidebars = {
