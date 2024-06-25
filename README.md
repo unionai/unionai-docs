@@ -37,6 +37,32 @@ Once the pull request is merged, the changes will be published to `docs.union.ai
 PR builds are also automatically deployed to preview URLs on the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
 project in Cloudflare Pages.
 
+## Build the site with algolia docsearch
+
+To build the site with, you need to provide the api keys associated with the
+byoc and serverless docsearch indexes. You can do this by creating a `secrets.txt`
+file (which will be ignored by git), and putting the following content into it:
+
+```
+DOCSEARCH_API_KEY_BYOC=<DOCSEARCH_API_KEY_BYOC>
+DOCSEARCH_API_KEY_SERVERLESS=<DOCSEARCH_API_KEY_SERVERLESS>
+```
+
+> [!NOTE]
+> You can obtain the credentials from LastPass by contacting niels@union.ai.
+
+Export the environment variables and run the docs build process:
+
+```bash
+export $(cat secrets.txt | xargs)
+make build
+```
+
+> [!NOTE]
+> When you view the local docs, the search bar will surface results that will
+> redirect to the corresponding `www.union.ai` page. This is because algolia
+> docssearch does not index local pages.
+
 ## How it works
 
 The content in `source/` is written in [Sphinx](https://www.sphinx-doc.org) [Myst Markdown](https://mystmd.org/) format

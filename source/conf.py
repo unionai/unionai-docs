@@ -1,3 +1,4 @@
+import os
 import re
 
 # Project
@@ -26,6 +27,7 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinxext.remoteliteralinclude",
     "sphinx_click",
+    "sphinx_docsearch",
 ]
 html_theme = "sphinx_book_theme"
 
@@ -43,7 +45,7 @@ html_sidebars = {
     "**": [
         "navbar-logo.html",
         "variant-selector.html",
-        "search-button-field.html",
+        "searchbox.html",
         "sbt-sidebar-nav.html",
     ]
 }
@@ -57,6 +59,11 @@ copybutton_prompt_text = "$ "
 
 # prevent css style tags from being copied by the copy button
 copybutton_exclude = 'style[type="text/css"]'
+
+# algolia docsearch credentials
+docsearch_app_id = os.getenv("DOCSEARCH_APP_ID")
+docsearch_api_key = os.getenv("DOCSEARCH_API_KEY")
+docsearch_index_name = os.getenv("DOCSEARCH_INDEX_NAME")
 
 
 # replace flyte-specific text in docstrings pulled in
