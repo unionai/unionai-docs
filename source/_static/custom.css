@@ -113,13 +113,13 @@ a:active, a:visited {
 }
 
 /* make the scroll bar sleeker */
-::-webkit-scrollbar {
+.bd-sidebar::-webkit-scrollbar {
     width: 3px;
     height: 3px;
     background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.bd-sidebar::-webkit-scrollbar-thumb {
     background: var(--pst-color-border);
 }
 
