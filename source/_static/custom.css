@@ -3,10 +3,6 @@ article.bd-article {
     height: 100%;
 }
 
-div.bd-header-article {
-    background-color: inherit;
-}
-
 /* Basic styling for the dropdown menu */
 button#dropdown-text::before {
     content: "Version:";
@@ -154,4 +150,9 @@ div.DocSearch-Logo .cls-2 {
 
 .DocSearch-Hits mark {
     padding: 0;
+}
+
+/* make sure content header doesn't pop out when docsearch model is active */
+body.DocSearch--active div.bd-header-article {
+    z-index: 1;
 }
