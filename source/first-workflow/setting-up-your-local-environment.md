@@ -19,8 +19,8 @@ conda activate ml-workflow
 Install Python 3.8 or higher from your package manager or from [Python.org](https://www.python.org/downloads/), then run the following commands to create a virtual environment:
 
 ```shell
-python -m venv .venv
-source .venv/bin/activate
+python -m venv venvs/ml_workflow_venv
+source venvs/ml_workflow_venv/bin/activate
 ```
 :::
 
@@ -39,8 +39,8 @@ $ git clone git@github.com:unionai/unionai-examples.git
 Next, install the required dependencies:
 
 ```{code-block} shell
-$ cd examples/guides/01_getting_started/ml_workflow
-$ pip install -r requirements.txt
+$ cd unionai-examples
+$ pip install -r guides/01_getting_started/ml_workflow/requirements.txt
 ```
 
 This will install `unionai`, `scikit-learn`, `pandas`, and `matplotlib`.
