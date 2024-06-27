@@ -4,7 +4,7 @@ In Union, your work is organized in a hierarchy with the following structure:
 
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
 
-* **Domains** Within an organization there are (typically) three domains used to separate workflows into different environments, usually `development`, `staging`, and `production`, though this can be configured when onboarding your organization.
+* **Domains** Within an organization there are (typically) three domains used to separate workflows into different environments, usually `development`, `staging`, and `production` (this can be configured when onboarding your organization).
 
 * **Projects**: Orthogonal to the domains
 
