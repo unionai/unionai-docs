@@ -1,27 +1,44 @@
-# Initializing a project
+# Setting up a project
 
 In Union, your work is organized in a hierarchy with the following structure:
 
+{@@ if serverless @@}
+
+* **Account**: Your account on Union, tied to your GitHub identity.
+* **Domains** Within your account there are three domains, `development`, `staging`, and `production`, used to organize your workflows during the development process.
+* **Projects**: Orthogonal to domains, projects are used to organize your workflows into logical groups. You can create as many projects as you need.
+
+A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
+When you initialize `my_workflow` you would typically register it in the project-domain `my_project/development`.
+As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
+Promotion is done simply by [re-registering the workflow to the new project-domain]()).
+
+{@@ elif byoc @@}
+
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
+* **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your workflows during the development process. You can configure a custom set of domains to suit your needs during [onboarding](../data-plane-setup/configuring-your-data-plane).
+* **Projects**: Orthogonal to domains, projects are used to organize your workflows into logical groups. You can create as many projects as you need.
 
-* **Domains** Within an organization there are (typically) three domains used to separate workflows into different environments, usually `development`, `staging`, and `production` (this can be configured when onboarding your organization).
+A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
+When you initialize `my_workflow` you would typically register it in the project-domain `my_project/development`.
+As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
+Promotion is done simply by [re-registering the workflow to the new project-domain]()).
 
-* **Projects**: Orthogonal to the domains
+{@@ endif @@}
 
-[DONE TO HERE]()
+The word "project" can be a somewhat overloaded term.
+It can refer to the entity in your Union instance that holds a set of workflows, as described above.
+But it can also refer to the local directory within which you are developing those workflows.
+Furthermore, it might refer to the GitHub (or other SCM) repository that you are using to store the same workflow code.
 
-* **Domain**: Within a project workflows can
+In order to avoid confusion, we recommend keep in the three types of projects always aligned, so that a GitHUb project corresponds to a local projects adn both of those correspond to a Union project.
+This is the approach we take in this guide.
 
-projects are used to organize and manage your workflows.
+Thus, when we refer generically to a "project" all three senses are usually interchangeable.
 
+If we need to be specific, we will use the terms "Union project", "local project", and "GitHub project" to distinguish between them.
 
-Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project cloned from git.
-
-In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
-
-The
-
-Projects in Union are used to organize and manage your workflows.
+## Create a Union project
 
 You can create a new project in the Union UI. You can then specify that when you register workflows to Union.
 
@@ -32,6 +49,27 @@ You can create a new project in the Union UI. You can then specify that when you
 3. In the project creation modal, enter a **Project Name**, **Project id**, and optional **Description**.
 ![Project creation modal](/_static/images/project-creation-modal.png)
 4. Click **Create Project**.
+
+[DONE TO HERE]()
+
+
+
+When organizing your work you will create projects on Union
+
+Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project cloned from git.
+
+In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
+
+The
+
+Projects in Union are used to organize and manage your workflows.
+
+
+
+
+
+
+
 
 ## Creating a project locally using `unionai init`
 
