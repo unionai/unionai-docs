@@ -4,6 +4,8 @@ You can use secrets to interact with external services through API keys.
 
 ## Creating secrets
 
+### Creating a secret on the command line
+
 To create a secret, use the `unionai create secret` command:
 
 ```{code-block} shell
@@ -16,6 +18,14 @@ You'll be prompted to enter a secret value in the terminal:
 Enter secret value: ...
 ```
 
+### Creating a secret from a file
+
+To create a secret from a file, run the following command:
+
+```{code-block} shell
+unionai create secret my_file_secret -f /path/to/file
+```
+
 ## Listing secrets
 
 You can list existing secrets with the `unionai get secret` command:
@@ -26,7 +36,15 @@ unionai get secret
 
 ## Using secrets in workflow code
 
-See below for an example of using a secret in your workflow code. To run the following example, copy it to a new file and save it as `using_secrets.py`:
+### Using a secret created on the command line
+
+To use a secret created on the command line, see the example code below. To run the example code:
+
+1. [Create a secret on the command line](#creating-a-secret-on-the-command-line) with the key `my_secret`.
+2. Copy the following example code to a new file and save it as `using_secrets.py`.
+3. Run the script with `unionai run --remote using_secrets.py main`.
+
+#### Example code
 
 ```{code-block} python
 from flytekit import Secret, current_context, task, workflow
@@ -43,11 +61,38 @@ def main() -> str:
     return fn()
 ```
 
-Use `unionai run` to run the `using_secrets.py` script:
+### Using a secret created from a file
 
-```{code-block} shell
-unionai run --remote using_secrets.py main
+To use a secret created from a file in your workflow code, you must mount it as a file. To run the example code below:
+
+1. [Create a secret from a file](#creating-a-secret-from-a-file) with the key `my_secret`.
+2. Copy the example code below to a new file and save it as `using_secrets_file.py`.
+4. Run the script with `unionai run --remote using_secrets_file.py main`.
+
+#### Example code
+
+```{code-block} python
+from flytekit import Secret, current_context, task, workflow
+
+@task(
+    secret_requests=[
+        Secret(key="my_file_secret", mount_requirement=Secret.MountType.FILE),
+    ]
+)
+def fn() -> str:
+    path_to_secret_file = current_context().secrets.get_secrets_file("my_file_secret")
+    with open(path_to_secret_file, "r") as f:
+        secret_value = f.read()
+    return secret_value
+
+@workflow
+def main() -> str:
+    return fn()
 ```
+
+:::{note}
+The `get_secrets_file` method takes the secret key and returns the path to the secret file.
+:::
 
 ## Updating secrets
 
