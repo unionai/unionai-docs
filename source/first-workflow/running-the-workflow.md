@@ -5,7 +5,7 @@
 To quickly check your workflow code, you can run it in your local Python environment with the following command:
 
 ```{code-block} shell
-$ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+$ unionai run guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 If the code runs successfully, you should see output like this:
