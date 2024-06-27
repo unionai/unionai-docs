@@ -225,7 +225,9 @@ Navigate to it in your browser and follow the directions.
 It can be used, for example, by CI bots.
 With this method, you create a Union application and configure your tools to pass the Client ID and App Secret to Union.
 
-These methods are all configured in the `config.yaml` that your `uctl` or `unionai` command uses. See [cli-authentication.md](administration/cli-authentication) for full details.
+These methods are all configured in the `config.yaml` that your `uctl` or `unionai` command uses. See [CLI Authentication](administration/cli-authentication) for full details.
+
+Note that if you wish to run or register workflows in a remote SSH session, you will need to authenticate using the DeviceFlow or ClientSecret methods as PKCE attempts to open a local browser from the CLI.
 
 ### How do I specify resource requirements for a task?
 
