@@ -1,13 +1,29 @@
-# Creating projects on Union
+# Initializing a project
 
-In this section, we will explore some of the features Union that you are likely to need as you
-move on from your first project and the best practices that you should follow
+In Union, your work is organized in a hierarchy with the following structure:
 
-## Creating a Union project
+* **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
+
+* **Domains** Within an organization there are (typically) three domains used to separate workflows into different environments, usually `development`, `staging`, and `production`, though this can be configured when onboarding your organization.
+
+* **Projects**: Orthogonal to the domains
+
+[DONE TO HERE]()
+
+* **Domain**: Within a project workflows can
+
+projects are used to organize and manage your workflows.
+
+
+Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project cloned from git.
+
+In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
+
+The
 
 Projects in Union are used to organize and manage your workflows.
 
-You can create a new project in the Union web console that you can specify when you register workflows to Union.
+You can create a new project in the Union UI. You can then specify that when you register workflows to Union.
 
 1. Navigate to the Projects page.
 ![Projects page navigation](/_static/images/projects-nav.png)

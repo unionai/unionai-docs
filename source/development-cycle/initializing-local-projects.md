@@ -1,3 +1,0 @@
-# Initializing local projects
-
-TK
