@@ -271,7 +271,7 @@ For example, let's say you have the following repository structure and you want 
             ├── __init__.py
             └── utils.py
 ```
-Unless all these python modules were explicitly added to the image being used by the task, you will encounter import errors as the container running the task does not recognize these modules.
+Unless all these python modules were explicitly added to the image being used by the task, you will encounter import errors as the container running the task does not recognize these modules by default.
 Rather than building a custom Dockerfile that copies all the files and modules in your repository structure, Union offers two helpful options:
 1. Use the `--copy-all` flag in `unionai run --remote ...`
 2. Use `unionai register` to register your workflow and run it later using the Union console, `UnionRemote`, a `LaunchPlan`, `Artifact` triggers, and more
