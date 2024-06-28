@@ -29,7 +29,7 @@ Each Union BYOC organization has a default project (called **flytesnacks**) wher
 
 {@@ endif @@}
 
-To create additional projects, see [Setting up a project](../moving-onward/setting-up-a-project).
+To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project).
 
 ## Our example workflow
 
