@@ -64,7 +64,7 @@ This command does the following:
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
-Running pyflyte register from /Users/me/repos/unionai/unionai-examples with images ImageConfig(default_image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/ppiegaze/repos/unionai/examples/guides/01_getting_started/ml_workflow',)
+Running pyflyte register from /Users/me/repos/unionai/unionai-examples with images ImageConfig(default_image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/me/repos/unionai/unionai-examples/guides/01_getting_started/ml_workflow',)
 Registering against union.my-company.com
 Detected Root /Users/me/repos/unionai/unionai-examples/guides/01_getting_started, using this to create deployable package...
 No output path provided, using a temporary directory at /var/folders/vh/5cnb0p254xv44zpn2ntj_0ch0000gn/T/tmp4a9iqzqt instead
