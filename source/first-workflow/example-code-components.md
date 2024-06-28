@@ -1,56 +1,76 @@
 # Example code components
 
-You can find the full example code on [{fab}`github` Github](https://github.com/unionai/examples/blob/main/guides/01_getting_started/ml_workflow/ml_workflow.py)
+The ML workflow example code contains a `@workflow`-decorated function made up of several tasks decorated with the `@task` decorator. The code also contains an `ImageSpec` block, and tasks with the `enable_deck=True` parameter set, which enables visualizations in the Union UI.
 
+```{note}
+You can find the full ML workflow example code on [{fab}`github` Github](https://github.com/unionai/examples/blob/main/guides/01_getting_started/ml_workflow/ml_workflow.py)
+```
 
-## `@workflow`
+## Workflow
 
-The overall [workflow](https://docs.union.ai/core-concepts/workflows/) is a collection
-of tasks that manages the data flow between tasks. Our standard workflow is defined using
-a `@workflow` decorator the wraps a Python function:
+The `@workflow` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index). This function contains references to the tasks defined earlier in the code.
 
+A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
+
+When deployed to Union, the workflow function is "compiled" to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
 :language: python
-:lines: 100-103
+:pyobject: main
 ```
 
-The workflow's `max_bins` parameter is automatically added to the `unionai run` CLI allowing
-us to run `--max_bins 64` to configure the parameter.
+Workflow parameters are available for configuration on the command line. In this example, the `main` workflow's `max_bins` parameter can be set to a different value from the default:
 
------
+```{code-block} shell
+$ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 128
+```
 
-The `@workflow` decorator indicates a function that defines a **workflow**:
-
-* A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
-* When deployed to Union, the workflow function is "compiled" to construct the directed acyclic graph of tasks, defining the order of execution of task pods and the data flow dependencies between them.
-
-:::{admonition} Details on `@task` and `@workflow` syntax
-* The `@task` and `@workflow` decorators are transparent to Python provided that they are used only on _functions at the top-level scope of the module_.
-  You can invoke tasks and workflows as regular Python functions and even import and use them in other Python modules or scripts.
-* Task and workflow function signatures must be _type-annotated with Python type hints_.
-* Task and workflow functions must be _invoked with keyword arguments_.
+:::{admonition} `@task` and `@workflow` syntax
+* The `@task` and `@workflow` decorators will only work on functions at the top-level scope of the module.
+* You can invoke tasks and workflows as regular Python functions and even import and use them in other Python modules or scripts.
+* Task and workflow function signatures must be type-annotated with Python type hints.
+* Task and workflow functions must be invoked with keyword arguments.
 :::
 
-TK - link to core concepts page(s)
+## Tasks
 
-## `@task`
+The `@task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index). A task taskes some input and produces an output. When deployed to a Kubernetes cluster, each task runs in its own Kubernetes pod.
 
-Each task is defined with a Python function that is decorated with a `@task` decorator.
-For example, the `train_model` task is defined as follows:
+### `train_model`
+
+The `train_model` task has the parameter `requests` set to `Resources(cpu="3", mem="2Gi")`, which is declarative infrastructure that allocates 3 CPUs and `2Gi` of memory for the task. This task also has the `container_image` parameter set, which specifies the image (defined in an `ImageSpec` block) to use for the task.
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
 :language: python
-:lines: 55-64
+:pyobject: train_model
 ```
 
-We highlight some of features used to define the task:
+### `get_dataset`
 
-1. Python typing is required for all inputs and outputs. Union uses the types for serialization
-   and to validate workflows.
-2. The `Resources(cpu="3", mem="2Gi")` is **declarative infrastructure** that allocates 3 CPUs
-   and `2Gi` of memory for the task.
-3. The `container_image=image` sets an image that has all the dependencies required by the task.
+`get_dataset` returns the training and test data as pandas DataFrames. `cache=True` means that the task output is cached by Union. With caching, future executions of the workflow will use the cached data instead of running
+the task again.
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+:language: python
+:pyobject: get_dataset
+```
+
+```{note}
+For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters).
+```
+
+## ImageSpec
+
+The `ImageSpec` object is used to define the container image that will run the tasks in the workflow.
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+:language: python
+:lines: 36-38
+```
+
+In this example, the `requirements` parameter is set to the location of the requirements file that will be used to build the image. For a full list of parameters, see the [ImageSpec reference documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec).
+
+-------
 
 The task requires custom dependencies, which we specify with an `ImageSpec`:
 
@@ -62,38 +82,6 @@ The task requires custom dependencies, which we specify with an `ImageSpec`:
 The `requirements.txt` contain the same dependencies we used to configure our local development environment. The Union hosted image builder builds the image based
 on the `ImageSpec` specification and uses that image for the machine learning workflow.
 
-The `get_dataset` task uses a cache of the data outputs of the task:
-
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 41-52
-```
-
-`get_dataset` returns the training and test data as pandas DataFrames which gets cached by Union.
-With caching, future executions of the workflow will use the cached data instead of running
-the task again.
-
------
-
-The `@task` decorator indicates functions that define **tasks**:
-
-* A task is a Python function that takes some inputs and produces an output.
-* When deployed to a Kubernetes cluster, each task runs in its own Kubernetes pod.
-* Tasks are assembled into workflows.
-
-TK - link to core concepts page(s)
-
-## `ImageSpec`
-
-The `ImageSpec` object is used to define the container image that will run the tasks in the workflow.
-
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 36-38
-```
-
-In this example, the `requirements` parameter is set to the location of the requirements file that will be used to build the image. For a full list of parameters, see the [ImageSpec reference documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec).
-
 ## Visualizations
 
 The Flyte Deck feature allows you to enable visualizations in Union's user interface by setting `enable_deck=True` in a task's parameters:
@@ -103,6 +91,3 @@ The Flyte Deck feature allows you to enable visualizations in Union's user inter
 :lines: 67-96
 :emphasize-lines: 69
 ```
-
-Enabling the deck adds the "Flyte Deck" button in the UI and task's code places the
-visualizations into the deck.
