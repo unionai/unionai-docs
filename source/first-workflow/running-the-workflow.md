@@ -135,4 +135,4 @@ workflow!
 
 ## Next step
 
-The next step is [Understanding the workflow code](understanding-the-workflow-code).
+The next step is to take a look at the [Example code components](example-code-components).

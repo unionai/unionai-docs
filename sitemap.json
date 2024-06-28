@@ -20,7 +20,7 @@
                 {"name": "setting-up-your-local-environment", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
                 {"name": "running-the-workflow", "variants": ["byoc", "serverless"]},
-                {"name": "understanding-the-workflow-code", "variants": ["byoc", "serverless"]}
+                {"name": "example-code-components", "variants": ["byoc", "serverless"]}
             ]},
         {"name": "development-cycle", "variants": ["byoc", "serverless"],
             "children": [
