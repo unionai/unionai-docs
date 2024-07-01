@@ -5,42 +5,44 @@ In Union, your work is organized in a hierarchy with the following structure:
 {@@ if serverless @@}
 
 * **Account**: Your account on Union, tied to your GitHub identity.
-* **Domains** Within your account there are three domains, `development`, `staging`, and `production`, used to organize your workflows during the development process.
-* **Projects**: Orthogonal to domains, projects are used to organize your workflows into logical groups. You can create as many projects as you need.
+* **Domains**: Within your account there are three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
+* **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
 
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
-When you initialize `my_workflow` you would typically register it in the project-domain `my_project/development`.
+When you start working on `my_workflow` you would typically register it in the project-domain `my_project/development`.
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
-Promotion is done simply by [re-registering the workflow to the new project-domain]()).
+Promotion is done simply by [re-registering the workflow to the new project-domain]().
 
 {@@ elif byoc @@}
 
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
-* **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your workflows during the development process. You can configure a custom set of domains to suit your needs during [onboarding](../data-plane-setup/configuring-your-data-plane).
-* **Projects**: Orthogonal to domains, projects are used to organize your workflows into logical groups. You can create as many projects as you need.
+* **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
+You can configure a custom set of domains to suit your needs during [onboarding](../data-plane-setup/configuring-your-data-plane).
+* **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
 
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
-When you initialize `my_workflow` you would typically register it in the project-domain `my_project/development`.
+When you start work on `my_workflow` you would typically register it in the project-domain `my_project/development`.
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
-Promotion is done simply by [re-registering the workflow to the new project-domain]()).
+Promotion is done simply by [re-registering the workflow to the new project-domain]().
 
 {@@ endif @@}
 
-The word "project" can be a somewhat overloaded term.
-It can refer to the entity in your Union instance that holds a set of workflows, as described above.
-But it can also refer to the local directory within which you are developing those workflows.
-Furthermore, it might refer to the GitHub (or other SCM) repository that you are using to store the same workflow code.
+## Terminology
 
-In order to avoid confusion, we recommend keep in the three types of projects always aligned, so that a GitHUb project corresponds to a local projects adn both of those correspond to a Union project.
-This is the approach we take in this guide.
+In everyday use the term "project" is often used to refer to not just the Union entity that holds a set of workflows, but also to the local directory in which you are developing those workflows, and to the GitHub (or other SCM) repository that you are using to store the same workflow code.
 
-Thus, when we refer generically to a "project" all three senses are usually interchangeable.
+To avoid confusion, in this guide we will stick to the following naming conventions:
 
-If we need to be specific, we will use the terms "Union project", "local project", and "GitHub project" to distinguish between them.
+* **Union Project**: The entity in your Union instance that holds a set of workflows, as described above. Often referred to simply as a **project**.
+* **Workflow directory**: The local directory in which you are developing workflows.
+  This directory does not necessarily correspond one-to-one with a Union project.
+  Often you will have multiple workflow directories that correspond to a single Union project.
+* **Workflow repository**: The GitHub (or other SCM) repository that you are using to store and manage your workflow code.
+  This repository does not necessarily correspond one-to-one with either workflow directory or a Union project, though it may correspond to at least the latter.
 
 ## Create a Union project
 
-You can create a new project in the Union UI. You can then specify that when you register workflows to Union.
+You can create a new project in the Union UI:
 
 1. Navigate to the Projects page.
 ![Projects page navigation](/_static/images/projects-nav.png)
@@ -51,7 +53,6 @@ You can create a new project in the Union UI. You can then specify that when you
 4. Click **Create Project**.
 
 [DONE TO HERE]()
-
 
 
 When organizing your work you will create projects on Union
