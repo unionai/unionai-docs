@@ -52,64 +52,35 @@ You can create a new project in the Union UI:
 ![Project creation modal](/_static/images/project-creation-modal.png)
 4. Click **Create Project**.
 
-[DONE TO HERE]()
+You now have a project on Union into which you can register your workflows.
+The next step is to set up a local workflow directory.
 
-
-When organizing your work you will create projects on Union
+## Creating a local workflow directory using `unionai init`
 
 Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project cloned from git.
-
 In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
 
-The
+We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-template-imagespec`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-template-imagespec) found in the [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
-Projects in Union are used to organize and manage your workflows.
-
-
-
-
-
-
-
-
-## Creating a project locally using `unionai init`
-
-We will use the `unionai` (the CLI tool that ships with `unionai`) to quickly initialize the local project from a template.
-The `wine-classification` example is among the installable examples published in the GitHub repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
-
-Install the example, and `cd` into it:
+To create the workflow directory, run the following command:
 
 ```{code-block} shell
-[~]:wine-classification
-$ unionai init --template wine-classification wine-classification
-
-[~]:wine-classification
-$ cd wine-classification
-
-[~/wine-classification]:wine-classification
-$
+$ unionai init --template basic-template-imagespec my-project
 ```
 
-:::{note}
-If you need to use a Dockerfile in your project instead of ImageSpec, you can use the Dockerfile template:
+## Project structure
+
+
+If you cd into the `my-project` directory you’ll see the following file structure:
 
 ```{code-block} shell
-unionai init --template basic-template-imagespec my_project
-```
-:::
+$ cd my-project
 
-### Project structure
-
-If you examine the `wine-classification` directory you’ll see the following file structure:
-
-```{code-block} shell
-[~/wine-classification]:wine-classification
 $ tree
 .
 ├── LICENSE
 ├── README.md
-├── local-requirements.txt
-├── image-requirements.txt
+├── requirements.txt
 └── workflows
     ├── __init__.py
     └── example.py
@@ -120,16 +91,30 @@ You can create your own conventions and file structure for your Union projects.
 The `unionai init` command just provides a good starting point.
 :::
 
-### Install the local dependencies
+## Create a Python virtual environment
 
-We will explain the significance of the two requirements files later.
-For now, you just need to install the local dependencies.
-Make sure that you have activated your `wine-classification` conda environment, then install the dependencies from `local-requirements.txt`:
+We recommend using a Python virtual environment to manage your project dependencies.
+For example, too create a new virtual environment using `conda`, run the following command:
 
 ```{code-block} shell
-[~/wine-classification]:wine-classification
-$ pip install -r local-requirements.txt
+$ conda create --name my-project-env python=3.11
+$ conda activate my-project-env
 ```
+:::{note}
+You can also use other tools, like `venv` to create and manage your virtual environments
+:::
+
+## Install the dependencies
+
+Make sure that you have activated your `my-project-env` environment, then install the dependencies from `requirements.txt`:
+
+```{code-block} shell
+$ pip install -r requirements.txt
+```
+
+
+[TODO: should rests of this page be its own page?]()
+
 
 
 ## Running the project in a local Python environment
@@ -137,25 +122,19 @@ $ pip install -r local-requirements.txt
 To quickly try out the code, you can run it in your local Python environment using `unionai run`:
 
 ```{code-block} shell
-[~/wine-classification]:wine-classification
-$ unionai run workflows/wine_classification_example.py \
-              training_workflow \
-              --hyperparameters '{"C": 0.1}'
+$ unionai run workflows/example.py wf --name 'Albert'
 ```
 
 Here you are invoking `unionai run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
-In addition, you are passing the named parameter `hyperparameters` and its value.
+In addition, you are passing the named parameter `name` and its value.
 
 You should see the following output:
 
 ```{code-block} shell
-LogisticRegression(C=0.1, max_iter=3000)
+Hello, Albert!
 ```
 
-This output above tells you that your workflow was executed successfully, but little else.
-To see actual results, we will need to run the workflow in a local Kubernetes cluster (see below).
-
-### Passing parameters
+## Passing parameters
 
 `unionai run` enables you to execute a specific workflow using the syntax:
 
@@ -169,21 +148,21 @@ Keyword arguments can be supplied to `unionai run` by passing them in like this:
 --<keyword> <value>
 ```
 
-For example, if file `foo.py` has a workflow `bar` with a named parameter `baz` , you would invoke it like this:
+For example, above we invoked `unionai run` with script `example.py`, workflow `wf`, and named parameter `name`:
 
 ```{code-block} shell
-$ unionai run foo.py bar --baz 'qux'
+$ unionai run example.py wf --name 'Albert'
 ```
 
-Here the the value `qux` is passed for the parameter `baz`.
+The value `Albert` is passed for the parameter `name`.
 
 With `snake_case` argument names, you have to convert them to `kebab-case`. For example,
 
 ```{code-block} shell
-$ unionai run foo.py bar --baz-luhrmann 'qux'
+$ unionai run example.py wf --last-name 'Einstein'
 ```
 
-would pass the value `qux` for the parameter `baz_luhrmann`.
+would pass the value `Einstein` for the parameter `last_name`.
 
 ### Why `unionai run` rather than `python`?
 
