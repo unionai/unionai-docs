@@ -61,26 +61,24 @@ For a full list of task parameters, see [Task parameters](../core-concepts/tasks
 
 ## ImageSpec
 
-The `ImageSpec` object is used to define the container image that will run the tasks in the workflow.
+The `ImageSpec` object is used to define the container image that will run the tasks in the workflow. The tasks require custom dependencies, which are included in the `ImageSpec`:
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
 :language: python
 :lines: 36-38
 ```
 
-In this example, the `requirements` parameter is set to the location of the requirements file that will be used to build the image. For a full list of parameters, see the [ImageSpec reference documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec).
+The `requirements` parameter is set to the location of the requirements file that will be used to build the image. In this case, the `requirements` file is the same one that is used to configure the local development environment.
 
--------
+{@@ if serverless @@}
 
-The task requires custom dependencies, which we specify with an `ImageSpec`:
+The Union-hosted image builder will build the image based on the `ImageSpec` definition and use it for designated tasks.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
-:language: python
-:lines: 36-38
-```
+{@@ elif byoc @@}
 
-The `requirements.txt` contain the same dependencies we used to configure our local development environment. The Union hosted image builder builds the image based
-on the `ImageSpec` specification and uses that image for the machine learning workflow.
+You build the image on your local machine based on the `ImageSpec` definition and push it to the specified registry. When Union executes the workflow, it will pull the image from the registry and use it for the designated task.
+
+{@@ endif @@}
 
 ## Visualizations
 
