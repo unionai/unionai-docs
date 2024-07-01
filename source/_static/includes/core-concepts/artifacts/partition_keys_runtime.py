@@ -1,10 +1,13 @@
 from datetime import datetime
 
 import pandas as pd
-from flytekit import task, workflow
+from flytekit import ImageSpec, task, workflow
 from flytekit.core.artifact import Artifact, Inputs, Granularity
 from typing_extensions import Annotated
 
+pandas_image = ImageSpec(
+    packages=["pandas"]
+)
 
 BasicArtifact = Artifact(
     name="my_basic_artifact",
@@ -14,7 +17,7 @@ BasicArtifact = Artifact(
 )
 
 
-@task
+@task(container_image="pandas_image")
 def t1(
     key1: str, date: datetime
 ) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:

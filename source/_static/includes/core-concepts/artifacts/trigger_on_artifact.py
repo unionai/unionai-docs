@@ -1,10 +1,14 @@
 from datetime import datetime
 
 import pandas as pd
-from flytekit import task, workflow, LaunchPlan
+from flytekit import ImageSpec, task, workflow, LaunchPlan
 from flytekit.core.artifact import Artifact, Inputs
 from typing_extensions import Annotated
 from unionai.artifacts import OnArtifact
+
+pandas_image = ImageSpec(
+    packages=["pandas"]
+)
 
 UpstreamArtifact = Artifact(
     name="my_upstream_artifact",
@@ -13,7 +17,7 @@ UpstreamArtifact = Artifact(
 )
 
 
-@task
+@task(container_image="pandas_image")
 def upstream_t1(key1: str) -> Annotated[pd.DataFrame,
                                         UpstreamArtifact(key1=Inputs.key1)]:
     dt = datetime.now()
