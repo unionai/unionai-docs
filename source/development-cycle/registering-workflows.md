@@ -89,6 +89,8 @@ _Where `unionai` is configured to point to your Union data plane._
 * Workflows are run from the Web interface.
 * Useful for advanced testing during the development cycle (possible but not recommended for production deployment).
 
+{@@ if byoc @@}
+
 ## Remote cluster using standard registration
 
 First, package your workflows:
@@ -119,3 +121,5 @@ _Where `unionai` and `uctl` are configured to point to your Union data plane._
 * Workflows are registered to the specified project.
 * Workflows are run from the Web interface.
 * Recommended for production deployment.
+
+{@@ endif @@}
