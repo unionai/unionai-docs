@@ -6,7 +6,7 @@ from flytekit.core.artifact import Artifact, Granularity
 from typing_extensions import Annotated
 
 pandas_image = ImageSpec(
-    packages=["pandas"]
+    packages=["pandas==2.2.2"]
 )
 
 BasicArtifact = Artifact(

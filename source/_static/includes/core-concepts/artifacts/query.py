@@ -5,7 +5,7 @@ from flytekit import ImageSpec, task, workflow
 from flytekit.core.artifact import Artifact, Inputs
 
 pandas_image = ImageSpec(
-    packages=["pandas"]
+    packages=["pandas==2.2.2"]
 )
 
 BasicArtifact = Artifact(

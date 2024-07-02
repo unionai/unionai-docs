@@ -7,7 +7,7 @@ from typing_extensions import Annotated
 from unionai.artifacts import OnArtifact
 
 pandas_image = ImageSpec(
-    packages=["pandas"]
+    packages=["pandas==2.2.2"]
 )
 
 UpstreamArtifact = Artifact(
