@@ -4,11 +4,17 @@
 
 You can define a workflow that consumes an artifact by defining a query and passing it as an input to the consuming workflow.
 
-The following code defines a query, `data_query`, that searches across all versions of `BasicArtifact` that match the partition values. This query binds parameters to the workflow's `key1` and `time_partition` inputs and returns the most recent version of the artifact:
+The following code defines a query, `data_query`, that searches across all versions of `BasicArtifact` that match the partition values. This query binds parameters to the workflow's `key1` and `time_partition` inputs and returns the most recent version of the artifact.
 
-```{literalinclude} ../../_static/includes/artifacts/query.py
+{@@ if byoc @@}
+:::{note}
+To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
+:::
+{@@ endif @@}
+
+```{literalinclude} ../../_static/includes/core-concepts/artifacts/query.py
 :language: python
-:emphasize-lines: 20-23,32
+:emphasize-lines: 23-26,35
 ```
 
 You can also directly reference a particular artifact version in a query using the `get()` method:

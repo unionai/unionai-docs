@@ -1,8 +1,12 @@
 import pandas as pd
-from flytekit import task, workflow
+from flytekit import ImageSpec, task, workflow
 from flytekit.core.artifact import Artifact
 from unionai.artifacts import ModelCard
 from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
 
 BasicArtifact = Artifact(name="my_basic_artifact")
 
@@ -13,7 +17,7 @@ def generate_md_contents(df: pd.DataFrame) -> str:
     return contents
 
 
-@task
+@task(container_image=pandas_image)
 def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
     df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
 
