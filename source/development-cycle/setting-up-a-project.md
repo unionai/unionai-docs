@@ -91,26 +91,7 @@ You can create your own conventions and file structure for your Union projects.
 The `unionai init` command just provides a good starting point.
 :::
 
-## Create a Python virtual environment
 
-We recommend using a Python virtual environment to manage your project dependencies.
-For example, too create a new virtual environment using `conda`, run the following command:
-
-```{code-block} shell
-$ conda create --name my-project-env python=3.11
-$ conda activate my-project-env
-```
-:::{note}
-You can also use other tools, like `venv` to create and manage your virtual environments
-:::
-
-## Install the dependencies
-
-Make sure that you have activated your `my-project-env` environment, then install the dependencies from `requirements.txt`:
-
-```{code-block} shell
-$ pip install -r requirements.txt
-```
 
 
 [TODO: should rests of this page be its own page?]()

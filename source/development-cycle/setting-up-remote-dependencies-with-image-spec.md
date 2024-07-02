@@ -1,17 +1,50 @@
-# ImageSpec
+# Setting up remote dependencies with ImageSpec
 
-`ImageSpec` allows you to define a custom container image (or images) in your workflow code instead of in a Dockerfile.
+During the development cycle you will want ot be able to run your workflows both locally on your machine and remotely on Union,
+so you will need ensure that the required dependencies are installed in both environments.
+
+Here we will explain how to set up the dependencies for you workflow to run remotely on Union.
+For information on how to make your dependencies available locally, see [Setting up local dependencies]().
+
+## ImageSpec
+
+When a workflow is deployed to Union, each task is set up to run in its own container in the Kubernetes cluster.
+You specify the dependencies as part of the definition of the container image to be used for each task using the `ImageSpec` class.
+See [ImageSpec](../core-concepts/tasks/task-software-environment/imagespec) for more details.
+
+In the template code generated when you did `union init`, you will see a `ImageSpec` block in the script.
+The relevant part for our purposes is:
+
+{@@ if serverless @@}
+```python
+image_spec = ImageSpec(
+    name="basic-union-byoc-image",
+    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
+    requirements="requirements.txt",
+    registry="ghcr.io/<my-github-org>"
+)
+
+@task(container_image=image_spec)
+def say_hello(name: str) -> str:
+    return f"Hello, {name}!"
+```
+
+
+
+
+
+
+
+
+
+
 
 Before building the image, Union checks the container registry first to see if the image already exists. By doing so, Union avoids having to rebuild the image. If the image does not exist, Union will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
 
 You can specify Python packages, `apt` packages, and environment variables in the `ImageSpec`.
 These specified packages will be added on top of the default image. To override the default image, set the `base_image` parameter in your `ImageSpec` block.
 
-```{note}
 
-For all `ImageSpec` parameters and methods, see the [`ImageSpec` reference documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec).
-
-```
 
 {@@ if serverless @@}
 
