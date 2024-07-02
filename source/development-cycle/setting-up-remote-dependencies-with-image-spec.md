@@ -15,7 +15,6 @@ See [ImageSpec](../core-concepts/tasks/task-software-environment/imagespec) for 
 In the template code generated when you did `union init`, you will see a `ImageSpec` block in the script.
 The relevant part for our purposes is:
 
-{@@ if serverless @@}
 ```python
 image_spec = ImageSpec(
     name="basic-union-byoc-image",
@@ -29,22 +28,10 @@ def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-
-
-
-
-
-
-
-
-
-
 Before building the image, Union checks the container registry first to see if the image already exists. By doing so, Union avoids having to rebuild the image. If the image does not exist, Union will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
 
 You can specify Python packages, `apt` packages, and environment variables in the `ImageSpec`.
 These specified packages will be added on top of the default image. To override the default image, set the `base_image` parameter in your `ImageSpec` block.
-
-
 
 {@@ if serverless @@}
 
