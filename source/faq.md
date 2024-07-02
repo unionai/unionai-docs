@@ -251,14 +251,14 @@ To install the `unionai` SDK, `flytekit SDK`, and `unionai` CLI, run the followi
 pip install unionai
 ```
 
-### How can import python objects from other modules in my repository?
+### How do I fix import errors when running workflows remotely?
 
-If you are using `unionai run --remote ...` to run your workflows, you may have trouble importing functions, classes, or variables from other modules in your project repository.
-For example, let's say you have the following repository structure and you want to import a model from `my_model.py`, some constants from `constants.py` and a helper function from `utils.py` in a task that is defined in `my_workflow.py`:
+If you run your workflows with `unionai run --remote ...`, you may encounter import errors when importing functions, classes, or variables from other modules in your project repository.
+For example, if you have the following repository structure and you want to import a model from `my_model.py`, some constants from `constants.py`, and a helper function from `utils.py` in a task that is defined in `my_workflow.py`, you will encounter import errors unless these Python modules were explicitly added to the image used by the task, since the container running the task does not recognize these modules by default.
 
 ```{code-block} shell
 ├── requirements.txt
-└── src
+└── my_lib
     ├── __init__.py
     ├── models
     │    ├── __init__.py
@@ -271,12 +271,10 @@ For example, let's say you have the following repository structure and you want 
             ├── __init__.py
             └── utils.py
 ```
-Unless all these python modules were explicitly added to the image being used by the task, you will encounter import errors as the container running the task does not recognize these modules by default.
-Rather than building a custom Dockerfile that copies all the files and modules in your repository structure, Union offers two helpful options:
+Instead of building a custom Dockerfile that copies all the files and modules in your repository structure, you can do one of the following:
 1. Use the `--copy-all` flag in `unionai run --remote ...`
-2. Use `unionai register` to register your workflow and run it later using the Union console, `UnionRemote`, a `LaunchPlan`, `Artifact` triggers, and more
-Both of these methods work by adding all the files within your local project root to the container running your tasks. 
-The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
+2. Use `unionai register` to register your workflow and run it later using the Union console, `UnionRemote`, a `LaunchPlan`, `Artifact` triggers, or other options.
+Both of these methods work by adding all the files within your local project root to the container running your tasks. The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
 
 ### What happens if an automated process launches a very large number of workflows?
 
