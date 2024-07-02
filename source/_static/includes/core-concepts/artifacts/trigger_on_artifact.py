@@ -17,7 +17,7 @@ UpstreamArtifact = Artifact(
 )
 
 
-@task(container_image="pandas_image")
+@task(container_image=pandas_image)
 def upstream_t1(key1: str) -> Annotated[pd.DataFrame,
                                         UpstreamArtifact(key1=Inputs.key1)]:
     dt = datetime.now()

@@ -17,7 +17,7 @@ BasicArtifact = Artifact(
 )
 
 
-@task(container_image="pandas_image")
+@task(container_image=pandas_image)
 def t1(
     key1: str, dt: datetime
 ) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:

@@ -13,7 +13,7 @@ BasicArtifact = Artifact(
 )
 
 
-@task(container_image="pandas_image")
+@task(container_image=pandas_image)
 def t1(key1: str, dt: datetime, data: pd.DataFrame):
     print(f"key1: {key1}")
     print(f"Date: {dt}")
