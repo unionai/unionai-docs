@@ -31,6 +31,8 @@ Here you can see:
 In the top right you can see if this launch plan is active (and if it is, which version, specifically, is active). There is also a control for changing the active version or deactivating the launch plan entirely.
 See [Activating and deactivating](activating-and-deactivating) for more details.
 
+{@@ if byoc @@}
+
 ## Viewing launch plans on the command line with `uctl`
 
 To view all launch plans within a project and domain:
@@ -53,6 +55,8 @@ $ uctl get launchplan \
 <!-- TODO add back when uctl reference exists
 See the [`uctl` reference]() for more details.
 -->
+
+{@@ endif @@}
 
 ## Viewing launch plans in Python with `UnionRemote`
 
