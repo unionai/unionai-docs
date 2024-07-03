@@ -16,7 +16,6 @@ set up your local Python environment, and install the `unionai[byoc]` command li
 
 {@@ endif @@}
 
-
 ## Your project on Union
 
 {@@ if serverless @@}

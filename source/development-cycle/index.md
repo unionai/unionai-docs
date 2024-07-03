@@ -2,62 +2,42 @@
 
 This section covers developing production-ready workflows for Union.
 
-{@@ if serverless @@}
-
 ```{list-table}
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`Initializing local projects <initializing-local-projects>`
-  - Use `unionai init` to initialize production-ready projects on your local machine.
-* - {doc}`Creating projects on Union <creating-projects-on-union>`
-  - Create a project on Union to organize your workflows.
-* - [Registering workflows](registering-workflows)
-  - Register workflows from your local machine to Union.
-* - {doc}`ImageSpec <image-spec>`
-  - Use ImageSpec to specify custom container images that will be built and hosted by the Union Serverless image builder.
+* - {doc}`Setting up a project <setting-up-a-project>`
+  - Create a project on Union and initialize a workflow directory on your local machine.
+* - {doc}`Local dependencies <local-dependencies>`
+  - Install the required dependencies locally.
+* - {doc}`Remote dependencies with ImageSpec <remote-dependencies-with-image-spec>`
+  - Use `ImageSpec` to specify the dependencies needed in the containers that will run your tasks on Union.
+* - {doc}`Running in local Python <running-in-local-python>`
+  - Run your workflows in your local Python environment.
+* - {doc}`Running remotely on Union <running-remotely-on-Union>`
+  - Run your workflows on your Union instance.
 * - {doc}`Managing secrets <managing-secrets>`
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
   - Create applications to allow external systems to run compute on Union.
+{@@ if serverless @@}
 * - {doc}`Accessing AWS S3 buckets <accessing-aws-s3>`
   - Access data in AWS S3 Buckets from Union.
-* - {doc}`Task resource validation <task-resource-validation>`
-  - How Union handles workflows with unsatisfiable resource requests.
-* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
-  - Inspect and debug live task code directly in the Union console.
-* - {doc}`UnionRemote <unionremote>`
-  - Programmatically perform certain operations on the Union control plane in Python.
-```
-
-{@@ elif byoc @@}
-
-```{list-table}
-:header-rows: 0
-:widths: 20 30
-
-* - {doc}`Initializing local projects <initializing-local-projects>`
-  - Use `unionai init` to initialize production-ready projects on your local machine.
-* - {doc}`Creating projects on Union <creating-projects-on-union>`
-  - Create a project on Union to organize your workflows.
-* - [Registering workflows](registering-workflows)
-  - Register workflows from your local machine to Union.
-* - {doc}`ImageSpec <image-spec>`
-  - Use ImageSpec to specify custom container images that you build and push to a container registry.
-* - {doc}`Managing secrets <managing-secrets>`
-  - Create and manage secrets to connect to third-party services.
-* - {doc}`Managing apps <managing-apps>`
-  - Create applications to allow external systems to run compute on Union.
-* - {doc}`Task resource validation <task-resource-validation>`
-  - How Union handles workflows with unsatisfiable resource requests.
-* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
-  - Inspect and debug live task code directly in the Union console.
-* - {doc}`Setting up CI/CD deployment <setting-up-ci-cd-deployment>`
-  - Automate workflow registration and execution.
-* - {doc}`UnionRemote <unionremote>`
-  - Programmatically perform certain operations on the Union control plane in Python.
-* - {doc}`Running in a local cluster <running-in-a-local-cluster>`
-  - Test your workflows in a local Kubernetes cluster.
-```
-
 {@@ endif @@}
+* - {doc}`Task resource validation <task-resource-validation>`
+  - How Union handles workflows with unsatisfiable resource requests.
+* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
+  - Inspect and debug live task code directly in the Union console.
+{@@ if byoc @@}
+* - {doc}`UCTL CLI <uctl-cli>`
+  - Install and use the UCTL CLI to interact with Union.
+* - {doc}`Running in a local cluster <running-in-a-local-cluster>`
+  - Run your workflows in a local Kubernetes cluster on your machine.
+* - {doc}`CI/CD deployment <ci-cd-deployment>`
+  - Automate workflow registration and execution.
+{@@ endif @@}
+* - {doc}`UnionRemote <unionremote>`
+  - Programmatically perform Union operations in Python.
+* - [Summary of registering workflows](summary-of-registering-workflows)
+  - Register workflows from your local machine to Union.
+```

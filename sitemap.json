@@ -25,18 +25,20 @@
         {"name": "development-cycle", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "setting-up-a-project", "variants": ["byoc", "serverless"]},
-                {"name": "setting-up-local-dependencies", "variants": ["byoc", "serverless"]},
-                {"name": "setting-up-remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-python-environment", "variants": ["byoc", "serverless"]},
-                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
+                {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
+                {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
+                {"name": "running-in-local-python", "variants": ["byoc", "serverless"]},
+                {"name": "running-remotely-on-union", "variants": ["byoc", "serverless"]},
                 {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
                 {"name": "managing-apps", "variants": ["byoc", "serverless"]},
                 {"name": "accessing-aws-s3", "variants": ["serverless"]},
                 {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                 {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
-                {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
+                {"name": "uctl-cli", "variants": ["byoc"]},
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
+                {"name": "ci-cd-deployment", "variants": ["byoc"]},
                 {"name": "unionremote", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc"]}
+                {"name": "summary-of-registering-workflows", "variants": ["byoc", "serverless"]}
             ]},
         {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [

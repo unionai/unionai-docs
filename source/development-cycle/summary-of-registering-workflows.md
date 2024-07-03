@@ -1,4 +1,4 @@
-# Registering workflows
+# Summary of registering workflows
 
 The numerous ways in which workflows can be deployed and run can be somewhat confusing. Here is a full overview.
 

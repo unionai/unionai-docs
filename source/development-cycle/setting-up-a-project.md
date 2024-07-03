@@ -29,16 +29,16 @@ Promotion is done simply by [re-registering the workflow to the new project-doma
 
 ## Terminology
 
-In everyday use the term "project" is often used to refer to not just the Union entity that holds a set of workflows, but also to the local directory in which you are developing those workflows, and to the GitHub (or other SCM) repository that you are using to store the same workflow code.
+In everyday use, the term "project" is often used to refer to not just the Union entity that holds a set of workflows, but also to the local directory in which you are developing those workflows, and to the GitHub (or other SCM) repository that you are using to store the same workflow code.
 
 To avoid confusion, in this guide we will stick to the following naming conventions:
 
-* **Union Project**: The entity in your Union instance that holds a set of workflows, as described above. Often referred to simply as a **project**.
+* **Union project**: The entity in your Union instance that holds a set of workflows, as described above. Often referred to simply as a **project**.
 * **Workflow directory**: The local directory in which you are developing workflows.
   This directory does not necessarily correspond one-to-one with a Union project.
-  Often you will have multiple workflow directories that correspond to a single Union project.
+  Often you will have multiple workflow directories that are all registered to a single Union project.
 * **Workflow repository**: The GitHub (or other SCM) repository that you are using to store and manage your workflow code.
-  This repository does not necessarily correspond one-to-one with either workflow directory or a Union project, though it may correspond to at least the latter.
+  This repository does not necessarily correspond one-to-one with either workflow directory or a Union project.
 
 ## Create a Union project
 
@@ -48,8 +48,9 @@ You can create a new project in the Union UI:
 ![Projects page navigation](/_static/images/projects-nav.png)
 2. Click **New Project**.
 ![New project button](/_static/images/project-new-project-btn.png)
-3. In the project creation modal, enter a **Project Name**, **Project id**, and optional **Description**.
+3. In the project creation modal, enter a **Project Name**, **Project ID**, and optional **Description**.
 ![Project creation modal](/_static/images/project-creation-modal.png)
+For the purposes of this exercise, name the project **Basic example**, and give it the ID `basic-example`.
 4. Click **Create Project**.
 
 You now have a project on Union into which you can register your workflows.
@@ -57,24 +58,37 @@ The next step is to set up a local workflow directory.
 
 ## Creating a local workflow directory using `unionai init`
 
-Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project cloned from git.
+Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project, cloned from git.
 In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
 
-We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-template-imagespec`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-template-imagespec) found in the [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
+{@@ if serverless @@}
+
+We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-serverless-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-serverless-template) found in the [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
 To create the workflow directory, run the following command:
 
 ```{code-block} shell
-$ unionai init --template basic-template-imagespec my-project
+$ unionai init --template basic-union-serverless-template basic-example
 ```
 
-## Project structure
+{@@ elif byoc @@}
 
+We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-byoc-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-byoc-template) found in the [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
-If you cd into the `my-project` directory you’ll see the following file structure:
+To create the workflow directory, run the following command:
 
 ```{code-block} shell
-$ cd my-project
+$ unionai init --template basic-union-byoc-template basic-example
+```
+
+{@@ endif @@}
+
+## Directory structure
+
+If you `cd` into the `basic-example` directory you’ll see the following file structure:
+
+```{code-block} shell
+$ cd basic-example
 
 $ tree
 .
@@ -86,7 +100,8 @@ $ tree
     └── example.py
 ```
 
-:::{note}
 You can create your own conventions and file structure for your Union projects.
 The `unionai init` command just provides a good starting point.
-:::
+
+However, the separate `workflows` subdirectory and the contained `__init__.py` file are significant.
+We will discuss them when we cover the [registration process]().

@@ -1,4 +1,4 @@
-# Setting up remote dependencies with ImageSpec
+# Remote dependencies with ImageSpec
 
 During the development cycle you will want ot be able to run your workflows both locally on your machine and remotely on Union,
 so you will need ensure that the required dependencies are installed in both environments.
@@ -28,7 +28,10 @@ def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-Before building the image, Union checks the container registry first to see if the image already exists. By doing so, Union avoids having to rebuild the image. If the image does not exist, Union will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
+[DONE TO HERE]()
+
+Before building the image, Union checks the container registry first to see if the image already exists.
+By doing so, Union avoids having to rebuild the image. If the image does not exist, Union will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
 
 You can specify Python packages, `apt` packages, and environment variables in the `ImageSpec`.
 These specified packages will be added on top of the default image. To override the default image, set the `base_image` parameter in your `ImageSpec` block.
@@ -60,7 +63,7 @@ my_image_spec = ImageSpec(
     python_version="3.9",
     apt_packages=["git"],
     env={"Debug": "True"},
-    registry="ghcr.io/flyteorg",
+    registry="ghcr.io/<my-github-org>",
 )
 ```
 

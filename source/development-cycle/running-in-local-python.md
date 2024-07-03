@@ -1,4 +1,4 @@
-# Running in a local Python environment
+# Running in local Python
 
 To quickly try out the code, you can run it in your local Python environment using `unionai run`:
 
