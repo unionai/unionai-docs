@@ -100,12 +100,12 @@ As their names imply, the former defines the Python packages that you will need 
 while the latter defines only those packages need to run the workflow in the container on Union.
 This setup is not mandatory, but it is a good practice to follow since it makes clear which dependencies are used where.
 
-The `local-requirements.txt` includes the `flytekit` and `flytekitplugins-env` packages as well as the contents of the `image-requirements.txt` file.
+The `local-requirements.txt` includes the `flytekit` and `flytekitplugins-envd` packages as well as the contents of the `image-requirements.txt` file.
 
 The `unionai` package is, of course, needed in your local requirements to define workflows and to provide the `unionai` SDK, the `flytekit` SDK, and the `unionai` CLI.
 It is not need in the `image-requirements.txt` file because the task container image is based on an image that already includes `flytekit` (specifically the image `flytekit:py3.11-latest`).
 
-The `flytekitplugins-env` package is needed in your local requirements because it provides (together with your local Docker install) the functionality to build and push the container image defined by the `ImageSpec`.
+The `flytekitplugins-envd` package is needed in your local requirements because it provides (together with your local Docker install) the functionality to build and push the container image defined by the `ImageSpec`.
 It is not needed in the `image-requirements.txt` file because it is not needed in the container image itself.
 
 The content of the `image-requirements.txt` file is just the `pandas` package, which is needed by the task, so it is need both locally and in the container image running on Union.
