@@ -1,6 +1,6 @@
 # Remote dependencies with ImageSpec
 
-During the development cycle you will want ot be able to run your workflows both locally on your machine and remotely on Union,
+During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union,
 so you will need ensure that the required dependencies are installed in both environments.
 
 Here we will explain how to set up the dependencies for you workflow to run remotely on Union.
@@ -15,132 +15,66 @@ See [ImageSpec](../core-concepts/tasks/task-software-environment/imagespec) for 
 In the template code generated when you did `union init`, you will see a `ImageSpec` block in the script.
 The relevant part for our purposes is:
 
-```python
-image_spec = ImageSpec(
-    name="basic-union-byoc-image",
-    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
-    requirements="requirements.txt",
-    registry="ghcr.io/<my-github-org>"
-)
+{@@ if serverless @@}
 
-@task(container_image=image_spec)
-def say_hello(name: str) -> str:
-    return f"Hello, {name}!"
+```{rli} https://raw.githubusercontent.com/flyteorg/flytekit-python-template/main/basic-union-template/%7B%7Bcookiecutter.project_name%7D%7D/workflows/example.py
+:language: python
+:lines: 1-12
 ```
 
-[DONE TO HERE]()
+The `init` template includes all available `ImageSpec` parameters. Apart from the two parameters above (`name` and `requirements`), they are all commented out.
+The two uncommented ones are the only ones needed for this example.
 
-Before building the image, Union checks the container registry first to see if the image already exists.
-By doing so, Union avoids having to rebuild the image. If the image does not exist, Union will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
+{@@ elif byoc @@}
 
-You can specify Python packages, `apt` packages, and environment variables in the `ImageSpec`.
-These specified packages will be added on top of the default image. To override the default image, set the `base_image` parameter in your `ImageSpec` block.
+```{rli} https://raw.githubusercontent.com/flyteorg/flytekit-python-template/main/basic-union-byoc-template/%7B%7Bcookiecutter.project_name%7D%7D/workflows/example.py
+:language: python
+:lines: 1-31
+```
+
+The `init` template includes all available `ImageSpec` parameters but apart from the two parameters above (`name` and `requirements`), they are all commented out.
+
+Since you are running on Union BYOC, you will have to uncomment and configure the `registry` parameter as well.
+
+Make sure that:
+
+* You substitute the actual name of the registry you are using for `<my-registry>`.
+  (For example if you are using GitHub's GHCR, you would use `https://ghcr.io/<my-github-org>`).
+
+* You have Docker installed locally and are logged into the registry.
+
+* The image, once pushed to the registry, is accessible to Union
+  (for example, for GHCR, make sure the image is public).
+
+This parameter is needed because with Union BYOC, when you register a workflow, the image is built on your local machine and pushed to the registry you specify.
+On the other hand, with Union Serverless, when you register a workflow, the image is built and stored in the cloud on Union and therefore does not need to be pushed to a registry.
+
+For more details on setting this up, see [Setting up container image handling](../first-workflow/setting-up-container-image-handling).
+
+{@@ endif @@}
+
+## Building the task container image
 
 {@@ if serverless @@}
 
-```python
+When you [register your workflow code](), Union builds the container images specified by the `ImageSpec` blocks using its `ImageBuilder` service in the cloud. These images are then stored in Union's own container registry. All of this is done transparently and does not require any set up by the user.
 
-from flytekit import ImageSpec, task
+When a task that uses that image is executed on Union, the image will be pulled from Union's native registry and installed in he container that runs the task.
 
-my_image_spec = ImageSpec(
-    base_image="cr.union.ai/union/unionai:py3.11-latest",
-    packages=["pandas", "numpy"],
-    python_version="3.11",
-    apt_packages=["git"],
-    env={"Debug": "True"},
-)
+```{note}
+Transparent building and storing of images with `ImageBuilder` is currently only supported on Union Serverless.
+For information on how to set up image handling on Union BYOC, see [the BYOC version of this page](https://docs.union.ai/byoc/development-cycle/remote-dependencies-with-image-spec.html) and [Setting up container image handling](https://docs.union.ai/byoc/first-workflow/setting-up-container-image-handling.html).
 ```
 
 {@@ elif byoc @@}
 
-```python
+When you [register your workflow code](), your locally installed Union SDK will build the container image defined in the `ImageSpec` block and push it to the registry you specified.
+When a task that uses that image is executed on Union, the image will be pulled from the registry and installed in he container that runs the task.
 
-from flytekit import ImageSpec, task
-
-my_image_spec = ImageSpec(
-    base_image="cr.flyte.org/flyteorg/flytekit:py3.9-latest",
-    packages=["pandas", "numpy"],
-    python_version="3.9",
-    apt_packages=["git"],
-    env={"Debug": "True"},
-    registry="ghcr.io/<my-github-org>",
-)
-```
-
-:::{important}
-For the `registry` parameter, you must replace `ghcr.io/flyteorg` with a container registry you can publish to.
-To upload the image to the local registry in the demo cluster, set `registry` to `localhost:30000`.
-:::
-
-{@@ endif @@}
-
-## Building container images
-
-{@@ if byoc @@}
-
-:::{admonition} Prerequisites
-:class: important
-
-- Install [flytekitplugins-envd](https://github.com/flyteorg/flytekit/tree/master/plugins/flytekit-envd) to build the `ImageSpec`.
-- `docker login` is required to push the image to the specified registry.
-- To build the image on a remote machine, see [this doc](https://envd.tensorchord.ai/teams/context.html#start-remote-buildkitd-on-builder-machine).
-:::
-
-The `ImageSpec` code block will be converted to an [Envd](https://envd.tensorchord.ai/) config, and the [Envd builder](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-envd/flytekitplugins/envd/image_builder.py#L12-L34) will build the image for you. However, you can also register your own builder and specify it in the `builder` parameter to build the image using other tools.
-
-{@@ elif serverless @@}
-
-The `ImageSpec` code block will be converted to an [Envd](https://envd.tensorchord.ai/) config, and the Serverless image builder will build the image for you.
-
-With the Union Serverless image builder, the Docker images used by your tasks are built in the cloud on Union.
-For this example, save the following as `image_build.py`:
-
-```{code-block} python
-from flytekit import ImageSpec, task, workflow
-
-image = ImageSpec(
-    builder="unionai",
-    packages=["numpy==1.26.4"],
-)
-
-@task(container_image=image)
-def fn() -> int:
-    import numpy as np
-    x = np.array([1, 2, 3])
-    return int(x.sum())
-
-@workflow
-def main() -> int:
-    return fn()
-
-```
-
-This example contains an `ImageSpec` that specifies the dependencies of the `@task`. We
-set `builder="unionai"` to configure `ImageSpec` to build the image on our hosted image
-builder. Next, run run the `image_build.py` script to see how it works:
-
-```{code-block} shell
-unionai run --remote image_build.py main
-```
-
-This command will start up an image builder task on Union:
-
-```{code-block} shell
-👍 Build submitted!
-⏳ Waiting for build to finish at: https://serverless.union.ai/org/cosmicbboy/projects/default/domains/development/executions/EXECUTION_ID
+```{note}
+Local building of container images and pushing them to your configured registry is only done on Union BYOC.
+With Union Serverless, images are built and stored transparently by the `ImageBuilder` service on Union in the cloud.
+For more information, see [the Serverless version of this page](https://docs.union.ai/serverless/development-cycle/remote-dependencies-with-image-spec.html).
 ```
 
 {@@ endif @@}
-
-After the build is complete, then the original workflow will run with the newly created image!
-
-## Specifying a custom image for a task
-
-To specify a custom image for a task, set the `container_image` parameter to the name of your `ImageSpec` in the `@task` decorator. If you do not specify a container image, the default Docker image is used.
-
-```python
-@task(container_image=my_image_spec)
-def my_task() -> pd.DataFrame
-    ...
-
-```

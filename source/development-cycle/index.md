@@ -12,10 +12,10 @@ This section covers developing production-ready workflows for Union.
   - Install the required dependencies locally.
 * - {doc}`Remote dependencies with ImageSpec <remote-dependencies-with-image-spec>`
   - Use `ImageSpec` to specify the dependencies needed in the containers that will run your tasks on Union.
-* - {doc}`Running in local Python <running-in-local-python>`
-  - Run your workflows in your local Python environment.
-* - {doc}`Running remotely on Union <running-remotely-on-Union>`
-  - Run your workflows on your Union instance.
+* - {doc}`Running your code <running-your code>`
+  - Use different deploy and run commands for different steps in the development cycle.
+* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
+  - Inspect and debug live task code directly in the Union console.
 * - {doc}`Managing secrets <managing-secrets>`
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
@@ -26,8 +26,6 @@ This section covers developing production-ready workflows for Union.
 {@@ endif @@}
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
-* - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
-  - Inspect and debug live task code directly in the Union console.
 {@@ if byoc @@}
 * - {doc}`UCTL CLI <uctl-cli>`
   - Install and use the UCTL CLI to interact with Union.
@@ -38,6 +36,4 @@ This section covers developing production-ready workflows for Union.
 {@@ endif @@}
 * - {doc}`UnionRemote <unionremote>`
   - Programmatically perform Union operations in Python.
-* - [Summary of registering workflows](summary-of-registering-workflows)
-  - Register workflows from your local machine to Union.
 ```

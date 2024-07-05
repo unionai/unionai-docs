@@ -1,19 +1,4 @@
-# Running in local Python
-
-To quickly try out the code, you can run it in your local Python environment using `unionai run`:
-
-```{code-block} shell
-$ unionai run workflows/example.py wf --name 'Albert'
-```
-
-Here you are invoking `unionai run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
-In addition, you are passing the named parameter `name` and its value.
-
-You should see the following output:
-
-```{code-block} shell
-Hello, Albert!
-```
+# `unionai` CLI extras
 
 ## Passing parameters
 
@@ -38,12 +23,15 @@ $ unionai run example.py wf --name 'Albert'
 The value `Albert` is passed for the parameter `name`.
 
 With `snake_case` argument names, you have to convert them to `kebab-case`. For example,
+if the code were altered to accept a `last_name` parameter then the following command:
+
+```{code-block} python
 
 ```{code-block} shell
 $ unionai run example.py wf --last-name 'Einstein'
 ```
 
-would pass the value `Einstein` for the parameter `last_name`.
+would pass the value `Einstein` for that parameter.
 
 ## Why `unionai run` rather than `python`?
 

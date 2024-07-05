@@ -1,57 +1,44 @@
-# Summary of registering workflows
+# Running your code
 
-The numerous ways in which workflows can be deployed and run can be somewhat confusing. Here is a full overview.
+Union let's you iterate on your workflow code easily and naturally with commands suitable for deploying and running code at different stages of the development cycle:
 
-## Local Python
+{@# TODO: Link to the unionai commands below to the unionai CLI reference section #@}
+
+1. `unionai run`: For deploying and running a single script immediately in your local Python environment.
+2. `unionai run --remote`: For deploying and running a single script immediately in the cloud on Union.
+3. `unionai register`: For deploying multiple scripts to Union and running them from the Web interface.
+{@@ if byoc @@}
+4. `unionai package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
+
+```{note}
+In some cases you may wish to to have the option of testing your code in a local cluster before deploying it to Union.
+Setting up a cluster in your local machine is supported by Union.
+This step would correspond to using the commands 2, 3, or 4 but targeting your local cluster instead of Union.
+For more details on this option see [Running in a local cluster](running-in-a-local-cluster).
+```
+{@@ endif @@}
+
+## Running a script in local Python with `unionai run`
+
+During the development cycle you will want to run a specific workflow or task in your local Python environment to test it.
+To quickly try out the code locally use `unionai run`:
 
 ```{code-block} shell
-$ unionai run my_file.py my_workflow
+$ unionai run workflows/example.py wf --name 'Albert'
 ```
 
-* Task code runs in your local Python environment.
-* Supports any Python dependencies you wish, since you have full control of your local environment.
-* Does not support features that require running in a cluster (S3, plugins, etc.).
-* Single workflow runs immediately.
-* Useful for quick testing during the development cycle.
+Here you are invoking `unionai run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
+In addition, you are passing the named parameter `name` and its value.
 
-## Local cluster with default image
+You should see the following output:
 
 ```{code-block} shell
-$ unionai run --remote my_file.py my_workflow
+Hello, Albert!
 ```
 
-_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
+## Running a script on Union with `unionai run --remote`
 
-* Task code runs in the environment of the default image in your local cluster.
-* Python code is dynamically overlaid into the container at runtime.
-* Only supports Python code whose dependencies are installed in the default image (see here).
-* Includes a local S3.
-* Supports some plugins but not all.
-* Single workflow runs immediately.
-* Workflow is registered to a default project.
-* Useful for demos.
-
-## Local cluster with custom image
-
-```{code-block} shell
-$ unionai run --remote \
-              --image my_cr.io/my_org/my_image:latest \
-              my_file.py \
-              my_workflow
-```
-
-_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
-
-* Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in your local cluster.
-* Python code is dynamically overlaid into the container at runtime
-* Supports any Python dependencies you wish, since you have full control of the image.
-* Includes a local S3.
-* Supports some plugins but not all.
-* Single workflow runs immediately.
-* Workflow is registered to a default project.
-* Useful for advanced testing during the development cycle.
-
-## Remote cluster with custom image
+[DONE TO HERE]()
 
 ```{code-block} shell
 $ unionai run --remote \
@@ -70,7 +57,7 @@ _Where `unionai` is configured to point to your Union data plane._
 * Workflow is registered to a default project.
 * Useful for advanced testing during the development cycle.
 
-## Remote cluster using fast registration
+## Deploying your code to Union with `unionai register`
 
 ```{code-block} shell
 $ unionai register workflows \
@@ -89,7 +76,9 @@ _Where `unionai` is configured to point to your Union data plane._
 * Workflows are run from the Web interface.
 * Useful for advanced testing during the development cycle (possible but not recommended for production deployment).
 
-## Remote cluster using standard registration
+{@@ if byoc @@}
+
+## Deploying your code to production with `unionai package` and `uctl register`
 
 First, package your workflows:
 
@@ -119,3 +108,5 @@ _Where `unionai` and `uctl` are configured to point to your Union data plane._
 * Workflows are registered to the specified project.
 * Workflows are run from the Web interface.
 * Recommended for production deployment.
+
+{@@ endif @@}

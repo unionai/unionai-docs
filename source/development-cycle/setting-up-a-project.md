@@ -61,27 +61,13 @@ The next step is to set up a local workflow directory.
 Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project, cloned from git.
 In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
 
-{@@ if serverless @@}
-
-We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-serverless-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-serverless-template) found in the [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
+We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
 To create the workflow directory, run the following command:
 
 ```{code-block} shell
-$ unionai init --template basic-union-serverless-template basic-example
+$ unionai init --template basic-union-template basic-example
 ```
-
-{@@ elif byoc @@}
-
-We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-byoc-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-byoc-template) found in the [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
-
-To create the workflow directory, run the following command:
-
-```{code-block} shell
-$ unionai init --template basic-union-byoc-template basic-example
-```
-
-{@@ endif @@}
 
 ## Directory structure
 
