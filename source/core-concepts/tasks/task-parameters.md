@@ -26,7 +26,7 @@ Input variables that should not be included when calculating the hash for the ca
 
 ## `container_image`
 
-See [Imagespec](task-software-environment/imagespec).
+See [Imagespec](./task-software-environment/imagespec).
 
 ## `deprecated`
 
@@ -48,15 +48,15 @@ def my_task(my_str: str):
 
 ## `environment`
 
-See [Environment variables](task-software-environment/environment-variables).
+See [Environment variables](./task-software-environment/environment-variables).
 
 ## `interruptible`
 
-See [Interruptible instances](task-hardware-environment/interruptible-instances).
+See [Interruptible instances](./task-hardware-environment/interruptible-instances).
 
 ## `limits`
 
-See [Customizing task resources](task-hardware-environment/customizing-task-resources).
+See [Customizing task resources](./task-hardware-environment/customizing-task-resources).
 
 ## `node_dependency_hints`
 
@@ -77,27 +77,27 @@ def launch_dynamically():
 
 ## `pod_template`
 
-See [Task hardware environment](task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
+See [Task hardware environment](./task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
 
 ## `pod_template_name`
 
-See [Task hardware environment](task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
+See [Task hardware environment](./task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
 
 ## `requests`
 
-See [Customizing task resources](task-hardware-environment/customizing-task-resources)
+See [Customizing task resources](./task-hardware-environment/customizing-task-resources)
 
 ## `retries`
 
 Number of times to retry this task during a workflow execution.
 Tasks can define a retry strategy to let the system know how to handle
-failures (For example: retry 3 times on any kind of error). For more information, see [Interruptible instances](task-hardware-environment/interruptible-instances)
+failures (For example: retry 3 times on any kind of error). For more information, see [Interruptible instances](./task-hardware-environment/interruptible-instances)
 
 There are two kinds of retries *system retries* and *user retries*.
 
 ## `secret_requests`
 
-See [Secrets](task-software-environment/secrets)
+See [Secrets](./task-software-environment/secrets)
 
 ## `task_config`
 

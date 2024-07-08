@@ -17,7 +17,7 @@ Among these are a number of Google Cloud Storage (GCS) buckets used internally b
 
 To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Service Account as a principal to that bucket and assign it a role that includes the permissions that you want your code to have.
 
-* Find the actual name and email of the `<UserFlyteGSA>` in your Union data plane GCP project (See [Find the actual name of `<UserFlyteGSA>`](index.md#find-the-actual-name-of-userflytegsa))
+* Find the actual name and email of the `<UserFlyteGSA>` in your Union data plane GCP project (See [Find the actual name of `<UserFlyteGSA>`](./index.md#find-the-actual-name-of-userflytegsa))
 * Go to **Cloud Storage > Buckets** and select the bucket to which you want to grant access.
 * In the **Bucket details** view select the **Permissions** tab and then select **GRANT ACCESS**:
 
@@ -37,6 +37,6 @@ Your bucket should now be **globally accessible** to task code in all Flyte proj
 :::{admonition} Domain-scoped permissions are not self-service
 
 If you want to assign permissions in a more fine-grained way, per project and/or domain, you need to contact the Union team.
-See [Domain-scoped access](index.md#domain-scoped-access).
+See [Domain-scoped access](./index.md#domain-scoped-access).
 
 :::

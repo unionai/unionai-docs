@@ -1,6 +1,6 @@
 # Launching workflows from the UI
 
-From the [individual workflow view](viewing-workflows.md#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](viewing-workflows.md#workflows-list)) you can select **Launch Workflow** in the top right:
+From the [individual workflow view](./viewing-workflows.md#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](./viewing-workflows.md#workflows-list)) you can select **Launch Workflow** in the top right:
 
 ![](/_static/images/launching-a-workflow.png)
 
@@ -37,4 +37,4 @@ The parameter is expected to be a URL to a writable resource (for example, `http
   * **Interruptible (enabled)**: This execution will be interruptible, regardless of the workflow-level setting
 * **Caching**: If **Overwrite cached outputs** is enabled, then Flyte will ignore all previously computed and stored outputs for this single execution and run all calculations again, overwriting any cached data after a successful execution.
 
-Finally, select **Launch** to launch the execution. This will take you to the [Execution view](viewing-workflow-executions).
+Finally, select **Launch** to launch the execution. This will take you to the [Execution view](./viewing-workflow-executions).

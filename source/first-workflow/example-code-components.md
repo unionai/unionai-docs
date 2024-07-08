@@ -34,7 +34,7 @@ $ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main
 
 ## Tasks
 
-The `@task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index). A task taskes some input and produces an output. When deployed to a Kubernetes cluster, each task runs in its own Kubernetes pod.
+The `@task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index). A task tasks some input and produces an output. When deployed to a Kubernetes cluster, each task runs in its own Kubernetes pod.
 
 ### `train_model`
 

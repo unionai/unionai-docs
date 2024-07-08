@@ -19,7 +19,7 @@ The `unionai` CLI provides a set of commands that allow you to deploy and run yo
 ```{note}
 In some cases, you may want to test your code in a local cluster before deploying it to Union.
 This step corresponds to using the commands 2, 3, or 4, but targeting your local cluster instead of Union.
-For more details, see [Running in a local cluster](running-in-a-local-cluster).
+For more details, see [Running in a local cluster](./running-in-a-local-cluster).
 ```
 {@@ endif @@}
 
@@ -36,7 +36,7 @@ Here you are invoking `unionai run` and passing the name of the Python file and 
 In addition, you are passing the named parameter `name` and its value.
 
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [unionai run details](union-run-details).
+For more details see [unionai run details](./union-run-details).
 
 ## Running a script on Union with `unionai run --remote`
 
@@ -63,7 +63,7 @@ This command will:
 * Run the workflow on Union.
 
 This command is useful for quickly deploying and running a specific workflow on Union.
-For more details see [unionai run details](union-run-details).
+For more details see [unionai run details](./union-run-details).
 
 ## Deploying your code to Union with `unionai register`
 

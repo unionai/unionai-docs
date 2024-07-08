@@ -2,7 +2,7 @@
 
 ## Artifacts list
 
-[Artifacts](index) can be viewed in the UI by navigating to the artifacts app in the left sidebar:
+[Artifacts](./index) can be viewed in the UI by navigating to the artifacts app in the left sidebar:
 
 ![Artifacts navigation](/_static/images/artifacts/artifacts_navigation.png)
 

@@ -41,4 +41,4 @@ The model training workflow has three steps:
 
 ## Next step
 
-The next step is [Setting up your local environment](setting-up-your-local-environment).
+The next step is [Setting up your local environment](./setting-up-your-local-environment).

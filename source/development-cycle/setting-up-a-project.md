@@ -11,7 +11,7 @@ In Union, your work is organized in a hierarchy with the following structure:
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
 When you start working on `my_workflow` you would typically register it in the project-domain `my_project/development`.
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
-Promotion is done simply by [re-registering the workflow to the new project-domain]().
+Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code).
 
 {@@ elif byoc @@}
 
@@ -23,7 +23,7 @@ You can configure a custom set of domains to suit your needs during [onboarding]
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
 When you start work on `my_workflow` you would typically register it in the project-domain `my_project/development`.
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
-Promotion is done simply by [re-registering the workflow to the new project-domain]().
+Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code).
 
 {@@ endif @@}
 
@@ -90,4 +90,4 @@ You can create your own conventions and file structure for your Union projects.
 The `unionai init` command just provides a good starting point.
 
 However, the separate `workflows` subdirectory and the contained `__init__.py` file are significant.
-We will discuss them when we cover the [registration process]().
+We will discuss them when we cover the [registration process](./running-your-code).

@@ -57,7 +57,7 @@ GPUs should only be specified in the `limits` section of the task decorator:
 The `accelerator` setting further specifies the specifies the *type* of specialized hardware required for the task.
 This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
 
-See [Accelerators](accelerators) for more information.
+See [Accelerators](./accelerators) for more information.
 
 {@@ if byoc @@}
 ## Task resource validation

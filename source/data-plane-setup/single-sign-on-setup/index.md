@@ -7,8 +7,8 @@ The team will then complete the process.
 
 ## Microsoft Entra ID (formerly Azure AD)
 
-To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](microsoft-entra-id.md).
+To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](./microsoft-entra-id).
 
 ## Other identity providers
 
-To configure other identity providers, see [Other identity providers](other-identity-providers.md).
+To configure other identity providers, see [Other identity providers](./other-identity-providers).

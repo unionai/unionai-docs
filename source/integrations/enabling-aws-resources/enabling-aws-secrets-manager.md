@@ -61,7 +61,7 @@ Above, it is `arn:aws:secretsmanager:<Region>:<AccountId>:secret:`.
 * **`SECRET_KEY`**: The part of the ARN after `:secret:`
 Above, it is `<SecretName>-<SixRandomCharacters>`.
 
-See [Using AWS secrets in your Flyte code](enabling-aws-secrets-manager.md#using-aws-secrets-in-your-flyte-code) for details on how these are used.
+See [Using AWS secrets in your Flyte code](./enabling-aws-secrets-manager.md#using-aws-secrets-in-your-flyte-code) for details on how these are used.
 
 :::
 
@@ -129,7 +129,7 @@ $ aws iam create-policy \
 To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your Union data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
-See [here](index) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.
+See [here](./index) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.
 
 ## Using AWS secrets in your Flyte code
 

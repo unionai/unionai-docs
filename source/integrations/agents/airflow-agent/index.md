@@ -30,7 +30,7 @@ automatically compile Airflow tasks to Flyte tasks and execute them on the Airfl
 
 :::
 
-For a usage example, see [Airflow agent example](airflow-agent-example).
+For a usage example, see [Airflow agent example](./airflow-agent-example).
 
 ## Local testing
 

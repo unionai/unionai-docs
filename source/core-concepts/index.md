@@ -11,7 +11,7 @@ In most contexts we just say that a workflow is a DAG of tasks.
 You define tasks and workflows in Python using the Flytekit SDK. The Flytekit SDK provides a set of decorators and classes that allow you to define tasks and workflows in a way that is easy to understand and work with.
 Once defined, tasks and workflows are deployed to your Union instance (we say they are *registered* to the instance), where they are compiled into a form that can be executed on your Union cluster.
 
-In addition to tasks and workflows, another important concept in Union is the [*launch plan*](launch-plans/index).
+In addition to tasks and workflows, another important concept in Union is the [*launch plan*](./launch-plans/index).
 A launch plan is like a template that can be used to define the inputs to a workflow.
 Triggering a launch plan will launch its associated workflow with the specified parameters.
 
@@ -56,7 +56,7 @@ For example, the workflow above results in the following DAG:
 One important difference between Union and generic Python is that in Union all inputs and outputs *must be type annotated*.
 This is because tasks are strongly typed(/todo), meaning that the types of the inputs and outputs are validated at deployment time.
 
-See [Tasks are strongly typed](tasks/index.md#tasks-are-strongly-typed) for more details.
+See [Tasks are strongly typed](./tasks/index.md#tasks-are-strongly-typed) for more details.
 
 ### Workflows *are not* full Python functions
 
@@ -65,7 +65,7 @@ but only *a subset of Python syntax is allowed*, because it must also be compile
 
 *Technically then, the language of a workflow function is a domain-specific language (DSL) that is a subset of Python.*
 
-See [Workflows](workflows/index) for more details.
+See [Workflows](./workflows/index) for more details.
 
 ## Registering tasks and workflows
 
@@ -79,7 +79,7 @@ unionai register ./workflows --project my_project --domain development
 
 Tasks can also be registered individually, but it is more common to register alongside the workflow that uses them.
 
-See [Registering workflows](../development-cycle/registering-workflows).
+See [Running your code](../development-cycle/running-your-code).
 
 ### Registering in Python with `FlyteRemote`
 
@@ -91,9 +91,9 @@ As with all Union command line actions, you can also perform registration of wor
 
 When the code above is registered to Union, it results in the creation of five objects:
 
-* The tasks `workflows.my_example.task_1`, `workflows.my_example.task_2`, and `workflows.my_example.task_3` (see [Task fundamentals](tasks/index) for more details).
+* The tasks `workflows.my_example.task_1`, `workflows.my_example.task_2`, and `workflows.my_example.task_3` (see [Task fundamentals](./tasks/index) for more details).
 * The workflow `workflows.my_example.my_workflow`.
-* The default launch plan `workflows.my_example.my_workflow` (see [Launch plans](launch-plans/index) for more details).
+* The default launch plan `workflows.my_example.my_workflow` (see [Launch plans](./launch-plans/index) for more details).
 
 Notice that the task and workflow names are derived from the path, file name and function name of the Python code that defines them: `<folder>.<file>.<function>`.
 The default launch plan for a workflow always has the same name as its workflow.
@@ -161,7 +161,7 @@ A list of recent versions of this task. Select a version to see the **Task versi
 ![Task version view](/_static/images/concepts-tasks-3.png)
 
 This view shows the task details and a list of all version of the task. You can switch between versions with the radio buttons.
-See [Tasks](tasks/index) for more information.
+See [Tasks](./tasks/index) for more information.
 
 #### All Executions in the Task
 
@@ -265,7 +265,7 @@ For more details on running workflows and tasks, see [Development cycle](../deve
 ### Running a task or workflow remotely on the command line with `unionai`
 
 {@@ if byoc @@}
-To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../getting-started/setting-up-the-project-on-union)):
+To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../development-cycle/setting-up-a-project)):
 {@@ elif serverless @@}
 To run a workflow remotely on your Union installation, use the following command:
 {@@ endif @@}

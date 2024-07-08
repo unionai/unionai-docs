@@ -5,17 +5,17 @@ The function is written in a domain specific language (DSL) that is a subset of 
 The syntax of a standard workflow definition can only include the following:
 
 * Calls to functions decorated with `@task` and assignment of variables to the returned values.
-* Calls to other functions decorated with `@workflow` and assignment of variables to the returned values (see [Subworkflows](subworkflows-and-sub-launch-plans)).
-* Calls to [`LaunchPlan` objects](../launch-plans/index) (see [When to use sub-launch plans](subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
-* Calls to functions decorated with `@dynamic` and assignment of variables to the returned values (see [Dynamic workflows](dynamic-workflows)).
-* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](eager-workflows)).
+* Calls to other functions decorated with `@workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans)).
+* Calls to [`LaunchPlan` objects](../launch-plans/index) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
+* Calls to functions decorated with `@dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows)).
+* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows)).
 * The special [`conditional` construct](#conditional-construct).
 * Statements using the [chaining operator `>>`](#chaining-operator).
 
 ## Evaluation of a standard workflow
 
 {@@ if byoc @@}
-When a standard workflow is [run locally in a Python environment](../../getting-started/running-in-a-local-python-environment) it is executed as a normal Python function.
+When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code.md#running-a-script-in-local-python-with-unionai-run) it is executed as a normal Python function.
 However, when it is registered to Union, the top level `@workflow`-decorated function is evaluated as follows:
 {@@ elif serverless @@}
 When a standard workflow is run locally in a Python environment it is executed as a normal Python function.

@@ -12,7 +12,7 @@ This section covers developing production-ready workflows for Union.
   - Install the required dependencies locally.
 * - {doc}`Remote dependencies with ImageSpec <remote-dependencies-with-image-spec>`
   - Use `ImageSpec` to specify the dependencies needed in the containers that will run your tasks on Union.
-* - {doc}`Running your code <running-your code>`
+* - {doc}`Running your code <running-your-code>`
   - Use different deploy and run commands for different steps in the development cycle.
 * - {doc}`unionai run details<union-run-details>`
   - Programmatically perform Union operations in Python.

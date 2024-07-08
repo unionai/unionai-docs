@@ -64,8 +64,8 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 
 ## Install and configure `unionai` and Docker
 
-To install Docker, see [Setting up container image handling](../../../getting-started/setting-up-container-image-handling).
-To configure `unionai` to connect to your Union instance, see [Getting started](../../../getting-started/index.md#set-up-configuration-for-the-unionai-cli).
+To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling).
+To configure `unionai` to connect to your Union instance, see [Quick start](../../../quick-start).
 
 ## Set up an image registry
 
@@ -91,7 +91,7 @@ Follow the directions [Working with the Container registry > Authenticating to t
 ## Set up your project and domain on Union
 
 You will need to set up a project on your Union instance to which you can register your workflow.
-See [Setting up the project on Union](../../../getting-started/setting-up-the-project-on-union).
+See [Setting up the project](../../../development-cycle/setting-up-a-project).
 
 ## Understand the requirements
 
@@ -119,7 +119,7 @@ Assuming you are in the local project root, run `pip install -r local-requiremen
 
 You can now run the workflow locally.
 In the project root directory, run: `unionai run workflows/imagespec-simple-example.py wf`.
-See [Running Workflows Locally](../../../getting-started/running-in-a-local-python-environment.md) for more details.
+See [Running your code](../../../development-cycle/running-your-code) for more details.
 
 :::{note}
 When you run the workflow in your local Python environment, the image is not built or pushed (in fact, no container image is used at all).

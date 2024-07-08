@@ -4,13 +4,12 @@ During the development cycle you will want to be able to run your workflows both
 so you will need ensure that the required dependencies are installed in both environments.
 
 Here we will explain how to set up the dependencies for you workflow to run remotely on Union.
-For information on how to make your dependencies available locally, see [Setting up local dependencies]().
+For information on how to make your dependencies available locally, see [Local dependencies](./local-dependencies).
 
 ## ImageSpec
 
 When a workflow is deployed to Union, each task is set up to run in its own container in the Kubernetes cluster.
 You specify the dependencies as part of the definition of the container image to be used for each task using the `ImageSpec` class.
-See [ImageSpec](../core-concepts/tasks/task-software-environment/imagespec) for more details.
 
 In the template code generated when you did `union init`, you will see a `ImageSpec` block in the script.
 The relevant part for our purposes is:
@@ -57,7 +56,7 @@ For more details on setting this up, see [Setting up container image handling](.
 
 {@@ if serverless @@}
 
-When you [register your workflow code](), Union builds the container images specified by the `ImageSpec` blocks using its `ImageBuilder` service in the cloud. These images are then stored in Union's own container registry. All of this is done transparently and does not require any set up by the user.
+When you [register your workflow code](./running-your-code), Union builds the container images specified by the `ImageSpec` blocks using its `ImageBuilder` service in the cloud. These images are then stored in Union's own container registry. All of this is done transparently and does not require any set up by the user.
 
 When a task that uses that image is executed on Union, the image will be pulled from Union's native registry and installed in he container that runs the task.
 
@@ -68,7 +67,7 @@ For information on how to set up image handling on Union BYOC, see [the BYOC ver
 
 {@@ elif byoc @@}
 
-When you [register your workflow code](), your locally installed Union SDK will build the container image defined in the `ImageSpec` block and push it to the registry you specified.
+When you [register your workflow code](./running-your-code), your locally installed Union SDK will build the container image defined in the `ImageSpec` block and push it to the registry you specified.
 When a task that uses that image is executed on Union, the image will be pulled from the registry and installed in he container that runs the task.
 
 ```{note}

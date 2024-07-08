@@ -6,7 +6,7 @@
 
 When you initially onboard your organization you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
-For details, see [Configuring your data plane](data-plane-setup/configuring-your-data-plane).
+For details, see [Configuring your data plane](./data-plane-setup/configuring-your-data-plane).
 
 ### How do I change the machine types in my cluster?
 
@@ -53,17 +53,17 @@ If you are only concerned with controlling where raw data used by `FlyteFile` or
 See also:
 
 * [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
-* [FlyteFile](data-input-output/flytefile)
+* [FlyteFile](./data-input-output/flytefile)
 
 ### Can I use my own blob store for data storage that I handle myself?
 
 Yes. You can certainly configure your own blob storage and then use your chosen library (like `boto3`, for example) to interact with that storage within your task code.
-The only caveat is that you must ensure that your task code has access to the storage (see [Enabling AWS S3](integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
+The only caveat is that you must ensure that your task code has access to the storage (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
 
 ### Can I control access to my own blob store?
 
 Yes. As with all resources used by your Flyte task code, the storage must be accessible from within the cluster running your code on your data plane.
-However, the data plane is your own and you have full control over access (see [Enabling AWS S3](integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
+However, the data plane is your own and you have full control over access (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
 
 ### Could someone maliciously delete or otherwise access my raw data?
 
@@ -88,7 +88,7 @@ If you do need to use `s3fs`, here are the basic steps:
 
 * Set up the S3 bucket that you wish to access.
 * Enable access to the bucket from your task code by configuring an appropriate IAM policy.
-See [Enabling AWS S3](integrations/enabling-aws-resources/enabling-aws-s3).
+See [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3).
 * Specify your task container image to have `s3fs` correctly installed and configured.
 * In the task decorator, configure a `PodTemplate` to run the task container in privileged mode (see links below).
 * In your task code, invoke the `s3fs` command line tool to mount the S3-backed volume.
@@ -106,8 +106,8 @@ See also:
 ### Can I use BigQuery from within a task?
 
 If your Union data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**.
-For details see [Enabling GCP resources](integrations/enabling-gcp-resources/index).
-If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](integrations/enabling-gcp-resources/enabling-bigquery).
+For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/index).
+If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
 For details see [BigQuery Query](https://docs.flyte.org/en/latest/flytesnacks/examples/bigquery_plugin/bigquery.html).
@@ -139,7 +139,7 @@ In this case, subsequent runs using the same `remote_path` _will_ overwrite data
 
 See also:
 
-* [FlyteFile](data-input-output/flytefile)
+* [FlyteFile](./data-input-output/flytefile)
 * [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
 
 ### Can I accidentally overwrite FlyteFile data?
@@ -155,13 +155,13 @@ No randomization occurs so successive runs using the same `remote_path` will ove
 See also:
 
 * In this FAQ section, **Where do FlyteFile and FlyteDirectory store their data?**
-* [FlyteFile](data-input-output/flytefile)
+* [FlyteFile](./data-input-output/flytefile)
 
 ### Can I use my own blob store for FlyteFile and FlyteDirectory data storage?
 
 Yes.
 If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
-If you do this, you must ensure that your task code has access to this custom storage (see [Enabling AWS S3](integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
+If you do this, you must ensure that your task code has access to this custom storage (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
 
 You then have two options for using that storage for `FlyteFile` and `FlyteDirectory`:
 
@@ -174,7 +174,7 @@ See also:
 
 * In this FAQ section, **Where do `FlyteFile` and `FlyteDirectory` store their data?**
 
-* [FlyteFile](data-input-output/flytefile)
+* [FlyteFile](./data-input-output/flytefile)
 
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
@@ -225,7 +225,7 @@ Navigate to it in your browser and follow the directions.
 It can be used, for example, by CI bots.
 With this method, you create a Union application and configure your tools to pass the Client ID and App Secret to Union.
 
-These methods are all configured in the `config.yaml` that your `uctl` or `unionai` command uses. See [CLI Authentication](administration/cli-authentication) for full details.
+These methods are all configured in the `config.yaml` that your `uctl` or `unionai` command uses. See [CLI Authentication](./administration/cli-authentication) for full details.
 
 Note that if you wish to run or register workflows in a remote SSH session, you will need to authenticate using the DeviceFlow or ClientSecret methods as PKCE attempts to open a local browser from the CLI.
 
@@ -239,7 +239,7 @@ You can also override the settings in the `@task` in a for more fine-grained con
 
 See also:
 
-* [Customizing task resources](core-concepts/tasks/task-hardware-environment/customizing-task-resources)
+* [Customizing task resources](./core-concepts/tasks/task-hardware-environment/customizing-task-resources)
 
 ### What command-line tools should I use to register and run workflows?
 

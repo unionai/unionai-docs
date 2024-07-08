@@ -1,6 +1,6 @@
 # Caching
 
-Union allows you to cache the output of nodes ([tasks](tasks/index), [subworkflows, and sub-launch plans](workflows/subworkflows-and-sub-launch-plans)) to make subsequent executions faster.
+Union allows you to cache the output of nodes ([tasks](./tasks/index), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans)) to make subsequent executions faster.
 
 Caching is useful when many executions with the same inputs may occur.
 

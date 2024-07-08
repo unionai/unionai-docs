@@ -49,10 +49,10 @@ This will install `unionai`, `scikit-learn`, `pandas`, and `matplotlib`.
 
 {@@ if serverless @@}
 
-The next step is [Running the workflow](running-the-workflow).
+The next step is [Running the workflow](./running-the-workflow).
 
 {@@ elif byoc @@}
 
-The next step is [Setting up container image handling](setting-up-container-image-handling).
+The next step is [Setting up container image handling](./setting-up-container-image-handling).
 
 {@@ endif @@}

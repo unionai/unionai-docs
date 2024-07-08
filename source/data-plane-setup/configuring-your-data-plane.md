@@ -38,7 +38,7 @@ You can further partition your deployment so that each Flyte domain-project pair
 
 In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by region or by the type of workloads that will run on them.
 
-See [Multi-cluster](multi-cluster) for more information.
+See [Multi-cluster](./multi-cluster) for more information.
 
 ## Account ID
 

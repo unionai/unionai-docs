@@ -5,7 +5,7 @@ It brings together:
 
 * A [workflow](../workflows/index)
 * A (possibly partial) set of inputs required to initiate that workflow
-* Optionally, [notifications](notifications)) and [schedules](schedules)
+* Optionally, [notifications](./notifications) and [schedules](./schedules)
 
 When invoked, the launch plan starts the workflow, passing the inputs as parameters.
 If the launch plan does not contain the entire set of required workflow inputs, additional input arguments must be provided at execution time.
@@ -30,13 +30,13 @@ If you have defined one or more custom launch plans, they will be available in t
 
 ![my_workflow_custom_lp](/_static/images/concepts-launch-plans-5.png)
 
-For more details, see [Running Launch Plans](running-launch-plans).
+For more details, see [Running Launch Plans](./running-launch-plans).
 
 ## Registering a launch plan
 
 ### Registering a launch plan on the command line with `unionai` or `uctl`
 
-In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `unionai` or `uctl`( See [Registering workflows](../../development-cycle/registering-workflows)).
+In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `unionai` or `uctl`( See [Running your code](../../development-cycle/running-your-code)).
 
 ### Registering a launch plan in Python with `UnionRemote`
 

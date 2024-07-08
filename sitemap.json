@@ -53,7 +53,7 @@
                 {"name": "tasks", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "task-types", "variants": ["byoc", "serverless"]},
-                        {"name": "task-parameters", "variants": ["byoc"]},
+                        {"name": "task-parameters", "variants": ["byoc", "serverless"]},
                         {"name": "launching-tasks", "variants": ["byoc", "serverless"]},
                         {"name": "viewing-tasks", "variants": ["byoc", "serverless"]},
                         {"name": "viewing-logs", "variants": ["byoc", "serverless"]},

@@ -1,6 +1,6 @@
 # Enabling AWS resources
 
-Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](enabling-aws-s3), [AWS Secrets Manager](enabling-aws-secrets-manager), [AWS Elastic Container Registry](enabling-aws-ecr), and so forth.
+Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Secrets Manager](./enabling-aws-secrets-manager), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 As much as possible, access to the resources you need will be pre-configured by the Union team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
@@ -19,12 +19,12 @@ Broadly speaking, there are two categories of access that you are likely to have
 
 * **Infrastructure access**:
 Enabling access to a resource for your data plane infrastructure.
-The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](enabling-aws-ecr) for your task container images and it resides in an AWS account other than the one containing your data plane.
+The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr) for your task container images and it resides in an AWS account other than the one containing your data plane.
 In that case, some configuration is required to enable the Union operator on your data plane to pull images from the registry when registering your workflows and tasks.
 **If you are using an ECR instance within the same AWS account as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
 Enabling access to a resource for your task code.
-For example, your task code might need to access [AWS S3 storage](enabling-aws-s3) or [AWS Secrets Manager](enabling-aws-secrets-manager) at runtime.
+For example, your task code might need to access [AWS S3 storage](./enabling-aws-s3) or [AWS Secrets Manager](./enabling-aws-secrets-manager) at runtime.
 This involves granting permission to roles that are attached to the Kubernetes cluster within which your task code runs.
 
 ## Infrastructure-level access
@@ -34,7 +34,7 @@ The only infrastructure-level access issue you are likely to encounter is around
 **If your task container images are stored in an AWS Elastic Container Registry in the same AWS account as your data plane, then access is already enabled. You do not have to do anything.**
 
 If your task container images reside in an ECR instance in **another AWS account** you will need configure that ECR instance to allow access from your data plane.
-See [Enabling AWS ECR](enabling-aws-ecr) for details.
+See [Enabling AWS ECR](./enabling-aws-ecr) for details.
 
 ## Task code access
 
@@ -128,7 +128,7 @@ To create a new policy:
 * Go through the sections of the visual editor to define the permissions you wish to grant.
   * Alternatively, you can paste a JSON definition directly into the JSON editor.
   * The details of what permissions to grant depend on the resource in question and the access you wish to grant.
-  Specific examples are covered in [Enabling AWS S3](enabling-aws-s3) and [Enabling AWS Secrets Manager](enabling-aws-secrets-manager).
+  Specific examples are covered in [Enabling AWS S3](./enabling-aws-s3) and [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 * Proceed through the steps of the wizard, give your policy a name (which we will call `<CustomPolicy>`), and select **Create policy**.
 * Record the name and ARN of your policy.
 Here we will refer to the ARN is `<CustomPolicyArn>`.

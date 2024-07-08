@@ -91,7 +91,7 @@ def wf(name: str = "world") -> str:
 
 {@@ if byoc @@}
 To register the code to a project on Union and run the workflow, follow the directions in
-[Registering and running workflows](../getting-started/deploying-the-project-on-union)
+[Running your code](../development-cycle/running-your-code)
 {@@ elif serverless @@}
 To register the code to a project on Union as usual and run the workflow.
 {@@ endif @@}
