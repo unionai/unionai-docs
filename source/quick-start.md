@@ -1,4 +1,4 @@
-# Getting started
+# Quick start
 
 In this section, we give a quick introduction to writing and running Union workflows.
 
@@ -126,11 +126,11 @@ Make sure to remove any files in `~/.flyte/` or `~/.unionai/` and unset the envi
 ## Set up configuration for the `unionai` CLI
 
 To run and register tasks, workflows, and launch plans from your local machine to your Union instance, you will need to create a Union connection configuration file that contains your Union host domain.
-Your Union host domain is the part of your `<union-host-url>` after the `https://`.
-For example, if your `<union-host-url>` is `https://my-union-instance.com`, then your Union host domain is `my-union-instance.com`.
-We will refer to this as `<union-host-domain>` below.
 
-Create you configuration file at `~/.unionai/config.yaml` as below, with `<union-host-domain>` substituted appropriately.
+Your Union host domain is the part of your `<union-host-url>` after the `https://`.
+For example, if your `<union-host-url>` is `https://my-union-instance.com`, then your Union host domain is `my-union-instance.com`. We will refer to this as `<union-host-domain>` below.
+
+Create your configuration file at `~/.unionai/config.yaml` as below, with `<union-host-domain>` substituted appropriately.
 Note that there are two `host` values to substitute and the resulting URLs are prefixed with `dns:///` (with three slashes):
 
 ```{code-block} yaml
@@ -146,6 +146,8 @@ admin:
   authType: Pkce
 ```
 
+:::{note}
+
 By default, the `unionai` CLI will look for a configuration file at `~/.unionai/config.yaml`.
 You can override this behavior to specify a different configuration file by setting the `UNIONAI_CONFIG` environment variable:
 
@@ -158,6 +160,7 @@ Alternatively, you can always specify the configuration file on the command line
 ```{code-block} shell
 $ unionai --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
+:::
 
 ```{warning}
 If you have previously used Flyte, you may have configuration files left over that will interfere with access to Union BYOC through the `unionai` CLI tool.
@@ -186,7 +189,6 @@ def hello_world_wf(name: str = 'world') -> str:
 ## Tasks and workflows
 
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-Typically, the corresponding configuration files would be located in the following locations:
 For more information, see the [task](../core-concepts/tasks/index) and [workflow](../core-concepts/workflows/index) documentation.
 
 ## Run the workflow locally in Python

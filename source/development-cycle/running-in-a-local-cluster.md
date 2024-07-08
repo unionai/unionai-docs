@@ -77,3 +77,40 @@ There are a few features of the console worth pointing out:
 * The **Graph** view shows the execution graph of the workflow, providing visual information about the topology of the graph and the state of each node as the workflow progresses.
 * The **Timeline** view shows how long each part of the execution takes.
 * On completion, you can inspect the outputs of each task, and ultimately, that of the overarching workflow.
+
+## Local cluster with default image
+
+```{code-block} shell
+$ unionai run --remote my_file.py my_workflow
+```
+
+_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
+
+* Task code runs in the environment of the default image in your local cluster.
+* Python code is dynamically overlaid into the container at runtime.
+* Only supports Python code whose dependencies are installed in the default image (see here).
+* Includes a local S3.
+* Supports some plugins but not all.
+* Single workflow runs immediately.
+* Workflow is registered to a default project.
+* Useful for demos.
+
+## Local cluster with custom image
+
+```{code-block} shell
+$ unionai run --remote \
+              --image my_cr.io/my_org/my_image:latest \
+              my_file.py \
+              my_workflow
+```
+
+_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
+
+* Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in your local cluster.
+* Python code is dynamically overlaid into the container at runtime
+* Supports any Python dependencies you wish, since you have full control of the image.
+* Includes a local S3.
+* Supports some plugins but not all.
+* Single workflow runs immediately.
+* Workflow is registered to a default project.
+* Useful for advanced testing during the development cycle.

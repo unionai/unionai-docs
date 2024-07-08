@@ -14,49 +14,30 @@
                 {"name": "configuring-your-data-plane", "variants": ["byoc"]},
                 {"name": "multi-cluster", "variants": ["byoc"]}
             ]},
-        {"name": "getting-started", "variants": ["byoc", "serverless"],
+        {"name": "quick-start", "variants": ["byoc", "serverless"]},
+        {"name": "first-workflow", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "machine-learning-example", "variants": ["serverless"]},
-                {"name": "adding-custom-dependencies", "variants": ["serverless"]},
+                {"name": "setting-up-your-local-environment", "variants": ["byoc", "serverless"]},
                 {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
-                {"name": "creating-the-project", "variants": ["byoc"]},
-                {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
-                {"name": "looking-at-the-workflow-code", "variants": ["byoc"]},
-                {"name": "running-in-a-local-python-environment", "variants": ["byoc"]},
-                {"name": "setting-up-the-project-on-union", "variants": ["byoc"]},
-                {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
-                {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
-                {"name": "managing-apps", "variants": ["serverless"]},
-                {"name": "access-aws-s3", "variants": ["serverless"]},
-                {"name": "more-resources", "variants": ["byoc"]}
+                {"name": "running-the-workflow", "variants": ["byoc", "serverless"]},
+                {"name": "example-code-components", "variants": ["byoc", "serverless"]}
             ]},
-        {"name": "tutorials", "variants": ["byoc", "serverless"],
+        {"name": "development-cycle", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "language-models", "variants": ["byoc", "serverless"],
-                    "children": [
-                        {
-                            "name": "sentiment-classifier",
-                            "variants": ["byoc", "serverless"],
-                            "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
-                        }
-                    ]
-                },
-                {"name": "parallel-processing-and-job-scheduling", "variants": ["byoc", "serverless"],
-                    "children": [
-                        {
-                            "name": "reddit-slack-bot",
-                            "variants": ["byoc", "serverless"],
-                            "from_py_file": "./unionai-examples/tutorials/reddit_slack_bot/reddit_slack_bot.py"
-                        },
-                        {
-                            "name": "time-series-forecaster-comparison",
-                            "variants": ["byoc", "serverless"],
-                            "from_py_file": "./unionai-examples/tutorials/time_series_forecasting/workflows/time_series_workflow.py"
-                        }
-                    ]
-                }
-            ]
-        },
+                {"name": "setting-up-a-project", "variants": ["byoc", "serverless"]},
+                {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
+                {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
+                {"name": "running-your-code", "variants": ["byoc", "serverless"]},
+                {"name": "union-run-details", "variants": ["byoc", "serverless"]},
+                {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
+                {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
+                {"name": "managing-apps", "variants": ["byoc", "serverless"]},
+                {"name": "accessing-aws-s3", "variants": ["serverless"]},
+                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
+                {"name": "ci-cd-deployment", "variants": ["byoc"]},
+                {"name": "unionremote", "variants": ["byoc", "serverless"]}
+            ]},
         {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "workflows", "variants": ["byoc", "serverless"],
@@ -72,7 +53,7 @@
                 {"name": "tasks", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "task-types", "variants": ["byoc", "serverless"]},
-                        {"name": "task-parameters", "variants": ["byoc"]},
+                        {"name": "task-parameters", "variants": ["byoc", "serverless"]},
                         {"name": "launching-tasks", "variants": ["byoc", "serverless"]},
                         {"name": "viewing-tasks", "variants": ["byoc", "serverless"]},
                         {"name": "viewing-logs", "variants": ["byoc", "serverless"]},
@@ -81,8 +62,7 @@
                                 {"name": "imagespec", "variants": ["byoc"]},
                                 {"name": "imagespec-with-ecr", "variants": ["byoc"]},
                                 {"name": "imagespec-with-gar", "variants": ["byoc"]},
-                                {"name": "environment-variables", "variants": ["byoc"]},
-                                {"name": "secrets", "variants": ["byoc"]}
+                                {"name": "environment-variables", "variants": ["byoc"]}
                             ]},
                         {"name": "task-hardware-environment", "variants": ["byoc"],
                             "children": [
@@ -112,15 +92,6 @@
                         {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "caching", "variants": ["byoc", "serverless"]}
-            ]},
-        {"name": "development-cycle", "variants": ["byoc", "serverless"],
-            "children": [
-                {"name": "registering-workflows", "variants": ["byoc", "serverless"]},
-                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
-                {"name": "interactive-tasks", "variants": ["byoc", "serverless"]},
-                {"name": "setting-up-ci-cd-deployment", "variants": ["byoc"]},
-                {"name": "unionremote", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc"]}
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
@@ -186,6 +157,32 @@
                                 {"name": "snowflake-agent-example", "variants": ["byoc"]}
                             ]}
                     ]}
+            ]},
+        {"name": "tutorials", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "language-models", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "sentiment-classifier",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+                        }
+                    ]
+                },
+                {"name": "parallel-processing-and-job-scheduling", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "reddit-slack-bot",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/reddit_slack_bot/reddit_slack_bot.py"
+                        },
+                        {
+                            "name": "time-series-forecaster-comparison",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/time_series_forecasting/workflows/time_series_workflow.py"
+                        }
+                    ]
+                }
             ]},
         {"name": "api", "variants": ["byoc", "serverless"],
             "children": [

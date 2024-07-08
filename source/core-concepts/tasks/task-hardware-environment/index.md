@@ -17,7 +17,7 @@ Control request and limits on
 * Storage size
 * Ephemeral storage size
 
-See [Customizing task resources](customizing-task-resources) for details.
+See [Customizing task resources](./customizing-task-resources) for details.
 
 ## Using PodTemplate
 

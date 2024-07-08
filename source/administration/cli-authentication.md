@@ -7,7 +7,6 @@ There are three authentication mechanisms available: **PKCE**, **DeviceFlow**, a
 ## PKCE
 
 Proof Key of Code Exchange (PKCE) is the default mechanism.
-It is used, for example, in the [getting-started](../getting-started/index) examples.
 It opens a browser window allowing the user to login. The authentication flow with this mechanism works like this:
 
 * The user invokes `uctl` or `unionai` to perform an operation in Union.
@@ -61,7 +60,7 @@ union:
 ```
 
 :::{note}
-During authentication, Union attempts to store an authentication token on the keyring service of the operating system. 
+During authentication, Union attempts to store an authentication token on the keyring service of the operating system.
 If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default.
 If you find that browser based authentication is required every time you run or register your workflows, you may need to run
 `pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
@@ -78,7 +77,7 @@ The authentication flow with ClientSecret works like this:
 * Upon successful authentication, the command-line action completes.
 
 With this mechanism, you need to first set up an application.
-Create the app as described in [Applications](applications), assigning it a `clientId` and recording the `AppSecret` that is returned.
+Create the app as described in [Applications](./applications), assigning it a `clientId` and recording the `AppSecret` that is returned.
 
 You then store the `AppSecret` in either a local file or an environment variable and set up your `config.yaml` to reference it.
 

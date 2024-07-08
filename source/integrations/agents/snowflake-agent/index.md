@@ -13,7 +13,7 @@ pip install flytekitplugins-snowflake
 
 ## Example usage
 
-For a usage example, see [Snowflake agent example](snowflake-agent-example).
+For a usage example, see [Snowflake agent example](./snowflake-agent-example).
 
 ## Local testing
 

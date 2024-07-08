@@ -15,7 +15,7 @@ Actors allow you to reuse a container and environment between tasks that need to
 * **parallelism:** The number of tasks that can execute in parallel, per worker.
 * **replica_count:** The number of workers to provision that are able to accept tasks.
 * **requests:** Compute resource requests per task.
-* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../getting-started/managing-secrets).
+* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../development-cycle/managing-secrets).
 * **ttl_seconds:** How long to keep the Actor alive while no tasks are being run.
 
 ## Examples

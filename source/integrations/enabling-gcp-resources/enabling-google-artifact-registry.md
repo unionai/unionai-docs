@@ -12,7 +12,7 @@ If your data plane is on GCP then you may want to use Google Artifact Registry (
 ## Enabling cross-project access to Artifact Registry
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
-This is the infrastructure-level access that we discussed [earlier](index.md#infrastructure-level-access).
+This is the infrastructure-level access that we discussed [earlier](./index.md#infrastructure-level-access).
 It is mediated by the a specific Google Service Account (GSA) which we will refer to here as `<FlyteWorkerGSA>`
 (recall that this is in contrast to the task code access, which is mediated by a different default GSA, `<UserFlyteGSA>`).
 

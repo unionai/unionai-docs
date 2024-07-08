@@ -10,7 +10,7 @@ $ pip install flytekitplugins-openai
 
 ## Example usage
 
-For a usage example, see [ChatGPT agent example](chatgpt-agent-example).
+For a usage example, see [ChatGPT agent example](./chatgpt-agent-example).
 
 ## Local testing
 
