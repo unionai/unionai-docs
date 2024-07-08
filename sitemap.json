@@ -62,8 +62,7 @@
                                 {"name": "imagespec", "variants": ["byoc"]},
                                 {"name": "imagespec-with-ecr", "variants": ["byoc"]},
                                 {"name": "imagespec-with-gar", "variants": ["byoc"]},
-                                {"name": "environment-variables", "variants": ["byoc"]},
-                                {"name": "secrets", "variants": ["byoc"]}
+                                {"name": "environment-variables", "variants": ["byoc"]}
                             ]},
                         {"name": "task-hardware-environment", "variants": ["byoc"],
                             "children": [
