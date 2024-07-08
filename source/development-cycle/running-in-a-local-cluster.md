@@ -78,11 +78,6 @@ There are a few features of the console worth pointing out:
 * The **Timeline** view shows how long each part of the execution takes.
 * On completion, you can inspect the outputs of each task, and ultimately, that of the overarching workflow.
 
-
-
-
-
-
 ## Local cluster with default image
 
 ```{code-block} shell

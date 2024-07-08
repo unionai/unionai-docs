@@ -36,6 +36,7 @@ Here you are invoking `unionai run` and passing the name of the Python file and 
 In addition, you are passing the named parameter `name` and its value.
 
 This command is useful for quickly testing a workflow locally to check for basic errors.
+For more details see [unionai run details](union-run-details).
 
 ## Running a script on Union with `unionai run --remote`
 
@@ -62,6 +63,7 @@ This command will:
 * Run the workflow on Union.
 
 This command is useful for quickly deploying and running a specific workflow on Union.
+For more details see [unionai run details](union-run-details).
 
 ## Deploying your code to Union with `unionai register`
 
@@ -109,5 +111,5 @@ Once the code is packaged you register it using the `uctl` CLI:
 $ uctl register files --project basic-example --domain development \
        --archive flyte-package.tgz --version 1.0
 ```
-See [UCTL CLI](./uctl-cli) for more details on how to install the `uctl` CLI.
+See [UCTL CLI](../administration/uctl-cli) for more details on how to install and use the `uctl` CLI.
 {@@ endif @@}

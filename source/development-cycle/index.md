@@ -14,6 +14,8 @@ This section covers developing production-ready workflows for Union.
   - Use `ImageSpec` to specify the dependencies needed in the containers that will run your tasks on Union.
 * - {doc}`Running your code <running-your code>`
   - Use different deploy and run commands for different steps in the development cycle.
+* - {doc}`unionai run details<union-run-details>`
+  - Programmatically perform Union operations in Python.
 * - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
   - Inspect and debug live task code directly in the Union console.
 * - {doc}`Managing secrets <managing-secrets>`
@@ -27,8 +29,6 @@ This section covers developing production-ready workflows for Union.
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
 {@@ if byoc @@}
-* - {doc}`UCTL CLI <uctl-cli>`
-  - Install and use the UCTL CLI to interact with Union.
 * - {doc}`Running in a local cluster <running-in-a-local-cluster>`
   - Run your workflows in a local Kubernetes cluster on your machine.
 * - {doc}`CI/CD deployment <ci-cd-deployment>`

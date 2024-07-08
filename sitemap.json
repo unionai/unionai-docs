@@ -28,12 +28,12 @@
                 {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
                 {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
                 {"name": "running-your-code", "variants": ["byoc", "serverless"]},
+                {"name": "union-run-details", "variants": ["byoc", "serverless"]},
                 {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
                 {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
                 {"name": "managing-apps", "variants": ["byoc", "serverless"]},
                 {"name": "accessing-aws-s3", "variants": ["serverless"]},
                 {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
-                {"name": "uctl-cli", "variants": ["byoc"]},
                 {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
                 {"name": "ci-cd-deployment", "variants": ["byoc"]},
                 {"name": "unionremote", "variants": ["byoc", "serverless"]}

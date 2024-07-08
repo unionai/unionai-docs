@@ -1,4 +1,7 @@
-# `unionai` CLI extras
+# `unionai run` details
+
+The `unionai run` command is used to run a specific workflow or task in your local Python environment or on Union.
+In this section we will discuss some of the details of how and why to use it.
 
 ## Passing parameters
 
@@ -24,8 +27,6 @@ The value `Albert` is passed for the parameter `name`.
 
 With `snake_case` argument names, you have to convert them to `kebab-case`. For example,
 if the code were altered to accept a `last_name` parameter then the following command:
-
-```{code-block} python
 
 ```{code-block} shell
 $ unionai run example.py wf --last-name 'Einstein'
