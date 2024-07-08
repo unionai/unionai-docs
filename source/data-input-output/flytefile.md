@@ -36,7 +36,7 @@ A file path and name in a backing store. Used to override the default storage (s
 
 **`path`**`: typing.Union[str, os.PathLike]`\
 The local (in-container) path to the file. If the `FlyteFile` was created in the current task from a local file, then this is simply the path to that file.
-If the `FlyteFile` was passed in to the current task or was created in the current task from a remote file then this attribute will be `None` until `download`is successfully called on `FlyteFile`.
+If the `FlyteFile` was passed in to the current task or was created in the current task from a remote file then this attribute will be `None` until `download` is successfully called on `FlyteFile`.
 At that point, a random local path is generated for the downloaded file and that path is stored here.
 
 **`remote_source`**`: str`\
@@ -65,6 +65,9 @@ From `@dataclass_json`
 
 **`new_remote_file`**`(name: typing.Optional[str] = None) -> FlyteFile`\
 Create a new `FlyteFile` with a remote source.
+
+**`from_source`**`(name: source: str | os.PathLike) -> FlyteFile`\
+Create a new `FlyteFile` from an existing remote file in blob storage.
 
 **`extension`**`()`\
 Return the extension.
@@ -105,7 +108,7 @@ def t2(ff: FlyteFile):
 @workflow
 def wf():
     ff = t1()
-    t2(ff)
+    t2(ff=ff)
 ```
 
 Recall that the code within a Flyte task function is real Python code (run in a Python interpreter inside the task container) while the code within a workflow function is actually a Python-like DSL, compiled by Flyte into a representation of the workflow.
@@ -166,7 +169,7 @@ You can, for example, use the same S3 bucket that your cluster uses by default (
 
 :::{note}
 
-If you set`remote_path`then subsequent runs of the same task will overwrite the file.
+If you set `remote_path` then subsequent runs of the same task will overwrite the file.
 
 :::
 
