@@ -1,4 +1,4 @@
-# `unionai run` details
+# Details of unionai run
 
 The `unionai run` command is used to run a specific workflow or task in your local Python environment or on Union.
 In this section we will discuss some of the details of how and why to use it.

@@ -1,4 +1,4 @@
-# Setting up local dependencies
+# Local dependencies
 
 During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union.
 To enable this, you need ensure that the required dependencies are installed in both places.
