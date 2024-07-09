@@ -232,10 +232,10 @@
 /development-cycle /byoc/development-cycle 301
 /development-cycle/interactive-tasks/ /byoc/development-cycle/debugging-with-interactive-tasks 301
 /development-cycle/interactive-tasks /byoc/development-cycle/debugging-with-interactive-tasks 301
-/development-cycle/registering-workflows/ /byoc/development-cycle/registering-workflows 301
-/development-cycle/registering-workflows /byoc/development-cycle/registering-workflows 301
-/development-cycle/setting-up-ci-cd-deployment/ /byoc/development-cycle/setting-up-ci-cd-deployment 301
-/development-cycle/setting-up-ci-cd-deployment /byoc/development-cycle/setting-up-ci-cd-deployment 301
+/development-cycle/registering-workflows/ /byoc/development-cycle/running-your-code 301
+/development-cycle/registering-workflows /byoc/development-cycle/running-your-code 301
+/development-cycle/setting-up-ci-cd-deployment/ /byoc/development-cycle/ci-cd-deployment 301
+/development-cycle/setting-up-ci-cd-deployment /byoc/development-cycle/ci-cd-deployment 301
 /development-cycle/task-resource-validation/ /byoc/development-cycle/task-resource-validation 301
 /development-cycle/task-resource-validation /byoc/development-cycle/task-resource-validation 301
 /development-cycle/unionremote/ /byoc/development-cycle/unionremote 301
@@ -349,30 +349,30 @@
 /platform-architecture /byoc/platform-architecture 301
 /release-notes/ /byoc 301
 /release-notes /byoc 301
-/running-workflows/ /byoc/web-console 301
-/running-workflows /byoc/web-console 301
-/running-workflows/execution-view/ /byoc/web-console/execution-view 301
-/running-workflows/execution-view /byoc/web-console/execution-view 301
-/running-workflows/launching-workflows-and-tasks/ /byoc/web-console/launching-workflows-and-tasks 301
-/running-workflows/launching-workflows-and-tasks /byoc/web-console/launching-workflows-and-tasks 301
-/running-workflows/logging/ /byoc/web-console/logging 301
-/running-workflows/logging /byoc/web-console/logging 301
-/running-workflows/project-view/ /byoc/web-console/execution-list 301
-/running-workflows/project-view /byoc/web-console/execution-list 301
-/running-workflows/registering-workflows/ /byoc/development-cycle/registering-workflows 301
-/running-workflows/registering-workflows /byoc/development-cycle/registering-workflows 301
-/running-workflows/resource-monitoring/ /byoc/web-console/usage 301
-/running-workflows/resource-monitoring /byoc/web-console/usage 301
-/running-workflows/task-level-monitoring/ /byoc/web-console/task-level-monitoring 301
-/running-workflows/task-level-monitoring /byoc/web-console/task-level-monitoring 301
-/running-workflows/web-console/ /byoc/web-console 301
-/running-workflows/web-console /byoc/web-console 301
-/union-and-flyte/ /byoc/union-and-flyte 301
-/union-and-flyte /byoc/union-and-flyte 301
+/running-workflows/ /byoc/core-concepts/workflows 301
+/running-workflows /byoc/core-concepts/workflows 301
+/running-workflows/execution-view/ /byoc/core-concepts/workflows/viewing-workflow-executions 301
+/running-workflows/execution-view /byoc/core-concepts/workflows/viewing-workflow-executions 301
+/running-workflows/launching-workflows-and-tasks/ /byoc/core-concepts/workflows/launching-workflows 301
+/running-workflows/launching-workflows-and-tasks /byoc/core-concepts/workflows/launching-workflows 301
+/running-workflows/logging/ /byoc/core-concepts/workflows/viewing-workflow-executions 301
+/running-workflows/logging /byoc/core-concepts/workflows/viewing-workflow-executions 301
+/running-workflows/project-view/ /byoc/core-concepts/workflows/viewing-workflows 301
+/running-workflows/project-view /byoc/core-concepts/workflows/viewing-workflows 301
+/running-workflows/registering-workflows/ /byoc/development-cycle/running-your-code 301
+/running-workflows/registering-workflows /byoc/development-cycle/running-your-code 301
+/running-workflows/resource-monitoring/ /byoc/administration/usage 301
+/running-workflows/resource-monitoring /byoc/administration/usage 301
+/running-workflows/task-level-monitoring/ /byoc/core-concepts/tasks/task-hardware-environment/task-level-monitoring 301
+/running-workflows/task-level-monitoring /byoc/core-concepts/tasks/task-hardware-environment/task-level-monitoring 301
+/running-workflows/web-console/ /byoc/core-concepts 301
+/running-workflows/web-console /byoc/core-concepts 301
+/union-and-flyte/ /byoc/union-overview 301
+/union-and-flyte /byoc/union-overview 301
 /union-cloud-and-flyte/ /byoc/union-overview 301
 /union-cloud-and-flyte /byoc/union-overview 301
-/web-console/ /byoc/getting-started 301
-/web-console /byoc/getting-started 301
+/web-console/ /byoc/core-concepts 301
+/web-console /byoc/core-concepts 301
 /web-console/artifact-list/ /byoc/core-concepts/artifacts/viewing-artifacts 301
 /web-console/artifact-list /byoc/core-concepts/artifacts/viewing-artifacts 301
 /web-console/artifact-view/ /byoc/core-concepts/artifacts/viewing-artifacts 301
@@ -395,60 +395,136 @@
 /web-console/task-list /byoc/core-concepts/tasks/viewing-tasks 301
 /web-console/task-view/ /byoc/core-concepts/tasks/viewing-tasks 301
 /web-console/task-view /byoc/core-concepts/tasks/viewing-tasks 301
-/web-console/usage-view/ /byoc/web-console/usage 301
-/web-console/usage-view /byoc/web-console/usage 301
+/web-console/usage-view/ /byoc/administration/usage 301
+/web-console/usage-view /byoc/administration/usage 301
 
-/byoc/development-cycle/interactive-tasks/ /byoc/development-cycle/debugging-with-interactive-tasks 301
-/byoc/development-cycle/interactive-tasks /byoc/development-cycle/debugging-with-interactive-tasks 301
-/byoc/getting-started /byoc/first-workflow 301
-/byoc/getting-started/creating-the-project /byoc/first-workflow/creating-the-project 301
-/byoc/getting-started/deploying-the-project-on-union /byoc/first-workflow/deploying-the-project-on-union 301
+/byoc/getting-started/ /byoc/quick-start 301
+/byoc/getting-started /byoc/quick-start 301
+/serverless/getting-started/ /serverless/quick-start 301
+/serverless/getting-started /serverless/quick-start 301
+/byoc/getting-started/installing-development-tools/ /byoc/quickstart 301
 /byoc/getting-started/installing-development-tools /byoc/quickstart 301
-/byoc/getting-started/looking-at-the-dependencies /byoc/first-workflow/looking-at-the-dependencies 301
-/byoc/getting-started/looking-at-the-workflow-code /byoc/first-workflow/looking-at-the-workflow-code 301
-/byoc/getting-started/more-resources /byoc/first-workflow/more-resources 301
-/byoc/getting-started/running-in-a-local-python-environment /byoc/first-workflow/running-in-a-local-python-environment 301
-/byoc/getting-started/setting-up-container-image-handling /byoc/first-workflow/setting-up-container-image-handling 301
-/byoc/getting-started/setting-up-the-project-on-union /byoc/first-workflow/setting-up-the-project-on-union 301
-
-
-/serverless/development-cycle/image-builder/ /serverless/development-cycle/image-spec 301
-/serverless/development-cycle/image-builder /serverless/development-cycle/image-spec 301
-/serverless/development-cycle/interactive-tasks/ /serverless/development-cycle/debugging-with-interactive-tasks 301
-/serverless/development-cycle/interactive-tasks /serverless/development-cycle/debugging-with-interactive-tasks 301
-/serverless/getting-started/ /serverless/first-workflow 301
-/serverless/getting-started /serverless/first-workflow 301
-/serverless/getting-started/access-aws-s3 /serverless/first-workflow/access-aws-s3 301
-/serverless/getting-started/adding-custom-dependencies /serverless/first-workflow/adding-custom-dependencies 301
-/serverless/getting-started/machine-learning-example /serverless/first-workflow/train-your-first-model 301
-/serverless/getting-started/managing-apps /serverless/first-workflow/managing-apps 301
-/serverless/getting-started/managing-secrets /serverless/first-workflow/managing-secrets 301
+/serverless/getting-started/installing-development-tools/ /serverless/quickstart 301
+/serverless/getting-started/installing-development-tools /serverless/quickstart 301
 
 /getting-started/ /byoc/first-workflow 301
 /getting-started /byoc/first-workflow 301
-/getting-started/creating-the-project/ /byoc/first-workflow 301
-/getting-started/creating-the-project /byoc/first-workflow 301
-/getting-started/deploying-the-project-on-union-cloud/ /byoc/first-workflow/running-the-workflow 301
-/getting-started/deploying-the-project-on-union-cloud /byoc/first-workflow/running-the-workflow 301
-/getting-started/deploying-the-project-on-union/ /byoc/first-workflow/running-the-workflow 301
-/getting-started/deploying-the-project-on-union /byoc/first-workflow/running-the-workflow 301
+/byoc/getting-started/machine-learning-example/ /byoc/first-workflow 301
+/byoc/getting-started/machine-learning-example /byoc/first-workflow 301
+/serverless/getting-started/machine-learning-example/ /serverless/first-workflow 301
+/serverless/getting-started/machine-learning-example /serverless/first-workflow 301
+
 /getting-started/installing-development-tools/ /byoc/first-workflow/setting-up-your-local-environment 301
 /getting-started/installing-development-tools /byoc/first-workflow/setting-up-your-local-environment 301
-/getting-started/looking-at-the-dependencies/ /byoc/first-workflow/setting-up-your-local-environment 301
-/getting-started/looking-at-the-dependencies /byoc/first-workflow/setting-up-your-local-environment 301
-/getting-started/looking-at-the-workflow-code/ /byoc/first-workflow/understanding-the-workflow-code 301
-/getting-started/looking-at-the-workflow-code /byoc/first-workflow/understanding-the-workflow-code 301
-/getting-started/more-resources/ /byoc/first-workflow 301
-/getting-started/more-resources /byoc/first-workflow 301
-/getting-started/registering-workflows/ /byoc/development-cycle/registering-workflows 301
-/getting-started/registering-workflows /byoc/development-cycle/registering-workflows 301
+
+/byoc/getting-started/setting-up-container-image-handling/ /byoc/first-workflow/setting-up-container-image-handling 301
+/byoc/getting-started/setting-up-container-image-handling /byoc/first-workflow/setting-up-container-image-handling 301
+/serverless/getting-started/setting-up-container-image-handling/ /serverless/first-workflow/setting-up-container-image-handling 301
+/serverless/getting-started/setting-up-container-image-handling /serverless/first-workflow/setting-up-container-image-handling 301
+
+/getting-started/more-resources/ /byoc/development-cycle 301
+/getting-started/more-resources /byoc/development-cycle 301
+/byoc/getting-started/more-resources/ /byoc/development-cycle 301
+/byoc/getting-started/more-resources /byoc/development-cycle 301
+/serverless/getting-started/more-resources/ /serverless/development-cycle 301
+/serverless/getting-started/more-resources /serverless/development-cycle 301
+
+/getting-started/setting-up-the-project-on-union-cloud/ /byoc/development-cycle/setting-up-a-project 301
+/getting-started/setting-up-the-project-on-union-cloud /byoc/development-cycle/setting-up-a-project 301
+/getting-started/setting-up-the-project-on-union/ /byoc/development-cycle/setting-up-a-project 301
+/getting-started/setting-up-the-project-on-union /byoc/development-cycle/setting-up-a-project 301
+/getting-started/creating-the-project/ /byoc/development-cycle/setting-up-a-project 301
+/getting-started/creating-the-project /byoc/development-cycle/setting-up-a-project 301
+/byoc/getting-started/creating-the-project/ /byoc/development-cycle/setting-up-a-project 301
+/byoc/getting-started/creating-the-project /byoc/development-cycle/setting-up-a-project 301
+/serverless/getting-started/creating-the-project/ /serverless/development-cycle/setting-up-a-project 301
+/serverless/getting-started/creating-the-project /serverless/development-cycle/setting-up-a-project 301
+/getting-started/looking-at-the-workflow-code/ /byoc/development-cycle/setting-up-a-project 301
+/getting-started/looking-at-the-workflow-code /byoc/development-cycle/setting-up-a-project 301
+
+/byoc/getting-started/adding-custom-dependencies/ /byoc/development-cycle/remote-dependencies-with-image-spec 301
+/byoc/getting-started/adding-custom-dependencies /byoc/development-cycle/remote-dependencies-with-image-spec 301
+/serverless/getting-started/adding-custom-dependencies/ /serverless/development-cycle/remote-dependencies-with-image-spec 301
+/serverless/getting-started/adding-custom-dependencies /serverless/development-cycle/remote-dependencies-with-image-spec 301
+
+/getting-started/running-in-a-local-python-environment/ /byoc/development-cycle/running-your-code 301
+/getting-started/running-in-a-local-python-environment /byoc/development-cycle/running-your-code 301
+/getting-started/registering-workflows/ /byoc/development-cycle/running-you-code 301
+/getting-started/registering-workflows /byoc/development-cycle/running-you-code 301
+/getting-started/deploying-the-project-on-union-cloud/ /byoc/development-cycle/running-your-code 301
+/getting-started/deploying-the-project-on-union-cloud /byoc/development-cycle/running-your-code 301
+/getting-started/deploying-the-project-on-union/ /byoc/development-cycle/running-your-code 301
+/getting-started/deploying-the-project-on-union /byoc/development-cycle/running-your-code 301
+/byoc/getting-started/deploying-the-project-on-union/ /byoc/development-cycle/running-your-code 301
+/byoc/getting-started/deploying-the-project-on-union /byoc/development-cycle/running-your-code 301
+/serverless/getting-started/deploying-the-project-on-union/ /serverless/development-cycle/running-your-code 301
+/serverless/getting-started/deploying-the-project-on-union /serverless/development-cycle/running-your-code 301
+/byoc/getting-started/running-in-a-local-python-environment/ /byoc/development-cycle/running-your-code 301
+/byoc/getting-started/running-in-a-local-python-environment /byoc/development-cycle/running-your-code 301
+/serverless/getting-started/running-in-a-local-python-environment/ /serverless/development-cycle/running-your-code 301
+/serverless/getting-started/running-in-a-local-python-environment /serverless/development-cycle/running-your-code 301
+/byoc/development-cycle/registering-workflows/ /byoc/development-cycle/running-your-code 301
+/byoc/development-cycle/registering-workflows /byoc/development-cycle/running-your-code 301
+/serverless/development-cycle/registering-workflows/ /serverless/development-cycle/running-your-code 301
+/serverless/development-cycle/registering-workflows /serverless/development-cycle/running-your-code 301
+
+/getting-started/looking-at-the-dependencies/ /byoc/development-cycle/local-dependencies 301
+/getting-started/looking-at-the-dependencies /byoc/development-cycle/local-dependencies 301
+/byoc/getting-started/looking-at-the-dependencies/ /byoc/development-cycle/local-dependencies 301
+/byoc/getting-started/looking-at-the-dependencies /byoc/development-cycle/local-dependencies 301
+/serverless/getting-started/looking-at-the-dependencies/ /serverless/development-cycle/local-dependencies 301
+/serverless/getting-started/looking-at-the-dependencies /serverless/development-cycle/local-dependencies 301
+
+/byoc/getting-started/looking-at-the-workflow-code/ /byoc/development-cycle/setting-up-a-project 301
+/byoc/getting-started/looking-at-the-workflow-code /byoc/development-cycle/setting-up-a-project 301
+/serverless/getting-started/looking-at-the-workflow-code/ /serverless/development-cycle/setting-up-a-project 301
+/serverless/getting-started/looking-at-the-workflow-code /serverless/development-cycle/setting-up-a-project 301
+/byoc/getting-started/setting-up-the-project-on-union/ /byoc/development-cycle/setting-up-a-project 301
+/byoc/getting-started/setting-up-the-project-on-union /byoc/development-cycle/setting-up-a-project 301
+/serverless/getting-started/setting-up-the-project-on-union/ /serverless/development-cycle/setting-up-a-project 301
+/serverless/getting-started/setting-up-the-project-on-union /serverless/development-cycle/setting-up-a-project 301
+
 /getting-started/running-in-a-local-cluster/ /byoc/development-cycle/running-in-a-local-cluster 301
 /getting-started/running-in-a-local-cluster /byoc/development-cycle/running-in-a-local-cluster 301
-/getting-started/running-in-a-local-python-environment/ /byoc/quick-start 301
-/getting-started/running-in-a-local-python-environment /byoc/quick-start 301
-/getting-started/setting-up-ci-cd-deployment/ /byoc/development-cycle/setting-up-ci-cd-deployment 301
-/getting-started/setting-up-ci-cd-deployment /byoc/development-cycle/setting-up-ci-cd-deployment 301
-/getting-started/setting-up-the-project-on-union-cloud/ /byoc/development-cycle/creating-projects-on-union-cloud 301
-/getting-started/setting-up-the-project-on-union-cloud /byoc/development-cycle/creating-projects-on-union-cloud 301
-/getting-started/setting-up-the-project-on-union/ /byoc/development-cycle/creating-projects-on-union-cloud 301
-/getting-started/setting-up-the-project-on-union /byoc/development-cycle/creating-projects-on-union-cloud 301
+
+/serverless/development-cycle/image-builder/ /serverless/development-cycle/remote-dependencies-with-image-spec 301
+/serverless/development-cycle/image-builder /serverless/development-cycle/remote-dependencies-with-image-spec 301
+
+/byoc/development-cycle/interactive-tasks/ /byoc/development-cycle/debugging-with-interactive-tasks 301
+/byoc/development-cycle/interactive-tasks /byoc/development-cycle/debugging-with-interactive-tasks 301
+/serverless/development-cycle/interactive-tasks/ /serverless/development-cycle/debugging-with-interactive-tasks 301
+/serverless/development-cycle/interactive-tasks /serverless/development-cycle/debugging-with-interactive-tasks 301
+
+/getting-started/setting-up-ci-cd-deployment/ /byoc/development-cycle/ci-cd-deployment 301
+/getting-started/setting-up-ci-cd-deployment /byoc/development-cycle/ci-cd-deployment 301
+/byoc/development-cycle/setting-up-ci-cd-deployment/ /byoc/development-cycle/ci-cd-deployment 301
+/byoc/development-cycle/setting-up-ci-cd-deployment /byoc/development-cycle/ci-cd-deployment 301
+
+/byoc/getting-started/access-aws-s3/ /byoc/development-cycle/access-aws-s3 301
+/byoc/getting-started/access-aws-s3 /byoc/development-cycle/access-aws-s3 301
+/serverless/getting-started/access-aws-s3/ /serverless/development-cycle/access-aws-s3 301
+/serverless/getting-started/access-aws-s3 /serverless/development-cycle/access-aws-s3 301
+
+/byoc/getting-started/managing-apps/ /byoc/development-cycle/managing-apps 301
+/byoc/getting-started/managing-apps /byoc/development-cycle/managing-apps 301
+/serverless/getting-started/managing-apps/ /serverless/development-cycle/managing-apps 301
+/serverless/getting-started/managing-apps /serverless/development-cycle/managing-apps 301
+
+/byoc/getting-started/managing-secrets/ /byoc/development-cycle/managing-secrets 301
+/byoc/getting-started/managing-secrets /byoc/development-cycle/managing-secrets 301
+/serverless/getting-started/managing-secrets/ /serverless/development-cycle/managing-secrets 301
+/serverless/getting-started/managing-secrets /serverless/development-cycle/managing-secrets 301
+
+/byoc/core-concepts/tasks/task-software-environment/secrets/ /byoc/development-cycle/managing-secrets 301
+/byoc/core-concepts/tasks/task-software-environment/secrets /byoc/development-cycle/managing-secrets 301
+
+/byoc/api/unionai-cli/ /byoc/api/union-cli 301
+/byoc/api/unionai-cli /byoc/api/union-cli 301
+/serverless/api/unionai-cli/ /serverless/api/union-cli 301
+/serverless/api/unionai-cli /serverless/api/union-cli 301
+
+/byoc/development-cycle/unionai-run-details/ /byoc/development-cycle/union-run-details 301
+/byoc/development-cycle/unionai-run-details /byoc/development-cycle/union-run-details 301
+/serverless/development-cycle/unionai-run-details/ /serverless/development-cycle/union-run-details 301
+/serverless/development-cycle/unionai-run-details /serverless/development-cycle/union-run-details 301
+

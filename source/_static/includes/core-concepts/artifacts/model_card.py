@@ -1,7 +1,7 @@
 import pandas as pd
 from flytekit import ImageSpec, task, workflow
 from flytekit.core.artifact import Artifact
-from unionai.artifacts import ModelCard
+from union.artifacts import ModelCard
 from typing_extensions import Annotated
 
 pandas_image = ImageSpec(

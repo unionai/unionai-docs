@@ -16,25 +16,17 @@ To illustrate the process, we will walk through an example.
 
 ```
 .
-├── image-requirements.txt
-├── local-requirements.txt
+├── requirements.txt
 └── workflows
     ├── __init__.py
     └── imagespec-simple-example.py
 ```
 
-### image-requirements.txt
+### requirements.txt
 
 ```
+union
 pandas
-```
-
-### local-requirements.txt
-
-```
-unionai
-flytekitplugins-envd
--r image-requirements.txt
 ```
 
 ### imagespec-simple-example.py
@@ -48,7 +40,7 @@ image_spec = ImageSpec(
     registry="ghcr.io/<my-github-org>",
     name="simple-example-image",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
-    requirements="image-requirements.txt"
+    requirements="requirements.txt"
 )
 
 @task(container_image=image_spec)
@@ -62,10 +54,10 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```
 
-## Install and configure `unionai` and Docker
+## Install and configure `union` and Docker
 
 To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling).
-To configure `unionai` to connect to your Union instance, see [Quick start](../../../quick-start).
+To configure `union` to connect to your Union instance, see [Quick start](../../../quick-start).
 
 ## Set up an image registry
 
@@ -84,7 +76,7 @@ For an example using Google Artifact Registry see [ImageSpec with GAR](./imagesp
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GHCR. This is needed for `unionai` to be able to push the image built according to the `ImageSpec` to GHCR.
+You will need to set up your local Docker client to authenticate with GHCR. This is needed for `union` to be able to push the image built according to the `ImageSpec` to GHCR.
 
 Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 
@@ -95,30 +87,17 @@ See [Setting up the project](../../../development-cycle/setting-up-a-project).
 
 ## Understand the requirements
 
-You will notice that we have defined two requirements files: `local-requirements.txt` and `image-requirements.txt`.
-As their names imply, the former defines the Python packages that you will need to run your workflow locally and to register it to Union,
-while the latter defines only those packages need to run the workflow in the container on Union.
-This setup is not mandatory, but it is a good practice to follow since it makes clear which dependencies are used where.
-
-The `local-requirements.txt` includes the `flytekit` and `flytekitplugins-env` packages as well as the contents of the `image-requirements.txt` file.
-
-The `unionai` package is, of course, needed in your local requirements to define workflows and to provide the `unionai` SDK, the `flytekit` SDK, and the `unionai` CLI.
-It is not need in the `image-requirements.txt` file because the task container image is based on an image that already includes `flytekit` (specifically the image `flytekit:py3.11-latest`).
-
-The `flytekitplugins-env` package is needed in your local requirements because it provides (together with your local Docker install) the functionality to build and push the container image defined by the `ImageSpec`.
-It is not needed in the `image-requirements.txt` file because it is not needed in the container image itself.
-
-The content of the `image-requirements.txt` file is just the `pandas` package, which is needed by the task, so it is need both locally and in the container image running on Union.
+The `requirements.txt` file conatins the `union` package and the `pandas` package, both of which are needed by the task.
 
 ## Set up a virtual Python environment
 
-Set up a virtual Python environment and install the dependencies defined in the `local-requirements.txt` file.
-Assuming you are in the local project root, run `pip install -r local-requirements.txt`.
+Set up a virtual Python environment and install the dependencies defined in the `requirements.txt` file.
+Assuming you are in the local project root, run `pip install -r requirements.txt`.
 
 ## Run the workflow locally
 
 You can now run the workflow locally.
-In the project root directory, run: `unionai run workflows/imagespec-simple-example.py wf`.
+In the project root directory, run: `union run workflows/imagespec-simple-example.py wf`.
 See [Running your code](../../../development-cycle/running-your-code) for more details.
 
 :::{note}
@@ -130,10 +109,10 @@ When you run the workflow in your local Python environment, the image is not bui
 To register the workflow to Union, in the local project root, run:
 
 ```{code-block} shell
-$ unionai register workflows/imagespec-simple-example.py
+$ union register workflows/imagespec-simple-example.py
 ```
 
-`unionai` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
+`union` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
 It will then register the workflow to Union.
 
 To see the registered workflow, go to the UI and navigate to the project and domain that you created above.

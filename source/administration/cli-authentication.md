@@ -1,6 +1,6 @@
 # CLI Authentication
 
-The command line tools `uctl` or `unionai` must authenticate to Union in order to perform operations on the platform.
+The command line tools `uctl` or `union` must authenticate to Union in order to perform operations on the platform.
 The authentication mechanism is configured in the `config.yaml` file used by the command line tool.
 There are three authentication mechanisms available: **PKCE**, **DeviceFlow**, and **ClientSecret**.
 
@@ -9,7 +9,7 @@ There are three authentication mechanisms available: **PKCE**, **DeviceFlow**, a
 Proof Key of Code Exchange (PKCE) is the default mechanism.
 It opens a browser window allowing the user to login. The authentication flow with this mechanism works like this:
 
-* The user invokes `uctl` or `unionai` to perform an operation in Union.
+* The user invokes `uctl` or `union` to perform an operation in Union.
 * A browser window opens allowing the user to log in.
 * On successful login, the command-line action completes.
 
@@ -36,7 +36,7 @@ union:
 With DeviceFlow the command line tool returns a URL that the user can then navigate to.
 The authentication flow with this mechanism works like this:
 
-* The user invokes `uctl` or `unionai` to perform an operation in Union.
+* The user invokes `uctl` or `union` to perform an operation in Union.
 * The command returns a URL.
 * The user navigates to that URL and follows the instructions.
 * Upon successful login, the command-line action completes.
@@ -72,7 +72,7 @@ This is the headless option. It is useful for CIs and other bots.
 
 The authentication flow with ClientSecret works like this:
 
-* The user (or machine bot) invokes `uctl` or `unionai` to perform an operation in Union.
+* The user (or machine bot) invokes `uctl` or `union` to perform an operation in Union.
 * Internally the tool authenticates to using the configured secret.
 * Upon successful authentication, the command-line action completes.
 

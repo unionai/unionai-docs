@@ -32,11 +32,11 @@ logger:
 
 Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your Union cluster.
 
-Later invocations of `uctl` or `unionai` will need to know the location of the target cluster. This can be provided in two ways:
+Later invocations of `uctl` or `union` will need to know the location of the target cluster. This can be provided in two ways:
 
 1. Explicitly passing the location of the config file on the command line
    * `uctl --config ~/.uctl/config-sandbox.yaml <command>`
-   * `unionai --config ~/.uctl/config-sandbox.yaml <command>`
+   * `union --config ~/.uctl/config-sandbox.yaml <command>`
 2. Setting the environment variable `FLYTECTL_CONFIG`to the location of the config file:
    * `export FLYTECTL_CONFIG=~/.uctl/config-sandbox.yaml`
 
@@ -48,11 +48,11 @@ In this guide, we assume that you have set the`FLYTECTL_CONFIG` environment vari
 
 ### Start the workflow
 
-Now you can run your workflow in the local cluster simply by adding the `--remote` flag to your `unionai` command:
+Now you can run your workflow in the local cluster simply by adding the `--remote` flag to your `union` command:
 
 ```{code-block} shell
 [~/wine-classification]:wine-classification
-$ unionai run --remote \
+$ union run --remote \
           workflows/example.py \
           training_workflow \
           --hyperparameters '{"C": 0.1}'
@@ -66,7 +66,7 @@ Go to http://localhost:30080/console/projects/flytesnacks/domains/development/ex
 
 ### Inspect the results
 
-Navigate to the URL produced by `unionai run`. This will take you to the Flyte web console, the web interface used to manage Flyte entities such as tasks, workflows, and executions:
+Navigate to the URL produced by `union run`. This will take you to the Flyte web console, the web interface used to manage Flyte entities such as tasks, workflows, and executions:
 
 ![](/_static/images/getting-started-console.png)
 
@@ -81,10 +81,10 @@ There are a few features of the console worth pointing out:
 ## Local cluster with default image
 
 ```{code-block} shell
-$ unionai run --remote my_file.py my_workflow
+$ union run --remote my_file.py my_workflow
 ```
 
-_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
+_Where `union` is configured to point to the local cluster started with `uctl demo start`._
 
 * Task code runs in the environment of the default image in your local cluster.
 * Python code is dynamically overlaid into the container at runtime.
@@ -98,13 +98,13 @@ _Where `unionai` is configured to point to the local cluster started with `uctl 
 ## Local cluster with custom image
 
 ```{code-block} shell
-$ unionai run --remote \
+$ union run --remote \
               --image my_cr.io/my_org/my_image:latest \
               my_file.py \
               my_workflow
 ```
 
-_Where `unionai` is configured to point to the local cluster started with `uctl demo start`._
+_Where `union` is configured to point to the local cluster started with `uctl demo start`._
 
 * Task code runs in the environment of your custom image (`my_cr.io/my_org/my_image:latest`) in your local cluster.
 * Python code is dynamically overlaid into the container at runtime

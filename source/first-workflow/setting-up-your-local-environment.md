@@ -43,7 +43,7 @@ $ cd unionai-examples
 $ pip install -r guides/01_getting_started/ml_workflow/requirements.txt
 ```
 
-This will install `unionai`, `scikit-learn`, `pandas`, and `matplotlib`.
+This will install `union`, `scikit-learn`, `pandas`, and `matplotlib`.
 
 ## Next step
 

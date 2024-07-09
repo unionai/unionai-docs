@@ -17,7 +17,7 @@ from sklearn.metrics import (
 )
 
 image = ImageSpec(
-    builder="unionai",
+    builder="union",
     requirements="requirements.txt",
 )
 

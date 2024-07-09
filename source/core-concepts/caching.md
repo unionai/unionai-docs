@@ -148,7 +148,7 @@ Similar to the remote case, a local cache entry for a node will be invalidated i
 In addition, the local cache can also be emptied by running
 
 ```{code-block} shell
-$ unionai local-cache clear
+$ union local-cache clear
 ```
 
 which essentially removes the contents of the `~/.flyte/local-cache/` directory.

@@ -56,17 +56,17 @@ For the purposes of this exercise, name the project **Basic example**, and give 
 You now have a project on Union into which you can register your workflows.
 The next step is to set up a local workflow directory.
 
-## Creating a local workflow directory using `unionai init`
+## Creating a local workflow directory using `union init`
 
 Earlier, in the [First workflow](../first-workflow/index) section of the guide, we started with a pre-existing example project, cloned from git.
-In this section we'll start from scratch and create a new project using the `unionai` CLI tool.
+In this section we'll start from scratch and create a new project using the `union` CLI tool.
 
-We will use the `unionai init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
+We will use the `union init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
 To create the workflow directory, run the following command:
 
 ```{code-block} shell
-$ unionai init --template basic-union-template basic-example
+$ union init --template basic-union-template basic-example
 ```
 
 ## Directory structure
@@ -87,7 +87,7 @@ $ tree
 ```
 
 You can create your own conventions and file structure for your Union projects.
-The `unionai init` command just provides a good starting point.
+The `union init` command just provides a good starting point.
 
 However, the separate `workflows` subdirectory and the contained `__init__.py` file are significant.
 We will discuss them when we cover the [registration process](./running-your-code).

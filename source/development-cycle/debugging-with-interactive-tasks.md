@@ -29,7 +29,6 @@ This `requirements.txt` file is used by all the examples in this section:
 
 ```{code-block} text
 flytekit
-flytekitplugins-envd
 flytekitplugins-flyteinteractive
 ```
 
@@ -69,7 +68,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="unionai",
+   builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -224,7 +223,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
 
 image = ImageSpec(
-   builder="unionai",
+   builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -293,7 +292,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="unionai",
+   builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -360,7 +359,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="unionai",
+   builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -427,7 +426,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="unionai",
+   builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )

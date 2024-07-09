@@ -1,6 +1,6 @@
 # artifacts.OnArtifact
 
 ```{eval-rst}
-.. autoclass:: unionai.artifacts.OnArtifact
+.. autoclass:: union.artifacts.OnArtifact
     :undoc-members:
 ```

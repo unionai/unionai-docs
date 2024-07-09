@@ -10,4 +10,4 @@ sphinx-book-theme
 sphinx-copybutton
 sphinx-docsearch
 sphinxext-remoteliteralinclude
-unionai
+union

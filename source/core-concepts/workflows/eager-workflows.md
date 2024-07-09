@@ -267,7 +267,7 @@ eager workflows with a `FlyteRemote` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
 ```{code-block} python
-from unionai.remote import FlyteRemote
+from union.remote import FlyteRemote
 from flytekit.configuration import Config
 
 @eager(
@@ -297,7 +297,7 @@ default sandbox configuration does not require key-based authentication.
 
 ```{code-block} python
 from flytekit.configuration import Config
-from unionai.remote import FlyteRemote
+from union.remote import FlyteRemote
 
 
 @eager(
@@ -326,20 +326,20 @@ invoked inside of the eager workflow.
 
 Assuming that your `flytekit` code is configured correctly, you will need to
 register all of the task and subworkflows that are used with your eager
-workflow with `unionai register`:
+workflow with `union register`:
 
 ```{code-block} shell
-unionai --config <path/to/config.yaml> register \
+union --config <path/to/config.yaml> register \
  --project <project> \
  --domain <domain> \
  --image <image> \
  path/to/eager_workflows.py
 ```
 
-And then run it with `unionai run`:
+And then run it with `union run`:
 
 ```{code-block} shell
-unionai --config <path/to/config.yaml> run \
+union --config <path/to/config.yaml> run \
  --project <project> \
  --domain <domain> \
  --image <image> \
@@ -347,7 +347,7 @@ unionai --config <path/to/config.yaml> run \
 ```
 
 :::{note}
-You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood, which means that `unionai run` has no way of knowing what tasks and subworkflows are invoked inside of it.
+You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood, which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
 :::
 
 ## Eager workflows in the UI

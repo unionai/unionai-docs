@@ -6,7 +6,7 @@
 
 |       |        |
 |-------|--------|
-| [`UnionRemote`](./entrypoint.md#unionai.remote.UnionRemote) | Main entrypoint for programmatically accessing a Union remote backend.|
+| [`UnionRemote`](./entrypoint.md#union.remote.UnionRemote) | Main entrypoint for programmatically accessing a Union remote backend.|
 | [`Options`](./entrypoint.md#flytekit.remote.remote.Options) | Options that can be configured for a launch plan during registration or overridden during an execution.|
 
 ## Entities

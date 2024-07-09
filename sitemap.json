@@ -193,7 +193,7 @@
                         {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},
                         {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "unionai-cli", "variants": ["byoc", "serverless"]},
+                {"name": "union-cli", "variants": ["byoc", "serverless"]},
                 {"name": "unionremote", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "entrypoint", "variants": ["byoc", "serverless"]},

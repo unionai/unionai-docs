@@ -131,7 +131,7 @@ jobs:
           context: ./${{ env.PROJECT }}
           dockerfile: Dockerfile
 
-      - name: Setup unionai
+      - name: Setup union
         run: |
           sudo apt-get install python3
           pip install -r ${{ env.PROJECT }}/requirements.txt
@@ -141,7 +141,7 @@ jobs:
       - name: Package
         working-directory: ./${{ env.PROJECT }}
         run: |
-          unionai --pkgs workflows package \
+          union --pkgs workflows package \
             --output ./flyte-package.tgz \
             --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
       - name: Register

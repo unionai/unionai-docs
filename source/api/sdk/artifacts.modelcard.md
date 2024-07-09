@@ -1,6 +1,6 @@
 # artifacts.ModelCard
 
 ```{eval-rst}
-.. autoclass:: unionai.artifacts.ModelCard
+.. autoclass:: union.artifacts.ModelCard
     :members:
 ```

@@ -5,7 +5,7 @@
 To quickly check your workflow code, you can run it in your local Python environment with the following command:
 
 ```{code-block} shell
-$ unionai run guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+$ union run guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 If the code runs successfully, you should see output like this:
@@ -22,7 +22,7 @@ Running Execution on local.
 To run the workflow in the cloud on Union, add the `--remote` option:
 
 ```{code-block} shell
-$ unionai run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+$ union run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 You should see the following output in your terminal:
@@ -35,7 +35,7 @@ You should see the following output in your terminal:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-When you invoke `unionai run --remote`, the system first launches a Union hosted image builder that creates the container images with the Python dependencies required for the tasks in your workflow.
+When you invoke `union run --remote`, the system first launches a Union hosted image builder that creates the container images with the Python dependencies required for the tasks in your workflow.
 
 Next, the workflow code is registered to Union (meaning that it is serialized uploaded to Union),
 the images defined in `ImageSpec` blocks are used to initialize the containers for each task, and the workflow is executed.
@@ -48,10 +48,10 @@ To run the workflow on Union, you will need to register the workflow, make your 
 
 ### Register the workflow on Union
 
-When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `unionai register`. To register the `ml_workflow` example, run the following command:
+When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `union register`. To register the `ml_workflow` example, run the following command:
 
 ```{code-block} shell
-$ unionai register guides/01_getting_started/ml_workflow
+$ union register guides/01_getting_started/ml_workflow
 ```
 
 This command does the following:
