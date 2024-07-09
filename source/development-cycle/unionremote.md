@@ -4,10 +4,10 @@
 
 ## Creating a `UnionRemote` object
 
-To use `UnionRemote`, install the `unionai` SDK with `pip install unionai`, then add the following import to your code:
+To use `UnionRemote`, install the `union` SDK with `pip install union`, then add the following import to your code:
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 ```
 
 The `UnionRemote` class is the entrypoint for programmatically performing operations in a Python
@@ -27,7 +27,7 @@ The `Config` class's `auto` method can be used to automatically
 construct the `Config` object.
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(config=Config.auto())
@@ -46,7 +46,7 @@ The `Config` class's `for_endpoint` method can be used to
 construct the `Config` object to connect to a specific endpoint.
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(
@@ -77,7 +77,7 @@ The `Config` class can be directly used to construct the `Config` object if addi
 For example:
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.configuration import Config, PlatformConfig
 
 remote = UnionRemote(
@@ -146,7 +146,7 @@ To fetch a single artifact, pass this URI to the `get_artifact` method:
 
 ```{code-block} python
 from flytekit.configuration import Config, PlatformConfig, AuthType
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 
 remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
     endpoint="example.domain.unionai.cloud", # replace with your domain
@@ -159,7 +159,7 @@ To dynamically query for artifacts, you can pass an artifact URI with a query to
 
 ```{code-block} python
 from flytekit.configuration import Config, PlatformConfig, AuthType
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 
 remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
     endpoint="example.domain.unionai.cloud", # replace with your domain
@@ -176,7 +176,7 @@ To create an artifact with `UnionRemote`, declare the artifact, then pass it to 
 
 ```{code-block} python
 from flytekit.configuration import Config, PlatformConfig, AuthType
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.core.artifact import Artifact
 
 remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(

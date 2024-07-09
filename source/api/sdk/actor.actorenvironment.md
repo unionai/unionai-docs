@@ -1,6 +1,6 @@
 # actor.ActorEnvironment
 
 ```{eval-rst}
-.. autoclass:: unionai.actor.ActorEnvironment
+.. autoclass:: union.actor.ActorEnvironment
     :members:
 ```

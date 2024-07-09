@@ -1,4 +1,4 @@
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)

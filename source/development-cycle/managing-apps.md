@@ -5,10 +5,10 @@ on Union, e.g. a Github action that registers or runs workflows.
 
 ## Creating an API key
 
-To create an API key, run the following with the `unionai` CLI with any name.
+To create an API key, run the following with the `union` CLI with any name.
 
 ```{code-block} shell
-unionai create app custom_name
+union create app custom_name
 
 Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
@@ -41,7 +41,7 @@ environment variable:
 
 ```{code-block} shell
 export UNIONAI_SERVERLESS_API_KEY="<SECRET>"
-unionai run --remote hello.py main --name "Union"
+union run --remote hello.py main --name "Union"
 ```
 
 ## Listing and deleting applications
@@ -49,7 +49,7 @@ unionai run --remote hello.py main --name "Union"
 You can list all your application by running:
 
 ```{code-block} shell
-unionai get app
+union get app
 ```
 
 ```{code-block} shell
@@ -66,5 +66,5 @@ user name.
 Finally, you can delete your application by running:
 
 ```{code-block} shell
-unionai delete app my-custom-name
+union delete app my-custom-name
 ```

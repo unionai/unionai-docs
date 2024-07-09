@@ -1,13 +1,13 @@
 # The `uctl` CLI
 
-While the `unionai` CLI provides the primary mechanism for interacting with Union,
+While the `union` CLI provides the primary mechanism for interacting with Union,
 another CLI, called `uctl`, is also provided.
 
-`uctl` provides the same functionality as `unionai` but also includes
+`uctl` provides the same functionality as `union` but also includes
 additional functionality for managing Union-specific entities like users, roles, and Union configurations.
 
 In addition, `uctl` is a compiled binary, which makes it faster and more efficient than the Python-based
-`unionai` CLI and more suitable for situations like running in CI/CD environment where you might want to
+`union` CLI and more suitable for situations like running in CI/CD environment where you might want to
 avoid the overhead of large Python dependencies.
 
 ## Installing `uctl`

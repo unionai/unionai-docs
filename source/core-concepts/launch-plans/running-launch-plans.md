@@ -46,7 +46,7 @@ See the [`uctl` reference]() for more details.
 The following code executes a launch plan using `UnionRemote`:
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.remote import Config
 
 remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)

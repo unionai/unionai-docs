@@ -4,7 +4,7 @@ import pandas as pd
 from flytekit import ImageSpec, task, workflow, LaunchPlan
 from flytekit.core.artifact import Artifact, Inputs
 from typing_extensions import Annotated
-from unionai.artifacts import OnArtifact
+from union.artifacts import OnArtifact
 
 pandas_image = ImageSpec(
     packages=["pandas==2.2.2"]

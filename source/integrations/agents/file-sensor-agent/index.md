@@ -6,7 +6,7 @@ To execute the provided example in a [local cluster](../../../development-cycle/
 copy the [file sensor agent example](./file-sensor-agent-example) to a file called "file_sensor_example.py" and run the following command:
 
 ```{code-block} shell
-$ unionai run --remote file_sensor_example.py wf
+$ union run --remote file_sensor_example.py wf
 ```
 
 ## Union cluster deployment

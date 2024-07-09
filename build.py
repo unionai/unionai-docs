@@ -52,8 +52,8 @@ SUBS: dict[str, dict[str, str] | str] = {
 }
 
 INSTALL_SDK_PACKAGES: dict[str, str] = {
-    "byoc": "'unionai[byoc]'",
-    "serverless": "unionai",
+    "byoc": "'union[byoc]'",
+    "serverless": "union",
 }
 
 DOCSEARCH_CREDENTIALS = {

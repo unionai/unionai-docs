@@ -2,19 +2,19 @@
 
 ## Set up your development environment
 
-If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union UI, set up your local Python environment, and install the `unionai` command line tool.
+If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union UI, set up your local Python environment, and install the `union` command line tool.
 
 ## CLI commands for running your code
 
-The `unionai` CLI provides a set of commands that allow you to deploy and run your code at different stages of the development cycle:
+The `union` CLI provides a set of commands that allow you to deploy and run your code at different stages of the development cycle:
 
-{@# TODO: Link to the unionai commands below to the unionai CLI reference section #@}
+{@# TODO: Link to the union commands below to the union CLI reference section #@}
 
-1. `unionai run`: For deploying and running a single script immediately in your local Python environment.
-2. `unionai run --remote`: For deploying and running a single script immediately in the cloud on Union.
-3. `unionai register`: For deploying multiple scripts to Union and running them from the Web interface.
+1. `union run`: For deploying and running a single script immediately in your local Python environment.
+2. `union run --remote`: For deploying and running a single script immediately in the cloud on Union.
+3. `union register`: For deploying multiple scripts to Union and running them from the Web interface.
 {@@ if byoc @@}
-4. `unionai package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
+4. `union package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
 
 ```{note}
 In some cases, you may want to test your code in a local cluster before deploying it to Union.
@@ -23,30 +23,30 @@ For more details, see [Running in a local cluster](./running-in-a-local-cluster)
 ```
 {@@ endif @@}
 
-## Running a script in local Python with `unionai run`
+## Running a script in local Python with `union run`
 
 During the development cycle you will want to run a specific workflow or task in your local Python environment to test it.
-To quickly try out the code locally use `unionai run`:
+To quickly try out the code locally use `union run`:
 
 ```{code-block} shell
-$ unionai run workflows/example.py wf --name 'Albert'
+$ union run workflows/example.py wf --name 'Albert'
 ```
 
-Here you are invoking `unionai run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
+Here you are invoking `union run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
 In addition, you are passing the named parameter `name` and its value.
 
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [unionai run details](./union-run-details).
+For more details see [union run details](./union-run-details).
 
-## Running a script on Union with `unionai run --remote`
+## Running a script on Union with `union run --remote`
 
-To quickly run a workflow on Union, use `unionai run --remote`:
+To quickly run a workflow on Union, use `union run --remote`:
 
 ```{code-block} shell
-$ unionai run --remote --project basic-example --domain development workflows/example.py wf --name 'Albert'
+$ union run --remote --project basic-example --domain development workflows/example.py wf --name 'Albert'
 ```
 
-Here we are invoking `unionai run --remote` and passing:
+Here we are invoking `union run --remote` and passing:
 * The project, `basic-example`
 * The domain, `development`
 * The Python file, `workflows/example.py`
@@ -63,12 +63,12 @@ This command will:
 * Run the workflow on Union.
 
 This command is useful for quickly deploying and running a specific workflow on Union.
-For more details see [unionai run details](./union-run-details).
+For more details see [union run details](./union-run-details).
 
-## Deploying your code to Union with `unionai register`
+## Deploying your code to Union with `union register`
 
 ```{code-block} shell
-$ unionai register workflows --project basic-example --domain development
+$ union register workflows --project basic-example --domain development
 ```
 
 Here we are registering all the code in the `workflows` directory to the project `basic-example` in the domain `development`.
@@ -91,15 +91,15 @@ This command is useful for deploying your full set of workflows to Union for tes
 
 {@@ if byoc @@}
 
-## Deploying your code to production with `unionai package` and `uctl register`
+## Deploying your code to production with `union package` and `uctl register`
 
-The combination of `unionai package` and `uctl register` is the standard way of deploying your code to production.
+The combination of `union package` and `uctl register` is the standard way of deploying your code to production.
 This method is often used in scripts to [build and deploy workflows in a CI/CD pipeline](./ci-cd-deployment).
 
 First, package your workflows:
 
 ```{code-block} shell
-$ unionai --pkgs workflows package
+$ union --pkgs workflows package
 ```
 
 This will create a tar file called `flyte-package.tgz` of the Python package located in the `workflows` directory.

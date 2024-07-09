@@ -101,9 +101,9 @@ def process_description(app, ctx, lines):
             .replace("Flyte backend registrable", "Union backend registrable")\
             .replace("entities in Flyte", "entities in Union")\
             .replace("remote flyte instance", "remote Union instance")\
-            .replace("pyflyte package", "unionai package")\
+            .replace("pyflyte package", "union package")\
             .replace("flytectl", "uctl")\
-            .replace("pyflyte run", "unionai run")
+            .replace("pyflyte run", "union run")
         del lines[idx]
         lines.insert(idx, str)
 
@@ -111,9 +111,9 @@ def process_description(app, ctx, lines):
 def process_str(my_str):
     my_str = my_str.replace("flyteremote", "UnionRemote")\
         .replace("Flyte deployment", "Union deployment")\
-        .replace("pyflyte serialize", "unionai serialize")\
-        .replace("pyflyte utility", "unionai utility")\
-        .replace("install flytekit", "install unionai and flytekit")
+        .replace("pyflyte serialize", "union serialize")\
+        .replace("pyflyte utility", "union utility")\
+        .replace("install flytekit", "install union and flytekit")
     return my_str
 
 

@@ -42,7 +42,7 @@ Later in the process, we will show you where to specify the name of your registr
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GHCR in order for `unionai` to be able to push the image built according to the `ImageSpec` to GHCR.
+You will need to set up your local Docker client to authenticate with GHCR in order for `union` to be able to push the image built according to the `ImageSpec` to GHCR.
 
 Follow the directions in [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 

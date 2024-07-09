@@ -14,7 +14,7 @@ This section covers developing production-ready workflows for Union.
   - Use `ImageSpec` to specify the dependencies needed in the containers that will run your tasks on Union.
 * - {doc}`Running your code <running-your-code>`
   - Use different deploy and run commands for different steps in the development cycle.
-* - {doc}`unionai run details<union-run-details>`
+* - {doc}`union run details<union-run-details>`
   - Programmatically perform Union operations in Python.
 * - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
   - Inspect and debug live task code directly in the Union console.
