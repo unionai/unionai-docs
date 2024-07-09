@@ -2,6 +2,8 @@
 
 {@@ if serverless @@}
 
+## Customizing task resources
+
 You can customize the hardware environment in which your task code executes through configuration in the `@task` decorator by specifying `requests` and `limits` on:
 
 * CPU number
@@ -12,9 +14,6 @@ You can customize the hardware environment in which your task code executes thro
 
 See [Customizing task resources](./customizing-task-resources) for details.
 
-If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
-See [Accelerators](./accelerators) for more information.
-
 {@@ elif byoc @@}
 
 You can customize the hardware environment in which your task code executes.
@@ -24,7 +23,7 @@ Depending on your needs, there are two different of ways to define and register 
 * Configuration in the `@task` decorator
 * Defining a PodTemplate
 
-## Using the `@task` decorator
+### Using the `@task` decorator
 
 You can specify `requests` and `limits` on:
 
@@ -36,10 +35,7 @@ You can specify `requests` and `limits` on:
 
 See [Customizing task resources](./customizing-task-resources) for details.
 
-If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
-See [Accelerators](./accelerators) for more information.
-
-## Using PodTemplate
+### Using PodTemplate
 
 If your needs are more complex, you can use Kubernetes-level configuration to constrain a task to only run on a specific machine type.
 
@@ -47,7 +43,7 @@ This requires that you coordinate with Union to set up the required machine type
 
 In your task definition you then use a `PodTemplate` that that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
 
-### `pod_template` and `pod_template_name` @task parameters
+#### `pod_template` and `pod_template_name` @task parameters
 
 The `pod_template` parameter can be used to supply a custom Kubernetes `PodTemplate` to the task.
 This can be used to define details about node selectors, affinity, tolerations, and other Kubernetes-specific settings.
@@ -57,3 +53,13 @@ The `pod_template_name` is a related parameter that can be used to specify the n
 For details see [Configuring task pods with K8s PodTemplates&#x2B00;](https://docs.flyte.org/en/latest/deployment/configuration/general.html#deployment-configuration-general).
 
 {@@ endif @@}
+
+## Accelerators
+
+If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
+See [Accelerators](./accelerators) for more information.
+
+## Task-level monitoring
+
+You can also monitor the hardware resources used by a task.
+See [Task-level monitoring](./task-level-monitoring) for details.
