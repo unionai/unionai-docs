@@ -213,7 +213,7 @@ def t1() -> FlyteDirectory:
 
 @task
 def t2(fd: FlyteDirectory):
-    # ff.remote_source == "s3://union-contoso/foo/bar"
+    # fd.remote_source == "s3://union-contoso/foo/bar"
     # file1.txt and file2.txt will now be found within s3://union-contoso/foo/bar
 
     # Use the FlyteDirectory
@@ -223,4 +223,22 @@ def t2(fd: FlyteDirectory):
 def wf():
     fd = t1()
     t2(fd=fd)
+```
+
+### Using `from_source`
+
+You may have a remote directory that is already sitting in blog storage, say S3 for example. If you want to access 
+this directory, you can use the `from_source` class method. The resulting `FlyteDirectory` will have a `path` local to
+the container and a `remote_source` equal to the URI used in `from_source`. Note that `from_source` does not download
+the content of the directory unless the `download` method is explicitly called. 
+
+```{code-block} python
+@task
+def t1() -> FlyteDirectory:
+    fd = FlyteDirectory.from_source("s3://union-contoso/foo/bar")
+    # fd.path is a random path local to the task container
+    # ff.remote_source == "s3://union-contoso/foo/bar"
+
+    return fd
+
 ```
