@@ -11,7 +11,7 @@ from flytekit.extras.accelerators import A100
 @task(
     requests=Resources(mem="120Gi", cpu="44", gpu="8", storage="100Gi", ephemeral_storage="100Gi"),
     limits=Resources(mem="200Gi", cpu="100", gpu="12", storage="200Gi", ephemeral_storage="200Gi"),
-    accelerator=A100
+    accelerator=GPUAccelerator("nvidia-tesla-a100")
 )
 def my_task()
     ...
@@ -54,12 +54,21 @@ GPUs should only be specified in the `limits` section of the task decorator:
 
 ## The `accelerator` setting
 
-The `accelerator` setting further specifies the specifies the *type* of specialized hardware required for the task.
+{@@ if serverless @@}
+
+The `accelerator` setting further specifies the *type* of GPU required for the task.
+
+{@@ elif byoc @@}
+
+The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
 This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
+
+{@@ endif @@}
 
 See [Accelerators](./accelerators) for more information.
 
 {@@ if byoc @@}
+
 ## Task resource validation
 
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
@@ -75,6 +84,7 @@ This portal also accessible from **Usage > Compute** through the **Adjust Config
 ![](/_static/images/adjust-configuration.png)
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
+
 {@@ endif @@}
 
 ## The `with_overrides` method

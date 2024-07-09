@@ -1,5 +1,59 @@
 # Accelerators
 
+{@@ if serverless @@}
+
+Union allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
+However, in some cases, you may want to be more specific about the type of GPU to be used.
+
+You can use the `accelerator` parameter to specify specific GPU types.
+
+Union Serverless comes with three GPU types available:
+
+* NVIDIA T4 Tensor Core GPU
+* NVIDIA L4 Tensor Core GPU
+* NVIDIA Tesla A100 GPU
+
+## NVIDIA T4 Tensor Core GPU
+
+The **NVIDIA T4 Tensor Core GPU** is the default.
+To use it for a task you simply specify the number of GPUs required in the `limits` parameter:
+
+```{code-block} python
+    @task(
+        limits=Resources(gpu="1"),
+    )
+    def my_task():
+        ...
+```
+
+## NVIDIA L4 Tensor Core GPU
+
+To use the **NVIDIA L4 Tensor Core GPU** for a task you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
+
+```{code-block} python
+@task(
+    requests=Resources(gpu="1"),
+    accelerator=GPUAccelerator("nvidia-l4"),
+)
+def my_task():
+    ...
+```
+
+## NVIDIA Tesla A100 GPU
+
+To use the **NVIDIA Tesla A100 GPU** for a task you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
+
+```{code-block} python
+@task(
+    requests=Resources(gpu="1"),
+    accelerator=GPUAccelerator("nvidia-tesla-a100"),
+)
+def my_task():
+    ...
+```
+
+{@@ elif byoc @@}
+
 :::{admonition} *Accelerators* and *Accelerated datasets* are entirely different things
 An accelerator, in Union, is a specialized hardware device that is used to accelerate the execution of a task.
 [Accelerated datasets](../../../data-input-output/accelerated-datasets), on the other hand, is a Union feature that enables quick access to large datasets from within a task.
@@ -23,7 +77,7 @@ from flytekit.extras.accelerators import A100
         limits=Resources(gpu="1"),
         accelerator=A100,
     )
-    def my_task() -> None:
+    def my_task():
         ...
 ```
 
@@ -55,7 +109,7 @@ If using the constants, you can import them directly from the module, e.g.:
         limits=Resources(gpu="1"),
         accelerator=T4,
     )
-    def my_task() -> None:
+    def my_task():
         ...
 ```
 
@@ -68,7 +122,7 @@ if you want to use a fractional GPU, you can use the `partitioned` method on the
         limits=Resources(gpu="1"),
         accelerator=A100.partition_2g_10gb,
     )
-    def my_task() -> None:
+    def my_task():
         ...
 ```
 
@@ -82,13 +136,13 @@ if you want to use a fractional GPU, you can use the `partitioned` method on the
 * `P100`: [NVIDIA Tesla P100 GPU](https://www.nvidia.com/en-us/data-center/tesla-p100/)
 * `T4`: [NVIDIA T4 Tensor Core GPU](https://www.nvidia.com/en-us/data-center/t4/)
 * `V100` [NVIDIA Tesla V100 GPU](https://www.nvidia.com/en-us/data-center/tesla-v100/)
-* `A100`: An entire [NVIDIA A100 GPU](https://www.nvidia.com/en-us/data-center/a100/). Fractional partitions are also available:
+* `A100`: An entire [NVIDIA Tesla A100 GPU](https://www.nvidia.com/en-us/data-center/a100/). Fractional partitions are also available:
     * `A100.partition_1g_5gb`: 5GB partition of an A100 GPU.
     * `A100.partition_2g_10gb`: 10GB partition of an A100 GPU - 2x5GB slices with 2/7th of the SM (streaming multiprocessor).
     * `A100.partition_3g_20gb`: 20GB partition of an A100 GPU - 4x5GB slices, with 3/7th fraction of the SM.
     * `A100.partition_4g_20gb`: 20GB partition of an A100 GPU - 4x5GB slices, with 4/7th fraction of the SM.
     * `A100.partition_7g_40gb`: 40GB partition of an A100 GPU - 8x5GB slices, with 7/7th fraction of the SM.
-* `A100_80GB`: An entire [NVIDIA A100 80GB GPU](https://www.nvidia.com/en-us/data-center/a100/). Fractional partitions are also available:
+* `A100_80GB`: An entire [NVIDIA Tesla A100 80GB GPU](https://www.nvidia.com/en-us/data-center/a100/). Fractional partitions are also available:
     *  `A100_80GB.partition_1g_10gb`: 10GB partition of an A100 80GB GPU - 2x5GB slices with 1/7th of the SM (streaming multiprocessor).
     * `A100_80GB.partition_2g_20gb`: 2GB partition of an A100 80GB GPU - 4x5GB slices with 2/7th of the SM.
     * `A100_80GB.partition_3g_40gb`: 3GB partition of an A100 80GB GPU - 8x5GB slices with 3/7th of the SM.
@@ -97,3 +151,5 @@ if you want to use a fractional GPU, you can use the `partitioned` method on the
 
 For more information see [Specifying Accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html) in the Flyte documentation.
 For more information on partitioning, see [Partitioned GPUs](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#partitioning).
+
+{@@ endif @@}

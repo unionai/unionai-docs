@@ -1,5 +1,19 @@
 # Task hardware environment
 
+{@@ if serverless @@}
+
+You can customize the hardware environment in which your task code executes through configuration in the `@task` decorator by specifying `requests` and `limits` on:
+
+* CPU number
+* GPU number
+* Memory size
+* Storage size
+* Ephemeral storage size
+
+See [Customizing task resources](./customizing-task-resources) for details.
+
+{@@ elif byoc @@}
+
 You can customize the hardware environment in which your task code executes.
 
 Depending on your needs, there are two different of ways to define and register tasks with their own custom hardware requirements:
@@ -9,7 +23,7 @@ Depending on your needs, there are two different of ways to define and register 
 
 ## Using the `@task` decorator
 
-Control request and limits on
+You can specify `requests` and `limits` on:
 
 * CPU number
 * GPU number
@@ -35,3 +49,5 @@ This can be used to define details about node selectors, affinity, tolerations, 
 The `pod_template_name` is a related parameter that can be used to specify the name of an already existing `PodTemplate` resource which will be used in this task.
 
 For details see [Configuring task pods with K8s PodTemplates&#x2B00;](https://docs.flyte.org/en/latest/deployment/configuration/general.html#deployment-configuration-general).
+
+{@@ endif @@}
