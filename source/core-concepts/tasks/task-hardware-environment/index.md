@@ -12,6 +12,9 @@ You can customize the hardware environment in which your task code executes thro
 
 See [Customizing task resources](./customizing-task-resources) for details.
 
+If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
+See [Accelerators](./accelerators) for more information.
+
 {@@ elif byoc @@}
 
 You can customize the hardware environment in which your task code executes.
@@ -32,6 +35,9 @@ You can specify `requests` and `limits` on:
 * Ephemeral storage size
 
 See [Customizing task resources](./customizing-task-resources) for details.
+
+If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
+See [Accelerators](./accelerators) for more information.
 
 ## Using PodTemplate
 
