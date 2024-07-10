@@ -13,6 +13,8 @@ Union Serverless comes with three GPU types available:
 * NVIDIA L4 Tensor Core GPU
 * NVIDIA Tesla A100 GPU
 
+Pricing for these GPUs can found on the [Union Pricing page](https://www.union.ai/pricing#:~:text=*Serverless%20compute%20pricing).
+
 ## NVIDIA T4 Tensor Core GPU
 
 The **NVIDIA T4 Tensor Core GPU** is the default.
@@ -20,7 +22,18 @@ To use it for a task you simply specify the number of GPUs required in the `limi
 
 ```{code-block} python
     @task(
+        limits=Resources(gpu="1")
+    )
+    def my_task():
+        ...
+```
+
+Or, you can explicitly specify the `accelerator` parameter as follows:
+
+```{code-block} python
+    @task(
         limits=Resources(gpu="1"),
+        accelerator=GPUAccelerator("nvidia-tesla-t4")
     )
     def my_task():
         ...
