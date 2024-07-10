@@ -69,8 +69,8 @@ From `@dataclass_json`
 **Class methods**
 
 **`listdir`**`(directory: FlyteDirectory) -> typing.List[typing.Union[FlyteDirectory, FlyteFile]]`\
-List all files and folders in the given directory, but without downloading the contents. The returned `FlyteDirectory` 
-and `FlyteFile` objects have the ability to lazily download the contents of the file or directory respectively. 
+List all files and folders in the given directory, but without downloading the contents. The returned `FlyteDirectory`
+and `FlyteFile` objects have the ability to lazily download the contents of the file or directory respectively.
 
 **`from_source`**`(name: source: str | os.PathLike) -> FlyteDirectory`\
 Create a new `FlyteFile` from an existing remote directory in blob storage.
@@ -227,10 +227,10 @@ def wf():
 
 ### Using `from_source`
 
-You may have a remote directory that is already sitting in blog storage, say S3 for example. If you want to access 
+You may have a remote directory that is already sitting in blog storage, say S3 for example. If you want to access
 this directory, you can use the `from_source` class method. The resulting `FlyteDirectory` will have a `path` local to
 the container and a `remote_source` equal to the URI used in `from_source`. Note that `from_source` does not download
-the content of the directory unless the `download` method is explicitly called. 
+the content of the directory unless the `download` method is explicitly called.
 
 ```{code-block} python
 @task
@@ -240,5 +240,4 @@ def t1() -> FlyteDirectory:
     # ff.remote_source == "s3://union-contoso/foo/bar"
 
     return fd
-
 ```

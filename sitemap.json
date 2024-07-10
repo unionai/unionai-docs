@@ -96,6 +96,8 @@
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "flytefile", "variants": ["byoc", "serverless"]},
+                {"name": "flytedirectory", "variants": ["byoc", "serverless"]},
+                {"name": "downloading-with-ff-and-fd", "variants": ["byoc", "serverless"]},
                 {"name": "accelerated-datasets", "variants": ["byoc"]}
             ]},
         {"name": "administration", "variants": ["byoc"],
