@@ -10,7 +10,7 @@ This section covers how to manage data input and output in Union.
   - Use `FlyteFile` to easily pass files across tasks.
 * - {doc}`FlyteDirectory <flytedirectory>`
   - Use `FlyteDirectory` to easily pass directories across tasks.
-* - {doc}`Downloading with FlyteFile and FLyteDirectory <downloading-with-ff-and-fd>`
+* - {doc}`Downloading with FlyteFile and FlyteDirectory <downloading-with-ff-and-fd>`
   - Details on how files and directories or downloaded with `FlyteFile` and `FlyteDirectory`.
 {@@ if byoc @@}
 * - {doc}`Accelerated datasets <accelerated-datasets>`
