@@ -163,7 +163,7 @@ Note this section:
 ```{code-block} yaml
 - name: Register
   env:
-    UNION_CLOUD_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
+    UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
 ```
 
 The first instance of the name`UNION_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
