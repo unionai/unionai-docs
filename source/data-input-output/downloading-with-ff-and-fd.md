@@ -1,14 +1,18 @@
 # Downloading with FlyteFile and FlyteDirectory
 
-When working with large files or directories, it is important to have a solid understanding of when files are
-downloaded from remote storage. This understanding allows for optimization around efficiency and resource utilization
-when writing workflows.
+The basic idea behind `FlyteFile` and `FlyteDirectory` is that they represent files and directories in remote storage.
+When you work with these objects in your tasks, you are working with references to the remote files and directories.
 
-In general a `FlyteFile` or `FlyteDirectory` should not be downloaded unless the `download` method is explicitly called.
-There is, however, an exception where files can be lazily downloaded without `download` being explicitly called. This occurs if some
-external function is called on the `FlyteFile` or `FlyteDirectory` that itself calls the `__fspath__` method.
+Of course, at some point you will need to access the actual contents of these files and directories,
+which means that they has to be downloaded to the local file system of the task container.
 
-Let's look at some examples showing when `FlyteFiles` and `FlyteDirectories` are downloaded.
+The actual files and directories of a `FlyteFile` or `FlyteDirectory` are downloaded to the local file system of the task container in two ways:
+* Through an explicit call to the `download` method.
+* Through automatic lazy downloading.
+  This occurs when an external function is called on the `FlyteFile` or `FlyteDirectory` that itself calls the `__fspath__` method.
+
+To write efficient and performant task and workflow code, it is particularly important to have a solid understanding of when exactly downloading occurs.
+Let's look at some examples showing when the content `FlyteFiles` and `FlyteDirectories` are downloaded to the local task container filesystem.
 
 ### FlyteFile
 
