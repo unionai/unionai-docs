@@ -80,28 +80,12 @@ $ pip install -U union
 
 {@@ elif byoc @@}
 
-::::{tab-set}
-
-:::{tab-item} Unix/macOS
-
-```{code-block} shell
-pip install -U 'union[byoc]'
-```
-
-:::
-
-
-:::{tab-item} Windows
-
 ```{code-block} shell
 pip install -U "union[byoc]"
 ```
 
-:::
-::::
-
 :::{note}
-The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless.
+The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless. If you are using Union Serverless, you should omit the `[byoc]` extra package. You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
 :::
 
 {@@ endif @@}
@@ -111,48 +95,27 @@ This will install:
 * The [`union` SDK](../api/sdk/index)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
-{@@ if serverless @@}
-
-```{warning}
-If you have previously used Union BYOC or Flyte,
-you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
-Make sure to remove any files in `~/.flyte/`, `~/.unionai/` or `~/.union/` and unset the environment variables `FLYTECTL_CONFIG`, `UNIONAI_CONFIG`, and `UNION_CONFIG` to avoid conflicts.
-```
-
-{@@ endif @@}
-
 {@@ if byoc @@}
 
 ## Set up configuration for the `union` CLI
 
-To run and register tasks, workflows, and launch plans from your local machine to your Union instance, you will need to create a Union connection configuration file that contains your Union host domain.
-
-Your Union host domain is the part of your `<union-host-url>` after the `https://`.
-For example, if your `<union-host-url>` is `https://my-union-instance.com`, then your Union host domain is `my-union-instance.com`. We will refer to this as `<union-host-domain>` below.
-
-Create your configuration file at `~/.union/config.yaml` as below, with `<union-host-domain>` substituted appropriately.
-Note that there are two `host` values to substitute and the resulting URLs are prefixed with `dns:///` (with three slashes):
-
-```{code-block} yaml
-:emphasize-lines: 3,8
-
-union:
-  connection:
-    host: dns:///<union-host-domain>
-  auth:
-    type: Pkce
-admin:
-  endpoint: dns:///<union-host-domain>
-  authType: Pkce
-```
-
-:::{note}
-
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`.
-You can override this behavior to specify a different configuration file by setting the `union_CONFIG` environment variable:
+To register and run workflows on your Union instance using the `union` CLI, you will need to create a configuration file that contains your Union connection information. To do this, run the following command:
 
 ```{code-block} shell
-export union_CONFIG=~/.my-config-location/my-config.yaml
+$ union create login --host <union-host-url>
+```
+
+where `<union-host-url>` is the URL of your Union instance, mentioned above.
+
+This will create a configuration file at `~/.union/config.yaml`.
+
+{@# TODO: add a link to the union command reference section  here #@}
+
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`.
+You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
+
+```{code-block} shell
+export UNION_CONFIG=~/.my-config-location/my-config.yaml
 ```
 
 Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag:
@@ -160,12 +123,59 @@ Alternatively, you can always specify the configuration file on the command line
 ```{code-block} shell
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
-:::
+
+{@@ endif @@}
 
 ```{warning}
-If you have previously used Flyte, you may have configuration files left over that will interfere with access to Union BYOC through the `union` CLI tool.
-Make sure to remove any files in `~/.flyte/` or unset the environment variable `FLYTECTL_CONFIG` to avoid conflicts.
+If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
+Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 ```
+
+## `union` CLI configuration search path
+
+{@@ if serverless @@}
+
+When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../byoc/quick-start).
+
+This will ensure that the CLI will automatically connect to `serverless.union.ai`, assuming no other configurations are set up.
+
+More precisely the CLI will check for configuration files as follows:
+
+First, if a `--config` option is specified on the command line, it will use the file specified there.
+
+Second, the locations pointed to by the following environment variables (in this order):
+
+* `UNION_CONFIG`
+* `UNIONAI_CONFIG`
+* `UCTL_CONFIG`
+
+Third, the following hard-coded locations (in this order):
+
+* `~/.union/config.yaml`
+* `~/.uctl/config.yaml`
+
+If none of these are present, it will connect to `serverless.union.ai`.
+
+{@@ elif byoc @@}
+
+When using Union BYOC, you should always install the `union[byoc]` package and not the plain `union` package, which is is configured for [Union Serverless](../serverless/quick-start).
+
+This will ensure that the CLI will check for configuration files as follows (if no `--config` option is specified on the command line):
+
+First, if a `--config` option is specified on the command line, it will use the file specified there.
+
+Second, the locations pointed to by the following environment variables (in this order):
+
+* `UNION_CONFIG`
+* `UNIONAI_CONFIG`
+* `UCTL_CONFIG`
+
+Third, the following hard-coded locations  (in this order):
+
+* `~/.union/config.yaml`
+* `~/.uctl/config.yaml`
+
+If none of these are present, it will raise an error. It will not attempt to connect to  `serverless.union.ai`, as the Serverless version of the CLI would.
 
 {@@ endif @@}
 
