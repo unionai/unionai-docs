@@ -53,6 +53,8 @@ The UI does not support deactivating launch plans that do not have schedules att
 You can deactivate them with `uctl` or `UnionRemote`.
 :::
 
+{@@ if byoc @@}
+
 ## Activating and deactivating a launch plan on the command line with `uctl`
 
 To activate a launch plan version with `uctl`, execute the following command:
@@ -80,6 +82,8 @@ $ uctl update launchplan \
 <!-- TODO add back when uctl reference exists
 See the [`uctl` reference]() for more details.
 -->
+
+{@@ endif @@}
 
 ## Activating and deactivating a launch plan in Python with `UnionRemote`
 
