@@ -14,7 +14,7 @@ Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
 Configure your headless CLI by setting the following environment variable:
 
-export UNIONAI_SERVERLESS_API_KEY="<SECRET>"
+export UNION_SERVERLESS_API_KEY="<SECRET>"
 ```
 
 Store the `<SECRET>` into a secure location. For `git` development, make sure to not check
@@ -36,11 +36,11 @@ def main(name: str) -> str:
     return welcome(name=name)
 ```
 
-You can run this workflow from any machine by setting the `UNIONAI_SERVERLESS_API_KEY`
+You can run this workflow from any machine by setting the `UNION_SERVERLESS_API_KEY`
 environment variable:
 
 ```{code-block} shell
-export UNIONAI_SERVERLESS_API_KEY="<SECRET>"
+export UNION_SERVERLESS_API_KEY="<SECRET>"
 union run --remote hello.py main --name "Union"
 ```
 
