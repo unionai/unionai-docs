@@ -146,7 +146,7 @@ jobs:
             --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
       - name: Register
         env:
-          UNION_CLOUD_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
+          UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
         run: |
           bin/uctl --config ./ci-config.yaml \
             register files \
