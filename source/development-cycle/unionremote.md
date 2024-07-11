@@ -13,15 +13,19 @@ from union.remote import UnionRemote
 The `UnionRemote` class is the entrypoint for programmatically performing operations in a Python
 runtime. It can be initialized by passing in the:
 
+{@@ if byoc @@}
+
 * `Config` object: the parent configuration object that holds all the configuration information to connect to the Flyte backend.
+{@@ endif @@}
 * `default_project`: the default project to use when fetching or executing flyte entities.
 * `default_domain`: the default domain to use when fetching or executing flyte entities.
 * `file_access`: the file access provider to use for offloading non-literal inputs/outputs.
 * `kwargs`: additional arguments that need to be passed to create `SynchronousFlyteClient`.
 
+{@@ if byoc @@}
 A `UnionRemote` object can be created in various ways:
 
-### Auto
+### Automatically construct the `Config` object
 
 The `Config` class's `auto` method can be used to automatically
 construct the `Config` object.
@@ -40,7 +44,7 @@ The order of precedence that `auto` follows is:
 * If no environment variables are set, it looks for a configuration file at the path specified by the `config_file` argument.
 * If no configuration file is found, it uses the default values.
 
-### Any endpoint
+### Construct the `Config` object to connect to a specific endpoint
 
 The `Config` class's `for_endpoint` method can be used to
 construct the `Config` object to connect to a specific endpoint.
@@ -72,7 +76,7 @@ The `Config` class can be directly used to construct the `Config` object if addi
 | `PlatformConfig` | Settings to talk to a Flyte backend.     |
 | `DataConfig`     | Any data storage specific configuration. |
 | `SecretsConfig`  | Configuration for secrets.               |
-| `StatsConfig`    | Configuration for sending statistics.        |
+| `StatsConfig`    | Configuration for sending statistics.    |
 
 For example:
 
@@ -94,6 +98,8 @@ remote = UnionRemote(
 )
 ```
 
+{@@ endif @@}
+
 ## Fetching entities
 
 ### Fetching tasks, workflows, launch plans, and executions
@@ -111,6 +117,8 @@ object will be used.
 
 The following is an example that fetches tasks and creates a workflow:
 
+{@@ if byoc @@}
+
 ```{code-block} python
 from flytekit import workflow
 
@@ -127,7 +135,29 @@ def my_remote_wf(name: str) -> int:
     return task_2(task_1(name=name))
 ```
 
+{@@ elif serverless @@}
+
+```{code-block} python
+from flytekit import workflow
+
+task_1 = remote.fetch_task(name="core.basic.hello_world.say_hello", version="v1")
+task_2 = remote.fetch_task(
+    name="core.basic.lp.greet",
+    version="v13",
+    project="default",
+    domain="development",
+)
+
+@workflow
+def my_remote_wf(name: str) -> int:
+    return task_2(task_1(name=name))
+```
+
+{@@ endif @@}
+
 Another example that dynamically creates a launch plan for the `my_remote_wf` workflow:
+
+{@@ if byoc @@}
 
 ```{code-block} python
 from flytekit import LaunchPlan
@@ -138,11 +168,26 @@ my_workflow = remote.fetch_workflow(
 launch_plan = LaunchPlan.get_or_create(name="my_launch_plan", workflow=my_workflow)
 ```
 
+{@@ elif serverless @@}
+
+```{code-block} python
+from flytekit import LaunchPlan
+
+my_workflow = remote.fetch_workflow(
+    name="my_workflow", version="v1", project="default", domain="development"
+)
+launch_plan = LaunchPlan.get_or_create(name="my_launch_plan", workflow=my_workflow)
+```
+
+{@@ endif @@}
+
 ### Fetching artifacts
 
 Each artifact version has a unique URI of the form `flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>`.
 
 To fetch a single artifact, pass this URI to the `get_artifact` method:
+
+{@@ if byoc @@}
 
 ```{code-block} python
 from flytekit.configuration import Config, PlatformConfig, AuthType
@@ -155,7 +200,21 @@ remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
 remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>") # replace with your artifact URI
 ```
 
+{@@ elif serverless @@}
+
+```{code-block} python
+from unionai.remote import UnionRemote
+
+remote = UnionRemote()
+
+remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>") # replace with your artifact URI
+```
+
+{@@ endif @@}
+
 To dynamically query for artifacts, you can pass an artifact URI with a query to the `get_artifact` method, adding as many partition key-value pairs as you wish to filter on. The query will retrieve the latest artifact version that matches the partition-based filters:
+
+{@@ if byoc @@}
 
 ```{code-block} python
 from flytekit.configuration import Config, PlatformConfig, AuthType
@@ -168,11 +227,25 @@ remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
 remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<partition_key1>=<partition_value1>&...") # replace with your artifact query
 ```
 
+{@@ elif serverless @@}
+
+```{code-block} python
+from unionai.remote import UnionRemote
+
+remote = UnionRemote()
+
+remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<partition_key1>=<partition_value1>&...") # replace with your artifact query
+```
+
+{@@ endif @@}
+
 ## Creating entities
 
 ### Creating artifacts
 
 To create an artifact with `UnionRemote`, declare the artifact, then pass it to the `create_artifact` method:
+
+{@@ if byoc @@}
 
 ```{code-block} python
 from flytekit.configuration import Config, PlatformConfig, AuthType
@@ -186,6 +259,20 @@ remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
 BasicArtifact = Artifact(name="my_basic_artifact")
 remote.create_artifact(BasicArtifact)
 ```
+
+{@@ elif serverless @@}
+
+```{code-block} python
+from unionai.remote import UnionRemote
+from flytekit.core.artifact import Artifact
+
+remote = UnionRemote()
+
+BasicArtifact = Artifact(name="my_basic_artifact")
+remote.create_artifact(BasicArtifact)
+```
+
+{@@ endif @@}
 
 For the full list of parameters for the Artifact class, see the [Flytekit artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html)
 
@@ -287,6 +374,8 @@ execution = remote.execute(
 
 After an execution is completed, you can retrieve the execution using the `fetch_execution` method. The fetched execution can be used to retrieve the inputs and outputs of an execution:
 
+{@@ if byoc @@}
+
 ```{code-block} python
 execution = remote.fetch_execution(
     name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development"
@@ -294,6 +383,18 @@ execution = remote.fetch_execution(
 input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
 ```
+
+{@@ elif serverless @@}
+
+```{code-block} python
+execution = remote.fetch_execution(
+    name="fb22e306a0d91e1c6000", project="default", domain="development"
+)
+input_keys = execution.inputs.keys()
+output_keys = execution.outputs.keys()
+```
+
+{@@ endif @@}
 
 The `inputs` and `outputs` correspond to the top-level execution or the workflow itself.
 
@@ -331,23 +432,54 @@ Node here can correspond to a task, workflow, or branch node.
 
 To list recent executions, use the `recent_executions` method:
 
+{@@ if byoc @@}
+
 ```{code-block} python
 recent_executions = remote.recent_executions(project="flytesnacks", domain="development", limit=10)
 ```
+
+{@@ elif serverless @@}
+
+```{code-block} python
+recent_executions = remote.recent_executions(project="default", domain="development", limit=10)
+```
+
+{@@ endif @@}
 
 The `limit` parameter is optional and defaults to 100.
 
 To list tasks by version, use the `UnionRemote.list_tasks_by_version` method.
 
+{@@ if byoc @@}
+
 ```{code-block} python
 tasks = remote.list_tasks_by_version(project="flytesnacks", domain="development", version="v1")
 ```
+
+{@@ elif serverless @@}
+
+```{code-block} python
+tasks = remote.list_tasks_by_version(project="default", domain="development", version="v1")
+```
+
+{@@ endif @@}
 
 ## Terminating an execution
 
 To terminate an execution, use the `terminate` method:
 
+{@@ if byoc @@}
+
 ```{code-block} python
 execution = remote.fetch_execution(name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development")
 remote.terminate(execution, cause="Code needs to be updated")
 ```
+
+{@@ elif serverless @@}
+
+```{code-block} python
+execution = remote.fetch_execution(name="fb22e306a0d91e1c6000", project="default", domain="development")
+remote.terminate(execution, cause="Code needs to be updated")
+```
+
+{@@ endif @@}
