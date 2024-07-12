@@ -8,7 +8,7 @@ sync-examples:
 
 .PHONY: build
 build: sync-examples
-	python build.py
+	UNION_SERVERLESS_ENDPOINT= python build.py
 
 .PHONY: clean
 clean:
