@@ -8,7 +8,7 @@ sync-examples:
 
 .PHONY: build
 build: sync-examples
-	UNION_SERVERLESS_API_KEY= python build.py
+	python build.py
 
 .PHONY: clean
 clean:
