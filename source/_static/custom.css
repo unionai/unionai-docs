@@ -156,3 +156,8 @@ div.DocSearch-Logo .cls-2 {
 body.DocSearch--active div.bd-header-article {
     z-index: 1;
 }
+
+/* grid items should have bottom margin */
+.sd-col {
+    margin-bottom: 1em;
+}

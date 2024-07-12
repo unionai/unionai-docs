@@ -166,6 +166,11 @@
                             "name": "sentiment-classifier",
                             "variants": ["byoc", "serverless"],
                             "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"
+                        },
+                        {
+                            "name": "agentic-rag",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/agentic_rag/agentic_rag.py"
                         }
                     ]
                 },
