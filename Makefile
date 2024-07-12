@@ -1,7 +1,6 @@
-
 .PHONY: update-examples
 update-examples:
-	git submodule update --init
+	git submodule update --remote
 
 .PHONY: build
 build: update-examples

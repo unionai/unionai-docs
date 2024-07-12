@@ -15,6 +15,13 @@ Fine-tune a pre-trained language model in the IMDB dataset for sentiment
 classification.
 :::
 
+:::{grid-item-card} {octicon}`dependabot` Agentic Retrieval Augmented Generation
+:link: language-models/agentic-rag
+:link-type: doc
+
+Build an agentic retrieval augmented generation system with ChromaDB and Langchain.
+:::
+
 :::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
 :link: parallel-processing-and-job-scheduling/reddit-slack-bot
 :link-type: doc
@@ -22,10 +29,6 @@ classification.
 Securely store Reddit and Slack authentication data while pushing relevant 
 Reddit posts to slack on a consistent basis.
 :::
-
-::::
-
-::::{grid} 2
 
 :::{grid-item-card} {octicon}`graph` Time Series Forecaster Comparison
 :link: parallel-processing-and-job-scheduling/time-series-forecaster-comparison

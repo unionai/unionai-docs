@@ -6,6 +6,10 @@ tokens within some context window, either in a [masked](https://huggingface.co/d
 
 Large language models (LLMs) are a type of language model that have many trainable 
 parameters, which in recent times can be hundreds of millions to trillions of parameters.
+LMs can also perform a wider range of inference-time tasks compared to traditional
+ML methods because they can operate on structured and unstructured text data. This
+means they can perform tasks like text generation, API function calling,
+summarization, and question-answering.
 
 In these examples, you'll learn how to use LMs of different sizes for different
-use cases, from sentiment analysis to text generation.
+use cases, from sentiment analysis to retrieval augmented generation (RAG).
