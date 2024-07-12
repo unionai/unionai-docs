@@ -31,6 +31,9 @@ SITEMAP: str = './sitemap.json'
 # path of the examples submodule repository in the docs repo.
 EXAMPLES_REPO: str = "./unionai-examples"
 
+# github url of the examples repo
+EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
+
 # The run commands defines how to run the example code.
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
@@ -82,7 +85,7 @@ RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 :open:
 :color: warning
 
-You can run this example on {variant}.
+Run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 :color: secondary
@@ -103,6 +106,8 @@ Then run the following commands to run the workflow:
 ```{{code}}
 {run_commands}
 ```
+
+The source code for this tutorial can be found [here {{octicon}}`mark-github`]({github_url}).
 
 ::::
 """
@@ -134,7 +139,7 @@ def contains_metadata(src: str):
     return src.startswith('"""\n---') and src.endswith('---\n"""')
 
 
-def create_run_command_node(run_commands: list[str], current_variant: str) -> NotebookNode:
+def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
     variant_display = SUBS["product_name"][current_variant]
     sdk_package_variant = INSTALL_SDK_PACKAGES[current_variant]
     pip_install_command = f"pip install {sdk_package_variant}"
@@ -149,7 +154,8 @@ def create_run_command_node(run_commands: list[str], current_variant: str) -> No
         sdk_package_variant=sdk_package_variant,
         pip_install_command=pip_install_command,
         byoc_commands=byoc_commands,
-        run_commands="\n".join(run_commands)
+        run_commands="\n".join(run_commands),
+        github_url=github_url,
     )
     return NotebookNode(cell_type="markdown", source=src, metadata={})
 
@@ -165,9 +171,10 @@ def convert_example_py_file_to_md(
 
     key = from_path.relative_to(Path(EXAMPLES_REPO))
     run_cmd_src = run_commands.get(str(key), None)
+    github_url = f"{EXAMPLES_GITHUB_REPO}/tree/main/{key}"
 
     if run_cmd_src is not None:
-        run_command_node = create_run_command_node(run_cmd_src, current_variant)
+        run_command_node = create_run_command_node(run_cmd_src, current_variant, github_url)
         notebook["cells"].insert(1, run_command_node)
 
     jupytext.write(notebook, to_path, fmt="md")
