@@ -10,5 +10,4 @@ sphinx-book-theme
 sphinx-copybutton
 sphinx-docsearch
 sphinxext-remoteliteralinclude
-# pinned until Union auth issue is resolved
-union==0.1.46
+union
