@@ -132,7 +132,7 @@ When a node's behavior does change though, you can bump `cache_version` to inval
 
 ## `overwrite-cache` flag
 
-When launching the execution of a workflow, launch plan or task, you can use the `overwrite-cache` flag to invalidate the cache and force the re-execution of the workflow, launch plan or task.
+When launching the execution of a workflow, launch plan or task, you can use the `overwrite-cache` flag to invalidate the cache and force re-execution.
 
 ### Overwrite cache on the command line
 
@@ -144,7 +144,7 @@ $ union run --remote  --overwrite-cache example.py wf
 
 ### Overwrite cache in the UI
 
-It can also be used when launching an execution from the UI, in the launch modal:
+You can also trigger cache invalidation when launching an execution from the UI, in the launch modal:
 
 ![Overwrite cache flag in the UI](/_static/images/core-concepts-caching-overwrite-cached-outputs.png)
 
