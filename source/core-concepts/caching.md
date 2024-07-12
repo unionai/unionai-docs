@@ -25,6 +25,7 @@ To enable caching set `cache=True`.
 A change to this parameter will invalidate the cache.
 This allows you to explicitly indicate when a change has been made to the node that should invalidate any existing cached results.
 Note that this is not the only change that will invalidate the cache (see below).
+Also, note that you can manually trigger cache invalidation per execution using the [`overwrite-cache` flag](#overwrite-cache-flag).
 * `cache_serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
 When enabled, Union ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
 This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
@@ -128,6 +129,48 @@ When you use Git (or any version control system), you have a new version per cod
 Since the behavior of most nodes in a Git repository will remain unchanged, you don't want their cached outputs to be lost.
 
 When a node's behavior does change though, you can bump `cache_version` to invalidate the cache entry and make the system recompute the outputs.
+
+## `overwrite-cache` flag
+
+When launching the execution of a workflow, launch plan or task, you can use the `overwrite-cache` flag to invalidate the cache and force the re-execution of the workflow, launch plan or task.
+
+### Overwrite cache on the command line
+
+The `overwrite-cache` flag can be used from the command line with the `union run` command. For example:
+
+```{code-block} shell
+$ union run --remote  --overwrite-cache example.py wf
+```
+
+### Overwrite cache in the UI
+
+It can also be used when launching an execution from the UI, in the launch modal:
+
+![Overwrite cache flag in the UI](/_static/images/core-concepts-caching-overwrite-cached-outputs.png)
+
+### Overwrite cache programmatically
+
+When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
+
+```{code-block} python
+{@@ if byoc @@}
+from flytekit.configuration import Config
+{@@ endif @@}
+from union.remote import UnionRemote
+
+{@@ if serverless @@}
+remote = UnionRemote()
+{@@ elif byoc @@}
+remote = UnionRemote(
+    config=Config.auto(),
+    default_project="flytesnacks",
+    default_domain="development"
+)
+{@@ endif @@}
+
+wf = remote.fetch_workflow(name="workflows.example.wf")
+execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
+```
 
 ### Node signature
 
