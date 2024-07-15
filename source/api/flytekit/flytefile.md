@@ -4,4 +4,5 @@
 .. autoclass:: flytekit.types.file.FlyteFile
     :members:
     :special-members:
+    :undoc-members:
 ```
