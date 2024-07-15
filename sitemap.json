@@ -206,7 +206,11 @@
                         {"name": "entity-components", "variants": ["byoc", "serverless"]},
                         {"name": "execution-objects", "variants": ["byoc", "serverless"]}
                     ]},
-                {"name": "config", "variants": ["byoc"]}
+                {"name": "config", "variants": ["byoc"]},
+                {"name": "flytekit", "variants": ["byoc", "serverless"],
+                "children": [
+                    {"name": "flytefile", "variants": ["byoc", "serverless"]}
+                ]}
             ]},
         {"name": "faq", "variants": ["byoc"]}
     ]}
