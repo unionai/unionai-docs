@@ -5,4 +5,7 @@
     :members:
     :special-members:
     :undoc-members:
+    :private-members:
+    :inherited-members:
+
 ```
