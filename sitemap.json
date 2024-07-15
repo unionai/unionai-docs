@@ -209,7 +209,8 @@
                 {"name": "config", "variants": ["byoc"]},
                 {"name": "flytekit", "variants": ["byoc", "serverless"],
                 "children": [
-                    {"name": "flytefile", "variants": ["byoc", "serverless"]}
+                    {"name": "flytefile", "variants": ["byoc", "serverless"]},
+                    {"name": "flytedirectory", "variants": ["byoc", "serverless"]}
                 ]}
             ]},
         {"name": "faq", "variants": ["byoc"]}
