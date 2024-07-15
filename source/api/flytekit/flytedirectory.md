@@ -1,7 +1,7 @@
 # types.file.FlyteFile
 
 ```{eval-rst}
-.. autoclass:: flytekit.types.file.FlyteFile
+.. autoclass:: flytekit.types.directory.FlyteDirectory
     :members:
     :special-members: __init__
     :undoc-members:

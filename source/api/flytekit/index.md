@@ -8,5 +8,6 @@
     :nosignatures:
 
     ~types.file.FlyteFile
+    ~types.directory.FlyteDirectory
 
 ```
