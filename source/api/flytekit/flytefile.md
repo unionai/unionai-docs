@@ -1,4 +1,4 @@
-# types.directory.FlyteDirectory
+# types.file.FlyteFile
 
 ```{eval-rst}
 .. autoclass:: flytekit.types.file.FlyteFile
