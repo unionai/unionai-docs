@@ -14,9 +14,11 @@ Caching is implemented at the node level of the workflow directed acyclic graph 
 Caching is not enabled for top-level workflows or launch plans (which are not invoked from within a parent workflow but rather via the UI or CLI).
 ```
 
-## Caching parameters
+## Caching configuration
 
-There are four parameters that pertain to caching:
+There are four parameters and one command-line flag that pertain to caching:
+
+### Parameters
 
 * `cache`(`bool`): Enables or disables caching of the workflow, task, or launch plan.
 By default, caching is disabled to avoid unintended consequences when caching executions with side effects.
@@ -25,16 +27,21 @@ To enable caching set `cache=True`.
 A change to this parameter will invalidate the cache.
 This allows you to explicitly indicate when a change has been made to the node that should invalidate any existing cached results.
 Note that this is not the only change that will invalidate the cache (see below).
+Also, note that you can manually trigger cache invalidation per execution using the [`overwrite-cache` flag](#overwrite-cache-flag).
 * `cache_serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
 When enabled, Union ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
 This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
 Cache serialization is disabled by default.
 * `cache_ignore_input_vars` (`Tuple[str, ...]`): Input variables that should not be included when calculating hash for cache. By default, no input variables are ignored. This parameter only applies to task serialization.
 
+### Command-line flag `overwrite-cache`
+
+*  `overwrite-cache` (`bool`): Invalidates the cache and forces re-execution of the node. This flag can be used when launching an execution from [the command line](#overwrite-cache-on-the-command-line), [the UI](#overwrite-cache-in-the-ui), or [programmatically through `UnionRemote`](#overwrite-cache-programmatically).
+
 ## Where to specify caching parameters
 
-* Task caching parameters can be specified at task definition time within `@task` decorator or at task execution time using `with_overrides` method.
-* Workflow and launch plan caching parameters can be specified at execution time using `with_overrides` method.
+* Task caching parameters can be specified at task definition time within `@task` decorator or at task invocation time using `with_overrides` method.
+* Workflow and launch plan caching parameters can be specified at invocation time using `with_overrides` method.
 
 ## Example
 
@@ -84,6 +91,48 @@ In each case, the result of the execution is cached and reused in subsequent exe
 Here the reuse is demonstrated by calling the `child_wf` and `child_lp` workflows multiple times with the same inputs.
 Additionally, if the same node is invoked again with the same inputs, even externally through the UI or CLI,
 the cached result is returned immediately instead of re-executing the process.
+
+## Where to use the `overwrite-cache` flag
+
+When launching the execution of a workflow, launch plan or task, you can use the `overwrite-cache` flag to invalidate the cache and force re-execution.
+
+### Overwrite cache on the command line
+
+The `overwrite-cache` flag can be used from the command line with the `union run` command. For example:
+
+```{code-block} shell
+$ union run --remote  --overwrite-cache example.py wf
+```
+
+### Overwrite cache in the UI
+
+You can also trigger cache invalidation when launching an execution from the UI, in the launch modal:
+
+![Overwrite cache flag in the UI](/_static/images/core-concepts-caching-overwrite-cached-outputs.png)
+
+### Overwrite cache programmatically
+
+When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
+
+```{code-block} python
+{@@ if byoc @@}
+from flytekit.configuration import Config
+{@@ endif @@}
+from union.remote import UnionRemote
+
+{@@ if serverless @@}
+remote = UnionRemote()
+{@@ elif byoc @@}
+remote = UnionRemote(
+    config=Config.auto(),
+    default_project="flytesnacks",
+    default_domain="development"
+)
+{@@ endif @@}
+
+wf = remote.fetch_workflow(name="workflows.example.wf")
+execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
+```
 
 ## How caching works
 
