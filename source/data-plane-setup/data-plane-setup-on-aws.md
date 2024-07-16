@@ -658,7 +658,7 @@ The VPC should be configured with the following characteristics.
   * Enable [S3 VPC gateway endpoint with appropriate route table association](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html).
   * Enable [VPC interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html) for the following services `com.amazonaws.<REGION>.logs`, `com.amazonaws.<REGION>.ecr.dkr`, `com.amazonaws.<REGION>.ec2`, `com.amazonaws.<REGION>.sns`, `com.amazonaws.<REGION>.sqs`
     * Ensure the service names include the region that contains the aforementioned availability zones.
-    * Ensure the subnet IDs are configured with the aforementioned private subnet IDs.
+    * Ensure the subnet IDs are configured to include all the aforementioned availability zones.
     * Ensure the security groups allow all traffic from within the VPC.
     * Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility data plane services.
 
