@@ -660,7 +660,7 @@ The VPC should be configured with the following characteristics.
     * Ensure the service names include the region that contains the aforementioned availability zones.
     * Ensure the subnet IDs are configured to include all the aforementioned availability zones.
     * Ensure the security groups allow all traffic from within the VPC.
-    * Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility data plane services.
+    * Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with data plane services.
 
 Once your VPC is set up, you will need to provide the Union team with the following information:
 
