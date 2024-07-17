@@ -214,5 +214,8 @@
                 ]}
             ]},
         {"name": "faq", "variants": ["byoc"]},
-        {"name": "api-2", "variants": ["byoc", "serverless"]}
+        {"name": "api-2", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "other", "variants": ["byoc", "serverless"]}
+            ]}
     ]}
