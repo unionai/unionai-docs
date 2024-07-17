@@ -213,5 +213,6 @@
                     {"name": "flytedirectory", "variants": ["byoc", "serverless"]}
                 ]}
             ]},
-        {"name": "faq", "variants": ["byoc"]}
+        {"name": "faq", "variants": ["byoc"]},
+        {"name": "api-2", "variants": ["byoc", "serverless"]}
     ]}
