@@ -85,12 +85,12 @@ To help with this, Flyte provides the [`FlyteFile`](https://docs.flyte.org/en/la
 
 ### Local file example
 
-Let's say you have a local file in task `t1` that you want to make accessible in the next task, `t2`.
+Let's say you have a local file in task `task1` that you want to make accessible in the next task, `task2`.
 To do this, you create a `FlyteFile` object using the local path of the file you created, and then pass the `FlyteFile` object as part of your workflow, like this:
 
 ```{code-block} python
 @task
-def t1() -> FlyteFile:
+def task1() -> FlyteFile:
     p = os.path.join(current_context().working_directory, "data.txt")
     f = open(p, mode="w")
     f.write("Here is some sample data.")
@@ -98,7 +98,7 @@ def t1() -> FlyteFile:
     return FlyteFile(p)
 
 @task
-def t2(ff: FlyteFile):
+def task2(ff: FlyteFile):
     ff.download()
     f = open(ff, mode="r")
     d = f.read()
@@ -106,22 +106,22 @@ def t2(ff: FlyteFile):
     # do something with the data `d`
 
 @workflow
-def wf():
-    ff = t1()
-    t2(ff=ff)
+def workflow():
+    ff = task1()
+    task2(ff=ff)
 ```
 
 Recall that the code within a Flyte task function is real Python code (run in a Python interpreter inside the task container) while the code within a workflow function is actually a Python-like DSL, compiled by Flyte into a representation of the workflow.
 
-This means that Flyte needs to handle the passing of the variable `ff` in `wf` from task `t1` to task `t2`. Of course, by design, the Flyte workflow engine knows how to handle values of type `FlyteFile`.
+This means that Flyte needs to handle the passing of the variable `ff` in `workflow` from task `task1` to task `task2`. Of course, by design, the Flyte workflow engine knows how to handle values of type `FlyteFile`.
 Here is what it does:
 
 * The `FlyteFile` object was initialized with the local path of the file that you created.
-* When the `FlyteFile` is passed out of `t1`, Flyte uploads the local file to a randomly generated location in your raw data store.
+* When the `FlyteFile` is passed out of `task1`, Flyte uploads the local file to a randomly generated location in your raw data store.
 The URI of this location is used to initialize a Flyte object of type `Blob`.
-* The `Blob` object is passed to `t2`.
+* The `Blob` object is passed to `task2`.
 Because the type of the input parameter is `FlyteFile`, Flyte converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
-* Inside `t2` you can now perform a `FlyteFile.download()` and then open the `FlyteFile`  as if it were a normal `file` object.
+* Inside `task2` you can now perform a `FlyteFile.download()` and then open the `FlyteFile`  as if it were a normal `file` object.
 
 ### Remote file example
 
@@ -132,12 +132,12 @@ You can also _start with a remote file_, simply by initializing the `FlyteFile` 
 
 ```{code-block} python
 @task
-def t1() -> FlyteFile:
+def task1() -> FlyteFile:
     p = "https://some/path/data.csv"
     return FlyteFile(p)
 
 @task
-def t2(ff: FlyteFile):
+def task2(ff: FlyteFile):
     ff.download()
     f = open(ff, mode="r")
     d = f.read()
@@ -145,9 +145,9 @@ def t2(ff: FlyteFile):
     # do something with the data `d`
 
 @workflow
-def wf():
-    ff = t1()
-    t2(ff)@task
+def workflow():
+    ff = task1()
+    task2(ff)@task
 ```
 
 In this case, no uploading is needed. When the object is passed out of the task, it is simply converted into a `Blob` with the remote path as the URI.
@@ -177,7 +177,7 @@ Here is an example
 
 ```{code-block} python
 @task
-def t1() -> FlyteFile:
+def task1() -> FlyteFile:
     p = os.path.join(current_context().working_directory, "data.txt")
     f = open(p, mode="w")
     f.write("Here is some sample data.")
@@ -185,7 +185,7 @@ def t1() -> FlyteFile:
     return FlyteFile(p, remote_path="s3://union-contoso/foobar")
 
 @task
-def t2(ff: FlyteFile):
+def task2(ff: FlyteFile):
     # ff.remote_source == "s3://union-contoso/foobar"
     ff.download()
     f = open(ff, mode="r")
@@ -194,9 +194,9 @@ def t2(ff: FlyteFile):
     # do something with the data `d`
 
 @workflow
-def wf():
-    ff = t1()
-    t2(ff)
+def workflow():
+    ff = task1()
+    task2(ff)
 ```
 
 :::{admonition} FlyteFile behavior triggered by different type hints
@@ -407,16 +407,16 @@ This is the case where a Flyte object of type `Blob` is passed to a task functio
 
 ```{code-block} python
 @workflow
-def wf1():
-    ff = t1()
-    t2(ff)
+def workflow():
+    ff = task1()
+    task2(ff)
 
 @task
-def t1() -> FlyteFile
+def task1() -> FlyteFile
     return FlyteFile("https://some/path/data.csv")
 
 @task
-def t2(ff: FlyteFile)
+def task2(ff: FlyteFile)
     ...
 ```
 

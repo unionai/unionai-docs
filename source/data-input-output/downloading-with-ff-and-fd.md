@@ -27,9 +27,9 @@ def my_task(ff: FlyteFile):
 ```
 
 Note that we use `ff.path` which is of type `typing.Union[str, os.PathLike]` rather than using `ff` in `os.path.isfile` directly.
-We will see in the next example that this is because of the invocation of `__fspath__` when `os.path.isfile` is called.
+In the next example, we will see that using `os.path.isfile(ff)` invokes `__fspath__` which downloads the file.
 
-**Lazy downloading by `__fspath__`**
+**Implicit downloading by `__fspath__`**
 
 In order to make use of some functions like `os.path.isfile` that you may be used to using with regular file paths, `FlyteFile`
 implements a `__fspath__` method that downloads the remote contents to the `path` of `FlyteFile` local to the container.
@@ -44,7 +44,7 @@ def my_task(ff: FlyteFile):
 
 It is important to be aware of any operations on your `FlyteFile` that might call `__fspath__` and result in downloading.
 Some examples include, calling `open(ff, mode="r")` directly on a `FlyteFile` (rather than on the `path` attribute) to get the contents of the path,
-or similarly calling `shutil.copy` on a `FlyteFile` to copy the contents to another file local to the container.
+or similarly calling `shutil.copy` or `pathlib.Path` directly on a `FlyteFile`.
 
 
 ### FlyteDirectory
@@ -62,7 +62,7 @@ def my_task(fd: FlyteDirectory):
 Similar to how the `path` argument was used above for the `FlyteFile`, note that we use `fd.path` which is of type `typing.Union[str, os.PathLike]` rather than using `fd` in `os.listdir` directly.
 Again, we will see that this is because of the invocation of `__fspath__` when `os.listdir(fd)` is called.
 
-**Lazy downloading by `__fspath__`**
+**Implicit downloading by `__fspath__`**
 
 In order to make use of some functions like `os.listdir` that you may be used to using with directories, `FlyteDirectory`
 implements a `__fspath__` method that downloads the remote contents to the `path` of `FlyteDirectory` local to the container.
@@ -87,7 +87,7 @@ the contents of the directory without calling `__fspath__` and therefore downloa
 
 ```{code-block} python
 @task
-def t1() -> FlyteDirectory:
+def task1() -> FlyteDirectory:
     p = os.path.join(current_context().working_directory, "my_new_directory")
     os.makedirs(p)
 
@@ -100,7 +100,7 @@ def t1() -> FlyteDirectory:
     return FlyteDirectory(p)
 
 @task
-def t2(fd: FlyteDirectory):
+def task2(fd: FlyteDirectory):
     print(os.listdir(fd.path))  # This will print nothing as the directory has not been downloaded
     print(list(fd.crawl()))  # This will print the files present in the remote blob storage
     # e.g. [('s3://union-contoso/ke/fe503def6ebe04fa7bba-n0-0/160e7266dcaffe79df85489771458d80', 'file_1.txt'), ('s3://union-contoso/ke/fe503def6ebe04fa7bba-n0-0/160e7266dcaffe79df85489771458d80', 'file_2.txt')]
