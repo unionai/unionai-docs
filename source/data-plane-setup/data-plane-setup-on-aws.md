@@ -299,7 +299,8 @@ You will use this policy in a later step.
 				"ec2:DetachInternetGateway",
 				"ec2:DeleteVpc",
 				"ec2:CreateSubnet",
-				"ec2:DescribeVpcAttribute"
+				"ec2:DescribeVpcAttribute",
+				"ec2:AssociateVpcCidrBlock"
 			],
 			"Resource": [
 				"arn:aws:ec2:${AWS::Region}:${AWS::AccountID}:vpc/*"
