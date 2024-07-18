@@ -2,6 +2,7 @@
 
 ```{eval-rst}
 .. autosummary::
+    :toctree:
     :recursive:
 
     flytekit
