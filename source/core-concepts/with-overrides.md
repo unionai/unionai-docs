@@ -2,7 +2,7 @@
 
 The `with_overrides` method allows you to specify parameter overrides on [tasks](./tasks/index), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans) at execution time. This is useful when you want to change the behavior of a task, subworkflow, or sub-launch plan without modifying the original definition.
 
-The following parameters can be specified in `with_overrides` when calling a `task`:
+When calling a task, the following parameters you can specify the following parameters in `with_overrides`:
 
 * `accelerator`: Specify [accelerators](./tasks/task-hardware-environment/accelerators).
 * `cache_serialize`: Enable [cache serialization](./caching).
@@ -17,7 +17,13 @@ The following parameters can be specified in `with_overrides` when calling a `ta
 * `task_config`: Specify a [task config](./tasks/task-parameters.md#task_config).
 * `timeout`: Specify the [task timeout](./tasks/task-parameters.md#timeout).
 
-Additionally, when calling a workflow or launch plan from within a high-level workflow (in other worlds when invoking a subworkflow or sub-launch plan), you can specify the following parameters in `with_overrides`:
+For example, let's say you have a task that does not have caching enabled. You can use `with_overrides` to enable caching at execution time as follows:
+
+```python
+my_task(a=1, b=2, c=3).with_overrides(cache=True)
+```
+
+When calling a workflow or launch plan from within a high-level workflow (in other worlds when invoking a subworkflow or sub-launch plan), you can specify the following parameters in `with_overrides`:
 
 * `cache_serialize`: Enable [cache serialization](./caching).
 * `cache_version`: Specify the [cache version](./caching).
