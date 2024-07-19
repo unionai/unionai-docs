@@ -17,7 +17,7 @@ Upon registration of a new launch plan, the first version is automatically inact
 If it has a schedule attached, the schedule is also inactive.
 Once activated, a launch plan version remains active even as new, later, versions are registered.
 
-A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../development-cycle/unionremote).
+A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../development-cycle/union-remote).
 
 ## Activating and deactivating a launch plan in the UI
 

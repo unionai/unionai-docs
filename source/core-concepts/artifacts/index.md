@@ -28,7 +28,7 @@ To consume an artifact in a workflow, you can define a query containing the arti
 
 For more information on querying for and consuming artifacts in workflows, see [Consuming artifacts in workflows](./consuming-artifacts-in-workflows).
 
-To query for artifacts programmatically in a Python script using `UnionRemote`, see [UnionRemote](../../development-cycle/unionremote.md#fetching-artifacts).
+To query for artifacts programmatically in a Python script using `UnionRemote`, see [UnionRemote](../../development-cycle/union-remote.md#fetching-artifacts).
 
 :::{admonition} UnionRemote vs FlyteRemote
 `UnionRemote` is identical to `FlyteRemote`, with additional functionality to handle artifacts. You cannot interact with artifacts using FlyteRemote.

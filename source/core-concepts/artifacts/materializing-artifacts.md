@@ -15,5 +15,5 @@ To use the example code on this page, you will need to add your `registry` to th
 ```
 
 :::{note}
-You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`. For more information, see the [UnionRemote documentation](../../development-cycle/unionremote.md#creating-artifacts).
+You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`. For more information, see the [UnionRemote documentation](../../development-cycle/union-remote.md#creating-artifacts).
 :::
