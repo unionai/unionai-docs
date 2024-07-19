@@ -81,7 +81,7 @@ or similarly calling `os.path.isdir` on a `FlyteDirectory` to check if a directo
 
 **Inspecting the contents of a directory without downloading using `crawl`**
 
-As we saw above, using `os.listdir` (or `FlyteDirectory.listdir`) on a `FlyteDirectory` to view the contents in remote blob storage
+As we saw above, using `os.listdir` on a `FlyteDirectory` to view the contents in remote blob storage
 results in the contents being downloaded to the task container. If this should be avoided, the `crawl` method offers a means of inspecting
 the contents of the directory without calling `__fspath__` and therefore downloading the directory contents.
 
