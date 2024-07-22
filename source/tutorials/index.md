@@ -38,4 +38,12 @@ Visually compare the output of various time series forecasters while
 maintaining lineage of the training and forecasted data.
 :::
 
+:::{grid-item-card} {octicon}`dna` Genomic Alignment using Bowtie 2
+:link: bioinformatics/alignment
+:link-type: doc
+
+Pre-process raw sequencing reads, build an index, and perform alignment 
+to the a reference genome using the Bowtie2 aligner.
+:::
+
 ::::
