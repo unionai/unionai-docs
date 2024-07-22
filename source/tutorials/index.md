@@ -38,7 +38,7 @@ Visually compare the output of various time series forecasters while
 maintaining lineage of the training and forecasted data.
 :::
 
-:::{grid-item-card} {octicon}`dna` Genomic Alignment using Bowtie 2
+:::{grid-item-card} {octicon}`beaker` Genomic Alignment using Bowtie 2
 :link: bioinformatics/alignment
 :link-type: doc
 
