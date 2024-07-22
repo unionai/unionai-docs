@@ -2,12 +2,15 @@ import os
 import subprocess
 import shlex
 import json
-from pathlib import Path
-
 import jinja2
 import jupytext
 import yaml
+
+
 from nbformat.notebooknode import NotebookNode
+from pathlib import Path
+import sys
+
 
 # Source directory containing content in the Markdown augmented with Jinja2 templating.
 # These files also lack toctree directives, as the `sitemap.json` defines the structure of the documentation
@@ -313,6 +316,19 @@ def process_project():
         )
     shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
+    build_api_docs()
+
+    return
+
+def build_api_docs():
+     for variant in ALL_VARIANTS:
+        output_path = f'{BUILD_DIR}/{variant}/new-api/flytekit'
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        shell(f'PYTHONPATH=pdoc --html --output-dir {output_path} flytekit')
+
 
 if __name__ == "__main__":
-    process_project()
+    if len(sys.argv) > 1 and sys.argv[1] == "--api":
+        build_api_docs()
+    else:
+        process_project()
