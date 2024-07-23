@@ -20,7 +20,7 @@ This is where you will be able to see your workflow executions and manage your p
 
 ![Union UI](/_static/images/dashboard.png)
 
-{@@ elif byoc@@}
+{@@ elif byoc @@}
 
 ## Gather your credentials
 
