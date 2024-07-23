@@ -81,7 +81,7 @@ $ pip install -U union
 :::{note}
 These directions are for Union Serverless.
 
-If you are using Union BYOC, you should install `union` with the `[byoc]` extra package, as described [here](../byoc/quick-start.md#install-the-union-package).
+If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start.md#install-the-union-package).
 :::
 {@@ elif byoc @@}
 
@@ -92,7 +92,7 @@ pip install -U "union[byoc]"
 :::{note}
 The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
 
-If you are using Union Serverless, you should install `union` without the `[byoc]` extra package, as described [here](../serverless/quick-start.md#install-the-union-package).
+If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/quick-start.md#install-the-union-package).
 
 You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
 :::
