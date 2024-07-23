@@ -144,7 +144,7 @@ Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the envi
 
 {@@ if serverless @@}
 
-When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../byoc/quick-start).
+When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../byoc/quick-start.md#install-the-union-package).
 
 This will ensure that the CLI will automatically connect to `serverless.union.ai`, assuming no other configurations are set up.
 
