@@ -83,6 +83,7 @@ These directions are for Union Serverless.
 
 If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start#install-the-union-package).
 :::
+
 {@@ elif byoc @@}
 
 ```{code-block} shell
