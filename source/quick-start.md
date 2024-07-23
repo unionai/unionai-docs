@@ -78,6 +78,11 @@ After setting up your virtual environment and activating it, install the `union`
 $ pip install -U union
 ```
 
+:::{note}
+These directions are for Union Serverless.
+
+If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](../byoc/quick-start.md#install-the-union-package).
+:::
 {@@ elif byoc @@}
 
 ```{code-block} shell
@@ -85,7 +90,11 @@ pip install -U "union[byoc]"
 ```
 
 :::{note}
-The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless. If you are using Union Serverless, you should omit the `[byoc]` extra package. You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
+The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
+
+If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](../serverless/quick-start.md#install-the-union-package).
+
+You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
 :::
 
 {@@ endif @@}
