@@ -20,7 +20,7 @@ This is where you will be able to see your workflow executions and manage your p
 
 ![Union UI](/_static/images/dashboard.png)
 
-{@@ elif byoc@@}
+{@@ elif byoc @@}
 
 ## Gather your credentials
 
@@ -78,6 +78,12 @@ After setting up your virtual environment and activating it, install the `union`
 $ pip install -U union
 ```
 
+:::{note}
+These directions are for Union Serverless.
+
+If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start#install-the-union-package).
+:::
+
 {@@ elif byoc @@}
 
 ```{code-block} shell
@@ -85,7 +91,11 @@ pip install -U "union[byoc]"
 ```
 
 :::{note}
-The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Serverless. If you are using Union Serverless, you should omit the `[byoc]` extra package. You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
+The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
+
+If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/quick-start#install-the-union-package).
+
+You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
 :::
 
 {@@ endif @@}
@@ -135,7 +145,7 @@ Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the envi
 
 {@@ if serverless @@}
 
-When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../byoc/quick-start).
+When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../byoc/quick-start.md#install-the-union-package).
 
 This will ensure that the CLI will automatically connect to `serverless.union.ai`, assuming no other configurations are set up.
 

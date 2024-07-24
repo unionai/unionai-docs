@@ -1,6 +1,6 @@
 # Actors
 
-Actors allow you to reuse a container and environment between tasks that need to maintain state. To create an actor, instantiate the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then add the `@actor` decorator to the task that requires that environment.
+Actors allow you to reuse a container and environment between tasks that need to maintain state. To create an actor, instantiate the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then add the instance as a decorator to the task that requires that environment.
 
 ## `ActorEnvironment` parameters
 
@@ -24,16 +24,16 @@ Actors allow you to reuse a container and environment between tasks that need to
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/378e3e8853086fd7161ed0b05253a6150465cdea/guides/02_core_concepts/actors/hello_world.py
+```{rli} https://raw.githubusercontent.com/unionai/examples/e8e8fb29470e5237089182048092b96f16d0fdc3/guides/02_core_concepts/actors/hello_world.py
 :caption: hello_world.py
 
 ```
 
 ### Multiple instances of the same task
 
-In this example, the `actor`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
+In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/378e3e8853086fd7161ed0b05253a6150465cdea/guides/02_core_concepts/actors/plus_one.py
+```{rli} https://raw.githubusercontent.com/unionai/examples/e8e8fb29470e5237089182048092b96f16d0fdc3/guides/02_core_concepts/actors/plus_one.py
 :caption: plus_one.py
 
 ```
@@ -42,7 +42,7 @@ In this example, the `actor`-decorated task is invoked multiple times in one wor
 
 Every task execution in the following example will execute in the same `ActorEnvironment`. You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launchplans:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/378e3e8853086fd7161ed0b05253a6150465cdea/guides/02_core_concepts/actors/multiple_tasks.py
+```{rli} https://raw.githubusercontent.com/unionai/examples/e8e8fb29470e5237089182048092b96f16d0fdc3/guides/02_core_concepts/actors/multiple_tasks.py
 :caption: multiple_entities.py
 
 ```
