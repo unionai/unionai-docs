@@ -22,22 +22,6 @@
                 {"name": "running-the-workflow", "variants": ["byoc", "serverless"]},
                 {"name": "example-code-components", "variants": ["byoc", "serverless"]}
             ]},
-        {"name": "development-cycle", "variants": ["byoc", "serverless"],
-            "children": [
-                {"name": "setting-up-a-project", "variants": ["byoc", "serverless"]},
-                {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
-                {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
-                {"name": "running-your-code", "variants": ["byoc", "serverless"]},
-                {"name": "union-run-details", "variants": ["byoc", "serverless"]},
-                {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
-                {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
-                {"name": "managing-apps", "variants": ["byoc", "serverless"]},
-                {"name": "accessing-aws-s3", "variants": ["serverless"]},
-                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
-                {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
-                {"name": "ci-cd-deployment", "variants": ["byoc"]},
-                {"name": "unionremote", "variants": ["byoc", "serverless"]}
-            ]},
         {"name": "core-concepts", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "workflows", "variants": ["byoc", "serverless"],
@@ -92,6 +76,23 @@
                         {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "caching", "variants": ["byoc", "serverless"]}
+            ]},
+        {"name": "development-cycle", "variants": ["byoc", "serverless"],
+            "children": [
+                {"name": "setting-up-a-project", "variants": ["byoc", "serverless"]},
+                {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
+                {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
+                {"name": "running-your-code", "variants": ["byoc", "serverless"]},
+                {"name": "overriding-parameters", "variants": ["byoc", "serverless"]},
+                {"name": "details-of-union-run", "variants": ["byoc", "serverless"]},
+                {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
+                {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
+                {"name": "managing-apps", "variants": ["byoc", "serverless"]},
+                {"name": "accessing-aws-s3", "variants": ["serverless"]},
+                {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
+                {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
+                {"name": "ci-cd-deployment", "variants": ["byoc"]},
+                {"name": "union-remote", "variants": ["byoc", "serverless"]}
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
@@ -210,7 +211,7 @@
                         {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
-                {"name": "unionremote", "variants": ["byoc", "serverless"],
+                {"name": "union-remote", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "entrypoint", "variants": ["byoc", "serverless"]},
                         {"name": "entities", "variants": ["byoc", "serverless"]},

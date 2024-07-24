@@ -226,8 +226,8 @@
 /developing-workflows/task-execution-context /byoc/core-concepts/tasks/task-software-environment/imagespec 301
 /developing-workflows/triggers/ /byoc/core-concepts/launch-plans/reactive-workflows 301
 /developing-workflows/triggers /byoc/core-concepts/launch-plans/reactive-workflows 301
-/developing-workflows/unionremote/ /byoc/development-cycle/unionremote 301
-/developing-workflows/unionremote /byoc/development-cycle/unionremote 301
+/developing-workflows/unionremote/ /byoc/development-cycle/union-remote 301
+/developing-workflows/unionremote /byoc/development-cycle/union-remote 301
 /development-cycle/ /byoc/development-cycle 301
 /development-cycle /byoc/development-cycle 301
 /development-cycle/interactive-tasks/ /byoc/development-cycle/debugging-with-interactive-tasks 301
@@ -238,8 +238,8 @@
 /development-cycle/setting-up-ci-cd-deployment /byoc/development-cycle/ci-cd-deployment 301
 /development-cycle/task-resource-validation/ /byoc/development-cycle/task-resource-validation 301
 /development-cycle/task-resource-validation /byoc/development-cycle/task-resource-validation 301
-/development-cycle/unionremote/ /byoc/development-cycle/unionremote 301
-/development-cycle/unionremote /byoc/development-cycle/unionremote 301
+/development-cycle/unionremote/ /byoc/development-cycle/union-remote 301
+/development-cycle/unionremote /byoc/development-cycle/union-remote 301
 /faq/ /byoc/faq 301
 /faq /byoc/faq 301
 /flyte-fundamentals/ /byoc/core-concepts 301
@@ -523,10 +523,20 @@
 /serverless/api/unionai-cli/ /serverless/api/union-cli 301
 /serverless/api/unionai-cli /serverless/api/union-cli 301
 
-/byoc/development-cycle/unionai-run-details/ /byoc/development-cycle/union-run-details 301
-/byoc/development-cycle/unionai-run-details /byoc/development-cycle/union-run-details 301
-/serverless/development-cycle/unionai-run-details/ /serverless/development-cycle/union-run-details 301
-/serverless/development-cycle/unionai-run-details /serverless/development-cycle/union-run-details 301
+/byoc/development-cycle/unionai-run-details/ /byoc/development-cycle/details-of-union-run 301
+/byoc/development-cycle/unionai-run-details /byoc/development-cycle/details-of-union-run 301
+/serverless/development-cycle/unionai-run-details/ /serverless/development-cycle/details-of-union-run 301
+/serverless/development-cycle/unionai-run-details /serverless/development-cycle/details-of-union-run 301
+
+/byoc/development-cycle/union-run-details/ /byoc/development-cycle/details-of-union-run 301
+/byoc/development-cycle/union-run-details /byoc/development-cycle/details-of-union-run 301
+/serverless/development-cycle/union-run-details/ /serverless/development-cycle/details-of-union-run 301
+/serverless/development-cycle/union-run-details /serverless/development-cycle/details-of-union-run 301
+
+/byoc/development-cycle/unionremote/ /byoc/development-cycle/union-remote 301
+/byoc/development-cycle/unionremote /byoc/development-cycle/union-remote 301
+/serverless/development-cycle/unionremote/ /serverless/development-cycle/union-remote 301
+/serverless/development-cycle/unionremote /serverless/development-cycle/union-remote 301
 
 /uctl-cli/ /byoc/administration/uctl-cli 301
 /uctl-cli /byoc/administration/uctl-cli 301

@@ -14,7 +14,9 @@ This section covers developing production-ready workflows for Union.
   - Use `ImageSpec` to specify the dependencies needed in the containers that will run your tasks on Union.
 * - {doc}`Running your code <running-your-code>`
   - Use different deploy and run commands for different steps in the development cycle.
-* - {doc}`union run details<union-run-details>`
+* - {doc}`Overriding parameters <overriding-parameters>`
+  - Use `with_overrides` to change parameters at execution time.
+* - {doc}`Details of union run <details-of-union-run>`
   - Programmatically perform Union operations in Python.
 * - {doc}`Debugging with interactive tasks <debugging-with-interactive-tasks>`
   - Inspect and debug live task code directly in the Union console.
@@ -34,6 +36,6 @@ This section covers developing production-ready workflows for Union.
 * - {doc}`CI/CD deployment <ci-cd-deployment>`
   - Automate workflow registration and execution.
 {@@ endif @@}
-* - {doc}`UnionRemote <unionremote>`
+* - {doc}`UnionRemote <union-remote>`
   - Programmatically perform Union operations in Python.
 ```
