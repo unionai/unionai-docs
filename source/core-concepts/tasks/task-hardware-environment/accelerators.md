@@ -18,7 +18,7 @@ Pricing for these GPUs can found on the [Union Pricing page](https://www.union.a
 ## NVIDIA T4 Tensor Core GPU
 
 The **NVIDIA T4 Tensor Core GPU** is the default.
-To use it for a task you simply specify the number of GPUs required in the `limits` parameter:
+To use it for a task, specify the number of GPUs required in the `limits` parameter:
 
 ```{code-block} python
     @task(
