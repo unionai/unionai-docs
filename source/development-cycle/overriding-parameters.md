@@ -22,7 +22,6 @@ When calling a task, you can specify the following parameters in `with_overrides
 * `timeout`: Specify the [task timeout](../core-concepts/tasks/task-parameters.md#timeout).
 
 For example, if you have a task that does not have caching enabled, you can use `with_overrides` to enable caching at execution time as follows:
-You can use `with_overrides` to enable caching at execution time as follows:
 
 ```python
 my_task(a=1, b=2, c=3).with_overrides(cache=True)
