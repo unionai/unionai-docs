@@ -9,8 +9,8 @@ Resources are specified in the `@task` decorator. Here is an example:
 from flytekit.extras.accelerators import A100
 
 @task(
-    requests=Resources(mem="120Gi", cpu="44", gpu="8", storage="100Gi", ephemeral_storage="100Gi"),
-    limits=Resources(mem="200Gi", cpu="100", gpu="12", storage="200Gi", ephemeral_storage="200Gi"),
+    requests=Resources(mem="120Gi", cpu="44", gpu="8", ephemeral_storage="100Gi"),
+    limits=Resources(mem="200Gi", cpu="100", gpu="12", ephemeral_storage="200Gi"),
     accelerator=GPUAccelerator("nvidia-tesla-a100")
 )
 def my_task()
@@ -30,9 +30,6 @@ The `requests` and `limits` settings each takes a [`Resource`](https://docs.flyt
 * `cpu`: Number of CPU cores (in whole numbers or millicores (`m`)).
 * `gpu`: Number of GPU cores (in whole numbers or millicores (`m`)).
 * `mem`: Main memory (in `Mi`, `Gi`, etc.).
-{@@ if byoc @@}
-* `storage`: Storage (in `Mi`,  `Gi` etc.).
-{@@ endif @@}
 * `ephemeral_storage`: Ephemeral storage (in `Mi`,  `Gi` etc.).
 
 Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2"` means 2 CPU cores and `gpu="3500m"`, meaning three and a half GPU cores.

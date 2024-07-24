@@ -9,7 +9,6 @@ You can customize the hardware environment in which your task code executes thro
 * CPU number
 * GPU number
 * Memory size
-* Storage size
 * Ephemeral storage size
 
 See [Customizing task resources](./customizing-task-resources) for details.
@@ -30,9 +29,6 @@ You can specify `requests` and `limits` on:
 * CPU number
 * GPU number
 * Memory size
-{@@ if byoc @@}
-* Storage size
-{@@ endif @@}
 * Ephemeral storage size
 
 See [Customizing task resources](./customizing-task-resources) for details.
