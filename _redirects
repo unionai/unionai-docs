@@ -537,9 +537,3 @@
 /byoc/development-cycle/unionremote /byoc/development-cycle/union-remote 301
 /serverless/development-cycle/unionremote/ /serverless/development-cycle/union-remote 301
 /serverless/development-cycle/unionremote /serverless/development-cycle/union-remote 301
-
-/uctl-cli/ /byoc/administration/uctl-cli 301
-/uctl-cli /byoc/administration/uctl-cli 301
-
-/union-cli/ /serverless/quick-start#install-the-union-package 301
-/union-cli /serverless/quick-start#install-the-union-package 301
