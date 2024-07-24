@@ -41,7 +41,7 @@ Or, you can explicitly specify the `accelerator` parameter as follows:
 
 ## NVIDIA L4 Tensor Core GPU
 
-To use the **NVIDIA L4 Tensor Core GPU** for a task you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
+To use the **NVIDIA L4 Tensor Core GPU** for a task, you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
 
 ```{code-block} python
 @task(
