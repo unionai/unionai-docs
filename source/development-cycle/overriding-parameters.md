@@ -4,7 +4,9 @@ The `with_overrides` method allows you to specify parameter overrides on [tasks]
 [subworkflows, and sub-launch plans](../core-concepts/workflows/subworkflows-and-sub-launch-plans) at execution time.
 This is useful when you want to change the behavior of a task, subworkflow, or sub-launch plan without modifying the original definition.
 
-When calling a task, the following parameters you can specify the following parameters in `with_overrides`:
+## Task parameters
+
+When calling a task, you can specify the following parameters in `with_overrides`:
 
 * `accelerator`: Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators).
 * `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
