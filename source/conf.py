@@ -18,11 +18,11 @@ release = "1.0"
 master_doc = "index"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
-html_css_files = [
-    "custom.css",
-    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
-]
-html_js_files = ["custom.js"]
+# html_css_files = [
+#    "custom.css",
+#    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
+# ]
+# html_js_files = ["custom.js"]
 
 exclude_patterns = []
 extensions = [
@@ -36,6 +36,7 @@ extensions = [
     "sphinx_click",
     "sphinx_docsearch"
 ]
+html_theme = "sphinxawesome_theme"
 html_theme = "sphinx_book_theme"
 graphviz_output_format = 'svg'
 
@@ -50,14 +51,14 @@ html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
 
 # Add variant selector to sidebar
-html_sidebars = {
-    "**": [
-        "navbar-logo.html",
-        "variant-selector.html",
-        "searchbox.html",
-        "sbt-sidebar-nav.html",
-    ]
-}
+# html_sidebars = {
+#     "**": [
+#         "navbar-logo.html",
+#         "variant-selector.html",
+#         "searchbox.html",
+#         "sbt-sidebar-nav.html",
+#     ]
+# }
 
 # autodoc config
 autodoc_typehints = "description"

@@ -1,0 +1,163 @@
+/* Make sure article takes full page */
+article.bd-article {
+    height: 100%;
+}
+
+/* Basic styling for the dropdown menu */
+button#dropdown-text::before {
+    content: "Version:";
+    margin-right: 0.3em;
+    font-weight: bold;
+}
+
+button#dropdown-text::after {
+    content: "⌄";
+    margin-left: 0.5em;
+    font-size: 1.25em;
+    line-height: 0.6em;
+}
+
+.navbar-brand img {
+    max-width: 80%;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--pst-color-surface);
+    width: 100%;
+    min-width: 160px;
+    box-shadow: 0px 1px 6px 3px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: var(--pst-color-text-muted);
+    padding: 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--pst-color-on-background);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-button {
+    border: 1px solid var(--pst-color-border);
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+    color: var(--pst-color-text-muted);
+    display: inline-flex;
+    justify-content: center;
+    padding: 1em .5em;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.dropdown-button:hover {
+    box-shadow: 0 0 0 .1875rem var(--pst-color-link-hover);
+}
+
+/* update styling for links to use yellow */
+a,
+.prev-next-area a p.prev-next-title,
+nav.bd-links .current>a,
+.toc-entry a.nav-link.active
+{
+    color: var(--pst-color-secondary);
+}
+
+nav.bd-links .current>a,
+.toc-entry a.nav-link.active {
+    box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--pst-color-link-hover);
+}
+
+a:active, a:visited {
+    color: #7652a2;
+}
+
+#dropdown-links a,
+#dropdown-links a:visited {
+    color: var(--pst-color-text-muted);
+}
+
+#dropdown-links a:visited:hover {
+    color: var(--pst-color-link-hover);
+}
+
+
+/* update styling for tabs */
+.bd-content .sd-tab-set>input:checked+label {
+    border-color: var(--pst-color-border) var(--pst-color-border) transparent;
+    color: var(--pst-color-secondary);
+}
+
+.bd-content .sd-tab-set .sd-tab-content {
+    border: .125rem solid var(--pst-color-border);
+}
+
+/* make the scroll bar sleeker */
+.bd-sidebar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+}
+
+.bd-sidebar::-webkit-scrollbar-thumb {
+    background: var(--pst-color-border);
+}
+
+/* hide default search bar */
+div.search-button__wrapper.show {
+    display: none;
+}
+
+/* docsearch button */
+button.DocSearch {
+    width: 100%;
+    margin: 0;
+}
+
+kbd.DocSearch-Commands-Key:not(.compound) {
+    padding: 0;
+}
+
+:root {
+    --docsearch-primary-color: #edab1c;
+}
+
+div.DocSearch-Hit-content-wrapper {
+    /* prevent scrollbar from showing up */
+    overflow-y: hidden;
+}
+
+div.DocSearch-Logo .cls-1,
+div.DocSearch-Logo .cls-2 {
+    fill: #414c70 !important;
+}
+
+.DocSearch-Hits mark {
+    padding: 0;
+}
+
+/* make sure content header doesn't pop out when docsearch model is active */
+body.DocSearch--active div.bd-header-article {
+    z-index: 1;
+}
+
+/* grid items should have bottom margin */
+.sd-col {
+    margin-bottom: 1em;
+}
