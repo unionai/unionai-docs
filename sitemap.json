@@ -203,7 +203,7 @@
             ]},
         {"name": "api", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "sdk", "variants": ["byoc", "serverless"],
+                {"name": "union-sdk", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]},
                         {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
