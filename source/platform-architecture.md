@@ -9,7 +9,7 @@ The Union architecture consists of two virtual private clouds, referred to as pl
 The control plane:
   * Runs within the Union AWS account.
   * Provides the user interface through which users can access authentication, authorization, observation, and management functions.
-  * Is responsible for placing executions onto execution plane clusters and performing other cluster control and management functions.
+  * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
 
