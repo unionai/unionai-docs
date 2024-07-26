@@ -59,3 +59,6 @@ To download manually, see the [UCTL releases](https://github.com/unionai/uctl/re
 that lets you manage not only Flyte entities (projects, domains, workflows, tasks, and launch plans)
 but also Union-specific entities like users, roles, and Union configurations.
 :::
+
+## Configuring `uctl`
+
