@@ -54,6 +54,7 @@ The data uses the following schema:
 +----------------------------------------------+
 | C_COMMENT (string)                           |
 +----------------------------------------------+
+```
 
 You can parameterize the query to filter results for a specific country.
 This country will be provided as user input, using a nation key to specify it.
