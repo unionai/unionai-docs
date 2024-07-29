@@ -69,10 +69,19 @@ snowflake_task_templatized_query = SnowflakeTask(
     ),
     query_template="SELECT * from CUSTOMER where C_NATIONKEY =  %(nation_key)s limit 100",
 )
+```
 
+```{note}
+Make sure to create a secret for the python task to access the Snowflake table.
+```
+    unionai create secret snowflake --value-file <SNOWFLAKE_PRIVATE_KEY>
+```
+```
+
+```{code-block} python
 image = ImageSpec(
     registry="ghcr.io/unionai",
-    packages=[flytekitplugins-snowflake, "pyarrow", "pandas"],
+    packages=["snowflake-connector-python", "pyarrow", "pandas"],
 )
 
 @task(container_image=image, secret_requests=[Secret(key="snowflake")])
