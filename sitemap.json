@@ -214,17 +214,49 @@
                     "children": [
                         {"name": "core-flytekit", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "basic-authoring", "variants": ["byoc", "serverless"]}
+                                {"name": "flytekit.task", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "configuration", "variants": ["byoc", "serverless"]},
-                        {"name": "clients", "variants": ["byoc", "serverless"]},
-                        {"name": "unit-testing", "variants": ["byoc", "serverless"]},
-                        {"name": "specifying-accelerators", "variants": ["byoc", "serverless"]},
-                        {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
-                        {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
-                        {"name": "custom-tasks", "variants": ["byoc", "serverless"]},
-                        {"name": "custom-types", "variants": ["byoc", "serverless"]},
-                        {"name": "experimental-features", "variants": ["byoc", "serverless"]}
+                        {"name": "configuration", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.configuration.Config", "variants": ["byoc", "serverless"]}
+                            ]},
+                        {"name": "ImageSpec", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.image_spec.ImageSpec"}
+                            ]},
+                        {"name": "clients", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.clients.friendly.SynchronousFlyteClient"}
+                            ]},
+                        {"name": "unit-testing", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.testing.patch"}
+                            ]},
+                        {"name": "specifying-accelerators", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.extras.accelerators.BaseAccelerator", "variants": ["byoc", "serverless"]}
+                            ]},
+                        {"name": "extending-flytekit", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.extend.get_serializable", "variants": ["byoc", "serverless"]}
+                            ]},
+                        {"name": "flyte-deck", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.deck.Deck", "variants": ["byoc", "serverless"]}
+                            ]},
+                        {"name": "plugin-api-reference", "variants": ["byoc", "serverless"]},
+                        {"name": "custom-tasks", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.core.base_task.kwtypes"}
+                            ]},
+                        {"name": "custom-types", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "structured-dataset", "variants": ["byoc", "serverless"]}
+                            ]},
+                        {"name": "experimental-features", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "flytekit.experimental.map_task"}
+                            ]}
                     ]
             },
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
