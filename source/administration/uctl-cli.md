@@ -89,7 +89,7 @@ The `uctl` CLI will use this configuration file to connect to your Union instanc
 The search order for finding the configuration file is:
 
 * `--config <path-to-config>` flag.
-* `UNION_CONFIG` environment variable: the same variable as used by the `union CLI`)
+* `UNION_CONFIG` environment variable: the same variable as used by the `union CLI`.
 * `UCTL_CONFIG` environment variable: for backward compatibility with earlier versions of `uctl`.
 * `~/.union/config.yaml`: the default, and the one created by the command above.
 * `~/.uctl/config.yaml`: for backward compatibility with earlier versions of `uctl`.
