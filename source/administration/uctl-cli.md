@@ -96,4 +96,4 @@ The search order for finding the configuration file is:
 
 For details on the parameters in the configuration file, see [CLI Authentication](./cli-authentication).
 
-For details on the `union` CLI, see [Quick Start](../quick-start).
+For details on the `union` CLI, see [Quick Start](../api/union-cli).
