@@ -183,6 +183,15 @@
                             "name": "reddit-slack-bot",
                             "variants": ["byoc", "serverless"],
                             "from_py_file": "./unionai-examples/tutorials/reddit_slack_bot/reddit_slack_bot.py"
+                        }
+                    ]
+                },
+                {"name": "time-series", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "gluonts-time-series",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/gluonts_time_series/gluonts_time_series.py"
                         },
                         {
                             "name": "time-series-forecaster-comparison",
