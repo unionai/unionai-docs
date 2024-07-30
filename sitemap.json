@@ -48,12 +48,12 @@
                                 {"name": "imagespec-with-gar", "variants": ["byoc"]},
                                 {"name": "environment-variables", "variants": ["byoc"]}
                             ]},
-                        {"name": "task-hardware-environment", "variants": ["byoc"],
+                        {"name": "task-hardware-environment", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "customizing-task-resources", "variants": ["byoc"]},
-                                {"name": "accelerators", "variants": ["byoc"]},
+                                {"name": "customizing-task-resources", "variants": ["byoc", "serverless"]},
+                                {"name": "accelerators", "variants": ["byoc", "serverless"]},
                                 {"name": "interruptible-instances", "variants": ["byoc"]},
-                                {"name": "task-level-monitoring", "variants": ["byoc"]}
+                                {"name": "task-level-monitoring", "variants": ["byoc", "serverless"]}
                             ]}
                     ]},
                 {"name": "launch-plans", "variants": ["byoc", "serverless"],
