@@ -44,9 +44,11 @@ Or, you can explicitly specify the `accelerator` parameter as follows:
 To use the **NVIDIA L4 Tensor Core GPU** for a task, you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
 
 ```{code-block} python
+from flytekit.extras.accelerators import L4
+
 @task(
     requests=Resources(gpu="1"),
-    accelerator=GPUAccelerator("nvidia-l4"),
+    accelerator=L4,
 )
 def my_task():
     ...
