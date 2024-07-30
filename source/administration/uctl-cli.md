@@ -62,7 +62,7 @@ but also Union-specific entities like users, roles, and Union configurations.
 
 ## Configuring `uctl`
 
-To configure `uctl` to connect to your Union instance, execute the following command:
+To configure `uctl` to connect to your Union instance, run the following command:
 
 ```{code-block} shell
 $ uctl config init --host <union-host-url>
