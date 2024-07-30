@@ -54,39 +54,39 @@ In GitHub, from the repository page:
 
 1. Select **Settings > Secrets and variables > Actions**.
 2. Select the **Secrets** tab and click **New repository secret**.
-3. Give a meaningful name to the secret, like `UNION_CLOUD_APP_SECRET`.
+3. Give a meaningful name to the secret, like `UNION_APP_SECRET`.
 4. Paste in the string from above as the value.
 5. Click **Add secret**.
 
 ## Create a Union configuration file
 
-Until now the configuration file we have used has been local (`~/.uctl/config.yaml`, for example).
+Until now the configuration file we have used has been local (`~/.union/config.yaml`, for example).
 For the CI/CD system you need to create one right in the same repository that holds your workflow code.
 
-Create `~/wine-classification/ci-config.yaml`:
+Create `example-project/ci-config.yaml`:
 
 ```{code-block} yaml
 admin:
-  endpoint: dns://<YourTenantURL>
+  endpoint: dns://<union-host-url>
   clientId: example-operator
-  clientSecretEnvVar: UNION_CLOUD_APP_SECRET
+  clientSecretEnvVar: UNION_APP_SECRET
   insecure: false
 logger:
   show-source: true
   level: 1
 union:
   connection:
-    host: dns://<YourTenantURL>
+    host: dns://<union-host-url>
     insecure: false
   auth:
     clientId: example-operator
-    clientSecretEnvVar: UNION_CLOUD_APP_SECRET
+    clientSecretEnvVar: UNION_APP_SECRET
     type: ClientSecret
 ```
 
 :::{note}
 
-Note that the value of`clientSecretEnvVar`(in his case, `UNION_CLOUD_APP_SECRET`) is the name of the variable that will be used by`uctl`within the CI/CD run environment.
+Note that the value of`clientSecretEnvVar`(in his case, `UNION_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
 
 It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
 
@@ -94,7 +94,7 @@ It is also usually good practice to make this the same as the name under which t
 
 ## Set up your CI/CD configuration file
 
-Finally, you need to set up the CI/CD configuration file. For GitHub Actions you might create the file `~/wine-classification/.github/workflows/deploy.yaml` that looks like this:
+Finally, you need to set up the CI/CD configuration file. For GitHub Actions you might create the file `example-project/.github/workflows/deploy.yaml` that looks like this:
 
 ```{code-block} yaml
 name: Deploy
@@ -146,7 +146,7 @@ jobs:
             --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
       - name: Register
         env:
-          UNION_CLOUD_APP_SECRET: ${{ secrets.UNION_CLOUD_APP_SECRET }}
+          UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
         run: |
           bin/uctl --config ./ci-config.yaml \
             register files \
@@ -163,12 +163,12 @@ Note this section:
 ```{code-block} yaml
 - name: Register
   env:
-    UNION_CLOUD_APP_SECRET: ${{ secrets.UNION_CLOUD_APP_SECRET }}
+    UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
 ```
 
-The first instance of the name`UNION_CLOUD_APP_SECRET`must be the same as that specified in the ci-`config.yaml` file as the value of `clientSecretEnvVar`.
+The first instance of the name`UNION_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
 
-Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.UNION_CLOUD_APP_SECRET.`
+Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.UNION_APP_SECRET.`
 
 You will also see other secrets and environment variables accessed in this configuration file.
 These are related to the container build process, project name and so forth.

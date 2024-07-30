@@ -32,11 +32,22 @@ This is the most common task variant and the one that, thus far, we have focused
 This task variant represents a raw container, with no assumptions made about what is running within it.
 Here is an example of declaring a `ContainerTask`:
 
-<!-- TODO: Example code -->
+```{code-block} python
+greeting_task = ContainerTask(
+    name="echo_and_return_greeting",
+    image="alpine:latest",
+    input_data_dir="/var/inputs",
+    output_data_dir="/var/outputs",
+    inputs=kwtypes(name=str),
+    outputs=kwtypes(greeting=str),
+    command=["/bin/sh", "-c", "echo 'Hello, my name is {{.inputs.name}}.' | tee -a /var/outputs/greeting"],
+)
+
+```
 
 The `ContainerTask` enables you to include a task in your workflow that executes arbitrary code in any language, not just Python.
 
-<!--TODO: Besides support for other languages, there are other reasons to use a container task. Mention them her -->
+<!--TODO: Besides support for other languages, there are other reasons to use a container task. Mention them here. -->
 
 See the [Container Task example](https://github.com/unionai-oss/union-cloud-docs-examples/tree/main/container_task).
 
@@ -53,7 +64,19 @@ Map tasks find application in various scenarios, including:
 
 Just like normal tasks, map tasks are automatically parallelized to the extent possible given resources available in the cluster.
 
-<!-- TODO: example code-->
+```{code-block} python
+THRESHOLD = 11
+
+@task
+def detect_anomalies(data_point: int) -> bool:
+    return data_point > THRESHOLD
+
+@workflow
+def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) -> list[bool]:
+    # Use the map task to apply the anomaly detection function to each data point
+    return map_task(detect_anomalies)(data_point=data)
+
+```
 
 See:
 * The [Map Task example](https://github.com/unionai-oss/union-cloud-docs-examples/tree/main/map_task).

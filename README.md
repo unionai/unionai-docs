@@ -161,9 +161,12 @@ This is done to avoid conflict with documentation content that includes the stan
 ### Pulling in tutorial examples content
 
 This repo uses the [unionai-examples](https://github.com/unionai/unionai-examples) repo as a git submodule
-to pull in the content for the tutorial examples. Calling `make build` automatically
-updates the submodule to the latest commit, but if you want to update it manually,
-you can run `make update-examples`.
+to pull in the content for the tutorial examples.
+
+Calling `make build` automatically synchronizes the submodule to the current commit in the parent `docs` repo, but if you want to update it manually, you can
+run `make sync-examples`.
+
+If you've added a new example to the `union-examples` repo, you can update the submodule to the latest remote commit by running `make update-examples`.
 
 To pull in a specific page from the examples repo, you can specify a `from_py_file`
 key in the `sitemap.json` file. For example:

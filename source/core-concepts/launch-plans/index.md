@@ -40,7 +40,7 @@ In most cases, launch plans are defined alongside the workflows and tasks in you
 
 ### Registering a launch plan in Python with `UnionRemote`
 
-As with all Union command line actions, you can also perform registration of launch plans programmatically with [`UnionRemote`](../../development-cycle/unionremote), specifically, `UnionRemote.register_launch_plan`.
+As with all Union command line actions, you can also perform registration of launch plans programmatically with [`UnionRemote`](../../development-cycle/union-remote), specifically, `UnionRemote.register_launch_plan`.
 
 ### Results of registration
 

@@ -17,17 +17,17 @@ Ensure that you are logged into the desired AWS account and then select the appr
 
 | Region         | Launch Stack |
 |----------------|--------------|
-| `us-east-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.9%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-east-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.9%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.9%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.9%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-central-1` | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.9%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin) |
+| `us-east-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.10%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-east-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.10%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.10%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.10%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-central-1` | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.10%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin) |
 
 :::{admonition} CloudFormation template
 
 All of these buttons launch the same CloudFormation template, just in different regions.
 The CloudFormation template itself is available at this URL:
-* [https://union-public.s3.amazonaws.com/templates/v0.9/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.9/union-ai-admin-role.template.yaml)
+* [https://union-public.s3.amazonaws.com/templates/v0.10/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.10/union-ai-admin-role.template.yaml)
 
 For details on the functionality enabled by each of the permissions, see the [release notes](https://github.com/unionai/union-cloud-infrastructure/releases).
 
@@ -299,7 +299,8 @@ You will use this policy in a later step.
 				"ec2:DetachInternetGateway",
 				"ec2:DeleteVpc",
 				"ec2:CreateSubnet",
-				"ec2:DescribeVpcAttribute"
+				"ec2:DescribeVpcAttribute",
+				"ec2:AssociateVpcCidrBlock"
 			],
 			"Resource": [
 				"arn:aws:ec2:${AWS::Region}:${AWS::AccountID}:vpc/*"
@@ -648,13 +649,19 @@ The VPC should be configured with the following characteristics.
 * **Multiple availability zones**:
     * We recommend a minimum of 3.
 * **A sufficiently large CIDR range**:
-    * We recommend a /16 for the VPC and /21 for each subnet (6 in total). 
+    * We recommend a /16 for the VPC and /21 for each subnet (6 in total).
     * With most CNIs, a safe assumption is one IP allocated per pod. Small subnets can limit the number of pods that can be spun up when projects scale.
 * **A public subnet** with:
     * An internet gateway configured for internet access.
 * **A private subnet** with:
-    * A NAT gateway setup for internet access.
-    * A [VPC Endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html) configured for S3 access to avoid excessive NAT gateway charges.
+  * A NAT gateway setup for internet access.
+* Enable **(Recommended) VPC Endpoints** to mitigate unnecessary NAT gateway network traffic:
+  * Enable [S3 VPC gateway endpoint with appropriate route table association](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html).
+  * Enable [VPC interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html) for the following services `com.amazonaws.<REGION>.logs`, `com.amazonaws.<REGION>.ecr.dkr`, `com.amazonaws.<REGION>.ec2`
+    * Ensure the service names include the region that contains the aforementioned availability zones.
+    * Ensure the subnet IDs are configured to include all the aforementioned availability zones.
+    * Ensure the security groups allow all traffic from within the VPC.
+    * Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with data plane services.
 
 Once your VPC is set up, you will need to provide the Union team with the following information:
 
