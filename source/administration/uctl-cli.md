@@ -30,7 +30,7 @@ To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 ```
 
-To download manually, see the [UCTL releases](https://github.com/unionai/uctl/releases).
+To download manually, see the [`uctl` releases](https://github.com/unionai/uctl/releases).
 :::
 
 :::{tab-item} Linux
@@ -40,7 +40,7 @@ To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 ```
 
-To download manually, see the [UCTL releases](https://github.com/unionai/uctl/releases).
+To download manually, see the [`uctl` releases](https://github.com/unionai/uctl/releases).
 :::
 
 :::{tab-item} Windows
