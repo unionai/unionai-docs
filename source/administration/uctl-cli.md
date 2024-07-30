@@ -50,7 +50,7 @@ To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 ```
 
-To download manually, see the [UCTL releases](https://github.com/unionai/uctl/releases).
+To download manually, see the [`uctl` releases](https://github.com/unionai/uctl/releases).
 :::
 ::::
 
