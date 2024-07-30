@@ -1,4 +1,4 @@
-# The `uctl` CLI
+# uctl CLI
 
 While the `union` CLI provides the primary mechanism for interacting with Union,
 another CLI, called `uctl`, is also provided.
@@ -96,4 +96,4 @@ The search order for finding the configuration file is:
 
 For details on the parameters in the configuration file, see [CLI Authentication](./cli-authentication).
 
-For details on the `union` CLI, see [Quick Start](../api/union-cli).
+For details on the `union` CLI, see [union CLI](../api/union-cli).
