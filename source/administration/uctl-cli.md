@@ -94,6 +94,6 @@ The search order for finding the configuration file is:
 * `~/.union/config.yaml`: the default, and the one created by the command above.
 * `~/.uctl/config.yaml`: for backward compatibility with earlier versions of `uctl`.
 
-For details on the meaning of the parameters in the configuration file, see [CLI Authentication](./cli-authentication).
+For details on the parameters in the configuration file, see [CLI Authentication](./cli-authentication).
 
 For details on the `union` CLI, see [Quick Start](../quick-start).
