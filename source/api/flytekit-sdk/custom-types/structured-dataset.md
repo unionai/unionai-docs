@@ -1,4 +1,4 @@
-# StructuredDataset
+# StructuredDataset type
 
 ```{eval-rst}
 
@@ -7,10 +7,10 @@
 .. autoclass:: StructuredDataset
     :members:
 
-.. autoclass:: StructuredDatasetDecoder
+.. autoclass:: StructuredDatasetEncoder
     :members:
 
-.. autoclass:: StructuredDatasetEncoder
+.. autoclass:: StructuredDatasetDecoder
     :members:
 
 ```

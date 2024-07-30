@@ -247,11 +247,18 @@
                         {"name": "plugin-api-reference", "variants": ["byoc", "serverless"]},
                         {"name": "custom-tasks", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "flytekit.core.base_task.kwtypes"}
+                                {"name": "base-task", "variants": ["byoc", "serverless"]},
+                                {"name": "python-function-task", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "custom-types", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "structured-dataset", "variants": ["byoc", "serverless"]}
+                                {"name": "structured-dataset", "variants": ["byoc", "serverless"]},
+                                {"name": "file", "variants": ["byoc", "serverless"]},
+                                {"name": "directory", "variants": ["byoc", "serverless"]},
+                                {"name": "iterator", "variants": ["byoc", "serverless"]},
+                                {"name": "pytorch", "variants": ["byoc", "serverless"]},
+                                {"name": "tensorflow", "variants": ["byoc", "serverless"]},
+                                {"name": "sklearn", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "experimental-features", "variants": ["byoc", "serverless"],
                             "children": [
