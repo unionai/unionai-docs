@@ -649,7 +649,7 @@ The VPC should be configured with the following characteristics.
 * **Multiple availability zones**:
     * We recommend a minimum of 3.
 * **A sufficiently large CIDR range**:
-    * We recommend a /16 for the VPC and /21 for each subnet (6 in total). 
+    * We recommend a /16 for the VPC and /21 for each subnet (6 in total).
     * With most CNIs, a safe assumption is one IP allocated per pod. Small subnets can limit the number of pods that can be spun up when projects scale.
 * **A public subnet** with:
     * An internet gateway configured for internet access.
@@ -657,7 +657,7 @@ The VPC should be configured with the following characteristics.
   * A NAT gateway setup for internet access.
 * Enable **(Recommended) VPC Endpoints** to mitigate unnecessary NAT gateway network traffic:
   * Enable [S3 VPC gateway endpoint with appropriate route table association](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html).
-  * Enable [VPC interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html) for the following services `com.amazonaws.<REGION>.logs`, `com.amazonaws.<REGION>.ecr.dkr`, `com.amazonaws.<REGION>.ec2`, `com.amazonaws.<REGION>.sns`, `com.amazonaws.<REGION>.sqs`
+  * Enable [VPC interface endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html) for the following services `com.amazonaws.<REGION>.logs`, `com.amazonaws.<REGION>.ecr.dkr`, `com.amazonaws.<REGION>.ec2`
     * Ensure the service names include the region that contains the aforementioned availability zones.
     * Ensure the subnet IDs are configured to include all the aforementioned availability zones.
     * Ensure the security groups allow all traffic from within the VPC.

@@ -203,7 +203,7 @@ remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<
 {@@ elif serverless @@}
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 
 remote = UnionRemote()
 
@@ -230,7 +230,7 @@ remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<
 {@@ elif serverless @@}
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 
 remote = UnionRemote()
 
@@ -263,7 +263,7 @@ remote.create_artifact(BasicArtifact)
 {@@ elif serverless @@}
 
 ```{code-block} python
-from unionai.remote import UnionRemote
+from union.remote import UnionRemote
 from flytekit.core.artifact import Artifact
 
 remote = UnionRemote()

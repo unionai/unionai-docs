@@ -9,9 +9,9 @@ Resources are specified in the `@task` decorator. Here is an example:
 from flytekit.extras.accelerators import A100
 
 @task(
-    requests=Resources(mem="120Gi", cpu="44", gpu="8", storage="100Gi", ephemeral_storage="100Gi"),
-    limits=Resources(mem="200Gi", cpu="100", gpu="12", storage="200Gi", ephemeral_storage="200Gi"),
-    accelerator=A100
+    requests=Resources(mem="120Gi", cpu="44", gpu="8", ephemeral_storage="100Gi"),
+    limits=Resources(mem="200Gi", cpu="100", gpu="12", ephemeral_storage="200Gi"),
+    accelerator=GPUAccelerator("nvidia-tesla-a100")
 )
 def my_task()
     ...
@@ -30,10 +30,9 @@ The `requests` and `limits` settings each takes a [`Resource`](https://docs.flyt
 * `cpu`: Number of CPU cores (in whole numbers or millicores (`m`)).
 * `gpu`: Number of GPU cores (in whole numbers or millicores (`m`)).
 * `mem`: Main memory (in `Mi`, `Gi`, etc.).
-* `storage`: Storage (in `Mi`,  `Gi` etc.).
 * `ephemeral_storage`: Ephemeral storage (in `Mi`,  `Gi` etc.).
 
-Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example `cpu="2"` means 2 CPU cores and `gpu="3500m"`, meaning three and a half GPU cores.
+Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2"` means 2 CPU cores and `gpu="3500m"`, meaning three and a half GPU cores.
 
 The `requests` setting tells the system that the task requires _at least_ the resources specified and therefore the pod running this task should be scheduled only on a node that meets or exceeds the resource profile specified.
 
@@ -54,12 +53,21 @@ GPUs should only be specified in the `limits` section of the task decorator:
 
 ## The `accelerator` setting
 
-The `accelerator` setting further specifies the specifies the *type* of specialized hardware required for the task.
+{@@ if serverless @@}
+
+The `accelerator` setting further specifies the *type* of GPU required for the task.
+
+{@@ elif byoc @@}
+
+The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
 This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
+
+{@@ endif @@}
 
 See [Accelerators](./accelerators) for more information.
 
 {@@ if byoc @@}
+
 ## Task resource validation
 
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
@@ -75,6 +83,7 @@ This portal also accessible from **Usage > Compute** through the **Adjust Config
 ![](/_static/images/adjust-configuration.png)
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
+
 {@@ endif @@}
 
 ## The `with_overrides` method
