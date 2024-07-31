@@ -4,7 +4,7 @@
 
 .. currentmodule:: flytekit
 
-This package contains all of the most common abstractions you'll need to write Flyte workflows and extend Flytekit.
+This package contains the most common abstractions you'll need to write Flyte workflows and extend flytekit.
 
 Basic Authoring
 ===============

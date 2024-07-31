@@ -3,6 +3,7 @@ jupytext
 myst-parser
 nbformat
 pyyaml
+scikit-learn
 sphinx
 sphinx-click
 sphinx-design
@@ -10,4 +11,6 @@ sphinx-book-theme
 sphinx-copybutton
 sphinx-docsearch
 sphinxext-remoteliteralinclude
+tensorflow
+torch
 union

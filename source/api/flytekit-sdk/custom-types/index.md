@@ -76,7 +76,7 @@ To contribute a Flyte type, see the [extensibility contribution guide](https://d
 
 ```{eval-rst}
 
-.. currentmodule:: flytekit.extras.pytorch.checkpoint
+.. currentmodule:: flytekit.extras.pytorch
 
 .. autosummary::
     :nosignatures:
@@ -92,7 +92,7 @@ To contribute a Flyte type, see the [extensibility contribution guide](https://d
 
 ```{eval-rst}
 
-.. currentmodule:: flytekit.extras.tensorflow.record
+.. currentmodule:: flytekit.extras.tensorflow
 
 .. autosummary::
     :nosignatures:
@@ -106,7 +106,7 @@ To contribute a Flyte type, see the [extensibility contribution guide](https://d
 
 ```{eval-rst}
 
-.. currentmodule:: flytekit.extras.sklearn.native
+.. currentmodule:: flytekit.extras.sklearn
 
 .. autosummary::
     :nosignatures:

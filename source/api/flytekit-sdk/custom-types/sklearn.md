@@ -2,7 +2,7 @@
 
 ```{eval-rst}
 
-.. currentmodule:: flytekit.extras.sklearn.native
+.. currentmodule:: flytekit.extras.sklearn
 
 .. autoclass:: SklearnEstimatorTransformer
     :members:

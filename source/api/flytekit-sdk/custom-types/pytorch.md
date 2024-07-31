@@ -1,9 +1,19 @@
 # PyTorch type
 
-Testing
-
 ```{eval-rst}
 
-.. automodule:: flytekit.extras.pytorch
+.. currentmodule:: flytekit.extras.pytorch
+
+.. autoclass:: PyTorchCheckpoint
+    :members:
+
+.. autoclass:: PyTorchCheckpointTransformer
+    :members:
+
+.. autoclass:: PyTorchModuleTransformer
+    :members:
+
+.. autoclass:: PyTorchTensorTransformer
+    :members:
 
 ```

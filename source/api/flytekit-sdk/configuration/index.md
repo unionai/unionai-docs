@@ -1,11 +1,8 @@
 # Configuration
 
+## Flytekit configuration sources
+
 ```{eval-rst}
-
-.. currentmodule:: flytekit.configuration
-
-Flytekit Configuration Sources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There are multiple ways to configure flytekit settings:
 
@@ -13,14 +10,10 @@ There are multiple ways to configure flytekit settings:
 For example, see `pyflyte package <pyflyte.html#pyflyte-package>`_ command.
 
 **Python Config Object**: A :py:class:`~flytekit.configuration.Config` object can by used directly, e.g. when
-initializing a :py:class:`~flytefit.remote.remote.FlyteRemote` object. See :doc:`here <design/control_plane>` for examples on
-how to specify a ``Config`` object.
+initializing a :py:class:`~flytefit.remote.remote.FlyteRemote` object. See :doc:`here <design/control_plane>` for examples on how to specify a ``Config`` object.
 
-**Environment Variables**: Users can specify these at compile time, but when your task is run, Flyte Propeller will
-also set configuration to ensure correct interaction with the platform. The environment variables must be specified
-with the format ``FLYTE_{SECTION}_{OPTION}``, all in upper case. For example, to specify the
-:py:class:`PlatformConfig.endpoint <flytekit.configuration.PlatformConfig>` setting, the environment variable would
-be ``FLYTE_PLATFORM_URL``.
+**Environment Variables**: You can specify these at compile time, but when your task is run, Flyte Propeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format ``FLYTE_{SECTION}_{OPTION}``, all in upper case. For example, to specify the
+:py:class:`PlatformConfig.endpoint <flytekit.configuration.PlatformConfig>` setting, the environment variable would be ``FLYTE_PLATFORM_URL``.
 
 .. note::
 
@@ -71,6 +64,8 @@ Configuration usage can roughly be bucketed into the following areas,
 
 Configuration Objects
 ---------------------
+
+.. currentmodule:: flytekit.configuration
 
 The following objects are encapsulated in a parent object called ``Config``.
 

@@ -2,6 +2,12 @@
 
 ```{eval-rst}
 
-.. automodule:: flytekit.extras
+.. currentmodule:: flytekit.extras.tensorflow
+
+.. autoclass:: TensorFlowRecordFileTransformer
+    :members:
+
+.. autoclass:: TensorFlowRecordsDirTransformer
+    :members:
 
 ```
