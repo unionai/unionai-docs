@@ -22,6 +22,13 @@ classification.
 Build an agentic retrieval augmented generation system with ChromaDB and Langchain.
 :::
 
+:::{grid-item-card} {octicon}`dependabot` HDBSCAN Soft Clustering With Headline Embeddings with GPUs
+:link: language-models/soft-clustering-hdbscan
+:link-type: doc
+
+Use HDBSCAN soft clustering with headline embeddings embeddings and UMAP on GPUs.
+:::
+
 :::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
 :link: parallel-processing-and-job-scheduling/reddit-slack-bot
 :link-type: doc
