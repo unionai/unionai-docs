@@ -247,10 +247,7 @@
                             "children": [
                                 {"name": "flytekit.extras.accelerators.BaseAccelerator", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "extending-flytekit", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "flytekit.extend.get_serializable", "variants": ["byoc", "serverless"]}
-                            ]},
+                        {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
                         {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
                         {"name": "plugin-api-reference", "variants": ["byoc", "serverless"]},
                         {"name": "custom-tasks", "variants": ["byoc", "serverless"],
