@@ -191,6 +191,15 @@
                         }
                     ]
                 },
+                {"name": "time-series", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "gluonts-time-series",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/gluonts_time_series/gluonts_time_series.py"
+                        }
+                    ]
+                },
                 {"name": "bioinformatics", "variants": ["byoc"],
                     "children": [
                         {
