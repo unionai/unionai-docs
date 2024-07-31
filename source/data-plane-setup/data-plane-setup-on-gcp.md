@@ -200,7 +200,7 @@ The VPC should be configured with the following characteristics:
   * A secondary range with /18 CIDR mask. This is used for Kubernetes service IP address. We recommend associating the name with services, e.g. `gke-services`.
   * Identity an /28 CIDR block that will be used for the Kubernetes Master IP addresses. Note this CIDR block is not reserved within the subnet. It just needs to be available.
 
-Once your VPC is setup provide the following to Union:
+Once your VPC is set up, provide the following to Union:
 
 * VPC name
 * Subnet region and name
