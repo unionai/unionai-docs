@@ -2,9 +2,21 @@
 
 ```{eval-rst}
 
-.. automodule:: flytekit.core.base_task
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
+.. currentmodule:: flytekit.core.base_task
+
+.. autoclass:: kwtypes
+    :members:
+
+.. autoclass:: PythonTask
+    :members:
+
+.. autoclass:: Task
+    :members:
+
+.. autoclass:: TaskResolverMixin
+    :members:
+
+.. autoclass:: IgnoreOutputs
+    :members:
 
 ```

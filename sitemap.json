@@ -262,7 +262,9 @@
                         {"name": "custom-tasks", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "base-task", "variants": ["byoc", "serverless"]},
-                                {"name": "python-function-task", "variants": ["byoc", "serverless"]}
+                                {"name": "python-function-task", "variants": ["byoc", "serverless"]},
+                                {"name": "shell-task", "variants": ["byoc", "serverless"]},
+                                {"name": "sqlite3-task", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "custom-types", "variants": ["byoc", "serverless"],
                             "children": [
