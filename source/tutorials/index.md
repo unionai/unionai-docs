@@ -26,7 +26,7 @@ Build an agentic retrieval augmented generation system with ChromaDB and Langcha
 :link: language-models/soft-clustering-hdbscan
 :link-type: doc
 
-Use HDBSCAN soft clustering with headline embeddings embeddings and UMAP on GPUs.
+Use HDBSCAN soft clustering with headline embeddings and UMAP on GPUs.
 :::
 
 :::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
