@@ -649,7 +649,7 @@ The VPC should be configured with the following characteristics.
 * **Multiple availability zones**:
     * We recommend a minimum of 3.
 * **A sufficiently large CIDR range**:
-    * We recommend a /16 for the VPC and /21 for each subnet (6 in total).
+    * We recommend a /16 for the VPC, /28 for each public subnet, and /18 for each private subnet.
     * With most CNIs, a safe assumption is one IP allocated per pod. Small subnets can limit the number of pods that can be spun up when projects scale.
 * **A public subnet** with:
     * An internet gateway configured for internet access.
