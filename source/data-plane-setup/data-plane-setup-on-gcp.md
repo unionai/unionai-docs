@@ -205,7 +205,7 @@ Once your VPC is setup provide the following to Union:
 * VPC name
 * Subnet region and name
 * The secondary range name for the /15 CIDR mask and /16 CIDR mask
-* Provide the /18 CIDR block that was left unallocated for the Kubernetes Master.
+* The /18 CIDR block that was left unallocated for the Kubernetes Master
 
 ### Example VPC CIDR Block allocation
 
