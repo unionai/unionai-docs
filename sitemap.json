@@ -234,10 +234,7 @@
                             "children": [
                                 {"name": "flytekit.configuration.Config", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "ImageSpec", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "flytekit.image_spec.ImageSpec"}
-                            ]},
+                        {"name": "image-spec", "variants": ["byoc", "serverless"]},
                         {"name": "clients", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "flytekit.clients.friendly.SynchronousFlyteClient"}
