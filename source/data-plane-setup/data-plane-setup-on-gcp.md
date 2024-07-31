@@ -209,7 +209,7 @@ Once your VPC is setup provide the following to Union:
 
 ### Example VPC CIDR Block allocation
 
-* 10.0.0.0/18 Subnet 1 primary IPv4 range → Used for GCP Nodes.
+* 10.0.0.0/18 Subnet 1 primary IPv4 range → Used for GCP Nodes
 * 10.32.0.0/14 Cluster secondary IPv4 range named `gke-pods` → Used for Kubernetes Pods
 * 10.64.0.0/18 Service secondary IPv4 range named `gke-services` → Used for Kubernetes Services
 * 10.65.0.0/28 Unallocated for Kubernetes Master
