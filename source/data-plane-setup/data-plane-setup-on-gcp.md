@@ -190,7 +190,7 @@ $ gcloud services enable sts.googleapis.com
 
 ## Setting up and managing your own VPC (optional)
 
-If you decide to manage your own VPC, instead of leaving it to Union, then you will need to set it up yourself.
+If you decide to manage your own VPC instead of leaving it to Union, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics.
 
 * For simplicity, the VPC should reside in the same project as the Union Data Plane Kubernetes cluster. [Shared VPCs](https://cloud.google.com/vpc/docs/shared-vpc) are possible but work directly with Union support in this scenario.
