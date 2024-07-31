@@ -22,11 +22,18 @@ classification.
 Build an agentic retrieval augmented generation system with ChromaDB and Langchain.
 :::
 
+:::{grid-item-card} {octicon}`dependabot` HDBSCAN Soft Clustering With Headline Embeddings with GPUs
+:link: language-models/soft-clustering-hdbscan
+:link-type: doc
+
+Use HDBSCAN soft clustering with headline embeddings and UMAP on GPUs.
+:::
+
 :::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
 :link: parallel-processing-and-job-scheduling/reddit-slack-bot
 :link-type: doc
 
-Securely store Reddit and Slack authentication data while pushing relevant 
+Securely store Reddit and Slack authentication data while pushing relevant
 Reddit posts to slack on a consistent basis.
 :::
 
@@ -38,11 +45,18 @@ Visually compare the output of various time series forecasters while
 maintaining lineage of the training and forecasted data.
 :::
 
+:::{grid-item-card} {octicon}`graph` GluonTS Time Series On GPUs
+:link: time-series/gluonts-time-series
+:link-type: doc
+
+Train and evaluate a time series forecasting model with GluonTS.
+:::
+
 :::{grid-item-card} {octicon}`beaker` Genomic Alignment using Bowtie 2
 :link: bioinformatics/alignment
 :link-type: doc
 
-Pre-process raw sequencing reads, build an index, and perform alignment 
+Pre-process raw sequencing reads, build an index, and perform alignment
 to the a reference genome using the Bowtie2 aligner.
 :::
 
