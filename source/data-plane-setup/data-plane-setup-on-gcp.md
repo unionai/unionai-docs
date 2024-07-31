@@ -197,7 +197,7 @@ The VPC should be configured with the following characteristics:
 * Create a single VPC subnet with:
   * A primary IPv4 range with /18 CIDR mask. This is used for cluster node IP addresses.
   * A secondary range with /15 CIDR mask. This is used for Kubernetes Pod IP addresses. We recommend associating the name with pods, e.g. `gke-pods`.
-  * A secondary range with /18 CIDR mask. This is used for Kubernetes service IP address. Provide a name of your choice but recommend associating to services such as `gke-services`
+  * A secondary range with /18 CIDR mask. This is used for Kubernetes service IP address. We recommend associating the name with services, e.g. `gke-services`.
   * Identity an /28 CIDR block that will be used for the Kubernetes Master IP addresses. Note this CIDR block is not reserved within the subnet. It just needs to be available.
 
 Once your VPC is setup provide the following to Union:
