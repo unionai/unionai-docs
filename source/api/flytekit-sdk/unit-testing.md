@@ -6,10 +6,8 @@ The decorator and function documented below will help you unit test your Flyte t
 
 .. currentmodule:: flytekit.testing
 
-.. autosummary::
-   :template: custom.rst
-   :toctree: members/
+.. autodecorator:: patch
 
-   patch
-   task_mock
+.. autofunction:: task_mock
+
 ```

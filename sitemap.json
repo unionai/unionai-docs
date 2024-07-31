@@ -235,14 +235,8 @@
                                 {"name": "flytekit.configuration.Config", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "image-spec", "variants": ["byoc", "serverless"]},
-                        {"name": "clients", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "flytekit.clients.friendly.SynchronousFlyteClient"}
-                            ]},
-                        {"name": "unit-testing", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "flytekit.testing.patch"}
-                            ]},
+                        {"name": "clients", "variants": ["byoc", "serverless"]},
+                        {"name": "unit-testing", "variants": ["byoc", "serverless"]},
                         {"name": "specifying-accelerators", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "flytekit.extras.accelerators.BaseAccelerator", "variants": ["byoc", "serverless"]}
