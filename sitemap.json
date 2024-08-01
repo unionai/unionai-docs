@@ -6,6 +6,7 @@
             "children": [
                 {"name": "data-plane-setup-on-aws", "variants": ["byoc"]},
                 {"name": "data-plane-setup-on-gcp", "variants": ["byoc"]},
+                {"name": "data-plane-setup-on-azure", "variants": ["byoc"]},
                 {"name": "single-sign-on-setup", "variants": ["byoc"],
                     "children": [
                         {"name": "microsoft-entra-id", "variants": ["byoc"]},
