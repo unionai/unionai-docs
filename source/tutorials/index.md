@@ -52,6 +52,13 @@ maintaining lineage of the training and forecasted data.
 Train and evaluate a time series forecasting model with GluonTS.
 :::
 
+:::{grid-item-card} {octicon}`graph` Credit Default Prediction with XGBoost & NVIDIA RAPIDS
+:link: machine-learning/credit-default-xgboost
+:link-type: doc
+
+Use NVIDIA RAPIDS `cuDF` DataFrame library and `cuML` machine learning to predict credit default.
+:::
+
 :::{grid-item-card} {octicon}`beaker` Genomic Alignment using Bowtie 2
 :link: bioinformatics/alignment
 :link-type: doc
