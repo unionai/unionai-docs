@@ -1,5 +1,9 @@
 # Enabling AWS Secrets Manager
 
+```{note}
+This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than AWS Secrets Manager.
+```
+
 To enable your code to access secrets from AWS Secrets Manager you will need to
 
 * Make sure AWS Secrets Manager is enabled.
