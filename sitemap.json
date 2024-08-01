@@ -205,6 +205,15 @@
                         }
                     ]
                 },
+                {"name": "machine-learning", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "credit-default-xgboost",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/credit_default/credit_default.py"
+                        }
+                    ]
+                },
                 {"name": "bioinformatics", "variants": ["byoc"],
                     "children": [
                         {
