@@ -1,6 +1,10 @@
 # Enabling GCP resources
 
-Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as Cloud Storage, Secret Manager, Artifact Registry, BigQuery, and so forth.
+Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage.md), [Artifact Registry](./enabling-google-artifact-registry.md), [BigQuery](./enabling-bigquery.md), and so forth.
+
+```{note} Secret management
+We recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see the [Google Secret Manager documentation](./enabling-google-secret-manager)) for setup instructions.
+```
 
 As much as possible, access to the resources you need will be pre-configured by the Union team when they set up your data plane.
 For example, if you want your task code to have access to a specific Cloud Storage bucket or BigQuery, this can be pre-configured.

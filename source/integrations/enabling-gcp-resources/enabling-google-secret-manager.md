@@ -1,5 +1,9 @@
 # Enabling Google Secret Manager
 
+```{note}
+This documentation exists for customers who are already using Google Secret Manager and cannot switch to another secret manager. For all others, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager.
+```
+
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
 All you need to do is:
 
