@@ -2,29 +2,48 @@
 
 ## Flytekit configuration sources
 
-```{eval-rst}
-
 There are multiple ways to configure flytekit settings:
 
-**Command Line Arguments**: This is the recommended way of setting configuration values for many cases.
-For example, see `pyflyte package <pyflyte.html#pyflyte-package>`_ command.
+### Command line Arguments
 
-**Python Config Object**: A :py:class:`~flytekit.configuration.Config` object can by used directly, e.g. when
-initializing a :py:class:`~flytefit.remote.remote.FlyteRemote` object. See :doc:`here <design/control_plane>` for examples on how to specify a ``Config`` object.
+Command line arguments are the recommended way to set configuration values most of the time.
+For example, see the `[union package](https://docs.union.ai/serverless/api/union-cli#union-package)` command.
 
-**Environment Variables**: You can specify these at compile time, but when your task is run, Flyte Propeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format ``FLYTE_{SECTION}_{OPTION}``, all in upper case. For example, to specify the
-:py:class:`PlatformConfig.endpoint <flytekit.configuration.PlatformConfig>` setting, the environment variable would be ``FLYTE_PLATFORM_URL``.
+{@@ if byoc @@}
+### Python Config object
 
-.. note::
+You can use a `[Config](TK)` object directly, for example, when
+initializing a `[UnionRemote](TK)` object. See [TK](TK) for examples on how to specify a `Config` object.
+{@@ endif @@}
 
-   Environment variables won't work for image configuration, which need to be specified with the
-   `pyflyte package --image ... <pyflyte.html#cmdoption-pyflyte-package-i>`_ option or in a configuration
-   file.
+### Environment variables
 
-**YAML Format Configuration File**: A configuration file that contains settings for both
-`flytectl <https://docs.flyte.org/en/latest/flytectl/overview.html>`__ and ``flytekit``. This is the recommended configuration
-file format. Invoke the :ref:`flytectl config init <flytectl_config_init>` command to create a boilerplate
-``~/.flyte/config.yaml`` file, and  ``flytectl --help`` to learn about all of the configuration yaml options.
+You can specify environment variables at compile time, but when your task is run, FlytePropeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format `FLYTE_{SECTION}_{OPTION}`, all in upper case. For example, to specify the `[PlatformConfig.endpoint](TK)` setting, the environment variable would be `FLYTE_PLATFORM_URL`.
+
+```{note}
+Environment variables won't work for specifying an image, which needs to be specified with the
+`[pyflyte package --image ...](TK)` option or in a configuration file.
+```
+
+### YAML format configuration file
+
+A configuration file that contains settings for both `[uctl](TK)` and `flytekit`. This is the recommended configuration file format. Invoke the `[uctl config init](TK)` command to create a boilerplate
+`~/.union/config.yaml` file, and  `uctl --help` to learn about all of the configuration YAML options.
+
+::::{dropdown} {fas} See example `config.yaml` file
+:animate: fade-in-slide-down
+
+:::{button-link} https://signup.union.ai/
+:color: secondary
+
+Create an account
+:::
+
+Once you have a Union account, install `'union[byoc]'`
+
+::::
+
+```{eval-rst}
 
 .. dropdown:: See example ``config.yaml`` file
    :animate: fade-in-slide-down
