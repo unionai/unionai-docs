@@ -114,15 +114,15 @@
                 {"name": "enabling-aws-resources", "variants": ["byoc"],
                     "children": [
                         {"name": "enabling-aws-s3", "variants": ["byoc"]},
-                        {"name": "enabling-aws-secrets-manager", "variants": ["byoc"]},
-                        {"name": "enabling-aws-ecr", "variants": ["byoc"]}
+                        {"name": "enabling-aws-ecr", "variants": ["byoc"]},
+                        {"name": "enabling-aws-secrets-manager", "variants": ["byoc"]}
                     ]},
                 {"name": "enabling-gcp-resources", "variants": ["byoc"],
                     "children": [
                         {"name": "enabling-google-cloud-storage", "variants": ["byoc"]},
-                        {"name": "enabling-google-secret-manager", "variants": ["byoc"]},
                         {"name": "enabling-google-artifact-registry", "variants": ["byoc"]},
-                        {"name": "enabling-bigquery", "variants": ["byoc"]}
+                        {"name": "enabling-bigquery", "variants": ["byoc"]},
+                        {"name": "enabling-google-secret-manager", "variants": ["byoc"]}
                     ]},
                 {"name": "agents", "variants": ["byoc"],
                     "children": [
