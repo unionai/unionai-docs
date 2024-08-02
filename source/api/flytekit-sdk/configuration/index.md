@@ -1,28 +1,26 @@
 # Configuration
 
-## What configuration is used for
+## Configuration uses
 
 Configuration usage can roughly be bucketed into the following areas:
 
 - **Compile-time settings**: These are settings like the default image and named images, where to look for Flyte code, etc.
 - **Platform settings**: Where to find the Flyte backend (Admin DNS, whether to use SSL).
 - **Registration runtime settings**: These are things like the K8s service account to use, a specific S3/GCS bucket to write off-loaded data (dataframes and files) to, notifications, labels & annotations, etc.
-- **Data access settings**: Is there a custom S3 endpoint in use? Backoff/retry behavior for accessing S3/GCS, key and password, etc.
-- **Other settings**: Statsd configuration, which is a run-time applicable setting but is not necessarily relevant to the Flyte platform.
+- **Data access settings**: Settings such as custom S3 endpoint settings, backoff/retry behavior for accessing S3 or GCS, key and password, and so on.
+- **Other settings**: `statsd` configuration, which is a run-time applicable setting, but is not necessarily relevant to the Flyte platform.
 
-## Flytekit configuration sources
+## Configuration sources
 
 ### Command line arguments
 
-Command line arguments are the recommended way to set configuration values most of the time.
-For example, see the [`union package`](https://docs.union.ai/serverless/api/union-cli#union-package) command.
+We recommended using command line arguments to set configuration values most of the time. See the [union CLI](../../union-cli) documentation for a full list of arguments for each command.
 
 ### Configuration files
 
 #### YAML format
 
-A configuration file that contains settings for both [`uctl`](TK) and `flytekit`. This is the recommended configuration file format. Invoke the [`uctl config init`](TK) command to create a boilerplate
-`~/.union/config.yaml` file, and  `uctl --help` to learn about all of the configuration YAML options.
+If you are using a configuration file, we recommend YAML format. The `~/.union/config.yaml` configuration file contains settings for both `uctl` and `flytekit`. To create a boilerplate `~/.union/config.yaml` file, run `uctl config init`, and to learn about all of the configuration YAML options, run `uctl --help`.
 
 ::::{dropdown} See example `config.yaml` file
 :animate: fade-in-slide-down
@@ -59,7 +57,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 #### Config object
 
 :::{note}
-You can use a [`Config`](TK) object directly, for example, when initializing a [`UnionRemote`](TK) object. See [TK](TK) for examples on how to specify a `Config` object.
+You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../development-cycle/union-remote) object. See [Creating a UnionRemote object](../../../development-cycle/union-remote.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
 :::
 
 ```{eval-rst}
@@ -71,6 +69,7 @@ You can use a [`Config`](TK) object directly, for example, when initializing a [
 
    ~Config
 ```
+{@@ endif @@}
 
 #### Compile time and serialization settings
 
@@ -88,9 +87,9 @@ You can use a [`Config`](TK) object directly, for example, when initializing a [
 ```
 
 :::{note}
-These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](TK) or [`union register](TK).
+These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](../../union-cli.md#union-package) or [`union register](../../union-cli#union-register).
 
-The image configurations are typically either passed in via an [`--image](https://docs.union.ai/serverless/api/union-cli#cmdoption-union-package-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-file).
+The image configurations are typically either passed in via an [`--image](../../union-cli.md#cmdoption-union-package-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-file).
 :::
 
 #### Execution time settings
@@ -114,13 +113,11 @@ credentials, secrets, and `statsd` metrics.
    ~DataConfig
 ```
 
-{@@ endif @@}
-
 ### Environment variables
 
-You can specify environment variables at compile time, but when your task is run, FlytePropeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format `FLYTE_{SECTION}_{OPTION}`, all in upper case. For example, to specify the [`PlatformConfig.endpoint`](TK) setting, the environment variable would be `FLYTE_PLATFORM_URL`.
+You can specify environment variables at compile time, but when your task is run, FlytePropeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format `FLYTE_{SECTION}_{OPTION}`, all in upper case. For example, to specify the [`PlatformConfig.endpoint`](execution-time-settings.md#flytekit.configuration.PlatformConfig) setting, the environment variable would be `FLYTE_PLATFORM_URL`.
 
 :::{note}
 Environment variables won't work for specifying an image, which needs to be specified with the
-[`union package --image ...`](TK) option or in a configuration file.
+[`union package --image ...`](../../union-cli.md#cmdoption-union-package-i) option or in a configuration file.
 :::

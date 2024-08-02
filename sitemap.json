@@ -237,7 +237,20 @@
                     "children": [
                         {"name": "core-flytekit", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "flytekit.task", "variants": ["byoc", "serverless"]}
+                                {"name": "basic-authoring", "variants": ["byoc", "serverless"]},
+                                {"name": "branching-and-conditionals", "variants": ["byoc", "serverless"]},
+                                {"name": "customizing-tasks-and-workflows", "variants": ["byoc", "serverless"]},
+                                {"name": "dynamic-and-nested-workflows", "variants": ["byoc", "serverless"]},
+                                {"name": "signaling", "variants": ["byoc", "serverless"]},
+                                {"name": "scheduling", "variants": ["byoc", "serverless"]},
+                                {"name": "notifications", "variants": ["byoc", "serverless"]},
+                                {"name": "reference-entities", "variants": ["byoc", "serverless"]},
+                                {"name": "core-task-types", "variants": ["byoc", "serverless"]},
+                                {"name": "secrets-and-security-context", "variants": ["byoc", "serverless"]},
+                                {"name": "common-flyte-idl-objects", "variants": ["byoc", "serverless"]},
+                                {"name": "task-utilities", "variants": ["byoc", "serverless"]},
+                                {"name": "artifacts", "variants": ["byoc", "serverless"]},
+                                {"name": "documentation", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "configuration", "variants": ["byoc", "serverless"],
                             "children": [
@@ -248,10 +261,7 @@
                         {"name": "image-spec", "variants": ["byoc", "serverless"]},
                         {"name": "clients", "variants": ["byoc", "serverless"]},
                         {"name": "unit-testing", "variants": ["byoc", "serverless"]},
-                        {"name": "specifying-accelerators", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "flytekit.extras.accelerators.BaseAccelerator", "variants": ["byoc", "serverless"]}
-                            ]},
+                        {"name": "specifying-accelerators", "variants": ["byoc", "serverless"]},
                         {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
                         {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
                         {"name": "plugin-api-reference", "variants": ["byoc", "serverless"]},
@@ -272,10 +282,7 @@
                                 {"name": "tensorflow", "variants": ["byoc", "serverless"]},
                                 {"name": "sklearn", "variants": ["byoc", "serverless"]}
                             ]},
-                        {"name": "experimental-features", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "flytekit.experimental.map_task"}
-                            ]}
+                        {"name": "experimental-features", "variants": ["byoc", "serverless"]}
                     ]
             },
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},

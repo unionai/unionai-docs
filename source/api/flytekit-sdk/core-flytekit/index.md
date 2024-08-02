@@ -1,20 +1,17 @@
 # Core flytekit
 
+This package contains the most common abstractions you'll need to write Flyte workflows and extend flytekit.
+
+## Basic authoring
+
 ```{eval-rst}
 
 .. currentmodule:: flytekit
-
-This package contains the most common abstractions you'll need to write Flyte workflows and extend flytekit.
-
-Basic Authoring
-===============
 
 These are the essentials needed to get started writing tasks and workflows.
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    task
    workflow
@@ -22,98 +19,111 @@ These are the essentials needed to get started writing tasks and workflows.
    current_context
    ExecutionParameters
    FlyteContext
-   map_task
+   ~core.array_node_map_task.map_task
    ~core.workflow.ImperativeWorkflow
    ~core.node_creation.create_node
    ~core.promise.NodeOutput
    FlyteContextManager
-
-.. important::
-
-   Tasks and Workflows can both be locally run, assuming the relevant tasks are capable of local execution.
-   This is useful for unit testing.
+```
 
 
-Branching and Conditionals
-==========================
+```{info}
+
+Tasks and workflows can both be locally run, assuming the relevant tasks are capable of local execution.
+This is useful for unit testing.
+```
+
+## Branching and conditionals
 
 Branches and conditionals can be expressed explicitly in Flyte. These conditions are evaluated
-in the flyte engine and hence should be used for control flow. ``dynamic workflows`` can be used to perform custom conditional logic not supported by flytekit
+in the flyte engine and hence should be used for control flow. [Dynamic workflows](dynamic-and-nested-workflows) can be used to perform custom conditional logic not supported by flytekit.
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    conditional
+```
 
+## Customizing Tasks & Workflows
 
-Customizing Tasks & Workflows
-==============================
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    TaskMetadata - Wrapper object that allows users to specify Task
    Resources - Things like CPUs/Memory, etc.
    WorkflowFailurePolicy - Customizes what happens when a workflow fails.
    PodTemplate - Custom PodTemplate for a task.
+```
 
-Dynamic and Nested Workflows
-==============================
-See the :py:mod:`Dynamic <flytekit.core.dynamic_workflow_task>` module for more information.
+## Dynamic and nested workflows
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    dynamic
+```
 
-Signaling
-=========
+## Signaling
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    approve
    sleep
    wait_for_input
+```
 
-Scheduling
-============================
+## Scheduling
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    CronSchedule
    FixedRate
+```
 
-Notifications
-============================
+## Notifications
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    Email
    PagerDuty
    Slack
+```
 
-Reference Entities
-====================
+## Reference entities
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    get_reference_entity
    LaunchPlanReference
@@ -122,40 +132,45 @@ Reference Entities
    reference_task
    reference_workflow
    reference_launch_plan
+```
 
-Core Task Types
-=================
+## Core task types
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    SQLTask
    ContainerTask
    PythonFunctionTask
    PythonInstanceTask
    LaunchPlan
+```
 
-Secrets and SecurityContext
-============================
+## Secrets and SecurityContext
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    Secret
    SecurityContext
+```
 
+## Common Flyte IDL Objects
 
-Common Flyte IDL Objects
-=========================
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    AuthRole
    Labels
@@ -167,37 +182,42 @@ Common Flyte IDL Objects
    Scalar
    LiteralType
    BlobType
+```
 
-Task Utilities
-==============
+## Task utilities
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    HashMethod
+```
 
-Artifacts
-=========
+## Artifacts
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    Artifact
+```
 
-Documentation
-=============
+## Documentation
+
+```{eval-rst}
+
+.. currentmodule:: flytekit
 
 .. autosummary::
    :nosignatures:
-   :template: custom.rst
-   :toctree: members/
 
    Description
    Documentation
    SourceCode
-
 ```

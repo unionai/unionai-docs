@@ -1,3 +1,0 @@
-# Specifying accelerators
-
-TK
