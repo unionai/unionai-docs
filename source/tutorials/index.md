@@ -38,7 +38,7 @@ Reddit posts to slack on a consistent basis.
 :::
 
 :::{grid-item-card} {octicon}`graph` Time Series Forecaster Comparison
-:link: parallel-processing-and-job-scheduling/time-series-forecaster-comparison
+:link: time-series/time-series-forecaster-comparison
 :link-type: doc
 
 Visually compare the output of various time series forecasters while
@@ -53,7 +53,7 @@ Train and evaluate a time series forecasting model with GluonTS.
 :::
 
 :::{grid-item-card} {octicon}`graph` Credit Default Prediction with XGBoost & NVIDIA RAPIDS
-:link: machine-learning/credit-default-xgboost
+:link: finance/credit-default-xgboost
 :link-type: doc
 
 Use NVIDIA RAPIDS `cuDF` DataFrame library and `cuML` machine learning to predict credit default.

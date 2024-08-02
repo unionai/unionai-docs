@@ -67,7 +67,7 @@ Create `example-project/ci-config.yaml`:
 
 ```{code-block} yaml
 admin:
-  endpoint: dns://<union-host-url>
+  endpoint: dns:///<union-host-url>
   clientId: example-operator
   clientSecretEnvVar: UNION_APP_SECRET
   insecure: false
@@ -76,7 +76,7 @@ logger:
   level: 1
 union:
   connection:
-    host: dns://<union-host-url>
+    host: dns:///<union-host-url>
     insecure: false
   auth:
     clientId: example-operator
