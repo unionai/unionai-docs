@@ -68,7 +68,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="union",
+   builder="unionai",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -223,7 +223,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
 
 image = ImageSpec(
-   builder="union",
+   builder="unionai",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -292,7 +292,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="union",
+   builder="unionai",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -359,7 +359,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="union",
+   builder="unionai",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
@@ -426,7 +426,7 @@ from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
 
 image = ImageSpec(
-   builder="union",
+   builder="unionai",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
