@@ -12,7 +12,7 @@ project.
 
 * Create a virtual Python environment with Python 3.11 installed.
 * Activate that virtual environment.
-* Install the dependencies with `pip install -r requirements.txt`.
+* Install the dependencies with `pip install -r requirements.txt`. **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
 
 ## Build the site
 
