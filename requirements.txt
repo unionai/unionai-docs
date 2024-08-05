@@ -1,3 +1,4 @@
+graphviz
 jinja2
 jupytext
 myst-parser

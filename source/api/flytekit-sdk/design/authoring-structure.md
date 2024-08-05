@@ -7,9 +7,10 @@ In this section, we'll take a closer look at how this works under the hood.
 
 Flyte uses its own type system, which is defined in the [IDL](https://github.com/flyteorg/flyte/tree/master/flyteidl). Despite being a dynamic language, Python also has its own type system, which is primarily explained in [PEP 484](https://www.python.org/dev/peps/pep-0484/). Therefore, Flytekit needs to establish a means of bridging the gap between these two type systems.
 
+```{eval-rst}
 This is primariliy accomplished through the use of :py:class:`flytekit.extend.TypeEngine`.
-The `TypeEngine` works by invoking a series of :py:class:`TypeTransformers <flytekit.extend.TypeTransformer>`.
-Each transformer is responsible for providing the functionality that the engine requires for a given native Python type.
+The ``TypeEngine`` works by invoking a series of :py:class:`TypeTransformers <flytekit.extend.TypeTransformer>`. Each transformer is responsible for providing the functionality that the engine requires for a given native Python type.
+```
 
 ## Callable entities
 
@@ -19,11 +20,12 @@ The Flyte user experience is built around three main concepts: [tasks](../../../
 
 Here is the existing hierarchy of task classes:
 
-```{eval-rst}
-
-.. inheritance-diagram:: flytekit.core.python_function_task.PythonFunctionTask flytekit.core.python_function_task.PythonInstanceTask flytekit.extras.sqlite3.task.SQLite3Task
+```{inheritance-diagram} flytekit.core.python_function_task.PythonFunctionTask flytekit.core.python_function_task.PythonInstanceTask flytekit.extras.sqlite3.task.SQLite3Task
    :top-classes: flytekit.core.base_task.Task
    :parts: 1
+```
+
+```{eval-rst}
 
 For more information on each of the classes, please refer to the corresponding documentation.
 
@@ -72,15 +74,14 @@ Exception handling occurs along two dimensions:
 
 The following is the user exception tree, which users can raise as needed. It is important to note that only `FlyteRecoverableException` is a recoverable exception. All other exceptions, including non-Flytekit defined exceptions, are non-recoverable.
 
-```{eval-rst}
-.. inheritance-diagram:: flytekit.exceptions.user.FlyteValidationException flytekit.exceptions.user.FlyteEntityAlreadyExistsException flytekit.exceptions.user.FlyteValueException flytekit.exceptions.user.FlyteTimeout flytekit.exceptions.user.FlyteAuthenticationException flytekit.exceptions.user.FlyteRecoverableException
+```{inheritance-diagram} flytekit.exceptions.user.FlyteValidationException flytekit.exceptions.user.FlyteEntityAlreadyExistsException flytekit.exceptions.user.FlyteValueException flytekit.exceptions.user.FlyteTimeout flytekit.exceptions.user.FlyteAuthenticationException flytekit.exceptions.user.FlyteRecoverableException
    :parts: 1
    :top-classes: Exception
 ```
 
 ### Implementation
 
-If you wish to delve deeper, you can explore the ``FlyteScopedException`` classes.
+If you wish to delve deeper, you can explore the `FlyteScopedException` classes.
 
 There are two decorators that are used throughout the codebase.
 
@@ -97,7 +98,9 @@ The entities mentioned above (tasks, workflows, and launch plans) are callable a
 
 In Pythonic terminology, adding `()` to the end of an entity invokes the `__call__` method on the object.
 
+```{eval-rst}
 The behavior that occurs when a callable entity is invoked depends on the current context, specifically the current :py:class:`flytekit.FlyteContext`.
+```
 
 ### Raw task execution
 
@@ -107,9 +110,10 @@ When a task is executed as part of a unit test, the `@task` decorator transforms
 
 When a workflow is executed locally (for instance, as part of a unit test), some modifications are made to the task.
 
+```{eval-rst}
+
 Before proceeding, it is worth noting a special object, the :py:class:`flytekit.extend.Promise`.
 
-```{eval-rst}
 .. autoclass:: flytekit.core.promise.Promise
    :noindex:
 ```
@@ -139,12 +143,16 @@ When the next task is invoked, the values are extracted from these Promises.
 
 ### Compilation
 
+```{eval-rst}
 During the workflow compilation process, instead of generating Promise objects that encapsulate literal values, the workflow encapsulates a :py:class:`flytekit.core.promise.NodeOutput`.
 This approach aids in tracking the data dependencies between tasks.
+```
 
 ### Branch skip
 
-If the condition specified in a :py:func:`flytekit.conditional` evaluates to `False`, Flytekit will avoid invoking the corresponding task. This prevents the unintended execution of the task.
+```{eval-rst}
+If the condition specified in a :py:func:`flytekit.conditional` evaluates to ``False``, Flytekit will avoid invoking the corresponding task. This prevents the unintended execution of the task.
+```
 
 ```{note}
 The execution pattern discussed for tasks can be applied to workflows and launch plans as well.

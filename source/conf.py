@@ -25,9 +25,11 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.graphviz",
+    "sphinx.ext.inheritance_diagram",
     "sphinxext.remoteliteralinclude",
     "sphinx_click",
-    "sphinx_docsearch",
+    "sphinx_docsearch"
 ]
 html_theme = "sphinx_book_theme"
 
