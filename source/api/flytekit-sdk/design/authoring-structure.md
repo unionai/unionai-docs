@@ -20,7 +20,8 @@ The Flyte user experience is built around three main concepts: [tasks](../../../
 
 Here is the existing hierarchy of task classes:
 
-```{inheritance-diagram} flytekit.core.python_function_task.PythonFunctionTask flytekit.core.python_function_task.PythonInstanceTask flytekit.extras.sqlite3.task.SQLite3Task
+```{eval-rst}
+.. inheritance-diagram:: flytekit.core.python_function_task.PythonFunctionTask flytekit.core.python_function_task.PythonInstanceTask flytekit.extras.sqlite3.task.SQLite3Task
    :top-classes: flytekit.core.base_task.Task
    :parts: 1
 ```

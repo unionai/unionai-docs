@@ -32,6 +32,7 @@ extensions = [
     "sphinx_docsearch"
 ]
 html_theme = "sphinx_book_theme"
+graphviz_output_format = 'svg'
 
 # Myst
 myst_enable_extensions = ["colon_fence"]
