@@ -1,4 +1,4 @@
-# union SDK
+# Union SDK
 
 To write workflow code, you will mostly use the [`flytekit` SDK](../flytekit-sdk/index.md). The `union` SDK provides additional functionality for interacting with the Union-specific entities listed below.
 

@@ -1,6 +1,6 @@
 # Flyte Deck
 
-Contains deck renderers provided by flytekit.
+Contains Deck renderers provided by Flytekit.
 
 ```{eval-rst}
 

@@ -1,6 +1,6 @@
 # Custom types
 
-Flytekit ships with an extensible type system, which makes it easy for anyone to extend and add new types.
+Flytekit ships with an extensible type system to make it easy for anyone to extend and add new types.
 
 ```{note}
 To contribute a Flyte type, see the [extensibility contribution guide](https://docs.flyte.org/en/latest/user_guide/extending/custom_types.html#advanced-custom-types).

@@ -1,6 +1,6 @@
-# Extending flytekit
+# Extending Flytekit
 
-This package contains useful classes and methods for extending flytekit.
+This package contains useful classes and methods for extending Flytekit.
 
 ```{eval-rst}
 

@@ -1,6 +1,6 @@
 # Clients
 
-This module provides lower-level access to a Flyte backend.
+This module provides lower-level access to a Union or Flyte backend.
 
 ```{eval-rst}
 

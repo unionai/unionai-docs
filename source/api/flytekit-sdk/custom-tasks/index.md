@@ -1,6 +1,6 @@
 # Custom tasks
 
-Flytekit ships with an extensible task system, which makes it easy for anyone to extend and add new task types.
+Flytekit ships with an extensible task system to make it easy for anyone to extend and add new task types.
 
 ```{note}
 To contribute a new task type, see the [prebuilt container task plugins](https://docs.flyte.org/en/latest/user_guide/extending/prebuilt_container_task_plugins.html#prebuilt-container) and [user container task plugins](https://docs.flyte.org/en/latest/user_guide/extending/user_container_task_plugins.html#user-container) documentation.
