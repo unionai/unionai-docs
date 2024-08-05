@@ -235,6 +235,12 @@
                     ]},
                 {"name": "flytekit-sdk", "variants": ["byoc", "serverless"],
                     "children": [
+                        {"name": "design", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "models-files", "variants": ["byoc", "serverless"]},
+                                {"name": "authoring-structure", "variants": ["byoc", "serverless"]},
+                                {"name": "execution-time-support", "variants": ["byoc", "serverless"]}
+                            ]},
                         {"name": "core-flytekit", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "basic-authoring", "variants": ["byoc", "serverless"]},
