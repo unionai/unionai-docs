@@ -13,7 +13,7 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 
 ## Create a Microsoft Entra Application Registration
 
-1. Navigate to [Application Registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) page.
+1. Navigate to the [Application Registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) page.
 2. Create a new registration
 3. Create a new Application the name. The name is your choice but we recommend `union`. Leave at Single Tenant account type and do not add and registration URIs.
 4. Navigate to your target Azure [Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
