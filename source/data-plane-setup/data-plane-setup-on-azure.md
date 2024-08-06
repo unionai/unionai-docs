@@ -36,4 +36,4 @@ AWS environment. This allows Union to manage Azure resources within your subscri
 4. Set "Issuer" to `https://cognito-identity.amazonaws.com`
 5. Set "Subject identifier" to `us-east-2:6f9a6050-887a-c4cc-0625-120a4805bc34`
 6. "Name" is your choice, but we recommend `union-access`
-7. Set `Audience` to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
+7. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
