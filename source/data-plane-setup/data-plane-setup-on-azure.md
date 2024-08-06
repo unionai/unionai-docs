@@ -1,6 +1,6 @@
 # Data plane setup on Azure
 
-To set up your data plane on Azure you must allow Union to provision and maintain compute resources under your Azure Subscription. To do this you will need to provision a user managed identity with sufficient permissions to an Azure resource group.
+To set up your data plane on Azure, you must allow Union to provision and maintain compute resources under your Azure Subscription. To do this, you will need to provision a user managed identity with sufficient permissions to an Azure resource group.
 
 ## Selecting Azure Tenant and Subscription
 
