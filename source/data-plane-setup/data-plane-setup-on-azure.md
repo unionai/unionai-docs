@@ -32,7 +32,7 @@ AWS environment. This allows Union to manage Azure resources within your subscri
 
 1. Go the application registration page for the app you created.
 2. Select "Certificates & secrets."
-3. Select "the Federated Credentials" tab, select "Add credential", and choose "Other issuer"
+3. Select the "Federated Credentials" tab, then select "Add credential", and choose "Other issuer".
 4. Set `Issuer` to `https://cognito-identity.amazonaws.com`
 5. Set `Subject identifier` to `us-east-2:6f9a6050-887a-c4cc-0625-120a4805bc34`
 6. `Name` is your choice but would recommend `union-access`
