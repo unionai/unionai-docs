@@ -51,6 +51,6 @@ This package contains useful classes and methods for extending Flytekit.
     :members:
 
 .. autoclass:: ShimTaskExecutor
-    :members
+    :members:
 
 ```

@@ -4,7 +4,7 @@
 
 .. currentmodule:: flytekit
 
-.. autoclass:: ChronSchedule
+.. autoclass:: CronSchedule
     :members:
 
 .. autoclass:: FixedRate
