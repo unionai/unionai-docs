@@ -1,6 +1,6 @@
 # Flytekit SDK
 
-[`flytekit` Python](https://github.com/flyteorg/flytekit) is the Python Library for easily authoring, testing, deploying, and interacting with Flyte tasks, workflows, and launch plans.
+[Flytekit Python](https://github.com/flyteorg/flytekit) is the Python Library for easily authoring, testing, deploying, and interacting with Flyte tasks, workflows, and launch plans.
 
 ```{list-table}
 :header-rows: 0
