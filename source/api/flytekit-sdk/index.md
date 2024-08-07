@@ -24,6 +24,10 @@
   - Contains useful classes and methods for extending Flytekit.
 * - {doc}`Flyte Deck <flyte-deck>`
   - Contains Deck renderers provided by Flytekit.
+{@@ if byoc @@}
+* - {doc}`Agent API reference`
+  - Contains documentation on agent classes and methods.
+{@@ endif @@}
 * - {doc}`Custom tasks <custom-tasks/index>`
   - Flytekit ships with an extensible task system to make it easy for anyone to extend and add new task types.
 * - {doc}`Custom types <custom-types/index>`

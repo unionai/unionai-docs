@@ -1,4 +1,4 @@
-# Plugin API reference
+# Agent API reference
 
 ```{list-table}
 :header-rows: 0

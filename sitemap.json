@@ -270,7 +270,7 @@
                         {"name": "specifying-accelerators", "variants": ["byoc", "serverless"]},
                         {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
                         {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
-                        {"name": "plugin-api-reference", "variants": ["byoc"],
+                        {"name": "agent-api-reference", "variants": ["byoc"],
                             "children": [
                                 {"name": "airflow", "variants": ["byoc"]},
                                 {"name": "sagemaker", "variants": ["byoc"]},
