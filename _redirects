@@ -522,6 +522,10 @@
 /byoc/api/unionai-cli /byoc/api/union-cli 301
 /serverless/api/unionai-cli/ /serverless/api/union-cli 301
 /serverless/api/unionai-cli /serverless/api/union-cli 301
+/byoc/api/sdk /byoc/api/union-sdk 301
+/byoc/api/sdk/ /byoc/api/union-sdk 301
+/serverless/api/sdk /serverless/api/union-sdk 301
+/serverless/api/sdk/ /serverless/api/union-sdk 301
 
 /byoc/development-cycle/unionai-run-details/ /byoc/development-cycle/details-of-union-run 301
 /byoc/development-cycle/unionai-run-details /byoc/development-cycle/details-of-union-run 301
