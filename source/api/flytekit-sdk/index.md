@@ -25,7 +25,7 @@
 * - {doc}`Flyte Deck <flyte-deck>`
   - Contains Deck renderers provided by Flytekit.
 {@@ if byoc @@}
-* - {doc}`Agent API reference`
+* - {doc}`Agent API reference  <agent-api-reference>`
   - Contains documentation on agent classes and methods.
 {@@ endif @@}
 * - {doc}`Custom tasks <custom-tasks/index>`
