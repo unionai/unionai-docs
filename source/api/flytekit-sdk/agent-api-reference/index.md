@@ -5,19 +5,19 @@
 :widths: 20 30
 
 * - {doc}`Apache Airflow agent <airflow>`
-  - TK
+  - Run Airflow tasks as Union tasks.
 * - {doc}`AWS Sagemaker inference agent <sagemaker>`
-  - TK
+  - Deploy models and create and trigger inference endpoints.
 * - {doc}`Databricks agent <databricks>`
-  - TK
+  - Submit Spark jobs to the Databricks platform.
 * - {doc}`File sensor agent <file-sensor>`
-  - TK
+  - Detect files appearing in your local or remote filesystem.
 * - {doc}`Google BigQuery agent <bigquery>`
-  - TK
+  - Execute queries on Google BigQuery.
 * - {doc}`MemVerge Memory Machine Cloud (MMC) agent <mmc>`
-  - TK
+  - Execute Union tasks using MemVerge Memory Machine Cloud.
 * - {doc}`OpenAI ChatGPT agent <chatgpt>`
-  - TK
+  - Send prompts to ChatGPT.
 * - {doc}`Snowflake agent <snowflake>`
-  - TK
+  - Query data in Snowflake.
 ```
