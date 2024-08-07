@@ -6,9 +6,11 @@ To use the MMC agent, you must `pip install flytekitplugins-mmcloud`.
 
 ```{eval-rst}
 
-.. currentmodule:: flytekitplugins.openai.mmcloud
+.. currentmodule:: flytekitplugins.mmcloud
 
 .. autoclass:: MMCloudConfig
    :members:
 
+.. autoclass:: MMCloudTask
+   :members:
 ```

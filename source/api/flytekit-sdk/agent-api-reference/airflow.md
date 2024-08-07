@@ -6,11 +6,9 @@ To use the Airflow agent, you must `pip install flytekitplugins-airflow`.
 
 ```{eval-rst}
 
-.. currentmodule:: flytekitplugins.airflow
-
-.. autoclass:: AirflowMetadata
+.. autoclass:: flytekitplugins.airflow.AirflowTask
    :members:
 
-.. autoclass:: AirflowAgent
+.. autoclass:: flytekitplugins.airflow.agent.AirflowMetadata
    :members:
 ```

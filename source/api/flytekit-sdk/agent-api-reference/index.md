@@ -8,8 +8,6 @@
   - Run Airflow tasks as Union tasks.
 * - {doc}`AWS Sagemaker inference agent <sagemaker>`
   - Deploy models and create and trigger inference endpoints.
-* - {doc}`Databricks agent <databricks>`
-  - Submit Spark jobs to the Databricks platform.
 * - {doc}`File sensor agent <file-sensor>`
   - Detect files appearing in your local or remote filesystem.
 * - {doc}`Google BigQuery agent <bigquery>`
@@ -20,4 +18,6 @@
   - Send prompts to ChatGPT.
 * - {doc}`Snowflake agent <snowflake>`
   - Query data in Snowflake.
+* - {doc}`Spark on Databricks agent <spark>`
+  - Submit Spark jobs to the Databricks platform.
 ```

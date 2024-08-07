@@ -274,12 +274,12 @@
                             "children": [
                                 {"name": "airflow", "variants": ["byoc"]},
                                 {"name": "sagemaker", "variants": ["byoc"]},
-                                {"name": "databricks", "variants": ["byoc"]},
                                 {"name": "file-sensor", "variants": ["byoc"]},
                                 {"name": "bigquery", "variants": ["byoc"]},
                                 {"name": "mmc", "variants": ["byoc"]},
                                 {"name": "chatgpt", "variants": ["byoc"]},
-                                {"name": "snowflake", "variants": ["byoc"]}
+                                {"name": "snowflake", "variants": ["byoc"]},
+                                {"name": "spark", "variants": ["byoc"]}
                             ]},
                         {"name": "custom-tasks", "variants": ["byoc", "serverless"],
                             "children": [

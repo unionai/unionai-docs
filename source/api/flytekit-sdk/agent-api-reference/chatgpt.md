@@ -6,12 +6,6 @@ To use the ChatGPT agent, you must `pip install flytekitplugins-openai`.
 
 ```{eval-rst}
 
-.. currentmodule:: flytekitplugins.openai.chatgpt
-
-.. autoclass:: ChatGPTAgent
+.. autoclass:: flytekitplugins.openai.ChatGPTTask
    :members:
-
-.. autoclass:: ChatGPTTask
-   :members:
-
 ```

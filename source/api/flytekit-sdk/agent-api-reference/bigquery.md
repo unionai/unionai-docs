@@ -13,7 +13,4 @@ To use the BigQuery agent, you must `pip install flytekitplugins-bigquery`.
 
 .. autoclass:: BigQueryTask
    :members:
-
-.. autoclass:: BigQueryAgent
-   :members:
 ```

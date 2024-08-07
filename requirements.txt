@@ -1,6 +1,7 @@
 flytekitplugins-airflow
 flytekitplugins-awssagemaker
 flytekitplugins-bigquery
+flytekitplugins-mmcloud
 flytekitplugins-openai
 flytekitplugins-snowflake
 flytekitplugins-spark

@@ -5,5 +5,4 @@
 
 .. autoclass:: FileSensor
     :members:
-
 ```
