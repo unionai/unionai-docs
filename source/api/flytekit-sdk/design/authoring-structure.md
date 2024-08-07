@@ -18,14 +18,6 @@ The Flyte user experience is built around three main concepts: [tasks](../../../
 
 ### Tasks
 
-Here is the existing hierarchy of task classes:
-
-```{eval-rst}
-.. inheritance-diagram:: flytekit.core.python_function_task.PythonFunctionTask flytekit.core.python_function_task.PythonInstanceTask flytekit.extras.sqlite3.task.SQLite3Task
-   :top-classes: flytekit.core.base_task.Task
-   :parts: 1
-```
-
 ```{eval-rst}
 
 For more information on each of the classes, please refer to the corresponding documentation.
@@ -68,25 +60,24 @@ There is one :py:class:`LaunchPlan <flytekit.core.launch_plan.LaunchPlan>` class
 
 ## Exception Handling
 
-Exception handling occurs along two dimensions:
+[Exception handling](https://github.com/flyteorg/flytekit/tree/master/flytekit/exceptions) occurs along two dimensions:
 
 * **System vs. user:** We distinguish between Flytekit/system-level exceptions and user exceptions. For instance, if Flytekit encounters an issue while uploading outputs, it is considered a system exception. On the other hand, if a user raises a `ValueError` due to an unexpected input in the task code, it is classified as a user exception.
 * **Recoverable vs. Non-recoverable:** Recoverable errors are retried and counted toward the task's retry count, while non-recoverable errors simply fail. System exceptions are recoverable by default, since they are usually temporary.
 
-The following is the user exception tree, which users can raise as needed. It is important to note that only `FlyteRecoverableException` is a recoverable exception. All other exceptions, including non-Flytekit defined exceptions, are non-recoverable.
-
-```{inheritance-diagram} flytekit.exceptions.user.FlyteValidationException flytekit.exceptions.user.FlyteEntityAlreadyExistsException flytekit.exceptions.user.FlyteValueException flytekit.exceptions.user.FlyteTimeout flytekit.exceptions.user.FlyteAuthenticationException flytekit.exceptions.user.FlyteRecoverableException
-   :parts: 1
-   :top-classes: Exception
-```
+:::{note}
+Only `flytekit.exceptions.user.FlyteRecoverableException` is a recoverable execption. All other exceptions, including non-Flytekit defined exceptions, are non-recoverable.
+:::
 
 ### Implementation
 
-If you wish to delve deeper, you can explore the `FlyteScopedException` classes.
+If you wish to delve deeper, you can explore the [`FlyteScopedException`](https://github.com/flyteorg/flytekit/blob/master/flytekit/exceptions/scopes.py) classes.
 
 There are two decorators that are used throughout the codebase.
 
 ```{eval-rst}
+
+.. currentmodule:: flytekit.exceptions.scopes
 
 .. autofunction:: flytekit.exceptions.scopes.system_entry_point
 
