@@ -1,5 +1,12 @@
 import os
 import re
+import logging
+
+import sphinx.application
+import sphinx.errors
+from sphinx.util import logging as sphinx_logging
+
+# sphinx.application.ExtensionError = sphinx.errors.ExtensionError
 
 # Project
 project = "union-docs"
@@ -144,7 +151,63 @@ def process_options(app, ctx, lines):
         counter += 1
 
 
+# Disable warnings from flytekit
+os.environ["FLYTE_SDK_LOGGING_LEVEL_ROOT"] = "50"
+
+# Disable warnings from tensorflow
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+
+class CustomWarningSuppressor(logging.Filter):
+    """Filter logs by `suppress_warnings`."""
+
+    def __init__(self, app: sphinx.application.Sphinx) -> None:
+        self.app = app
+        super().__init__()
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        msg = record.getMessage()
+
+        # TODO: These are all warnings that should be fixed as follow-ups to the
+        # monodocs build project.
+        filter_out = (
+            "duplicate label",
+            "Unexpected indentation",
+            "local id not found in doc",
+            "'myst' cross-reference target not found",
+            "undefined label",
+            "not found or reading it failed",
+            "Definition list ends without a blank line",
+            "Enumerated list ends without a blank line",
+            "Block quote ends without a blank line",
+            "Include file",
+            "duplicate object description"
+        )
+
+        if msg.strip().startswith(filter_out):
+            return False
+
+        if (
+            msg.strip().startswith("document isn't included in any toctree")
+            and record.location == "_tags/tagsindex"
+        ):
+            # ignore this warning, since we don't want the side nav to be
+            # cluttered with the tags index page.
+            return False
+
+        return True
+
+
 def setup(app):
     app.connect('autodoc-process-docstring', process_docstring)
     app.connect("sphinx-click-process-description", process_description)
     app.connect("sphinx-click-process-options", process_options)
+
+    """Setup root logger for Sphinx"""
+    logger = logging.getLogger("sphinx")
+
+    warning_handler, *_ = [
+        h for h in logger.handlers
+        if isinstance(h, sphinx_logging.WarningStreamHandler)
+    ]
+    warning_handler.filters.insert(0, CustomWarningSuppressor(app))
