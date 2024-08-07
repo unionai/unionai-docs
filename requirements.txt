@@ -1,3 +1,9 @@
+flytekitplugins-airflow
+flytekitplugins-awssagemaker
+flytekitplugins-bigquery
+flytekitplugins-openai
+flytekitplugins-snowflake
+flytekitplugins-spark
 graphviz
 jinja2
 jupytext
