@@ -187,3 +187,29 @@ $ gcloud services enable sts.googleapis.com
 3. Select **Download** under **Client Library Config**.
 4. Send the downloaded file to the Union Team to complete the setup process.
    There are no secrets stored in this file.
+
+## Setting up and managing your own VPC (optional)
+
+If you decide to manage your own VPC instead of leaving it to Union, then you will need to set it up yourself.
+The VPC should be configured with the following characteristics:
+
+* We recommend using a VPC that resides in the same project as the Union Data Plane Kubernetes cluster. If you want to use a [shared VPC](https://cloud.google.com/vpc/docs/shared-vpc), contact Union support.
+* Create a single VPC subnet with:
+  * A primary IPv4 range with /18 CIDR mask. This is used for cluster node IP addresses.
+  * A secondary range with /15 CIDR mask. This is used for Kubernetes Pod IP addresses. We recommend associating the name with pods, e.g. `gke-pods`.
+  * A secondary range with /18 CIDR mask. This is used for Kubernetes service IP address. We recommend associating the name with services, e.g. `gke-services`.
+  * Identify a /28 CIDR block that will be used for the Kubernetes Master IP addresses. Note this CIDR block is not reserved within the subnet. Google Kubernetes Engine requires this /28 block to be available.
+
+Once your VPC is set up, provide the following to Union:
+
+* VPC name
+* Subnet region and name
+* The secondary range name for the /15 CIDR mask and /16 CIDR mask
+* The /18 CIDR block that was left unallocated for the Kubernetes Master
+
+### Example VPC CIDR Block allocation
+
+* 10.0.0.0/18 Subnet 1 primary IPv4 range → Used for GCP Nodes
+* 10.32.0.0/14 Cluster secondary IPv4 range named `gke-pods` → Used for Kubernetes Pods
+* 10.64.0.0/18 Service secondary IPv4 range named `gke-services` → Used for Kubernetes Services
+* 10.65.0.0/28 Unallocated for Kubernetes Master
