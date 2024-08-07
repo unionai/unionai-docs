@@ -27,8 +27,7 @@ These are the essentials needed to get started writing tasks and workflows.
 ```
 
 
-```{info}
-
+```{note}
 Tasks and workflows can both be locally run, assuming the relevant tasks are capable of local execution.
 This is useful for unit testing.
 ```
