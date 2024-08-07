@@ -270,7 +270,17 @@
                         {"name": "specifying-accelerators", "variants": ["byoc", "serverless"]},
                         {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
                         {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
-                        {"name": "plugin-api-reference", "variants": ["byoc", "serverless"]},
+                        {"name": "plugin-api-reference", "variants": ["byoc"],
+                            "children": [
+                                {"name": "airflow", "variants": ["byoc"]},
+                                {"name": "sagemaker", "variants": ["byoc"]},
+                                {"name": "databricks", "variants": ["byoc"]},
+                                {"name": "file-sensor", "variants": ["byoc"]},
+                                {"name": "bigquery", "variants": ["byoc"]},
+                                {"name": "mmc", "variants": ["byoc"]},
+                                {"name": "chatgpt", "variants": ["byoc"]},
+                                {"name": "snowflake", "variants": ["byoc"]}
+                            ]},
                         {"name": "custom-tasks", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "base-task", "variants": ["byoc", "serverless"]},
