@@ -5,7 +5,6 @@ flytekitplugins-mmcloud
 flytekitplugins-openai
 flytekitplugins-snowflake
 flytekitplugins-spark
-graphviz
 jinja2
 jupytext
 myst-parser
