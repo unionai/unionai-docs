@@ -50,15 +50,14 @@ To use a secret created on the command line, see the example code below. To run 
 from flytekit import Secret, current_context, task, workflow
 
 @task(secret_requests=[Secret(key="my_secret")])
-def fn() -> str:
+def t1():
     secret_value = current_context().secrets.get(key="my_secret")
     # do something with the secret. For example, communication with an external API.
-    # For this example, we'll just return it.
-    return f"Hello: {secret_value}!"
+    ...
+```
 
-@workflow
-def main() -> str:
-    return fn()
+```{warning}
+Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
 
 ### Using a secret created from a file
@@ -79,15 +78,16 @@ from flytekit import Secret, current_context, task, workflow
         Secret(key="my_file_secret", mount_requirement=Secret.MountType.FILE),
     ]
 )
-def fn() -> str:
+def t1():
     path_to_secret_file = current_context().secrets.get_secrets_file("my_file_secret")
     with open(path_to_secret_file, "r") as f:
         secret_value = f.read()
-    return secret_value
+    # do something with the secret. For example, communication with an external API.
+    ...
+```
 
-@workflow
-def main() -> str:
-    return fn()
+```{warning}
+Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
 
 :::{note}
