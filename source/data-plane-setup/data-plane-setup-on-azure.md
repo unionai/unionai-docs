@@ -19,6 +19,8 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 4. Navigate to your target Azure [Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
 5. Within the Subscription page select Access Control (IAM). Select Add Role Assignment and add the following roles:
 
+<!-- TODO(PE-1123) The below roles will change in favor of minimal set of permissions -->
+
 * Contributor
 * Storage Blob Data Owner
 * Role Based Access Control Administrator
