@@ -19,15 +19,18 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 4. Navigate to your target Azure [Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
 5. Within the Subscription page select Access Control (IAM). Select Add Role Assignment and add the following roles:
 
-  * Contributor
+* Contributor
+* Storage Blob Data Owner
+* Role Based Access Control Administrator
+* Azure Kubernetes Service Cluster User Role
 
 6. Provide the Application Client ID to Union.
 
 <!-- TODO(MIKE) ### Azure CLI Steps -->
 
-## Create a Workload Federation Identity Credentials for Union.
+## Create a Workload Federation Identity Credentials for Union
 
-Creating an Azure [Workload identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation) to establish a trust relationship with Union's
+Create an Azure [Workload identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation) to establish a trust relationship with Union's
 AWS environment. This allows Union to manage Azure resources within your subscription.
 
 1. Go the application registration page for the app you created.
@@ -37,3 +40,14 @@ AWS environment. This allows Union to manage Azure resources within your subscri
 5. Set "Subject identifier" to `us-east-2:6f9a6050-887a-c4cc-0625-120a4805bc34`
 6. "Name" is your choice, but we recommend `union-access`
 7. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
+
+## Create a Microsoft Entra group for Cluster Administration
+
+Union uses [Microsoft Entra for AKS authentication and Kubernetes RBAC for authorization](https://learn.microsoft.com/en-us/azure/aks/azure-ad-rbac?tabs=portal). A Microsoft Entra group for cluster admins that includes the previously created Microsoft Entra Applicaiton's service principal.
+
+1. Go to [Groups](https://portal.azure.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/AllGroups) page within the same Tenant as the previously created application. Union recommends creating a new group by selecting "New group."
+2. Set `Group type` to `Security`
+3. `Group name` is your choice but would recommend `union-cluster-admin`
+4. Add previously created application to `members`
+5. Select `Create`
+6. Provide groups `Object ID` to Union.
