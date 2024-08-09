@@ -28,7 +28,7 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 
 <!-- TODO(MIKE) ### Azure CLI Steps -->
 
-## Create a Workload Federation Identity Credentials for Union
+## Create workload identity federation credentials for Union
 
 Create an [Azure workload identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation) to establish a trust relationship with Union's
 AWS environment. This allows Union to manage Azure resources within your subscription.
