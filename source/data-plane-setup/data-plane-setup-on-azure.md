@@ -41,7 +41,7 @@ AWS environment. This allows Union to manage Azure resources within your subscri
 6. "Name" is your choice, but we recommend `union-access`
 7. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
 
-## Create a Microsoft Entra group for Cluster Administration
+## Create a Microsoft Entra group for cluster administration
 
 Union uses [Microsoft Entra for AKS authentication and Kubernetes RBAC for authorization](https://learn.microsoft.com/en-us/azure/aks/azure-ad-rbac?tabs=portal). A Microsoft Entra group for cluster admins that includes the previously created Microsoft Entra Applicaiton's service principal.
 
