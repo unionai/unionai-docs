@@ -45,7 +45,8 @@ AWS environment. This allows Union to manage Azure resources within your subscri
 
 Union uses [Microsoft Entra for AKS authentication and Kubernetes RBAC for authorization](https://learn.microsoft.com/en-us/azure/aks/azure-ad-rbac?tabs=portal). A Microsoft Entra group for cluster admins that includes the previously created Microsoft Entra Applicaiton's service principal.
 
-1. Go to [Groups](https://portal.azure.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/AllGroups) page within the same Tenant as the previously created application. Union recommends creating a new group by selecting "New group."
+1. Go to the [Groups](https://portal.azure.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/AllGroups) page within the same tenant as the previously created application.
+2. Select "New group".
 2. Set `Group type` to `Security`
 3. `Group name` is your choice but would recommend `union-cluster-admin`
 4. Add previously created application to `members`
