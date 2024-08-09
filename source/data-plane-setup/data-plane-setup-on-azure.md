@@ -49,6 +49,6 @@ Union uses [Microsoft Entra for AKS authentication and Kubernetes RBAC for autho
 2. Select "New group".
 3. Set `Group type` to `Security`.
 4. `Group name` is your choice, but we recommend `union-cluster-admin`.
-4. Add previously created application to `members`
+5. Add your previously created application to `members`.
 5. Select `Create`
 6. Provide groups `Object ID` to Union.
