@@ -1,5 +1,9 @@
 # AWS Sagemaker Inference API
 
+:::{note}
+To use the Sagemaker agent, you must `pip install flytekitplugins-awssagemaker`.
+:::
+
 ## Boto
 
 ```{eval-rst}
