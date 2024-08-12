@@ -146,10 +146,6 @@ To use an AWS secret in your Flyte task code, do the following:
 Here is an example:
 
 ```{code-block} python
-import typing
-import pandas as pd
-import numpy as np
-import os
 
 from flytekit import task, workflow
 from flytekit import Secret
@@ -157,22 +153,22 @@ import flytekit
 
 SECRET_GROUP = "arn:aws:secretsmanager:<Region>:<AccountId>:secret:"
 SECRET_KEY = "<SecretName>-<SixRandomCharacters>"
-
-@task(
-    secret_requests=[
-        Secret(
-            group=SECRET_GROUP,
-            key=SECRET_KEY,
-            mount_requirement=Secret.MountType.FILE
-        ),
-    ],
+SECRET_REQUEST = Secret(
+  group=SECRET_GROUP,
+  key=SECRET_KEY,
+  mount_requirement=Secret.MountType.FILE
 )
-def get_my_secret() -> str:
-    secret_val = flytekit.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)
-    print(secret_val)
-    return str(secret_val)
 
-@workflow
-def wf() -> str:
-    return get_my_secret()
+@task(secret_requests=[SECRET_REQUEST])
+def t1():
+    secret_val = flytekit.current_context().secrets.get(
+        SECRET_GROUP,
+        group_version=SECRET_GROUP_VERSION
+    )
+    # do something with the secret. For example, communication with an external API.
+    ...
+```
+
+```{warning}
+Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
