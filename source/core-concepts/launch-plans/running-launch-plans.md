@@ -67,3 +67,9 @@ A subworkflow becomes part of the execution graph of the parent workflow and sha
 On the other hand, when a sub-launch plan is invoked a full, top-level workflow is kicked off with its own execution ID and context.
 
 See [Subworkflows and sub-launch plans](../workflows/subworkflows-and-sub-launch-plans) for more details.
+
+
+## Mapping over launch plans
+
+Just like you can map over tasks, you can also map over launch plans. See [map tasks](../tasks/task-types.md#map-tasks) 
+to execute launch plans in parallel across a series of inputs.
