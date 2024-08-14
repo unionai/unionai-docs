@@ -2,38 +2,31 @@
 
 This example shows how to use the `FileSensor` to detect files appearing in your local or remote filesystem.
 
-```{code-block} python
+First, import the required libraries.
 
-# First, import the required libraries.
-from flytekit import task, workflow
-from flytekit.sensor.file_sensor import FileSensor
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sensor/sensor/file_sensor_example.py
+:language: python
+:lines: 9-10
+```
 
-# Next, create a FileSensor task.
+Next, create a FileSensor task.
 
-sensor = FileSensor(name="test_file_sensor")
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sensor/sensor/file_sensor_example.py
+:language: python
+:lines: 16
+```
 
-# To use the FileSensor created in the previous step, you must specify the path parameter. In the sandbox, you can use the S3 path.
+To use the FileSensor created in the previous step, you must specify the `path` parameter. In the sandbox, you can use the S3 path.
 
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sensor/sensor/file_sensor_example.py
+:language: python
+:lines: 23-34
+```
 
-@task()
-def t1():
-    print("SUCCEEDED")
+You can also use the S3 or GCS file system. We have already set the minio credentials in the agent by default. If you test the sandbox example locally, you will need to set the AWS credentials in your environment variables.
 
-
-@workflow()
-def wf():
-    sensor(path="s3://my-s3-bucket/file.txt") >> t1()
-
-
-if __name__ == "__main__":
-    wf()
-
-# You can also use the S3 or GCS file system.
-# We have already set the minio credentials in the agent by default. If you test the sandbox example locally, you will need to set the AWS credentials in your environment variables:
-#
-# ```{prompt} bash
-# export FLYTE_AWS_ENDPOINT="http://localhost:30002"
-# export FLYTE_AWS_ACCESS_KEY_ID="minio"
-# export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
-# ```
+```{prompt} bash
+export FLYTE_AWS_ENDPOINT="http://localhost:30002"
+export FLYTE_AWS_ACCESS_KEY_ID="minio"
+export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
 ```
