@@ -50,7 +50,7 @@ For more details, see the [FlyteChatGPT Summary Bot GitHub repository](https://g
 
 ### Summarize the latest MLOps trend from Medium to Twitter
 
-```{info}
+```{note}
 This example only works in a local environment.
 ```
 
