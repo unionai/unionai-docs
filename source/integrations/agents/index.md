@@ -54,7 +54,7 @@ For an example implementation, see the [ChatGPT agent code](https://github.com/f
 
 ### Testing your agent locally
 
-To test your agent locally, create a class for the agent task that inherits from [AsyncAgentExecutorMixin](https://github.com/flyteorg/flytekit/blob/master/flytekit/extend/backend/base_agent.py#L155). This mixin can handle both asynchronous tasks and synchronous tasks and allows flytekit to mimic FlytePropeller's behavior in calling the agent.
+To test your agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L278-382). This mixin can handle both asynchronous tasks and synchronous tasks and allows flytekit to mimic FlytePropeller's behavior in calling the agent.
 
 For testing examples, see the [BigQuery agent](./bigquery-agent/index.md#local-testing) and [Databricks agent](./databricks-agent/index.md#local-testing) documentation.
 
