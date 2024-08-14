@@ -2,7 +2,7 @@
 
 This example shows how to use the `SnowflakeTask` to execute a query in Snowflake.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/snowflake_agent/snowflake_agent/snowflake_agent_example_usage.py
 :language: python
 :lines: 8-15
 ```
@@ -24,7 +24,7 @@ SELECT
     CURRENT_WAREHOUSE() AS "Warehouse";
 ```
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/snowflake_agent/snowflake_agent/snowflake_agent_example_usage.py
 :language: python
 :lines: 36-122
 ```
