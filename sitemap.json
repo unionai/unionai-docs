@@ -302,6 +302,23 @@
                     ]
             },
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
+                {"name": "uctl-cli", "variants": ["byoc"],
+                    "children": [
+                        {"name": "cli-entrypoint", "variants": ["byoc"]},
+                        {"name": "verbs", "variants": ["byoc"],
+                            "children": [
+                                {"name": "create", "variants": ["byoc"]}
+                            ]},
+                    {"name": "nouns", "variants": ["byoc"],
+                        "children": [
+                            {"name": "launch-plans", "variants": ["byoc"],
+                                "children": [
+                                    {"name": "uctl-get-launch-plan", "variants": ["byoc"]}
+
+                                ]
+                            }
+                        ]}
+                ]},
                 {"name": "union-remote", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "entrypoint", "variants": ["byoc", "serverless"]},
