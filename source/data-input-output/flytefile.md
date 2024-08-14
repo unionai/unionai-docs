@@ -1,175 +1,88 @@
 # FlyteFile
 
-## `FlyteFile` class
+In Union, because each task runs in its own container, a file created locally in one task will not automatically be available in other tasks.
 
-**Definition**
+To natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
 
-```{code-block} python
-class FlyteFile(os.PathLike, typing.Generic[T])
-```
+Since this is such a common case, Union provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) class, which automates this process, makes it (almost) transparent to the user.
 
-**Import**
+Here is how it works.
 
-```{code-block} python
-from flytekit.types.file import FlyteFile
-```
+## Local file example
 
-**Constructor**
-
-```{code-block} python
-FlyteFile(path: typing.Union[str, os.PathLike],
-          downloader: typing.Callable = noop,
-          remote_path: typing.Optional[os.PathLike] = None)
-```
-
-**`path`**`: typing.Union[str, os.PathLike]` (_required_)\
-The path to the source file from which to create the `FlyteFile`.
-It may be a local path or a remote URI. In the vast majority of cases, this is the only parameter you need to initialize a `FlyteFile`.
-
-**`downloader`**` : typing.Callable = noop` (_optional_)\
-A custom download function (see below).
-
-**`remote_path`**`: typing.Optional[os.PathLike] = None` (_optional_)\
-A file path and name in a backing store. Used to override the default storage (see below).
-
-**Attributes**
-
-**`path`**`: typing.Union[str, os.PathLike]`\
-The local (in-container) path to the file. If the `FlyteFile` was created in the current task from a local file, then this is simply the path to that file.
-If the `FlyteFile` was passed in to the current task or was created in the current task from a remote file then this attribute will be `None` until `download` is successfully called on `FlyteFile`.
-At that point, a random local path is generated for the downloaded file and that path is stored here.
-
-**`remote_source`**`: str`\
-If the `FlyteFile` was created from a remote source or passed into a task, the URI of the backing file is stored here.
-
-**`remote_path`**`: typing.Optional[os.PathLike]`\
-If a custom remote location was specified when the `FlyteFile` was created, it is stored here.
-
-**`downloaded`**`: bool`\
-If the `FlyteFile` was passed in to the current task or created in the current task from a remote source and downloaded then this attribute is `true`, otherwise it is `false`.
-
-**Instance methods**
-
-**`open`**`(mode: str, cache_type: typing.Optional[str] = None,`\
-     `cache_options: typing.Optional[typing.Dict[str, typing.Any]]`\
-     `= None) -> File`\
-Opens the `FlyteFile` as a Python streaming `File` object. This method does not cause a download of a remote `FlyteFile` to occur.
-
-**`download`**`() -> str`\
-Triggers a download of a remote `FlyteFile`.
-
-**`to_dict`**, **`to_json`**\
-From `@dataclass_json`
-
-**Class methods**
-
-**`new_remote_file`**`(name: typing.Optional[str] = None) -> FlyteFile`\
-Create a new `FlyteFile` with a remote source.
-
-**`from_source`**`(name: source: str | os.PathLike) -> FlyteFile`\
-Create a new `FlyteFile` from an existing remote file in blob storage.
-
-**`extension`**`()`\
-Return the extension.
-
-**`from_dict`**, **`from_json`**, **`schema`**\
-From `@dataclass_json`
-
-## Overview
-
-In Flyte, each task runs in its own container.
-One result is that a local file in one task will not automatically be available in other tasks, because it exists only inside the container where it was created.
-
-To share a file across tasks it must be explicitly passed out of one task and into another within your workflow code.
-To help with this, Flyte provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) Python class. Here is an example of how it works.
-
-### Local file example
-
-Let's say you have a local file in task `task1` that you want to make accessible in the next task, `task2`.
+Let's say you have a local file in task `task_1` that you want to make accessible in the next task, `task_2`.
 To do this, you create a `FlyteFile` object using the local path of the file you created, and then pass the `FlyteFile` object as part of your workflow, like this:
 
 ```{code-block} python
 @task
-def task1() -> FlyteFile:
-    p = os.path.join(current_context().working_directory, "data.txt")
-    f = open(p, mode="w")
-    f.write("Here is some sample data.")
-    f.close()
-    return FlyteFile(p)
+def task_1() -> FlyteFile:
+    local_path = os.path.join(current_context().working_directory, "data.txt")
+    with open(local_path, mode="w") as f:
+        f.write("Here is some sample data.")
+    return FlyteFile(path=local_path)
+
 
 @task
-def task2(ff: FlyteFile):
-    ff.download()
-    f = open(ff, mode="r")
-    d = f.read()
-    f.close()
-    # do something with the data `d`
+def task_2(ff: FlyteFile):
+    with ff.open(mode="r") as f
+        file_contents = f.read()
+
 
 @workflow
-def workflow():
-    ff = task1()
-    task2(ff=ff)
+def wf():
+    ff = task_1()
+    task_2(ff=ff)
 ```
 
-Recall that the code within a Flyte task function is real Python code (run in a Python interpreter inside the task container) while the code within a workflow function is actually a Python-like DSL, compiled by Flyte into a representation of the workflow.
+Union handles the passing of the `FlyteFile` `ff` in `wf` from `task1` to `task2`:
 
-This means that Flyte needs to handle the passing of the variable `ff` in `workflow` from task `task1` to task `task2`. Of course, by design, the Flyte workflow engine knows how to handle values of type `FlyteFile`.
-Here is what it does:
+* The `FlyteFile` object was initialized in `task_1` with the local path of the file that you created.
+* When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a randomly generated location in the Union object store.
+* This location is used to initialize the URI attribute of a Flyte `Blob` object (Note that Flyte objects are not Python objects. They exists at the workflow level and are used to pass data between task containers.
+  See [Flyte objects]() for more details).
+* The `Blob` object is passed to `task_2`.
+* Because the type of the input parameter of `task_2` is `FlyteFile`, Union converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
+* Inside `task_2` you can now perform a `FlyteFile.open()` and read the file contents.
 
-* The `FlyteFile` object was initialized with the local path of the file that you created.
-* When the `FlyteFile` is passed out of `task1`, Flyte uploads the local file to a randomly generated location in your raw data store.
-The URI of this location is used to initialize a Flyte object of type `Blob`.
-* The `Blob` object is passed to `task2`.
-Because the type of the input parameter is `FlyteFile`, Flyte converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
-* Inside `task2` you can now perform a `FlyteFile.download()` and then open the `FlyteFile`  as if it were a normal `file` object.
-
-### Remote file example
+## Remote file example
 
 In the example above we started with a local file.
-To preserve that file across the task boundary, Flyte uploaded it to a remote location (in this case the system's dedicated blob store) before passing it to the next task, where it can be downloaded.
+To preserve that file across the task boundary, Union uploaded it to the Union object store before passing it to the next task.
 
 You can also _start with a remote file_, simply by initializing the `FlyteFile` object with a URI pointing to a remote source. For example:
 
 ```{code-block} python
 @task
-def task1() -> FlyteFile:
-    p = "https://some/path/data.csv"
-    return FlyteFile(p)
-
-@task
-def task2(ff: FlyteFile):
-    ff.download()
-    f = open(ff, mode="r")
-    d = f.read()
-    f.close()
-    # do something with the data `d`
-
-@workflow
-def workflow():
-    ff = task1()
-    task2(ff)@task
+def task_1() -> FlyteFile:
+    remote_path = "https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv"
+    return FlyteFile(path=remote_path)
 ```
 
-In this case, no uploading is needed. When the object is passed out of the task, it is simply converted into a `Blob` with the remote path as the URI.
-After being passed to the next task, `FlyteFile.download()` can be called and the object opened as a file, just as before.
+In this case, no uploading is needed because the source file is already in a remote location.
+When the object is passed out of the task, it is simply converted into a `Blob` with the remote path as the URI.
+After being passed to the next task, `FlyteFile.open()` can be called, just as before.
 
-When initializing a `FlyteFile` with a remote file location, the URI schemes supported are: `http`, `https`, `gs`, `abfs`, `abfss`, and `file`.
+When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, the most common being: `http`, `https`, `gs` and `s3`.
 
-### Specifying `remote_path`
+{@@ if byoc @@}
 
-When a `FlyteFile` based on a local file is passed out of a task, the file is uploaded, by default, to the default raw data store configured in your data plane.
-In AWS-based systems, this is an S3 bucket, for example.
+## Specifying `remote_path`
+
+When a `FlyteFile` based on a local file is passed out of a task, the file is uploaded, by default, to the Union object store.
+For example, in AWS-based Union BYOC systems, this is an S3 bucket, while in Google CLoud-based Union BYOC systems, this is a GCS bucket.
 
 Within that bucket, the actual file location is, by default, a randomly generated path.
 This path is guaranteed to be unique so that files are never over-written on subsequent runs of the task.
 
-However,  the storage location used can be overridden by specifying the optional parameter `remote_path` when initializing the `FlyteFile` object.
-The specified value must be the full URI of a writable location accessible from your Flyte cluster.
-You can, for example, use the same S3 bucket that your cluster uses by default (the raw data store) but with a specified file name.
+However, the storage location used can be overridden by specifying the optional parameter `remote_path` when initializing the `FlyteFile` object.
+The specified value must be the full URI of a writable location accessible from your Union cluster.
+You can, for example, use the same bucket that your cluster uses by default but with a specified file name.
+Alternatively, you can use an entirely different bucket.
 
 :::{note}
 
-If you set `remote_path` then subsequent runs of the same task will overwrite the file.
+If you set `remote_path` to a static string then subsequent runs of the same task will overwrite the file.
+If you want to use a dynamically generated path you will have to generate it yourself.
 
 :::
 
@@ -178,26 +91,94 @@ Here is an example
 ```{code-block} python
 @task
 def task1() -> FlyteFile:
-    p = os.path.join(current_context().working_directory, "data.txt")
-    f = open(p, mode="w")
-    f.write("Here is some sample data.")
-    f.close()
-    return FlyteFile(p, remote_path="s3://union-contoso/foobar")
+    local_path = os.path.join(current_context().working_directory, "data.txt")
+    with open(local_path, mode="w") as f:
+        f.write("Here is some sample data.")
+    return FlyteFile(path=local_path, remote_path="s3://union-contoso/foobar")
+```
+
+## Specifying the raw data prefix
+
+Note that the above use of `remote_path` in `FlyteFile` is different from the higher level configuration of `raw_data_prefix` parameter.
+The `raw_data_prefix` parameter can be set at the workflow execution level and effectively changes the default location for all writes to object store.
+For example, if the `raw_data_prefix` is set then a `FlyteFile` (without a `remote_path` override) will still perform the automatic random path generation,
+but it will simply be relative to the new `raw_data_prefix` instead of the default location.
+See [Raw data prefix](raw-data-prefix) for more information.
+
+{@@ endif @@}
+
+## Streaming
+
+In the above examples we showed how to access the contents of `FlyteFile` by calling `open` on the `FlyteFile` object.
+The object returned by `FlyteFile.open` is a stream. In the above examples the files were small so a simple `read` was used.
+But, for large files you can iterate through the contents of the stream:
+
+```{code-block} python
+@task
+def task_1() -> FlyteFile:
+    remote_path = "https://sample-videos.com/csv/Sample-Spreadsheet-100000-rows.csv"
+    return FlyteFile(path=remote_path)
 
 @task
-def task2(ff: FlyteFile):
-    # ff.remote_source == "s3://union-contoso/foobar"
-    ff.download()
-    f = open(ff, mode="r")
-    d = f.read()
-    f.close()
-    # do something with the data `d`
-
-@workflow
-def workflow():
-    ff = task1()
-    task2(ff)
+def task_2(ff: FlyteFile):
+    with ff.open(mode="r") as f
+        for row in f:
+            do_something(row)
 ```
+
+## Downloading
+
+Alternative, you can download the contents of a `FlyteFile` object to a local file in the task container.
+There are two ways to do this: **implicitly** and **explicitly**.
+
+### Implicit downloading
+
+The source file of a `FlyteFile` object is downloaded to the local container file system automatically whenever an external function is called that takes the `FlyteFile` object and then itself calls `FlyteFile`'s `__fspath__()` method.
+
+`FlyteFile` implements the `os.PathLike` interface and therefore the `__fspath__()` method.
+`FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and return the path to that local file.
+This enables many common file-related operations in Python to be performed on the `FlyteFile` object.
+
+The most prominent example of a such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
+
+```{code-block} python
+@task
+def task_2(ff: FlyteFile):
+    with open(ff, mode="r") as f
+       file_contents= f.read()
+```
+
+:::{admonition}
+
+Note the difference between
+
+`ff.open(mode="r")`
+
+and
+
+`open(ff, mode="r")`
+
+The former calls `FlyteFile`'s `open` method and returns a stream to the file without downloading it.
+The latter calls the built-in Python function `open` passing a `FlyteFile`, downloads the file to the local container file system, and returns a handle to that file.
+
+:::
+
+Many other Python file operations (essentially, any that accept an `os.PathLike`) can also be performed on a `FlyteFile` object and result in an automatic download.
+
+See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
+
+### Explicit downloading
+
+You can also explicitly download a `FlyteFile` to the local container file system by calling `FlyteFile.download()`:
+
+```{code-block} python
+@task
+def task_2(ff: FlyteFile):
+    local_path = ff.download()
+```
+
+This method typically used when you want to download the file without immediately reading it.
+
 
 :::{admonition} FlyteFile behavior triggered by different type hints
 
