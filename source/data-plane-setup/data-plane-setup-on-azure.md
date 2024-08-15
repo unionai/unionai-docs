@@ -54,7 +54,7 @@ creating a Union specific App and granting it sufficient permission to managed t
 
 ## (Recommended) Create a Microsoft Entra group for cluster administration
 
-It is recommended to [create a Microsoft Entra group](https://learn.microsoft.com/en-us/training/modules/create-users-and-groups-in-azure-active-directory/) for AKS cluster admin access.
+We recommend [creating a Microsoft Entra group](https://learn.microsoft.com/en-us/training/modules/create-users-and-groups-in-azure-active-directory/) for AKS cluster admin access.
 AKS Cluster admin access is commonly provided to individuals that need direct (E.G. `kubectl`) access to the clustr.
 
 Provide the group `Object ID` to Union.
