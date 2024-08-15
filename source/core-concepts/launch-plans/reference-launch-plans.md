@@ -5,7 +5,7 @@ A reference launch plan references previously defined, serialized, and registere
 When you create a reference launch plan, be sure to verify that the workflow interface corresponds to that of the referenced workflow.
 
 ```{note}
-Reference launch plans cannot be run locally. You must mock them out.
+Reference launch plans cannot be run locally. To run this example, clone the flytesnacks repo, register the `simple_wf` workflow (in `basics/basics/workflow.py`), create a separate file for the reference launch plan code below, and register the reference launch plan.
 ```
 
 {@@ if serverless @@}
@@ -32,7 +32,7 @@ def map_simple_wf() -> list[float]:
 {@@ elif byoc @@}
 ```{code-block} python
 @reference_launch_plan(
-    project="default",
+    project="flytesnacks",
     domain="development",
     name="basics.workflow.simple_wf",
     version="v1",

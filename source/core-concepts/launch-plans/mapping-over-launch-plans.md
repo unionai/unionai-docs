@@ -8,9 +8,9 @@ Mapping over launch plans requires the use of reference launch plans. For more i
 
 ### Example
 
-In this example, we map over the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/basics/basics/workflow.py#L25) workflow from the flytesnacks repository.
+In this example, we map over the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/basics/basics/workflow.py#L25) workflow from the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).
 
-1. Clone the flytesnacks repository:
+1. Clone the Flytesnacks repository:
 ```{code-block} bash
 git clone git@github.com:flyteorg/flytesnacks.git
 ```
@@ -23,7 +23,7 @@ cd flytesnacks/examples/basics
 ```{code-block} bash
 unionai register --project default --domain development --version $(git rev-parse HEAD) basics/workflow.py.
 ```
-4. Create a file called "simple_wf_reference_launch_plan.py" and copy the following code into it:
+4. Create a file called `map_simple_wf.py` and copy the following code into it:
 
 ```{code-block} python
 @reference_launch_plan(
