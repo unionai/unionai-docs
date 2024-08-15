@@ -18,13 +18,18 @@ git clone git@github.com:flyteorg/flytesnacks.git
 ```{code-block} bash
 cd flytesnacks/examples/basics
 ```
-{@@ if serverless @@}
 3. Register the `simple_wf` workflow:
+{@@ if serverless @@}
 ```{code-block} bash
 unionai register --project default --domain development --version $(git rev-parse HEAD) basics/workflow.py.
 ```
+{@@ elif byoc @@}
+```{code-block} bash
+unionai register --project flytesnacks --domain development --version $(git rev-parse HEAD) basics/workflow.py.
+```
+{@@ endif @@}
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
-
+{@@ if serverless @@}
 ```{code-block} python
 @reference_launch_plan(
     project="default",
@@ -45,17 +50,7 @@ def map_simple_wf() -> list[float]:
     return map_task(simple_wf_lp)(x=x, y=y)
 
 ```
-5. Register the launch plan:
-```{code-block} bash
-unionai register --project default --domain development simple_wf_reference_launch_plan.py
-```
 {@@ elif byoc @@}
-3. Register the `simple_wf` workflow:
-```{code-block} bash
-unionai register --project flytesnacks --domain development --version $(git rev-parse HEAD) basics/workflow.py.
-```
-4. Create a file called "simple_wf_reference_launch_plan.py" and copy the following code into it:
-
 ```{code-block} python
 @reference_launch_plan(
     project="flytesnacks",
@@ -76,9 +71,15 @@ def map_simple_wf() -> list[float]:
     return map_task(simple_wf_lp)(x=x, y=y)
 
 ```
+{@@ endif @@}
 5. Register the launch plan:
+{@@ if serverless @@}
 ```{code-block} bash
-unionai register --project flytesnacks --domain development simple_wf_reference_launch_plan.py
+unionai register --project default --domain development map_simple_wf.py
+```
+{@@ elif byoc @@}
+```{code-block} bash
+unionai register --project flytesnacks --domain development map_simple_wf.py
 ```
 {@@ endif @@}
 6. In the Union UI, run the reference launch plan.
