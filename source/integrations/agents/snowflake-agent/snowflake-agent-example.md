@@ -49,7 +49,7 @@ snowflake_task_templatized_query = SnowflakeTask(
 )
 ```
 
-Insert data into a Snowflake table using the `SnowflakeTask`.
+Insert data into a Snowflake table.
 
 ```{code-block} python
 snowflake_task_insert_query = SnowflakeTask(
