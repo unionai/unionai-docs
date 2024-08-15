@@ -15,10 +15,10 @@ pip install flytekitplugins-snowflake
 1. [Generate the private key](https://docs.snowflake.com/en/user-guide/key-pair-auth#generate-the-private-key)
 2. [Assign the public key to a Snowflake user](https://docs.snowflake.com/en/user-guide/key-pair-auth#assign-the-public-key-to-a-snowflake-user)
 
-## Get the metadat for the task
-These metadata (user, account, database, warehouse, and schema) are required to configure the Snowflake task.
+## Get the metadata for the task
+The user, account, database, warehouse, and schema metadata are required to configure the Snowflake task.
 
-Run the following sql in the Snowflake console to get the metadata:
+Run the following SQL in the Snowflake console to get the metadata:
 
 ```sql
 SELECT

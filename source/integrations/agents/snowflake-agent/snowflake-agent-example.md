@@ -29,32 +29,6 @@ snowflake_task_no_io = SnowflakeTask(
 )
 ```
 
-In practical applications, we often use Snowflake to query datasets.
-Here, we use `SNOWFLAKE_SAMPLE_DATA`, a default dataset in the Snowflake service.
-For more information, check out this [documentation](https://docs.snowflake.com/en/user-guide/sample-data.html)
-
-The data uses the following schema:
-
-```{eval-rst}
-+----------------------------------------------+
-| C_CUSTKEY (int)                              |
-+----------------------------------------------+
-| C_NAME (string)                              |
-+----------------------------------------------+
-| C_ADDRESS (string)                           |
-+----------------------------------------------+
-| C_NATIONKEY (int)                            |
-+----------------------------------------------+
-| C_PHONE (string)                             |
-+----------------------------------------------+
-| C_ACCTBAL (float)                            |
-+----------------------------------------------+
-| C_MKTSEGMENT (string)                        |
-+----------------------------------------------+
-| C_COMMENT (string)                           |
-+----------------------------------------------+
-```
-
 You can parameterize the query to filter results for a specific country.
 This country will be provided as user input, using a nation key to specify it.
 
@@ -72,6 +46,26 @@ snowflake_task_templatized_query = SnowflakeTask(
         warehouse="COMPUTE_WH",
     ),
     query_template="SELECT * from CUSTOMER where C_NATIONKEY =  %(nation_key)s limit 100",
+)
+```
+
+Insert data into a Snowflake table using the `SnowflakeTask`.
+
+```{code-block} python
+snowflake_task_insert_query = SnowflakeTask(
+    name="insert-query",
+    inputs=kwtypes(id=int, name=str, age=int),
+    task_config=SnowflakeConfig(
+        user="FLYTE",
+        account="FLYTE_SNOFLAKE_ACCOUNT",
+        database="FLYTEAGENT",
+        schema="PUBLIC",
+        warehouse="COMPUTE_WH",
+    ),
+    query_template="""
+            INSERT INTO FLYTEAGENT.PUBLIC.TEST (ID, NAME, AGE)
+            VALUES (%(id)s, %(name)s, %(age)s);
+            """,
 )
 ```
 
@@ -109,13 +103,13 @@ if __name__ == "__main__":
 
 ### Writing data to Snowflake
 
-You can also create a pandas dataframe and subsequently save this DataFrame as a table within your Snowflake data warehouse,
-thereby facilitating further high-performance data analysis and storage.
+You can also create a pandas  DataFrame and save it as a table within your Snowflake data warehouse to enable
+further high-performance data analysis and storage.
 
 ```{code-block} python
 image = ImageSpec(
     registry="ghcr.io/unionai",
-    packages=[flytekitplugins-snowflake, "pyarrow", "pandas"],
+    packages=["flytekitplugins-snowflake", "pyarrow", "pandas"],
 )
 
 @task(container_image=image, secret_requests=[Secret(key="snowflake")])
