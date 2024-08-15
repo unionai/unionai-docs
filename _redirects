@@ -543,3 +543,8 @@
 
 /union-cli/ /serverless/quick-start#install-the-union-package 301
 /union-cli /serverless/quick-start#install-the-union-package 301
+
+/serverless/tutorials/machine-learning/credit-default-xgboost/ /serverless/tutorials/finance/credit-default-xgboost 301
+/serverless/tutorials/machine-learning/credit-default-xgboost /serverless/tutorials/finance/credit-default-xgboost 301
+/byoc/tutorials/machine-learning/credit-default-xgboost/ /byoc/tutorials/finance/credit-default-xgboost 301
+/byoc/tutorials/machine-learning/credit-default-xgboost /byoc/tutorials/finance/credit-default-xgboost 301

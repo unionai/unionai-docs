@@ -1,5 +1,9 @@
 # Enabling Google Secret Manager
 
+```{note}
+This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager.
+```
+
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
 All you need to do is:
 
@@ -123,4 +127,10 @@ def t1():
         SECRET_GROUP,
         group_version=SECRET_GROUP_VERSION
     )
+    # do something with the secret. For example, communication with an external API.
+    ...
+```
+
+```{warning}
+Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
