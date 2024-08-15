@@ -20,7 +20,7 @@ creating a Union specific App and granting it sufficient permission to managed t
 2. Create a new registration.
 3. Create a new application. The name is your choice, but we recommend `union`. Leave it at the "Single Tenant" account type and do not add any registration URIs.
 4. Select "API Permissions" from the application details page after creating it.
-5. Select "Add a permission"
+5. Select "Add a permission".
 6. Select "Microsoft Graph" from the "Microsofts APIs" tab
 7. Select "Application permissions"
 8. Add the following permissions
