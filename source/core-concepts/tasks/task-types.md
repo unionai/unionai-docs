@@ -78,29 +78,8 @@ def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) ->
 
 ```
 
-Map tasks can also map over Launch Plans. 
-
-* Source workflow ([simple_wf](https://github.com/flyteorg/flytesnacks/blob/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/basics/basics/workflow.py#L25)) getting mapped over below.
-
-```{code-block} python
-@reference_launch_plan(
-    project="flytesnacks",
-    domain="development",
-    name="basics.workflow.simple_wf",
-    version="M6K5W-v36km3hn2_QMTZlA",
-)
-def simple_wf_lp(
-    x: list[int], y: list[int]
-) -> float:
-    return 1.0
-
-
-@workflow
-def map_simple_wf() -> list[float]:
-    x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
-    y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
-    return map_task(simple_wf_lp)(x=x, y=y)
-
+```{note}
+Map tasks can also map over launch plans. For more information and example code, see [Mapping over launch plans](../launch-plans/mapping-over-launch-plans).
 ```
 
 See:

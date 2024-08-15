@@ -64,6 +64,8 @@
                         {"name": "schedules", "variants": ["byoc", "serverless"]},
                         {"name": "activating-and-deactivating", "variants": ["byoc", "serverless"]},
                         {"name": "running-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "reference-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "mapping-over-launch-plans", "variants": ["byoc", "serverless"]},
                         {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "actors", "variants": ["byoc", "serverless"]},
