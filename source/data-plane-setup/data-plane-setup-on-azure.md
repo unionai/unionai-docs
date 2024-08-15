@@ -28,7 +28,7 @@ creating a Union specific App and granting it sufficient permission to managed t
 * Application.Read.All
 * Group.ReadWrite.All
 
-9. Navigate to your target Azure [Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
+9. Navigate to your target [Azure Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
 10. Within the Subscription page select Access Control (IAM). Select Add Role Assignment and add the following roles:
 
 <!-- TODO(PE-1123) The below roles will change in favor of minimal set of permissions -->
