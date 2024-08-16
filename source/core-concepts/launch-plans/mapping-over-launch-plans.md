@@ -3,7 +3,7 @@
 You can map over launch plans the same way you can [map over tasks](../tasks/task-types.md#map-tasks) to execute launch plans in parallel across a series of inputs.
 
 ```{note}
-Mapping over launch plans requires the use of reference launch plans. For more information, see [Reference launch plans](reference-launch-plans).
+This example uses a reference launch plan. For more information, see [Reference launch plans](reference-launch-plans).
 ```
 
 ### Example
@@ -21,11 +21,11 @@ cd flytesnacks/examples/basics
 3. Register the `simple_wf` workflow:
 {@@ if serverless @@}
 ```{code-block} bash
-unionai register --project default --domain development --version v1 basics/workflow.py.
+unionai register --project default --domain development --version v1 basics/workflow.py
 ```
 {@@ elif byoc @@}
 ```{code-block} bash
-unionai register --project flytesnacks --domain development --version v1 basics/workflow.py.
+unionai register --project flytesnacks --domain development --version v1 basics/workflow.py
 ```
 {@@ endif @@}
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
