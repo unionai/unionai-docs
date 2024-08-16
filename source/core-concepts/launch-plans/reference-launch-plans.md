@@ -79,7 +79,7 @@ def run_simple_wf() -> float:
     return simple_wf_lp(x=x, y=y)
 ```
 {@@ endif @@}
-5. Register the `simple_wf_ref_lp` launch plan:
+5. Register the `run_simple_wf` workflow:
 {@@ if serverless @@}
 ```{code-block} bash
 unionai register simple_wf_ref_lp.py
