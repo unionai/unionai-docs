@@ -19,15 +19,9 @@ git clone git@github.com:flyteorg/flytesnacks.git
 cd flytesnacks/examples/basics
 ```
 3. Register the `simple_wf` workflow:
-{@@ if serverless @@}
 ```{code-block} bash
-unionai register --project default --domain development --version v1 basics/workflow.py
+union register --project default --domain development --version v1 basics/workflow.py
 ```
-{@@ elif byoc @@}
-```{code-block} bash
-unionai register --project flytesnacks --domain development --version v1 basics/workflow.py
-```
-{@@ endif @@}
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
 {@@ if serverless @@}
 ```{code-block} python
@@ -79,13 +73,7 @@ def map_simple_wf() -> list[float]:
 ```
 {@@ endif @@}
 5. Register the `map_simple_wf` workflow:
-{@@ if serverless @@}
 ```{code-block} bash
-unionai register map_simple_wf.py
+union register map_simple_wf.py
 ```
-{@@ elif byoc @@}
-```{code-block} bash
-unionai register map_simple_wf.py
-```
-{@@ endif @@}
 6. In the Union UI, run the `map_simple_wf` workflow.

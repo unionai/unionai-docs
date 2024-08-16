@@ -23,11 +23,11 @@ cd flytesnacks/examples/basics
 3. Register the `simple_wf` workflow:
 {@@ if serverless @@}
 ```{code-block} bash
-unionai register --project default --domain development --version v1 basics/workflow.py.
+union register --project default --domain development --version v1 basics/workflow.py.
 ```
 {@@ elif byoc @@}
 ```{code-block} bash
-unionai register --project flytesnacks --domain development --version v1 basics/workflow.py.
+union register --project flytesnacks --domain development --version v1 basics/workflow.py.
 ```
 {@@ endif @@}
 4. Create a file called `simple_wf_ref_lp.py` and copy the following code into it:
@@ -80,14 +80,8 @@ def run_simple_wf() -> float:
 ```
 {@@ endif @@}
 5. Register the `run_simple_wf` workflow:
-{@@ if serverless @@}
 ```{code-block} bash
-unionai register simple_wf_ref_lp.py
+union register simple_wf_ref_lp.py
 ```
-{@@ elif byoc @@}
-```{code-block} bash
-unionai register simple_wf_ref_lp.py
-```
-{@@ endif @@}
 6. In the Union UI, run the workflow `run_simple_wf`.
 
