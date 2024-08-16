@@ -47,6 +47,13 @@ def simple_wf_lp(
 ) -> float:
     return 1.0
 
+
+@workflow
+def run_simple_wf() -> float:
+    x = [-8, 2, 4]
+    y = [-2, 4, 7]
+    return simple_wf_lp(x=x, y=y)
+
 ```
 {@@ elif byoc @@}
 ```{code-block} python
@@ -64,6 +71,12 @@ def simple_wf_lp(
 ) -> float:
     return 1.0
 
+
+@workflow
+def run_simple_wf() -> float:
+    x = [-8, 2, 4]
+    y = [-2, 4, 7]
+    return simple_wf_lp(x=x, y=y)
 ```
 {@@ endif @@}
 5. Register the `simple_wf_ref_lp` launch plan:
@@ -76,5 +89,5 @@ unionai register simple_wf_ref_lp.py
 unionai register simple_wf_ref_lp.py
 ```
 {@@ endif @@}
-6. In the Union UI, run the reference launch plan `simple_wf_ref_lp`.
+6. In the Union UI, run the workflow `run_simple_wf`.
 
