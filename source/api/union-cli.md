@@ -50,6 +50,8 @@ If none of these are present, it will raise an error. It will not attempt to con
 
 {@@ endif @@}
 
+## `union` CLI commands
+
 ```{eval-rst}
 
 .. click:: flytekit.clis.sdk_in_container.pyflyte:main
