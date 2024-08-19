@@ -1,8 +1,5 @@
 # FlyteFile
 
-TODO: Integrate info from FAQ into this and create raw_data_storage section in sibling page (in data input/output section) based on same
-
-
 In Union, because each task runs in its own container, a file created locally in one task will not automatically be available in other tasks.
 
 To natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
@@ -181,4 +178,3 @@ def task_2(ff: FlyteFile):
 ```
 
 This method typically used when you want to download the file without immediately reading it.
-
