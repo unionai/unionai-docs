@@ -157,6 +157,11 @@
                             "children": [
                                 {"name": "chatgpt-agent-example", "variants": ["byoc"]}
                             ]},
+                        {"name": "openai-agents", "variants": ["byoc"],
+                            "children": [
+                                {"name": "batch-agent-example", "variants": ["byoc"]},
+                                {"name": "chatgpt-agent-example", "variants": ["byoc"]}
+                            ]},
                         {"name": "snowflake-agent", "variants": ["byoc"],
                             "children": [
                                 {"name": "snowflake-agent-example", "variants": ["byoc"]}
