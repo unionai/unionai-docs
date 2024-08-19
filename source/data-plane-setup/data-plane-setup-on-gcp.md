@@ -153,6 +153,8 @@ You will need to enable the following service APIs.
 | Secret Manager API | `secretmanager.googleapis.com` |
 | Service Networking API | `servicenetworking.googleapis.com` |
 | Security Token Service API | `sts.googleapis.com` |
+| Cloud SQL Admin API | `sqladmin.googleapis.com` |
+| Cloud Storage Services API | `storage-api.googleapis.com` |
 
 ### In the GCP web console
 
@@ -178,6 +180,8 @@ $ gcloud services enable monitoring.googleapis.com
 $ gcloud services enable secretmanager.googleapis.com
 $ gcloud services enable servicenetworking.googleapis.com
 $ gcloud services enable sts.googleapis.com
+$ gcloud services enable sqladmin.googleapis.com
+$ gcloud services enable storage-api.googleapis.com
 ```
 
 ## Export Workflow Identity Config
