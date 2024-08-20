@@ -82,7 +82,7 @@ Alternatively, you can use an entirely different bucket.
 :::{note}
 
 If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
-If you want to use a dynamically generated path you will have to generate it yourself.
+If you want to use a dynamically generated path, you will have to generate it yourself.
 
 :::
 
