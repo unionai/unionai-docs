@@ -19,4 +19,4 @@ build: sync-examples
 	pip install uv
 	uv venv
 	uv pip install -r docs-requirements.txt
-	. .venv/bin/activate; python build.py
+	. .venv/bin/activate; UNION_SERVERLESS_ENDPOINT= python build.py
