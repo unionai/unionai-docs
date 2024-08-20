@@ -119,7 +119,7 @@ where `<union-host-url>` is the URL of your Union instance, mentioned above.
 
 This will create a configuration file at `~/.union/config.yaml`.
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml` (see [union CLI](./api/union-cli) for more details).
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](./api/union-cli) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
