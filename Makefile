@@ -17,6 +17,6 @@ clean:
 .PHONY: build
 build: sync-examples
 	pip install uv
-	uv venv
+	uv venv venv
 	uv pip install -r docs-requirements.txt
-	.venv/bin/python build.py
+	source venv/bin/activate; python build.py
