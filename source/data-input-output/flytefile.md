@@ -4,7 +4,7 @@ In Union, because each task runs in its own container, a file created locally in
 
 The natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
 
-Since this is such a common case, Union provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) class, which automates this process, makes it (almost) transparent to the user.
+Since this is such a common case, Union provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) class, which automates this process, making it nearly transparent to the user.
 
 ## Local file example
 
@@ -72,20 +72,20 @@ When initializing a `FlyteFile` with a remote file location, all URI schemes sup
 ## Specifying `remote_path`
 
 When a `FlyteFile` based on a local file is passed out of a task, the file is uploaded, by default, to the Union object store.
-For example, in AWS-based Union BYOC systems, this is an S3 bucket, while in Google CLoud-based Union BYOC systems, this is a GCS bucket.
+For example, in AWS-based Union BYOC systems, this is an S3 bucket, while in Google Cloud-based Union BYOC systems, this is a GCS bucket.
 
 Within that bucket, the actual file location is, by default, a randomly generated path.
 This path is guaranteed to be unique so that files are never over-written on subsequent runs of the task.
 
 However, the storage location used can be overridden by specifying the optional parameter `remote_path` when initializing the `FlyteFile` object.
 The specified value must be the full URI of a writable location accessible from your Union cluster.
-You can, for example, use the same bucket that your cluster uses by default but with a specified file name.
+You can, for example, use the same bucket that your cluster uses by default, but with a specified file name.
 Alternatively, you can use an entirely different bucket.
 
 :::{note}
 
-If you set `remote_path` to a static string then subsequent runs of the same task will overwrite the file.
-If you want to use a dynamically generated path you will have to generate it yourself.
+If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
+If you want to use a dynamically generated path, you will have to generate it yourself.
 
 :::
 
@@ -112,9 +112,9 @@ See [Raw data prefix](raw-data-prefix) for more information.
 
 ## Streaming
 
-In the above examples we showed how to access the contents of `FlyteFile` by calling `open` on the `FlyteFile` object.
-The object returned by `FlyteFile.open` is a stream. In the above examples the files were small so a simple `read` was used.
-But, for large files you can iterate through the contents of the stream:
+In the above examples, we showed how to access the contents of `FlyteFile` by calling `open` on the `FlyteFile` object.
+The object returned by `FlyteFile.open` is a stream. In the above examples, the files were small, so a simple `read` was used.
+But for large files, you can iterate through the contents of the stream:
 
 ```{code-block} python
 @task
@@ -139,10 +139,10 @@ There are two ways to do this: **implicitly** and **explicitly**.
 The source file of a `FlyteFile` object is downloaded to the local container file system automatically whenever an external function is called that takes the `FlyteFile` object and then itself calls `FlyteFile`'s `__fspath__()` method.
 
 `FlyteFile` implements the `os.PathLike` interface and therefore the `__fspath__()` method.
-`FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and return the path to that local file.
+`FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and returns the path to that local file.
 This enables many common file-related operations in Python to be performed on the `FlyteFile` object.
 
-The most prominent example of a such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
+The most prominent example of such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
 
 ```{code-block} python
 @task
@@ -162,11 +162,11 @@ and
 `open(ff, mode="r")`
 
 The former calls `FlyteFile`'s `open` method and returns a stream to the file without downloading it.
-The latter calls the built-in Python function `open` passing a `FlyteFile`, downloads the file to the local container file system, and returns a handle to that file.
+The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system, and returns a handle to that file.
 
 :::
 
-Many other Python file operations (essentially, any that accept an `os.PathLike`) can also be performed on a `FlyteFile` object and result in an automatic download.
+Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
 
 See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
 
@@ -180,4 +180,4 @@ def task_2(ff: FlyteFile):
     local_path = ff.download()
 ```
 
-This method typically used when you want to download the file without immediately reading it.
+This method is typically used when you want to download the file without immediately reading it.
