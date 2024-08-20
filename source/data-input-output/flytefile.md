@@ -109,7 +109,7 @@ See [Raw data prefix](raw-data-prefix) for more information.
 
 ## Streaming
 
-In the above examples we showed how to access the contents of `FlyteFile` by calling `open` on the `FlyteFile` object.
+In the above examples, we showed how to access the contents of `FlyteFile` by calling `open` on the `FlyteFile` object.
 The object returned by `FlyteFile.open` is a stream. In the above examples the files were small so a simple `read` was used.
 But, for large files you can iterate through the contents of the stream:
 
