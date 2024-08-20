@@ -1,5 +1,10 @@
 import os
 import re
+import logging
+import sphinx.application
+import sphinx.errors
+from sphinx.util import logging as sphinx_logging
+
 
 # Project
 project = "union-docs"
@@ -143,8 +148,50 @@ def process_options(app, ctx, lines):
         lines.insert(idx, line)
         counter += 1
 
+class CustomWarningSuppressor(logging.Filter):
+    """Filter logs by `suppress_warnings`."""
 
-def setup(app):
+    def __init__(self, app: sphinx.application.Sphinx) -> None:
+        self.app = app
+        super().__init__()
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        msg = record.getMessage()
+
+        # filter_out = (
+        #    "duplicate label",
+        #    "Unexpected indentation",
+        #    'Error with CSV data in "csv-table" directive',
+        #    "Definition list ends without a blank line",
+        #    "autodoc: failed to import module 'awssagemaker' from module 'flytekitplugins'",
+        #    "Enumerated list ends without a blank line",
+        #    'Unknown directive type "toc".',  # need to fix flytesnacks/contribute.md
+        #)
+
+        filter_out = (
+            "local id not found in doc"
+        )
+
+        if msg.strip().startswith(filter_out):
+            return False
+
+        # if (
+        #    msg.strip().startswith("document isn't included in any toctree")
+        #    and record.location == "_tags/tagsindex"
+        # ):
+            # ignore this warning, since we don't want the side nav to be
+            # cluttered with the tags index page.
+        #    return False
+
+        return True
+
+def setup(app: sphinx.application.Sphinx) -> None:
     app.connect('autodoc-process-docstring', process_docstring)
     app.connect("sphinx-click-process-description", process_description)
     app.connect("sphinx-click-process-options", process_options)
+    logger = logging.getLogger("sphinx")
+    warning_handler, *_ = [
+        h for h in logger.handlers
+        if isinstance(h, sphinx_logging.WarningStreamHandler)
+    ]
+    warning_handler.filters.insert(0, CustomWarningSuppressor(app))
