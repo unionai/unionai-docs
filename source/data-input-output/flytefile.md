@@ -2,7 +2,7 @@
 
 In Union, because each task runs in its own container, a file created locally in one task will not automatically be available in other tasks.
 
-To natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
+The natural way to solve this problem is for the source task to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
 
 Since this is such a common case, Union provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) class, which automates this process, makes it (almost) transparent to the user.
 
