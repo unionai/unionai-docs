@@ -45,7 +45,7 @@ Union handles the passing of the `FlyteFile` `ff` in `wf` from `task_1` to `task
   See [Flyte objects]() for more details).
 * The `Blob` object is passed to `task_2`.
 * Because the type of the input parameter of `task_2` is `FlyteFile`, Union converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
-* Inside `task_2` you can now perform a `FlyteFile.open()` and read the file contents.
+* Inside `task_2` you can now perform a [`FlyteFile.open()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit.types.file.FlyteFile.open) and read the file contents.
 
 ## Remote file example
 
@@ -106,7 +106,8 @@ Note that the above use of `remote_path` in `FlyteFile` is different from the hi
 The `raw_data_prefix` parameter can be set at the workflow execution level and effectively changes the default location for all writes to object store.
 For example, if the `raw_data_prefix` is set then a `FlyteFile` (without a `remote_path` override) will still perform the automatic random path generation,
 but it will simply be relative to the new `raw_data_prefix` instead of the default location.
-See [Raw data prefix](raw-data-prefix) for more information.
+
+{@# See [Raw data prefix](raw-data-prefix) for more information. #@}
 
 {@@ endif @@}
 
