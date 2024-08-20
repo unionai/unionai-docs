@@ -65,7 +65,6 @@ If none of these are present, it will connect to `serverless.union.ai`.
 
 {@@ elif byoc @@}
 
-When using Union BYOC, you should always install the `union[byoc]` package and not the plain `union` package, which is is configured for [Union Serverless](../serverless/quick-start).
 
 This will ensure that the CLI will check for configuration files as follows (if no `--config` option is specified on the command line):
 
