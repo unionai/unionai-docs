@@ -26,7 +26,7 @@ The two uncommented ones are the only ones needed for this example.
 
 {@@ elif byoc @@}
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytekit-python-template/main/basic-union-byoc-template/%7B%7Bcookiecutter.project_name%7D%7D/workflows/example.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytekit-python-template/main/basic-union-template/%7B%7Bcookiecutter.project_name%7D%7D/workflows/example.py
 :language: python
 :lines: 1-31
 ```

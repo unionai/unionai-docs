@@ -64,6 +64,8 @@
                         {"name": "schedules", "variants": ["byoc", "serverless"]},
                         {"name": "activating-and-deactivating", "variants": ["byoc", "serverless"]},
                         {"name": "running-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "reference-launch-plans", "variants": ["byoc", "serverless"]},
+                        {"name": "mapping-over-launch-plans", "variants": ["byoc", "serverless"]},
                         {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                     ]},
                 {"name": "actors", "variants": ["byoc", "serverless"]},
@@ -151,10 +153,6 @@
                                 {"name": "mmcloud-agent-example", "variants": ["byoc"]}
                             ]},
                         {"name": "dgx-agent", "variants": ["byoc"]},
-                        {"name": "chatgpt-agent", "variants": ["byoc"],
-                            "children": [
-                                {"name": "chatgpt-agent-example", "variants": ["byoc"]}
-                            ]},
                         {"name": "openai-agents", "variants": ["byoc"],
                             "children": [
                                 {"name": "batch-agent-example", "variants": ["byoc"]},

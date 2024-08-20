@@ -16,11 +16,11 @@ pip install flytekitplugins-openai
 
 ### Batch agent
 
-For a batch agent usage example, see [OpenAI Batch agent example usage](openai-batch-agent-example).
+For a batch agent usage example, see [OpenAI Batch agent example usage](./batch-agent-example.md).
 
 ### ChatGPT agent
 
-For a ChatGPT usage example, see [ChatGPT agent example](./chatgpt-agent-example).
+For a ChatGPT usage example, see [ChatGPT agent example](./chatgpt-agent-example.md).
 
 ## Local testing
 

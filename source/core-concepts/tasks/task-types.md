@@ -78,6 +78,10 @@ def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) ->
 
 ```
 
+```{note}
+Map tasks can also map over launch plans. For more information and example code, see [Mapping over launch plans](../launch-plans/mapping-over-launch-plans).
+```
+
 See:
 * The [Map Task example](https://github.com/unionai-oss/union-cloud-docs-examples/tree/main/map_task).
 * [Map Tasks](https://docs.flyte.org/en/latest/user_guide/advanced_composition/map_tasks.html#map-task) in the Flyte docs

@@ -26,7 +26,7 @@ Input variables that should not be included when calculating the hash for the ca
 
 ## `container_image`
 
-See [Imagespec](./task-software-environment/imagespec).
+See [Imagespec](./task-software-environment/imagespec.md).
 
 ## `deprecated`
 
@@ -48,15 +48,15 @@ def my_task(my_str: str):
 
 ## `environment`
 
-See [Environment variables](./task-software-environment/environment-variables).
+See [Environment variables](./task-software-environment/environment-variables.md).
 
 ## `interruptible`
 
-See [Interruptible instances](./task-hardware-environment/interruptible-instances).
+See [Interruptible instances](./task-hardware-environment/interruptible-instances.md).
 
 ## `limits`
 
-See [Customizing task resources](./task-hardware-environment/customizing-task-resources).
+See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md).
 
 ## `node_dependency_hints`
 
@@ -85,23 +85,23 @@ See [Task hardware environment](./task-hardware-environment/index.md#pod_templat
 
 ## `requests`
 
-See [Customizing task resources](./task-hardware-environment/customizing-task-resources)
+See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md)
 
 ## `retries`
 
 Number of times to retry this task during a workflow execution.
 Tasks can define a retry strategy to let the system know how to handle
-failures (For example: retry 3 times on any kind of error). For more information, see [Interruptible instances](./task-hardware-environment/interruptible-instances)
+failures (For example: retry 3 times on any kind of error). For more information, see [Interruptible instances](./task-hardware-environment/interruptible-instances.md)
 
 There are two kinds of retries *system retries* and *user retries*.
 
 ## `secret_requests`
 
-See [Secrets](./task-software-environment/secrets)
+See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 ## `task_config`
 
-Configuration for a specific task type. See the [Union Agents documentation](../../integrations/agents/index)  and [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
+Configuration for a specific task type. See the [Union Agents documentation](../../integrations/agents/index.md)  and [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 ## `task_resolver`
 

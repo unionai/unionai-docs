@@ -23,7 +23,7 @@ A variety of agents and plugins enable you to integrate Union with additional ex
 
 ### AI integrations
 
-* [OpenAI ChatGPT agent](./agents/chatgpt-agent/index) Send prompts to ChatGPT and receive responses.
+* [OpenAI agents](./agents/openai-agents/index) Send prompts to ChatGPT and receive responses.
 
 ### Database integrations
 

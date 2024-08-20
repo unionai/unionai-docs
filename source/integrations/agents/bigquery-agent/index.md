@@ -14,7 +14,7 @@ For an example query, see [BigQuery agent example](./bigquery-agent-example).
 
 ## Local testing
 
-To test the BigQuery agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`]([AsyncAgentExecutorMixin](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L278-382)). This mixin allows flytekit to mimic FlytePropeller's behavior in calling the agent.
+To test the BigQuery agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L278-382). This mixin allows flytekit to mimic FlytePropeller's behavior in calling the agent.
 
 To test the BigQuery agent, copy the following code to a file called `bigquery_task.py`, modifying as needed.
 
