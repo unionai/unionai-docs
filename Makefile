@@ -19,4 +19,4 @@ build: sync-examples
 	pip install uv
 	uv venv
 	uv pip install -r docs-requirements.txt
-	./venv/bin/python build.py
+	.venv/bin/python build.py
