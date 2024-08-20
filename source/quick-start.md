@@ -159,11 +159,11 @@ def hello_world_wf(name: str = 'world') -> str:
 ## Tasks and workflows
 
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-For more information, see the [task](../core-concepts/tasks/index) and [workflow](../core-concepts/workflows/index) documentation.
+For more information, see the [task](./core-concepts/tasks/index) and [workflow](./core-concepts/workflows/index) documentation.
 
 ## Run the workflow locally in Python
 
-You can run the workflow in your local Python environment with the [`union run` command](../api/union-cli.md#union-run):
+You can run the workflow in your local Python environment with the [`union run` command](./api/union-cli.md#union-run):
 
 ```{code-block} shell
 $ union run hello.py hello_world_wf
@@ -192,7 +192,7 @@ Hello, Ada!
 
 ## Run the workflow remotely on Union
 
-To run the workflow remotely on Union, add the [`--remote` flag](../api/union-cli.md#cmdoption-union-run-r):
+To run the workflow remotely on Union, add the [`--remote` flag](./api/union-cli.md#cmdoption-union-run-r):
 
 ```{code-block} shell
 $ union run --remote hello.py hello_world_wf --name "Ada"

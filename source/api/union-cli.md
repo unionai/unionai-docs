@@ -6,27 +6,28 @@ The `union` CLI is the main tool developers use to interact with Union on the co
 
 To install the latest version of the `union` CLI, run the following command:
 
+{@@ if serverless @@}
 
-:::{code-block} shell
-The `union` CLI will automatically connect to `serverless.union.ai` if no other configuration files exist.
-:::
+```{code-block} shell
+$ pip install -U union
+```
 
 :::{note}
-This will install `union` for Union Serverless, which will automatically connect to `serverless.union.ai`, assuming no other configurations are set up.
+These directions are for Union Serverless.
 
-If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/api/union-cli/).
+If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start#install-the-union-package).
 :::
 
 {@@ elif byoc @@}
 
-:::{code-block} shell
+```{code-block} shell
 pip install -U "union[byoc]"
-:::
+```
 
 :::{note}
 The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
 
-If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/api/union-cli).
+If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/quick-start#install-the-union-package).
 
 You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
 :::
@@ -42,9 +43,7 @@ This will install:
 
 {@@ if serverless @@}
 
-When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../../byoc/quick-start.md#install-the-union-package).
-
-The `union` CLI will automatically connect to `serverless.union.ai` if no other configuration files exist.
+The `union` CLI installed in the plain `union` package (not the `union[byoc]` package) will automatically connect to `serverless.union.ai` if no other configuration files exist.
 
 More precisely the CLI will check for configuration files as follows:
 
@@ -65,8 +64,7 @@ If none of these are present, the CLI will connect to `serverless.union.ai`.
 
 {@@ elif byoc @@}
 
-
-The `union[byoc]` CLI will check for configuration files as follows:
+The `union` CLI installed in the `union[byoc]` package (not the plain `union` package),  will check for configuration files as follows:
 
 First, if a `--config` option is used, it will use the specific file.
 
@@ -76,12 +74,12 @@ Second, the config files pointed to by the following environment variables (in t
 * `UNIONAI_CONFIG`
 * `UCTL_CONFIG`
 
-Third, the following hard-coded locations  (in this order):
+Third, the following hard-coded locations (in this order):
 
 * `~/.union/config.yaml`
 * `~/.uctl/config.yaml`
 
-If none of these are present, the `union[byoc]` CLI will raise an error.
+If none of these are present, the CLI will raise an error.
 
 {@@ endif @@}
 
