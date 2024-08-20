@@ -50,7 +50,7 @@ More precisely the CLI will check for configuration files as follows:
 
 First, if a `--config` option is used, it will use the specified config file.
 
-Second, the locations pointed to by the following environment variables (in this order):
+Second, the config files pointed to by the following environment variables (in this order):
 
 * `UNION_CONFIG`
 * `UNIONAI_CONFIG`
