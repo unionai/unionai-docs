@@ -1,8 +1,8 @@
 # Task hardware environment
 
-{@@ if serverless @@}
-
 ## Customizing task resources
+
+{@@ if serverless @@}
 
 You can customize the hardware environment in which your task code executes through configuration in the `@task` decorator by specifying `requests` and `limits` on:
 

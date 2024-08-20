@@ -101,7 +101,7 @@ if __name__ == "__main__":
     print(snowflake_wf(nation_key=10))
 ```
 
-### Writing data to Snowflake
+## Writing data to Snowflake
 
 You can also create a pandas  DataFrame and save it as a table within your Snowflake data warehouse to enable
 further high-performance data analysis and storage.

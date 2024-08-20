@@ -14,7 +14,7 @@ The actual files and directories of a `FlyteFile` or `FlyteDirectory` are downlo
 To write efficient and performant task and workflow code, it is particularly important to have a solid understanding of when exactly downloading occurs.
 Let's look at some examples showing when the content `FlyteFiles` and `FlyteDirectories` are downloaded to the local task container filesystem.
 
-### FlyteFile
+## FlyteFile
 
 **Calling `download` on a FlyteFile**
 
@@ -47,7 +47,7 @@ Some examples include, calling `open(ff, mode="r")` directly on a `FlyteFile` (r
 or similarly calling `shutil.copy` or `pathlib.Path` directly on a `FlyteFile`.
 
 
-### FlyteDirectory
+## FlyteDirectory
 
 **Calling `download` on a FlyteDirectory**
 
