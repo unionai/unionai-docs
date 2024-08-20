@@ -2,16 +2,19 @@
 
 In Union, because each task runs in its own container, a file created locally in one task will not automatically be available in other tasks.
 
-To natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
+The natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
 
 Since this is such a common case, Union provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) class, which automates this process, makes it (almost) transparent to the user.
 
-Here is how it works.
-
 ## Local file example
 
-Let's say you have a local file in task `task_1` that you want to make accessible in the next task, `task_2`.
-To do this, you create a `FlyteFile` object using the local path of the file you created, and then pass the `FlyteFile` object as part of your workflow, like this:
+:::{note}
+The term _local file_ in this section refers to a file local to the container running a task in Union.
+It does not refer to a file on your local machine.
+:::
+
+Let's say you have a local file in the container running `task_1` that you want to make accessible in the next task, `task_2`.
+To do this, you create a `FlyteFile` object using the local path of the file, and then pass the `FlyteFile` object as part of your workflow, like this:
 
 ```{code-block} python
 @task
@@ -34,9 +37,9 @@ def wf():
     task_2(ff=ff)
 ```
 
-Union handles the passing of the `FlyteFile` `ff` in `wf` from `task1` to `task2`:
+Union handles the passing of the `FlyteFile` `ff` in `wf` from `task_1` to `task_2`:
 
-* The `FlyteFile` object was initialized in `task_1` with the local path of the file that you created.
+* The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
 * When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a randomly generated location in the Union object store.
 * This location is used to initialize the URI attribute of a Flyte `Blob` object (Note that Flyte objects are not Python objects. They exists at the workflow level and are used to pass data between task containers.
   See [Flyte objects]() for more details).
