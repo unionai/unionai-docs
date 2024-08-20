@@ -139,7 +139,7 @@ The source file of a `FlyteFile` object is downloaded to the local container fil
 `FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and return the path to that local file.
 This enables many common file-related operations in Python to be performed on the `FlyteFile` object.
 
-The most prominent example of a such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
+The most prominent example of such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
 
 ```{code-block} python
 @task
