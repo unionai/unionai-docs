@@ -81,7 +81,7 @@ Third, the following hard-coded locations  (in this order):
 * `~/.union/config.yaml`
 * `~/.uctl/config.yaml`
 
-If none of these are present, it will raise an error. It will not attempt to connect to  `serverless.union.ai`, as the Serverless version of the CLI would.
+If none of these are present, the `union[byoc]` CLI will raise an error.
 
 {@@ endif @@}
 
