@@ -151,10 +151,6 @@
                                 {"name": "mmcloud-agent-example", "variants": ["byoc"]}
                             ]},
                         {"name": "dgx-agent", "variants": ["byoc"]},
-                        {"name": "chatgpt-agent", "variants": ["byoc"],
-                            "children": [
-                                {"name": "chatgpt-agent-example", "variants": ["byoc"]}
-                            ]},
                         {"name": "openai-agents", "variants": ["byoc"],
                             "children": [
                                 {"name": "batch-agent-example", "variants": ["byoc"]},
