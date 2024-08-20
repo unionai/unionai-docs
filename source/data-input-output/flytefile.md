@@ -76,7 +76,7 @@ This path is guaranteed to be unique so that files are never over-written on sub
 
 However, the storage location used can be overridden by specifying the optional parameter `remote_path` when initializing the `FlyteFile` object.
 The specified value must be the full URI of a writable location accessible from your Union cluster.
-You can, for example, use the same bucket that your cluster uses by default but with a specified file name.
+You can, for example, use the same bucket that your cluster uses by default, but with a specified file name.
 Alternatively, you can use an entirely different bucket.
 
 :::{note}
