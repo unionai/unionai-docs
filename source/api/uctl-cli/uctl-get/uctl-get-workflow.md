@@ -1,17 +1,73 @@
-# uctl CLI
+# uctl get workflow
 
-A brief description of your application
+Gets workflow resources
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieves all the workflows within project and
+domain.(workflow,workflows can be used interchangeably in these
+commands) :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get workflow -p flytesnacks -d development
+
+Retrieves workflow by name within project and domain.
+
+    uctl get workflow -p flytesnacks -d development  core.basic.lp.go_greet
+
+Retrieves latest version of workflow by name within project and domain.
+
+    uctl get workflow -p flytesnacks -d development  core.basic.lp.go_greet --latest
+
+Retrieves particular version of workflow by name within project and
+domain.
+
+    uctl get workflow -p flytesnacks -d development  core.basic.lp.go_greet --version v2
+
+Retrieves all the workflows with filters. :
+
+    uctl get workflow -p flytesnacks -d development  --filter.fieldSelector="workflow.name=k8s_spark.dataframe_passing.my_smart_schema"
+
+Retrieve specific workflow with filters. :
+
+    uctl get workflow -p flytesnacks -d development k8s_spark.dataframe_passing.my_smart_schema --filter.fieldSelector="workflow.version=v1"
+
+Retrieves all the workflows with limit and sorting. :
+
+    uctl get -p flytesnacks -d development workflow  --filter.sortBy=created_at --filter.limit=1 --filter.asc
+
+Retrieves all the workflow within project and domain in yaml format.
+
+    uctl get workflow -p flytesnacks -d development -o yaml
+
+Retrieves all the workflow within project and domain in json format.
+
+    uctl get workflow -p flytesnacks -d development -o json
+
+Visualize the graph for a workflow within project and domain in dot
+format.
+
+    uctl get workflow -p flytesnacks -d development  core.flyte_basics.basic_workflow.my_wf --latest -o dot
+
+Visualize the graph for a workflow within project and domain in a dot
+content render.
+
+    uctl get workflow -p flytesnacks -d development  core.flyte_basics.basic_workflow.my_wf --latest -o doturl
+
+Usage
+
+    uctl get workflow [flags]
 
 ## Options
+
+    --filter.asc                    Specifies the sorting order. By default uctl sort result in descending order
+    --filter.fieldSelector string   Specifies the Field selector
+    --filter.limit int32            Specifies the limit (default 100)
+    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
+    -h, --help                          help for workflow
+    --latest                         flag to indicate to fetch the latest version,  version flag will be ignored in this case
+    --version string                version of the workflow to be fetched.
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +87,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

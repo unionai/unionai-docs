@@ -1,17 +1,19 @@
-# uctl CLI
+# uctl delete
 
-A brief description of your application
+Used for terminating/deleting various union/flyte resources including
+tasks/workflows/launchplans/executions/project
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Example Delete executions. :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl delete execution kxd1i72850  -d development  -p flytesnacks
 
 ## Options
+
+    -h, --help   help for delete
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +33,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

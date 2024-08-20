@@ -1,17 +1,51 @@
-# uctl CLI
+# uctl update execution-cluster-label
 
-A brief description of your application
+Updates matchable resources of execution cluster label
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Updates execution cluster label for given project and domain combination
+or additionally with workflow name.
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+Updating to the execution cluster label is only available from a
+generated file. See the get section for generating this file. Here the
+command updates takes the input for execution cluster label from the
+config file ecl.yaml eg: content of ecl.yaml
+
+``` yaml
+domain: development
+project: flytectldemo
+value: foo
+```
+
+    uctl update execution-cluster-label --attrFile ecl.yaml
+
+Updating execution cluster label for project and domain and workflow
+combination. This will take precedence over any other execution cluster
+label defined at project domain level. Update the execution cluster
+label for workflow core.control_flow.run_merge_sort.merge_sort in
+flytectldemo, development domain
+
+``` yaml
+domain: development
+project: flytectldemo
+workflow: core.control_flow.run_merge_sort.merge_sort
+value: foo
+```
+
+    uctl update execution-cluster-label --attrFile ecl.yaml
+
+Usage
+
+    uctl update execution-cluster-label [flags]
 
 ## Options
+
+    --attrFile string   attribute file name to be used for updating attribute for the resource type.
+    --dryRun            execute command without making any modifications.
+    -h, --help              help for execution-cluster-label
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +65,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

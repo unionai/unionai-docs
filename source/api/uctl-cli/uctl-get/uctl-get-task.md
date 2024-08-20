@@ -1,17 +1,87 @@
-# uctl CLI
+# uctl get task
 
-A brief description of your application
+Gets task resources
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieves all the task within project and domain.(task,tasks can be used
+interchangeably in these commands) :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get task -p flytesnacks -d development
+
+Retrieves task by name within project and domain.
+
+    uctl task -p flytesnacks -d development core.basic.lp.greet
+
+Retrieves latest version of task by name within project and domain.
+
+    uctl get task -p flytesnacks -d development  core.basic.lp.greet --latest
+
+Retrieves particular version of task by name within project and domain.
+
+    uctl get task -p flytesnacks -d development  core.basic.lp.greet --version v2
+
+Retrieves all the tasks with filters. :
+
+    uctl get task -p flytesnacks -d development --filter.fieldSelector="task.name=k8s_spark.pyspark_pi.print_every_time,task.version=v1" 
+
+Retrieve a specific task with filters. :
+
+    uctl get task -p flytesnacks -d development k8s_spark.pyspark_pi.print_every_time --filter.fieldSelector="task.version=v1,created_at>=2021-05-24T21:43:12.325335Z" 
+
+Retrieves all the task with limit and sorting. :
+
+    uctl get -p flytesnacks -d development task  --filter.sortBy=created_at --filter.limit=1 --filter.asc
+
+Retrieves all the tasks within project and domain in yaml format. :
+
+    uctl get task -p flytesnacks -d development -o yaml
+
+Retrieves all the tasks within project and domain in json format.
+
+    uctl get task -p flytesnacks -d development -o json
+
+Retrieves a tasks within project and domain for a version and generate
+the execution spec file for it to be used for launching the execution
+using create execution.
+
+    uctl get tasks -d development -p flytesnacks core.advanced.run_merge_sort.merge --execFile execution_spec.yaml --version v2
+
+The generated file would look similar to this
+
+``` yaml
+iamRoleARN: ""
+inputs:
+  sorted_list1:
+  - 0
+  sorted_list2:
+  - 0
+kubeServiceAcct: ""
+targetDomain: ""
+targetProject: ""
+task: core.advanced.run_merge_sort.merge
+version: v2
+```
+
+Check the create execution section on how to launch one using the
+generated file.
+
+Usage
+
+    uctl get task [flags]
 
 ## Options
+
+    --execFile string               execution file name to be used for generating execution spec of a single task.
+    --filter.asc                    Specifies the sorting order. By default uctl sort result in descending order
+    --filter.fieldSelector string   Specifies the Field selector
+    --filter.limit int32            Specifies the limit (default 100)
+    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
+    -h, --help                          help for task
+    --latest                         flag to indicate to fetch the latest version,  version flag will be ignored in this case
+    --version string                version of the task to be fetched.
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +101,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

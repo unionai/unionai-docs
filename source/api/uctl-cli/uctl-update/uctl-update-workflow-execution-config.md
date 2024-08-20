@@ -1,17 +1,56 @@
-# uctl CLI
+# uctl update workflow-execution-config
 
-A brief description of your application
+Updates matchable resources of workflow execution config
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Updates workflow execution config for given project and domain
+combination or additionally with workflow name.
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+Updating the workflow execution config is only available from a
+generated file. See the get section for generating this file. Also this
+will completely overwrite any existing custom project and domain and
+workflow combination execution config. Would be preferable to do get and
+generate an config file if there is an existing execution config already
+set and then update it to have new values Refer to get
+workflow-execution-config section on how to generate this file Here the
+command updates takes the input for workflow execution config from the
+config file wec.yaml eg: content of wec.yaml
+
+``` yaml
+domain: development
+project: flytectldemo
+max_parallelism: 5
+```
+
+    uctl update workflow-execution-config --attrFile wec.yaml
+
+Updating workflow execution config for project and domain and workflow
+combination. This will take precedence over any other execution config
+defined at project domain level. Update the workflow execution config
+for workflow core.control_flow.run_merge_sort.merge_sort in
+flytectldemo, development domain
+
+``` yaml
+domain: development
+project: flytectldemo
+workflow: core.control_flow.run_merge_sort.merge_sort
+max_parallelism: 5
+```
+
+    uctl update workflow-execution-config --attrFile wec.yaml
+
+Usage
+
+    uctl update workflow-execution-config [flags]
 
 ## Options
+
+    --attrFile string   attribute file name to be used for updating attribute for the resource type.
+    --dryRun            execute command without making any modifications.
+    -h, --help              help for workflow-execution-config
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +70,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

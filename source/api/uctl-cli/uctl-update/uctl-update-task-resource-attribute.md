@@ -1,17 +1,66 @@
-# uctl CLI
+# uctl update task-resource-attribute
 
-A brief description of your application
+Updates matchable resources of task attributes
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Updates task resource attributes for given project and domain
+combination or additionally with workflow name.
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+Updating the task resource attribute is only available from a generated
+file. See the get section for generating this file. Also this will
+completely overwrite any existing custom project and domain and workflow
+combination attributes. Would be preferable to do get and generate an
+attribute file if there is an existing attribute already set and then
+update it to have new values Refer to get task-resource-attribute
+section on how to generate this file Here the command updates takes the
+input for task resource attributes from the config file tra.yaml eg:
+content of tra.yaml
+
+``` yaml
+domain: development
+project: flytectldemo
+defaults:
+  cpu: "1"
+  memory: "150Mi"
+limits:
+  cpu: "2"
+  memory: "450Mi"
+```
+
+    uctl update task-resource-attribute --attrFile tra.yaml
+
+Updating task resource attribute for project and domain and workflow
+combination. This will take precedence over any other resource attribute
+defined at project domain level. Update the resource attributes for
+workflow core.control_flow.run_merge_sort.merge_sort in flytectldemo,
+development domain
+
+``` yaml
+domain: development
+project: flytectldemo
+workflow: core.control_flow.run_merge_sort.merge_sort
+defaults:
+  cpu: "1"
+  memory: "150Mi"
+limits:
+  cpu: "2"
+  memory: "450Mi"
+```
+
+    uctl update task-resource-attribute --attrFile tra.yaml
+
+Usage
+
+    uctl update task-resource-attribute [flags]
 
 ## Options
+
+    --attrFile string   attribute file name to be used for updating attribute for the resource type.
+    --dryRun            execute command without making any modifications.
+    -h, --help              help for task-resource-attribute
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +80,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

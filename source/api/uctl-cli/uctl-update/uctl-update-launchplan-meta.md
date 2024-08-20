@@ -1,17 +1,35 @@
-# uctl CLI
+# uctl update launchplan-meta
 
-A brief description of your application
+Updates launch plan metadata
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Following command updates the description on the launchplan. :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl update launchplan -p flytectldemo -d development  core.advanced.run_merge_sort.merge_sort --description "Mergesort example"
+
+Archiving launchplan named entity is not supported and would throw an
+error. :
+
+    uctl update launchplan -p flytectldemo -d development  core.advanced.run_merge_sort.merge_sort --archive
+
+Activating launchplan named entity would be a noop. :
+
+    uctl update launchplan -p flytectldemo -d development  core.advanced.run_merge_sort.merge_sort --activate
+
+Usage
+
+    uctl update launchplan-meta [flags]
 
 ## Options
+
+    --activate             activate the named entity.
+    --archive              archive named entity.
+    --description string   description of the named entity.
+    --dryRun               execute command without making any modifications.
+    -h, --help                 help for launchplan-meta
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +49,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

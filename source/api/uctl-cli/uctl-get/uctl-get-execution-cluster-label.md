@@ -1,17 +1,60 @@
-# uctl CLI
+# uctl get execution-cluster-label
 
-A brief description of your application
+Gets matchable resources of execution cluster label.
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+// Retrieves the execution cluster label for a given project and domain,
+combination or additionally with workflow name.
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+Retrieve the execution cluster label for the given project and domain.
+Here the command get execution cluster label for project flytectldemo
+and development domain. :
+
+    uctl get execution-cluster-label -p flytectldemo -d development 
+
+e.g. : output from the command
+
+``` json
+{"project":"flytectldemo","domain":"development","value":"foo"}
+```
+
+Retrieve the execution cluster label for the given project, domain and
+workflow. Here, the command gets the execution cluster label for the
+project flytectldemo, development domain, and workflow
+\'core.control_flow.run_merge_sort.merge_sort\'. :
+
+    uctl get execution-cluster-label -p flytectldemo -d development core.control_flow.run_merge_sort.merge_sort
+
+eg : output from the command
+
+``` json
+{"project":"flytectldemo","domain":"development","workflow":"core.control_flow.run_merge_sort.merge_sort","value":"foo"}
+```
+
+Writes the execution cluster label to a file. If there is no execution
+cluster label, command throws an error. Here, the command gets the
+execution cluster label and writes the config file to ecl.yaml file. eg:
+content of ecl.yaml
+
+    uctl get execution-cluster-label --attrFile ecl.yaml
+
+``` yaml
+domain: development
+project: flytectldemo
+value: foo
+```
+
+Usage
+
+    uctl get execution-cluster-label [flags]
 
 ## Options
+
+    --attrFile string   attribute file name to be used for generating attribute for the resource type.
+    -h, --help              help for execution-cluster-label
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +74,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

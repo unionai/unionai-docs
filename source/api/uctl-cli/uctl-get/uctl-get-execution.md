@@ -1,17 +1,71 @@
-# uctl CLI
+# uctl get execution
 
-A brief description of your application
+Gets execution resources
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieve all executions within the project and domain (execution,
+executions can be used interchangeably). :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get execution -p flytesnacks -d development
+
+Retrieves executions by name within the project and domain.
+
+    uctl get execution -p flytesnacks -d development oeh94k9r2r
+
+Retrieves all the executions with filters. :
+
+    uctl get execution -p flytesnacks -d development --filter.fieldSelector="execution.phase in (FAILED;SUCCEEDED),execution.duration<200" 
+
+Retrieve executions as per the specified limit and sorting parameters. :
+
+    uctl get execution -p flytesnacks -d development --filter.sortBy=created_at --filter.limit=1 --filter.asc
+
+Retrieve executions within the project and domain in YAML format.
+
+    uctl get execution -p flytesnacks -d development -o yaml
+
+Retrieve executions within the project and domain in JSON format.
+
+    uctl get execution -p flytesnacks -d development -o json
+
+Get more details of the execution using the \--details flag, which shows
+node and task executions. The default view is a tree view, and the TABLE
+view format is not supported on this view.
+
+    uctl get execution -p flytesnacks -d development oeh94k9r2r --details
+
+Fetch execution details in YAML format. In this view, only node details
+are available. For task, send the \--nodeID flag.
+
+    uctl get execution -p flytesnacks -d development oeh94k9r2r --details -o yaml
+
+Fetch task executions on a specific node using the \--nodeID flag. Use
+the nodeID attribute given by the node details view.
+
+    uctl get execution -p flytesnacks -d development oeh94k9r2r --nodeID n0
+
+Task execution view is also available in YAML/JSON format. The following
+example showcases YAML, where the output also contains input and output
+data of each node.
+
+    uctl get execution -p flytesnacks -d development oeh94k9r2r --nodID n0 -o yaml
+
+Usage
+
+    uctl get execution [flags]
 
 ## Options
+
+    --details                       gets node execution details. Only applicable for single execution name i.e get execution name --details
+    --filter.asc                    Specifies the sorting order. By default flytectl sort result in descending order
+    --filter.fieldSelector string   Specifies the Field selector
+    --filter.limit int32            Specifies the limit (default 100)
+    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
+    -h, --help                          help for execution
+    --nodeID string                 get task executions for given node name.
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +85,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

@@ -1,17 +1,61 @@
-# uctl CLI
+# uctl get execution-queue-attribute
 
-A brief description of your application
+Gets matchable resources of execution queue attributes
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieve the execution queue attribute for the given project and domain.
+Here, the command gets execution queue attributes for the project
+flytectldemo and development domain. :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get execution-queue-attribute -p flytectldemo -d development 
+
+e.g. : output from the command
+
+``` json
+{"project":"flytectldemo","domain":"development","tags":["foo", "bar"]}
+```
+
+Retrieve the execution queue attribute for the given project, domain,
+and workflow. Here, the command gets execution queue attributes for the
+project flytectldemo, development domain, and workflow
+\'core.control_flow.run_merge_sort.merge_sort\'. :
+
+    uctl get execution-queue-attribute -p flytectldemo -d development core.control_flow.run_merge_sort.merge_sort
+
+e.g. : output from the command
+
+``` json
+{"project":"flytectldemo","domain":"development","workflow":"core.control_flow.run_merge_sort.merge_sort","tags":["foo", "bar"]}
+```
+
+Write the execution queue attribute to a file. If there are no execution
+queue attributes, the command throws an error. Here, the command gets
+the execution queue attributes and writes the config to era.yaml file.
+e.g. : content of era.yaml
+
+    uctl get execution-queue-attribute --attrFile era.yaml
+
+``` yaml
+domain: development
+project: flytectldemo
+tags:
+  - foo
+  - bar
+  - buzz
+  - lightyear
+```
+
+Usage
+
+    uctl get execution-queue-attribute [flags]
 
 ## Options
+
+    --attrFile string   attribute file name to be used for generating attribute for the resource type.
+    -h, --help              help for execution-queue-attribute
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +75,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

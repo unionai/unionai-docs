@@ -1,17 +1,24 @@
-# uctl CLI
+# uctl get cluster
 
-A brief description of your application
+Retrieves clusters
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieves clusters
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get cluster [flags]
 
 ## Options
+
+    --dryRun                        execute command without making any modifications.
+    --filter.asc                    Specifies the sorting order. By default sorts result in descending order
+    --filter.fieldSelector string   Allows for filtering resources based on a specific value for a field name using operations =, !=, >, <, >=, <=, in, contains.Multiple selectors can be added separated by commas
+    --filter.limit int32            Specifies the number of results to return (default 100)
+    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
+    --filter.token string           Specifies the server provided token to use for fetching next page in case of multi page result
+    -h, --help                          help for cluster
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +38,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

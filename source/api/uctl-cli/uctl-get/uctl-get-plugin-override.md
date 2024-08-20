@@ -1,17 +1,77 @@
-# uctl CLI
+# uctl get plugin-override
 
-A brief description of your application
+Gets matchable resources of plugin override
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieve the plugin overrides for the given project and domain. Here,
+the command gets the plugin overrides for the project flytectldemo and
+development domain.
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get plugin-override -p flytectldemo -d development 
+
+e.g. : output from the command
+
+``` json
+{
+   "project": "flytectldemo",
+   "domain": "development",
+   "overrides": [{
+       "task_type": "python_task",
+       "plugin_id": ["pluginoverride1", "pluginoverride2"],
+       "missing_plugin_behavior": 0 
+   }]
+}
+```
+
+Retrieves the plugin overrides for project, domain and workflow Here the
+command gets the plugin overrides for project flytectldemo, development
+domain and workflow core.control_flow.run_merge_sort.merge_sort
+
+    uctl get plugin-override -p flytectldemo -d development core.control_flow.run_merge_sort.merge_sort
+
+e.g. : output from the command
+
+``` json
+{
+   "project": "flytectldemo",
+   "domain": "development",
+   "workflow": "core.control_flow.run_merge_sort.merge_sort"
+   "overrides": [{
+       "task_type": "python_task",
+       "plugin_id": ["pluginoverride1", "pluginoverride2"],
+       "missing_plugin_behavior": 0
+   }]
+}
+```
+
+Writing the plugin overrides to a file. If there are no plugin
+overrides, command would return an error. Here the command gets plugin
+overrides and writes the config file to po.yaml eg: content of po.yaml
+
+    uctl get plugin-override --attrFile po.yaml
+
+``` yaml
+domain: development
+project: flytectldemo
+overrides:
+   - task_type: python_task # Task type for which to apply plugin implementation overrides
+     plugin_id:             # Plugin id(s) to be used in place of the default for the task type.
+       - plugin_override1
+       - plugin_override2
+     missing_plugin_behavior: 1 # Behavior when no specified plugin_id has an associated handler. 0 : FAIL , 1: DEFAULT
+```
+
+Usage
+
+    uctl get plugin-override [flags]
 
 ## Options
+
+    --attrFile string   attribute file name to be used for generating attribute for the resource type.
+    -h, --help              help for plugin-override
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +91,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.

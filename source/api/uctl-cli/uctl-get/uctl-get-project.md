@@ -1,17 +1,47 @@
-# uctl CLI
+# uctl get project
 
-A brief description of your application
+Gets project resources
 
 ## Synopsis
 
-A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+Retrieves all the projects.(project,projects can be used interchangeably
+in these commands) :
 
-Cobra is a CLI library for Go that empowers applications. This
-application is a tool to generate the needed files to quickly create a
-Cobra application.
+    uctl get project
+
+Retrieves project by name
+
+    uctl get project flytesnacks
+
+Retrieves all the projects with filters. :
+
+    uctl get project --filter.fieldSelector="project.name=flytesnacks"
+
+Retrieves all the projects with limit and sorting. :
+
+    uctl get project --filter.sortBy=created_at --filter.limit=1 --filter.asc
+
+Retrieves all the projects in yaml format
+
+    uctl get project -o yaml
+
+Retrieves all the projects in json format
+
+    uctl get project -o json
+
+Usage
+
+    uctl get project [flags]
 
 ## Options
+
+    --filter.asc                    Specifies the sorting order. By default uctl sort result in descending order
+    --filter.fieldSelector string   Specifies the Field selector
+    --filter.limit int32            Specifies the limit (default 100)
+    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
+    -h, --help                          help for project
+
+## Options inherited from parent commands
 
     --admin.authorizationHeader string            Custom metadata header to pass JWT
     --admin.authorizationServerUrl string         This is the URL to your IdP's authorization server. It'll default to Endpoint
@@ -31,7 +61,6 @@ Cobra application.
     --admin.useAuth                               Deprecated: Auth will be enabled/disabled based on admin's dynamically discovered information.
     --config string                               config file (default is $HOME/.uctl.yaml)
     -d, --domain string                               Specifies the Flyte project's domain.
-    -h, --help                                        help for uctl
     --logger.formatter.type string                Sets logging format type. (default "json")
     --logger.level int                            Sets the minimum logging level. (default 4)
     --logger.mute                                 Mutes all logs regardless of severity. Intended for benchmarks/tests only.
