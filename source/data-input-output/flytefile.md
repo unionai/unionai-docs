@@ -177,4 +177,4 @@ def task_2(ff: FlyteFile):
     local_path = ff.download()
 ```
 
-This method typically used when you want to download the file without immediately reading it.
+This method is typically used when you want to download the file without immediately reading it.
