@@ -66,7 +66,7 @@ If none of these are present, it will connect to `serverless.union.ai`.
 {@@ elif byoc @@}
 
 
-This will ensure that the CLI will check for configuration files as follows (if no `--config` option is specified on the command line):
+The `union[byoc]` CLI will check for configuration files as follows:
 
 First, if a `--config` option is specified on the command line, it will use the file specified there.
 
