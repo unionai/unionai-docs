@@ -44,7 +44,7 @@ This will install:
 
 When using Union Serverless, you should always install the plain `union` package and not the `union[byoc]` package, which is configured for [Union BYOC](../../byoc/quick-start.md#install-the-union-package).
 
-This will ensure that the CLI will automatically connect to `serverless.union.ai`, assuming no other configurations are set up.
+The `union` CLI will automatically connect to `serverless.union.ai` if no other configuration files exist.
 
 More precisely the CLI will check for configuration files as follows:
 
