@@ -68,7 +68,7 @@ If none of these are present, it will connect to `serverless.union.ai`.
 
 The `union[byoc]` CLI will check for configuration files as follows:
 
-First, if a `--config` option is specified on the command line, it will use the file specified there.
+First, if a `--config` option is used, it will use the specific file.
 
 Second, the locations pointed to by the following environment variables (in this order):
 
