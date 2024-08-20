@@ -136,7 +136,7 @@ There are two ways to do this: **implicitly** and **explicitly**.
 The source file of a `FlyteFile` object is downloaded to the local container file system automatically whenever an external function is called that takes the `FlyteFile` object and then itself calls `FlyteFile`'s `__fspath__()` method.
 
 `FlyteFile` implements the `os.PathLike` interface and therefore the `__fspath__()` method.
-`FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and return the path to that local file.
+`FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and returns the path to that local file.
 This enables many common file-related operations in Python to be performed on the `FlyteFile` object.
 
 The most prominent example of such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
