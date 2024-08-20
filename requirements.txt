@@ -1,5 +1,5 @@
 # use CPU only torch for building docs
--i https://download.pytorch.org/whl/cpu
+--extra-index-url https://download.pytorch.org/whl/cpu  # use CPU only torch for building docs
 flytekitplugins-airflow
 flytekitplugins-awssagemaker
 flytekitplugins-bigquery
