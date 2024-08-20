@@ -149,40 +149,17 @@ def process_options(app, ctx, lines):
         counter += 1
 
 class CustomWarningSuppressor(logging.Filter):
-    """Filter logs by `suppress_warnings`."""
-
     def __init__(self, app: sphinx.application.Sphinx) -> None:
         self.app = app
         super().__init__()
 
     def filter(self, record: logging.LogRecord) -> bool:
         msg = record.getMessage()
-
-        # filter_out = (
-        #    "duplicate label",
-        #    "Unexpected indentation",
-        #    'Error with CSV data in "csv-table" directive',
-        #    "Definition list ends without a blank line",
-        #    "autodoc: failed to import module 'awssagemaker' from module 'flytekitplugins'",
-        #    "Enumerated list ends without a blank line",
-        #    'Unknown directive type "toc".',  # need to fix flytesnacks/contribute.md
-        #)
-
         filter_out = (
             "local id not found in doc"
         )
-
         if msg.strip().startswith(filter_out):
             return False
-
-        # if (
-        #    msg.strip().startswith("document isn't included in any toctree")
-        #    and record.location == "_tags/tagsindex"
-        # ):
-            # ignore this warning, since we don't want the side nav to be
-            # cluttered with the tags index page.
-        #    return False
-
         return True
 
 def setup(app: sphinx.application.Sphinx) -> None:
