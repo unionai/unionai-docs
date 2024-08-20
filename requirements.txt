@@ -1,3 +1,5 @@
+# use CPU only torch for building docs
+-i https://download.pytorch.org/whl/cpu
 flytekitplugins-airflow
 flytekitplugins-awssagemaker
 flytekitplugins-bigquery
