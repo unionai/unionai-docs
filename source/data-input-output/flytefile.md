@@ -69,7 +69,7 @@ When initializing a `FlyteFile` with a remote file location, all URI schemes sup
 ## Specifying `remote_path`
 
 When a `FlyteFile` based on a local file is passed out of a task, the file is uploaded, by default, to the Union object store.
-For example, in AWS-based Union BYOC systems, this is an S3 bucket, while in Google CLoud-based Union BYOC systems, this is a GCS bucket.
+For example, in AWS-based Union BYOC systems, this is an S3 bucket, while in Google Cloud-based Union BYOC systems, this is a GCS bucket.
 
 Within that bucket, the actual file location is, by default, a randomly generated path.
 This path is guaranteed to be unique so that files are never over-written on subsequent runs of the task.
