@@ -291,8 +291,8 @@
                         {"name": "custom-types", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "structured-dataset", "variants": ["byoc", "serverless"]},
-                                {"name": "file", "variants": ["byoc", "serverless"]},
-                                {"name": "directory", "variants": ["byoc", "serverless"]},
+                                {"name": "flytefile", "variants": ["byoc", "serverless"]},
+                                {"name": "flytedirectory", "variants": ["byoc", "serverless"]},
                                 {"name": "iterator", "variants": ["byoc", "serverless"]},
                                 {"name": "pytorch", "variants": ["byoc", "serverless"]},
                                 {"name": "tensorflow", "variants": ["byoc", "serverless"]},

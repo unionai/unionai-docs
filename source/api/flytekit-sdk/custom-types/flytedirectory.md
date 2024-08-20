@@ -1,4 +1,4 @@
-# Directory type
+# FlyteDirectory
 
 ```{eval-rst}
 
