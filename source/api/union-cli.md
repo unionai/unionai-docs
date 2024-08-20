@@ -61,7 +61,7 @@ Third, the following hard-coded locations (in this order):
 * `~/.union/config.yaml`
 * `~/.uctl/config.yaml`
 
-If none of these are present, it will connect to `serverless.union.ai`.
+If none of these are present, the CLI will connect to `serverless.union.ai`.
 
 {@@ elif byoc @@}
 
