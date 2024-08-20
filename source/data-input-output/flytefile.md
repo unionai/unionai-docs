@@ -163,7 +163,7 @@ The latter calls the built-in Python function `open` passing a `FlyteFile`, down
 
 :::
 
-Many other Python file operations (essentially, any that accept an `os.PathLike`) can also be performed on a `FlyteFile` object and result in an automatic download.
+Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
 
 See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
 
