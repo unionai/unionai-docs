@@ -23,8 +23,8 @@ For example, to use the example GAR repository shown here, we would alter the Py
 
 ```{code-block} python
 image_spec = ImageSpec(
-    registry="<AZURE_CONTAINER_REGISTRY_NAME>.azurecr.io/my-repository",
-    name="simple-example-image",
+    registry="<AZURE_CONTAINER_REGISTRY_NAME>.azurecr.io",
+    name="my-repository/simple-example-image",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
     requirements="image-requirements.txt"
 )
