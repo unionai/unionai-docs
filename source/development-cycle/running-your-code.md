@@ -36,7 +36,7 @@ Here you are invoking `union run` and passing the name of the Python file and th
 In addition, you are passing the named parameter `name` and its value.
 
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [union run details](./union-run-details).
+For more details see [union run details](./details-of-union-run.md).
 
 ## Running a script on Union with `union run --remote`
 
@@ -63,7 +63,7 @@ This command will:
 * Run the workflow on Union.
 
 This command is useful for quickly deploying and running a specific workflow on Union.
-For more details see [union run details](./union-run-details).
+For more details see [union run details](./details-of-union-run.md).
 
 ## Deploying your code to Union with `union register`
 

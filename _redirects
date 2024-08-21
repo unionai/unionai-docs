@@ -265,10 +265,10 @@
 /integrations/additional-integrations/bigquery-agent /byoc/integrations/agents/bigquery-agent 301
 /integrations/additional-integrations/bigquery-agent/bigquery-agent-example/ /byoc/integrations/agents/bigquery-agent/bigquery-agent-example 301
 /integrations/additional-integrations/bigquery-agent/bigquery-agent-example /byoc/integrations/agents/bigquery-agent/bigquery-agent-example 301
-/integrations/additional-integrations/chatgpt-agent/ /byoc/integrations/agents/chatgpt-agent 301
-/integrations/additional-integrations/chatgpt-agent /byoc/integrations/agents/chatgpt-agent 301
-/integrations/additional-integrations/chatgpt-agent/chatgpt-agent-example/ /byoc/integrations/agents/chatgpt-agent/chatgpt-agent-example 301
-/integrations/additional-integrations/chatgpt-agent/chatgpt-agent-example /byoc/integrations/agents/chatgpt-agent/chatgpt-agent-example 301
+/integrations/additional-integrations/chatgpt-agent/ /byoc/integrations/agents/openai-agents/chatgpt-agent-example 301
+/integrations/additional-integrations/chatgpt-agent /byoc/integrations/agents/openai-agents/chatgpt-agent-example 301
+/integrations/additional-integrations/chatgpt-agent/chatgpt-agent-example/ /byoc/integrations/agents/openai-agents/chatgpt-agent-example 301
+/integrations/additional-integrations/chatgpt-agent/chatgpt-agent-example /byoc/integrations/agents/openai-agents/chatgpt-agent-example 301
 /integrations/additional-integrations/databricks-agent/ /byoc/integrations/agents/databricks-agent 301
 /integrations/additional-integrations/databricks-agent /byoc/integrations/agents/databricks-agent 301
 /integrations/additional-integrations/databricks-agent/databricks-agent-example/ /byoc/integrations/agents/databricks-agent/databricks-agent-example 301

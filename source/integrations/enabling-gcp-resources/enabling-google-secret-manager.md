@@ -127,4 +127,10 @@ def t1():
         SECRET_GROUP,
         group_version=SECRET_GROUP_VERSION
     )
+    # do something with the secret. For example, communication with an external API.
+    ...
+```
+
+```{warning}
+Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
