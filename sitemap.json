@@ -47,6 +47,7 @@
                                 {"name": "imagespec", "variants": ["byoc"]},
                                 {"name": "imagespec-with-ecr", "variants": ["byoc"]},
                                 {"name": "imagespec-with-gar", "variants": ["byoc"]},
+                                {"name": "imagespec-with-acr", "variants": ["byoc"]},
                                 {"name": "environment-variables", "variants": ["byoc"]}
                             ]},
                         {"name": "task-hardware-environment", "variants": ["byoc", "serverless"],
@@ -126,6 +127,10 @@
                         {"name": "enabling-google-artifact-registry", "variants": ["byoc"]},
                         {"name": "enabling-bigquery", "variants": ["byoc"]},
                         {"name": "enabling-google-secret-manager", "variants": ["byoc"]}
+                    ]},
+                {"name": "enabling-azure-resources", "variants": ["byoc"],
+                    "children": [
+                        {"name": "enabling-azure-container-registry", "variants": ["byoc"]}
                     ]},
                 {"name": "agents", "variants": ["byoc"],
                     "children": [
