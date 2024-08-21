@@ -2,19 +2,19 @@
 
 Fetches `uctl` version
 
-# Synopsis
+## Synopsis
 
-Fetch uctl version. :
+Fetch `uctl` version. :
 
     uctl version
 
     uctl version [flags]
 
-# Options
+## Options
 
     -h, --help   help for version
 
-# Options inherited from parent commands
+## Options inherited from parent commands
 
     --admin.audience string                        Audience to use when initiating OAuth2 authorization requests.
     --admin.authType string                        Type of OAuth2 flow used for communicating with admin.ClientSecret, Pkce, ExternalCommand are valid values (default "ClientSecret")
