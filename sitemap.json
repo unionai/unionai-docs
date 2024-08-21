@@ -338,7 +338,7 @@
                                 {"name": "uctl-get-project", "variants": ["byoc"]},
                                 {"name": "uctl-get-task-resource-attribute", "variants": ["byoc"]},
                                 {"name": "uctl-get-task", "variants": ["byoc"]},
-                                {"name": "uctl-get-workflow-execution", "variants": ["byoc"]},
+                                {"name": "uctl-get-workflow-execution-config", "variants": ["byoc"]},
                                 {"name": "uctl-get-workflow", "variants": ["byoc"]}
                             ]},
                         {"name": "uctl-register", "variants": ["byoc"],
