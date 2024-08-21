@@ -25,7 +25,7 @@ To use the FileSensor created in the previous step, you must specify the `path` 
 
 You can also use the S3 or GCS file system. We have already set the minio credentials in the agent by default. If you test the sandbox example locally, you will need to set the AWS credentials in your environment variables:
 
-```{prompt} bash
+```{code-block} bash
 export FLYTE_AWS_ENDPOINT="http://localhost:30002"
 export FLYTE_AWS_ACCESS_KEY_ID="minio"
 export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
