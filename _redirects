@@ -522,6 +522,7 @@
 /byoc/api/unionai-cli /byoc/api/union-cli 301
 /serverless/api/unionai-cli/ /serverless/api/union-cli 301
 /serverless/api/unionai-cli /serverless/api/union-cli 301
+
 /byoc/api/sdk /byoc/api/union-sdk 301
 /byoc/api/sdk/ /byoc/api/union-sdk 301
 /byoc/api/sdk/actor.actorenvironment /byoc/api/union-sdk/actor.actorenvironment 301
