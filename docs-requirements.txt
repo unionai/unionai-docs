@@ -1,0 +1,25 @@
+# use CPU only torch for building docs
+--extra-index-url https://download.pytorch.org/whl/cpu  # use CPU only torch for building docs
+flytekitplugins-airflow
+flytekitplugins-awssagemaker
+flytekitplugins-bigquery
+flytekitplugins-mmcloud
+flytekitplugins-openai
+flytekitplugins-snowflake
+flytekitplugins-spark
+jinja2
+jupytext
+myst-parser
+nbformat
+pyyaml
+scikit-learn
+sphinx
+sphinx-click
+sphinx-design
+sphinx-book-theme
+sphinx-copybutton
+sphinx-docsearch
+sphinxext-remoteliteralinclude
+tensorflow
+torch
+union
