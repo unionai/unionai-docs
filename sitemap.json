@@ -307,20 +307,60 @@
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
                 {"name": "uctl-cli", "variants": ["byoc"],
                     "children": [
-                        {"name": "cli-entrypoint", "variants": ["byoc"]},
-                        {"name": "verbs", "variants": ["byoc"],
+                        {"name": "uctl-create", "variants": ["byoc"],
                             "children": [
-                                {"name": "create", "variants": ["byoc"]}
+                                {"name": "uctl-create-execution", "variants": ["byoc"]},
+                                {"name": "uctl-create-project", "variants": ["byoc"]}
                             ]},
-                    {"name": "nouns", "variants": ["byoc"],
-                        "children": [
-                            {"name": "launch-plans", "variants": ["byoc"],
-                                "children": [
-                                    {"name": "uctl-get-launch-plan", "variants": ["byoc"]}
-
-                                ]
-                            }
-                        ]}
+                        {"name": "uctl-delete", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-delete-cluster-resource-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-delete-cluster", "variants": ["byoc"]},
+                                {"name": "uctl-delete-execution-cluster-label", "variants": ["byoc"]},
+                                {"name": "uctl-delete-execution-queue-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-delete-execution", "variants": ["byoc"]},
+                                {"name": "uctl-delete-plugin-override", "variants": ["byoc"]},
+                                {"name": "uctl-delete-task-resource-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-delete-workflow-execution-config", "variants": ["byoc"]}
+                            ]},
+                        {"name": "uctl-get", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-get-app", "variants": ["byoc"]},
+                                {"name": "uctl-get-cluster-resource-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-get-cluster", "variants": ["byoc"]},
+                                {"name": "uctl-get-echo", "variants": ["byoc"]},
+                                {"name": "uctl-get-execution-cluster-label", "variants": ["byoc"]},
+                                {"name": "uctl-get-execution-queue-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-get-execution", "variants": ["byoc"]},
+                                {"name": "uctl-get-executionoperation", "variants": ["byoc"]},
+                                {"name": "uctl-get-launchplan", "variants": ["byoc"]},
+                                {"name": "uctl-get-plugin-override", "variants": ["byoc"]},
+                                {"name": "uctl-get-project", "variants": ["byoc"]},
+                                {"name": "uctl-get-task-resource-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-get-task", "variants": ["byoc"]},
+                                {"name": "uctl-get-workflow-execution", "variants": ["byoc"]},
+                                {"name": "uctl-get-workflow", "variants": ["byoc"]}
+                            ]},
+                        {"name": "uctl-register", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-register-files", "variants": ["byoc"]}
+                            ]},
+                        {"name": "uctl-update", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-update-cluster-resource-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-update-cluster", "variants": ["byoc"]},
+                                {"name": "uctl-update-execution-cluster-label", "variants": ["byoc"]},
+                                {"name": "uctl-update-execution-queue-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-update-launchplan-meta", "variants": ["byoc"]},
+                                {"name": "uctl-update-launchplan", "variants": ["byoc"]},
+                                {"name": "uctl-update-plugin-override", "variants": ["byoc"]},
+                                {"name": "uctl-update-project", "variants": ["byoc"]},
+                                {"name": "uctl-update-task-meta", "variants": ["byoc"]},
+                                {"name": "uctl-update-task-resource-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-update-workflow-execution-config", "variants": ["byoc"]},
+                                {"name": "uctl-update-workflow-meta", "variants": ["byoc"]}
+                            ]},
+                        {"name": "uctl-version", "variants": ["byoc"]}
                 ]},
                 {"name": "union-remote", "variants": ["byoc", "serverless"],
                     "children": [
