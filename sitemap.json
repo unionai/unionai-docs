@@ -312,7 +312,7 @@
                                 {"name": "uctl-config-discover", "variants": ["byoc"]},
                                 {"name": "uctl-config-docs", "variants": ["byoc"]},
                                 {"name": "uctl-config-init", "variants": ["byoc"]},
-                                {"name": "uctl-config-validate", "variants": ["byoc"]},
+                                {"name": "uctl-config-validate", "variants": ["byoc"]}
                             ]},
                         {"name": "uctl-create", "variants": ["byoc"],
                             "children": [
