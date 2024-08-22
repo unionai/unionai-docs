@@ -367,6 +367,7 @@
                                 {"name": "uctl-update-cluster", "variants": ["byoc"]},
                                 {"name": "uctl-update-execution-cluster-label", "variants": ["byoc"]},
                                 {"name": "uctl-update-execution-queue-attribute", "variants": ["byoc"]},
+                                {"name": "uctl-update-execution", "variants": ["byoc"]},
                                 {"name": "uctl-update-launchplan-meta", "variants": ["byoc"]},
                                 {"name": "uctl-update-launchplan", "variants": ["byoc"]},
                                 {"name": "uctl-update-plugin-override", "variants": ["byoc"]},
