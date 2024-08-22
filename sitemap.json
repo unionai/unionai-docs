@@ -307,6 +307,13 @@
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
                 {"name": "uctl-cli", "variants": ["byoc"],
                     "children": [
+                        {"name": "uctl-completion", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-completion-bash", "variants": ["byoc"]},
+                                {"name": "uctl-completion-fish", "variants": ["byoc"]},
+                                {"name": "uctl-completion-powershell", "variants": ["byoc"]},
+                                {"name": "uctl-completion-zsh", "variants": ["byoc"]}
+                            ]},
                         {"name": "uctl-config", "variants": ["byoc"],
                             "children": [
                                 {"name": "uctl-config-discover", "variants": ["byoc"]},
@@ -329,6 +336,14 @@
                                 {"name": "uctl-delete-plugin-override", "variants": ["byoc"]},
                                 {"name": "uctl-delete-task-resource-attribute", "variants": ["byoc"]},
                                 {"name": "uctl-delete-workflow-execution-config", "variants": ["byoc"]}
+                            ]},
+                        {"name": "uctl-demo", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-demo-exec", "variants": ["byoc"]},
+                                {"name": "uctl-demo-reload", "variants": ["byoc"]},
+                                {"name": "uctl-demo-start", "variants": ["byoc"]},
+                                {"name": "uctl-demo-status", "variants": ["byoc"]},
+                                {"name": "uctl-demo-teardown", "variants": ["byoc"]}
                             ]},
                         {"name": "uctl-get", "variants": ["byoc"],
                             "children": [
