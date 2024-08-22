@@ -1,0 +1,1 @@
+# uctl completion zsh
