@@ -112,6 +112,12 @@ The source code for this tutorial can be found [here {{octicon}}`mark-github`]({
 ::::
 """
 
+LOGGING_ENABLED = False
+
+# Print to stdout
+def log(msg: str) -> None:
+    if LOGGING_ENABLED:
+        print(msg)
 
 # Call a shell command.
 def shell(command: str, env: dict | None = None) -> None:
@@ -166,7 +172,7 @@ def convert_example_py_file_to_md(
     current_variant: str,
     run_commands: dict[str, list[str]],
 ):
-    print(f"converting {from_path} to {to_path}")
+    log(f"converting {from_path} to {to_path}")
     notebook = jupytext.read(from_path, fmt="py:light")
 
     key = from_path.relative_to(Path(EXAMPLES_REPO))
@@ -187,7 +193,7 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
     n = path.count('/')
     n = n - 1 if n > 0 else 0
     indent: str = "    " * n
-    print(f'{indent}Creating sphinx file for variant: {variant}')
+    log(f'{indent}Creating sphinx file for variant: {variant}')
     env: jinja2.Environment = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
         block_start_string='{@@',
@@ -200,15 +206,15 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
         lstrip_blocks=True,
     )
     input_path: str = f'{SOURCE_DIR}/{path}'
-    print(f'{indent}input_path: {input_path}')
+    log(f'{indent}input_path: {input_path}')
 
     output_path: str = f'{SPHINX_SOURCE_DIR}/{variant}/{path}'
-    print(f'{indent}output_path: {output_path}')
+    log(f'{indent}output_path: {output_path}')
 
     try:
         template: jinja2.Template = env.get_template(input_path)
     except jinja2.exceptions.TemplateNotFound:
-        print(f'{indent}File not found at {input_path}')
+        log(f'{indent}File not found at {input_path}')
     else:
         output: str = template.render(get_vars(variant)).strip()
         frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\nthis-variant: {variant}\n---\n\n'
@@ -240,8 +246,8 @@ def process_page_node(
         convert_example_py_file_to_md(py_file, md_path, current_variant, run_commands)
 
     variants = [*reversed(variants)]  # make sure that serverless is the first element
-    print(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
-    print(f'{indent}path: [{path}]')
+    log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
+    log(f'{indent}path: [{path}]')
 
     # If tree is malformed, exit.
     if set(variants) > set(parent_variants):
@@ -249,7 +255,7 @@ def process_page_node(
 
     # If this page does not appear in the current variant site return `None`.
     if current_variant not in variants:
-        print(f'This page has no variant [{current_variant}]')
+        log(f'This page has no variant [{current_variant}]')
         return ''
 
     # If this page has no children:
@@ -258,10 +264,10 @@ def process_page_node(
     # Do not add a toctree to this page.
     # Return the toctree entry of this page in its parent page: `{name}`.
     if not children:
-        print(f'{indent}This page has no children')
+        log(f'{indent}This page has no children')
         create_sphinx_file(f'{path}.md', current_variant, variants)
         toc_entry = title + ' <' + name + '>' if title else name
-        print(f'{indent}toc_entry: [{toc_entry}]')
+        log(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 
     # This page does have children:
@@ -271,7 +277,7 @@ def process_page_node(
     # Add the assembled toctree to this page.
     # Return the toctree entry of this page in its parent page: `{name}/index`
     else:
-        print(f'{indent}This page has children')
+        log(f'{indent}This page has children')
         toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
         for child_page_node in children:
             toc_entry = process_page_node(
@@ -286,7 +292,7 @@ def process_page_node(
         toctree += '```\n'
         create_sphinx_file(f'{path}/index.md', current_variant, variants, toctree)
         toc_entry = title + ' <' + name + '/index' + '>' if title else name + '/index'
-        print(f'{indent}toc_entry: [{toc_entry}]')
+        log(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 
 

@@ -41,8 +41,7 @@ Union handles the passing of the `FlyteFile` `ff` in `wf` from `task_1` to `task
 
 * The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
 * When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a randomly generated location in the Union object store.
-* This location is used to initialize the URI attribute of a Flyte `Blob` object (Note that Flyte objects are not Python objects. They exists at the workflow level and are used to pass data between task containers.
-  See [Flyte objects]() for more details).
+* This location is used to initialize the URI attribute of a Flyte `Blob` object. (Note that Flyte objects are not Python objects. They exists at the workflow level and are used to pass data between task containers. See [Flyte Core Language Specification > Literals](https://docs.flyte.org/en/latest/protos/docs/core/core.html#flyteidl-core-literals-proto) for more details.)
 * The `Blob` object is passed to `task_2`.
 * Because the type of the input parameter of `task_2` is `FlyteFile`, Union converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
 * Inside `task_2` you can now perform a [`FlyteFile.open()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit.types.file.FlyteFile.open) and read the file contents.
@@ -152,7 +151,7 @@ def task_2(ff: FlyteFile):
        file_contents= f.read()
 ```
 
-:::{admonition}
+:::{note}
 
 Note the difference between
 
