@@ -22,7 +22,7 @@ e.g. : output from the command
 Retrieve the execution cluster label for the given project, domain and
 workflow. Here, the command gets the execution cluster label for the
 project flytectldemo, development domain, and workflow
-\'core.control_flow.run_merge_sort.merge_sort\'. :
+'core.control_flow.run_merge_sort.merge_sort'. :
 
     uctl get execution-cluster-label -p flytectldemo -d development core.control_flow.run_merge_sort.merge_sort
 
@@ -110,4 +110,4 @@ Usage
     --union.connection.maxRetries int             Max number of gRPC retries (default 4)
     --union.connection.minConnectTimeout string   Minimum timeout for establishing a connection (default "20s")
     --union.connection.perRetryTimeout string     gRPC per retry timeout (default "15s")
-    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}")
+    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}")

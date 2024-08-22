@@ -9,8 +9,8 @@ these commands)
 
     uctl create project --name flytesnacks --id flytesnacks --description "flytesnacks description"  --labels app=flyte
 
-Create Project by definition file. Note: The name shouldn\'t contain any
-whitespace characters\' :
+Create Project by definition file. Note: The name shouldn't contain any
+whitespace characters' :
 
     uctl create project --file project.yaml 
 
@@ -90,4 +90,4 @@ description: "Some description for the project"
     --union.connection.maxRetries int             Max number of gRPC retries (default 4)
     --union.connection.minConnectTimeout string   Minimum timeout for establishing a connection (default "20s")
     --union.connection.perRetryTimeout string     gRPC per retry timeout (default "15s")
-    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}")
+    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}")

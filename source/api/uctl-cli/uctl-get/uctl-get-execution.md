@@ -29,18 +29,18 @@ Retrieve executions within the project and domain in JSON format.
 
     uctl get execution -p flytesnacks -d development -o json
 
-Get more details of the execution using the \--details flag, which shows
+Get more details of the execution using the `--details` flag, which shows
 node and task executions. The default view is a tree view, and the TABLE
 view format is not supported on this view.
 
     uctl get execution -p flytesnacks -d development oeh94k9r2r --details
 
 Fetch execution details in YAML format. In this view, only node details
-are available. For task, send the \--nodeID flag.
+are available. For task, send the `--nodeID` flag.
 
     uctl get execution -p flytesnacks -d development oeh94k9r2r --details -o yaml
 
-Fetch task executions on a specific node using the \--nodeID flag. Use
+Fetch task executions on a specific node using the `--nodeID` flag. Use
 the nodeID attribute given by the node details view.
 
     uctl get execution -p flytesnacks -d development oeh94k9r2r --nodeID n0
@@ -121,4 +121,4 @@ Usage
     --union.connection.maxRetries int             Max number of gRPC retries (default 4)
     --union.connection.minConnectTimeout string   Minimum timeout for establishing a connection (default "20s")
     --union.connection.perRetryTimeout string     gRPC per retry timeout (default "15s")
-    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}")
+    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}")

@@ -72,4 +72,4 @@ Retrieves apps registered in the tenant
     --union.connection.maxRetries int             Max number of gRPC retries (default 4)
     --union.connection.minConnectTimeout string   Minimum timeout for establishing a connection (default "20s")
     --union.connection.perRetryTimeout string     gRPC per retry timeout (default "15s")
-    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}")
+    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}")

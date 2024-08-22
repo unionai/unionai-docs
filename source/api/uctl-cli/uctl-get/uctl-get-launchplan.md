@@ -46,7 +46,7 @@ format.
 
 Retrieve a launch plan within the project and domain as per a version
 and generate the execution spec file; the file can be used to launch the
-execution using the \'create execution\' command.
+execution using the 'create execution' command.
 
     uctl get launchplan -d development -p flytectldemo core.advanced.run_merge_sort.merge_sort --execFile execution_spec.yaml
 
@@ -140,4 +140,4 @@ Usage
     --union.connection.maxRetries int             Max number of gRPC retries (default 4)
     --union.connection.minConnectTimeout string   Minimum timeout for establishing a connection (default "20s")
     --union.connection.perRetryTimeout string     gRPC per retry timeout (default "15s")
-    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}")
+    --union.connection.serviceConfig string       Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}")
