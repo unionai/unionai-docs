@@ -12,11 +12,11 @@ project.
 
 * Create a virtual Python environment with Python 3.11 installed.
 * Activate that virtual environment.
-* Install the dependencies with `pip install -r requirements.txt`.
+* Install the dependencies with `pip install -r docs-requirements.txt`. **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
 
 ## Build the site
 
-* Run the build with `make build`.
+* Run the build with `make build-local`.
 
 The resulting HTML files will be in the directory `build/html`.
 
@@ -55,7 +55,7 @@ Export the environment variables and run the docs build process:
 
 ```bash
 export $(cat secrets.txt | xargs)
-make build
+make build-local
 ```
 
 > [!NOTE]
@@ -163,7 +163,7 @@ This is done to avoid conflict with documentation content that includes the stan
 This repo uses the [unionai-examples](https://github.com/unionai/unionai-examples) repo as a git submodule
 to pull in the content for the tutorial examples.
 
-Calling `make build` automatically synchronizes the submodule to the current commit in the parent `docs` repo, but if you want to update it manually, you can
+Calling `make build-local` automatically synchronizes the submodule to the current commit in the parent `docs` repo, but if you want to update it manually, you can
 run `make sync-examples`.
 
 If you've added a new example to the `union-examples` repo, you can update the submodule to the latest remote commit by running `make update-examples`.
@@ -181,7 +181,7 @@ key in the `sitemap.json` file. For example:
 ]
 ```
 
-When you run `make build`, `update-examples` will pull in the latest changes from the `unionai-examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
+When you run `make build-local`, `update-examples` will pull in the latest changes from the `unionai-examples` repo, then the `build.py` module converts the contents of the Python file to a Markdown file using `jupytext` before rendering the sphinx files using the `jinja` templating system.
 
 It will also use the YAML file in the `./unionai-examples/run_commands.yaml` repo to
 generate metadata about how to run that example.
