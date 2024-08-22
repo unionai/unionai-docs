@@ -307,13 +307,7 @@
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
                 {"name": "uctl-cli", "variants": ["byoc"],
                     "children": [
-                        {"name": "uctl-completion", "variants": ["byoc"],
-                            "children": [
-                                {"name": "uctl-completion-bash", "variants": ["byoc"]},
-                                {"name": "uctl-completion-fish", "variants": ["byoc"]},
-                                {"name": "uctl-completion-powershell", "variants": ["byoc"]},
-                                {"name": "uctl-completion-zsh", "variants": ["byoc"]}
-                            ]},
+                        {"name": "uctl-completion", "variants": ["byoc"]},
                         {"name": "uctl-config", "variants": ["byoc"],
                             "children": [
                                 {"name": "uctl-config-discover", "variants": ["byoc"]},
