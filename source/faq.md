@@ -1,10 +1,10 @@
 # FAQ
 
-## Onboarding my organization
+## Onboarding my organization to Union BYOC
 
 ### What information does Union need to set up my service?
 
-When you initially onboard your organization you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
+When you initially onboard your organization to Union BYOC you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
 For details, see [Configuring your data plane](./data-plane-setup/configuring-your-data-plane).
 
