@@ -87,5 +87,5 @@ The Flyte Deck feature allows you to enable visualizations in Union's user inter
 ```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
 :language: python
 :lines: 67-96
-:emphasize-lines: 69
+:emphasize-lines: 3
 ```
