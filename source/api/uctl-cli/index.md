@@ -79,19 +79,19 @@
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`uctl_completion <uctl-completion/index>`
+* - {doc}`uctl_completion <uctl-completion>`
   - Generates completion script.
 * - {doc}`uctl_config <uctl-config/index>`
   - Runs various config commands.
 * - {doc}`uctl_create <uctl-create/index>`
   - Creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl_delete<uctl-delete/index>`
+* - {doc}`uctl_delete <uctl-delete/index>`
   - Terminates/deletes various Flyte resources, such as executions and resource attributes.
 * - {doc}`uctl_demo <uctl-demo/index>`
   - Provides commands for starting and interacting with a standalone minimal local environment for running Flyte.
 * - {doc}`uctl_get <uctl-get/index>`
   - Fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl_register <uctl-register>`
+* - {doc}`uctl_register <uctl-register/index>`
   - Registers tasks, workflows, and launch plans from a list of generated serialized files.
 * - {doc}`uctl_update <uctl-update/index>`
   - Update Flyte resources e.g., projects.
