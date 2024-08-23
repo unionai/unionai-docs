@@ -67,7 +67,79 @@ After being passed to the next task, `FlyteFile.open()` can be called, just as b
 
 When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, the most common being: `http`, `https`, `gs` and `s3`.
 
-{@@ if byoc @@}
+## Where dos FlyteFile and Flyte Directory store the actual data?
+
+{@@ if serverless @@}
+
+
+
+{@@ elif byoc @@}
+
+`FlyteFile` and `FlyteDirectory` are two Python classes provided by Flyte to make it easy to pass files from one task to the next within a workflow.
+They do this by wrapping a file or directory location path and, if necessary, maintaining the persistence of the referenced file or directory across task containers.
+
+When you return a `FlyteFile` (or `FlyteDirectory`) object from a task, Flyte checks to see if the underlying file or directory is local to the task container or is already remotely located.
+If it is local then Flyte automatically uploads it to an object store so that it is not lost when the task container is discarded on task completion.
+If the file is already remote then no upload is performed.
+
+When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the location of the source file (or directory) is available within the object and it can be downloaded and opened.
+
+By default, when Flyte uploads a local file or directory (as opposed to the case where the source data is already remote), it is stored in the default **raw data store** (an S3 or GCS bucket) configured in your data plane during setup.
+
+Optionally, you can set up your own bucket and set the **raw data prefix** parameter to point to it.
+In that case, Flyte will use this bucket for `FlyteFile`/`FlyteDirectory` storage.
+This setting can be done on registration or per execution on the command line or in the UI.
+
+In either case, the data stored in the bucket is placed in a randomly-named directory with a different random name generated for each `FlyteFile` (`FlyteDirectory`) data write.
+This guarantees that you never overwrite your data.
+
+A further variation is to specify `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), in which case the underlying data is written to that precise location with no randomization.
+In this case, subsequent runs using the same `remote_path` _will_ overwrite data.
+
+See also:
+
+* [FlyteFile](./data-input-output/flytefile)
+* [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
+
+### Can I accidentally overwrite FlyteFile data?
+
+In general, no.
+When a task returns a `FlyteFile` or `FlyteDirectory` whose source is local to the origin container, Flyte automatically uploads it to a location with a randomized path in the raw data store.
+This ensures that subsequent runs will not overwrite earlier data.
+
+The only exception is if you explicitly initialize the `FlyteFile` or `FlyteDirectory` with a `remote_path`.
+In that case, the storage location used is precisely that specified.
+No randomization occurs so successive runs using the same `remote_path` will overwrite the same location.
+
+See also:
+
+* In this FAQ section, **Where do FlyteFile and FlyteDirectory store their data?**
+* [FlyteFile](./data-input-output/flytefile)
+
+### Can I use my own blob store for FlyteFile and FlyteDirectory data storage?
+
+Yes.
+If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
+If you do this, you must ensure that your task code has access to this custom storage (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
+
+You then have two options for using that storage for `FlyteFile` and `FlyteDirectory`:
+
+* Specify the custom storage location in the output location prefix parameter either on workflow registration or per execution.
+Your custom storage will be used instead of the default pre-configured raw data store, but the file data will be managed in the same way, using a randomized location within that store for each run, ensuring no overwrites.
+* Specify the `remote_path` when initializing your `FlyteFile` or `FlyteDirectory` object in your task code.
+The precise location specified will be used with no randomization so avoiding overwrites is up to you.
+
+See also:
+
+* In this FAQ section, **Where do `FlyteFile` and `FlyteDirectory` store their data?**
+
+* [FlyteFile](./data-input-output/flytefile)
+
+
+
+
+
+
 
 ## Specifying `remote_path`
 
@@ -189,69 +261,11 @@ This method is typically used when you want to download the file without immedia
 
 
 
-## FlyteFile and FlyteDirectory
+
 
 ### Where do `FlyteFile` and `FlyteDirectory` store their data?
 
-`FlyteFile` and `FlyteDirectory` are two Python classes provided by Flyte to make it easy to pass files from one task to the next within a workflow.
-They do this by wrapping a file or directory location path and, if necessary, maintaining the persistence of the referenced file or directory across task containers.
 
-When you return a `FlyteFile` (or `FlyteDirectory`) object from a task, Flyte checks to see if the underlying file or directory is local to the task container or is already remotely located.
-If it is local then Flyte automatically uploads it to an object store so that it is not lost when the task container is discarded on task completion.
-If the file is already remote then no upload is performed.
-
-When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the location of the source file (or directory) is available within the object and it can be downloaded and opened.
-
-By default, when Flyte uploads a local file or directory (as opposed to the case where the source data is already remote), it is stored in the default **raw data store** (an S3 or GCS bucket) configured in your data plane during setup.
-
-Optionally, you can set up your own bucket and set the **raw data prefix** parameter to point to it.
-In that case, Flyte will use this bucket for `FlyteFile`/`FlyteDirectory` storage.
-This setting can be done on registration or per execution on the command line or in the UI.
-
-In either case, the data stored in the bucket is placed in a randomly-named directory with a different random name generated for each `FlyteFile` (`FlyteDirectory`) data write.
-This guarantees that you never overwrite your data.
-
-A further variation is to specify `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), in which case the underlying data is written to that precise location with no randomization.
-In this case, subsequent runs using the same `remote_path` _will_ overwrite data.
-
-See also:
-
-* [FlyteFile](./data-input-output/flytefile)
-* [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
-
-### Can I accidentally overwrite FlyteFile data?
-
-In general, no.
-When a task returns a `FlyteFile` or `FlyteDirectory` whose source is local to the origin container, Flyte automatically uploads it to a location with a randomized path in the raw data store.
-This ensures that subsequent runs will not overwrite earlier data.
-
-The only exception is if you explicitly initialize the `FlyteFile` or `FlyteDirectory` with a `remote_path`.
-In that case, the storage location used is precisely that specified.
-No randomization occurs so successive runs using the same `remote_path` will overwrite the same location.
-
-See also:
-
-* In this FAQ section, **Where do FlyteFile and FlyteDirectory store their data?**
-* [FlyteFile](./data-input-output/flytefile)
-
-### Can I use my own blob store for FlyteFile and FlyteDirectory data storage?
-
-Yes.
-If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
-If you do this, you must ensure that your task code has access to this custom storage (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
-
-You then have two options for using that storage for `FlyteFile` and `FlyteDirectory`:
-
-* Specify the custom storage location in the output location prefix parameter either on workflow registration or per execution.
-Your custom storage will be used instead of the default pre-configured raw data store, but the file data will be managed in the same way, using a randomized location within that store for each run, ensuring no overwrites.
-* Specify the `remote_path` when initializing your `FlyteFile` or `FlyteDirectory` object in your task code.
-The precise location specified will be used with no randomization so avoiding overwrites is up to you.
-
-See also:
-
-* In this FAQ section, **Where do `FlyteFile` and `FlyteDirectory` store their data?**
-
-* [FlyteFile](./data-input-output/flytefile)
 
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
