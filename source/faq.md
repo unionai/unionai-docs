@@ -17,43 +17,18 @@ To initiate the process, submit the [Node Group Configuration Change form](https
 
 ### How does Union store my data?
 
-When data is passed from task to task in a workflow (and output at the end of the workflow), the workflow engine has to store this data so that it can persist after each task container is discarded.
+When data is passed from task to task in a workflow (and output at the end of the workflow), the workflow engine manages the transfer of these values.
 
 The system distinguishes between metadata and raw data.
-Primitive values (`int`, `str`, etc.) are stored directly in the metadata store while complex data objects (`pandas.DataFrame`, `FlyteFile`, etc.) are stored by reference with the reference in metadata and the actual data in the raw data store.
+Primitive values (`int`, `str`, etc.) are stored directly in the metadata store
+while complex data objects (`pandas.DataFrame`, `FlyteFile`, etc.) are stored by reference with the reference in metadata and the actual data in the raw data store.
+By default, both metadata and raw data are stored in Union's internal object store, located in your data plane in a pre-configured S3/GCS bucket.
 
-The metadata is stored in your data plane in a preconfigured S3/GCS bucket in your data plane.
-This data is accessible to the control plane. It is to run and manage workflows and is surfaced in the web UI.
-
-The raw data store is, by default, also located in a pre-configured S3/GCS bucket in your data plane.
-But this location can be overridden per workflow or per execution using the **raw data prefix** parameter (see, in this FAQ section, **Can I change the raw data storage location?**).
-This allows the actual location to be re-configured by you.
-
-`FlyteFile` and `FlyteDirectory`, like all complex data objects, have their underlying data stored in the raw data store (either the OOTB default or whatever you have configured with the raw data prefix), but, in the case of these two classes, you can also specify a custom location on object initialization in your task code (see, in this FAQ section, **Where do FlyteFile and FlyteDirectory store their data?**).
-
-The data in the raw data store is not accessible to the control plane and will only be surfaced in the web UI unless your code explicitly does so (through, for example, a Flyte Deck).
-
-See also:
-
-* [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
+For more details see [Task input and output](./data-input-output/task-input-and-output.md)
 
 ### Can I change the raw data storage location?
 
-Yes. There are a number of ways to do this:
-
-* When registering your workflow:
-  * With [`uctl register`](https://docs.flyte.org/en/latest/flytectl/gen/flytectl_register.html), use the flag `--files.outputLocationPrefix`.
-  * With [`union register`](https://docs.flyte.org/en/latest/api/flytekit/pyflyte.html#pyflyte-register), use the flag `--raw-data-prefix`.
-* At the execution level:
-  * In the web UI, set the **Raw output data config** parameter in the execution dialog.
-
-These options change the raw data location for **all large types** (`FlyteFile`, `FlyteDirectory`, `DataFrame,` any other large data object).
-If you are only concerned with controlling where raw data used by `FlyteFile` or `FlyteDirectory` is stored, you can set the `remote_path` parameter in your task code when initializing objects of those types.
-
-See also:
-
-* [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
-* [FlyteFile](./data-input-output/flytefile)
+Yes. See [Task input and output > Changing the raw storage location](./data-input-output/task-input-and-output.md#changing-the-raw-data-storage-location).
 
 ### Can I use my own blob store for data storage that I handle myself?
 
@@ -117,30 +92,10 @@ For details see [BigQuery Query](https://docs.flyte.org/en/latest/flytesnacks/ex
 ### Where do `FlyteFile` and `FlyteDirectory` store their data?
 
 `FlyteFile` and `FlyteDirectory` are two Python classes provided by Flyte to make it easy to pass files from one task to the next within a workflow.
-They do this by wrapping a file or directory location path and, if necessary, maintaining the persistence of the referenced file or directory across task containers.
+They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to Union's internal object store to persist it
+across task containers.
 
-When you return a `FlyteFile` (or `FlyteDirectory`) object from a task, Flyte checks to see if the underlying file or directory is local to the task container or is already remotely located.
-If it is local then Flyte automatically uploads it to an object store so that it is not lost when the task container is discarded on task completion.
-If the file is already remote then no upload is performed.
-
-When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the location of the source file (or directory) is available within the object and it can be downloaded and opened.
-
-By default, when Flyte uploads a local file or directory (as opposed to the case where the source data is already remote), it is stored in the default **raw data store** (an S3 or GCS bucket) configured in your data plane during setup.
-
-Optionally, you can set up your own bucket and set the **raw data prefix** parameter to point to it.
-In that case, Flyte will use this bucket for `FlyteFile`/`FlyteDirectory` storage.
-This setting can be done on registration or per execution on the command line or in the UI.
-
-In either case, the data stored in the bucket is placed in a randomly-named directory with a different random name generated for each `FlyteFile` (`FlyteDirectory`) data write.
-This guarantees that you never overwrite your data.
-
-A further variation is to specify `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), in which case the underlying data is written to that precise location with no randomization.
-In this case, subsequent runs using the same `remote_path` _will_ overwrite data.
-
-See also:
-
-* [FlyteFile](./data-input-output/flytefile)
-* [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html)
+For more information see [FlyteFile](./data-input-output/flytefile), [FlyteDirectory](./data-input-output/flytedirectory.md).
 
 ### Can I accidentally overwrite FlyteFile data?
 
@@ -148,63 +103,25 @@ In general, no.
 When a task returns a `FlyteFile` or `FlyteDirectory` whose source is local to the origin container, Flyte automatically uploads it to a location with a randomized path in the raw data store.
 This ensures that subsequent runs will not overwrite earlier data.
 
-The only exception is if you explicitly initialize the `FlyteFile` or `FlyteDirectory` with a `remote_path`.
-In that case, the storage location used is precisely that specified.
-No randomization occurs so successive runs using the same `remote_path` will overwrite the same location.
-
-See also:
-
-* In this FAQ section, **Where do FlyteFile and FlyteDirectory store their data?**
-* [FlyteFile](./data-input-output/flytefile)
+For more information see [FlyteFile](./data-input-output/flytefile), [FlyteDirectory](./data-input-output/flytedirectory.md).
 
 ### Can I use my own blob store for FlyteFile and FlyteDirectory data storage?
 
-Yes.
-If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
-If you do this, you must ensure that your task code has access to this custom storage (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage)).
+Yes. If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
 
-You then have two options for using that storage for `FlyteFile` and `FlyteDirectory`:
-
-* Specify the custom storage location in the output location prefix parameter either on workflow registration or per execution.
-Your custom storage will be used instead of the default pre-configured raw data store, but the file data will be managed in the same way, using a randomized location within that store for each run, ensuring no overwrites.
-* Specify the `remote_path` when initializing your `FlyteFile` or `FlyteDirectory` object in your task code.
-The precise location specified will be used with no randomization so avoiding overwrites is up to you.
-
-See also:
-
-* In this FAQ section, **Where do `FlyteFile` and `FlyteDirectory` store their data?**
-
-* [FlyteFile](./data-input-output/flytefile)
+For details see [FlyteFile](./data-input-output/flytefile), [FlyteDirectory](./data-input-output/flytedirectory.md).
 
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
-You may notice that `flytekit` defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](https://github.com/flyteorg/flytekit/blob/edfa76739d1064822af44e0addc924e381d3a5ad/flytekit/types/file/__init__.py):
-
-* `HDF5EncodedFile`
-* `HTMLPage`
-* `JoblibSerializedFile`
-* `JPEGImageFile`
-* `PDFFile`
-* `PNGImageFile`
-* `PythonPickledFile`
-* `PythonNotebook`
-* `SVGImageFile`
-
-Similarly, `FlyteDirectory` has the following [aliases](https://github.com/flyteorg/flytekit/blob/edfa76739d1064822af44e0addc924e381d3a5ad/flytekit/types/directory/__init__.py):
-
-* `TensorboardLogs`
-* `TFRecordsDirectory`
-
-These aliases can be used when handling a file or directory of the specified type, however, doing so is entirely optional.
-Under the covers, the object itself will still be a simple `FlyteFile` or `FlyteDirectory`.
-The aliased version of the classes do not perform any checks on the actual content of the file, they are simply syntactic markers that enforce agreement between type annotations in the signatures of task functions.
+You may notice that `flytekit` defines some aliases of `FlyteFile` with specific type annotations such as `PDFFile`, JPEGImageFile`, and so forth.
+These aliases can be used when handling a file or directory of the specified type.
+For details see [FlyteFile](./data-input-output/flytefile), [FlyteDirectory](./data-input-output/flytedirectory.md).
 
 ## Building and running workflows
 
 ### What SDK should I download and use in workflow code?
 
-You should install the `union` SDK, which will install the `union` and `flytekit` SDKs and the `union` command-line tool. You will need to use the `flytekit` SDK the majority of the time in the code to import core features and use the `union` SDK for Union-specific features, such as Artifacts.
+You should install the `union` SDK, which will install the `union` and `flytekit` SDKs and the `union` command-line tool. You will need to use the `flytekit` SDK the majority of the time in the code to import core features and use the `union` SDK for Union-specific features, such as artifacts.
 
 To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following command:
 

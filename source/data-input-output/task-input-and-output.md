@@ -29,7 +29,7 @@ The data in the raw data store is not accessible to the control plane and will o
 
 See [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html) for more details.
 
-### Changing the raw data storage location
+## Changing the raw data storage location
 
 There are a number of ways to change the raw data location:
 
@@ -43,6 +43,14 @@ These options change the raw data location for **all large types** (`FlyteFile`,
 
 If you are only concerned with controlling where raw data used by [`FlyteFile`](./flytefile) or []`FlyteDirectory`](./flytedirectory) is stored, you can set the `remote_path` parameter in your task code when initializing objects of those types.
 
+### Setting up your own object store
+
+By default, when Union marshalls values across tasks it stores both metadata and raw data in its own dedicated object store bucket.
+While this bucket is located in your Union BYOC data plane and is therefore under your control, it is part of the Union implementation and should not be accessed or modified directly by your task code.
+
+When changing the default raw data location, the target should therefore be a bucket that you set up, separate from the Union-implementation bucket.
+
+For information on setting up your own bucket, and enabling access to it, see [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage), depending on your cloud provider.
 
 
 
