@@ -1,22 +1,111 @@
 # uctl CLI
 
-The `uctl` CLI provides system management functions for Union BYOC administrators and development-related functions for use in non-Python environments, like CI/CD.
+The `uctl` CLI is a binary executable (written in Go) that provides system management functions for Union administrators. It also includes much of the functionality of the [`union` CLI](../union-cli), but in a package that does not require a Python environment to run, making it convenient for CI/CD pipelines.
 
-:::{admonition} `union` CLI vs `uctl` CLI
-Union BYOC provides two different CLIs: `union` and `uctl`.
+`uctl` provides the same functionality as `union` but also includes
+additional functionality for managing Union-specific entities like users, roles, and Union configurations.
 
-The [`union` CLI](../union-cli.md) is a Python program that comes as part of the `union` Python package.
-It provides all development-related functions that Union developers need when developing, testing and deploying workflows.
+In addition, `uctl` is a compiled binary, which makes it faster and more efficient than the Python-based
+`union` CLI and more suitable for situations like running in CI/CD environment where you might want to
+avoid the overhead of large Python dependencies.
 
-The `uctl` CLIi on the other hand, is a binary executable (written in Go) that provides system management functions for Union administrators.
-In addition, it also includes much of the functionality of the `union` CLI, but in a package that does not require a Python environment to run.
-The most common use-case for this is registering Union workflows in a CI/CD pipeline, where you may not want to install Python.
-{@# TODO: "For more information on this use case see..." #@}
+## Installation
+
+::::{tab-set}
+
+:::{tab-item} macOS
+To install `uctl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or manually download the binary.
+
+**Homebrew**
+
+```{code-block} shell
+$ brew tap unionai/homebrew-tap
+$ brew install uctl
+```
+**curl**
+
+To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+
+```{code-block} shell
+$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+```
+
+**Manual download**
+
+To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
 :::
 
-## Installation and configuration
+:::{tab-item} Linux
+To install `uctl` on Linux, use `curl` or manually download the binary.
 
-See [Setting up the `uctl CLI`](../../administration/setting-up-the-uctl-cli.md) for details on installation and configuration.
+**curl**
+
+To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+
+```{code-block} shell
+$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+```
+
+**Manual download**
+
+To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
+:::
+
+:::{tab-item} Windows
+To install `uctl` on Windows, use `curl` or manually download the binary.
+
+**curl**
+
+To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+
+```{code-block} shell
+$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+```
+
+**Manual download**
+
+To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
+:::
+::::
+
+{@@ if byoc @@}
+
+## Configuration
+
+To configure `uctl` to connect to your Union instance, use the [`uctl config init`] command. Replace `<union-host-url>` with the URL of your Union instance.
+
+```{code-block} shell
+$ uctl config init --host <union-host-url>
+```
+
+This will create a new configuration file at `~/.union/config.yaml`:
+
+```{code-block} yaml
+union:
+  connection:
+    host: dns:///<union-host-url>
+    insecure: false
+  auth:
+    type: Pkce
+admin:
+  endpoint: dns:///<union-host-url>
+  insecure: false
+  authType: Pkce
+```
+
+### Configuration file hierarchy
+
+By default, the `uctl` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union instance unless you override it. `uctl` searches for configuration files in the following order:
+
+* `--config <path-to-config>` flag.
+* `UNION_CONFIG` environment variable: the same variable as used by the `union CLI`.
+* `UCTL_CONFIG` environment variable: for backward compatibility with earlier versions of `uctl`.
+* `~/.union/config.yaml`: the default, and the one created by the command above.
+* `~/.uctl/config.yaml`: for backward compatibility with earlier versions of `uctl`.
+
+For details on the parameters in the configuration file, see [CLI Authentication](../../administration/cli-authentication).
+
+{@@ endif @@}
 
 ## Options
 
