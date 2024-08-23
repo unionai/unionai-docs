@@ -2,6 +2,20 @@
 
 The `union` CLI is the main tool developers use to interact with Union on the command line.
 
+{@@ if byoc @@}
+
+:::{admonition} `union` CLI vs `uctl` CLI
+Union BYOC provides two different CLIs: `union` and `uctl`.
+
+The `union` CLI is a Python program that comes as part of the `union` Python package.
+It provides all development-related functions that Union developers need when developing, testing and deploying workflows.
+
+The [`uctl` CLI](../administration/setting-up-the-uctl-cli.md), on the other hand, is a binary executable (written in Go) that provides system management functions for Union administrators.
+In addition, it also includes much of the functionality of the `union` CLI, but in a package that does not require a Python environment to run.
+:::
+
+{@@ endif @@}
+
 ## Installation
 
 To install the latest version of the `union` CLI, run the following command:

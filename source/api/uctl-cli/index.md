@@ -1,10 +1,22 @@
 # uctl CLI
 
-`uctl` CLI tool
+The `uctl` CLI provides system management functions for Union BYOC administrators and development-related functions for use in non-Python environments, like CI/CD.
 
-## Synopsis
+:::{admonition} `union` CLI vs `uctl` CLI
+Union BYOC provides two different CLIs: `union` and `uctl`.
 
-`uctl` is a CLI tool written in Go to interact with the FlyteAdmin service.
+The [`union` CLI](../union-cli.md) is a Python program that comes as part of the `union` Python package.
+It provides all development-related functions that Union developers need when developing, testing and deploying workflows.
+
+The `uctl` CLIi on the other hand, is a binary executable (written in Go) that provides system management functions for Union administrators.
+In addition, it also includes much of the functionality of the `union` CLI, but in a package that does not require a Python environment to run.
+The most common use-case for this is registering Union workflows in a CI/CD pipeline, where you may not want to install Python.
+{@# TODO: "For more information on this use case see..." #@}
+:::
+
+## Installation and configuration
+
+See [Setting up the `uctl CLI`](../../administration/setting-up-the-uctl-cli.md) for details on installation and configuration.
 
 ## Options
 
@@ -19,7 +31,7 @@
 | `--admin.clientSecretEnvVar` | string | Environment variable containing the client secret |
 | `--admin.clientSecretLocation` | string | File containing the client secret (default "/etc/secrets/client_secret") |
 | `--admin.command` | strings | Command for external authentication token generation |
-| `--admin.defaultServiceConfig` | string  |           
+| `--admin.defaultServiceConfig` | string  |
 | `--admin.deviceFlowConfig.pollInterval` | string | amount of time the device flow would poll the token endpoint if auth server doesn't return a polling interval. Okta and google IDP do return an interval' (default "5s") |
 | `--admin.deviceFlowConfig.refreshTime` | string | grace period from the token expiry after which it would refresh the token. (default "5m0s") |
 | `--admin.deviceFlowConfig.timeout` | string | amount of time the device flow should complete or else it will be cancelled. (default "10m0s") |

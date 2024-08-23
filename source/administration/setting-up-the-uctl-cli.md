@@ -1,4 +1,4 @@
-# uctl CLI
+# Setting up the `uctl` CLI
 
 While the `union` CLI provides the primary mechanism for interacting with Union,
 another CLI, called `uctl`, is also provided.
@@ -9,6 +9,11 @@ additional functionality for managing Union-specific entities like users, roles,
 In addition, `uctl` is a compiled binary, which makes it faster and more efficient than the Python-based
 `union` CLI and more suitable for situations like running in CI/CD environment where you might want to
 avoid the overhead of large Python dependencies.
+{@# TODO: "For more information on this use case see..." #@}
+
+See the [`uctl` CLI reference section](../api/uctl-cli/index.md) for details on the commands available.
+
+For details on the `union` CLI, see [union CLI](../api/union-cli).
 
 ## Installing `uctl`
 
@@ -95,5 +100,3 @@ The search order for finding the configuration file is:
 * `~/.uctl/config.yaml`: for backward compatibility with earlier versions of `uctl`.
 
 For details on the parameters in the configuration file, see [CLI Authentication](./cli-authentication).
-
-For details on the `union` CLI, see [union CLI](../api/union-cli).

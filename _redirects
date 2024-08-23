@@ -570,3 +570,8 @@
 /serverless/tutorials/machine-learning/credit-default-xgboost /serverless/tutorials/finance/credit-default-xgboost 301
 /byoc/tutorials/machine-learning/credit-default-xgboost/ /byoc/tutorials/finance/credit-default-xgboost 301
 /byoc/tutorials/machine-learning/credit-default-xgboost /byoc/tutorials/finance/credit-default-xgboost 301
+
+/serverless/administration/uctl-cli/ /serverless/administration/setting-up-the-uctl-cli 301
+/serverless/administration/uctl-cli /serverless/administration/setting-up-the-uctl-cli 301
+/byoc/administration/uctl-cli/ /serverless/administration/setting-up-the-uctl-cli 301
+/byoc/administration/uctl-cli /serverless/administration/setting-up-the-uctl-cli 301
