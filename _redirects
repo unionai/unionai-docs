@@ -573,6 +573,7 @@
 
 /byoc/administration/uctl-cli/ /byoc/api/uctl-cli 301
 /byoc/administration/uctl-cli /byoc/api/uctl-cli 301
-
 /byoc/administration/setting-up-the-uctl-cli/ /byoc/api/uctl-cli 301
 /byoc/administration/setting-up-the-uctl-cli /byoc/api/uctl-cli 301
+/byoc/administration/cli-authentication/ /byoc/administration/cli-authentication-types 301
+/byoc/administration/cli-authentication /byoc/administration/cli-authentication-types 301

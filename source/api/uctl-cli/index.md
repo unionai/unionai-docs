@@ -1,13 +1,12 @@
 # uctl CLI
 
-The `uctl` CLI is a binary executable (written in Go) that provides system management functions for Union administrators. It also includes much of the functionality of the [`union` CLI](../union-cli), but in a package that does not require a Python environment to run, making it convenient for CI/CD pipelines.
+The `uctl` CLI provides functionality for Union administrators to manage Union-specific entities like users, roles, and Union configuration. 
 
-`uctl` provides the same functionality as `union` but also includes
-additional functionality for managing Union-specific entities like users, roles, and Union configurations.
+It also includes much of the functionality of the [`union` CLI](../union-cli), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `union` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
 
-In addition, `uctl` is a compiled binary, which makes it faster and more efficient than the Python-based
-`union` CLI and more suitable for situations like running in CI/CD environment where you might want to
-avoid the overhead of large Python dependencies.
+:::{note}
+If you are not a Union administrator, or if you will be interacting with Union in an environment where Python is installed, you should use the [`union` CLI](../union-cli) instead.
+::: 
 
 ## Installation
 
@@ -68,11 +67,21 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 :::
 ::::
 
-{@@ if byoc @@}
-
 ## Configuration
 
-To configure `uctl` to connect to your Union instance, use the [`uctl config init`] command. Replace `<union-host-url>` with the URL of your Union instance.
+{@@ if serverless @@}
+
+`uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
+
+```{warning}
+If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
+
+To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
+```
+
+{@@ elif byoc @@}
+
+To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
 
 ```{code-block} shell
 $ uctl config init --host <union-host-url>
@@ -93,17 +102,19 @@ admin:
   authType: Pkce
 ```
 
-### Configuration file hierarchy
+```{note}
+PKCE is the default authentication type. To specify a different authentication type in the configuration file, see [CLI authentication types](../../administration/cli-authentication-types).
+```
+
+### Configuration file location hierarchy
 
 By default, the `uctl` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union instance unless you override it. `uctl` searches for configuration files in the following order:
 
-* `--config <path-to-config>` flag.
-* `UNION_CONFIG` environment variable: the same variable as used by the `union CLI`.
-* `UCTL_CONFIG` environment variable: for backward compatibility with earlier versions of `uctl`.
-* `~/.union/config.yaml`: the default, and the one created by the command above.
-* `~/.uctl/config.yaml`: for backward compatibility with earlier versions of `uctl`.
-
-For details on the parameters in the configuration file, see [CLI Authentication](../../administration/cli-authentication).
+* `--config <path-to-config>` flag
+* `UNION_CONFIG` environment variable
+* `UCTL_CONFIG` environment variable
+* `~/.union/config.yaml` file
+* `~/.uctl/config.yaml` file
 
 {@@ endif @@}
 
@@ -185,8 +196,10 @@ For details on the parameters in the configuration file, see [CLI Authentication
 
 * - {doc}`uctl completion <uctl-completion>`
   - Generates completion script.
+{@@ if byoc @@}
 * - {doc}`uctl config <uctl-config/index>`
   - Runs various config commands.
+{@@ endif @@}
 * - {doc}`uctl create <uctl-create/index>`
   - Creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
 * - {doc}`uctl delete <uctl-delete/index>`

@@ -1,20 +1,10 @@
 # union CLI
 
-The `union` CLI is the main tool developers use to interact with Union on the command line.
+The `union` CLI is the main tool developers use to interact with Union on the command line. It is a Python program that provides commands for developing, testing, and deploying workflows.
 
-{@@ if byoc @@}
-
-:::{admonition} `union` CLI vs `uctl` CLI
-Union BYOC provides two different CLIs: `union` and `uctl`.
-
-The `union` CLI is a Python program that comes as part of the `union` Python package.
-It provides all development-related functions that Union developers need when developing, testing and deploying workflows.
-
-The [`uctl` CLI](../administration/setting-up-the-uctl-cli.md), on the other hand, is a binary executable (written in Go) that provides system management functions for Union administrators.
-In addition, it also includes much of the functionality of the `union` CLI, but in a package that does not require a Python environment to run.
+:::{note}
+If you are a Union administrator or if you need to interact with Union in a CI/CD environment, you may want to use the [`uctl` CLI](uctl-cli/index) instead. The `uctl` CLI is a binary executable that provides system management functions, along with much of the functionality of the `union` CLI, but in a package that doesn't require a Python environment to run.
 :::
-
-{@@ endif @@}
 
 ## Installation
 
@@ -26,25 +16,11 @@ To install the latest version of the `union` CLI, run the following command:
 $ pip install -U union
 ```
 
-:::{note}
-These directions are for Union Serverless.
-
-If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start#install-the-union-package).
-:::
-
 {@@ elif byoc @@}
 
 ```{code-block} shell
 pip install -U "union[byoc]"
 ```
-
-:::{note}
-The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
-
-If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/quick-start#install-the-union-package).
-
-You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
-:::
 
 {@@ endif @@}
 
@@ -53,51 +29,66 @@ This will install:
 * The [`union` SDK](./sdk/index)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
-## `union` CLI configuration search path
-
 {@@ if serverless @@}
 
-The `union` CLI installed in the plain `union` package (not the `union[byoc]` package) will automatically connect to `serverless.union.ai` if no other configuration files exist.
+:::{note}
+These directions are for Union Serverless.
 
-More precisely the CLI will check for configuration files as follows:
-
-First, if a `--config` option is used, it will use the specified config file.
-
-Second, the config files pointed to by the following environment variables (in this order):
-
-* `UNION_CONFIG`
-* `UNIONAI_CONFIG`
-* `UCTL_CONFIG`
-
-Third, the following hard-coded locations (in this order):
-
-* `~/.union/config.yaml`
-* `~/.uctl/config.yaml`
-
-If none of these are present, the CLI will connect to `serverless.union.ai`.
+If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/api/union-cli).
+:::
 
 {@@ elif byoc @@}
 
-The `union` CLI installed in the `union[byoc]` package (not the plain `union` package),  will check for configuration files as follows:
+:::{note}
+The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
 
-First, if a `--config` option is used, it will use the specific file.
+If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/api/union-cli).
 
-Second, the config files pointed to by the following environment variables (in this order):
-
-* `UNION_CONFIG`
-* `UNIONAI_CONFIG`
-* `UCTL_CONFIG`
-
-Third, the following hard-coded locations (in this order):
-
-* `~/.union/config.yaml`
-* `~/.uctl/config.yaml`
-
-If none of these are present, the CLI will raise an error.
+You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
+:::
 
 {@@ endif @@}
 
-## `union` CLI commands
+## Configuration
+
+{@@ if serverless @@}
+
+`union` will automatically connect to Union Serverless. You do not need to create a configuration file.
+
+```{warning}
+If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
+
+To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
+```
+
+{@@ elif byoc @@}
+
+To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
+
+```{code-block} shell
+$ union create login --host <union-host-url>
+```
+
+This will create a configuration file at `~/.union/config.yaml`.
+
+```{note}
+PKCE is the default authentication type. To specify a different authentication type in the configuration file, see [CLI authentication types](../../administration/cli-authentication-types).
+```
+
+### Configuration file location hierarchy
+
+By default, the `union` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union instance unless you override it with the `--config` flag or by setting an environment variable that points to a configuration file. `union` searches for configuration files in the following order:
+
+* `--config <path-to-config>` flag
+* `UNION_CONFIG` environment variable
+* `UNIONAI_CONFIG` environment variable
+* `UCTL_CONFIG` environment variable
+* `~/.union/config.yaml` file
+* `~/.uctl/config.yaml` file
+
+{@@ endif @@}
+
+## Commands
 
 ```{eval-rst}
 
