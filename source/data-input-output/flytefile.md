@@ -1,10 +1,10 @@
-# FlyteFile
+# FlyteFile and FlyteDirectory
 
-In Union, because each task runs in its own container, a file created locally in one task will not automatically be available in other tasks.
+In Union, because each task runs in its own container, a file or directory created locally in one task will not automatically be available in other tasks.
 
-The natural way to solve this problem is for the source task to to upload the file to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the file.
+The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the data.
 
-Since this is such a common case, Union provides the [`FlyteFile`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit-types-file-flytefile) class, which automates this process, making it nearly transparent to the user.
+Since this is such a common use case, Union provides the [`FlyteFile`](../api/sdk/) class and [`FlyteDirectory`](), which automates this process, making it nearly transparent to the user.
 
 ## Local file example
 
@@ -66,7 +66,7 @@ After being passed to the next task, `FlyteFile.open()` can be called, just as b
 
 When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, the most common being: `http`, `https`, `gs` and `s3`.
 
-## Where dos FlyteFile and Flyte Directory store the actual data?
+## Where do FlyteFile and Flyte Directory store the actual data?
 
 {@@ if serverless @@}
 
