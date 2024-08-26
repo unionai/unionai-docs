@@ -41,7 +41,7 @@ There are a number of ways to change the raw data location:
 
 These options change the raw data location for **all large types** (`FlyteFile`, `FlyteDirectory`, `DataFrame`, any other large data object).
 
-If you are only concerned with controlling where raw data used by [`FlyteFile`](./flytefile) or []`FlyteDirectory`](./flytedirectory) is stored, you can set the `remote_path` parameter in your task code when initializing objects of those types.
+If you are only concerned with controlling where raw data used by [`FlyteFile`](./flyte-file-and-flyte-directory) or [`FlyteDirectory`](./flyte-file-and-flyte-directory) is stored, you can set the `remote_path` parameter in your task code when initializing objects of those types.
 
 ### Setting up your own object store
 
