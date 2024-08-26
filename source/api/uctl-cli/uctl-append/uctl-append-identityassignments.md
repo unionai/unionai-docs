@@ -4,6 +4,41 @@ Assigns a role to a specific user or application
 
 ## Synopsis
 
+To append to a user's identity assignments, specify them by their email and run:
+::
+
+	./bin/uctl append identityassignments --user bob@contoso.com --policy contributor
+
+
+To append a policy assignment to an application, specify the application by its unique client id and run
+::
+
+	./bin/uctl append identityassignments --application "contoso-operator" --policy admin
+
+Hint: you can fetch an application's ID by listing apps
+::
+
+	./bin/uctl get apps
+
+
+You can list the existing policies in your org with:
+::
+
+	./bin/uctl get policies
+
+
+You can list existing policy assignments with:
+::
+
+	./bin/uctl get identityassignments --user bob@contoso.com
+	./bin/uctl get identityassignments --application "contoso-operator"
+
+Usage:
+  uctl append identityassignments [flags]
+
+Aliases:
+  identityassignments, identityassignment, ia
+
 
 ## Options
 
