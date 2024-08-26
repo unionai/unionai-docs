@@ -523,6 +523,28 @@
 /serverless/api/unionai-cli/ /serverless/api/union-cli 301
 /serverless/api/unionai-cli /serverless/api/union-cli 301
 
+/byoc/api/sdk /byoc/api/union-sdk 301
+/byoc/api/sdk/ /byoc/api/union-sdk 301
+/byoc/api/sdk/actor.actorenvironment /byoc/api/union-sdk/actor.actorenvironment 301
+/byoc/api/sdk/actor.actorenvironment/ /byoc/api/union-sdk/actor.actorenvironment 301
+/byoc/api/sdk/artifacts.datacard /byoc/api/union-sdk/artifacts.datacard 301
+/byoc/api/sdk/artifacts.datacard/ /byoc/api/union-sdk/artifacts.datacard 301
+/byoc/api/sdk/artifacts.modelcard /byoc/api/union-sdk/artifacts.modelcard 301
+/byoc/api/sdk/artifacts.modelcard/ /byoc/api/union-sdk/artifacts.modelcard 301
+/byoc/api/sdk/artifacts.onartifact /byoc/api/union-sdk/artifacts.onartifact 301
+/byoc/api/sdk/artifacts.onartifact/ /byoc/api/union-sdk/artifacts.onartifact 301
+
+/serverless/api/sdk /serverless/api/union-sdk 301
+/serverless/api/sdk/ /serverless/api/union-sdk 301
+/serverless/api/sdk/actor.actorenvironment /serverless/api/union-sdk/actor.actorenvironment 301
+/serverless/api/sdk/actor.actorenvironment/ /serverless/api/union-sdk/actor.actorenvironment 301
+/serverless/api/sdk/artifacts.datacard /serverless/api/union-sdk/artifacts.datacard 301
+/serverless/api/sdk/artifacts.datacard/ /serverless/api/union-sdk/artifacts.datacard 301
+/serverless/api/sdk/artifacts.modelcard /serverless/api/union-sdk/artifacts.modelcard 301
+/serverless/api/sdk/artifacts.modelcard/ /serverless/api/union-sdk/artifacts.modelcard 301
+/serverless/api/sdk/artifacts.onartifact /serverless/api/union-sdk/artifacts.onartifact 301
+/serverless/api/sdk/artifacts.onartifact/ /serverless/api/union-sdk/artifacts.onartifact 301
+
 /byoc/development-cycle/unionai-run-details/ /byoc/development-cycle/details-of-union-run 301
 /byoc/development-cycle/unionai-run-details /byoc/development-cycle/details-of-union-run 301
 /serverless/development-cycle/unionai-run-details/ /serverless/development-cycle/details-of-union-run 301
