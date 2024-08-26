@@ -138,6 +138,7 @@ def workflow():
     fd = task1()
     task2(fd=fd)
 ```
+
 {@@ if serverless @@}
 
 ::: {note} Upload location
@@ -159,7 +160,7 @@ With Union BYOC, the upload location is configurable.
 By default, when Union uploads a local file or directory (as opposed to the case where the source data is already remote), it is stored in the default **raw data store** (Union's dedicated internal object store).
 
 ### Changing the raw data prefix
-]
+
 Optionally, you can set up your own bucket and set the **raw data prefix** parameter to point to it.
 In that case, Flyte will use this bucket for `FlyteFile`/`FlyteDirectory` storage.
 This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
