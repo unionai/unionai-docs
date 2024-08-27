@@ -6,7 +6,7 @@ The natural way to solve this problem is for the source task to to upload the fi
 
 Since this is such a common use case, Union provides the [`FlyteFile`](../api/flytekit-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../api/flytekit-sdk/custom-types/flytedirectory.md) classes, which automate this process, making it nearly transparent to the user.
 
-## How it works
+## How the classes work
 
 The classes work by wrapping a file or directory location path and, if necessary, maintaining the persistence of the referenced file or directory across task containers.
 
