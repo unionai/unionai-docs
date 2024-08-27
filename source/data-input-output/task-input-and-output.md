@@ -54,7 +54,7 @@ While this bucket is located in your Union BYOC data plane and is therefore unde
 
 When changing the default raw data location, the target should therefore be a bucket that you set up, separate from the Union-implementation bucket.
 
-For information on setting up your own bucket, and enabling access to it, see [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage), depending on your cloud provider.
+For information on setting up your own bucket and enabling access to it, see [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3) or [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage), depending on your cloud provider.
 
 
 
