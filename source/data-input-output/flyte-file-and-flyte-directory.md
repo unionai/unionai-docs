@@ -17,7 +17,7 @@ If the file or directory is already remote, then no upload is performed.
 
 When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the location of the source file (or directory) is available within the object and it can be downloaded or streamed.
 
-## Local file example
+## Local examples
 
 :::{note}
 The term _local file_ in this section refers to a file local to the container running a task in Union.
