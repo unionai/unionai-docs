@@ -49,7 +49,7 @@ If you are only concerned with controlling where raw data used by [`FlyteFile`](
 
 ### Setting up your own object store
 
-By default, when Union marshalls values across tasks it stores both metadata and raw data in its own dedicated object store bucket.
+By default, when Union marshalls values across tasks, it stores both metadata and raw data in its own dedicated object store bucket.
 While this bucket is located in your Union BYOC data plane and is therefore under your control, it is part of the Union implementation and should not be accessed or modified directly by your task code.
 
 When changing the default raw data location, the target should therefore be a bucket that you set up, separate from the Union-implementation bucket.
