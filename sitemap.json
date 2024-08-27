@@ -98,8 +98,8 @@
             ]},
         {"name": "data-input-output", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "flytefile", "variants": ["byoc", "serverless"]},
-                {"name": "flytedirectory", "variants": ["byoc", "serverless"]},
+                {"name": "task-input-and-output", "variants": ["byoc", "serverless"]},
+                {"name": "flyte-file-and-flyte-directory", "variants": ["byoc", "serverless"]},
                 {"name": "downloading-with-ff-and-fd", "variants": ["byoc", "serverless"]},
                 {"name": "accelerated-datasets", "variants": ["byoc"]}
             ]},
