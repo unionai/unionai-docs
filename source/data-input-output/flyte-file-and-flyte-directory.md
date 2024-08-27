@@ -286,6 +286,6 @@ Similarly, `FlyteDirectory` has the following [aliases](https://github.com/flyte
 * `TensorboardLogs`
 * `TFRecordsDirectory`
 
-These aliases can be used when handling a file or directory of the specified type, however, doing so is entirely optional.
+These aliases can optionally be used when handling a file or directory of the specified type, although the object itself will still be a `FlyteFile` or `FlyteDirectory`.
 Under the covers, the object itself will still be a simple `FlyteFile` or `FlyteDirectory`.
 The aliased version of the classes do not perform any checks on the actual content of the file, they are simply syntactic markers that enforce agreement between type annotations in the signatures of task functions.
