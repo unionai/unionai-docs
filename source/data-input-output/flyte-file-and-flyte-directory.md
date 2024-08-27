@@ -48,7 +48,7 @@ def wf():
     task_2(ff=ff)
 ```
 
-Union handles the passing of the `FlyteFile` `ff` in `wf` from `task_1` to `task_2`:
+Union handles the passing of the `FlyteFile` `ff` in the workflow `wf` from `task_1` to `task_2`:
 
 * The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
 * When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a unique location in the Union object store. A randomly generated, universally unique location is used to ensure that subsequent uploads of other files never overwrite each other.
