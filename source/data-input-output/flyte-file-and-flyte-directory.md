@@ -20,7 +20,7 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 ## Local examples
 
 :::{note}
-The term _local file_ in this section refers to a file local to the container running a task in Union.
+The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
 It does not refer to a file on your local machine.
 :::
 
