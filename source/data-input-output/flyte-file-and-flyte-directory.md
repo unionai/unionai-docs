@@ -23,7 +23,7 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
 They do not refer to a file or directory on your local machine.
 :::
-
+### Local file example
 Let's say you have a local file in the container running `task_1` that you want to make accessible in the next task, `task_2`.
 To do this, you create a `FlyteFile` object using the local path of the file, and then pass the `FlyteFile` object as part of your workflow, like this:
 
