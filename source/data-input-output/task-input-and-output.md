@@ -31,7 +31,7 @@ However, this location can be overridden per workflow or per execution using the
 
 The data in the raw data store is not accessible to the control plane and will only be surfaced in the UI if your code explicitly does so (for example, in a Flyte Deck).
 
-See [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html) for more details.
+For more details, see [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html).
 
 ## Changing the raw data storage location
 
