@@ -147,7 +147,7 @@ With Union Serverless, the remote location to which FlyteFile and FlyteDirectory
 With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 :::
 
-{@@ if byoc @@}
+{@@ elif byoc @@}
 
 ## Changing the data upload location
 
