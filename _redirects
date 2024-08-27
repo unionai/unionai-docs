@@ -570,3 +570,12 @@
 /serverless/tutorials/machine-learning/credit-default-xgboost /serverless/tutorials/finance/credit-default-xgboost 301
 /byoc/tutorials/machine-learning/credit-default-xgboost/ /byoc/tutorials/finance/credit-default-xgboost 301
 /byoc/tutorials/machine-learning/credit-default-xgboost /byoc/tutorials/finance/credit-default-xgboost 301
+
+/serverless/data-input-output/flytefile/ /serverless/data-input-output/flyte-file-and-flyte-directory 301
+/serverless/data-input-output/flytefile /serverless/data-input-output/flyte-file-and-flyte-directory 301
+/serverless/data-input-output/flytedirectory/ /serverless/data-input-output/flyte-file-and-flyte-directory 301
+/serverless/data-input-output/flytedirectory /serverless/data-input-output/flyte-file-and-flyte-directory 301
+/byoc/data-input-output/flytefile/ /byoc/data-input-output/flyte-file-and-flyte-directory 301
+/byoc/data-input-output/flytefile /byoc/data-input-output/flyte-file-and-flyte-directory 301
+/byoc/data-input-output/flytedirectory/ /byoc/data-input-output/flyte-file-and-flyte-directory 301
+/byoc/data-input-output/flytedirectory /byoc/data-input-output/flyte-file-and-flyte-directory 301
