@@ -170,7 +170,7 @@ Union will create a directory with a unique, random name in your bucket for each
 
 ### Specifying `remote_path`
 
-A further variation is to specify `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), in which case the underlying data is written to that precise location with no randomization.
+If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
 
 :::{note} Using `remote_path` will overwrite data
 
