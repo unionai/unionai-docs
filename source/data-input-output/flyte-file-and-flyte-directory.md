@@ -207,7 +207,7 @@ There are two ways to do this: **implicitly** and **explicitly**.
 
 ### Implicit downloading
 
-The source file of a `FlyteFile` object is downloaded to the local container file system automatically whenever an external function is called that takes the `FlyteFile` object and then itself calls `FlyteFile`'s `__fspath__()` method.
+The source file of a `FlyteFile` object is downloaded to the local container file system automatically whenever a function is called that takes the `FlyteFile` object and then calls `FlyteFile`'s `__fspath__()` method.
 
 `FlyteFile` implements the `os.PathLike` interface and therefore the `__fspath__()` method.
 `FlyteFile`'s implementation of `__fspath__()` performs a download of the source file to the local container storage and returns the path to that local file.
