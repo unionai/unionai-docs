@@ -116,7 +116,7 @@ When initializing a `FlyteFile` with a remote file location, all URI schemes sup
 
 ### Remote directory example
 
-Below is an equivalent remote example for `FlyteDirectory`. (The behind the scenes process is essentially identical to the `FlyteFile` example above.)
+Below is an equivalent remote example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```{code-block} python
 @task
