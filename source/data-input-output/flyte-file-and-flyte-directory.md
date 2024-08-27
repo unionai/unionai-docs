@@ -157,7 +157,7 @@ With Union Serverless, the remote location to which FlyteFile and FlyteDirectory
 With Union BYOC, the upload location is configurable.
 :::
 
-By default, when Union uploads a local file or directory (as opposed to the case where the source data is already remote), it is stored in the default **raw data store** (Union's dedicated internal object store).
+By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store). However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
 
 ### Changing the raw data prefix
 
