@@ -232,7 +232,7 @@ and
 
 `open(ff, mode="r")`
 
-The former calls `FlyteFile`'s `open` method and returns a stream to the file without downloading it.
+The former calls the `FlyteFile.open()` method and returns an iterator without downloading the file.
 The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system, and returns a handle to that file.
 
 :::
