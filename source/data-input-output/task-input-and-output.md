@@ -13,7 +13,7 @@ The actual data is temporarily stored in Union's internal object store.
 
 ## Metadata and raw data
 
-The system distinguishes between the metadata and raw data.
+Union distinguishes between the metadata and raw data.
 
 Primitive values (`int`, `str`, etc.) are stored directly in the metadata store while complex data objects (`pandas.DataFrame`, `FlyteFile`, etc.) are stored by reference, with the reference pointer in the in metadata store and the actual data in the raw data store.
 
