@@ -6,9 +6,9 @@ This section covers how to manage data input and output in Union.
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`FlyteFile <flytefile>`
+* - {doc}`FlyteFile <flyte-file-and-flyte-directory>`
   - Use `FlyteFile` to easily pass files across tasks.
-* - {doc}`FlyteDirectory <flytedirectory>`
+* - {doc}`FlyteDirectory <flyte-file-and-flyte-directory>`
   - Use `FlyteDirectory` to easily pass directories across tasks.
 * - {doc}`Downloading with FlyteFile and FlyteDirectory <downloading-with-ff-and-fd>`
   - Details on how files and directories or downloaded with `FlyteFile` and `FlyteDirectory`.
