@@ -12,7 +12,7 @@ The classes work by wrapping a file or directory location path and, if necessary
 
 When you return a `FlyteFile` (or `FlyteDirectory`) object from a task, Union checks to see if the underlying file or directory is local to the task container or if it already exists in a remote location.
 
-If it is local to the source container, then Union automatically uploads it an object store so that it is not lost when the task container is discarded on task completion.
+If it is local to the source container, then Union automatically uploads it to an object store so that it is not lost when the task container is discarded on task completion.
 If the file is already remote then no upload is performed.
 
 When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the location of the source file (or directory) is available within the object and it can be downloaded or streamed.
