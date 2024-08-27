@@ -4,7 +4,7 @@ In Union, each task runs in its own container. This means that a file or directo
 
 The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, Union provides the [`FlyteFile`](../api/flytekit-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../api/flytekit-sdk/custom-types/flytedirectory.md) classes, which automate this process, making it nearly transparent to the user.
+Since this is such a common use case, theFLytekit SDK provides the [`FlyteFile`](../api/flytekit-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../api/flytekit-sdk/custom-types/flytedirectory.md) classes, which automate this process.
 
 ## How the classes work
 
@@ -19,11 +19,13 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 
 ## Local examples
 
-:::{note}
+:::{admonition} Local means local to the container
 The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
 They do not refer to a file or directory on your local machine.
 :::
+
 ### Local file example
+
 Let's say you have a local file in the container running `task_1` that you want to make accessible in the next task, `task_2`.
 To do this, you create a `FlyteFile` object using the local path of the file, and then pass the `FlyteFile` object as part of your workflow, like this:
 
@@ -94,8 +96,59 @@ def workflow():
     task2(fd=fd)
 ```
 
+{@@ if serverless @@}
+
+:::{admonition} Upload location
+With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
+
+With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+:::
+
+{@@ elif byoc @@}
+
+## Changing the data upload location
+
+:::{admonition} Upload location
+With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
+
+With Union BYOC, the upload location is configurable.
+:::
+
+By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store).
+However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
+
+:::{admonition} Setting up your own object store bucket
+For details on how to set up your own object store bucket, consult the direction for your cloud provider:
+
+* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
+* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
+{@# TODO * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage) #@}
+:::
+
+### Changing the raw data prefix
+
+If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
+This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
+
+{@# TODO See [Raw data prefix](raw-data-prefix) for more information. #@}
+
+Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
+
+### Specifying `remote_path` for a `FlyteFile` or `FlyteDirectory`
+
+If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
+
+:::{admonition} Using `remote_path` will overwrite data
+If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
+If you want to use a dynamically generated path, you will have to generate it yourself.
+:::
+
+{@@ endif @@}
+
 ## Remote examples
+
 ### Remote file example
+
 In the example above, we started with a local file.
 To preserve that file across the task boundary, Union uploaded it to the Union object store before passing it to the next task.
 
@@ -139,52 +192,10 @@ def workflow():
     task2(fd=fd)
 ```
 
-{@@ if serverless @@}
-
-::: {note} Upload location
-With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
-
-With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
-:::
-
-{@@ elif byoc @@}
-
-## Changing the data upload location
-
-::: {note} Upload location
-With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
-
-With Union BYOC, the upload location is configurable.
-:::
-
-By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store). However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
-
-### Changing the raw data prefix
-
-If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
-This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
-
-{@# See [Raw data prefix](raw-data-prefix) for more information. #@}
-
-Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
-
-### Specifying `remote_path` for a `FlyteFile` or `FlyteDirectory`
-
-If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
-
-:::{note} Using `remote_path` will overwrite data
-
-If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
-If you want to use a dynamically generated path, you will have to generate it yourself.
-
-:::
-
-{@@ endif @@}
-
 ## Streaming
 
 In the above examples, we showed how to access the contents of `FlyteFile` by calling `FlyteFile.open()`.
-The object returned by `FlyteFile.open` is a stream. In the above examples, the files were small, so a simple `read` was used.
+The object returned by `FlyteFile.open()` is a stream. In the above examples, the files were small, so a simple `read()` was used.
 But for large files, you can iterate through the contents of the stream:
 
 ```{code-block} python
@@ -222,8 +233,7 @@ def task_2(ff: FlyteFile):
        file_contents= f.read()
 ```
 
-:::{note}
-
+:::{admonition} `open()` vs `ff.open()`
 Note the difference between
 
 `ff.open(mode="r")`
@@ -234,7 +244,6 @@ and
 
 The former calls the `FlyteFile.open()` method and returns an iterator without downloading the file.
 The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system, and returns a handle to that file.
-
 :::
 
 Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
@@ -268,8 +277,9 @@ FlyteDirectory.new_file()
 
 ## Typed aliases of `FlyteFile` and `FlyteDirectory`
 
-The `flytekit` SDK defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](https://github.com/flyteorg/flytekit/blob/edfa76739d1064822af44e0addc924e381d3a5ad/flytekit/types/file/__init__.py):
+The [Flytekit SDK](../api/flytekit-sdk/index) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../api/flytekit-sdk/custom-types/index.md#file-type):
+:
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -281,7 +291,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](ht
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](https://github.com/flyteorg/flytekit/blob/edfa76739d1064822af44e0addc924e381d3a5ad/flytekit/types/directory/__init__.py):
+Similarly, `FlyteDirectory` has the following [aliases](../api/flytekit-sdk/custom-types/index.md#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`
