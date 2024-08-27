@@ -91,31 +91,25 @@ For details see [BigQuery Query](https://docs.flyte.org/en/latest/flytesnacks/ex
 
 ### Where do `FlyteFile` and `FlyteDirectory` store their data?
 
-`FlyteFile` and `FlyteDirectory` are two Python classes provided by Flyte to make it easy to pass files from one task to the next within a workflow.
+[`FlyteFile` and `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) are two Python classes provided by Union to make it easy to pass files from one task to the next within a workflow.
 They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to Union's internal object store to persist it
 across task containers.
-
-For more information see [FlyteFile](./data-input-output/flyte-file-and-flyte-directory), [FlyteDirectory](./data-input-output/flyte-file-and-flyte-directory).
 
 ### Can I accidentally overwrite FlyteFile data?
 
 In general, no.
-When a task returns a `FlyteFile` or `FlyteDirectory` whose source is local to the origin container, Flyte automatically uploads it to a location with a randomized path in the raw data store.
+When a task returns a [`FlyteFile` or `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) whose source is local to the origin container, Union automatically uploads it to a location with a randomized path in the raw data store.
 This ensures that subsequent runs will not overwrite earlier data.
-
-For more information see [FlyteFile](./data-input-output/flyte-file-and-flyte-directory), [FlyteDirectory](./data-input-output/flyte-file-and-flyte-directory).
 
 ### Can I use my own blob store for FlyteFile and FlyteDirectory data storage?
 
 Yes. If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
 
-For details see [FlyteFile](./data-input-output/flyte-file-and-flyte-directory), [FlyteDirectory](./data-input-output/flyte-file-and-flyte-directory).
-
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
 You may notice that `flytekit` defines some aliases of `FlyteFile` with specific type annotations such as `PDFFile`, JPEGImageFile`, and so forth.
 These aliases can be used when handling a file or directory of the specified type.
-For details see [FlyteFile](./data-input-output/flyte-file-and-flyte-directory), [FlyteDirectory](./data-input-output/flyte-file-and-flyte-directory).
+For details see [FlyteFile and FlyteDirectory > Typed aliases](./data-input-output/flyte-file-and-flyte-directory.md#typed-aliases).
 
 ## Building and running workflows
 
