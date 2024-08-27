@@ -168,7 +168,7 @@ This setting can be done at the workflow level on registration or per execution 
 
 Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
 
-### Specifying `remote_path`
+### Specifying `remote_path` for a `FlyteFile` or `FlyteDirectory`
 
 If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
 
