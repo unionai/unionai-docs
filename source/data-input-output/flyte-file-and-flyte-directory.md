@@ -183,7 +183,7 @@ If you want to use a dynamically generated path, you will have to generate it yo
 
 ## Streaming
 
-In the above examples, we showed how to access the contents of `FlyteFile` by calling `open` on the `FlyteFile` object.
+In the above examples, we showed how to access the contents of `FlyteFile` by calling `FlyteFile.open()`.
 The object returned by `FlyteFile.open` is a stream. In the above examples, the files were small, so a simple `read` was used.
 But for large files, you can iterate through the contents of the stream:
 
