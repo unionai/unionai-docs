@@ -110,7 +110,7 @@ def task_1() -> FlyteFile:
 
 In this case, no uploading is needed because the source file is already in a remote location.
 When the object is passed out of the task, it is converted into a `Blob` with the remote path as the URI.
-After being passed to the next task, `FlyteFile.open()` can be called, just as before.
+After the FlyteFile is passed to the next task,  you can call `FlyteFile.open()` on it, just as before.
 
 When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, including `http`, `https`(Web), `gs` (Google Cloud Storage), `s3` (AWS S3), `abfs`, and `abfss` (Azure Blob Filesystem).
 
