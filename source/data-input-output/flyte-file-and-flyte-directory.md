@@ -275,7 +275,7 @@ FlyteDirectory.new_dir()
 FlyteDirectory.new_file()
 #@}
 
-## Typed aliases of `FlyteFile` and `FlyteDirectory`
+## Typed aliases
 
 The [Flytekit SDK](../api/flytekit-sdk/index) defines some aliases of `FlyteFile` with specific type annotations.
 Specifically, `FlyteFile` has the following [aliases for specific file types](../api/flytekit-sdk/custom-types/index.md#file-type):
