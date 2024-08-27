@@ -96,7 +96,7 @@ def workflow():
 
 ## Remote examples
 ### Remote file example
-In the example above we started with a local file.
+In the example above, we started with a local file.
 To preserve that file across the task boundary, Union uploaded it to the Union object store before passing it to the next task.
 
 You can also _start with a remote file_, simply by initializing the `FlyteFile` object with a URI pointing to a remote source. For example:
