@@ -161,7 +161,7 @@ By default, Union uploads local files or directories to the default **raw data s
 
 ### Changing the raw data prefix
 
-Optionally, you can set up your own bucket and set the **raw data prefix** parameter to point to it.
+If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
 In that case, Flyte will use this bucket for `FlyteFile`/`FlyteDirectory` storage.
 This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
 
