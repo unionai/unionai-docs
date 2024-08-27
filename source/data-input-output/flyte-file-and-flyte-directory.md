@@ -94,7 +94,7 @@ def workflow():
     task2(fd=fd)
 ```
 
-## Remote file example
+## Remote examples
 
 In the example above we started with a local file.
 To preserve that file across the task boundary, Union uploaded it to the Union object store before passing it to the next task.
