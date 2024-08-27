@@ -2,7 +2,7 @@
 
 In Union, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
 
-The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads the data.
+The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
 Since this is such a common use case, Union provides the [`FlyteFile`](../api/flytekit-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../api/flytekit-sdk/custom-types/flytedirectory.md) classes, which automate this process, making it nearly transparent to the user.
 
