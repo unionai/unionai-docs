@@ -167,7 +167,6 @@ This setting can be done at the workflow level on registration or per execution 
 {@# See [Raw data prefix](raw-data-prefix) for more information. #@}
 
 Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
-This guarantees that you never overwrite your data.
 
 ### Specifying `remote_path`
 
