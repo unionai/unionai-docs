@@ -59,7 +59,7 @@ Union handles the passing of the `FlyteFile` `ff` in the workflow `wf` from `tas
 
 ### Local directory example
 
-Below is an equivalent local example for `FlyteDirectory`. (The behind the scenes process is essentially identical to the `FlyteFile` example above.)
+Below is an equivalent local example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```{code-block} python
 def task1() -> FlyteDirectory:
