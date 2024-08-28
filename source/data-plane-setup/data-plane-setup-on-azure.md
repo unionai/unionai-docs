@@ -108,7 +108,7 @@ Once your VPC is set up, provide the following to Union:
 
 ### Example VPC CIDR Block allocation
 
-* 10.0.0.0/8 for the VPC CIDR block.
+* `10.0.0.0/8` for the VPC CIDR block.
 * 10.0.0.0/19 for the Kubernetes node specific subnet.
 * 10.4.0.0/14 for the initial Kubernetes pods specific subnet.
   * 10.8.0.0/14, 10.12.0.0/14, 10.16.0.0/14, 10.20.0.0/14 for any future Kubernetes pod specific subnets.
