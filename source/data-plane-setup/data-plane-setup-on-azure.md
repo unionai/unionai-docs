@@ -94,7 +94,7 @@ We recommend using a VNet within the same Azure tenant as your Union data plane.
 * An non-allocated (i.e., no subnet) `/19` CIDR range that will be retained for service CIDRs.
 * Within the CIDR range, choose a single IP address that will be used for internal DNS. This IP address should not be the first address within the CIDR range.
 * (Recommended): Enable [virtual network service endpoints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) `Microsoft.Storage`, `Microsoft.ContainerRegistry`, and `Microsoft.KeyVault`.
-* (Recommended) Create a [NAT gateway for Virtual network](https://learn.microsoft.com/en-us/azure/nat-gateway/quickstart-create-nat-gateway-portal) egress traffic. This allows scaling out public IP addresses and limit potential external rate limitting scenarios.
+* (Recommended) Create a [NAT gateway for virtual network](https://learn.microsoft.com/en-us/azure/nat-gateway/quickstart-create-nat-gateway-portal) egress traffic. This allows scaling out public IP addresses and limit potential external rate limiting scenarios.
 
 Once your VPC is set up, provide the following to Union:
 
