@@ -10,7 +10,7 @@ Refer to [Azure documentation for more details](https://learn.microsoft.com/en-u
 
 ### Creating a container registry outside of Union
 
-ACR instances that allow anonymous (I.E., public) access doesn't require additional configuration. Otherwise, the underlying AKS cluster must be granted permissions to pull from the container registry.
+Container registries that allow anonymous (I.E., public) access doesn't require additional configuration. Otherwise, the underlying AKS cluster must be granted permissions to pull from the container registry.
 
 Private ACR for Union images is only supported for ACRs within the same tenant as the Union data plane. Refer to [Azure documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) for creating Container Registries.
 
@@ -18,7 +18,7 @@ Private ACR for Union images is only supported for ACRs within the same tenant a
 
 Upon request, Union can create a container registry within your data plane.
 
-By default this Union-managed ACR instance:
+By default this Union-managed container registry:
 
 * Will be created within the same Subscription and Resource group of the Azure Kubernetes Cluster instance.
 * Union will create necessary permissions for the Azure Kubernetes Cluster to pull images from the container registry.
@@ -36,28 +36,29 @@ Union will provide the created container registry Name and Login server for Dock
 
 ## Enable access to ACR in a different subscription within the same Azure Tenant
 
-Union data plane resources will require permissions to pull images from you ACR instance.
+Union data plane resources will require permissions to pull images from your container registry.
 
 ### Allow Union to manage permissions
 
-The simplest, most flexible approach is to provide Union the ability to add roles assignments against the ACR instance.
+The simplest, most flexible approach is to provide Union the ability to add roles assignments against the container registry. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to assign roles to the container registry. These permissions should be scoped to the target container registry. Follow these steps to set up the required access:
 
-Your Azure account should have a Union Entra app that was created during your data plane setup. To this app, you need to either assign the Azure-provided role `User Access Administrator` or a custom-created role. If you choose to use a custom role, it must be scoped to the ACR instance, with the following permissions:
-
-* `Microsoft.Authorization/roleAssignments/write`
-* `Microsoft.Authorization/roleAssignments/delete`
-* `Microsoft.Authorization/roleAssignments/read`
-* `Microsoft.Authorization/roleDefinitions/read`
-
-With either approach, [creating a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) `scope`d to the ACR instance and granted to the union app.
-
-Provide union the resource ID of the ACR instance.
+1. Navigate to the Azure portal and locate the target VNet.
+2. In the VNet's access control (IAM) section, create a new role assignment.
+3. For the 'Assigned to' field, select the Union application's service principal.
+4. For the 'Role' field, you have two options:
+   a. Simplest approach: Assign the built-in Azure role 'User Access Administrator'.
+   b. Advanced approach: Create a custom role with the following specific permissions:
+      * `Microsoft.Authorization/roleAssignments/write`
+      * `Microsoft.Authorization/roleAssignments/delete`
+      * `Microsoft.Authorization/roleAssignments/read`
+      * `Microsoft.Authorization/roleDefinitions/read`
+5. Ensure the 'Scope' is set to the target container registry.
+6. Complete the role assignment process.
+7. Provide the container registry [resource ID](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.storage.models.resource.id) to Union support.
 
 ### Manage permissions directly
 
-Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union.
-
-Retrieve the underlying kubelet principal ID from Union. [Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `AcrPull` role to the provided principal ID.
+Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `AcrPull` role to the underlying AKS cluster kubelet service principal ID. The service principal ID can be provided by Union support.
 
 Note, this process needs to be repeated every time the underlying Kubernetes cluster is changed or a new cluster is added.
 

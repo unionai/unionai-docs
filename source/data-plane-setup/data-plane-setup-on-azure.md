@@ -67,7 +67,7 @@ If you decide to manage your own VNet instead of leaving it to Union, you will n
 
 Union requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying Union Kubernetes cluster.
 
-[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to read VNet resources. These permissions should be scoped to the target Virtual Network (VNet) where the application will be deployed. Follow these steps to set up the required access:
+[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to read VNet resources and assign roles. These permissions should be scoped to the target Virtual Network (VNet). Follow these steps to set up the required access:
 
 1. Navigate to the Azure portal and locate the target VNet.
 2. In the VNet's access control (IAM) section, create a new role assignment.
