@@ -73,8 +73,8 @@ Union requires permissions to read Azure network resources and assign the `Netwo
 2. In the VNet's access control (IAM) section, create a new role assignment.
 3. For the 'Assigned to' field, select the Union application's service principal.
 4. For the 'Role' field, you have two options:
-   a. Simplest approach: Assign the built-in Azure roles 'Reader' and 'User Access Administrator'.
-   b. Advanced approach: Create a custom role with the following specific permissions:
+    * Simplest approach: Assign the built-in Azure roles `Reader` and `User Access Administrator`.
+    * Advanced approach: Create a custom role with the following specific permissions:
       * `Microsoft.Network/*/read`
       * `Microsoft.Authorization/roleAssignments/write`
       * `Microsoft.Authorization/roleAssignments/delete`
