@@ -89,7 +89,6 @@ This configuration will provide the Union application with the necessary permiss
 
 We recommend using a VNet within the same Azure tenant as your Union data plane. It should be configured with the following characteristics:
 
-* We recommend using a VNet within the same Azure tenant as your Union data plane
 * A single subnet with an address prefix with /19 CIDR mask. This is used for Kubernetes nodes
 * One to five subnets with an address prefix with /14 to /18 CIDR mask. This is used for Kubernetes pods. /14 is preferrable to mitigate IP exhaustion. It is common to start with one subnet for initial clusters and add more subnets as workloads scale.
 * An non-allocated (I.E. no subnet) /19 CIDR range that will be retained for Service CIDRs.
