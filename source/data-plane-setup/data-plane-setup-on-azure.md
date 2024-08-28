@@ -61,7 +61,7 @@ Provide the group `Object ID` to Union.
 
 ## Setting up and managing your own VNet (optional)
 
-If you decide to manage your own VNet instead of leaving it to Union, then you will need to set it up yourself.
+If you decide to manage your own VNet instead of leaving it to Union, you will need to set it up yourself.
 
 ### Required Union VNet Permissions
 
