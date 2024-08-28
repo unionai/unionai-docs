@@ -58,3 +58,50 @@ We recommend [creating a Microsoft Entra group](https://learn.microsoft.com/en-u
 AKS Cluster admin access is commonly provided to individuals that need direct (e.g. `kubectl`) access to the cluster.
 
 Provide the group `Object ID` to Union.
+
+## Setting up and managing your own VNet (optional)
+
+If you decide to manage your own VNet instead of leaving it to Union, then you will need to set it up yourself.
+
+### Required Union VNet Permissions
+
+Union requires permissions to read Azure Network resources and assign "Network Contributor" role to the underlying Union Kubernetes Cluster.
+
+Therefore, the Union application requires the following RBAC permissions scoped to the target VNet. [Creating a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) will be required `scope`d to the VNet with the Union app service principal as the granted principal (`Members` through the Azure portal). For roles, the simplest option is to use Azure provided roles `Reader` and `User Access Administrator`. Alternatively, a custom role can be used with the following permissions:
+
+* `Microsoft.Network/*/read`
+* `Microsoft.Authorization/roleAssignments/write`
+* `Microsoft.Authorization/roleAssignments/delete`
+* `Microsoft.Authorization/roleAssignments/read`
+* `Microsoft.Authorization/roleDefinitions/read`
+
+### Required VNet Properties
+
+The VNet should be configured with the following characteristics:
+
+* We recommend using a VNet within the same Azure tenant as your Union data plane
+* A single subnet with an address prefix with /19 CIDR mask. This is used for Kubernetes nodes
+* One to five subnets with an address prefix with /14 to /18 CIDR mask. This is used for Kubernetes pods. /14 is preferrable to mitigate IP exhaustion. It is common to start with one subnet for initial clusters and add more subnets as workloads scale.
+* An non-allocated (I.E. no subnet) /19 CIDR range that will be retained for Service CIDRs.
+* Within the CIDR range choose a single IP address that will be used for internal DNS. This IP address should not be the first address within the CIDR range.
+* (Recommended): Enable [Virtual network service endpoints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) `Microsoft.Storage`, `Microsoft.ContainerRegistry`, and `Microsoft.KeyVault`.
+* (Recommended) Create a [NAT gateway for Virtual network](https://learn.microsoft.com/en-us/azure/nat-gateway/quickstart-create-nat-gateway-portal) egress traffic. This allows scaling out public IP addresses and limit potential external rate limitting scenarios.
+
+Once your VPC is set up, provide the following to Union:
+
+* The Virtual Network's subscription ID.
+* The Virtual Network's name.
+* The Virtual Network's resource group name.
+* The Virtual Network's subnet name used for Kubernetes nodes.
+* The Virtual Network's subnet names used for Kubernetes pods.
+* The CIDR range intended to use for Kubernetes services.
+* The IP address to be used for internal DNS.
+
+### Example VPC CIDR Block allocation
+
+* 10.0.0.0/8 for the VPC CIDR block.
+* 10.0.0.0/19 for the Kubernetes node specific subnet.
+* 10.4.0.0/14 for the initial Kubernetes pods specific subnet.
+  * 10.8.0.0/14, 10.12.0.0/14, 10.16.0.0/14, 10.20.0.0/14 for any future Kubernetes pod specific subnets.
+* 10.0.96.0/19 unallocated for Kubernetes services.
+* 10.0.96.10 for internal DNS.
