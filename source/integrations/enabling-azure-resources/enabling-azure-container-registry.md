@@ -34,7 +34,7 @@ Upon request, Union can:
 
 Union will provide the created container registry Name and Login server for Docker authentication.
 
-## Enable access to ACR in a different subscription within the same Azure Tenant
+## Enable access to ACR in a different subscription within the same Azure tenant
 
 Union data plane resources will require permissions to pull images from your container registry.
 
