@@ -9,7 +9,7 @@ Among these are a number of Azure Storage containers used internally by the Unio
 
 **These are not the Azure Blob Storage containers we are talking about in this section.**
 
-**We are discussing the case where you have **_**your own Azure Storage Container**_**that you set up to store input and output data used by your workflows.**
+**We are discussing the case where you have **_**your own Azure Blob Storage container**_**that you set up to store input and output data used by your workflows.**
 
 :::
 
