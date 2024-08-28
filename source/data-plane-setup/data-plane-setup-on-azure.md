@@ -75,7 +75,7 @@ Therefore, the Union application requires the following RBAC permissions scoped 
 * `Microsoft.Authorization/roleAssignments/read`
 * `Microsoft.Authorization/roleDefinitions/read`
 
-### Required VNet Properties
+### Required VNet properties
 
 The VNet should be configured with the following characteristics:
 
