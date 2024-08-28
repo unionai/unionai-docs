@@ -67,13 +67,23 @@ If you decide to manage your own VNet instead of leaving it to Union, you will n
 
 Union requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying Union Kubernetes cluster.
 
-Therefore, the Union application requires the following RBAC permissions scoped to the target VNet. [Creating a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) will be required `scope`d to the VNet with the Union app service principal as the granted principal (`Members` through the Azure portal). For roles, the simplest option is to use Azure provided roles `Reader` and `User Access Administrator`. Alternatively, a custom role can be used with the following permissions:
+[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to read VNet resources. These permissions should be scoped to the target Virtual Network (VNet) where the application will be deployed. Follow these steps to set up the required access:
 
-* `Microsoft.Network/*/read`
-* `Microsoft.Authorization/roleAssignments/write`
-* `Microsoft.Authorization/roleAssignments/delete`
-* `Microsoft.Authorization/roleAssignments/read`
-* `Microsoft.Authorization/roleDefinitions/read`
+1. Navigate to the Azure portal and locate the target VNet.
+2. In the VNet's access control (IAM) section, create a new role assignment.
+3. For the 'Assigned to' field, select the Union application's service principal.
+4. For the 'Role' field, you have two options:
+   a. Simplest approach: Assign the built-in Azure roles 'Reader' and 'User Access Administrator'.
+   b. Advanced approach: Create a custom role with the following specific permissions:
+      * `Microsoft.Network/*/read`
+      * `Microsoft.Authorization/roleAssignments/write`
+      * `Microsoft.Authorization/roleAssignments/delete`
+      * `Microsoft.Authorization/roleAssignments/read`
+      * `Microsoft.Authorization/roleDefinitions/read`
+5. Ensure the 'Scope' is set to the target VNet.
+6. Complete the role assignment process.
+
+This configuration will provide the Union application with the necessary permissions to interact with and manage resources within the specified VNet. For more detailed instructions on creating role assignments, refer to the [official Azure documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
 
 ### Required VNet properties
 
