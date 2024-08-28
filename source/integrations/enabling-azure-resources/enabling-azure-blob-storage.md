@@ -5,7 +5,7 @@ For Union customers whose data plane is in Azure, we walk through setting up acc
 :::{admonition} Azure Blob Storage in the Union environment
 
 Your data plane is set up with a Kubernetes cluster and other resources.
-Among these are a number of Azure Storage contaiers used internally by the Union operator running in the cluster (see [Platform architecture](/platform-architecture)) to store things like workflow metadata.
+Among these are a number of Azure Storage containers used internally by the Union operator running in the cluster (see [Platform architecture](/platform-architecture)) to store things like workflow metadata.
 
 **These are not the Azure Storage containers we are talking about in this section.**
 
