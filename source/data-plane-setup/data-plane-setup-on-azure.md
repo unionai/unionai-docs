@@ -65,7 +65,7 @@ If you decide to manage your own VNet instead of leaving it to Union, you will n
 
 ### Required Union VNet permissions
 
-Union requires permissions to read Azure Network resources and assign "Network Contributor" role to the underlying Union Kubernetes Cluster.
+Union requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying Union Kubernetes cluster.
 
 Therefore, the Union application requires the following RBAC permissions scoped to the target VNet. [Creating a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) will be required `scope`d to the VNet with the Union app service principal as the granted principal (`Members` through the Azure portal). For roles, the simplest option is to use Azure provided roles `Reader` and `User Access Administrator`. Alternatively, a custom role can be used with the following permissions:
 
