@@ -1,6 +1,6 @@
 # Enabling Azure Blob Storage
 
-For Union customers whose data plane is in Azure and have a Blob Storage Container within the same Azure tenant.
+For Union customers whose data plane is in Azure, we walk through setting up access to your own Azure Blob Storage container.
 
 :::{admonition} Azure Blob Storage in the Union environment
 
