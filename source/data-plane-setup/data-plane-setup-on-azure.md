@@ -87,7 +87,7 @@ This configuration will provide the Union application with the necessary permiss
 
 ### Required VNet properties
 
-The VNet should be configured with the following characteristics:
+We recommend using a VNet within the same Azure tenant as your Union data plane. It should be configured with the following characteristics:
 
 * We recommend using a VNet within the same Azure tenant as your Union data plane
 * A single subnet with an address prefix with /19 CIDR mask. This is used for Kubernetes nodes
