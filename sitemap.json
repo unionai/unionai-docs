@@ -131,7 +131,8 @@
                 {"name": "enabling-azure-resources", "variants": ["byoc"],
                     "children": [
                         {"name": "enabling-azure-blob-storage", "variants": ["byoc"]},
-                        {"name": "enabling-azure-container-registry", "variants": ["byoc"]}
+                        {"name": "enabling-azure-container-registry", "variants": ["byoc"]},
+                        {"name": "enabling-azure-key-vault", "variants": ["byoc"]}
                     ]},
                 {"name": "agents", "variants": ["byoc"],
                     "children": [
