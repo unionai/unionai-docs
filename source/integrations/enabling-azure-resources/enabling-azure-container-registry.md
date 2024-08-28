@@ -10,15 +10,15 @@ Refer to [Azure documentation for more details](https://learn.microsoft.com/en-u
 
 ### Creating a container registry outside of Union
 
-Container registries that allow anonymous (I.E., public) access doesn't require additional configuration. Otherwise, the underlying AKS cluster must be granted permissions to pull from the container registry.
+ACR instances that allow anonymous (I.E., public) access doesn't require additional configuration. Otherwise, the underlying AKS cluster must be granted permissions to pull from the container registry.
 
 Private ACR for Union images is only supported for ACRs within the same tenant as the Union data plane. Refer to [Azure documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal?tabs=azure-cli) for creating Container Registries.
 
-### Using Union-managed container registry
+### Creating a Union-managed container registry
 
 Upon request, Union can create a container registry within your data plane.
 
-By default this Union-managed container registry:
+By default this Union-managed ACR instance:
 
 * Will be created within the same Subscription and Resource group of the Azure Kubernetes Cluster instance.
 * Union will create necessary permissions for the Azure Kubernetes Cluster to pull images from the container registry.
