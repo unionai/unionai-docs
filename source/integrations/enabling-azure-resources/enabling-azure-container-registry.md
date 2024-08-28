@@ -42,7 +42,7 @@ Union data plane resources will require permissions to pull images from you ACR 
 
 The simplest, most flexible approach is to provide Union the ability to add roles assignments against the ACR instance.
 
-Assign the union Entra app registration created during data plane setup the Azure provided role `User Access Administrator` or create a custom role, scoped to the ACR instance, with the following permissions:
+Your Azure account should have a Union Entra app that was created during your data plane setup. To this app, you need to either assign the Azure-provided role `User Access Administrator` or a custom-created role. If you choose to use a custom role, it must be scoped to the ACR instance, with the following permissions:
 
 * `Microsoft.Authorization/roleAssignments/write`
 * `Microsoft.Authorization/roleAssignments/delete`
