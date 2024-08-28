@@ -63,7 +63,7 @@ Provide the group `Object ID` to Union.
 
 If you decide to manage your own VNet instead of leaving it to Union, you will need to set it up yourself.
 
-### Required Union VNet Permissions
+### Required Union VNet permissions
 
 Union requires permissions to read Azure Network resources and assign "Network Contributor" role to the underlying Union Kubernetes Cluster.
 
