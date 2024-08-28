@@ -83,7 +83,13 @@ Union requires permissions to read Azure network resources and assign the `Netwo
 5. Ensure the 'Scope' is set to the target VNet.
 6. Complete the role assignment process.
 
-This configuration will provide the Union application with the necessary permissions to interact with and manage resources within the specified VNet. For more detailed instructions on creating role assignments, refer to the [official Azure documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+This configuration will provide the Union application with the necessary permissions to interact with and manage resources within the specified VNet.
+
+:::{admonition} Creating Azure role assignments
+
+For more detailed instructions on creating role assignments, refer to the [official Azure documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+
+:::
 
 ### Required VNet properties
 

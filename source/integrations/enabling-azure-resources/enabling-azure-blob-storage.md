@@ -39,4 +39,8 @@ The simplest, most flexible approach is to provide Union the ability to add role
 
 Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Storage Blob Data Contributor` role to the `unionrunner` user assigned identity scoped the blob storage container.
 
+:::{admonition} Union managed user-assigned identities
+
 Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `unionrunner` user assigned managed identity within the same resource group as the Union data plane.
+
+:::
