@@ -15,7 +15,7 @@ Among these are a number of Azure Storage containers used internally by the Unio
 
 ## Providing permissions to Azure Blob Storage container
 
-Union data plane tasks utilizes Azure Workload Identity Federation to access Azure resources as an Azure user assigned identity. Access Azure Blob Storage containers requires updating permissions to permit this Union managed user assigned identity.
+Union data plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Blob Storage containers requires updating permissions to permit this Union-managed user-assigned identity.
 
 ### Union managed permissions
 
