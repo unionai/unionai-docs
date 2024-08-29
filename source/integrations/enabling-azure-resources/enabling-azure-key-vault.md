@@ -4,7 +4,7 @@
 This documentation exists for customers who must use Azure Key Vault for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Azure Key Vault.
 ```
 
-The Union managed `unionrunner` user assigned identities needs to be granted permissions to access [Azure Key Vault secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/about-secrets) as [Flyte secrets](https://docs.flyte.org/en/latest/user_guide/productionizing/secrets.html).
+The Union-managed `unionrunner` identity must be granted permission to access [Azure Key Vault secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/about-secrets).
 
 :::{admonition} Managing Azure Key Vault secrets
 
