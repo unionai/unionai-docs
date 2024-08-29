@@ -1,12 +1,12 @@
 # Data retention policy
 
-Each data plane has its own Union-internal object store (and AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
+Each data plane has its own Union-internal object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
 This includes task input-output metadata, task input-output raw data, Flyte Decks data, and fast registration data.
 
 When setting up your data plane (or multiple data planes, if you are using a [multi-cluster set up](../data-plane-setup/multi-cluster)) you can specify the data retention policy for that data plane.
 This policy determines how long workflow execution data will be stored in the object store before it is automatically deleted.
 
-A retention policy is specified as a maximum time in days or, "unlimited", in the case where automatic data deletion is disabled.
+A retention policy is specified as a maximum time in days or `unlimited` (in which case automatic data deletion is disabled).
 
 ## Data retention is specified at set up time
 
