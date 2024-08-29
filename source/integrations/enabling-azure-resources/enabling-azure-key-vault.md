@@ -8,7 +8,7 @@ The Union managed `unionrunner` user assigned identities needs to be granted per
 
 :::{admonition} Managing Azure Key Vault secrets
 
-Refer to [Azure official documentation](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) for assistance creating and managing secrets.
+Refer to [Azure official documentation](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) for details on  creating and managing secrets.
 
 :::
 
