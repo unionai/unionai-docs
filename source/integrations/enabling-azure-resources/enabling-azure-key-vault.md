@@ -27,7 +27,7 @@ Refer to [Azure portal's user assigned managed identitites](https://portal.azure
 ## Accessing the Secret within Flyte
 
 * Define a `Secret` object where
-  * `Secret.group` is the a http URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
+  * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
   * `Secret.group_version` can be omitted to retrieve the latest version or set to an explicit secret version
   * `Secret.mount_requirement` is `Secret.MountType.FILE`
 * Pass that `Secret` object in the `secret_requests` parameter of the `@task` decorator.
