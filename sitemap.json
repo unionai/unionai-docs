@@ -101,7 +101,8 @@
                 {"name": "flyte-file-and-flyte-directory", "variants": ["byoc", "serverless"]},
                 {"name": "downloading-with-ff-and-fd", "variants": ["byoc", "serverless"]},
                 {"name": "task-input-and-output", "variants": ["byoc"]},
-                {"name": "accelerated-datasets", "variants": ["byoc"]}
+                {"name": "accelerated-datasets", "variants": ["byoc"]},
+                {"name": "data-retention-policy", "variants": ["byoc"]}
             ]},
         {"name": "administration", "variants": ["byoc"],
             "children": [

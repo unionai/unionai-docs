@@ -11,6 +11,7 @@ You will need to send the following details to the Union team:
     * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
     * [Region](#region) in which the cluster will be deployed.
     * [VPC](#vpc) setup (will you use your own VPC or have Union provision one for you?)
+    * [Data retention policy](#data-retention-policy) for raw data stored in this cloud provider account
     * For each [node group](#node-group-name):
         * [Node type](#node-type)
         * [Minimum](#minimum)
@@ -18,6 +19,7 @@ You will need to send the following details to the Union team:
         * [Interruptible](#interruptible-instances)?
         * [Taints](#taints)
         * [Disk](#disk)
+
 
 ## Cloud provider
 
@@ -52,6 +54,14 @@ For each cluster, specify the region. Available regions are `us-west`, `us-east`
 
 Specify whether you want to set up your own VPC or use one provided by Union.
 If you are provisioning your own VPC, provide the VPC ID.
+
+## Data retention policy
+
+Each cluster has its own internal object store that is used to store data used in the execution of workflows.
+This includes task input-output metadata, task input-output raw data, Flyte Decks data, and fast registration data.
+For each cluster, you can choose to enable a data retention policy that defines a maximum time for this data to be stored, after which it will be automatically deleted.
+Alternatively, you can set this to `unlimited` to disable automatic data deletion.
+See [Data retention policy](../data-input-output/data-retention-policy) for more details.
 
 ## Worker node groups
 
@@ -127,6 +137,7 @@ Values provided by you are in single quotes (').
         - Account ID: 'account-id-1'
         - Region: 'us-west'
         - VPC: 'vpc-id-1'
+        - Data retention policy: '30 days'
         - Node groups:
             - 'node-group-1'
                 - Node type: 'p3d.4xlarge'
@@ -146,6 +157,7 @@ Values provided by you are in single quotes (').
         - Account ID: 'account-id-2'
         - Region: 'us-west'
         - VPC: 'vpc-id-2'
+        - Data retention policy: '30 days'
         - Node groups:
             - 'node-group-1'
                 - Node type: 'p3d.4xlarge'
@@ -165,6 +177,7 @@ Values provided by you are in single quotes (').
         - Account ID: 'account-id-3'
         - Region: 'us-west'
         - VPC: 'vpc-id-3'
+        - Data retention policy: 'unlimited'
         - Node groups:
             - 'node-group-1'
                 - Node type: 'p3d.4xlarge'
