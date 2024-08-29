@@ -11,7 +11,7 @@ You will need to send the following details to the Union team:
     * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
     * [Region](#region) in which the cluster will be deployed.
     * [VPC](#vpc) setup (will you use your own VPC or have Union provision one for you?)
-    * [Data retention policy](#data-retention-policy) for raw data stored in this cloud provider account
+    * [Data retention policy](#data-retention-policy) for workflow execution data stored in this cloud provider account.
     * For each [node group](#node-group-name):
         * [Node type](#node-type)
         * [Minimum](#minimum)
