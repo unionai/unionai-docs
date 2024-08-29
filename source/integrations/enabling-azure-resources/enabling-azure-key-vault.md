@@ -16,7 +16,7 @@ Refer to [Azure official documentation](https://learn.microsoft.com/en-us/azure/
 
 Union data plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Key Vault containers requires updating permissions to permit this Union-managed user-assigned identity.
 
-[Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Key Vault Secrets User` role to the `unionrunner` user assigned identity scoped to the Azure Key Vault Secret.
+[Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Key Vault Secrets User` role to the `unionrunner` user-assigned identity. Maker sure it is scoped to the Azure Key Vault Secret.
 
 :::{admonition} Union managed user-assigned identities
 
