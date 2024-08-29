@@ -20,7 +20,7 @@ Union data plane tasks employ Azure Workload Identity Federation to access Azure
 
 :::{admonition} Union managed user-assigned identities
 
-Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `unionrunner` user assigned managed identity within the same resource group as the Union data plane.
+Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `unionrunner` user-assigned identity within the Union data plane resource group.
 
 :::
 
