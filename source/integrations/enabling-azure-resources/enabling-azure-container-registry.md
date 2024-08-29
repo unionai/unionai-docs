@@ -34,13 +34,33 @@ Upon request, Union can:
 
 Union will provide the created container registry Name and Login server for Docker authentication.
 
-## Enable access to ACR within the same Azure Subscription
+## Enable access to ACR in a different subscription within the same Azure tenant
 
-Given that Union was [set up with appropriate permissions](../../data-plane-setup/data-plane-setup-on-azure.md), Union can create and manage the permissions required to provide the dataplane's AKS cluster. Provide your ACR container ID to Union Support if Union-managed permissions are desired. Otherwise, refer to [Enable access to ACR within the same Azure Tenant but different Azure Subscription](#enable-access-to-acr-within-the-same-azure-tenant-but-different-azure-subscription)
+Union data plane resources will require permissions to pull images from your container registry.
 
-## Enable access to ACR within the same Azure Tenant but different Azure Subscription
+### Allow Union to manage permissions
 
-Union will most likely not have permissions to assign roles to AKS managed identities scoped to the ACR instance unless special permission accomodations have been made. This will require you to use [Azure Role Assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to assign `AcrPull` role to Kubernetes service principal provided by Union.
+The simplest, most flexible approach is to provide Union the ability to add roles assignments against the container registry. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to assign roles to the container registry. These permissions should be scoped to the target container registry. Follow these steps to set up the required access:
+
+1. Navigate to the Azure portal and locate the target VNet.
+2. In the VNet's access control (IAM) section, create a new role assignment.
+3. For the 'Assigned to' field, select the Union application's service principal.
+4. For the 'Role' field, you have two options:
+    * Simplest approach: Assign the built-in Azure role `User Access Administrator`.
+    * Advanced approach: Create a custom role with the following specific permissions:
+      * `Microsoft.Authorization/roleAssignments/write`
+      * `Microsoft.Authorization/roleAssignments/delete`
+      * `Microsoft.Authorization/roleAssignments/read`
+      * `Microsoft.Authorization/roleDefinitions/read`
+5. Ensure the 'Scope' is set to the target container registry.
+6. Complete the role assignment process.
+7. Provide the container registry [resource ID](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.storage.models.resource.id) to Union support.
+
+### Manage permissions directly
+
+Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `AcrPull` role to the underlying AKS cluster kubelet service principal ID. The service principal ID can be provided by Union support.
+
+Note, this process needs to be repeated every time the underlying Kubernetes cluster is changed or a new cluster is added.
 
 ## Enable access to ACR in a different Azure Tenant
 

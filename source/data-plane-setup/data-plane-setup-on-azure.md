@@ -58,3 +58,65 @@ We recommend [creating a Microsoft Entra group](https://learn.microsoft.com/en-u
 AKS Cluster admin access is commonly provided to individuals that need direct (e.g. `kubectl`) access to the cluster.
 
 Provide the group `Object ID` to Union.
+
+## Setting up and managing your own VNet (optional)
+
+If you decide to manage your own VNet instead of leaving it to Union, you will need to set it up yourself.
+
+### Required Union VNet permissions
+
+Union requires permissions to read Azure network resources and assign the `Network Contributor` role to the underlying Union Kubernetes cluster.
+
+[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to read VNet resources and assign roles. These permissions should be scoped to the target Virtual Network (VNet). Follow these steps to set up the required access:
+
+1. Navigate to the Azure portal and locate the target VNet.
+2. In the VNet's access control (IAM) section, create a new role assignment.
+3. For the 'Assigned to' field, select the Union application's service principal.
+4. For the 'Role' field, you have two options:
+    * Simplest approach: Assign the built-in Azure roles `Reader` and `User Access Administrator`.
+    * Advanced approach: Create a custom role with the following specific permissions:
+      * `Microsoft.Network/*/read`
+      * `Microsoft.Authorization/roleAssignments/write`
+      * `Microsoft.Authorization/roleAssignments/delete`
+      * `Microsoft.Authorization/roleAssignments/read`
+      * `Microsoft.Authorization/roleDefinitions/read`
+5. Ensure the 'Scope' is set to the target VNet.
+6. Complete the role assignment process.
+
+This configuration will provide the Union application with the necessary permissions to interact with and manage resources within the specified VNet.
+
+:::{admonition} Creating Azure role assignments
+
+For more detailed instructions on creating role assignments, refer to the [official Azure documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
+
+:::
+
+### Required VNet properties
+
+We recommend using a VNet within the same Azure tenant as your Union data plane. It should be configured with the following characteristics:
+
+* A single subnet with an address prefix with `/19` CIDR mask. This is used for Kubernetes nodes.
+* One to five subnets with an address prefix with `/14` to `/18` CIDR mask. This is used for Kubernetes pods. `/14` is preferable to mitigate IP exhaustion. It is common to start with one subnet for initial clusters and add more subnets as workloads scale.
+* An non-allocated (i.e., no subnet) `/19` CIDR range that will be retained for service CIDRs.
+* Within the CIDR range, choose a single IP address that will be used for internal DNS. This IP address should not be the first address within the CIDR range.
+* (Recommended): Enable [virtual network service endpoints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview) `Microsoft.Storage`, `Microsoft.ContainerRegistry`, and `Microsoft.KeyVault`.
+* (Recommended) Create a [NAT gateway for virtual network](https://learn.microsoft.com/en-us/azure/nat-gateway/quickstart-create-nat-gateway-portal) egress traffic. This allows scaling out public IP addresses and limit potential external rate limiting scenarios.
+
+Once your VPC is set up, provide the following to Union:
+
+* The Virtual Network's subscription ID.
+* The Virtual Network's name.
+* The Virtual Network's resource group name.
+* The Virtual Network's subnet name used for Kubernetes nodes.
+* The Virtual Network's subnet names used for Kubernetes pods.
+* The CIDR range intended to use for Kubernetes services.
+* The IP address to be used for internal DNS.
+
+### Example VPC CIDR Block allocation
+
+* `10.0.0.0/8` for the VPC CIDR block.
+* `10.0.0.0/19` for the Kubernetes node specific subnet.
+* `10.4.0.0/14` for the initial Kubernetes pods specific subnet.
+  * `10.8.0.0/14`, `10.12.0.0/14`, `10.16.0.0/14`, `10.20.0.0/14` for any future Kubernetes pod specific subnets.
+* `10.0.96.0/19` unallocated for Kubernetes services.
+* `10.0.96.10` for internal DNS.
