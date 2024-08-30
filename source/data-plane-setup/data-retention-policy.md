@@ -20,8 +20,8 @@ If you choose not to explicitly specify a retention policy for a category, the d
 
 ## Attempting to access deleted data
 
-If you attempt to access a workflow execution, or its associated data, that has been deleted, you will receive an error in the UI.
-To remedy this, you would have to re-register and re-run the workflow.
+If you attempt to access a deleted workflow execution or any of tis associated data, you will receive an error.
+To remedy this, you will have to re-register and re-run the workflow.
 
 ## Separate sets of policies per cluster
 
