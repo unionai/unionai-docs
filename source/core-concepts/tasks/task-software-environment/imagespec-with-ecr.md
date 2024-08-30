@@ -13,17 +13,13 @@ If you want to store your task container images in an ECR instance in an AWS acc
 Unlike GitHub Container Registry, ECR does not allow you to simply push an arbitrarily named image to the registry. Instead, you must first create a repository in the ECR instance and then push the image to that repository.
 
 :::{admonition} Registry, repository, and image
-
 In ECR terminology the **registry** is the top-level storage service. The registry holds a collection of **repositories**. Each repository corresponds to a named image and holds all versions of that image.
 
 When you push an image to a registry, you are actually pushing it to a repository within that registry. Strictly speaking, the term *image* refers to a specific *image version* within that repository.
-
 :::
 
 
-This means that you have to decide on the name of your image and create a repository by that name first, before registering your workflow.
-
-Adapting the example from the [previous section](./index.md), we will assume the following
+This means that you have to decide on the name of your image and create a repository by that name first, before registering your workflow. We will assume the following:
 
 * The ECR instance you will be using has the base URL `123456789012.dkr.ecr.us-eas-1.amazonaws.com`.
 
@@ -33,7 +29,7 @@ In the AWS console, go to **Amazon ECR > Repositories**. If you are in the same 
 
 Once you are in the correct ECR registry, under **Create a Repository**, click **Get Started**:
 
-![]/_static/images/create-repository-1.png)
+![](/_static/images/create-repository-1.png)
 
 On the **Create repository** page:
 
@@ -41,11 +37,11 @@ On the **Create repository** page:
 
 * Enter the name of the repository:
 
-![]/_static/images/create-repository-2.png)
+![](/_static/images/create-repository-2.png)
 
 and then scroll down to click **Create repository**:
 
-![]/_static/images/create-repository-3.png)
+![](/_static/images/create-repository-3.png)
 
 Your repository is now created.
 

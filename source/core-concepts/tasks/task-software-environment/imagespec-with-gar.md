@@ -24,9 +24,7 @@ When you push an image to GAR, you are actually pushing it to an image name with
 :::
 
 
-This means that you have to decide on the name of your repository and create it, before registering your workflow. You can, however, decide on the image name later, when you push the image to the repository.
-
-Adapting the example from the [previous section](./index.md), we will assume the following
+This means that you have to decide on the name of your repository and create it, before registering your workflow. You can, however, decide on the image name later, when you push the image to the repository. We will assume the following:
 
 * The GAR instance you will be using has the base URL `us-east1-docker.pkg.dev/my-union-dataplane/my-registry/`.
 
@@ -36,7 +34,7 @@ Adapting the example from the [previous section](./index.md), we will assume the
 
 In the GCP console, within your Union data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by Union. For your own work you should create a new one. Click **Create Repository**:
 
-![]/_static/images/gar-create-repository-1.png)
+![](/_static/images/gar-create-repository-1.png)
 
 On the **Create repository** page,
 
@@ -48,7 +46,7 @@ On the **Create repository** page,
 
 * Click **Create**:
 
-![]/_static/images/gar-create-repository-2.png)
+![](/_static/images/gar-create-repository-2.png)
 
 Your GAR repository is now created.
 
@@ -58,7 +56,7 @@ You will need to set up your local Docker client to authenticate with GAR. This 
 
 Directions can be found in the GAR console interface. Click on **Setup Instructions**:
 
-![]/_static/images/gar-setup-instructions.png)
+![](/_static/images/gar-setup-instructions.png)
 
 The directions are also reproduced below. (We show the directions for the `us-east1` region. You may need to adjust the command accordingly):
 
