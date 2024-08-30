@@ -24,46 +24,12 @@ cd flytesnacks/examples/basics
 
 3. Register the `simple_wf` workflow:
 
-{@@ if serverless @@}
-
-```{code-block} bash
-union register --project default --domain development --version v1 basics/workflow.py
-```
-{@@ elif byoc @@}
-
 ```{code-block} bash
 union register --project flytesnacks --domain development --version v1 basics/workflow.py
 ```
-{@@ endif @@}
 
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
 
-{@@ if serverless @@}
-
-```{code-block} python
-from flytekit import reference_launch_plan, workflow, map_task
-
-
-@reference_launch_plan(
-    project="default",
-    domain="development",
-    name="basics.workflow.simple_wf",
-    version="v1",
-)
-def simple_wf_lp(
-    x: list[int], y: list[int]
-) -> float:
-    return 1.0
-
-
-@workflow
-def map_simple_wf() -> list[float]:
-    x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
-    y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
-    return map_task(simple_wf_lp)(x=x, y=y)
-
-```
-{@@ elif byoc @@}
 ```{code-block} python
 from flytekit import reference_launch_plan, workflow, map_task
 
@@ -87,8 +53,6 @@ def map_simple_wf() -> list[float]:
     return map_task(simple_wf_lp)(x=x, y=y)
 
 ```
-
-{@@ endif @@}
 
 5. Register the `map_simple_wf` workflow:
 

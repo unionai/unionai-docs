@@ -18,15 +18,7 @@ set up your local Python environment, and install the `union[byoc]` command line
 
 ## Your project on Union
 
-{@@ if serverless @@}
-
-Union Serverless provides a default project (called **default**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
-
-{@@ elif byoc @@}
-
-Each Union BYOC organization has a default project (called **flytesnacks**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
-
-{@@ endif @@}
+Union provides a default project (called **flytesnacks**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
 
 To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project).
 
