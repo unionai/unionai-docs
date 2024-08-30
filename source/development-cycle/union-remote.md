@@ -117,8 +117,6 @@ object will be used.
 
 The following is an example that fetches tasks and creates a workflow:
 
-{@@ if byoc @@}
-
 ```{code-block} python
 from flytekit import workflow
 
@@ -135,29 +133,7 @@ def my_remote_wf(name: str) -> int:
     return task_2(task_1(name=name))
 ```
 
-{@@ elif serverless @@}
-
-```{code-block} python
-from flytekit import workflow
-
-task_1 = remote.fetch_task(name="core.basic.hello_world.say_hello", version="v1")
-task_2 = remote.fetch_task(
-    name="core.basic.lp.greet",
-    version="v13",
-    project="default",
-    domain="development",
-)
-
-@workflow
-def my_remote_wf(name: str) -> int:
-    return task_2(task_1(name=name))
-```
-
-{@@ endif @@}
-
 Another example that dynamically creates a launch plan for the `my_remote_wf` workflow:
-
-{@@ if byoc @@}
 
 ```{code-block} python
 from flytekit import LaunchPlan
@@ -167,19 +143,6 @@ my_workflow = remote.fetch_workflow(
 )
 launch_plan = LaunchPlan.get_or_create(name="my_launch_plan", workflow=my_workflow)
 ```
-
-{@@ elif serverless @@}
-
-```{code-block} python
-from flytekit import LaunchPlan
-
-my_workflow = remote.fetch_workflow(
-    name="my_workflow", version="v1", project="default", domain="development"
-)
-launch_plan = LaunchPlan.get_or_create(name="my_launch_plan", workflow=my_workflow)
-```
-
-{@@ endif @@}
 
 ### Fetching artifacts
 
@@ -274,7 +237,7 @@ remote.create_artifact(BasicArtifact)
 
 {@@ endif @@}
 
-For the full list of parameters for the Artifact class, see the [Flytekit artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html)
+For the full list of parameters, see the [Artifact class documentation](../api/flytekit-sdk/core-flytekit/artifacts).
 
 :::{note}
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
@@ -374,8 +337,6 @@ execution = remote.execute(
 
 After an execution is completed, you can retrieve the execution using the `fetch_execution` method. The fetched execution can be used to retrieve the inputs and outputs of an execution:
 
-{@@ if byoc @@}
-
 ```{code-block} python
 execution = remote.fetch_execution(
     name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development"
@@ -383,18 +344,6 @@ execution = remote.fetch_execution(
 input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
 ```
-
-{@@ elif serverless @@}
-
-```{code-block} python
-execution = remote.fetch_execution(
-    name="fb22e306a0d91e1c6000", project="default", domain="development"
-)
-input_keys = execution.inputs.keys()
-output_keys = execution.outputs.keys()
-```
-
-{@@ endif @@}
 
 The `inputs` and `outputs` correspond to the top-level execution or the workflow itself.
 
@@ -432,54 +381,23 @@ Node here can correspond to a task, workflow, or branch node.
 
 To list recent executions, use the `recent_executions` method:
 
-{@@ if byoc @@}
-
 ```{code-block} python
 recent_executions = remote.recent_executions(project="flytesnacks", domain="development", limit=10)
 ```
-
-{@@ elif serverless @@}
-
-```{code-block} python
-recent_executions = remote.recent_executions(project="default", domain="development", limit=10)
-```
-
-{@@ endif @@}
 
 The `limit` parameter is optional and defaults to 100.
 
 To list tasks by version, use the `UnionRemote.list_tasks_by_version` method.
 
-{@@ if byoc @@}
-
 ```{code-block} python
 tasks = remote.list_tasks_by_version(project="flytesnacks", domain="development", version="v1")
 ```
-
-{@@ elif serverless @@}
-
-```{code-block} python
-tasks = remote.list_tasks_by_version(project="default", domain="development", version="v1")
-```
-
-{@@ endif @@}
 
 ## Terminating an execution
 
 To terminate an execution, use the `terminate` method:
 
-{@@ if byoc @@}
-
 ```{code-block} python
 execution = remote.fetch_execution(name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development")
 remote.terminate(execution, cause="Code needs to be updated")
 ```
-
-{@@ elif serverless @@}
-
-```{code-block} python
-execution = remote.fetch_execution(name="fb22e306a0d91e1c6000", project="default", domain="development")
-remote.terminate(execution, cause="Code needs to be updated")
-```
-
-{@@ endif @@}
