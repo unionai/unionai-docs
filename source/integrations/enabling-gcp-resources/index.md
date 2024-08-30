@@ -51,16 +51,13 @@ There are two main options for setting this up:
 * **Global access**: With this arrangement, you define the permissions you want to grant to your task code, and those permissions are then applied to code in all your projects and domains.
 
 :::{admonition} GCP only supports scoping by domain
-
 In AWS-based data planes, scoping by both project _and_ domain is supported.
 However, due to intrinsic architectural constraints, GCP-based data planes only support scoping by domain.
-
 :::
 
 Global access is recommended for most use cases since it is simpler, but if you have a compelling reason to restrict access, then the project-domain-scoped access is available, at the cost of some additional complexity in setup.
 
 :::{admonition} Relationship with RBAC
-
 The permissions being discussed here are attached to a domain.
 This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management)).
 But, the two types of permissions are related.
@@ -69,7 +66,6 @@ For example, for a user (or machine application) to have read access to a Cloud 
 
 * The user (or machine application) must have **execute** permission for the project and domain where the code that does the reading resides.
 * The domain must have read permission for the Cloud Storage bucket.
-
 :::
 
 ## Domain-scoped access
@@ -92,21 +88,17 @@ We refer to it as `<UserFlyteGSA>`.
 To enable access to a resource in GCP you grant `<UserFlyteGSA>`access to that resource and assign it a role that includes the permissions that you want your code to have.
 
 :::{admonition} `<UserFlyteGSA>`
-
 Here we refer to the default global-access GSA as`<UserFlyteGSA>`because the precise name differs across installations.
 This GSA is identified by name and email of the following form:
 
 * Name: `<OrgName>-userflyterol-<Suffix>`
 * Email: `<OrgName>-userflyterol-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
-
 :::
 
 :::{admonition} Google Service Account (GSA)
-
 We use the term Google Service Account (GSA) to refer to the accounts that are managed in the GCP console under **IAM & Admin > Service Accounts**.
 This is to distinguish them from Kubernetes Service Accounts (KSAs).
 KSAs are a distinct type of service account managed _within_ the Kubernetes cluster. You will not normally encounter these at the data plane level.
-
 :::
 
 ## Find the actual name of `<UserFlyteGSA>`

@@ -17,22 +17,15 @@ pip install -U union
 {@@ elif byoc @@}
 
 ::::{tab-set}
-
 :::{tab-item} Unix/macOS
-
 ```{code-block} shell
 pip install -U 'union[byoc]'
 ```
-
 :::
-
-
 :::{tab-item} Windows
-
 ```{code-block} shell
 pip install -U "union[byoc]"
 ```
-
 :::
 ::::
 

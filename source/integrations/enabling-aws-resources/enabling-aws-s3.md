@@ -3,14 +3,12 @@
 For Union customers whose data plane is in AWS, we walk through setting up access to your own AWS S3 bucket.
 
 :::{admonition} AWS S3 in the Union environment
-
 Your data plane is set up with a Kubernetes cluster and other resources.
 Among these are a number of S3 buckets used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture)) to store things like workflow metadata.
 
 **These **_**are not**_** the S3 bucket we are talking about in this section.**
 
 **We are discussing the case where you have **_**your own S3 bucket**_** that you set up to store input and output data used by your workflows.**
-
 :::
 
 ## Add permissions to your custom policy

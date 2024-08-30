@@ -1,9 +1,7 @@
 # Viewing logs
 
 :::{note}
-
 This section applies to Union instances on AWS.
-
 :::
 
 In the [Execution view](../workflows/viewing-workflow-executions), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.

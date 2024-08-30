@@ -40,7 +40,6 @@ The `limits` setting serves as a hard upper bound on the resource profile of nod
 The task will not be scheduled on a node that exceeds the resource profile specified (in any of the specified attributes).
 
 :::{admonition} GPUs take only `limits`
-
 GPUs should only be specified in the `limits` section of the task decorator:
 
 * You should specify GPU requirements only in `limits`, not in `requests`, because Kubernetes will use the `limits` value as the `requests` value anyway.
@@ -48,7 +47,6 @@ GPUs should only be specified in the `limits` section of the task decorator:
 * You *can* specify GPU in both `limits` and `requests` but the two values must be equal.
 
 * You cannot specify GPU `requests` without specifying `limits`.
-
 :::
 
 ## The `accelerator` setting

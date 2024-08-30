@@ -40,10 +40,8 @@ An execution represents a single run of all or part of a workflow (including sub
 ![](/_static/images/execution-view.png)
 
 :::{note}
-
 An execution usually represents the run of an entire workflow.
 But, because workflows are composed of tasks (and sometimes subworkflows) and Union caches the outputs of those independently of the workflows in which they participate, it sometimes makes sense to execute a task or subworkflow independently.
-
 :::
 
 The execution view provides a lot of detailed information about the execution:

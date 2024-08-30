@@ -99,12 +99,10 @@ At this point, your task code will have access to the secret in the other projec
 `flytekit.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`
 
 :::{admonition} GCP secret name vs GCP secret path
-
 In your task code, the only difference between using a same-project secret and a cross-project secret is
 
 * With a _same-project secret,_ you can use either the **GCP secret name** or the **GCP secret path** as the value of the parameter `flytekit.Secret.group`.
 * With a _cross-project secret,_ you must use the **GCP secret path** as the value of the parameter `flytekit.Secret.group`.
-
 :::
 
 Here is an example:

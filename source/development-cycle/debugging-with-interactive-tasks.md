@@ -13,10 +13,8 @@ The `@vscode` decorator, when applied, converts a task into a Visual Studio Code
 This process overrides the standard execution of the task’s function body, initiating a command to start a Visual Studio Code server instead.
 
 :::{admonition} No need for ingress or port forwarding
-
 The Union interactive tasks feature is an adaptation of the open-source [FlyteInteractive plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/flyteinteractive_plugin/index.html).
 It improves on the open-source version by removing the need for ingress configuration or port forwarding, providing a more seamless debugging experience.
-
 :::
 
 ## Basic example
@@ -120,9 +118,7 @@ Click the **Play** button beside the configuration drop-down to run the task.
 This will run your task with inputs from the previous task. To inspect intermediate states, set breakpoints in the Python code and use the debugger for tracing.
 
 :::{admonition} No task output written to Union storage
-
 It’s important to note that during the debugging phase the task runs entirely within VSCode and does not write the output to Union storage.
-
 :::
 
 ## Update your code
@@ -137,9 +133,7 @@ After you finish debugging, you can resume your task with updated code by execut
 This will terminate the code server, run the task with inputs from the previous task, and write the output to Union storage.
 
 :::{admonition} Remember to persist your code
-
 Remember to persist your code (for example, by checking it into GitHub) before resuming the task, since you will lose the connection to the VSCode server afterwards.
-
 :::
 
 ![](/_static/images/resume-task.png)

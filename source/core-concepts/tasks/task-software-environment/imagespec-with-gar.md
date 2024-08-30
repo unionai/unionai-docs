@@ -16,13 +16,11 @@ Unlike GitHub Container Registry, GAR does not allow you to simply push an arbit
 Instead, you must first create a repository in the GAR instance and then push the image to that repository.
 
 :::{admonition} Registry, repository, and image
-
 In GAR terminology the **registry** is the top-level storage service. The registry holds a collection of **repositories**. Each repository in turn holds some number of images, and each specific image name can have different versions.
 
 Note that this differs from the arrangement in AWS ECR where the repository name and image name are essentially the same.
 
 When you push an image to GAR, you are actually pushing it to an image name within a repository within that registry. Strictly speaking, the term *image* refers to a specific *image version* within that repository.
-
 :::
 
 
@@ -65,7 +63,6 @@ Directions can be found in the GAR console interface. Click on **Setup Instructi
 The directions are also reproduced below. (We show the directions for the `us-east1` region. You may need to adjust the command accordingly):
 
 :::{admonition} Setup Instructions
-
 Follow the steps below to configure your client to push and pull packages using this repository.
 You can also [view more detailed instructions here](https://cloud.google.com/artifact-registry/docs/docker/authentication?authuser=1).
 For more information about working with artifacts in this repository, see the [documentation](https://cloud.google.com/artifact-registry/docs/docker?authuser=1).
@@ -82,7 +79,6 @@ Run the following command to configure `gcloud` as the credential helper for the
 ```{code-block} shell
 $ gcloud auth configure-docker us-east1-docker.pkg.dev
 ```
-
 :::
 
 ## Register your workflow to Union

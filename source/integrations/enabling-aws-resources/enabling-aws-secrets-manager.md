@@ -20,10 +20,8 @@ Contact the Union team if you are unsure.
 ## Create your secrets
 
 :::{note}
-
 Secrets must be defined within the same region as your Union data plane.
 For example, if your Union data plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
-
 :::
 
 Create your secrets in **AWS Secrets Manager** (see the [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) for details):
@@ -55,7 +53,6 @@ arn:aws:secretsmanager:<Region>:<AccountId>:secret:<SecretName>-<SixRandomCharac
 ```
 
 :::{note}
-
 You will need your secret ARN when you access your secret from within your code.
 Specifically, you will need to divide it into two strings:
 
@@ -66,7 +63,6 @@ Above, it is `arn:aws:secretsmanager:<Region>:<AccountId>:secret:`.
 Above, it is `<SecretName>-<SixRandomCharacters>`.
 
 See [Using AWS secrets in your Flyte code](./enabling-aws-secrets-manager.md#using-aws-secrets-in-your-flyte-code) for details on how these are used.
-
 :::
 
 ## Create a policy providing access to your secrets
@@ -91,11 +87,9 @@ To provide access to your newly created secrets in your code, you will first nee
 ```
 
 :::{note}
-
 The`Resource`entry takes a wildcard string that must match the ARNs of the secrets in your environment that you want to grant access to.
 This can be all the secrets in your environment (as shown above) or some subset (achieved by making the wildcard match more specific).
 Be sure to substitute the appropriate`<Region>`and`<AccountNumber>`.
-
 :::
 
 * Select **Next: Tags** and add tags if you wish.
@@ -107,7 +101,6 @@ It should be at the top of the policy summary page.
 We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<SecretManagerPolicyArn>`.
 
 :::{note}
-
 Alternatively, you can create the policy from the command line like this (remember to substitute the`<Region>`and`<AccountId>`appropriately):
 
 ```{code-block} shell
@@ -125,7 +118,6 @@ $ aws iam create-policy \
         ]\
       }
 ```
-
 :::
 
 ## Bind the policy to the User Flyte Role
