@@ -584,7 +584,7 @@
 /byoc/tutorials/machine-learning/credit-default-xgboost /byoc/tutorials/finance/credit-default-xgboost 301
 
 /byoc/administration /byoc/guide/administration 301
-/byoc/administration/applications /byoc/guide/administration/applications 301 /byoc/guide/administration/applications /byoc/guide/administration/applications 301 301
+/byoc/administration/applications /byoc/guide/administration/applications 301
 /byoc/administration/cli-authentication /byoc/guide/administration/cli-authentication 301
 /byoc/administration/index /byoc/guide/administration/index 301
 /byoc/administration/uctl-cli /byoc/guide/administration/uctl-cli 301
@@ -726,7 +726,7 @@
 /byoc/union-overview /byoc/guide/union-overview 301
 
 /serverless/administration /serverless/guide/administration 301
-/serverless/administration/applications /serverless/guide/administration/applications 301 /serverless/guide/administration/applications /serverless/guide/administration/applications 301 301
+/serverless/administration/applications /serverless/guide/administration/applications 301
 /serverless/administration/cli-authentication /serverless/guide/administration/cli-authentication 301
 /serverless/administration/index /serverless/guide/administration/index 301
 /serverless/administration/uctl-cli /serverless/guide/administration/uctl-cli 301
