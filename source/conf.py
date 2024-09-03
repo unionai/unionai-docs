@@ -58,6 +58,16 @@ html_sidebars = {
         "sbt-sidebar-nav.html",
     ]
 }
+html_permalinks_icon = "<span>¶</span>"
+html_theme_options = {
+    "show_scrolltop": True,
+    "awesome_external_links": True,
+    "main_nav_links": {
+        "Guide": "guide/index",
+        "Tutorial": "tutorials/index",
+        "Reference": "api/index"
+    }
+}
 
 # autodoc config
 autodoc_typehints = "description"
