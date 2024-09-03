@@ -43,7 +43,7 @@ graphviz_output_format = 'svg'
 myst_enable_extensions = ["colon_fence"]
 myst_heading_anchors = 6
 
-# Sphinx book theme
+# Sphinx awesome theme
 
 # Union logo
 html_logo = "_static/public/logo.svg"
@@ -53,9 +53,12 @@ html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
     "**": [
         "variant-selector.html",
-        "searchbox.html"
+        "sidebar_main_nav_links.html",
+        "sidebar_toc.html"
     ]
 }
+
+html_permalinks_icon = "<span>¶</span>"
 
 # autodoc config
 autodoc_typehints = "description"
