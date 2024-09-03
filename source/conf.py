@@ -52,10 +52,8 @@ html_favicon = "_static/public/favicon.ico"
 # Add variant selector to sidebar
 html_sidebars = {
     "**": [
-        "navbar-logo.html",
         "variant-selector.html",
-        "searchbox.html",
-        "sbt-sidebar-nav.html",
+        "searchbox.html"
     ]
 }
 
