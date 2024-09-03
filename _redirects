@@ -1,8 +1,14 @@
+# Top-level redirects
 / /byoc/guide 301
 /byoc /byoc/guide 301
+/byoc/ /byoc/guide 301
 /serverless /serverless/guide 301
+/serverless/ /serverless/guide 301
+
+# Special case
 /_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt /byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt 301
 
+# General redirects die to page moves
 /administration/ /byoc/guide/administration 301
 /administration /byoc/guide/administration 301
 /administration/applications/ /byoc/guide/administration/applications 301
@@ -583,6 +589,7 @@
 /byoc/tutorials/machine-learning/credit-default-xgboost/ /byoc/tutorials/finance/credit-default-xgboost 301
 /byoc/tutorials/machine-learning/credit-default-xgboost /byoc/tutorials/finance/credit-default-xgboost 301
 
+# Redirects due to creating guide at top level
 /byoc/administration /byoc/guide/administration 301
 /byoc/administration/applications /byoc/guide/administration/applications 301
 /byoc/administration/cli-authentication /byoc/guide/administration/cli-authentication 301
