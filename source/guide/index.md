@@ -1,4 +1,4 @@
-# Introduction
+# Guide
 
 The Union AI orchestration platform is based on the [Flyte](https://flyte.org) open-source project.
 
