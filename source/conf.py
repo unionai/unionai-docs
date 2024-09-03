@@ -55,7 +55,7 @@ html_theme_options = {
     "awesome_external_links": True,
     "main_nav_links": {
         "Guide": "guide/index",
-        "Tutorial": "tutorials/index",
+        "Tutorials": "tutorials/index",
         "Reference": "api/index"
     }
 }
