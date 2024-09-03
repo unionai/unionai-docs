@@ -54,9 +54,9 @@ html_theme_options = {
     "show_scrolltop": True,
     "awesome_external_links": True,
     "main_nav_links": {
-        "Guide": "/",
-        "Tutorial": "/tutorial",
-        "Reference": "/api"
+        "Guide": "guide/index",
+        "Tutorial": "tutorials/index",
+        "Reference": "api/index"
     }
 }
 
