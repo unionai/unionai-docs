@@ -112,7 +112,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
     
     Note the fact that the reference launch plan has an interface that corresponds exactly to the registered `simple_wf` we wish to map over.
 
-5. Register the `map_simple_wf` workflow:
+5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run it remotely.
 
     Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run remotely.
 
