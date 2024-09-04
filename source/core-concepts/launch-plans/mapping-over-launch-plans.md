@@ -43,7 +43,7 @@ You can run the `map_interest` workflow locally:
 union run map_interest_wf.py map_interest_wf
 ```
 
-Or remotely on Union:
+You can also run the `map_interest` workflow remotely on Union:
 
 ```{code-block} bash
 union run --remote map_interest_wf.py map_interest_wf
