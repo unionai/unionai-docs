@@ -6,7 +6,7 @@ You can either map over a `LaunchPlan` object defined in one of your Python modu
 
 ## Launch plan defined in your code
 
-Here we define launch plan around a workflow, `interest_workflow`, we want to parallelize in a file we'll call `map_interest_wf.py`. 
+Here we define a workflow called `interest_workflow` that we want to parallelize, along with a launch plan called `interest_workflow_lp`, in a file we'll call `map_interest_wf.py`. 
 We then write a new workflow, `map_interest_wf`, where we use a `map_task` to parallelize `interest_workflow` over a list of inputs.
 
 ```{code-block} python
