@@ -51,7 +51,7 @@ union run --remote map_interest_wf.py map_interest_wf
 
 ## Previously registered launch plan
 
-To demonstrate the ability to map over existing launch plans that have been registered, in this example we map over the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/basics/basics/workflow.py#L25) launch plan from the basic workflow example in the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).
+To demonstrate the ability to map over previously registered launch plans, in this example, we map over the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/basics/basics/workflow.py#L25) launch plan from the basic workflow example in the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).
 
 Recall that when a workflow is registered, an associated launch plan is created automatically. One of these launch plans will be leveraged in this example, though custom launch plans can also be used. 
 
