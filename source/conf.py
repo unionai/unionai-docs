@@ -43,7 +43,17 @@ html_theme = "sphinxawesome_theme"
 html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
-    "**": [
+    "guide/**": [
+        "variant-selector.html",
+        "sidebar_main_nav_links.html",
+        "sidebar_toc.html"
+    ],
+    "tutorials/**": [
+        "variant-selector.html",
+        "sidebar_main_nav_links.html",
+        "sidebar_toc.html"
+    ],
+    "api/**": [
         "variant-selector.html",
         "sidebar_main_nav_links.html",
         "sidebar_toc.html"
