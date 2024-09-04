@@ -37,7 +37,7 @@ def map_interest_wf() -> list[float]:
     return map_task(lp)(principal=principal, rate=rate, time=time)
 ```
 
-We can run this locally:
+You can run the `map_interest` workflow locally:
 
 ```{code-block} bash
 union run map_interest_wf.py map_interest_wf
