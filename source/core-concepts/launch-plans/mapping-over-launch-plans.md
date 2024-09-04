@@ -55,7 +55,6 @@ To demonstrate the ability to map over previously registered launch plans, in th
 
 Recall that when a workflow is registered, an associated launch plan is created automatically. One of these launch plans will be leveraged in this example, though custom launch plans can also be used. 
 
-Let's take a look at some steps:
 
 1. Clone the Flytesnacks repository:
 
