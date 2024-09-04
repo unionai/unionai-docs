@@ -110,7 +110,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
     
     ```
     
-    Note the fact that the reference launch plan has an interface that corresponds exactly to the registered `simple_wf` we with to map over.
+    Note the fact that the reference launch plan has an interface that corresponds exactly to the registered `simple_wf` we wish to map over.
 
 5. Register the `map_simple_wf` workflow:
 
