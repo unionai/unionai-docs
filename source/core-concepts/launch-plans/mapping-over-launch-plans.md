@@ -114,7 +114,6 @@ Recall that when a workflow is registered, an associated launch plan is created 
 
 5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run it remotely.
 
-    Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run remotely.
 
     ```{code-block} bash
     union register map_simple_wf.py
