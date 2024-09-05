@@ -8,7 +8,7 @@ Actors allow you to reuse a container and environment between tasks that need to
 {@@ if serverless @@}
 * **container_image:** The container image to use for the task. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
 {@@ elif byoc @@}
-* **container_image:** The container image to use for the task. Defaults to `cr.flyte.org/flyteorg/flytekit:py3.9-latest`.
+* **container_image:** The container image to use for the task. Defaults to `cr.flyte.org/flyteorg/flytekit:py3.11-latest`.
 {@@ endif @@}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
 * **limits:** Compute resource limits.
@@ -24,25 +24,46 @@ Actors allow you to reuse a container and environment between tasks that need to
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/e8e8fb29470e5237089182048092b96f16d0fdc3/guides/02_core_concepts/actors/hello_world.py
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/fd53b707f3158bce13746c0c68f67d27ad2f6d34/guides/02_core_concepts/actors/serverless/hello_world.py
 :caption: hello_world.py
 
 ```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/fd53b707f3158bce13746c0c68f67d27ad2f6d34/guides/02_core_concepts/actors/byoc/hello_world.py
+:caption: hello_world.py
+
+```
+{@@ endif @@}
 
 ### Multiple instances of the same task
 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/e8e8fb29470e5237089182048092b96f16d0fdc3/guides/02_core_concepts/actors/plus_one.py
-:caption: plus_one.py
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/fd53b707f3158bce13746c0c68f67d27ad2f6d34/guides/02_core_concepts/actors/serverless/plus_one.py
+:caption: hello_world.py
 
 ```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/fd53b707f3158bce13746c0c68f67d27ad2f6d34/guides/02_core_concepts/actors/byoc/plus_one.py
+:caption: hello_world.py
+
+```
+{@@ endif @@}
 
 ### Multiple tasks
 
 Every task execution in the following example will execute in the same `ActorEnvironment`. You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launchplans:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/e8e8fb29470e5237089182048092b96f16d0fdc3/guides/02_core_concepts/actors/multiple_tasks.py
-:caption: multiple_entities.py
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/fd53b707f3158bce13746c0c68f67d27ad2f6d34/guides/02_core_concepts/actors/serverless/multiple_tasks.py
+:caption: hello_world.py
 
 ```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/fd53b707f3158bce13746c0c68f67d27ad2f6d34/guides/02_core_concepts/actors/byoc/multiple_tasks.py
+:caption: hello_world.py
+
+```
+{@@ endif @@}
