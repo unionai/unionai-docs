@@ -17,13 +17,11 @@ It is mediated by the a specific Google Service Account (GSA) which we will refe
 (recall that this is in contrast to the task code access, which is mediated by a different default GSA, `<UserFlyteGSA>`).
 
 :::{admonition} `<FlyteWorkerGSA>`
-
 Here we refer to the default global-access GSA as`<FlyteWorkerGSA>`because the precise name differs across installations.
 This GSA is identified by name and email of the following form:
 
 * Name: `<OrgName>-flyteworker-<Suffix>`
 * Email: `<OrgName>-flyteworker-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
-
 :::
 
 To enable access to the GAR repository in the other account, do the following:

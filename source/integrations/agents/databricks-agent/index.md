@@ -38,10 +38,9 @@ To execute the Spark task on the agent, you must configure the `raw-output-data-
 This configuration ensures that flytekit transfers the input data to the blob storage and allows the Spark job running on Databricks to access the input data directly from the designated bucket.
 
 :::{note}
-
 The Spark task will run locally if the `raw-output-data-prefix` is not set.
-
 :::
+
 ```{code-block} shell
 $ union run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_task.py hello_spark
 ```

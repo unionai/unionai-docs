@@ -31,11 +31,9 @@ If you choose project isolation, then you would have one GCP project or AWS suba
 The precise set of GCP projects and/or AWS subaccounts depends on the number of Union domains and projects that you have.
 
 :::{admonition} Limitations of project per GCP project/AWS subaccount
-
 Note that if you choose to map each Union project to its own GCP project/AWS subaccount, you will need to define the set of such projects up front. This is because the Union project will have to be created when the GCP project/AWS subaccount is set up.
 
 If you also want the ability to create projects on demand, this can be supported by having an additional *default* GCP project/AWS subaccount. Any projects created *after* onboarding will be created in that default GCP project/AWS subaccount.
-
 :::
 
 ## Data and metadata isolation

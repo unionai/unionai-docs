@@ -53,7 +53,6 @@ There are two main options for setting this up:
 Global access is recommended for most use cases since it is simpler, but if you have a compelling reason to restrict access, then the project-domain-scoped access is available, at the cost of some additional complexity in setup.
 
 :::{admonition} Relationship with RBAC
-
 The permissions being discussed here are attached to a project and domain.
 This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management)).
 But, the two types of permissions are related.
@@ -62,7 +61,6 @@ For example, for a user (or machine application) to have read access to an S3 bu
 
 * The user (or machine application) must have **execute** permission for the project and domain where the code that does the reading resides.
 * The project and domain must have read permission for the S3 bucket.
-
 :::
 
 ## Background
@@ -80,7 +78,6 @@ This policy contains all the permissions granted to your task code when your dat
 If you requested permissions for resources specific to your organization at set up time, they will have been added here.
 
 :::{admonition} `<UserFlyteRole>` vs `userflyterole`
-
 The entity that we refer to here as `<UserFlyteRole>` is an IAM role.
 As mentioned the actual name of this role in your system will be of the form `<YourOrgPrefix>-userflyterole.`
 
@@ -88,17 +85,14 @@ By default, this role has an attached IAM policy called `userflyterole`.
 This is the literal name used in all AWS-based data planes.
 
 **Be aware of the difference and don't get these two things confused!**
-
 :::
 
 :::{admonition} `<UserFlyteRole>`vs `<AdminFlyteRole>`
-
 In addition to the task pods, your cluster also contains pods that run Union services, which are used to manage tasks and to connect your cluster to the control plane.
 These pods are bound to a different default role, `<AdminFlyteRole>` (again, its actual name differs from organization to organization).
 The separation of this role from `<UserFlyteRole>` serves to provide isolation between Union administrative logic and your workflow logic.
 
 **You should not alter any settings associated with `<AdminFlyteRole>`**.
-
 :::
 
 ## Enabling access
@@ -142,13 +136,11 @@ Here we will refer to the ARN is `<CustomPolicyArn>`.
 To set up global access, you must bind the `<CustomPolicy>` that you created above to the role `<UserFlyteRole>`.
 
 :::{note}
-
 As mentioned above, the actual name of `<UserFlyteRole>` has the form:
 
 **`<YourOrgPrefix>-userflyterole`**
 
 You should be able to find the role by searching in your AWS IAM console for roles with names that follow that pattern.
-
 :::
 
 * Go to **IAM > Access management > Roles**.
@@ -157,7 +149,6 @@ You should be able to find the role by searching in your AWS IAM console for rol
 * In the displayed list find `<CustomPolicy>` and select its checkbox, then select **Add permissions**.
 
 :::{note}
-
 Alternatively, you can perform the binding from the command line like this:
 
 ```{code-block} shell
@@ -167,7 +158,6 @@ $ aws iam attach-role-policy \
 ```
 
 Notice that in this case, you have to use `<CustomPolicyArn>` here instead of `<CustomPolicy>`.
-
 :::
 
 **At this point, all task code in your organization will have access to the cloud resource as defined by your custom policy.**

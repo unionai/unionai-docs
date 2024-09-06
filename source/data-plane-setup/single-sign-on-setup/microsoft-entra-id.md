@@ -3,9 +3,7 @@
 To set up your Union instance to use Microsoft Entra ID as the identity provider, follow the directions below.
 
 :::{admonition} Microsoft documentation
-
 In this article, we cover the same steps as the "[Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app.md#register-an-application)" Microsoft documentation, but with additional directions specific to Union.
-
 :::
 
 ## Register an Entra ID application
@@ -29,11 +27,9 @@ In this article, we cover the same steps as the "[Quickstart: Register an applic
 ![Register an application](/_static/images/entra-id-register.png)
 
 :::{admonition} Make the app visible to users
-
 New app registrations are hidden to users by default. You must enable the app when you are ready for users to see the app on their **My Apps** page.
 To enable the app, in the Microsoft Entra admin center, navigate to **Identity > Applications > Enterprise applications** and select the app.
 Then, on the **Properties** page, toggle **Visible to users?** to **Yes**.
-
 :::
 
 ## Copy the values needed by the Union team

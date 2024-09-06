@@ -15,7 +15,6 @@ avoid the overhead of large Python dependencies.
 To install `uctl`, you can use Homebrew on macOS or `curl` on macOS, Linux, or Windows:
 
 ::::{tab-set}
-
 :::{tab-item} macOS
 To use [Homebrew](https://brew.sh/), do this:
 
@@ -32,7 +31,6 @@ $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 
 To download manually, see the [`uctl` releases](https://github.com/unionai/uctl/releases).
 :::
-
 :::{tab-item} Linux
 To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
@@ -42,7 +40,6 @@ $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 
 To download manually, see the [`uctl` releases](https://github.com/unionai/uctl/releases).
 :::
-
 :::{tab-item} Windows
 To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
