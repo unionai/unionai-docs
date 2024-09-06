@@ -131,7 +131,7 @@ def process_options(app, ctx, lines):
     # and change str representations of functions
     # to default image and project values
     counter = 5
-    default_project = "'default' (Serverless), 'flytesnacks' (BYOC)"
+    default_project = "flytesnacks"
     default_image = "'cr.union.ai/union/unionai:py3.11-latest' (Serverless), 'cr.flyte.org/flyteorg/flytekit:py3.9-latest' (BYOC)"
     for line in lines:
         idx = lines.index(line)
