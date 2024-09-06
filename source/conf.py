@@ -43,10 +43,26 @@ html_theme = "pydata_sphinx_theme"
 html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
-    "**": [
+    "guide/**": [
+        "variant-selector.html",
+        "custom-sidebar.html"
+    ],
+    "tutorials/**": [
+        "variant-selector.html",
+        "custom-sidebar.html"
+    ],
+    "api/**": [
         "variant-selector.html",
         "custom-sidebar.html"
     ]
+}
+
+html_context = {
+    "dir_to_title": {
+        "guide": "Guide",
+        "tutorials": "Tutorials",
+        "api": "API",
+    }
 }
 
 # Autodoc config

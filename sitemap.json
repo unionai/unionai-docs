@@ -1,4 +1,4 @@
-{"name": "", "title": "Introduction", "variants": ["byoc", "serverless"],
+{"name": "", "variants": ["byoc", "serverless"],
     "children": [
         {"name": "guide", "variants": ["byoc", "serverless"],
             "children": [
