@@ -12,7 +12,8 @@
                         {"name": "other-identity-providers", "variants": ["byoc"]}
                     ]},
                 {"name": "configuring-your-data-plane", "variants": ["byoc"]},
-                {"name": "multi-cluster", "variants": ["byoc"]}
+                {"name": "multi-cluster", "variants": ["byoc"]},
+                {"name": "data-retention-policy", "variants": ["byoc"]}
             ]},
         {"name": "quick-start", "variants": ["byoc", "serverless"]},
         {"name": "first-workflow", "variants": ["byoc", "serverless"],
