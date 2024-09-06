@@ -1,7 +1,7 @@
 {# Displays the TOC-subtree for pages nested under the currently active top-level TOCtree element. #}
-<nav class="bd-docs-nav bd-links"
-     aria-label="{{ _('Section Navigation') }}">
-  <p class="bd-links__title" role="heading" aria-level="1">{{ _("Section Navigation") }}</p>
+{% set section_title = dir_to_title.get(pagename.split('/')[0]) %}
+<nav class="bd-docs-nav bd-links" aria-label="{{ section_title }}">
+  <p class="bd-links__title" role="heading" aria-level="1">{{ section_title }}</p>
   <div class="bd-toc-item navbar-nav">
     {{- generate_toctree_html(
       "sidebar",
