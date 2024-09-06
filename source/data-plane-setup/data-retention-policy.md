@@ -1,5 +1,8 @@
 # Data retention policy
 
+Data retention polices allow you to control what data is stored in your data plane and for how long.
+This allows you to reduce costs by ensuring that you only keep data that you actually need.
+
 Each data plane has its own Union-internal object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
 As a Union administrator, you can specify retention policies for this data when setting up your data plane.
 The policies are specified in discussion with the Union team when you set up your Union instance.
