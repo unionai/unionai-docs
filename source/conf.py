@@ -38,8 +38,12 @@ graphviz_output_format = 'svg'
 myst_enable_extensions = ["colon_fence"]
 myst_heading_anchors = 6
 
-# Sphinx awesome theme
+# Pydata Sphinx theme
 html_theme = "pydata_sphinx_theme"
+html_theme_options = {
+    "navbar_center": ["variant-selector", "navbar-nav"],
+    # "navbar_start": ["navbar-logo", "variant-selector"],
+}
 html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
@@ -54,7 +58,7 @@ html_sidebars = {
     "api/**": [
         "variant-selector.html",
         "custom-sidebar.html"
-    ]
+    ],
 }
 
 html_context = {
