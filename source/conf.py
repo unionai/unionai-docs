@@ -41,23 +41,19 @@ myst_heading_anchors = 6
 # Pydata Sphinx theme
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
-    "navbar_center": ["variant-selector", "navbar-nav"],
-    # "navbar_start": ["navbar-logo", "variant-selector"],
+    "navbar_start": ["navbar-logo", "variant-selector"],
 }
 html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
     "guide/**": [
-        "variant-selector.html",
-        "custom-sidebar.html"
+        "custom-sidebar.html",
     ],
     "tutorials/**": [
-        "variant-selector.html",
-        "custom-sidebar.html"
+        "custom-sidebar.html",
     ],
     "api/**": [
-        "variant-selector.html",
-        "custom-sidebar.html"
+        "custom-sidebar.html",
     ],
 }
 
