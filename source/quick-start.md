@@ -72,40 +72,23 @@ $ source .venv/bin/activate
 
 After setting up your virtual environment and activating it, install the `union` Python package:
 
-{@@ if serverless @@}
-
 ```{code-block} shell
-$ pip install -U union
+$ pip install union
 ```
-
-:::{note}
-These directions are for Union Serverless.
-
-If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start#install-the-union-package).
-:::
-
-{@@ elif byoc @@}
-
-```{code-block} shell
-pip install -U "union[byoc]"
-```
-
-:::{note}
-The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
-
-If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/quick-start#install-the-union-package).
-
-You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
-:::
-
-{@@ endif @@}
 
 This will install:
 * The [`union` command-line tool](./api/union-cli)
 * The [`union` SDK](./api/sdk/index)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
-{@@ if byoc @@}
+
+
+
+
+
+
+
+
 
 ## Set up configuration for the `union` CLI
 
@@ -132,7 +115,19 @@ Alternatively, you can always specify the configuration file on the command line
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
-{@@ endif @@}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{warning}
 If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
