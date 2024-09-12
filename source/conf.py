@@ -57,16 +57,6 @@ html_sidebars = {
         "custom-sidebar.html",
     ],
 }
-html_permalinks_icon = "<span>¶</span>"
-html_theme_options = {
-    "show_scrolltop": True,
-    "awesome_external_links": True,
-    "main_nav_links": {
-        "Guide": "guide/index",
-        "Tutorial": "tutorials/index",
-        "Reference": "api/index"
-    }
-}
 
 html_context = {
     "dir_to_title": {
