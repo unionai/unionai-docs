@@ -1,4 +1,4 @@
-# API reference
+# API
 
 You can interact with your Union deployment in the following ways:
 
