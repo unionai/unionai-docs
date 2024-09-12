@@ -67,4 +67,11 @@ Pre-process raw sequencing reads, build an index, and perform alignment
 to the a reference genome using the Bowtie2 aligner.
 :::
 
+:::{grid-item-card} {octicon}`video` Video Dubbing with Open-Source Models
+:link: multimodal-ai/video-dubbing
+:link-type: doc
+
+Use open-source models to dub videos.
+:::
+
 ::::
