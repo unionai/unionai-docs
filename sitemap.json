@@ -225,6 +225,15 @@
                     "children": [
                         {"name": "alignment", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/genomic_alignment/genomic_alignment.py"}
                     ]
+                },
+                { "name": "multimodal-ai", "variants": ["byoc", "serverless"],
+                    "children": [
+                        {
+                            "name": "video-dubbing",
+                            "variants": ["byoc", "serverless"],
+                            "from_py_file": "./unionai-examples/tutorials/video_translation/video_translation.py"
+                        }
+                    ]
                 }
             ]
         },
