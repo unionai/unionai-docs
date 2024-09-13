@@ -16,7 +16,7 @@ scikit-learn
 sphinx
 sphinx-click
 sphinx-design
-sphinx-book-theme
+pydata-sphinx-theme
 sphinx-copybutton
 sphinx-docsearch
 sphinxext-remoteliteralinclude
