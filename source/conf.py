@@ -42,7 +42,9 @@ myst_heading_anchors = 6
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
     "navbar_start": ["navbar-logo", "variant-selector"],
-    "secondary_sidebar_items": ["page-toc"],
+    "secondary_sidebar_items": ["custom-page-toc"],
+    "footer_start": [],
+    "footer_end": []
 }
 html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
