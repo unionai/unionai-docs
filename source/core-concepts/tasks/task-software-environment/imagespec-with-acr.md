@@ -19,7 +19,7 @@ Refer to [Azure "Individual login with Microsoft Entra ID" documentation](https:
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
+For example, to use an existing ACR repository, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
 
 ```{code-block} python
 image_spec = ImageSpec(
