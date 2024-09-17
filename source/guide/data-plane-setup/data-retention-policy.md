@@ -20,7 +20,7 @@ The retention policy system distinguishes three categories of data:
     * Internal metadata used by Union.
 2. Fast-registered code:
     * Local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
-3. Flyte-plugin metadata (for example, Spark history server data).
+3. Flyte plugin metadata (for example, Spark history server data).
 
 Each category of data is stored in a separate Union-managed object store bucket and versioning is enabled on these buckets.
 This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
