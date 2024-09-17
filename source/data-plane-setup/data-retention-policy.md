@@ -12,17 +12,23 @@ They are not adjustable through the UI or CLI.
 
 The retention policy system distinguishes three categories of data:
 
-1. Workflow execution data:
+1. Workflow execution data::
     * Task inputs and outputs (that is, primitive type literals, not `FlyteFile`/`FlyteDirectory` data)
-    * `FlyteFile`/`FlyteDirectory` data (in its default location in the object store, as opposed to any custom location you may specify)
+    * `FlyteFile`/`FlyteDirectory` and other large offloaded data objects (like `DataFrame`s) both in their default location in the object store and in any custom `raw-data-prefix` location that may have been specified at execution time
     * Flyte `Deck` data.
-    * Any auto-serialized workflow or task output data.
+    * Internal metadata used by Union.
 2. Fast-registered code when using `union register` or `union run` or `union run --copy-all`
 3. Flyte-plugin metadata (for example, Spark history server data).
 
-Since versioning is enabled on Union-managed object store buckets, for each data category, you can specify two distinct policies: one for current versions and one for non-current versions.
-
+Each category of data is stored in a separate Union-managed object store bucket and versioning is enabled on these buckets.
+This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
 The result is that there are six distinct retention policies to specify (though in most cases you can stick with the defaults, see below).
+
+:::{admonition} Object versions are not the same as Union entity versions
+The versions discussed here are not related to the versions of workflows, tasks and other Union entities that you see in the Union UI.
+Those are implemented at a higher level.
+The versions discussed here at the object store level and do not correspond to the entity versions in the Union UI.
+:::
 
 ## How policies are specified
 
