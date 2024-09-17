@@ -51,7 +51,7 @@ But, the two types of permissions are related.
 For example, for a user (or machine application) to have read access to a Blob Storage Container, two things are required:
 
 * The user (or machine application) must have **execute** permission for the project and domain where the code that does the reading resides.
-* The domain must have read permission for the Blob Storage Container.
+* The domain must have read permission for the blob storage container.
 
 :::
 
