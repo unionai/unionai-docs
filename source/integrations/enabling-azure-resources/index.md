@@ -31,7 +31,7 @@ Union tasks run within a Union-managed Kubernetes pod in your data plane. Union 
 Union on Azure has two types of access arrangements:
 
 * **Domain-scoped access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied only to a specific Union domain.
-* **Global access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied to an entire Azure Subscription or Resource Group.
+* **Global access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied to an entire Azure subscription or resource group.
 
 :::{admonition} Azure only supports scoping by domain
 
