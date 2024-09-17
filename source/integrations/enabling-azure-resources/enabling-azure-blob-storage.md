@@ -25,22 +25,22 @@ The simplest, most flexible approach is to provide Union the ability to add role
 2. In the VNet's access control (IAM) section, create a new role assignment.
 3. For the 'Assigned to' field, select the Union application's service principal.
 4. For the 'Role' field, you have two options:
-    * Simplest approach: Assign the built-in Azure role `User Access Administrator`.
-    * Advanced approach: Create a custom role with the following specific permissions:
-      * `Microsoft.Authorization/roleAssignments/write`
-      * `Microsoft.Authorization/roleAssignments/delete`
-      * `Microsoft.Authorization/roleAssignments/read`
-      * `Microsoft.Authorization/roleDefinitions/read`
+   * Simplest approach: Assign the built-in Azure role `User Access Administrator`.
+   * Advanced approach: Create a custom role with the following specific permissions:
+     * `Microsoft.Authorization/roleAssignments/write`
+     * `Microsoft.Authorization/roleAssignments/delete`
+     * `Microsoft.Authorization/roleAssignments/read`
+     * `Microsoft.Authorization/roleDefinitions/read`
 5. Ensure the 'Scope' is set to the target blob storage container.
 6. Complete the role assignment process.
 7. Provide the blob storage container [resource ID](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.storage.models.resource.id) to Union support.
 
 ### Manage permissions directly
 
-Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Storage Blob Data Contributor` role to the `unionrunner` user assigned identity scoped the blob storage container.
+Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Storage Blob Data Contributor` role to the `userflyterole` user assigned identity scoped the blob storage container.
 
 :::{admonition} Union managed user-assigned identities
 
-Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `unionrunner` user assigned managed identity within the same resource group as the Union data plane.
+Refer to [Azure portal&#39;s user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user assigned managed identity within the same resource group as the Union data plane.
 
 :::

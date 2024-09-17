@@ -52,6 +52,14 @@ creating a Union specific App and granting it sufficient permission to managed t
 6. "Name" is your choice, but we recommend `union-access`
 7. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
 
+## (Recommended) Identify a Maintainence window for Kubernetes and OS Image upgrades
+
+Union leverages [AKS](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster) and [OS Node image](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-automatic-upgrade) auto-upgrade to ensure latest security patches and updates are applied. Union requires a periodic four hour maintainence window to apply updates.
+
+By default, Union configures the maintainence window to run monthly on the first Sunday at 3AM PDT. We recommend providing Union with a specific 4 hour window running monthly or weekly if the default settings don't adhere to your business needs.
+
+During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimizing failed executions.
+
 ## (Recommended) Create a Microsoft Entra group for cluster administration
 
 We recommend [creating a Microsoft Entra group](https://learn.microsoft.com/en-us/training/modules/create-users-and-groups-in-azure-active-directory/) for AKS cluster admin access.
