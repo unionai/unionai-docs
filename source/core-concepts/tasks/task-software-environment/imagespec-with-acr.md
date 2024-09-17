@@ -1,6 +1,6 @@
 # ImageSpec with ACR
 
-In this section we explain how to set up and use [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/products/container-registry) to build and deploy task container images using `ImageSpec`.
+In this section we explain how to use [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/products/container-registry) to build and deploy task container images using `ImageSpec`.
 
 Refer to [Enabling Azure Container Registry](../../../integrations/enabling-azure-resources/enabling-azure-container-registry.md) for more details in how to setup Azure Container Registry.
 
