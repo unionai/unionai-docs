@@ -86,7 +86,7 @@ This will install:
 To register and run workflows on your Union instance using the `union` CLI, you will need to create a configuration file that contains your Union connection information.
 To do this, run the following command:
 
-{@@ elif serverless @@}
+{@@ if serverless @@}
 
 ```{code-block} shell
 $ union create login --serverless
