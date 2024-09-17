@@ -10,15 +10,17 @@ They are not adjustable through the UI or CLI.
 
 ## Data categories
 
-The retention policy system distinguishes two categories of data:
+The retention policy system distinguishes three categories of data:
 
-1. Workflow execution data::
+1. Workflow execution data:
     * Task inputs and outputs (that is, primitive type literals)
     * `FlyteFile`/`FlyteDirectory` and other large offloaded data objects (like `DataFrame`s) both in their default locations and in any custom `raw-data-prefix` locations that may have been specified at execution time
     * Flyte `Deck` data.
     * Artifact data.
     * Internal metadata used by Union.
-2. Flyte-plugin metadata (for example, Spark history server data).
+2. Fast-registered code:
+    * Local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
+3. Flyte plugin metadata (for example, Spark history server data).
 
 Each category of data is stored in a separate Union-managed object store bucket and versioning is enabled on these buckets.
 This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
@@ -64,6 +66,7 @@ If you attempt to access deleted data, you will receive an error:
 * When workflow node input/output data is deleted, the Input/Output tabs in the UI will display a *Not Found* error.
 * When Flyte `Deck` data is deleted, the `Deck` view in the UI will display a *Not Found* error.
 * When artifacts are deleted, the artifacts UI will work, but it will display an URL that points to no longer existing artifact.
+* When fast registered code data is deleted, Flyte tasks will fail to download the code artifacts and you will see a *Not found* error in the UI.
 
 To remedy these types of errors, you will have to re-run the workflows that generated the data in question.
 
