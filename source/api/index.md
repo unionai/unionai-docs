@@ -8,27 +8,9 @@ You can interact with your Union deployment in the following ways:
 
 To get started, install `union`:
 
-{@@ if serverless @@}
-
 ```
 pip install -U union
 ```
 
-{@@ elif byoc @@}
-
-::::{tab-set}
-:::{tab-item} Unix/macOS
-```{code-block} shell
-pip install -U 'union[byoc]'
-```
-:::
-:::{tab-item} Windows
-```{code-block} shell
-pip install -U "union[byoc]"
-```
-:::
-::::
-
-{@@ endif @@}
-
 This will install the `flytekit` and `union` SDKs, the `union` CLI, and `UnionRemote`.
+See [Quick start](../guide/quick-start.md) for more details.
