@@ -1,12 +1,9 @@
 import os
 import re
 import logging
-
 import sphinx.application
 import sphinx.errors
 from sphinx.util import logging as sphinx_logging
-
-# sphinx.application.ExtensionError = sphinx.errors.ExtensionError
 
 # Project
 project = "union-docs"
@@ -23,7 +20,6 @@ html_css_files = [
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
 html_js_files = ["custom.js"]
-
 exclude_patterns = []
 extensions = [
     "myst_parser",
@@ -36,46 +32,59 @@ extensions = [
     "sphinx_click",
     "sphinx_docsearch"
 ]
-html_theme = "sphinx_book_theme"
 graphviz_output_format = 'svg'
 
 # Myst
 myst_enable_extensions = ["colon_fence"]
 myst_heading_anchors = 6
 
-# Sphinx book theme
-
-# Union logo
+# Pydata Sphinx theme
+html_theme = "pydata_sphinx_theme"
+html_theme_options = {
+    "navbar_start": ["navbar-logo", "variant-selector"],
+    "secondary_sidebar_items": ["custom-page-toc"],
+    "footer_start": [],
+    "footer_end": []
+}
 html_logo = "_static/public/logo.svg"
 html_favicon = "_static/public/favicon.ico"
-
-# Add variant selector to sidebar
 html_sidebars = {
-    "**": [
-        "navbar-logo.html",
-        "variant-selector.html",
-        "searchbox.html",
-        "sbt-sidebar-nav.html",
-    ]
+    "guide/**": [
+        "custom-sidebar.html",
+    ],
+    "tutorials/**": [
+        "custom-sidebar.html",
+    ],
+    "api/**": [
+        "custom-sidebar.html",
+    ],
 }
 
-# autodoc config
+html_context = {
+    "dir_to_title": {
+        "guide": "Guide",
+        "tutorials": "Tutorials",
+        "api": "API",
+    }
+}
+
+# Autodoc config
 autodoc_typehints = "description"
 autosummary_generate = True
 
 # Makes it so that only the command is copied, not the output
 copybutton_prompt_text = "$ "
 
-# prevent css style tags from being copied by the copy button
+# Prevent css style tags from being copied by the copy button
 copybutton_exclude = 'style[type="text/css"]'
 
-# algolia docsearch credentials
+# Algolia docsearch credentials
 docsearch_app_id = os.getenv("DOCSEARCH_APP_ID")
 docsearch_api_key = os.getenv("DOCSEARCH_API_KEY")
 docsearch_index_name = os.getenv("DOCSEARCH_INDEX_NAME")
 
 
-# replace flyte-specific text in docstrings pulled in
+# Replace flyte-specific text in docstrings pulled in
 # with autodoc (automodule, autoclass, etc)
 def process_docstring(app, what, name, obj, options, lines):
     for str in lines:
