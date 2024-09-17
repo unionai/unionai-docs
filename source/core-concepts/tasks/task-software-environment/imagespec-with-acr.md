@@ -13,7 +13,7 @@ az login
 az acr login --name <acrName>
 ```
 
-Refer to [Azure "Individual login with Microsoft Entra ID" documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#individual-login-with-microsoft-entra-id) for additional details
+Refer to [Azure "Individual login with Microsoft Entra ID" documentation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#individual-login-with-microsoft-entra-id) for additional details.
 
 ## Register your workflow to Union
 
