@@ -10,29 +10,27 @@ They are not adjustable through the UI or CLI.
 
 ## Data categories
 
-The retention policy system distinguishes three categories of data:
+The retention policy system distinguishes two categories of data:
 
 1. Workflow execution data::
-    * Task inputs and outputs (that is, primitive type literals, not `FlyteFile`/`FlyteDirectory` data)
-    * `FlyteFile`/`FlyteDirectory` and other large offloaded data objects (like `DataFrame`s) both in their default location in the object store and in any custom `raw-data-prefix` location that may have been specified at execution time
+    * Task inputs and outputs (that is, primitive type literals)
+    * `FlyteFile`/`FlyteDirectory` and other large offloaded data objects (like `DataFrame`s) both in their default locations and in any custom `raw-data-prefix` locations that may have been specified at execution time
     * Flyte `Deck` data.
+    * Artifact data.
     * Internal metadata used by Union.
-2. Fast-registered code when using `union register` or `union run` or `union run --copy-all`
-3. Flyte-plugin metadata (for example, Spark history server data).
+2. Flyte-plugin metadata (for example, Spark history server data).
 
 Each category of data is stored in a separate Union-managed object store bucket and versioning is enabled on these buckets.
 This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
-The result is that there are six distinct retention policies to specify (though in most cases you can stick with the defaults, see below).
+The result is that there are four distinct retention policies to specify (though in most cases you can stick with the defaults, see below).
 
 :::{admonition} Object versions are not the same as Union entity versions
-The versions discussed here are not related to the versions of workflows, tasks and other Union entities that you see in the Union UI.
-Those are implemented at a higher level.
-The versions discussed here at the object store level and do not correspond to the entity versions in the Union UI.
+The versions discussed here are at the object level and are not related to the versions of workflows, tasks and other Union entities that you see in the Union UI.
 :::
 
 ## How policies are specified
 
-A policy determines how long data in a given category and version-state (current vs. non-current))will be retained in the object store before it is automatically deleted.
+A policy determines how long data in a given category and version-state (current vs. non-current) will be retained in the object store before it is automatically deleted.
 
 A policy is specified as a time period in days, or `unlimited` (in which case automatic data deletion is disabled for that category and version-state).
 
@@ -61,8 +59,13 @@ By default:
 
 ## Attempting to access deleted data
 
-If you attempt to access deleted data, you will receive an error.
-To remedy this, you will have to re-register and re-run the workflow.
+If you attempt to access deleted data, you will receive an error:
+
+* When workflow node input/output data is deleted, the Input/Output tabs in the UI will display a *Not Found* error.
+* When Flyte `Deck` data is deleted, the `Deck` view in the UI will display a `Not Found` error.
+* When artifacts are deleted, the artifacts UI will work, but it will display an URL that points to no longer existing artifact.
+
+To remedy these types of errors, you will have to re-run the workflows that generated the data in question.
 
 ## Separate sets of policies per cluster
 
