@@ -22,7 +22,7 @@ By default this Union-managed ACR instance:
 
 * Will be created within the same subscription and resource group of the Azure Kubernetes cluster instance.
 * Union will create necessary permissions for the Azure Kubernetes cluster to pull images from the container registry.
-* Container registry will be created with "Basic" service tier.
+* Container registry will be created with **Basic** service tier.
 * In order to mitigate excessive storage costs, Union creates a weekly [scheduled container registry task](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-scheduled) to [purge](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-auto-purge#use-the-purge-command) **all** images with last modified dates older then 7 days. As a symptom, some 7 day old images will be rebuilt.
 
 Upon request, Union can:
