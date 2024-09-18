@@ -8,6 +8,7 @@
                     "children": [
                         {"name": "data-plane-setup-on-aws", "variants": ["byoc"]},
                         {"name": "data-plane-setup-on-gcp", "variants": ["byoc"]},
+                        {"name": "data-plane-setup-on-azure", "variants": ["byoc"]},
                         {"name": "single-sign-on-setup", "variants": ["byoc"],
                             "children": [
                                 {"name": "microsoft-entra-id", "variants": ["byoc"]},
@@ -53,6 +54,7 @@
                                         {"name": "imagespec", "variants": ["byoc"]},
                                         {"name": "imagespec-with-ecr", "variants": ["byoc"]},
                                         {"name": "imagespec-with-gar", "variants": ["byoc"]},
+                                        {"name": "imagespec-with-acr", "variants": ["byoc"]},
                                         {"name": "environment-variables", "variants": ["byoc"]}
                                     ]
                                 },
@@ -143,6 +145,13 @@
                                 {"name": "enabling-bigquery", "variants": ["byoc"]},
                                 {"name": "enabling-google-secret-manager", "variants": ["byoc"]}
                             ]
+                        },
+                        {"name": "enabling-azure-resources", "variants": ["byoc"],
+                          "children": [
+                              {"name": "enabling-azure-blob-storage", "variants": ["byoc"]},
+                              {"name": "enabling-azure-container-registry", "variants": ["byoc"]},
+                              {"name": "enabling-azure-key-vault", "variants": ["byoc"]}
+                          ]
                         },
                         {"name": "agents", "variants": ["byoc"],
                             "children": [

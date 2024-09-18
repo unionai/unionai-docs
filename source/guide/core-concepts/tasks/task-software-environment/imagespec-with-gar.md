@@ -23,13 +23,10 @@ Note that this differs from the arrangement in AWS ECR where the repository name
 When you push an image to GAR, you are actually pushing it to an image name within a repository within that registry. Strictly speaking, the term *image* refers to a specific *image version* within that repository.
 :::
 
-
 This means that you have to decide on the name of your repository and create it, before registering your workflow. You can, however, decide on the image name later, when you push the image to the repository. We will assume the following:
 
 * The GAR instance you will be using has the base URL `us-east1-docker.pkg.dev/my-union-dataplane/my-registry/`.
-
 * Your repository will be called `my-image-repository`.
-
 * Your image will be called `simple-example-image`.
 
 In the GCP console, within your Union data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by Union. For your own work you should create a new one. Click **Create Repository**:
@@ -39,11 +36,8 @@ In the GCP console, within your Union data plane project, go to **Artifact Regis
 On the **Create repository** page,
 
 * Enter the name of the repository. In this example it would be `my-image-repository`.
-
 * Select **Docker** for the artifact type.
-
 * Select the region. If you want to access the GAR without further configuration, make sure this the same region as your Union data plane.
-
 * Click **Create**:
 
 ![](/_static/images/gar-create-repository-2.png)
@@ -75,7 +69,7 @@ Make sure that it is installed and initialized with [Application Default Credent
 Run the following command to configure `gcloud` as the credential helper for the Artifact Registry domain associated with this repository's location:
 
 ```{code-block} shell
-$ gcloud auth configure-docker us-east1-docker.pkg.dev
+gcloud auth configure-docker us-east1-docker.pkg.dev
 ```
 :::
 
@@ -87,13 +81,9 @@ For example, to use the example GAR repository shown here, we would alter the Py
 
 ```{code-block} python
 image_spec = ImageSpec(
-
-us-east1-docker.pkg.dev/dogfood-gcp-dataplane/hello/imagespec:0OiA3VrE3Z-CXrkFNZW--w..
-
-    registry="us-east1-docker.pkg.dev/my-union-dataplane/my-registry/my-image-repository`.
+    registry="us-east1-docker.pkg.dev/my-union-dataplane/my-registry/my-image-repository",
     name="simple-example-image",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
     requirements="image-requirements.txt"
 )
 ```
-
