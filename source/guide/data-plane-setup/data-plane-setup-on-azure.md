@@ -51,7 +51,7 @@ AKS Cluster admin access is commonly provided to individuals that need direct (e
 
 Provide the group `Object ID` to Union.
 
-## Setting up and managing your own VNet (optional)
+## (Optional) Setting up and managing your own VNet
 
 If you decide to manage your own VNet instead of leaving it to Union, you will need to set it up yourself.
 
@@ -115,10 +115,10 @@ Once your VPC is set up, provide the following to Union:
 
 ## Union Maintenance Windows
 
-Union configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure timezone.
+Union configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
 
 :::{admonition} Setting up Tasks for Fault Tolerance
 
-During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimizing failed executions.
+During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimize failed executions.
 
 :::
