@@ -1,6 +1,6 @@
 # Data plane setup on Azure
 
-To set up your data plane on Azure, you must allow Union to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision a user managed identity with sufficient permissions to an Azure resource group.
+To set up your data plane on Azure, you must allow Union to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision an Azure app registration with sufficient permissions to an Azure subscription.
 
 ## Selecting Azure Tenant and Subscription
 
@@ -8,8 +8,6 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 * We highly recommend creating a new Subscription for Union-specific services. This helps isolate Service Quotas and Azure costs from your other Azure resources.
   * Ensure the Subscription is tied to an active Billing account.
 * Provide the Tenant and Suscription ID to Union.
-
-<!-- TODO(MIKE) ### Azure CLI Steps -->
 
 ## Create a Microsoft Entra Application Registration
 
@@ -31,16 +29,10 @@ creating a Union specific App and granting it sufficient permission to managed t
 9. Navigate to your target [Azure Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
 10. Within the Subscription page select Access Control (IAM). Select Add Role Assignment and add the following roles:
 
-<!-- TODO(PE-1123) The below roles will change in favor of minimal set of permissions -->
-
 * Contributor
-* Storage Blob Data Owner
 * Role Based Access Control Administrator
-* Azure Kubernetes Service Cluster User Role
 
 11. Provide the Application Client ID to Union.
-
-<!-- TODO(MIKE) ### Azure CLI Steps -->
 
 ## Create workload identity federation credentials for Union
 
@@ -51,14 +43,6 @@ creating a Union specific App and granting it sufficient permission to managed t
 5. Set "Subject identifier" to `us-east-2:6f9a6050-887a-c4cc-0625-120a4805bc34`
 6. "Name" is your choice, but we recommend `union-access`
 7. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
-
-## (Recommended) Identify a Maintainence window for Kubernetes and OS Image upgrades
-
-Union leverages [AKS](https://learn.microsoft.com/en-us/azure/aks/auto-upgrade-cluster) and [OS Node image](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-automatic-upgrade) auto-upgrade to ensure latest security patches and updates are applied. Union requires a periodic four hour maintainence window to apply updates.
-
-By default, Union configures the maintainence window to run monthly on the first Sunday at 3AM PDT. We recommend providing Union with a specific 4 hour window running monthly or weekly if the default settings don't adhere to your business needs.
-
-During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimizing failed executions.
 
 ## (Recommended) Create a Microsoft Entra group for cluster administration
 
@@ -128,3 +112,13 @@ Once your VPC is set up, provide the following to Union:
   * `10.8.0.0/14`, `10.12.0.0/14`, `10.16.0.0/14`, `10.20.0.0/14` for any future Kubernetes pod specific subnets.
 * `10.0.96.0/19` unallocated for Kubernetes services.
 * `10.0.96.10` for internal DNS.
+
+## Union Maintenance Windows
+
+Union configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure timezone.
+
+:::{admonition} Setting up Tasks for Fault Tolerance
+
+During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimizing failed executions.
+
+:::
