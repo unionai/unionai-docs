@@ -17,13 +17,13 @@ This will install:
 
 ## Configure the `union` CLI
 
-To configure the `union` CLI to connect to Union Serverless, perform the following command:
+To configure the `union` CLI to connect to Union Serverless, run the following command:
 
 ```{code-block} shell
 $ union create login --serverless
 ```
 
-To configure the `union` CLI to connect to you Union BYOC instance, perform the following command:
+To configure the `union` CLI to connect to you Union BYOC instance, run the following command:
 
 ```{code-block} shell
 $ union create login --host <union-host-url>
