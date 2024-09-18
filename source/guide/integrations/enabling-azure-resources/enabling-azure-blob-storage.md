@@ -21,8 +21,8 @@ Union data plane tasks employ Azure Workload Identity Federation to access Azure
 
 The simplest, most flexible approach is to provide Union the ability to add roles assignments against the blob storage container. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to assign roles to the blob storage container. These permissions should be scoped to the target container. Follow these steps to set up the required access:
 
-1. Navigate to the Azure portal and locate the target VNet.
-2. In the VNet's access control (IAM) section, create a new role assignment.
+1. Navigate to the Azure portal and locate the target storage container.
+2. In the storage container's access control (IAM) section, create a new role assignment.
 3. For the 'Assigned to' field, select the Union application's service principal.
 4. For the 'Role' field, you have two options:
    * Simplest approach: Assign the built-in Azure role `User Access Administrator`.

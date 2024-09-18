@@ -42,8 +42,8 @@ Union data plane resources will require permissions to pull images from your con
 
 The simplest, most flexible approach is to provide Union the ability to add roles assignments against the container registry. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to allow Union to assign roles to the container registry. These permissions should be scoped to the target container registry. Follow these steps to set up the required access:
 
-1. Navigate to the Azure portal and locate the target VNet.
-2. In the VNet's access control (IAM) section, create a new role assignment.
+1. Navigate to the Azure portal and locate the target container registry.
+2. In the container registry's access control (IAM) section, create a new role assignment.
 3. For the 'Assigned to' field, select the Union application's service principal.
 4. For the 'Role' field, you have two options:
     * Simplest approach: Assign the built-in Azure role `User Access Administrator`.
