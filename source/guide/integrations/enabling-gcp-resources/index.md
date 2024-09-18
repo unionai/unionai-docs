@@ -72,7 +72,7 @@ For example, for a user (or machine application) to have read access to a Cloud 
 
 **Because of the way that GCP works internally, domain-scoped access can only be configured by the Union team.**
 
-If you have requirements that involve domain-scoped access to cloud resources you should communicate these to the Union team when your data plane is being set up.
+Please work directly with the Union team if you have requirements that involve domain-scoped access to cloud resources.
 
 If you need to add or change domain-scoped access after your data plane has been set up, you should also contact the team.
 
