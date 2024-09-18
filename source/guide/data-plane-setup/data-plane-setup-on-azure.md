@@ -6,7 +6,7 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 
 * Select the tenant ID for your organization. Refer to [Microsoft Entra ID service page](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) from the Azure portal.
 * We highly recommend creating a new subscription for Union-specific services. This helps isolate service quotas and Azure costs from your other Azure resources.
-  * Ensure the Subscription is tied to an active Billing account.
+  * Ensure the subscription is tied to an active billing account.
 * Provide the Tenant and Suscription ID to Union.
 
 ## Create a Microsoft Entra Application Registration
