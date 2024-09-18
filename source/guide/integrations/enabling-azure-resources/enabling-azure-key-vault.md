@@ -24,7 +24,7 @@ Refer to [Azure portal's user assigned managed identitites](https://portal.azure
 
 :::
 
-## Accessing the Secret within Flyte
+## Accessing the secret within Union
 
 * Define a `Secret` object where
   * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
