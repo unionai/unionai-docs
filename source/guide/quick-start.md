@@ -77,8 +77,8 @@ $ pip install -U union
 ```
 
 This will install:
-* The [`union` command-line tool](./api/union-cli)
-* The [`union` SDK](./api/sdk/index)
+* The [`union` command-line tool](../api/union-cli)
+* The [`union` SDK](../api/union-sdk)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
 ## Configure the `union` CLI

@@ -4,7 +4,7 @@ In Union, each task runs in its own container. This means that a file or directo
 
 The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, theFLytekit SDK provides the [`FlyteFile`](../api/flytekit-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../api/flytekit-sdk/custom-types/flytedirectory.md) classes, which automate this process.
+Since this is such a common use case, theFLytekit SDK provides the [`FlyteFile`](../../api/flytekit-sdk/custom-types/flytefile) and [`FlyteDirectory`](../../api/flytekit-sdk/custom-types/flytedirectory) classes, which automate this process.
 
 ## How the classes work
 
@@ -277,8 +277,8 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [Flytekit SDK](../api/flytekit-sdk/index) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../api/flytekit-sdk/custom-types/index.md#file-type):
+The [Flytekit SDK](../../api/flytekit-sdk) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api/flytekit-sdk/custom-types/index.md#file-type):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -290,7 +290,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../api/flytekit-sdk/custom-types/index.md#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api/flytekit-sdk/custom-types/index.md#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

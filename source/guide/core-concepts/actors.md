@@ -1,6 +1,6 @@
 # Actors
 
-Actors allow you to reuse a container and environment between tasks that need to maintain state. To create an actor, instantiate the [`ActorEnvironment`](../api/sdk/actor.actorenvironment) class, then add the instance as a decorator to the task that requires that environment.
+Actors allow you to reuse a container and environment between tasks that need to maintain state. To create an actor, instantiate the [`ActorEnvironment`](../../api/union-sdk/actor.actorenvironment.md) class, then add the instance as a decorator to the task that requires that environment.
 
 ## `ActorEnvironment` parameters
 
