@@ -72,44 +72,31 @@ $ source .venv/bin/activate
 
 After setting up your virtual environment and activating it, install the `union` Python package:
 
-{@@ if serverless @@}
-
 ```{code-block} shell
 $ pip install -U union
 ```
-
-:::{note}
-These directions are for Union Serverless.
-
-If you are using Union BYOC, you should [install `union` with the `[byoc]` extra package](https://docs.union.ai/byoc/quick-start#install-the-union-package).
-:::
-
-{@@ elif byoc @@}
-
-```{code-block} shell
-pip install -U "union[byoc]"
-```
-
-:::{note}
-The `[byoc]` extra package includes configuration defaults specific to Union BYOC that differ from those needed for Union Serverless.
-
-If you are using Union Serverless, you should [install `union` without the `[byoc]` extra package](https://docs.union.ai/serverless/quick-start#install-the-union-package).
-
-You can tell whether you have the `byoc` extra package installed by running `pip list` and checking for the package `unionmeta-byoc`.
-:::
-
-{@@ endif @@}
 
 This will install:
 * The [`union` command-line tool](./api/union-cli)
 * The [`union` SDK](./api/sdk/index)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
-{@@ if byoc @@}
+## Configure the `union` CLI
 
-## Set up configuration for the `union` CLI
+To register and run workflows on your Union instance using the `union` CLI, you will need to create a configuration file that contains your Union connection information.
+To do this, run the following command:
 
-To register and run workflows on your Union instance using the `union` CLI, you will need to create a configuration file that contains your Union connection information. To do this, run the following command:
+{@@ if serverless @@}
+
+```{code-block} shell
+$ union create login --serverless
+```
+This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
+
+:::{note}
+These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/guide/quick-start.html#configure-the-union-cli).
+
+{@@ elif byoc @@}
 
 ```{code-block} shell
 $ union create login --host <union-host-url>
@@ -117,9 +104,15 @@ $ union create login --host <union-host-url>
 
 where `<union-host-url>` is the URL of your Union instance, mentioned above.
 
-This will create a configuration file at `~/.union/config.yaml`.
+This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](./api/union-cli) for more details.)
+:::{note}
+These directions apply to Union BYOC, where you connect to your own dedicated Union instance. To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/guide/quick-start.html#configure-the-union-cli).
+:::
+
+{@@ endif @@}
+
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../api/union-cli) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
@@ -131,8 +124,6 @@ Alternatively, you can always specify the configuration file on the command line
 ```{code-block} shell
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
-
-{@@ endif @@}
 
 ```{warning}
 If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
@@ -163,7 +154,7 @@ For more information, see the [task](./core-concepts/tasks/index) and [workflow]
 
 ## Run the workflow locally in Python
 
-You can run the workflow in your local Python environment with the [`union run` command](./api/union-cli.md#union-run):
+You can run the workflow in your local Python environment with the [`union run` command](../api/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run hello.py hello_world_wf
@@ -192,7 +183,7 @@ Hello, Ada!
 
 ## Run the workflow remotely on Union
 
-To run the workflow remotely on Union, add the [`--remote` flag](./api/union-cli.md#cmdoption-union-run-r):
+To run the workflow remotely on Union, add the [`--remote` flag](../api/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run --remote hello.py hello_world_wf --name "Ada"

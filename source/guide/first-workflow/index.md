@@ -4,17 +4,8 @@ This section walks through building your first Union workflow, exploring the maj
 
 ## Prerequisites
 
-{@@ if serverless @@}
-
 If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union UI,
 set up your local Python environment, and install the `union` command line tool.
-
-{@@ elif byoc @@}
-
-If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union UI,
-set up your local Python environment, and install the `union[byoc]` command line tool.
-
-{@@ endif @@}
 
 ## Your project on Union
 
