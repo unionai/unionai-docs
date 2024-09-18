@@ -62,7 +62,7 @@ Managing permissions directly is required if it is not desirable to grant role a
 
 Note, this process needs to be repeated every time the underlying Kubernetes cluster is changed or a new cluster is added.
 
-## Enable access to ACR in a different Azure Tenant
+## Enable access to ACR in a different Azure tenant
 
 Please contact and work directly with Union support.
 
