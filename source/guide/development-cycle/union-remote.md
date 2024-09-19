@@ -1,20 +1,44 @@
 # UnionRemote
 
-`UnionRemote` enables you to register, fetch and execute Union workflows
+`UnionRemote` PythonAPI supports functionality similar to that of the `union` CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
 
-
-perform operations on the Union control plane in a Python runtime environment.
+:::{note}
+The primary use case of `UnionRemote` is to automate the deployment of Union entities. As such, it is intended for use within scripts *external* to actual Union workflow and task code, for example CI/CD pipeline scripts.
+:::
 
 ## Creating a `UnionRemote` object
 
-To use `UnionRemote`, install the `union` SDK with `pip install union`, then add the following import to your code:
+To use `UnionRemote`, install the `union` SDK with `pip install union`, then import the class and create the object like this:
 
 ```{code-block} python
 from union.remote import UnionRemote
+
+remote = UnionRemote()
 ```
 
-The `UnionRemote` class is the entrypoint for programmatically performing operations in a Python
-runtime. It can be initialized by passing in the:
+By default, when created with a no-argument constructor, `UnionRemote` will use the prevailing configuration in the local environment to connect to Union, that is, the same configuration as would be used by the `union` CLI in that environment (see [Union CLI > `union` CLI configuration search path](../../api/union-cli.md#union-cli-configuration-search-path)).
+
+In the default case, as with the `union` CLI, all operations will be applied to the default project, `flytesnacks` and default domain, `development`.
+
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a `Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see XX)):
+
+```{code-block} python
+from union.remote import UnionRemote
+from flytekit.configuration import Config
+
+remote = UnionRemote(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+```
+
+[DONE TO HERE]()
+
+
+
+default configuration.
+You can initialize The `UnionRemote` can be initialized by passing in the following:
 
 {@@ if byoc @@}
 
@@ -24,6 +48,10 @@ runtime. It can be initialized by passing in the:
 * `default_domain`: the default domain to use when fetching or executing flyte entities.
 * `file_access`: the file access provider to use for offloading non-literal inputs/outputs.
 * `kwargs`: additional arguments that need to be passed to create `SynchronousFlyteClient`.
+
+
+
+
 
 {@@ if byoc @@}
 A `UnionRemote` object can be created in various ways:
