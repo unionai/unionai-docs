@@ -1,6 +1,9 @@
 # UnionRemote
 
-`UnionRemote` allows you to programmatically perform certain operations on the Union control plane in a Python runtime environment.
+`UnionRemote` enables you to register, fetch and execute Union workflows
+
+
+perform operations on the Union control plane in a Python runtime environment.
 
 ## Creating a `UnionRemote` object
 
