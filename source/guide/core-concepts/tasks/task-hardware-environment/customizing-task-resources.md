@@ -82,7 +82,7 @@ Execution defaults can be edited by clicking on the gear icon.
 
 An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed. 
 This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on 
-ephemeral storage, we recommend being explicit with the ephemeral storage you request as to avoid pod eviction. 
+ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction. 
 
 {@@ if byoc @@}
 
