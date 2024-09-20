@@ -74,7 +74,7 @@ The default memory, CPU, and GPU `requests` and `limits` for an execution can be
 
 {@@ elif byoc @@}
 
-Execution defaults can be edited by clicking on the gear icon.
+Execution defaults can be edited by selecting the gear icon.
 
 ![](/_static/images/byoc_execution_defaults.png)
 
