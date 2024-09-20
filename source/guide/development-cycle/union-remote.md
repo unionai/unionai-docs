@@ -237,7 +237,7 @@ remote.create_artifact(BasicArtifact)
 
 {@@ endif @@}
 
-For the full list of parameters, see the [Artifact class documentation](../api/flytekit-sdk/core-flytekit/artifacts).
+For the full list of parameters, see the [Artifact class documentation](../../api/flytekit-sdk/core-flytekit/artifacts).
 
 :::{note}
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
@@ -380,8 +380,8 @@ Node here can correspond to a task, workflow, or branch node.
 ### Reference launch plan executions
 
 When retrieving and inspecting an execution which calls a launch plan, the launch plan manifests as a sub-workflow which
-can be found within the `workflow_executions` of a given node execution. Note that the workflow execution of interest 
-must again be synced in order to inspect the input and output of the contained tasks. 
+can be found within the `workflow_executions` of a given node execution. Note that the workflow execution of interest
+must again be synced in order to inspect the input and output of the contained tasks.
 
 ```{code-block} python
 @task
@@ -403,7 +403,7 @@ def parent_wf(x: int = 1) -> int:
     x = add_random(x=x)
     return sub_wf_lp(x=x)
 ```
-To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the 
+To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the
 `parent_wf`:
 
 ```{code-block} python
