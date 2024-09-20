@@ -1,6 +1,6 @@
 # UnionRemote
 
-`UnionRemote` PythonAPI supports functionality similar to that of the `union` CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
+The `UnionRemote` Python API supports functionality similar to that of the `union` CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
 
 :::{note}
 The primary use case of `UnionRemote` is to automate the deployment of Union entities. As such, it is intended for use within scripts *external* to actual Union workflow and task code, for example CI/CD pipeline scripts.
@@ -20,116 +20,90 @@ By default, when created with a no-argument constructor, `UnionRemote` will use 
 
 In the default case, as with the `union` CLI, all operations will be applied to the default project, `flytesnacks` and default domain, `development`.
 
-Alternatively, you can initialize `UnionRemote` by explicitly specifying a `Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see XX)):
+{@@ if byoc @@}
+
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see XX)):
 
 ```{code-block} python
 from union.remote import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(
-    config=Config.for_endpoint(endpoint="flyte.example.net"),
-    default_project="flytesnacks",
-    default_domain="development",
+    config=Config.for_endpoint(endpoint="union.example.com"),
+    default_project="my-project",
+    default_domain="my-domain",
+    data_upload_location="<s3|gs|abs>://my-bucket/my-prefix",
 )
 ```
 
-[DONE TO HERE]()
+Here we use the `Config.for_endpoint` method to specify the URL to connect to.
+There are number of other ways to configure the `Config` object.
+In general, you have all the same options as you would when specifying a connection for the `union` CLI using a `config.yaml` file.
+For details see [the API docs for `flytekit.configuration.Config`]().
 
+{@@ elif serverless @@}
 
-
-default configuration.
-You can initialize The `UnionRemote` can be initialized by passing in the following:
-
-{@@ if byoc @@}
-
-* `Config` object: the parent configuration object that holds all the configuration information to connect to the Flyte backend.
-{@@ endif @@}
-* `default_project`: the default project to use when fetching or executing flyte entities.
-* `default_domain`: the default domain to use when fetching or executing flyte entities.
-* `file_access`: the file access provider to use for offloading non-literal inputs/outputs.
-* `kwargs`: additional arguments that need to be passed to create `SynchronousFlyteClient`.
-
-
-
-
-
-{@@ if byoc @@}
-A `UnionRemote` object can be created in various ways:
-
-### Automatically construct the `Config` object
-
-The `Config` class's `auto` method can be used to automatically
-construct the `Config` object.
-
-```{code-block} python
-from union.remote import UnionRemote
-from flytekit.configuration import Config
-
-remote = UnionRemote(config=Config.auto())
-```
-
-`auto` also accepts a `config_file` argument, which is the path to the configuration file to use.
-The order of precedence that `auto` follows is:
-
-* Finds all the environment variables that match the configuration variables.
-* If no environment variables are set, it looks for a configuration file at the path specified by the `config_file` argument.
-* If no configuration file is found, it uses the default values.
-
-### Construct the `Config` object to connect to a specific endpoint
-
-The `Config` class's `for_endpoint` method can be used to
-construct the `Config` object to connect to a specific endpoint.
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a project, and a domain:
 
 ```{code-block} python
 from union.remote import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(
-    config=Config.for_endpoint(endpoint="flyte.example.net"),
-    default_project="flytesnacks",
-    default_domain="development",
-)
-```
-
-The `for_endpoint` method also accepts:
-
-* `insecure`: whether to use insecure connections. Defaults to `False`.
-* `data_config`: can be used to configure how data is downloaded or uploaded to a specific blob storage like S3, GCS, etc.
-* `config_file`: the path to the configuration file to use.
-
-### Generalized initialization
-
-The `Config` class can be directly used to construct the `Config` object if additional configuration is needed. You can send `configuration.PlatformConfig`, `configuration.DataConfig`,
-`configuration.SecretsConfig`, and `configuration.StatsConfig` objects to the `Config` class.
-
-| Config attribute | Description                              |
-|------------------|------------------------------------------|
-| `PlatformConfig` | Settings to talk to a Flyte backend.     |
-| `DataConfig`     | Any data storage specific configuration. |
-| `SecretsConfig`  | Configuration for secrets.               |
-| `StatsConfig`    | Configuration for sending statistics.    |
-
-For example:
-
-```{code-block} python
-from union.remote import UnionRemote
-from flytekit.configuration import Config, PlatformConfig
-
-remote = UnionRemote(
-    config=Config(
-        platform=PlatformConfig(
-            endpoint="flyte.example.net",
-            insecure=False,
-            client_id="my-client-id",
-            client_credentials_secret="my-client-secret",
-            auth_mode="client_credentials",
-        ),
-        secrets=SecretsConfig(default_dir="/etc/secrets"),
-    )
+    default_project="my-project",
+    default_domain="my-domain",
 )
 ```
 
 {@@ endif @@}
+
+
+## Registering entities
+
+Tasks, workflows, and launch plans can be registered using `UnionRemote`:
+
+```{code-block} python
+from flytekit.configuration import SerializationSettings
+
+some_entity = ...
+my_task = remote.register_task(
+    entity=some_entity,
+    serialization_settings=SerializationSettings(image_config=None),
+    version="v1",
+)
+my_workflow = remote.register_workflow(
+    entity=some_entity,
+    serialization_settings=SerializationSettings(image_config=None),
+    version="v1",
+)
+my_launch_plan = remote.register_launch_plan(entity=some_entity, version="v1")
+```
+
+* `entity`: the entity to register.
+* `version`: the version that will be used to register. If not specified, the version used in serialization settings will be used.
+* `serialization_settings`: the serialization settings to use. Refer to `configuration.SerializationSettings` to know all the acceptable parameters.
+
+All the additional parameters which can be sent to the `register_*` methods can be found in the documentation for the corresponding method:
+`register_task`, `register_workflow`,
+and `register_launch_plan`.
+
+The `configuration.SerializationSettings` class accepts `configuration.ImageConfig` which
+holds the available images to use for the registration.
+
+The following example showcases how to register a workflow using an existing image if the workflow is created locally:
+
+```{code-block} python
+from flytekit.configuration import ImageConfig
+
+img = ImageConfig.from_images(
+    "docker.io/xyz:latest", {"spark": "docker.io/spark:latest"}
+)
+wf2 = remote.register_workflow(
+    my_remote_wf,
+    serialization_settings=SerializationSettings(image_config=img),
+    version="v1",
+)
+```
 
 ## Fetching entities
 
@@ -274,52 +248,7 @@ For the full list of parameters, see the [Artifact class documentation](../../ap
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
 :::
 
-## Registering entities
 
-Tasks, workflows, and launch plans can be registered using `UnionRemote`:
-
-```{code-block} python
-from flytekit.configuration import SerializationSettings
-
-some_entity = ...
-my_task = remote.register_task(
-    entity=some_entity,
-    serialization_settings=SerializationSettings(image_config=None),
-    version="v1",
-)
-my_workflow = remote.register_workflow(
-    entity=some_entity,
-    serialization_settings=SerializationSettings(image_config=None),
-    version="v1",
-)
-my_launch_plan = remote.register_launch_plan(entity=some_entity, version="v1")
-```
-
-* `entity`: the entity to register.
-* `version`: the version that will be used to register. If not specified, the version used in serialization settings will be used.
-* `serialization_settings`: the serialization settings to use. Refer to `configuration.SerializationSettings` to know all the acceptable parameters.
-
-All the additional parameters which can be sent to the `register_*` methods can be found in the documentation for the corresponding method:
-`register_task`, `register_workflow`,
-and `register_launch_plan`.
-
-The `configuration.SerializationSettings` class accepts `configuration.ImageConfig` which
-holds the available images to use for the registration.
-
-The following example showcases how to register a workflow using an existing image if the workflow is created locally:
-
-```{code-block} python
-from flytekit.configuration import ImageConfig
-
-img = ImageConfig.from_images(
-    "docker.io/xyz:latest", {"spark": "docker.io/spark:latest"}
-)
-wf2 = remote.register_workflow(
-    my_remote_wf,
-    serialization_settings=SerializationSettings(image_config=img),
-    version="v1",
-)
-```
 
 ## Executing entities
 
