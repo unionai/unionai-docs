@@ -64,6 +64,26 @@ This may be a GPU, a specific variation of a GPU, a fractional GPU, or a differe
 
 See [Accelerators](./accelerators) for more information.
 
+## Resource Defaults
+
+The default memory, CPU, and GPU `requests` and `limits` for an execution can be found on the right sidebar of the Dashboard.
+
+{@@ if serverless @@}
+
+![](/_static/images/serverless_execution_defaults.png)
+
+{@@ elif byoc @@}
+
+Execution defaults can be edited by selecting the gear icon.
+
+![](/_static/images/byoc_execution_defaults.png)
+
+{@@ endif @@}
+
+An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed. 
+This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on 
+ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction. 
+
 {@@ if byoc @@}
 
 ## Task resource validation

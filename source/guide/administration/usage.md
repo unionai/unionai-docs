@@ -117,6 +117,8 @@ This dashboard displays information about configured node pools in the organizat
 
 Union will schedule tasks on a node pool that meets the requirements of the task (as defined by the `requests` and `limits` parameters in the task definition) and can vertically scale these node pools according to the minimum and maximum configured limits. This dashboard shows all currently-configured node pools, whether they are interruptible, labels and taints, minimum and maximum sizes, and allocatable resources.
 
+The allocatable resource values reflect any compute necessary for Union services to function. This is why the value may be slightly lower than the quoted value from the cloud provider. This value, however, does not account for any overhead that may be used by third-party services, like Ray, for example.
+
 ### Information displayed
 
 The dashboard provides the following information:
