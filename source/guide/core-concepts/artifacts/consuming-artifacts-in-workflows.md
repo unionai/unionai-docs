@@ -12,7 +12,7 @@ To use the example code on this page, you will need to add your `registry` to th
 :::
 {@@ endif @@}
 
-```{literalinclude} ../../_static/includes/core-concepts/artifacts/query.py
+```{literalinclude} ../../../_static/includes/core-concepts/artifacts/query.py
 :language: python
 :emphasize-lines: 23-26,35
 ```

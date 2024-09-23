@@ -10,7 +10,7 @@ To use the example code on this page, you will need to add your `registry` to th
 :::
 {@@ endif @@}
 
-```{literalinclude} ../../_static/includes/core-concepts/artifacts/partition_keys_runtime.py
+```{literalinclude} ../../../_static/includes/core-concepts/artifacts/partition_keys_runtime.py
 :language: python
 ```
 
