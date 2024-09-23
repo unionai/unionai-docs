@@ -14,7 +14,7 @@ The only difference is that it happens to have been kicked off from within anoth
 
 Here is an example:
 
-```{literalinclude} ../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_1.py
+```{literalinclude} ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_1.py
 :language: python
 ```
 
@@ -27,7 +27,7 @@ Consequently, all nodes of a subworkflow adhere to the overall constraints impos
 
 Here's an example illustrating the calculation of slope, intercept and the corresponding y-value.
 
-```{literalinclude} ../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_2.py
+```{literalinclude} ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_2.py
 :language: python
 ```
 
@@ -38,7 +38,7 @@ It is possible to nest a workflow that contains a subworkflow within yet another
 Workflows can be easily constructed from other workflows, even if they also function as standalone entities.
 For example, each workflow in the example below has the capability to exist and run independently:
 
-```{literalinclude} ../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_3.py
+```{literalinclude} ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_3.py
 :language: python
 ```
 
@@ -51,7 +51,7 @@ They are executed as a separate top-level entities and thus can be distributed a
 
 Here is an example of invoking a workflow multiple times through its launch plan:
 
-```{literalinclude} ../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_4.py
+```{literalinclude} ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_4.py
 :language: python
 :emphasize-lines: 2, 15, 18-20
 ```

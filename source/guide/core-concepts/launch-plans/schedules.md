@@ -6,7 +6,7 @@ If a schedule is activated on a launch plan, the workflow will be invoked automa
 
 To add a schedule to a launch plan, add a schedule object to the launch plan, like this:
 
-```{literalinclude} ../../_static/includes/core-concepts/launch-plans/schedules/example_1.py
+```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/schedules/example_1.py
 :language: python
 ```
 
@@ -14,7 +14,7 @@ Here we specify a [FixedRate](https://docs.flyte.org/en/latest/api/flytekit/gene
 
 Alternatively, you can specify a [CronSchedule](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.CronSchedule.html#flytekit.CronSchedule) that uses the Unix standard [cron format](https://en.wikipedia.org/wiki/Cron)(See [crontab guru](https://crontab.guru/) for a handy helper for cron expressions):
 
-```{literalinclude} ../../_static/includes/core-concepts/launch-plans/schedules/example_2.py
+```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/schedules/example_2.py
 :language: python
 ```
 
@@ -26,7 +26,7 @@ This parameter is used to specify the name of a workflow input argument.
 Each time the system invokes the workflow via this schedule, the time of the invocation will be passed to the workflow through the specified parameter.
 For example:
 
-```{literalinclude} ../../_static/includes/core-concepts/launch-plans/schedules/example_3.py
+```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/schedules/example_3.py
 :language: python
 ```
 

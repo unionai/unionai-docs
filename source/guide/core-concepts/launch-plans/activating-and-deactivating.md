@@ -89,13 +89,13 @@ See the [`uctl` reference]() for more details.
 
 To activate a launch plan using version `UnionRemote`:
 
-```{literalinclude} ../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_1.py
+```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_1.py
 :language: python
 ```
 
 To deactivate a launch plan version using `UnionRemote`:
 
-```{literalinclude} ../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py
+```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py
 :language: python
 ```
 
