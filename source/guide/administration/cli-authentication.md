@@ -2,6 +2,25 @@
 
 The command line tools `uctl` or `union` must authenticate to Union in order to perform operations on the platform.
 The authentication mechanism is configured in the `config.yaml` file used by the command line tool.
+
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../api/union-cli) for more details.)
+You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
+
+```{code-block} shell
+export UNION_CONFIG=~/.my-config-location/my-config.yaml
+```
+
+Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag:
+
+```{code-block} shell
+$ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
+```
+
+```{warning}
+If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
+Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
+```
+
 There are three authentication mechanisms available: **PKCE**, **DeviceFlow**, and **ClientSecret**.
 
 ## PKCE

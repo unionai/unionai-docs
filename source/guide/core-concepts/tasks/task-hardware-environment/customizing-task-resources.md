@@ -32,7 +32,7 @@ The `requests` and `limits` settings each takes a [`Resource`](https://docs.flyt
 * `mem`: Main memory (in `Mi`, `Gi`, etc.).
 * `ephemeral_storage`: Ephemeral storage (in `Mi`,  `Gi` etc.).
 
-Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2"` means 2 CPU cores and `gpu="3500m"`, meaning three and a half GPU cores.
+Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2500m"` means two and a half CPU cores and `gpu="3000m"`, meaning three GPU cores.
 
 The `requests` setting tells the system that the task requires _at least_ the resources specified and therefore the pod running this task should be scheduled only on a node that meets or exceeds the resource profile specified.
 
