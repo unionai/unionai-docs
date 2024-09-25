@@ -88,19 +88,17 @@ document.addEventListener("DOMContentLoaded", function() {
         // Iterate over the variants array
         // skipping the current variant
         variants.forEach(function(variant) {
-            if (!variant.equals(currentVariant)) {
-                // Create a new URL with the matched path segment replaced by the variant
-                var newUrl = new URL(currentUrl);
-                var newPathSegments = pathSegments.slice();
-                newPathSegments[matchedIndex] = variant;
-                newUrl.pathname = '/' + newPathSegments.join('/');
+            // Create a new URL with the matched path segment replaced by the variant
+            var newUrl = new URL(currentUrl);
+            var newPathSegments = pathSegments.slice();
+            newPathSegments[matchedIndex] = variant;
+            newUrl.pathname = '/' + newPathSegments.join('/');
 
-                // Create the list item and anchor elements
-                var listItem = {};
-                listItem.text = variantDisplayNames[variant];
-                listItem.url = newUrl.href;
-                list.push(listItem);
-            }
+            // Create the list item and anchor elements
+            var listItem = {};
+            listItem.text = variantDisplayNames[variant];
+            listItem.url = newUrl.href;
+            list.push(listItem);
         });
 
         const dropdownLinks = document.getElementById('dropdown-links');
