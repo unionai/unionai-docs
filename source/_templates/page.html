@@ -51,7 +51,7 @@ function getVariantDisplayNames() {
 
 function getCurrentVariant() {
     var div = document.getElementById('unionai-docs-current-variant');
-    var content = div.textContent || div.innerText;
+    return div.textContent || div.innerText;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
