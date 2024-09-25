@@ -49,10 +49,16 @@ function getVariantDisplayNames() {
     return displayNames;
 }
 
+function getCurrentVariant() {
+    var div = document.getElementById('unionai-docs-current-variant');
+    var content = div.textContent || div.innerText;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     var variants = getAvailableVariants();
     var variantDisplayNames = getVariantDisplayNames();
-    var thisVariantDisplayName = variantDisplayNames[document.getElementById('unionai-docs-this-variant').textContent];
+    var currentVariant = getCurrentVariant();
+    var currentVariantDisplayName = variantDisplayNames[currentVariant];
 
     // Get the current page URL
     var currentUrl = new URL(window.location.href);
@@ -99,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const dropdownTextContainer = document.getElementById('dropdown-text');
-    dropdownTextContainer.textContent = thisVariantDisplayName;
+    dropdownTextContainer.textContent = currentVariantDisplayName;
 })
 
 </script>
@@ -110,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
 {%- if meta is mapping %}
     <div id="unionai-docs-variant-display-names" style="display: none;">{{ meta.get("variant-display-names") }}</div>
     <div id="unionai-docs-available-variants" style="display: none;">{{ meta.get("available-variants") }}</div>
-    <div id="unionai-docs-this-variant" style="display: none;">{{ meta.get("this-variant") }}</div>
+    <div id="unionai-docs-current-variant" style="display: none;">{{ meta.get("current-variant") }}</div>
 {%- endif %}
 {{ super() }}
 
