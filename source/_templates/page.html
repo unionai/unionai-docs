@@ -54,6 +54,17 @@ function getCurrentVariant() {
     return div.textContent || div.innerText;
 }
 
+function getVariantElementIndex(variants, pathSegments) {
+    var matchedIndex = -1;
+    for (var i = 0; i < pathSegments.length; i++) {
+        if (variants.includes(pathSegments[i])) {
+            matchedIndex = i;
+            break;
+        }
+    }
+    return matchedIndex;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     var variants = getAvailableVariants();
     var variantDisplayNames = getVariantDisplayNames();
@@ -67,32 +78,29 @@ document.addEventListener("DOMContentLoaded", function() {
     var pathSegments = currentUrl.pathname.split('/').filter(Boolean);
 
     // Find the index of the path segment that matches one of the variants
-    var matchedIndex = -1;
-    for (var i = 0; i < pathSegments.length; i++) {
-        if (variants.includes(pathSegments[i])) {
-            matchedIndex = i;
-            break;
-        }
-    }
+    var variantElementIndex = getVariantElementIndex(variants, pathSegments);
 
     // If a matching path segment is found
-    if (matchedIndex !== -1) {
+    if (variantElementIndex !== -1) {
         // Create the list container
         var list = [];
 
         // Iterate over the variants array
+        // skipping the current variant
         variants.forEach(function(variant) {
-            // Create a new URL with the matched path segment replaced by the variant
-            var newUrl = new URL(currentUrl);
-            var newPathSegments = pathSegments.slice();
-            newPathSegments[matchedIndex] = variant;
-            newUrl.pathname = '/' + newPathSegments.join('/');
+            if (!variant.equals(currentVariant)) {
+                // Create a new URL with the matched path segment replaced by the variant
+                var newUrl = new URL(currentUrl);
+                var newPathSegments = pathSegments.slice();
+                newPathSegments[matchedIndex] = variant;
+                newUrl.pathname = '/' + newPathSegments.join('/');
 
-            // Create the list item and anchor elements
-            var listItem = {};
-            listItem.text = variantDisplayNames[variant];
-            listItem.url = newUrl.href;
-            list.push(listItem);
+                // Create the list item and anchor elements
+                var listItem = {};
+                listItem.text = variantDisplayNames[variant];
+                listItem.url = newUrl.href;
+                list.push(listItem);
+            }
         });
 
         const dropdownLinks = document.getElementById('dropdown-links');
