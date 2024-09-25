@@ -95,6 +95,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 
 :::{note}
 These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/guide/quick-start.html#configure-the-union-cli).
+:::
 
 {@@ elif byoc @@}
 
@@ -212,3 +213,12 @@ Go to the UI to see the execution:
 ![Dashboard](/_static/images/first-execution-byoc.png)
 
 {@@ endif @@}
+
+:::{note}
+When you use `union create login --host <union-host-url>` to configure the `union` CLI, this creates a `config.yaml` file
+configured for a Proof Key of Code Exchange (PKCE) mechanism. This is one of three authentication options, including DeviceFlow and 
+ClientSecret. In short, PKCE opens a browser window allowing you to login, DeviceFlow returns a URL you can navigate to, 
+and ClientSecret authenticates via a pre-configured secret. If you are using Union in a headless fashion, either on a 
+VM, connecting to a machine via SSH, in CI/CD, etc., DeviceFlow and ClientSecret should be considered. 
+See [CLI authentication](administration/cli-authentication.md) for more information.
+:::

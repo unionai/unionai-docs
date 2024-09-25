@@ -4,7 +4,7 @@ You can define a launch plan with the [`flytekit.LaunchPlan` class](https://docs
 
 For example:
 
-```{literalinclude} ../../_static/includes/core-concepts/launch-plans/defining-launch-plans/example_1.py
+```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/defining-launch-plans/example_1.py
 :language: python
 ```
 

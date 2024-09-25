@@ -22,4 +22,4 @@ sphinx-docsearch
 sphinxext-remoteliteralinclude
 tensorflow
 torch
-union==0.1.75
+union==0.1.78
