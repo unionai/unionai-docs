@@ -3,6 +3,11 @@ article.bd-article {
     height: 100%;
 }
 
+/* Styling for page layout */
+.bd-page-width {
+    max-width: 100%;
+}
+
 /* Basic styling for the dropdown menu */
 button#dropdown-text::before {
     margin-right: 0.3em;
@@ -16,23 +21,31 @@ button#dropdown-text::after {
     line-height: 0.6em;
 }
 
+.navbar-brand.logo:hover {
+    text-decoration: none;
+}
+
 .navbar-brand img {
-    max-width: 80%;
+    max-width: 20%;
 }
 
 .navbar-header-items__start{
     flex-flow: row nowrap;
-    flex-grow: 1;
+    flex-grow: 0.1;
     width: auto;
 }
 
-.dropdown {
+.navbar.bd-header {
+    box-shadow: 0 0 0 0.075rem var(--pst-color-shadow);
+}
+
+.dropdown-content.navbar .dropdown {
     position: relative;
     display: inline-block;
     width: 100%;
 }
 
-.dropdown-content {
+.variant-selector .dropdown-content {
     display: none;
     position: absolute;
     background-color: var(--pst-color-surface);
@@ -42,75 +55,102 @@ button#dropdown-text::after {
     z-index: 1;
 }
 
-.dropdown-content a {
+.variant-selector .dropdown-content a {
     color: var(--pst-color-text-muted);
     padding: 8px;
     text-decoration: none;
     display: block;
 }
 
-.dropdown-content a:hover {
+.variant-selector .dropdown-content a:hover {
+    color: var(--primary-color);
     background-color: var(--pst-color-on-background);
 }
 
-.dropdown:hover .dropdown-content {
+.variant-selector.dropdown:hover .dropdown-content {
     display: block;
 }
 
-.dropdown-button {
+.variant-selector .dropdown-button {
     border: 1px solid var(--pst-color-border);
-    border-left: none;
-    border-right: none;
-    border-radius: 0px;
+    border-radius: 8px;
     color: var(--pst-color-text-muted);
     display: inline-flex;
     justify-content: center;
-    padding: 1em .5em;
+    padding: .5em .5em;
     margin-top: 8px;
     margin-bottom: 8px;
     width: 100%;
+    min-width: 8rem;
 }
 
-.dropdown-button:hover {
-    box-shadow: 0 0 0 .1875rem var(--pst-color-link-hover);
+.variant-selector .dropdown-button:hover {
+    box-shadow: 0 0 0 .1875rem var(--primary-color);
 }
 
-/* update styling for links to use yellow */
+/* update styling for links to use correct color */
+
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link {
+    color: var(--primary-color);
+}
+
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link:before,
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
+    border-bottom: 3px solid var(--primary-color);
+}
+
 a,
 .prev-next-area a p.prev-next-title,
 nav.bd-links .current>a,
 .toc-entry a.nav-link.active
 {
-    color: var(--pst-color-secondary);
+    color: var(--primary-color);
 }
 
 nav.bd-links .current>a,
 .toc-entry a.nav-link.active {
-    box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--pst-color-link-hover);
+    box-shadow: inset max(3px, .1875rem, .12em) 0 0 var(--primary-color);
+}
+
+nav.bd-links li>a:active, nav.bd-links li>a:hover {
+    color: var(--primary-color);
 }
 
 a:active, a:visited {
-    color: #7652a2;
+    color: var(--primary-color);
 }
 
-#dropdown-links a,
-#dropdown-links a:visited {
-    color: var(--pst-color-text-muted);
-}
-
+a:hover,
+a:visited:hover,
 #dropdown-links a:visited:hover {
-    color: var(--pst-color-link-hover);
+    color: var(--primary-color);
 }
 
+/* #dropdown-links a,
+#dropdown-links a:visited {
+} */
+
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover {
+    color: var(--primary-color);
+}
 
 /* update styling for tabs */
 .bd-content .sd-tab-set>input:checked+label {
     border-color: var(--pst-color-border) var(--pst-color-border) transparent;
-    color: var(--pst-color-secondary);
+    color: var(--primary-color);
 }
 
 .bd-content .sd-tab-set .sd-tab-content {
     border: .125rem solid var(--pst-color-border);
+}
+
+/* left sidebar nav width */
+.bd-sidebar-primary {
+    width: 20%;
+    min-width: 350px;
+    padding: 1rem;
 }
 
 /* make the scroll bar sleeker */
@@ -122,6 +162,22 @@ a:active, a:visited {
 
 .bd-sidebar::-webkit-scrollbar-thumb {
     background: var(--pst-color-border);
+}
+
+/* make sure page content fills up the page */
+.bd-main .bd-content {
+    justify-content: left;
+}
+
+.bd-main .bd-content .bd-article-container {
+    padding: 2.5rem;
+}
+
+/* button styling */
+a.sd-btn {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
 }
 
 /* hide default search bar */
@@ -140,6 +196,9 @@ kbd.DocSearch-Commands-Key:not(.compound) {
 }
 
 :root {
+    --primary-color: #edab1c;
+    --primary-border-color: #a87915;
+    --primary-color-surface: #fef2e5;
     --docsearch-primary-color: #edab1c;
 }
 
@@ -165,4 +224,9 @@ body.DocSearch--active div.bd-header-article {
 /* grid items should have bottom margin */
 .sd-col {
     margin-bottom: 1em;
+}
+
+/* update table hover color to neutral color */
+.table tbody tr:hover {
+    background-color: var(--pst-color-table-inner-border);
 }

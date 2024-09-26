@@ -89,17 +89,21 @@ document.addEventListener("DOMContentLoaded", function() {
             list.push(listItem);
         });
 
-        const dropdownLinks = document.getElementById('dropdown-links');
-        list.forEach(link => {
-            const anchor = document.createElement('a');
-            anchor.href = link.url;
-            anchor.textContent = link.text;
-            dropdownLinks.appendChild(anchor);
-        });
+        dropdownLinkContainers = document.getElementsByClassName('variant-selector-links');
+        for (let container of dropdownLinkContainers) {
+            list.forEach(link => {
+                const anchor = document.createElement('a');
+                anchor.href = link.url;
+                anchor.textContent = link.text;
+                container.appendChild(anchor);
+            })
+        }
     }
 
-    const dropdownTextContainer = document.getElementById('dropdown-text');
-    dropdownTextContainer.textContent = thisVariantDisplayName;
+    dropdownTextContainers = document.getElementsByClassName('variant-selector-button')
+    for (let container of dropdownTextContainers) {
+        container.textContent = thisVariantDisplayName;
+    }
 })
 
 </script>

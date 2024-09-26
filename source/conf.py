@@ -13,7 +13,7 @@ release = "1.0"
 
 # Sphinx basic
 master_doc = "index"
-html_static_path = ["_static"]
+html_static_path = ["_static", "_static/switcher.json"]
 templates_path = ["_templates"]
 html_css_files = [
     "custom.css",
@@ -41,12 +41,18 @@ myst_heading_anchors = 6
 # Pydata Sphinx theme
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
-    "navbar_start": ["navbar-logo", "variant-selector"],
+    "navbar_start": ["navbar-logo"],
+    "navbar_center": ["variant-selector", "navbar-nav"],
     "secondary_sidebar_items": ["custom-page-toc"],
+    "logo": {
+        "text": "Union Docs",
+        "image_dark": "_static/public/icon-logo.svg",
+    },
     "footer_start": [],
-    "footer_end": []
+    "footer_end": [],
 }
-html_logo = "_static/public/logo.svg"
+html_title = "Union Docs"
+html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
     "guide/**": [
