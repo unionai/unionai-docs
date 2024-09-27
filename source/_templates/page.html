@@ -24,11 +24,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // e.g., 'serverless'
     const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;;
 
-    // If this page does not have a variant value, return.
-    if (currentVariant == null) {
-        return;
-    }
-
     // Object mapping variant name to display name
     // e.g., {'serverless': 'Serverless', 'byoc': 'BYOC'}
     const variantDisplayNames = JSON.parse(document.getElementById('unionai-docs-variant-display-names').textContent);
