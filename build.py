@@ -255,7 +255,7 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
         log(f'{indent}File not found at {input_path}')
     else:
         output: str = template.render(get_vars(variant)).strip()
-        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\nthis-variant: {variant}\n---\n\n'
+        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\ncurrent-variant: {variant}\n---\n\n'
         output = frontmatter + output + toctree
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'w') as f:
