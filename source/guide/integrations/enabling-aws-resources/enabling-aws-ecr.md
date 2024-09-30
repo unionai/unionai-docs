@@ -5,6 +5,8 @@
 When registering tasks and workflows, the Union infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
 If your data plane is on AWS then you may want to use AWS Elastic Container Registry (ECR) to store these images.
 
+For details on how to use ECR when building and deploying your workflows, see [ImageSpec with ECR](../../core-concepts/tasks/task-software-environment/imagespec-with-ecr.md).
+
 **In most cases, you will be using an ECR instance in the same AWS account as your data plane.**
 **If this is the case, then you do not need to configure anything.**
 **Access to ECR in the same account is enabled by default.**
