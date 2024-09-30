@@ -66,9 +66,12 @@ If you attempt to access deleted data, you will receive an error:
 * When workflow node input/output data is deleted, the Input/Output tabs in the UI will display a *Not Found* error.
 * When Flyte `Deck` data is deleted, the `Deck` view in the UI will display a *Not Found* error.
 * When artifacts are deleted, the artifacts UI will work, but it will display an URL that points to no longer existing artifact.
-* When fast registered code data is deleted, Flyte tasks will fail to download the code artifacts and you will see a *Not found* error in the UI.
 
-To remedy these types of errors, you will have to re-run the workflows that generated the data in question.
+To remedy these types of errors, you will have to re-run the workflow that generated the data in question.
+
+* When fast registered code data is deleted, the workflow execution will fail.
+
+To remedy this type of error, you will have to both re-register and re-run the workflow.
 
 ## Separate sets of policies per cluster
 
