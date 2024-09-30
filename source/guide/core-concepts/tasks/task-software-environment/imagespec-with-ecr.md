@@ -21,7 +21,7 @@ When you push an image to a registry, you are actually pushing it to a repositor
 
 This means that you have to decide on the name of your image and create a repository by that name first, before registering your workflow. We will assume the following:
 
-* The ECR instance you will be using has the base URL `123456789012.dkr.ecr.us-eas-1.amazonaws.com`.
+* The ECR instance you will be using has the base URL `123456789012.dkr.ecr.us-east-1.amazonaws.com`.
 
 * Your image will be called `simple-example-image`.
 
