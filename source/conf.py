@@ -13,7 +13,7 @@ release = "1.0"
 
 # Sphinx basic
 master_doc = "index"
-html_static_path = ["_static", "_static/switcher.json"]
+html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = [
     "custom.css",
