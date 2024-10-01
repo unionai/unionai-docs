@@ -403,14 +403,14 @@
 /web-console/usage-view/ /byoc/guide/administration/usage 301
 /web-console/usage-view /byoc/guide/administration/usage 301
 
-/byoc/getting-started/ /byoc/guide/quick-start 301
-/byoc/getting-started /byoc/guide/quick-start 301
-/serverless/getting-started/ /serverless/guide/quick-start 301
-/serverless/getting-started /serverless/guide/quick-start 301
-/byoc/getting-started/installing-development-tools/ /byoc/guide/quickstart 301
-/byoc/getting-started/installing-development-tools /byoc/guide/quickstart 301
-/serverless/getting-started/installing-development-tools/ /serverless/guide/quickstart 301
-/serverless/getting-started/installing-development-tools /serverless/guide/quickstart 301
+/byoc/getting-started/ /byoc 301
+/byoc/getting-started /byoc 301
+/serverless/getting-started/ /serverless 301
+/serverless/getting-started /serverless 301
+/byoc/getting-started/installing-development-tools/ /byoc 301
+/byoc/getting-started/installing-development-tools /byoc 301
+/serverless/getting-started/installing-development-tools/ /serverless 301
+/serverless/getting-started/installing-development-tools /serverless 301
 
 /getting-started/ /byoc/guide/first-workflow 301
 /getting-started /byoc/guide/first-workflow 301
@@ -541,8 +541,8 @@
 /uctl-cli/ /byoc/guide/administration/uctl-cli 301
 /uctl-cli /byoc/guide/administration/uctl-cli 301
 
-/union-cli/ /serverless/guide/quick-start#install-the-union-package 301
-/union-cli /serverless/guide/quick-start#install-the-union-package 301
+/union-cli/ /serverless/api/union-cli 301
+/union-cli /serverless/api/union-cli 301
 
 /serverless/data-input-output/flytefile/ /serverless/guide/data-input-output/flyte-file-and-flyte-directory 301
 /serverless/data-input-output/flytefile /serverless/guide/data-input-output/flyte-file-and-flyte-directory 301
@@ -812,8 +812,8 @@
 /byoc/integrations/enabling-gcp-resources/enabling-google-secret-manager/ /byoc/guide/integrations/enabling-gcp-resources/enabling-google-secret-manager 301
 /byoc/platform-architecture /byoc/guide/platform-architecture 301
 /byoc/platform-architecture/ /byoc/guide/platform-architecture 301
-/byoc/quick-start /byoc/guide/quick-start 301
-/byoc/quick-start/ /byoc/guide/quick-start 301
+/byoc/quick-start /byoc 301
+/byoc/quick-start/ /byoc 301
 /byoc/union-overview /byoc/guide/union-overview 301
 /byoc/union-overview/ /byoc/guide/union-overview 301
 
@@ -1043,7 +1043,7 @@
 /serverless/integrations/enabling-gcp-resources/enabling-google-secret-manager/ /serverless/guide/integrations/enabling-gcp-resources/enabling-google-secret-manager 301
 /serverless/platform-architecture /serverless/guide/platform-architecture 301
 /serverless/platform-architecture/ /serverless/guide/platform-architecture 301
-/serverless/quick-start /serverless/guide/quick-start 301
-/serverless/quick-start/ /serverless/guide/quick-start 301
+/serverless/quick-start /serverless 301
+/serverless/quick-start/ /serverless 301
 /serverless/union-overview /serverless/guide/union-overview 301
 /serverless/union-overview/ /serverless/guide/union-overview 301
