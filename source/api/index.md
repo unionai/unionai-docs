@@ -1,41 +1,52 @@
-# API reference
-
-You can interact with your Union deployment in the following ways:
-
-* Use the [`flytekit`](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html) and [`union`](./sdk/index) Python SDKs in your workflow code.
-* Use the [`union` CLI](./union-cli) to access your Union deployment via the command line.
-* Use [`UnionRemote`](./union-remote/index) to access your Union deployment from a Python script or runtime environment.
+# API
 
 To get started, install `union`:
-
-{@@ if serverless @@}
 
 ```
 pip install -U union
 ```
 
-{@@ elif byoc @@}
+This will install the `flytekit` and `union` SDKs, the `union` CLI, and `UnionRemote`.
+See [Quick start](../index.md#quick-start) for more details.
 
-::::{tab-set}
 
-:::{tab-item} Unix/macOS
+::::{grid} 2
 
-```{code-block} shell
-pip install -U 'union[byoc]'
-```
+:::{grid-item-card} {octicon}`rocket` Flytekit SDK
+:link: flytekit-sdk/index
+:link-type: doc
 
+Flytekit is the main Python SDK for building workflows.
 :::
 
+:::{grid-item-card} {octicon}`workflow` Union SDK
+:link: union-sdk/index
+:link-type: doc
 
-:::{tab-item} Windows
-
-```{code-block} shell
-pip install -U "union[byoc]"
-```
-
+The Union SDK adds additional features to Flytekit.
 :::
-::::
 
+:::{grid-item-card} {octicon}`terminal` Union CLI
+:link: union-cli
+:link-type: doc
+
+The Union CLI is the command-line interface for interacting with your Union instance.
+:::
+
+:::{grid-item-card} {octicon}`globe` UnionRemote
+:link: union-remote/index
+:link-type: doc
+
+The UnionRemote Python API lets you manage Union workflows with Python code.
+:::
+
+{@@ if byoc @@}
+:::{grid-item-card} {octicon}`gear` Config
+:link: config
+:link-type: doc
+
+The Config Python API is used to connect to your Union BYOC instance.
+:::
 {@@ endif @@}
 
-This will install the `flytekit` and `union` SDKs, the `union` CLI, and `UnionRemote`.
+::::

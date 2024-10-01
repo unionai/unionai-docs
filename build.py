@@ -2,6 +2,8 @@ import os
 import subprocess
 import shlex
 import json
+import re
+import shutil
 from pathlib import Path
 
 import jinja2
@@ -88,7 +90,6 @@ RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 Run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
-:color: secondary
 
 Create an account
 :::
@@ -166,12 +167,46 @@ def create_run_command_node(run_commands: list[str], current_variant: str, githu
     return NotebookNode(cell_type="markdown", source=src, metadata={})
 
 
-def convert_example_py_file_to_md(
+def import_static_files_from_tutorial(
+    name: str,
+    from_path: Path,
+    static_file_dir: str,
+    notebook: NotebookNode,
+):
+    """Imports static files from a tutorial subdirectory and replaces the paths in the notebook."""
+    # copy over any static files over to the sphinx source
+    from_static_path = from_path.parent / static_file_dir
+    if not from_static_path.exists():
+        return
+
+    # copy static files over to the _static directory
+    static_dir = Path(SOURCE_DIR) / "_static" / "_tutorials" / name
+    shutil.copytree(from_static_path, static_dir, dirs_exist_ok=True)
+
+    # replace any image paths in markdown cells with the new path
+    for cell in notebook["cells"]:
+        if cell["cell_type"] != "markdown":
+            continue
+
+        src = cell["source"]
+        # match markdown image paths, with a group for the image path
+        result = re.search(r"!\[.+\]\((static\/.+)\)", src)
+        if not result:
+            continue
+
+        image_path = Path(result.group(1))
+        replace_image_path = Path("/", *static_dir.parts[1:]) / image_path.name
+        cell["source"] = re.sub(result.group(1), str(replace_image_path), src)
+
+
+def convert_tutorial_py_file_to_md(
+    name: str,
     from_path: Path,
     to_path: Path,
     current_variant: str,
     run_commands: dict[str, list[str]],
 ):
+    """Converts a tutorial Python file to a Markdown file along with its static assets."""
     log(f"converting {from_path} to {to_path}")
     notebook = jupytext.read(from_path, fmt="py:light")
 
@@ -182,6 +217,9 @@ def convert_example_py_file_to_md(
     if run_cmd_src is not None:
         run_command_node = create_run_command_node(run_cmd_src, current_variant, github_url)
         notebook["cells"].insert(1, run_command_node)
+
+    for fname in ("static", "images"):
+        import_static_files_from_tutorial(name, from_path, fname, notebook)
 
     jupytext.write(notebook, to_path, fmt="md")
 
@@ -217,7 +255,7 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
         log(f'{indent}File not found at {input_path}')
     else:
         output: str = template.render(get_vars(variant)).strip()
-        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\nthis-variant: {variant}\n---\n\n'
+        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\ncurrent-variant: {variant}\n---\n\n'
         output = frontmatter + output + toctree
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'w') as f:
@@ -243,7 +281,7 @@ def process_page_node(
     if py_file is not None:
         py_file = Path(py_file)
         md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
-        convert_example_py_file_to_md(py_file, md_path, current_variant, run_commands)
+        convert_tutorial_py_file_to_md(name, py_file, md_path, current_variant, run_commands)
 
     variants = [*reversed(variants)]  # make sure that serverless is the first element
     log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')

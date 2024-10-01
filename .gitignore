@@ -2,6 +2,8 @@ secrets.txt
 .vscode
 source/tutorials/**/*.md
 !source/tutorials/**/index.md
+source/_static/_tutorials/
+source/tutorials/**/static/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

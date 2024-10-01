@@ -18,88 +18,68 @@
 <!-- End Google Tag Manager -->
 <!-- UnionAI docs variant switcher -->
 <script>
-function getAvailableVariants() {
-    var div = document.getElementById('unionai-docs-available-variants');
-    var content = div.textContent || div.innerText;
-    var array;
-    try {
-        array = JSON.parse(content);
-    } catch (e) {
-        console.error('Error parsing content to array:', e);
-        return null;
-    }
-    if (Array.isArray(array) && array.every(item => typeof item === 'string')) {
-        return array;
-    } else {
-        console.error('Parsed content is not an array of strings');
-        return null;
-    }
-}
-
-function getVariantDisplayNames() {
-    var div = document.getElementById('unionai-docs-variant-display-names');
-    var content = div.textContent || div.innerText;
-    var displayNames;
-    try {
-        displayNames = JSON.parse(content);
-    } catch (e) {
-        console.error('Error parsing content to array:', e);
-        return null;
-    }
-    return displayNames;
-}
-
 document.addEventListener("DOMContentLoaded", function() {
-    var variants = getAvailableVariants();
-    var variantDisplayNames = getVariantDisplayNames();
-    var thisVariantDisplayName = variantDisplayNames[document.getElementById('unionai-docs-this-variant').textContent];
 
-    // Get the current page URL
-    var currentUrl = new URL(window.location.href);
+    // Variant of the current page.
+    // e.g., 'serverless'
+    const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;;
 
-    // Extract the path segments
-    var pathSegments = currentUrl.pathname.split('/').filter(Boolean);
+    // Object mapping variant name to display name
+    // e.g., {'serverless': 'Serverless', 'byoc': 'BYOC'}
+    const variantDisplayNames = JSON.parse(document.getElementById('unionai-docs-variant-display-names').textContent);
 
-    // Find the index of the path segment that matches one of the variants
-    var matchedIndex = -1;
-    for (var i = 0; i < pathSegments.length; i++) {
-        if (variants.includes(pathSegments[i])) {
-            matchedIndex = i;
-            break;
-        }
-    }
+    // List of all variants
+    const m = new Map(Object.entries(variantDisplayNames));
+    const allVariants = Array.from(m.keys());
 
-    // If a matching path segment is found
-    if (matchedIndex !== -1) {
-        // Create the list container
-        var list = [];
+    // URL of current page
+    // e.g., 'https://docs.unionai.com/serverless/guide/'
+    const currentUrl = new URL(window.location.href);
 
-        // Iterate over the variants array
-        variants.forEach(function(variant) {
-            // Create a new URL with the matched path segment replaced by the variant
-            var newUrl = new URL(currentUrl);
-            var newPathSegments = pathSegments.slice();
-            newPathSegments[matchedIndex] = variant;
-            newUrl.pathname = '/' + newPathSegments.join('/');
+    // Current URL in segments
+    // e.g., ['serverless', 'guide']
+    const currentUrlSegments = currentUrl.pathname.split('/').filter(Boolean);
 
-            // Create the list item and anchor elements
-            var listItem = {};
-            listItem.text = variantDisplayNames[variant];
-            listItem.url = newUrl.href;
-            list.push(listItem);
-        });
+    // Index of the current variant in the URL segments
+    // e.g., 0
+    const variantIndexInUrl = currentUrlSegments.indexOf(currentVariant);
 
-        const dropdownLinks = document.getElementById('dropdown-links');
-        list.forEach(link => {
+    // An array of links, where each link is an object with a text and a url property
+    // This array will be populated with links to the top of the website for all
+    // variants (regardless of whether the current page has an equivalent in that variant)
+    const topLinks = [];
+
+    // For each variant, create a link to the top of that variant's section of the website
+    // and add it to topLinks
+    allVariants.forEach(variant => {
+        const newUrlSegments = currentUrlSegments.slice(0, variantIndexInUrl);
+        newUrlSegments.push(variant);
+
+        const newUrl = new URL(currentUrl);
+        newUrl.pathname = '/' + newUrlSegments.join('/');
+
+        const link = {};
+        link.text = variantDisplayNames[variant];
+        link.url = newUrl.href;
+        topLinks.push(link);
+    });
+
+    // Insert the links into the dropdown menu
+    dropdownLinkContainers = document.getElementsByClassName('variant-selector-links');
+    for (let container of dropdownLinkContainers) {
+        topLinks.forEach(link => {
             const anchor = document.createElement('a');
             anchor.href = link.url;
             anchor.textContent = link.text;
-            dropdownLinks.appendChild(anchor);
-        });
+            container.appendChild(anchor);
+        })
     }
 
-    const dropdownTextContainer = document.getElementById('dropdown-text');
-    dropdownTextContainer.textContent = thisVariantDisplayName;
+    // Insert the name of the current variant into the dropdown menu button
+    dropdownTextContainers = document.getElementsByClassName('variant-selector-button')
+    for (let container of dropdownTextContainers) {
+        container.textContent = variantDisplayNames[currentVariant];
+    }
 })
 
 </script>
@@ -110,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
 {%- if meta is mapping %}
     <div id="unionai-docs-variant-display-names" style="display: none;">{{ meta.get("variant-display-names") }}</div>
     <div id="unionai-docs-available-variants" style="display: none;">{{ meta.get("available-variants") }}</div>
-    <div id="unionai-docs-this-variant" style="display: none;">{{ meta.get("this-variant") }}</div>
+    <div id="unionai-docs-current-variant" style="display: none;">{{ meta.get("current-variant") }}</div>
 {%- endif %}
 {{ super() }}
 
