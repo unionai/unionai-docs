@@ -33,7 +33,7 @@ where `<union-host-url>` is the URL of your Union instance.
 
 These command will create the file `~/.union/config.yaml` with the configuration information to connect to the desired Union instance (Serverless or your own specific BYOC).
 
-See [Quick start](../guide/quick-start.md) for more details.
+See [Quick start](../index.md#quick-start) for more details.
 
 ## Overriding the configuration file location
 

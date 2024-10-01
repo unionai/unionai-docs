@@ -20,7 +20,6 @@
                         {"name": "data-retention-policy", "variants": ["byoc"]}
                     ]
                 },
-                {"name": "quick-start", "variants": ["byoc", "serverless"]},
                 {"name": "first-workflow", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "setting-up-your-local-environment", "variants": ["byoc", "serverless"]},

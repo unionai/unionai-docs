@@ -4,7 +4,7 @@ This section walks through building your first Union workflow, exploring the maj
 
 ## Prerequisites
 
-If you have not already done so, follow the [Quick start guide](../quick-start) to sign into the Union UI,
+If you have not already done so, follow the [Quick start guide](../../index.md#quick-start) to sign into the Union UI,
 set up your local Python environment, and install the `union` command line tool.
 
 ## Your project on Union
