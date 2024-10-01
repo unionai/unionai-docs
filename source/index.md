@@ -12,19 +12,25 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 
 {@@ if serverless @@}
 
-[**Union Serverless**](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
+* **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you.
+  All you need to do is sign up through your GitHub account and start running your workflows.
+  **You are currently in the Union Serverless docs**.
+  To get started, follow the [quick start guide](#quick-start) below.
 
-To get started, follow the [quick start guide](#quick-start) below.
-
-[Union BYOC](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+* **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you.
+  It also offers more control over your hardware and other advanced features.
+  Switch to the Union BYOC docs [here](https://docs.union.ai/byoc).
 
 {@@ elif byoc @@}
 
-[**Union BYOC**](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+* **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you.
+  It also offers more control over your hardware and other advanced features.
+  **You are currently in the Union BYOC docs**.
+  To get started, follow the [quick start guide](#quick-start) below.
 
-To get started, follow the [quick start guide](#quick-start) below.
-
-[Union Serverless](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
+* **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you.
+  All you need to do is sign up through your GitHub account and start running your workflows.
+  Switch to the Union Serverless docs [here](https://docs.union.ai/serverless).
 
 {@@ endif @@}
 
