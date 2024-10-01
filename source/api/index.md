@@ -13,14 +13,14 @@ See [Quick start](../index.md#quick-start) for more details.
 ::::{grid} 2
 
 :::{grid-item-card} {octicon}`rocket` Flytekit SDK
-:link: flytekit-sdk
+:link: flytekit-sdk/index
 :link-type: doc
 
 Flytekit is the main Python SDK for building workflows.
 :::
 
 :::{grid-item-card} {octicon}`workflow` Union SDK
-:link: union-sdk
+:link: union-sdk/index
 :link-type: doc
 
 The Union SDK adds additional features to Flytekit.
@@ -34,7 +34,7 @@ The Union CLI is the command-line interface for interacting with your Union inst
 :::
 
 :::{grid-item-card} {octicon}`globe` UnionRemote
-:link: union-remote
+:link: union-remote/index
 :link-type: doc
 
 The UnionRemote Python API lets you manage Union workflows with Python code.

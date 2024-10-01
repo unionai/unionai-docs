@@ -4,7 +4,7 @@
 # Union BYOC
 {@@ endif @@}
 
-Union AI orchestrator empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The Union orchestrator empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with unparalleled performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
@@ -23,7 +23,7 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 
 * **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you.
   It also offers more control over your hardware and other advanced features.<br/>
-  Switch to the Union BYOC docs [here](https://docs.union.ai/byoc).
+  Switch to the Union BYOC docs [here](../byoc).
 
 {@@ elif byoc @@}
 
@@ -34,7 +34,7 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 
 * **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you.
   All you need to do is sign up through your GitHub account and start running your workflows.<br/>
-  Switch to the Union Serverless docs [here](https://docs.union.ai/serverless).
+  Switch to the Union Serverless docs [here](../serverless).
 
 {@@ endif @@}
 
