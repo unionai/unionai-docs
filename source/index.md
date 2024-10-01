@@ -14,7 +14,7 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 
 To get started, follow the [quick start guide](#quick-start) below.
 
-[**Union BYOC**](byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+[**Union BYOC**](../byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 {@@ elif byoc @@}
 
@@ -22,7 +22,7 @@ To get started, follow the [quick start guide](#quick-start) below.
 
 To get started, follow the [quick start guide](#quick-start) below.
 
-[**Union Serverless**](serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
+[**Union Serverless**](../serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
 {@@ endif @@}
 
