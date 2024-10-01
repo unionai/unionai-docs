@@ -12,23 +12,19 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 
 {@@ if serverless @@}
 
-```{attention}
-**Union Serverless** is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
+[**Union Serverless**](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
 To get started, follow the [quick start guide](#quick-start) below.
-```
 
-[**Union BYOC**](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+[Union BYOC](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 {@@ elif byoc @@}
 
-```{attention}
-**Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+[**Union BYOC**](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 To get started, follow the [quick start guide](#quick-start) below.
-```
 
-[**Union Serverless**](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
+[Union Serverless](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
 {@@ endif @@}
 
