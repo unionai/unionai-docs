@@ -17,24 +17,20 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 {@@ if serverless @@}
 
 * **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you.
-  All you need to do is sign up through your GitHub account and start running your workflows.<br/>
-  **You are currently in the Union Serverless docs**.<br/>
+  All you need to do is sign up through your GitHub account and start running your workflows.
   To get started, follow the [quick start guide](#quick-start) below.
 
-* **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you.
-  It also offers more control over your hardware and other advanced features.<br/>
-  Switch to the Union BYOC docs [here](https://docs.union.ai/byoc).
+* [**Union BYOC**](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you.
+  It also offers more control over your hardware and other advanced features.
 
 {@@ elif byoc @@}
 
 * **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you.
-  It also offers more control over your hardware and other advanced features.<br/>
-  **You are currently in the Union BYOC docs**.<br/>
+  It also offers more control over your hardware and other advanced features.
   To get started, follow the [quick start guide](#quick-start) below.
 
-* **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you.
-  All you need to do is sign up through your GitHub account and start running your workflows.<br/>
-  Switch to the Union Serverless docs [here](https://docs.union.ai/serverless).
+* [**Union Serverless**](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you.
+  All you need to do is sign up through your GitHub account and start running your workflows.
 
 {@@ endif @@}
 
@@ -44,7 +40,7 @@ In this section, we give a quick introduction to writing and running Union workf
 
 {@@ if serverless @@}
 
-## Sign up for Union Serverless
+### Sign up for Union Serverless
 
 First, sign up for Union Serverless:
 
@@ -62,14 +58,14 @@ This is where you will be able to see your workflow executions and manage your p
 
 {@@ elif byoc @@}
 
-## Gather your credentials
+### Gather your credentials
 
 After your administrator has onboarded you to Union, you should have the following at hand:
 
 * Your Union credentials.
 * The URL of your Union instance. We will refer to this as `<union-host-url>` below.
 
-## Log into Union
+### Log into Union
 
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
 Once you have logged in you should see the Union UI.
@@ -79,7 +75,7 @@ This is where you will be able to see your workflow executions and and manage yo
 
 {@@ endif @@}
 
-## Set up your Python environment
+### Set up your Python environment
 
 Set up a Python virtual environment with `conda`, `venv` or a similar tool.
 
@@ -108,7 +104,7 @@ $ source .venv/bin/activate
 
 ::::
 
-## Install the `union` package
+### Install the `union` package
 
 After setting up your virtual environment and activating it, install the `union` Python package:
 
@@ -121,7 +117,7 @@ This will install:
 * The [`union` SDK](api/union-sdk)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
-## Configure the `union` CLI
+### Configure the `union` CLI
 
 To register and run workflows on your Union instance using the `union` CLI, you will need to create a configuration file that contains your Union connection information.
 To do this, run the following command:
@@ -171,7 +167,7 @@ If you have previously used Union, you may have configuration files left over th
 Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 ```
 
-## Create a "Hello, world!" workflow
+### Create a "Hello, world!" workflow
 
 To create an example workflow file, copy the following into a file called `hello.py`:
 
@@ -188,12 +184,12 @@ def hello_world_wf(name: str = 'world') -> str:
     return res
 ```
 
-## Tasks and workflows
+### Tasks and workflows
 
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
 For more information, see the [task](./core-concepts/tasks/index) and [workflow](./core-concepts/workflows/index) documentation.
 
-## Run the workflow locally in Python
+### Run the workflow locally in Python
 
 You can run the workflow in your local Python environment with the [`union run` command](../api/union-cli.md#union-cli-commands):
 
@@ -222,7 +218,7 @@ Running Execution on local.
 Hello, Ada!
 ```
 
-## Run the workflow remotely on Union
+### Run the workflow remotely on Union
 
 To run the workflow remotely on Union, add the [`--remote` flag](../api/union-cli.md#union-cli-commands):
 
