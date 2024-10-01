@@ -6,21 +6,27 @@ Union AI orchestrator empowers AI development teams to rapidly ship high-quality
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
+## Deployment models
+
 Union is available in two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
 
 {@@ if serverless @@}
 
+```{admonition}
 **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
 To get started, follow the [quick start guide](#quick-start) below.
+```
 
 [**Union BYOC**](../byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 {@@ elif byoc @@}
 
+```{admonition}
 **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 To get started, follow the [quick start guide](#quick-start) below.
+```
 
 [**Union Serverless**](../serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
