@@ -1,4 +1,8 @@
-# Union
+{@@ if serverless @@}
+# Union Serverless
+{@@ elif byoc @@}
+# Union BYOC
+{@@ endif @@}
 
 Union AI orchestrator empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
