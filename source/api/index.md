@@ -13,4 +13,4 @@ pip install -U union
 ```
 
 This will install the `flytekit` and `union` SDKs, the `union` CLI, and `UnionRemote`.
-See [Quick start](../guide/quick-start.md) for more details.
+See [Quick start](../index.md#quick-start) for more details.

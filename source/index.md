@@ -12,23 +12,23 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
 
 {@@ if serverless @@}
 
-```{admonition}
+```{attention}
 **Union Serverless** is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
 To get started, follow the [quick start guide](#quick-start) below.
 ```
 
-[**Union BYOC**](../byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
+[**Union BYOC**](https://docs.union.ai/byoc) lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 {@@ elif byoc @@}
 
-```{admonition}
+```{attention}
 **Union BYOC** lets you keep your data and workflow code on your infrastructure, but has Union manage it for you. It also offers more control over your hardware and other advanced features.
 
 To get started, follow the [quick start guide](#quick-start) below.
 ```
 
-[**Union Serverless**](../serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
+[**Union Serverless**](https://docs.union.ai/serverless) is a turnkey solution that takes care of all the infrastructure for you. All you need to do is sign up through your GitHub account and start running your workflows.
 
 {@@ endif @@}
 
@@ -111,8 +111,8 @@ $ pip install -U union
 ```
 
 This will install:
-* The [`union` command-line tool](../api/union-cli)
-* The [`union` SDK](../api/union-sdk)
+* The [`union` command-line tool](api/union-cli)
+* The [`union` SDK](api/union-sdk)
 * The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
 ## Configure the `union` CLI
@@ -128,7 +128,7 @@ $ union create login --serverless
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
 :::{note}
-These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/guide/quick-start.html#configure-the-union-cli).
+These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/index.html#configure-the-union-cli).
 :::
 
 {@@ elif byoc @@}
@@ -142,7 +142,7 @@ where `<union-host-url>` is the URL of your Union instance, mentioned above.
 This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
 :::{note}
-These directions apply to Union BYOC, where you connect to your own dedicated Union instance. To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/guide/quick-start.html#configure-the-union-cli).
+These directions apply to Union BYOC, where you connect to your own dedicated Union instance. To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/index.html#configure-the-union-cli).
 :::
 
 {@@ endif @@}
