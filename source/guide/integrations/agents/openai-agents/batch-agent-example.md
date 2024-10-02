@@ -12,7 +12,7 @@ You can provide either a `JSONLFile` or `Iterator[JSON]`, and the agent handles 
 
 Here's how you can provide an `Iterator` as an input to the agent:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/openai_batch_agent/openai_batch_agent/openai_batch_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/openai_batch_agent/openai_batch_agent/openai_batch_agent_example_usage.py
 :language: python
 :lines: 16-64
 ```
@@ -25,7 +25,7 @@ The `create_batch` function returns an imperative workflow responsible for uploa
 
 The following code snippet demonstrates how to send a JSONL file to the `create_batch` function:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/openai_batch_agent/openai_batch_agent/openai_batch_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/openai_batch_agent/openai_batch_agent/openai_batch_agent_example_usage.py
 :language: python
 :lines: 79-91
 ```

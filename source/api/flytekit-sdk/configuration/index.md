@@ -57,7 +57,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 #### Config object
 
 :::{note}
-You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../development-cycle/union-remote) object. See [Creating a UnionRemote object](../../../development-cycle/union-remote.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
+You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../guide/development-cycle/union-remote.md) object. See [Creating a UnionRemote object](../../../guide/development-cycle/union-remote.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
 :::
 
 ```{eval-rst}
@@ -87,9 +87,9 @@ You can use a `Config` object directly, for example, when initializing a [`Union
 ```
 
 :::{note}
-These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](../../union-cli.md#union-package) or [`union register](../../union-cli#union-register).
+These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](../../union-cli.md#union-package) or [`union register`](../../union-cli#union-cli-commands).
 
-The image configurations are typically either passed in via an [`--image](../../union-cli.md#cmdoption-union-package-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-file).
+The image configurations are typically either passed in via an [`--image`](../../union-cli#cmdoption-union-build-i) flag, or can be specified in a `YAML` or `ini` configuration file.
 :::
 
 #### Execution time settings

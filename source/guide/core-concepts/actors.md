@@ -23,12 +23,12 @@ Actors allow you to reuse a container and environment between tasks that need to
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
 {@@ if serverless @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/main/guides/02_core_concepts/actors/serverless/hello_world.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/02_core_concepts/actors/serverless/hello_world.py
 :caption: hello_world.py
 
 ```
 {@@ elif byoc @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/main/guides/02_core_concepts/actors/byoc/hello_world.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/02_core_concepts/actors/byoc/hello_world.py
 :caption: hello_world.py
 
 ```
@@ -39,12 +39,12 @@ The following example shows how to create a basic `ActorEnvironment` and use it 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
 {@@ if serverless @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/main/guides/02_core_concepts/actors/serverless/plus_one.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/02_core_concepts/actors/serverless/plus_one.py
 :caption: plus_one.py
 
 ```
 {@@ elif byoc @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/main/guides/02_core_concepts/actors/byoc/plus_one.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/02_core_concepts/actors/byoc/plus_one.py
 :caption: plus_one.py
 
 ```
@@ -55,12 +55,12 @@ In this example, the `actor.task`-decorated task is invoked multiple times in on
 Every task execution in the following example will execute in the same `ActorEnvironment`. You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launchplans:
 
 {@@ if serverless @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/main/guides/02_core_concepts/actors/serverless/multiple_tasks.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/02_core_concepts/actors/serverless/multiple_tasks.py
 :caption: multiple_tasks.py
 
 ```
 {@@ elif byoc @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/main/guides/02_core_concepts/actors/byoc/multiple_tasks.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/02_core_concepts/actors/byoc/multiple_tasks.py
 :caption: multiple_tasks.py
 
 ```

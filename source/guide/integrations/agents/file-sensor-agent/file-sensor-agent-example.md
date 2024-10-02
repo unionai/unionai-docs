@@ -4,21 +4,21 @@ This example shows how to use the `FileSensor` to detect files appearing in your
 
 First, import the required libraries:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sensor/sensor/file_sensor_example.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sensor/sensor/file_sensor_example.py
 :language: python
 :lines: 9-10
 ```
 
 Next, create a FileSensor task:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sensor/sensor/file_sensor_example.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sensor/sensor/file_sensor_example.py
 :language: python
 :lines: 16
 ```
 
 To use the FileSensor created in the previous step, you must specify the `path` parameter. In the sandbox, you can use the S3 path:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sensor/sensor/file_sensor_example.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sensor/sensor/file_sensor_example.py
 :language: python
 :lines: 23-34
 ```
