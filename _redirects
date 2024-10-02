@@ -1,5 +1,9 @@
 # Top-level redirect
-/ /byoc 301
+/ /byoc 302
+/byoc/ /byoc 302
+/byoc /byoc 302
+/serverless/ /serverless 302
+/serverless /serverless 302
 
 # Special case
 /_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt /byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt 301
