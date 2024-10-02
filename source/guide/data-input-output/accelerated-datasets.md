@@ -24,7 +24,11 @@ Currently, this feature is only available for AWS S3.
 * Each customer has a dedicated S3 bucket where they can store their accelerated datasets.
 * The naming and set up of this bucket must be coordinated with the Union team, in order that a suitable name is chosen. In general it will usually be something like `s3://union-<org-name>-persistent`.
 * You can upload any data you wish to this bucket.
-* The bucket will be automatically mounted into every node in your cluster using a mechanism that make it locally accessible through `FlyteFile` (see below). To your task logic, it will appear to be a local directory in the task container.
+* The bucket will be automatically mounted into every node in your cluster.
+* To your task logic, it will appear to be a local directory in the task container.
+* To use it, initialize a `FlyteFile` object with the path to the data file and pass it into a task as an input.
+    * Note that in order for the system to recognize the file as an accelerated dataset, it must be created as a `FlyteFile` and that `FLyteFile` must be passed *into* a task.
+      If you try to access the file directly from the object store, it will not be recognized as an accelerated dataset and the data will not be found.
 
 ## Example usage
 
@@ -36,10 +40,14 @@ The code to access the data looks like this:
 from flytekit.types.file import FlyteFile
 
 @task
-def my_task()
-    my_data = FlyteFile(path='s3://union-my-company-persistent/my_data.csv')
-    contents = open(my_data).read()
-    // Do something with the contents
+def my_task(f: FlyteFile) -> int:
+    with open(f, newline="\n") as input_file:
+        data = input_file.read()
+        // Do something with the data
+
+@workflow
+def my_wf()
+    my_task(f=FlyteFile("s3://union-my-company-persistent/my_data.csv"))
 ```
 
 Note that you do not have to invoke `FlyteFile.download()` because the file will already have been made available locally within the container.
