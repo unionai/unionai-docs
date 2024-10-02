@@ -89,7 +89,7 @@ You can use a `Config` object directly, for example, when initializing a [`Union
 :::{note}
 These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](../../union-cli.md#union-package) or [`union register`](../../union-cli#union-cli-commands).
 
-The image configurations are typically either passed in via an [`--image`](../../union-cli#cmdoption-union-build-i) flag, or can be specified in a `YAML` or `ini` configuration file.
+The image configurations are typically either passed in via an [`--image`](../../union-cli#cmdoption-union-build-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-files).
 :::
 
 #### Execution time settings
