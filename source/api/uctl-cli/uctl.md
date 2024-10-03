@@ -2,14 +2,14 @@
 
 uctl is used to interact with Union Cloud
 
-## Synopsis
+### Synopsis
 
 uctl is used to interact with Union Cloud
 
 Lets you manage Flyte entities (Projects, Domains, Workflows, Tasks, and
 Launch Plans), Users, Roles, and Union Cloud configuration.
 
-## Options
+### Options
 
     --admin.audience string                                                                      Audience to use when initiating OAuth2 authorization requests.
     --admin.authType string                                                                      Type of OAuth2 flow used for communicating with admin.ClientSecret, Pkce, ExternalCommand are valid values (default "ClientSecret")
@@ -294,7 +294,7 @@ Launch Plans), Users, Roles, and Union Cloud configuration.
     --webhook.servicePort int32                                                                  The port on the service that hosting webhook. (default 443)
     --webhook.vaultSecretManager.role string                                                     Specifies the vault role to use (default "flyte")
 
-## SEE ALSO
+### SEE ALSO
 
 -   `uctl_append`{.interpreted-text role="doc"} - Used for updating
     various union/flyte resources including
