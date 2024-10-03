@@ -194,8 +194,8 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`uctl completion <uctl-completion>`
-  - Generates completion script.
+* - {doc}`uctl apply <uctl-apply/index>`
+| - Used for updating various Union/Flyte resources including tasks/workflows/launchplans/executions/project.
 {@@ if byoc @@}
 * - {doc}`uctl config <uctl-config/index>`
   - Runs various config commands.
@@ -234,7 +234,4 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 | Task resource attribute | [`uctl get task-resource-attribute`](uctl-get/uctl-get-task-resource-attribute) <br /> [`uctl update task-resource-attribute`](uctl-update/uctl-update-task-resource-attribute) <br /> [`uctl delete task-resource-attribute`](uctl-delete/uctl-delete-task-resource-attribute) |
 | Workflow | [`uctl get workflow`](uctl-get/uctl-get-workflow) <br /> [`uctl update workflow-meta`](uctl-update/uctl-update-workflow-meta) |
 | Workflow execution config | [`uctl get workflow-execution-config`](uctl-get/uctl-get-workflow-execution-config) <br /> [`uctl update workflow-execution-config`](uctl-update/uctl-update-workflow-execution-config) <br /> [`uctl delete workflow-execution-config`](uctl-delete/uctl-delete-workflow-execution-config) |
-
-
-
 

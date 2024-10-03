@@ -332,7 +332,18 @@
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
                 {"name": "uctl-cli", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "uctl-completion", "variants": ["byoc", "serverless"]},
+                        {"name": "uctl", "variants": ["byoc", "serverless"]},
+                        {"name": "uctl-append", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-append-identityassignments", "variants": ["byoc"]}
+                            ]},
+                        {"name": "uctl-apply", "variants": ["byoc"],
+                            "children": [
+                                {"name": "uctl-apply-app", "variants": ["byoc"]},
+                                {"name": "uctl-apply-clusterconfig", "variants": ["byoc"]},
+                                {"name": "uctl-apply-clusterconfigid", "variants": ["byoc"]},
+                                {"name": "uctl-apply-clusterpoolconfig", "variants": ["byoc"]}
+                            ]},
                         {"name": "uctl-config", "variants": ["byoc"],
                             "children": [
                                 {"name": "uctl-config-discover", "variants": ["byoc"]},
@@ -342,17 +353,30 @@
                             ]},
                         {"name": "uctl-create", "variants": ["byoc", "serverless"],
                             "children": [
+                                {"name": "uctl-create-app", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-create-clusterpool", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-create-clusterpoolassignment", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-create-execution", "variants": ["byoc", "serverless"]},
-                                {"name": "uctl-create-project", "variants": ["byoc", "serverless"]}
+                                {"name": "uctl-create-policy", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-create-project", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-create-role", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "uctl-delete", "variants": ["byoc", "serverless"],
                             "children": [
+                                {"name": "uctl-delete-app", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-cluster-pool-attributes", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-cluster-resource-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-cluster", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-clusterconfig", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-clusterpool", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-clusterpoolassignment", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-execution-cluster-label", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-execution-queue-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-execution", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-identityassignments", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-plugin-override", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-policy", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-delete-role", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-task-resource-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-delete-workflow-execution-config", "variants": ["byoc", "serverless"]}
                             ]},
@@ -367,16 +391,25 @@
                         {"name": "uctl-get", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "uctl-get-app", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-cluster-pool-attributes", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-cluster-resource-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-cluster", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-clusterconfig", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-clusterconfigs", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-clusterpool", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-clusterpoolconfig", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-clusterswithconfig", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-echo", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-execution-cluster-label", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-execution-queue-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-execution", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-executionoperation", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-identityassignment", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-launchplan", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-plugin-override", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-policy", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-project", "variants": ["byoc", "serverless"]},
+                                {"name": "uctl-get-role", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-task-resource-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-task", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-get-workflow-execution-config", "variants": ["byoc", "serverless"]},
@@ -384,10 +417,12 @@
                             ]},
                         {"name": "uctl-register", "variants": ["byoc", "serverless"],
                             "children": [
+                                {"name": "uctl-register-examples", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-register-files", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "uctl-update", "variants": ["byoc", "serverless"],
                             "children": [
+                                {"name": "uctl-update-cluster-pool-attributes", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-cluster-resource-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-cluster", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-execution-cluster-label", "variants": ["byoc", "serverless"]},
