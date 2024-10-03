@@ -33,7 +33,7 @@ The Union SDK adds additional features to Flytekit.
 The Union CLI is the command-line interface for interacting with your Union instance.
 :::
 
-:::{grid-item-card} {octicon}`terminal` uctl
+:::{grid-item-card} {octicon}`terminal` uctl CLI
 :link: uctl-cli/index
 :link-type: doc
 
