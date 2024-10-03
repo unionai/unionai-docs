@@ -59,7 +59,7 @@ Because of the way that Union and Flyte are architected, tasks within a single w
 * **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index).
 * **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/index).
 
-<img src="/_static/images/task-dimensions-green.png" alt="Task definitions can vary independently along (almost) any dimension" width="200" height="200">
+![Task definitions can vary independently along (almost) any dimension](/_static/images/task-dimensions-green.png){w=200px}
 
 **_The three dimensions along which a task definition can vary_**
 
@@ -67,17 +67,10 @@ Because of the way that Union and Flyte are architected, tasks within a single w
 
 Along these three dimensions, you can mix and match characteristics to build a task definition that performs exactly the job you want, while still taking advantage of all the features provided at the workflow level like output caching, versioning, and reproducibility.
 
-<div class="row">
-  <div class="column">
-    <img src="/_static/images/task-dimensions-green.png" alt="Task definitions can vary independently along (almost) any dimension" width="100" height="100">
-  </div>
-  <div class="column">
-    <img src="/_static/images/task-dimensions-red.png" alt="Task definitions can vary independently along (almost) any dimension" width="100" height="100">
-  </div>
-  <div class="column">
-    <img src="/_static/images/task-dimensions-blue.png" alt="Task definitions can vary independently along (almost) any dimension" width="100" height="100">
-  </div>
-</div>
+
+![Task definitions can vary independently along (almost) any dimension](/_static/images/task-dimensions-green.png){w=100px}
+![Task definitions can vary independently along (almost) any dimension](/_static/images/task-dimensions-red.png){w=100px}
+![Task definitions can vary independently along (almost) any dimension](/_static/images/task-dimensions-blue.png){w=100px}
 
 **_Task definitions can vary independently along (almost) any dimension_**
 

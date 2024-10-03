@@ -1,0 +1,60 @@
+/serverless
+    _images/dashboard.png
+    _images/first-execution.png
+/byoc
+    _images/union-byoc-home.png
+    _images/first-execution-byoc.png
+
+/byoc/platform-architecture
+    _images/union-architecture.png (graphic)
+
+/byoc/guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id
+    _images/entra-id-register.png (external site)
+    _images/entra-id-application-and-directory-id.png (external site)
+    _images/entra-id-client-credentials.png (external site)
+    _images/entra-id-client-secret.png (external site)
+
+/byoc/guide/data-plane-setup/configuring-your-data-plane
+    _images/adjust-configuration.png
+
+/*/guide/first-workflow/running-the-workflow
+    _images/getting-started-graph.jpg
+    _images/getting-started-full-sidebar.jpg
+    _images/getting-started-input-output.jpg
+    _images/getting-started-flyte-deck.jpg (graphic)
+
+/*/guide/core-concepts/
+    _images/concepts-workflows-1.png (graphic)
+
+/*/guide/core-concepts/workflows/launching-workflows
+    _images/launching-a-workflow.png
+    _images/create-new-execution.png
+    _images/advanced-options-1.png
+
+/*/guide/core-concepts/workflows/viewing-workflows
+    _images/workflow-list.png
+    _images/workflow-view.png
+    _images/workflow-version-list.png
+
+/*/guide/core-concepts/workflows/viewing-workflow-executions
+    _images/execution-list.png
+    _images/execution-view.png
+    _images/execution-view-topbar.png
+    _images/execution-view-info.png
+    _images/execution-view-nodes.png
+    _images/execution-view-right-panel.png
+    _images/execution-view-right-panel-executions.png
+    _images/execution-view-right-panel-inputs.png
+    _images/execution-view-right-panel-outputs.png
+    _images/execution-view-right-panel-task.png
+    _images/execution-view-graph.png
+    _images/execution-view-timeline.png
+
+/serverless/guide/core-concepts/tasks
+    (missing sections in byoc, probably intentional, but check)
+
+/byoc/guide/core-concepts/tasks
+https://docs.union.ai/_static/images/task-dimensions-green.png (graphic, broken)
+https://docs.union.ai/_static/images/task-dimensions-red.png (graphic, broken)
+https://docs.union.ai/_static/images/task-dimensions-blue.png (graphic, broken)
+https://docs.union.ai/byoc/_images/task-dimensions-wf.png (graphic)
