@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // e.g., 'serverless'
     const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;;
 
+    // Available variants of the current page (including the current page).
+    // e.g., '["serverless", "byoc"]
+    const availableVariants = document.getElementById('unionai-docs-available-variants').textContent;
+
     // Object mapping variant name to display name
     // e.g., {'serverless': 'Serverless', 'byoc': 'BYOC'}
     const variantDisplayNames = JSON.parse(document.getElementById('unionai-docs-variant-display-names').textContent);
