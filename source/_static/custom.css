@@ -8,6 +8,14 @@ article.bd-article {
     max-width: 100%;
 }
 
+/*
+Center the main page content only when the sidebar has the .hide-on-wide
+class, which is only on the root page
+*/
+.bd-sidebar.hide-on-wide + main.bd-main .bd-content {
+    justify-content: center;
+}
+
 /* Basic styling for the dropdown menu */
 button#dropdown-text::before {
     margin-right: 0.3em;
