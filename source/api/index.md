@@ -33,6 +33,13 @@ The Union SDK adds additional features to Flytekit.
 The Union CLI is the command-line interface for interacting with your Union instance.
 :::
 
+:::{grid-item-card} {octicon}`terminal` uctl
+:link: uctl-cli/index
+:link-type: doc
+
+uctl is an alternative CLI for those who need to perform administrative tasks or integrate with CI/CD systems. It is a Golang binary that can be installed on any platform supported by Golang.
+:::
+
 :::{grid-item-card} {octicon}`globe` UnionRemote
 :link: union-remote/index
 :link-type: doc

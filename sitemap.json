@@ -424,7 +424,6 @@
                             "children": [
                                 {"name": "uctl-update-cluster-pool-attributes", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-cluster-resource-attribute", "variants": ["byoc", "serverless"]},
-                                {"name": "uctl-update-cluster", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-execution-cluster-label", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-execution-queue-attribute", "variants": ["byoc", "serverless"]},
                                 {"name": "uctl-update-execution", "variants": ["byoc", "serverless"]},
