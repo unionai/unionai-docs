@@ -22,7 +22,7 @@ You are currently in the **Union BYOC** docs.
 {@@ endif @@}
 :::
 
-::::{grid}
+::::{grid} 2
 
 :::{grid-item-card} {octicon}`rocket` Quick start
 :link: quick-start.html
