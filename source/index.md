@@ -10,6 +10,37 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
+::::{grid} 2
+
+:::{grid-item-card} {octicon}`rocket` Quick start
+:link: ./#quickstart
+:link-type: doc
+
+Jump right into writing and running Union workflows.
+:::
+
+:::{grid-item-card} {octicon}`milestone` Guide
+:link: guide/index
+:link-type: doc
+
+Learn all about the structure, concepts and features of the Union platform.
+:::
+
+:::{grid-item-card} {octicon}`mortar-board` Tutorials
+:link: tutorials/index
+:link-type: doc
+
+Walk though fully functioning examples of AI/ML applications built on Union.
+:::
+
+:::{grid-item-card} {octicon}`book` API
+:link: api/index
+:link-type: doc
+
+Explore the Union API, CLI, and SDKs.
+:::
+
+::::
 ## Deployment models
 
 Union is available in two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
@@ -32,40 +63,6 @@ Union is available in two deployment options: **Serverless** and **BYOC** (Bring
   All you need to do is sign up through your GitHub account and start running your workflows.
 
 {@@ endif @@}
-
-::::{grid} 2
-
-:::{grid-item-card} {octicon}`rocket` Quick start
-:link: #quickstart
-:link-type: doc
-
-Jump right into writing and running Union workflows.
-:::
-
-{@@ if byoc @@}
-:::{grid-item-card} {octicon}`milestone` Guide
-:link: guide/index
-:link-type: doc
-
-Learn all about the structure, concepts and features of the Union platform.
-:::
-
-:::{grid-item-card} {octicon}`mortar-board` Tutorials
-:link: tutorials/index
-:link-type: doc
-
-Walk though fully functioning examples of AI/ML applications built on Union.
-:::
-{@@ endif @@}
-
-:::{grid-item-card} {octicon}`book` API
-:link: api/index
-:link-type: doc
-
-Explore the Union API, CLI, and SDKs.
-:::
-
-::::
 
 ## Quick start
 
