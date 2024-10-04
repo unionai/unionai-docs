@@ -1,5 +1,7 @@
 # Guide
 
+This section provides a comprehensive guide to the Union platform including the concepts underlying the system and all the available features.
+
 ::::{grid} 2
 
 :::{grid-item-card} {octicon}`telescope` Union overview
