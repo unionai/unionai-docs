@@ -27,7 +27,7 @@ You are currently in the **Union BYOC** docs.
 :::{grid-item-card} {octicon}`rocket` Quick start
 :link: quick-start.html
 :link-type: url
-:columns: 6 6 6 12
+:columns: 6
 
 Jump right into writing and running Union workflows.
 :::
@@ -35,7 +35,7 @@ Jump right into writing and running Union workflows.
 :::{grid-item-card} {octicon}`milestone` Guide
 :link: guide/index.html
 :link-type: url
-:columns: 6 6 6 12
+:columns: 6
 
 Learn Union concepts and features.
 :::
@@ -43,7 +43,7 @@ Learn Union concepts and features.
 :::{grid-item-card} {octicon}`mortar-board` Tutorials
 :link: tutorials/index.html
 :link-type: url
-:columns: 6 6 6 12
+:columns: 6
 
 Walk through example applications.
 :::
@@ -51,7 +51,7 @@ Walk through example applications.
 :::{grid-item-card} {octicon}`book` API
 :link: api/index.html
 :link-type: url
-:columns: 6 6 6 12
+:columns: 6
 
 Explore the Union APIs, SDKs, and CLIs.
 :::
