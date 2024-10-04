@@ -1,8 +1,8 @@
-# Deployment
+# Union overview
 
 Union builds on [Flyte](http://flyte.org), the emerging open-source standard for orchestrating machine learning and data processing workflows,
 Union offers all the features of Flyte while adding many additional capabilities.
-Union is available in two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
+There are two deployment options for Union: **Serverless** and **BYOC** (Bring Your Own Cloud).
 
 ## Flyte
 
@@ -19,7 +19,7 @@ Flyte provides a full suite of powerful features for orchestrating AL, ML, and d
 
 ## Union Serverless
 
-Union Serverless is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[Union Serverless](https://docs.union.ai/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
 Your Data and workflow code stored safely and securely in Union's cloud infrastructure.
 Union Serverless provide all the features of Flyte, plus:
@@ -43,7 +43,7 @@ Union Serverless provide all the features of Flyte, plus:
 
 ## Union BYOC
 
-Union BYOC (Bring Your own CLoud) let's you keep your data and workflow code on your infrastructure, while Union takes care of the management.
+[Union BYOC](https://docs.union.ai/byoc) (Bring Your own Cloud) let's you keep your data and workflow code on your infrastructure, while Union takes care of the management.
 Union BYOC provides all the features of Flyte and Union Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)

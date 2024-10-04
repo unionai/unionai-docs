@@ -10,7 +10,7 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
-::::{grid} 2
+::::{grid}
 
 :::{grid-item-card} {octicon}`rocket` Quick start
 :link: quick-start.html
@@ -20,36 +20,44 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 Jump right into writing and running Union workflows.
 :::
 
-:::{grid-item-card} {octicon}`cloud` Deployment
-:link: deployment.html
-:link-type: url
-:columns: 6
-
-Union has two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
-:::
-
 :::{grid-item-card} {octicon}`milestone` Guide
 :link: guide/index.html
 :link-type: url
-:columns: 6
+:columns: 4
 
-Learn all about the structure, concepts and features of the Union platform.
+Learn Union concepts and features.
 :::
 
 :::{grid-item-card} {octicon}`mortar-board` Tutorials
 :link: tutorials/index.html
 :link-type: url
-:columns: 6
+:columns: 4
 
-Walk though fully functioning examples of AI/ML applications built on Union.
+Walk through example applications.
 :::
 
 :::{grid-item-card} {octicon}`book` API
 :link: api/index.html
 :link-type: url
-:columns: 6
+:columns: 4
 
-Explore the Union API, CLI, and SDKs.
+Explore the Union APIs, SDKs, and CLIs.
+:::
+
+:::{grid-item-card} {octicon}`cloud` Deployment options
+:link: guide/union-overview.html
+:link-type: url
+:columns: 12
+
+Union offers two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
 :::
 
 ::::
+
+{@@ if serverless @@}
+You are currently in the **Union Serverless** docs.
+[Switch to the Union BYOC docs](https://docs.union.ai/byoc).
+{@@  elif byoc @@}
+You are currently in the **Union BYOC** docs.
+[Switch to the Union Serverless docs](https://docs.union.ai/serverless).
+{@@ endif @@}
