@@ -372,10 +372,10 @@
 /running-workflows/task-level-monitoring /byoc/guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring 302
 /running-workflows/web-console/ /byoc/guide/core-concepts 302
 /running-workflows/web-console /byoc/guide/core-concepts 302
-/union-and-flyte/ /byoc/deployment 302
-/union-and-flyte /byoc/deployment 302
-/union-cloud-and-flyte/ /byoc/deployment 302
-/union-cloud-and-flyte /byoc/deployment 302
+/union-and-flyte/ /byoc/guide/union-overview 302
+/union-and-flyte /byoc/guide/union-overview 302
+/union-cloud-and-flyte/ /byoc/guide/union-overview 302
+/union-cloud-and-flyte /byoc/guide/union-overview 302
 /web-console/ /byoc/guide/core-concepts 302
 /web-console /byoc/guide/core-concepts 302
 /web-console/artifact-list/ /byoc/guide/core-concepts/artifacts/viewing-artifacts 302
@@ -812,10 +812,8 @@
 /byoc/integrations/enabling-gcp-resources/enabling-google-secret-manager/ /byoc/guide/integrations/enabling-gcp-resources/enabling-google-secret-manager 302
 /byoc/platform-architecture /byoc/guide/platform-architecture 302
 /byoc/platform-architecture/ /byoc/guide/platform-architecture 302
-/byoc/union-overview /byoc/deployment 302
-/byoc/union-overview/ /byoc/deployment 302
-/byoc/guide/union-overview /byoc/deployment 302
-/byoc/guide/union-overview/ /byoc/deployment 302
+/byoc/union-overview /byoc/guide/union-overview 302
+/byoc/union-overview/ /byoc/guide/union-overview 302
 
 /serverless/administration /serverless/guide/administration 302
 /serverless/administration/ /serverless/guide/administration 302
@@ -1043,7 +1041,5 @@
 /serverless/integrations/enabling-gcp-resources/enabling-google-secret-manager/ /serverless/guide/integrations/enabling-gcp-resources/enabling-google-secret-manager 302
 /serverless/platform-architecture /serverless/guide/platform-architecture 302
 /serverless/platform-architecture/ /serverless/guide/platform-architecture 302
-/serverless/union-overview /serverless/deployment 302
-/serverless/union-overview/ /serverless/deployment 302
-/serverless/guide/union-overview /serverless/deployment 302
-/serverless/guide/union-overview/ /serverless/deployment 302
+/serverless/union-overview /serverless/guide/union-overview 302
+/serverless/union-overview/ /serverless/guide/union-overview 302
