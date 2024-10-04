@@ -14,7 +14,7 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 
 :::{grid-item-card} {octicon}`rocket` Quick start
 :link: ./#quickstart
-:link-type: doc
+:link-type: url
 
 Jump right into writing and running Union workflows.
 :::
