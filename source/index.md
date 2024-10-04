@@ -10,50 +10,8 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
-::::{grid}
-
-:::{grid-item-card} {octicon}`rocket` Quick start
-:link: quick-start.html
-:link-type: url
-:columns: 12
-
-Jump right into writing and running Union workflows.
-:::
-
-:::{grid-item-card} {octicon}`milestone` Guide
-:link: guide/index.html
-:link-type: url
-:columns: 4
-
-Learn Union concepts and features.
-:::
-
-:::{grid-item-card} {octicon}`mortar-board` Tutorials
-:link: tutorials/index.html
-:link-type: url
-:columns: 4
-
-Walk through example applications.
-:::
-
-:::{grid-item-card} {octicon}`book` API
-:link: api/index.html
-:link-type: url
-:columns: 4
-
-Explore the Union APIs, SDKs, and CLIs.
-:::
-
-:::{grid-item-card} {octicon}`cloud` Deployment options
-:link: guide/union-overview.html
-:link-type: url
-:columns: 12
-
-Union offers two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
-:::
-
-::::
-
+:::{admonition} Deployment options
+Union offers two deployment options: [**Serverless** and **BYOC**](guide/union-overview).
 {@@ if serverless @@}
 You are currently in the **Union Serverless** docs.
 [Switch to the Union BYOC docs](https://docs.union.ai/byoc).
@@ -61,3 +19,40 @@ You are currently in the **Union Serverless** docs.
 You are currently in the **Union BYOC** docs.
 [Switch to the Union Serverless docs](https://docs.union.ai/serverless).
 {@@ endif @@}
+:::
+
+::::{grid}
+
+:::{grid-item-card} {octicon}`rocket` Quick start
+:link: quick-start.html
+:link-type: url
+:columns: 6 12 12 12
+
+Jump right into writing and running Union workflows.
+:::
+
+:::{grid-item-card} {octicon}`milestone` Guide
+:link: guide/index.html
+:link-type: url
+:columns: 6 12 12 12
+
+Learn Union concepts and features.
+:::
+
+:::{grid-item-card} {octicon}`mortar-board` Tutorials
+:link: tutorials/index.html
+:link-type: url
+:columns: 6 12 12 12
+
+Walk through example applications.
+:::
+
+:::{grid-item-card} {octicon}`book` API
+:link: api/index.html
+:link-type: url
+:columns: 6 12 12 12
+
+Explore the Union APIs, SDKs, and CLIs.
+:::
+
+::::
