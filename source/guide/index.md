@@ -25,7 +25,7 @@ The Union team will help you set up your Union data plane on AWS, GCP or Azure, 
 :::
 {@@ endif @@}
 
-:::{grid-item-card} {octicon}`rocket` First workflow
+:::{grid-item-card} {octicon}`file-binary` First workflow
 :link: first-workflow/index
 :link-type: doc
 
