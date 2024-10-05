@@ -6,7 +6,7 @@ ChatGPT can be used in lots of cases, for example, sentiment analysis, language 
 
 This example shows you how to run ChatGPT tasks in flyte.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
 :language: python
 :lines: 11-15
 ```
@@ -17,14 +17,14 @@ You have to specify your `name`, `openai_organization` and `chatgpt_config`.
 * `openai_organization` is for the OpenAI API. You can find it [here](https://platform.openai.com/account/organization).
 * `chatgpt_config` is for OpenAI chat completion. You can find it [here](https://platform.openai.com/docs/api-reference/chat/create).
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
 :language: python
 :lines: 27-50
 ```
 
 You can execute the workflow locally.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
 :language: python
 :lines: 56-58
 ```
@@ -36,14 +36,14 @@ For more details, see the [FlyteChatGPT Summary Bot GitHub repository](https://g
 
 ### Summarize Flyte's latest GitHub releases to Slack
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
 :language: python
 :lines: 69-140
 ```
 
 ### Summarize Flyte's latest YouTube Video to Slack
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
 :language: python
 :lines: 146-271
 ```
@@ -54,7 +54,7 @@ For more details, see the [FlyteChatGPT Summary Bot GitHub repository](https://g
 This example only works in a local environment.
 ```
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/chatgpt_agent/chatgpt_agent/chatgpt_agent_example_usage.py
 :language: python
 :lines: 277-363
 ```
