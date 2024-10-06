@@ -7,8 +7,6 @@ pip install -U union
 ```
 
 This will install the `flytekit` and `union` SDKs, the `union` CLI, and `UnionRemote`.
-See [Quick start](../index.md#quick-start) for more details.
-
 
 ::::{grid} 2
 
@@ -37,7 +35,7 @@ The Union CLI is the command-line interface for interacting with your Union inst
 :link: uctl-cli/index
 :link-type: doc
 
-uctl is an alternative CLI for those who need to perform administrative tasks or integrate with CI/CD systems. It is a Golang binary that can be installed on any platform supported by Golang.
+uctl is an alternative CLI for performing administrative tasks or use in CI/CD environments. It is a Golang binary that can be installed on any platform supported by Golang.
 :::
 
 :::{grid-item-card} {octicon}`globe` UnionRemote
