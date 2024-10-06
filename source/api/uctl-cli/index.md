@@ -118,7 +118,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 
 {@@ endif @@}
 
-### Options
+## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
