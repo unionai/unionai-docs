@@ -158,20 +158,22 @@ been dumped for generic data types \'x\' and \'y\'. :
 
 ## Options
 
-    --clusterPool string       specify which cluster pool to assign execution to.
-    --dryRun                   execute command without making any modifications.
-    --execFile string          file for the execution params. If not specified defaults to <<workflow/task>_name>.execution_spec.yaml
-    -h, --help                     help for execution
-    --iamRoleARN string        iam role ARN AuthRole for launching execution.
-    --kubeServiceAcct string   kubernetes service account AuthRole for launching execution.
-    --overwriteCache           skip cached results when performing execution, causing all outputs to be re-calculated and stored data to be overwritten. Does not work for recovered executions.
-    --recover string           execution id to be recreated from the last known failure point.
-    --relaunch string          execution id to be relaunched.
-    --targetDomain string      project where execution needs to be created. If not specified configured domain would be used.
-    --targetProject string     project where execution needs to be created. If not specified configured project would be used.
-    --task string              
-    --version string           specify version of execution workflow/task.
-    --workflow string          
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterPool | string | specify which cluster pool to assign execution to. |
+| --dryRun | | execute command without making any modifications. |
+| --execFile | string | file for the execution params. If not specified defaults to <<workflow/task>_name>.execution_spec.yaml |
+| -h, --help | help for execution |
+| --iamRoleARN | string | iam role ARN AuthRole for launching execution. |
+| --kubeServiceAcct | string | kubernetes service account AuthRole for launching execution. |
+| --overwriteCache | | skip cached results when performing execution, causing all outputs to be re-calculated and stored data to be overwritten. Does not work for recovered executions. |
+| --recover | string | execution id to be recreated from the last known failure point. |
+| --relaunch | string | execution id to be relaunched. |
+| --targetDomain | string | project where execution needs to be created. If not specified configured domain would be used. |
+| --targetProject | string | project where execution needs to be created. If not specified configured project would be used. |
+| --task | string |  |
+| --version | string | specify version of execution workflow/task. |
+| --workflow | string |  |
 
 ### Options inherited from parent commands
 

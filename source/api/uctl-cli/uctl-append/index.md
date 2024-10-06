@@ -10,7 +10,9 @@ tasks/workflows/launchplans/executions/project.
 
 ## Options
 
-    -h, --help   help for append
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for append |
 
 ### Options inherited from parent commands
 

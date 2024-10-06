@@ -13,7 +13,9 @@ config: :
 
 ## Options
 
-    -h, --help   help for clusterconfigs
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for clusterconfigs |
 
 ### Options inherited from parent commands
 

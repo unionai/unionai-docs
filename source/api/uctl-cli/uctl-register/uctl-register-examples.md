@@ -27,19 +27,23 @@ Usage
 
 ## Options
 
-    --archive                       Pass in archive file either an http link or local path.
-    --assumableIamRole string       Custom assumable iam auth role to register launch plans with.
-    --continueOnError               Continue on error when registering files.
-    --destinationDirectory string   Location of source code in container.
-    --dryRun                        Execute command without making any modifications.
-    --enableSchedule                Enable the schedule if the files contain schedulable launchplan.
-    --force                         Force use of version number on entities registered with flyte.
-    -h, --help                          help for examples
-    --k8ServiceAccount string       Deprecated. Please use --K8sServiceAccount
-    --k8sServiceAccount string      Custom kubernetes service account auth role to register launch plans with.
-    --outputLocationPrefix string   Custom output location prefix for offloaded types (files/schemas).
-    --sourceUploadPath string       Deprecated: Update flyte admin to avoid having to configure storage access from flytectl.
-    --version string                Version of the entity to be registered with flyte which are un-versioned after serialization.
+| Option | Type | Description |
+|--------|------|-------------|
+| --archive | | Pass in archive file either an http link or local path. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --assumableIamRole | string | Custom assumable iam auth role to register launch plans with. |
+| --continueOnError | | Continue on error when registering files. |
+| --destinationDirectory | string | Location of source code in container. |
+| --dryRun | | Execute command without making any modifications. |
+| --enableSchedule | | Enable the schedule if the files contain schedulable launchplan. |
+| --force | | Force use of version number on entities registered with flyte. |
+| -h, --help | help for examples |
+| --k8ServiceAccount | string | Deprecated. Please use --K8sServiceAccount |
+| --k8sServiceAccount | string | Custom kubernetes service account auth role to register launch plans with. |
+| --outputLocationPrefix | string | Custom output location prefix for offloaded types (files/schemas). |
+| --sourceUploadPath | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
+| --version | string | Version of the entity to be registered with flyte which are un-versioned after serialization. |
 
 ### Options inherited from parent commands
 

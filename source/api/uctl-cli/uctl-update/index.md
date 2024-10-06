@@ -13,7 +13,9 @@ resource; e.g., to activate a project: :
 
 ## Options
 
-    -h, --help   help for update
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for update |
 
 ### Options inherited from parent commands
 

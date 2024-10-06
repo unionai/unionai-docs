@@ -24,11 +24,13 @@ To fetch compiled cluster config: :
 
 ## Options
 
-    --clusterName string   Fetch config of cluster with given name
-    --compiled             fetch compiled config for given cluster
-    --configID string      Fetch cluster config with given id
-    -h, --help                 help for clusterconfig
-    --outputFile string    optional output file
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterName | string | Fetch config of cluster with given name |
+| --compiled | | fetch compiled config for given cluster |
+| --configID | string | Fetch cluster config with given id |
+| -h, --help | help for clusterconfig |
+| --outputFile | string | optional output file |
 
 ### Options inherited from parent commands
 

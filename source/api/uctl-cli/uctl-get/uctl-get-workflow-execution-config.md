@@ -107,9 +107,11 @@ Usage
 
 ## Options
 
-    --attrFile string   attribute file name to be used for generating attribute for the resource type.
-    --gen               generates an empty workflow execution config file with conformance to the api format.
-    -h, --help              help for workflow-execution-config
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | attribute file name to be used for generating attribute for the resource type. |
+| --gen | | generates an empty workflow execution config file with conformance to the api format. |
+| -h, --help | help for workflow-execution-config |
 
 ### Options inherited from parent commands
 

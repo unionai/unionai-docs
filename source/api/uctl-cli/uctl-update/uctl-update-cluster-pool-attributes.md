@@ -43,10 +43,12 @@ uctl update cluster-pool-attribute \--genSkeleton \--attrFile cpa.yaml
 
 ## Options
 
-    --attrFile string   cluster pool attribute file to be used for creating cluster pool matchable attribute.
-    --force             do not ask for an acknowledgement during updates
-    --genSkeleton       generates a skeleton cluster pool config attribute file with templatized values in full conformance with the api format.
-    -h, --help              help for cluster-pool-attributes
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | cluster pool attribute file to be used for creating cluster pool matchable attribute. |
+| --force | | do not ask for an acknowledgement during updates |
+| --genSkeleton | | generates a skeleton cluster pool config attribute file with templatized values in full conformance with the api format. |
+| -h, --help | help for cluster-pool-attributes |
 
 ### Options inherited from parent commands
 

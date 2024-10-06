@@ -24,8 +24,10 @@ To fetch cluster pool workflow attributes: :
 
 ## Options
 
-    -h, --help              help for cluster-pool-attributes
-        --workflow string   optional,  workflow name for the matchable attributes to fetch
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for cluster-pool-attributes |
+| --workflow | string | optional,  workflow name for the matchable attributes to fetch |
 
 ### Options inherited from parent commands
 

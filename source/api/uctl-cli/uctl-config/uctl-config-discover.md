@@ -10,7 +10,9 @@ Searches for a config in one of the default search paths.
 
 ## Options
 
-    -h, --help   help for discover
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for discover |
 
 ### Options inherited from parent commands
 

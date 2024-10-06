@@ -49,8 +49,10 @@ Usage
 
 ## Options
 
-    --attrFile string   attribute file name to be used for generating attribute for the resource type.
-    -h, --help              help for execution-queue-attribute
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | attribute file name to be used for generating attribute for the resource type. |
+| -h, --help | help for execution-queue-attribute |
 
 ### Options inherited from parent commands
 

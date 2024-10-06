@@ -10,8 +10,12 @@ Delete clusters
 
 ## Options
 
-    --dryRun   execute command without making any modifications.
-    -h, --help     help for cluster
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for cluster |
 
 ### Options inherited from parent commands
 

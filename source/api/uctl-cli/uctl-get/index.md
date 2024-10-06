@@ -11,7 +11,9 @@ To fetch a project, use the following command: :
 
 ## Options
 
-    -h, --help   help for get
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for get |
 
 ### Options inherited from parent commands
 

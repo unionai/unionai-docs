@@ -11,7 +11,9 @@ Create Flyte resource; if a project: :
 
 ## Options
 
-    -h, --help   help for create
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for create |
 
 ### Options inherited from parent commands
 

@@ -32,10 +32,12 @@ You can list existing policy assignments with: :
 
 ## Options
 
-    --application string   Application id to fetch identity assignments for
-    -h, --help                 help for identityassignments
-    --policy string        Policy name with which to update the identity assignment
-    --user string          Human user email to fetch identity assignments for
+| Option | Type | Description |
+|--------|------|-------------|
+| --application | string | Application id to fetch identity assignments for |
+| -h, --help | help for identityassignments |
+| --policy | string | Policy name with which to update the identity assignment |
+| --user | string | Human user email to fetch identity assignments for |
 
 ### Options inherited from parent commands
 

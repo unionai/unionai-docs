@@ -16,13 +16,15 @@ To fetch one cluster pool: :
 
 ## Options
 
-    --clusterPoolSpecFile string    generates an clusterPool spec file with conformance to the api format with current values.This can only be used while fetching single cluster pool
-    --filter.asc                    Specifies the sorting order. By default sorts result in descending order
-    --filter.fieldSelector string   Allows for filtering resources based on a specific value for a field name using operations =, !=, >, <, >=, <=, in, contains.Multiple selectors can be added separated by commas
-    --filter.limit int32            Specifies the number of results to return (default 100)
-    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
-    --filter.token string           Specifies the server provided token to use for fetching next page in case of multi page result
-    -h, --help                          help for clusterpool
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterPoolSpecFile | string | generates an clusterPool spec file with conformance to the api format with current values.This can only be used while fetching single cluster pool |
+| --filter.asc | | Specifies the sorting order. By default sorts result in descending order |
+| --filter.fieldSelector | string | Allows for filtering resources based on a specific value for a field name using operations =, !=, >, <, >=, <=, in, contains.Multiple selectors can be added separated by commas |
+| --filter.limit | int32 | Specifies the number of results to return (default 100) |
+| --filter.sortBy | string | Specifies which field to sort results  (default "created_at") |
+| --filter.token | string | Specifies the server provided token to use for fetching next page in case of multi page result |
+| -h, --help | help for clusterpool |
 
 ### Options inherited from parent commands
 

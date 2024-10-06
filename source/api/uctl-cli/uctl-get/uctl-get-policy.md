@@ -14,9 +14,11 @@ Fetch an individual policy: :: ./bin/uctl get policy \--name MyPolicy
 
 ## Options
 
-    -h, --help                help for policy
-        --name string         Optional,  specific name of the policy to fetch
-        --outputFile string   writes API response to this file.
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for policy |
+| --name | string | Optional,  specific name of the policy to fetch |
+| --outputFile | string | writes API response to this file. |
 
 ### Options inherited from parent commands
 

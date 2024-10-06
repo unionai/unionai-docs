@@ -10,9 +10,11 @@ Delete cluster pool assignment
 
 ## Options
 
-    --clusterName string   Assign cluster with this name
-    -h, --help                 help for clusterpoolassignment
-    --poolName string      Assign cluster to this pool
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterName | string | Assign cluster with this name |
+| -h, --help | help for clusterpoolassignment |
+| --poolName | string | Assign cluster to this pool |
 
 ### Options inherited from parent commands
 

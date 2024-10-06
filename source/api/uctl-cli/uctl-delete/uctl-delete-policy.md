@@ -10,8 +10,10 @@ Delete a policy
 
 ## Options
 
-    -h, --help          help for policy
-        --name string   Name of the policy to remove
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for policy |
+| --name | string | Name of the policy to remove |
 
 ### Options inherited from parent commands
 

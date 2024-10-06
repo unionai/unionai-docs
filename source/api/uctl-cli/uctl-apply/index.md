@@ -11,7 +11,9 @@ Eg: Update Union resources of app for a tenant: :
 
 ## Options
 
-    -h, --help   help for apply
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for apply |
 
 ### Options inherited from parent commands
 

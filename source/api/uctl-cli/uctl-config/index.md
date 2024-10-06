@@ -10,10 +10,12 @@ list of available commands..
 
 ## Options
 
-    --file stringArray   Passes the config file to load.
+| Option | Type | Description |
+|--------|------|-------------|
+| --file | stringArray | Passes the config file to load. |
                          If empty, it'll first search for the config file path then, if found, will load config from there.
-    --force              Force to overwrite the default config file without confirmation
-    -h, --help               help for config
+| --force | | Force to overwrite the default config file without confirmation |
+| -h, --help | help for config |
 
 ### Options inherited from parent commands
 

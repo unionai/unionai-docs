@@ -10,10 +10,12 @@ Create cluster pools
 
 ## Options
 
-    --clusterPoolSpecFile string   cluster pool spec file to be used for creating cluster pool.
-    --dryRun                       execute command without making any modifications.
-    --genSkeleton                  generates a skeleton cluster pool config file with templatized values in full conformance with the api format.
-    -h, --help                         help for clusterpool
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterPoolSpecFile | string | cluster pool spec file to be used for creating cluster pool. |
+| --dryRun | | execute command without making any modifications. |
+| --genSkeleton | | generates a skeleton cluster pool config file with templatized values in full conformance with the api format. |
+| -h, --help | help for clusterpool |
 
 ### Options inherited from parent commands
 

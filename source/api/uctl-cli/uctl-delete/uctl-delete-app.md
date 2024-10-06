@@ -10,8 +10,12 @@ Delete application
 
 ## Options
 
-    --dryRun   execute command without making any modifications.
-    -h, --help     help for app
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for app |
 
 ### Options inherited from parent commands
 

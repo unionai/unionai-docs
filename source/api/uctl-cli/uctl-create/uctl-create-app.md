@@ -10,10 +10,12 @@ Create apps
 
 ## Options
 
-    --appSpecFile string   app spec file to be used for creating app.
-    --dryRun               execute command without making any modifications.
-    --gen                  generates an empty app config file with conformance to the api format.
-    -h, --help                 help for app
+| Option | Type | Description |
+|--------|------|-------------|
+| --appSpecFile | string | app spec file to be used for creating app. |
+| --dryRun | | execute command without making any modifications. |
+| --gen | | generates an empty app config file with conformance to the api format. |
+| -h, --help | help for app |
 
 ### Options inherited from parent commands
 

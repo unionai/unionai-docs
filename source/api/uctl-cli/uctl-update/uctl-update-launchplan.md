@@ -22,13 +22,25 @@ Usage
 
 ## Options
 
-    --activate         activate launchplan.
-    --archive          (Deprecated) disable the launch plan schedule (if it has an active schedule associated with it).
-    --deactivate       disable the launch plan schedule (if it has an active schedule associated with it).
-    --dryRun           execute command without making any modifications.
-    --force            do not ask for an acknowledgement during updates.
-    -h, --help             help for launchplan
-    --version string   version of the launchplan to be fetched.
+| Option | Type | Description |
+|--------|------|-------------|
+| --activate | | activate launchplan. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --archive | | (Deprecated) disable the launch plan schedule (if it has an active schedule associated with it). |
+| Option | Type | Description |
+|--------|------|-------------|
+| --deactivate | | disable the launch plan schedule (if it has an active schedule associated with it). |
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --force | | do not ask for an acknowledgement during updates. |
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for launchplan |
+| --version | string | version of the launchplan to be fetched. |
 
 ### Options inherited from parent commands
 

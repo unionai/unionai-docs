@@ -38,11 +38,13 @@ Generate Flytectl config with a storage provider: :
 
 ## Options
 
-    --console string   Endpoint of console,  if different than flyte admin
-    --force            Force to overwrite the default config file without confirmation
-    -h, --help             help for init
-    --host string      Endpoint of flyte admin
-    --insecure         Enable insecure mode
+| Option | Type | Description |
+|--------|------|-------------|
+| --console | string | Endpoint of console,  if different than flyte admin |
+| --force | | Force to overwrite the default config file without confirmation |
+| -h, --help | help for init |
+| --host | string | Endpoint of flyte admin |
+| --insecure | | Enable insecure mode |
 
 ### Options inherited from parent commands
 

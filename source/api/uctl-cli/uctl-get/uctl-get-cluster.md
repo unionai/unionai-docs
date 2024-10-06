@@ -10,13 +10,19 @@ Retrieves clusters
 
 ## Options
 
-    --dryRun                        execute command without making any modifications.
-    --filter.asc                    Specifies the sorting order. By default sorts result in descending order
-    --filter.fieldSelector string   Allows for filtering resources based on a specific value for a field name using operations =, !=, >, <, >=, <=, in, contains.Multiple selectors can be added separated by commas
-    --filter.limit int32            Specifies the number of results to return (default 100)
-    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
-    --filter.token string           Specifies the server provided token to use for fetching next page in case of multi page result
-    -h, --help                          help for cluster
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --filter.asc | | Specifies the sorting order. By default sorts result in descending order |
+| Option | Type | Description |
+|--------|------|-------------|
+| --filter.fieldSelector | string | Allows for filtering resources based on a specific value for a field name using operations =, !=, >, <, >=, <=, in, contains.Multiple selectors can be added separated by commas |
+| --filter.limit | int32 | Specifies the number of results to return (default 100) |
+| --filter.sortBy | string | Specifies which field to sort results  (default "created_at") |
+| --filter.token | string | Specifies the server provided token to use for fetching next page in case of multi page result |
+| -h, --help | help for cluster |
 
 ### Options inherited from parent commands
 

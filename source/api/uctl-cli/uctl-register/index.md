@@ -15,7 +15,9 @@ registration would fail.
 
 ## Options
 
-    -h, --help   help for register
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for register |
 
 ### Options inherited from parent commands
 

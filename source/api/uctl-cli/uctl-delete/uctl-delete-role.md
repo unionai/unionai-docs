@@ -10,8 +10,10 @@ Delete a role
 
 ## Options
 
-    -h, --help          help for role
-        --name string   Name of the role to remove
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for role |
+| --name | string | Name of the role to remove |
 
 ### Options inherited from parent commands
 

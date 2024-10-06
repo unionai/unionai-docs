@@ -12,7 +12,9 @@ To fetch list of clusters with assigned config: :
 
 ## Options
 
-    -h, --help   help for clusterswithconfig
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for clusterswithconfig |
 
 ### Options inherited from parent commands
 

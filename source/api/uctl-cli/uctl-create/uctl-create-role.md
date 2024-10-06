@@ -58,11 +58,13 @@ resources using
 
 ## Options
 
-    --actions strings   Actions permitted by holders of the role
-    --genFile           Optional,  if you want to create a role using a file as a specification,  this will generate a template example
-    -h, --help              help for role
-    --name string       Name to assign to the role. Must be unique
-    --roleFile string   Optional,  use a file for defining more complicated roles (default "role.yaml")
+| Option | Type | Description |
+|--------|------|-------------|
+| --actions | strings | Actions permitted by holders of the role |
+| --genFile | | Optional,  if you want to create a role using a file as a specification,  this will generate a template example |
+| -h, --help | help for role |
+| --name | string | Name to assign to the role. Must be unique |
+| --roleFile | string | Optional,  use a file for defining more complicated roles (default "role.yaml") |
 
 ### Options inherited from parent commands
 

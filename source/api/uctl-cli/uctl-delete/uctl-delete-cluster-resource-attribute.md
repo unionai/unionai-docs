@@ -41,9 +41,11 @@ Usage
 
 ## Options
 
-    --attrFile string   attribute file name to be used for delete attribute for the resource type.
-    --dryRun            execute command without making any modifications.
-    -h, --help              help for cluster-resource-attribute
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | attribute file name to be used for delete attribute for the resource type. |
+| --dryRun | | execute command without making any modifications. |
+| -h, --help | help for cluster-resource-attribute |
 
 ### Options inherited from parent commands
 

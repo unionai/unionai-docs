@@ -6,7 +6,9 @@
 
 ## Options
 
-    -h, --help   help for echo
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for echo |
 
 ### Options inherited from parent commands
 

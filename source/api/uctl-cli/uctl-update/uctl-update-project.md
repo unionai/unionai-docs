@@ -80,18 +80,28 @@ Usage
 
 ## Options
 
-    --activate                Activates the project specified as argument. Only used in update
-    --activateProject         (Deprecated) Activates the project specified as argument. Only used in update
-    --archive                 Archives the project specified as argument. Only used in update
-    --archiveProject          (Deprecated) Archives the project specified as argument. Only used in update
-    --description string      description for the project specified as argument.
-    --dryRun                  execute command without making any modifications.
-    --file string             file for the project definition.
-    --force                   Skips asking for an acknowledgement during an update operation. Only used in update
-    -h, --help                    help for project
-    --id string               id for the project specified as argument.
-    --labels stringToString   labels for the project specified as argument. (default [])
-    --name string             name for the project specified as argument.
+| Option | Type | Description |
+|--------|------|-------------|
+| --activate | | Activates the project specified as argument. Only used in update |
+| Option | Type | Description |
+|--------|------|-------------|
+| --activateProject | | (Deprecated) Activates the project specified as argument. Only used in update |
+| Option | Type | Description |
+|--------|------|-------------|
+| --archive | | Archives the project specified as argument. Only used in update |
+| Option | Type | Description |
+|--------|------|-------------|
+| --archiveProject | | (Deprecated) Archives the project specified as argument. Only used in update |
+| Option | Type | Description |
+|--------|------|-------------|
+| --description | string | description for the project specified as argument. |
+| --dryRun | | execute command without making any modifications. |
+| --file | string | file for the project definition. |
+| --force | | Skips asking for an acknowledgement during an update operation. Only used in update |
+| -h, --help | help for project |
+| --id | string | id for the project specified as argument. |
+| --labels | stringToString | labels for the project specified as argument. (default []) |
+| --name | string | name for the project specified as argument. |
 
 ### Options inherited from parent commands
 

@@ -16,7 +16,9 @@ Usage
 
 ## Options
 
-    -h, --help   help for exec
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for exec |
 
 ### Options inherited from parent commands
 

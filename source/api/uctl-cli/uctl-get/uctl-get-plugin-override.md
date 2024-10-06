@@ -67,8 +67,10 @@ Usage
 
 ## Options
 
-    --attrFile string   attribute file name to be used for generating attribute for the resource type.
-    -h, --help              help for plugin-override
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | attribute file name to be used for generating attribute for the resource type. |
+| -h, --help | help for plugin-override |
 
 ### Options inherited from parent commands
 

@@ -15,9 +15,11 @@ Fetch an individual role: :: ./bin/uctl get role MyExampleRole
 
 ## Options
 
-    -h, --help                help for role
-        --name string         Optional,  specific name of the role to fetch
-        --outputFile string   writes API response to this file.
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for role |
+| --name | string | Optional,  specific name of the role to fetch |
+| --outputFile | string | writes API response to this file. |
 
 ### Options inherited from parent commands
 

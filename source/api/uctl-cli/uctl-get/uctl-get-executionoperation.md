@@ -11,7 +11,9 @@ executions. They will eventually show up again on the queue.
 
 ## Options
 
-    -h, --help   help for executionoperation
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for executionoperation |
 
 ### Options inherited from parent commands
 

@@ -15,7 +15,9 @@ Usage :
 
 ## Options
 
-    -h, --help   help for status
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for status |
 
 ### Options inherited from parent commands
 

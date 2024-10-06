@@ -80,10 +80,14 @@ privileges in flytesnacks production, define a policy.yaml like so:
 
 ## Options
 
-    --genFile             Optional,  if you want to create a policy using a file as a specification,  this will generate a template example
-    -h, --help                help for policy
-    --name string         Name to assign to the policy. Must be unique
-    --policyFile string   Optional,  use a file for defining more complicated policies (default "policy.yaml")
+| Option | Type | Description |
+|--------|------|-------------|
+| --genFile | | Optional,  if you want to create a policy using a file as a specification,  this will generate a template example |
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for policy |
+| --name | string | Name to assign to the policy. Must be unique |
+| --policyFile | string | Optional,  use a file for defining more complicated policies (default "policy.yaml") |
 
 ### Options inherited from parent commands
 

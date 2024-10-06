@@ -23,12 +23,18 @@ Usage
 
 ## Options
 
-    --activate             activate the named entity.
-    --archive              archive named entity.
-    --description string   description of the named entity.
-    --dryRun               execute command without making any modifications.
-    --force                do not ask for an acknowledgement during updates.
-    -h, --help                 help for launchplan-meta
+| Option | Type | Description |
+|--------|------|-------------|
+| --activate | | activate the named entity. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --archive | | archive named entity. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --description | string | description of the named entity. |
+| --dryRun | | execute command without making any modifications. |
+| --force | | do not ask for an acknowledgement during updates. |
+| -h, --help | help for launchplan-meta |
 
 ### Options inherited from parent commands
 

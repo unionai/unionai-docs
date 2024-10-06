@@ -47,8 +47,10 @@ Usage
 
 ## Options
 
-    --attrFile string   attribute file name to be used for generating attribute for the resource type.
-    -h, --help              help for execution-cluster-label
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | attribute file name to be used for generating attribute for the resource type. |
+| -h, --help | help for execution-cluster-label |
 
 ### Options inherited from parent commands
 

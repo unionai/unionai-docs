@@ -10,8 +10,10 @@ Validates the loaded config.
 
 ## Options
 
-    -h, --help     help for validate
-        --strict   Validates that all keys in loaded config
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for validate |
+| --strict | | Validates that all keys in loaded config |
                    map to already registered sections.
 
 ### Options inherited from parent commands

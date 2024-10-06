@@ -98,16 +98,18 @@ role="ref"} on how to launch one using the generated file. Usage
 
 ## Options
 
-    --execFile string               execution file name to be used for generating execution spec of a single launchplan.
-    --filter.asc                    Specifies the sorting order. By default flytectl sort result in descending order
-    --filter.fieldSelector string   Specifies the Field selector
-    --filter.limit int32            Specifies the limit (default 100)
-    --filter.page int32             Specifies the page number,  in case there are multiple pages of results (default 1)
-    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
-    -h, --help                          help for launchplan
-    --latest                         flag to indicate to fetch the latest version,  version flag will be ignored in this case
-    --version string                version of the launchplan to be fetched.
-    --workflow string               name of the workflow for which the launchplans need to be fetched.
+| Option | Type | Description |
+|--------|------|-------------|
+| --execFile | string | execution file name to be used for generating execution spec of a single launchplan. |
+| --filter.asc | | Specifies the sorting order. By default flytectl sort result in descending order |
+| --filter.fieldSelector | string | Specifies the Field selector |
+| --filter.limit | int32 | Specifies the limit (default 100) |
+| --filter.page | int32 | Specifies the page number,  in case there are multiple pages of results (default 1) |
+| --filter.sortBy | string | Specifies which field to sort results  (default "created_at") |
+| -h, --help | help for launchplan |
+| --latest | | flag to indicate to fetch the latest version,  version flag will be ignored in this case |
+| --version | string | version of the launchplan to be fetched. |
+| --workflow | string | name of the workflow for which the launchplans need to be fetched. |
 
 ### Options inherited from parent commands
 

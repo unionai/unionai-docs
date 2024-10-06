@@ -10,7 +10,9 @@ Generate configuration documentation in rst format
 
 ## Options
 
-    -h, --help   help for docs
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for docs |
 
 ### Options inherited from parent commands
 

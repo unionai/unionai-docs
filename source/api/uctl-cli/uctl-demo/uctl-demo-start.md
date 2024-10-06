@@ -78,19 +78,27 @@ Usage
 
 ## Options
 
-    --dev                                    Optional. Only start minio and postgres in the sandbox.
-    --disable-agent                          Optional. Disable the agent service.
-    --dryRun                                 Optional. Only print the docker commands to bring up flyte sandbox/demo container.This will still call github api's to get the latest flyte release to use'
-    --env strings                            Optional. Provide Env variable in key=value format which can be passed to sandbox container.
-    --force                                  Optional. Forcefully delete existing sandbox cluster if it exists.
-    -h, --help                                   help for start
-    --image string                           Optional. Provide a fully qualified path to a Flyte compliant docker image.
-    --imagePullOptions.platform string       Forces a specific platform's image to be pulled.'
-    --imagePullOptions.registryAuth string   The base64 encoded credentials for the registry.
-    --imagePullPolicy ImagePullPolicy        Optional. Defines the image pull behavior [Always/IfNotPresent/Never] (default Always)
-    --pre                                    Optional. Pre release Version of flyte will be used for sandbox.
-    --source string                          deprecated,  path of your source code,  please build images with local daemon
-    --version string                         Version of flyte. Only supports flyte releases greater than v0.10.0
+| Option | Type | Description |
+|--------|------|-------------|
+| --dev | | Optional. Only start minio and postgres in the sandbox. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --disable-agent | | Optional. Disable the agent service. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | Optional. Only print the docker commands to bring up flyte sandbox/demo container.This will still call github api's to get the latest flyte release to use' |
+| Option | Type | Description |
+|--------|------|-------------|
+| --env | strings | Optional. Provide Env variable in key=value format which can be passed to sandbox container. |
+| --force | | Optional. Forcefully delete existing sandbox cluster if it exists. |
+| -h, --help | help for start |
+| --image | string | Optional. Provide a fully qualified path to a Flyte compliant docker image. |
+| --imagePullOptions.platform | string | Forces a specific platform's image to be pulled.' |
+| --imagePullOptions.registryAuth | string | The base64 encoded credentials for the registry. |
+| --imagePullPolicy | ImagePullPolicy | Optional. Defines the image pull behavior [Always/IfNotPresent/Never] (default Always) |
+| --pre | | Optional. Pre release Version of flyte will be used for sandbox. |
+| --source | string | deprecated,  path of your source code,  please build images with local daemon |
+| --version | string | Version of flyte. Only supports flyte releases greater than v0.10.0 |
 
 ### Options inherited from parent commands
 

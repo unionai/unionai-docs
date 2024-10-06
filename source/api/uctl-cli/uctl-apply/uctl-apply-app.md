@@ -10,9 +10,11 @@ Updates apps config in configured OAuthProvider
 
 ## Options
 
-    --appSpecFile string   app spec file to be used for updating app.
-    --dryRun               execute command without making any modifications.
-    -h, --help                 help for app
+| Option | Type | Description |
+|--------|------|-------------|
+| --appSpecFile | string | app spec file to be used for updating app. |
+| --dryRun | | execute command without making any modifications. |
+| -h, --help | help for app |
 
 ### Options inherited from parent commands
 

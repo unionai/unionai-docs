@@ -10,9 +10,11 @@ Updates cluster pool config
 
 ## Options
 
-    --clusterPoolSpecFile string   cluster pool spec file to be used for updating cluster pool.
-    --dryRun                       execute command without making any modifications.
-    -h, --help                         help for clusterpoolconfig
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterPoolSpecFile | string | cluster pool spec file to be used for updating cluster pool. |
+| --dryRun | | execute command without making any modifications. |
+| -h, --help | help for clusterpoolconfig |
 
 ### Options inherited from parent commands
 

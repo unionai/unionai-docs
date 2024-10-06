@@ -54,10 +54,12 @@ Usage
 
 ## Options
 
-    --attrFile string   attribute file name to be used for updating attribute for the resource type.
-    --dryRun            execute command without making any modifications.
-    --force             do not ask for an acknowledgement during updates.
-    -h, --help              help for execution-queue-attribute
+| Option | Type | Description |
+|--------|------|-------------|
+| --attrFile | string | attribute file name to be used for updating attribute for the resource type. |
+| --dryRun | | execute command without making any modifications. |
+| --force | | do not ask for an acknowledgement during updates. |
+| -h, --help | help for execution-queue-attribute |
 
 ### Options inherited from parent commands
 

@@ -15,8 +15,10 @@ Usage
 
 ## Options
 
-    -h, --help     help for teardown
-    -v, --volume   Optional. Clean up Docker volume. This will result in a permanent loss of all data within the database and object store. Use with caution!
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for teardown |
+| -v, --volume | Optional. | Clean up Docker volume. This will result in a permanent loss of all data within the database and object store. Use with caution! |
 
 ### Options inherited from parent commands
 

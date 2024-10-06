@@ -12,9 +12,11 @@ Fetch uctl version. :
 
 ## Options
 
-    -h, --help   help for version
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for version |
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 | Option | Type | Description |
 |--------|------|-------------|

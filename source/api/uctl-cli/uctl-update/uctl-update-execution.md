@@ -18,11 +18,21 @@ Usage
 
 ## Options
 
-    --activate   activate execution.
-    --archive    archive execution.
-    --dryRun     execute command without making any modifications.
-    --force      do not ask for an acknowledgement during updates.
-    -h, --help       help for execution
+| Option | Type | Description |
+|--------|------|-------------|
+| --activate | | activate execution. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --archive | | archive execution. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| --force | | do not ask for an acknowledgement during updates. |
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for execution |
 
 ### Options inherited from parent commands
 

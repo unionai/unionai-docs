@@ -10,9 +10,13 @@ Updates cluster config
 
 ## Options
 
-    --dryRun            execute command without making any modifications.
-    -h, --help              help for clusterconfig
-    --specFile string   spec file to be used to update cluster config.
+| Option | Type | Description |
+|--------|------|-------------|
+| --dryRun | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for clusterconfig |
+| --specFile | string | spec file to be used to update cluster config. |
 
 ### Options inherited from parent commands
 

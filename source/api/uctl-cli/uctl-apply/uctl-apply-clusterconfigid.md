@@ -10,10 +10,12 @@ Assign cluster config
 
 ## Options
 
-    --clusterName string   Specifies cluster name which config to update
-    --configID string      Specifies config ID to assign to the cluster
-    --dryRun               execute command without making any modifications.
-    -h, --help                 help for clusterconfigid
+| Option | Type | Description |
+|--------|------|-------------|
+| --clusterName | string | Specifies cluster name which config to update |
+| --configID | string | Specifies config ID to assign to the cluster |
+| --dryRun | | execute command without making any modifications. |
+| -h, --help | help for clusterconfigid |
 
 ### Options inherited from parent commands
 

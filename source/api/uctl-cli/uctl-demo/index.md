@@ -15,7 +15,9 @@ inside the demo container, use exec: :: ./bin/uctl demo exec \-- pwd
 
 ## Options
 
-    -h, --help   help for demo
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for demo |
 
 ### Options inherited from parent commands
 

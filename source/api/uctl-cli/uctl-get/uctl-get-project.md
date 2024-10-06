@@ -47,12 +47,16 @@ Usage
 
 ## Options
 
-    --filter.asc                    Specifies the sorting order. By default flytectl sort result in descending order
-    --filter.fieldSelector string   Specifies the Field selector
-    --filter.limit int32            Specifies the limit (default 100)
-    --filter.page int32             Specifies the page number,  in case there are multiple pages of results (default 1)
-    --filter.sortBy string          Specifies which field to sort results  (default "created_at")
-    -h, --help                          help for project
+| Option | Type | Description |
+|--------|------|-------------|
+| --filter.asc | | Specifies the sorting order. By default flytectl sort result in descending order |
+| Option | Type | Description |
+|--------|------|-------------|
+| --filter.fieldSelector | string | Specifies the Field selector |
+| --filter.limit | int32 | Specifies the limit (default 100) |
+| --filter.page | int32 | Specifies the page number,  in case there are multiple pages of results (default 1) |
+| --filter.sortBy | string | Specifies which field to sort results  (default "created_at") |
+| -h, --help | help for project |
 
 ### Options inherited from parent commands
 

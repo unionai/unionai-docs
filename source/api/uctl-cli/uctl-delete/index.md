@@ -11,7 +11,9 @@ Delete a resource; if an execution: :
 
 ## Options
 
-    -h, --help   help for delete
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for delete |
 
 ### Options inherited from parent commands
 

@@ -16,8 +16,10 @@ Delete workflow cluster pool attributes: :
 
 ## Options
 
-    -h, --help              help for cluster-pool-attributes
-        --workflow string   optional,  workflow name for the matchable attributes to delete
+| Option | Type | Description |
+|--------|------|-------------|
+| -h, --help | help for cluster-pool-attributes |
+| --workflow | string | optional,  workflow name for the matchable attributes to delete |
 
 ### Options inherited from parent commands
 
