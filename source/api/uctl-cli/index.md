@@ -194,9 +194,9 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 :header-rows: 0
 :widths: 20 30
 
-* - {doc}`uctl apply <uctl-apply/index>`
-  - Used for updating various Union/Flyte resources including tasks/workflows/launchplans/executions/project.
 {@@ if byoc @@}
+* - {doc}`uctl apply <uctl-apply/index>`
+  - Used for updating various Union/Flyte resources, including cluster configs.
 * - {doc}`uctl config <uctl-config/index>`
   - Runs various config commands.
 {@@ endif @@}
