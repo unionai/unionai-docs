@@ -2,14 +2,14 @@
 
 This example shows how to use a BigQueryTask to execute a query.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
 :language: python
 :lines: 7-10
 ```
 
 This is the world's simplest query. Note that in order for registration to work properly, you'll need to give your BigQuery task a name that's unique across your project/domain for your Union deployment.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
 :language: python
 :lines: 16-26
 ```
@@ -19,7 +19,7 @@ In this case we use crypto_dogecoin data, which is a public dataset in BigQuery 
 
 Let's look out how we can parameterize our query to filter results for a specific transaction version, provided as a user input specifying a version.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
 :language: python
 :lines: 38-47
 ```
@@ -27,7 +27,7 @@ Let's look out how we can parameterize our query to filter results for a specifi
 The `StructuredDataset` transformer can convert query result to a `pandas` dataframe here.
 We can also change `pandas.datafram"` to `pyarrow.Table`, and convert the result to an Arrow table.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
 :language: python
 :lines: 54-62
 ```
