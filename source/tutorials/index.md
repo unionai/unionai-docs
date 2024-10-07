@@ -1,9 +1,7 @@
 # Tutorials
 
-In this part of the docs, you'll find tutorials that walk you through the process
-of building AI/ML applications on Union. These applications range from training
-XGBoost models in tabular datasets to fine-tuning large language models for text
-generation tasks.
+This section provides tutorials that walk you through the process of building AI/ML applications on Union.
+The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
 ::::{grid} 2
 
