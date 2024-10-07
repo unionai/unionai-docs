@@ -1,5 +1,6 @@
 {"name": "", "variants": ["byoc", "serverless"],
     "children": [
+        {"name": "quick-start", "variants": ["byoc", "serverless"]},
         {"name": "guide", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "union-overview", "variants": ["byoc", "serverless"]},

@@ -11,7 +11,7 @@ For now, we will just cover setting up the necessary tools and access.
 
 :::{admonition} Default image
 If no image is specified for a task, Union will use a default image that is provided by the system.
-For example, the code in the [Quick start guide](../../index.md#quick-start) did not explicitly specify an image.
+For example, the code in the [Quick start guide](../../quick-start) did not explicitly specify an image.
 :::
 
 ## Prerequisites

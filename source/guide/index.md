@@ -1,5 +1,7 @@
 # Guide
 
+This section provides a comprehensive guide to the Union platform including the concepts underlying the system and all the available features.
+
 ::::{grid} 2
 
 :::{grid-item-card} {octicon}`telescope` Union overview
@@ -25,7 +27,7 @@ The Union team will help you set up your Union data plane on AWS, GCP or Azure, 
 :::
 {@@ endif @@}
 
-:::{grid-item-card} {octicon}`rocket` First workflow
+:::{grid-item-card} {octicon}`file-binary` First workflow
 :link: first-workflow/index
 :link-type: doc
 

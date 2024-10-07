@@ -1,5 +1,7 @@
 # API
 
+This section provides the reference material for all Union APIS, SDKs and CLIs.
+
 To get started, install `union`:
 
 ```
@@ -7,7 +9,7 @@ pip install -U union
 ```
 
 This will install the `flytekit` and `union` SDKs, the `union` CLI, and `UnionRemote`.
-See [Quick start](../index.md#quick-start) for more details.
+See [Quick start](../quick-start) for more details.
 
 
 ::::{grid} 2

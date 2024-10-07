@@ -55,6 +55,8 @@ html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
+    "quick-start": [],
+    "deployment": [],
     "guide/**": [
         "custom-sidebar.html",
     ],
