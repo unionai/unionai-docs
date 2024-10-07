@@ -24,11 +24,15 @@ document.addEventListener("DOMContentLoaded", function() {
     // e.g., 'serverless'
     const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;;
 
+    // Available variants of the current page (including the current page).
+    // e.g., '["serverless", "byoc"]
+    const availableVariants = JSON.parse(document.getElementById('unionai-docs-available-variants').textContent);
+
     // Object mapping variant name to display name
     // e.g., {'serverless': 'Serverless', 'byoc': 'BYOC'}
     const variantDisplayNames = JSON.parse(document.getElementById('unionai-docs-variant-display-names').textContent);
 
-    // List of all variants
+    // List of all variants (globally, not just this page)
     const m = new Map(Object.entries(variantDisplayNames));
     const allVariants = Array.from(m.keys());
 
@@ -44,33 +48,62 @@ document.addEventListener("DOMContentLoaded", function() {
     // e.g., 0
     const variantIndexInUrl = currentUrlSegments.indexOf(currentVariant);
 
-    // An array of links, where each link is an object with a text and a url property
-    // This array will be populated with links to the top of the website for all
-    // variants (regardless of whether the current page has an equivalent in that variant)
-    const topLinks = [];
+    // An array of variant link objects, one for each variant (globally not just variants of the current page).
+    // Each object has the following properties:
+    //
+    // * text: The display name of the variant represented by this object
+    //   (e.g., "Serverless" or "BYOC").
+    //
+    // * url: The URL of the current page in this variant,
+    //   if it exists (e.g., "https://docs.unionai.com/serverless/guide",
+    //   "https://docs.unionai.com/byoc/guide") the top of the website in
+    //   this variant (e.g., "https://docs.unionai.com/serverless/"
+    //   or "https://docs.unionai.com/byoc/")
+    const variantLinks = [];
 
-    // For each variant, create a link to the top of that variant's section of the website
-    // and add it to topLinks
+    // For each variant, fill in text, peerUrl, and topUrl for the current page
+    // and add it to the variant_links object.
     allVariants.forEach(variant => {
-        const newUrlSegments = currentUrlSegments.slice(0, variantIndexInUrl);
-        newUrlSegments.push(variant);
 
-        const newUrl = new URL(currentUrl);
-        newUrl.pathname = '/' + newUrlSegments.join('/');
+        // Get the URL segments in the current URL that come before the variant segment
+        const prefixSegments = currentUrlSegments.slice(0, variantIndexInUrl);
 
-        const link = {};
-        link.text = variantDisplayNames[variant];
-        link.url = newUrl.href;
-        topLinks.push(link);
+        // Get the URL segments in the current URL that come after the variant segment
+        const suffixSegments = currentUrlSegments.slice(variantIndexInUrl + 1);
+
+        // Construct the top and peer URLs
+        const topUrlSegments = prefixSegments.concat([variant]);
+        const peerUrlSegments = prefixSegments.concat([variant], suffixSegments);
+        const topUrl = new URL(currentUrl);
+        topUrl.pathname = '/' + topUrlSegments.join('/');
+        const peerUrl = new URL(currentUrl);
+        peerUrl.pathname = '/' + peerUrlSegments.join('/');
+
+        // Create a variant link object
+        const variantLink = {};
+
+        // Set the variantLink text to the display name of the variant
+        variantLink.text = variantDisplayNames[variant];
+
+        // If the variant is available for the current page, set the variantLink URL
+        // to the peerURL, otherwise set it to the topURL
+        if (availableVariants.includes(variant)) {
+            variantLink.url = peerUrl.href;
+        } else {
+            variantLink.url = topUrl.href;
+        }
+
+        // Add the variant link to the list of variant links
+        variantLinks.push(variantLink);
     });
 
-    // Insert the links into the dropdown menu
+    // Insert the variant links into the dropdown menu
     dropdownLinkContainers = document.getElementsByClassName('variant-selector-links');
     for (let container of dropdownLinkContainers) {
-        topLinks.forEach(link => {
+        variantLinks.forEach(variantLink => {
             const anchor = document.createElement('a');
-            anchor.href = link.url;
-            anchor.textContent = link.text;
+            anchor.textContent = variantLink.text;
+            anchor.href = variantLink.url;
             container.appendChild(anchor);
         })
     }
