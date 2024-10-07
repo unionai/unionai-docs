@@ -57,7 +57,7 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 ## Install and configure `union` and Docker
 
 To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling).
-To configure `union` to connect to your Union instance, see [Quick start](../../../../index.md#quick-start).
+To configure `union` to connect to your Union instance, see [Quick start](../../../../quick-start).
 
 ## Set up an image registry
 

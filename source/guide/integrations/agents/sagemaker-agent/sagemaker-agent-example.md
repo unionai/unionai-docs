@@ -10,7 +10,7 @@ We train an XGBoost model on the Pima Indians Diabetes dataset and generate a `t
 The model artifact needs to be available in an S3 bucket for SageMaker to be able to access.
 :::
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
 :language: python
 :lines: 11-62
 ```
@@ -24,7 +24,7 @@ The above workflow generates a compressed model artifact that can be stored in a
 
 To deploy the model on SageMaker, use the [`awssagemaker_inference.create_sagemaker_deployment`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.create_sagemaker_deployment.html#flytekitplugins.awssagemaker_inference.create_sagemaker_deployment) function.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
 :language: python
 :lines: 76-122
 ```
@@ -54,7 +54,7 @@ listening on port 8080 and must accept POST and GET requests to the `/invocation
 
 We define the FastAPI inference code as follows:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
 :language: python
 :lines: 155-208
 ```
@@ -83,7 +83,7 @@ You can trigger the `sagemaker_deployment_wf` by providing the model artifact pa
 Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
 You can then invoke the endpoint using the SageMaker agent as follows:
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
 :language: python
 :lines: 237-246
 ```
@@ -92,7 +92,7 @@ The [`awssagemaker_inference.SageMakerInvokeEndpointTask`](https://docs.flyte.or
 
 To delete the deployment, you can instantiate a [`awssagemaker_inference.delete_sagemaker_deployment`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment.html#flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment) function.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/7a300ac43f3da41a4e01bd4dae9d45e8c0094ce3/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
 :language: python
 :lines: 255-266
 ```
