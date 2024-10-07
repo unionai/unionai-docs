@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Available variants of the current page (including the current page).
     // e.g., '["serverless", "byoc"]
-    const availableVariants = document.getElementById('unionai-docs-available-variants').textContent;
+    const availableVariants = JSON.parse(document.getElementById('unionai-docs-available-variants').textContent);
 
     // Object mapping variant name to display name
     // e.g., {'serverless': 'Serverless', 'byoc': 'BYOC'}
@@ -88,9 +88,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // If the variant is available for the current page, set the variantLink URL
         // to the peerURL, otherwise set it to the topURL
         if (availableVariants.includes(variant)) {
-            variantLink.peerUrl = peerUrl.href;
+            variantLink.url = peerUrl.href;
         } else {
-            variantLink.peerUrl = topUrl.href;
+            variantLink.url = topUrl.href;
         }
 
         // Add the variant link to the list of variant links
