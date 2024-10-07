@@ -29,6 +29,13 @@ Build an agentic retrieval augmented generation system with ChromaDB and Langcha
 Use HDBSCAN soft clustering with headline embeddings and UMAP on GPUs.
 :::
 
+:::{grid-item-card} {octicon}`iphone` Deploy a Fine-Tuned Llama Model to an iOS App with MLC-LLM
+:link: language-models/llama_edge_deployment
+:link-type: doc
+
+Fine-tunes a Llama 3 model on the Cohere Aya Telugu subset and generates a model artifact for deployment as an iOS app.
+:::
+
 :::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
 :link: parallel-processing-and-job-scheduling/reddit-slack-bot
 :link-type: doc
