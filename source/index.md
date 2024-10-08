@@ -13,40 +13,40 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 ::::{grid}
 
 :::{grid-item-card} {octicon}`rocket` Quick start
-:link: quick-start.html
-:link-type: url
+:link: quick-start
+:link-type: doc
 :columns: 12
 
 Jump right into writing and running Union workflows.
 :::
 
 :::{grid-item-card} {octicon}`milestone` Guide
-:link: guide/index.html
-:link-type: url
+:link: guide/index
+:link-type: doc
 :columns: 4
 
 Learn Union concepts and features.
 :::
 
 :::{grid-item-card} {octicon}`mortar-board` Tutorials
-:link: tutorials/index.html
-:link-type: url
+:link: tutorials/index
+:link-type: doc
 :columns: 4
 
 Walk through example applications.
 :::
 
 :::{grid-item-card} {octicon}`book` API
-:link: api/index.html
-:link-type: url
+:link: api/index
+:link-type: doc
 :columns: 4
 
 Explore the Union APIs, SDKs, and CLIs.
 :::
 
 :::{grid-item-card} {octicon}`cloud` Deployment options
-:link: guide/union-overview.html
-:link-type: url
+:link: guide/union-overview
+:link-type: doc
 :columns: 12
 
 Union offers two deployment options: **Serverless** and **BYOC** (Bring Your Own Cloud).
