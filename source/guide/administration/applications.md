@@ -3,7 +3,7 @@
 A Union application is an identity through which external systems can perform actions in the system.
 An application can be bound to policies and granted permissions just like a human user.
 
-Applications are managed through `uctl`.
+Applications are managed through [`uctl`](../api/uctl-cli/).
 
 ## List existing apps
 

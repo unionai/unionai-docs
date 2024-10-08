@@ -538,11 +538,11 @@
 /serverless/development-cycle/unionremote/ /serverless/guide/development-cycle/union-remote 302
 /serverless/development-cycle/unionremote /serverless/guide/development-cycle/union-remote 302
 
-/uctl-cli/ /byoc/guide/administration/uctl-cli 302
-/uctl-cli /byoc/guide/administration/uctl-cli 302
+/uctl-cli/ /byoc/api/uctl-cli 302
+/uctl-cli /byoc/api/uctl-cli 302
 
-/union-cli/ /serverless/api/union-cli 302
-/union-cli /serverless/api/union-cli 302
+/union-cli/ /byoc/api/union-cli 302
+/union-cli /byoc/api/union-cli 302
 
 /serverless/data-input-output/flytefile/ /serverless/guide/data-input-output/flyte-file-and-flyte-directory 302
 /serverless/data-input-output/flytefile /serverless/guide/data-input-output/flyte-file-and-flyte-directory 302
@@ -592,8 +592,8 @@
 /byoc/administration/applications/ /byoc/guide/administration/applications 302
 /byoc/administration/cli-authentication /byoc/guide/administration/cli-authentication 302
 /byoc/administration/cli-authentication/ /byoc/guide/administration/cli-authentication 302
-/byoc/administration/uctl-cli /byoc/guide/administration/uctl-cli 302
-/byoc/administration/uctl-cli/ /byoc/guide/administration/uctl-cli 302
+/byoc/administration/uctl-cli /byoc/api/uctl-cli 302
+/byoc/administration/uctl-cli/ /byoc/api/uctl-cli 302
 /byoc/administration/usage /byoc/guide/administration/usage 302
 /byoc/administration/usage/ /byoc/guide/administration/usage 302
 /byoc/administration/user-management /byoc/guide/administration/user-management 302
@@ -821,8 +821,8 @@
 /serverless/administration/applications/ /serverless/guide/administration/applications 302
 /serverless/administration/cli-authentication /serverless/guide/administration/cli-authentication 302
 /serverless/administration/cli-authentication/ /serverless/guide/administration/cli-authentication 302
-/serverless/administration/uctl-cli /serverless/guide/administration/uctl-cli 302
-/serverless/administration/uctl-cli/ /serverless/guide/administration/uctl-cli 302
+/serverless/administration/uctl-cli /serverless/api/uctl-cli 302
+/serverless/administration/uctl-cli/ /serverless/api/uctl-cli 302
 /serverless/administration/usage /serverless/guide/administration/usage 302
 /serverless/administration/usage/ /serverless/guide/administration/usage 302
 /serverless/administration/user-management /serverless/guide/administration/user-management 302
