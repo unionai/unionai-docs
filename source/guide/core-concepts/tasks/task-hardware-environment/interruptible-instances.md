@@ -42,7 +42,7 @@ However, there are two main disadvantages:
 
 1. The task is successfully scheduled on an interruptible instance but is interrupted.
 In the worst case scenario, for `retries=n` the task may be interrupted `n` times until, finally, the fallback on-demand instance is used.
-Clearly, this may be problem for time-critical tasks.
+Clearly, this may be a problem for time-critical tasks.
 
 2. Interruptible instances of the selected node type may simply be unavailable on the initial attempt to schedule.
 When this happens, the task may hang indefinitely until an interruptible instance becomes available.
