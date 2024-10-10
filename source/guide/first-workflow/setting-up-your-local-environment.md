@@ -16,7 +16,7 @@ conda activate ml-workflow
 :::
 
 :::{tab-item} venv
-Install Python 3.8 or higher from your package manager or from [Python.org](https://www.python.org/downloads/), then run the following commands to create a virtual environment:
+Install Python using your package manager or from [Python.org](https://www.python.org/downloads/), then run the following commands to create a virtual environment:
 
 ```shell
 python -m venv venvs/ml_workflow_venv

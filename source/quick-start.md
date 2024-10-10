@@ -16,9 +16,12 @@ Create an account
 
 Once you've received confirmation that your sign up succeeded, navigate to
 the UI at [serverless.union.ai](https://serverless.union.ai).
-This is where you will be able to see your workflow executions and manage your projects:
 
-![Union UI](/_static/images/dashboard.png)
+To get started, try selecting the default project, called `flytesnacks`, from the list of projects.
+This will take you to `flytesnacks` project dashboard:
+
+![Union UI](/_static/images/quick-start/serverless-dashboard.png)
+
 
 {@@ elif byoc @@}
 
@@ -33,9 +36,11 @@ After your administrator has onboarded you to Union, you should have the followi
 
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
 Once you have logged in you should see the Union UI.
-This is where you will be able to see your workflow executions and and manage your projects:
 
-![Union UI](/_static/images/union-byoc-home.png)
+To get started, try selecting the default project, called `flytesnacks`, from the list of projects.
+This will take you to `flytesnacks` project dashboard:
+
+![Union UI](/_static/images/quick-start/byoc-dashboard.png)
 
 {@@ endif @@}
 
@@ -58,7 +63,7 @@ $ conda activate union-env
 :::
 
 :::{tab-item} venv
-Install Python 3.11 from your package manager or from [Python.org](https://www.python.org/downloads/), then run the following to create a virtual environment:
+Install Python using your package manager or from [Python.org](https://www.python.org/downloads/), then run the following to create a virtual environment:
 
 ```{code-block} shell
 $ python -m venv .venv
@@ -94,7 +99,7 @@ $ union create login --serverless
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
 :::{note}
-These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/index.html#configure-the-union-cli).
+These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
 :::
 
 {@@ elif byoc @@}
@@ -108,12 +113,12 @@ where `<union-host-url>` is the URL of your Union instance, mentioned above.
 This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
 :::{note}
-These directions apply to Union BYOC, where you connect to your own dedicated Union instance. To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/index.html#configure-the-union-cli).
+These directions apply to Union BYOC, where you connect to your own dedicated Union instance. To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 :::
 
 {@@ endif @@}
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../api/union-cli) for more details.)
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](api/union-cli) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
@@ -130,6 +135,10 @@ $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workfl
 If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
 Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 ```
+
+{@@ if byoc @@}
+For more details on connection configuration see [CLI authentication types](guide/administration/cli-authentication-types).
+{@@ endif @@}
 
 ## Create a "Hello, world!" workflow
 
@@ -151,11 +160,11 @@ def hello_world_wf(name: str = 'world') -> str:
 ## Tasks and workflows
 
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-For more information, see the [task](./core-concepts/tasks/index) and [workflow](./core-concepts/workflows/index) documentation.
+For more information, see the [task](guide/core-concepts/tasks/index) and [workflow](guide/core-concepts/workflows/index) documentation.
 
 ## Run the workflow locally in Python
 
-You can run the workflow in your local Python environment with the [`union run` command](../api/union-cli.md#union-cli-commands):
+You can run the workflow in your local Python environment with the [`union run` command](api/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run hello.py hello_world_wf
@@ -184,7 +193,7 @@ Hello, Ada!
 
 ## Run the workflow remotely on Union
 
-To run the workflow remotely on Union, add the [`--remote` flag](../api/union-cli.md#union-cli-commands):
+To run the workflow remotely on Union, add the [`--remote` flag](api/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run --remote hello.py hello_world_wf --name "Ada"
@@ -198,27 +207,13 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-Go to the UI to see the execution:
-
-![Dashboard](/_static/images/first-execution.png)
-
 {@@ elif byoc @@}
 
 ```{code-block} shell
 [✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
 
-Go to the UI to see the execution:
-
-![Dashboard](/_static/images/first-execution-byoc.png)
-
 {@@ endif @@}
 
-:::{note}
-When you use `union create login --host <union-host-url>` to configure the `union` CLI, this creates a `config.yaml` file
-configured for a Proof Key of Code Exchange (PKCE) mechanism. This is one of three authentication options, including DeviceFlow and
-ClientSecret. In short, PKCE opens a browser window allowing you to login, DeviceFlow returns a URL you can navigate to,
-and ClientSecret authenticates via a pre-configured secret. If you are using Union in a headless fashion, either on a
-VM, connecting to a machine via SSH, in CI/CD, etc., DeviceFlow and ClientSecret should be considered.
-See [CLI authentication](administration/cli-authentication.md) for more information.
-:::
+Click the link to see the execution in the UI.
+
