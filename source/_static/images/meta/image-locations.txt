@@ -101,7 +101,7 @@
     _images/map-task-3.png
 
 /*/guide/core-concepts/launch-plans
-https://docs.union.ai/byoc/_images/concepts-launch-plans-5.png
+	_images/concepts-launch-plans-5.png
 
 /*/guide/core-concepts/launch-plans/viewing-launch-plans
     _images/launch-plans-list-view.png
@@ -157,35 +157,35 @@ https://docs.union.ai/byoc/_images/concepts-launch-plans-5.png
 /serverless/guide/development-cycle/accessing-aws-s3
 (only in serverless. Double check)
 
-https://docs.union.ai/byoc/guide/administration/user-management
-https://docs.union.ai/byoc/_images/users-icon.png
-https://docs.union.ai/byoc/_images/user-management.png
-https://docs.union.ai/byoc/_images/add-user.png
-https://docs.union.ai/byoc/_images/edit-user.png
+/byoc/guide/administration/user-management
+    _images/users-icon.png
+    _images/user-management.png
+    _images/add-user.png
+	_images/edit-user.png
 
-https://docs.union.ai/byoc/guide/administration/usage
-https://docs.union.ai/byoc/_images/usage-executions.png
-https://docs.union.ai/byoc/_images/usage-filter.png
-https://docs.union.ai/byoc/_images/workflow-executions-in-final-state.png
-https://docs.union.ai/byoc/_images/task-executions-in-final-state.png
-https://docs.union.ai/byoc/_images/running-pods.png
-https://docs.union.ai/byoc/_images/utilization.png
-https://docs.union.ai/byoc/_images/usage-resource-quotas.png
-https://docs.union.ai/byoc/_images/usage-resource-quotas-10.png
-https://docs.union.ai/byoc/_images/usage-resource-quotas-100.png
-https://docs.union.ai/byoc/_images/usage-compute.png
-https://docs.union.ai/byoc/_images/usage-billing.png
+/byoc/guide/administration/usage
+	_images/usage-executions.png
+	_images/usage-filter.png
+	_images/workflow-executions-in-final-state.png
+	_images/task-executions-in-final-state.png
+	_images/running-pods.png
+	_images/utilization.png
+	_images/usage-resource-quotas.png
+	_images/usage-resource-quotas-10.png
+	_images/usage-resource-quotas-100.png
+	_images/usage-compute.png
+	_images/usage-billing.png
 
-https://docs.union.ai/byoc/guide/integrations/enabling-aws-resources/
-https://docs.union.ai/byoc/_images/unionroles.png (diagram)
+/byoc/guide/integrations/enabling-aws-resources/
+	_images/unionroles.png (diagram)
 
-https://docs.union.ai/byoc/guide/integrations/enabling-gcp-resources/
-https://docs.union.ai/byoc/_images/userflytegsa.png
+/byoc/guide/integrations/enabling-gcp-resources/
+	_images/userflytegsa.png
 
-https://docs.union.ai/byoc/guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage
-https://docs.union.ai/byoc/_images/bucket-details.png
-https://docs.union.ai/byoc/_images/grant-access-to-bucket.png
+/byoc/guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage
+	_images/bucket-details.png
+	_images/grant-access-to-bucket.png
 
-https://docs.union.ai/byoc/guide/integrations/enabling-gcp-resources/enabling-google-secret-manager
-https://docs.union.ai/byoc/_images/secret-manager.png
-https://docs.union.ai/byoc/_images/secret-details.png
+/byoc/guide/integrations/enabling-gcp-resources/enabling-google-secret-manager
+	_images/secret-manager.png
+	_images/secret-details.png
