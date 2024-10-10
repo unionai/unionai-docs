@@ -20,7 +20,7 @@ the UI at [serverless.union.ai](https://serverless.union.ai).
 To get started, try selecting the default project, called `flytesnacks`, from the list of projects.
 This will take you to `flytesnacks` project dashboard:
 
-![Union UI](/_static/images/quick-start/serverless-dashboard.png)
+![Union UI](/_images/quick-start/serverless-dashboard.png)
 
 
 {@@ elif byoc @@}
@@ -40,7 +40,7 @@ Once you have logged in you should see the Union UI.
 To get started, try selecting the default project, called `flytesnacks`, from the list of projects.
 This will take you to `flytesnacks` project dashboard:
 
-![Union UI](/_static/images/quick-start/byoc-dashboard.png)
+![Union UI](/_images/quick-start/byoc-dashboard.png)
 
 {@@ endif @@}
 
