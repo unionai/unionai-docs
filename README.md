@@ -14,6 +14,9 @@ project.
 * Activate that virtual environment.
 * Install the dependencies with `pip install -r docs-requirements.txt`. **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
 
+![Union Docs Workflow](runserver.gif)
+
+
 ## Build the site
 
 * Run the build with `make build-local`.
