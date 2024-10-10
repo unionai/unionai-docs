@@ -1,7 +1,8 @@
-/serverless
+/serverless/quick-start
     _images/dashboard.png
     _images/first-execution.png
-/byoc
+
+/byoc/quick-start
     _images/union-byoc-home.png
     _images/first-execution-byoc.png
 
