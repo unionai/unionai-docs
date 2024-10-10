@@ -2,7 +2,7 @@
 
 The Union architecture consists of two virtual private clouds, referred to as planes—the control plane and the data plane.
 
-![](/_static/images/guide/platform-architecture/union-architecture.png)
+![](/_static/images/union-architecture.png)
 
 ## Control plane
 
