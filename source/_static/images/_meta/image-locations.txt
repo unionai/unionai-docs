@@ -6,10 +6,7 @@
     _images/union-byoc-home.png
     _images/first-execution-byoc.png
 
-
-
-
-/byoc/platform-architecture
+/byoc/guide/platform-architecture
     _images/union-architecture.png (graphic)
 
 /byoc/guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id
@@ -20,6 +17,8 @@
 
 /byoc/guide/data-plane-setup/configuring-your-data-plane
     _images/adjust-configuration.png
+
+
 
 /*/guide/first-workflow/running-the-workflow
     _images/getting-started-graph.jpg

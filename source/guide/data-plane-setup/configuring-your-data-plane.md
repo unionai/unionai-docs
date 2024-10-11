@@ -202,6 +202,4 @@ Once Union has configured and deployed your cluster(s), you will be able to see 
 ## Adjusting your configuration
 
 To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
-This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button:
-
-![](/_static/images/adjust-configuration.png)
+This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.

@@ -2,7 +2,7 @@
 
 The Union architecture consists of two virtual private clouds, referred to as planes—the control plane and the data plane.
 
-![](/_static/images/union-architecture.png)
+![](/_static/images/guide/platform-architecture/union-architecture.png)
 
 ## Control plane
 
@@ -27,7 +27,7 @@ Default nodes guarantee the basic operation of the data plane and are always run
 
 #### Worker nodes
 
-Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](/data-plane-setup/configuring-your-data-plane.md#worker-node-groups).
+Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](data-plane-setup/configuring-your-data-plane.md#worker-node-groups).
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
 
