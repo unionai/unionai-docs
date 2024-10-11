@@ -31,7 +31,7 @@ source venvs/ml_workflow_venv/bin/activate
 After setting up a virtual environment, clone the [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples) repository:
 
 ```{code-block} shell
-$ git clone git@github.com:unionai/unionai-examples.git
+$ git clone https://github.com/unionai/unionai-examples
 ```
 
 ## Install the dependencies
