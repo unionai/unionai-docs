@@ -40,19 +40,17 @@ Next, install the required dependencies:
 
 ```{code-block} shell
 $ cd unionai-examples
-$ pip install -r guides/01_getting_started/ml_workflow/requirements.txt
+$ pip install -r guide/first_workflows/ml_workflow/requirements.txt
 ```
-
-This will install `union`, `scikit-learn`, `pandas`, and `matplotlib`.
 
 ## Next step
 
 {@@ if serverless @@}
 
-The next step is [Running the workflow](./running-the-workflow).
+The next step is [Running the workflow](running-the-workflow).
 
 {@@ elif byoc @@}
 
-The next step is [Setting up container image handling](./setting-up-container-image-handling).
+The next step is [Setting up container image handling](setting-up-container-image-handling).
 
 {@@ endif @@}

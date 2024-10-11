@@ -5,7 +5,7 @@
 To quickly check your workflow code, you can run it in your local Python environment with the following command:
 
 ```{code-block} shell
-$ union run guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+$ union run guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 If the code runs successfully, you should see output like this:
@@ -22,7 +22,7 @@ Running Execution on local.
 To run the workflow in the cloud on Union, add the `--remote` option:
 
 ```{code-block} shell
-$ union run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 64
+$ union run --remote guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 You should see the following output in your terminal:
@@ -51,7 +51,7 @@ To run the workflow on Union, you will need to register the workflow, make your 
 When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `union register`. To register the `ml_workflow` example, run the following command:
 
 ```{code-block} shell
-$ union register guides/01_getting_started/ml_workflow
+$ union register guide/first_workflow/ml_workflow
 ```
 
 This command does the following:
@@ -64,18 +64,6 @@ This command does the following:
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
-Running pyflyte register from /Users/me/repos/unionai/unionai-examples with images ImageConfig(default_image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.11-1.12.2', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/me/repos/unionai/unionai-examples/guides/01_getting_started/ml_workflow',)
-Registering against union.my-company.com
-Detected Root /Users/me/repos/unionai/unionai-examples/guides/01_getting_started, using this to create deployable package...
-No output path provided, using a temporary directory at /var/folders/vh/5cnb0p254xv44zpn2ntj_0ch0000gn/T/tmp4a9iqzqt instead
-Computed version is nuHakW_PUV5uk71n-to7bg
-Loading packages ['ml_workflow'] under source root /Users/me/repos/unionai/unionai-examples/guides/01_getting_started
-Image flytekit:Jg0osJpciXDDf5amjsBDAw not found. building...
-Run command: envd build --path /var/folders/vh/5cnb0p254xv44zpn2ntj_0ch0000gn/T/flyte3i9ry6kc/control_plane_metadata/local_flytekit/03f65b09b7ea32403f5e7673ebae1993  --platform linux/amd64 --tag flytekit:Jg0osJpciXDDf5amjsBDAw
-#1 docker-image://cr.flyte.org/flyteorg/flytekit:py3.11-1.12.2
-...
-#9 DONE 9.0s
-
 Successfully serialized 5 flyte objects
 [✔] Registration ml_workflow.ml_workflow.evaluate_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
 [✔] Registration ml_workflow.ml_workflow.train_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
@@ -135,4 +123,4 @@ workflow!
 
 ## Next step
 
-The next step is to take a look at the [Example code components](./example-code-components).
+The next step is to take a look at the [Example code components](example-code-components).
