@@ -5,8 +5,8 @@
 /_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt /byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt 302
 
 # General redirects due to page moves
-/administration/* /byoc/guide/administration/:splat 302
-# /administration /byoc/guide/administration 302
+# /administration/* /byoc/guide/administration/:splat 302
+/administration* /byoc/guide/administration:splat 302
 # /administration/applications/ /byoc/guide/administration/applications 302
 # /administration/applications /byoc/guide/administration/applications 302
 # /administration/cli-authentication/ /byoc/guide/administration/cli-authentication 302
