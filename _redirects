@@ -5,75 +5,18 @@
 /_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt /byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt 302
 
 # General redirects due to page moves
-# /administration/* /byoc/guide/administration/:splat 302
 /administration* /byoc/guide/administration:splat 302
-# /administration/applications/ /byoc/guide/administration/applications 302
-# /administration/applications /byoc/guide/administration/applications 302
-# /administration/cli-authentication/ /byoc/guide/administration/cli-authentication 302
-# /administration/cli-authentication /byoc/guide/administration/cli-authentication 302
-# /administration/usage/ /byoc/guide/administration/usage 302
-# /administration/usage /byoc/guide/administration/usage 302
-# /administration/user-management/ /byoc/guide/administration/user-management 302
-# /administration/user-management /byoc/guide/administration/user-management 302
 
-/building-workflows/ /byoc/guide/core-concepts 302
-/building-workflows /byoc/guide/core-concepts 302
-/building-workflows/artifacts/ /byoc/guide/core-concepts/artifacts 302
-/building-workflows/artifacts /byoc/guide/core-concepts/artifacts 302
-/building-workflows/artifacts/connecting-workflows-with-artifact-event-triggers/ /byoc/guide/core-concepts/artifacts/connecting-workflows-with-artifact-event-triggers 302
-/building-workflows/artifacts/connecting-workflows-with-artifact-event-triggers /byoc/guide/core-concepts/artifacts/connecting-workflows-with-artifact-event-triggers 302
-/building-workflows/artifacts/consuming-artifacts-in-workflows/ /byoc/guide/core-concepts/artifacts/consuming-artifacts-in-workflows 302
-/building-workflows/artifacts/consuming-artifacts-in-workflows /byoc/guide/core-concepts/artifacts/consuming-artifacts-in-workflows 302
-/building-workflows/artifacts/declaring-artifacts/ /byoc/guide/core-concepts/artifacts/declaring-artifacts 302
-/building-workflows/artifacts/declaring-artifacts /byoc/guide/core-concepts/artifacts/declaring-artifacts 302
-/building-workflows/artifacts/materializing-artifacts/ /byoc/guide/core-concepts/artifacts/materializing-artifacts 302
-/building-workflows/artifacts/materializing-artifacts /byoc/guide/core-concepts/artifacts/materializing-artifacts 302
-/building-workflows/launch-plans/ /byoc/guide/core-concepts/launch-plans 302
-/building-workflows/launch-plans /byoc/guide/core-concepts/launch-plans 302
-/building-workflows/launch-plans/reactive-workflows/ /byoc/guide/core-concepts/launch-plans/reactive-workflows 302
-/building-workflows/launch-plans/reactive-workflows /byoc/guide/core-concepts/launch-plans/reactive-workflows 302
-/building-workflows/launch-plans/running-launch-plans/ /byoc/guide/core-concepts/launch-plans/running-launch-plans 302
-/building-workflows/launch-plans/running-launch-plans /byoc/guide/core-concepts/launch-plans/running-launch-plans 302
 /building-workflows/launch-plans/triggers/ /byoc/guide/core-concepts/launch-plans/reactive-workflows 302
 /building-workflows/launch-plans/triggers /byoc/guide/core-concepts/launch-plans/reactive-workflows 302
-/building-workflows/tasks/ /byoc/guide/core-concepts/tasks 302
-/building-workflows/tasks /byoc/guide/core-concepts/tasks 302
-/building-workflows/tasks/task-caching/ /byoc/guide/core-concepts/tasks/task-caching 302
-/building-workflows/tasks/task-caching /byoc/guide/core-concepts/tasks/task-caching 302
-/building-workflows/tasks/task-hardware-environment/ /byoc/guide/core-concepts/tasks/task-hardware-environment 302
-/building-workflows/tasks/task-hardware-environment /byoc/guide/core-concepts/tasks/task-hardware-environment 302
-/building-workflows/tasks/task-hardware-environment/accelerators/ /byoc/guide/core-concepts/tasks/task-hardware-environment/accelerators 302
-/building-workflows/tasks/task-hardware-environment/accelerators /byoc/guide/core-concepts/tasks/task-hardware-environment/accelerators 302
-/building-workflows/tasks/task-hardware-environment/customizing-task-resources/ /byoc/guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources 302
-/building-workflows/tasks/task-hardware-environment/customizing-task-resources /byoc/guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources 302
-/building-workflows/tasks/task-hardware-environment/interruptible-instances/ /byoc/guide/core-concepts/tasks/task-hardware-environment/interruptible-instances 302
-/building-workflows/tasks/task-hardware-environment/interruptible-instances /byoc/guide/core-concepts/tasks/task-hardware-environment/interruptible-instances 302
-/building-workflows/tasks/task-parameters/ /byoc/guide/core-concepts/tasks/task-parameters 302
-/building-workflows/tasks/task-parameters /byoc/guide/core-concepts/tasks/task-parameters 302
-/building-workflows/tasks/task-software-environment/ /byoc/guide/core-concepts/tasks/task-software-environment 302
-/building-workflows/tasks/task-software-environment /byoc/guide/core-concepts/tasks/task-software-environment 302
-/building-workflows/tasks/task-software-environment/environment-variables/ /byoc/guide/core-concepts/tasks/task-software-environment/environment-variables 302
-/building-workflows/tasks/task-software-environment/environment-variables /byoc/guide/core-concepts/tasks/task-software-environment/environment-variables 302
-/building-workflows/tasks/task-software-environment/imagespec-with-ecr/ /byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr 302
-/building-workflows/tasks/task-software-environment/imagespec-with-ecr /byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr 302
-/building-workflows/tasks/task-software-environment/imagespec-with-gar/ /byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-gar 302
-/building-workflows/tasks/task-software-environment/imagespec-with-gar /byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-gar 302
-/building-workflows/tasks/task-software-environment/imagespec/ /byoc/guide/core-concepts/tasks/task-software-environment/imagespec 302
-/building-workflows/tasks/task-software-environment/imagespec /byoc/guide/core-concepts/tasks/task-software-environment/imagespec 302
-/building-workflows/tasks/task-software-environment/secrets/ /byoc/guide/core-concepts/tasks/task-software-environment/secrets 302
-/building-workflows/tasks/task-software-environment/secrets /byoc/guide/core-concepts/tasks/task-software-environment/secrets 302
-/building-workflows/tasks/task-types/ /byoc/guide/core-concepts/tasks/task-types 302
-/building-workflows/tasks/task-types /byoc/guide/core-concepts/tasks/task-types 302
-/building-workflows/workflows/ /byoc/guide/core-concepts/workflows 302
-/building-workflows/workflows /byoc/guide/core-concepts/workflows 302
-/building-workflows/workflows/dynamic-workflows/ /byoc/guide/core-concepts/workflows/dynamic-workflows 302
-/building-workflows/workflows/dynamic-workflows /byoc/guide/core-concepts/workflows/dynamic-workflows 302
-/building-workflows/workflows/eager-workflows/ /byoc/guide/core-concepts/workflows/eager-workflows 302
-/building-workflows/workflows/eager-workflows /byoc/guide/core-concepts/workflows/eager-workflows 302
-/building-workflows/workflows/standard-workflows/ /byoc/guide/core-concepts/workflows/standard-workflows 302
-/building-workflows/workflows/standard-workflows /byoc/guide/core-concepts/workflows/standard-workflows 302
-/building-workflows/workflows/subworkflows/ /byoc/guide/core-concepts/workflows/subworkflows 302
-/building-workflows/workflows/subworkflows /byoc/guide/core-concepts/workflows/subworkflows 302
+/building-workflows* /byoc/guide/core-concepts:splat 302
+
+
+
+
+
+
+
 /concepts/ /byoc/guide/core-concepts 302
 /concepts /byoc/guide/core-concepts 302
 /core-concepts/ /byoc/guide/core-concepts 302
