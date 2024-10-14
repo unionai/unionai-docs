@@ -20,8 +20,8 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 Jump right into writing and running Union workflows.
 :::
 
-:::{grid-item-card} {octicon}`milestone` Guide
-:link: guide/index
+:::{grid-item-card} {octicon}`milestone` User guide
+:link: user-guide/index
 :link-type: doc
 :columns: 4
 
@@ -36,8 +36,8 @@ Learn Union concepts and features.
 Walk through example applications.
 :::
 
-:::{grid-item-card} {octicon}`book` API
-:link: api/index
+:::{grid-item-card} {octicon}`book` API reference
+:link: api-reference/index
 :link-type: doc
 :columns: 4
 
@@ -45,7 +45,7 @@ Explore the Union APIs, SDKs, and CLIs.
 :::
 
 :::{grid-item-card} {octicon}`cloud` Deployment options
-:link: guide/union-overview
+:link: user-guide/union-overview
 :link-type: doc
 :columns: 12
 

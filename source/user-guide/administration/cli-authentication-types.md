@@ -3,7 +3,7 @@
 The command line tools `uctl` or `union` must authenticate to Union in order to perform operations on the platform.
 The authentication mechanism is configured in the `config.yaml` file used by the command line tool.
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../../api/union-cli) for more details.)
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../../api-reference/union-cli) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
