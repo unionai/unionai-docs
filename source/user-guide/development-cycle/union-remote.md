@@ -237,7 +237,7 @@ remote.create_artifact(BasicArtifact)
 
 {@@ endif @@}
 
-For the full list of parameters, see the [Artifact class documentation](../../api/flytekit-sdk/core-flytekit/artifacts).
+For the full list of parameters, see the [Artifact class documentation](../../api-reference/flytekit-sdk/core-flytekit/artifacts).
 
 :::{note}
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
