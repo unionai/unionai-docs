@@ -6,7 +6,7 @@ This section applies to the BYOC version of Union. The Serverless version uses `
 
 With Union, each task in a workflow typically runs within its own dedicated container, which has an associated container image. When you deploy your workflow, the images defined by the `ImageSpec` objects in your code are built on your local machine and pushed to a container registry, from which they are later pulled by Union when the workflow is executed.
 
-We will explain how to define `ImageSpec` objects [later in this section](./setting-up-container-image-handling).
+We will explain how to define `ImageSpec` objects [later in this section](setting-up-container-image-handling).
 For now, we will just cover setting up the necessary tools and access.
 
 :::{admonition} Default image
@@ -55,4 +55,4 @@ We will call out the need to make the image publicly accessible at that time.
 
 ## Next step
 
-The next step is [Running the workflow](./running-the-workflow).
+The next step is [Running the workflow](running-the-workflow).

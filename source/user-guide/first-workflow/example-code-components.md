@@ -22,7 +22,7 @@ When deployed to Union, the workflow function is "compiled" to construct the dir
 Workflow parameters are available for configuration on the command line. In this example, the `main` workflow's `max_bins` parameter can be set to a different value from the default:
 
 ```{code-block} shell
-$ union run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 128
+$ union run --remote guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 128
 ```
 
 :::{admonition} `@task` and `@workflow` syntax

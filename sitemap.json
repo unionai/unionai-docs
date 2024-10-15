@@ -1,7 +1,7 @@
 {"name": "", "variants": ["byoc", "serverless"],
     "children": [
         {"name": "quick-start", "variants": ["byoc", "serverless"]},
-        {"name": "guide", "variants": ["byoc", "serverless"],
+        {"name": "user-guide", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "union-overview", "variants": ["byoc", "serverless"]},
                 {"name": "platform-architecture", "variants": ["byoc"]},
@@ -247,7 +247,7 @@
                 }
             ]
         },
-        {"name": "api", "variants": ["byoc", "serverless"],
+        {"name": "api-reference", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "union-sdk", "variants": ["byoc", "serverless"],
                     "children": [
