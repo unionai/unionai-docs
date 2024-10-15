@@ -18,13 +18,14 @@
 /byoc/guide/data-plane-setup/configuring-your-data-plane
     _images/adjust-configuration.png
 
-
-
 /*/guide/first-workflow/running-the-workflow
     _images/getting-started-graph.jpg
     _images/getting-started-full-sidebar.jpg
     _images/getting-started-input-output.jpg
     _images/getting-started-flyte-deck.jpg (graphic)
+
+
+
 
 /*/guide/core-concepts/
     _images/concepts-workflows-1.png (graphic)
