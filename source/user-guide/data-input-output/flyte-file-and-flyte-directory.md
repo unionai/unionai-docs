@@ -122,7 +122,7 @@ For details on how to set up your own object store bucket, consult the direction
 
 * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
 * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
-{@# TODO * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage) #@}
+* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage)
 :::
 
 ### Changing the raw data prefix

@@ -49,12 +49,12 @@ When the workflow is registered, Union compiles the workflow into a directed acy
 The DAG is then used to execute the tasks in the correct order, taking advantage of any parallelism that is possible.
 For example, the workflow above results in the following DAG:
 
-![Workflow DAG](/_static/images/concepts-workflows-1.png)
+![Workflow DAG](/_static/images/user-guide/core-concepts/workflow-dag.png)
 
 ### Type annotation is required
 
 One important difference between Union and generic Python is that in Union all inputs and outputs *must be type annotated*.
-This is because tasks are strongly typed(/todo), meaning that the types of the inputs and outputs are validated at deployment time.
+This is because tasks are strongly typed, meaning that the types of the inputs and outputs are validated at deployment time.
 
 See [Tasks are strongly typed](./tasks/index.md#tasks-are-strongly-typed) for more details.
 
@@ -107,69 +107,43 @@ When a task or workflow with the same project, domain, and name as a preexisting
 
 ### Inspecting workflows in the UI
 
-Select **Workflows** in the sidebar to display a list of all the registered workflows in the project and domain:
-
-![Workflow list](/_static/images/concepts-workflows-2.png)
-
+Select **Workflows** in the sidebar to display a list of all the registered workflows in the project and domain.
 You can search the workflows by name.
 
-Click on a workflow in the list to see the workflow view:
+Click on a workflow in the list to see the **workflow view**.
+The sections in this view are as follows:
 
-![Workflow view](/_static/images/concepts-workflows-3.png)
+* **Recent Workflow Versions**: A list of recent versions of this workflow.
+  Select a version to see the **Workflow version view**.
+  This view shows the DAG and a list of all version of the task.
+  You can switch between versions with the radio buttons.
 
-The sections in the workflow view are as follows:
+* **All Executions in the Workflow**: A list of all executions of this workflow.
+  Click on an execution to go to the **Execution view**.
 
-#### Recent Workflow Versions
-
-A list of recent versions of this workflow. Select a version to see the **Workflow version view**:
-
-![Workflow version view](/_static/images/concepts-workflows-4.png)
-
-This view shows the DAG and a list of all version of the task. You can switch between versions with the radio buttons.
-
-#### All Executions in the Workflow
-
-A list of all executions of this workflow. Click on an execution to go to the execution view.
-
-#### Launch Workflow button
-
-In the top right of the workflow view, you can click the **Launch Workflow** button to run the task with the default inputs.
+* **Launch Workflow button**: In the top right of the workflow view, you can click the **Launch Workflow** button to run the workflow with the default inputs.
 
 ### Inspecting tasks in the UI
 
-Select **Tasks** in the sidebar to display a list of all the registered tasks in the project and domain:
-
-![Task list](/_static/images/concepts-tasks-1.png)
-
+Select **Tasks** in the sidebar to display a list of all the registered tasks in the project and domain.
 You can search the launch plans by name.
 To filter for only those that are archived, check the **Show Only Archived Tasks** box.
 
-Click on a task in the list to see the task view:
-
-![Task view](/_static/images/concepts-tasks-2.png)
-
+Click on a task in the list to see the task view
 The sections in the task view are as follows:
 
-#### Inputs & Outputs
+* **Inputs & Outputs**: The name and type of each input and output for the latest version of this task.
 
-The name and type of each input and output for the latest version of this task.
+* **Recent Task Versions**: A list of recent versions of this task.
+  Select a version to see the **Task version view**:
+  This view shows the task details and a list of all version of the task.
+  You can switch between versions with the radio buttons.
+  See [Tasks](./tasks/index) for more information.
 
-#### Recent Task Versions
+* **All Executions in the Task**: A list of all executions of this task.
+  Click on an execution to go to the execution view.
 
-A list of recent versions of this task. Select a version to see the **Task version view**:
-
-![Task version view](/_static/images/concepts-tasks-3.png)
-
-This view shows the task details and a list of all version of the task. You can switch between versions with the radio buttons.
-See [Tasks](./tasks/index) for more information.
-
-#### All Executions in the Task
-
-A list of all executions of this task. Click on an execution to go to the execution view.
-
-#### Launch Task button
-
-In the top right of the task view, you can click the **Launch Task** button to run the task with the default inputs.
+* **Launch Task button**: In the top right of the task view, you can click the **Launch Task** button to run the task with the default inputs.
 
 ### Inspecting workflows on the command line with `uctl`
 
@@ -191,9 +165,7 @@ $ uctl get workflow \
        <workflow-version>
 ```
 
-<!-- TODO add back when uctl reference exists
-See the [`uctl` reference]() for more details.
--->
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
 
 ### Inspecting tasks on the command line with `uctl`
 
@@ -215,9 +187,7 @@ $ uctl get task \
        <task-version>
 ```
 
-<!-- TODO add back when uctl reference exists
-See the [`uctl` reference]() for more details.
--->
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
 
 ### Inspecting tasks and workflows in Python with `FlyteRemote`
 

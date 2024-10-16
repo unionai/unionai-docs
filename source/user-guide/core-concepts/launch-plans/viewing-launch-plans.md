@@ -52,9 +52,7 @@ $ uctl get launchplan \
        <launch-plan-name>
 ```
 
-<!-- TODO add back when uctl reference exists
-See the [`uctl` reference]() for more details.
--->
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
 
 {@@ endif @@}
 
@@ -62,4 +60,4 @@ See the [`uctl` reference]() for more details.
 
 Use the method `UnionRemote.client.list_launch_plans_paginated` to get the list of launch plans.
 
-<!-- TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods -->
+{@# TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. }

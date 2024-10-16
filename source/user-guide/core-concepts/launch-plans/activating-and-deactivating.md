@@ -79,9 +79,7 @@ $ uctl update launchplan \
        --version <launch-plan-version>
 ```
 
-<!-- TODO add back when uctl reference exists
-See the [`uctl` reference]() for more details.
--->
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
 
 {@@ endif @@}
 
@@ -99,4 +97,4 @@ To deactivate a launch plan version using `UnionRemote`:
 :language: python
 ```
 
-<!-- TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods -->
+{@# TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. }

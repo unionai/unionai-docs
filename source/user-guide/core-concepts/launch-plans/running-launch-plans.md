@@ -37,9 +37,7 @@ $ uctl create execution \
        --execFile <execution-spec-file-name>.yaml
 ```
 
-<!-- TODO add back when uctl reference exists
-See the [`uctl` reference]() for more details.
--->
+{#@ TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
 
 ## Running a launch plan in Python with `UnionRemote`
 

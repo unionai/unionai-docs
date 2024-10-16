@@ -24,11 +24,12 @@
     _images/getting-started-input-output.jpg
     _images/getting-started-flyte-deck.jpg (graphic)
 
-
-
-
 /*/guide/core-concepts/
     _images/concepts-workflows-1.png (graphic)
+
+
+
+
 
 /*/guide/core-concepts/workflows/launching-workflows
     _images/launching-a-workflow.png
