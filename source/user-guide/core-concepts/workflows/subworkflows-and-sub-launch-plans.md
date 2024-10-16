@@ -23,7 +23,7 @@ Here is an example:
 Subworkflows allow you to manage parallelism between a workflow and its launched sub-flows, as they execute within the same context as the parent workflow.
 Consequently, all nodes of a subworkflow adhere to the overall constraints imposed by the parent workflow.
 
-{@#  TODO: a diagram of the above example. }
+{@#  TODO: a diagram of the above example. #@}
 
 Here's an example illustrating the calculation of slope, intercept and the corresponding y-value.
 

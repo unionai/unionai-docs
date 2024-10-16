@@ -119,7 +119,7 @@ The sections in this view are as follows:
   You can switch between versions with the radio buttons.
 
 * **All Executions in the Workflow**: A list of all executions of this workflow.
-  Click on an execution to go to the **Execution view**.
+  Click on an execution to go to the [Execution view](workflows/viewing-workflow-executions).
 
 * **Launch Workflow button**: In the top right of the workflow view, you can click the **Launch Workflow** button to run the workflow with the default inputs.
 
@@ -165,7 +165,7 @@ $ uctl get workflow \
        <workflow-version>
 ```
 
-{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. #@}
 
 ### Inspecting tasks on the command line with `uctl`
 
@@ -187,7 +187,7 @@ $ uctl get task \
        <task-version>
 ```
 
-{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. }
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. #@}
 
 ### Inspecting tasks and workflows in Python with `FlyteRemote`
 

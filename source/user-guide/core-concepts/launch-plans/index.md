@@ -10,13 +10,19 @@ It brings together:
 When invoked, the launch plan starts the workflow, passing the inputs as parameters.
 If the launch plan does not contain the entire set of required workflow inputs, additional input arguments must be provided at execution time.
 
+## Default launch plan
+
 Every workflow automatically comes with a *default launch plan*.
 This launch plan does not define any default inputs, so they must all be provided at execution time.
 A default launch plan always has the same name as its workflow.
 
+## Launch plans are versioned
+
 Like tasks and workflows, launch plans are versioned.
 A launch plan can be updated to change, for example, the set of inputs, the schedule, or the notifications.
 Each update creates a new version of the launch plan.
+
+## Custom launch plans
 
 Additional launch plans, other than the default one, can be defined for any workflow.
 In general, a given workflow can be associated with multiple launch plans, but a given launch plan is always associated with exactly one workflow.

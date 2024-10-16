@@ -2,7 +2,7 @@
 
 You pass the following parameters to the `@task` decorator:
 
-{@# TODO: consider organizing by category rather than alphabetically. }
+{@# TODO: consider organizing by category rather than alphabetically. #@}
 
 ## `accelerator`
 
