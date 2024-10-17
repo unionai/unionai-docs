@@ -352,11 +352,15 @@ def process_project():
         shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
     for variant in ALL_VARIANTS:
         shell(
-            f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
+            f'sphinx-build -j auto {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
             env=DOCSEARCH_CREDENTIALS[variant],
         )
     shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 
 if __name__ == "__main__":
+    import time
+    start = time.time()
     process_project()
+    end = time.time()
+    print(f"Total time: {end - start} seconds")
