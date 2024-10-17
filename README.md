@@ -18,12 +18,29 @@ project.
 
 * Run the build with `make build-local`.
 
+> [!NOTE]
+> We have included the following experimenal features in an effort to improve the
+> build process and reduce the build time. Feel free to experiment with them and
+> let us know if you have any feedback. The `make build-fast` and `make build-async` options now complete in 30 seconds
+> or less, offering a significant speedup over the original build process.
+
+Performance comparison:
+
+| Build Option    | Before -j auto | After -j auto | Improvement |
+|-----------------|----------------|---------------|-------------|
+| `make build-local`| > 60s          | >= 42s        | ~ 30%       |
+| `make build-fast` | <= 40s         | <= 30s        | Negligible  |
+| `make build-async`| <= 40s         | <= 30s        | Negligible  |
+
 The resulting HTML files will be in the directory `build/html`.
 
 ```bash
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
 ```
+> [!NOTE] Alternatively, to serve the entire site locally, just run `make serve-local`. 
+> PORT defaults to 8000. To serve on a different port, run `make serve-local PORT=8080`. 
+> Access the site at http://localhost:8000/serverless/ or http://localhost:8000/byoc/.
 
 The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
 
@@ -58,10 +75,12 @@ export $(cat secrets.txt | xargs)
 make build-local
 ```
 
+
 > [!NOTE]
 > When you view the local docs, the search bar will surface results that will
 > redirect to the corresponding `docs.union.ai` page. This is because Algolia
 > DocSearch does not index local pages.
+
 
 ## How it works
 
