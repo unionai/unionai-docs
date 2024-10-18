@@ -57,22 +57,22 @@ html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
     "quick-start": [],
     "deployment": [],
-    "guide/**": [
+    "user-guide/**": [
         "custom-sidebar.html",
     ],
     "tutorials/**": [
         "custom-sidebar.html",
     ],
-    "api/**": [
+    "api-reference/**": [
         "custom-sidebar.html",
     ],
 }
 
 html_context = {
     "dir_to_title": {
-        "guide": "Guide",
+        "user-guide": "User guide",
         "tutorials": "Tutorials",
-        "api": "API",
+        "api-reference": "API reference",
     }
 }
 

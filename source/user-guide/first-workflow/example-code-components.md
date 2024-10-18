@@ -14,7 +14,7 @@ A workflow appears to be a Python function but is actually a [DSL](https://en.wi
 
 When deployed to Union, the workflow function is "compiled" to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guides/01_getting_started/ml_workflow/ml_workflow.py
 :language: python
 :pyobject: main
 ```
@@ -22,7 +22,7 @@ When deployed to Union, the workflow function is "compiled" to construct the dir
 Workflow parameters are available for configuration on the command line. In this example, the `main` workflow's `max_bins` parameter can be set to a different value from the default:
 
 ```{code-block} shell
-$ union run --remote guides/01_getting_started/ml_workflow/ml_workflow.py main --max_bins 128
+$ union run --remote guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 128
 ```
 
 :::{admonition} `@task` and `@workflow` syntax
@@ -40,7 +40,7 @@ The `@task` decorator indicates a Python function that defines a [**task**](../c
 
 The `train_model` task has the parameter `requests` set to `Resources(cpu="3", mem="2Gi")`, which is declarative infrastructure that allocates 3 CPUs and `2Gi` of memory for the task. This task also has the `container_image` parameter set, which specifies the image (defined in an `ImageSpec` block) to use for the task.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/first_workflow/ml_workflow/ml_workflow.py
 :language: python
 :pyobject: train_model
 ```
@@ -50,7 +50,7 @@ The `train_model` task has the parameter `requests` set to `Resources(cpu="3", m
 `get_dataset` returns the training and test data as pandas DataFrames. `cache=True` means that the task output is cached by Union. With caching, future executions of the workflow will use the cached data instead of running
 the task again.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/first_workflow/ml_workflow/ml_workflow.py
 :language: python
 :pyobject: get_dataset
 ```
@@ -63,7 +63,7 @@ For a full list of task parameters, see [Task parameters](../core-concepts/tasks
 
 The `ImageSpec` object is used to define the container image that will run the tasks in the workflow. The tasks require custom dependencies, which are included in the `ImageSpec`:
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/first_workflow/ml_workflow/ml_workflow.py
 :language: python
 :lines: 36-38
 ```

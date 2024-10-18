@@ -1,6 +1,6 @@
-# API
+# API reference
 
-This section provides the reference material for all Union APIS, SDKs and CLIs.
+This section provides the reference material for all Union APIs, SDKs and CLIs.
 
 To get started, install `union`:
 

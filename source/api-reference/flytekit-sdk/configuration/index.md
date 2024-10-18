@@ -57,7 +57,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 #### Config object
 
 :::{note}
-You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../guide/development-cycle/union-remote.md) object. See [Creating a UnionRemote object](../../../guide/development-cycle/union-remote.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
+You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../user-guide/development-cycle/union-remote.md) object. See [Creating a UnionRemote object](../../../user-guide/development-cycle/union-remote.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
 :::
 
 ```{eval-rst}
