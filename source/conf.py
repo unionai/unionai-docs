@@ -5,6 +5,11 @@ import sphinx.application
 import sphinx.errors
 from sphinx.util import logging as sphinx_logging
 
+
+
+# pygments_style = 'friendly'
+# pygments_dark_style = 'monokai'
+
 # Project
 project = "union-docs"
 copyright = "2024, Union"
@@ -45,9 +50,10 @@ myst_heading_anchors = 6
 # Pydata Sphinx theme
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
-    "navbar_start": ["navbar-logo"],
-    "navbar_start_bottom": ["navbar-links"],
-    "navbar_center": ["variant-selector", "navbar-nav"],
+    "navbar_start": ["navbar-logo", "variant-selector", "navbar-nav"],
+    "navbar_center": [],
+    "navbar_end": ["navbar-icon-links"],
+    "navbar_persistent": ["navbar-nav", "search-button"],
     "secondary_sidebar_items": ["custom-page-toc"],
     "logo": {
         "text": "Union Docs",
@@ -67,6 +73,8 @@ html_theme_options = {
     ],
     "footer_start": [],
     "footer_end": [],
+    "announcement": "This is a beta version of the v2 Union documentation. Please provide feedback on the documentation by creating an issue on our GitHub repository or by contacting us on our Slack channel.",
+
 }
 html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
@@ -246,3 +254,4 @@ def setup(app):
         h for h in logger.handlers if isinstance(h, sphinx_logging.WarningStreamHandler)
     ]
     warning_handler.filters.insert(0, CustomWarningSuppressor(app))
+
