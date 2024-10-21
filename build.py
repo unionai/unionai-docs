@@ -56,10 +56,7 @@ SUBS: dict[str, dict[str, str] | str] = {
     'cli_name': 'uctl',
 }
 
-INSTALL_SDK_PACKAGES: dict[str, str] = {
-    "byoc": "'union[byoc]'",
-    "serverless": "union",
-}
+INSTALL_SDK_PACKAGE = "union"
 
 DOCSEARCH_CREDENTIALS = {
     "byoc": {
@@ -83,18 +80,25 @@ export IMAGE_SPEC_REGISTRY="<your-container-registry>"
 ```
 """
 
-RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+RUN_COMMAND_START_SERVERLESS = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 :open:
 :color: warning
-
-Run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 
 Create an account
 :::
+"""
 
-Once you have a Union account, install `{sdk_package_variant}`
+RUN_COMMAND_START_BYOC = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+:open:
+:color: warning
+
+"""
+
+RUN_COMMAND_REST = """
+
+Once you have a Union account, install `{sdk_package}`
 
 ```{{code}}
 {pip_install_command}
@@ -148,22 +152,29 @@ def contains_metadata(src: str):
 
 def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
     variant_display = SUBS["product_name"][current_variant]
-    sdk_package_variant = INSTALL_SDK_PACKAGES[current_variant]
-    pip_install_command = f"pip install {sdk_package_variant}"
+    sdk_package = INSTALL_SDK_PACKAGE
+    pip_install_command = f"pip install {sdk_package}"
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
         pip_install_command += " flytekitplugins-envd"
+        run_cmd_start = RUN_COMMAND_START_BYOC.format(
+            variant=variant_display
+        )
     else:
         byoc_commands = ""
-    src = RUN_COMMAND_TEMPLATE.format(
+        run_cmd_start = RUN_COMMAND_START_SERVERLESS.format(
+            variant=variant_display
+        )
+    run_cmd_rest = RUN_COMMAND_REST.format(
         variant=variant_display,
-        sdk_package_variant=sdk_package_variant,
+        sdk_package=sdk_package,
         pip_install_command=pip_install_command,
         byoc_commands=byoc_commands,
         run_commands="\n".join(run_commands),
         github_url=github_url,
     )
+    src = run_cmd_start + run_cmd_rest
     return NotebookNode(cell_type="markdown", source=src, metadata={})
 
 
