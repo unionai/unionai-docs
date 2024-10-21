@@ -98,7 +98,7 @@ RUN_COMMAND_START_BYOC = """::::{{dropdown}} {{fas}}`circle-play` Run on {varian
 
 RUN_COMMAND_REST = """
 
-Once you have a Union account, install `{sdk_package}`
+Once you have a Union account, install `{sdk_package}`:
 
 ```{{code}}
 {pip_install_command}
