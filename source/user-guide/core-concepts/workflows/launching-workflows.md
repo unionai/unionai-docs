@@ -2,11 +2,6 @@
 
 From the [individual workflow view](./viewing-workflows.md#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](./viewing-workflows.md#workflows-list)) you can select **Launch Workflow** in the top right. This opens the **New Execution** dialog for workflows:
 
-```{image} /_static/images/user-guide/core-concepts/workflows/launching-workflows/new-execution-dialog-inputs.png
-:alt: New execution dialog inputs
-:width: 300px
-```
-
 ![New execution dialog settings](/_static/images/user-guide/core-concepts/workflows/launching-workflows/new-execution-dialog-settings.png)
 
 At the top you can select:
