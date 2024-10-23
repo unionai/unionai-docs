@@ -67,3 +67,12 @@ Every task execution in the following example will execute in the same `ActorEnv
 
 ```
 {@@ endif @@}
+
+### Custom PodTemplates
+
+Both tasks in the following example will be executed in the same `ActorEnvironment`, which is created with a `PodTemplate` for additional configuration.
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/pod_template.py
+:caption: pod_template.py
+:language: python
+```
