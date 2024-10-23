@@ -79,4 +79,11 @@ to the a reference genome using the Bowtie2 aligner.
 Use open-source models to dub videos.
 :::
 
+:::{grid-item-card} {octicon}`accessibility-inset` Efficient Named Entity Recognition with vLLM
+:link: language-models/vllm-serving-on-actor
+:link-type: doc
+
+Serve a vLLM model on a warm container and trigger inference automatically with artifacts.
+:::
+
 ::::
