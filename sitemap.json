@@ -211,7 +211,8 @@
                         {"name": "agentic-rag", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/agentic_rag/agentic_rag.py"},
                         {"name": "soft-clustering-hdbscan", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py"},
                         {"name": "liger-kernel-finetuning", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py"},
-                        {"name": "llama_edge_deployment", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py"}
+                        {"name": "llama_edge_deployment", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py"},
+                        {"name": "vllm-serving-on-actor", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/vllm_serving_on_actor/ner.py"}
                     ]
                 },
                 {"name": "parallel-processing-and-job-scheduling", "variants": ["byoc", "serverless"],
