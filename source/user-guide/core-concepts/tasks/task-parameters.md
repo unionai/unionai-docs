@@ -7,9 +7,12 @@ You pass the following parameters to the `@task` decorator:
 * `accelerator`: The accelerator to use for this task.
   For more information, see [Specifying accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html#specifying-accelerators).
 
+
 * `cache`: See [Caching](../caching).
 
+
 * `cache_serialize`: See [Caching](../caching).
+
 
 * `cache_version`: See [Caching](../caching).
 
