@@ -22,11 +22,11 @@ You pass the following parameters to the `@task` decorator:
 
 * `enable_deck`: If true, this task will output a Flyte Deck which can be used to visualize the task execution (see [Decks&#x2B00;](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)).
 
-```{code-block} python
-@task(enable_deck=True)
-def my_task(my_str: str):
+    ```{code-block} python
+    @task(enable_deck=True)
+    def my_task(my_str: str):
     print("hello {my_str}")
-```
+    ```
 
 * `environment`: See [Environment variables](./task-software-environment/environment-variables.md).
 
