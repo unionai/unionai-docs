@@ -6,47 +6,30 @@ You pass the following parameters to the `@task` decorator:
 
 * `accelerator`: The accelerator to use for this task.
   For more information, see [Specifying accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html#specifying-accelerators).
-
-
 * `cache`: See [Caching](../caching).
-
-
 * `cache_serialize`: See [Caching](../caching).
-
-
 * `cache_version`: See [Caching](../caching).
-
 * `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
-
 * `container_image`: See [Imagespec](./task-software-environment/imagespec.md).
-
 * `deprecated`: A string that can be used to provide a warning message for deprecated task.
   Absence / empty str indicates that the task is active and not deprecated
-
 * `docs`: Documentation about this task.
-
 * `enable_deck`: If true, this task will output a Flyte Deck which can be used to visualize the task execution
   (see [Decks&#x2B00;](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)).
-
-    ```{code-block} python
-    @task(enable_deck=True)
-    def my_task(my_str: str):
-    print("hello {my_str}")
-    ```
-
+  ```{code-block} python
+  @task(enable_deck=True)
+  def my_task(my_str: str):
+  print("hello {my_str}")
+  ```
 * `environment`: See [Environment variables](./task-software-environment/environment-variables.md).
-
 * `interruptible`: See [Interruptible instances](./task-hardware-environment/interruptible-instances.md).
-
 * `limits`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md).
-
 * `node_dependency_hints`: A list of tasks, launch plans, or workflows that this task depends on.
   This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime.
   Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier,
   because it allows registration to be done the same as for static tasks/workflows.
   For example this is useful to run launch plans dynamically, because launch plans must be registered on Flyteadmin before they can be run.
   Tasks and workflows do not have this requirement.
-
     ```{code-block} python
     @workflow
     def workflow0():
