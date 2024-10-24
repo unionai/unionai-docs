@@ -73,7 +73,6 @@ html_theme_options = {
     ],
     "footer_start": [],
     "footer_end": [],
-    "announcement": "This is a beta version of the v2 Union documentation. Please provide feedback on the documentation by creating an issue on our GitHub repository or by contacting us on our Slack channel.",
 
 }
 html_title = "Union Docs"
