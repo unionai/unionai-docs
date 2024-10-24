@@ -1,22 +1,3 @@
-/*/guide/core-concepts/workflows/viewing-workflows
-    _images/workflow-list.png
-    _images/workflow-view.png
-    _images/workflow-version-list.png
-
-/*/guide/core-concepts/workflows/viewing-workflow-executions
-    _images/execution-list.png
-    _images/execution-view.png
-    _images/execution-view-topbar.png
-    _images/execution-view-info.png
-    _images/execution-view-nodes.png
-    _images/execution-view-right-panel.png
-    _images/execution-view-right-panel-executions.png
-    _images/execution-view-right-panel-inputs.png
-    _images/execution-view-right-panel-outputs.png
-    _images/execution-view-right-panel-task.png
-    _images/execution-view-graph.png
-    _images/execution-view-timeline.png
-
 /serverless/guide/core-concepts/tasks
     (missing section `task-software-environment` in serverless, probably intentional, but check)
 
