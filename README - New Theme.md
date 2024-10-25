@@ -41,6 +41,8 @@ drwxr-xr-x@ 13 shalomz  staff   416 Oct 17 00:27 user-guide
 
 ### 2. Theme config:
 
+`/source/conf.py`:
+
 ```python
 
 # path: source/conf.py
@@ -94,6 +96,7 @@ html_theme_options = {
 ```
 
 ### 3. CSS
+`/source/_static/new-theme.css`
 
 ```css
 
@@ -146,7 +149,7 @@ drwxr-xr-x@ 8 shalomz  staff   256 Oct 25 17:06 sections
 ...
 {% endblock %}
 ```
-layout.html:
+#### `/source/_templates/layout.html`:
 ```html
 {%- extends "!layout.html" %}
 
