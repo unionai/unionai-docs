@@ -227,6 +227,7 @@ class CustomWarningSuppressor(logging.Filter):
             "Block quote ends without a blank line",
             "Include file",
             "duplicate object description",
+            "unknown document"
         )
 
         if msg.strip().startswith(filter_out):
