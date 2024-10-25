@@ -29,7 +29,7 @@ In the AWS console, go to **Amazon ECR > Repositories**. If you are in the same 
 
 Once you are in the correct ECR registry, under **Create a Repository**, click **Get Started**:
 
-![](/_static/images/create-repository-1.png)
+![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-1.png)
 
 On the **Create repository** page:
 
@@ -37,11 +37,11 @@ On the **Create repository** page:
 
 * Enter the name of the repository:
 
-![](/_static/images/create-repository-2.png)
+![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-2.png)
 
 and then scroll down to click **Create repository**:
 
-![](/_static/images/create-repository-3.png)
+![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr/create-repository-3.png)
 
 Your repository is now created.
 
