@@ -71,8 +71,8 @@ html_theme_options = {
             "icon": "fab fa-slack",
         },
     ],
-    "footer_start": [],
-    "footer_end": [],
+    "footer_start": ["copyright"],
+    "footer_end": ["navbar-icon-links"],
 
 }
 html_title = "Union Docs"
