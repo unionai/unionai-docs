@@ -35,6 +35,7 @@ html[data-theme="light"] {
     --secondary-color: #4E4539;
     --pst-color-surface: #FEF2E5;
     --pst-color-inline-code: #201B13;
+    --pst-color-info-bg: #E4DFFF !important;
 }
 
 /* ==========================================================================
@@ -53,7 +54,7 @@ html[data-theme="dark"] {
     --color-outline-variant: #6A6A6A;
     --pri-btn-background: #3D3D3D;
     --pri-btn-text-color: #F8DFBB;
-    --primary-color: #EFBF6D;
+    --primary-color: #ECE1D4 !important;
     --pst-color-text-muted: #D2C5B4;
     --pst-color-background: #120D07;
     --pst-color-on-background: #120D07;
