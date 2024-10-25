@@ -62,12 +62,12 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/unionai-oss/union-docs",
+            "url": "https://github.com/flyteorg/flyte",
             "icon": "fab fa-github",
         },
         {
             "name": "Slack",
-            "url": "https://slack.flyte.com/unionai-oss/union-docs",
+            "url": "https://flyte-org.slack.com/",
             "icon": "fab fa-slack",
         },
     ],
