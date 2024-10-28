@@ -17,6 +17,11 @@ First we import the required packages:
 :lines: 1-7
 ```
 
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: hello_world.py
+```
+
+
 ## Upstream artifact and workflow definition
 
 Then we define an upstream artifact and a workflow that emits a new version of `UpstreamArtifact` when executed:
@@ -25,6 +30,11 @@ Then we define an upstream artifact and a workflow that emits a new version of `
 :language: python
 :lines: 13-31
 ```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: hello_world.py
+```
+
 ## Artifact event definition
 
 Next we define the artifact event that will link the upstream and downstream workflows together:
@@ -32,6 +42,10 @@ Next we define the artifact event that will link the upstream and downstream wor
 ```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
 :language: python
 :lines: 34-36
+```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: hello_world.py
 ```
 
 ## Downstream workflow definition
@@ -43,6 +57,10 @@ Then we define the downstream task and workflow that will be triggered when the 
 :lines: 39-46
 ```
 
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: hello_world.py
+```
+
 ## Launch plan with trigger definition
 
 Finally we create a launch plan with a trigger set to an `OnArtifact` object to link the two workflows via the `Upstream` artifact. The trigger will initiate an execution of the downstream `downstream_wf` workflow upon the creation of a new version of the `Upstream` artifact.
@@ -50,6 +68,10 @@ Finally we create a launch plan with a trigger set to an `OnArtifact` object to 
 ```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
 :language: python
 :lines: 49-53
+```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: hello_world.py
 ```
 
 :::{note}
@@ -62,4 +84,8 @@ Here is the full example code file:
 
 ```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
 :language: python
+```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: hello_world.py
 ```

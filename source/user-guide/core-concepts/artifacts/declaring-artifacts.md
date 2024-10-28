@@ -16,6 +16,10 @@ To use the example code on this page, you will need to add your `registry` to th
 :language: python
 ```
 
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/basic.py
+:caption: hello_world.py
+```
+
 ## Time-partitioned artifact
 
 By default, time partitioning is not enabled for artifacts. To enable it, declare the artifact with `time_partitioned` set to `True`. You can optionally set the granularity for the time partition to `MINUTE`, `HOUR`, `DAY`, or `MONTH`; the default is `DAY`.
@@ -29,11 +33,19 @@ You must also pass a value to `time_partition`, which you can do at runtime or b
 :emphasize-lines: 1,5,14-15,21-23
 ```
 
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/time_partition_runtime.py
+:caption: hello_world.py
+```
+
+
 ### Passing a value to `time_partition` by input
 
 ```{literalinclude} ../../../_static/includes/core-concepts/artifacts/time_partition_input.py
 :language: python
 :emphasize-lines: 20-21,28
+```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/time_partition_input.py
 ```
 
 ## Artifact with custom partition keys
@@ -47,11 +59,19 @@ You can specify up to 10 custom partition keys when declaring an artifact. Custo
 :emphasize-lines: 16,35-36
 ```
 
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_runtime.py
+:caption: hello_world.py
+```
+
 ### Passing a value to a custom partition key by input
 
 ```{literalinclude} ../../../_static/includes/core-concepts/artifacts/partition_keys_input.py
 :language: python
 :emphasize-lines: 16,34
+```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_input.py
+:caption: hello_world.py
 ```
 
 ## Artifact with model card example
@@ -61,4 +81,8 @@ You can attach a model card with additional metadata to your artifact, formatted
 ```{literalinclude} ../../../_static/includes/core-concepts/artifacts/model_card.py
 :language: python
 :emphasize-lines: 4,14-17,26
+```
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/model_card.py
+:caption: hello_world.py
 ```

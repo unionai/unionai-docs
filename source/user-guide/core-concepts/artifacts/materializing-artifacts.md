@@ -14,6 +14,10 @@ To use the example code on this page, you will need to add your `registry` to th
 :language: python
 ```
 
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_runtime.py
+:caption: hello_world.py
+```
+
 :::{note}
 You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`. For more information, see the [UnionRemote documentation](../../development-cycle/union-remote.md#creating-artifacts).
 :::
