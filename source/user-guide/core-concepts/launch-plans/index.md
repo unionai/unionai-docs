@@ -33,9 +33,6 @@ To view the launch plans for a given workflow, in the UI, navigate to the workfl
 You can choose which launch plan to use to launch the workflow from the **Launch Plan** dropdown menu.
 The default launch plan will be selected by default. If you have not defined any custom launch plans for the workflow, only the default plan will be available.
 If you have defined one or more custom launch plans, they will be available in the dropdown menu along with the default launch plan.
-
-![my_workflow_custom_lp](/_static/images/concepts-launch-plans-5.png)
-
 For more details, see [Running Launch Plans](./running-launch-plans).
 
 ## Registering a launch plan
