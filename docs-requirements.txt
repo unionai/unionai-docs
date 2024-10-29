@@ -9,9 +9,9 @@ accessible-pygments==0.0.5
     # via pydata-sphinx-theme
 adlfs==2024.7.0
     # via flytekit
-aioboto3==13.1.1
+aioboto3==13.2.0
     # via flytekitplugins-awssagemaker
-aiobotocore==2.13.1
+aiobotocore==2.15.2
     # via
     #   aioboto3
     #   s3fs
@@ -21,7 +21,7 @@ aiofiles==24.1.0
     #   union
 aiohappyeyeballs==2.4.3
     # via aiohttp
-aiohttp==3.10.9
+aiohttp==3.10.10
     # via
     #   adlfs
     #   aiobotocore
@@ -39,7 +39,7 @@ alembic==1.13.3
     # via apache-airflow
 annotated-types==0.7.0
     # via pydantic
-anyio==4.6.0
+anyio==4.6.2.post1
     # via
     #   httpx
     #   openai
@@ -55,15 +55,17 @@ apache-airflow==2.10.2
     #   apache-airflow-providers-smtp
     #   apache-airflow-providers-sqlite
     #   flytekitplugins-airflow
-apache-airflow-providers-common-compat==1.2.0
+apache-airflow-providers-common-compat==1.2.1
+    # via
+    #   apache-airflow
+    #   apache-airflow-providers-fab
+apache-airflow-providers-common-io==1.4.2
     # via apache-airflow
-apache-airflow-providers-common-io==1.4.1
-    # via apache-airflow
-apache-airflow-providers-common-sql==1.17.1
+apache-airflow-providers-common-sql==1.18.0
     # via
     #   apache-airflow
     #   apache-airflow-providers-sqlite
-apache-airflow-providers-fab==1.4.0
+apache-airflow-providers-fab==1.4.1
     # via apache-airflow
 apache-airflow-providers-ftp==3.11.1
     # via apache-airflow
@@ -75,7 +77,7 @@ apache-airflow-providers-smtp==1.8.0
     # via apache-airflow
 apache-airflow-providers-sqlite==3.9.0
     # via apache-airflow
-apispec==6.6.1
+apispec==6.7.0
     # via flask-appbuilder
 argcomplete==3.5.1
     # via apache-airflow
@@ -101,7 +103,7 @@ azure-core==1.31.0
     #   azure-storage-blob
 azure-datalake-store==0.0.53
     # via adlfs
-azure-identity==1.18.0
+azure-identity==1.19.0
     # via adlfs
 azure-storage-blob==12.23.1
     # via adlfs
@@ -114,13 +116,15 @@ backoff==2.2.1
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
+backports-tarfile==1.2.0
+    # via jaraco-context
 beautifulsoup4==4.12.3
     # via pydata-sphinx-theme
 blinker==1.8.2
     # via apache-airflow
-boto3==1.34.131
+boto3==1.35.36
     # via aiobotocore
-botocore==1.34.131
+botocore==1.35.36
     # via
     #   aiobotocore
     #   boto3
@@ -144,7 +148,7 @@ cffi==1.17.1
     #   azure-datalake-store
     #   cryptography
     #   snowflake-connector-python
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via
     #   requests
     #   snowflake-connector-python
@@ -159,7 +163,7 @@ click==8.1.7
     #   union
 clickclick==20.10.2
     # via connexion
-cloudpickle==3.0.0
+cloudpickle==3.1.0
     # via flytekit
 colorama==0.4.6
     # via flask-appbuilder
@@ -171,11 +175,11 @@ connexion==2.14.2
     # via apache-airflow
 cron-descriptor==1.4.5
     # via apache-airflow
-croniter==3.0.3
+croniter==4.0.0
     # via
     #   apache-airflow
     #   flytekit
-cryptography==43.0.1
+cryptography==43.0.3
     # via
     #   apache-airflow
     #   azure-identity
@@ -209,7 +213,6 @@ docutils==0.21.2
     # via
     #   myst-parser
     #   pydata-sphinx-theme
-    #   python-daemon
     #   sphinx
     #   sphinx-click
 durationpy==0.9
@@ -254,13 +257,13 @@ flask-session==0.5.0
     # via apache-airflow
 flask-sqlalchemy==2.5.1
     # via flask-appbuilder
-flask-wtf==1.2.1
+flask-wtf==1.2.2
     # via
     #   apache-airflow
     #   flask-appbuilder
 flatbuffers==24.3.25
     # via tensorflow
-flyteidl==1.13.4
+flyteidl==1.13.5
     # via
     #   flytekit
     #   flytekitplugins-airflow
@@ -268,7 +271,7 @@ flyteidl==1.13.4
     #   flytekitplugins-openai
     #   flytekitplugins-spark
     #   union
-flytekit==1.13.7
+flytekit==1.13.11
     # via
     #   flytekitplugins-airflow
     #   flytekitplugins-awssagemaker
@@ -278,25 +281,25 @@ flytekit==1.13.7
     #   flytekitplugins-snowflake
     #   flytekitplugins-spark
     #   union
-flytekitplugins-airflow==1.13.7
+flytekitplugins-airflow==1.13.11
     # via -r docs-requirements.in
-flytekitplugins-awssagemaker==1.13.7
+flytekitplugins-awssagemaker==1.13.11
     # via -r docs-requirements.in
-flytekitplugins-bigquery==1.13.7
+flytekitplugins-bigquery==1.13.11
     # via -r docs-requirements.in
-flytekitplugins-mmcloud==1.13.7
+flytekitplugins-mmcloud==1.13.11
     # via -r docs-requirements.in
-flytekitplugins-openai==1.13.7
+flytekitplugins-openai==1.13.11
     # via -r docs-requirements.in
-flytekitplugins-snowflake==1.13.7
+flytekitplugins-snowflake==1.13.11
     # via -r docs-requirements.in
-flytekitplugins-spark==1.13.7
+flytekitplugins-spark==1.13.11
     # via -r docs-requirements.in
-frozenlist==1.4.1
+frozenlist==1.5.0
     # via
     #   aiohttp
     #   aiosignal
-fsspec==2024.9.0
+fsspec==2024.10.0
     # via
     #   adlfs
     #   apache-airflow
@@ -308,9 +311,9 @@ fsspec==2024.9.0
     #   universal-pathlib
 gast==0.6.0
     # via tensorflow
-gcsfs==2024.9.0.post1
+gcsfs==2024.10.0
     # via flytekit
-google-api-core==2.20.0
+google-api-core==2.22.0
     # via
     #   google-cloud-bigquery
     #   google-cloud-core
@@ -358,7 +361,7 @@ googleapis-common-protos==1.65.0
     #   opentelemetry-exporter-otlp-proto-http
     #   protoc-gen-openapiv2
     #   union
-grpcio==1.66.2
+grpcio==1.67.1
     # via
     #   flytekit
     #   google-api-core
@@ -398,13 +401,15 @@ imagesize==1.4.1
     # via sphinx
 importlib-metadata==8.5.0
     # via
+    #   apache-airflow
     #   flytekit
+    #   keyring
     #   union
 importlib-resources==6.4.5
     # via limits
 inflection==0.5.1
     # via connexion
-isodate==0.6.1
+isodate==0.7.2
     # via azure-storage-blob
 itsdangerous==2.2.0
     # via
@@ -429,7 +434,7 @@ jinja2==3.1.4
     #   sphinx
     #   torch
     #   union
-jiter==0.6.0
+jiter==0.6.1
     # via openai
 jmespath==1.0.1
     # via
@@ -450,7 +455,7 @@ jsonschema==4.23.0
     #   connexion
     #   flask-appbuilder
     #   nbformat
-jsonschema-specifications==2023.12.1
+jsonschema-specifications==2024.10.1
     # via jsonschema
 jupyter-core==5.7.2
     # via nbformat
@@ -458,7 +463,7 @@ jupytext==1.16.4
     # via -r docs-requirements.in
 keras==3.6.0
     # via tensorflow
-keyring==25.4.1
+keyring==25.5.0
     # via
     #   flytekit
     #   union
@@ -476,7 +481,7 @@ lockfile==0.12.2
     # via
     #   apache-airflow
     #   python-daemon
-mako==1.3.5
+mako==1.3.6
     # via alembic
 markdown==3.7
     # via tensorboard
@@ -488,14 +493,14 @@ markdown-it-py==3.0.0
     #   mdit-py-plugins
     #   myst-parser
     #   rich
-markupsafe==2.1.5
+markupsafe==3.0.2
     # via
     #   apache-airflow
     #   jinja2
     #   mako
     #   werkzeug
     #   wtforms
-marshmallow==3.22.0
+marshmallow==3.23.0
     # via
     #   dataclasses-json
     #   flask-appbuilder
@@ -513,7 +518,7 @@ marshmallow-oneofschema==3.1.1
     # via apache-airflow
 marshmallow-sqlalchemy==0.28.2
     # via flask-appbuilder
-mashumaro==3.13.1
+mashumaro==3.14
     # via
     #   flytekit
     #   union
@@ -558,9 +563,9 @@ nbformat==5.10.4
     # via
     #   -r docs-requirements.in
     #   jupytext
-networkx==3.3
+networkx==3.4.2
     # via torch
-numpy==1.26.4
+numpy==2.0.2
     # via
     #   h5py
     #   keras
@@ -574,7 +579,7 @@ oauthlib==3.2.2
     # via
     #   kubernetes
     #   requests-oauthlib
-openai==1.51.1
+openai==1.52.2
     # via flytekitplugins-openai
 opentelemetry-api==1.16.0
     # via
@@ -616,7 +621,6 @@ packaging==24.1
     #   limits
     #   marshmallow
     #   marshmallow-sqlalchemy
-    #   pydata-sphinx-theme
     #   snowflake-connector-python
     #   sphinx
     #   tensorboard
@@ -637,7 +641,9 @@ portalocker==2.10.1
     # via msal-extensions
 prison==0.2.1
     # via flask-appbuilder
-proto-plus==1.24.0
+propcache==0.2.0
+    # via yarl
+proto-plus==1.25.0
     # via google-api-core
 protobuf==4.25.5
     # via
@@ -653,7 +659,7 @@ protobuf==4.25.5
     #   tensorflow
 protoc-gen-openapiv2==0.0.1
     # via flyteidl
-psutil==6.0.0
+psutil==6.1.0
     # via apache-airflow
 py4j==0.10.9.7
     # via pyspark
@@ -669,7 +675,7 @@ pydantic==2.9.2
     # via openai
 pydantic-core==2.23.4
     # via pydantic
-pydata-sphinx-theme==0.15.4
+pydata-sphinx-theme==0.16.0
     # via -r docs-requirements.in
 pygments==2.18.0
     # via
@@ -690,7 +696,7 @@ pyopenssl==24.2.1
     # via snowflake-connector-python
 pyspark==3.5.3
     # via flytekitplugins-spark
-python-daemon==3.0.1
+python-daemon==3.1.0
     # via apache-airflow
 python-dateutil==2.9.0.post0
     # via
@@ -765,7 +771,7 @@ requests-toolbelt==1.0.0
     #   apache-airflow-providers-http
 rfc3339-validator==0.1.4
     # via apache-airflow
-rich==13.9.2
+rich==13.9.3
     # via
     #   apache-airflow
     #   flask-limiter
@@ -786,32 +792,30 @@ rpds-py==0.20.0
     #   referencing
 rsa==4.9
     # via google-auth
-s3fs==2024.9.0
+s3fs==2024.10.0
     # via flytekit
-s3transfer==0.10.2
+s3transfer==0.10.3
     # via boto3
 scikit-learn==1.5.2
     # via -r docs-requirements.in
 scipy==1.14.1
     # via scikit-learn
-sentry-sdk==2.15.0
+sentry-sdk==2.17.0
     # via union
 setproctitle==1.3.3
     # via apache-airflow
-setuptools==75.1.0
+setuptools==75.2.0
     # via
     #   opentelemetry-api
     #   opentelemetry-sdk
     #   python-daemon
     #   tensorboard
     #   tensorflow
-    #   torch
 six==1.16.0
     # via
     #   astunparse
     #   azure-core
     #   google-pasta
-    #   isodate
     #   kubernetes
     #   prison
     #   python-dateutil
@@ -827,13 +831,13 @@ sniffio==1.3.1
     #   openai
 snowballstemmer==2.2.0
     # via sphinx
-snowflake-connector-python==3.12.2
+snowflake-connector-python==3.12.3
     # via flytekitplugins-snowflake
 sortedcontainers==2.4.0
     # via snowflake-connector-python
 soupsieve==2.6
     # via beautifulsoup4
-sphinx==8.0.2
+sphinx==8.1.3
     # via
     #   -r docs-requirements.in
     #   myst-parser
@@ -882,18 +886,20 @@ sqlparse==0.5.1
     # via apache-airflow-providers-common-sql
 statsd==4.0.1
     # via flytekit
-sympy==1.13.3
+sympy==1.13.1
     # via torch
 tabulate==0.9.0
     # via apache-airflow
 tenacity==9.0.0
     # via apache-airflow
-tensorboard==2.17.1
+tensorboard==2.18.0
     # via tensorflow
 tensorboard-data-server==0.7.2
     # via tensorboard
-tensorflow==2.17.0
+tensorflow==2.18.0
     # via -r docs-requirements.in
+tensorflow-io-gcs-filesystem==0.37.1
+    # via tensorflow
 termcolor==2.5.0
     # via
     #   apache-airflow
@@ -902,13 +908,13 @@ text-unidecode==1.3
     # via python-slugify
 threadpoolctl==3.5.0
     # via scikit-learn
-time-machine==2.15.0
+time-machine==2.16.0
     # via pendulum
 tomlkit==0.13.2
     # via snowflake-connector-python
-torch==2.4.1
+torch==2.5.0
     # via -r docs-requirements.in
-tqdm==4.66.5
+tqdm==4.66.6
     # via openai
 traitlets==5.14.3
     # via
@@ -946,7 +952,7 @@ uc-micro-py==1.0.3
     # via linkify-it-py
 unicodecsv==0.14.1
     # via apache-airflow
-union==0.1.78
+union==0.1.90
     # via -r docs-requirements.in
 universal-pathlib==0.2.5
     # via apache-airflow
@@ -978,13 +984,13 @@ wrapt==1.16.0
     #   aiobotocore
     #   deprecated
     #   tensorflow
-wtforms==3.1.2
+wtforms==3.2.1
     # via
     #   flask-appbuilder
     #   flask-wtf
 xxhash==3.5.0
     # via flytekitplugins-awssagemaker
-yarl==1.13.1
+yarl==1.17.0
     # via aiohttp
 zipp==3.20.2
     # via importlib-metadata

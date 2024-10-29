@@ -11,7 +11,7 @@ myst-parser
 nbformat
 pyyaml
 scikit-learn
-sphinx==8.0.2
+sphinx
 sphinx-click
 sphinx-design
 pydata-sphinx-theme
@@ -20,4 +20,4 @@ sphinx-docsearch
 sphinxext-remoteliteralinclude
 tensorflow
 torch
-union==0.1.78
+union
