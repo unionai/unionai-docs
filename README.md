@@ -10,7 +10,7 @@ project.
 
 ## Set up your local Python environment
 
-* Create a virtual Python environment with Python 3.11 installed.
+* Create a virtual Python environment with Python 3.12 installed.
 * Activate that virtual environment.
 * Install the dependencies with `pip install -r docs-requirements.txt`. **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
 
@@ -19,7 +19,7 @@ project.
 * Run the build with `make build-local`.
 
 > [!NOTE]
-> We have included the following experimenal features in an effort to improve the
+> We have included the following experimental features in an effort to improve the
 > build process and reduce the build time. Feel free to experiment with them and
 > let us know if you have any feedback. The `make build-fast` and `make build-async` options now complete in 30 seconds
 > or less, offering a significant speedup over the original build process.
@@ -38,8 +38,9 @@ The resulting HTML files will be in the directory `build/html`.
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
 ```
-> [!NOTE] Alternatively, to serve the entire site locally, just run `make serve-local`. 
-> PORT defaults to 8000. To serve on a different port, run `make serve-local PORT=8080`. 
+> [!NOTE]
+> Alternatively, to serve the entire site locally, just run `make serve-local`.
+> PORT defaults to 8000. To serve on a different port, run `make serve-local PORT=8080`.
 > Access the site at http://localhost:8000/serverless/ or http://localhost:8000/byoc/.
 
 The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
