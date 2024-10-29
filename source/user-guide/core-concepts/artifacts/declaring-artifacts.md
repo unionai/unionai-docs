@@ -17,7 +17,8 @@ To use the example code on this page, you will need to add your `registry` to th
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/basic.py
-:caption: hello_world.py
+:caption: basic.py
+:language: python
 ```
 
 ## Time-partitioned artifact
@@ -34,9 +35,10 @@ You must also pass a value to `time_partition`, which you can do at runtime or b
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/time_partition_runtime.py
-:caption: hello_world.py
+:caption: time_partition_runtime.py
+:language: python
+:emphasize-lines: 1,5,14-15,21-23
 ```
-
 
 ### Passing a value to `time_partition` by input
 
@@ -46,6 +48,9 @@ You must also pass a value to `time_partition`, which you can do at runtime or b
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/time_partition_input.py
+:caption: time_partition_input.py
+:language: python
+:emphasize-lines: 20-21,28
 ```
 
 ## Artifact with custom partition keys
@@ -60,7 +65,9 @@ You can specify up to 10 custom partition keys when declaring an artifact. Custo
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_runtime.py
-:caption: hello_world.py
+:caption: partition_keys_runtime.py
+:language: python
+:emphasize-lines: 16,35-36
 ```
 
 ### Passing a value to a custom partition key by input
@@ -71,7 +78,9 @@ You can specify up to 10 custom partition keys when declaring an artifact. Custo
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_input.py
-:caption: hello_world.py
+:caption: partition_keys_input.py
+:language: python
+:emphasize-lines: 16,34
 ```
 
 ## Artifact with model card example
@@ -84,5 +93,7 @@ You can attach a model card with additional metadata to your artifact, formatted
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/model_card.py
-:caption: hello_world.py
+:caption:model_card.py
+:language: python
+:emphasize-lines: 4,14-17,26
 ```

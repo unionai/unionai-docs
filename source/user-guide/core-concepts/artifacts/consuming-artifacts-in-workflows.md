@@ -18,7 +18,9 @@ To use the example code on this page, you will need to add your `registry` to th
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/query.py
-:caption: hello_world.py
+:caption: query.py
+:language: python
+:emphasize-lines: 23-26,35
 ```
 
 You can also directly reference a particular artifact version in a query using the `get()` method:

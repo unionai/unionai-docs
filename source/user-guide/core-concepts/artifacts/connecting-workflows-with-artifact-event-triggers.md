@@ -18,7 +18,9 @@ First we import the required packages:
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
-:caption: hello_world.py
+:caption: trigger_on_artifact.py
+:language: python
+:lines: 1-7
 ```
 
 
@@ -32,7 +34,9 @@ Then we define an upstream artifact and a workflow that emits a new version of `
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
-:caption: hello_world.py
+:caption: trigger_on_artifact.py
+:language: python
+:lines: 13-31
 ```
 
 ## Artifact event definition
@@ -45,7 +49,9 @@ Next we define the artifact event that will link the upstream and downstream wor
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
-:caption: hello_world.py
+:caption: trigger_on_artifact.py
+:language: python
+:lines: 34-36
 ```
 
 ## Downstream workflow definition
@@ -58,7 +64,10 @@ Then we define the downstream task and workflow that will be triggered when the 
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
-:caption: hello_world.py
+:caption: trigger_on_artifact.py
+:language: python
+:lines: 34-36
+:lines: 39-46
 ```
 
 ## Launch plan with trigger definition
@@ -71,7 +80,9 @@ Finally we create a launch plan with a trigger set to an `OnArtifact` object to 
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
-:caption: hello_world.py
+:caption: trigger_on_artifact.py
+:language: python
+:lines: 49-53
 ```
 
 :::{note}
@@ -87,5 +98,6 @@ Here is the full example code file:
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
-:caption: hello_world.py
+:caption: trigger_on_artifact.py
+:language: python
 ```
