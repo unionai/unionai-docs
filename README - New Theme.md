@@ -186,6 +186,38 @@ total 48
 -rw-r--r--@ 1 shalomz  staff   331 Oct 25 17:06 sidebar-secondary.html
 (docs-test) ➜  sections git:(shalom/add-navbar-changes) ✗
 ```
+#### Checklist
+- [x] Colors
+- [] Typography
+- [] Spacing
+- [] Borders
+- [] Shadows
+- [] Icons
+- [] Animations
+- [] Buttons
+- [] Dropdowns
+- [] Forms
+- [] Tables
+- [] Code blocks
+- [] Alerts
+- [] Banners
+- [] Breadcrumbs
+- [] Cards
+- [] Carousels
+- [] Collapses
+- [] Dropdowns
+- [] Figures
+- [] Jumbotrons
+- [] List groups
+- [] Modals
+- [] Navbars
+- [] Navs
+- [] Pagination
+- [] Popovers
+- [] Progress bars
+- [] Scrollbars
+- [] Tooltips
+
 
 
 
