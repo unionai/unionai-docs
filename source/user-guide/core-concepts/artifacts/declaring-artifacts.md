@@ -93,7 +93,7 @@ You can attach a model card with additional metadata to your artifact, formatted
 ```
 
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/model_card.py
-:caption:model_card.py
+:caption: model_card.py
 :language: python
 :emphasize-lines: 4,14-17,26
 ```
