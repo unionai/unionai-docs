@@ -42,16 +42,15 @@ To avoid confusion, in this guide we will stick to the following naming conventi
 
 ## Create a Union project
 
-You can create a new project in the Union UI:
+You can create a new project in the Union UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
 
-1. Navigate to the Projects page.
-![Projects page navigation](/_static/images/projects-nav.png)
-2. Click **New Project**.
-![New project button](/_static/images/project-new-project-btn.png)
-3. In the project creation modal, enter a **Project Name**, **Project ID**, and optional **Description**.
-![Project creation modal](/_static/images/project-creation-modal.png)
-For the purposes of this exercise, name the project **Basic example**, and give it the ID `basic-example`.
-4. Click **Create Project**.
+![Select all projects](/_static/images/user-guide/development-cycle/setting-up-a-project/select-all-projects.png)
+
+This will take you to the **Projects list**:
+
+![Projects list](/_static/images/user-guide/development-cycle/setting-up-a-project/projects-list.png)
+
+Click on the **New Project** button and fill in the details for your new project.
 
 You now have a project on Union into which you can register your workflows.
 The next step is to set up a local workflow directory.
