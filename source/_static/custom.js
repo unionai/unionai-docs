@@ -10,12 +10,12 @@ window.addEventListener("DOMContentLoaded", function() {
 
     // hide login/signup buttons on BYOC pages
     if (window.location.pathname.includes('/byoc/')) {
-        const loginButton = document.querySelector('.unionai-btn-login');
+        // const loginButton = document.querySelector('.unionai-btn-login');
         const signupButton = document.querySelector('.unionai-btn-signup');
         
-        if (loginButton) {
-            loginButton.parentElement.style.display = 'none';
-        }
+        // if (loginButton) {
+        //     loginButton.parentElement.style.display = 'none';
+        // }
         if (signupButton) {
             signupButton.parentElement.style.display = 'none';
         }
