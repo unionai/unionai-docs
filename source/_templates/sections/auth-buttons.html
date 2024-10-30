@@ -1,0 +1,46 @@
+<div class="union-navbar-right">
+    <!-- Center and End sections of the navbar -->
+    <div class="{{ navbar_class }} navbar-header-items">
+        {% if theme_navbar_center %}
+        <div class="{{ navbar_align }} navbar-header-items__center">
+            {% for navbar_item in theme_navbar_center %}
+            <div class="navbar-item">{% include navbar_item %}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if theme_navbar_end or theme_navbar_persistent %}
+        <div class="navbar-header-items__end">
+            {% if theme_navbar_persistent %}
+            {% for navbar_item in theme_navbar_persistent %}
+            <div class="navbar-item navbar-persistent--container">
+                {% include navbar_item %}
+            </div>
+            <div class="vertical-separator"></div>
+            {% endfor %}
+            {% endif %}
+
+            {% for navbar_item in theme_navbar_end %}
+            <div class="navbar-item">{% include navbar_item %}</div>
+            {% if loop.last %}
+            <div class="vertical-separator"></div>
+            {% endif %}
+            {% endfor %}
+
+            {% if '/byoc/' not in pagename %}
+            <!-- Login and Signup buttons -->
+            <div class="navbar-item">
+                <a href="https://signup.union.ai/?page=login" target="_blank" class="unionai-btn-plain unionai-btn-login">
+                    <span>Log In</span>
+                </a>
+            </div>
+            <div class="navbar-item">
+                <a href="https://signup.union.ai" target="_blank" class="unionai-btn unionai-btn-signup">
+                    <span>Sign Up</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
