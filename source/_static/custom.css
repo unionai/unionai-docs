@@ -190,7 +190,7 @@ a.sd-btn {
 
 /* hide default search bar */
 dialog#pst-search-dialog {
-    display: none;
+    display: none !important;
 }
 
 /* docsearch button */
