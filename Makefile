@@ -10,14 +10,6 @@ sync-examples:
 build-local: sync-examples
 	UNION_SERVERLESS_ENDPOINT= python build.py
 
-.PHONY: build-fast
-build-fast: sync-examples
-	UNION_SERVERLESS_ENDPOINT= python build_fast.py
-
-.PHONY: build-async
-build-async: sync-examples
-	UNION_SERVERLESS_ENDPOINT= python build_async.py
-
 .PHONY: clean
 clean:
 	rm -rf build sphinx_source
@@ -42,4 +34,4 @@ build: sync-examples
 	[ -x "$(shell command -v uv)" ] || pip install uv
 	[ -d ".venv" ] || uv venv
 	uv pip install -r docs-requirements.txt
-	. .venv/bin/activate; UNION_SERVERLESS_ENDPOINT= python build_fast.py
+	. .venv/bin/activate; UNION_SERVERLESS_ENDPOINT= python build.py
