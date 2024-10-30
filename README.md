@@ -19,24 +19,15 @@ project.
 * Run the build with `make build-local`.
 
 > [!NOTE]
-> We have included the following experimental features in an effort to improve the
-> build process and reduce the build time. Feel free to experiment with them and
-> let us know if you have any feedback. The `make build-fast` and `make build-async` options now complete in 30 seconds
-> or less, offering a significant speedup over the original build process.
-
-Performance comparison:
-
-| Build Option    | Before -j auto | After -j auto | Improvement |
-|-----------------|----------------|---------------|-------------|
-| `make build-local`| > 60s          | >= 42s        | ~ 30%       |
-| `make build-fast` | <= 40s         | <= 30s        | Negligible  |
-| `make build-async`| <= 40s         | <= 30s        | Negligible  |
+> We have leveraged on parallel processing to speed up the build process.
+> We are using Sphinx's `-j auto` flag to achieve this. This flag sets the number of parallel processes to the number of available CPU cores. 
 
 The resulting HTML files will be in the directory `build/html`.
 
 ```bash
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
+
 ```
 > [!NOTE]
 > Alternatively, to serve the entire site locally, just run `make serve-local`.
