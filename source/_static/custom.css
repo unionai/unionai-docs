@@ -189,8 +189,8 @@ a.sd-btn {
 }
 
 /* hide default search bar */
-div.search-button__wrapper.show {
-    display: none;
+dialog#pst-search-dialog {
+    display: none !important;
 }
 
 /* docsearch button */

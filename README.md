@@ -10,7 +10,7 @@ project.
 
 ## Set up your local Python environment
 
-* Create a virtual Python environment with Python 3.11 installed.
+* Create a virtual Python environment with Python 3.12 installed.
 * Activate that virtual environment.
 * Install the dependencies with `pip install -r docs-requirements.txt`. **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
 
@@ -18,12 +18,21 @@ project.
 
 * Run the build with `make build-local`.
 
+> [!NOTE]
+> We have leveraged on parallel processing to speed up the build process.
+> We are using Sphinx's `-j auto` flag to achieve this. This flag sets the number of parallel processes to the number of available CPU cores. 
+
 The resulting HTML files will be in the directory `build/html`.
 
 ```bash
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
+
 ```
+> [!NOTE]
+> Alternatively, to serve the entire site locally, just run `make serve-local`.
+> PORT defaults to 8000. To serve on a different port, run `make serve-local PORT=8080`.
+> Access the site at http://localhost:8000/serverless/ or http://localhost:8000/byoc/.
 
 The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
 
@@ -58,10 +67,12 @@ export $(cat secrets.txt | xargs)
 make build-local
 ```
 
+
 > [!NOTE]
 > When you view the local docs, the search bar will surface results that will
 > redirect to the corresponding `docs.union.ai` page. This is because Algolia
 > DocSearch does not index local pages.
+
 
 ## How it works
 

@@ -1,3 +1,5 @@
+"""Parallelizes the build process for the Union AI documentation."""
+
 import os
 import subprocess
 import shlex
@@ -5,6 +7,8 @@ import json
 import re
 import shutil
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 
 import jinja2
 import jupytext
@@ -15,20 +19,20 @@ from nbformat.notebooknode import NotebookNode
 # These files also lack toctree directives, as the `sitemap.json` defines the structure of the documentation
 # and the toctrees are added during the template processing step
 # These files are processed by this python script to create proper Sphinx files.
-SOURCE_DIR: str = './source'
+SOURCE_DIR: str = "./source"
 
 # Destination after Jinja2 template processing the source into proper Sphinx files.
 # Each variant has its own directory comprising a complete Sphinx project.
 # Sphinx build is then run on these files to generate the final HTML.
-SPHINX_SOURCE_DIR: str = './sphinx_source'
+SPHINX_SOURCE_DIR: str = "./sphinx_source"
 
 # Destination of the final HTML.
 # Each variant has its own directory containing the final HTML tree for that variant.
-BUILD_DIR: str = './build/html'
+BUILD_DIR: str = "./build/html"
 
 # The sitemap defines the structure of the documentation and defines which pages appear in which variants
 # The Sphinx toctrees are generated based on this sitemap and added to the Sphinx files in SPHINX_SOURCE_DIR.
-SITEMAP: str = './sitemap.json'
+SITEMAP: str = "./sitemap.json"
 
 # path of the examples submodule repository in the docs repo.
 EXAMPLES_REPO: str = "./unionai-examples"
@@ -37,26 +41,29 @@ EXAMPLES_REPO: str = "./unionai-examples"
 EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 
 # The run commands defines how to run the example code.
-RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
+RUN_COMMANDS: str = "./unionai-examples/run_commands.yaml"
 
 # The set of variants.
-ALL_VARIANTS: list[str] = ['serverless', 'byoc']
+ALL_VARIANTS: list[str] = ["serverless", "byoc"]
 
 # The display names of the variants
-VARIANT_DISPLAY_NAMES: dict[str, str] = {'serverless': 'Serverless', 'byoc': 'BYOC'}
+VARIANT_DISPLAY_NAMES: dict[str, str] = {"serverless": "Serverless", "byoc": "BYOC"}
 
 # Global substitutions for Jinja2 templating.
 # Currently unused, but can be used to substitute variables in the Markdown files.
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
-    'product_name': {
-        'byoc': 'Union BYOC',
-        'serverless': 'Union Serverless',
+    "product_name": {
+        "byoc": "Union BYOC",
+        "serverless": "Union Serverless",
     },
-    'cli_name': 'uctl',
+    "cli_name": "uctl",
 }
 
-INSTALL_SDK_PACKAGE = "union"
+INSTALL_SDK_PACKAGES: dict[str, str] = {
+    "byoc": "'union[byoc]'",
+    "serverless": "union",
+}
 
 DOCSEARCH_CREDENTIALS = {
     "byoc": {
@@ -80,25 +87,18 @@ export IMAGE_SPEC_REGISTRY="<your-container-registry>"
 ```
 """
 
-RUN_COMMAND_START_SERVERLESS = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 :open:
 :color: warning
+
+Run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 
 Create an account
 :::
-"""
 
-RUN_COMMAND_START_BYOC = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
-:open:
-:color: warning
-
-"""
-
-RUN_COMMAND_REST = """
-
-Once you have a Union account, install `{sdk_package}`:
+Once you have a Union account, install `{sdk_package_variant}`
 
 ```{{code}}
 {pip_install_command}
@@ -119,10 +119,12 @@ The source code for this tutorial can be found [here {{octicon}}`mark-github`]({
 
 LOGGING_ENABLED = False
 
+
 # Print to stdout
 def log(msg: str) -> None:
     if LOGGING_ENABLED:
         print(msg)
+
 
 # Call a shell command.
 def shell(command: str, env: dict | None = None) -> None:
@@ -150,31 +152,26 @@ def contains_metadata(src: str):
     return src.startswith('"""\n---') and src.endswith('---\n"""')
 
 
-def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
+def create_run_command_node(
+    run_commands: list[str], current_variant: str, github_url: str
+) -> NotebookNode:
     variant_display = SUBS["product_name"][current_variant]
-    sdk_package = INSTALL_SDK_PACKAGE
-    pip_install_command = f"pip install {sdk_package}"
+    sdk_package_variant = INSTALL_SDK_PACKAGES[current_variant]
+    pip_install_command = f"pip install {sdk_package_variant}"
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
         pip_install_command += " flytekitplugins-envd"
-        run_cmd_start = RUN_COMMAND_START_BYOC.format(
-            variant=variant_display
-        )
     else:
         byoc_commands = ""
-        run_cmd_start = RUN_COMMAND_START_SERVERLESS.format(
-            variant=variant_display
-        )
-    run_cmd_rest = RUN_COMMAND_REST.format(
+    src = RUN_COMMAND_TEMPLATE.format(
         variant=variant_display,
-        sdk_package=sdk_package,
+        sdk_package_variant=sdk_package_variant,
         pip_install_command=pip_install_command,
         byoc_commands=byoc_commands,
         run_commands="\n".join(run_commands),
         github_url=github_url,
     )
-    src = run_cmd_start + run_cmd_rest
     return NotebookNode(cell_type="markdown", source=src, metadata={})
 
 
@@ -226,7 +223,9 @@ def convert_tutorial_py_file_to_md(
     github_url = f"{EXAMPLES_GITHUB_REPO}/tree/main/{key}"
 
     if run_cmd_src is not None:
-        run_command_node = create_run_command_node(run_cmd_src, current_variant, github_url)
+        run_command_node = create_run_command_node(
+            run_cmd_src, current_variant, github_url
+        )
         notebook["cells"].insert(1, run_command_node)
 
     for fname in ("static", "images"):
@@ -238,38 +237,40 @@ def convert_tutorial_py_file_to_md(
 # Process a single Markdown/Jinja2 file.
 # Note that the Jinja2 templating syntax is customized and differs from standard Jinja2 syntax.
 # This is to avoid conflict with content that uses they standard Jinja2 syntax
-def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: str = '') -> None:
-    n = path.count('/')
+def create_sphinx_file(
+    path: str, variant: str, variants: list[str], toctree: str = ""
+) -> None:
+    n = path.count("/")
     n = n - 1 if n > 0 else 0
     indent: str = "    " * n
-    log(f'{indent}Creating sphinx file for variant: {variant}')
+    log(f"{indent}Creating sphinx file for variant: {variant}")
     env: jinja2.Environment = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
-        block_start_string='{@@',
-        block_end_string='@@}',
-        variable_start_string='{@=',
-        variable_end_string='=@}',
-        comment_start_string='{@#',
-        comment_end_string='#@}',
+        block_start_string="{@@",
+        block_end_string="@@}",
+        variable_start_string="{@=",
+        variable_end_string="=@}",
+        comment_start_string="{@#",
+        comment_end_string="#@}",
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    input_path: str = f'{SOURCE_DIR}/{path}'
-    log(f'{indent}input_path: {input_path}')
+    input_path: str = f"{SOURCE_DIR}/{path}"
+    log(f"{indent}input_path: {input_path}")
 
-    output_path: str = f'{SPHINX_SOURCE_DIR}/{variant}/{path}'
-    log(f'{indent}output_path: {output_path}')
+    output_path: str = f"{SPHINX_SOURCE_DIR}/{variant}/{path}"
+    log(f"{indent}output_path: {output_path}")
 
     try:
         template: jinja2.Template = env.get_template(input_path)
     except jinja2.exceptions.TemplateNotFound:
-        log(f'{indent}File not found at {input_path}')
+        log(f"{indent}File not found at {input_path}")
     else:
         output: str = template.render(get_vars(variant)).strip()
-        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\ncurrent-variant: {variant}\n---\n\n'
+        frontmatter = f"---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\ncurrent-variant: {variant}\n---\n\n"
         output = frontmatter + output + toctree
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        with open(output_path, 'w') as f:
+        with open(output_path, "w") as f:
             f.write(output)
 
 
@@ -280,74 +281,82 @@ def process_page_node(
     parent_variants: list,
     run_commands: dict,
 ) -> str:
-    """Recursively process a page node in the sitemap from jinja template into sphinx format."""
-    name: str = page_node.get('name', '')
-    title: str = page_node.get('title', '')
-    variants: list = page_node.get('variants', '')
-    children: list = page_node.get('children', None)
-    indent: str = parent_path.count('/') * "    "
-    path: str = os.path.join(parent_path, name).rstrip(' /')
+    name: str = page_node.get("name", "")
+    title: str = page_node.get("title", "")
+    variants: list = page_node.get("variants", "")
+    children: list = page_node.get("children", None)
+    indent: str = parent_path.count("/") * "    "
+    path: str = os.path.join(parent_path, name).rstrip(" /")
 
     py_file = page_node.get("from_py_file", None)
     if py_file is not None:
         py_file = Path(py_file)
-        md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
-        convert_tutorial_py_file_to_md(name, py_file, md_path, current_variant, run_commands)
+        md_path = Path(SOURCE_DIR) / Path(path).with_suffix(".md")
+        convert_tutorial_py_file_to_md(
+            name, py_file, md_path, current_variant, run_commands
+        )
 
-    variants = [*reversed(variants)]  # make sure that serverless is the first element
+    variants = [*reversed(variants)]
     log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
-    log(f'{indent}path: [{path}]')
+    log(f"{indent}path: [{path}]")
 
-    # If tree is malformed, exit.
     if set(variants) > set(parent_variants):
-        raise ValueError(f'Error processing {path}: variants of current page include element not present in parent page variants. A page for a variant cannot exist unless its parent page also exists for that variant.')
+        raise ValueError(
+            f"Error processing {path}: variants of current page include element not present in parent page variants. A page for a variant cannot exist unless its parent page also exists for that variant."
+        )
 
-    # If this page does not appear in the current variant site return `None`.
     if current_variant not in variants:
-        log(f'This page has no variant [{current_variant}]')
-        return ''
+        log(f"This page has no variant [{current_variant}]")
+        return ""
 
-    # If this page has no children:
-    # The file path for this page `{path}.md`.
-    # Create the Sphinx file for this page, processed for the current variant.
-    # Do not add a toctree to this page.
-    # Return the toctree entry of this page in its parent page: `{name}`.
     if not children:
-        log(f'{indent}This page has no children')
-        create_sphinx_file(f'{path}.md', current_variant, variants)
-        toc_entry = title + ' <' + name + '>' if title else name
-        log(f'{indent}toc_entry: [{toc_entry}]')
+        log(f"{indent}This page has no children")
+        create_sphinx_file(f"{path}.md", current_variant, variants)
+        toc_entry = title + " <" + name + ">" if title else name
+        log(f"{indent}toc_entry: [{toc_entry}]")
         return toc_entry
 
-    # This page does have children:
-    # Call `process_page_node` on each child, assembling the returned toctree entries into a toctree
-    # The file path for this page is `{path}/index.md`.
-    # Create the Sphinx file for this page, processed for the current variant.
-    # Add the assembled toctree to this page.
-    # Return the toctree entry of this page in its parent page: `{name}/index`
-    else:
-        log(f'{indent}This page has children')
-        toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
-        for child_page_node in children:
-            toc_entry = process_page_node(
+    log(f"{indent}This page has children")
+    toctree: str = "\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n"
+
+    with ThreadPoolExecutor() as executor:
+        future_to_child = {
+            executor.submit(
+                process_page_node,
                 child_page_node,
                 current_variant,
                 path,
                 variants,
                 run_commands,
-            )
+            ): child_page_node
+            for child_page_node in children
+        }
+        for future in as_completed(future_to_child):
+            toc_entry = future.result()
             if toc_entry:
-                toctree += toc_entry + '\n'
-        toctree += '```\n'
-        create_sphinx_file(f'{path}/index.md', current_variant, variants, toctree)
-        toc_entry = title + ' <' + name + '/index' + '>' if title else name + '/index'
-        log(f'{indent}toc_entry: [{toc_entry}]')
-        return toc_entry
+                toctree += toc_entry + "\n"
+
+    toctree += "```\n"
+    create_sphinx_file(f"{path}/index.md", current_variant, variants, toctree)
+    toc_entry = title + " <" + name + "/index" + ">" if title else name + "/index"
+    log(f"{indent}toc_entry: [{toc_entry}]")
+    return toc_entry
+
+
+def process_variant(variant: str, page_node: dict, run_commands: dict):
+    process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
+    shell(f"cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}")
+    shell(f"cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}")
+    shell(f"cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}")
+    shell(
+        f"sphinx-build -j auto {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}",
+        env=DOCSEARCH_CREDENTIALS[variant],
+    )
 
 
 def process_project():
-    shell(f'rm -rf {BUILD_DIR}')
-    shell(f'rm -rf {SPHINX_SOURCE_DIR}')
+    shell(f"rm -rf {BUILD_DIR}")
+    shell(f"rm -rf {SPHINX_SOURCE_DIR}")
 
     with open(SITEMAP, "r") as sm:
         page_node = json.load(sm)
@@ -355,19 +364,20 @@ def process_project():
     with open(RUN_COMMANDS, "r") as rc:
         run_commands = yaml.safe_load(rc)
 
-    for variant in ALL_VARIANTS:
-        process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
-    for variant in ALL_VARIANTS:
-        shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
-    for variant in ALL_VARIANTS:
-        shell(
-            f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
-            env=DOCSEARCH_CREDENTIALS[variant],
-        )
-    shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
+    with ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(process_variant, variant, page_node, run_commands)
+            for variant in ALL_VARIANTS
+        ]
+        for future in as_completed(futures):
+            future.result()
+
+    shell(f"cp ./_redirects {BUILD_DIR}/_redirects")
 
 
 if __name__ == "__main__":
+    import time
+
+    start_time = time.time()
     process_project()
+    print("--- %s seconds ---" % (time.time() - start_time))
