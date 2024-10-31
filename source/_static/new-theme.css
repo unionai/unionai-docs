@@ -433,7 +433,7 @@ ul.navbar-nav li a {
 }
 
 button#pst-back-to-top:hover {
-    color: red;
+    color: var(--color-surface);
 }
 
 #pst-back-to-top:hover {
