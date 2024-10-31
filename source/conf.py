@@ -6,7 +6,6 @@ import sphinx.errors
 from sphinx.util import logging as sphinx_logging
 
 
-
 # pygments_style = 'friendly'
 # pygments_dark_style = 'monokai'
 
@@ -73,10 +72,8 @@ html_theme_options = {
     ],
     "footer_start": [],
     "footer_end": [],
-    # "footer_start": ["copyright"],
-    # "footer_end": ["navbar-icon-links"],
-
 }
+
 html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
@@ -227,7 +224,7 @@ class CustomWarningSuppressor(logging.Filter):
             "Block quote ends without a blank line",
             "Include file",
             "duplicate object description",
-            "unknown document"
+            "unknown document",
         )
 
         if msg.strip().startswith(filter_out):
@@ -256,4 +253,3 @@ def setup(app):
         h for h in logger.handlers if isinstance(h, sphinx_logging.WarningStreamHandler)
     ]
     warning_handler.filters.insert(0, CustomWarningSuppressor(app))
-
