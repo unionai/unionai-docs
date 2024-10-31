@@ -1,0 +1,45 @@
+{% if theme_navbar_start or theme_navbar_center or theme_navbar_end or theme_navbar_persistent %}
+<div class="bd-header__inner bd-page-width">
+    <div class="union-navbar-container">
+        <div class="union-navbar-left">
+            <!-- Top row of the left section -->
+            <div class="navbar-header-top">
+                <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="{{ _('Site navigation') }}">
+                    <span class="fa-solid fa-bars"></span>
+                </button>
+                {% set navbar_start, navbar_class, navbar_align = navbar_align_class() %}
+                {% if theme_navbar_start %}
+                <div class="{{ navbar_start }} navbar-header-items__start">
+                    {% for navbar_item in theme_navbar_start[:2] %}
+                    <div class="navbar-item">{% include navbar_item %}</div>
+                    {% if not loop.last %}
+                    <div class="vertical-separator"></div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Bottom row of the left section - only visible on desktop -->
+            <div class="navbar-header-bottom desktop-only">
+                {% if theme_navbar_start and theme_navbar_start|length > 2 %}
+                <div class="navbar-nav">
+                    {% for navbar_item in theme_navbar_start[2:] %}
+                    <div class="navbar-item">{% include navbar_item %}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+       {% include 'sections/auth-buttons.html'%}
+
+    </div>
+
+    {% if not remove_sidebar_secondary and secondary_sidebar_items %}
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="{{ _('On this page') }}">
+        <span class="fa-solid fa-outdent"></span>
+    </button>
+    {% endif %}
+</div>
+{% endif %}

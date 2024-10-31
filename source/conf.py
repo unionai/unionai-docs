@@ -5,6 +5,10 @@ import sphinx.application
 import sphinx.errors
 from sphinx.util import logging as sphinx_logging
 
+
+# pygments_style = 'friendly'
+# pygments_dark_style = 'monokai'
+
 # Project
 project = "union-docs"
 copyright = "2024, Union"
@@ -16,7 +20,11 @@ master_doc = "index"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = [
+    # Current Theme CSS:
     "custom.css",
+    # New Theme CSS:
+    "new-theme.css",
+    # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
 html_js_files = ["custom.js"]
@@ -30,9 +38,9 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinxext.remoteliteralinclude",
     "sphinx_click",
-    "sphinx_docsearch"
+    "sphinx_docsearch",
 ]
-graphviz_output_format = 'svg'
+graphviz_output_format = "svg"
 
 # Myst
 myst_enable_extensions = ["colon_fence"]
@@ -41,16 +49,31 @@ myst_heading_anchors = 6
 # Pydata Sphinx theme
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
-    "navbar_start": ["navbar-logo"],
-    "navbar_center": ["variant-selector", "navbar-nav"],
+    "navbar_start": ["navbar-logo", "variant-selector", "navbar-nav"],
+    "navbar_center": [],
+    "navbar_end": ["navbar-icon-links"],
+    "navbar_persistent": ["navbar-nav", "search-button"],
     "secondary_sidebar_items": ["custom-page-toc"],
     "logo": {
         "text": "Union Docs",
         "image_dark": "_static/public/icon-logo.svg",
     },
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/flyteorg/flyte",
+            "icon": "fab fa-github",
+        },
+        {
+            "name": "Slack",
+            "url": "https://flyte-org.slack.com/",
+            "icon": "fab fa-slack",
+        },
+    ],
     "footer_start": [],
     "footer_end": [],
 }
+
 html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
@@ -97,18 +120,20 @@ docsearch_index_name = os.getenv("DOCSEARCH_INDEX_NAME")
 def process_docstring(app, what, name, obj, options, lines):
     for str in lines:
         idx = lines.index(str)
-        str = str.replace('FlyteRemote ', 'UnionRemote ')\
-            .replace('flyteremote', 'UnionRemote')\
-            .replace('Flyte remote', 'Union remote')\
-            .replace('FlyteRemote(', 'UnionRemote(')\
-            .replace('flyte_workflow', 'union_workflow')\
-            .replace('Flyte remote backend', 'Union remote backend')\
-            .replace('Flyte platform', 'Union platform')\
-            .replace('Flyte Admin', 'Union Admin')\
-            .replace('Flyte backend', 'Union backend')\
-            .replace('flyte backend', 'union backend')\
-            .replace('flyte config', 'union config')\
-            .replace('Flyte UI', 'UI')
+        str = (
+            str.replace("FlyteRemote ", "UnionRemote ")
+            .replace("flyteremote", "UnionRemote")
+            .replace("Flyte remote", "Union remote")
+            .replace("FlyteRemote(", "UnionRemote(")
+            .replace("flyte_workflow", "union_workflow")
+            .replace("Flyte remote backend", "Union remote backend")
+            .replace("Flyte platform", "Union platform")
+            .replace("Flyte Admin", "Union Admin")
+            .replace("Flyte backend", "Union backend")
+            .replace("flyte backend", "union backend")
+            .replace("flyte config", "union config")
+            .replace("Flyte UI", "UI")
+        )
         del lines[idx]
         lines.insert(idx, str)
 
@@ -116,29 +141,32 @@ def process_docstring(app, what, name, obj, options, lines):
 def process_description(app, ctx, lines):
     for str in lines:
         idx = lines.index(str)
-        str = str.replace("Flyte UI", "UI")\
-            .replace("Flyte's execution system", "Union's execution system")\
-            .replace("Flyte Execution", "Union execution")\
-            .replace("Flyte Console", "UI")\
-            .replace("Flyte Python CLI environment",
-                     "Union Python CLI environment")\
-            .replace("flyte-ready", "Union-ready")\
-            .replace("Flyte backend registrable", "Union backend registrable")\
-            .replace("entities in Flyte", "entities in Union")\
-            .replace("remote flyte instance", "remote Union instance")\
-            .replace("pyflyte package", "union package")\
-            .replace("flytectl", "uctl")\
+        str = (
+            str.replace("Flyte UI", "UI")
+            .replace("Flyte's execution system", "Union's execution system")
+            .replace("Flyte Execution", "Union execution")
+            .replace("Flyte Console", "UI")
+            .replace("Flyte Python CLI environment", "Union Python CLI environment")
+            .replace("flyte-ready", "Union-ready")
+            .replace("Flyte backend registrable", "Union backend registrable")
+            .replace("entities in Flyte", "entities in Union")
+            .replace("remote flyte instance", "remote Union instance")
+            .replace("pyflyte package", "union package")
+            .replace("flytectl", "uctl")
             .replace("pyflyte run", "union run")
+        )
         del lines[idx]
         lines.insert(idx, str)
 
 
 def process_str(my_str):
-    my_str = my_str.replace("flyteremote", "UnionRemote")\
-        .replace("Flyte deployment", "Union deployment")\
-        .replace("pyflyte serialize", "union serialize")\
-        .replace("pyflyte utility", "union utility")\
+    my_str = (
+        my_str.replace("flyteremote", "UnionRemote")
+        .replace("Flyte deployment", "Union deployment")
+        .replace("pyflyte serialize", "union serialize")
+        .replace("pyflyte utility", "union utility")
         .replace("install flytekit", "install union and flytekit")
+    )
     return my_str
 
 
@@ -152,14 +180,13 @@ def process_options(app, ctx, lines):
     default_image = "'cr.union.ai/union/unionai:py3.11-latest' (Serverless), 'cr.flyte.org/flyteorg/flytekit:py3.9-latest' (BYOC)"
     for line in lines:
         idx = lines.index(line)
-        if ctx.command.name == 'build' or ctx.command.name == 'run':
+        if ctx.command.name == "build" or ctx.command.name == "run":
             if "--image" in line:
                 counter = 0
         if counter == 4:
             line = re.sub(r"<function.*>", default_image, line)
         else:
-            line = re.sub(r"functools.partial.*'flytesnacks'\)",
-                          default_project, line)
+            line = re.sub(r"functools.partial.*'flytesnacks'\)", default_project, line)
         line = process_str(line)
         del lines[idx]
         lines.insert(idx, line)
@@ -197,7 +224,7 @@ class CustomWarningSuppressor(logging.Filter):
             "Block quote ends without a blank line",
             "Include file",
             "duplicate object description",
-            "unknown document"
+            "unknown document",
         )
 
         if msg.strip().startswith(filter_out):
@@ -215,7 +242,7 @@ class CustomWarningSuppressor(logging.Filter):
 
 
 def setup(app):
-    app.connect('autodoc-process-docstring', process_docstring)
+    app.connect("autodoc-process-docstring", process_docstring)
     app.connect("sphinx-click-process-description", process_description)
     app.connect("sphinx-click-process-options", process_options)
 
@@ -223,7 +250,6 @@ def setup(app):
     logger = logging.getLogger("sphinx")
 
     warning_handler, *_ = [
-        h for h in logger.handlers
-        if isinstance(h, sphinx_logging.WarningStreamHandler)
+        h for h in logger.handlers if isinstance(h, sphinx_logging.WarningStreamHandler)
     ]
     warning_handler.filters.insert(0, CustomWarningSuppressor(app))

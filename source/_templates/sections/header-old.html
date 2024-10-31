@@ -1,0 +1,86 @@
+{% if theme_navbar_start or theme_navbar_center or theme_navbar_end or theme_navbar_persistent %}
+<div class="bd-header__inner bd-page-width">
+  <div class="union-navbar-container">
+    <div class="union-navbar-left">
+      <!-- Top row of the left section -->
+      <div class="navbar-header-top">
+        <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="{{ _('Site navigation') }}">
+          <span class="fa-solid fa-bars"></span>
+        </button>
+        {% set navbar_start, navbar_class, navbar_align = navbar_align_class() %}
+        {% if theme_navbar_start %}
+        <div class="{{ navbar_start }} navbar-header-items__start">
+          {% for navbar_item in theme_navbar_start[:2] %}
+          <div class="navbar-item">{% include navbar_item %}</div>
+          {% if not loop.last %}
+          <div class="vertical-separator"></div>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Bottom row of the left section -->
+      <div class="navbar-header-bottom">
+        {% if theme_navbar_start and theme_navbar_start|length > 2 %}
+        <div class="navbar-nav">
+          <div class="navbar-item">{% include theme_navbar_start[2] %}</div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="union-navbar-right">
+      <!-- Center and End sections of the navbar -->
+      <div class="{{ navbar_class }} navbar-header-items">
+        {% if theme_navbar_center %}
+        <div class="{{ navbar_align }} navbar-header-items__center">
+          {% for navbar_item in theme_navbar_center %}
+          <div class="navbar-item">{% include navbar_item %}</div>
+          {% if not loop.last %}
+          <div class="vertical-separator"></div>
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if theme_navbar_end or theme_navbar_persistent %}
+        <div class="navbar-header-items__end">
+          {% for navbar_item in theme_navbar_persistent %}
+          <div class="navbar-item navbar-persistent--container">
+            {% include navbar_item %}
+          </div>
+          <div class="vertical-separator"></div>
+          {% endfor %}
+
+          {% for navbar_item in theme_navbar_end %}
+          <div class="navbar-item">{% include navbar_item %}</div>
+          {% if loop.last %}
+          <div class="vertical-separator"></div>
+          {% endif %}
+          {% endfor %}
+
+          <!-- Add the buttons -->
+          <div class="navbar-item">
+            <a href="#" class="unionai-btn-plain unionai-btn-login">
+              <span>Log In</span>
+            </a>
+          </div>
+          <div class="navbar-item">
+            <a href="#" class="unionai-btn unionai-btn-signup">
+              <span>Sign Up</span>
+            </a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if not remove_sidebar_secondary and secondary_sidebar_items %}
+  <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="{{ _('On this page') }}">
+    <span class="fa-solid fa-outdent"></span>
+  </button>
+  {% endif %}
+</div>
+{% endif %}
