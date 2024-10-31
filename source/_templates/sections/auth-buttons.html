@@ -1,10 +1,11 @@
 <div class="union-navbar-right">
-    <!-- Center and End sections of the navbar -->
     <div class="{{ navbar_class }} navbar-header-items">
         {% if theme_navbar_center %}
         <div class="{{ navbar_align }} navbar-header-items__center">
             {% for navbar_item in theme_navbar_center %}
-            <div class="navbar-item">{% include navbar_item %}</div>
+            <div class="navbar-item">
+                {% include navbar_item %}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
@@ -12,34 +13,36 @@
         {% if theme_navbar_end or theme_navbar_persistent %}
         <div class="navbar-header-items__end">
             {% if theme_navbar_persistent %}
-            {% for navbar_item in theme_navbar_persistent %}
-            <div class="navbar-item navbar-persistent--container">
-                {% include navbar_item %}
-            </div>
-            <div class="vertical-separator"></div>
-            {% endfor %}
+                {% for navbar_item in theme_navbar_persistent %}
+                <div class="navbar-item navbar-persistent--container">
+                    {% include navbar_item %}
+                </div>
+                <div class="vertical-separator"></div>
+                {% endfor %}
             {% endif %}
 
             {% for navbar_item in theme_navbar_end %}
-            <div class="navbar-item">{% include navbar_item %}</div>
+            <div class="navbar-item">
+                {% include navbar_item %}
+            </div>
             {% if loop.last %}
             <div class="vertical-separator"></div>
             {% endif %}
             {% endfor %}
 
-            {% if '/byoc/' not in pagename %}
-            <!-- Login and Signup buttons -->
+            {%- if meta is mapping and meta.get("current-variant") == "byoc" %}
             <div class="navbar-item">
-                <a href="https://signup.union.ai/?page=login" target="_blank" class="unionai-btn-plain unionai-btn-login">
-                    <span>Log In</span>
-                </a>
+                <a href="https://www.union.ai/pricing" class="unionai-btn unionai-btn-signup" target="_blank">Sign Up</a>
             </div>
+            {%- elif meta is mapping and meta.get("current-variant") == "serverless" %}
             <div class="navbar-item">
-                <a href="https://www.union.ai/pricing" target="_blank" class="unionai-btn unionai-btn-signup">
-                    <span>Sign Up</span>
-                </a>
+                <a href="https://serverless.union.ai" class="unionai-btn-plain unionai-btn-login" target="_blank">Log In</a>
             </div>
-            {% endif %}
+            <!-- <div class="vertical-separator"></div> -->
+            <div class="navbar-item">
+                <a href="https://signup.union.ai" class="unionai-btn unionai-btn-signup" target="_blank">Sign Up</a>
+            </div>
+            {%- endif %}
         </div>
         {% endif %}
     </div>
