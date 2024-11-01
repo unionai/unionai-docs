@@ -26,6 +26,9 @@ While (most) tasks are locally executable, when a task is deployed to Union as p
 {@@ if byoc @@}
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
+{@@ elif serverless @@}
+This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index).
+For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {@@ endif @@}
 
 ## Tasks are named, versioned, and immutable
@@ -59,27 +62,9 @@ Because of the way that Union and Flyte are architected, tasks within a single w
 * **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index).
 * **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/index).
 
-<img src="/_static/images/task-dimensions-green.png" alt="Task definitions can vary independently along (almost) any dimension" width="200" height="200">
-
-**_The three dimensions along which a task definition can vary_**
-
 ### Mix and match task characteristics
 
 Along these three dimensions, you can mix and match characteristics to build a task definition that performs exactly the job you want, while still taking advantage of all the features provided at the workflow level like output caching, versioning, and reproducibility.
-
-<div class="row">
-  <div class="column">
-    <img src="/_static/images/task-dimensions-green.png" alt="Task definitions can vary independently along (almost) any dimension" width="100" height="100">
-  </div>
-  <div class="column">
-    <img src="/_static/images/task-dimensions-red.png" alt="Task definitions can vary independently along (almost) any dimension" width="100" height="100">
-  </div>
-  <div class="column">
-    <img src="/_static/images/task-dimensions-blue.png" alt="Task definitions can vary independently along (almost) any dimension" width="100" height="100">
-  </div>
-</div>
-
-**_Task definitions can vary independently along (almost) any dimension_**
 
 Tasks with diverse characteristics can be combined into a single workflow.
 For example, a workflow might contain:
@@ -90,10 +75,6 @@ For example, a workflow might contain:
 * A **plugin task** running a Spark job that spawns its own cluster-in-a-cluster.
 * A **map task** that runs multiple copies of a Python task in parallel.
 
-![The three dimensions along which a task definition can vary](/_static/images/task-dimensions-wf.png)
-
-**_A workflow consisting of heterogeneous tasks_**
-
 The ability to build workflows from such a wide variety of heterogeneous tasks makes Union uniquely flexible.
 
 :::{note}
@@ -102,5 +83,7 @@ Not all parameters are compatible. For example, with specialized plugin task typ
 
 ## Task configuration
 
-The `@task` decorator can take a number of parameters that allow you to configure the task's behavior. For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more. For more information, see [Task parameters](./task-parameters).
+The `@task` decorator can take a number of parameters that allow you to configure the task's behavior.
+For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more.
+For more information, see [Task parameters](./task-parameters).
 {@@ endif @@}

@@ -3,7 +3,7 @@
 To set up your Union instance to use Microsoft Entra ID as the identity provider, follow the directions below.
 
 :::{admonition} Microsoft documentation
-In this article, we cover the same steps as the "[Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app.md#register-an-application)" Microsoft documentation, but with additional directions specific to Union.
+In this article, we cover the same steps as the [Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app.md#register-an-application) Microsoft documentation, but with additional directions specific to Union.
 :::
 
 ## Register an Entra ID application
@@ -24,8 +24,6 @@ In this article, we cover the same steps as the "[Quickstart: Register an applic
 
 1. Click **Register**.
 
-![Register an application](/_static/images/entra-id-register.png)
-
 :::{admonition} Make the app visible to users
 New app registrations are hidden to users by default. You must enable the app when you are ready for users to see the app on their **My Apps** page.
 To enable the app, in the Microsoft Entra admin center, navigate to **Identity > Applications > Enterprise applications** and select the app.
@@ -40,18 +38,18 @@ When registration finishes, the Microsoft Entra admin center will display the ap
 
 Copy the **Application (client) ID** and **Directory (tenant) ID** from the overview page to a text file on your computer.
 
-![Application and directory ID](/_static/images/entra-id-application-and-directory-id.png)
+![Application and directory ID](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-application-and-directory-id.png)
 
 ### Client secret
 
 To get the **client secret**, on the overview page, go to **Client credentials** and click **Add a certificate or secret**.
 
-![Client credentials](/_static/images/entra-id-client-credentials.png)
+![Client credentials](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-credentials.png)
 
 On the subsequent page, under **Client secrets**, click **New client secret** to generate a new secret.
 Copy the **Value** of this secret to a plain text file on your computer.
 
-![Client secret](/_static/images/entra-id-client-secret.png)
+![Client secret](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-secret.png)
 
 ## Share the client secret securely with Union
 

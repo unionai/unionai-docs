@@ -1,25 +1,43 @@
 # Launching tasks
 
-From the [individual task view](./viewing-tasks.md#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](./viewing-tasks.md#tasks-list)) you can select **Launch Task** in the top right:
+From the [task view](./viewing-tasks.md#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](./viewing-tasks.md#tasks-list)) you can select **Launch Task** in the top right:
 
-![](/_static/images/launching-a-task.png)
+This opens the **New Execution** dialog for tasks:
 
-This opens the **Create New Execution** dialog for tasks:
+![](/_static/images/user-guide/core-concepts/tasks/launching-tasks/new-execution-dialog.png)
 
-![](/_static/images/create-new-execution-task-1.png)
+The settings are similar to those for workflows. At the top you can select:
 
-![](/_static/images/create-new-execution-task-2.png)
+* The specific version of this task that you want to launch.
 
-The settings are similar to those for workflows, with a few missing:
+Along the left side the following sections are available:
 
-* **Task Version**: Select which version of the task to launch.
-* **IAM Role:** If your task code needs an IAM role that you have configured in your cloud environment, and you want to specify it specifically for this execution (as opposed to for all executions of a workflow or globally for this project) then add it here.
-* **Kubernetes Service Account**: If your workflow code needs to access a service that you have configured in your cloud environment, and you want to specify that account specifically for this execution (as opposed to for all executions of a workflow or globally for this project) then add the name of that account here.
-* **Inputs**: Enter any parameters that the task may require.
-* **Override interruptible flag**: A three-value setting:
-  * **Interruptible (disabled)**: This execution will not be interruptible, regardless of the workflow-level setting.
-  * **Interruptible (no override)**: The interruptible status of this execution will be determined by the workflow-level setting.
-  * **Interruptible (enabled)**: This execution will be interruptible, regardless of the workflow-level setting
-* **Caching**: If **Overwrite cached outputs** is enabled, then Flyte will ignore all previously computed and stored outputs for this single execution and run all calculations again, overwriting any cached data after a successful execution.
+* **Inputs**: The input parameters of the task function appear here as fields to be filled in.
+* **Settings**:
+  * **Execution name**: A custom name for this execution. If not specified, a name will be generated.
+  * **Overwrite cached outputs**: A boolean. If set to `True`, this execution will overwrite any previously-computed cached outputs.
+  * **Raw output data config**: Remote path prefix to store raw output data.
+    By default, workflow output will be written to the built-in metadata storage.
+    Alternatively, you can specify a custom location for output at the organization, project-domain, or individual execution levels.
+    This field is for specifying this setting at the workflow execution level.
+    If this field is filled in it overrides any settings at higher levels.
+    The parameter is expected to be a URL to a writable resource (for example, `http://s3.amazonaws.com/my-bucket/`).
+    {@# TODO: Add link to raw data documentation #@}
+  * **Max parallelism**: Number of workflow nodes that can be executed in parallel. If not specified, project/domain defaults are used. If 0 then no limit is applied.
+  * **Force interruptible**: A three valued setting for overriding the interruptible setting of the workflow for this particular execution.
+    If not set, the workflow's interruptible setting is used.
+    If set and **enabled** then `interruptible=True` is used for this execution.
+    If set and **disabled** then `interruptible=False` is used for this execution.
+    {@# TODO: Add link to interruptible documentation #@}
+{@@ if byoc @@}
+  * **Service account**: The service account to use for this execution. If not specified, the default is used.
+{@@ endif @@}
+* **Environment variables**: Environment variables that will be available to tasks in this workflow execution.
+* **Labels**: Labels to apply to the execution resource.
+* **Notifications**: Notifications configured for this workflow execution.
+{@# TODO: Add link to notifications documentation #@}
+{@@ if byoc @@}
+* **Debug**: The workflow execution details for debugging purposes.
+{@@ endif @@}
 
-Finally, select **Launch** to launch the execution. This will take you to the [Execution view](../workflows/viewing-workflow-executions).
+Select **Launch** to launch the task execution. This will take you to the [Execution view](../workflows/viewing-workflow-executions).

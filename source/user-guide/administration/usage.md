@@ -6,7 +6,7 @@ Four tabs are available: [**Executions**](#executions), [**Resource Quotas**](#r
 
 ## Executions
 
-![Usage Executions](/_static/images/usage-executions.png)
+![Usage Executions](/_static/images/user-guide/administration/usage/usage-executions.png)
 
 This tab displays information about workflows, tasks, resource consumption, and resource utilization.
 
@@ -14,7 +14,7 @@ This tab displays information about workflows, tasks, resource consumption, and 
 
 The drop-downs at the top lets you filter the charts below by project, domain and time period:
 
-![](/_static/images/usage-filter.png)
+![](/_static/images/user-guide/administration/usage/usage-filter.png)
 
 * **Project**: Dropdown with multi-select over all projects. Making a selection recalculates the charts accordingly. Defaults to **All Projects**.
 * **Domain**: Dropdown with multi-select over all domains (for example, **development**, **staging**, **production**). Making a selection recalculates the charts accordingly. Defaults to **All Domains**.
@@ -24,7 +24,7 @@ The drop-downs at the top lets you filter the charts below by project, domain an
 
 This chart shows the overall status of workflows at the project-domain level.
 
-![](/_static/images/workflow-executions-in-final-state.png)
+![](/_static/images/user-guide/administration/usage/workflow-executions-in-final-state.png)
 
 For all workflows in the selected project and domain which reached their final state during the selected time period, the chart shows:
 
@@ -38,7 +38,7 @@ See [Workflow States](https://docs.flyte.org/en/latest/concepts/state_machine.ht
 
 This chart shows the overall status of tasks at the project-domain level.
 
-![](/_static/images/task-executions-in-final-state.png)
+![](/_static/images/user-guide/administration/usage/task-executions-in-final-state.png)
 
 For all tasks in the selected project and domain which reached their final state during the selected time period, the chart shows:
 
@@ -59,7 +59,7 @@ This chart shows the absolute resource consumption for
 You can select which parameter to show by clicking on the corresponding button at the top of the chart.
 You can also select whether to show **Requested**, **Used**, or both.
 
-![Running Pods](/_static/images/running-pods.png)
+![Running Pods](/_static/images/user-guide/administration/usage/running-pods.png)
 
 ### Utilization
 
@@ -70,13 +70,13 @@ This chart shows the percent resource utilization for
 
 You can select which parameter to show by clicking on the corresponding button at the top of the chart.
 
-![Utilization](/_static/images/utilization.png)
+![Utilization](/_static/images/user-guide/administration/usage/utilization.png)
 
 ## Resource Quotas
 
 This dashboard displays the resource quotas for projects and domains in the organization.
 
-![Resource Quotas](/_static/images/usage-resource-quotas.png)
+![Resource Quotas](/_static/images/user-guide/administration/usage/usage-resource-quotas.png)
 
 ### Namespaces and Quotas
 
@@ -95,15 +95,13 @@ In Flyte you set resource requests and limits at the task level like this (see [
 
 This task (which will manifest as a Kubernetes pod) requests 1 CPU and 1 gibibyte of memory. It sets a limit of 10 CPUs and 10 gibibytes of memory.
 
-
-
 If a task requesting the above resources (1 CPU and 1Gi) is executed in a project (for example **cluster-observability**) and domain (for example, **development**) with 10 CPU and 10Gi of quota for CPU and memory respectively, the dashboard will show that 10% of both memory and CPU quotas have been consumed.
 
-![Resource Quotas 10%](/_static/images/usage-resource-quotas-10.png)
+![Resource Quotas 10%](/_static/images/user-guide/administration/usage/usage-resource-quotas-10.png)
 
 Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
 
-![Resource Quotas 100%](/_static/images/usage-resource-quotas-100.png)
+![Resource Quotas 100%](/_static/images/user-guide/administration/usage/usage-resource-quotas-100.png)
 
 ### Quota Consumption
 
@@ -113,7 +111,7 @@ For each resource type, the sum of all the `limits` parameters set on all the ta
 
 This dashboard displays information about configured node pools in the organization.
 
-![alt_text](/_static/images/usage-compute.png)
+![alt_text](/_static/images/user-guide/administration/usage/usage-compute.png)
 
 Union will schedule tasks on a node pool that meets the requirements of the task (as defined by the `requests` and `limits` parameters in the task definition) and can vertically scale these node pools according to the minimum and maximum configured limits. This dashboard shows all currently-configured node pools, whether they are interruptible, labels and taints, minimum and maximum sizes, and allocatable resources.
 
@@ -160,4 +158,4 @@ The workload will schedule on a larger instance (like the `c5.4xlarge`) because 
 
 The **Billing** tab displays the cost of running workflows and tasks in your Union installation.
 
-![Billing](/_static/images/usage-billing.png)
+![Billing](/_static/images/user-guide/administration/usage/usage-billing.png)

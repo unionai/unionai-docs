@@ -1,4 +1,4 @@
-# CLI authentication
+# CLI authentication types
 
 The command line tools `uctl` or `union` must authenticate to Union in order to perform operations on the platform.
 The authentication mechanism is configured in the `config.yaml` file used by the command line tool.

@@ -114,7 +114,7 @@ If so, it will be configured with a *taint* so that only tasks configured with a
 
 Typically, only GPU node groups fall into this specialized category, and they will always be assigned taints in any case. It is not common to place taints on other types of node groups, but you can do so if you wish.
 
-<!-- TODO ADD: For more detail on how taints and tolerations work see [Taints and tolerations]().-->
+{@# TODO ADD: For more detail on how taints and tolerations work see [Taints and tolerations](). #@}
 
 ### Disk
 
@@ -202,6 +202,4 @@ Once Union has configured and deployed your cluster(s), you will be able to see 
 ## Adjusting your configuration
 
 To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
-This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button:
-
-![](/_static/images/adjust-configuration.png)
+This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.
