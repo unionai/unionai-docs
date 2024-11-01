@@ -1,0 +1,53 @@
+{% block docs_sidebar %} {% if theme_navbar_center or theme_navbar_end or sidebars or theme_primary_sidebar_end %}
+
+<div class="sidebar-primary-items__mobile-nav sidebar-primary__section mobile-only">
+    {% if theme_navbar_start %}
+    <nav class="navbar-nav">
+        {% for navbar_item in theme_navbar_start[1:] %}
+        <div class="sidebar-primary-item">
+            {% include navbar_item %}
+        </div>
+        {% endfor %}
+    </nav>
+    {% endif %}
+
+    <!-- Move the existing search button to mobile sidebar -->
+    <!-- <div class="sidebar-primary-item sidebar-search"> -->
+        <!-- {% include "search-button.html" %} -->
+    <!-- </div> -->
+
+    <!-- Add auth buttons in mobile sidebar -->
+    <div class="sidebar-primary-item sidebar-auth-buttons">
+        {%- if meta is mapping and meta.get("current-variant") == "byoc" %}
+            <a href="https://www.union.ai/pricing" class="unionai-btn unionai-btn-signup" target="_blank">Sign Up</a>
+        {%- elif meta is mapping and meta.get("current-variant") == "serverless" %}
+            <a href="https://serverless.union.ai" class="unionai-btn-plain unionai-btn-login" target="_blank">Log In</a>
+            <div class="mobile-auth-separator"></div>
+            <a href="https://signup.union.ai" class="unionai-btn unionai-btn-signup" target="_blank">Sign Up</a>
+        {%- endif %}
+    </div>
+</div>
+
+{% if sidebars %}
+<div class="sidebar-primary-items__start sidebar-primary__section">
+    {%- for sidebartemplate in sidebars %}
+    <div class="sidebar-primary-item">
+        {%- include sidebartemplate %}
+    </div>
+    {%- endfor %}
+</div>
+{% endif %}
+
+<div class="sidebar-primary-items__end sidebar-primary__section">
+    {%- for sidebartemplate in theme_primary_sidebar_end %}
+    <div class="sidebar-primary-item">
+        {%- include sidebartemplate %}
+    </div>
+    {%- endfor %}
+
+    <div class="sidebar-primary-item sidebar-theme-toggle">
+        {% include "theme-switcher.html" %}
+    </div>
+</div>
+
+{% endif %} {% endblock docs_sidebar %}

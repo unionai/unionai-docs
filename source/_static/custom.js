@@ -7,4 +7,5 @@ window.addEventListener("DOMContentLoaded", function() {
         // Set the target attribute to "_blank"
         link.setAttribute("target", "_blank");
     });
+
 });

@@ -14,7 +14,7 @@ A workflow appears to be a Python function but is actually a [DSL](https://en.wi
 
 When deployed to Union, the workflow function is "compiled" to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guides/01_getting_started/ml_workflow/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/first_workflow/ml_workflow/ml_workflow.py
 :language: python
 :pyobject: main
 ```
@@ -84,7 +84,7 @@ You build the image on your local machine based on the `ImageSpec` definition an
 
 The Flyte Deck feature allows you to enable visualizations in Union's user interface by setting `enable_deck=True` in a task's parameters:
 
-```{rli} https://raw.githubusercontent.com/unionai/examples/main/guides/01_getting_started/ml_workflow/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/examples/main/user_guide/first_workflow/ml_workflow/ml_workflow.py
 :language: python
 :lines: 67-96
 :emphasize-lines: 3

@@ -1,0 +1,11 @@
+{%- extends "!layout.html" %}
+
+{{ super() }}
+
+<!-- Start of override of the sections/header.html block to add the custom design -->
+{% block docs_navbar %}
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    {%- include "sections/header.html" %}
+</header>
+{% endblock %}
+<!-- End of section/header.html block override -->

@@ -5,6 +5,10 @@ import json
 import re
 import shutil
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import asyncio
+import aiofiles
+import aiohttp
 
 import jinja2
 import jupytext
@@ -56,7 +60,10 @@ SUBS: dict[str, dict[str, str] | str] = {
     'cli_name': 'uctl',
 }
 
-INSTALL_SDK_PACKAGE = "union"
+INSTALL_SDK_PACKAGES: dict[str, str] = {
+    "byoc": "'union[byoc]'",
+    "serverless": "union",
+}
 
 DOCSEARCH_CREDENTIALS = {
     "byoc": {
@@ -80,25 +87,18 @@ export IMAGE_SPEC_REGISTRY="<your-container-registry>"
 ```
 """
 
-RUN_COMMAND_START_SERVERLESS = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 :open:
 :color: warning
+
+Run this example on {variant}.
 
 :::{{button-link}} https://signup.union.ai/
 
 Create an account
 :::
-"""
 
-RUN_COMMAND_START_BYOC = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
-:open:
-:color: warning
-
-"""
-
-RUN_COMMAND_REST = """
-
-Once you have a Union account, install `{sdk_package}`:
+Once you have a Union account, install `{sdk_package_variant}`
 
 ```{{code}}
 {pip_install_command}
@@ -119,64 +119,27 @@ The source code for this tutorial can be found [here {{octicon}}`mark-github`]({
 
 LOGGING_ENABLED = False
 
+
+
 # Print to stdout
 def log(msg: str) -> None:
     if LOGGING_ENABLED:
         print(msg)
 
-# Call a shell command.
-def shell(command: str, env: dict | None = None) -> None:
+async def async_shell(command: str, env: dict | None = None) -> None:
     _env = os.environ.copy()
     if env:
         _env.update(env)
-    subprocess.run(shlex.split(command), env=_env)
+    process = await asyncio.create_subprocess_shell(command, env=_env)
+    await process.communicate()
 
+async def async_read_file(file_path: str) -> str:
+    async with aiofiles.open(file_path, mode='r') as file:
+        return await file.read()
 
-# Returns a dictionary of variables based on the global SUBS dictionary,
-# filtered for the specified variant and augmented with the variant itself
-# as a boolean variable set to True.
-def get_vars(variant: str) -> dict:
-    vd: dict = {}
-    for key, value in SUBS.items():
-        if isinstance(value, dict):
-            vd[key] = value[variant]
-        elif isinstance(value, str):
-            vd[key] = value
-    vd[variant] = True
-    return vd
-
-
-def contains_metadata(src: str):
-    return src.startswith('"""\n---') and src.endswith('---\n"""')
-
-
-def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
-    variant_display = SUBS["product_name"][current_variant]
-    sdk_package = INSTALL_SDK_PACKAGE
-    pip_install_command = f"pip install {sdk_package}"
-
-    if current_variant == "byoc":
-        byoc_commands = BYOC_RUN_COMMANDS
-        pip_install_command += " flytekitplugins-envd"
-        run_cmd_start = RUN_COMMAND_START_BYOC.format(
-            variant=variant_display
-        )
-    else:
-        byoc_commands = ""
-        run_cmd_start = RUN_COMMAND_START_SERVERLESS.format(
-            variant=variant_display
-        )
-    run_cmd_rest = RUN_COMMAND_REST.format(
-        variant=variant_display,
-        sdk_package=sdk_package,
-        pip_install_command=pip_install_command,
-        byoc_commands=byoc_commands,
-        run_commands="\n".join(run_commands),
-        github_url=github_url,
-    )
-    src = run_cmd_start + run_cmd_rest
-    return NotebookNode(cell_type="markdown", source=src, metadata={})
-
+async def async_write_file(file_path: str, content: str) -> None:
+    async with aiofiles.open(file_path, mode='w') as file:
+        await file.write(content)
 
 def import_static_files_from_tutorial(
     name: str,
@@ -234,11 +197,46 @@ def convert_tutorial_py_file_to_md(
 
     jupytext.write(notebook, to_path, fmt="md")
 
+def contains_metadata(src: str):
+    return src.startswith('"""\n---') and src.endswith('---\n"""')
 
-# Process a single Markdown/Jinja2 file.
-# Note that the Jinja2 templating syntax is customized and differs from standard Jinja2 syntax.
-# This is to avoid conflict with content that uses they standard Jinja2 syntax
-def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: str = '') -> None:
+
+def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
+    variant_display = SUBS["product_name"][current_variant]
+    sdk_package_variant = INSTALL_SDK_PACKAGES[current_variant]
+    pip_install_command = f"pip install {sdk_package_variant}"
+
+    if current_variant == "byoc":
+        byoc_commands = BYOC_RUN_COMMANDS
+        pip_install_command += " flytekitplugins-envd"
+    else:
+        byoc_commands = ""
+    src = RUN_COMMAND_TEMPLATE.format(
+        variant=variant_display,
+        sdk_package_variant=sdk_package_variant,
+        pip_install_command=pip_install_command,
+        byoc_commands=byoc_commands,
+        run_commands="\n".join(run_commands),
+        github_url=github_url,
+    )
+    return NotebookNode(cell_type="markdown", source=src, metadata={})
+
+
+# Returns a dictionary of variables based on the global SUBS dictionary,
+# filtered for the specified variant and augmented with the variant itself
+# as a boolean variable set to True.
+def get_vars(variant: str) -> dict:
+    vd: dict = {}
+    for key, value in SUBS.items():
+        if isinstance(value, dict):
+            vd[key] = value[variant]
+        elif isinstance(value, str):
+            vd[key] = value
+    vd[variant] = True
+    return vd
+
+# Use multiprocessing for CPU-bound operations
+def mp_create_sphinx_file(path: str, variant: str, variants: list[str], toctree: str = '') -> None:
     n = path.count('/')
     n = n - 1 if n > 0 else 0
     indent: str = "    " * n
@@ -272,15 +270,7 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
         with open(output_path, 'w') as f:
             f.write(output)
 
-
-def process_page_node(
-    page_node: dict,
-    current_variant: str,
-    parent_path: str,
-    parent_variants: list,
-    run_commands: dict,
-) -> str:
-    """Recursively process a page node in the sitemap from jinja template into sphinx format."""
+async def process_page_node(page_node: dict, current_variant: str, parent_path: str, parent_variants: list, run_commands: dict) -> str:
     name: str = page_node.get('name', '')
     title: str = page_node.get('title', '')
     variants: list = page_node.get('variants', '')
@@ -292,86 +282,66 @@ def process_page_node(
     if py_file is not None:
         py_file = Path(py_file)
         md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
-        convert_tutorial_py_file_to_md(name, py_file, md_path, current_variant, run_commands)
+        await asyncio.to_thread(convert_tutorial_py_file_to_md, name, py_file, md_path, current_variant, run_commands)
 
-    variants = [*reversed(variants)]  # make sure that serverless is the first element
+    variants = [*reversed(variants)]
     log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
     log(f'{indent}path: [{path}]')
 
-    # If tree is malformed, exit.
     if set(variants) > set(parent_variants):
         raise ValueError(f'Error processing {path}: variants of current page include element not present in parent page variants. A page for a variant cannot exist unless its parent page also exists for that variant.')
 
-    # If this page does not appear in the current variant site return `None`.
     if current_variant not in variants:
         log(f'This page has no variant [{current_variant}]')
         return ''
 
-    # If this page has no children:
-    # The file path for this page `{path}.md`.
-    # Create the Sphinx file for this page, processed for the current variant.
-    # Do not add a toctree to this page.
-    # Return the toctree entry of this page in its parent page: `{name}`.
     if not children:
         log(f'{indent}This page has no children')
-        create_sphinx_file(f'{path}.md', current_variant, variants)
+        await asyncio.to_thread(mp_create_sphinx_file, f'{path}.md', current_variant, variants)
         toc_entry = title + ' <' + name + '>' if title else name
         log(f'{indent}toc_entry: [{toc_entry}]')
         return toc_entry
 
-    # This page does have children:
-    # Call `process_page_node` on each child, assembling the returned toctree entries into a toctree
-    # The file path for this page is `{path}/index.md`.
-    # Create the Sphinx file for this page, processed for the current variant.
-    # Add the assembled toctree to this page.
-    # Return the toctree entry of this page in its parent page: `{name}/index`
-    else:
-        log(f'{indent}This page has children')
-        toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
-        for child_page_node in children:
-            toc_entry = process_page_node(
-                child_page_node,
-                current_variant,
-                path,
-                variants,
-                run_commands,
-            )
-            if toc_entry:
-                toctree += toc_entry + '\n'
-        toctree += '```\n'
-        create_sphinx_file(f'{path}/index.md', current_variant, variants, toctree)
-        toc_entry = title + ' <' + name + '/index' + '>' if title else name + '/index'
-        log(f'{indent}toc_entry: [{toc_entry}]')
-        return toc_entry
+    log(f'{indent}This page has children')
+    toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
+    
+    tasks = [process_page_node(child_page_node, current_variant, path, variants, run_commands) for child_page_node in children]
+    results = await asyncio.gather(*tasks)
+    
+    for toc_entry in results:
+        if toc_entry:
+            toctree += toc_entry + '\n'
+    
+    toctree += '```\n'
+    await asyncio.to_thread(mp_create_sphinx_file, f'{path}/index.md', current_variant, variants, toctree)
+    toc_entry = title + ' <' + name + '/index' + '>' if title else name + '/index'
+    log(f'{indent}toc_entry: [{toc_entry}]')
+    return toc_entry
 
+async def process_variant(variant: str, page_node: dict, run_commands: dict):
+    await process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
+    await async_shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
+    await async_shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
+    await async_shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
+    await async_shell(
+        f'sphinx-build -j auto {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
+        env=DOCSEARCH_CREDENTIALS[variant],
+    )
 
-def process_project():
-    shell(f'rm -rf {BUILD_DIR}')
-    shell(f'rm -rf {SPHINX_SOURCE_DIR}')
+async def process_project():
+    await async_shell(f'rm -rf {BUILD_DIR}')
+    await async_shell(f'rm -rf {SPHINX_SOURCE_DIR}')
 
-    with open(SITEMAP, "r") as sm:
-        page_node = json.load(sm)
+    page_node = json.loads(await async_read_file(SITEMAP))
+    run_commands = yaml.safe_load(await async_read_file(RUN_COMMANDS))
 
-    with open(RUN_COMMANDS, "r") as rc:
-        run_commands = yaml.safe_load(rc)
+    tasks = [process_variant(variant, page_node, run_commands) for variant in ALL_VARIANTS]
+    await asyncio.gather(*tasks)
 
-    for variant in ALL_VARIANTS:
-        process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
-    for variant in ALL_VARIANTS:
-        shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
-    for variant in ALL_VARIANTS:
-        shell(
-            f'sphinx-build -j auto {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
-            env=DOCSEARCH_CREDENTIALS[variant],
-        )
-    shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
-
+    await async_shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 if __name__ == "__main__":
     import time
-    start = time.time()
-    process_project()
-    end = time.time()
-    print(f"Total time: {end - start} seconds")
+    start_time = time.time()
+    asyncio.run(process_project())
+    print(f"--- {time.time() - start_time} seconds ---")
