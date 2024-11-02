@@ -106,9 +106,9 @@ $ union run --remote  --overwrite-cache example.py wf
 
 ### Overwrite cache in the UI
 
-You can also trigger cache invalidation when launching an execution from the UI, in the launch modal:
+You can also trigger cache invalidation when launching an execution from the UI by checking the **Override, in the launch dialog:
 
-![Overwrite cache flag in the UI](/_static/images/core-concepts-caching-overwrite-cached-outputs.png)
+![Overwrite cache flag in the UI](/_static/images/user-guide/core-concepts/caching/overwrite-cached-outputs.png)
 
 ### Overwrite cache programmatically
 

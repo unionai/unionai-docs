@@ -100,23 +100,18 @@ To view the workflow execution graph, click the **Graph** tab above the running 
 
 When you view the workflow execution graph, you will see the following:
 
-![Graph](/_static/images/getting-started-graph.jpg)
+![Graph](/_static/images/user-guide/first-workflow/running-the-workflow/graph.png)
 
 Above the graph, there is metadata that describes the workflow execution, such as the
 duration and the workflow version. Next, click on the `evaluate_model` node to open up a
 sidebar that contains additional information about the task:
 
-![Sidebar](/_static/images/getting-started-full-sidebar.jpg)
+![Sidebar](/_static/images//user-guide/first-workflow/running-the-workflow/sidebar.png)
 
-The `Inputs` and `Outputs` tabs contains links to data coming into the task and the
-task's output:
-
-![Input-Output](/_static/images/getting-started-input-output.jpg)
-
-Finally, click on the "Flyte Deck" button in the sidebar to open up visualizations generated
+Click on the "Flyte Deck" button in the sidebar to open up visualizations generated
 by the task:
 
-![Flyte Deck](/_static/images/getting-started-flyte-deck.jpg)
+![Flyte Deck](/_static/images//user-guide/first-workflow/running-the-workflow/flyte-deck.png)
 
 Now that we are familiar with the UI, let's jump into the code and see how to build the
 workflow!

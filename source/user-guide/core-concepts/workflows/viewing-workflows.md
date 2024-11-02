@@ -4,7 +4,7 @@
 
 The workflows list shows all workflows in the current project and domain:
 
-![Workflow list](/_static/images/workflow-list.png)
+![Workflows list](/_static/images/user-guide/core-concepts/workflows/viewing-workflows/workflows-list.png)
 
 You can search the list by name and filter for only those that are archived.
 To archive a workflow, select the archive icon ![Archive icon](/_static/images/archive-icon.png).
@@ -28,16 +28,16 @@ Select an entry on the list to go to that [specific workflow](#workflow-view).
 
 The workflow view provides details about a specific workflow.
 
-![Workflow view](/_static/images/workflow-view.png)
+![Workflow view](/_static/images/user-guide/core-concepts/workflows/viewing-workflows/workflow-view.png)
 
 This view provides:
 * A list of recent workflow versions:
-  Selecting a version will take you to the [workflow version list](#workflow-version-list).
+  Selecting a version will take you to the [workflow version list](#workflow-versions-list).
 * A list of recent executions:
   Selecting an execution will take you to the [execution view](./viewing-workflow-executions).
 
-### Workflow version list
+### Workflow versions list
 
-The workflow version list shows the  a list of all versions of this workflow along with a graph view of the workflow structure:
+The workflow versions list shows the  a list of all versions of this workflow along with a graph view of the workflow structure:
 
-![Workflow version list](/_static/images/workflow-version-list.png)
+![Workflow version list](/_static/images/user-guide/core-concepts/workflows/viewing-workflows/workflow-versions-list.png)

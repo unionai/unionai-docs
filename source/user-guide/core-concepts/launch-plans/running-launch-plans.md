@@ -2,19 +2,8 @@
 
 ## Running a launch plan in the UI
 
-In the [Launch Plans section](./index), we defined `my_workflow_custom_lp` with fixed input `a=3` and default inputs `b=4` and `c=5`:
 
-![my_workflow_custom_lp](/_static/images/concepts-launch-plans-4.png)
-
-To invoke the launch plan, go to the **Workflows** view, select `workflows.launch_plan_example.my_workflow`, click **Launch Workflow**, then select `my_workflow_custom_lp` from the **Launch Plan** dropdown menu:
-
-![my_workflow_custom_lp](/_static/images/concepts-launch-plans-5.png)
-
-You will see that the two default inputs are available to be overridden, but the fixed input is not:
-
-![my_workflow_custom_lp](/_static/images/concepts-launch-plans-6.png)
-
-Click **Launch** to execute the launch plan.
+To invoke a launch plan, go to the **Workflows** list, select the desired workflow, click **Launch Workflow**. In the new execution dialog, select the desired launch plan from from the **Launch Plan** dropdown menu and click **Launch**.
 
 ## Running a launch plan on the command line with `uctl`
 
@@ -37,9 +26,7 @@ $ uctl create execution \
        --execFile <execution-spec-file-name>.yaml
 ```
 
-<!-- TODO add back when uctl reference exists
-See the [`uctl` reference]() for more details.
--->
+{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. #@}
 
 ## Running a launch plan in Python with `UnionRemote`
 

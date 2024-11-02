@@ -4,7 +4,7 @@
 
 Selecting **Tasks** in the sidebar displays a list of all the registered tasks:
 
-![Task list](/_static/images/task-list.png)
+![Tasks list](/_static/images/user-guide/core-concepts/tasks/viewing-tasks/tasks-list.png)
 
 You can search the tasks by name and filter for only those that are archived.
 
@@ -20,17 +20,19 @@ Select an entry on the list to go to that [specific task](#task-view).
 
 Selecting an individual task from the [task list](#tasks-list) will take you to the task view:
 
-![Task view](/_static/images/task-view.png)
+![Task view](/_static/images/user-guide/core-concepts/tasks/viewing-tasks/task-view.png)
 
 Here you can see:
 
 * **Inputs & Outputs**: The input and output types for the task.
-* Recent task versions. Selecting one of these takes you to the [task version view](#task-version-list)
+* Recent task versions. Selecting one of these takes you to the [task version view](#task-versions-list)
 * Recent executions of this task. Selecting one of these takes you to the [execution view](../workflows/viewing-workflow-executions).
 
-### Task version list
+### Task versions list
 
-The task version list give you detailed information about a specific version of a task:
+The task versions list give you detailed information about a specific version of a task:
+
+![Task versions list](/_static/images/user-guide/core-concepts/tasks/viewing-tasks/task-versions-list.png)
 
 * **Image**: The Docker image used to run this task.
 * **Env Vars**: The environment variables used by this task.

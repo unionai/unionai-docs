@@ -12,24 +12,29 @@ To use the example code on this page, you will need to add your `registry` to th
 
 First we import the required packages:
 
-```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: trigger_on_artifact.py
 :language: python
 :lines: 1-7
 ```
+
 
 ## Upstream artifact and workflow definition
 
 Then we define an upstream artifact and a workflow that emits a new version of `UpstreamArtifact` when executed:
 
-```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: trigger_on_artifact.py
 :language: python
 :lines: 13-31
 ```
+
 ## Artifact event definition
 
 Next we define the artifact event that will link the upstream and downstream workflows together:
 
-```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: trigger_on_artifact.py
 :language: python
 :lines: 34-36
 ```
@@ -38,8 +43,10 @@ Next we define the artifact event that will link the upstream and downstream wor
 
 Then we define the downstream task and workflow that will be triggered when the upstream artifact is created:
 
-```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: trigger_on_artifact.py
 :language: python
+:lines: 34-36
 :lines: 39-46
 ```
 
@@ -47,7 +54,8 @@ Then we define the downstream task and workflow that will be triggered when the 
 
 Finally we create a launch plan with a trigger set to an `OnArtifact` object to link the two workflows via the `Upstream` artifact. The trigger will initiate an execution of the downstream `downstream_wf` workflow upon the creation of a new version of the `Upstream` artifact.
 
-```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: trigger_on_artifact.py
 :language: python
 :lines: 49-53
 ```
@@ -60,6 +68,7 @@ The `OnArtifact` object must be attached to a launch plan in order for the launc
 
 Here is the full example code file:
 
-```{literalinclude} ../../../_static/includes/core-concepts/artifacts/trigger_on_artifact.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/trigger_on_artifact.py
+:caption: trigger_on_artifact.py
 :language: python
 ```
