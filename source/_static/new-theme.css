@@ -182,6 +182,16 @@ a:visited {
     cursor: pointer;
 }
 
+a.sd-btn {
+    background-color: var(--pri-btn-background) !important;
+    /* border-color: var(--primary-color); */
+    color: var(--pri-btn-text-color) !important;
+}
+
+a.sd-btn:hover {
+    background-color: var(--pri-btn-hover-background) !important;
+}
+
 /* ==========================================================================
    Navigation & Header Styles
    ========================================================================== */
