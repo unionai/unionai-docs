@@ -8,4 +8,8 @@ window.addEventListener("DOMContentLoaded", function() {
         link.setAttribute("target", "_blank");
     });
 
+    const searchDialog = document.getElementById('pst-search-dialog');
+    if (searchDialog) {
+        searchDialog.remove();
+    }
 });
