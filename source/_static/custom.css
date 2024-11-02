@@ -182,13 +182,6 @@ a:visited:hover,
     padding: 2.5rem;
 }
 
-/* button styling */
-a.sd-btn {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
 
 /* docsearch button */
 button.DocSearch {
