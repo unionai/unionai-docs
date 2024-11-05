@@ -34,6 +34,8 @@ The `requests` and `limits` settings each takes a [`Resource`](https://docs.flyt
 
 Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2500m"` means two and a half CPU cores and `gpu="3000m"`, meaning three GPU cores.
 
+The type of ephemeral storage used depends on the node type and configuration you request from the Union team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the Union team configure your cluster to use the attached NVMe ephemeral storage for that node type.
+
 The `requests` setting tells the system that the task requires _at least_ the resources specified and therefore the pod running this task should be scheduled only on a node that meets or exceeds the resource profile specified.
 
 The `limits` setting serves as a hard upper bound on the resource profile of nodes to be scheduled to run the task.
