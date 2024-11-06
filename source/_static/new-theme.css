@@ -60,6 +60,7 @@ html[data-theme="dark"] {
     --pri-active-link-color: #ECE1D4;
     --pri-btn-text-color: #422C00;
     --primary-color: #ECE1D4 !important;
+    --secondary-color: #D2C5B4;
     --pst-color-surface: #2F2921;
     --pst-color-text-muted: #D2C5B4;
     --pst-color-background: #120D07;
@@ -261,7 +262,21 @@ ul.navbar-nav li a {
     display: flex;
     height: 100%;
     padding-bottom: 14px;
-    text-decoration: none;
+    text-decoration: none !important;
+}
+
+/* ==========================================================================
+   Navbar Link Styles
+   ========================================================================== */
+
+.nav-link:hover {
+    /* Remove underline on hover */
+    text-decoration: none !important;
+    /* color: var(--color-link-tertiary) !important; */
+    /* background-color: var(--color-surface-container-low) !important; */
+    border-radius: 8px !important;
+    /* padding: 8px !important; */
+    /* transition: background-color 0.3s ease !important; */
 }
 
 /* ==========================================================================
@@ -399,6 +414,24 @@ ul.navbar-nav li a {
 
 .prev-next-area a {
     align-items: center;
+}
+
+.prev-next-area a p.prev-next-title {
+    word-wrap: break-word;
+    /* color: var(--pst-color-link); */
+    font-size: 1.1em;
+    font-weight: var(--pst-admonition-font-weight-heading);
+    text-decoration: none !important;
+    text-decoration-thickness: unset !important;
+    text-underline-offset: unset !important;
+}
+
+.prev-next-area a:hover {
+    background-color: rgba(32, 27, 19, 0.08) !important;
+    color: var(--color-text-primary) !important;
+}
+.prev-next-area a p.prev-next-title:hover {
+    color: var(--color-text-primary) !important;
 }
 
 .prev-page,
