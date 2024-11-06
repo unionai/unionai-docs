@@ -39,6 +39,7 @@ html[data-theme="light"] {
     --pst-color-inline-code: #201B13;
     --pst-color-info-bg: #E4DFFF !important;
     --color-back-to-top: #372F24;
+    --color-hover: rgba(32, 27, 19, 0.08);
 }
 
 /* ==========================================================================
@@ -68,6 +69,7 @@ html[data-theme="dark"] {
     --pst-color-inline-code: #ECE1D4;
     --pst-color-info-bg: #454077 !important;
     --color-back-to-top: #EFBF6D;
+    --color-hover: rgba(255, 248, 243, 0.08);
 }
 
 /* ==========================================================================
@@ -274,11 +276,27 @@ ul.navbar-nav li a {
     text-decoration: none !important;
     /* color: var(--color-link-tertiary) !important; */
     /* background-color: var(--color-surface-container-low) !important; */
-    border-radius: 8px !important;
+    /* border-radius: 8px !important; */
     /* padding: 8px !important; */
     /* transition: background-color 0.3s ease !important; */
 }
 
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link:before,
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header ul.navbar-nav>li.nav-item>.nav-link:hover:before {
+    border-bottom: none !important;
+    background-color: var(--color-hover) !important;
+}
+
+html .pst-navbar-icon:hover:before {
+    border-bottom: unset !important;
+}
 /* ==========================================================================
    Sidebar Styles
    ========================================================================== */
