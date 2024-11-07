@@ -103,11 +103,6 @@ button#dropdown-text::after {
     color: var(--primary-color);
 }
 
-.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link:before,
-.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
-.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
-    border-bottom: 3px solid var(--primary-color);
-}
 
 a,
 .prev-next-area a p.prev-next-title,

@@ -39,6 +39,8 @@ html[data-theme="light"] {
     --pst-color-inline-code: #201B13;
     --pst-color-info-bg: #E4DFFF !important;
     --color-back-to-top: #372F24;
+    --color-hover: rgba(32, 27, 19, 0.08);
+    --color-active-link: #372F24;
 }
 
 /* ==========================================================================
@@ -60,6 +62,7 @@ html[data-theme="dark"] {
     --pri-active-link-color: #ECE1D4;
     --pri-btn-text-color: #422C00;
     --primary-color: #ECE1D4 !important;
+    --secondary-color: #D2C5B4;
     --pst-color-surface: #2F2921;
     --pst-color-text-muted: #D2C5B4;
     --pst-color-background: #120D07;
@@ -67,6 +70,8 @@ html[data-theme="dark"] {
     --pst-color-inline-code: #ECE1D4;
     --pst-color-info-bg: #454077 !important;
     --color-back-to-top: #EFBF6D;
+    --color-hover: rgba(255, 248, 243, 0.08);
+    --color-active-link: #EFBF6D;
 }
 
 /* ==========================================================================
@@ -155,6 +160,7 @@ a:visited {
 .unionai-btn:hover {
     /* background-color: color-mix(in srgb, var(--pri-btn-background) 80%, black); */
     background-color: var(--pri-btn-hover-background);
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15)
 }
 
 .unionai-btn-plain {
@@ -182,15 +188,49 @@ a:visited {
     cursor: pointer;
 }
 
+.unionai-btn-plain.unionai-btn-login:hover {
+    display: inline;
+    /* padding: unset !important; */
+    padding: 10px 24px;
+    border: none;
+    background-color: var(--color-hover);
+    text-decoration: none;
+    cursor: pointer;
+}
+
 a.sd-btn {
     background-color: var(--pri-btn-background) !important;
-    /* border-color: var(--primary-color); */
     color: var(--pri-btn-text-color) !important;
 }
 
 a.sd-btn:hover {
     background-color: var(--pri-btn-hover-background) !important;
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15) !important;
+    color: var(--pri-btn-text-color) !important;
+    text-decoration: none !important;
+    border: none !important;
+    border-color: unset !important;
+    border-style: unset !important;
+    border-width: unset !important;
 }
+
+a.unionai-btn-plain {
+    /* background-color: var(--color-surface-container-lowest) !important; */
+    color: var(--color-active-link) !important;
+}
+
+a.unionai-btn-signup:hover {
+    /* background-color: var(--color-link-tertiary) !important; */
+    color: var(--pri-btn-text-color) !important;
+}
+
+.sd-btn-secondary {
+    border: none !important;
+    border-width: unset !important;
+    border-style: unset !important;
+}
+
+
 
 /* ==========================================================================
    Navigation & Header Styles
@@ -270,8 +310,63 @@ ul.navbar-nav li a {
     color: var(--pst-color-text-muted);
     display: flex;
     height: 100%;
-    padding-bottom: 14px;
-    text-decoration: none;
+    /* padding-bottom: 14px; */
+    padding-bottom: 6px;
+    text-decoration: none !important;
+}
+
+.bd-header ul.navbar-nav>li.nav-item>.nav-link {
+    padding: 16px;
+}
+
+
+/* ==========================================================================
+   Navbar Link Styles
+   ========================================================================== */
+
+.nav-link:hover {
+    /* Remove underline on hover */
+    text-decoration: none !important;
+    /* color: var(--color-link-tertiary) !important; */
+    /* background-color: var(--color-surface-container-low) !important; */
+    /* border-radius: 8px !important; */
+    /* padding: 8px !important; */
+    /* transition: background-color 0.3s ease !important; */
+}
+
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link:before,
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before .bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
+    border-bottom: 3px solid var(--color-text-primary) !important;
+}
+
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
+.bd-header ul.navbar-nav>li.nav-item>.nav-link:hover:before {
+    border-bottom: none !important;
+    background-color: var(--color-hover) !important;
+}
+
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
+    border-bottom: 3px solid var(--color-active-link) !important;
+}
+
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link {
+    color: var(--color-active-link) !important;
+}
+
+
+/* 
+
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link {
+    color: var(--primary-color);
+}
+
+*/
+
+html .pst-navbar-icon:hover:before {
+    border-bottom: unset !important;
 }
 
 /* ==========================================================================
@@ -327,6 +422,14 @@ ul.navbar-nav li a {
     background-color: var(--color-surface-container-lowest);
 }
 
+nav.bd-links li>a:hover {
+    text-decoration: none !important;
+  
+}
+
+nav.bd-links li>a:before {
+    border-bottom: none !important;
+}
 /* ==========================================================================
    Dropdown Styles
    ========================================================================== */
@@ -409,6 +512,25 @@ ul.navbar-nav li a {
 
 .prev-next-area a {
     align-items: center;
+}
+
+.prev-next-area a p.prev-next-title {
+    word-wrap: break-word;
+    /* color: var(--pst-color-link); */
+    font-size: 1.1em;
+    font-weight: var(--pst-admonition-font-weight-heading);
+    text-decoration: none !important;
+    text-decoration-thickness: unset !important;
+    text-underline-offset: unset !important;
+}
+
+.prev-next-area a:hover {
+    background-color: rgba(32, 27, 19, 0.08) !important;
+    color: var(--color-text-primary) !important;
+}
+
+.prev-next-area a p.prev-next-title:hover {
+    color: var(--color-text-primary) !important;
 }
 
 .prev-page,
@@ -504,7 +626,8 @@ code.literal {
 /* Desktop/Mobile visibility */
 .desktop-only {
     display: block;
-    margin-bottom: -10px;
+    /* margin-bottom: -10px; */
+    margin-bottom: -4px;
 }
 
 .mobile-only {
