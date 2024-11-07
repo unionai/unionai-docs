@@ -40,6 +40,7 @@ html[data-theme="light"] {
     --pst-color-info-bg: #E4DFFF !important;
     --color-back-to-top: #372F24;
     --color-hover: rgba(32, 27, 19, 0.08);
+    --color-active-link: #372F24;
 }
 
 /* ==========================================================================
@@ -70,6 +71,7 @@ html[data-theme="dark"] {
     --pst-color-info-bg: #454077 !important;
     --color-back-to-top: #EFBF6D;
     --color-hover: rgba(255, 248, 243, 0.08);
+    --color-active-link: #EFBF6D;
 }
 
 /* ==========================================================================
@@ -186,6 +188,30 @@ a:visited {
     cursor: pointer;
 }
 
+a.sd-btn {
+    background-color: var(--pri-btn-background) !important;
+    color: var(--pri-btn-text-color) !important;
+}
+
+a.sd-btn:hover {
+    background-color: var(--pri-btn-hover-background) !important;
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15) !important;
+    color: var(--pri-btn-text-color) !important;
+    text-decoration: none !important;
+    border: none !important;
+    border-color: unset !important;
+    border-style: unset !important;
+    border-width: unset !important;
+}
+
+.sd-btn-secondary {
+    border: none !important;
+    border-width: unset !important;
+    border-style: unset !important;
+}
+
+
+
 /* ==========================================================================
    Navigation & Header Styles
    ========================================================================== */
@@ -290,9 +316,7 @@ ul.navbar-nav li a {
 
 .bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link:before,
 .bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover:before,
-.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before 
-.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before
-{
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before .bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
     border-bottom: 3px solid var(--color-text-primary) !important;
 }
 
@@ -304,12 +328,27 @@ ul.navbar-nav li a {
 }
 
 .bd-header ul.navbar-nav>li.nav-item.current>.nav-link:before {
-    border-bottom: 3px solid var(--color-text-primary) !important;
+    border-bottom: 3px solid var(--color-active-link) !important;
 }
+
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link {
+    color: var(--color-active-link) !important;
+}
+
+
+/* 
+
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link {
+    color: var(--primary-color);
+}
+
+*/
 
 html .pst-navbar-icon:hover:before {
     border-bottom: unset !important;
 }
+
 /* ==========================================================================
    Sidebar Styles
    ========================================================================== */
@@ -461,6 +500,7 @@ html .pst-navbar-icon:hover:before {
     background-color: rgba(32, 27, 19, 0.08) !important;
     color: var(--color-text-primary) !important;
 }
+
 .prev-next-area a p.prev-next-title:hover {
     color: var(--color-text-primary) !important;
 }
