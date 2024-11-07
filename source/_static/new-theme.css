@@ -188,6 +188,16 @@ a:visited {
     cursor: pointer;
 }
 
+.unionai-btn-plain.unionai-btn-login:hover {
+    display: inline;
+    /* padding: unset !important; */
+    padding: 10px 24px;
+    border: none;
+    background-color: var(--color-hover);
+    text-decoration: none;
+    cursor: pointer;
+}
+
 a.sd-btn {
     background-color: var(--pri-btn-background) !important;
     color: var(--pri-btn-text-color) !important;
@@ -202,6 +212,16 @@ a.sd-btn:hover {
     border-color: unset !important;
     border-style: unset !important;
     border-width: unset !important;
+}
+
+a.unionai-btn-plain {
+    /* background-color: var(--color-surface-container-lowest) !important; */
+    color: var(--color-active-link) !important;
+}
+
+a.unionai-btn-signup:hover {
+    /* background-color: var(--color-link-tertiary) !important; */
+    color: var(--pri-btn-text-color) !important;
 }
 
 .sd-btn-secondary {
@@ -402,6 +422,14 @@ html .pst-navbar-icon:hover:before {
     background-color: var(--color-surface-container-lowest);
 }
 
+nav.bd-links li>a:hover {
+    text-decoration: none !important;
+  
+}
+
+nav.bd-links li>a:before {
+    border-bottom: none !important;
+}
 /* ==========================================================================
    Dropdown Styles
    ========================================================================== */
