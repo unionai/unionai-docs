@@ -41,6 +41,7 @@ html[data-theme="light"] {
     --color-back-to-top: #372F24;
     --color-hover: rgba(32, 27, 19, 0.08);
     --color-active-link: #372F24;
+    --color-variant-selector-hover: #49454F;
 }
 
 /* ==========================================================================
@@ -72,6 +73,7 @@ html[data-theme="dark"] {
     --color-back-to-top: #EFBF6D;
     --color-hover: rgba(255, 248, 243, 0.08);
     --color-active-link: #EFBF6D;
+    --color-variant-selector-hover: #49454F;
 }
 
 /* ==========================================================================
@@ -526,7 +528,7 @@ nav.bd-links li>a:before {
 }
 
 .variant-dropdown-button:hover {
-    background-color: var(--color-surface-container-low);
+    background-color: var(--color-surface);
     border-radius: 4px;
 }
 
