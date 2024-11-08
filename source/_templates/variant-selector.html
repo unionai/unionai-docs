@@ -1,9 +1,13 @@
-<div class="variant-selector-container">
-    <span class="version-label">Version:</span>
-    <div class="dropdown variant-selector">
-        <button class="btn navbar-btn dropdown-button variant-selector-button" id="dropdown-text"></button>
-        <div class="dropdown-content variant-selector-links" id="dropdown-links">
-            <!-- Links will be inserted here by JavaScript -->
-        </div>
+{# Make sure this matches the div IDs that the JavaScript is looking for #}
+<div class="variant-selector-wrapper">
+  <div class="variant-selector">
+    <button class="variant-dropdown-button">
+      <span class="version-label">Version: </span>
+      <span class="variant-text"></span>
+      <span class="variant-arrow">▼</span>
+    </button>
+    <div class="variant-dropdown-content">
+        <!-- Links will be inserted here by JavaScript -->
     </div>
+  </div>
 </div>
