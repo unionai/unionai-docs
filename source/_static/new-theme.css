@@ -424,17 +424,18 @@ html .pst-navbar-icon:hover:before {
 
 nav.bd-links li>a:hover {
     text-decoration: none !important;
-  
+
 }
 
 nav.bd-links li>a:before {
     border-bottom: none !important;
 }
+
 /* ==========================================================================
    Dropdown Styles
    ========================================================================== */
 
-.dropdown-content.navbar .dropdown {
+/* .dropdown-content.navbar .dropdown {
     position: relative;
     display: inline-block;
     width: 100%;
@@ -497,6 +498,97 @@ nav.bd-links li>a:before {
     margin-right: 12px;
     font-weight: 500;
     font-family: var(--font-family-code);
+} */
+
+/* Variant Selector Container */
+.variant-selector-wrapper {
+    display: inline-block;
+    margin: 0 15px;
+}
+
+.variant-selector {
+    position: relative;
+}
+
+/* Dropdown Button */
+.variant-dropdown-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: transparent;
+    border: none;
+    font-family: var(--font-family-code);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.variant-dropdown-button:hover {
+    background-color: var(--color-surface-container-low);
+    border-radius: 4px;
+}
+
+.version-label {
+    color: var(--color-text-secondary);
+}
+
+.variant-arrow {
+    font-size: 10px;
+    margin-left: 4px;
+}
+
+/* Dropdown Content */
+.variant-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 120px;
+    background-color: var(--color-surface-container-lowest);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    border: 1px solid var(--color-outline-variant);
+    z-index: 1000;
+    margin-top: 4px;
+}
+
+.variant-dropdown-content.show {
+    display: block;
+}
+
+.variant-dropdown-content a {
+    color: var(--color-primary);
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    font-family: var(--font-family-code);
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+.variant-dropdown-content a:hover {
+    background-color: var(--color-hover);
+}
+
+/* Selected state */
+.variant-dropdown-content a.selected {
+    background-color: var(--color-surface-container-low);
+    position: relative;
+}
+
+.variant-dropdown-content a.selected::before {
+    content: "✓";
+    position: absolute;
+    right: 12px;
+    color: var(--color-link-tertiary);
+}
+
+/* Dark mode adjustments */
+html[data-theme="dark"] .variant-dropdown-content {
+    background-color: var(--color-surface-container-lowest);
+    border-color: var(--color-outline-variant);
 }
 
 /* ==========================================================================
