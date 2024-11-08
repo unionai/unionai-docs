@@ -126,11 +126,11 @@ a:visited {
     color: var(--primary-color);
 }
 
-a:hover,
+/* a:hover,
 a:visited:hover,
 #dropdown-links a:visited:hover {
     color: var(--primary-color);
-}
+} */
 
 /* #dropdown-links a,
 #dropdown-links a:visited {
