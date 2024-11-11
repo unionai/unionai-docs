@@ -46,6 +46,7 @@ window.addEventListener("DOMContentLoaded", function () {
         if (!isOpen) {
           dropdown.classList.add("show");
         }
+      
       });
     });
 
