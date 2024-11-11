@@ -42,7 +42,7 @@ Securely store Reddit and Slack authentication data while pushing relevant
 Reddit posts to slack on a consistent basis.
 :::
 
-:::{grid-item-card} {octicon}`hubot` Wikipedia Embeddings Generation
+:::{grid-item-card} {octicon}`book` Wikipedia Embeddings Generation
 :link: parallel-processing-and-job-scheduling/wikipedia-embeddings
 :link-type: doc
 
