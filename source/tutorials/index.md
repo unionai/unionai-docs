@@ -42,6 +42,13 @@ Securely store Reddit and Slack authentication data while pushing relevant
 Reddit posts to slack on a consistent basis.
 :::
 
+:::{grid-item-card} {octicon}`hubot` Wikipedia Embeddings Generation
+:link: parallel-processing-and-job-scheduling/wikipedia-embeddings
+:link-type: doc
+
+Create embeddings for the Wikipedia dataset, powered by Union actors.
+:::
+
 :::{grid-item-card} {octicon}`graph` Time Series Forecaster Comparison
 :link: time-series/time-series-forecaster-comparison
 :link-type: doc
