@@ -2,6 +2,11 @@
 {{ super() }}
 
 {% block extrahead %}
+<!-- Inter + Roboto Mono Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
 <!-- Google Tag Manager -->
 <script>
 (function (w, d, s, l, i) {
@@ -15,113 +20,109 @@
     f.parentNode.insertBefore(j, f);
 })(window, document, "script", "dataLayer", "GTM-WC8V9XS");
 </script>
-<!-- End Google Tag Manager -->
+
 <!-- UnionAI docs variant switcher -->
 <script>
-function getAvailableVariants() {
-    var div = document.getElementById('unionai-docs-available-variants');
-    var content = div.textContent || div.innerText;
-    var array;
-    try {
-        array = JSON.parse(content);
-    } catch (e) {
-        console.error('Error parsing content to array:', e);
-        return null;
-    }
-    if (Array.isArray(array) && array.every(item => typeof item === 'string')) {
-        return array;
-    } else {
-        console.error('Parsed content is not an array of strings');
-        return null;
-    }
-}
-
-function getVariantDisplayNames() {
-    var div = document.getElementById('unionai-docs-variant-display-names');
-    var content = div.textContent || div.innerText;
-    var displayNames;
-    try {
-        displayNames = JSON.parse(content);
-    } catch (e) {
-        console.error('Error parsing content to array:', e);
-        return null;
-    }
-    return displayNames;
-}
-
 document.addEventListener("DOMContentLoaded", function() {
-    var variants = getAvailableVariants();
-    var variantDisplayNames = getVariantDisplayNames();
-    var thisVariantDisplayName = variantDisplayNames[document.getElementById('unionai-docs-this-variant').textContent];
+    const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;
+    const availableVariants = JSON.parse(document.getElementById('unionai-docs-available-variants').textContent);
+    const variantDisplayNames = JSON.parse(document.getElementById('unionai-docs-variant-display-names').textContent);
+    const m = new Map(Object.entries(variantDisplayNames));
+    const allVariants = Array.from(m.keys());
+    const currentUrl = new URL(window.location.href);
+    const currentUrlSegments = currentUrl.pathname.split('/').filter(Boolean);
+    const variantIndexInUrl = currentUrlSegments.indexOf(currentVariant);
+    const variantLinks = [];
 
-    // Get the current page URL
-    var currentUrl = new URL(window.location.href);
+    // Generate variant links
+    allVariants.forEach(variant => {
+        const prefixSegments = currentUrlSegments.slice(0, variantIndexInUrl);
+        const suffixSegments = currentUrlSegments.slice(variantIndexInUrl + 1);
+        const topUrlSegments = prefixSegments.concat([variant]);
+        const peerUrlSegments = prefixSegments.concat([variant], suffixSegments);
+        const topUrl = new URL(currentUrl);
+        topUrl.pathname = '/' + topUrlSegments.join('/');
+        const peerUrl = new URL(currentUrl);
+        peerUrl.pathname = '/' + peerUrlSegments.join('/');
 
-    // Extract the path segments
-    var pathSegments = currentUrl.pathname.split('/').filter(Boolean);
+        const variantLink = {
+            text: variantDisplayNames[variant],
+            url: availableVariants.includes(variant) ? peerUrl.href : topUrl.href,
+            isSelected: variant === currentVariant
+        };
+        variantLinks.push(variantLink);
+    });
 
-    // Find the index of the path segment that matches one of the variants
-    var matchedIndex = -1;
-    for (var i = 0; i < pathSegments.length; i++) {
-        if (variants.includes(pathSegments[i])) {
-            matchedIndex = i;
-            break;
-        }
-    }
-
-    // If a matching path segment is found
-    if (matchedIndex !== -1) {
-        // Create the list container
-        var list = [];
-
-        // Iterate over the variants array
-        variants.forEach(function(variant) {
-            // Create a new URL with the matched path segment replaced by the variant
-            var newUrl = new URL(currentUrl);
-            var newPathSegments = pathSegments.slice();
-            newPathSegments[matchedIndex] = variant;
-            newUrl.pathname = '/' + newPathSegments.join('/');
-
-            // Create the list item and anchor elements
-            var listItem = {};
-            listItem.text = variantDisplayNames[variant];
-            listItem.url = newUrl.href;
-            list.push(listItem);
-        });
-
-        const dropdownLinks = document.getElementById('dropdown-links');
-        list.forEach(link => {
+    // Update the variant selector
+    const dropdownContent = document.querySelector('.variant-dropdown-content');
+    if (dropdownContent) {
+        variantLinks.forEach(variantLink => {
             const anchor = document.createElement('a');
-            anchor.href = link.url;
-            anchor.textContent = link.text;
-            dropdownLinks.appendChild(anchor);
+            anchor.textContent = variantLink.text;
+            anchor.href = variantLink.url;
+            if (variantLink.isSelected) {
+                anchor.classList.add('selected');
+            }
+            dropdownContent.appendChild(anchor);
         });
     }
 
-    const dropdownTextContainer = document.getElementById('dropdown-text');
-    dropdownTextContainer.textContent = thisVariantDisplayName;
-})
+    // Update the variant text in the button
+    const variantText = document.querySelector('.variant-text');
+    if (variantText) {
+        variantText.textContent = variantDisplayNames[currentVariant];
+    }
 
+    // Click handler for the dropdown button
+    const variantButton = document.querySelector('.variant-dropdown-button');
+    if (variantButton) {
+        variantButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const selector = this.closest('.variant-selector');
+            const dropdown = this.nextElementSibling;
+            const isOpen = dropdown.style.display === 'block';
+            
+            if (isOpen) {
+                dropdown.style.display = 'none';
+                selector.classList.remove('active');
+            } else {
+                dropdown.style.display = 'block';
+                selector.classList.add('active');
+            }
+        });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.variant-selector')) {
+            const dropdowns = document.querySelectorAll('.variant-dropdown-content');
+            const selectors = document.querySelectorAll('.variant-selector');
+            dropdowns.forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+            selectors.forEach(selector => {
+                selector.classList.remove('active');
+            });
+        }
+    });
+
+    // Prevent dropdown from closing when clicking inside it
+    dropdownContent?.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+});
 </script>
-<!-- End UnionAI docs variant switcher -->
 {% endblock %}
 
 {% block body %}
 {%- if meta is mapping %}
     <div id="unionai-docs-variant-display-names" style="display: none;">{{ meta.get("variant-display-names") }}</div>
     <div id="unionai-docs-available-variants" style="display: none;">{{ meta.get("available-variants") }}</div>
-    <div id="unionai-docs-this-variant" style="display: none;">{{ meta.get("this-variant") }}</div>
+    <div id="unionai-docs-current-variant" style="display: none;">{{ meta.get("current-variant") }}</div>
 {%- endif %}
 {{ super() }}
 
 <!-- Google Tag Manager (noscript) -->
-<noscript
-  ><iframe
-    src="https://www.googletagmanager.com/ns.html?id=GTM-WC8V9XS"
-    height="0"
-    width="0"
-    style="display: none; visibility: hidden"
-  ></iframe
-></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WC8V9XS" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {% endblock %}

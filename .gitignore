@@ -2,11 +2,16 @@ secrets.txt
 .vscode
 source/tutorials/**/*.md
 !source/tutorials/**/index.md
+source/_static/_tutorials/
+source/tutorials/**/static/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Pipfile
+Pipfile
 
 # C extensions
 *.so

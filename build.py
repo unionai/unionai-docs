@@ -2,6 +2,8 @@ import os
 import subprocess
 import shlex
 import json
+import re
+import shutil
 from pathlib import Path
 
 import jinja2
@@ -54,10 +56,7 @@ SUBS: dict[str, dict[str, str] | str] = {
     'cli_name': 'uctl',
 }
 
-INSTALL_SDK_PACKAGES: dict[str, str] = {
-    "byoc": "'union[byoc]'",
-    "serverless": "union",
-}
+INSTALL_SDK_PACKAGE = "union"
 
 DOCSEARCH_CREDENTIALS = {
     "byoc": {
@@ -81,19 +80,25 @@ export IMAGE_SPEC_REGISTRY="<your-container-registry>"
 ```
 """
 
-RUN_COMMAND_TEMPLATE = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+RUN_COMMAND_START_SERVERLESS = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
 :open:
 :color: warning
 
-Run this example on {variant}.
-
 :::{{button-link}} https://signup.union.ai/
-:color: secondary
 
 Create an account
 :::
+"""
 
-Once you have a Union account, install `{sdk_package_variant}`
+RUN_COMMAND_START_BYOC = """::::{{dropdown}} {{fas}}`circle-play` Run on {variant}
+:open:
+:color: warning
+
+"""
+
+RUN_COMMAND_REST = """
+
+Once you have a Union account, install `{sdk_package}`:
 
 ```{{code}}
 {pip_install_command}
@@ -147,31 +152,72 @@ def contains_metadata(src: str):
 
 def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
     variant_display = SUBS["product_name"][current_variant]
-    sdk_package_variant = INSTALL_SDK_PACKAGES[current_variant]
-    pip_install_command = f"pip install {sdk_package_variant}"
+    sdk_package = INSTALL_SDK_PACKAGE
+    pip_install_command = f"pip install {sdk_package}"
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
         pip_install_command += " flytekitplugins-envd"
+        run_cmd_start = RUN_COMMAND_START_BYOC.format(
+            variant=variant_display
+        )
     else:
         byoc_commands = ""
-    src = RUN_COMMAND_TEMPLATE.format(
+        run_cmd_start = RUN_COMMAND_START_SERVERLESS.format(
+            variant=variant_display
+        )
+    run_cmd_rest = RUN_COMMAND_REST.format(
         variant=variant_display,
-        sdk_package_variant=sdk_package_variant,
+        sdk_package=sdk_package,
         pip_install_command=pip_install_command,
         byoc_commands=byoc_commands,
         run_commands="\n".join(run_commands),
         github_url=github_url,
     )
+    src = run_cmd_start + run_cmd_rest
     return NotebookNode(cell_type="markdown", source=src, metadata={})
 
 
-def convert_example_py_file_to_md(
+def import_static_files_from_tutorial(
+    name: str,
+    from_path: Path,
+    static_file_dir: str,
+    notebook: NotebookNode,
+):
+    """Imports static files from a tutorial subdirectory and replaces the paths in the notebook."""
+    # copy over any static files over to the sphinx source
+    from_static_path = from_path.parent / static_file_dir
+    if not from_static_path.exists():
+        return
+
+    # copy static files over to the _static directory
+    static_dir = Path(SOURCE_DIR) / "_static" / "_tutorials" / name
+    shutil.copytree(from_static_path, static_dir, dirs_exist_ok=True)
+
+    # replace any image paths in markdown cells with the new path
+    for cell in notebook["cells"]:
+        if cell["cell_type"] != "markdown":
+            continue
+
+        src = cell["source"]
+        # match markdown image paths, with a group for the image path
+        result = re.search(r"!\[.+\]\((static\/.+)\)", src)
+        if not result:
+            continue
+
+        image_path = Path(result.group(1))
+        replace_image_path = Path("/", *static_dir.parts[1:]) / image_path.name
+        cell["source"] = re.sub(result.group(1), str(replace_image_path), src)
+
+
+def convert_tutorial_py_file_to_md(
+    name: str,
     from_path: Path,
     to_path: Path,
     current_variant: str,
     run_commands: dict[str, list[str]],
 ):
+    """Converts a tutorial Python file to a Markdown file along with its static assets."""
     log(f"converting {from_path} to {to_path}")
     notebook = jupytext.read(from_path, fmt="py:light")
 
@@ -182,6 +228,9 @@ def convert_example_py_file_to_md(
     if run_cmd_src is not None:
         run_command_node = create_run_command_node(run_cmd_src, current_variant, github_url)
         notebook["cells"].insert(1, run_command_node)
+
+    for fname in ("static", "images"):
+        import_static_files_from_tutorial(name, from_path, fname, notebook)
 
     jupytext.write(notebook, to_path, fmt="md")
 
@@ -217,7 +266,7 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
         log(f'{indent}File not found at {input_path}')
     else:
         output: str = template.render(get_vars(variant)).strip()
-        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\nthis-variant: {variant}\n---\n\n'
+        frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\ncurrent-variant: {variant}\n---\n\n'
         output = frontmatter + output + toctree
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'w') as f:
@@ -243,7 +292,7 @@ def process_page_node(
     if py_file is not None:
         py_file = Path(py_file)
         md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
-        convert_example_py_file_to_md(py_file, md_path, current_variant, run_commands)
+        convert_tutorial_py_file_to_md(name, py_file, md_path, current_variant, run_commands)
 
     variants = [*reversed(variants)]  # make sure that serverless is the first element
     log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
@@ -314,11 +363,15 @@ def process_project():
         shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
     for variant in ALL_VARIANTS:
         shell(
-            f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
+            f'sphinx-build -j auto {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
             env=DOCSEARCH_CREDENTIALS[variant],
         )
     shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 
 if __name__ == "__main__":
+    import time
+    start = time.time()
     process_project()
+    end = time.time()
+    print(f"Total time: {end - start} seconds")

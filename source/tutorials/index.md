@@ -1,9 +1,7 @@
 # Tutorials
 
-In this part of the docs, you'll find tutorials that walk you through the process
-of building AI/ML applications on Union. These applications range from training
-XGBoost models in tabular datasets to fine-tuning large language models for text
-generation tasks.
+This section provides tutorials that walk you through the process of building AI/ML applications on Union.
+The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
 ::::{grid} 2
 
@@ -27,6 +25,13 @@ Build an agentic retrieval augmented generation system with ChromaDB and Langcha
 :link-type: doc
 
 Use HDBSCAN soft clustering with headline embeddings and UMAP on GPUs.
+:::
+
+:::{grid-item-card} {octicon}`device-mobile` Deploy a Fine-Tuned Llama Model to an iOS App with MLC-LLM
+:link: language-models/llama_edge_deployment
+:link-type: doc
+
+Fine-tunes a Llama 3 model on the Cohere Aya Telugu subset and generates a model artifact for deployment as an iOS app.
 :::
 
 :::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
@@ -72,6 +77,13 @@ to the a reference genome using the Bowtie2 aligner.
 :link-type: doc
 
 Use open-source models to dub videos.
+:::
+
+:::{grid-item-card} {octicon}`accessibility-inset` Efficient Named Entity Recognition with vLLM
+:link: language-models/vllm-serving-on-actor
+:link-type: doc
+
+Serve a vLLM model on a warm container and trigger inference automatically with artifacts.
 :::
 
 ::::
