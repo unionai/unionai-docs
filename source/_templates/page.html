@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const variantIndexInUrl = currentUrlSegments.indexOf(currentVariant);
     const variantLinks = [];
 
+    // Generate variant links
     allVariants.forEach(variant => {
         const prefixSegments = currentUrlSegments.slice(0, variantIndexInUrl);
         const suffixSegments = currentUrlSegments.slice(variantIndexInUrl + 1);
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
         variantLinks.push(variantLink);
     });
 
-    // Update the new variant selector
+    // Update the variant selector
     const dropdownContent = document.querySelector('.variant-dropdown-content');
     if (dropdownContent) {
         variantLinks.forEach(variantLink => {
@@ -72,42 +73,43 @@ document.addEventListener("DOMContentLoaded", function() {
         variantText.textContent = variantDisplayNames[currentVariant];
     }
 
-    // Setup dropdown toggle functionality
-    function setupVariantSelector() {
-        document.addEventListener('click', function(event) {
-            const dropdowns = document.querySelectorAll('.variant-dropdown-content');
-            if (!event.target.closest('.variant-selector')) {
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('show');
-                });
+    // Click handler for the dropdown button
+    const variantButton = document.querySelector('.variant-dropdown-button');
+    if (variantButton) {
+        variantButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const selector = this.closest('.variant-selector');
+            const dropdown = this.nextElementSibling;
+            const isOpen = dropdown.style.display === 'block';
+            
+            if (isOpen) {
+                dropdown.style.display = 'none';
+                selector.classList.remove('active');
+            } else {
+                dropdown.style.display = 'block';
+                selector.classList.add('active');
             }
-        });
-
-        const variantButtons = document.querySelectorAll('.variant-dropdown-button');
-        variantButtons.forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.stopPropagation();
-                const dropdown = this.nextElementSibling;
-                const isOpen = dropdown.classList.contains('show');
-                
-                document.querySelectorAll('.variant-dropdown-content').forEach(d => {
-                    d.classList.remove('show');
-                });
-                
-                if (!isOpen) {
-                    dropdown.classList.add('show');
-                }
-            });
-        });
-
-        document.querySelectorAll('.variant-dropdown-content').forEach(dropdown => {
-            dropdown.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
         });
     }
 
-    setupVariantSelector();
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.variant-selector')) {
+            const dropdowns = document.querySelectorAll('.variant-dropdown-content');
+            const selectors = document.querySelectorAll('.variant-selector');
+            dropdowns.forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+            selectors.forEach(selector => {
+                selector.classList.remove('active');
+            });
+        }
+    });
+
+    // Prevent dropdown from closing when clicking inside it
+    dropdownContent?.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
 });
 </script>
 {% endblock %}
