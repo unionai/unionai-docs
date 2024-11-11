@@ -1,104 +1,108 @@
 # UnionRemote
 
-`UnionRemote` allows you to programmatically perform certain operations on the Union control plane in a Python runtime environment.
+The `UnionRemote` Python API supports functionality similar to that of the `union` CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
+
+:::{note}
+The primary use case of `UnionRemote` is to automate the deployment of Union entities. As such, it is intended for use within scripts *external* to actual Union workflow and task code, for example CI/CD pipeline scripts.
+:::
 
 ## Creating a `UnionRemote` object
 
-To use `UnionRemote`, install the `union` SDK with `pip install union`, then add the following import to your code:
+To use `UnionRemote`, install the `union` SDK with `pip install union`, then import the class and create the object like this:
 
 ```{code-block} python
 from union.remote import UnionRemote
+
+remote = UnionRemote()
 ```
 
-The `UnionRemote` class is the entrypoint for programmatically performing operations in a Python
-runtime. It can be initialized by passing in the:
+By default, when created with a no-argument constructor, `UnionRemote` will use the prevailing configuration in the local environment to connect to Union, that is, the same configuration as would be used by the `union` CLI in that environment (see [Union CLI > `union` CLI configuration search path](../../api/union-cli.md#union-cli-configuration-search-path)).
+
+In the default case, as with the `union` CLI, all operations will be applied to the default project, `flytesnacks` and default domain, `development`.
 
 {@@ if byoc @@}
 
-* `Config` object: the parent configuration object that holds all the configuration information to connect to the Flyte backend.
-{@@ endif @@}
-* `default_project`: the default project to use when fetching or executing flyte entities.
-* `default_domain`: the default domain to use when fetching or executing flyte entities.
-* `file_access`: the file access provider to use for offloading non-literal inputs/outputs.
-* `kwargs`: additional arguments that need to be passed to create `SynchronousFlyteClient`.
-
-{@@ if byoc @@}
-A `UnionRemote` object can be created in various ways:
-
-### Automatically construct the `Config` object
-
-The `Config` class's `auto` method can be used to automatically
-construct the `Config` object.
-
-```{code-block} python
-from union.remote import UnionRemote
-from flytekit.configuration import Config
-
-remote = UnionRemote(config=Config.auto())
-```
-
-`auto` also accepts a `config_file` argument, which is the path to the configuration file to use.
-The order of precedence that `auto` follows is:
-
-* Finds all the environment variables that match the configuration variables.
-* If no environment variables are set, it looks for a configuration file at the path specified by the `config_file` argument.
-* If no configuration file is found, it uses the default values.
-
-### Construct the `Config` object to connect to a specific endpoint
-
-The `Config` class's `for_endpoint` method can be used to
-construct the `Config` object to connect to a specific endpoint.
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see XX)):
 
 ```{code-block} python
 from union.remote import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(
-    config=Config.for_endpoint(endpoint="flyte.example.net"),
-    default_project="flytesnacks",
-    default_domain="development",
+    config=Config.for_endpoint(endpoint="union.example.com"),
+    default_project="my-project",
+    default_domain="my-domain",
+    data_upload_location="<s3|gs|abs>://my-bucket/my-prefix",
 )
 ```
 
-The `for_endpoint` method also accepts:
+Here we use the `Config.for_endpoint` method to specify the URL to connect to.
+There are number of other ways to configure the `Config` object.
+In general, you have all the same options as you would when specifying a connection for the `union` CLI using a `config.yaml` file.
+For details see [the API docs for `flytekit.configuration.Config`]().
 
-* `insecure`: whether to use insecure connections. Defaults to `False`.
-* `data_config`: can be used to configure how data is downloaded or uploaded to a specific blob storage like S3, GCS, etc.
-* `config_file`: the path to the configuration file to use.
+{@@ elif serverless @@}
 
-### Generalized initialization
-
-The `Config` class can be directly used to construct the `Config` object if additional configuration is needed. You can send `configuration.PlatformConfig`, `configuration.DataConfig`,
-`configuration.SecretsConfig`, and `configuration.StatsConfig` objects to the `Config` class.
-
-| Config attribute | Description                              |
-|------------------|------------------------------------------|
-| `PlatformConfig` | Settings to talk to a Flyte backend.     |
-| `DataConfig`     | Any data storage specific configuration. |
-| `SecretsConfig`  | Configuration for secrets.               |
-| `StatsConfig`    | Configuration for sending statistics.    |
-
-For example:
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a project, and a domain:
 
 ```{code-block} python
 from union.remote import UnionRemote
-from flytekit.configuration import Config, PlatformConfig
+from flytekit.configuration import Config
 
 remote = UnionRemote(
-    config=Config(
-        platform=PlatformConfig(
-            endpoint="flyte.example.net",
-            insecure=False,
-            client_id="my-client-id",
-            client_credentials_secret="my-client-secret",
-            auth_mode="client_credentials",
-        ),
-        secrets=SecretsConfig(default_dir="/etc/secrets"),
-    )
+    default_project="my-project",
+    default_domain="my-domain",
 )
 ```
 
 {@@ endif @@}
+
+## Registering entities
+
+Tasks, workflows, and launch plans can be registered using `UnionRemote`:
+
+```{code-block} python
+from flytekit.configuration import SerializationSettings
+
+some_entity = ...
+my_task = remote.register_task(
+    entity=some_entity,
+    serialization_settings=SerializationSettings(image_config=None),
+    version="v1",
+)
+my_workflow = remote.register_workflow(
+    entity=some_entity,
+    serialization_settings=SerializationSettings(image_config=None),
+    version="v1",
+)
+my_launch_plan = remote.register_launch_plan(entity=some_entity, version="v1")
+```
+
+* `entity`: the entity to register.
+* `version`: the version that will be used to register. If not specified, the version used in serialization settings will be used.
+* `serialization_settings`: the serialization settings to use. Refer to `configuration.SerializationSettings` to know all the acceptable parameters.
+
+All the additional parameters which can be sent to the `register_*` methods can be found in the documentation for the corresponding method:
+`register_task`, `register_workflow`,
+and `register_launch_plan`.
+
+The `configuration.SerializationSettings` class accepts `configuration.ImageConfig` which
+holds the available images to use for the registration.
+
+The following example showcases how to register a workflow using an existing image if the workflow is created locally:
+
+```{code-block} python
+from flytekit.configuration import ImageConfig
+
+img = ImageConfig.from_images(
+    "docker.io/xyz:latest", {"spark": "docker.io/spark:latest"}
+)
+wf2 = remote.register_workflow(
+    my_remote_wf,
+    serialization_settings=SerializationSettings(image_config=img),
+    version="v1",
+)
+```
 
 ## Fetching entities
 
@@ -243,53 +247,6 @@ For the full list of parameters, see the [Artifact class documentation](../../ap
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
 :::
 
-## Registering entities
-
-Tasks, workflows, and launch plans can be registered using `UnionRemote`:
-
-```{code-block} python
-from flytekit.configuration import SerializationSettings
-
-some_entity = ...
-my_task = remote.register_task(
-    entity=some_entity,
-    serialization_settings=SerializationSettings(image_config=None),
-    version="v1",
-)
-my_workflow = remote.register_workflow(
-    entity=some_entity,
-    serialization_settings=SerializationSettings(image_config=None),
-    version="v1",
-)
-my_launch_plan = remote.register_launch_plan(entity=some_entity, version="v1")
-```
-
-* `entity`: the entity to register.
-* `version`: the version that will be used to register. If not specified, the version used in serialization settings will be used.
-* `serialization_settings`: the serialization settings to use. Refer to `configuration.SerializationSettings` to know all the acceptable parameters.
-
-All the additional parameters which can be sent to the `register_*` methods can be found in the documentation for the corresponding method:
-`register_task`, `register_workflow`,
-and `register_launch_plan`.
-
-The `configuration.SerializationSettings` class accepts `configuration.ImageConfig` which
-holds the available images to use for the registration.
-
-The following example showcases how to register a workflow using an existing image if the workflow is created locally:
-
-```{code-block} python
-from flytekit.configuration import ImageConfig
-
-img = ImageConfig.from_images(
-    "docker.io/xyz:latest", {"spark": "docker.io/spark:latest"}
-)
-wf2 = remote.register_workflow(
-    my_remote_wf,
-    serialization_settings=SerializationSettings(image_config=img),
-    version="v1",
-)
-```
-
 ## Executing entities
 
 You can execute a task, workflow, or launch plan using the `execute` method
@@ -298,7 +255,10 @@ which returns a `FlyteWorkflowExecution` object:
 ```{code-block} python
 some_entity = ...  # one of FlyteTask, FlyteWorkflow, or FlyteLaunchPlan
 execution = remote.execute(
-    some_entity, inputs={...}, execution_name="my_execution", wait=True
+    some_entity,
+    inputs={...},
+    execution_name="my_execution",
+    wait=True,
 )
 ```
 
@@ -339,7 +299,9 @@ After an execution is completed, you can retrieve the execution using the `fetch
 
 ```{code-block} python
 execution = remote.fetch_execution(
-    name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development"
+    name="fb22e306a0d91e1c6000",
+    project="flytesnacks",
+    domain="development",
 )
 input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
@@ -363,10 +325,6 @@ synced_execution = remote.sync(execution, sync_nodes=True)
 node_keys = synced_execution.node_executions.keys()
 ```
 
-:::{note}
-During the sync, you may encounter an error of `Received message larger than max (xxx vs. 4194304)` if the message size is too large. In that case, reach out to the Union team.
-:::
-
 `node_executions` will fetch all the underlying node executions recursively.
 
 To fetch output of a specific node execution:
@@ -379,9 +337,8 @@ Node here can correspond to a task, workflow, or branch node.
 
 ### Reference launch plan executions
 
-When retrieving and inspecting an execution which calls a launch plan, the launch plan manifests as a sub-workflow which
-can be found within the `workflow_executions` of a given node execution. Note that the workflow execution of interest
-must again be synced in order to inspect the input and output of the contained tasks.
+When retrieving and inspecting an execution which calls a launch plan, the launch plan manifests as a sub-workflow which can be found within the `workflow_executions` of a given node execution.
+Note that the workflow execution of interest must again be synced in order to inspect the input and output of the contained tasks.
 
 ```{code-block} python
 @task
@@ -403,8 +360,8 @@ def parent_wf(x: int = 1) -> int:
     x = add_random(x=x)
     return sub_wf_lp(x=x)
 ```
-To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the
-`parent_wf`:
+
+To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the `parent_wf`:
 
 ```{code-block} python
 execution = remote.fetch_execution(name="adgswtrzfn99k2cws49q", project="flytesnacks", domain="development")
