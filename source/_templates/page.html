@@ -2,12 +2,10 @@
 {{ super() }}
 
 {% block extrahead %}
-
 <!-- Inter + Roboto Mono Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-<!-- End Inter + Roboto Mono Font -->
 
 <!-- Google Tag Manager -->
 <script>
@@ -22,63 +20,24 @@
     f.parentNode.insertBefore(j, f);
 })(window, document, "script", "dataLayer", "GTM-WC8V9XS");
 </script>
-<!-- End Google Tag Manager -->
+
 <!-- UnionAI docs variant switcher -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-
-    // Variant of the current page.
-    // e.g., 'serverless'
-    const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;;
-
-    // Available variants of the current page (including the current page).
-    // e.g., '["serverless", "byoc"]
+    const currentVariant = document.getElementById('unionai-docs-current-variant').textContent;
     const availableVariants = JSON.parse(document.getElementById('unionai-docs-available-variants').textContent);
-
-    // Object mapping variant name to display name
-    // e.g., {'serverless': 'Serverless', 'byoc': 'BYOC'}
     const variantDisplayNames = JSON.parse(document.getElementById('unionai-docs-variant-display-names').textContent);
-
-    // List of all variants (globally, not just this page)
     const m = new Map(Object.entries(variantDisplayNames));
     const allVariants = Array.from(m.keys());
-
-    // URL of current page
-    // e.g., 'https://docs.unionai.com/serverless/guide/'
     const currentUrl = new URL(window.location.href);
-
-    // Current URL in segments
-    // e.g., ['serverless', 'guide']
     const currentUrlSegments = currentUrl.pathname.split('/').filter(Boolean);
-
-    // Index of the current variant in the URL segments
-    // e.g., 0
     const variantIndexInUrl = currentUrlSegments.indexOf(currentVariant);
-
-    // An array of variant link objects, one for each variant (globally not just variants of the current page).
-    // Each object has the following properties:
-    //
-    // * text: The display name of the variant represented by this object
-    //   (e.g., "Serverless" or "BYOC").
-    //
-    // * url: The URL of the current page in this variant,
-    //   if it exists (e.g., "https://docs.unionai.com/serverless/guide",
-    //   "https://docs.unionai.com/byoc/guide") the top of the website in
-    //   this variant (e.g., "https://docs.unionai.com/serverless/"
-    //   or "https://docs.unionai.com/byoc/")
     const variantLinks = [];
 
-    // For each variant, fill in text, peerUrl, and topUrl for the current page
-    // and add it to the variant_links object.
+    // Generate variant links
     allVariants.forEach(variant => {
-
-        // Get the URL segments in the current URL that come before the variant segment
         const prefixSegments = currentUrlSegments.slice(0, variantIndexInUrl);
-
-        // Get the URL segments in the current URL that come after the variant segment
         const suffixSegments = currentUrlSegments.slice(variantIndexInUrl + 1);
-
-        // Construct the top and peer URLs
         const topUrlSegments = prefixSegments.concat([variant]);
         const peerUrlSegments = prefixSegments.concat([variant], suffixSegments);
         const topUrl = new URL(currentUrl);
@@ -86,44 +45,73 @@ document.addEventListener("DOMContentLoaded", function() {
         const peerUrl = new URL(currentUrl);
         peerUrl.pathname = '/' + peerUrlSegments.join('/');
 
-        // Create a variant link object
-        const variantLink = {};
-
-        // Set the variantLink text to the display name of the variant
-        variantLink.text = variantDisplayNames[variant];
-
-        // If the variant is available for the current page, set the variantLink URL
-        // to the peerURL, otherwise set it to the topURL
-        if (availableVariants.includes(variant)) {
-            variantLink.url = peerUrl.href;
-        } else {
-            variantLink.url = topUrl.href;
-        }
-
-        // Add the variant link to the list of variant links
+        const variantLink = {
+            text: variantDisplayNames[variant],
+            url: availableVariants.includes(variant) ? peerUrl.href : topUrl.href,
+            isSelected: variant === currentVariant
+        };
         variantLinks.push(variantLink);
     });
 
-    // Insert the variant links into the dropdown menu
-    dropdownLinkContainers = document.getElementsByClassName('variant-selector-links');
-    for (let container of dropdownLinkContainers) {
+    // Update the variant selector
+    const dropdownContent = document.querySelector('.variant-dropdown-content');
+    if (dropdownContent) {
         variantLinks.forEach(variantLink => {
             const anchor = document.createElement('a');
             anchor.textContent = variantLink.text;
             anchor.href = variantLink.url;
-            container.appendChild(anchor);
-        })
+            if (variantLink.isSelected) {
+                anchor.classList.add('selected');
+            }
+            dropdownContent.appendChild(anchor);
+        });
     }
 
-    // Insert the name of the current variant into the dropdown menu button
-    dropdownTextContainers = document.getElementsByClassName('variant-selector-button')
-    for (let container of dropdownTextContainers) {
-        container.textContent = variantDisplayNames[currentVariant];
+    // Update the variant text in the button
+    const variantText = document.querySelector('.variant-text');
+    if (variantText) {
+        variantText.textContent = variantDisplayNames[currentVariant];
     }
-})
 
+    // Click handler for the dropdown button
+    const variantButton = document.querySelector('.variant-dropdown-button');
+    if (variantButton) {
+        variantButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const selector = this.closest('.variant-selector');
+            const dropdown = this.nextElementSibling;
+            const isOpen = dropdown.style.display === 'block';
+            
+            if (isOpen) {
+                dropdown.style.display = 'none';
+                selector.classList.remove('active');
+            } else {
+                dropdown.style.display = 'block';
+                selector.classList.add('active');
+            }
+        });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.variant-selector')) {
+            const dropdowns = document.querySelectorAll('.variant-dropdown-content');
+            const selectors = document.querySelectorAll('.variant-selector');
+            dropdowns.forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+            selectors.forEach(selector => {
+                selector.classList.remove('active');
+            });
+        }
+    });
+
+    // Prevent dropdown from closing when clicking inside it
+    dropdownContent?.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+});
 </script>
-<!-- End UnionAI docs variant switcher -->
 {% endblock %}
 
 {% block body %}
@@ -135,13 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
 {{ super() }}
 
 <!-- Google Tag Manager (noscript) -->
-<noscript
-  ><iframe
-    src="https://www.googletagmanager.com/ns.html?id=GTM-WC8V9XS"
-    height="0"
-    width="0"
-    style="display: none; visibility: hidden"
-  ></iframe
-></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WC8V9XS" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {% endblock %}
