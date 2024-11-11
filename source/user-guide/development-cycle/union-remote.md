@@ -104,9 +104,7 @@ wf2 = remote.register_workflow(
 )
 ```
 
-## Fetching entities
-
-### Fetching tasks, workflows, launch plans, and executions
+## Fetching tasks, workflows, launch plans, and executions
 
 ```{code-block} python
 my_task = remote.fetch_task(name="my_task", version="v1")
@@ -148,7 +146,7 @@ my_workflow = remote.fetch_workflow(
 launch_plan = LaunchPlan.get_or_create(name="my_launch_plan", workflow=my_workflow)
 ```
 
-### Fetching artifacts
+## Fetching artifacts
 
 Each artifact version has a unique URI of the form `flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>`.
 
@@ -206,9 +204,7 @@ remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<
 
 {@@ endif @@}
 
-## Creating entities
-
-### Creating artifacts
+## Creating artifacts
 
 To create an artifact with `UnionRemote`, declare the artifact, then pass it to the `create_artifact` method:
 
@@ -247,7 +243,7 @@ For the full list of parameters, see the [Artifact class documentation](../../ap
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
 :::
 
-## Executing entities
+## Executing tasks, workflows, and launch plans
 
 You can execute a task, workflow, or launch plan using the `execute` method
 which returns a `FlyteWorkflowExecution` object:
@@ -293,7 +289,7 @@ execution = remote.execute(
 )
 ```
 
-## Retrieving & inspecting executions
+## Retrieving and inspecting executions
 
 After an execution is completed, you can retrieve the execution using the `fetch_execution` method. The fetched execution can be used to retrieve the inputs and outputs of an execution:
 
@@ -335,7 +331,7 @@ node_execution_output = synced_execution.node_executions["n1"].outputs["model_fi
 
 Node here can correspond to a task, workflow, or branch node.
 
-### Reference launch plan executions
+## Reference launch plan executions
 
 When retrieving and inspecting an execution which calls a launch plan, the launch plan manifests as a sub-workflow which can be found within the `workflow_executions` of a given node execution.
 Note that the workflow execution of interest must again be synced in order to inspect the input and output of the contained tasks.
