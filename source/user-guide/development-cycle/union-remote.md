@@ -141,7 +141,10 @@ Another example that dynamically creates a launch plan for the `my_remote_wf` wo
 from flytekit import LaunchPlan
 
 my_workflow = remote.fetch_workflow(
-    name="my_workflow", version="v1", project="flytesnacks", domain="development"
+    name="my_workflow",
+    version="v1",
+    project="flytesnacks",
+    domain="development",
 )
 launch_plan = LaunchPlan.get_or_create(name="my_launch_plan", workflow=my_workflow)
 ```
@@ -158,11 +161,16 @@ To fetch a single artifact, pass this URI to the `get_artifact` method:
 from flytekit.configuration import Config, PlatformConfig, AuthType
 from union.remote import UnionRemote
 
-remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
-    endpoint="example.domain.unionai.cloud", # replace with your domain
-    insecure=False)))
+remote = UnionRemote(
+    Config.auto().with_params(
+        platform=PlatformConfig(
+            endpoint="example.domain.unionai.cloud",
+            insecure=False,
+        )
+    )
+)
 
-remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>") # replace with your artifact URI
+remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>")
 ```
 
 {@@ elif serverless @@}
@@ -172,7 +180,7 @@ from union.remote import UnionRemote
 
 remote = UnionRemote()
 
-remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>") # replace with your artifact URI
+remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>@<artifact_version>")
 ```
 
 {@@ endif @@}
@@ -185,11 +193,16 @@ To dynamically query for artifacts, you can pass an artifact URI with a query to
 from flytekit.configuration import Config, PlatformConfig, AuthType
 from union.remote import UnionRemote
 
-remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
-    endpoint="example.domain.unionai.cloud", # replace with your domain
-    insecure=False)))
+remote = UnionRemote(
+    Config.auto().with_params(
+        platform=PlatformConfig(
+            endpoint="example.domain.unionai.cloud",
+            insecure=False,
+        )
+    )
+)
 
-remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<partition_key1>=<partition_value1>&...") # replace with your artifact query
+remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<partition_key1>=<partition_value1>&...")
 ```
 
 {@@ elif serverless @@}
@@ -199,7 +212,7 @@ from union.remote import UnionRemote
 
 remote = UnionRemote()
 
-remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<partition_key1>=<partition_value1>&...") # replace with your artifact query
+remote.get_artifact("flyte://<organization>/<project>/<domain>/<artifact_name>?<partition_key1>=<partition_value1>&...")
 ```
 
 {@@ endif @@}
@@ -215,9 +228,14 @@ from flytekit.configuration import Config, PlatformConfig, AuthType
 from union.remote import UnionRemote
 from flytekit.core.artifact import Artifact
 
-remote = UnionRemote(Config.auto().with_params(platform=PlatformConfig(
-    endpoint="example.domain.unionai.cloud", # replace with your domain
-    insecure=False)))
+remote = UnionRemote(
+    Config.auto().with_params(
+        platform=PlatformConfig(
+            endpoint="example.domain.unionai.cloud",
+            insecure=False,
+        )
+    )
+)
 
 BasicArtifact = Artifact(name="my_basic_artifact")
 remote.create_artifact(BasicArtifact)
@@ -360,7 +378,11 @@ def parent_wf(x: int = 1) -> int:
 To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the `parent_wf`:
 
 ```{code-block} python
-execution = remote.fetch_execution(name="adgswtrzfn99k2cws49q", project="flytesnacks", domain="development")
+execution = remote.fetch_execution(
+    name="adgswtrzfn99k2cws49q",
+    project="flytesnacks",
+    domain="development",
+)
 remote.sync_execution(execution, sync_nodes=True)
 remote.sync_execution(execution.node_executions['n1'].workflow_executions[0], sync_nodes=True)
 out = execution.node_executions['n1'].workflow_executions[0].node_executions['n0'].outputs['o0']
@@ -371,7 +393,11 @@ out = execution.node_executions['n1'].workflow_executions[0].node_executions['n0
 To list recent executions, use the `recent_executions` method:
 
 ```{code-block} python
-recent_executions = remote.recent_executions(project="flytesnacks", domain="development", limit=10)
+recent_executions = remote.recent_executions(
+    project="flytesnacks",
+    domain="development",
+    limit=10,
+)
 ```
 
 The `limit` parameter is optional and defaults to 100.
@@ -379,7 +405,11 @@ The `limit` parameter is optional and defaults to 100.
 To list tasks by version, use the `UnionRemote.list_tasks_by_version` method.
 
 ```{code-block} python
-tasks = remote.list_tasks_by_version(project="flytesnacks", domain="development", version="v1")
+tasks = remote.list_tasks_by_version(
+    project="flytesnacks",
+    domain="development",
+    version="v1",
+)
 ```
 
 ## Terminating an execution
@@ -387,6 +417,10 @@ tasks = remote.list_tasks_by_version(project="flytesnacks", domain="development"
 To terminate an execution, use the `terminate` method:
 
 ```{code-block} python
-execution = remote.fetch_execution(name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development")
+execution = remote.fetch_execution(
+    name="fb22e306a0d91e1c6000",
+    project="flytesnacks",
+    domain="development",
+)
 remote.terminate(execution, cause="Code needs to be updated")
 ```
