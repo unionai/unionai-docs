@@ -57,7 +57,6 @@ remote = UnionRemote(
 
 {@@ endif @@}
 
-
 ## Registering entities
 
 Tasks, workflows, and launch plans can be registered using `UnionRemote`:
@@ -248,8 +247,6 @@ For the full list of parameters, see the [Artifact class documentation](../../ap
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
 :::
 
-
-
 ## Executing entities
 
 You can execute a task, workflow, or launch plan using the `execute` method
@@ -258,7 +255,10 @@ which returns a `FlyteWorkflowExecution` object:
 ```{code-block} python
 some_entity = ...  # one of FlyteTask, FlyteWorkflow, or FlyteLaunchPlan
 execution = remote.execute(
-    some_entity, inputs={...}, execution_name="my_execution", wait=True
+    some_entity,
+    inputs={...},
+    execution_name="my_execution",
+    wait=True,
 )
 ```
 
@@ -299,7 +299,9 @@ After an execution is completed, you can retrieve the execution using the `fetch
 
 ```{code-block} python
 execution = remote.fetch_execution(
-    name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development"
+    name="fb22e306a0d91e1c6000",
+    project="flytesnacks",
+    domain="development",
 )
 input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
@@ -323,10 +325,6 @@ synced_execution = remote.sync(execution, sync_nodes=True)
 node_keys = synced_execution.node_executions.keys()
 ```
 
-:::{note}
-During the sync, you may encounter an error of `Received message larger than max (xxx vs. 4194304)` if the message size is too large. In that case, reach out to the Union team.
-:::
-
 `node_executions` will fetch all the underlying node executions recursively.
 
 To fetch output of a specific node execution:
@@ -339,9 +337,8 @@ Node here can correspond to a task, workflow, or branch node.
 
 ### Reference launch plan executions
 
-When retrieving and inspecting an execution which calls a launch plan, the launch plan manifests as a sub-workflow which
-can be found within the `workflow_executions` of a given node execution. Note that the workflow execution of interest
-must again be synced in order to inspect the input and output of the contained tasks.
+When retrieving and inspecting an execution which calls a launch plan, the launch plan manifests as a sub-workflow which can be found within the `workflow_executions` of a given node execution.
+Note that the workflow execution of interest must again be synced in order to inspect the input and output of the contained tasks.
 
 ```{code-block} python
 @task
@@ -363,8 +360,8 @@ def parent_wf(x: int = 1) -> int:
     x = add_random(x=x)
     return sub_wf_lp(x=x)
 ```
-To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the
-`parent_wf`:
+
+To get the output of the first `add_random` call in `sub_wf`, you can do the following with the `execution` from the `parent_wf`:
 
 ```{code-block} python
 execution = remote.fetch_execution(name="adgswtrzfn99k2cws49q", project="flytesnacks", domain="development")
