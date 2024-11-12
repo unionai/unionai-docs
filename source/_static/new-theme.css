@@ -472,6 +472,14 @@ html .pst-navbar-icon:hover:before {
     background-color: var(--color-surface-container-lowest);
 }
 
+.sidebar-primary-item .sidebar-theme-toggle {
+    padding-bottom: 2.5rem !important;
+}
+
+.bd-sidebar-primary .sidebar-primary-items__end .sidebar-primary-item {
+    padding-bottom: 2.5rem !important;
+}
+
 nav.bd-links li>a:hover {
     text-decoration: none !important;
 
