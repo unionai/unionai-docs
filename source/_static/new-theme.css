@@ -319,6 +319,16 @@ nav.bd-links .current>a {
     font-weight: 700 !important;
 }
 
+a .reference .internal .nav-link .active {
+    color: var(--color-text-primary) !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+.toc-entry a.nav-link.active {
+    box-shadow: none !important;
+    color: var(--primary-color);
+}
 
 /* ==========================================================================
    Navigation & Header Styles
@@ -737,7 +747,7 @@ html[data-theme="dark"] .variant-dropdown-content {
 
 .prev-next-area a p.prev-next-title {
     word-wrap: break-word;
-    /* color: var(--pst-color-link); */
+    color: var(--primary-color);
     font-size: 1.1em;
     font-weight: var(--pst-admonition-font-weight-heading);
     text-decoration: none !important;
