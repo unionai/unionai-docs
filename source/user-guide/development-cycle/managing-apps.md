@@ -8,7 +8,7 @@ on Union, e.g. a Github action that registers or runs workflows.
 To create an API key, run the following with the `union` CLI with any name.
 
 ```{code-block} shell
-union create app custom_name
+union create api-key --kind admin --id my-custom-name
 
 Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
@@ -49,7 +49,7 @@ union run --remote hello.py main --name "Union"
 You can list all your application by running:
 
 ```{code-block} shell
-union get app
+union get api-key --kind admin
 ```
 
 ```{code-block} shell
@@ -66,5 +66,5 @@ user name.
 Finally, you can delete your application by running:
 
 ```{code-block} shell
-union delete app my-custom-name
+union delete api-key --kind admin --id my-custom-name
 ```
