@@ -154,8 +154,12 @@ Conversely, if a user requests the following:
 
 The workload will schedule on a larger instance (like the `c5.4xlarge`) because `4000m` exceeds the allocatable CPU on the `t3a.xlarge`, despite the fact that this instance type is [marketed](https://instances.vantage.sh/aws/ec2/t3a.xlarge) as having 4 CPU cores. The discrepancy is due to overheads and holdbacks introduced by K8s to ensure adequate resources to schedule pods on the node.
 
+{@@ if byoc @@}
+
 ## Billing
 
 The **Billing** tab displays the cost of running workflows and tasks in your Union installation.
 
 ![Billing](/_static/images/user-guide/administration/usage/usage-billing.png)
+
+{@@ endif @@}
