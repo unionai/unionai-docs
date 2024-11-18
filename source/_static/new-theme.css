@@ -121,7 +121,7 @@ p {
     font-family: var(--font-family-base);
     font-weight: 400 !important;
     line-height: 26px !important;
-    letter-spacing: 0.5px !important;
+    /* letter-spacing: 0.5px !important; */
 }
 
 a {
