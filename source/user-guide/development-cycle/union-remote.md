@@ -16,13 +16,13 @@ from union.remote import UnionRemote
 remote = UnionRemote()
 ```
 
-By default, when created with a no-argument constructor, `UnionRemote` will use the prevailing configuration in the local environment to connect to Union, that is, the same configuration as would be used by the `union` CLI in that environment (see [Union CLI > `union` CLI configuration search path](../../api/union-cli.md#union-cli-configuration-search-path)).
+By default, when created with a no-argument constructor, `UnionRemote` will use the prevailing configuration in the local environment to connect to Union, that is, the same configuration as would be used by the `union` CLI in that environment (see [Union CLI > `union` CLI configuration search path](../../api-reference/union-cli.md#union-cli-configuration-search-path)).
 
 In the default case, as with the `union` CLI, all operations will be applied to the default project, `flytesnacks` and default domain, `development`.
 
 {@@ if byoc @@}
 
-Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see XX)):
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see [TODO](TODO)):
 
 ```{code-block} python
 from union.remote import UnionRemote
@@ -39,7 +39,7 @@ remote = UnionRemote(
 Here we use the `Config.for_endpoint` method to specify the URL to connect to.
 There are number of other ways to configure the `Config` object.
 In general, you have all the same options as you would when specifying a connection for the `union` CLI using a `config.yaml` file.
-For details see [the API docs for `flytekit.configuration.Config`]().
+For details see [the API docs for `flytekit.configuration.Config`](TODO).
 
 {@@ elif serverless @@}
 
@@ -424,3 +424,6 @@ execution = remote.fetch_execution(
 )
 remote.terminate(execution, cause="Code needs to be updated")
 ```
+
+## Retrieving outputs
+
