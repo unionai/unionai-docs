@@ -675,6 +675,7 @@ html[data-theme="dark"] .variant-dropdown-content {
     justify-content: space-between;
     margin-top: 2rem;
     margin-bottom: 2rem;
+    padding: 48px 0px;
 }
 
 .prev-next-area a {
@@ -1028,8 +1029,9 @@ pre {
    ========================================================================== */
 
 .bd-footer-content {
-    margin-top: 2rem;
-    padding: 2rem 0;
+    /* margin-top: 2rem; */
+    /* padding: 2rem 0; */
+    padding-bottom: 20px;
     /* border-top: 1px solid var(--color-outline-variant); */
 }
 
