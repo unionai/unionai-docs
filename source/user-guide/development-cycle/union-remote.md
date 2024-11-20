@@ -309,7 +309,8 @@ execution = remote.execute(
 
 ## Retrieving and inspecting executions
 
-After an execution is completed, you can retrieve the execution using the `fetch_execution` method. The fetched execution can be used to retrieve the inputs and outputs of an execution:
+After an execution is completed, you can retrieve the execution using the `fetch_execution` method.
+The fetched execution can be used to retrieve the inputs and outputs of an execution:
 
 ```{code-block} python
 execution = remote.fetch_execution(
@@ -321,6 +322,8 @@ input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
 ```
 
+##
+
 The `inputs` and `outputs` correspond to the top-level execution or the workflow itself.
 
 To fetch a specific output, say, a model file:
@@ -331,6 +334,8 @@ with open(model_file) as f:
     # use mode
     ...
 ```
+
+## Syncing state
 
 You can use `sync` to sync the entity object's state with the remote state during the execution run:
 
@@ -348,6 +353,20 @@ node_execution_output = synced_execution.node_executions["n1"].outputs["model_fi
 ```
 
 Node here can correspond to a task, workflow, or branch node.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Reference launch plan executions
 
@@ -424,6 +443,3 @@ execution = remote.fetch_execution(
 )
 remote.terminate(execution, cause="Code needs to be updated")
 ```
-
-## Retrieving outputs
-
