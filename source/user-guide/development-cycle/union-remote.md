@@ -4,11 +4,13 @@ The `UnionRemote` Python API supports functionality similar to that of the `unio
 
 :::{note}
 The primary use case of `UnionRemote` is to automate the deployment of Union entities. As such, it is intended for use within scripts *external* to actual Union workflow and task code, for example CI/CD pipeline scripts.
+
+In other words: _Do not use `UnionRemote` within task code._
 :::
 
 ## Creating a `UnionRemote` object
 
-To use `UnionRemote`, install the `union` SDK with `pip install union`, then import the class and create the object like this:
+Ensure that you have the `union` SDK installed, import the `UnionRemote` class and create the object like this:
 
 ```{code-block} python
 from union.remote import UnionRemote
@@ -22,7 +24,7 @@ In the default case, as with the `union` CLI, all operations will be applied to 
 
 {@@ if byoc @@}
 
-Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix (see [TODO](TODO)):
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix. See [TODO](TODO)):
 
 ```{code-block} python
 from union.remote import UnionRemote
@@ -57,52 +59,213 @@ remote = UnionRemote(
 
 {@@ endif @@}
 
-## Registering entities
+## Registering and running a workflow
 
-Tasks, workflows, and launch plans can be registered using `UnionRemote`:
+The simplest way to register and run a workflow is to use `UnionRemote.fast_register_workflow` and `UnionRemote.execute`
 
-```{code-block} python
-from flytekit.configuration import SerializationSettings
+Here is  an example project structure:
 
-some_entity = ...
-my_task = remote.register_task(
-    entity=some_entity,
-    serialization_settings=SerializationSettings(image_config=None),
-    version="v1",
-)
-my_workflow = remote.register_workflow(
-    entity=some_entity,
-    serialization_settings=SerializationSettings(image_config=None),
-    version="v1",
-)
-my_launch_plan = remote.register_launch_plan(entity=some_entity, version="v1")
+```{code-block} bash
+:caption: A simple project
+
+├── remote.py
+└── workflow
+    ├── __init__.py
+    └── example.py
 ```
 
-* `entity`: the entity to register.
-* `version`: the version that will be used to register. If not specified, the version used in serialization settings will be used.
-* `serialization_settings`: the serialization settings to use. Refer to `configuration.SerializationSettings` to know all the acceptable parameters.
-
-All the additional parameters which can be sent to the `register_*` methods can be found in the documentation for the corresponding method:
-`register_task`, `register_workflow`,
-and `register_launch_plan`.
-
-The `configuration.SerializationSettings` class accepts `configuration.ImageConfig` which
-holds the available images to use for the registration.
-
-The following example showcases how to register a workflow using an existing image if the workflow is created locally:
+The workflow code resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
 
 ```{code-block} python
-from flytekit.configuration import ImageConfig
+:caption: example.py
+import os
+from flytekit import task, workflow
+from flytekit.types.file import FlyteFile
 
-img = ImageConfig.from_images(
-    "docker.io/xyz:latest", {"spark": "docker.io/spark:latest"}
-)
-wf2 = remote.register_workflow(
-    my_remote_wf,
-    serialization_settings=SerializationSettings(image_config=img),
-    version="v1",
+
+@task()
+def create_file(message: str) -> FlyteFile:
+    with open("data.txt", "w") as f:
+        f.write(message)
+    return FlyteFile(path="data.txt")
+
+@workflow
+def my_workflow(message: str) -> FlyteFile:
+    f = create_file(message)
+    return f
+```
+
+The file `remote.py` contains the UnionRemote logic (and is not part of the workflow code):
+
+```{code-block} python
+:caption: remote.py
+from union.remote import UnionRemote
+from flytekit.tools.translator import Options
+from workflow.example import my_workflow
+
+
+def run_workflow():
+    remote = UnionRemote()
+    remote.fast_register_workflow(entity=my_workflow)
+    execution = remote.execute(
+        entity=my_workflow,
+        inputs={"message": "Hello, world!"},
+        wait=True)
+    output = execution.outputs["o0"]
+    print(output)
+    with open(output, "r") as f:
+        read_lines = f.readlines()
+    print(read_lines)
+
+
+if __name__ == "__main__":
+    run_workflow()
+```
+
+Note a few things about the code above:
+* Since no project or domain are specified when creating the `UnionRemote` object the default project (`flytesnacks`) and the default domain (`development`)
+  will be used.
+* Since no container image is specified in the `@task` declaration, the default container image will be used.
+* The method `UnionRemote.fast_register_workflow` take the actual workflow function (the Python object) as input.
+* The registration logic then registers that workflow and all tasks referenced by it (you don't have to individually register each task)
+* If you the results of an execution you have to retrieve the execution and then wait for it to complete.
+  The method `UnionRemote.execute` provides the `wait` flag for this purpose. When `wait=True` `execute` will block until the execution is completed and then return.
+
+
+You can run the code with:
+
+```{code-block} bash
+$ python remote.py
+```
+
+`UnionRemote` provides a variety methods for registering and running workflows.
+For details see [API reference > UnionRemote > Entrypoint](../../api-reference/union-remote/entrypoint.md)
+
+
+
+## Executing tasks, workflows, and launch plans
+
+You can execute a task, workflow, or launch plan using the `execute` method
+which returns a `FlyteWorkflowExecution` object:
+
+```{code-block} python
+some_entity = ...  # one of FlyteTask, FlyteWorkflow, or FlyteLaunchPlan
+execution = remote.execute(
+    some_entity,
+    inputs={...},
+    execution_name="my_execution",
+    wait=True,
 )
 ```
+
+* `inputs`: the inputs to the entity.
+* `execution_name`: the name of the execution. This is useful to avoid de-duplication of executions.
+* `wait`: synchronously wait for the execution to complete.
+
+Additional arguments include:
+
+* `project`: the project on which to execute the entity.
+* `domain`: the domain on which to execute the entity.
+* `type_hints`: a dictionary mapping Python types to their corresponding Flyte types.
+* `options`: options can be configured for a launch plan during registration or overridden during execution. Refer to `Options` to know all the acceptable parameters.
+
+The following is an example demonstrating how to use the `Options` class to configure a Flyte entity:
+
+```{code-block} python
+from flytekit.models.common import AuthRole, Labels
+from flytekit.tools.translator import Options
+
+some_entity = ...  # one of FlyteTask, FlyteWorkflow, or FlyteLaunchPlan
+execution = remote.execute(
+    some_entity,
+    inputs={...},
+    execution_name="my_execution",
+    wait=True,
+    options=Options(
+        raw_data_prefix="s3://my-bucket/my-prefix",
+        auth_role=AuthRole(assumable_iam_role="my-role"),
+        labels=Labels({"my-label": "my-value"}),
+    ),
+)
+```
+
+## Retrieving and inspecting executions
+
+After an execution is completed, you can retrieve the execution using the `fetch_execution` method.
+The fetched execution can be used to retrieve the inputs and outputs of an execution:
+
+```{code-block} python
+execution = remote.fetch_execution(
+    name="fb22e306a0d91e1c6000",
+    project="flytesnacks",
+    domain="development",
+)
+input_keys = execution.inputs.keys()
+output_keys = execution.outputs.keys()
+```
+
+##
+
+The `inputs` and `outputs` correspond to the top-level execution or the workflow itself.
+
+To fetch a specific output, say, a model file:
+
+```{code-block} python
+model_file = execution.outputs["model_file"]
+with open(model_file) as f:
+    # use mode
+    ...
+```
+
+## Syncing state
+
+You can use `sync` to sync the entity object's state with the remote state during the execution run:
+
+```{code-block} python
+synced_execution = remote.sync(execution, sync_nodes=True)
+node_keys = synced_execution.node_executions.keys()
+```
+
+`node_executions` will fetch all the underlying node executions recursively.
+
+To fetch output of a specific node execution:
+
+```{code-block} python
+node_execution_output = synced_execution.node_executions["n1"].outputs["model_file"]
+```
+
+Node here can correspond to a task, workflow, or branch node.
+
+## Terminating an execution
+
+To terminate an execution, use the `terminate` method:
+
+```{code-block} python
+execution = remote.fetch_execution(
+    name="fb22e306a0d91e1c6000",
+    project="flytesnacks",
+    domain="development",
+)
+remote.terminate(execution, cause="Code needs to be updated")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Fetching tasks, workflows, launch plans, and executions
 
@@ -261,100 +424,6 @@ For the full list of parameters, see the [Artifact class documentation](../../ap
 If you want to create a new version of an existing artifact, be sure to set the `version` parameter. Without it, attempting to recreate the same artifact will result in an error.
 :::
 
-## Executing tasks, workflows, and launch plans
-
-You can execute a task, workflow, or launch plan using the `execute` method
-which returns a `FlyteWorkflowExecution` object:
-
-```{code-block} python
-some_entity = ...  # one of FlyteTask, FlyteWorkflow, or FlyteLaunchPlan
-execution = remote.execute(
-    some_entity,
-    inputs={...},
-    execution_name="my_execution",
-    wait=True,
-)
-```
-
-* `inputs`: the inputs to the entity.
-* `execution_name`: the name of the execution. This is useful to avoid de-duplication of executions.
-* `wait`: synchronously wait for the execution to complete.
-
-Additional arguments include:
-
-* `project`: the project on which to execute the entity.
-* `domain`: the domain on which to execute the entity.
-* `type_hints`: a dictionary mapping Python types to their corresponding Flyte types.
-* `options`: options can be configured for a launch plan during registration or overridden during execution. Refer to `Options` to know all the acceptable parameters.
-
-The following is an example demonstrating how to use the `Options` class to configure a Flyte entity:
-
-```{code-block} python
-from flytekit.models.common import AuthRole, Labels
-from flytekit.tools.translator import Options
-
-some_entity = ...  # one of FlyteTask, FlyteWorkflow, or FlyteLaunchPlan
-execution = remote.execute(
-    some_entity,
-    inputs={...},
-    execution_name="my_execution",
-    wait=True,
-    options=Options(
-        raw_data_prefix="s3://my-bucket/my-prefix",
-        auth_role=AuthRole(assumable_iam_role="my-role"),
-        labels=Labels({"my-label": "my-value"}),
-    ),
-)
-```
-
-## Retrieving and inspecting executions
-
-After an execution is completed, you can retrieve the execution using the `fetch_execution` method.
-The fetched execution can be used to retrieve the inputs and outputs of an execution:
-
-```{code-block} python
-execution = remote.fetch_execution(
-    name="fb22e306a0d91e1c6000",
-    project="flytesnacks",
-    domain="development",
-)
-input_keys = execution.inputs.keys()
-output_keys = execution.outputs.keys()
-```
-
-##
-
-The `inputs` and `outputs` correspond to the top-level execution or the workflow itself.
-
-To fetch a specific output, say, a model file:
-
-```{code-block} python
-model_file = execution.outputs["model_file"]
-with open(model_file) as f:
-    # use mode
-    ...
-```
-
-## Syncing state
-
-You can use `sync` to sync the entity object's state with the remote state during the execution run:
-
-```{code-block} python
-synced_execution = remote.sync(execution, sync_nodes=True)
-node_keys = synced_execution.node_executions.keys()
-```
-
-`node_executions` will fetch all the underlying node executions recursively.
-
-To fetch output of a specific node execution:
-
-```{code-block} python
-node_execution_output = synced_execution.node_executions["n1"].outputs["model_file"]
-```
-
-Node here can correspond to a task, workflow, or branch node.
-
-
 
 
 
@@ -431,15 +500,4 @@ tasks = remote.list_tasks_by_version(
 )
 ```
 
-## Terminating an execution
 
-To terminate an execution, use the `terminate` method:
-
-```{code-block} python
-execution = remote.fetch_execution(
-    name="fb22e306a0d91e1c6000",
-    project="flytesnacks",
-    domain="development",
-)
-remote.terminate(execution, cause="Code needs to be updated")
-```
