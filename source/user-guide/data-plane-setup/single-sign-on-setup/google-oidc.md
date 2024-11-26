@@ -3,12 +3,12 @@
 To set up your Union instance to use Google OpenID Connect as the identity provider, follow the directions below.
 
 :::{admonition} Google documentation
-In this article, we cover the same steps as the [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation, but with additional directions specific to Union.
+In this article, we cover the same steps as in the [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation, but with additional directions specific to Union.
 :::
 
 ## Setting up OAuth 2.0
 
-Before your Union can use Google's OAuth 2.0 authentication system for user login, select an existing project or set up a new project in the [Google Cloud Console](https://console.cloud.google.com).
+Before your Union tenant can use Google's OAuth 2.0 authentication system for user login, select an existing project or set up a new project in the [Google Cloud Console](https://console.cloud.google.com).
 
 1. Maneuver to the Clients section for [Google Auth Platform](https://console.cloud.google.com/auth/).
 
@@ -30,15 +30,7 @@ Click on your configured client and copy the values for **Client ID** & **Client
 
 1. Copy the public key provided by Union here: [**public-key.txt**](/_static/public/public-key.txt)
 
-1. Go to [https://pgptool.org](https://pgptool.org/).
+2. Encrypt the given text file on your computer with a pgb tool of your choice.
 
-1. Click the **Encrypt** tab.
-
-1. Upload the public key provided by Union under **Receiver's public key**.
-
-1. Skip the **Signer’s Private Key** section.
-
-1. Enter the **client secret** in plain text and encrypt it.
-
-1. Download the encrypted text and share it with the Union team over Slack.
+3. Share the encrypted message with the Union team over Slack.
 

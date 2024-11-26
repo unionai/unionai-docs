@@ -7,7 +7,7 @@ The team will then complete the process.
 
 ## Google OpenID Connect
 
-To configure Google OpenID Connect, see [Google OpenID Connect)](./google-oidc).
+To configure Google OpenID Connect, see [Google OpenID Connect](./google-oidc).
 
 ## Microsoft Entra ID (formerly Azure AD)
 
