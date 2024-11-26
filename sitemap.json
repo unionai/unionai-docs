@@ -12,6 +12,7 @@
                         {"name": "data-plane-setup-on-azure", "variants": ["byoc"]},
                         {"name": "single-sign-on-setup", "variants": ["byoc"],
                             "children": [
+                                {"name": "google-oidc", "variants": ["byoc"]},
                                 {"name": "microsoft-entra-id", "variants": ["byoc"]},
                                 {"name": "other-identity-providers", "variants": ["byoc"]}
                             ]
