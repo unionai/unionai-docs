@@ -812,15 +812,70 @@ code.literal {
         display: none !important;
     }
 
-    /* Basic layout */
-    .union-navbar-container {
-        flex-direction: column;
+    /* But keep the search visible */
+    .navbar-header-items__end .navbar-item:has(#docsearch) {
+        display: flex !important;
         width: 100%;
+        padding: 0.5rem 1rem;
+        margin: 0;
     }
 
-    .union-navbar-left,
-    .union-navbar-right {
+    /* Make the search button full width */
+    .navbar-header-items__end .navbar-item:has(#docsearch) .DocSearch-Button {
         width: 100%;
+        margin: 0;
+        height: 40px;
+    }
+
+    .union-navbar-left {
+        display: flex;
+        flex-direction: column;
+        margin-right: 37px;
+    }
+    
+    /* Hide keyboard shortcut on mobile */
+    .DocSearch-Button-Keys {
+        display: none !important;
+    }
+
+    /* Center the text and icon */
+    .DocSearch-Button-Container {
+        margin: 0 auto;
+    }
+    
+    /* Adjust search button styling for mobile */
+    .DocSearch-Button {
+        background: var(--color-surface-container-low) !important;
+        border-radius: 8px;
+    }
+    /* Basic layout */
+    .union-navbar-container {
+        flex-direction: row;
+        /* width: 90%; */
+    }
+
+    .union-navbar-left
+    {
+        width: 80%;
+    }
+
+    .union-navbar-right {
+        /* width: 20%; */
+        margin-right: -20px !important;
+        padding: .5rem;
+    }
+
+    .navbar-header-items__end .vertical-separator {
+        display: none !important;
+    }
+
+    .navbar-header-items__start .vertical-separator {
+        margin: 0 0 !important;
+    }
+
+    .variant-selector-wrapper {
+        display: inline-block;
+        margin: 0 1px;
     }
 
     .version-label {
@@ -913,7 +968,7 @@ code.literal {
     }
 
     .navbar-brand img {
-        max-width: 80%;
+        max-width: 60%;
     }
 
     p.title.logo__title {
@@ -950,6 +1005,10 @@ code.literal {
 
     .sidebar-primary-items__mobile-nav .sidebar-primary-item a:hover {
         color: var(--color-link-tertiary);
+    }
+
+    .bd-header .navbar-header-items__center, .bd-header .navbar-header-items__end {
+        column-gap: unset !important;
     }
 
 }
@@ -1089,4 +1148,32 @@ pre {
     .footer-company {
         align-items: center;
     }
+    .mobile-search {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--color-outline-variant);
+    }
+    
+    #docsearch-mobile .DocSearch-Button {
+        width: 100%;
+        margin: 0;
+    }
 }
+
+@media (max-width: 768px) {
+    .mobile-search {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--color-outline-variant);
+    }
+    
+    #docsearch-mobile .DocSearch-Button {
+        width: 100%;
+        margin: 0;
+    }
+    .navbar-header-items {
+        display: flex !important;
+        align-items: center;    
+    }
+}
+
+
+
