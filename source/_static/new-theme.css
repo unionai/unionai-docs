@@ -851,7 +851,7 @@ code.literal {
     /* Basic layout */
     .union-navbar-container {
         flex-direction: row;
-        width: 90%;
+        /* width: 90%; */
     }
 
     .union-navbar-left
@@ -861,7 +861,8 @@ code.literal {
 
     .union-navbar-right {
         /* width: 20%; */
-        margin-right: 30px !important;
+        margin-right: -20px !important;
+        padding: .5rem;
     }
 
     .navbar-header-items__end .vertical-separator {
