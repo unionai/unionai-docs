@@ -2,7 +2,7 @@
    Root Variables & Base Styles
    ========================================================================== */
 
-:root {
+   :root {
     /* Font families */
     --font-family-base: 'Inter', sans-serif;
     --font-family-heading: 'Inter', sans-serif;
@@ -1177,3 +1177,112 @@ pre {
 
 
 
+
+/* FIXING TABLETS */
+/* Update media query breakpoints */
+/* Mobile and Tablet Styles */
+@media (max-width: 1024px) {
+    /* Keep auth buttons and search visible on tablets */
+    .navbar-header-items__end .navbar-item {
+        display: flex !important;
+    }
+
+    .bd-header .navbar-header-items {
+        display: flex !important;
+        flex-shrink: 1;
+    }
+
+    /* Ensure search is properly positioned */
+    .navbar-header-items__end .navbar-item:has(#docsearch) {
+        width: auto;
+        padding: 0.5rem;
+    }
+
+    /* Adjust navbar container for better spacing */
+    .union-navbar-container {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .union-navbar-right {
+        flex-grow: 0;
+        margin-right: 0;
+    }
+
+    /* Adjust variant selector for tablet */
+    .variant-selector-wrapper {
+        margin: 0 8px;
+    }
+
+    /* Ensure buttons remain properly sized */
+    .unionai-btn, .unionai-btn-plain {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Mobile-only styles */
+@media (max-width: 768px) {
+    .navbar-header-items__end .navbar-item {
+        display: none !important;
+    }
+
+    /* But keep the search visible */
+    .navbar-header-items__end .navbar-item:has(#docsearch) {
+        display: flex !important;
+        width: 100%;
+    }
+
+    .union-navbar-right {
+        margin-right: -20px !important;
+    }
+
+    /* Mobile-specific variant selector adjustments */
+    .variant-selector-wrapper {
+        margin: 0 1px;
+    }
+
+    /* Mobile auth buttons in sidebar */
+    .sidebar-primary-item.sidebar-auth-buttons {
+        display: flex !important;
+    }
+}
+
+/* Adjust secondary sidebar positioning for tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .bd-sidebar-secondary {
+        position: fixed;
+        top: var(--navbar-total-height) !important;
+        right: 0;
+        width: 25%;
+        height: calc(100vh - var(--navbar-total-height)) !important;
+        overflow-y: auto;
+    }
+
+    .bd-main .bd-content {
+        margin-right: 25%;
+    }
+}
+
+/* Ensure DocSearch is properly styled on tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .DocSearch-Button {
+        width: auto;
+        min-width: 160px;
+    }
+
+    .DocSearch-Button-Keys {
+        display: flex !important;
+    }
+}
+
+/* Adjust spacing for auth buttons on tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .navbar-header-items__end {
+        gap: 8px;
+    }
+
+    .vertical-separator {
+        margin: 0 4px;
+    }
+}
