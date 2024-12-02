@@ -3,10 +3,13 @@
 Union lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
 using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne).
 
+```{warning}
+Serving on Union is an experimental feature. The API is subject to change.
+```
+
 ## Example app
 
-We will start with a simple app that consists only of the framework code that is need for an app
-and a small piece of custom logic that provides the functionality of the app.
+We will start with a simple app that consists only of the framework code that is need for an app and a small piece of custom logic that provides the functionality of the app.
 This example uses Streamlit. Other frameworks are also available.
 
 In a local directory, create the following files:
@@ -28,7 +31,7 @@ from union import App, Resources
 
 app1 = App(
     name="streamlit-demo",
-    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.11",
+    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.37",
     command=[
         "streamlit",
         "hello",
@@ -38,7 +41,7 @@ app1 = App(
     port=8080,
     include=[
         "./main.py",
-        "./process.py",
+        "./utils.py",
     ],
 )
 ```
@@ -81,7 +84,7 @@ The file `main.py` contains the actual Streamlit code:
 import streamlit as st
 from process import process_user_input
 
-st.title("This is a Union demo: Wow this is awesome")
+st.title("Custom code demo")
 
 user_input = st.text_input("Enter some text:")
 
