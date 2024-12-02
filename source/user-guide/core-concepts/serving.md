@@ -92,7 +92,7 @@ if user_input:
     st.write("You entered:", process_user_input(user_input))
 ```
 
-The file `utils.py` contains a supporting function that is imported into the streamlit file, above.
+The file `utils.py` contains a supporting function that is imported into the Streamlit file, above.
 
 ```{code-block} python
 :caption: utils.py
