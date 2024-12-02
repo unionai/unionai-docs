@@ -155,14 +155,14 @@ To connect to an app click on its **Endpoint**.
 To see more information about the app, click on its **Name**.
 This will take you to the **App view**:
 
-![Apps list](/_static/images/user-guide/core-concepts/app-serving/app-view.png)
+![Apps view](/_static/images/user-guide/core-concepts/app-serving/app-view.png)
 
 Buttons to **Copy Endpoint** and **Start app** are available at the top of the view.
 The **Overview** tab provides the information about app's properties, configuration, and event history:
 
 The **Logs** tab provides a searchable and filterable view of the app's logs:
 
-![Apps list](/_static/images/user-guide/core-concepts/app-serving/app-logs.png)
+![Apps logs](/_static/images/user-guide/core-concepts/app-serving/app-logs.png)
 
 You can also view all apps deployed in your Union instance from the command-line with:
 
