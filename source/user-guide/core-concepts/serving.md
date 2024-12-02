@@ -75,14 +75,14 @@ We will examine these parameters in later examples.
 
 ## Custom code
 
-In this example we include two files containing custom logic: `main.py` and `helper.py`.
+In this example we include two files containing custom logic: `main.py` and `utils.py`.
 
 The file `main.py` contains the actual Streamlit code:
 
 ```{code-block} python
 :caption: main.py
 import streamlit as st
-from process import process_user_input
+from utils import process_user_input
 
 st.title("Custom code demo")
 
