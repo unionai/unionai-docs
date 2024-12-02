@@ -127,7 +127,7 @@ Created Endpoint at: https://tight--river--9e001.apps.serving-mvp.us-west-2.unio
 Click on the displayed endpoint to go to the app.
 You should see something like this:
 
-![A simple app](/_static/images/user-guide/core-concepts/app-serving/simple-app.png)
+![A simple app](/_static/images/user-guide/core-concepts/serving/simple-app.png)
 
 ## How app deployment works
 
@@ -149,20 +149,20 @@ to production quality.
 
 Go to **Apps** in the left sidebar in Union to see a a list of all your deployed apps:
 
-![Apps list](/_static/images/user-guide/core-concepts/app-serving/apps-list.png)
+![Apps list](/_static/images/user-guide/core-concepts/serving/apps-list.png)
 
 To connect to an app click on its **Endpoint**.
 To see more information about the app, click on its **Name**.
 This will take you to the **App view**:
 
-![Apps view](/_static/images/user-guide/core-concepts/app-serving/app-view.png)
+![Apps view](/_static/images/user-guide/core-concepts/serving/app-view.png)
 
 Buttons to **Copy Endpoint** and **Start app** are available at the top of the view.
 The **Overview** tab provides the information about app's properties, configuration, and event history:
 
 The **Logs** tab provides a searchable and filterable view of the app's logs:
 
-![Apps logs](/_static/images/user-guide/core-concepts/app-serving/app-logs.png)
+![Apps logs](/_static/images/user-guide/core-concepts/serving/app-logs.png)
 
 You can also view all apps deployed in your Union instance from the command-line with:
 
