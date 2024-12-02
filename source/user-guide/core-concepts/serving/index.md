@@ -3,7 +3,7 @@
 Union lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
 using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne).
 
-## Define the app
+## Example app
 
 We will start with a simple app that consists only of the framework code that is need for an app
 and a small piece of custom logic that provides the functionality of the app.
@@ -15,12 +15,10 @@ In a local directory, create the following files:
 .
 ├── app.py
 ├── main.py
-└── helper.py
+└── utils.py
 ```
 
-[TODO: add link to full example in GH]()
-
-### App declaration
+## App declaration
 
 The file `app.py` contains the app declaration:
 
@@ -44,7 +42,7 @@ app1 = App(
     ],
 )
 ```
-[TODO: replace the container_image URL with a permanent public example.]()
+{@# TODO: replace the container_image URL with a permanent public example. #@}
 
 Here the `App` constructor is initialized with the following parameters:
 
@@ -72,7 +70,7 @@ There are a few additional available parameters that we do not use in this examp
 
 We will examine these parameters in later examples.
 
-### Custom code
+## Custom code
 
 In this example we include two files containing custom logic: `main.py` and `helper.py`.
 
@@ -91,20 +89,20 @@ if user_input:
     st.write("You entered:", process_user_input(user_input))
 ```
 
-The file `helper.py` contains a supporting function that is imported into the streamlit file, above.
+The file `utils.py` contains a supporting function that is imported into the streamlit file, above.
 
 ```{code-block} python
-:caption: process.py
+:caption: utils.py
 def process_user_input(value):
     return f"Processing {value}"
 ```
 
-### Deploy the app
+## Deploy the app
 
 Deploy the app with:
 
 ```{code-block} bash
-union deploy apps APP_FILE APP_NAME
+$ union deploy apps APP_FILE APP_NAME
 ```
 
 * `APP_FILE` is the Python file that contains one or more app declarations.
@@ -113,10 +111,10 @@ union deploy apps APP_FILE APP_NAME
 If an app with the name `APP_NAME` does not yet exist on the system then this command creates that app and starts it.
 If an ap by that name already exists then this command stops the app, updates its code and restarts it.
 
-In this case, you would do:
+In this case, you would execute the following:
 
-```bash
-union deploy apps app.py streamlit-demo
+```{code-block}bash
+$ union deploy apps app.py streamlit-demo
 ```
 
 This will return output like the following:
@@ -131,7 +129,7 @@ You should see something like this:
 
 ![A simple app](/_static/images/user-guide/core-concepts/app-serving/simple-app.png)
 
-### How app deployment works
+## How app deployment works
 
 When a new app is deployed for the first time (i.e., there is no app registered with the specified `name`),
 a container is spun up using the specified `container_image` and the files specified in `include` are
@@ -147,7 +145,7 @@ Because there is a slight performance penalty involved in copying the `include` 
 you may wish to consolidate you code directly into custom built image once you have successfully iterated
 to production quality.
 
-### View deployed apps
+## Viewing deployed apps
 
 Go to **Apps** in the left sidebar in Union to see a a list of all your deployed apps:
 
@@ -169,7 +167,7 @@ The **Logs** tab provides a searchable and filterable view of the app's logs:
 You can also view all apps deployed in your Union instance from the command-line with:
 
 ```{code-block} bash
-union get apps
+$ union get apps
 ```
 
 This will display the app list:
@@ -190,7 +188,7 @@ This will display the app list:
 To stop an app from the command-line, perform the following command:
 
 ```{code-block} bash
-union stop apps APP_NAME
+$ union stop apps APP_NAME
 ```
 
 * `APP_NAME` is the name of an app deployed on the Union instance.

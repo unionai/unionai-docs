@@ -4,19 +4,17 @@ In the previous example we defined and deployed a simple Streamlit app unconnect
 
 In this section we will demonstrate how to use a Union app to display the out of a Union workflow.
 
-## Example
+## Example app
 
 Your project directory should now look like this:
 
-```bash
+```{code-block}bash
 ├── app.py
 ├── main.py
 ├── wf.py
 ```
 
-[TODO: add link to full example in GH]()
-
-### app.py
+## App declaration
 
 ```{code-block} python
 :caption: app.py
@@ -28,7 +26,7 @@ app = App(
     inputs=[
         Input(
             name="DATA_FILE_PATH",
-            value="s3://opencompute-staging-sample-tenant/yw/akvrr49wc4qdhbl62nlq-n0-0/099d1a5b222e611a6c440f2a307dd256/data.txt",
+            value=<MY-DATA-URI>,
             auto_download=True,
         ),
     ],
@@ -39,7 +37,7 @@ app = App(
 )
 ```
 
-### main.py
+## main.py
 
 ```{code-block} python
 :caption: main.py
@@ -54,7 +52,7 @@ st.header("I want to update the header of my file")
 st.subheader(data)
 ```
 
-### wf.py
+## wf.py
 
 ```{code-block} python
 :caption: wf.py
@@ -78,6 +76,25 @@ def wf() -> FlyteFile:
 ## Run the example
 
 To run this example you will need to register and run the workflow first:
+
+```{code-block} bash
+:caption: Run the workflow
+$ union run --remote wf.py wf
+```
+
 This will write the data file to the Union object store.
-You then need to get the URI of the file in the object store and paste it into the App definition as an input and deploy the app.
+
+Once the workflow is completed, you need to get the URI of the file in the object store.
+It can be copied from the task output in the UI:
+
+![Copy output URI](/_static/images/user-guide/core-concepts/serving/serving-workflow-outputa/copy-output-uri.png)
+
+Paste this URI into `<MY-DATA-URI>` in the `input` parameter of the App declaration above.
+
+Now you deploy your app:
+
+```{code-block} bash
+$ union deploy apps app.py streamlit-demo-wf-data
+```
+
 When the app runs, inside `main.py` the URI of the file will be retrieved as the environment variable `DATA_FILE_PATH` and displayed in the Streamlit app.

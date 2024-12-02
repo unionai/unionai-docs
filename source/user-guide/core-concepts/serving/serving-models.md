@@ -1,6 +1,6 @@
 # Serving models
 
-TODO: Clean up based on more recent examples from Thomas
+TODO:
 
 ```bash
 streamlit_app.py
