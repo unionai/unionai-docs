@@ -2,7 +2,7 @@
    Root Variables & Base Styles
    ========================================================================== */
 
-:root {
+   :root {
     /* Font families */
     --font-family-base: 'Inter', sans-serif;
     --font-family-heading: 'Inter', sans-serif;
@@ -118,7 +118,7 @@ h2 {
 
 .h3,
 h3 {
-    font-weight: 400;
+    /* font-weight: 400; */
     font-size: 16px;
     line-height: 24px;
 }
@@ -1013,11 +1013,11 @@ code.literal {
 
 }
 
-@media (max-width: 960px) {
+/* @media (max-width: 960px) {
     .navbar-header-bottom.desktop-only {
         display: none !important;
     }
-}
+} */
 
 /* ==========================================================================
    Pygments Styles
@@ -1082,6 +1082,18 @@ pre {
         padding-top: calc(var(--navbar-total-height) - 20px);
     }
 }
+
+/* Tablet adjustments */
+/* @media (max-width: 768px) {
+    :root {
+        --navbar-total-height: 80px;
+        
+    }
+
+    .bd-main .bd-content {
+        padding-top: calc(var(--navbar-total-height) - 20px);
+    }
+} */
 
 /* ==========================================================================
    Footer Styles
@@ -1172,6 +1184,223 @@ pre {
     .navbar-header-items {
         display: flex !important;
         align-items: center;    
+    }
+}
+
+
+
+
+/* FIXING TABLETS */
+/* Update media query breakpoints */
+/* Mobile and Tablet Styles */
+@media (max-width: 1024px) {
+    /* Keep auth buttons and search visible on tablets */
+    .navbar-header-items__end .navbar-item {
+        display: flex !important;
+    }
+
+    .bd-header .navbar-header-items {
+        display: flex !important;
+        flex-shrink: 1;
+    }
+
+    /* Ensure search is properly positioned */
+    .navbar-header-items__end .navbar-item:has(#docsearch) {
+        width: auto;
+        padding: 0.5rem;
+    }
+
+    /* Adjust navbar container for better spacing */
+    .union-navbar-container {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .union-navbar-right {
+        flex-grow: 0;
+        margin-right: 0;
+    }
+
+    /* Adjust variant selector for tablet */
+    .variant-selector-wrapper {
+        margin: 0 8px;
+    }
+
+    /* Ensure buttons remain properly sized */
+    .unionai-btn, .unionai-btn-plain {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Mobile-only styles */
+@media (max-width: 768px) {
+    .navbar-header-items__end .navbar-item {
+        display: none !important;
+    }
+
+    /* But keep the search visible */
+    .navbar-header-items__end .navbar-item:has(#docsearch) {
+        display: flex !important;
+        width: 100%;
+    }
+
+    .union-navbar-right {
+        margin-right: -20px !important;
+    }
+
+    /* Mobile-specific variant selector adjustments */
+    .variant-selector-wrapper {
+        margin: 0 1px;
+    }
+
+    /* Mobile auth buttons in sidebar */
+    .sidebar-primary-item.sidebar-auth-buttons {
+        display: flex !important;
+    }
+}
+
+/* Adjust secondary sidebar positioning for tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .bd-sidebar-secondary {
+        position: fixed;
+        top: var(--navbar-total-height) !important;
+        right: 0;
+        width: 25%;
+        height: calc(100vh - var(--navbar-total-height)) !important;
+        overflow-y: auto;
+    }
+
+    .bd-main .bd-content {
+        margin-right: 25%;
+    }
+}
+
+/* Ensure DocSearch is properly styled on tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .DocSearch-Button {
+        width: auto;
+        min-width: 160px;
+    }
+
+    .DocSearch-Button-Keys {
+        display: flex !important;
+    }
+}
+
+/* Adjust spacing for auth buttons on tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .navbar-header-items__end {
+        gap: 8px;
+    }
+
+    .vertical-separator {
+        margin: 0 4px;
+    }
+}
+
+/* Tablet-specific breakpoint */
+@media (min-width: 769px) and (max-width: 960px) {
+    /* Adjust navbar for tablet */
+    .union-navbar-container {
+        flex-direction: row;
+        padding: 0 1rem;
+    }
+
+    .union-navbar-left {
+        width: 60%;
+    }
+
+    .union-navbar-right {
+        width: 40%;
+    }
+
+    /* Adjust spacing and sizing for tablet view */
+    .navbar-header-items__start {
+        gap: 8px !important;
+    }
+
+    /* Adjust auth buttons for tablet */
+    .navbar-header-items__end .navbar-item {
+        margin-left: 8px;
+    }
+
+    .unionai-btn, .unionai-btn-plain {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    /* Adjust sidebar width for tablet */
+    .bd-sidebar-primary {
+        width: 25% !important;
+        min-width: 250px !important;
+    }
+
+    /* Adjust main content area for tablet */
+    .bd-main .bd-content .bd-article-container {
+        padding: 1.5rem;
+    }
+
+    /* Variant selector adjustments */
+    .variant-selector-wrapper {
+        margin: 0 8px;
+    }
+
+    .variant-dropdown-button {
+        padding: 4px 6px;
+        font-size: 13px;
+    }
+
+    /* Adjust navigation items spacing */
+    .bd-header ul.navbar-nav>li.nav-item>.nav-link {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* Adjust logo size for tablet */
+    .navbar-brand img {
+        max-width: 30%;
+    }
+
+    /* Table scroll handling */
+    .pst-scrollable-table-container {
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+
+    /* Adjust footer spacing */
+    .bd-footer-content__inner {
+        padding: 0 1.5rem;
+    }
+
+    /* DocSearch button adjustments */
+    button.DocSearch {
+        font-size: 13px;
+        padding: 0 8px;
+    }
+
+    /* Adjust code blocks and pre elements */
+    pre {
+        margin: 1rem -1rem;
+        padding: 1rem;
+    }
+
+    /* Fix navigation height for tablet */
+    /* :root {
+        --navbar-total-height: 100px;
+    } */
+
+    :root {
+        --navbar-total-height: 80px;
+        /* Smaller height for mobile */
+    }
+
+    .bd-main .bd-content {
+        padding-top: calc(var(--navbar-total-height) - 20px);
+    }
+
+    .navbar-nav {
+        flex-direction: row !important;
     }
 }
 

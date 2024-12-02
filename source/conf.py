@@ -28,7 +28,7 @@ html_css_files = [
     # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
-html_js_files = ["custom.js", "sidebar-expand.js"]
+html_js_files = ["custom.js"]
 exclude_patterns = []
 extensions = [
     "myst_parser",
