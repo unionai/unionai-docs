@@ -91,6 +91,7 @@
                                 {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                             ]
                         },
+                        {"name": "serving", "variants": ["byoc", "serverless"]},
                         {"name": "caching", "variants": ["byoc", "serverless"]}
                     ]
                 },
