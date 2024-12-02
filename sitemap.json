@@ -91,13 +91,7 @@
                                 {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                             ]
                         },
-                        {"name": "serving", "variants": ["byoc", "serverless"],
-                            "children": [
-                                {"name": "serving-workflow-outputs", "variants": ["byoc", "serverless"]},
-                                {"name": "http-endpoints", "variants": ["byoc", "serverless"]},
-                                {"name": "serving-models", "variants": ["byoc", "serverless"]}
-                            ]
-                        },
+                        {"name": "serving", "variants": ["byoc", "serverless"]},
                         {"name": "caching", "variants": ["byoc", "serverless"]},
                         {"name": "app-serving", "variants": ["byoc", "serverless"]}
                     ]
