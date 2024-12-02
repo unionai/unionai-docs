@@ -125,9 +125,12 @@ Created Endpoint at: https://tight--river--9e001.apps.serving-mvp.us-west-2.unio
 ```
 
 Click on the displayed endpoint to go to the app.
+
+{@# TODO: add the screenshot once it is available
 You should see something like this:
 
 ![A simple app](/_static/images/user-guide/core-concepts/serving/simple-app.png)
+#@}
 
 ## How app deployment works
 

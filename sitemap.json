@@ -92,8 +92,7 @@
                             ]
                         },
                         {"name": "serving", "variants": ["byoc", "serverless"]},
-                        {"name": "caching", "variants": ["byoc", "serverless"]},
-                        {"name": "app-serving", "variants": ["byoc", "serverless"]}
+                        {"name": "caching", "variants": ["byoc", "serverless"]}
                     ]
                 },
                 {"name": "development-cycle", "variants": ["byoc", "serverless"],
