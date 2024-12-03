@@ -93,4 +93,11 @@ Use open-source models to dub videos.
 Serve a vLLM model on a warm container and trigger inference automatically with artifacts.
 :::
 
+:::{grid-item-card} {octicon}`video` Video Generation with Mochi
+:link: diffusion-models/mochi-video-generation
+:link-type: doc
+
+Run the Mochi 1 text-to-video generation model by Genmo on Union.
+:::
+
 ::::
