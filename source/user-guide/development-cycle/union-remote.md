@@ -13,7 +13,7 @@ In other words: _Do not use `UnionRemote` within task code._
 Ensure that you have the `union` SDK installed, import the `UnionRemote` class and create the object like this:
 
 ```{code-block} python
-from union.remote import UnionRemote
+from union import UnionRemote
 
 remote = UnionRemote()
 ```
@@ -24,10 +24,10 @@ In the default case, as with the `union` CLI, all operations will be applied to 
 
 {@@ if byoc @@}
 
-Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix. See [TODO](TODO)):
+Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix:
 
 ```{code-block} python
-from union.remote import UnionRemote
+from union import UnionRemote
 from flytekit.configuration import Config
 
 remote = UnionRemote(
@@ -41,15 +41,15 @@ remote = UnionRemote(
 Here we use the `Config.for_endpoint` method to specify the URL to connect to.
 There are number of other ways to configure the `Config` object.
 In general, you have all the same options as you would when specifying a connection for the `union` CLI using a `config.yaml` file.
-For details see [the API docs for `flytekit.configuration.Config`](TODO).
+
+{@# TODO: For details see [the API docs for `flytekit.configuration.Config`]() #@}
 
 {@@ elif serverless @@}
 
 Alternatively, you can initialize `UnionRemote` by explicitly specifying a project, and a domain:
 
 ```{code-block} python
-from union.remote import UnionRemote
-from flytekit.configuration import Config
+from union import UnionRemote
 
 remote = UnionRemote(
     default_project="my-project",
@@ -77,8 +77,7 @@ The workflow code that will be registered and run on Union resides in the `workf
 ```{code-block} python
 :caption: example.py
 import os
-from flytekit import task, workflow
-from flytekit.types.file import FlyteFile
+from union import task, workflow, FlyteFile
 
 
 @task()
@@ -97,8 +96,7 @@ The file `remote.py` contains the `UnionRemote` logic. It is not part of the wor
 
 ```{code-block} python
 :caption: remote.py
-from union.remote import UnionRemote
-from flytekit.tools.translator import Options
+from union import UnionRemote
 from workflow.example import my_workflow
 
 
@@ -129,7 +127,9 @@ $ python remote.py
 The `my_workflow` workflow and the `create_file` task is registered and run.
 Once the the workflow completes, the output is passed back to the `run_workflow` function and printed out.
 
-The output is also be available via the UI, in the **Outputs** tab of the `create_file` task details view.
+The output is also be available via the UI, in the **Outputs** tab of the `create_file` task details view:
 
-The steps above demonstrates the most straightforward way of registering and running a workflow with `UnionRemote`.
+![Outputs](/_static/images/user-guide/development-cycle/union-remote/outputs.png)
+
+The steps above demonstrates the simplest way of registering and running a workflow with `UnionRemote`.
 For more options and details see [API reference > UnionRemote > Entrypoint](../../api-reference/union-remote/entrypoint.md).
