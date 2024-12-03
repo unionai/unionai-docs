@@ -273,7 +273,7 @@ from flytekit.configuration import Config
 @eager(
     remote=UnionRemote(
         config=Config.auto(config_file="config.yaml"),
-        default_project="{@= default-project =@}",
+        default_project="{@= default_project =@}",
         default_domain="development",
     ),
     client_secret_group="<my_client_secret_group>",
@@ -300,7 +300,7 @@ from union import UnionRemote
 @eager(
     remote=FlyteRemote(
         config=Config.for_sandbox(),
-        default_project="{@= default-project =@}",
+        default_project="{@= default_project =@}",
         default_domain="development",
     )
 )
