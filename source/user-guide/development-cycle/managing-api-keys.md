@@ -1,6 +1,6 @@
-# Managing apps
+# Managing API keys
 
-You need to create an application to allow external systems to run compute
+You need to create an API key to allow external systems to run compute
 on Union, e.g. a Github action that registers or runs workflows.
 
 ## Creating an API key
@@ -8,7 +8,7 @@ on Union, e.g. a Github action that registers or runs workflows.
 To create an API key, run the following with the `union` CLI with any name.
 
 ```{code-block} shell
-union create app custom_name
+union create api-key admin --name my-custom-name
 
 Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
@@ -49,7 +49,7 @@ union run --remote hello.py main --name "Union"
 You can list all your application by running:
 
 ```{code-block} shell
-union get app
+union get api-key admin
 ```
 
 ```{code-block} shell
@@ -66,5 +66,5 @@ user name.
 Finally, you can delete your application by running:
 
 ```{code-block} shell
-union delete app my-custom-name
+union delete api-key admin --name my-custom-name
 ```
