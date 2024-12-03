@@ -11,9 +11,10 @@ $ pip install -U union
 ```
 
 This will install:
-* The `union` command line tool
-* The [`union` SDK](./sdk/index)
-* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
+
+- The `union` command line tool
+- The [`union` SDK](./sdk/index)
+- The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
 
 ## Configure the `union` CLI
 
@@ -59,24 +60,23 @@ First, if a `--config` option is used, it will use the specified config file.
 
 Second, the config files pointed to by the following environment variables (in this order):
 
-* `UNION_CONFIG`
-* `UNIONAI_CONFIG`
-* `UCTL_CONFIG`
+- `UNION_CONFIG`
+- `UNIONAI_CONFIG`
+- `UCTL_CONFIG`
 
 Third, the following hard-coded locations (in this order):
 
-* `~/.union/config.yaml`
-* `~/.uctl/config.yaml`
+- `~/.union/config.yaml`
+- `~/.uctl/config.yaml`
 
 If none of these are present, the CLI will raise an error.
 
 ## `union` CLI commands
 
 ```{eval-rst}
-
-.. click:: flytekit.clis.sdk_in_container.pyflyte:main
+.. click:: union.cli._main:main
     :prog: union
     :nested: full
-    :commands: backfill, build, create, delete, execution, fetch, get, info, init, launchplan, local-cache, metrics, package, register, run, serialize, serve, update
+    :commands: backfill, build, create, delete, deploy, execution, fetch, get, info, init, launchplan, local-cache, metrics, package, register, run, serialize, serve, update
 
 ```
