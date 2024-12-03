@@ -53,7 +53,7 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'Union BYOC',
         'serverless': 'Union Serverless',
     },
-    'default_proejct': {
+    'default_project': {
         'byoc': 'flytesnacks',
         'serverless': 'default',
     }
