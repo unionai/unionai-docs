@@ -96,6 +96,13 @@
                         {"name": "caching", "variants": ["byoc", "serverless"]}
                     ]
                 },
+                {"name": "best-practices", "variants": ["byoc", "serverless"],
+                "children": [
+                    {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
+                    {"name": "project-structure", "variants": ["byoc", "serverless"]},
+                    {"name": "workflow-structure", "variants": ["byoc", "serverless"]}
+                ]
+                },
                 {"name": "development-cycle", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "setting-up-a-project", "variants": ["byoc", "serverless"]},
