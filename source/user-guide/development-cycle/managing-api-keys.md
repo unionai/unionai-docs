@@ -1,6 +1,6 @@
-# Managing apps
+# Managing API keys
 
-You need to create an application to allow external systems to run compute
+You need to create an API key to allow external systems to run compute
 on Union, e.g. a Github action that registers or runs workflows.
 
 ## Creating an API key

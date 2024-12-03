@@ -105,7 +105,7 @@
                         {"name": "details-of-union-run", "variants": ["byoc", "serverless"]},
                         {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
                         {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
-                        {"name": "managing-apps", "variants": ["byoc", "serverless"]},
+                        {"name": "managing-api-keys", "variants": ["byoc", "serverless"]},
                         {"name": "accessing-aws-s3", "variants": ["serverless"]},
                         {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                         {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
@@ -216,7 +216,7 @@
                         {"name": "vllm-serving-on-actor", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/vllm_serving_on_actor/ner.py"}
                     ]
                 },
-                {"name": "diffusion-models", "variants": ["byoc", "serverless"], 
+                {"name": "diffusion-models", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "mochi-video-generation", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/mochi_video_generation/mochi_video_generation.py"}
                     ]
