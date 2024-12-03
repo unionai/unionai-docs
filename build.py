@@ -49,7 +49,11 @@ VARIANT_DISPLAY_NAMES: dict[str, str] = {'serverless': 'Serverless', 'byoc': 'BY
 # Currently unused, but can be used to substitute variables in the Markdown files.
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
-    'default_project': {
+    'product_name': {
+        'byoc': 'Union BYOC',
+        'serverless': 'Union Serverless',
+    },
+    'default_proejct': {
         'byoc': 'flytesnacks',
         'serverless': 'default',
     }
