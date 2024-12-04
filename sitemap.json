@@ -12,6 +12,7 @@
                         {"name": "data-plane-setup-on-azure", "variants": ["byoc"]},
                         {"name": "single-sign-on-setup", "variants": ["byoc"],
                             "children": [
+                                {"name": "google-oidc", "variants": ["byoc"]},
                                 {"name": "microsoft-entra-id", "variants": ["byoc"]},
                                 {"name": "other-identity-providers", "variants": ["byoc"]}
                             ]
@@ -111,7 +112,7 @@
                         {"name": "details-of-union-run", "variants": ["byoc", "serverless"]},
                         {"name": "debugging-with-interactive-tasks", "variants": ["byoc", "serverless"]},
                         {"name": "managing-secrets", "variants": ["byoc", "serverless"]},
-                        {"name": "managing-apps", "variants": ["byoc", "serverless"]},
+                        {"name": "managing-api-keys", "variants": ["byoc", "serverless"]},
                         {"name": "accessing-aws-s3", "variants": ["serverless"]},
                         {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                         {"name": "running-in-a-local-cluster", "variants": ["byoc"]},

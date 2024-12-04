@@ -2106,3 +2106,8 @@
 /serverless/api/union-sdk/artifacts/serverless/apimodelcard/ /serverless/api-reference/union-sdk/artifacts/serverless/apimodelcard 302
 /serverless/api/union-sdk/artifacts/serverless/apionartifact /serverless/api-reference/union-sdk/artifacts/serverless/apionartifact 302
 /serverless/api/union-sdk/artifacts/serverless/apionartifact/ /serverless/api-reference/union-sdk/artifacts/serverless/apionartifact 302
+
+/byoc/user-guide/development-cycle/managing-apps /byoc/user-guide/development-cycle/managing-api-keys 302
+/byoc/user-guide/development-cycle/managing-apps/ /byoc/user-guide/development-cycle/managing-api-keys 302
+/serverless/user-guide/development-cycle/managing-apps /serverless/user-guide/development-cycle/managing-api-keys 302
+/serverless/user-guide/development-cycle/managing-apps/ /serverless/user-guide/development-cycle/managing-api-keys 302

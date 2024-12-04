@@ -208,7 +208,6 @@ def create_run_command_node(run_commands: list[str], current_variant: str, githu
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
-        pip_install_command += " flytekitplugins-envd"
     else:
         byoc_commands = ""
     src = RUN_COMMAND_TEMPLATE.format(
@@ -304,14 +303,14 @@ async def process_page_node(page_node: dict, current_variant: str, parent_path: 
 
     log(f'{indent}This page has children')
     toctree: str = '\n\n```{toctree}\n:maxdepth: 2\n:hidden:\n\n'
-    
+
     tasks = [process_page_node(child_page_node, current_variant, path, variants, run_commands) for child_page_node in children]
     results = await asyncio.gather(*tasks)
-    
+
     for toc_entry in results:
         if toc_entry:
             toctree += toc_entry + '\n'
-    
+
     toctree += '```\n'
     await asyncio.to_thread(mp_create_sphinx_file, f'{path}/index.md', current_variant, variants, toctree)
     toc_entry = title + ' <' + name + '/index' + '>' if title else name + '/index'

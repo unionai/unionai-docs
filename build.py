@@ -157,7 +157,6 @@ def create_run_command_node(run_commands: list[str], current_variant: str, githu
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
-        pip_install_command += " flytekitplugins-envd"
         run_cmd_start = RUN_COMMAND_START_BYOC.format(
             variant=variant_display
         )
