@@ -40,7 +40,7 @@ Next, install the required dependencies:
 
 ```{code-block} shell
 $ cd unionai-examples
-$ pip install -r guide/first_workflows/ml_workflow/requirements.txt
+$ pip install -r user_guide/first_workflows/ml_workflow/requirements.txt
 ```
 
 ## Next step
