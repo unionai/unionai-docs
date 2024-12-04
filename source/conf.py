@@ -23,8 +23,7 @@ html_css_files = [
     # Current Theme CSS:
     "custom.css",
     # Union Theme CSS:
-    # "union-theme.css",
-    "new-theme.css",
+    "union-theme.css",
     # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
