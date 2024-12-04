@@ -4067,7 +4067,7 @@ wheels = [
 
 [[package]]
 name = "union"
-version = "0.1.104"
+version = "0.1.85"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -4090,9 +4090,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "unionai-actor", marker = "platform_machine == 'x86_64' and platform_system == 'Linux'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/88/a5/902f8c08f95e0acbd335e86c7160d3d772567a0d207ce91075ac6ebf5b04/union-0.1.104.tar.gz", hash = "sha256:cde5b197a47820ee64f8b6a9acd0fa4e068006bb84d369288b9c119756e8301b", size = 107708 }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/87/a785f4d42a57cc36bbc6bba56b17601c49d043aec3240458daf855cf7e77/union-0.1.85.tar.gz", hash = "sha256:0effce702ebdcc3b202742d441370477d41e6e31ac78fa6cf07cb60b7d3a8855", size = 85981 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/52/cca16c51f7365a711a2a3ebd39e46b6875bc32b5b9fde6c448a81fcae172/union-0.1.104-py3-none-any.whl", hash = "sha256:cec7e2ea9dfa64baf5feb90d166e61d275f555c91abc64c340157e29230daf69", size = 149795 },
+    { url = "https://files.pythonhosted.org/packages/d2/8a/daf96c74b508f753e2038878de8cd06067a42ea6bb149901ee9abfc21e56/union-0.1.85-py3-none-any.whl", hash = "sha256:ce1c3e83f92e1e505da50f4d92ead3b10524d4040f939d468fb9fd96c45f1b6a", size = 119077 },
 ]
 
 [[package]]
@@ -4149,7 +4149,7 @@ requires-dist = [
     { name = "sphinxext-remoteliteralinclude" },
     { name = "tensorflow" },
     { name = "torch" },
-    { name = "union", specifier = ">=0.1.104" },
+    { name = "union", specifier = "==0.1.85" },
 ]
 
 [[package]]
