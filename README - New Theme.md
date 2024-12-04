@@ -6,37 +6,37 @@ This README file documents the customization journey from the existing theme to 
 ### 1. Root dir:
 
 ```bash
-(docs-test) ➜  docs-test git:(shalom/add-navbar-changes) ✗ ls -l
+(docs) ➜  docs git:(shalom/add-navbar-changes) ✗ ls -l
 total 1120
--rw-r--r--@  1 shalomz  staff     189 Oct 12 04:54 CODEOWNERS
--rw-r--r--@  1 shalomz  staff     502 Oct 25 14:50 Makefile
--rw-r--r--@  1 shalomz  staff     179 Oct 17 11:36 Pipfile
--rw-r--r--@  1 shalomz  staff    2319 Oct 17 11:36 Pipfile.lock
--rw-r--r--   1 shalomz  staff     229 Oct 25 17:35 README - New Theme.md
--rw-r--r--@  1 shalomz  staff    9041 Oct 25 14:50 README.md
--rw-r--r--@  1 shalomz  staff  245912 Oct 17 00:27 _overflow
--rw-r--r--@  1 shalomz  staff  207506 Oct 17 00:27 _redirects
--rw-r--r--@  1 shalomz  staff   13067 Oct 25 14:50 build.py
--rw-r--r--@  1 shalomz  staff     388 Oct 12 04:54 docs-requirements.in
--rw-r--r--@  1 shalomz  staff   21052 Oct 12 04:54 docs-requirements.txt
--rw-r--r--@  1 shalomz  staff       0 Oct 25 17:06 pygments.py
--rw-r--r--@  1 shalomz  staff   33527 Oct 24 22:04 sitemap.json
-drwxr-xr-x@ 10 shalomz  staff     320 Oct 25 17:06 source
-drwxr-xr-x@ 12 shalomz  staff     384 Oct 24 11:11 unionai-examples
+-rw-r--r--@       189 Oct 12 04:54 CODEOWNERS
+-rw-r--r--@       502 Oct 25 14:50 Makefile
+-rw-r--r--@       179 Oct 17 11:36 Pipfile
+-rw-r--r--@      2319 Oct 17 11:36 Pipfile.lock
+-rw-r--r--        229 Oct 25 17:35 README - New Theme.md
+-rw-r--r--@      9041 Oct 25 14:50 README.md
+-rw-r--r--@    245912 Oct 17 00:27 _overflow
+-rw-r--r--@    207506 Oct 17 00:27 _redirects
+-rw-r--r--@     13067 Oct 25 14:50 build.py
+-rw-r--r--@       388 Oct 12 04:54 docs-requirements.in
+-rw-r--r--@     21052 Oct 12 04:54 docs-requirements.txt
+-rw-r--r--@         0 Oct 25 17:06 pygments.py
+-rw-r--r--@     33527 Oct 24 22:04 sitemap.json
+drwxr-xr-x@ 10    320 Oct 25 17:06 source
+drwxr-xr-x@ 12    384 Oct 24 11:11 unionai-examples
 ```
  #### 1.1 Source dir:
 
 ```bash
-(docs-test) ➜  source git:(shalom/add-navbar-changes) ✗ ls -l
+(docs) ➜  source git:(shalom/add-navbar-changes) ✗ ls -l
 total 40
-drwxr-xr-x@  9 shalomz  staff   288 Oct 25 17:06 _static
-drwxr-xr-x@ 11 shalomz  staff   352 Oct 25 17:06 _templates
-drwxr-xr-x@  9 shalomz  staff   288 Oct 17 00:27 api-reference
--rw-r--r--@  1 shalomz  staff  7986 Oct 25 17:43 conf.py
--rw-r--r--@  1 shalomz  staff  1687 Oct 17 00:27 index.md
--rw-r--r--@  1 shalomz  staff  7182 Oct 17 00:27 quick-start.md
-drwxr-xr-x@  9 shalomz  staff   288 Oct 24 22:04 tutorials
-drwxr-xr-x@ 13 shalomz  staff   416 Oct 17 00:27 user-guide
+drwxr-xr-x@  9  288 Oct 25 17:06 _static
+drwxr-xr-x@ 1   352 Oct 25 17:06 _templates
+drwxr-xr-x@  9  288 Oct 17 00:27 api-reference
+-rw-r--r--@    7986 Oct 25 17:43 conf.py
+-rw-r--r--@    1687 Oct 17 00:27 index.md
+-rw-r--r--@    7182 Oct 17 00:27 quick-start.md
+drwxr-xr-x@  9  288 Oct 24 22:04 tutorials
+drwxr-xr-x@ 13  416 Oct 17 00:27 user-guide
 ```
 
 ### 2. Theme config:
@@ -124,17 +124,17 @@ html[data-theme="dark"] {
 ### 4. Templates
 
 ```bash
-(docs-test) ➜  _templates git:(shalom/add-navbar-changes) ✗ ls -l
+(docs) ➜  _templates git:(shalom/add-navbar-changes) ✗ ls -l
 total 64
-drwxr-xr-x@ 4 shalomz  staff   128 Oct 25 17:06 components
--rw-r--r--@ 1 shalomz  staff   343 Oct 12 04:54 custom-page-toc.html
--rw-r--r--@ 1 shalomz  staff   665 Oct 12 04:54 custom-sidebar.html
--rw-r--r--@ 1 shalomz  staff   675 Oct 12 04:54 custom.rst
--rw-r--r--@ 1 shalomz  staff   347 Oct 25 17:06 layout.html
--rw-r--r--@ 1 shalomz  staff   289 Oct 25 17:06 navbar-links.html
--rw-r--r--@ 1 shalomz  staff  5961 Oct 25 17:06 page.html
-drwxr-xr-x@ 8 shalomz  staff   256 Oct 25 17:06 sections
--rw-r--r--@ 1 shalomz  staff   418 Oct 25 17:06 variant-selector.html
+drwxr-xr-x@ 4  128 Oct 25 17:06 components
+-rw-r--r--@    343 Oct 12 04:54 custom-page-toc.html
+-rw-r--r--@    665 Oct 12 04:54 custom-sidebar.html
+-rw-r--r--@    675 Oct 12 04:54 custom.rst
+-rw-r--r--@    347 Oct 25 17:06 layout.html
+-rw-r--r--@    289 Oct 25 17:06 navbar-links.html
+-rw-r--r--@   5961 Oct 25 17:06 page.html
+drwxr-xr-x@ 8  256 Oct 25 17:06 sections
+-rw-r--r--@    418 Oct 25 17:06 variant-selector.html
 ```
 
 #### `/source/_templates/page.html`:
@@ -167,40 +167,40 @@ drwxr-xr-x@ 8 shalomz  staff   256 Oct 25 17:06 sections
 components:
 
 ```bash
-(docs-test) ➜  components git:(shalom/add-navbar-changes) ✗ ls -l
+(docs) ➜  components git:(shalom/add-navbar-changes) ✗ ls -l
 total 16
--rw-r--r--@ 1 shalomz  staff  861 Oct 25 17:06 prev-next-old.html
--rw-r--r--@ 1 shalomz  staff  910 Oct 25 17:06 prev-next.html -> previous and next buttons
+-rw-r--r--@   861 Oct 25 17:06 prev-next-old.html
+-rw-r--r--@   910 Oct 25 17:06 prev-next.html -> previous and next buttons
 ```
 
 sections:
 
 ```bash
-(docs-test) ➜  sections git:(shalom/add-navbar-changes) ✗ ls -l
+(docs) ➜  sections git:(shalom/add-navbar-changes) ✗ ls -l
 total 48
--rw-r--r--@ 1 shalomz  staff  3142 Oct 25 17:06 header-old.html
--rw-r--r--@ 1 shalomz  staff  3858 Oct 25 17:06 header.html
--rw-r--r--@ 1 shalomz  staff  2638 Oct 25 17:06 header_working.html
--rw-r--r--@ 1 shalomz  staff  1870 Oct 25 17:06 sidebar-primary-old.html
--rw-r--r--@ 1 shalomz  staff  2148 Oct 25 17:06 sidebar-primary.html
--rw-r--r--@ 1 shalomz  staff   331 Oct 25 17:06 sidebar-secondary.html
-(docs-test) ➜  sections git:(shalom/add-navbar-changes) ✗
+-rw-r--r--@   3142 Oct 25 17:06 header-old.html
+-rw-r--r--@   3858 Oct 25 17:06 header.html
+-rw-r--r--@   2638 Oct 25 17:06 header_working.html
+-rw-r--r--@   1870 Oct 25 17:06 sidebar-primary-old.html
+-rw-r--r--@   2148 Oct 25 17:06 sidebar-primary.html
+-rw-r--r--@    331 Oct 25 17:06 sidebar-secondary.html
+(docs) ➜  sections git:(shalom/add-navbar-changes) ✗
 ```
 #### Checklist
 - [x] Colors
-- [] Typography
-- [] Spacing
-- [] Borders
-- [] Shadows
-- [] Icons
+- [x] Typography
+- [x] Spacing
+- [x] Borders
+- [x] Shadows
+- [x] Icons
 - [] Animations
-- [] Buttons
-- [] Dropdowns
+- [x] Buttons
+- [x] Dropdowns
 - [] Forms
 - [] Tables
-- [] Code blocks
-- [] Alerts
-- [] Banners
+- [x] Code blocks
+- [x] Alerts
+- [x] Banners
 - [] Breadcrumbs
 - [] Cards
 - [] Carousels
