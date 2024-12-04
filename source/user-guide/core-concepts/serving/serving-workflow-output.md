@@ -1,7 +1,5 @@
 # Serving workflow output
 
-In the previous example we defined and deployed a simple Streamlit app unconnected to any Union workflow.
-
 In this section we will demonstrate how to use a Union app to display the output of a Union workflow.
 
 ## Example app
