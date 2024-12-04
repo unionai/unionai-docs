@@ -22,7 +22,7 @@ serve-local:
 	@echo "$(GREEN)Starting local server on port $(PORT) to serve the documentation...$(NC)"
 	[ -x "$(shell command -v uv)" ] || pip install uv
 	[ -d ".venv" ] || uv venv
-	uv pip install -r docs-requirements.txt
+	uv sync
 	. .venv/bin/activate; UNION_SERVERLESS_ENDPOINT= python3 -m http.server --directory build/html ${PORT}
 # check if a port is passed as an arg and override PORT var
 ifdef port
@@ -33,5 +33,5 @@ endif
 build: sync-examples
 	[ -x "$(shell command -v uv)" ] || pip install uv
 	[ -d ".venv" ] || uv venv
-	uv pip install -r docs-requirements.txt
+	uv sync
 	. .venv/bin/activate; UNION_SERVERLESS_ENDPOINT= python build.py
