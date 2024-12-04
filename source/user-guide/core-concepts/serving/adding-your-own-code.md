@@ -23,18 +23,19 @@ The file `app.py` contains the app declaration:
 
 ```{code-block} python
 :caption: app.py
-from union import App, Resources
+from union.app import App
+from union import Resources
 
-app1 = App(
+app = App(
      name="streamlit-custom-code",
     container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.30",
     command=["streamlit", "run", "main.py", "--server.port", "8080"],
     port=8080,
+    limits=Resources(cpu="2", mem="3Gi"),
     include=[
         "./main.py",
         "./utils.py",
     ],
-)
 )
 ```
 {@# TODO: replace the container_image URL with a permanent public example. #@}
