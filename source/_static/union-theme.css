@@ -26,7 +26,7 @@ html[data-theme="light"] {
     --color-text-primary: #201B13;
     --color-primary: #201B13;
     --color-text-secondary: #4E4539;
-    --color-link-tertiary: #5D5791;
+    --color-link-tertiary: #4861D3;
     --color-surface: #FFF8F3;
     --color-surface-sd: #FFF8F3;
     --color-surface-container-lowest: #FFFFFF;
@@ -57,7 +57,7 @@ html[data-theme="dark"] {
     --pst-color-secondary: #8A7B5F;
     --color-text-primary: #FFF8F3;
     --color-text-secondary: #D2C5B4;
-    --color-link-tertiary: #9CA3FF;
+    --color-link-tertiary: #6CAFF7;
     --color-surface: #1C1C1C;
     --color-surface-sd: #241F17;
     --color-surface-container-lowest: #2C2C2C;
