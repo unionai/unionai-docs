@@ -111,7 +111,11 @@
                         {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                         {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
                         {"name": "ci-cd-deployment", "variants": ["byoc"]},
-                        {"name": "union-remote", "variants": ["byoc", "serverless"]}
+                        {"name": "union-remote", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "union-remote-examples", "variants": ["byoc", "serverless"]}
+                            ]
+                        }
                     ]
                 },
                 {"name": "data-input-output", "variants": ["byoc", "serverless"],
