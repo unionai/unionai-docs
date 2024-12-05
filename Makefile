@@ -18,6 +18,5 @@ clean:
 .PHONY: build
 build: sync-examples
 	[ -x "$(shell command -v uv)" ] || pip install uv
-	[ -d ".venv" ] || python -m venv .venv
 	uv sync
 	UNION_SERVERLESS_ENDPOINT= uv run build.py
