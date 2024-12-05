@@ -1,9 +1,5 @@
 # Serving models
 
-# Serving models
-
-TODO:
-
 ```bash
 streamlit_app.py
 utils.py

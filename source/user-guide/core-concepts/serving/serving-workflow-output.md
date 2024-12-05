@@ -17,22 +17,36 @@ Your project directory should now look like this:
 ```{code-block} python
 :caption: app.py
 
-from union import App, Input, Resources
+from union import Artifact, Resources
+from union.app import App, Input
+
+MyFile = Artifact(name="my_file")
 
 app = App(
-    name="streamlit-demo-wf-data",
+    name="streamlit-workflow-output",
     inputs=[
         Input(
-            name="DATA_FILE_PATH",
-            value=<MY-DATA-URI>,
+            name="my_file",
+            value=MyFile.query(),
             auto_download=True,
+            env_name="MY_FILE",
         ),
     ],
-    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.20",
-    command=["streamlit", "run", "main.py", "--server.port", "8080"],
+    container_image="ghcr.io/thomasjpfan/streamlit-app-image-seg:0.1.30",
+    command=[
+        "streamlit",
+        "run",
+        "main.py",
+        "--server.port",
+        "8080",
+    ],
     port=8080,
-    include=["./main.py"]
+    include=["./main.py"],
+    limits=Resources(cpu="2", mem="6Gi", ephemeral_storage="4Gi"),
+    min_replicas=1,
+    max_replicas=1,
 )
+
 ```
 
 ## main.py
@@ -42,12 +56,14 @@ app = App(
 
 import os
 import streamlit as st
-from pathlib import Path
 
-data_file_path = Path(os.environ["DATA_FILE_PATH"])
-data = data_file_path.read_text()
-st.header("I want to update the header of my file")
-st.subheader(data)
+my_file = os.getenv("MY_FILE")
+with open(my_file, "r") as file:
+    my_file_content = file.read()
+
+st.title("Display workflow output")
+st.write(my_file_content)
+
 ```
 
 ## wf.py
@@ -55,20 +71,25 @@ st.subheader(data)
 ```{code-block} python
 :caption: wf.py
 
+from union import Artifact, Resources, FlyteFile, current_context, task, workflow
 from pathlib import Path
-from union import current_context, task, workflow, FlyteFile
+from typing_extensions import Annotated
+
+MyFile = Artifact(name="my_file")
 
 @task
-def my_task() -> FlyteFile:
+def t() -> Annotated[FlyteFile, SegModel]:
     working_dir = Path(current_context().working_directory)
-    new_file = working_dir / "data.txt"
-    new_file.write_text("This is some workflow data")
-    return new_file
+    my_file = working_dir / "my_file.txt"
 
+    with open(my_file, "w") as file:
+        file.write("Some data")
+
+    return MyFile.create_from(my_file)
 
 @workflow
 def wf() -> FlyteFile:
-    return my_task()
+    return t()
 ```
 
 ## Run the example
@@ -80,19 +101,13 @@ To run this example you will need to register and run the workflow first:
 $ union run --remote wf.py wf
 ```
 
-This will write the data file to the Union object store.
+This will create an `Artifact` called `my_file` from the file `my_file.txt` that contains the text `Some data`.
 
-Once the workflow is completed, you need to get the URI of the file in the object store.
-It can be copied from the task output in the UI:
-
-![Copy output URI](/_static/images/user-guide/core-concepts/serving/serving-workflow-outputa/copy-output-uri.png)
-
-Paste this URI into `<MY-DATA-URI>` in the `input` parameter of the App declaration above.
-
-Now you deploy your app:
+Now you can deploy your app:
 
 ```{code-block} bash
 $ union deploy apps app.py streamlit-demo-wf-data
 ```
 
-When the app runs, inside `main.py` the URI of the file will be retrieved as the environment variable `DATA_FILE_PATH` and displayed in the Streamlit app.
+The URI of the artifact `my_file` is passed as the environment variable `MY_FILE` via the `input` parameter in the App constructor.
+Within `main.py`, the file is retrieved using that environment variable and the contents are displayed in the Streamlit app.
