@@ -20,8 +20,6 @@ master_doc = "index"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = [
-    # Current Theme CSS:
-    "custom.css",
     # Union Theme CSS:
     "union-theme.css",
     # Font Awesome
