@@ -1,15 +1,16 @@
 # Serving workflow output
 
-In this section we will demonstrate how to use a Union app to display the output of a Union workflow.
+In this section we use a Union app to display the output of a Union workflow.
 
 ## Example app
 
-Your project directory should now look like this:
+In a local directory, create the following files:
 
 ```{code-block}bash
+.
 ├── app.py
 ├── main.py
-├── wf.py
+└── wf.py
 ```
 
 ## App declaration

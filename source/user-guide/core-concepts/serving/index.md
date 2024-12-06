@@ -16,7 +16,7 @@ In a local directory, create the following file:
 
 ```{code-block} bash
 .
-├── app.py
+└── app.py
 ```
 
 ## App declaration

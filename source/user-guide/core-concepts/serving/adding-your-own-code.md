@@ -23,8 +23,9 @@ The file `app.py` contains the app declaration:
 
 ```{code-block} python
 :caption: app.py
-from union.app import App
+
 from union import Resources
+from union.app import App
 
 app = App(
      name="streamlit-custom-code",
@@ -52,6 +53,7 @@ The file `main.py` contains the actual Streamlit code:
 
 ```{code-block} python
 :caption: main.py
+
 import streamlit as st
 from utils import process_user_input
 
@@ -67,6 +69,7 @@ The file `utils.py` contains a supporting function that is imported into the Str
 
 ```{code-block} python
 :caption: utils.py
+
 def process_user_input(value):
     return f"Processing {value}"
 ```
@@ -92,5 +95,4 @@ the app code is updated in the container and the app is restarted.
 You can iterate on your app easily by changing your `include` code and re-deploying.
 
 Because there is a slight performance penalty involved in copying the `include` files into the container,
-you may wish to consolidate you code directly into custom built image once you have successfully iterated
-to production quality.
+you may wish to consolidate you code directly into custom built image once you have successfully iterated to production quality.
