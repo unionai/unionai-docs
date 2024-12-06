@@ -1,4 +1,4 @@
-# UnionRemote Examples
+# UnionRemote examples
 
 ## Registering and running a workflow
 
@@ -118,8 +118,8 @@ for e in executions:
                 execution_on_interest = Execution(name=e.id.name, link=f"https://{ENDPOINT}/console/projects/{PROJECT}/domains/{DOMAIN}/executions/{e.id.name}")
                 executions_of_interest.append(execution_on_interest)
                 remote.terminate(e, cause="Terminated manually via script.")
- 
-                
+
+
 with open('terminated_executions.json', 'w') as f:
     json.dump([{'name': e.name, 'link': e.link} for e in executions_of_interest], f, indent=2)
 
@@ -175,7 +175,7 @@ inputs = [remote.sync(execution).inputs for execution in windowed]
 # get new workflow version entity
 workflow = remote.fetch_workflow(name=WF_NAME, version=VERSION)
 
-# execute new workflow for each failed previous execution    
+# execute new workflow for each failed previous execution
 [remote.execute(workflow, inputs=X) for X in inputs]
 ```
 
