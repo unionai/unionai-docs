@@ -45,7 +45,7 @@ app = App(
 
 Here the `App` constructor is initialized with the following parameters:
 
-* `name`: The name of tha pp. This name will be displayed in app listings (via CLI and UI) and used to refer to the app when deploying and stopping.
+* `name`: The name of the app. This name will be displayed in app listings (via CLI and UI) and used to refer to the app when deploying and stopping.
 * `container_image`: The container image that will be used to for the container that will run the app. Here we use a prebuilt container provided by Union that support Streamlit.
 * `command`: The command that will be used within the container to start the app. The individual strings in this array will be concatenated and the invoked as a single command.
 * `port`: The port of the app container from which the app will be served.
@@ -58,9 +58,8 @@ The parameters above are the minimum needed to initialize the app.
 There are a few additional available parameters that we do not use in this example (but we will cover later):
 
 * `include`: A list of files to be added to the container at deployment time, containing the custom code that defines the specific functionality of your app.
-* `inputs`: A `List` of `union.app.Input` objects. Used to provide default inputs to the app on startup {@# TODO: (see [App inputs]() for details). #@}
-* `requests`:  A `flytekit.Resources` object defining the resource requests for the app container.
-  The same object is used for the same purpose in the `@task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
+* `inputs`: A `List` of `union.app.Input` objects. Used to provide default inputs to the app on startup.
+* `requests`:  A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
 * `min_replicas`: The minimum number of replica containers permitted for this app.
   This defines the lower bound for auto-scaling the app. The default is 0 {@# TODO: (see [App autoscaling]() for details) #@}.
 * `max_replicas`: The maximum number of replica containers permitted for this app.
@@ -78,7 +77,7 @@ $ union deploy apps APP_FILE APP_NAME
 * `APP_NAME` is the name of (one of) the declared apps in APP_FILE. The name of an app is the value of the `name` parameter passed into the `App` constructor.
 
 If an app with the name `APP_NAME` does not yet exist on the system then this command creates that app and starts it.
-If an ap by that name already exists then this command stops the app, updates its code and restarts it.
+If an app by that name already exists then this command stops the app, updates its code and restarts it.
 
 In this case, we do the following:
 
