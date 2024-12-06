@@ -5,6 +5,7 @@ source/tutorials/**/*.md
 source/_static/_tutorials/
 source/tutorials/**/static/
 _static/
+_static
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
