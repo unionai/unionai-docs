@@ -95,4 +95,4 @@ the app code is updated in the container and the app is restarted.
 You can iterate on your app easily by changing your `include` code and re-deploying.
 
 Because there is a slight performance penalty involved in copying the `include` files into the container,
-you may wish to consolidate you code directly into custom built image once you have successfully iterated to production quality.
+you may wish to consolidate you code directly into custom-built image once you have successfully iterated to production quality.
