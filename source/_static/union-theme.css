@@ -1612,3 +1612,105 @@ pre {
         flex-direction: row !important;
     }
 }
+
+/* ==========================================================================
+   Caret positioning
+   ========================================================================== 
+*/
+
+/* list structure */
+.bd-links li {
+    position: relative;
+    /* absolute positioning of caret */
+}
+
+/* remove the flex ordering. */
+.bd-links li>a {
+    display: block;
+    width: 100%;
+    padding-left: 24px !important;
+    /* sspace for caret */
+}
+
+/* position the details element */
+.bd-links li>details {
+    position: static;
+    /* reset position */
+}
+
+/* position the caret */
+.bd-links li>details>summary {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 0px;
+    top: 0px;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+    /* ensure caret lives above other elements */
+}
+
+/* remove default arrow */
+.bd-links li>details>summary::marker,
+.bd-links li>details>summary::-webkit-details-marker {
+    display: none;
+}
+
+/* nested levels indentation */
+.bd-links .toctree-l2>a {
+    padding-left: 24px !important;
+}
+
+.bd-links .toctree-l3>a {
+    padding-left: 20px !important;
+}
+
+.bd-links .toctree-l4>a {
+    padding-left: 28px !important;
+}
+
+/* Position nested carets */
+.bd-links .toctree-l2>details>summary {
+    /* left: 20px; */
+}
+
+.bd-links .toctree-l3>details>summary {
+    /* left: 24px; */
+}
+
+.bd-links .toctree-l4>details>summary {
+    /* left: 48px; */
+}
+
+/* caret styling */
+.bd-links li>details>summary>span.toctree-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.bd-links li>details>summary svg {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.15s ease;
+}
+
+/* open caret styling */
+.bd-links li>details[open]>summary svg {
+    transform: rotate(360deg) !important;
+}
+
+
+/* collapsed caret styling */
+.bd-sidebar-primary li.has-children>details>summary svg {
+    transform: rotate(270deg) !important;
+    font-size: .75rem;
+}
+
+.bd-sidebar-primary li.has-children>details[open]>summary svg {
+    transform: rotate(360deg) !important;
+    font-size: .75rem;
+}
