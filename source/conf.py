@@ -20,14 +20,12 @@ master_doc = "index"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = [
-    # Current Theme CSS:
-    "custom.css",
     # Union Theme CSS:
     "union-theme.css",
     # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
-html_js_files = ["custom.js"]
+html_js_files = ["union.js"]
 exclude_patterns = []
 extensions = [
     "myst_parser",
@@ -96,7 +94,9 @@ html_context = {
         "user-guide": "User guide",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
-    }
+    },
+    "github_url": os.getenv("GITHUB_URL", "https://github.com/flyteorg/flyte"),
+    "slack_url": os.getenv("SLACK_URL", "https://flyte-org.slack.com/"),
 }
 
 # Autodoc config

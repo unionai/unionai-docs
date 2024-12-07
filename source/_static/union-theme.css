@@ -2,13 +2,19 @@
    Root Variables & Base Styles
    ========================================================================== */
 
-   :root {
+:root {
     /* Font families */
     --font-family-base: 'Inter', sans-serif;
     --font-family-heading: 'Inter', sans-serif;
     --pst-font-family-base: 'Inter', sans-serif;
     --pst-font-family-heading: 'Inter', sans-serif;
     --font-family-code: 'Roboto Mono', monospace;
+
+    /* Primary colors */
+    --primary-color: #edab1c;
+    --primary-border-color: #a87915;
+    --primary-color-surface: #fef2e5;
+    --docsearch-primary-color: #edab1c;
 
     /* Shared styles */
     --pri-btn-border-radius: 100px;
@@ -86,6 +92,202 @@ html[data-theme="dark"] {
 /* scroll padding to account for navbar height */
 html {
     scroll-padding-top: var(--navbar-total-height);
+}
+
+/* Make sure article takes full page */
+article.bd-article {
+    height: 100%;
+}
+
+
+/* Styling for page layout */
+.bd-page-width {
+    max-width: 100%;
+}
+
+/*
+Center the main page content only when the sidebar has the .hide-on-wide
+class, which is only on the root page
+*/
+.bd-sidebar.hide-on-wide+main.bd-main .bd-content {
+    justify-content: center;
+}
+
+/* Basic styling for the dropdown menu */
+button#dropdown-text::before {
+    margin-right: 0.3em;
+    font-weight: bold;
+}
+
+button#dropdown-text::after {
+    content: "⌄";
+    margin-left: 0.5em;
+    font-size: 1.25em;
+    line-height: 0.6em;
+}
+
+.navbar-brand.logo:hover {
+    text-decoration: none;
+}
+
+.navbar-brand img {
+    max-width: 20%;
+}
+
+.navbar-header-items__start {
+    flex-flow: row nowrap;
+    flex-grow: 0.1;
+    width: auto;
+}
+
+.navbar.bd-header {
+    box-shadow: 0 0 0 0.075rem var(--pst-color-shadow);
+}
+
+
+.dropdown-content.navbar .dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.variant-selector .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--pst-color-surface);
+    width: 100%;
+    min-width: 160px;
+    box-shadow: 0px 1px 6px 3px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.variant-selector .dropdown-content a {
+    color: var(--pst-color-text-muted);
+    padding: 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.variant-selector .dropdown-content a:hover {
+    color: var(--primary-color);
+    background-color: var(--pst-color-on-background);
+}
+
+
+
+.variant-selector.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.variant-selector .dropdown-button {
+    border: 1px solid var(--pst-color-border);
+    border-radius: 8px;
+    color: var(--pst-color-text-muted);
+    display: inline-flex;
+    justify-content: center;
+    padding: .5em .5em;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 100%;
+    min-width: 8rem;
+}
+
+.variant-selector .dropdown-button:hover {
+    box-shadow: 0 0 0 .1875rem var(--primary-color);
+}
+
+
+/* update styling for links to use correct color */
+
+.bd-header .navbar-nav li.pst-header-nav-item.current>.nav-link,
+.bd-header ul.navbar-nav>li.nav-item.current>.nav-link {
+    color: var(--primary-color);
+}
+
+nav.bd-links li>a:active,
+nav.bd-links li>a:hover {
+    color: var(--primary-color);
+}
+
+a:active,
+a:visited {
+    color: var(--primary-color);
+}
+
+
+.bd-header .navbar-nav li.pst-header-nav-item>.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* update styling for tabs */
+.bd-content .sd-tab-set>input:checked+label {
+    border-color: var(--pst-color-border) var(--pst-color-border) transparent;
+    color: var(--primary-color);
+}
+
+.bd-content .sd-tab-set .sd-tab-content {
+    border: .125rem solid var(--pst-color-border);
+}
+
+.bd-sidebar-primary {
+    width: 20%;
+    min-width: 350px;
+    padding: 1rem;
+}
+
+/* make the scroll bar sleeker */
+.bd-sidebar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+}
+
+.bd-sidebar::-webkit-scrollbar-thumb {
+    background: var(--pst-color-border);
+}
+
+.bd-main .bd-content .bd-article-container {
+    padding: 2.5rem;
+}
+
+
+/* docsearch button */
+button.DocSearch {
+    width: 100%;
+    margin: 0;
+}
+
+kbd.DocSearch-Commands-Key:not(.compound) {
+    padding: 0;
+}
+
+div.DocSearch-Hit-content-wrapper {
+    /* prevent scrollbar from showing up */
+    overflow-y: hidden;
+}
+
+div.DocSearch-Logo .cls-1,
+div.DocSearch-Logo .cls-2 {
+    fill: #414c70 !important;
+}
+
+.DocSearch-Hits mark {
+    padding: 0;
+}
+
+/* make sure content header doesn't pop out when docsearch model is active */
+body.DocSearch--active div.bd-header-article {
+    z-index: 1;
+}
+
+/* grid items should have bottom margin */
+.sd-col {
+    margin-bottom: 1em;
+}
+
+/* update table hover color to neutral color */
+.table tbody tr:hover {
+    background-color: var(--pst-color-table-inner-border);
 }
 
 /* ==========================================================================
@@ -832,7 +1034,7 @@ code.literal {
         flex-direction: column;
         margin-right: 37px;
     }
-    
+
     /* Hide keyboard shortcut on mobile */
     .DocSearch-Button-Keys {
         display: none !important;
@@ -842,20 +1044,20 @@ code.literal {
     .DocSearch-Button-Container {
         margin: 0 auto;
     }
-    
+
     /* Adjust search button styling for mobile */
     .DocSearch-Button {
         background: var(--color-surface-container-low) !important;
         border-radius: 8px;
     }
+
     /* Basic layout */
     .union-navbar-container {
         flex-direction: row;
         /* width: 90%; */
     }
 
-    .union-navbar-left
-    {
+    .union-navbar-left {
         width: 80%;
     }
 
@@ -1007,7 +1209,8 @@ code.literal {
         color: var(--color-link-tertiary);
     }
 
-    .bd-header .navbar-header-items__center, .bd-header .navbar-header-items__end {
+    .bd-header .navbar-header-items__center,
+    .bd-header .navbar-header-items__end {
         column-gap: unset !important;
     }
 
@@ -1160,11 +1363,12 @@ pre {
     .footer-company {
         align-items: center;
     }
+
     .mobile-search {
         padding: 1rem 0;
         border-bottom: 1px solid var(--color-outline-variant);
     }
-    
+
     #docsearch-mobile .DocSearch-Button {
         width: 100%;
         margin: 0;
@@ -1176,14 +1380,15 @@ pre {
         padding: 1rem 0;
         border-bottom: 1px solid var(--color-outline-variant);
     }
-    
+
     #docsearch-mobile .DocSearch-Button {
         width: 100%;
         margin: 0;
     }
+
     .navbar-header-items {
         display: flex !important;
-        align-items: center;    
+        align-items: center;
     }
 }
 
@@ -1194,6 +1399,7 @@ pre {
 /* Update media query breakpoints */
 /* Mobile and Tablet Styles */
 @media (max-width: 1024px) {
+
     /* Keep auth buttons and search visible on tablets */
     .navbar-header-items__end .navbar-item {
         display: flex !important;
@@ -1227,7 +1433,8 @@ pre {
     }
 
     /* Ensure buttons remain properly sized */
-    .unionai-btn, .unionai-btn-plain {
+    .unionai-btn,
+    .unionai-btn-plain {
         padding: 8px 16px;
         font-size: 14px;
     }
@@ -1301,6 +1508,7 @@ pre {
 
 /* Tablet-specific breakpoint */
 @media (min-width: 769px) and (max-width: 960px) {
+
     /* Adjust navbar for tablet */
     .union-navbar-container {
         flex-direction: row;
@@ -1325,7 +1533,8 @@ pre {
         margin-left: 8px;
     }
 
-    .unionai-btn, .unionai-btn-plain {
+    .unionai-btn,
+    .unionai-btn-plain {
         padding: 8px 16px;
         font-size: 13px;
     }
@@ -1403,6 +1612,3 @@ pre {
         flex-direction: row !important;
     }
 }
-
-
-
