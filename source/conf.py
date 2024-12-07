@@ -94,7 +94,9 @@ html_context = {
         "user-guide": "User guide",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
-    }
+    },
+    "github_url": os.getenv("GITHUB_URL", "https://github.com/flyteorg/flyte"),
+    "slack_url": os.getenv("SLACK_URL", "https://flyte-org.slack.com/"),
 }
 
 # Autodoc config
