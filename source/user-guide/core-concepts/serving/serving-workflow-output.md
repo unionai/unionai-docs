@@ -18,6 +18,8 @@ In a local directory, create the following files:
 ```{code-block} python
 :caption: app.py
 
+"""A Union app that serves the output of a Union workflow"""
+
 from union import Artifact, Resources
 from union.app import App, Input
 
@@ -55,6 +57,8 @@ app = App(
 ```{code-block} python
 :caption: main.py
 
+"""A Streamlit app that displays the contents of a file"""
+
 import os
 import streamlit as st
 
@@ -72,6 +76,8 @@ st.write(my_file_content)
 ```{code-block} python
 :caption: wf.py
 
+"""A Union workflow that creates an artifact from a file"""
+
 from union import Artifact, Resources, FlyteFile, current_context, task, workflow
 from pathlib import Path
 from typing_extensions import Annotated
@@ -80,6 +86,7 @@ MyFile = Artifact(name="my_file")
 
 @task
 def t() -> Annotated[FlyteFile, SegModel]:
+    """Create an artifact from a file"""
     working_dir = Path(current_context().working_directory)
     my_file = working_dir / "my_file.txt"
 
@@ -90,6 +97,7 @@ def t() -> Annotated[FlyteFile, SegModel]:
 
 @workflow
 def wf() -> FlyteFile:
+    """execute task to create an artifact from a file"""
     return t()
 ```
 

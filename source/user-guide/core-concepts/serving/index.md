@@ -25,6 +25,9 @@ The file `app.py` contains the app declaration:
 
 ```{code-block} python
 :caption: app.py
+
+""" A simple Union app using Streamlit"""
+
 from union.app import App
 from union import Resources
 

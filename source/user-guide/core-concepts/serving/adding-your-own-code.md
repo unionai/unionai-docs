@@ -24,6 +24,8 @@ The file `app.py` contains the app declaration:
 ```{code-block} python
 :caption: app.py
 
+"""A Union app with custom code"""
+
 from union import Resources
 from union.app import App
 
@@ -39,7 +41,6 @@ app = App(
     ],
 )
 ```
-{@# TODO: replace the container_image URL with a permanent public example. #@}
 
 Compared to the first example we have added one more parameter:
 
@@ -53,6 +54,8 @@ The file `main.py` contains the bulk of our custom code:
 
 ```{code-block} python
 :caption: main.py
+
+"""Custom Streamlit app code"""
 
 import streamlit as st
 from utils import process_user_input
@@ -69,6 +72,8 @@ The file `utils.py` contains a supporting function that is imported into the fil
 
 ```{code-block} python
 :caption: utils.py
+
+"""Custom Streamlit app supporting code"""
 
 def process_user_input(value):
     return f"Processing {value}"
