@@ -85,7 +85,7 @@ from typing_extensions import Annotated
 MyFile = Artifact(name="my_file")
 
 @task
-def t() -> Annotated[FlyteFile, SegModel]:
+def t() -> Annotated[FlyteFile, MyFile]:
     """Create an artifact from a file"""
     working_dir = Path(current_context().working_directory)
     my_file = working_dir / "my_file.txt"
