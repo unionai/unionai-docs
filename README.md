@@ -42,20 +42,12 @@ uv sync
 
 * Run the build with `uv run make build-local`.
 
-> [!NOTE]
-> We have leveraged on parallel processing to speed up the build process.
-> We are using Sphinx's `-j auto` flag to achieve this. This flag sets the number of parallel processes to the number of available CPU cores. 
-
 The resulting HTML files will be in the directory `build/html`.
 
 ```bash
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
 ```
-> [!NOTE]
-> Alternatively, to serve the entire site locally, just run `uv run make serve-local`.
-> PORT defaults to 8000. To serve on a different port, run `uv run make serve-local PORT=8080`.
-> Access the site at http://localhost:8000/serverless/ or http://localhost:8000/byoc/.
 
 The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
 
