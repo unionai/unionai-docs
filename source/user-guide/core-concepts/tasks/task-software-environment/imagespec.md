@@ -7,7 +7,7 @@ When you register the workflow, the container image is built locally and pushed 
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
 
 :::{note}
-See the [flytekit documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec) for full documentation of `ImageSpec` class parameters and methods.
+See the [Flytekit documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec) for full documentation of `ImageSpec` class parameters and methods.
 :::
 
 To illustrate the process, we will walk through an example.
@@ -87,7 +87,7 @@ See [Setting up the project](../../../development-cycle/setting-up-a-project).
 
 ## Understand the requirements
 
-The `requirements.txt` file conatins the `union` package and the `pandas` package, both of which are needed by the task.
+The `requirements.txt` file contains the `union` package and the `pandas` package, both of which are needed by the task.
 
 ## Set up a virtual Python environment
 

@@ -41,7 +41,6 @@ app = App(
     limits=Resources(cpu="2", mem="3Gi"),
 )
 ```
-{@# TODO: replace the container_image URL with a permanent public example. #@}
 
 Here the `App` constructor is initialized with the following parameters:
 
@@ -89,16 +88,12 @@ This will return output like the following:
 
 ```{code-block} bash
 ✨ Creating Application: streamlit-demo
-Created Endpoint at: https://tight--river--9e001.apps.serving-mvp.us-west-2.union.ai
+Created Endpoint at: https://withered--firefly--8ca31.apps.demo.hosted.unionai.cloud/
 ```
 
-Click on the displayed endpoint to go to the app.
+Click on the displayed endpoint to go to the app:
 
-{@# TODO: add the screenshot once it is available
-You should see something like this:
-
-![A simple app](/_static/images/user-guide/core-concepts/serving/simple-app.png)
-#@}
+![A simple app](/_static/images/user-guide/core-concepts/serving/streamlit-hello.png)
 
 ## Viewing deployed apps
 
@@ -110,14 +105,9 @@ To connect to an app click on its **Endpoint**.
 To see more information about the app, click on its **Name**.
 This will take you to the **App view**:
 
-![Apps view](/_static/images/user-guide/core-concepts/serving/app-view.png)
+![App view](/_static/images/user-guide/core-concepts/serving/app-view.png)
 
 Buttons to **Copy Endpoint** and **Start app** are available at the top of the view.
-The **Overview** tab provides the information about app's properties, configuration, and event history:
-
-The **Logs** tab provides a searchable and filterable view of the app's logs:
-
-![Apps logs](/_static/images/user-guide/core-concepts/serving/app-logs.png)
 
 You can also view all apps deployed in your Union instance from the command-line with:
 

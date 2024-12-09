@@ -103,8 +103,11 @@ $ union run --remote wf.py wf
 ```
 
 This will create an `Artifact` called `my_file` from the file `my_file.txt` that contains the text `Some data`.
+Obviously, this is just a toy example, but you can imagine the file containing useful data produced by your workflow that you want to display via your app.
 
-Now you can deploy your app:
+To see that the artifact was successfully created, you can go to the Artifact view in the Union UI and search for `my_file`:
+
+Deploy your app:
 
 ```{code-block} bash
 $ union deploy apps app.py streamlit-demo-wf-data

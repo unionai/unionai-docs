@@ -6,7 +6,7 @@ In this section we will expand on this by adding our own custom code to the app.
 
 ## Example app
 
-We will start with a simple app that consists only of the framework code that is need for an app and a small piece of custom logic.
+We will initialize the app in `app.py` as before, but now we will add two files containing our own code, `main.py` and `utils.py`.
 
 In a local directory, create the following files:
 
@@ -49,7 +49,7 @@ Compared to the first example we have added one more parameter:
 
 In this example we include two files containing custom logic: `main.py` and `utils.py`.
 
-The file `main.py` contains the actual Streamlit code:
+The file `main.py` contains the bulk of our custom code:
 
 ```{code-block} python
 :caption: main.py
@@ -65,7 +65,7 @@ if user_input:
     st.write("You entered:", process_user_input(user_input))
 ```
 
-The file `utils.py` contains a supporting function that is imported into the Streamlit file, above.
+The file `utils.py` contains a supporting function that is imported into the file above.
 
 ```{code-block} python
 :caption: utils.py
