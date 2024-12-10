@@ -15,7 +15,6 @@ In this case we will use the default Streamlit "Hello, World!" app.
 In a local directory, create the following file:
 
 ```{code-block} bash
-.
 └── app.py
 ```
 

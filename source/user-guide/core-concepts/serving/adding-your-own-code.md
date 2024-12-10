@@ -10,8 +10,7 @@ We will initialize the app in `app.py` as before, but now we will add two files 
 
 In a local directory, create the following files:
 
-```{code-block} bash
-.
+```{code-block} shell
 ├── app.py
 ├── main.py
 └── utils.py

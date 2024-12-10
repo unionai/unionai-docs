@@ -9,8 +9,7 @@ We then use a Union app to serve the model using `FastAPI`.
 
 In a local directory, create the following files:
 
-```{code-block}bash
-.
+```{code-block} shell
 ├── app.py
 ├── main.py
 └── wf.py
@@ -79,8 +78,6 @@ async def predict(x: float, y: float) -> float:
 
 ## wf.py
 
-Import the required packages:
-
 ```{code-block} python
 :caption: wf.py
 
@@ -96,28 +93,21 @@ from sklearn.datasets import make_regression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.model_selection import train_test_split
-```
 
-Create the [`Artifact`](../artifacts/index.md):
-
-```{code-block} python
+# Declare the artifact
 SklearnModel = Artifact(name="sklearn-model")
-```
 
-Define the container image that will be used to run the tasks using [`ImageSpec`](../tasks/task-software-environment/imagespec.md).
-Note that you must replace `YOUR_REGISTRY` with the actual URI of your own container registry.
-
-```{code-block} python
+# Define the container image that will be used to run the tasks.
+# Note that you must replace `YOUR_REGISTRY` with the actual URI of your own container registry.
 image_spec = ImageSpec(
     name="flytekit",
     packages=["scikit-learn==1.5.2"],
     registry="YOUR_REGISTRY",
 )
-```
 
-Define the tasks and workflow:
 
-```{code-block} python
+# Task that generates the example data
+# and splits it into training and testing sets.
 @task(
     cache=True,
     cache_version="2",
@@ -129,13 +119,13 @@ def load_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     return train_test_split(X, y, random_state=42)
 
 
+# Task that trains a RandomForestRegressor model
 @task(
     limits=Resources(cpu="2", mem="4Gi"),
     cache=True,
     cache_version="2",
     container_image=image_spec,
 )
-
 def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Annotated[FlyteFile, SklearnModel]:
     """Train a RandomForestRegressor model and save it as a file."""
     working_dir = Path(current_context().working_directory)
@@ -146,6 +136,7 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Annotated[FlyteFile
     return model_file
 
 
+# Task that evaluates the model
 @task(
     container_image=image_spec,
     limits=Resources(cpu="2", mem="2Gi"),
@@ -158,7 +149,7 @@ def evaluate_model(model: FlyteFile, X_test: np.ndarray, y_test: np.ndarray) -> 
     y_pred = model_.predict(X_test)
     return float(mean_absolute_percentage_error(y_test, y_pred))
 
-
+# Workflow that trains a model and evaluates it
 @workflow
 def wf() -> float:
     """Train a model and evaluate it."""

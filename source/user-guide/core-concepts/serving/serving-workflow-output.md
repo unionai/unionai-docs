@@ -6,8 +6,7 @@ In this section we use a Union app to display the output of a Union workflow.
 
 In a local directory, create the following files:
 
-```{code-block}bash
-.
+```{code-block} shell
 ├── app.py
 ├── main.py
 └── wf.py

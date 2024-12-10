@@ -14,8 +14,7 @@ To illustrate the process, we will walk through an example.
 
 ## Project structure
 
-```
-.
+```{code-block} shell
 ├── requirements.txt
 └── workflows
     ├── __init__.py
@@ -24,7 +23,7 @@ To illustrate the process, we will walk through an example.
 
 ### requirements.txt
 
-```
+```{code-block} shell
 union
 pandas
 ```
