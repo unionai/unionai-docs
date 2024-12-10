@@ -10,33 +10,48 @@ project.
 
 ## Set up your local Python environment
 
-* Create a virtual Python environment with Python 3.12 installed.
-* Activate that virtual environment.
-* Install the dependencies with `pip install -r docs-requirements.txt`. **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
+* Ensure you have Python 3.12 or later installed.
+* Clone this repository.
+
+```bash
+git clone https://github.com/unionai/docs.git
+```
+* We use `uv`. See installation instructions for your platform [here](https://docs.astral.sh/uv/getting-started/installation/).
+
+#### Activate the virtual environment
+
+```bash
+cd docs
+uv venv  # create a virtual environment
+```
+Or, if you have multiple Python versions installed, you can specify the Python version to use:
+
+```bash
+uv venv .venv --python 3.12  # create a virtual environment with the specific Python 3.12 version
+```
+
+#### Install the dependencies
+
+```bash
+uv sync
+```
+
+**Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
 
 ## Build the site
 
-* Run the build with `make build-local`.
-
-> [!NOTE]
-> We have leveraged on parallel processing to speed up the build process.
-> We are using Sphinx's `-j auto` flag to achieve this. This flag sets the number of parallel processes to the number of available CPU cores. 
+* Run the build with `uv run make build-local`.
 
 The resulting HTML files will be in the directory `build/html`.
 
 ```bash
 open build/html/serverless/index.html  # serverless variant
 open build/html/byoc/index.html  # byoc variant
-
 ```
-> [!NOTE]
-> Alternatively, to serve the entire site locally, just run `make serve-local`.
-> PORT defaults to 8000. To serve on a different port, run `make serve-local PORT=8080`.
-> Access the site at http://localhost:8000/serverless/ or http://localhost:8000/byoc/.
 
 The build process will generate two sets of Markdown files in the `sphinx_source` directory, one each for the Serverless and BYOC product versions. The final HTML output lives in the `build` directory.
 
-To delete both the `sphinx_source` and `build` directories, run `make clean`.
+To delete both the `sphinx_source` and `build` directories, run `uv run make clean`.
 
 ## Publish the site
 
@@ -64,7 +79,7 @@ Export the environment variables and run the docs build process:
 
 ```bash
 export $(cat secrets.txt | xargs)
-make build-local
+uv run make build-local
 ```
 
 

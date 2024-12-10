@@ -119,7 +119,6 @@ The source code for this tutorial can be found [here {{octicon}}`mark-github`]({
 
 ::::
 """
-
 LOGGING_ENABLED = False
 
 # Print to stdout
@@ -139,13 +138,18 @@ def shell(command: str, env: dict | None = None) -> None:
 # filtered for the specified variant and augmented with the variant itself
 # as a boolean variable set to True.
 def get_vars(variant: str) -> dict:
+    """Get template variables for the given variant."""
     vd: dict = {}
+    # Add existing variable processing
     for key, value in SUBS.items():
         if isinstance(value, dict):
             vd[key] = value[variant]
         elif isinstance(value, str):
             vd[key] = value
     vd[variant] = True
+    
+    if LOGGING_ENABLED:
+        log(f"Template variables for {variant}: {vd}")
     return vd
 
 
@@ -160,7 +164,6 @@ def create_run_command_node(run_commands: list[str], current_variant: str, githu
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
-        pip_install_command += " flytekitplugins-envd"
         run_cmd_start = RUN_COMMAND_START_BYOC.format(
             variant=variant_display
         )
@@ -246,17 +249,19 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
     n = n - 1 if n > 0 else 0
     indent: str = "    " * n
     log(f'{indent}Creating sphinx file for variant: {variant}')
+    
+    # Create Jinja environment with explicit settings
     env: jinja2.Environment = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.getcwd()),
         block_start_string='{@@',
         block_end_string='@@}',
         variable_start_string='{@=',
         variable_end_string='=@}',
-        comment_start_string='{@#',
-        comment_end_string='#@}',
         trim_blocks=True,
         lstrip_blocks=True,
+        autoescape=False  # Disable autoescaping for URLs
     )
+    
     input_path: str = f'{SOURCE_DIR}/{path}'
     log(f'{indent}input_path: {input_path}')
 
@@ -265,15 +270,31 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
 
     try:
         template: jinja2.Template = env.get_template(input_path)
-    except jinja2.exceptions.TemplateNotFound:
-        log(f'{indent}File not found at {input_path}')
-    else:
-        output: str = template.render(get_vars(variant)).strip()
+        
+        # Get template variables
+        template_vars = get_vars(variant)
+        if LOGGING_ENABLED:
+            log(f"Processing template {input_path} with vars: {template_vars}")
+            
+        # Render template
+        output: str = template.render(template_vars).strip()
+        
+        # Add frontmatter
         frontmatter = f'---\nvariant-display-names: {str(VARIANT_DISPLAY_NAMES)}\navailable-variants: {str(variants)}\ncurrent-variant: {variant}\n---\n\n'
         output = frontmatter + output + toctree
+        
+        # Write output file
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         with open(output_path, 'w') as f:
             f.write(output)
+            
+        if LOGGING_ENABLED:
+            log(f"Successfully wrote {output_path}")
+            
+    except jinja2.exceptions.TemplateNotFound:
+        log(f'{indent}File not found at {input_path}')
+    except Exception as e:
+        log(f"Error processing template {input_path}: {str(e)}")
 
 
 def process_page_node(
@@ -366,7 +387,7 @@ def process_project():
         shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
     for variant in ALL_VARIANTS:
         shell(
-            f'sphinx-build -j auto {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
+            f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
             env=DOCSEARCH_CREDENTIALS[variant],
         )
     shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
@@ -377,4 +398,4 @@ if __name__ == "__main__":
     start = time.time()
     process_project()
     end = time.time()
-    print(f"Total time: {end - start} seconds")
+    log(f"Total time: {end - start} seconds")

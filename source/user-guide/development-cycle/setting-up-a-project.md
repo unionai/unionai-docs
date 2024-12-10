@@ -70,13 +70,9 @@ $ union init --template basic-union-template basic-example
 
 ## Directory structure
 
-If you `cd` into the `basic-example` directory you’ll see the following file structure:
+In the `basic-example` directory you’ll see the following file structure:
 
 ```{code-block} shell
-$ cd basic-example
-
-$ tree
-.
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
