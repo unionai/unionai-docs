@@ -1,0 +1,275 @@
+/* ==========================================================================
+   Sidebar Styles
+   ========================================================================== */
+.bd-sidebar-primary {
+    width: 12% !important;
+    min-width: 279px !important;
+    padding: 1rem !important;
+    border-right-color: transparent;
+}
+
+.bd-sidebar-primary.bd-sidebar {
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    border-right-color: transparent;
+}
+
+.bd-sidebar-primary.bd-sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.bd-sidebar {
+    background-color: var(--color-surface-sd);
+}
+
+.bd-sidebar .nav-item a {
+    color: var(--color-text-primary);
+}
+
+.bd-sidebar .bd-sidebar-primary {
+    color: var(--color-text-primary);
+    border-right-color: transparent;
+}
+
+.sidebar-theme-toggle {
+    padding: 10px;
+    text-align: center;
+    margin-top: auto;
+}
+
+.sidebar-theme-toggle .theme-toggle {
+    background-color: var(--color-surface-container-low);
+    color: var(--color-text-primary);
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.sidebar-theme-toggle .theme-toggle:hover {
+    background-color: var(--color-surface-container-lowest);
+}
+
+.sidebar-primary-item .sidebar-theme-toggle {
+    padding-bottom: 2.5rem !important;
+}
+
+.bd-sidebar-primary .sidebar-primary-items__end .sidebar-primary-item {
+    padding-bottom: 2.5rem !important;
+}
+
+nav.bd-links li>a:hover {
+    text-decoration: none !important;
+
+}
+
+nav.bd-links li>a:before {
+    border-bottom: none !important;
+}
+
+.sidebar-secondary-item {
+    border-left: none !important;
+}
+
+
+.bd-sidebar-primary {
+    width: 20%;
+    min-width: 350px;
+    padding: 1rem;
+}
+
+/* make the scroll bar sleeker */
+.bd-sidebar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background: transparent;
+}
+
+.bd-sidebar::-webkit-scrollbar-thumb {
+    background: var(--pst-color-border);
+}
+
+/* Adjust sidebar positioning */
+.bd-sidebar-primary {
+    top: var(--navbar-total-height) !important;
+    height: calc(100vh - var(--navbar-total-height)) !important;
+}
+
+/* Adjust secondary sidebar positioning */
+.bd-sidebar-secondary {
+    top: var(--navbar-total-height) !important;
+    height: calc(100vh - var(--navbar-total-height)) !important;
+}
+
+/* ==========================================================================
+   Caret positioning
+   ========================================================================== 
+*/
+
+/* list structure */
+.bd-links li {
+    position: relative;
+    /* absolute positioning of caret */
+}
+
+/* remove the flex ordering. */
+.bd-links li>a {
+    display: block;
+    width: 100%;
+    padding-left: 24px !important;
+    /* sspace for caret */
+}
+
+/* position the details element */
+.bd-links li>details {
+    position: static;
+    /* reset position */
+}
+
+/* position the caret */
+.bd-links li>details>summary {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 0px;
+    top: 0px;
+    padding: 0;
+    list-style: none;
+    z-index: 1;
+    /* ensure caret lives above other elements */
+}
+
+/* remove default arrow */
+.bd-links li>details>summary::marker,
+.bd-links li>details>summary::-webkit-details-marker {
+    display: none;
+}
+
+/* nested levels indentation */
+.bd-links .toctree-l2>a {
+    padding-left: 24px !important;
+}
+
+.bd-links .toctree-l3>a {
+    padding-left: 20px !important;
+}
+
+.bd-links .toctree-l4>a {
+    padding-left: 28px !important;
+}
+
+/* caret styling */
+.bd-links li>details>summary>span.toctree-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.bd-links li>details>summary svg {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.15s ease;
+}
+
+/* open caret styling */
+.bd-links li>details[open]>summary svg {
+    transform: rotate(360deg) !important;
+}
+
+
+/* collapsed caret styling */
+.bd-sidebar-primary li.has-children>details>summary svg {
+    transform: rotate(270deg) !important;
+    font-size: .75rem;
+}
+
+.bd-sidebar-primary li.has-children>details[open]>summary svg {
+    transform: rotate(360deg) !important;
+    font-size: .75rem;
+}
+
+/* Tablet-specific breakpoint */
+@media (min-width: 769px) and (max-width: 960px) {
+
+    /* Adjust sidebar width for tablet */
+    .bd-sidebar-primary {
+        width: 25% !important;
+        min-width: 250px !important;
+    }
+}
+
+/* Adjust secondary sidebar positioning for tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .bd-sidebar-secondary {
+        position: fixed;
+        top: var(--navbar-total-height) !important;
+        right: 0;
+        width: 25%;
+        height: calc(100vh - var(--navbar-total-height)) !important;
+        overflow-y: auto;
+    }
+}
+
+/* Mobile-only styles */
+@media (max-width: 768px) {
+
+    /* Mobile auth buttons in sidebar */
+    .sidebar-primary-item.sidebar-auth-buttons {
+        display: flex !important;
+    }
+
+    /* Mobile sidebar navigation */
+    .sidebar-primary-items__mobile-nav {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 1rem !important;
+        gap: 1.5rem !important;
+    }
+
+    /* Auth buttons in sidebar */
+    .sidebar-primary-item.sidebar-auth-buttons {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    .sidebar-auth-buttons .unionai-btn,
+    .sidebar-auth-buttons .unionai-btn-plain {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Mobile Navigation */
+    .sidebar-primary-items__mobile-nav {
+        padding: 1rem;
+    }
+
+    .sidebar-primary-items__mobile-nav .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .sidebar-primary-items__mobile-nav .sidebar-primary-item {
+        padding: 0.5rem 0;
+    }
+
+    .sidebar-primary-items__mobile-nav .sidebar-primary-item a {
+        color: var(--color-text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        display: block;
+        padding: 0.25rem 0;
+    }
+
+    .sidebar-primary-items__mobile-nav .sidebar-primary-item a:hover {
+        color: var(--color-link-tertiary);
+    }
+}

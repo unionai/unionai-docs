@@ -1,0 +1,16 @@
+@import "./buttons.css";
+@import "./code.css";
+@import "./docsearch.css";
+@import "./footer.css";
+@import "./layout.css";
+@import "./nav-header.css";
+@import "./sidebar.css";
+@import "./table.css";
+@import "./typography.css";
+@import "./variant-selector.css";
+
+
+a:active,
+a:visited {
+    color: var(--primary-color);
+}
