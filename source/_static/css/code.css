@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Code Styles
+   ========================================================================== */
+
+
+/* Inline Code */
+code.literal {
+    border: unset !important;
+    /* border-radius: unset !important; */
+    padding: .1rem .25rem;
+}
+
+html[data-theme="light"] .highlight {
+    background-color: var(--pygments-light-bg, #f8f8f8);
+}
+
+html[data-theme="dark"] .highlight {
+    background-color: var(--pygments-dark-bg, #2F2921) !important;
+}
+
+/* Code Blocks */
+pre {
+    border: unset !important;
+}
+
+/* Tablet-specific breakpoint */
+@media (min-width: 769px) and (max-width: 960px) {
+
+    /* Adjust code blocks and pre elements */
+    pre {
+        margin: 1rem -1rem;
+        padding: 1rem;
+    }
+}
