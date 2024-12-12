@@ -1,23 +1,3 @@
-# Actors
-
-Actors allow you to reuse a container and environment between tasks, avoiding the cost of starting a new container for each task. This can be useful when you have a task that requires a lot of setup or has a long startup time.
-
-To create an actor, instantiate the [`ActorEnvironment`](../../api-reference/union-sdk/actor.actorenvironment.md) class, then add the instance as a decorator to the task that requires that environment.
-
-## `ActorEnvironment` parameters
-
-{@@ if serverless @@}
-* **container_image:** The container image to use for the task. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
-{@@ elif byoc @@}
-* **container_image:** The container image to use for the task. Defaults to `cr.flyte.org/flyteorg/flytekit:py3.11-latest`.
-{@@ endif @@}
-* **environment:** Environment variables as key, value pairs in a Python dictionary.
-* **limits:** Compute resource limits.
-* **replica_count:** The number of workers to provision that are able to accept tasks.
-* **requests:** Compute resource requests per task.
-* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../development-cycle/managing-secrets).
-* **ttl_seconds:** How long to keep the Actor alive while no tasks are being run.
-
 ## Examples
 
 ### Hello world
@@ -76,3 +56,13 @@ Both tasks in the following example will be executed in the same `ActorEnvironme
 :caption: pod_template.py
 :language: python
 ```
+
+### Refactoring from Regular Tasks to Actors
+
+Notice that converting a non-actor workflow to use actors is as simple as replacing the @flytekit.task decorator with the @actor_env.task decorator. Additionally, task decorator arguments can be moved either to the actor environment or the actor task decorator, depending on whether they apply to the entire environment (e.g., resource specifications) or to a single task execution (e.g., caching arguments).
+
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/danielsola/se-297-actors-docs-for-customer-push/user_guide/core_concepts/actors/byoc/diff.py
+:emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24
+:language: diff
+```
+
