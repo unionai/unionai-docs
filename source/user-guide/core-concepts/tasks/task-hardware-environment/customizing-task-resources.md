@@ -94,11 +94,8 @@ To remedy such a failure, you should make sure that the appropriate node types a
 * Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
-Go to the **Usage > Compute** dashboard to find the available node types and their resource profiles.
+Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
 To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
-This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button:
-
-![](/_static/images/adjust-configuration.png)
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
 
