@@ -16,7 +16,7 @@ Because they are independently executable, tasks can also be shared and reused a
 Tasks have strongly typed inputs and outputs, which are validated at deployment time.
 This helps catch bugs early and ensures that the data passing through tasks and workflows is compatible with the explicitly stated types.
 
-Under the hood, Union uses the [Flyte type system](https://docs.flyte.org/en/latest/protos/docs/core/core.html#flyteidl-core-types-proto) and translates between the Flyte types and the SDK language types, in this case Python.
+Under the hood, Union uses the [Flyte type system](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto) and translates between the Flyte types and the SDK language types, in this case Python.
 Python type annotations make sure that the data passing through tasks and workflows is compatible with the explicitly stated types defined through a function signature.
 The Flyte type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
 

@@ -3,7 +3,7 @@
 The ML workflow example code contains a `@workflow`-decorated function made up of several tasks decorated with the `@task` decorator. The code also contains an `ImageSpec` block, and tasks with the `enable_deck=True` parameter set, which enables visualizations in the Union UI.
 
 ```{note}
-You can find the full ML workflow example code on [{fab}`github` Github](https://github.com/unionai/examples/blob/main/guides/01_getting_started/ml_workflow/ml_workflow.py)
+You can find the full ML workflow example code on [{fab}`github` Github](https://github.com/unionai/unionai-examples/blob/main/user_guide/first_workflow/ml_workflow/ml_workflow.py)
 ```
 
 ## Workflow
