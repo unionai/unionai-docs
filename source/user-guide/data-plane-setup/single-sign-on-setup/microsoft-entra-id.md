@@ -3,7 +3,7 @@
 To set up your Union instance to use Microsoft Entra ID as the identity provider, follow the directions below.
 
 :::{admonition} Microsoft documentation
-In this article, we cover the same steps as the [Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app.md#register-an-application) Microsoft documentation, but with additional directions specific to Union.
+In this article, we cover the same steps as the [Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) Microsoft documentation, but with additional directions specific to Union.
 :::
 
 ## Register an Entra ID application

@@ -40,4 +40,4 @@ In the `query_wf` example, the workflow takes three inputs: `key1`, `dt`, and a 
 
 You can also override the artifact query from the launch form by clicking **Override**, directly supplying the input that the artifact references (in this case, a blob store URI), and clicking **Launch**:
 
-![Launch workflow UI with artifact query override](/_static/images/user-guide/core-concepts/artifacts/launch-workflow-artifact-query-override.png)
+![Launch workflow UI with artifact query override](/_static/images/user-guide/core-concepts/artifacts/consuming-artifacts-in-workflows/launch-workflow-artifact-query-override.png)

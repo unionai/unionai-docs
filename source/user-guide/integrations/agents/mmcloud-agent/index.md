@@ -11,7 +11,7 @@ To install the MMCloud agent, run the following command:
 pip install flytekitplugins-mmcloud
 ```
 
-To get started with Memory Machine Cloud, see the [Memory Machine Cloud user guide](https://docs.memverge.com/mmce/current/userguide/olh/index.html).
+To get started with Memory Machine Cloud, see the [Memory Machine Cloud user guide](https://docs.memverge.com).
 
 ## Example usage
 
