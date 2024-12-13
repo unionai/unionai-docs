@@ -26,5 +26,5 @@ dependencies = [
     "sphinxext-remoteliteralinclude",
     "tensorflow",
     "torch",
-    "union==0.1.85",
+    "union==0.1.104",
 ]

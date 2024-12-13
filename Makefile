@@ -8,7 +8,7 @@ sync-examples:
 
 .PHONY: build-local
 build-local: sync-examples
-	UNION_SERVERLESS_ENDPOINT= uv run build.py
+	UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
 
 .PHONY: clean
 clean:
@@ -19,4 +19,4 @@ clean:
 build: sync-examples
 	[ -x "$(shell command -v uv)" ] || pip install uv
 	uv sync
-	UNION_SERVERLESS_ENDPOINT= uv run build.py
+	UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
