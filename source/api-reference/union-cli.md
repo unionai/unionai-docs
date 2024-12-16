@@ -77,6 +77,5 @@ If none of these are present, the CLI will raise an error.
 .. click:: union.cli._main:main
     :prog: union
     :nested: full
-    :commands: backfill, build, create, delete, deploy, execution, fetch, get, info, init, launchplan, local-cache, metrics, package, register, run, serialize, serve, stop, update
 
 ```
