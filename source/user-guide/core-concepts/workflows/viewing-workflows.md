@@ -7,7 +7,7 @@ The workflows list shows all workflows in the current project and domain:
 ![Workflows list](/_static/images/user-guide/core-concepts/workflows/viewing-workflows/workflows-list.png)
 
 You can search the list by name and filter for only those that are archived.
-To archive a workflow, select the archive icon ![Archive icon](/_static/images/archive-icon.png).
+To archive a workflow, select the archive icon ![Archive icon](/_static/images/user-guide/core-concepts/workflows/viewing-workflows/archive-icon.png).
 
 Each entry in the list provides some basic information about the workflow:
 

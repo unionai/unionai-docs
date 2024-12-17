@@ -3,7 +3,7 @@
 The ML workflow example code contains a `@workflow`-decorated function made up of several tasks decorated with the `@task` decorator. The code also contains an `ImageSpec` block, and tasks with the `enable_deck=True` parameter set, which enables visualizations in the Union UI.
 
 ```{note}
-You can find the full ML workflow example code on [{fab}`github` Github](https://github.com/unionai/examples/blob/main/guides/01_getting_started/ml_workflow/ml_workflow.py)
+You can find the full ML workflow example code on [{fab}`github` Github](https://github.com/unionai/unionai-examples/blob/main/user_guide/first_workflow/ml_workflow/ml_workflow.py)
 ```
 
 ## Workflow
@@ -22,7 +22,7 @@ When deployed to Union, the workflow function is "compiled" to construct the dir
 Workflow parameters are available for configuration on the command line. In this example, the `main` workflow's `max_bins` parameter can be set to a different value from the default:
 
 ```{code-block} shell
-$ union run --remote guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 128
+$ union run --remote user_guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 128
 ```
 
 :::{admonition} `@task` and `@workflow` syntax

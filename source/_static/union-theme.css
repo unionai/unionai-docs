@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Root Variables & Base Styles
+   ========================================================================== */
+@import "./css/base.css";
+
+:root {
+    /* Font families */
+    --font-family-base: 'Inter', sans-serif;
+    --font-family-heading: 'Inter', sans-serif;
+    --pst-font-family-base: 'Inter', sans-serif;
+    --pst-font-family-heading: 'Inter', sans-serif;
+    --font-family-code: 'Roboto Mono', monospace;
+
+    /* Primary colors */
+    --primary-color: #edab1c;
+    --primary-border-color: #a87915;
+    --primary-color-surface: #fef2e5;
+    --docsearch-primary-color: #edab1c;
+
+    /* Shared styles */
+    --pri-btn-border-radius: 100px;
+
+    /* configure the navbar total height */
+    --navbar-total-height: 130px;
+}
+
+/* ==========================================================================
+   Theme Colors - Light Mode
+   ========================================================================== */
+
+html[data-theme="light"] {
+    --pst-color-secondary: #6D5C3F;
+    --color-text-primary: #201B13;
+    --color-primary: #201B13;
+    --color-text-secondary: #4E4539;
+    --color-link-tertiary: #4861D3;
+    --color-surface: #FFF8F3;
+    --color-surface-sd: #FFF8F3;
+    --color-surface-container-lowest: #FFFFFF;
+    --color-surface-container-low: #FEF2E5;
+    --color-outline: #807667;
+    --color-outline-variant: #D2C5B4;
+    --pri-btn-background: #EFBF6D;
+    --pri-btn-hover-background: #F8DFBB;
+    --pri-active-link-color: #201B13;
+    --union-btn-text-color: #422C00;
+    --primary-color: #201B13;
+    --secondary-color: #4E4539;
+    --pst-color-surface: #FCF8FF;
+    --pst-color-inline-code: #201B13;
+    --pst-heading-color: #201B13;
+    --pst-color-info-bg: #E4DFFF !important;
+    --color-back-to-top: #372F24;
+    --color-hover: rgba(32, 27, 19, 0.08);
+    --color-active-link: #372F24;
+    --color-variant-selector-hover: #49454F;
+}
+
+/* ==========================================================================
+   Theme Colors - Dark Mode
+   ========================================================================== */
+
+html[data-theme="dark"] {
+    --pst-color-secondary: #8A7B5F;
+    --color-text-primary: #FFF8F3;
+    --color-text-secondary: #D2C5B4;
+    --color-link-tertiary: #6CAFF7;
+    --color-surface: #1C1C1C;
+    --color-surface-sd: #241F17;
+    --color-surface-container-lowest: #2C2C2C;
+    --color-surface-container-low: #3C3C3C;
+    --color-outline: #505050;
+    --color-outline-variant: #6A6A6A;
+    --pri-btn-background: #EFBF6D;
+    --pri-btn-hover-background: #F8DFBB;
+    --pri-active-link-color: #ECE1D4;
+    --pri-btn-text-color: #422C00;
+    --primary-color: #ECE1D4 !important;
+    --secondary-color: #D2C5B4;
+    --pst-color-surface: #2F2921;
+    --pst-color-text-muted: #D2C5B4;
+    --pst-color-background: #120D07;
+    --pst-color-on-background: #120D07;
+    --pst-color-inline-code: #ECE1D4;
+    --pst-heading-color: #ECE1D4;
+    --pst-color-info-bg: #454077 !important;
+    --color-back-to-top: #EFBF6D;
+    --color-hover: rgba(255, 248, 243, 0.08);
+    --color-active-link: #EFBF6D;
+    --color-variant-selector-hover: #49454F;
+}
+
+/* Dark mode adjustments */
+html[data-theme="dark"] .variant-dropdown-content {
+    background-color: var(--color-surface-container-lowest);
+    border-color: var(--color-outline-variant);
+}

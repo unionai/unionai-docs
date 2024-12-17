@@ -4,8 +4,7 @@ import logging
 import sphinx.application
 import sphinx.errors
 from sphinx.util import logging as sphinx_logging
-
-
+from sphinx_click import ext as sphinx_click_ext
 # pygments_style = 'friendly'
 # pygments_dark_style = 'monokai'
 
@@ -20,15 +19,12 @@ master_doc = "index"
 html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = [
-    # Current Theme CSS:
-    "custom.css",
     # Union Theme CSS:
-    # "union-theme.css",
-    "new-theme.css",
+    "union-theme.css",
     # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
-html_js_files = ["custom.js"]
+html_js_files = ["union.js"]
 exclude_patterns = []
 extensions = [
     "myst_parser",
@@ -97,7 +93,9 @@ html_context = {
         "user-guide": "User guide",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
-    }
+    },
+    "github_url": os.getenv("GITHUB_URL", "https://github.com/flyteorg/flyte"),
+    "slack_url": os.getenv("SLACK_URL", "https://flyte-org.slack.com/"),
 }
 
 # Autodoc config
@@ -242,7 +240,21 @@ class CustomWarningSuppressor(logging.Filter):
         return True
 
 
+# We need to inject the project and domain params into the click context
+get_commands = sphinx_click_ext._get_lazyload_commands
+
+def custom_get_commands(ctx):
+    # inject params into the context
+    ctx.params = {
+        "project": "flytesnacks",
+        "domain": "development"
+    }
+    return get_commands(ctx)
+
 def setup(app):
+    # override the command loading fn
+    sphinx_click_ext._get_lazyload_commands = custom_get_commands
+
     app.connect("autodoc-process-docstring", process_docstring)
     app.connect("sphinx-click-process-description", process_description)
     app.connect("sphinx-click-process-options", process_options)

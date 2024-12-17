@@ -365,7 +365,7 @@ As eager workflows are still experimental, there are a few limitations to keep i
 
 - You cannot invoke [dynamic workflows](./dynamic-workflows), [map tasks](../tasks/task-types.md#map-tasks), or [launch plans](../launch-plans/index) inside an eager workflow.
 - [Context managers](https://docs.python.org/3/library/contextlib.html) will only work on locally executed functions within the eager workflow, i.e. using a context manager to modify the behavior of a task or subworkflow will not work because they are executed on a completely different pod.
-- All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.experimental.EagerException.html#flytekit.experimental.EagerException) at runtime.
+- All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/flytekit-sdk/experimental-features) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
 - Flyte entities that are invoked inside of an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
 - The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.

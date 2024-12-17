@@ -5,7 +5,7 @@
 To quickly check your workflow code, you can run it in your local Python environment with the following command:
 
 ```{code-block} shell
-$ union run guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
+$ union run user_guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 If the code runs successfully, you should see output like this:
@@ -22,7 +22,7 @@ Running Execution on local.
 To run the workflow in the cloud on Union, add the `--remote` option:
 
 ```{code-block} shell
-$ union run --remote guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
+$ union run --remote user_guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
 ```
 
 You should see the following output in your terminal:

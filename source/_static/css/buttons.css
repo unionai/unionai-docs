@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+
+.union-btn-primary {
+    background-color: var(--color-link-tertiary);
+    color: var(--color-surface);
+}
+
+.union-btn-primary:hover {
+    /* background-color: color-mix(in srgb, var(--color-link-tertiary) 80%, black); */
+    background-color: var(--pri-btn-hover-background);
+}
+
+.union-btn-secondary {
+    background-color: var(--color-surface-container-low);
+    color: var(--color-text-primary);
+    transition: background-color 0.3s ease;
+}
+
+.union-btn-secondary:hover {
+    background-color: color-mix(in srgb, var(--color-surface-container-low) 80%, black);
+}
+
+.unionai-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 24px;
+    background-color: var(--pri-btn-background);
+    color: var(--pri-btn-text-color);
+    border-radius: var(--pri-btn-border-radius);
+    font-family: var(--font-family-code);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.unionai-btn:hover {
+    /* background-color: color-mix(in srgb, var(--pri-btn-background) 80%, black); */
+    background-color: var(--pri-btn-hover-background);
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15)
+}
+
+.unionai-btn-plain {
+    display: inline;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 24px;
+    background-color: var(--color-surface-container-lowest);
+    color: var(--color-text-primary);
+    border-radius: var(--pri-btn-border-radius);
+    font-family: var(--font-family-code);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.unionai-btn-plain.unionai-btn-login {
+    display: inline;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.unionai-btn-plain.unionai-btn-login:hover {
+    display: inline;
+    /* padding: unset !important; */
+    padding: 10px 24px;
+    border: none;
+    background-color: var(--color-hover);
+    text-decoration: none !important;
+    cursor: pointer;
+
+}
+
+a.sd-btn {
+    background-color: var(--pri-btn-background) !important;
+    color: var(--pri-btn-text-color) !important;
+}
+
+a.sd-btn:hover {
+    background-color: var(--pri-btn-hover-background) !important;
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15) !important;
+    color: var(--pri-btn-text-color) !important;
+    text-decoration: none !important;
+    border: none !important;
+    border-color: unset !important;
+    border-style: unset !important;
+    border-width: unset !important;
+}
+
+a.unionai-btn-plain {
+    /* background-color: var(--color-surface-container-lowest) !important; */
+    color: var(--color-active-link) !important;
+}
+
+a.unionai-btn-signup:hover {
+    /* background-color: var(--color-link-tertiary) !important; */
+    color: var(--pri-btn-text-color) !important;
+    text-decoration: none !important;
+}
+
+.sd-btn-secondary {
+    border: none !important;
+    border-width: unset !important;
+    border-style: unset !important;
+}
+
+/* Tablet-specific breakpoint */
+@media (min-width: 769px) and (max-width: 960px) {
+
+    .unionai-btn,
+    .unionai-btn-plain {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+/* Mobile and Tablet Styles */
+@media (max-width: 1024px) {
+    /* Ensure buttons remain properly sized */
+    .unionai-btn,
+    .unionai-btn-plain {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* Buttons */
+    .union-btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}

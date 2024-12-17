@@ -74,9 +74,8 @@ If none of these are present, the CLI will raise an error.
 
 ```{eval-rst}
 
-.. click:: flytekit.clis.sdk_in_container.pyflyte:main
+.. click:: union.cli._main:main
     :prog: union
     :nested: full
-    :commands: backfill, build, create, delete, execution, fetch, get, info, init, launchplan, local-cache, metrics, package, register, run, serialize, serve, update
 
 ```

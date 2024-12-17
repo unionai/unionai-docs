@@ -92,7 +92,13 @@
                                 {"name": "viewing-artifacts", "variants": ["byoc", "serverless"]}
                             ]
                         },
-                        {"name": "serving", "variants": ["byoc", "serverless"]},
+                        {"name": "serving", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "adding-your-own-code", "variants": ["byoc", "serverless"]},
+                                {"name": "serving-workflow-output", "variants": ["byoc", "serverless"]},
+                                {"name": "serving-a-model", "variants": ["byoc", "serverless"]}
+                            ]
+                        },
                         {"name": "caching", "variants": ["byoc", "serverless"]}
                     ]
                 },
@@ -118,7 +124,11 @@
                         {"name": "task-resource-validation", "variants": ["byoc", "serverless"]},
                         {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
                         {"name": "ci-cd-deployment", "variants": ["byoc"]},
-                        {"name": "union-remote", "variants": ["byoc", "serverless"]}
+                        {"name": "union-remote", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "union-remote-examples", "variants": ["byoc", "serverless"]}
+                            ]
+                        }
                     ]
                 },
                 {"name": "data-input-output", "variants": ["byoc", "serverless"],
