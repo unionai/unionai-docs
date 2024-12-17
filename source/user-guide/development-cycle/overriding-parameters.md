@@ -1,5 +1,38 @@
 # Overriding parameters
 
+Every task execution in Union occurs within a parameter context that defines various aspects of the [task parameters](../core-concepts/tasks/task-hardware-environment) and [software environment](../core-concepts/tasks/task-software-environment).
+
+The parameter settings for a given execution are defined by a cascading set of configurations starting at the global level and proceeding through the project, workflow definition, task definition, and task invocation levels, with each level potentially overriding settings from the previous level.
+
+In this section we will explain the parameters involved and how they are inherited and overridden.
+
+To begin, let's take a look at which parameters we are talking about.
+
+## Execution settings and resource quotas
+
+The parameters that are inherited and (potentially) overridden are the *execution settings and resource quotas* that govern the hardware and software environment within which a task is executed. They are:
+
+* `accelerator`: Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators).
+* `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
+* `cache_version`: Specify the [cache version](../core-concepts/caching).
+* `cache`: Enable [caching](../core-concepts/caching).
+* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec).
+* `interruptible`: Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
+* `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+* `name`: Give a specific name to this task execution. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name).
+* `node_name`: Give a specific name to the DAG node for this task. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).
+* `requests`: Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+* `retries`: Specify the [number of times to retry this task](../core-concepts/tasks/task-parameters.md#retries).
+* `task_config`: Specify a [task config](../core-concepts/tasks/task-parameters.md#task_config).
+* `timeout`: Specify the [task timeout](../core-concepts/tasks/task-parameters.md#timeout).*
+
+
+
+level, the configuration, the workflow definition, the task definition and the task invocation
+
+
+the task definition, the workflow definition, and the
+
 The `with_overrides` method allows you to specify parameter overrides on [tasks](../core-concepts/tasks/index),
 [subworkflows, and sub-launch plans](../core-concepts/workflows/subworkflows-and-sub-launch-plans) at execution time.
 This is useful when you want to change the behavior of a task, subworkflow, or sub-launch plan without modifying the original definition.
