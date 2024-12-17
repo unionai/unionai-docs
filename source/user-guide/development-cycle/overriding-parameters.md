@@ -10,28 +10,52 @@ To begin, let's take a look at which parameters we are talking about.
 
 ## Execution settings and resource quotas
 
-The parameters that are inherited and (potentially) overridden are the *execution settings and resource quotas* that govern the hardware and software environment within which a task is executed. They are:
+The parameters that are inherited and (potentially) overridden are the *execution settings and resource quotas* that govern the hardware and software environment within which a task is executed and other aspects of execution behavior. They are:
+
+### Execution settings
+
+* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec).
+
+* `requests`: Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+* `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
 
 * `accelerator`: Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators).
-* `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
-* `cache_version`: Specify the [cache version](../core-concepts/caching).
-* `cache`: Enable [caching](../core-concepts/caching).
-* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec).
 * `interruptible`: Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
-* `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+
 * `name`: Give a specific name to this task execution. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name).
 * `node_name`: Give a specific name to the DAG node for this task. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).
-* `requests`: Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+
+* `cache`: Enable [caching](../core-concepts/caching).
+* `cache_version`: Specify the [cache version](../core-concepts/caching).
+* `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
+* (from Task parameters page) `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
+
+* (from Task parameters page) `secret_requests`: See Managing secrets
+
 * `retries`: Specify the [number of times to retry this task](../core-concepts/tasks/task-parameters.md#retries).
-* `task_config`: Specify a [task config](../core-concepts/tasks/task-parameters.md#task_config).
 * `timeout`: Specify the [task timeout](../core-concepts/tasks/task-parameters.md#timeout).*
 
+* `task_config`: Specify a [task config](../core-concepts/tasks/task-parameters.md#task_config).
+* (from Task parameters page) `task_resolver`: Provide a custom task resolver.
+* (from Task parameters page) `pod_template`: See Task hardware environment.
+* (from Task parameters page) `pod_template_name`: See Task hardware environment.
+
+* (from Task parameters page) `enable_deck`: If true, this task will output a Flyte Deck which can be used to visualize the task execution (see Decks⬀).
+* (from Task parameters page) `node_dependency_hints`: A list of tasks, launch plans, or workflows that this task depends on. This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime. Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier, because it allows registration to be done the same as for static tasks/workflows. For example this is useful to run launch plans dynamically, because launch plans must be registered on Flyteadmin before they can be run. Tasks and workflows do not have this requirement.
+* (from Task parameters page) `deprecated`: A string that can be used to provide a warning message for deprecated task. Absence / empty str indicates that the task is active and not deprecated
+* (from Task parameters page) `docs`: Documentation about this task.
+
+### Resource quotas
+
+(from UI)
+
+* **Memory quota**: Default namespace memory quota. The sum of all concurrent task memory limits cannot exceed this value
+* **CPU quota**: Default namespace CPU quota. The sum of all concurrent task CPU limits cannot exceed this value.
+* **GPU quota**: Default namespace GPU quota. The total number of currently active GPUs cannot exceed this value.
 
 
-level, the configuration, the workflow definition, the task definition and the task invocation
 
-
-the task definition, the workflow definition, and the
+## with_overrides
 
 The `with_overrides` method allows you to specify parameter overrides on [tasks](../core-concepts/tasks/index),
 [subworkflows, and sub-launch plans](../core-concepts/workflows/subworkflows-and-sub-launch-plans) at execution time.
