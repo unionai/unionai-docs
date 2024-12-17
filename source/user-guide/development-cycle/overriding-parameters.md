@@ -8,7 +8,7 @@ In this section we will explain the parameters involved and how they are inherit
 
 To begin, let's take a look at which parameters we are talking about.
 
-## Execution settings and resource quotas
+## Parameters
 
 The parameters that are inherited and (potentially) overridden are the *execution settings and resource quotas* that govern the hardware and software environment within which a task is executed and other aspects of execution behavior. They are:
 
@@ -52,6 +52,31 @@ The parameters that are inherited and (potentially) overridden are the *executio
 * **Memory quota**: Default namespace memory quota. The sum of all concurrent task memory limits cannot exceed this value
 * **CPU quota**: Default namespace CPU quota. The sum of all concurrent task CPU limits cannot exceed this value.
 * **GPU quota**: Default namespace GPU quota. The total number of currently active GPUs cannot exceed this value.
+
+
+
+## Scopes
+
+Global: {a, b, c}
+Domain(name): {d, e, f}
+Org(name): {a, b, c, d, e, f}
+Org(name)+ Domain(name): {d, e, f}
+Project(name): {a, b, c, d, e, f}
+Project(name) + Domain(name): {a, b, c, d, e, f}
+TaskDef(name): {a, b, c, d, e, f}
+TaskOverride(name): {a, b, c, d, e, f}
+
+
+## Inheritance
+
+
+Global -> Org -> Org+Domain -> Project -> Project+Domain -> TaskDef -> TaskOverride
+Domain ---^
+
+
+
+
+
 
 
 
