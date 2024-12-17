@@ -1,16 +1,52 @@
 # Projects and domains
 
-Projects and domain enable dedicated configurations, permissions, secrets, cached execution history, and resource allocations for each environment, preventing unintended impact on other projects/domains.
+Projects and domains are the principle organizational categories into which you group your workflows in Union. They are orthogonal to one another.
+
+Projects define groups of task, workflows, launch plans and other entities that share a functional purpose.
+Domains represent distinct steps through which the entities in a project transition as they proceed through the development cycle.
+{@@ if serverless @@}
+Union provides three domains: `development`, `staging`, and `production`.
+{@@ elif byoc @@}
+By default, Union provides three domains: `development`, `staging`, and `production`.
+During onboarding, you can configure your Union instance to have different domains.
+Speak to the Union team for more information.
+{@@ endif @@}
 
 
-## When to use development/staging/production domains?
+environments such as development, staging, and production.
 
-Allows for clear separation between environments, helping ensure that development and testing don't interfere with production workflows. A production domain ensures a “clean slate” so that cached development executions do not result in unexpected behavior. Additionally, secrets may be configured for external production data sources.
+
+, while domains represent distinct environments such as development, staging, and production.
+
+
+
+and represent independent workflows related to specific teams, business areas, or applications. Each project is isolated from others, but workflows can reference entities (workflows or tasks) from other projects to reuse generalizable resources.
+
+
+
+enable dedicated configurations, permissions, secrets, cached execution history, and resource allocations for each environment, preventing unintended impact on other projects and/or domains.
+
+Project
+
+## Domains
+
+Domains represent distinct environments orthogonal to the set of projects in your orgwithin Union, such as development, staging, and production.
+
+
+
+
+Using domains allows for a clear separation between environments, helping ensure that development and testing don't interfere with production workflows.
+
+
+A production domain ensures a “clean slate” so that cached development executions do not result in unexpected behavior.
+Additionally, secrets may be configured for external production data sources.
 
 
 ## When to use different Union projects?
 
-Projects help group independent workflows related to specific teams, business areas, or applications. Generally speaking, each independent team or ML product should have its own Union project. Even though these are isolated from one another, teams may reference entities (workflows or tasks) from other Union projects to reuse generalizable resources. For example, one team may create a generalizable task to train common model types. However, this requires advanced collaboration and common coding standards.
+Projects help group independent workflows related to specific teams, business areas, or applications.
+Generally speaking, each independent team or ML product should have its own Union project.
+Even though these are isolated from one another, teams may reference entities (workflows or tasks) from other Union projects to reuse generalizable resources. For example, one team may create a generalizable task to train common model types. However, this requires advanced collaboration and common coding standards.
 
 When setting up workflows in Union, effective use of **projects** and **domains** is key to managing environments, permissions, and resource allocation.
 Below are best practices to consider when organizing workflows in Union.
