@@ -16,34 +16,43 @@ The parameters that are inherited and (potentially) overridden are the *executio
 
 * `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec).
 
-* `requests`: Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
-* `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+* `requests`: (Resources object) Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+    * `cpu`: (name) Specify the CPU request.
+    * `gpu`: (name) Specify the GPU request.
+    * `memory`: (amount) Specify the memory request.
+    * `storage`: (amount) Specify the storage request.
+    * `ephemeral_storage`: (amount) Specify the ephemeral storage request.
+* `limits`: (Resources object) Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+    * `cpu`: (name) Specify the CPU request.
+    * `gpu`: (name) Specify the GPU request.
+    * `memory`: (amount) Specify the memory request.
+    * `storage`: (amount) Specify the storage request.
+    * `ephemeral_storage`: (amount) Specify the ephemeral storage request.
+* `accelerator`: (name) Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators).
+* `interruptible`: (boolean) Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
 
-* `accelerator`: Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators).
-* `interruptible`: Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
+* `name`: (string) Give a specific name to this task execution. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name).
+* `node_name`: (string) Give a specific name to the DAG node for this task. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).
 
-* `name`: Give a specific name to this task execution. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name).
-* `node_name`: Give a specific name to the DAG node for this task. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).
+* `cache`: (boolean) Enable [caching](../core-concepts/caching).
+* `cache_version`: (string) Specify the [cache version](../core-concepts/caching).
+* `cache_serialize`: (boolean) Enable [cache serialization](../core-concepts/caching).
+* (from Task parameters page) `cache_ignore_input_vars`: (boolean) Input variables that should not be included when calculating the hash for the cache.
 
-* `cache`: Enable [caching](../core-concepts/caching).
-* `cache_version`: Specify the [cache version](../core-concepts/caching).
-* `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
-* (from Task parameters page) `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
+* (from Task parameters page) `secret_requests`: (Secrets object) See Managing secrets
 
-* (from Task parameters page) `secret_requests`: See Managing secrets
+* `retries`: (number) Specify the [number of times to retry this task](../core-concepts/tasks/task-parameters.md#retries).
+* `timeout`: (time-period) Specify the [task timeout](../core-concepts/tasks/task-parameters.md#timeout).*
 
-* `retries`: Specify the [number of times to retry this task](../core-concepts/tasks/task-parameters.md#retries).
-* `timeout`: Specify the [task timeout](../core-concepts/tasks/task-parameters.md#timeout).*
+* `task_config`:(object) Specify a [task config](../core-concepts/tasks/task-parameters.md#task_config).
+* (from Task parameters page) `task_resolver`: (object) Provide a custom task resolver.
+* (from Task parameters page) `pod_template`: (object) See Task hardware environment.
+* (from Task parameters page) `pod_template_name`: (string) See Task hardware environment.
 
-* `task_config`: Specify a [task config](../core-concepts/tasks/task-parameters.md#task_config).
-* (from Task parameters page) `task_resolver`: Provide a custom task resolver.
-* (from Task parameters page) `pod_template`: See Task hardware environment.
-* (from Task parameters page) `pod_template_name`: See Task hardware environment.
-
-* (from Task parameters page) `enable_deck`: If true, this task will output a Flyte Deck which can be used to visualize the task execution (see Decks⬀).
-* (from Task parameters page) `node_dependency_hints`: A list of tasks, launch plans, or workflows that this task depends on. This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime. Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier, because it allows registration to be done the same as for static tasks/workflows. For example this is useful to run launch plans dynamically, because launch plans must be registered on Flyteadmin before they can be run. Tasks and workflows do not have this requirement.
-* (from Task parameters page) `deprecated`: A string that can be used to provide a warning message for deprecated task. Absence / empty str indicates that the task is active and not deprecated
-* (from Task parameters page) `docs`: Documentation about this task.
+* (from Task parameters page) `enable_deck`: (boolean) If true, this task will output a Flyte Deck which can be used to visualize the task execution (see Decks⬀).
+* (from Task parameters page) `node_dependency_hints`: (list) A list of tasks, launch plans, or workflows that this task depends on. This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime. Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier, because it allows registration to be done the same as for static tasks/workflows. For example this is useful to run launch plans dynamically, because launch plans must be registered on Flyteadmin before they can be run. Tasks and workflows do not have this requirement.
+* (from Task parameters page) `deprecated`: (string) A string that can be used to provide a warning message for deprecated task. Absence / empty str indicates that the task is active and not deprecated
+* (from Task parameters page) `docs`: (string) Documentation about this task.
 
 ### Resource quotas
 
@@ -148,7 +157,7 @@ message ExternalResourceAttributes {
 }
 ```
 
-## External Resource Attributes
+## Cluster Resource Attributes
 
 ```{code-block} proto
 message ClusterResourceAttributes {
@@ -157,6 +166,11 @@ message ClusterResourceAttributes {
   // Map values should be the custom values which get substituted during resource creation.
   map<string, string> attributes = 1;
 }
+```
+
+## Cluster Assignment
+
+```{code-block} proto
 ```
 
 ## with_overrides
