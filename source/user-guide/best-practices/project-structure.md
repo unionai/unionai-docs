@@ -10,6 +10,8 @@ A typical Union workflow project structure could look like this:
 
 ```{code-block} bash
 .
+├── .github/workflows/
+├── .gitignore
 ├── docs/
 │   └── README.md
 ├── src/
@@ -32,7 +34,6 @@ A typical Union workflow project structure could look like this:
 │       ├── __init__.py
 │       └── constants.py
 ├── uv.lock
-├── .gitignore
 └── pyproject.toml
 
 ```
@@ -72,7 +73,7 @@ Adding `__init__.py` files within each directory is essential:
 * **For Union's Fast Registration**: When performing fast registration, Union considers the first directory without an `__init__.py` as the root. Union will then package the root and its contents into a tarball, streamlining the registration process and avoiding the need to rebuild the container image every time you make code changes.
 
 
-### Monorepo vs Multi-repo: Choosing a structure
+## Monorepo vs Multi-repo: Choosing a structure
 
 When working with multiple teams, you have two main options:
 
@@ -80,8 +81,14 @@ When working with multiple teams, you have two main options:
 
 * **Multi-repo**: Separate repositories for each team or project can improve isolation and control. In this case, consider creating shared, installable packages for constructs that multiple teams use, ensuring consistency without merging codebases.
 
+## CI/CD
+
+The GitHub action should:
+* Register (and promote if needed) on merge to domain branch.
+* Execute on merge of input YAML.
+* Inject git SHA as entity version.
+
 
 ## Documentation and Docstrings
 
 Writing clear docstrings is encouraged, as they are automatically propagated to the Union UI. This provides useful context for anyone viewing the workflows and tasks in the UI, reducing the need to consult source code for explanations.
-
