@@ -53,32 +53,111 @@ The parameters that are inherited and (potentially) overridden are the *executio
 * **CPU quota**: Default namespace CPU quota. The sum of all concurrent task CPU limits cannot exceed this value.
 * **GPU quota**: Default namespace GPU quota. The total number of currently active GPUs cannot exceed this value.
 
+## Notes
 
+> So, if the Organization scope is equivalent to the Global scope, and the same parameters can be set, can we just omit Global from the story?
+> It is an implementaion detail. The ultimate default settings are, in effect, the default Organization settings.
+
+These levels can be separated into two groups. 1. Global and Domain. 2. Organization, Project, and Project-Domain.
+The first group is default from us, and the second group can be configured by users.
+So will it be easier for users to understand if we just hide the first group and say there are defaults?
+
+> So the set of parameters governed by Global and the set governed by Domain are disjoint.
+> There are no parameters in common (otherwise one would have to override the other).
+> Is this correct?
+Yes it is correct.
+Currently, `Cluster Resource Attributes` and `Cluster Assignment` are in the Domain level and
+`Task Resource Attributes`, `Workflow Execution Config`, and `External Resource Attributes` are in the Global level.
+
+I think the reason we want to have the Domain level is that we want to provide Domain-to-Cluster mapping for multi-cluster users.
+
+IMO, right now users are able to set organization level setting (they couldn't in the past),
+most of the users don't have to ask us to change the default unless they are using Domain-to-Cluster mapping for multi-cluster.
 
 ## Scopes
 
-Global: {a, b, c}
-Domain(name): {d, e, f}
-Org(name): {a, b, c, d, e, f}
-Org(name)+ Domain(name): {d, e, f}
-Project(name): {a, b, c, d, e, f}
-Project(name) + Domain(name): {a, b, c, d, e, f}
-TaskDef(name): {a, b, c, d, e, f}
-TaskOverride(name): {a, b, c, d, e, f}
-
+Global: default={a, b, c}
+Domain(d): default={d, e, f}
+Org(o): override={a, b, c, d, e, f}
+Project(p): {a, b, c, d, e, f}
+Project(p)+Domain(d): {a, b, c, d, e, f}
+TaskDef(t): {a, b, c, d, e, f}
+TaskOverride(to): {a, b, c, d, e, f}
 
 ## Inheritance
 
-
-Global -> Org -> Org+Domain -> Project -> Project+Domain -> TaskDef -> TaskOverride
+Global -> Org -> Project -> Project+Domain -> TaskDef -> TaskOverride
 Domain ---^
 
+## Task Resource Attributes
 
+```{code-block} proto
+message TaskResourceSpec {
+  string cpu = 1;
+  string gpu = 2;
+  string memory = 3;
+  string storage = 4;
+  string ephemeral_storage = 5;
+}
+```
 
+## Workflow Execution Config
 
+```{code-block} proto
+message WorkflowExecutionConfig {
+  // Can be used to control the number of parallel nodes to run within the workflow. This is useful to achieve fairness.
+  int32 max_parallelism = 1;
 
+  // Indicates security context permissions for executions triggered with this matchable attribute.
+  core.SecurityContext security_context = 2;
 
+  // Encapsulates user settings pertaining to offloaded data (i.e. Blobs, Schema, query data, etc.).
+  RawOutputDataConfig raw_output_data_config = 3;
 
+  // Custom labels to be applied to a triggered execution resource.
+  Labels labels = 4;
+
+  // Custom annotations to be applied to a triggered execution resource.
+  Annotations annotations = 5;
+
+  // Allows for the interruptible flag of a workflow to be overwritten for a single execution.
+  // Omitting this field uses the workflow's value as a default.
+  // As we need to distinguish between the field not being provided and its default value false, we have to use a wrapper
+  // around the bool field.
+  google.protobuf.BoolValue interruptible = 6;
+
+  // Allows for all cached values of a workflow and its tasks to be overwritten for a single execution.
+  // If enabled, all calculations are performed even if cached results would be available, overwriting the stored
+  // data once execution finishes successfully.
+  bool overwrite_cache = 7;
+
+  // Environment variables to be set for the execution.
+  Envs envs = 8;
+
+  // Execution environment assignments to be set for the execution.
+  repeated core.ExecutionEnvAssignment execution_env_assignments = 9;
+}
+```
+
+## External Resource Attributes
+
+```{code-block} proto
+message ExternalResourceAttributes {
+  // Connections here is used by the agent to connect to external systems.
+  map<string, core.Connection> connections = 1;
+}
+```
+
+## External Resource Attributes
+
+```{code-block} proto
+message ClusterResourceAttributes {
+  // Custom resource attributes which will be applied in cluster resource creation (e.g. quotas).
+  // Map keys are the *case-sensitive* names of variables in templatized resource files.
+  // Map values should be the custom values which get substituted during resource creation.
+  map<string, string> attributes = 1;
+}
+```
 
 ## with_overrides
 
