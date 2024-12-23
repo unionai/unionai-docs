@@ -43,6 +43,7 @@ html[data-theme="light"] {
     --pri-btn-background: #EFBF6D;
     --pri-btn-hover-background: #F8DFBB;
     --pri-active-link-color: #201B13;
+    --pri-visited-link-color: #5D5791;
     --union-btn-text-color: #422C00;
     --primary-color: #201B13;
     --secondary-color: #4E4539;
@@ -74,6 +75,7 @@ html[data-theme="dark"] {
     --pri-btn-background: #EFBF6D;
     --pri-btn-hover-background: #F8DFBB;
     --pri-active-link-color: #ECE1D4;
+    --pri-visited-link-color: #5D5791;
     --pri-btn-text-color: #422C00;
     --primary-color: #ECE1D4 !important;
     --secondary-color: #D2C5B4;

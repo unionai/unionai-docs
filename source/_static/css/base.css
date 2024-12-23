@@ -14,3 +14,7 @@ a:active,
 a:visited {
     color: var(--primary-color);
 }
+
+.bd-article a:visited:not(.sd-btn) {
+    color: var(--pri-visited-link-color) !important;
+}

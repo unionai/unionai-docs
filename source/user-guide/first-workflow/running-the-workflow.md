@@ -1,5 +1,28 @@
 # Running the workflow
 
+## Log in to Union
+
+To run workflows on Union using the `union` CLI, run the following command:
+
+{@@ if serverless @@}
+
+```{code-block} shell
+$ union create login --serverless
+```
+This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
+
+{@@ elif byoc @@}
+
+```{code-block} shell
+$ union create login --host <union-host-url>
+```
+
+where `<union-host-url>` is the URL of your Union instance.
+
+This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
+
+{@@ endif @@}
+
 ## Run the workflow locally in Python
 
 To quickly check your workflow code, you can run it in your local Python environment with the following command:

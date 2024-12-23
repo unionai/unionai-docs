@@ -44,6 +44,70 @@ This will take you to `flytesnacks` project dashboard:
 
 {@@ endif @@}
 
+{@@ if serverless @@}
+
+## Run your first workflow
+
+Run your first workflow on a Union Workspace.
+
+```{note}
+See the [local development](user-guide/first-workflow/index) guide to run your
+first workflow in your local machine instead.
+```
+
+::::{tab-set}
+
+:::{tab-item} {octicon}`play` Start workspace
+
+Go to the Workspaces page by clicking on the `Workspaces` button on the
+left-hand navigation bar.
+
+Start the default workspace by clicking on the `default` workspace item.
+
+![Start workspace](/_static/gifs/start-workspace.gif)
+
+:::
+
+:::{tab-item} {octicon}`book` Open workspace
+When the `Status` is `Active` on the `default` workspace, you can click on it
+again to open the workspace.
+
+*It will take a few moments to load the VSCode interface.*
+
+![Open workspace](/_static/gifs/open-workspace.gif)
+
+:::
+
+:::{tab-item} {octicon}`check-circle-fill` Complete walkthrough
+Once the workspace is open, you should see a VSCode interface in your browser.
+
+![Workspace VSCode](/_static/images/quick-start/serverless-workspace-vscode.png)
+
+In the walkthrough, you'll learn how to:
+
+1. 🤖 Train a model
+2. 🔀 Parallelize model training
+3. 📘 Iterate on a Jupyter Notebook
+
+:::
+
+:::{tab-item} {octicon}`stop` Stop workspace
+The workspace will terminate after 20 minutes of idle time, but you can also
+stop it manually on the Workspaces page.
+
+![Open workspace](/_static/gifs/stop-workspace.gif)
+:::
+
+::::
+
+## Next steps
+
+Once you've completed the walkthrough, run more examples in the [User Guide](user-guide/index)
+and [Tutorials](tutorials/index) in the workspace.
+
+
+{@@ elif byoc @@}
+
 ## Set up your Python environment
 
 Set up a Python virtual environment with `conda`, `venv` or a similar tool.
@@ -217,3 +281,4 @@ The output displays a URL that links to the workflow execution in the UI:
 
 Click the link to see the execution in the UI.
 
+{@@ endif @@}
