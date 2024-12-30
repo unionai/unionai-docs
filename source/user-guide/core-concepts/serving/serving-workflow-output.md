@@ -32,7 +32,7 @@ app = App(
         Input(
             name="my_file",
             value=MyFile.query(),
-            auto_download=True,
+            download=True,
             env_name="MY_FILE",
         ),
     ],
