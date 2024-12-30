@@ -100,7 +100,7 @@ Serve a vLLM model on a warm container and trigger inference automatically with 
 Run the Mochi 1 text-to-video generation model by Genmo on Union.
 :::
 
-:::{grid-item-card} {octicon}`server` Serving NVIDIA NIM Models with Union Actors
+:::{grid-item-card} {octicon}`server` Near-Real-Time Inference with NVIDIA NIM
 :link: language-models/nim-on-actor
 :link-type: doc
 
