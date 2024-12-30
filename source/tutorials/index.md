@@ -104,7 +104,7 @@ Run the Mochi 1 text-to-video generation model by Genmo on Union.
 :link: language-models/nim-on-actor
 :link-type: doc
 
-Serve NVIDIA NIM-supported language models using Union actors.
+Serve NVIDIA NIM-supported language models, powered by Union actors.
 :::
 
 ::::
