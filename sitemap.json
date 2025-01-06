@@ -82,7 +82,12 @@
                                 {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                             ]
                         },
-                        {"name": "actors", "variants": ["byoc", "serverless"]},
+                        {"name": "actors", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "actors-and-regular-tasks", "variants": ["byoc", "serverless"]},
+                                {"name": "actor-examples", "variants": ["byoc", "serverless"]}
+                            ]
+                        },
                         {"name": "artifacts", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "declaring-artifacts", "variants": ["byoc", "serverless"]},
