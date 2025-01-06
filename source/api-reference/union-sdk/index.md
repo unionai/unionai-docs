@@ -13,5 +13,5 @@ To write workflow code, you will mostly use the [`flytekit` SDK](../flytekit-sdk
     ~artifacts.DataCard
     ~artifacts.ModelCard
     ~artifacts.OnArtifact
-
+    
 ```
