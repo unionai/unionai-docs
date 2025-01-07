@@ -33,7 +33,7 @@ The Union CLI is the command-line interface for interacting with your Union inst
 :link-type: doc
 :columns: 6
 
-`uctl` is an alternative CLI for performing administrative tasks or use in CI/CD environments.
+`uctl` is an alternative CLI for performing administrative tasks and for use in CI/CD environments.
 :::
 
 ::::
