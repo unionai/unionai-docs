@@ -34,7 +34,6 @@ The Union CLI is the command-line interface for interacting with your Union inst
 :columns: 6
 
 `uctl` is an alternative CLI for performing administrative tasks or use in CI/CD environments.
-It is a Golang binary that can be installed on any platform supported by Golang.
 :::
 
 ::::
