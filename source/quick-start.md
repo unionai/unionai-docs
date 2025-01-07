@@ -51,16 +51,14 @@ This will take you to `flytesnacks` project dashboard:
 Run your first workflow on a Union Workspace.
 
 ```{note}
-See the [local development](user-guide/first-workflow/index) guide to run your
-first workflow in your local machine instead.
+To run workflows from your local machine instead, see the [First workflow](user-guide/first-workflow/index) section.
 ```
 
 ::::{tab-set}
 
 :::{tab-item} {octicon}`play` Start workspace
 
-Go to the Workspaces page by clicking on the `Workspaces` button on the
-left-hand navigation bar.
+Select **Workspaces** in the left navigation bar.
 
 Start the default workspace by clicking on the `default` workspace item.
 
@@ -102,8 +100,10 @@ stop it manually on the Workspaces page.
 
 ## Next steps
 
-Once you've completed the walkthrough, run more examples in the [User Guide](user-guide/index)
-and [Tutorials](tutorials/index) in the workspace.
+🎉 Congratulations! You've just run your first workflow on Union.
+
+Run more examples in the [User Guide](user-guide/index) and [Tutorials](tutorials/index)
+using the workspace, or run them from your local machine by following the [First workflow](user-guide/first-workflow/index) section.
 
 
 {@@ elif byoc @@}

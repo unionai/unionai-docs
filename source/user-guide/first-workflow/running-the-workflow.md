@@ -1,8 +1,8 @@
 # Running the workflow
 
-## Log in to Union
+## Set up your configuration
 
-To run workflows on Union using the `union` CLI, run the following command:
+To configure your `union` CLI, run the following command:
 
 {@@ if serverless @@}
 
