@@ -297,7 +297,7 @@
                         },
                         {"name": "configuration", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "config", "variants": ["byoc", "serverless"]},
+                                {"name": "config", "variants": ["byoc"]},
                                 {"name": "compile-time-and-serialization-settings", "variants": ["byoc", "serverless"]},
                                 {"name": "execution-time-settings", "variants": ["byoc", "serverless"]}
                             ]
@@ -325,7 +325,7 @@
                                 {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]}
                             ]
                         },
-                        {"name": "artifacts", "variants": ["byoc", "serverless"], 
+                        {"name": "artifacts", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
                                 {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},

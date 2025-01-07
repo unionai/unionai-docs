@@ -1,4 +1,4 @@
-# union CLI
+# Union CLI
 
 The `union` CLI is the main tool developers use to interact with Union on the command line.
 
