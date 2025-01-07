@@ -85,6 +85,7 @@
                         {"name": "actors", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "actors-and-regular-tasks", "variants": ["byoc", "serverless"]},
+                                {"name": "actors-caching", "variants": ["byoc", "serverless"]},
                                 {"name": "actor-examples", "variants": ["byoc", "serverless"]}
                             ]
                         },
