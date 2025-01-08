@@ -259,7 +259,7 @@ developing your workflows and tasks.
 
 ### Remote Union cluster execution
 
-Under the hood, `@eager` workflows use the [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index)
+Under the hood, `@eager` workflows use the [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md)
 object to kick off task, static workflow, and eager workflow executions.
 
 In order to actually execute them on a Union cluster, you'll need to configure
