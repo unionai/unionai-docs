@@ -18,115 +18,156 @@ The `@actor.cache` decorator provides a powerful mechanism to cache the results 
 
 ## Example: Caching Expensive Operations
 
-Below is a simplified example showcasing the use of `@actor.cache` for caching repetitive tasks. This dummy example demonstrates caching operations like loading a directory and file, which theoretically take a long time, so they are cached to avoid repeated loading across replicas.
+Below is a simplified example showcasing the use of `@actor.cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
 ```python
 from time import sleep
-from flytekit import fl
-from union.actor import ActorEnvironment
 
-actor = ActorEnvironment(...)
+from union import ActorEnvironment, workflow
 
-class MyObject:
-    def __init__(self, value: int):
-        self.value = value
+image = "ghcr.io/unionai-oss/union:py3.11-0.1.121"
 
-    def __hash__(self):
-        return hash(self.value)
-
-    def __eq__(self, other):
-        return self.value == other.value
-
-
-@fl.task(container_image=image, cache=True, cache_version="1")
-def create_file() -> FlyteFile:
-    ctx = current_context()
-    working_dir = Path(ctx.working_directory)
-    file = working_dir / "my_file.txt"
-    file.write_text("34")
-    return file
-
-
-@fl.task(container_image=image, cache=True, cache_version="1")
-def create_directory() -> FlyteDirectory:
-    ctx = current_context()
-    working_dir = Path(ctx.working_directory)
-    file = working_dir / "another.txt"
-    file.write_text("12")
-    return working_dir
+actor = ActorEnvironment(
+    name="my-actor",
+    container_image=image,
+    replica_count=1,
+)
 
 
 @actor.cache
-def load_data(file: FlyteFile) -> int:
-    sleep(2)  # Let's say the file takes a long time to load
-    with open(file, "r") as f:
-        return int(f.read())
-
-
-@actor.cache
-def load_directory(d: FlyteDirectory) -> int:
-    path = Path(d.download())
-    sleep(2)
-    with (path / "another.txt").open("r") as f:
-        return int(f.read())
-
-
-@actor.cache
-def get_value(obj: MyObject) -> int:
-    sleep(2)
-    return obj.value
+def load_model(state: int) -> callable:
+    sleep(4)  # simulate model loading
+    return lambda value: state + value
 
 
 @actor.task
-def add_file(num: int, file: FlyteFile, d: FlyteDirectory) -> int:
-    d1 = load_data(file=file)
-    d2 = load_directory(d=d)
-    my_obj = MyObject(value=1)
-    val = get_value(my_obj)
-    return num + d1 + d2 + val
+def evaluate(value: int, state: int) -> int:
+    model = load_model(state=state)
+    return model(value)
 
 
-@fl.workflow
-def add_five(num: int) -> int:
-    file = create_file()
-    d = create_directory()
-    result = add_file(num=num, file=file, d=d)
-    result = add_file(num=result, file=file, d=d)
-    result = add_file(num=result, file=file, d=d)
-    result = add_file(num=result, file=file, d=d)
-    return result
+@workflow
+def wf(init_value: int = 1, state: int = 3) -> int:
+    out = evaluate(value=init_value, state=state)
+    out = evaluate(value=out, state=state)
+    out = evaluate(value=out, state=state)
+    out = evaluate(value=out, state=state)
+    return out
 ```
 
-In this example, `load_data`, `load_directory`, and `get_value` are computed only once per unique input on a given actor replica, saving significant time across repeated calls.
+![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
 
-## Example: Avoiding Race Conditions
+You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time. 
 
-To ensure that a resource is initialized before downstream tasks execute, use a separate task to preload the resource and set the dependency graph using `>>` notation. This approach avoids potential race conditions when multiple tasks access the same cache.
+## Example: `@actor.cache` with `map_task`
+
+It can be idea to use map tasks with since they reuse the same environment and involve repetition. If a task has an expensive operation, like model loading, caching it with `@actor.cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
 ```python
-actor = ActorEnvironment(...)
+from functools import partial
+from pathlib import Path
+from time import sleep
+
+from union import ActorEnvironment, FlyteFile, current_context, map_task, task, workflow
+
+image = "ghcr.io/unionai-oss/union:py3.11-0.1.121"
+
+actor = ActorEnvironment(
+    name="my-actor",
+    container_image=image,
+    replica_count=2,
+)
+
+
+class MyModel:
+    """Simple model that multiples value with model_state."""
+
+    def __init__(self, model_state: int):
+        self.model_state = model_state
+
+    def __call__(self, value: int):
+        return self.model_state * value
+
+
+@task(container_image=image, cache=True, cache_version="v1")
+def create_model_state() -> FlyteFile:
+    working_dir = Path(current_context().working_directory)
+    model_state_path = working_dir / "model_state.txt"
+    model_state_path.write_text("4")
+    return model_state_path
+
 
 @actor.cache
-def load(model_dir: str):
-    # Simulate loading a model
-    sleep(2)
-    return f"Model loaded from {model_dir}"
+def load_model(model_state_path: FlyteFile) -> MyModel:
+    # Simulate model loading time. This can take a long time
+    # because the FlyteFile download is large, or when the  
+    # model is loaded onto the GPU.
+    sleep(10)
+    with model_state_path.open("r") as f:
+        model_state = int(f.read())
+
+    return MyModel(model_state=model_state)
+
 
 @actor.task
-def load_model_task(model_dir: str):
-    # Ensure the model is loaded before downstream tasks execute
-    load(model_dir=model_dir)
+def inference(value: int, model_state_path: FlyteFile) -> int:
+    model = load_model(model_state_path)
+    return model(value)
 
-@actor.task
-def run_inference(model_dir: str, input: list[str]) -> list[str]:
-    model = load(model_dir=model_dir)
-    return [f"{model} inference on {i}" for i in input]
 
-@fl.workflow
-def inference_workflow(model_dir: str, input: list[str]) -> list[str]:
-    load_model_task(model_dir=model_dir)
-    run = run_inference(model_dir=model_dir, input=input)
-    load >> run  # always run `load` before `run` so that the model gets loaded first
+@workflow
+def run_inference(values: list[int] = list(range(20))) -> list[int]:
+    model_state = create_model_state()
+    inference_ = partial(inference, model_state_path=model_state)
+    return map_task(inference_)(value=values)
 ```
 
-In this example, `load_model_task` ensures the model is cached before any inference task runs, avoiding contention or redundant initialization.
+## Example: Caching with Custom Objects
+
+Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor.cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
+
+```python
+from time import sleep
+
+from union import ActorEnvironment, workflow
+
+image = "ghcr.io/unionai-oss/union:py3.11-0.1.121"
+
+actor = ActorEnvironment(
+    name="my-actor",
+    container_image=image,
+    replica_count=1,
+)
+
+
+class MyObj:
+    def __init__(self, state: int):
+        self.state = state
+
+    def __hash__(self):
+        return hash(self.state)
+
+    def __eq__(self, other):
+        return self.state == other.state
+
+
+@actor.cache
+def get_state(obj: MyObj) -> int:
+    sleep(2)
+    return obj.state
+
+
+@actor.task
+def construct_and_get_value(state: int) -> int:
+    obj = MyObj(state=state)
+    return get_state(obj)
+
+
+@workflow
+def wf(state: int = 2) -> int:
+    value = construct_and_get_value(state=state)
+    value = construct_and_get_value(state=value)
+    value = construct_and_get_value(state=value)
+    value = construct_and_get_value(state=value)
+    return value
+```
