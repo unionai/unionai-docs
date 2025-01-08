@@ -14,7 +14,7 @@ Configuration usage can roughly be bucketed into the following areas:
 
 ### Command line arguments
 
-We recommended using command line arguments to set configuration values most of the time. See the [union CLI](../../union-cli) documentation for a full list of arguments for each command.
+We recommended using command line arguments to set configuration values most of the time. See the [union CLI](../../union-cli.md) documentation for a full list of arguments for each command.
 
 ### Configuration files
 
@@ -34,7 +34,7 @@ If you are using a configuration file, we recommend YAML format. The `~/.union/c
 #### INI format
 
 ```{warning}
-The INI format configuration is considered a legacy configuration format. We recommend using the [YAML format](#yaml-format-configuration-file) instead if you're using a configuration file.
+The INI format configuration is considered a legacy configuration format. We recommend using the [YAML format](#yaml-format) instead if you're using a configuration file.
 ```
 
 A configuration file for `flytekit`. By default, `flytekit` will look for a file in two places:
@@ -57,7 +57,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 #### Config object
 
 :::{note}
-You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../user-guide/development-cycle/union-remote.md) object. See [Creating a UnionRemote object](../../../user-guide/development-cycle/union-remote.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
+You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md) object. See [Creating a `UnionRemote` object](../../../user-guide/development-cycle/union-remote/index.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
 :::
 
 ```{eval-rst}
@@ -87,9 +87,9 @@ You can use a `Config` object directly, for example, when initializing a [`Union
 ```
 
 :::{note}
-These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](../../union-cli.md#union-package) or [`union register`](../../union-cli#union-cli-commands).
+These are compile-time and serialization settings that are usually passed in as flags to commands like [`union package`](../../union-cli.md#union-package) or [`union register`](../../union-cli.md#union-cli-commands).
 
-The image configurations are typically either passed in via an [`--image`](../../union-cli#cmdoption-union-build-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-files).
+The image configurations are typically either passed in via an [`--image`](../../union-cli.md#cmdoption-union-build-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-files).
 :::
 
 #### Execution time settings
