@@ -33,7 +33,7 @@ fast_api_app = App(
         Input(
             name="sklearn_model",
             value=SklearnModel.query(),
-            auto_download=True,
+            download=True,
         )
     ],
     container_image="ghcr.io/thomasjpfan/union-serve-sklearn-fastapi:0.1.2",

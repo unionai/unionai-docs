@@ -1,4 +1,4 @@
-# Agent API reference
+# Agents
 
 ```{list-table}
 :header-rows: 0

@@ -4,8 +4,7 @@ import logging
 import sphinx.application
 import sphinx.errors
 from sphinx.util import logging as sphinx_logging
-
-
+from sphinx_click import ext as sphinx_click_ext
 # pygments_style = 'friendly'
 # pygments_dark_style = 'monokai'
 
@@ -85,7 +84,7 @@ html_sidebars = {
         "custom-sidebar.html",
     ],
     "api-reference/**": [
-        "custom-sidebar.html",
+        "custom-sidebar.html", 
     ],
 }
 
@@ -108,6 +107,10 @@ copybutton_prompt_text = "$ "
 
 # Prevent css style tags from being copied by the copy button
 copybutton_exclude = 'style[type="text/css"]'
+
+# Makes it so that the copy button copies the entire block of code
+copybutton_line_continuation_character = "\\"
+
 
 # Algolia docsearch credentials
 docsearch_app_id = os.getenv("DOCSEARCH_APP_ID")
@@ -241,7 +244,21 @@ class CustomWarningSuppressor(logging.Filter):
         return True
 
 
+# We need to inject the project and domain params into the click context
+get_commands = sphinx_click_ext._get_lazyload_commands
+
+def custom_get_commands(ctx):
+    # inject params into the context
+    ctx.params = {
+        "project": "flytesnacks",
+        "domain": "development"
+    }
+    return get_commands(ctx)
+
 def setup(app):
+    # override the command loading fn
+    sphinx_click_ext._get_lazyload_commands = custom_get_commands
+
     app.connect("autodoc-process-docstring", process_docstring)
     app.connect("sphinx-click-process-description", process_description)
     app.connect("sphinx-click-process-options", process_options)

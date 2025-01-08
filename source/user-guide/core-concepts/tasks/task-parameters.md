@@ -83,4 +83,4 @@ You pass the following parameters to the `@task` decorator:
   It is possible for task authors to define a timeout period, after which the task is marked as `failure`.
   Note that a timed-out task will be retried if it has a retry strategy defined.
   The timeout can be handled in the
-  [TaskMetadata](https://docs.flyte.org/projects/flytekit/en/latest/generated/flytekit.TaskMetadata.html?highlight=retries.md#flytekit.TaskMetadata).
+  [TaskMetadata](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.TaskMetadata.html?highlight=retries.md#flytekit.TaskMetadata).
