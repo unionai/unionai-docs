@@ -53,7 +53,10 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'Union BYOC',
         'serverless': 'Union Serverless',
     },
-    'cli_name': 'uctl'
+    'default_project': {
+        'byoc': 'flytesnacks',
+        'serverless': 'default',
+    }
 }
 
 INSTALL_SDK_PACKAGE = "union"
