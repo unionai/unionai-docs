@@ -56,7 +56,7 @@ Both tasks in the following example will be executed in the same `ActorEnvironme
 
 ## Example: `@actor.cache` with `map_task`
 
-It can be idea to use map tasks with since they reuse the same environment and involve repetition. If a task has an expensive operation, like model loading, caching it with `@actor.cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
+With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor.cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
 {@@ if serverless @@}
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_map_task.py
