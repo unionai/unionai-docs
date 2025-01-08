@@ -18,7 +18,7 @@ from union import UnionRemote
 remote = UnionRemote()
 ```
 
-By default, when created with a no-argument constructor, `UnionRemote` will use the prevailing configuration in the local environment to connect to Union, that is, the same configuration as would be used by the `union` CLI in that environment (see [Union CLI > `union` CLI configuration search path](../../api-reference/union-cli.md#union-cli-configuration-search-path)).
+By default, when created with a no-argument constructor, `UnionRemote` will use the prevailing configuration in the local environment to connect to Union, that is, the same configuration as would be used by the `union` CLI in that environment (see [Union CLI > `union` CLI configuration search path](../../../api-reference/union-cli.md#union-cli-configuration-search-path)).
 
 In the default case, as with the `union` CLI, all operations will be applied to the default project, `{@= default_project =@}` and default domain, `development`.
 
@@ -49,7 +49,7 @@ In some cases, you may be running a script with `UnionRemote` in a CI/CD pipelin
 ```{code-block} python
 from union import UnionRemote
 from flytekit.configuration import Config, PlatformConfig
-    
+
 remote = FlyteRemote(
         config=Config(
             platform=PlatformConfig(
@@ -64,7 +64,7 @@ remote = FlyteRemote(
 ```
 
 
-{@# TODO: For details see [the API docs for `flytekit.configuration.Config`]() #@}
+For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/union-sdk/configuration/index.md)
 
 {@@ elif serverless @@}
 

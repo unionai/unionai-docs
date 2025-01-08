@@ -115,7 +115,7 @@ credentials, secrets, and `statsd` metrics.
 
 ### Environment variables
 
-You can specify environment variables at compile time, but when your task is run, FlytePropeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format `FLYTE_{SECTION}_{OPTION}`, all in upper case. For example, to specify the [`PlatformConfig.endpoint`](execution-time-settings.md#flytekit.configuration.PlatformConfig) setting, the environment variable would be `FLYTE_PLATFORM_URL`.
+You can specify environment variables at compile time, but when your task is run, FlytePropeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format `FLYTE_{SECTION}_{OPTION}`, all in upper case. For example, to specify the [`PlatformConfig.endpoint`](./execution-time-settings.md#flytekit.configuration.PlatformConfig) setting, the environment variable would be `FLYTE_PLATFORM_URL`.
 
 :::{note}
 Environment variables won't work for specifying an image, which needs to be specified with the

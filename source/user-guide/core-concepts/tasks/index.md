@@ -9,7 +9,7 @@ Workflows are constructed by chaining together tasks, with the output of one tas
 Tasks are designed to be independently executable, meaning that they can be run in isolation from other tasks.
 And since most tasks are just Python functions, they can be executed on your local machine, making it easy to unit test and debug tasks locally before deploying them to Union.
 
-Because they are independently executable, tasks can also be shared and reused across multiple workflows and, as long as their logic is deterministic, their input and outputs can be [cached](../caching) to save compute resources and execution time.
+Because they are independently executable, tasks can also be shared and reused across multiple workflows and, as long as their logic is deterministic, their input and outputs can be [cached](../caching.md) to save compute resources and execution time.
 
 ## Tasks are strongly typed
 
@@ -24,10 +24,10 @@ The Flyte type system is also used for caching, data lineage tracking, and autom
 
 While (most) tasks are locally executable, when a task is deployed to Union as part of the registration process it is containerized and run in its own independent Kubernetes pod.
 {@@ if byoc @@}
-This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index).
+This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {@@ elif serverless @@}
-This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index).
+This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {@@ endif @@}
 
@@ -46,10 +46,10 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
       It is expected to produce the same output every time.
       You should, for example, avoid using random number generators with the current clock as seed.
 * Is it a pure function? That is, does it have side effects that are unknown to the system?
-    * It is recommended to avoid side-effects in tasks.
-    * When side-effects are unavoidable, ensure that the operations are idempotent.
+    * It is recommended to avoid side effects in tasks.
+    * When side effects are unavoidable, ensure that the operations are idempotent.
 
-For details on task caching, see [Caching](../caching).
+For details on task caching, see [Caching](../caching.md).
 
 {@@ if byoc @@}
 ## Workflows can contain many types of tasks
@@ -58,9 +58,9 @@ One of the most powerful features of Union is the ability to run widely differin
 
 Because of the way that Union and Flyte are architected, tasks within a single workflow can differ along many dimensions. While the total number of ways that tasks can be configured is quite large, the options fall into three categories:
 
-* **Task type**: These include standard Python tasks, map tasks, raw container tasks, and many specialized plugin tasks. For more information, see [Task types](./task-types).
-* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index).
-* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/index).
+* **Task type**: These include standard Python tasks, map tasks, raw container tasks, and many specialized plugin tasks. For more information, see [Task types](./task-types.md).
+* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index.md).
+* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/index.md).
 
 ### Mix and match task characteristics
 
@@ -85,5 +85,5 @@ Not all parameters are compatible. For example, with specialized plugin task typ
 
 The `@task` decorator can take a number of parameters that allow you to configure the task's behavior.
 For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more.
-For more information, see [Task parameters](./task-parameters).
+For more information, see [Task parameters](./task-parameters.md).
 {@@ endif @@}

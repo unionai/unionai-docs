@@ -118,4 +118,4 @@ workflow!
 
 ## Next step
 
-The next step is to take a look at the [Example code components](example-code-components).
+The next step is to take a look at the [Example code components](./example-code-components.md).

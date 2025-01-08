@@ -17,7 +17,7 @@ Upon registration of a new launch plan, the first version is automatically inact
 If it has a schedule attached, the schedule is also inactive.
 Once activated, a launch plan version remains active even as new, later, versions are registered.
 
-A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../development-cycle/union-remote).
+A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../../user-guide/development-cycle/union-remote/index.md).
 
 ## Activating and deactivating a launch plan in the UI
 
@@ -29,7 +29,7 @@ A modal will appear that lets you select which launch plan version to activate:
 
 ![Activate schedule](/_static/images/user-guide/core-concepts/launch-plans/activating-and-deactivating/update-active-launch-plan-dialog.png)
 
-This modal will contain all versions of the the launch plan that have an attached schedule.
+This modal will contain all versions of the launch plan that have an attached schedule.
 Note that at most one version (and therefore at most one schedule) of a launch plan can be active at any given time.
 
 Selecting the launch plan version and clicking **Update** activates the launch plan version and schedule.
@@ -79,7 +79,7 @@ $ uctl update launchplan \
        --version <launch-plan-version>
 ```
 
-{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. #@}
+See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
 {@@ endif @@}
 

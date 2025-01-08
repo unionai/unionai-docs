@@ -34,7 +34,7 @@ This view provides:
 * A list of recent workflow versions:
   Selecting a version will take you to the [workflow version list](#workflow-versions-list).
 * A list of recent executions:
-  Selecting an execution will take you to the [execution view](./viewing-workflow-executions).
+  Selecting an execution will take you to the [execution view](./viewing-workflow-executions.md).
 
 ### Workflow versions list
 

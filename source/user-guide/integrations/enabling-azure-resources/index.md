@@ -14,7 +14,7 @@ There are two categories of access that you are likely to have to deal with:
 * **Infrastructure access**:
 Enabling access to a resource for your data plane infrastructure.
 The most common case occurs when using your container registry task container images.
-In that case, refer to [Enabling Azure Container Registry](enabling-azure-container-registry.md) to configure the Union data plane to access that registry.
+In that case, refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) to configure the Union data plane to access that registry.
 * **Task code access**:
 Enabling access to a resource for your task code.
 For example, your task code might need to access Azure Blob Storage at runtime.

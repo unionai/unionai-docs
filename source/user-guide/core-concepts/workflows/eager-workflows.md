@@ -85,7 +85,7 @@ We're leveraging Python's native `async` capabilities in order to:
    compile-time analysis and first-class data lineage tracking.
 :::
 
-Similar to [dynamic workflows](./dynamic-workflows), eager workflows are
+Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
 a static workflow at runtime using materialized inputs, eager workflows do
 not compile any workflow at all. Instead, they use the [`FlyteRemote`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote)
@@ -352,18 +352,17 @@ which means that `union run` has no way of knowing what tasks and subworkflows a
 
 Since eager workflows are an experimental feature, there is currently no first-class representation of them in the UI. When you register an eager workflow, you'll be able to see it in the task view.
 
-When you execute an eager workflow, the tasks and subworkflows invoked within it **won't show up** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually Flyte tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
+When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually Flyte tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
 
-However, at the end of execution, you'll be able to use [Flyte Decks](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html) to see a list of all the tasks and subworkflows that were executed within the
-eager workflow.
+However, at the end of execution, you'll be able to use [Flyte Decks](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html) to see a list of all the tasks and subworkflows that were executed within the eager workflow.
 
 ## Limitations
 
 As eager workflows are still experimental, there are a few limitations to keep in mind:
 
-- You cannot invoke [dynamic workflows](./dynamic-workflows), [map tasks](../tasks/task-types.md#map-tasks), or [launch plans](../launch-plans/index) inside an eager workflow.
+- You cannot invoke [dynamic workflows](./dynamic-workflows.md), [map tasks](../tasks/task-types.md#map-tasks), or [launch plans](../launch-plans/index.md) inside an eager workflow.
 - [Context managers](https://docs.python.org/3/library/contextlib.html) will only work on locally executed functions within the eager workflow, i.e. using a context manager to modify the behavior of a task or subworkflow will not work because they are executed on a completely different pod.
-- All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/flytekit-sdk/experimental-features) at runtime.
+- All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/union-sdk/experimental-features.md) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
-- UNion entities that are invoked inside of an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
+- Union entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
 - The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.

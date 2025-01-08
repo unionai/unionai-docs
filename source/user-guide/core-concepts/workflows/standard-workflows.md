@@ -5,10 +5,10 @@ The function is written in a domain specific language (DSL) that is a subset of 
 The syntax of a standard workflow definition can only include the following:
 
 * Calls to functions decorated with `@task` and assignment of variables to the returned values.
-* Calls to other functions decorated with `@workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans)).
-* Calls to [`LaunchPlan` objects](../launch-plans/index) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
-* Calls to functions decorated with `@dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows)).
-* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows)).
+* Calls to other functions decorated with `@workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans.md)).
+* Calls to [`LaunchPlan` objects](../launch-plans/index.md) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
+* Calls to functions decorated with `@dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows.md)).
+* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows.md)).
 * The special [`conditional` construct](#conditional-construct).
 * Statements using the [chaining operator `>>`](#chaining-operator).
 
@@ -50,7 +50,7 @@ The `@workflow` decorator can take the following parameters:
 * `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.WorkflowFailurePolicy.html#flytekit.WorkflowFailurePolicy).
 
 {@@ if byoc @@}
-* `interruptible`: Whether or not tasks launched from this workflow are by default interruptible. See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances).
+* `interruptible`: Indicates if tasks launched from this workflow are interruptible by default. See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances.md).
 {@@ endif @@}
 
 * `on_failure`: Invoke this workflow or task on failure. The workflow specified must have the same parameter signature as the current workflow, with an additional parameter called `error`.

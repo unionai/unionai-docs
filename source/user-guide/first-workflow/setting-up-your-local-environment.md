@@ -47,10 +47,10 @@ $ pip install -r user_guide/first_workflows/ml_workflow/requirements.txt
 
 {@@ if serverless @@}
 
-The next step is [Running the workflow](running-the-workflow).
+The next step is [Running the workflow](./running-the-workflow.md).
 
 {@@ elif byoc @@}
 
-The next step is [Setting up container image handling](setting-up-container-image-handling).
+The next step is [Setting up container image handling](./setting-up-container-image-handling.md).
 
 {@@ endif @@}

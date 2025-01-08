@@ -2,7 +2,7 @@
 
 {@@ if serverless @@}
 
-Union allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
+Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types.
@@ -75,7 +75,7 @@ An accelerator, in Union, is a specialized hardware device that is used to accel
 These concepts are entirely different and should not be confused.
 :::
 
-Union allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
+Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs. or other specialized hardware devices such as TPUs.
