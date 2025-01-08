@@ -9,7 +9,7 @@ We will use GitHub Actions as the example CI/CD system.
 
 An app is an agent registered in your Union data plane that enables external systems to perform actions in the system.
 To enable your CI/CD system to authenticate with Union, you need to create a Union app.
-See [Applications](../administration/applications).
+See [Applications](../administration/applications.md).
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
 

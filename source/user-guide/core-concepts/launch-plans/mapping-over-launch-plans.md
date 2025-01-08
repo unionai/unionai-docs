@@ -2,7 +2,7 @@
 
 You can map over launch plans the same way you can [map over tasks](../tasks/task-types.md#map-tasks) to execute workflows in parallel across a series of inputs.
 
-You can either map over a `LaunchPlan` object defined in one of your Python modules or a [reference launch plan](reference-launch-plans) that points to a previously registered launch plan.
+You can either map over a `LaunchPlan` object defined in one of your Python modules or a [reference launch plan](./reference-launch-plans.md) that points to a previously registered launch plan.
 
 ## Launch plan defined in your code
 

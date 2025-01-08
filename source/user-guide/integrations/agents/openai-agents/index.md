@@ -1,8 +1,8 @@
 # OpenAI agents
 
 There are two OpenAI agents:
-* **[Batch agent](batch-agent-example):** The Batch API agent allows you to submit requests for asynchronous batch processing on OpenAI.
-* **[ChatGPT agent](chatgpt-agent-example)** The ChatGPT agent allows you to submit prompts to ChatGPT and receive responses synchronously.
+* [**Batch agent**](./batch-agent-example.md): The Batch API agent allows you to submit requests for asynchronous batch processing on OpenAI.
+* [**ChatGPT agent**](./chatgpt-agent-example.md) The ChatGPT agent allows you to submit prompts to ChatGPT and receive responses synchronously.
 
 ## Installation
 

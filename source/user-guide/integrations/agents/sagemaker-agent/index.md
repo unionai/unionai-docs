@@ -12,7 +12,7 @@ pip install flytekitplugins-awssagemaker
 
 ## Example usage
 
-For a usage example, see [AWS SageMaker inference agent example](./sagemaker-agent-example).
+For a usage example, see [AWS SageMaker inference agent example](./sagemaker-agent-example.md).
 
 ## Local testing
 

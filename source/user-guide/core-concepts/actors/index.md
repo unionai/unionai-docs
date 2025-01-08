@@ -2,7 +2,7 @@
 
 Actors allow you to reuse a container and environment between tasks, avoiding the cost of starting a new container for each task. This can be useful when you have a task that requires a lot of setup or has a long startup time.
 
-To create an actor, instantiate the [`ActorEnvironment`](../../api-reference/union-sdk/actor.actorenvironment.md) class, then add the instance as a decorator to the task that requires that environment.
+To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/union-sdk/actors/actor-actorenvironment.md) class, then add the instance as a decorator to the task that requires that environment.
 
 ## `ActorEnvironment` parameters
 
@@ -15,7 +15,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../api-reference/uni
 * **limits:** Compute resource limits.
 * **replica_count:** The number of workers to provision that are able to accept tasks.
 * **requests:** Compute resource requests per task.
-* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../development-cycle/managing-secrets).
+* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../../development-cycle/managing-secrets.md).
 * **ttl_seconds:** How long to keep the Actor alive while no tasks are being run.
 
 

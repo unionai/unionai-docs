@@ -1,9 +1,9 @@
 # Local dependencies
 
 During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union.
-To enable this, you need ensure that the required dependencies are installed in both places.
+To enable this, you need to ensure that the required dependencies are installed in both places.
 Here we will explain how to install your dependencies locally.
-For information on how to make your dependencies available on Union, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec).
+For information on how to make your dependencies available on Union, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec.md).
 
 ## Create a Python virtual environment
 
@@ -35,6 +35,6 @@ union
 It simply specifies the `union` package (which in any case, you have already installed locally).
 In an actual project you would specify all the other dependency packages here as well.
 
-Having installed your dependencies in your local environment, you can now [run your workflows locally using `union run`](./running-your-code).
+Having installed your dependencies in your local environment, you can now [run your workflows locally using `union run`](./running-your-code.md).
 
-The next step is to ensure that the same dependencies are also [available in the remote environment on Union](./remote-dependencies-with-image-spec).
+The next step is to ensure that the same dependencies are also [available in the remote environment on Union](./remote-dependencies-with-image-spec.md).

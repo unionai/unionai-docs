@@ -1,7 +1,7 @@
 # Enabling Azure Key Vault
 
 ```{note}
-This documentation exists for customers who must use Azure Key Vault for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Azure Key Vault.
+This documentation exists for customers who must use Azure Key Vault for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Azure Key Vault.
 ```
 
 The Union-managed `userflyterole` identity must be granted permission to access [Azure Key Vault secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/about-secrets).
@@ -16,7 +16,7 @@ Refer to [Azure official documentation](https://learn.microsoft.com/en-us/azure/
 
 Union data plane tasks employ Azure Workload Identity Federation to access Azure resources using an Azure user-assigned identity. Access to Azure Key Vault containers requires updating permissions to permit this Union-managed user-assigned identity.
 
-[Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Key Vault Secrets User` role to the `userflyterole` user-assigned identity. Make sure it is scoped to the Azure Key Vault Secret.
+[Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) assigning the `Key Vault Secrets User` role to the `userflyterole` user-assigned identity. Make sure it is scoped to the Azure Key Vault Secret.
 
 :::{admonition} Union managed user-assigned identities
 

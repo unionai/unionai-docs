@@ -82,9 +82,8 @@ $ pip install -U union
 ```
 
 This will install:
-* The [`union` command-line tool](api-reference/union-cli)
-* The [`union` SDK](api-reference/union-sdk)
-* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
+* The [`union` CLI](./api-reference/union-cli.md)
+* The [`union` SDK](./api-reference/union-sdk/index.md)
 
 ## Configure the `union` CLI
 
@@ -118,7 +117,7 @@ These directions apply to Union BYOC, where you connect to your own dedicated Un
 
 {@@ endif @@}
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../api-reference/union-cli) for more details.)
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](./api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
@@ -137,7 +136,7 @@ Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the envi
 ```
 
 {@@ if byoc @@}
-For more details on connection configuration see [CLI authentication types](guide/administration/cli-authentication-types).
+For more details on connection configuration see [CLI authentication types](./user-guide/administration/cli-authentication-types.md).
 {@@ endif @@}
 
 ## Create a "Hello, world!" workflow
@@ -160,11 +159,11 @@ def hello_world_wf(name: str = 'world') -> str:
 ## Tasks and workflows
 
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-For more information, see the [task](guide/core-concepts/tasks/index) and [workflow](guide/core-concepts/workflows/index) documentation.
+For more information, see the [tasks](./user-guide/core-concepts/tasks/index.md) and [workflows](./user-guide/core-concepts/workflows/index.md) documentation.
 
 ## Run the workflow locally in Python
 
-You can run the workflow in your local Python environment with the [`union run` command](../api-reference/union-cli.md#union-cli-commands):
+You can run the workflow in your local Python environment with the [`union run` command](./api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run hello.py hello_world_wf
@@ -193,7 +192,7 @@ Hello, Ada!
 
 ## Run the workflow remotely on Union
 
-To run the workflow remotely on Union, add the [`--remote` flag](../api-reference/union-cli.md#union-cli-commands):
+To run the workflow remotely on Union, add the [`--remote` flag](./api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run --remote hello.py hello_world_wf --name "Ada"

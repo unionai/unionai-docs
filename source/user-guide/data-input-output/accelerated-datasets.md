@@ -2,7 +2,7 @@
 
 :::{admonition} *Accelerated datasets* and *Accelerators* are entirely different things
 Accelerated datasets is a Union feature that enables quick access to large datasets from within a task.
-An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
+An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators.md), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
 These concepts are entirely different and should not be confused.
 :::
 
@@ -10,10 +10,10 @@ Many of the workflows that you may want to run in Union will involve tasks that 
 These assets are often stored in an object store and need to be downloaded to the task pod each time before the task can run.
 This can be a significant bottleneck, especially if the data must be loaded into memory to be randomly accessed and therefore cannot be streamed.
 
-To remedy this, Union provides a way to pre-load large static assets into a shared object store that is mounted to all machine nodes in your cluster by default.
+To remedy this, Union provides a way to preload large static assets into a shared object store that is mounted to all machine nodes in your cluster by default.
 This allows you to upload your data once and then access it from any task without needing to download it each time.
 
-Data items stored in this way are called an accelerated datasets.
+Data items stored in this way are called *accelerated datasets*.
 
 :::{admonition} Only on S3
 Currently, this feature is only available for AWS S3.

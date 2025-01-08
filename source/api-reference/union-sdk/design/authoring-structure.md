@@ -14,7 +14,7 @@ The ``TypeEngine`` works by invoking a series of :py:class:`TypeTransformers <fl
 
 ## Callable entities
 
-The Flyte user experience is built around three main concepts: [tasks](../../../core-concepts/tasks/index), [workflows](../../../core-concepts/workflows/index), and [launch plans](../../../core-concepts/launch-plans/index). Each of these concepts is supported by one or more Python classes, which are instantiated by decorators (in the case of tasks and workflows) or a regular Python call (in the case of launch plans).
+The Flyte user experience is built around three main concepts: [tasks](../../../user-guide/core-concepts/tasks/index.md), [workflows](../../../user-guide/core-concepts/workflows/index.md), and [launch plans](../../../user-guide/core-concepts/launch-plans/index.md). Each of these concepts is supported by one or more Python classes, which are instantiated by decorators (in the case of tasks and workflows) or a regular Python call (in the case of launch plans).
 
 ### Tasks
 

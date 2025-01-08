@@ -2111,3 +2111,25 @@
 /byoc/user-guide/development-cycle/managing-apps/ /byoc/user-guide/development-cycle/managing-api-keys 302
 /serverless/user-guide/development-cycle/managing-apps /serverless/user-guide/development-cycle/managing-api-keys 302
 /serverless/user-guide/development-cycle/managing-apps/ /serverless/user-guide/development-cycle/managing-api-keys 302
+
+
+
+byoc/api-reference/union-sdk/actors/actor.actorenvironment byoc/api-reference/union-sdk/actors/actor-actorenvironment 302
+byoc/api-reference/union-sdk/actors/actor.actorenvironment/ byoc/api-reference/union-sdk/actors/actor-actorenvironment 302
+serverless/api-reference/union-sdk/actors/actor.actorenvironment serverless/api-reference/union-sdk/actors/actor-actorenvironment 302
+serverless/api-reference/union-sdk/actors/actor.actorenvironment/ serverless/api-reference/union-sdk/actors/actor-actorenvironment 302
+
+byoc/api-reference/union-sdk/artifacts/artifacts.datacard byoc/api-reference/union-sdk/artifacts/artifacts-datacard 302
+byoc/api-reference/union-sdk/artifacts/artifacts.datacard/ byoc/api-reference/union-sdk/artifacts/artifacts-datacard 302
+serverless/api-reference/union-sdk/artifacts/artifacts.datacard serverless/api-reference/union-sdk/artifacts/artifacts-datacard 302
+serverless/api-reference/union-sdk/artifacts/artifacts.datacard/ serverless/api-reference/union-sdk/artifacts/artifacts-datacard 302
+
+byoc/api-reference/union-sdk/artifacts/artifacts.modelcard byoc/api-reference/union-sdk/artifacts/artifacts-modelcard 302
+byoc/api-reference/union-sdk/artifacts/artifacts.modelcard/ byoc/api-reference/union-sdk/artifacts/artifacts-modelcard 302
+serverless/api-reference/union-sdk/artifacts/artifacts.modelcard serverless/api-reference/union-sdk/artifacts/artifacts-modelcard 302
+serverless/api-reference/union-sdk/artifacts/artifacts.modelcard/ serverless/api-reference/union-sdk/artifacts/artifacts-modelcard 302
+
+byoc/api-reference/union-sdk/artifacts/artifacts.onartifact byoc/api-reference/union-sdk/artifacts/artifacts-onartifact 302
+byoc/api-reference/union-sdk/artifacts/artifacts.onartifact/ byoc/api-reference/union-sdk/artifacts/artifacts-onartifact 302
+serverless/api-reference/union-sdk/artifacts/artifacts.onartifact serverless/api-reference/union-sdk/artifacts/artifacts-onartifact 302
+serverless/api-reference/union-sdk/artifacts/artifacts.onartifact/ serverless/api-reference/union-sdk/artifacts/artifacts-onartifact 302

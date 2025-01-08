@@ -22,16 +22,16 @@ This integration has two components:
 ## Example usage
 
 :::{note}
-You don't need an Airflow cluster to run Airflow tasks, since flytekit will
+You don't need an Airflow cluster to run Airflow tasks, since Flytekit will
 automatically compile Airflow tasks to Flyte tasks and execute them on the Airflow agent.
 :::
 
-For a usage example, see [Airflow agent example](./airflow-agent-example).
+For a usage example, see [Airflow agent example](./airflow-agent-example.md).
 
 ## Local testing
 
 Airflow doesn't support local execution natively. However, Flyte compiles Airflow tasks to Flyte tasks,
-which enables you to test Airflow tasks locally in flytekit's local execution mode.
+which enables you to test Airflow tasks locally in Flytekit's local execution mode.
 
 :::{note}
 In some cases, you will need to store credentials in your local environment when testing locally.
