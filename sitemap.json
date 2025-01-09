@@ -126,7 +126,8 @@
                             "children": [
                                 {"name": "union-remote-examples", "variants": ["byoc", "serverless"]}
                             ]
-                        }
+                        },
+                        {"name": "cost-allocation", "variants": ["byoc"]}
                     ]
                 },
                 {"name": "data-input-output", "variants": ["byoc", "serverless"],
