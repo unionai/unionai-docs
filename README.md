@@ -1,6 +1,6 @@
 # Union documentation
 
-This repository contains the source for the Union documentation site.
+This repository contains the source for the Union documentation site [docs.union.ai](https://docs.union.ai).
 
 The site is built using a combination of the [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
 templating system and the [Sphinx](https://www.sphinx-doc.org) static site generator.
