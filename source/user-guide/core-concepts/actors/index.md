@@ -37,9 +37,9 @@ You can learn more about the tradeoffs between actors and regular tasks, as well
 
 ## Caching on Actor Replicas
 
-The `@actor.cache` decorator provides a powerful mechanism to cache the results of Python callables on individual actor replicas. This is particularly beneficial for workflows involving repetitive tasks, such as data preprocessing, model loading, or initialization of shared resources, where caching can minimize redundant operations and improve overall efficiency. Once a callable is cached on a replica, subsequent tasks that use the same actor can access the cached result, significantly improving performance and efficiency.
+The `@actor_cache` decorator provides a powerful mechanism to cache the results of Python callables on individual actor replicas. This is particularly beneficial for workflows involving repetitive tasks, such as data preprocessing, model loading, or initialization of shared resources, where caching can minimize redundant operations and improve overall efficiency. Once a callable is cached on a replica, subsequent tasks that use the same actor can access the cached result, significantly improving performance and efficiency.
 
-### When to Use `actor.cache`
+### When to Use `@actor_cache`
 
 - **Shared Initialization Costs:**  
   For expensive, shared initialization processes that multiple tasks rely on.
@@ -49,9 +49,9 @@ The `@actor.cache` decorator provides a powerful mechanism to cache the results 
 
 - **Complex Object Caching:**  
   Use custom Python objects as keys to define unique cache entries.
-  
 
-Below is a simplified example showcasing the use of `@actor.cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
+
+Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
 {@@ if serverless @@}
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_basic.py
@@ -63,7 +63,7 @@ Below is a simplified example showcasing the use of `@actor.cache` for caching r
 :caption: caching_basic.py
 ```
 ```{note}
-In order to get the `@actor.cache` functionality, you must pin `union` to at least `0.1.121`.
+In order to get the `@actor_cache` functionality, you must pin `union` to at least `0.1.121`.
 ```
 {@@ endif @@}
 

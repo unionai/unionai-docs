@@ -54,9 +54,9 @@ Both tasks in the following example will be executed in the same `ActorEnvironme
 :language: python
 ```
 
-## Example: `@actor.cache` with `map_task`
+## Example: `@actor_cache` with `map_task`
 
-With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor.cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
+With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
 {@@ if serverless @@}
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_map_task.py
@@ -72,7 +72,7 @@ With map tasks, each task is executed within the same environment, making actors
 
 ## Example: Caching with Custom Objects
 
-Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor.cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
+Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor_cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
 
 {@@ if serverless @@}
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_custom_object.py
