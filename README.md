@@ -79,7 +79,7 @@ Export the environment variables and run the docs build process:
 
 ```bash
 export $(cat secrets.txt | xargs)
-uv run make build-local
+make build-local
 ```
 
 
