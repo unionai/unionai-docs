@@ -38,6 +38,7 @@ extensions = [
     "sphinx_docsearch",
 ]
 graphviz_output_format = "svg"
+nitpicky = True
 
 # Myst
 myst_enable_extensions = ["colon_fence"]
@@ -84,7 +85,7 @@ html_sidebars = {
         "custom-sidebar.html",
     ],
     "api-reference/**": [
-        "custom-sidebar.html", 
+        "custom-sidebar.html",
     ],
 }
 
@@ -228,6 +229,7 @@ class CustomWarningSuppressor(logging.Filter):
             "Include file",
             "duplicate object description",
             "unknown document",
+            "py:class reference target not found",
         )
 
         if msg.strip().startswith(filter_out):
