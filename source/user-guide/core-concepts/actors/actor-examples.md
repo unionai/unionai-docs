@@ -1,20 +1,17 @@
 # Examples
 
-## Hello world
+### Refactoring from Regular Tasks to Actors
 
-The following example shows how to create a basic `ActorEnvironment` and use it for one task:
+Notice that converting a non-actor workflow to use actors is as simple as replacing the `@flytekit.task` decorator with the `@actor_env.task` decorator. Additionally, task decorator arguments can be moved either to the actor environment or the actor task decorator, depending on whether they apply to the entire environment (e.g. resource specifications) or to a single task execution (e.g. caching arguments).
 
-{@@ if serverless @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/hello_world.py
-:caption: hello_world.py
-
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/danielsola/se-297-actors-docs-for-customer-push/user_guide/core_concepts/actors/byoc/diff.py
+:emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24
+:language: diff
 ```
-{@@ elif byoc @@}
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/hello_world.py
-:caption: hello_world.py
 
+```{note}
+The `union` package is a superset of `flytekit` and the following examples use `union` to define Flyte tasks, workflows, resources, etc. Though actors require `union`, you may use `flytekit` for the remaining Flyte constructs of you so desire.
 ```
-{@@ endif @@}
 
 ## Multiple instances of the same task
 
@@ -57,12 +54,35 @@ Both tasks in the following example will be executed in the same `ActorEnvironme
 :language: python
 ```
 
-## Refactoring from Regular Tasks to Actors
+## Example: `@actor_cache` with `map_task`
 
-Notice that converting a non-actor workflow to use actors is as simple as replacing the @flytekit.task decorator with the @actor_env.task decorator. Additionally, task decorator arguments can be moved either to the actor environment or the actor task decorator, depending on whether they apply to the entire environment (e.g., resource specifications) or to a single task execution (e.g., caching arguments).
+With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/refs/heads/danielsola/se-297-actors-docs-for-customer-push/user_guide/core_concepts/actors/byoc/diff.py
-:emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24
-:language: diff
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_map_task.py
+:caption: caching_map_task.py
+
 ```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_map_task.py
+:caption: caching_map_task.py
+
+```
+{@@ endif @@}
+
+## Example: Caching with Custom Objects
+
+Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor_cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
+
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_custom_object.py
+:caption: caching_custom_object.py
+
+```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_custom_object.py
+:caption: caching_custom_object.py
+
+```
+{@@ endif @@}
 
