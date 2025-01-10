@@ -44,6 +44,77 @@ This will take you to `{@= default_project =@}` project dashboard:
 
 {@@ endif @@}
 
+{@@ if serverless @@}
+
+## Run your first workflow
+
+Run your first workflow on a Union Workspace.
+
+```{note}
+To run workflows from your local machine instead, see the [First workflow](user-guide/first-workflow/index) section.
+```
+
+:::{dropdown} {octicon}`play` Start workspace
+:open:
+:animate: fade-in
+:color: light
+
+Select **Workspaces** in the left navigation bar.
+
+Start the default workspace by clicking on the `default` workspace item.
+
+![Start workspace](/_static/gifs/start-workspace.gif)
+:::
+
+:::{dropdown} {octicon}`book` Open workspace
+:animate: fade-in
+:color: light
+
+When the `Status` is `Active` on the `default` workspace, you can click on it
+again to open the workspace.
+
+*It will take a few moments to load the VSCode interface.*
+
+![Open workspace](/_static/gifs/open-workspace.gif)
+:::
+
+
+:::{dropdown} {octicon}`check-circle-fill` Complete walkthrough
+:animate: fade-in
+:color: light
+
+Once the workspace is open, you should see a VSCode interface in your browser.
+
+![Workspace VSCode](/_static/images/quick-start/serverless-workspace-vscode.png)
+
+In the walkthrough, you'll learn how to:
+
+1. 🤖 Train a model
+2. 🔀 Parallelize model training
+3. 📘 Iterate on a Jupyter Notebook
+:::
+
+:::{dropdown} {octicon}`stop` Stop workspace
+:animate: fade-in
+:color: light
+
+The workspace will terminate after 20 minutes of idle time, but you can also
+stop it manually on the Workspaces page.
+
+![Open workspace](/_static/gifs/stop-workspace.gif)
+:::
+
+
+## Next steps
+
+🎉 Congratulations! You've just run your first workflow on Union.
+
+Run more examples in the [User Guide](user-guide/index) and [Tutorials](tutorials/index)
+using the workspace, or run them from your local machine by following the [First workflow](user-guide/first-workflow/index) section.
+
+
+{@@ elif byoc @@}
+
 ## Set up your Python environment
 
 Set up a Python virtual environment with `conda`, `venv` or a similar tool.
@@ -216,3 +287,4 @@ The output displays a URL that links to the workflow execution in the UI:
 
 Click the link to see the execution in the UI.
 
+{@@ endif @@}

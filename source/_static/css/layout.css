@@ -141,9 +141,22 @@ class, which is only on the root page
 
 
 /* update styling for tabs */
+.bd-content .sd-tab-set .sd-tab-content {
+    padding: 2.5em;
+}
+
 .bd-content .sd-tab-set>input:checked+label {
     border-color: var(--pst-color-border) var(--pst-color-border) transparent;
     color: var(--primary-color);
+}
+
+.bd-content .sd-tab-set>input:not(.focus-visible)+label {
+    padding: 0.5em 1em;
+}
+
+.bd-content .sd-tab-set .sd-tab-label svg {
+    font-size: 1.25em;
+    margin-right: 0.25em;
 }
 
 .bd-content .sd-tab-set .sd-tab-content {
@@ -152,6 +165,10 @@ class, which is only on the root page
 
 .bd-main .bd-content .bd-article-container {
     padding: 2.5rem;
+}
+
+.bd-content .sd-tab-set>input:not(:checked,:focus-visible)+label:hover {
+    text-decoration-line: none;
 }
 
 /* grid items should have bottom margin */
