@@ -3,7 +3,7 @@
 Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage.md), [Artifact Registry](./enabling-google-artifact-registry.md), [BigQuery](./enabling-bigquery.md), and so forth.
 
 :::{admonition} Secret management
-We strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
+We strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager.md).
 :::
 
 As much as possible, access to the resources you need will be pre-configured by the Union team when they set up your data plane.
@@ -59,7 +59,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 :::{admonition} Relationship with RBAC
 The permissions being discussed here are attached to a domain.
-This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management)).
+This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management.md)).
 But, the two types of permissions are related.
 
 For example, for a user (or machine application) to have read access to a Cloud Storage bucket, two things are required:

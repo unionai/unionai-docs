@@ -82,7 +82,12 @@
                                 {"name": "reactive-workflows", "variants": ["byoc", "serverless"]}
                             ]
                         },
-                        {"name": "actors", "variants": ["byoc", "serverless"]},
+                        {"name": "actors", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "actors-and-regular-tasks", "variants": ["byoc", "serverless"]},
+                                {"name": "actor-examples", "variants": ["byoc", "serverless"]}
+                            ]
+                        },
                         {"name": "artifacts", "variants": ["byoc", "serverless"],
                             "children": [
                                 {"name": "declaring-artifacts", "variants": ["byoc", "serverless"]},
@@ -231,7 +236,8 @@
                         {"name": "soft-clustering-hdbscan", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py"},
                         {"name": "liger-kernel-finetuning", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py"},
                         {"name": "llama_edge_deployment", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py"},
-                        {"name": "vllm-serving-on-actor", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/vllm_serving_on_actor/ner.py"}
+                        {"name": "vllm-serving-on-actor", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/vllm_serving_on_actor/ner.py"},
+                        {"name": "nim-on-actor", "variants": ["byoc"], "from_py_file": "./unionai-examples/tutorials/nim_on_actor/nim_on_actor.py"}
                     ]
                 },
                 {"name": "diffusion-models", "variants": ["byoc", "serverless"],
@@ -276,16 +282,8 @@
             "children": [
                 {"name": "union-sdk", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]},
-                        {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
-                        {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},
-                        {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
-                    ]
-                },
-                {"name": "flytekit-sdk", "variants": ["byoc", "serverless"],
-                    "children": [
                         {"name": "design", "variants": ["byoc", "serverless"],
-                            "children": [
+                        "children": [
                                 {"name": "models-files", "variants": ["byoc", "serverless"]},
                                 {"name": "authoring-structure", "variants": ["byoc", "serverless"]},
                                 {"name": "execution-time-support", "variants": ["byoc", "serverless"]}
@@ -311,7 +309,7 @@
                         },
                         {"name": "configuration", "variants": ["byoc", "serverless"],
                             "children": [
-                                {"name": "config-object", "variants": ["byoc", "serverless"]},
+                                {"name": "config", "variants": ["byoc", "serverless"]},
                                 {"name": "compile-time-and-serialization-settings", "variants": ["byoc", "serverless"]},
                                 {"name": "execution-time-settings", "variants": ["byoc", "serverless"]}
                             ]
@@ -322,7 +320,7 @@
                         {"name": "specifying-accelerators", "variants": ["byoc", "serverless"]},
                         {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
                         {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
-                        {"name": "agent-api-reference", "variants": ["byoc"],
+                        {"name": "agents", "variants": ["byoc"],
                             "children": [
                                 {"name": "airflow", "variants": ["byoc"]},
                                 {"name": "sagemaker", "variants": ["byoc"]},
@@ -332,6 +330,26 @@
                                 {"name": "chatgpt", "variants": ["byoc"]},
                                 {"name": "snowflake", "variants": ["byoc"]},
                                 {"name": "spark", "variants": ["byoc"]}
+                            ]
+                        },
+                        {"name": "actors", "variants": ["byoc", "serverless"],
+                            "children":[
+                                {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]}
+                            ]
+                        },
+                        {"name": "artifacts", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
+                                {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},
+                                {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
+                            ]
+                        },
+                        {"name": "union-remote", "variants": ["byoc", "serverless"],
+                            "children": [
+                                {"name": "entrypoint", "variants": ["byoc", "serverless"]},
+                                {"name": "entities", "variants": ["byoc", "serverless"]},
+                                {"name": "entity-components", "variants": ["byoc", "serverless"]},
+                                {"name": "execution-objects", "variants": ["byoc", "serverless"]}
                             ]
                         },
                         {"name": "custom-tasks", "variants": ["byoc", "serverless"],
@@ -464,16 +482,7 @@
                                 {"name": "uctl-update-workflow-meta", "variants": ["byoc", "serverless"]}
                             ]},
                         {"name": "uctl-version", "variants": ["byoc", "serverless"]}
-                ]},
-                {"name": "union-remote", "variants": ["byoc", "serverless"],
-                    "children": [
-                        {"name": "entrypoint", "variants": ["byoc", "serverless"]},
-                        {"name": "entities", "variants": ["byoc", "serverless"]},
-                        {"name": "entity-components", "variants": ["byoc", "serverless"]},
-                        {"name": "execution-objects", "variants": ["byoc", "serverless"]}
-                    ]
-                },
-                {"name": "config", "variants": ["byoc"]}
+                ]}
             ]
         }
     ]

@@ -4,7 +4,7 @@ In Union, each task runs in its own container. This means that a file or directo
 
 The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, theFLytekit SDK provides the [`FlyteFile`](../../api-reference/flytekit-sdk/custom-types/flytefile) and [`FlyteDirectory`](../../api-reference/flytekit-sdk/custom-types/flytedirectory) classes, which automate this process.
+Since this is such a common use case, the Union SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
 
 ## How the classes work
 
@@ -120,9 +120,9 @@ However, you can change the upload location by setting the raw data prefix to yo
 :::{admonition} Setting up your own object store bucket
 For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 
-* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
-* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
-* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage)
+* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
+* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
+* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
 :::
 
 ### Changing the raw data prefix
@@ -130,7 +130,7 @@ For details on how to set up your own object store bucket, consult the direction
 If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
 This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
 
-{@# TODO See [Raw data prefix](raw-data-prefix) for more information. #@}
+{@# TODO See [Raw data prefix]() for more information. #@}
 
 Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
 
@@ -248,7 +248,7 @@ The latter calls the built-in Python function `open()`, downloads the specified 
 
 Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
 
-See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
+See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
 
 ### Explicit downloading
 
@@ -277,8 +277,8 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [Flytekit SDK](../../api-reference/flytekit-sdk) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/custom-types/index.md#file-type):
+The [Union SDK](../../api-reference/union-sdk/index.md) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/index.md#file-type):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -290,7 +290,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/flytekit-sdk/custom-types/index.md#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/index.md#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

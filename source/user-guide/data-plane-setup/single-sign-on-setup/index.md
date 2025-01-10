@@ -7,12 +7,12 @@ The team will then complete the process.
 
 ## Google OpenID Connect
 
-To configure Google OpenID Connect, see [Google OpenID Connect](./google-oidc).
+To configure Google OpenID Connect, see [Google OpenID Connect](./google-oidc.md).
 
 ## Microsoft Entra ID (formerly Azure AD)
 
-To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](./microsoft-entra-id).
+To configure Entra ID (Azure AD), see [Microsoft Entra ID (formerly Azure ID)](./microsoft-entra-id.md).
 
 ## Other identity providers
 
-To configure other identity providers, see [Other identity providers](./other-identity-providers).
+To configure other identity providers, see [Other identity providers](./other-identity-providers.md).

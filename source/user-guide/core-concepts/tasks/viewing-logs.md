@@ -1,6 +1,6 @@
 # Viewing logs
 
-In the [Execution view](../workflows/viewing-workflow-executions), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.
+In the [Execution view](../workflows/viewing-workflow-executions.md), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.
 
 Within that panel, in the **Execution** tab, under **Logs**, you will find a link labeled **Live Logs**.
 
@@ -16,7 +16,7 @@ For example, any `print` statements in the tasks Python code will be displayed h
 
 ## Other tabs
 
-Alongside the **Execution logs** tab in the the **Execution details page**, you will also find the **Execution resources** and **Inputs & Outputs** tabs.
+Alongside the **Execution logs** tab in the **Execution details page**, you will also find the **Execution resources** and **Inputs & Outputs** tabs.
 
 {@@ if byoc @@}
 

@@ -13,7 +13,7 @@ pip install flytekitplugins-spark
 
 ## Example usage
 
-For a usage example, see [Databricks agent example](./databricks-agent-example).
+For a usage example, see [Databricks agent example](./databricks-agent-example.md).
 
 ## Local testing
 

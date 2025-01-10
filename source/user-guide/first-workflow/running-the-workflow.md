@@ -59,7 +59,7 @@ This command does the following:
 * Builds the images defined by the `ImageSpec` objects in your code and pushes them to the specified container registry.
 * Pushes the workflow code to Union.
 * Sets up the workflow DAG and its constituent task containers.
-* Registers the workflow in the default domain (`development`) of the default project (`flytesnacks`) in Union.
+* Registers the workflow in the default domain (`development`) of the default project (`{@= default_project =@}`) in Union.
 
 You should see the following output (or similar) in your terminal:
 
@@ -118,4 +118,4 @@ workflow!
 
 ## Next step
 
-The next step is to take a look at the [Example code components](example-code-components).
+The next step is to take a look at the [Example code components](./example-code-components.md).

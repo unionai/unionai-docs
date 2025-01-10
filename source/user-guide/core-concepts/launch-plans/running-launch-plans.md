@@ -26,7 +26,7 @@ $ uctl create execution \
        --execFile <execution-spec-file-name>.yaml
 ```
 
-{@# TODO add back when uctl reference exists. See the [`uctl` reference]() for more details. #@}
+See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
 ## Running a launch plan in Python with `UnionRemote`
 
@@ -41,16 +41,16 @@ launch_plan = remote.fetch_launch_plan(name=<launch-plan-name>, version=<launch-
 remote.execute(launch_plan, inputs=<inputs>)
 ```
 
-See the [UnionRemote](../../development-cycle/union-remote) and [UnionRemote.execute](../../development-cycle/union-remote.md#executing-entities) documentation for more details.
+See the [UnionRemote](../../development-cycle/union-remote/index.md) for more details.
 
 ## Sub-launch plans
 
 The above invocation examples assume you want to run your launch plan as a top-level entity within your project.
-However, you can also invoke a launch plan from *within a workflow*, creating an *sub-launch plan*.
+However, you can also invoke a launch plan from *within a workflow*, creating a *sub-launch plan*.
 This causes the invoked launch plan to kick off its workflow, passing any parameters specified to that workflow.
 
-This differs from the case of [subworkflows](../workflows/subworkflows-and-sub-launch-plans) where you invoke one workflow function from within another.
+This differs from the case of [subworkflows](../workflows/subworkflows-and-sub-launch-plans.md) where you invoke one workflow function from within another.
 A subworkflow becomes part of the execution graph of the parent workflow and shares the same execution ID and context.
 On the other hand, when a sub-launch plan is invoked a full, top-level workflow is kicked off with its own execution ID and context.
 
-See [Subworkflows and sub-launch plans](../workflows/subworkflows-and-sub-launch-plans) for more details.
+See [Subworkflows and sub-launch plans](../workflows/subworkflows-and-sub-launch-plans.md) for more details.

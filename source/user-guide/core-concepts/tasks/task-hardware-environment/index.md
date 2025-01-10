@@ -11,7 +11,7 @@ You can customize the hardware environment in which your task code executes thro
 * Memory size
 * Ephemeral storage size
 
-See [Customizing task resources](./customizing-task-resources) for details.
+See [Customizing task resources](./customizing-task-resources.md) for details.
 
 {@@ elif byoc @@}
 
@@ -20,7 +20,7 @@ You can customize the hardware environment in which your task code executes.
 Depending on your needs, there are two different of ways to define and register tasks with their own custom hardware requirements:
 
 * Configuration in the `@task` decorator
-* Defining a PodTemplate
+* Defining a `PodTemplate`
 
 ### Using the `@task` decorator
 
@@ -31,7 +31,7 @@ You can specify `requests` and `limits` on:
 * Memory size
 * Ephemeral storage size
 
-See [Customizing task resources](./customizing-task-resources) for details.
+See [Customizing task resources](./customizing-task-resources.md) for details.
 
 ### Using PodTemplate
 
@@ -55,9 +55,9 @@ For details see [Configuring task pods with K8s PodTemplates&#x2B00;](https://do
 ## Accelerators
 
 If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
-See [Accelerators](./accelerators) for more information.
+See [Accelerators](./accelerators.md) for more information.
 
 ## Task-level monitoring
 
 You can also monitor the hardware resources used by a task.
-See [Task-level monitoring](./task-level-monitoring) for details.
+See [Task-level monitoring](./task-level-monitoring.md) for details.

@@ -8,7 +8,7 @@ You can find the full ML workflow example code on [{fab}`github` Github](https:/
 
 ## Workflow
 
-The `@workflow` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index). This function contains references to the tasks defined earlier in the code.
+The `@workflow` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md). This function contains references to the tasks defined earlier in the code.
 
 A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
 
@@ -34,7 +34,7 @@ $ union run --remote user_guide/first_workflow/ml_workflow/ml_workflow.py main -
 
 ## Tasks
 
-The `@task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index). A task tasks some input and produces an output. When deployed to a Kubernetes cluster, each task runs in its own Kubernetes pod.
+The `@task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md). A task tasks some input and produces an output. When deployed to a Kubernetes cluster, each task runs in its own Kubernetes pod.
 
 ### `train_model`
 
@@ -56,7 +56,7 @@ the task again.
 ```
 
 ```{note}
-For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters).
+For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
 ```
 
 ## ImageSpec

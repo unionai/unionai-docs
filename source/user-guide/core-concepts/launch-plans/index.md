@@ -3,9 +3,9 @@
 A launch plan is a template for a workflow invocation.
 It brings together:
 
-* A [workflow](../workflows/index)
+* A [workflow](../workflows/index.md)
 * A (possibly partial) set of inputs required to initiate that workflow
-* Optionally, [notifications](./notifications) and [schedules](./schedules)
+* Optionally, [notifications](./notifications.md) and [schedules](./schedules.md)
 
 When invoked, the launch plan starts the workflow, passing the inputs as parameters.
 If the launch plan does not contain the entire set of required workflow inputs, additional input arguments must be provided at execution time.
@@ -33,17 +33,17 @@ To view the launch plans for a given workflow, in the UI, navigate to the workfl
 You can choose which launch plan to use to launch the workflow from the **Launch Plan** dropdown menu.
 The default launch plan will be selected by default. If you have not defined any custom launch plans for the workflow, only the default plan will be available.
 If you have defined one or more custom launch plans, they will be available in the dropdown menu along with the default launch plan.
-For more details, see [Running Launch Plans](./running-launch-plans).
+For more details, see [Running Launch Plans](./running-launch-plans.md).
 
 ## Registering a launch plan
 
 ### Registering a launch plan on the command line with `union` or `uctl`
 
-In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `union` or `uctl`( See [Running your code](../../development-cycle/running-your-code)).
+In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `union` or `uctl` (see [Running your code](../../development-cycle/running-your-code.md)).
 
 ### Registering a launch plan in Python with `UnionRemote`
 
-As with all Union command line actions, you can also perform registration of launch plans programmatically with [`UnionRemote`](../../development-cycle/union-remote), specifically, `UnionRemote.register_launch_plan`.
+As with all Union command line actions, you can also perform registration of launch plans programmatically with [`UnionRemote`](../../development-cycle/union-remote/index.md), specifically, `UnionRemote.register_launch_plan`.
 
 ### Results of registration
 
