@@ -1,12 +1,14 @@
-# Usage
+# Resources
 
-Select **Usage** in the sidebar to open a view showing the overall health and utilization of your Union installation.
+Select the **Resources** button in the top right of the Union interface to open a view showing the overall health and utilization of your Union installation.
+
+![Resources button](/_static/images/user-guide/administration/resources/resources-button.png)
 
 Four tabs are available: [**Executions**](#executions), [**Resource Quotas**](#resource-quotas), [**Compute**](#compute), and [**Billing**](#billing).
 
 ## Executions
 
-![Usage Executions](/_static/images/user-guide/administration/usage/usage-executions.png)
+![Usage Executions](/_static/images/user-guide/administration/resources/usage-executions.png)
 
 This tab displays information about workflows, tasks, resource consumption, and resource utilization.
 
@@ -14,7 +16,7 @@ This tab displays information about workflows, tasks, resource consumption, and 
 
 The drop-downs at the top lets you filter the charts below by project, domain and time period:
 
-![](/_static/images/user-guide/administration/usage/usage-filter.png)
+![](/_static/images/user-guide/administration/resources/filter.png)
 
 * **Project**: Dropdown with multi-select over all projects. Making a selection recalculates the charts accordingly. Defaults to **All Projects**.
 * **Domain**: Dropdown with multi-select over all domains (for example, **development**, **staging**, **production**). Making a selection recalculates the charts accordingly. Defaults to **All Domains**.
@@ -24,7 +26,7 @@ The drop-downs at the top lets you filter the charts below by project, domain an
 
 This chart shows the overall status of workflows at the project-domain level.
 
-![](/_static/images/user-guide/administration/usage/workflow-executions-in-final-state.png)
+![](/_static/images/user-guide/administration/resources/workflow-executions-in-final-state.png)
 
 For all workflows in the selected project and domain which reached their final state during the selected time period, the chart shows:
 
@@ -38,7 +40,7 @@ See [Workflow States](https://docs.flyte.org/en/latest/concepts/state_machine.ht
 
 This chart shows the overall status of tasks at the project-domain level.
 
-![](/_static/images/user-guide/administration/usage/task-executions-in-final-state.png)
+![](/_static/images/user-guide/administration/resources/task-executions-in-final-state.png)
 
 For all tasks in the selected project and domain which reached their final state during the selected time period, the chart shows:
 
@@ -59,7 +61,7 @@ This chart shows the absolute resource consumption for
 You can select which parameter to show by clicking on the corresponding button at the top of the chart.
 You can also select whether to show **Requested**, **Used**, or both.
 
-![Running Pods](/_static/images/user-guide/administration/usage/running-pods.png)
+![Running Pods](/_static/images/user-guide/administration/resources/running-pods.png)
 
 ### Utilization
 
@@ -70,13 +72,13 @@ This chart shows the percent resource utilization for
 
 You can select which parameter to show by clicking on the corresponding button at the top of the chart.
 
-![Utilization](/_static/images/user-guide/administration/usage/utilization.png)
+![Utilization](/_static/images/user-guide/administration/resources/utilization.png)
 
 ## Resource Quotas
 
 This dashboard displays the resource quotas for projects and domains in the organization.
 
-![Resource Quotas](/_static/images/user-guide/administration/usage/usage-resource-quotas.png)
+![Resource Quotas](/_static/images/user-guide/administration/resources/usage-resource-quotas.png)
 
 ### Namespaces and Quotas
 
@@ -97,11 +99,11 @@ This task (which will manifest as a Kubernetes pod) requests 1 CPU and 1 gibibyt
 
 If a task requesting the above resources (1 CPU and 1Gi) is executed in a project (for example **cluster-observability**) and domain (for example, **development**) with 10 CPU and 10Gi of quota for CPU and memory respectively, the dashboard will show that 10% of both memory and CPU quotas have been consumed.
 
-![Resource Quotas 10%](/_static/images/user-guide/administration/usage/usage-resource-quotas-10.png)
+![Resource Quotas 10%](/_static/images/user-guide/administration/resources/usage-resource-quotas-10.png)
 
 Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
 
-![Resource Quotas 100%](/_static/images/user-guide/administration/usage/usage-resource-quotas-100.png)
+![Resource Quotas 100%](/_static/images/user-guide/administration/resources/usage-resource-quotas-100.png)
 
 ### Quota Consumption
 
