@@ -4,7 +4,7 @@
 
 In the following example we register and run a workflow and retrieve its output:
 
-```{code-block} bash
+```{code-block} shell
 :caption: A simple project
 
 ├── remote.py
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
 You can run the code with:
 
-```{code-block} bash
+```{code-block} shell
 $ python remote.py
 ```
 

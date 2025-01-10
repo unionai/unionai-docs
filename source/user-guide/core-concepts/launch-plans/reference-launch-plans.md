@@ -14,17 +14,17 @@ In this example, we create a reference launch plan for the [`simple_wf`](https:/
 
 1. Clone the Flytesnacks repository:
 
-```{code-block} bash
+```{code-block} shell
 git clone git@github.com:flyteorg/flytesnacks.git
 ```
 2. Navigate to the `basics` directory:
 
-```{code-block} bash
+```{code-block} shell
 cd flytesnacks/examples/basics
 ```
 3. Register the `simple_wf` workflow:
 
-```{code-block} bash
+```{code-block} shell
 union register --project flytesnacks --domain development --version v1 basics/workflow.py.
 ```
 
@@ -55,7 +55,7 @@ def run_simple_wf() -> float:
 
 5. Register the `run_simple_wf` workflow:
 
-```{code-block} bash
+```{code-block} shell
 union register simple_wf_ref_lp.py
 ```
 6. In the Union UI, run the workflow `run_simple_wf`.

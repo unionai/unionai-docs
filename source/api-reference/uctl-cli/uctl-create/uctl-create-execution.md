@@ -123,7 +123,7 @@ been dumped for generic data types \'x\' and \'y\'. :
 9.  Modified file with struct data populated for 'x' and 'y'
     parameters for the task "core.type_system.custom_objects.add":
 
-```{code-block} YAML
+```{code-block} yaml
     iamRoleARN: "arn:aws:iam::123456789:role/dummy"
     inputs:
       "x":
@@ -150,7 +150,7 @@ been dumped for generic data types \'x\' and \'y\'. :
 :   that supports cluster pools, then when creating a new execution, you
     can assign it to a specific cluster pool:
 
-```{code-block} bash
+```{code-block} shell
     flytectl create execution --execFile execution_spec.yaml -p flytesnacks -d development --clusterPool my-gpu-cluster
 
     uctl create execution [flags]

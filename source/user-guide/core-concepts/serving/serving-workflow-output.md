@@ -118,7 +118,7 @@ def wf() -> FlyteFile:
 
 To run this example you will need to register and run the workflow first:
 
-```{code-block} bash
+```{code-block} shell
 :caption: Run the workflow
 $ union run --remote wf.py wf
 ```
@@ -138,7 +138,7 @@ You can select the artifact to see more details:
 
 Now that you have confirmed that the artifact has been created, you can deploy your app:
 
-```{code-block} bash
+```{code-block} shell
 $ union deploy apps app.py streamlit-workflow-output
 ```
 
