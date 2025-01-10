@@ -1,6 +1,6 @@
-## Examples
+# Examples
 
-### Hello world
+## Hello world
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
@@ -16,7 +16,7 @@ The following example shows how to create a basic `ActorEnvironment` and use it 
 ```
 {@@ endif @@}
 
-### Multiple instances of the same task
+## Multiple instances of the same task
 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
@@ -32,7 +32,7 @@ In this example, the `actor.task`-decorated task is invoked multiple times in on
 ```
 {@@ endif @@}
 
-### Multiple tasks
+## Multiple tasks
 
 Every task execution in the following example will execute in the same `ActorEnvironment`. You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launchplans:
 
@@ -48,7 +48,7 @@ Every task execution in the following example will execute in the same `ActorEnv
 ```
 {@@ endif @@}
 
-### Custom PodTemplates
+## Custom PodTemplates
 
 Both tasks in the following example will be executed in the same `ActorEnvironment`, which is created with a `PodTemplate` for additional configuration.
 
@@ -57,7 +57,7 @@ Both tasks in the following example will be executed in the same `ActorEnvironme
 :language: python
 ```
 
-### Refactoring from Regular Tasks to Actors
+## Refactoring from Regular Tasks to Actors
 
 Notice that converting a non-actor workflow to use actors is as simple as replacing the @flytekit.task decorator with the @actor_env.task decorator. Additionally, task decorator arguments can be moved either to the actor environment or the actor task decorator, depending on whether they apply to the entire environment (e.g., resource specifications) or to a single task execution (e.g., caching arguments).
 
