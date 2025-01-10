@@ -54,29 +54,35 @@ Run your first workflow on a Union Workspace.
 To run workflows from your local machine instead, see the [First workflow](user-guide/first-workflow/index) section.
 ```
 
-::::{tab-set}
-
-:::{tab-item} {octicon}`play` Start workspace
+:::{dropdown} {octicon}`play` Start workspace
+:open:
+:animate: fade-in
+:color: light
 
 Select **Workspaces** in the left navigation bar.
 
 Start the default workspace by clicking on the `default` workspace item.
 
 ![Start workspace](/_static/gifs/start-workspace.gif)
-
 :::
 
-:::{tab-item} {octicon}`book` Open workspace
+:::{dropdown} {octicon}`book` Open workspace
+:animate: fade-in
+:color: light
+
 When the `Status` is `Active` on the `default` workspace, you can click on it
 again to open the workspace.
 
 *It will take a few moments to load the VSCode interface.*
 
 ![Open workspace](/_static/gifs/open-workspace.gif)
-
 :::
 
-:::{tab-item} {octicon}`check-circle-fill` Complete walkthrough
+
+:::{dropdown} {octicon}`check-circle-fill` Complete walkthrough
+:animate: fade-in
+:color: light
+
 Once the workspace is open, you should see a VSCode interface in your browser.
 
 ![Workspace VSCode](/_static/images/quick-start/serverless-workspace-vscode.png)
@@ -86,17 +92,18 @@ In the walkthrough, you'll learn how to:
 1. 🤖 Train a model
 2. 🔀 Parallelize model training
 3. 📘 Iterate on a Jupyter Notebook
-
 :::
 
-:::{tab-item} {octicon}`stop` Stop workspace
+:::{dropdown} {octicon}`stop` Stop workspace
+:animate: fade-in
+:color: light
+
 The workspace will terminate after 20 minutes of idle time, but you can also
 stop it manually on the Workspaces page.
 
 ![Open workspace](/_static/gifs/stop-workspace.gif)
 :::
 
-::::
 
 ## Next steps
 
