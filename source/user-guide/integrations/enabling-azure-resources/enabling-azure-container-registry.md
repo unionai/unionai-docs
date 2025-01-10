@@ -58,7 +58,7 @@ The simplest, most flexible approach is to provide Union the ability to add role
 
 ### Manage permissions directly
 
-Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment]((https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `AcrPull` role to the underlying AKS cluster kubelet service principal ID. The service principal ID can be provided by Union support.
+Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) assigning the `AcrPull` role to the underlying AKS cluster kubelet service principal ID. The service principal ID can be provided by Union support.
 
 Note, this process needs to be repeated every time the underlying Kubernetes cluster is changed or a new cluster is added.
 

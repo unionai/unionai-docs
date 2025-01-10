@@ -14,7 +14,7 @@ In this case we will use the default Streamlit "Hello, World!" app.
 
 In a local directory, create the following file:
 
-```{code-block} bash
+```{code-block} shell
 └── app.py
 ```
 
@@ -70,7 +70,7 @@ There are a few additional available parameters that we do not use in this examp
 
 Deploy the app with:
 
-```{code-block} bash
+```{code-block} shell
 $ union deploy apps APP_FILE APP_NAME
 ```
 
@@ -82,13 +82,13 @@ If an app by that name already exists then this command stops the app, updates i
 
 In this case, we do the following:
 
-```{code-block}bash
+```{code-block} shell
 $ union deploy apps app.py streamlit-hello
 ```
 
 This will return output like the following:
 
-```{code-block} bash
+```{code-block} shell
 ✨ Creating Application: streamlit-demo
 Created Endpoint at: https://withered--firefly--8ca31.apps.demo.hosted.unionai.cloud/
 ```
@@ -113,13 +113,13 @@ Buttons to **Copy Endpoint** and **Start app** are available at the top of the v
 
 You can also view all apps deployed in your Union instance from the command-line with:
 
-```{code-block} bash
+```{code-block} shell
 $ union get apps
 ```
 
 This will display the app list:
 
-```{code-block} bash
+```{code-block} shell
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━━━┓
 ┃ Name                                    ┃ Link       ┃ Status     ┃ Desired State ┃ CPU ┃ Memory ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━━━┩
@@ -134,7 +134,7 @@ This will display the app list:
 
 To stop an app from the command-line, perform the following command:
 
-```{code-block} bash
+```{code-block} shell
 $ union stop apps APP_NAME
 ```
 

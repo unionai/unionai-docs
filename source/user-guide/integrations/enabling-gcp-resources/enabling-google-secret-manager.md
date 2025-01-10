@@ -1,7 +1,7 @@
 # Enabling Google Secret Manager
 
 ```{note}
-This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager.
+This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager.
 ```
 
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
@@ -11,7 +11,7 @@ All you need to do is:
 * Retrieve your secrets from within your task code.
 
 To access a secret stored in Secret Manager in a GCP project _other than the one that holds your data plane_ requires one additional step:
-Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](./index)) access to top the secret in the other projects.
+Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](./index.md)) access to top the secret in the other projects.
 
 ## Create your secrets
 
@@ -81,7 +81,7 @@ def t1():
 
 If your secret is stored in the Secret Manager of a project other than the one containing your data plane, then you will first need to grant the `<UserFlyteGSA>` permission to access it:
 
-* Find the **email identifier** of the `<UserFlyteGSA>` in your data plane GCP project (see [Enabling GCP resources](./index) for details).
+* Find the **email identifier** of the `<UserFlyteGSA>` in your data plane GCP project (see [Enabling GCP resources](./index.md) for details).
 * Go to **Security > Secret Manager** in the GCP project that contains your secret.
 * Select the secret that you want to access and select **GRANT ACCESS**.
 * In the subsequent panel, under **Add principals**, paste in the email identifier of the `<UserFlyteGSA>` that you found above.

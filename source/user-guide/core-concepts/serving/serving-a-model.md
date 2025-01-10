@@ -33,7 +33,7 @@ fast_api_app = App(
         Input(
             name="sklearn_model",
             value=SklearnModel.query(),
-            auto_download=True,
+            download=True,
         )
     ],
     container_image="ghcr.io/thomasjpfan/union-serve-sklearn-fastapi:0.1.2",
@@ -162,7 +162,7 @@ def wf() -> float:
 
 To run this example you will need to register and run the workflow first:
 
-```{code-block} bash
+```{code-block} shell
 :caption: Run the workflow
 $ union run --remote wf.py wf
 ```
@@ -173,6 +173,6 @@ The file is defined as a Union `Artifact`, enabling it to be retrieved later by 
 
 Once the workflow has completed, you can deploy the app:
 
-```{code-block} bash
+```{code-block} shell
 $ union deploy apps app.py simple-fastapi-sklearn
 ```

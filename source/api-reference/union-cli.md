@@ -1,4 +1,4 @@
-# union CLI
+# Union CLI
 
 The `union` CLI is the main tool developers use to interact with Union on the command line.
 
@@ -11,9 +11,8 @@ $ pip install -U union
 ```
 
 This will install:
-* The `union` command line tool
-* The [`union` SDK](./sdk/index)
-* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
+* The [`union` command line tool](./union-cli.md)
+* The [Union SDK](./union-sdk/index.md)
 
 ## Configure the `union` CLI
 
@@ -33,7 +32,7 @@ where `<union-host-url>` is the URL of your Union instance.
 
 These command will create the file `~/.union/config.yaml` with the configuration information to connect to the desired Union instance (Serverless or your own specific BYOC).
 
-See [Quick start](../quick-start) for more details.
+See [Quick start](../quick-start.md) for more details.
 
 ## Overriding the configuration file location
 

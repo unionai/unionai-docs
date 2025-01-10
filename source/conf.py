@@ -38,6 +38,7 @@ extensions = [
     "sphinx_docsearch",
 ]
 graphviz_output_format = "svg"
+nitpicky = True
 
 # Myst
 myst_enable_extensions = ["colon_fence"]
@@ -107,6 +108,10 @@ copybutton_prompt_text = "$ "
 
 # Prevent css style tags from being copied by the copy button
 copybutton_exclude = 'style[type="text/css"]'
+
+# Makes it so that the copy button copies the entire block of code
+copybutton_line_continuation_character = "\\"
+
 
 # Algolia docsearch credentials
 docsearch_app_id = os.getenv("DOCSEARCH_APP_ID")
@@ -224,6 +229,7 @@ class CustomWarningSuppressor(logging.Filter):
             "Include file",
             "duplicate object description",
             "unknown document",
+            "py:class reference target not found",
         )
 
         if msg.strip().startswith(filter_out):

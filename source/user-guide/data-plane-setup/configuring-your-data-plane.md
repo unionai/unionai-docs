@@ -40,7 +40,7 @@ You can further partition your deployment so that each Flyte domain-project pair
 
 In addition, clusters are grouped into cluster pools. Each cluster pool will have its own metadata bucket. You can group your clusters into pools based on your own criteria, for example, by region or by the type of workloads that will run on them.
 
-See [Multi-cluster](./multi-cluster) for more information.
+See [Multi-cluster](./multi-cluster.md) for more information.
 
 ## Account ID
 
@@ -61,7 +61,7 @@ Each cluster has its own internal object store that is used to store data used i
 This includes task input-output metadata, task input-output raw data, Flyte Decks data, and fast registration data.
 For each cluster, you can choose to enable a data retention policy that defines a maximum time for this data to be stored, after which it will be automatically deleted.
 Alternatively, you can set this to `unlimited` to disable automatic data deletion.
-See [Data retention policy](../data-input-output/data-retention-policy) for more details.
+See [Data retention policy](./data-retention-policy.md) for more details.
 
 ## Worker node groups
 
@@ -104,7 +104,7 @@ Note that for each interruptible node group, an identical on-demand group will b
 This fallback group will be identical in all respects to the interruptible group (instance type, taints, disk size, etc.), apart from being on-demand instead of interruptible.
 The fallback group will be used when the retries on the interruptible group have been exhausted.
 
-For more information on interruptible instances, see [Interruptible instances](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
+For more information on interruptible instances, see [Interruptible instances](../core-concepts/tasks/task-hardware-environment/interruptible-instances.md).
 
 ### Taints
 

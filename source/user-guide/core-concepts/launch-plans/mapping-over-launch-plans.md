@@ -2,7 +2,7 @@
 
 You can map over launch plans the same way you can [map over tasks](../tasks/task-types.md#map-tasks) to execute workflows in parallel across a series of inputs.
 
-You can either map over a `LaunchPlan` object defined in one of your Python modules or a [reference launch plan](reference-launch-plans) that points to a previously registered launch plan.
+You can either map over a `LaunchPlan` object defined in one of your Python modules or a [reference launch plan](./reference-launch-plans.md) that points to a previously registered launch plan.
 
 ## Launch plan defined in your code
 
@@ -39,13 +39,13 @@ def map_interest_wf() -> list[float]:
 
 You can run the `map_interest` workflow locally:
 
-```{code-block} bash
+```{code-block} shell
 union run map_interest_wf.py map_interest_wf
 ```
 
 You can also run the `map_interest` workflow remotely on Union:
 
-```{code-block} bash
+```{code-block} shell
 union run --remote map_interest_wf.py map_interest_wf
 ```
 
@@ -58,19 +58,19 @@ Recall that when a workflow is registered, an associated launch plan is created 
 
 1. Clone the Flytesnacks repository:
 
-    ```{code-block} bash
+    ```{code-block} shell
     git clone git@github.com:flyteorg/flytesnacks.git
     ```
 
 2. Navigate to the `basics` directory:
 
-    ```{code-block} bash
+    ```{code-block} shell
     cd flytesnacks/examples/basics
     ```
 
 3. Register the `simple_wf` workflow:
 
-    ```{code-block} bash
+    ```{code-block} shell
     union register --project flytesnacks --domain development --version v1 basics/workflow.py
     ```
 
@@ -115,7 +115,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
 5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run it remotely.
 
 
-    ```{code-block} bash
+    ```{code-block} shell
     union register map_simple_wf.py
     ```
 

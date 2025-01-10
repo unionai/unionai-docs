@@ -4,7 +4,7 @@ For Union customers whose data plane is in GCP, we walk through setting up acces
 
 :::{admonition} Google Cloud Storage in the Union environment
 Your data plane is set up with a Kubernetes cluster and other resources.
-Among these are a number of Google Cloud Storage (GCS) buckets used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture)) to store things like workflow metadata.
+Among these are a number of Google Cloud Storage (GCS) buckets used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
 
 **These are not the GCS buckets we are talking about in this section.**
 

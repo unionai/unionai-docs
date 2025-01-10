@@ -39,5 +39,5 @@ Along the left side the following sections are available:
 * **Debug**: The workflow execution details for debugging purposes.
 {@@ endif @@}
 
-Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions).
+Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions.md).
 

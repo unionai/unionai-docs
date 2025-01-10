@@ -7,18 +7,18 @@ You pass the following parameters to the `@task` decorator:
 * `accelerator`: The accelerator to use for this task.
   For more information, see [Specifying accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html#specifying-accelerators).
 
-* `cache`: See [Caching](../caching).
+* `cache`: See [Caching](../caching.md).
 
-* `cache_serialize`: See [Caching](../caching).
+* `cache_serialize`: See [Caching](../caching.md).
 
-* `cache_version`: See [Caching](../caching).
+* `cache_version`: See [Caching](../caching.md).
 
 * `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
 
-* `container_image`: See [Imagespec](./task-software-environment/imagespec.md).
+* `container_image`: See [`ImageSpec`](./task-software-environment/imagespec.md).
 
 * `deprecated`: A string that can be used to provide a warning message for deprecated task.
-  Absence / empty str indicates that the task is active and not deprecated
+  The absence of a string, or an empty string, indicates that the task is active and not deprecated.
 
 * `docs`: Documentation about this task.
 
