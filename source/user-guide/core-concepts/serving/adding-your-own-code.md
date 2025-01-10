@@ -82,7 +82,7 @@ def process_user_input(value):
 
 Deploy the app with:
 
-```{code-block}bash
+```{code-block} shell
 $ union deploy apps app.py streamlit-custom-code
 ```
 

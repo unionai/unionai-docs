@@ -140,7 +140,7 @@ However, `etcd` has a hard limit on data size, encompassing the workflow and nod
 
 In contrast, dynamic workflows offload the workflow specification (including node/task definitions and connections) to the object store. Still, the statuses of nodes are stored in the workflow CRD within `etcd`.
 
-Dynamic workflows help alleviate some of the pressure on `etcd` storage space, providing a solution to mitigate storage constraints.
+Dynamic workflows help alleviate some pressure on `etcd` storage space, providing a solution to mitigate storage constraints.
 
 ## Dynamic workflows vs. map tasks
 

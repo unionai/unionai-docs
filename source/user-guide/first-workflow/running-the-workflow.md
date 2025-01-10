@@ -1,5 +1,28 @@
 # Running the workflow
 
+## Set up your configuration
+
+To configure your `union` CLI, run the following command:
+
+{@@ if serverless @@}
+
+```{code-block} shell
+$ union create login --serverless
+```
+This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
+
+{@@ elif byoc @@}
+
+```{code-block} shell
+$ union create login --host <union-host-url>
+```
+
+where `<union-host-url>` is the URL of your Union instance.
+
+This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
+
+{@@ endif @@}
+
 ## Run the workflow locally in Python
 
 To quickly check your workflow code, you can run it in your local Python environment with the following command:
@@ -59,7 +82,7 @@ This command does the following:
 * Builds the images defined by the `ImageSpec` objects in your code and pushes them to the specified container registry.
 * Pushes the workflow code to Union.
 * Sets up the workflow DAG and its constituent task containers.
-* Registers the workflow in the default domain (`development`) of the default project (`flytesnacks`) in Union.
+* Registers the workflow in the default domain (`development`) of the default project (`{@= default_project =@}`) in Union.
 
 You should see the following output (or similar) in your terminal:
 
@@ -118,4 +141,4 @@ workflow!
 
 ## Next step
 
-The next step is to take a look at the [Example code components](example-code-components).
+The next step is to take a look at the [Example code components](./example-code-components.md).

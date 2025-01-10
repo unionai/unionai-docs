@@ -55,8 +55,8 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 
 ## Install and configure `union` and Docker
 
-To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling).
-To configure `union` to connect to your Union instance, see [Quick start](../../../../quick-start).
+To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling.md).
+To configure `union` to connect to your Union instance, see [Quick start](../../../../quick-start.md).
 
 ## Set up an image registry
 
@@ -70,8 +70,8 @@ Additionally, you will need to ensure that the specific image, once pushed to th
 In this example, we use GitHub's `ghcr.io` container registry.
 See [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) for more information.
 
-For an example using Amazon ECR see [ImageSpec with ECR](./imagespec-with-ecr).
-For an example using Google Artifact Registry see [ImageSpec with GAR](./imagespec-with-gar).
+For an example using Amazon ECR see [ImageSpec with ECR](./imagespec-with-ecr.md).
+For an example using Google Artifact Registry see [ImageSpec with GAR](./imagespec-with-gar.md).
 
 ## Authenticate to the registry
 
@@ -82,7 +82,7 @@ Follow the directions [Working with the Container registry > Authenticating to t
 ## Set up your project and domain on Union
 
 You will need to set up a project on your Union instance to which you can register your workflow.
-See [Setting up the project](../../../development-cycle/setting-up-a-project).
+See [Setting up the project](../../../development-cycle/setting-up-a-project.md).
 
 ## Understand the requirements
 
@@ -97,7 +97,7 @@ Assuming you are in the local project root, run `pip install -r requirements.txt
 
 You can now run the workflow locally.
 In the project root directory, run: `union run workflows/imagespec-simple-example.py wf`.
-See [Running your code](../../../development-cycle/running-your-code) for more details.
+See [Running your code](../../../development-cycle/running-your-code.md) for more details.
 
 :::{note}
 When you run the workflow in your local Python environment, the image is not built or pushed (in fact, no container image is used at all).

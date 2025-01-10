@@ -1,4 +1,4 @@
-## Examples
+# Examples
 
 ### Refactoring from Regular Tasks to Actors
 
@@ -13,7 +13,7 @@ Notice that converting a non-actor workflow to use actors is as simple as replac
 The `union` package is a superset of `flytekit` and the following examples use `union` to define Flyte tasks, workflows, resources, etc. Though actors require `union`, you may use `flytekit` for the remaining Flyte constructs of you so desire.
 ```
 
-### Multiple instances of the same task
+## Multiple instances of the same task
 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
@@ -29,7 +29,7 @@ In this example, the `actor.task`-decorated task is invoked multiple times in on
 ```
 {@@ endif @@}
 
-### Multiple tasks
+## Multiple tasks
 
 Every task execution in the following example will execute in the same `ActorEnvironment`. You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launchplans:
 
@@ -45,7 +45,7 @@ Every task execution in the following example will execute in the same `ActorEnv
 ```
 {@@ endif @@}
 
-### Custom PodTemplates
+## Custom PodTemplates
 
 Both tasks in the following example will be executed in the same `ActorEnvironment`, which is created with a `PodTemplate` for additional configuration.
 

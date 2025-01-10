@@ -17,8 +17,8 @@ Create an account
 Once you've received confirmation that your sign up succeeded, navigate to
 the UI at [serverless.union.ai](https://serverless.union.ai).
 
-To get started, try selecting the default project, called `flytesnacks`, from the list of projects.
-This will take you to `flytesnacks` project dashboard:
+To get started, try selecting the default project, called `{@= default_project =@}`, from the list of projects.
+This will take you to `{@= default_project =@}` project dashboard:
 
 ![Union UI](/_static/images/quick-start/serverless-dashboard.png)
 
@@ -37,12 +37,83 @@ After your administrator has onboarded you to Union, you should have the followi
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
 Once you have logged in you should see the Union UI.
 
-To get started, try selecting the default project, called `flytesnacks`, from the list of projects.
-This will take you to `flytesnacks` project dashboard:
+To get started, try selecting the default project, called `{@= default_project =@}`, from the list of projects.
+This will take you to `{@= default_project =@}` project dashboard:
 
 ![Union UI](/_static/images/quick-start/byoc-dashboard.png)
 
 {@@ endif @@}
+
+{@@ if serverless @@}
+
+## Run your first workflow
+
+Run your first workflow on a Union Workspace.
+
+```{note}
+To run workflows from your local machine instead, see the [First workflow](user-guide/first-workflow/index) section.
+```
+
+:::{dropdown} {octicon}`play` Start workspace
+:open:
+:animate: fade-in
+:color: light
+
+Select **Workspaces** in the left navigation bar.
+
+Start the default workspace by clicking on the `default` workspace item.
+
+![Start workspace](/_static/gifs/start-workspace.gif)
+:::
+
+:::{dropdown} {octicon}`book` Open workspace
+:animate: fade-in
+:color: light
+
+When the `Status` is `Active` on the `default` workspace, you can click on it
+again to open the workspace.
+
+*It will take a few moments to load the VSCode interface.*
+
+![Open workspace](/_static/gifs/open-workspace.gif)
+:::
+
+
+:::{dropdown} {octicon}`check-circle-fill` Complete walkthrough
+:animate: fade-in
+:color: light
+
+Once the workspace is open, you should see a VSCode interface in your browser.
+
+![Workspace VSCode](/_static/images/quick-start/serverless-workspace-vscode.png)
+
+In the walkthrough, you'll learn how to:
+
+1. 🤖 Train a model
+2. 🔀 Parallelize model training
+3. 📘 Iterate on a Jupyter Notebook
+:::
+
+:::{dropdown} {octicon}`stop` Stop workspace
+:animate: fade-in
+:color: light
+
+The workspace will terminate after 20 minutes of idle time, but you can also
+stop it manually on the Workspaces page.
+
+![Open workspace](/_static/gifs/stop-workspace.gif)
+:::
+
+
+## Next steps
+
+🎉 Congratulations! You've just run your first workflow on Union.
+
+Run more examples in the [User Guide](user-guide/index) and [Tutorials](tutorials/index)
+using the workspace, or run them from your local machine by following the [First workflow](user-guide/first-workflow/index) section.
+
+
+{@@ elif byoc @@}
 
 ## Set up your Python environment
 
@@ -82,9 +153,8 @@ $ pip install -U union
 ```
 
 This will install:
-* The [`union` command-line tool](api-reference/union-cli)
-* The [`union` SDK](api-reference/union-sdk)
-* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
+* The [`union` CLI](./api-reference/union-cli.md)
+* The [`union` SDK](./api-reference/union-sdk/index.md)
 
 ## Configure the `union` CLI
 
@@ -118,7 +188,7 @@ These directions apply to Union BYOC, where you connect to your own dedicated Un
 
 {@@ endif @@}
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../api-reference/union-cli) for more details.)
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](./api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
@@ -137,7 +207,7 @@ Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the envi
 ```
 
 {@@ if byoc @@}
-For more details on connection configuration see [CLI authentication types](guide/administration/cli-authentication-types).
+For more details on connection configuration see [CLI authentication types](./user-guide/administration/cli-authentication-types.md).
 {@@ endif @@}
 
 ## Create a "Hello, world!" workflow
@@ -160,11 +230,11 @@ def hello_world_wf(name: str = 'world') -> str:
 ## Tasks and workflows
 
 The "Hello, world!" code contains a task and a workflow, which are Python functions decorated with the `@task` and `@workflow` decorators, respectively.
-For more information, see the [task](guide/core-concepts/tasks/index) and [workflow](guide/core-concepts/workflows/index) documentation.
+For more information, see the [tasks](./user-guide/core-concepts/tasks/index.md) and [workflows](./user-guide/core-concepts/workflows/index.md) documentation.
 
 ## Run the workflow locally in Python
 
-You can run the workflow in your local Python environment with the [`union run` command](../api-reference/union-cli.md#union-cli-commands):
+You can run the workflow in your local Python environment with the [`union run` command](./api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run hello.py hello_world_wf
@@ -193,7 +263,7 @@ Hello, Ada!
 
 ## Run the workflow remotely on Union
 
-To run the workflow remotely on Union, add the [`--remote` flag](../api-reference/union-cli.md#union-cli-commands):
+To run the workflow remotely on Union, add the [`--remote` flag](./api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run --remote hello.py hello_world_wf --name "Ada"
@@ -217,3 +287,4 @@ The output displays a URL that links to the workflow execution in the UI:
 
 Click the link to see the execution in the UI.
 
+{@@ endif @@}

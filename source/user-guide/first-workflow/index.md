@@ -4,14 +4,14 @@ This section walks through building your first Union workflow, exploring the maj
 
 ## Prerequisites
 
-If you have not already done so, follow the [Quick start guide](../../quick-start) to sign into the Union UI,
+If you have not already done so, follow the [Quick start guide](../../quick-start.md) to sign into the Union UI,
 set up your local Python environment, and install the `union` command line tool.
 
 ## Your project on Union
 
-Union provides a default project (called **flytesnacks**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
+Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
 
-To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project).
+To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project.md).
 
 ## Our example workflow
 
@@ -24,4 +24,4 @@ The model training workflow has three steps:
 
 ## Next step
 
-The next step is [Setting up your local environment](./setting-up-your-local-environment).
+The next step is [Setting up your local environment](./setting-up-your-local-environment.md).

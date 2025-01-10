@@ -64,7 +64,7 @@ This may be a GPU, a specific variation of a GPU, a fractional GPU, or a differe
 
 {@@ endif @@}
 
-See [Accelerators](./accelerators) for more information.
+See [Accelerators](./accelerators.md) for more information.
 
 ## Execution defaults and resource quotas
 
@@ -91,7 +91,7 @@ ephemeral storage, we recommend being explicit with the ephemeral storage you re
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
 
 To remedy such a failure, you should make sure that the appropriate node types are:
-* Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane).
+* Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.

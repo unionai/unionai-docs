@@ -86,7 +86,7 @@ Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/po
 
 ### Examples
 
-In Flyte you set resource requests and limits at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources)):
+In Flyte you set resource requests and limits at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources.md)):
 
 ```{code-block} python
 @task(requests=Resources(cpu="1", mem="1Gi"),
