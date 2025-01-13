@@ -75,7 +75,7 @@ subprocess.run(['s3fs', bucket_and_path, mount_point, '-o', 'iam_role=auto'], ch
 
 See also:
 
-* [Configuring Custom K8s Resources > Using K8s PodTemplates](https://docs.flyte.org/en/latest/deployment/configuration/general.html#using-k8s-podtemplates)
+* [Configuring Custom Kubernetes Resources > Using Kubernetes PodTemplates](https://docs.flyte.org/en/latest/deployment/configuration/general.html#using-k8s-podtemplates)
 * [Configure a Security Context for a Pod or Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
 
 ### Can I use BigQuery from within a task?

@@ -48,7 +48,7 @@ This can be used to define details about node selectors, affinity, tolerations, 
 
 The `pod_template_name` is a related parameter that can be used to specify the name of an already existing `PodTemplate` resource which will be used in this task.
 
-For details see [Configuring task pods with K8s PodTemplates&#x2B00;](https://docs.flyte.org/en/latest/deployment/configuration/general.html#deployment-configuration-general).
+For details see [Configuring task pods with Kubernetes PodTemplates](https://docs.flyte.org/en/latest/deployment/configuration/general.html#deployment-configuration-general).
 
 {@@ endif @@}
 

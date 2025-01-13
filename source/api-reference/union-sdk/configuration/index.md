@@ -6,7 +6,7 @@ Configuration usage can roughly be bucketed into the following areas:
 
 - **Compile-time settings**: These are settings like the default image and named images, where to look for Flyte code, etc.
 - **Platform settings**: Where to find the Flyte backend (Admin DNS, whether to use SSL).
-- **Registration runtime settings**: These are things like the K8s service account to use, a specific S3/GCS bucket to write off-loaded data (dataframes and files) to, notifications, labels & annotations, etc.
+- **Registration runtime settings**: These are things like the Kubernetes service account to use, a specific S3/GCS bucket to write off-loaded data (dataframes and files) to, notifications, labels & annotations, etc.
 - **Data access settings**: Settings such as custom S3 endpoint settings, backoff/retry behavior for accessing S3 or GCS, key and password, and so on.
 - **Other settings**: `statsd` configuration, which is a run-time applicable setting, but is not necessarily relevant to the Flyte platform.
 

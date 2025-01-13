@@ -117,7 +117,7 @@ For each resource type, the sum of all the `limits` parameters set on all the ta
 
 This dashboard displays information about configured node pools in the organization.
 
-![alt_text](/_static/images/user-guide/administration/resources/resources-compute.png)
+![Resources compute](/_static/images/user-guide/administration/resources/resources-compute.png)
 
 Union will schedule tasks on a node pool that meets the requirements of the task (as defined by the `requests` and `limits` parameters in the task definition) and can vertically scale these node pools according to the minimum and maximum configured limits. This dashboard shows all currently-configured node pools, whether they are interruptible, labels and taints, minimum and maximum sizes, and allocatable resources.
 
@@ -158,5 +158,5 @@ Conversely, if a user requests the following:
       limits=Resources(cpu="4000m", mem="1Gi"))
 ```
 
-The workload will schedule on a larger instance (like the `c5.4xlarge`) because `4000m` exceeds the allocatable CPU on the `t3a.xlarge`, despite the fact that this instance type is [marketed](https://instances.vantage.sh/aws/ec2/t3a.xlarge) as having 4 CPU cores. The discrepancy is due to overheads and holdbacks introduced by K8s to ensure adequate resources to schedule pods on the node.
+The workload will schedule on a larger instance (like the `c5.4xlarge`) because `4000m` exceeds the allocatable CPU on the `t3a.xlarge`, despite the fact that this instance type is [marketed](https://instances.vantage.sh/aws/ec2/t3a.xlarge) as having 4 CPU cores. The discrepancy is due to overheads and holdbacks introduced by Kubernetes to ensure adequate resources to schedule pods on the node.
 
