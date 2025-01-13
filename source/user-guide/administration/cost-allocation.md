@@ -28,7 +28,7 @@ The cost of CPU, memory, and GPU resources is calculated using the following app
   These hourly costs are converted to a 15-second cost for consistency with the data collection interval.
   For node costs, the total hourly cost of each node type is used.
 
-* **Allocation to Entities: The resource costs from each pod are then allocated to the corresponding workflow or task using labeled metrics that link pods to the relevant entity.
+* **Allocation to Entities**: The resource costs from each pod are then allocated to the corresponding workflow or task using labeled metrics that link pods to the relevant entity.
 
 ## Overhead Cost Calculation:
 
@@ -45,10 +45,57 @@ These costs are proportionally allocated to workflows/tasks and applications bas
 
 Cost data is accessed by selecting the **Cost** button in the top right of the Union interface:
 
-![Cost button](/images/cost-button.png)
+![Cost link](/_static/images/user-guide/administration/cost-allocation/cost-link.png)
 
-The **Cost** view displays three top level tabs: **Workload Costs**, **Compute Costs**, and **Invoices**. The first two are provide cost allocation information while the third provides total
+The **Cost** view displays three top level tabs: **Workload Costs**, **Compute Costs**, and **Invoices**.
 
+### Workload Costs
 
+This tab provides a detailed breakdown of workflow and task costs, allowing you to filter by domain, project, workflow name, and execution ID.
+It offers views showing total cost, memory cost, CPU cost, GPU cost, and overhead cost.
+Bar charts visualize costs by domain, project, workflow/task and task execution; tables summarize cost by domain and resource type, project and resource type, workflow/task and resource type, and workflow/task execution and resource type.
 
-Workload Costs: This dashboard provides a detailed breakdown of workflow and task costs, allowing you to filter by domain, project, workflow name, and execution ID. It offers views showing total cost, memory cost, CPU cost, GPU cost, and overhead cost. Bar charts visualize costs by domain, project, workflow/task and task execution; tables summarize cost by domain and resource type, project and resource type, workflow/task and resource type, and workflow/task execution and resource type.
+![Workload costs 1](/_static/images/user-guide/administration/cost-allocation/workload-costs-1.png)
+
+![Workload costs 2](/_static/images/user-guide/administration/cost-allocation/workload-costs-2.png)
+
+### Compute Costs
+
+This tab provides a summary of the cluster's overall compute costs.
+It includes information on total cost of worker nodes, total uptime by node type, and total cost by node type.
+
+![Compute costs](/_static/images/user-guide/administration/cost-allocation/compute-costs.png)
+
+### Invoices
+
+This tab displays the total cost of running workflows and tasks in your Union installation broken out by invoice.
+
+![Invoices](/_static/images/user-guide/administration/cost-allocation/invoices.png)
+
+## Limitations
+
+The system currently assumes that all nodes in the cluster are using on-demand pricing.
+Therefore, cost will be overestimated for spot and reserved instances, as well as special pricing arrangements with cloud providers.
+
+Overhead cost allocation is an approximation and might not perfectly reflect the true distribution of overhead costs.
+In particular, overhead costs are only evaluated within the scope of a single 15-second scrape interval.
+This means that the system can still fail to allocate costs to nodes which are left running after a given execution completes.
+
+Union services and fees such as platform fees are not reflected in the dashboards.
+Cost is scoped to nodes that have been used in running executions.
+The accuracy of cost allocation depends on the accuracy of the underlying Kubernetes and cost metrics.
+
+This feature limits lookback to 3 days and allows picking any time range within the past 3 days to assess cost.
+
+## Future Enhancements
+
+Future enhancements may include:
+
+* Customizable pricing per node type
+* Data export
+* Support for additional resource types (such as App Serving, Workspaces, and Actors)
+* Enhanced visualization and reporting capabilities
+* Cost optimization suggestions
+* Longer lookback horizon
+
+If you have an idea for what you and your business would like to see, reach out to your Union representative via Slack.
