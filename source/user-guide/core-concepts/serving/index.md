@@ -135,7 +135,7 @@ This will display the app list:
 To stop an app from the command-line, perform the following command:
 
 ```{code-block} shell
-$ union stop apps APP_NAME
+$ union stop apps --name APP_NAME
 ```
 
 * `APP_NAME` is the name of an app deployed on the Union instance.
