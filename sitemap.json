@@ -146,8 +146,9 @@
                 },
                 {"name": "administration", "variants": ["byoc", "serverless"],
                     "children": [
+                        {"name": "resources", "variants": ["byoc", "serverless"]},
+                        {"name": "cost-allocation", "variants": ["byoc"]},
                         {"name": "user-management", "variants": ["byoc"]},
-                        {"name": "usage", "variants": ["byoc", "serverless"]},
                         {"name": "applications", "variants": ["byoc"]},
                         {"name": "cli-authentication-types", "variants": ["byoc"]}
                     ]

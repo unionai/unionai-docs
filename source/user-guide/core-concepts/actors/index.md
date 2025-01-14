@@ -4,7 +4,7 @@ Actors allow you to reuse a container and environment between tasks, avoiding th
 
 To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/union-sdk/actors/actor-actorenvironment.md) class, then add the instance as a decorator to the task that requires that environment.
 
-## `ActorEnvironment` parameters
+### `ActorEnvironment` parameters
 
 {@@ if serverless @@}
 * **container_image:** The container image to use for the task. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
@@ -18,4 +18,57 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 * **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../../development-cycle/managing-secrets.md).
 * **ttl_seconds:** How long to keep the Actor alive while no tasks are being run.
 
+The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/hello_world.py
+:caption: hello_world.py
+
+```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/hello_world.py
+:caption: hello_world.py
+
+```
+{@@ endif @@}
+
+
+You can learn more about the tradeoffs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks.md).
+
+## Caching on Actor Replicas
+
+The `@actor_cache` decorator provides a powerful mechanism to cache the results of Python callables on individual actor replicas. This is particularly beneficial for workflows involving repetitive tasks, such as data preprocessing, model loading, or initialization of shared resources, where caching can minimize redundant operations and improve overall efficiency. Once a callable is cached on a replica, subsequent tasks that use the same actor can access the cached result, significantly improving performance and efficiency.
+
+### When to Use `@actor_cache`
+
+- **Shared Initialization Costs:**  
+  For expensive, shared initialization processes that multiple tasks rely on.
+
+- **Repetitive Task Execution:**  
+  When tasks repeatedly require the same resource or computation on the same actor replica.
+
+- **Complex Object Caching:**  
+  Use custom Python objects as keys to define unique cache entries.
+
+
+Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
+
+{@@ if serverless @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_basic.py
+:caption: caching_basic.py
+
+```
+{@@ elif byoc @@}
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_basic.py
+:caption: caching_basic.py
+```
+```{note}
+In order to get the `@actor_cache` functionality, you must pin `union` to at least `0.1.121`.
+```
+{@@ endif @@}
+
+![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
+
+You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time. 
+
+You can see examples of more advanced actor usage [here](actor-examples.md).
