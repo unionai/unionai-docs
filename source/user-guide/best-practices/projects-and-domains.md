@@ -16,22 +16,10 @@ Speak to the Union team for more information.
 Projects and domains are orthogonal to each other, meaning that a project has multiple domains and a domain has multiple projects.
 Here is an example arrangement:
 
-:::{table} Projects and domains
-:widths: auto
-:align: center
-
-|           | development | staging      | production   |
-| --------- | ----------- | ------------ | ------------ |
-| Project_1 | wf_1 (v=2.0)| wf_1 (v=1.0) | wf_1 (v=1.0) |
-| Project_2 | wf_2 (v=2.0)| wf_2 (v=1.0) | wf_2 (v=1.0) |
-
-:::
-
 :::{list-table} Projects and domains
 :widths: auto
 :header-rows: 1
 :stub-columns: 1
-
 *   -
     - Development
     - Staging
@@ -44,7 +32,6 @@ Here is an example arrangement:
     - workflow_2 (v=2.0)
     - workflow_2 (v=1.0)
     - workflow_2 (v=1.0)
-
 :::
 
 ## Projects
