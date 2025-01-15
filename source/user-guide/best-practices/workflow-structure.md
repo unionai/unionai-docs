@@ -12,4 +12,15 @@ Lastly, one may utilize “fine-grained” caching to leverage interruptible tas
 
 ## When should I parallelize tasks?
 
+In general, parallelize early and often. A lot of Flyte’s powerful ergonomics like caching and workflow recovery happen at the task level, as mentioned above. Decomposing into smaller tasks and parallelizing enables for a performant and fault-tolerant workflow.
+
+One caveat is for very short duration tasks, where the overhead of spinning up a pod and cleaning it up negates any benefits of parallelism. With reusable containers via Actors, however, these overheads are transparently obviated, providing the best of both worlds at the cost of some up-front work in setting up that environment. In any case, it may be useful to batch the inputs and outputs to amortize any overheads. Please be mindful to keep the sequencing of inputs within a batch, and of the batches themselves, to ensure reliable cache hits.
+
+The two main parallelization constructs in Flyte are the map task and dynamic workflow. They accomplish roughly the same goal but are implemented quite differently and have different advantages. Dynamics are more akin to a for loop, iterating over inputs sequentially. The parallelism is controlled by the overall workflow parallelism. Map tasks are more efficient and have no such sequencing guarantees. They also have their own concurrency setting separate from the overall workflow and can have a minimum failure threshold of their constituent tasks. A deeper explanation of their differences is available here while examples of how to use them together can be found here.
+
 ## When should I use caching?
+
+Caching should be enabled once the body of a task has stabilized. Cache keys are implicitly derived from the task signature, most notably the inputs and outputs. If the body of a task changes without a modification to the signature, and the same inputs are used, it will produce a cache hit. This can result in unexpected behavior when iterating on the core functionality of the task and expecting different inputs downstream. Moreover, caching will not introspect the contents of a FlyteFile for example. If the same URI is used as input with completely different contents, it will also produce a cache hit. For these reasons, it’s wise to add an explicit cache key so that it can be invalidated at any time.
+
+Despite these caveats, caching is a huge time saver during workflow development. Caching upstream tasks enable a rapid run through of the workflow up to the node you’re iterating on. Additionally, caching can be valuable in complex parallelization scenarios where you’re debugging the failure state of large map tasks, for example. In production, if your cluster is under heavy resource constraints, caching can allow a workflow to complete across re-runs as more and more tasks are able to return successfully with each run. While not an ideal scenario, caching can help soften the blow of production failures. With these caveats in mind, there are very few scenarios where caching isn’t warranted.
+

@@ -66,7 +66,7 @@ $ python remote.py
 ```
 
 The `my_workflow` workflow and the `create_file` task is registered and run.
-Once the the workflow completes, the output is passed back to the `run_workflow` function and printed out.
+Once the workflow completes, the output is passed back to the `run_workflow` function and printed out.
 
 The output is also be available via the UI, in the **Outputs** tab of the `create_file` task details view:
 
