@@ -1,28 +1,8 @@
 {"name": "", "variants": ["byoc", "serverless"],
     "children": [
-        {"name": "quick-start", "variants": ["byoc", "serverless"]},
         {"name": "user-guide", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "union-overview", "variants": ["byoc", "serverless"]},
-                {"name": "platform-architecture", "variants": ["byoc"]},
-                {"name": "data-plane-setup", "variants": ["byoc"],
-                    "children": [
-                        {"name": "data-plane-setup-on-aws", "variants": ["byoc"]},
-                        {"name": "data-plane-setup-on-gcp", "variants": ["byoc"]},
-                        {"name": "data-plane-setup-on-azure", "variants": ["byoc"]},
-                        {"name": "single-sign-on-setup", "variants": ["byoc"],
-                            "children": [
-                                {"name": "google-oidc", "variants": ["byoc"]},
-                                {"name": "microsoft-entra-id", "variants": ["byoc"]},
-                                {"name": "other-identity-providers", "variants": ["byoc"]}
-                            ]
-                        },
-                        {"name": "configuring-your-data-plane", "variants": ["byoc"]},
-                        {"name": "multi-cluster", "variants": ["byoc"]},
-                        {"name": "data-retention-policy", "variants": ["byoc"]}
-                    ]
-                },
-                {"name": "first-workflow", "variants": ["byoc", "serverless"],
+                {"name": "getting-started", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "setting-up-your-local-environment", "variants": ["byoc", "serverless"]},
                         {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
@@ -30,6 +10,7 @@
                         {"name": "example-code-components", "variants": ["byoc", "serverless"]}
                     ]
                 },
+                {"name": "about-union", "variants": ["byoc", "serverless"]},
                 {"name": "core-concepts", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "workflows", "variants": ["byoc", "serverless"],
@@ -106,14 +87,6 @@
                         },
                         {"name": "caching", "variants": ["byoc", "serverless"]}
                     ]
-                },
-                {"name": "best-practices", "variants": ["byoc", "serverless"],
-                "children": [
-                    {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
-                    {"name": "project-structure", "variants": ["byoc", "serverless"]},
-                    {"name": "workflow-structure", "variants": ["byoc", "serverless"]},
-                    {"name": "projects-and-domains", "variants": ["byoc", "serverless"]}
-                ]
                 },
                 {"name": "development-cycle", "variants": ["byoc", "serverless"],
                     "children": [
@@ -485,6 +458,24 @@
                             ]},
                         {"name": "uctl-version", "variants": ["byoc", "serverless"]}
                 ]}
+            ]
+        },
+        {"name": "deployment", "variants": ["byoc"],
+            "children": [
+                {"name": "platform-architecture", "variants": ["byoc"]},
+                {"name": "data-plane-setup-on-aws", "variants": ["byoc"]},
+                {"name": "data-plane-setup-on-gcp", "variants": ["byoc"]},
+                {"name": "data-plane-setup-on-azure", "variants": ["byoc"]},
+                {"name": "single-sign-on-setup", "variants": ["byoc"],
+                    "children": [
+                        {"name": "google-oidc", "variants": ["byoc"]},
+                        {"name": "microsoft-entra-id", "variants": ["byoc"]},
+                        {"name": "other-identity-providers", "variants": ["byoc"]}
+                    ]
+                },
+                {"name": "configuring-your-data-plane", "variants": ["byoc"]},
+                {"name": "multi-cluster", "variants": ["byoc"]},
+                {"name": "data-retention-policy", "variants": ["byoc"]}
             ]
         }
     ]
