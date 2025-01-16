@@ -165,6 +165,20 @@ In this case, no uploading is needed because the source file is already in a rem
 When the object is passed out of the task, it is converted into a `Blob` with the remote path as the URI.
 After the FlyteFile is passed to the next task,  you can call `FlyteFile.open()` on it, just as before.
 
+If you don't intend on passing the `FlyteFile` to the next task, and rather intend to open the contents of the remote file within the task, you can use `from_source`.
+
+```{code-block} python
+@task
+def load_json():
+    uri = "gs://my-bucket/my-directory/example.json"
+    my_json = FlyteFile.from_source(uri)
+
+    # Load the JSON file into a dictionary and print it
+    with open(my_json, "r") as json_file:
+        data = json.load(json_file)
+    print(data)
+```
+
 When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, including `http`, `https`(Web), `gs` (Google Cloud Storage), `s3` (AWS S3), `abfs`, and `abfss` (Azure Blob Filesystem).
 
 ### Remote directory example
