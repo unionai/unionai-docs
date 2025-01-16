@@ -74,14 +74,6 @@ admin:
 logger:
   show-source: true
   level: 1
-union:
-  connection:
-    host: dns:///<union-host-url>
-    insecure: false
-  auth:
-    clientId: example-operator
-    clientSecretEnvVar: UNION_APP_SECRET
-    type: ClientSecret
 ```
 
 :::{note}
