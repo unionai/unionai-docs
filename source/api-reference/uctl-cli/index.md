@@ -90,12 +90,6 @@ $ uctl config init --host <union-host-url>
 This will create a new configuration file at `~/.union/config.yaml`:
 
 ```{code-block} yaml
-union:
-  connection:
-    host: dns:///<union-host-url>
-    insecure: false
-  auth:
-    type: Pkce
 admin:
   endpoint: dns:///<union-host-url>
   insecure: false

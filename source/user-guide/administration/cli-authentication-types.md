@@ -42,12 +42,6 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: https://<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: Pkce
 ```
 
 ## DeviceFlow
@@ -70,12 +64,6 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: dns:///<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: DeviceFlow
 ```
 
 :::{note}
@@ -112,14 +100,6 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: dns:///<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: ClientSecret
-    clientId: <YourAppId>
-    clientSecretLocation: /path/to/secret.txt
 ```
 
 Here is an example that uses ClientSecret with an environment variable:
@@ -134,12 +114,4 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: dns:///<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: ClientSecret
-    clientId: <YourAppId>
-    clientSecretEnvVar: YOUR_APP_SECRET
 ```
