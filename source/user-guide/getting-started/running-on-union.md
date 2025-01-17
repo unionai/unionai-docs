@@ -1,42 +1,65 @@
-# Running the workflow
+# Running on Union
 
-## Set up your configuration
+## Your project on Union
 
-To configure your `union` CLI, run the following command:
+Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
+
+To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project.md).
+
+## Our example workflow
+
+In this section, we will use a workflow from Union's [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples) GitHub repository that illustrates training a simple model using `flytekit`, `scikit-learn`, and `pandas`.
+
+The model training workflow has three steps:
+- Getting the `penguins` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
+- Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
+- Evaluating the model by creating a confusion matrix, displayed as a Flyte `Deck`.
+
+## Next step
+
+The next step is [Setting up your local environment](./setting-up-your-local-environment.md).
+
+
+## Run the workflow remotely on Union
+
+To run the workflow remotely on Union, add the [`--remote` flag](./api-reference/union-cli.md#union-cli-commands):
+
+```{code-block} shell
+$ union run --remote hello.py hello_world_wf --name "Ada"
+```
+
+The output displays a URL that links to the workflow execution in the UI:
 
 {@@ if serverless @@}
 
 ```{code-block} shell
-$ union create login --serverless
+[✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
-This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
 {@@ elif byoc @@}
 
 ```{code-block} shell
-$ union create login --host <union-host-url>
+[✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
-
-where `<union-host-url>` is the URL of your Union instance.
-
-This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
 {@@ endif @@}
 
-## Run the workflow locally in Python
+Click the link to see the execution in the UI.
 
-To quickly check your workflow code, you can run it in your local Python environment with the following command:
+{@@ endif @@}
 
-```{code-block} shell
-$ union run user_guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
-```
+## Next step
 
-If the code runs successfully, you should see output like this:
+{@@ if serverless @@}
 
-```{code-block} shell
-Running Execution on local.
-0.9767441860465116
-```
+The next step is [Running the workflow](./running-the-workflow.md).
+
+{@@ elif byoc @@}
+
+The next step is [Setting up container image handling](./setting-up-container-image-handling.md).
+
+{@@ endif @@}
+
 
 ## Run the workflow remotely on Union
 
@@ -68,6 +91,7 @@ The first URL in the output above points to the image builder and the second URL
 {@@ elif byoc @@}
 
 To run the workflow on Union, you will need to register the workflow, make your container image accessible to Union, and finally, run the workflow from the Union interface.
+
 
 ### Register the workflow on Union
 

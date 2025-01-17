@@ -1,4 +1,4 @@
-# Union overview
+# About Union
 
 Union builds on [Flyte](http://flyte.org), the emerging open-source standard for orchestrating machine learning and data processing workflows,
 Union offers all the features of Flyte while adding many additional capabilities.

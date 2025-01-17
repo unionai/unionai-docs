@@ -4,10 +4,12 @@
             "children": [
                 {"name": "getting-started", "variants": ["byoc", "serverless"],
                     "children": [
-                        {"name": "setting-up-your-local-environment", "variants": ["byoc", "serverless"]},
-                        {"name": "setting-up-container-image-handling", "variants": ["byoc"]},
-                        {"name": "running-the-workflow", "variants": ["byoc", "serverless"]},
-                        {"name": "example-code-components", "variants": ["byoc", "serverless"]}
+                        {"name": "local-setup", "variants": ["byoc", "serverless"]},
+                        {"name": "first-project", "variants": ["byoc", "serverless"]},
+                        {"name": "running-locally", "variants": ["byoc", "serverless"]},
+                        {"name": "container-images", "variants": ["byoc"]},
+                        {"name": "running-on-union", "variants": ["byoc", "serverless"]},
+                        {"name": "code-components", "variants": ["byoc", "serverless"]}
                     ]
                 },
                 {"name": "about-union", "variants": ["byoc", "serverless"]},

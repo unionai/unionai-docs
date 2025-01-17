@@ -1,4 +1,4 @@
-# Setting up container image handling
+# Container images
 
 :::{admonition} Differences between BYOC and Serverless
 This section applies to the BYOC version of Union. The Serverless version uses `ImageBuilder` to build and push images and does not require the setup described here.

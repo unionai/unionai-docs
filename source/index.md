@@ -12,8 +12,8 @@ The Union orchestrator empowers AI development teams to rapidly ship high-qualit
 
 ::::{grid}
 
-:::{grid-item-card} {octicon}`rocket` Quick start
-:link: quick-start
+:::{grid-item-card} {octicon}`rocket` Getting started
+:link: user-guide/getting-started/index
 :link-type: doc
 :columns: 12
 
@@ -45,7 +45,7 @@ Explore the Union APIs, SDKs, and CLIs.
 :::
 
 :::{grid-item-card} {octicon}`cloud` Deployment options
-:link: user-guide/union-overview
+:link: user-guide/about-union
 :link-type: doc
 :columns: 12
 
