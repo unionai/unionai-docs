@@ -46,8 +46,6 @@ The output displays a URL that links to the workflow execution in the UI:
 
 Click the link to see the execution in the UI.
 
-{@@ endif @@}
-
 ## Next step
 
 {@@ if serverless @@}
