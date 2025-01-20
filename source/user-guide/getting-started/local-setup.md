@@ -12,11 +12,8 @@ However, in this guide we will be opinionated about some aspects of tooling, pro
 The essential guidelines are:
 
 1. Use the [`uv` package and project manager](https://docs.astral.sh/uv/).
-   You can, of course, use other tools, but all discussion in these pages will use `uv`, so you will have to adapt the directions as appropriate
-   (if you are reluctant to switch to `uv`, just try it, we strongly recommend it!)
 
 2. Structure your project source according to our established patterns (see [Project structure](./project-structure.md)).
-   After years of experience we have come up with some good organizing principles that will make your life easier. Follow them.
 
 3. Use a source code management system for your code. In this guide we assume you are using Git (and in some examples, specifically GitHub).
 
@@ -24,6 +21,10 @@ The essential guidelines are:
 ## Install uv
 
 First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
+The `uv` tool is our recommended package and project manager.
+It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
+You can, of course, use other tools, but all discussion in these pages will use `uv`,
+so you will have to adapt the directions as appropriate.
 
 
 ## Ensure the correct version of Python is installed
