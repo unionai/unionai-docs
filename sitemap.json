@@ -5,7 +5,7 @@
                 {"name": "getting-started", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "local-setup", "variants": ["byoc", "serverless"]},
-                        {"name": "first-project", "variants": ["byoc", "serverless"]},
+                        {"name": "hello-world", "variants": ["byoc", "serverless"]},
                         {"name": "running-locally", "variants": ["byoc", "serverless"]},
                         {"name": "container-images", "variants": ["byoc"]},
                         {"name": "running-on-union", "variants": ["byoc", "serverless"]},

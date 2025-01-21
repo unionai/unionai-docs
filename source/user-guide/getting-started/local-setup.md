@@ -1,6 +1,10 @@
 # Local setup
 
-In this section we will install and configure the tools on your local machine that you need to work with Union.
+In [Getting started](./index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
+
+Now we will move on to setting up an actual project, which will allow you to run workflows on Union from your local machine.
+
+The first step is to set up your local environment.
 
 
 ## A note on best practices
@@ -23,6 +27,7 @@ The essential guidelines are:
 First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
 The `uv` tool is our recommended package and project manager.
 It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
+
 You can, of course, use other tools, but all discussion in these pages will use `uv`,
 so you will have to adapt the directions as appropriate.
 

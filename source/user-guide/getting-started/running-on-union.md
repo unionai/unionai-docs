@@ -2,7 +2,8 @@
 
 ## Your project on Union
 
-Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise. We will use this default project for the rest of this guide.
+Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise.
+We will use this default project for the rest of this guide.
 
 To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project.md).
 
