@@ -63,3 +63,43 @@ We will call out the need to make the image publicly accessible at that time.
 ## Next step
 
 The next step is [Running on Union](./running-on-union.md).
+
+
+
+
+
+### Register the workflow on Union and then run in the UI
+
+When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `union register`. To register the `ml_workflow` example, run the following command:
+
+```{code-block} shell
+$ union register guide/first_workflow/ml_workflow
+```
+
+This command does the following:
+
+* Builds the images defined by the `ImageSpec` objects in your code and pushes them to the specified container registry.
+* Pushes the workflow code to Union.
+* Sets up the workflow DAG and its constituent task containers.
+* Registers the workflow in the default domain (`development`) of the default project (`{@= default_project =@}`) in Union.
+
+You should see the following output (or similar) in your terminal:
+
+```{code-block} shell
+Successfully serialized 5 flyte objects
+[✔] Registration ml_workflow.ml_workflow.evaluate_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.train_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.get_dataset type TASK successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.main type WORKFLOW successful with version nuHakW_PUV5uk71n-to7bg
+[✔] Registration ml_workflow.ml_workflow.main type LAUNCH_PLAN successful with version nuHakW_PUV5uk71n-to7bg
+Successfully registered 5 entities
+```
+
+### Make your image accessible to Union
+
+Before you can run the workflow from the Union interface, you must make sure that the image defined in your `ImageSpec` is public.
+
+In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
+
+At this point, you can run the workflow from the Union interface.
+

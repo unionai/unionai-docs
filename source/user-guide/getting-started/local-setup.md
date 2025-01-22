@@ -1,8 +1,12 @@
 # Local setup
 
+{@@ if serverless @@}
+
 In [Getting started](./index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
 
-Now we will move on to setting up an actual project, which will allow you to run workflows on Union from your local machine.
+{@@ endif @@}
+
+In this section we will set up a project containing a workflow, run the workflow locally, and then deploy it to Union and run it in the cloud.
 
 The first step is to set up your local environment.
 
@@ -25,7 +29,7 @@ The essential guidelines are:
 ## Install uv
 
 First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
-The `uv` tool is our recommended package and project manager.
+The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
 It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
 
 You can, of course, use other tools, but all discussion in these pages will use `uv`,
@@ -63,8 +67,12 @@ This will install the `union` CLI as a globally available tool on your system.
 `uv` installs tools in `~/.local/bin` by default.
 Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
 `uv` provides a convenience command to do this: `uv tool update-shell`.
-:::
 
+Note that later in this guide we will be running the `union` CLI to register workflows to Union in the cloud.
+In those cases you will be running `union` within the Python virtual environment of your workflow project.
+You will not be using this globally installed instance of `union`.
+This instance of `union` is only used during the configuration step, below, when no projects yet exist.
+:::
 
 ## Configure the `union` CLI
 
@@ -115,6 +123,30 @@ $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workfl
 ```{warning}
 If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
 Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
+```
+
+## Check your `union` CLI configuration
+
+To check your `union` CLI configuration, run:
+
+```{code-block} shell
+$ union info
+```
+
+You should get a response like this:
+
+```{code-block} shell
+$ union info
+╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
+│                                                                                                                                       │
+│ union is the CLI to interact with Union. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│                                                                                                                                       │
+│ Union Version    : 0.1.132                                                                                                            │
+│ Flytekit Version : 1.14.3                                                                                                             │
+│ Union Endpoint   : demo.hosted.unionai.cloud                                                                                          │
+│ Config Source    : UNION_CONFIG env variable                                                                                          │
+│                                                                                                                                       │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 {@@ if byoc @@}

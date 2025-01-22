@@ -1,76 +1,57 @@
 # Running on Union
 
-## Your project on Union
+Local execution is useful for testing and debugging your workflows.
+But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance.
 
-Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise.
-We will use this default project for the rest of this guide.
+When task and workflow code is registered on Union:
 
-To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project.md).
+* The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
+* The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-## Our example workflow
+## ImageSpec and image building
 
-In this section, we will use a workflow from Union's [`unionai/unionai-examples`](https://github.com/unionai/unionai-examples) GitHub repository that illustrates training a simple model using `flytekit`, `scikit-learn`, and `pandas`.
+In this example the `ImageSpec` object is defined like this:
 
-The model training workflow has three steps:
-- Getting the `penguins` dataset from [openml.org](https://www.openml.org/search?type=data&sort=runs&id=42585&status=active)
-- Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
-- Evaluating the model by creating a confusion matrix, displayed as a Flyte `Deck`.
+```{code-block} python
+image = union.ImageSpec(
+    builder = "union",
+    name="ml-workflow-image",
+    packages=[
+        "scikit-learn==1.4.1.post1",
+        "pandas==2.2.1",
+        "matplotlib==3.8.3",
+        "pyarrow==17.0.0",
+        "union==0.1.132",
+    ]
+)
+```
 
-## Next step
+Specifying `builder = "union"` tells Union to build the image using its cloud image builder and register it in its own image registry,
+from where it will be pulled when the task container is spun up.
 
-The next step is [Setting up your local environment](./setting-up-your-local-environment.md).
+Alternatively, if you do not specify `builder = "union"` the `union` CLI will use your local Docker to build the image on your local machine,
+register it to the registry that you specify (using the `registry` parameter in the `ImageSpec`).
+See [Container images](../development-cycle/container-images.md) for more information.
+
+The main advantages offered by local building are:
+
+* You can specify a custom base image to build from (whereas the cloud builder always uses the default `union` image).
+* You can store your image in a private registry.
+
+If these advantages are not important to you, we recommend using the cloud builder, as it is simpler and faster.
 
 
-## Run the workflow remotely on Union
+## Run the workflow on Union
 
-To run the workflow remotely on Union, add the [`--remote` flag](./api-reference/union-cli.md#union-cli-commands):
+To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run --remote hello.py hello_world_wf --name "Ada"
+$ union run --remote src/ml_workflow.py main
 ```
 
 The output displays a URL that links to the workflow execution in the UI:
 
 {@@ if serverless @@}
-
-```{code-block} shell
-[✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
-```
-
-{@@ elif byoc @@}
-
-```{code-block} shell
-[✔] Go to https://<union-host-url>/org/... to see execution in the UI.
-```
-
-{@@ endif @@}
-
-Click the link to see the execution in the UI.
-
-## Next step
-
-{@@ if serverless @@}
-
-The next step is [Running the workflow](./running-the-workflow.md).
-
-{@@ elif byoc @@}
-
-The next step is [Setting up container image handling](./setting-up-container-image-handling.md).
-
-{@@ endif @@}
-
-
-## Run the workflow remotely on Union
-
-{@@ if serverless @@}
-
-To run the workflow in the cloud on Union, add the `--remote` option:
-
-```{code-block} shell
-$ union run --remote user_guide/first_workflow/ml_workflow/ml_workflow.py main --max_bins 64
-```
-
-You should see the following output in your terminal:
 
 ```{code-block} shell
 👍 Build submitted!
@@ -80,33 +61,40 @@ You should see the following output in your terminal:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-When you invoke `union run --remote`, the system first launches a Union hosted image builder that creates the container images with the Python dependencies required for the tasks in your workflow.
-
-Next, the workflow code is registered to Union (meaning that it is serialized uploaded to Union),
-the images defined in `ImageSpec` blocks are used to initialize the containers for each task, and the workflow is executed.
-
-The first URL in the output above points to the image builder and the second URL points to the workflow execution.
-
 {@@ elif byoc @@}
 
-To run the workflow on Union, you will need to register the workflow, make your container image accessible to Union, and finally, run the workflow from the Union interface.
-
-
-### Register the workflow on Union
-
-When starting with a new workflow that requires a new container image that has not been previously built, you must first register your workflow code with `union register`. To register the `ml_workflow` example, run the following command:
-
 ```{code-block} shell
-$ union register guide/first_workflow/ml_workflow
+👍 Build submitted!
+⏳ Waiting for build to finish at: https://<union-host-url>/org/...
+✅ Build completed in 0:01:57!
+
+[✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
 
-This command does the following:
+{@@ endif @@}
 
-* Builds the images defined by the `ImageSpec` objects in your code and pushes them to the specified container registry.
-* Pushes the workflow code to Union.
-* Sets up the workflow DAG and its constituent task containers.
-* Registers the workflow in the default domain (`development`) of the default project (`{@= default_project =@}`) in Union.
+Click the link to see the execution in the UI.
 
+## Register the workflow without running
+
+Above we used the `union run --remote` to register and immediately run a workflow on Union.
+
+This is useful for quick testing, but for more complex workflows you may want to register the workflow first and then run it from the Union interface.
+
+To do this, you can use the `union register` command to register the workflow code with Union.
+
+The form of the command is:
+
+```{code-block} shell
+$ union register <path-to-src>
+```
+in our case, from within the `getting-started` directory, you would do:
+
+```{code-block} shell
+$ union register src
+```
+
+This registers all code in the `src` directory to Union but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
@@ -119,17 +107,10 @@ Successfully serialized 5 flyte objects
 Successfully registered 5 entities
 ```
 
-### Make your image accessible to Union
 
-Before you can run the workflow from the Union interface, you must make sure that the image defined in your `ImageSpec` is public.
+## Run the workflow from the Union interface
 
-In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
-
-At this point, you can run the workflow from the Union interface.
-
-### Run the workflow from the Union interface
-
-To run the workflow from the Union interface:
+To run the workflow, you need to go to the Union interface:
 
 1. Navigate to the Union dashboard.
 2. In the left sidebar, click **Workflows**.
@@ -164,4 +145,4 @@ workflow!
 
 ## Next step
 
-The next step is to take a look at the [Example code components](./example-code-components.md).
+The next step is to take a look at the [Example code components](./code-components.md).
