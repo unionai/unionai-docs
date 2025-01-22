@@ -8,11 +8,9 @@ In [Getting started](./index.md) we showed you how to run your first workflow ri
 
 In this section we will set up a project containing a workflow, run the workflow locally, and then deploy it to Union and run it in the cloud.
 
-The first step is to set up your local environment.
+The first step is setting up your local environment.
 
-
-## A note on best practices
-
+:::{admonition} A note on best practices
 Union supports the full flexibility of the Python ecosystem in structuring your projects and in the choice of tools used to manage those projects.
 
 However, in this guide we will be opinionated about some aspects of tooling, project structure and project management, in order to streamline the experience and guide users toward established best practices.
@@ -24,9 +22,9 @@ The essential guidelines are:
 2. Structure your project source according to our established patterns (see [Project structure](./project-structure.md)).
 
 3. Use a source code management system for your code. In this guide we assume you are using Git (and in some examples, specifically GitHub).
+:::
 
-
-## Install uv
+## Install `uv`
 
 First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
 The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
@@ -53,7 +51,7 @@ If you have a version `>=3.13` installed, you will need to uninstall it since `u
 :::
 
 
-## Install union CLI
+## Install `union` CLI
 
 Once `uv` is installed, use it to install the `union` CLI:
 

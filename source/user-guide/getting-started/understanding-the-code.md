@@ -1,5 +1,16 @@
 # Understanding the code
 
+This example illustrates training a simple model using `union`, `scikit-learn`, and `pandas`.
+
+The model training workflow has three steps:
+
+* Getting the `penguins` dataset from `openml.org`.
+* Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
+* Evaluating the model by creating a confusion matrix, displayed as a `union.Deck`.
+
+
+## Code components
+
 The ML workflow example code contains a `@union.workflow`-decorated function that calls decorated with the `@union.task`.
 The code also contains an `ImageSpec` block.
 Some tasks have the `enable_deck=True` parameter set, which enables visualizations in the Union UI.
@@ -7,6 +18,7 @@ Some tasks have the `enable_deck=True` parameter set, which enables visualizatio
 ```{note}
 You can find the full ML workflow example code on [{fab}`github` Github](https://github.com/unionai/unionai-examples/blob/main/user_guide/getting-started/src/ml_workflow.py)
 ```
+
 
 ## Workflow
 
@@ -35,6 +47,7 @@ $ union run --remote src/ml_workflow.py main --max_bins 128
 * Task and workflow function signatures must be type-annotated with Python type hints.
 * Task and workflow functions must be invoked with keyword arguments.
 :::
+
 
 ## Tasks
 
@@ -66,6 +79,7 @@ With caching, future executions of the workflow will use the cached data instead
 ```{note}
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
 ```
+
 
 ## ImageSpec
 

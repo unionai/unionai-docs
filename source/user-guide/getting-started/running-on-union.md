@@ -88,6 +88,7 @@ The form of the command is:
 ```{code-block} shell
 $ union register <path-to-src>
 ```
+
 in our case, from within the `getting-started` directory, you would do:
 
 ```{code-block} shell
@@ -121,7 +122,6 @@ To run the workflow, you need to go to the Union interface:
 
 To view the workflow execution graph, click the **Graph** tab above the running workflow.
 
-{@@ endif @@}
 
 ## View the workflow execution on Union
 
@@ -140,9 +140,5 @@ by the task:
 
 ![Flyte Deck](/_static/images//user-guide/first-workflow/running-the-workflow/flyte-deck.png)
 
-Now that we are familiar with the UI, let's jump into the code and see how to build the
-workflow!
-
-## Next step
-
-The next step is to take a look at the [Example code components](./code-components.md).
+Now that we are familiar with the UI, let's jump into the code and see how the
+workflow is constructed.

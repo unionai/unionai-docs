@@ -59,17 +59,6 @@ In our examples docs we assume that you are doing the latter.
 :::
 
 
-## Take a look at the code
-
-This example illustrates training a simple model using `union`, `scikit-learn`, and `pandas`.
-
-The model training workflow has three steps:
-
-* Getting the `penguins` dataset from `openml.org`.
-* Training a `HistGradientBoostingClassifier` model using `scikit-learn`.
-* Evaluating the model by creating a confusion matrix, displayed as a `union.Deck`.
-
-
 ## Run the code locally
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
