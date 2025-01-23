@@ -1,4 +1,6 @@
-# Setting up a project
+# Project organization
+
+## Setting up a project
 
 In Union, your work is organized in a hierarchy with the following structure:
 
