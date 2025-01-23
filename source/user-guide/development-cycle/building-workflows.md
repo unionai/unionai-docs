@@ -1,4 +1,4 @@
-# Workflow structure
+# Building workflows
 
 ## When should I decompose tasks?
 

@@ -1,6 +1,4 @@
-# Project organization
-
-## Setting up a project
+# Setting up a project
 
 In Union, your work is organized in a hierarchy with the following structure:
 
@@ -31,15 +29,16 @@ Promotion is done simply by [re-registering the workflow to the new project-doma
 
 ## Terminology
 
-In everyday use, the term "project" is often used to refer to not just the Union entity that holds a set of workflows, but also to the local directory in which you are developing those workflows, and to the GitHub (or other SCM) repository that you are using to store the same workflow code.
+In everyday use, the term "project" is often used to refer to not just the Union entity that holds a set of workflows,
+but also to the local directory in which you are developing those workflows, and to the GitHub (or other SCM) repository that you are using to store the same workflow code.
 
 To avoid confusion, in this guide we will stick to the following naming conventions:
 
 * **Union project**: The entity in your Union instance that holds a set of workflows, as described above. Often referred to simply as a **project**.
-* **Workflow directory**: The local directory in which you are developing workflows.
+* **Local project**: The local directory in which you are developing workflows.
   This directory does not necessarily correspond one-to-one with a Union project.
   Often you will have multiple workflow directories that are all registered to a single Union project.
-* **Workflow repository**: The GitHub (or other SCM) repository that you are using to store and manage your workflow code.
+* **Project repository**: The GitHub (or other SCM) repository that you are using to store and manage your workflow code.
   This repository does not necessarily correspond one-to-one with either workflow directory or a Union project.
 
 ## Create a Union project

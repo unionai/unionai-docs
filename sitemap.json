@@ -67,11 +67,10 @@
             {"name": "caching", "variants": ["byoc", "serverless"]}
         ]},
         {"name": "development-cycle", "variants": ["byoc", "serverless"], "children": [
-            {"name": "project-organization", "variants": ["byoc", "serverless"],  "children": [
-                {"name": "project-structure", "variants": ["byoc", "serverless"]},
-                {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
-                {"name": "workflow-structure", "variants": ["byoc", "serverless"]}
-            ]},
+            {"name": "setting-up-project", "variants": ["byoc", "serverless"]},
+            {"name": "project-structure", "variants": ["byoc", "serverless"]},
+            {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
+            {"name": "building-workflows", "variants": ["byoc", "serverless"]},
             {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
             {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
             {"name": "container-images", "variants": ["byoc", "serverless"]},
