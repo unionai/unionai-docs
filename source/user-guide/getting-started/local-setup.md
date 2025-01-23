@@ -6,14 +6,13 @@ In [Getting started](./index.md) we showed you how to run your first workflow ri
 
 {@@ endif @@}
 
-In this section we will set up a project containing a workflow, run the workflow locally, and then deploy it to Union and run it in the cloud.
-
-The first step is setting up your local environment.
+In this section we will set up your local environment so that you can start building and deploying workflows on Union.
 
 :::{admonition} A note on best practices
-Union supports the full flexibility of the Python ecosystem in structuring your projects and in the choice of tools used to manage those projects.
+Union gives you full flexibility in structuring your projects and choosing your tools from across the Python ecosystem.
 
-However, in this guide we will be opinionated about some aspects of tooling, project structure and project management, in order to streamline the experience and guide users toward established best practices.
+However, in this guide we will be opinionated about some aspects of tooling, project structure, and project management.
+This will streamline the experience and guide you toward established best practices.
 
 The essential guidelines are:
 
@@ -21,7 +20,7 @@ The essential guidelines are:
 
 2. Structure your project source according to our established patterns (see [Project structure](./project-structure.md)).
 
-3. Use a source code management system for your code. In this guide we assume you are using Git (and in some examples, specifically GitHub).
+3. Use Git to manage your code.
 :::
 
 ## Install `uv`
@@ -51,7 +50,7 @@ If you have a version `>=3.13` installed, you will need to uninstall it since `u
 :::
 
 
-## Install `union` CLI
+## Install the `union` CLI
 
 Once `uv` is installed, use it to install the `union` CLI:
 
@@ -112,7 +111,7 @@ You can override this behavior to specify a different configuration file by sett
 export UNION_CONFIG=~/.my-config-location/my-config.yaml
 ```
 
-Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag:
+Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag. For example:
 
 ```{code-block} shell
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
@@ -133,6 +132,8 @@ $ union info
 
 You should get a response like this:
 
+{@@ if byoc @@}
+
 ```{code-block} shell
 $ union info
 ╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
@@ -141,14 +142,28 @@ $ union info
 │                                                                                                                                       │
 │ Union Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │
-│ Union Endpoint   : demo.hosted.unionai.cloud                                                                                          │
-│ Config Source    : UNION_CONFIG env variable                                                                                          │
+│ Union Endpoint   : <union-host-url>                                                                                                   │
+│ Config Source    : <path-to-config> file                                                                                              │
 │                                                                                                                                       │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-{@@ if byoc @@}
-
 For more details on connection configuration see [CLI authentication types](../administration/cli-authentication-types.md).
+
+{@@ elif serverless @@}
+
+```{code-block} shell
+$ union info
+╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
+│                                                                                                                                       │
+│ union is the CLI to interact with Union. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│                                                                                                                                       │
+│ Union Version    : 0.1.132                                                                                                            │
+│ Flytekit Version : 1.14.3                                                                                                             │
+│ Union Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
+│ Config Source    : <path-to-config> file                                                                                              │
+│                                                                                                                                       │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
 
 {@@ endif @@}

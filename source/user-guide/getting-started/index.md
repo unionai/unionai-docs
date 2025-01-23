@@ -96,4 +96,8 @@ This will take you to `{@= default_project =@}` project dashboard:
 
 ![Union UI](/_static/images/quick-start/byoc-dashboard.png)
 
+This dashboard gives you an overview of the workflows and tasks in your project.
+Since you are just starting out, it will be empty.
+To build and deploy your first workflow, the first step is to [set up your local environment](./local-setup.md).
+
 {@@ endif @@}
