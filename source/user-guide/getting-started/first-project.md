@@ -1,6 +1,6 @@
 # First project
 
-In this section we will set up a Union project. A Union project consists of
+In this section we will set up a Union project. A Union project consists of:
 
 * A local directory (typically the checkout a Git repository, or a subdirectory of a Git repository) holding your workflow code.
 
@@ -12,6 +12,8 @@ using the `union` CLI.
 Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise.
 We will use this default project for the rest of this guide.
 To create additional projects, see [Setting up a project](../development-cycle/setting-up-a-project.md).
+In actual production usage, you would typically name your local project directory after the Union project it corresponds to,
+but here we will just use the default project.
 
 :::{admonition} Initialize a project from scratch
 In this example we will start with an existing Git repository.
@@ -22,7 +24,8 @@ See [Setting up a project](../development-cycle/setting-up-a-project.md) for mor
 
 ## Clone the example project
 
-We will use the **Getting started: Machine learning example**, found in the [`https://github.com/unionai/unionai-examples/`](unionai/unionai-examples/) GitHub repository under `user-guide/getting-started`.
+We will use the **Getting started: Machine learning example**,
+found in the [`https://github.com/unionai/unionai-examples/`](https://github.com/unionai/unionai-examples/) GitHub repository under `user-guide/getting-started`.
 
 Clone the repository to your local machine and `cd` to the project directory:
 
@@ -31,7 +34,7 @@ $ git clone https://github.com/unionai/unionai-examples/
 $ cd unionai-examples/user-guide/getting-started
 ```
 
-Once you have cloned the repository, ensure that your Python virtual environment is properly set up with the required dependencies.
+Ensure that your Python virtual environment is properly set up with the required dependencies.
 
 Using `uv`, you can install the dependencies with the command:
 
@@ -47,7 +50,7 @@ source .venv/bin/activate
 
 :::{admonition} `activate` vs `uv run`
 When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
-This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-union-cli) in order to [set up its configuration](./local-setup.md#configure-the-union-cli).
+This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the-union-cli) in order to [set up its configuration](./local-setup.md#configure-the-union-cli).
 
 To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
 
@@ -55,7 +58,7 @@ To run union within your project's virtual environment using `uv`, you can prefi
 
 Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
 
-In our examples docs we assume that you are doing the latter.
+In our examples we assume that you are doing the latter.
 :::
 
 

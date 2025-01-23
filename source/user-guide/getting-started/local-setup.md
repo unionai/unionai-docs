@@ -65,7 +65,7 @@ This will install the `union` CLI as a globally available tool on your system.
 Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
 `uv` provides a convenience command to do this: `uv tool update-shell`.
 
-Note that later in this guide we will be running the `union` CLI to register workflows to Union in the cloud.
+Note that later in this guide we will be running the `union` CLI to run your workflows.
 In those cases you will be running `union` within the Python virtual environment of your workflow project.
 You will not be using this globally installed instance of `union`.
 This instance of `union` is only used during the configuration step, below, when no projects yet exist.
@@ -73,8 +73,7 @@ This instance of `union` is only used during the configuration step, below, when
 
 ## Configure the `union` CLI
 
-To register and run workflows on your Union instance using the `union` CLI,
-you will need to create a configuration file that contains your Union connection information.
+Next, you need to create a configuration file that contains your Union connection information.
 To do this, run the following command:
 
 {@@ if serverless @@}

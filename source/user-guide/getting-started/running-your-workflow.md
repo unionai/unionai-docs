@@ -1,4 +1,23 @@
-# Running on Union
+# Running your workflow
+
+## Running locally the code locally
+
+Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
+
+You can run the workflow locally with the command [`union run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
+
+```{code-block} shell
+$ union run src/ml_workflow.py main
+```
+
+If the code runs successfully, you should see output like this:
+
+```{code-block} shell
+Running Execution on local.
+0.9767441860465116
+```
+
+## Running remotely on Union
 
 Local execution is useful for testing and debugging your workflows.
 But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance.
