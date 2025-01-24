@@ -33,7 +33,7 @@ app = App(
             name="my_file",
             value=MyFile.query(),
             download=True,
-            env_name="MY_FILE",
+            env_var="MY_FILE",
         ),
     ],
     container_image="ghcr.io/thomasjpfan/streamlit-app-image-seg:0.1.30",
