@@ -11,7 +11,8 @@ allowing for seamless integration and manipulation of the query data within subs
 2. Incorporate `flytekitplugins.snowflake.SnowflakeConfig` within the task to define the appropriate configuration.
 
 ```{code-block} python
-from flytekit import kwtypes, workflow
+import union
+from flytekit import kwtypes
 from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 
 snowflake_task_no_io = SnowflakeTask(
@@ -77,18 +78,18 @@ Make sure to create a secret for the python task to access the Snowflake table.
 ```
 
 ```{code-block} python
-image = ImageSpec(
+image = union.ImageSpec(
     registry="ghcr.io/unionai",
     packages=["flytekitplugins-snowflake", "pyarrow", "pandas"],
 )
 
-@task(container_image=image, secret_requests=[Secret(key="snowflake")])
+@union.task(container_image=image, secret_requests=[Secret(key="snowflake")])
 def print_table(input_sd: StructuredDataset):
     df = input_sd.open(pd.DataFrame).all()
     print(df)
 
 
-@workflow
+@union.workflow
 def snowflake_wf(nation_key: int):
     sd = snowflake_task_templatized_query(nation_key=nation_key)
     print_table(sd)
@@ -107,12 +108,12 @@ You can also create a pandas  DataFrame and save it as a table within your Snowf
 further high-performance data analysis and storage.
 
 ```{code-block} python
-image = ImageSpec(
+image = union.ImageSpec(
     registry="ghcr.io/unionai",
     packages=["flytekitplugins-snowflake", "pyarrow", "pandas"],
 )
 
-@task(container_image=image, secret_requests=[Secret(key="snowflake")])
+@union.task(container_image=image, secret_requests=[Secret(key="snowflake")])
 def write_table() -> StructuredDataset:
     df = pd.DataFrame({
         "ID": [1, 2, 3],

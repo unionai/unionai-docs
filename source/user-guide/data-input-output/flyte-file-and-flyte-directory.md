@@ -30,7 +30,7 @@ Let's say you have a local file in the container running `task_1` that you want 
 To do this, you create a `FlyteFile` object using the local path of the file, and then pass the `FlyteFile` object as part of your workflow, like this:
 
 ```{code-block} python
-@task
+@union.task
 def task_1() -> FlyteFile:
     local_path = os.path.join(current_context().working_directory, "data.txt")
     with open(local_path, mode="w") as f:
@@ -38,13 +38,13 @@ def task_1() -> FlyteFile:
     return FlyteFile(path=local_path)
 
 
-@task
+@union.task
 def task_2(ff: FlyteFile):
     with ff.open(mode="r") as f
         file_contents = f.read()
 
 
-@workflow
+@union.workflow
 def wf():
     ff = task_1()
     task_2(ff=ff)
@@ -77,7 +77,7 @@ def task1() -> FlyteDirectory:
 
     return FlyteDirectory(p)
 
-@task
+@union.task
 def task2(fd: FlyteDirectory):
     # Get a list of the directory contents using os to return strings
     items = os.listdir(fd)
@@ -90,7 +90,7 @@ def task2(fd: FlyteDirectory):
         d = f.read()
     print(f"The first line in the first file is: {d}")
 
-@workflow
+@union.workflow
 def workflow():
     fd = task1()
     task2(fd=fd)
@@ -155,7 +155,7 @@ To preserve that file across the task boundary, Union uploaded it to the Union o
 You can also _start with a remote file_, simply by initializing the `FlyteFile` object with a URI pointing to a remote source. For example:
 
 ```{code-block} python
-@task
+@union.task
 def task_1() -> FlyteFile:
     remote_path = "https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv"
     return FlyteFile(path=remote_path)
@@ -168,7 +168,7 @@ After the FlyteFile is passed to the next task,  you can call `FlyteFile.open()`
 If you don't intend on passing the `FlyteFile` to the next task, and rather intend to open the contents of the remote file within the task, you can use `from_source`.
 
 ```{code-block} python
-@task
+@union.task
 def load_json():
     uri = "gs://my-bucket/my-directory/example.json"
     my_json = FlyteFile.from_source(uri)
@@ -186,12 +186,12 @@ When initializing a `FlyteFile` with a remote file location, all URI schemes sup
 Below is an equivalent remote example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```{code-block} python
-@task
+@union.task
 def task1() -> FlyteDirectory:
     p = "https://people.sc.fsu.edu/~jburkardt/data/csv/"
     return FlyteDirectory(p)
 
-@task
+@union.task
 def task2(fd: FlyteDirectory):
     # Get a list of the directory contents and display the first csv
     files = FlyteDirectory.listdir(fd)
@@ -200,7 +200,7 @@ def task2(fd: FlyteDirectory):
     print(f"The first csv is: \n{d}")
 
 
-@workflow
+@union.workflow
 def workflow():
     fd = task1()
     task2(fd=fd)
@@ -213,12 +213,12 @@ The object returned by `FlyteFile.open()` is a stream. In the above examples, th
 But for large files, you can iterate through the contents of the stream:
 
 ```{code-block} python
-@task
+@union.task
 def task_1() -> FlyteFile:
     remote_path = "https://sample-videos.com/csv/Sample-Spreadsheet-100000-rows.csv"
     return FlyteFile(path=remote_path)
 
-@task
+@union.task
 def task_2(ff: FlyteFile):
     with ff.open(mode="r") as f
         for row in f:
@@ -241,7 +241,7 @@ This enables many common file-related operations in Python to be performed on th
 The most prominent example of such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
 
 ```{code-block} python
-@task
+@union.task
 def task_2(ff: FlyteFile):
     with open(ff, mode="r") as f
        file_contents= f.read()
@@ -269,7 +269,7 @@ See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd
 You can also explicitly download a `FlyteFile` to the local container file system by calling `FlyteFile.download()`:
 
 ```{code-block} python
-@task
+@union.task
 def task_2(ff: FlyteFile):
     local_path = ff.download()
 ```

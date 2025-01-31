@@ -22,7 +22,7 @@ You can now register tasks with `ImageSpec` declarations that reference this rep
 For example, to use an existing ACR repository, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
 
 ```{code-block} python
-image_spec = ImageSpec(
+image_spec = union.ImageSpec(
     registry="<AZURE_CONTAINER_REGISTRY_NAME>.azurecr.io",
     name="my-repository/simple-example-image",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",

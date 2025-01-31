@@ -93,7 +93,7 @@ Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/po
 In Flyte you set resource requests and limits at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources.md)):
 
 ```{code-block} python
-@task(requests=Resources(cpu="1", mem="1Gi"),
+@union.task(requests=Resources(cpu="1", mem="1Gi"),
       limits=Resources(cpu="10", mem="10Gi"))
 ```
 
@@ -145,7 +145,7 @@ The dashboard provides the following information:
 In the screenshot above, there is a `t3a.xlarge` with `3670m` (3670 millicores) of allocatable CPU, and a larger `c5.4xlarge` with `15640m` of allocatable CPU. In order to schedule a workload on the smaller node, you could specify the following in a task definition:
 
 ```{code-block} python
-@task(requests=Resources(cpu="3670m", mem="1Gi"),
+@union.task(requests=Resources(cpu="3670m", mem="1Gi"),
       limits=Resources(cpu="3670m", mem="1Gi"))
 ```
 
@@ -154,7 +154,7 @@ In the absence of confounding factors (for example, other workloads fully utiliz
 Conversely, if a user requests the following:
 
 ```{code-block} python
-@task(requests=Resources(cpu="4000m", mem="1Gi"),
+@union.task(requests=Resources(cpu="4000m", mem="1Gi"),
       limits=Resources(cpu="4000m", mem="1Gi"))
 ```
 

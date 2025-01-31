@@ -96,7 +96,7 @@ The behavior that occurs when a callable entity is invoked depends on the curren
 
 ### Raw task execution
 
-When a task is executed as part of a unit test, the `@task` decorator transforms the decorated function into an instance of the `PythonFunctionTask` object. However, when a user invokes the `task()` function outside of a workflow, the original function is called without any intervention from Flytekit.
+When a task is executed as part of a unit test, the `@union.task` decorator transforms the decorated function into an instance of the `PythonFunctionTask` object. However, when a user invokes the `task()` function outside of a workflow, the original function is called without any intervention from Flytekit.
 
 ### Task execution inside a workflow
 
@@ -113,15 +113,15 @@ Before proceeding, it is worth noting a special object, the :py:class:`flytekit.
 Consider the following workflow:
 
 ```{code} python
-@task
+@union.task
 def t1(a: int) -> Tuple[int, str]:
     return a + 2, "world"
 
-@task
+@union.task
 def t2(a: str, b: str) -> str:
     return b + a
 
-@workflow
+@union.workflow
 def my_wf(a: int, b: str) -> Tuple[int, str]:
     x, y = t1(a=a).with_overrides(...)
     d = t2(a=y, b=b)

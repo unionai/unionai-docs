@@ -21,13 +21,13 @@ import os
 from union import task, workflow, FlyteFile
 
 
-@task()
+@union.task()
 def create_file(message: str) -> FlyteFile:
     with open("data.txt", "w") as f:
         f.write(message)
     return FlyteFile(path="data.txt")
 
-@workflow
+@union.workflow
 def my_workflow(message: str) -> FlyteFile:
     f = create_file(message)
     return f

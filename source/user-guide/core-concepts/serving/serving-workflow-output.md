@@ -24,7 +24,7 @@ from union.app import App, Input
 
 # Declare an Artifact with the name "my_file".
 # Note that this must be same Artifact name as declared in the workflow code in `wf.py`, below.
-MyFile = Artifact(name="my_file")
+MyFile = union.Artifact(name="my_file")
 
 app = App(
     name="streamlit-workflow-output",
@@ -85,7 +85,7 @@ from typing_extensions import Annotated
 
 # ImageSpec defining the container image that will run the task
 # Replace YOUR-Registry with the actual name of your own registry!
-image_spec = ImageSpec(
+image_spec = union.ImageSpec(
     registry="YOUR-REGISTRY",
     name="serving-example-image",
     base_image="ghcr.io/flyteorg/flytekit:py3.12-latest",
@@ -94,11 +94,11 @@ image_spec = ImageSpec(
 
 # Declare an Artifact with the name "my_file"
 # Note that this must be same Artifact name as declared in the App declaration code in `app.py`, above.
-MyFile = Artifact(name="my_file")
+MyFile = union.Artifact(name="my_file")
 
 # Define a task that creates an artifact from a file.
 # Uses the artifact declared above.
-@task(container_image=image_spec)
+@union.task(container_image=image_spec)
 def t() -> Annotated[FlyteFile, MyFile]:
     working_dir = Path(current_context().working_directory)
     my_file = working_dir / "my_file.txt"
@@ -109,7 +109,7 @@ def t() -> Annotated[FlyteFile, MyFile]:
     return MyFile.create_from(my_file)
 
 # Define a workflow that executes the task.
-@workflow
+@union.workflow
 def wf() -> FlyteFile:
     return t()
 ```

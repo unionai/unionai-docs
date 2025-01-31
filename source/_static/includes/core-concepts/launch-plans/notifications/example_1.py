@@ -1,23 +1,23 @@
+from datetime import datetime
+
+import union
+
 from flytekit import (
-    task,
-    workflow,
-    LaunchPlan,
     WorkflowExecutionPhase,
     Email,
     PagerDuty,
     Slack
 )
-from datetime import datetime
 
-@task
+@union.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@workflow
+@union.workflow
 def my_workflow(a: int, b: int, c: int, kickoff_time: datetime ) -> str:
     return f"sum: {my_task(a=a, b=b, c=c)} at {kickoff_time}"
 
-LaunchPlan.get_or_create(
+union.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},

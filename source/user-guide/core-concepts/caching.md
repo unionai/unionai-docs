@@ -40,22 +40,22 @@ Cache serialization is disabled by default.
 
 ## Where to specify caching parameters
 
-* Task caching parameters can be specified at task definition time within `@task` decorator or at task invocation time using `with_overrides` method.
+* Task caching parameters can be specified at task definition time within `@union.task` decorator or at task invocation time using `with_overrides` method.
 * Workflow and launch plan caching parameters can be specified at invocation time using `with_overrides` method.
 
 ## Example
 
 ```{code-block} python
-from flytekit import task, workflow, LaunchPlan
+import union
 from typing import List
 
 
-@task(cache=True, cache_version="1.0", cache_serialize=True)
+@union.task(cache=True, cache_version="1.0", cache_serialize=True)
 def sum(a: int, b: int, c: int) -> int:
     return a + b + c
 
 
-@workflow
+@union.workflow
 def child_wf(a: int, b: int, c: int) -> List[int]:
     return [
         sum(a=a, b=b, c=c)
@@ -63,10 +63,10 @@ def child_wf(a: int, b: int, c: int) -> List[int]:
     ]
 
 
-child_lp = LaunchPlan.get_or_create(child_wf)
+child_lp = union.LaunchPlan.get_or_create(child_wf)
 
 
-@workflow
+@union.workflow
 def parent_wf_with_subwf(input: int = 0):
     return [
         child_wf(a=input, b=3, c=4).with_overrides(cache=True, cache_version="1.0", cache_serialize=True)
@@ -74,7 +74,7 @@ def parent_wf_with_subwf(input: int = 0):
     ]
 
 
-@workflow
+@union.workflow
 def parent_wf_with_sublp(input: int = 0):
      return [
         child_lp(a=input, b=1, c=2).with_overrides(cache=True, cache_version="1.0", cache_serialize=True)
@@ -83,7 +83,7 @@ def parent_wf_with_sublp(input: int = 0):
 ```
 
 In the above example, caching is enabled at multiple levels:
-    * At the task level, in the `@task` decorator of the task `sum`.
+    * At the task level, in the `@union.task` decorator of the task `sum`.
     * At the workflow level, in the `with_overrides` method of the invocation of the workflow `child_wf`.
     * At the launch plan level, in the `with_overrides` method of the invocation of the launch plan `child_lp`.
 
@@ -160,7 +160,7 @@ When a change to code is made that should invalidate the cache for that node, yo
 For a task example, see below. (For workflows and launch plans, the parameter would be specified in the `with_overrides` method.)
 
 ```{code-block} python
-@task(cache=True, cache_version="1.1", cache_serialize=True)
+@union.task(cache=True, cache_version="1.1", cache_serialize=True)
 def t(n: int) -> int:
    return n * n + 1
 ```
@@ -218,13 +218,13 @@ It is particularly well fit for long-running or otherwise computationally expens
 ### Enabling cache serialization
 
 Task cache serializing is disabled by default to avoid unexpected behavior for task executions.
-To enable set `cache_serialize=True` in the `@task` decorator (this only has an effect if `cache=True` is also set)
+To enable set `cache_serialize=True` in the `@union.task` decorator (this only has an effect if `cache=True` is also set)
 
 The cache key definitions follow the same rules as non-serialized cache tasks.
 It is important to understand the implications of the task signature and `cache_version` parameter in defining cached results.
 
 ```{code-block} python
-@task(cache=True, cache_version="1.0", cache_serialize=True)
+@union.task(cache=True, cache_version="1.0", cache_serialize=True)
 def t(n: int) -> int:
     return n * n
 ```
@@ -251,19 +251,19 @@ In some cases, the default behavior displayed by Union’s caching feature might
 For example, this code makes use of pandas dataframes:
 
 ```{code-block} python
-@task
+@union.task
 def foo(a: int, b: str) -> pandas.DataFrame:
     df = pandas.DataFrame(...)
     ...
     return df
 
 
-@task(cache=True, cache_version="1.0")
+@union.task(cache=True, cache_version="1.0")
 def bar(df: pandas.DataFrame) -> int:
     ...
 
 
-@workflow
+@union.workflow
 def wf(a: int, b: str):
     df = foo(a=a, b=b)
     v = bar(df=df)
@@ -280,19 +280,19 @@ def hash_pandas_dataframe(df: pandas.DataFrame) -> str:
     return str(pandas.util.hash_pandas_object(df))
 
 
-@task
+@union.task
 def foo_1(a: int, b: str) -> Annotated[pandas.DataFrame, HashMethod(hash_pandas_dataframe)]:
     df = pandas.DataFrame(...)
     ...
     return df
 
 
-@task(cache=True, cache_version="1.0")
+@union.task(cache=True, cache_version="1.0")
 def bar_1(df: pandas.DataFrame) -> int:
     ...
 
 
-@workflow
+@union.workflow
 def wf_1(a: int, b: str):
     df = foo(a=a, b=b)
     v = bar(df=df)
@@ -316,23 +316,23 @@ def hash_pandas_dataframe(df: pandas.DataFrame) -> str:
     return str(pandas.util.hash_pandas_object(df))
 
 
-@task
+@union.task
 def uncached_data_reading_task() -> Annotated[pandas.DataFrame, HashMethod(hash_pandas_dataframe)]:
     return pandas.DataFrame({"column_1": [1, 2, 3]})
 
 
-@task(cache=True, cache_version="1.0")
+@union.task(cache=True, cache_version="1.0")
 def cached_data_processing_task(df: pandas.DataFrame) -> pandas.DataFrame:
     time.sleep(1)
     return df * 2
 
 
-@task
+@union.task
 def compare_dataframes(df1: pandas.DataFrame, df2: pandas.DataFrame):
     assert df1.equals(df2)
 
 
-@workflow
+@union.workflow
 def cached_dataframe_wf():
     raw_data = uncached_data_reading_task()
 
