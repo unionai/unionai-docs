@@ -37,7 +37,7 @@ app = App(
         ),
     ],
     container_image="ghcr.io/thomasjpfan/streamlit-app-image-seg:0.1.30",
-    command=[
+    args=[
         "streamlit",
         "run",
         "main.py",

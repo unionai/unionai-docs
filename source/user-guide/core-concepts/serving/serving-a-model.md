@@ -40,7 +40,7 @@ fast_api_app = App(
     limits=Resources(cpu="2", mem="4Gi"),
     port=8082,
     include=["./main.py"],
-    command=["fastapi", "dev", "--port", "8082"],
+    args=["fastapi", "dev", "--port", "8082"],
 )
 ```
 
