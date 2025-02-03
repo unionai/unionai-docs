@@ -33,7 +33,7 @@ from union import Resources
 app = App(
     name="streamlit-hello",
     container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.37",
-    command=[
+    args=[
         "streamlit",
         "hello",
         "--server.port",
