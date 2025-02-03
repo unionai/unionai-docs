@@ -30,15 +30,16 @@ The file `app.py` contains the app declaration:
 from union.app import App
 from union import Resources
 
+image = ImageSpec(
+    name="streamlit-app",
+    packages=["streamlit==1.41.1", "union-runtime>=0.1.10"],
+    registry=os.getenv("REGISTRY"),
+)
+
 app = App(
     name="streamlit-hello",
-    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.37",
-    args=[
-        "streamlit",
-        "hello",
-        "--server.port",
-        "8080",
-    ],
+    container_image=image,
+    args=["streamlit", "hello", "--server.port", "8080"],
     port=8080,
     limits=Resources(cpu="2", mem="3Gi"),
 )

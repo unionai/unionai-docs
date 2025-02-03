@@ -25,19 +25,26 @@ The file `app.py` contains the app declaration:
 
 """A Union app with custom code"""
 
-from union import Resources
+import os
+from flytekit import ImageSpec, Resources
 from union.app import App
 
+image = ImageSpec(
+    name="streamlit-app",
+    packages=["streamlit==1.41.1", "union-runtime>=0.1.10"],
+    registry=os.getenv("REGISTRY"),
+)
+
 app = App(
-     name="streamlit-custom-code",
-    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.30",
+    name="streamlit-custom-code",
+    container_image=image,
     args=["streamlit", "run", "main.py", "--server.port", "8080"],
     port=8080,
-    limits=Resources(cpu="2", mem="3Gi"),
     include=[
         "./main.py",
         "./utils.py",
     ],
+    limits=Resources(cpu="1", mem="1Gi"),
 )
 ```
 
