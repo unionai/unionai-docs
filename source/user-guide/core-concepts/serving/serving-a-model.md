@@ -22,10 +22,17 @@ In a local directory, create the following files:
 
 """A Union app that uses FastAPI to serve model created by a Union workflow."""
 
-from union import Artifact, Resources
+import os
+from union import Artifact, ImageSpec, Resources
 from union.app import App, Input
 
 SklearnModel = Artifact(name="sklearn-model")
+
+image_spec = ImageSpec(
+    name="union-serve-sklearn-fastapi",
+    packages=["scikit-learn==1.5.2", "union-runtime>=0.1.10", "fastapi[standard]"],
+    registry=os.getenv("REGISTRY"),
+)
 
 fast_api_app = App(
     name="simple-fastapi-sklearn",
@@ -36,8 +43,8 @@ fast_api_app = App(
             download=True,
         )
     ],
-    container_image="ghcr.io/thomasjpfan/union-serve-sklearn-fastapi:0.1.2",
-    limits=Resources(cpu="2", mem="4Gi"),
+    container_image=image_spec,
+    limits=Resources(cpu="1", mem="1Gi"),
     port=8082,
     include=["./main.py"],
     args=["fastapi", "dev", "--port", "8082"],
@@ -98,11 +105,10 @@ from sklearn.model_selection import train_test_split
 SklearnModel = Artifact(name="sklearn-model")
 
 # Define the container image that will be used to run the tasks.
-# Note that you must replace `YOUR_REGISTRY` with the actual URI of your own container registry.
+# Note that you must set `REGISTRY` with the actual URI of your own container registry.
 image_spec = ImageSpec(
-    name="flytekit",
     packages=["scikit-learn==1.5.2"],
-    registry="YOUR_REGISTRY",
+    registry=os.getenv("REGISTRY"),
 )
 
 

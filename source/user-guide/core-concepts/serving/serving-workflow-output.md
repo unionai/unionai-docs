@@ -26,6 +26,15 @@ from union.app import App, Input
 # Note that this must be same Artifact name as declared in the workflow code in `wf.py`, below.
 MyFile = Artifact(name="my_file")
 
+# ImageSpec must have `union-runtime` and any dependencies you need for your application
+# Set `REGISTRY` to be the URI for your registry
+image = ImageSpec(
+    name="streamlit-app",
+    packages=["streamlit==1.41.1", "union-runtime>=0.1.10"],
+    registry=os.getenv("REGISTRY"),
+)
+
+
 app = App(
     name="streamlit-workflow-output",
     inputs=[
@@ -36,21 +45,12 @@ app = App(
             env_var="MY_FILE",
         ),
     ],
-    container_image="ghcr.io/thomasjpfan/streamlit-app-image-seg:0.1.30",
-    args=[
-        "streamlit",
-        "run",
-        "main.py",
-        "--server.port",
-        "8080",
-    ],
+    container_image=image,
+    args="streamlit run main.py --server.port 8080",
     port=8080,
     include=["./main.py"],
-    limits=Resources(cpu="2", mem="6Gi", ephemeral_storage="4Gi"),
-    min_replicas=1,
-    max_replicas=1,
+    limits=Resources(cpu="1", mem="1Gi"),
 )
-
 ```
 
 ## main.py
@@ -79,17 +79,16 @@ st.write(my_file_content)
 
 """A Union workflow that creates an artifact from a file"""
 
-from union import Artifact, Resources, FlyteFile, ImageSpec, current_context, task, workflow
+import os
+from union import Artifact, FlyteFile, ImageSpec, current_context, task, workflow
 from pathlib import Path
 from typing_extensions import Annotated
 
 # ImageSpec defining the container image that will run the task
-# Replace YOUR-Registry with the actual name of your own registry!
+# Set `REGISTRY` to be the URI for your registry
 image_spec = ImageSpec(
-    registry="YOUR-REGISTRY",
-    name="serving-example-image",
-    base_image="ghcr.io/flyteorg/flytekit:py3.12-latest",
     packages=["union"],
+    registry=os.getenv("REGISTRY"),
 )
 
 # Declare an Artifact with the name "my_file"
@@ -104,7 +103,7 @@ def t() -> Annotated[FlyteFile, MyFile]:
     my_file = working_dir / "my_file.txt"
 
     with open(my_file, "w") as file:
-        file.write("Some data")
+        file.write("This is the contents of my file in my task")
 
     return MyFile.create_from(my_file)
 
