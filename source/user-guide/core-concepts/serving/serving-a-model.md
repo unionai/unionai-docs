@@ -27,7 +27,6 @@ import union
 
 SklearnModel = union.Artifact(name="sklearn-model")
 
-fast_api_app = App(
 # The `ImageSpec` for the container that will run the `App`.
 # `union-runtime` must be declared as a dependency, 
 # in addition to any other dependencies needed by the app code.
@@ -53,10 +52,10 @@ fast_api_app = union.app.App(
         )
     ],
     container_image=image_spec,
-    limits=union.Resources(cpu="1", mem="1Gi"),
+    limits=Resources(cpu="1", mem="1Gi"),
     port=8082,
     include=["./main.py"],
-    command=["fastapi", "dev", "--port", "8082"],
+    args=["fastapi", "dev", "--port", "8082"],
 )
 ```
 
@@ -117,7 +116,7 @@ SklearnModel = union.Artifact(name="sklearn-model")
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
 image_spec = union.ImageSpec(
     packages=["scikit-learn==1.5.2"],
-    registry="YOUR_REGISTRY",
+    registry=os.getenv("REGISTRY"),
 )
 
 

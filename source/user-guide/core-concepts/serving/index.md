@@ -45,13 +45,8 @@ image = union.ImageSpec(
 # as we are using the built-in Streamlit `hello` app.
 app = union.app.App(
     name="streamlit-hello",
-    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.37",
-    command=[
-        "streamlit",
-        "hello",
-        "--server.port",
-        "8080",
-    ],
+    container_image=image,
+    args=["streamlit", "hello", "--server.port", "8080"],
     port=8080,
     limits=union.Resources(cpu="2", mem="3Gi"),
 )
@@ -148,7 +143,7 @@ This will display the app list:
 To stop an app from the command-line, perform the following command:
 
 ```{code-block} shell
-$ union stop apps APP_NAME
+$ union stop apps --name APP_NAME
 ```
 
 * `APP_NAME` is the name of an app deployed on the Union instance.

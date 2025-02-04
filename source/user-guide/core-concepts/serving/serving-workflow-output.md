@@ -35,6 +35,7 @@ image = union.ImageSpec(
     registry=os.getenv("REGISTRY"),
 )
 
+
 # The `App` declaration.
 # Uses the `ImageSpec` declared above.
 # Your core logic of the app resides in the files declared 
@@ -47,22 +48,15 @@ app = union.app.App(
             name="my_file",
             value=MyFile.query(),
             download=True,
-            env_name="MY_FILE",
+            env_var="MY_FILE",
         ),
     ],
-    container_image="ghcr.io/thomasjpfan/streamlit-app-image-seg:0.1.30",
-    command=[
-        "streamlit",
-        "run",
-        "main.py",
-        "--server.port",
-        "8080",
-    ],
+    container_image=image,
+    args="streamlit run main.py --server.port 8080",
     port=8080,
     include=["./main.py"],
     limits=union.Resources(cpu="1", mem="1Gi"),
 )
-
 ```
 
 ## main.py
@@ -100,6 +94,7 @@ from typing_extensions import Annotated
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
 image_spec = union.ImageSpec(
     packages=["union"],
+    registry=os.getenv("REGISTRY"),
 )
 
 # Declare an `Artifact` with the name `my_file`.
@@ -114,7 +109,7 @@ def t() -> Annotated[union.FlyteFile, MyFile]:
     my_file = working_dir / "my_file.txt"
 
     with open(my_file, "w") as file:
-        file.write("Some data")
+        file.write("This is the contents of my file in my task")
 
     return MyFile.create_from(my_file)
 

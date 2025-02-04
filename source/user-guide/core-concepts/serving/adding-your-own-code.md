@@ -47,7 +47,6 @@ app = union.app.App(
     container_image=image,
     args=["streamlit", "run", "main.py", "--server.port", "8080"],
     port=8080,
-    limits=Resources(cpu="2", mem="3Gi"),
     include=[
         "./main.py",
         "./utils.py",
