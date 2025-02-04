@@ -27,10 +27,23 @@ The file `app.py` contains the app declaration:
 
 """ A simple Union app using Streamlit"""
 
-from union.app import App
-from union import Resources
+import union
 
-app = App(
+# The `ImageSpec` for the container that will run the `App`.
+# `union-runtime` must be declared as a dependency, 
+# in addition to any other dependencies needed by the app code.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image = union.ImageSpec(
+    name="streamlit-app",
+    packages=["union-runtime>=0.1.10", "streamlit==1.41.1"],
+    registry=os.getenv("REGISTRY"),
+)
+
+# The `App` declaration.
+# Uses the `ImageSpec` declared above.
+# In this case we do not need to supply any app code 
+# as we are using the built-in Streamlit `hello` app.
+app = union.app.App(
     name="streamlit-hello",
     container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.37",
     command=[
@@ -40,7 +53,7 @@ app = App(
         "8080",
     ],
     port=8080,
-    limits=Resources(cpu="2", mem="3Gi"),
+    limits=union.Resources(cpu="2", mem="3Gi"),
 )
 ```
 
