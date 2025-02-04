@@ -1,12 +1,12 @@
 {"name": "", "variants": ["byoc", "serverless"], "children": [
     {"name": "user-guide", "variants": ["byoc", "serverless"], "children": [
+        {"name": "about-union", "variants": ["byoc", "serverless"]},
         {"name": "getting-started", "variants": ["byoc", "serverless"], "children": [
             {"name": "local-setup", "variants": ["byoc", "serverless"]},
             {"name": "first-project", "variants": ["byoc", "serverless"]},
             {"name": "understanding-the-code", "variants": ["byoc", "serverless"]},
             {"name": "running-your-workflow", "variants": ["byoc", "serverless"]}
         ]},
-        {"name": "about-union", "variants": ["byoc", "serverless"]},
         {"name": "core-concepts", "variants": ["byoc", "serverless"], "children": [
             {"name": "workflows", "variants": ["byoc", "serverless"], "children": [
                 {"name": "standard-workflows", "variants": ["byoc", "serverless"]},

@@ -4,9 +4,9 @@
 # Union BYOC
 {@@ endif @@}
 
-The Union orchestrator empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The Union platorm empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
-* Run complex AI workloads with unparalleled performance, scale, and efficiency.
+* Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
