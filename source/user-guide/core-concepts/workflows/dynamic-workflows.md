@@ -17,9 +17,9 @@ Dynamic workflows become essential when you need to do the following:
 
 ## Defining a dynamic workflow
 
-You can define a dynamic workflow using the `@dynamic` decorator.
+You can define a dynamic workflow using the `@union.dynamic` decorator.
 
-Within the `@dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@dynamic` and `@union.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
+Within the `@union.dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@union.dynamic` and `@union.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
 
 The example below uses a dynamic workflow to count the common characters between any two strings.
 
@@ -194,7 +194,7 @@ def sort_locally(numbers: list[int]) -> list[int]:
     return sorted(numbers)
 
 
-@dynamic
+@union.dynamic
 def merge_sort_remotely(numbers: list[int], run_local_at_count: int) -> list[int]:
     split1, split2, new_count1, new_count2 = split(numbers=numbers)
     sorted1 = merge_sort(numbers=split1, numbers_count=new_count1, run_local_at_count=run_local_at_count)
@@ -213,9 +213,9 @@ def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int =
     )
 ```
 
-By simply adding the `@dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
+By simply adding the `@union.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
 generating a workflow with four distinct nodes. These nodes run remotely on potentially different hosts,
 with Union ensuring proper data reference passing and maintaining execution order with maximum possible parallelism.
 
-`@dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
+`@union.dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
 creating a recursive and flexible execution structure.

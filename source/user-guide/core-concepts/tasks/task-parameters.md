@@ -51,7 +51,7 @@ You pass the following parameters to the `@union.task` decorator:
       # Specify node_dependency_hints so that launchplan0
       # will be registered on flyteadmin, despite this being a dynamic task.
 
-  @dynamic(node_dependency_hints=[launchplan0])
+  @union.dynamic(node_dependency_hints=[launchplan0])
   def launch_dynamically():
       # To run a sub-launchplan it must have previously been registered on flyteadmin.
       return [launchplan0]*10
