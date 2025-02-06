@@ -173,7 +173,6 @@ sphinx_source/
 
 # VS Code
 .vscode
-.order
 /_static
 
 # macOS
