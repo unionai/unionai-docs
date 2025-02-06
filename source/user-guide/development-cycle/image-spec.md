@@ -1,4 +1,4 @@
-# Remote dependencies with ImageSpec
+# ImageSpec
 
 During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union,
 so you will need to ensure that the required dependencies are installed in both environments.

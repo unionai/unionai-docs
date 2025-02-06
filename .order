@@ -91,7 +91,7 @@ source/user-guide/development-cycle/project-structure.md
 source/user-guide/development-cycle/projects-and-domains.md
 source/user-guide/development-cycle/building-workflows.md
 source/user-guide/development-cycle/local-dependencies.md
-source/user-guide/development-cycle/remote-dependencies-with-image-spec.md
+source/user-guide/development-cycle/image-spec.md
 source/user-guide/development-cycle/container-images.md
 source/user-guide/development-cycle/running-your-code.md
 source/user-guide/development-cycle/overriding-parameters.md
