@@ -72,7 +72,7 @@
             {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
             {"name": "building-workflows", "variants": ["byoc", "serverless"]},
             {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
-            {"name": "remote-dependencies-with-image-spec", "variants": ["byoc", "serverless"]},
+            {"name": "image-spec", "variants": ["byoc", "serverless"]},
             {"name": "running-your-code", "variants": ["byoc", "serverless"]},
             {"name": "overriding-parameters", "variants": ["byoc", "serverless"]},
             {"name": "details-of-union-run", "variants": ["byoc", "serverless"]},
