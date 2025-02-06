@@ -46,7 +46,7 @@ fast_api_app = App(
     container_image=image_spec,
     limits=Resources(cpu="1", mem="1Gi"),
     port=8082,
-    include=["./main.py"],
+    include=["main.py"],
     args=["fastapi", "dev", "--port", "8082"],
 )
 ```
