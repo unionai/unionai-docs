@@ -96,7 +96,7 @@ make build-local
 
 ## Variants
 
-The Union docs website is built to differient content depending on which 
+The Union docs website is built to differient content depending on which
 "variant" of the product is selected in the variant switcher a tthe top of the page.
 
 Currently we have two variants, "Serverless" and "BYOC".
@@ -154,7 +154,7 @@ The `sitemap.json` is the single source that defines the hierarchy of the pages.
 
 ### Correspondence between `sitemap.json`, website, and file tree
 
-The hierarchy and ordering of pages in the `sitemap.json` correspond hierarchy and ordering of the navigation 
+The hierarchy and ordering of pages in the `sitemap.json` correspond hierarchy and ordering of the navigation
 elements in the website, as well as the URL structure of the website.
 
 For example, the section shown above defines the following pages:
@@ -265,6 +265,14 @@ Again, each variant is placed in a separate subdirectory.
 When re-arranging the content of the site, it may be necessary to create redirects.
 These are defined in the `_redirects` file which is checked in at the
 root of this repo. They are enabled automatically when the project is deployed.
+
+
+## Ordering in VS Code explorer
+
+The file `.order` is included in the repo to control the order of files in the VS Code explorer when using the
+[SortMyFile extension](https://marketplace.visualstudio.com/items?itemName=CanklotSoftware.SortMyFiles).
+This extension allows the order of the files in the explorer to reflect the order of pages in the left navigation of the Union docs
+(with one limitation: folders will always appear above files, whereas this is not the case in website navigation).
 
 
 ## Contributing
