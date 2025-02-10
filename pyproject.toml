@@ -27,4 +27,6 @@ dependencies = [
     "tensorflow",
     "torch",
     "union==0.1.104",
+    "pdoc>=15.0.1",
+    "html2text>=2024.2.26",
 ]
