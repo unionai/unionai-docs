@@ -5,6 +5,12 @@ import sphinx.application
 import sphinx.errors
 from sphinx.util import logging as sphinx_logging
 from sphinx_click import ext as sphinx_click_ext
+import sys
+from pathlib import Path
+
+# Configure the path to the extensions directory
+sys.path.append(str(Path("extensions").resolve()))
+
 # pygments_style = 'friendly'
 # pygments_dark_style = 'monokai'
 
@@ -37,6 +43,9 @@ extensions = [
     "sphinx_click",
     "sphinx_docsearch",
 ]
+# reg pdoc-sphinx ext.
+extensions.append("pdoc_sphinx")
+
 graphviz_output_format = "svg"
 
 # Myst
@@ -190,6 +199,14 @@ def process_options(app, ctx, lines):
         del lines[idx]
         lines.insert(idx, line)
         counter += 1
+
+# pdoc-sphinx section
+# This section configures the documentation generation for the `union` and `flytekit` modules using `pdoc`.
+
+# Configure the pdoc extension
+pdoc_modules = ['union', 'flytekit']  # List of modules to document
+pdoc_output_dir = 'rst'  # Output directory for generated docs
+
 
 
 # Disable warnings from flytekit
