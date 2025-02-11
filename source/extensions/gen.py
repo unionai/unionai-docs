@@ -106,7 +106,8 @@ def generate_class_rst(cls):
     source = get_source_code(cls)
     if source:
         content.append("   **Source:**\n\n   .. code-block:: python\n")
-        content.append(f"      {source.replace('\n', '\n      ')}\n")
+        formatted_source = source.replace('\n', '\n      ')
+        content.append(f"      {formatted_source}\n")
     
     return "\n".join(content)
 
@@ -132,7 +133,8 @@ def generate_function_rst(func):
     source = get_source_code(func)
     if source:
         content.append("   **Source:**\n\n   .. code-block:: python\n")
-        content.append(f"      {source.replace('\n', '\n      ')}\n")
+        formatted_source = source.replace('\n', '\n      ')
+        content.append(f"      {formatted_source}\n")
     
     return "\n".join(content)
 
