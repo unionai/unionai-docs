@@ -24,7 +24,7 @@ html_css_files = [
     # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
-html_js_files = ["union.js"]
+html_js_files = ["union.js", "sidebar-expand.js"]
 exclude_patterns = []
 extensions = [
     "myst_parser",
@@ -90,6 +90,14 @@ html_sidebars = {
     ],
 }
 
+# Sidebar expand
+expand_level = -1 # set to 0, 1, 2, or -1
+#   * Configure the expansion level:
+#    * 0  => All details remain closed.
+#    * 1  => Open level-1 details only.
+#    * 2  => Open level-1 and level-2 details.
+#    * -1 => Open all levels.
+
 html_context = {
     "dir_to_title": {
         "user-guide": "User guide",
@@ -99,6 +107,7 @@ html_context = {
     },
     "github_url": os.getenv("GITHUB_URL", "https://github.com/flyteorg/flyte"),
     "slack_url": os.getenv("SLACK_URL", "https://flyte-org.slack.com/"),
+    'expand_level': expand_level,
 }
 
 # Autodoc config
