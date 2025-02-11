@@ -1,4 +1,4 @@
-# Setting up CI/CD deployment
+# CI/CD deployment
 
 So far we have covered the steps of deploying a project manually from the command line.
 In many cases, you will want to automate this process through a CI/CD system.

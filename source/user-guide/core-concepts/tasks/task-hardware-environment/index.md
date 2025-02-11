@@ -4,7 +4,7 @@
 
 {@@ if serverless @@}
 
-You can customize the hardware environment in which your task code executes through configuration in the `@task` decorator by specifying `requests` and `limits` on:
+You can customize the hardware environment in which your task code executes through configuration in the `@union.task` decorator by specifying `requests` and `limits` on:
 
 * CPU number
 * GPU number
@@ -19,10 +19,10 @@ You can customize the hardware environment in which your task code executes.
 
 Depending on your needs, there are two different of ways to define and register tasks with their own custom hardware requirements:
 
-* Configuration in the `@task` decorator
+* Configuration in the `@union.task` decorator
 * Defining a `PodTemplate`
 
-### Using the `@task` decorator
+### Using the `@union.task` decorator
 
 You can specify `requests` and `limits` on:
 
@@ -41,7 +41,7 @@ This requires that you coordinate with Union to set up the required machine type
 
 In your task definition you then use a `PodTemplate` that that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
 
-#### `pod_template` and `pod_template_name` @task parameters
+#### `pod_template` and `pod_template_name` @union.task parameters
 
 The `pod_template` parameter can be used to supply a custom Kubernetes `PodTemplate` to the task.
 This can be used to define details about node selectors, affinity, tolerations, and other Kubernetes-specific settings.

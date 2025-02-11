@@ -2,7 +2,7 @@
 
 ## Set up your development environment
 
-If you have not already done so, follow the [Quick start guide](../../quick-start.md) to sign into the Union UI, set up your local Python environment, and install the `union` command line tool.
+If you have not already done so, follow the [Getting started](../getting-started/index.md) section to sign in to Union, and set up your local environment.
 
 ## CLI commands for running your code
 
@@ -75,16 +75,10 @@ Here we are registering all the code in the `workflows` directory to the project
 
 This command will:
 * Build the container image defined in your `ImageSpec`.
-{@@ if byoc @@}
-* Push the image to the container registry specified in that `ImageSpec`.
-  * (Don't forget make the image accessible to Union. For example, if you are using GitHub Container Registry, you will need to make the image public.)
-{@@ endif @@}
 * Package up your code and deploy it to the specified project and domain in Union.
-  * The package will contain the code in the Python package located in the `workflows` directory.
-    Note that the presence of the `__init__.py` file in this directory is necessary in order to make
-    it a Python package.
+  The package will contain the code in the Python package located in the `workflows` directory.
+  Note that the presence of the `__init__.py` file in this directory is necessary in order to make it a Python package.
 
-  all the workflows in the `workflows` directory.
 The command will not run the workflow. You can run it from the Web interface.
 
 This command is useful for deploying your full set of workflows to Union for testing.

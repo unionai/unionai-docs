@@ -10,31 +10,31 @@ Here we define a workflow called `interest_workflow` that we want to parallelize
 We then write a separate workflow, `map_interest_wf`, that uses a `map_task` to parallelize `interest_workflow` over a list of inputs.
 
 ```{code-block} python
-from flytekit import task, workflow, LaunchPlan, map_task
+import union
 
 # Task to calculate monthly interest payment on a loan
-@task
+@union.task
 def calculate_interest(principal: int, rate: float, time: int) -> float:
     return (principal * rate * time) / 12
 
 # Workflow using the calculate_interest task
-@workflow
+@union.workflow
 def interest_workflow(principal: int, rate: float, time: int) -> float:
     return calculate_interest(principal=principal, rate=rate, time=time)
 
 # Create LaunchPlan for interest_workflow
-lp = LaunchPlan.get_or_create(
+lp = union.LaunchPlan.get_or_create(
     workflow=interest_workflow,
     name="interest_workflow_lp",
 )
 
 # Mapping over the launch plan to calculate interest for multiple loans
-@workflow
+@union.workflow
 def map_interest_wf() -> list[float]:
     principal = [1000, 5000, 10000]
     rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
     time = [12, 24, 36]        # Loan periods in months
-    return map_task(lp)(principal=principal, rate=rate, time=time)
+    return union.map_task(lp)(principal=principal, rate=rate, time=time)
 ```
 
 You can run the `map_interest` workflow locally:
@@ -77,7 +77,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
     Note that the `simple_wf` workflow is defined as follows:
 
     ```{code-block} python
-    @workflow
+    @union.workflow
     def simple_wf(x: list[int], y: list[int]) -> float:
         slope_value = slope(x=x, y=y)
         intercept_value = intercept(x=x, y=y, slope=slope_value)
@@ -87,7 +87,8 @@ Recall that when a workflow is registered, an associated launch plan is created 
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
 
     ```{code-block} python
-    from flytekit import reference_launch_plan, workflow, map_task
+    import union
+    from flytekit import reference_launch_plan
 
 
     @reference_launch_plan(
@@ -102,11 +103,11 @@ Recall that when a workflow is registered, an associated launch plan is created 
         pass
 
 
-    @workflow
+    @union.workflow
     def map_simple_wf() -> list[float]:
         x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
         y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
-        return map_task(simple_wf_lp)(x=x, y=y)
+        return union.map_task(simple_wf_lp)(x=x, y=y)
 
     ```
 

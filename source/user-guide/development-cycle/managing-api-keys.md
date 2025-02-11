@@ -23,13 +23,13 @@ Within a GitHub action, you can use [Github Secrets](https://docs.github.com/en/
 For this example, copy the following workflow into a file called `hello.py`:
 
 ```{code-block} python
-from flytekit import task, workflow
+import union
 
-@task
+@union.task
 def welcome(name: str) -> str:
     return f"Welcome to Union! {name}"
 
-@workflow
+@union.workflow
 def main(name: str) -> str:
     return welcome(name=name)
 ```

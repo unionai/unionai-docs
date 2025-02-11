@@ -80,7 +80,7 @@ You can now register tasks with `ImageSpec` declarations that reference this rep
 For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
 
 ```{code-block} python
-image_spec = ImageSpec(
+image_spec = union.ImageSpec(
     registry="us-east1-docker.pkg.dev/my-union-dataplane/my-registry/my-image-repository",
     name="simple-example-image",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",

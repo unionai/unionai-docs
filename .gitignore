@@ -1,10 +1,4 @@
-secrets.txt
-.vscode
-source/tutorials/**/*.md
-!source/tutorials/**/index.md
-source/_static/_tutorials/
-source/tutorials/**/static/
-/_static
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -171,7 +165,15 @@ cython_debug/
 .idea/
 
 # Union build specific
+source/tutorials/**/*.md
+!source/tutorials/**/index.md
+source/_static/_tutorials/
+source/tutorials/**/static/
 sphinx_source/
+
+# VS Code
+.vscode
+/_static
 
 # macOS
 .DS_Store

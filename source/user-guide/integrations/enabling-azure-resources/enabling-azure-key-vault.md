@@ -30,7 +30,7 @@ Refer to [Azure portal's user assigned managed identitites](https://portal.azure
   * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
   * `Secret.group_version` can be omitted to retrieve the latest version or set to an explicit secret version
   * `Secret.mount_requirement` is `Secret.MountType.FILE`
-* Pass that `Secret` object in the `secret_requests` parameter of the `@task` decorator.
+* Pass that `Secret` object in the `secret_requests` parameter of the `@union.task` decorator.
 * Inside the task code, retrieve the value of the secret with:
   * `flytekit.current_context().secrets.get(<SECRET_NAME>)` if `Secret.group_version` was omitted.
   * `flytekit.current_context().secrets.get(<SECRET_NAME>, group_version=SECRET_GROUP_VERSION)`  if `Secret.group_version` was specified.
@@ -38,8 +38,7 @@ Refer to [Azure portal's user assigned managed identitites](https://portal.azure
 Here are examples:
 
 ```{code-block} python
-import flytekit
-from flytekit import task, workflow, Secret
+import union
 
 VAULT_NAME = "examplevault"
 SECRET_NAME = "example-secret"
@@ -47,27 +46,27 @@ SECRET_NAME = "example-secret"
 SECRET_GROUP = f"https://{VAULT_NAME}.vault.azure.net/secrets/{SECRET_NAME}"
 SECRET_GROUP_VERSION = "12345"
 
-SECRET_REQUEST_WITH_VERSION = Secret(
+SECRET_REQUEST_WITH_VERSION = union.Secret(
   group=SECRET_GROUP,
   group_version=SECRET_GROUP_VERSION,
-  mount_requirement=Secret.MountType.FILE
+  mount_requirement=union.Secret.MountType.FILE
 )
 
-@task(secret_requests=[SECRET_REQUEST_WITH_VERSION])
+@union.task(secret_requests=[SECRET_REQUEST_WITH_VERSION])
 def task_with_versioned_secret():
-    secret_val = flytekit.current_context().secrets.get(
+    secret_val = union.current_context().secrets.get(
         SECRET_NAME,
         group_version=SECRET_GROUP_VERSION
     )
 
-SECRET_REQUEST_FOR_LATEST = Secret(
+SECRET_REQUEST_FOR_LATEST = union.Secret(
   group=SECRET_GROUP,
-  mount_requirement=Secret.MountType.FILE
+  mount_requirement=union.Secret.MountType.FILE
 )
 
-@task(secret_requests=[SECRET_REQUEST_FOR_LATEST])
+@union.task(secret_requests=[SECRET_REQUEST_FOR_LATEST])
 def task_with_latest_secret():
-    secret_val = flytekit.current_context().secrets.get(
+    secret_val = union.current_context().secrets.get(
         SECRET_NAME
     )
 ```

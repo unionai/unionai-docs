@@ -1,4 +1,4 @@
-# Actors vs. Regular Tasks
+# Actors and regular tasks
 
 When deciding whether to use actors or traditional tasks in your workflows, it's important to consider the benefits 
 and trade-offs. This page outlines key scenarios where actors shine and where they may not be the best fit.

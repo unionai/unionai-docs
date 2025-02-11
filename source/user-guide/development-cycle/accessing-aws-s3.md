@@ -32,17 +32,17 @@ aws s3 cp my_file.txt s3://test_bucket/my_file.txt
 Next, we give a task access to our AWS secrets by supplying them through `secret_requests`. For this guide, save the following snippet as `aws-s3-access.py` and run:
 
 ```{code-block} python
-from flytekit import task, current_context, Secret, workflow
+import union
 
-@task(
+@union.task(
     secret_requests=[
-        Secret(key="AWS_ACCESS_KEY_ID"),
-        Secret(key="AWS_SECRET_ACCESS_KEY"),
+        union.Secret(key="AWS_ACCESS_KEY_ID"),
+        union.Secret(key="AWS_SECRET_ACCESS_KEY"),
     ],
 )
 def read_s3_data() -> str:
     import s3fs
-    secrets = current_context().secrets
+    secrets = union.current_context().secrets
 
     s3 = s3fs.S3FileSystem(
         secret=secrets.get(key="AWS_SECRET_ACCESS_KEY"),
@@ -53,7 +53,7 @@ def read_s3_data() -> str:
         content = f.read().decode("utf-8")
     return content
 
-@workflow
+@union.workflow
 def main():
     read_s3_data()
 ```

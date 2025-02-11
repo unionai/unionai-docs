@@ -1,14 +1,14 @@
-from flytekit import task, workflow, LaunchPlan
+import union
 
-@task
+@union.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@workflow
+@union.workflow
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
-LaunchPlan.get_or_create(
+union.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},

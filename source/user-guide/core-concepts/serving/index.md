@@ -27,20 +27,28 @@ The file `app.py` contains the app declaration:
 
 """ A simple Union app using Streamlit"""
 
-from union.app import App
-from union import Resources
+import union
 
-app = App(
+# The `ImageSpec` for the container that will run the `App`.
+# `union-runtime` must be declared as a dependency, 
+# in addition to any other dependencies needed by the app code.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image = union.ImageSpec(
+    name="streamlit-app",
+    packages=["union-runtime>=0.1.10", "streamlit==1.41.1"],
+    registry=os.getenv("REGISTRY"),
+)
+
+# The `App` declaration.
+# Uses the `ImageSpec` declared above.
+# In this case we do not need to supply any app code 
+# as we are using the built-in Streamlit `hello` app.
+app = union.app.App(
     name="streamlit-hello",
-    container_image="ghcr.io/thomasjpfan/streamlit-app:0.1.37",
-    command=[
-        "streamlit",
-        "hello",
-        "--server.port",
-        "8080",
-    ],
+    container_image=image,
+    args=["streamlit", "hello", "--server.port", "8080"],
     port=8080,
-    limits=Resources(cpu="2", mem="3Gi"),
+    limits=union.Resources(cpu="2", mem="3Gi"),
 )
 ```
 
@@ -51,7 +59,7 @@ Here the `App` constructor is initialized with the following parameters:
 * `command`: The command that will be used within the container to start the app. The individual strings in this array will be concatenated and the invoked as a single command.
 * `port`: The port of the app container from which the app will be served.
 * `limits`: A `union.Resources` object defining the resource limits for the app container.
-  The same object is used for the same purpose in the `@task` decorator in Union workflows.
+  The same object is used for the same purpose in the `@union.task` decorator in Union workflows.
   See [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details.
 
 The parameters above are the minimum needed to initialize the app.
@@ -60,7 +68,7 @@ There are a few additional available parameters that we do not use in this examp
 
 * `include`: A list of files to be added to the container at deployment time, containing the custom code that defines the specific functionality of your app.
 * `inputs`: A `List` of `union.app.Input` objects. Used to provide default inputs to the app on startup.
-* `requests`: A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
+* `requests`: A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@union.task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
 * `min_replicas`: The minimum number of replica containers permitted for this app.
   This defines the lower bound for auto-scaling the app. The default is 0 {@# TODO: (see [App autoscaling]() for details) #@}.
 * `max_replicas`: The maximum number of replica containers permitted for this app.

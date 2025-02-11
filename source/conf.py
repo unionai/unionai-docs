@@ -76,8 +76,6 @@ html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
-    "quick-start": [],
-    "deployment": [],
     "user-guide/**": [
         "custom-sidebar.html",
     ],
@@ -87,6 +85,9 @@ html_sidebars = {
     "api-reference/**": [
         "custom-sidebar.html",
     ],
+    "deployment/**": [
+        "custom-sidebar.html",
+    ],
 }
 
 html_context = {
@@ -94,6 +95,7 @@ html_context = {
         "user-guide": "User guide",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
+        "deployment": "Deployment",
     },
     "github_url": os.getenv("GITHUB_URL", "https://github.com/flyteorg/flyte"),
     "slack_url": os.getenv("SLACK_URL", "https://flyte-org.slack.com/"),

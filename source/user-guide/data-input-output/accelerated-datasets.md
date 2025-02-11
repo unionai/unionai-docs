@@ -39,13 +39,13 @@ The code to access the data looks like this:
 ```{code-block} python
 from flytekit.types.file import FlyteFile
 
-@task
+@union.task
 def my_task(f: FlyteFile) -> int:
     with open(f, newline="\n") as input_file:
         data = input_file.read()
         // Do something with the data
 
-@workflow
+@union.workflow
 def my_wf()
     my_task(f=FlyteFile("s3://union-my-company-persistent/my_data.csv"))
 ```

@@ -22,25 +22,40 @@ In a local directory, create the following files:
 
 """A Union app that uses FastAPI to serve model created by a Union workflow."""
 
-from union import Artifact, Resources
-from union.app import App, Input
+import os
+import union
 
-SklearnModel = Artifact(name="sklearn-model")
+SklearnModel = union.Artifact(name="sklearn-model")
 
-fast_api_app = App(
+# The `ImageSpec` for the container that will run the `App`.
+# `union-runtime` must be declared as a dependency, 
+# in addition to any other dependencies needed by the app code.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image_spec = union.ImageSpec(
+    name="union-serve-sklearn-fastapi",
+    packages=["union-runtime>=0.1.10", "scikit-learn==1.5.2", "fastapi[standard]"],
+    registry=os.getenv("REGISTRY"),
+)
+
+# The `App` declaration.
+# Uses the `ImageSpec` declared above.
+# Your core logic of the app resides in the files declared 
+# in the `include` parameter, in this case, `main.py`.
+# Input arttifacts are declared in the `inputs` parameter
+fast_api_app = union.app.App(
     name="simple-fastapi-sklearn",
     inputs=[
-        Input(
+        union.app.Input(
             name="sklearn_model",
             value=SklearnModel.query(),
             download=True,
         )
     ],
-    container_image="ghcr.io/thomasjpfan/union-serve-sklearn-fastapi:0.1.2",
-    limits=Resources(cpu="2", mem="4Gi"),
+    container_image=image_spec,
+    limits=Resources(cpu="1", mem="1Gi"),
     port=8082,
-    include=["./main.py"],
-    command=["fastapi", "dev", "--port", "8082"],
+    include=["main.py"],
+    args=["fastapi", "dev", "--port", "8082"],
 )
 ```
 
@@ -55,14 +70,14 @@ from contextlib import asynccontextmanager
 
 import joblib
 from fastapi import FastAPI
-from union_runtime import get_input
+import union_runtime
 
 ml_models = {}
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    model_file = get_input("sklearn_model")
+    model_file = union_runtime.get_input("sklearn_model")
     ml_models["model"] = joblib.load(model_file)
     yield
 
@@ -88,27 +103,26 @@ from typing import Annotated
 
 import joblib
 import numpy as np
-from flytekit import Artifact, FlyteFile, ImageSpec, Resources, current_context, task, workflow
+import union
 from sklearn.datasets import make_regression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.model_selection import train_test_split
 
-# Declare the artifact
-SklearnModel = Artifact(name="sklearn-model")
+# Declare the `Artifact`.
+SklearnModel = union.Artifact(name="sklearn-model")
 
-# Define the container image that will be used to run the tasks.
-# Note that you must replace `YOUR_REGISTRY` with the actual URI of your own container registry.
-image_spec = ImageSpec(
-    name="flytekit",
+# The `ImageSpec` for the container that runs the tasks.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image_spec = union.ImageSpec(
     packages=["scikit-learn==1.5.2"],
-    registry="YOUR_REGISTRY",
+    registry=os.getenv("REGISTRY"),
 )
 
 
-# Task that generates the example data
+# The `task` that generates the example data
 # and splits it into training and testing sets.
-@task(
+@union.task(
     cache=True,
     cache_version="2",
     container_image=image_spec,
@@ -119,16 +133,16 @@ def load_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     return train_test_split(X, y, random_state=42)
 
 
-# Task that trains a RandomForestRegressor model
-@task(
-    limits=Resources(cpu="2", mem="4Gi"),
+# The `task` that trains a `RandomForestRegressor` model.
+@union.task(
+    limits=union.Resources(cpu="2", mem="4Gi"),
     cache=True,
     cache_version="2",
     container_image=image_spec,
 )
-def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Annotated[FlyteFile, SklearnModel]:
+def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Annotated[union.FlyteFile, SklearnModel]:
     """Train a RandomForestRegressor model and save it as a file."""
-    working_dir = Path(current_context().working_directory)
+    working_dir = Path(union.current_context().working_directory)
     model_file = working_dir / "model.joblib"
 
     rf = RandomForestRegressor().fit(X_train, y_train)
@@ -136,21 +150,21 @@ def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Annotated[FlyteFile
     return model_file
 
 
-# Task that evaluates the model
-@task(
+# The `task` that evaluates the model.
+@union.task(
     container_image=image_spec,
-    limits=Resources(cpu="2", mem="2Gi"),
+    limits=union.Resources(cpu="2", mem="2Gi"),
     cache=True,
     cache_version="2",
 )
-def evaluate_model(model: FlyteFile, X_test: np.ndarray, y_test: np.ndarray) -> float:
+def evaluate_model(model: union.FlyteFile, X_test: np.ndarray, y_test: np.ndarray) -> float:
     """Evaluate the model using mean absolute percentage error."""
     model_ = joblib.load(model.download())
     y_pred = model_.predict(X_test)
     return float(mean_absolute_percentage_error(y_test, y_pred))
 
-# Workflow that trains a model and evaluates it
-@workflow
+# The `workflow` that trains a model and evaluates it.
+@union.workflow
 def wf() -> float:
     """Train a model and evaluate it."""
     X_train, X_test, y_train, y_test = load_data()

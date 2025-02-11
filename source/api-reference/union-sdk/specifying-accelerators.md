@@ -6,7 +6,7 @@ Flyte allows you to specify `gpu` resources for a given task. However, in some c
 If you want to use a specific GPU device, you can pass the device name directly to the task decorator, e.g.:
 
 ```{code-block} python
-@task(
+@union.task(
     limits=Resources(gpu="1"),
     accelerator=GPUAccelerator("nvidia-tesla-v100"),
 )
@@ -28,7 +28,7 @@ You can import constants directly from the module:
 
 from flytekit.extras.accelerators import T4
 
-@task(
+@union.task(
     limits=Resources(gpu="1"),
     accelerator=T4,
 )
@@ -42,7 +42,7 @@ To use a fractional GPU, you can use the `partitioned` method on the accelerator
 
 from flytekit.extras.accelerators import A100
 
-@task(
+@union.task(
     limits=Resources(gpu="1"),
     accelerator=A100.partition_2g_10gb,
 )

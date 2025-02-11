@@ -3,12 +3,12 @@
 When defining a task function, you can specify resource requirements for the pod that runs the task.
 Union will take this into account to ensure that the task pod is scheduled to run on a Kubernetes node that meets the specified resource profile.
 
-Resources are specified in the `@task` decorator. Here is an example:
+Resources are specified in the `@union.task` decorator. Here is an example:
 
 ```{code-block} python
 from flytekit.extras.accelerators import A100
 
-@task(
+@union.task(
     requests=Resources(mem="120Gi", cpu="44", gpu="8", ephemeral_storage="100Gi"),
     limits=Resources(mem="200Gi", cpu="100", gpu="12", ephemeral_storage="200Gi"),
     accelerator=GPUAccelerator("nvidia-tesla-a100")
@@ -103,17 +103,17 @@ See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deploymen
 
 ## The `with_overrides` method
 
-When `requests`, `limits`, or `accelerator` are specified in the `@task` decorator, they apply every time that a task is invoked from a workflow.
+When `requests`, `limits`, or `accelerator` are specified in the `@union.task` decorator, they apply every time that a task is invoked from a workflow.
 In some cases, you may wish to change the resources specified from one invocation to another.
 To do that, use the [`with_overrides` method](https://docs.flyte.org/en/latest/flytesnacks/examples/productionizing/customizing_resources.html#resource-with-overrides) of the task function.
 For example:
 
 ```{code-block} python
-@task
+@union.task
 def my_task(ff: FlyteFile):
     ...
 
-@workflow
+@union.workflow
 def my_workflow():
     my_task(ff=smallFile)
     my_task(ff=bigFile).withoverrides(requests=Resources(mem="120Gi", cpu="10"))

@@ -20,7 +20,7 @@ For a usage example, see [Databricks agent example](./databricks-agent-example.m
 To test the Databricks agent copy the following code to a file called `databricks_task.py`, modifying as needed.
 
 ```{code-block} python
-@task(task_config=Databricks(...))
+@union.task(task_config=Databricks(...))
 def hello_spark(partitions: int) -> float:
     print("Starting Spark with Partitions: {}".format(partitions))
 
