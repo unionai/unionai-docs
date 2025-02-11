@@ -97,7 +97,7 @@ make build-local
 ## Variants
 
 The Union docs website is built to differient content depending on which
-"variant" of the product is selected in the variant switcher a tthe top of the page.
+"variant" of the product is selected in the variant switcher a the top of the page.
 
 Currently we have two variants, "Serverless" and "BYOC".
 
