@@ -1,15 +1,15 @@
 / /byoc 302
 /_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt /byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt 302
-/administration/ /byoc/user-guide/administration 302
-/administration /byoc/user-guide/administration 302
-/administration/applications/ /byoc/user-guide/administration/applications 302
-/administration/applications /byoc/user-guide/administration/applications 302
-/administration/cli-authentication/ /byoc/user-guide/administration/cli-authentication 302
-/administration/cli-authentication /byoc/user-guide/administration/cli-authentication 302
-/administration/usage/ /byoc/user-guide/administration/usage 302
-/administration/usage /byoc/user-guide/administration/usage 302
-/administration/user-management/ /byoc/user-guide/administration/user-management 302
-/administration/user-management /byoc/user-guide/administration/user-management 302
+# /administration/ /byoc/user-guide/administration 302
+# /administration /byoc/user-guide/administration 302
+# /administration/applications/ /byoc/user-guide/administration/applications 302
+# /administration/applications /byoc/user-guide/administration/applications 302
+# /administration/cli-authentication/ /byoc/user-guide/administration/cli-authentication 302
+# /administration/cli-authentication /byoc/user-guide/administration/cli-authentication 302
+# /administration/usage/ /byoc/user-guide/administration/usage 302
+# /administration/usage /byoc/user-guide/administration/usage 302
+# /administration/user-management/ /byoc/user-guide/administration/user-management 302
+# /administration/user-management /byoc/user-guide/administration/user-management 302
 /building-workflows/ /byoc/user-guide/core-concepts 302
 /building-workflows /byoc/user-guide/core-concepts 302
 /building-workflows/artifacts/ /byoc/user-guide/core-concepts/artifacts 302
