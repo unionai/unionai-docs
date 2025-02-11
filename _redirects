@@ -1798,3 +1798,8 @@
 /byoc/api/union-sdk/artifacts/byoc/apimodelcard/ /byoc/api-reference/union-sdk/artifacts/byoc/apimodelcard 302
 /byoc/api/union-sdk/artifacts/byoc/apionartifact /byoc/api-reference/union-sdk/artifacts/byoc/apionartifact 302
 /byoc/api/union-sdk/artifacts/byoc/apionartifact/ /byoc/api-reference/union-sdk/artifacts/byoc/apionartifact 302
+
+/byoc/user-guide/union-overview /byoc/user-guide/about-union 302
+/byoc/user-guide/union-overview/ /byoc/user-guide/about-union 302
+/serverless/user-guide/union-overview /serverless/user-guide/about-union 302
+/serverless/user-guide/union-overview/ /serverless/user-guide/about-union 302
