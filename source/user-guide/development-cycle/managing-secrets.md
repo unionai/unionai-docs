@@ -60,6 +60,18 @@ def t1():
 Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
 
+With `env_var`, you can automatically load the secret into the environment. This is useful
+with libraries that expect the secret to have a specific name:
+
+```{code-block} python
+import union
+
+@union.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
+def t1():
+    # Authenticates the remote with UNION_API_KEY
+    remote = union.UnionRemote(default_project="flytesnacks", default_domain="development")
+```
+
 ### Using a secret created from a file
 
 To use a secret created from a file in your workflow code, you must mount it as a file. To run the example code below:
