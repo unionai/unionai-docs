@@ -99,7 +99,7 @@ make build-local
 The Union docs website is built to differient content depending on which
 "variant" of the product is selected in the variant switcher a the top of the page.
 
-Currently we have two variants, "Serverless" and "BYOC".
+Currently we have two variants: "Serverless" and "BYOC".
 
 The content for different variants is produced from a common single tree of source pages
 with templating logic in individual pages and configuration in the `sitemap.json` controling which
