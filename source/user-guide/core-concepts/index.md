@@ -17,32 +17,32 @@ Triggering a launch plan will launch its associated workflow with the specified 
 
 ## Defining tasks and workflows
 
-Using the Flytekit SDK, tasks and workflows are defined as Python functions using the `@task` and `@workflow` decorators, respectively:
+Using the Flytekit SDK, tasks and workflows are defined as Python functions using the `@union.task` and `@union.workflow` decorators, respectively:
 
 **`./workflows/my_example.py`**
 ```{code-block} python
-from flytekit import task, workflow
+import union
 
-@task
+@union.task
 def task_1(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@task
+@union.task
 def task_2(m: int, n: int) -> int:
     return m * n
 
-@task
+@union.task
 def task_3(x: int, y: int) -> int:
     return x - y
 
-@workflow
+@wunion.workflow
 def my_workflow(a: int, b: int, c: int, m: int, n: int) -> int:
     x = task_1(a=a, b=b, c=c)
     y = task_2(m=m, n=n)
     return task_3(x=x, y=y)
 ```
 
-Here we see three tasks defined using the `@task` decorator and a workflow defined using the `@workflow` decorator.
+Here we see three tasks defined using the `@union.task` decorator and a workflow defined using the `@union.workflow` decorator.
 The workflow calls `task_1` and `task_2` and passes the results to `task_3` before finally outputting the result of `task_3`.
 
 When the workflow is registered, Union compiles the workflow into a directed acyclic graph (DAG) based on the input/output dependencies between the tasks.

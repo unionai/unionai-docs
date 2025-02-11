@@ -19,26 +19,32 @@ In a local directory, create the following files:
 
 """A Union app that serves the output of a Union workflow"""
 
-from union import Artifact, Resources
-from union.app import App, Input
+import union
 
-# Declare an Artifact with the name "my_file".
-# Note that this must be same Artifact name as declared in the workflow code in `wf.py`, below.
-MyFile = Artifact(name="my_file")
+# Declare an `Artifact` with the name `my_file`.
+# Note that this must be the same `Artifact` name as declared in the workflow code in `wf.py`, below.
+MyFile = union.Artifact(name="my_file")
 
-# ImageSpec must have `union-runtime` and any dependencies you need for your application
-# Set `REGISTRY` to be the URI for your registry
-image = ImageSpec(
+# The `ImageSpec` for the container that will run the `App`.
+# `union-runtime` must be declared as a dependency, 
+# in addition to any other dependencies needed by the app code.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image = union.ImageSpec(
     name="streamlit-app",
-    packages=["streamlit==1.41.1", "union-runtime>=0.1.10"],
+    packages=["union-runtime>=0.1.10", "streamlit==1.41.1"],
     registry=os.getenv("REGISTRY"),
 )
 
 
-app = App(
+# The `App` declaration.
+# Uses the `ImageSpec` declared above.
+# Your core logic of the app resides in the files declared 
+# in the `include` parameter, in this case, `main.py`.
+# Input arttifacts are declared in the `inputs` parameter.
+app = union.app.App(
     name="streamlit-workflow-output",
     inputs=[
-        Input(
+        union.app.Input(
             name="my_file",
             value=MyFile.query(),
             download=True,
@@ -80,26 +86,26 @@ st.write(my_file_content)
 """A Union workflow that creates an artifact from a file"""
 
 import os
-from union import Artifact, FlyteFile, ImageSpec, current_context, task, workflow
+import union
 from pathlib import Path
 from typing_extensions import Annotated
 
-# ImageSpec defining the container image that will run the task
-# Set `REGISTRY` to be the URI for your registry
-image_spec = ImageSpec(
+# The `ImageSpec` for the container that runs the `task`.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image_spec = union.ImageSpec(
     packages=["union"],
     registry=os.getenv("REGISTRY"),
 )
 
-# Declare an Artifact with the name "my_file"
-# Note that this must be same Artifact name as declared in the App declaration code in `app.py`, above.
-MyFile = Artifact(name="my_file")
+# Declare an `Artifact` with the name `my_file`.
+# Note that this must be same `Artifact` name as declared in the `App` declaration code in `app.py`, above.
+MyFile = union.Artifact(name="my_file")
 
-# Define a task that creates an artifact from a file.
-# Uses the artifact declared above.
-@task(container_image=image_spec)
-def t() -> Annotated[FlyteFile, MyFile]:
-    working_dir = Path(current_context().working_directory)
+# Define a `task` that creates an `Artifact` from a file.
+# Uses the `Artifact` declared above.
+@union.task(container_image=image_spec)
+def t() -> Annotated[union.FlyteFile, MyFile]:
+    working_dir = Path(union.current_context().working_directory)
     my_file = working_dir / "my_file.txt"
 
     with open(my_file, "w") as file:
@@ -107,9 +113,9 @@ def t() -> Annotated[FlyteFile, MyFile]:
 
     return MyFile.create_from(my_file)
 
-# Define a workflow that executes the task.
-@workflow
-def wf() -> FlyteFile:
+# Define a `workflow` that executes the `task`.
+@union.workflow
+def wf() -> union.FlyteFile:
     return t()
 ```
 
@@ -156,4 +162,4 @@ Click on the **Endpoint** to view the app itself in action:
 
 ![App in action](/_static/images/user-guide/core-concepts/serving/serving-workflow-output/app-in-action.png)
 
-Note that the content of the file, "Some data" is successfully displayed in the app.
+Note that the contents of the file, "Some data" is successfully displayed in the app.

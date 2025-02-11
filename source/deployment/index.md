@@ -1,4 +1,4 @@
-# Data plane setup
+# Deployment
 
 Union uses a hybrid model cloud service: Union maintains the control plane of the application on its own cloud infrastructure in Amazon Web Services (AWS).
 This is where all administration and management functionality resides.

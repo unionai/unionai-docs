@@ -47,11 +47,11 @@ To use a secret created on the command line, see the example code below. To run 
 #### Example code
 
 ```{code-block} python
-from flytekit import Secret, current_context, task, workflow
+import union
 
-@task(secret_requests=[Secret(key="my_secret")])
+@union.task(secret_requests=[union.Secret(key="my_secret")])
 def t1():
-    secret_value = current_context().secrets.get(key="my_secret")
+    secret_value = union.current_context().secrets.get(key="my_secret")
     # do something with the secret. For example, communication with an external API.
     ...
 ```
@@ -71,15 +71,15 @@ To use a secret created from a file in your workflow code, you must mount it as 
 #### Example code
 
 ```{code-block} python
-from flytekit import Secret, current_context, task, workflow
+import union
 
-@task(
+@union.task(
     secret_requests=[
-        Secret(key="my_file_secret", mount_requirement=Secret.MountType.FILE),
+        union.Secret(key="my_file_secret", mount_requirement=Secret.MountType.FILE),
     ]
 )
 def t1():
-    path_to_secret_file = current_context().secrets.get_secrets_file("my_file_secret")
+    path_to_secret_file = union.current_context().secrets.get_secrets_file("my_file_secret")
     with open(path_to_secret_file, "r") as f:
         secret_value = f.read()
     # do something with the secret. For example, communication with an external API.

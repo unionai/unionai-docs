@@ -1,8 +1,8 @@
 # Execution time support
 
-Most of the tasks that are written in Flytekit will be Python functions decorated with `@task`, which turns the body of the function into a Flyte task, capable of being run independently, or included in any number of workflows. The interaction between Flytekit and these tasks does not end once the tasks have been serialized and registered to the control plane, however. When compiled, the command that will be executed when the task is run is hardcoded into the task definition itself.
+Most of the tasks that are written in Flytekit will be Python functions decorated with `@union.task`, which turns the body of the function into a Flyte task, capable of being run independently, or included in any number of workflows. The interaction between Flytekit and these tasks does not end once the tasks have been serialized and registered to the control plane, however. When compiled, the command that will be executed when the task is run is hardcoded into the task definition itself.
 
-In the basic `@task`-decorated function scenario, the command to be run will be something containing `pyflyte-execute`, which is the open source version of the `union` CLI.
+In the basic `@union.task`-decorated function scenario, the command to be run will be something containing `pyflyte-execute`, which is the open source version of the `union` CLI.
 
 That command, if you were to inspect a serialized task, might look something like the following:
 

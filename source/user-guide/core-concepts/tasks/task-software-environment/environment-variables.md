@@ -4,7 +4,7 @@ The `environment` parameter lets you specify the values of any variables that yo
 For example:
 
 ```{code-block} python
-@task(environment={"MY_ENV_VAR": "my_value"})
+@union.task(environment={"MY_ENV_VAR": "my_value"})
 def my_task() -> str:
     return os.environ["MY_ENV_VAR"]
 ```

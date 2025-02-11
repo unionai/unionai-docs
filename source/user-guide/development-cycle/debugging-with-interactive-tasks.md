@@ -36,23 +36,23 @@ flytekitplugins-flyteinteractive
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode)"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    registry="<my-image-registry>",
    name="interactive-tasks-example",
    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
    requirements="requirements.txt"
 )
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -62,22 +62,22 @@ def wf(name: str = "world") -> str:
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode)"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -181,10 +181,10 @@ Additional extensions can be added by defining a configuration object and passin
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with extensions"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    registry="<my-image-registry>",
    name="interactive-tasks-example",
    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
@@ -197,13 +197,13 @@ config.add_extensions(
     "https://open-vsx.org/api/vscodevim/vim/1.27.0/file/vscodevim.vim-1.27.0.vsix"
 )  # Copy raw URL from Open VSX
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(config=config)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -213,10 +213,10 @@ def wf(name: str = "world") -> str:
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with extensions"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
@@ -228,13 +228,13 @@ config.add_extensions(
     "https://open-vsx.org/api/vscodevim/vim/1.27.0/file/vscodevim.vim-1.27.0.vsix"
 )  # Copy raw URL from Open VSX
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(config=config)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -255,23 +255,23 @@ The `max_idle_seconds` parameter can be used to set the maximum number of second
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with max_idle_seconds"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    registry="<my-image-registry>",
    name="interactive-tasks-example",
    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
    requirements="requirements.txt"
 )
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(max_idle_seconds=60000)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -282,22 +282,22 @@ def wf(name: str = "world") -> str:
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with max_idle_seconds"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(max_idle_seconds=60000)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -316,10 +316,10 @@ This can be used for tasks requiring setup or cleanup.
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with pre and post hooks"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    registry="<my-image-registry>",
    name="interactive-tasks-example",
    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
@@ -332,13 +332,13 @@ def set_up_proxy():
 def push_code():
     print("push code")
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(pre_execute=set_up_proxy, post_execute=push_code)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -349,10 +349,10 @@ def wf(name: str = "world") -> str:
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with pre and post hooks"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
@@ -364,13 +364,13 @@ def set_up_proxy():
 def push_code():
     print("push code")
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(pre_execute=set_up_proxy, post_execute=push_code)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -389,23 +389,23 @@ This is done by setting the `run_task_first` parameter to `True`.
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with run_task_first"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    registry="<my-image-registry>",
    name="interactive-tasks-example",
    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
    requirements="requirements.txt"
 )
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(run_task_first=True)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting
@@ -416,22 +416,22 @@ def wf(name: str = "world") -> str:
 ```{code-block} python
 """Union workflow example of interactive tasks (@vscode) with run_task_first"""
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.flyteinteractive import vscode
 
-image = ImageSpec(
+image = union.ImageSpec(
    builder="union",
    name="interactive-tasks-example",
    requirements="requirements.txt"
 )
 
-@task(container_image=image)
+@union.task(container_image=image)
 @vscode(run_task_first=True)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@workflow
+@union.workflow
 def wf(name: str = "world") -> str:
    greeting = say_hello(name=name)
    return greeting

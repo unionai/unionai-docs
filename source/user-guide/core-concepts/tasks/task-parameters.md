@@ -1,6 +1,6 @@
 # Task parameters
 
-You pass the following parameters to the `@task` decorator:
+You pass the following parameters to the `@union.task` decorator:
 
 {@# TODO: consider organizing by category rather than alphabetically. #@}
 
@@ -26,7 +26,7 @@ You pass the following parameters to the `@task` decorator:
   (see [Decks&#x2B00;](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)).
 
   ```{code-block} python
-  @task(enable_deck=True)
+  @union.task(enable_deck=True)
   def my_task(my_str: str):
   print("hello {my_str}")
   ```
@@ -45,13 +45,13 @@ You pass the following parameters to the `@task` decorator:
   Tasks and workflows do not have this requirement.
 
   ```{code-block} python
-  @workflow
+  @union.workflow
   def workflow0():
       launchplan0 = LaunchPlan.get_or_create(workflow0)
       # Specify node_dependency_hints so that launchplan0
       # will be registered on flyteadmin, despite this being a dynamic task.
 
-  @dynamic(node_dependency_hints=[launchplan0])
+  @union.dynamic(node_dependency_hints=[launchplan0])
   def launch_dynamically():
       # To run a sub-launchplan it must have previously been registered on flyteadmin.
       return [launchplan0]*10

@@ -4,31 +4,15 @@ This section provides a comprehensive guide to the Union platform including the 
 
 ::::{grid} 2
 
-:::{grid-item-card} {octicon}`telescope` Union overview
-:link: union-overview
+:::{grid-item-card} {octicon}`telescope` About Union
+:link: about-union
 :link-type: doc
 
 Union builds on the leading OSS orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
 :::
 
-{@@ if byoc @@}
-:::{grid-item-card} {octicon}`stack` Platform architecture
-:link: platform-architecture
-:link-type: doc
-
-Union BYOC is deployed on your cloud infrastructure, but managed by Union.
-:::
-
-:::{grid-item-card} {octicon}`cloud` Data plane setup
-:link: data-plane-setup/index
-:link-type: doc
-
-The Union team will help you set up your Union data plane on AWS, GCP or Azure, or even across multiple cloud providers.
-:::
-{@@ endif @@}
-
-:::{grid-item-card} {octicon}`file-binary` First workflow
-:link: first-workflow/index
+:::{grid-item-card} {octicon}`file-binary` Getting started
+:link: getting-started/index
 :link-type: doc
 
 Build your first Union workflow, exploring the major features of the platform along the way.
@@ -61,6 +45,13 @@ Manage the input and output of data in your Union workflow.
 :link-type: doc
 
 Union BYOC administrators can manage users, projects, and resources.
+:::
+
+:::{grid-item-card} {octicon}`tools` Integrations
+:link: integrations/index
+:link-type: doc
+
+Union BYOC integrates with your cloud resources and external services.
 :::
 
 :::{grid-item-card} {octicon}`question` FAQ

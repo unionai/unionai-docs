@@ -1,4 +1,4 @@
-# Examples
+# Actor examples
 
 ### Refactoring from Regular Tasks to Actors
 

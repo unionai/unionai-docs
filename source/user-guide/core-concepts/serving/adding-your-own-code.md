@@ -26,16 +26,23 @@ The file `app.py` contains the app declaration:
 """A Union app with custom code"""
 
 import os
-from flytekit import ImageSpec, Resources
-from union.app import App
+import union
 
-image = ImageSpec(
+# The `ImageSpec` for the container that will run the `App`.
+# `union-runtime` must be declared as a dependency, 
+# in addition to any other dependencies needed by the app code.
+# Set the environment variable `REGISTRY` to be the URI for your container registry.
+image = union.ImageSpec(
     name="streamlit-app",
-    packages=["streamlit==1.41.1", "union-runtime>=0.1.10"],
+    packages=["union-runtime>=0.1.10", "streamlit==1.41.1"] ,
     registry=os.getenv("REGISTRY"),
 )
 
-app = App(
+# The `App` declaration.
+# Uses the `ImageSpec` declared above.
+# Your core logic of the app resides in the files declared 
+# in the `include` parameter, in this case, `main.py` and `utils.py`.
+app = union.app.App(
     name="streamlit-custom-code",
     container_image=image,
     args=["streamlit", "run", "main.py", "--server.port", "8080"],
@@ -44,7 +51,7 @@ app = App(
         "main.py",
         "utils.py",
     ],
-    limits=Resources(cpu="1", mem="1Gi"),
+    limits=union.Resources(cpu="1", mem="1Gi"),
 )
 ```
 
