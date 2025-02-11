@@ -64,13 +64,12 @@ With `env_var`, you can automatically load the secret into the environment. This
 with libraries that expect the secret to have a specific name:
 
 ```{code-block} python
-from flytekit import Secret, task
-from union import UnionRemote
+import union
 
-@task(secret_requests=[Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
+@union.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
 def t1():
     # Authenticates the remote with UNION_API_KEY
-    remote = UnionRemote(default_project="flytesnacks", default_domain="development")
+    remote = union.UnionRemote(default_project="flytesnacks", default_domain="development")
 ```
 
 ### Using a secret created from a file
