@@ -48,8 +48,8 @@ app = union.app.App(
     args=["streamlit", "run", "main.py", "--server.port", "8080"],
     port=8080,
     include=[
-        "./main.py",
-        "./utils.py",
+        "main.py",
+        "utils.py",
     ],
     limits=union.Resources(cpu="1", mem="1Gi"),
 )

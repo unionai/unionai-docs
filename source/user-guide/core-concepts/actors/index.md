@@ -7,9 +7,9 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 ### `ActorEnvironment` parameters
 
 {@@ if serverless @@}
-* **container_image:** The container image to use for the task. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
+* **container_image:** The container image to use for the task. This container must have the `union` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
 {@@ elif byoc @@}
-* **container_image:** The container image to use for the task. Defaults to `cr.flyte.org/flyteorg/flytekit:py3.11-latest`.
+* **container_image:** The container image to use for the task. This container must have the `union` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
 {@@ endif @@}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
 * **limits:** Compute resource limits.
