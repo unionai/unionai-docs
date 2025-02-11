@@ -385,7 +385,7 @@ def process_project():
         shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
         shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
         shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r extensions {SPHINX_SOURCE_DIR}/{variant}/')
+        shell(f'cp -r {SOURCE_DIR}/extensions {SPHINX_SOURCE_DIR}/{variant}/')
     for variant in ALL_VARIANTS:
         shell(
             f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
