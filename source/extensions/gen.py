@@ -22,11 +22,18 @@ def generate_rst_section(title, content, level=1):
     underline = underline_char * len(title)
     return f"{title}\n{underline}\n\n{content}\n\n"
 
+# def format_docstring(docstring):
+#     """Format docstring for reST"""
+#     if not docstring:
+#         return ""
+#     return f"   {docstring.replace('\n', '\n   ')}\n\n"
+
 def format_docstring(docstring):
     """Format docstring for reST"""
     if not docstring:
         return ""
-    return f"   {docstring.replace('\n', '\n   ')}\n\n"
+    formatted = docstring.replace('\n', '\n   ')
+    return f"   {formatted}\n\n"
 
 def extract_signature(method_str):
     """Extract method signature from the string representation"""
