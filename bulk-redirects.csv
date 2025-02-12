@@ -1,4 +1,4 @@
-docs.union.ai/,https://docs.union.ai/byoc,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai,https://docs.union.ai/byoc,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt,https://docs.union.ai/byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/administration,https://docs.union.ai/byoc/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows,https://docs.union.ai/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
@@ -25,8 +25,8 @@ docs.union.ai/byoc/api/uctl-cli,https://docs.union.ai/byoc/api-reference/uctl-cl
 docs.union.ai/byoc/api/union-cli,https://docs.union.ai/byoc/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api/union-remote,https://docs.union.ai/byoc/api-reference/union-remote,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api/union-sdk,https://docs.union.ai/byoc/api-reference/union-sdk,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/api/union-sdk/actor/actorenvironment/byoc/api-reference/union-sdk/actors/actor-environment,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/api/union-sdk/artifacts/datacard,https://docs.union.ai/byoc/api-reference/union-sdk/artifacts/artifacts-data-card302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/api/union-sdk/actor/actorenvironment,https://docs.union.ai/byoc/api-reference/union-sdk/actors/actor-environment,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/api/union-sdk/artifacts/datacard,https://docs.union.ai/byoc/api-reference/union-sdk/artifacts/artifacts-data-card,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api/union-sdk/artifacts/modelcard,https://docs.union.ai/byoc/api-reference/union-sdk/artifacts/artifacts-model-card,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api/union-sdk/artifacts/onartifact,https://docs.union.ai/byoc/api-reference/union-sdk/artifacts/artifacts-on-artifact,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api/unionai-cli,https://docs.union.ai/byoc/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
@@ -70,7 +70,7 @@ docs.union.ai/byoc/getting-started/running-in-a-local-python-environment,https:/
 docs.union.ai/byoc/getting-started/setting-up-container-image-handling,https://docs.union.ai/byoc/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/getting-started/setting-up-the-project-on-union,https://docs.union.ai/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide,https://docs.union.ai/byoc/user-guide,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/guide/administration,https://docs.union.ai/byoc/user-guide/administration
+docs.union.ai/byoc/guide/administration,https://docs.union.ai/byoc/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts,https://docs.union.ai/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec,https://docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-acr,https://docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-acr,302,TRUE,FALSE,TRUE,TRUE
@@ -91,7 +91,6 @@ docs.union.ai/byoc/guide/platform-architecture,https://docs.union.ai/byoc/deploy
 docs.union.ai/byoc/guide/union-overview,https://docs.union.ai/byoc/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/integrations,https://docs.union.ai/byoc/user-guide/integrations,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/platform-architecture,https://docs.union.ai/byoc/deployment/platform-architecture,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/platform-architecture,https://docs.union.ai/byoc/deployment/platform-architecture,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/quick-start,https://docs.union.ai/byoc/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/tutorials/machine-learning/credit-default-xgboost,https://docs.union.ai/byoc/tutorials/finance/credit-default-xgboost,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/union-overview,https://docs.union.ai/byoc/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
@@ -109,8 +108,8 @@ docs.union.ai/byoc/user-guide/first-workflow/example-code-components,https://doc
 docs.union.ai/byoc/user-guide/first-workflow/running-the-workflow,https://docs.union.ai/byoc/user-guide/getting-started/running-your-workflow,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/first-workflow/setting-up-container-image-handling,https://docs.union.ai/byoc/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/first-workflow/setting-up-your-local-environment,https://docs.union.ai/byoc/user-guide/getting-started/local-setup,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/user-guide/platform-architecture,https://docs.union.ai/byoc/deployment/platform-architecture
-docs.union.ai/byoc/user-guide/union-overview,https://docs.union.ai/byoc/user-guide/about-union
+docs.union.ai/byoc/user-guide/platform-architecture,https://docs.union.ai/byoc/deployment/platform-architecture,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/user-guide/union-overview,https://docs.union.ai/byoc/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/concepts,https://docs.union.ai/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts,https://docs.union.ai/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts/tasks/task-software-environment/imagespec,https://docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
@@ -202,8 +201,8 @@ docs.union.ai/serverless/api/uctl-cli,https://docs.union.ai/serverless/api-refer
 docs.union.ai/serverless/api/union-cli,https://docs.union.ai/serverless/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/api/union-remote,https://docs.union.ai/serverless/api-reference/union-remote,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/api/union-sdk,https://docs.union.ai/serverless/api-reference/union-sdk,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/api/union-sdk/actor/actorenvironment/serverless/api-reference/union-sdk/actors/actor-environment,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/api/union-sdk/artifacts/datacard,https://docs.union.ai/serverless/api-reference/union-sdk/artifacts/artifacts-data-card302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/serverless/api/union-sdk/actor/actorenvironment,https://docs.union.ai/serverless/api-reference/union-sdk/actors/actor-environment,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/serverless/api/union-sdk/artifacts/datacard,https://docs.union.ai/serverless/api-reference/union-sdk/artifacts/artifacts-data-card,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/api/union-sdk/artifacts/modelcard,https://docs.union.ai/serverless/api-reference/union-sdk/artifacts/artifacts-model-card,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/api/union-sdk/artifacts/onartifact,https://docs.union.ai/serverless/api-reference/union-sdk/artifacts/artifacts-on-artifact,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/api/unionai-cli,https://docs.union.ai/serverless/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
@@ -247,7 +246,7 @@ docs.union.ai/serverless/getting-started/running-in-a-local-python-environment,h
 docs.union.ai/serverless/getting-started/setting-up-container-image-handling,https://docs.union.ai/serverless/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/getting-started/setting-up-the-project-on-union,https://docs.union.ai/serverless/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide,https://docs.union.ai/serverless/user-guide,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/guide/administration,https://docs.union.ai/serverless/user-guide/administration
+docs.union.ai/serverless/guide/administration,https://docs.union.ai/serverless/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts,https://docs.union.ai/serverless/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec,https://docs.union.ai/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec-with-acr,https://docs.union.ai/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-acr,302,TRUE,FALSE,TRUE,TRUE
@@ -268,7 +267,6 @@ docs.union.ai/serverless/guide/platform-architecture,https://docs.union.ai/serve
 docs.union.ai/serverless/guide/union-overview,https://docs.union.ai/serverless/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/integrations,https://docs.union.ai/serverless/user-guide/integrations,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/platform-architecture,https://docs.union.ai/serverless/deployment/platform-architecture,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/platform-architecture,https://docs.union.ai/serverless/deployment/platform-architecture,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/quick-start,https://docs.union.ai/serverless/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/tutorials/machine-learning/credit-default-xgboost,https://docs.union.ai/serverless/tutorials/finance/credit-default-xgboost,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/union-overview,https://docs.union.ai/serverless/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
@@ -286,8 +284,8 @@ docs.union.ai/serverless/user-guide/first-workflow/example-code-components,https
 docs.union.ai/serverless/user-guide/first-workflow/running-the-workflow,https://docs.union.ai/serverless/user-guide/getting-started/running-your-workflow,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/first-workflow/setting-up-container-image-handling,https://docs.union.ai/serverless/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/first-workflow/setting-up-your-local-environment,https://docs.union.ai/serverless/user-guide/getting-started/local-setup,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/user-guide/platform-architecture,https://docs.union.ai/serverless/deployment/platform-architecture
-docs.union.ai/serverless/user-guide/union-overview,https://docs.union.ai/serverless/user-guide/about-union
+docs.union.ai/serverless/user-guide/platform-architecture,https://docs.union.ai/serverless/deployment/platform-architecture,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/serverless/user-guide/union-overview,https://docs.union.ai/serverless/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/uctl-cli,https://docs.union.ai/byoc/api-reference/uctl-cli,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/union-and-flyte,https://docs.union.ai/byoc/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/union-cli,https://docs.union.ai/byoc/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
