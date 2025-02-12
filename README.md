@@ -271,7 +271,7 @@ The redirects must be registered separately (they do not go into effect automati
 To register the redirects, go to the Cloudflare dashboard for the `docs-union-ai` project:
 
 * Go to "Bulk Redirects"
-* Select `union_docs_evolution_redirects` under "Bulk Redirect Lists"
+* Select `docs_redirects` under "Bulk Redirect Lists"
 * Upload the `bulk-redirects.csv` file.
 
 For details on how the redirects file works, see the [Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
