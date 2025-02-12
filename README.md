@@ -263,7 +263,7 @@ Again, each variant is placed in a separate subdirectory.
 ## Redirects
 
 When re-arranging the content of the site, it may be necessary to create redirects.
-These are defined in the `bulk-redirects.csv` file which is checked in at the
+These are defined in the `docs_redirects.csv` file which is checked in at the
 root of this repo.
 
 The redirects must be registered separately (they do not go into effect automatically on merge to main)
@@ -271,10 +271,17 @@ The redirects must be registered separately (they do not go into effect automati
 To register the redirects, go to the Cloudflare dashboard for the `docs-union-ai` project:
 
 * Go to "Bulk Redirects"
-* Select `union_docs_evolution_redirects` under "Bulk Redirect Lists"
-* Upload the `bulk-redirects.csv` file.
+* Select `docs_redirects` under "Bulk Redirect Lists"
+* Upload the `docs_redirects.csv` file.
 
-For details on how the redirects file works, see the [Bulk redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
+For details on how the redirects file works, see the [Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
+
+## PR builds
+
+In Cloudflare pages, builds are automatically created for each PR. The PR builds are available at the following URL.
+Because redirects happen at the Cloudflare Bulk Redirects level, they do not affect PR builds.
+Consequently, IN PR builds the topmost page of the srte is not redirected to the BYOC index page (as it is on the production site).
+Instead, a dummy index page is located there with links to the BYOC and Serverless index pages.
 
 
 ## Ordering in VS Code explorer
