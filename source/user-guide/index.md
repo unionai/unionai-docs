@@ -1,6 +1,27 @@
 # User guide
 
-This section provides a comprehensive guide to the Union platform including the concepts underlying the system and all the available features.
+{@@ if serverless @@}
+
+```{admonition} Union Serverless
+This documentation covers [**Union Serverless**](./about-union.md#union-serverless).
+For Union BYOC, click [here](https://docs.union.ai/byoc), or select **BYOC** it in the dropdown above.
+```
+
+{@@ elif byoc @@}
+
+```{admonition} Union BYOC
+This documentation covers [**Union BYOC**](./about-union.md#union-byoc).
+For Union Serverless, click [here](https://docs.union.ai/serverless), or select **Serverless** it in the dropdown above.
+```
+
+{@@ endif @@}
+
+The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+
+* Run complex AI workloads with performance, scale, and efficiency.
+* Achieve millisecond-level execution times with reusable containers.
+* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+
 
 ::::{grid} 2
 
