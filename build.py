@@ -392,6 +392,7 @@ def process_project():
             f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
             env=DOCSEARCH_CREDENTIALS[variant],
         )
+    shell(f'cp ./dummy_index.html {BUILD_DIR}/index.html')
 
 
 if __name__ == "__main__":
