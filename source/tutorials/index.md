@@ -100,7 +100,7 @@ Serve a vLLM model on a warm container and trigger inference automatically with 
 Run the Mochi 1 text-to-video generation model by Genmo on Union.
 :::
 
-:::{grid-item-card} {octicon}`server` NVIDIA Blueprint to Union Workflow: PDF to Podcast
+:::{grid-item-card} {octicon}`play` Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use
 :link: language-models/pdf-to-podcast-blueprint
 :link-type: doc
 
