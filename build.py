@@ -392,7 +392,6 @@ def process_project():
             f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
             env=DOCSEARCH_CREDENTIALS[variant],
         )
-    shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 
 if __name__ == "__main__":
