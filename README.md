@@ -263,7 +263,7 @@ Again, each variant is placed in a separate subdirectory.
 ## Redirects
 
 When re-arranging the content of the site, it may be necessary to create redirects.
-These are defined in the `bulk-redirects.csv` file which is checked in at the
+These are defined in the `docs_redirects.csv` file which is checked in at the
 root of this repo.
 
 The redirects must be registered separately (they do not go into effect automatically on merge to main)
@@ -272,7 +272,7 @@ To register the redirects, go to the Cloudflare dashboard for the `docs-union-ai
 
 * Go to "Bulk Redirects"
 * Select `docs_redirects` under "Bulk Redirect Lists"
-* Upload the `bulk-redirects.csv` file.
+* Upload the `docs_redirects.csv` file.
 
 For details on how the redirects file works, see the [Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
 
