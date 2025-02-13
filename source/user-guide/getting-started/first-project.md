@@ -15,6 +15,13 @@ To create additional projects, see [Setting up a project](../development-cycle/s
 In actual production usage, you would typically name your local project directory after the Union project it corresponds to,
 but here we will just use the default project.
 
+
+## Initialize a local project
+
+[TODO: Use the the union init command to create the union-simple project and run with that through the rest of this section]()
+
+
+
 :::{admonition} Initialize a project from scratch
 In this example we will start with an existing Git repository.
 Alternatively, you can initialize a fresh project from a template with the `union init` command, which you then check into Git.

@@ -29,7 +29,7 @@ A workflow appears to be a Python function but is actually a [DSL](https://en.wi
 
 When deployed to Union, the workflow function is "compiled" to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/getting-started/src/ml_workflow.py
+```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/getting_started/src/ml_workflow.py
 :language: python
 :pyobject: main
 ```
