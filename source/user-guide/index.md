@@ -3,17 +3,15 @@
 {@@ if serverless @@}
 
 ```{admonition} Union Serverless
-This documentaion is for [**Union Serverless**](./about-union.md#union-serverless).
-
-You can switch to [Union BYOC](https://docs.union.ai/byoc) with the version selector above.
+These docs are for [**Union Serverless**](./about-union.md#union-serverless).
+Switch to [Union BYOC](https://docs.union.ai/byoc) with the version selector above.
 ```
 
 {@@ elif byoc @@}
 
 ```{admonition} Union BYOC
-This documentaion is for [**Union BYOC**](./about-union.md#union-byoc).
-
-You can switch to [Union Serverless](https://docs.union.ai/byoc) with the version selector above.
+These docs are for [**Union BYOC**](./about-union.md#union-byoc).
+Switch to [Union Serverless](https://docs.union.ai/byoc) with the version selector above.
 ```
 
 {@@ endif @@}
