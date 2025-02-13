@@ -6,7 +6,7 @@ In [Getting started](./index.md) we showed you how to run your first workflow ri
 
 {@@ endif @@}
 
-In this section we will set up your local environment so that you can start building and deploying workflows on Union.
+In this section we will set up your local environment so that you can start building and deploying Union workflows from your local machine.
 
 
 ## Install `uv`
@@ -70,7 +70,8 @@ $ union create login --serverless
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
 :::{note}
-These directions apply to Union Serverless. To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
+These directions apply to Union Serverless.
+To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
 :::
 
 {@@ elif byoc @@}
@@ -84,7 +85,8 @@ $ union create login --host <union-host-url>
 This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
 :::{note}
-These directions apply to Union BYOC, where you connect to your own dedicated Union instance. To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
+These directions apply to Union BYOC, where you connect to your own dedicated Union instance.
+To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 :::
 
 {@@ endif @@}
@@ -96,7 +98,8 @@ You can override this behavior to specify a different configuration file by sett
 export UNION_CONFIG=~/.my-config-location/my-config.yaml
 ```
 
-Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag. For example:
+Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag.
+For example:
 
 ```{code-block} shell
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow

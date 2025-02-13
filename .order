@@ -7,9 +7,6 @@ source/user-guide/index.md
 source/user-guide/faq.md
 source/user-guide/about-union.md
 
-
-
-
 source/user-guide/getting-started/
 source/user-guide/getting-started/index.md
 source/user-guide/getting-started/local-setup.md
@@ -90,7 +87,8 @@ source/user-guide/development-cycle/index.md
 source/user-guide/development-cycle/project-structure.md
 source/user-guide/development-cycle/projects-and-domains.md
 source/user-guide/development-cycle/building-workflows.md
-source/user-guide/development-cycle/local-dependencies.md
+source/user-guide/development-cycle/building-workflows.md
+source/user-guide/development-cycle/setting-up-a-project.md
 source/user-guide/development-cycle/image-spec.md
 source/user-guide/development-cycle/container-images.md
 source/user-guide/development-cycle/running-your-code.md
