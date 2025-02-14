@@ -1,21 +1,66 @@
 # Running your workflow
 
-## Running locally the code locally
+## Python virtual environment
+
+The first step is to ensure that your `uv.lock` file is properly generated from your `pyproject.toml` file and that your local Python virtual environment is properly set up.
+
+Using `uv`, you can install the dependencies with the command:
+
+```{code-block} shell
+$ uv sync
+```
+
+You can then activate the virtual environment with:
+
+```{code-block} shell
+source .venv/bin/activate
+```
+
+:::{admonition} `activate` vs `uv run`
+When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
+This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the-union-cli) in order to [set up its configuration](./local-setup.md#configure-the-union-cli).
+
+To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
+
+`uv run union ...`
+
+Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
+
+In our examples we assume that you are doing the latter.
+:::
+
+
+## Run the code locally
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
 You can run the workflow locally with the command [`union run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run src/ml_workflow.py main
+$ union run hello_world.py hello_world_wf
 ```
 
-If the code runs successfully, you should see output like this:
+You should see output like this:
 
 ```{code-block} shell
 Running Execution on local.
-0.9767441860465116
+Hello, world!
 ```
+
+
+You can also pass in parameters to the workflow (assuming they declared in the workflow function):
+
+```{code-block} shell
+$ union run hello_world.py hello_world_wf --name="everybody"
+```
+
+You should see output like this:
+
+```{code-block} shell
+Running Execution on local.
+Hello, everybody!
+```
+
 
 ## Running remotely on Union
 
@@ -26,6 +71,10 @@ When task and workflow code is registered on Union:
 
 * The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
+
+
+
+{@# DONE TO HERE #@}
 
 ## ImageSpec and image building
 
@@ -146,18 +195,18 @@ To view the workflow execution graph, click the **Graph** tab above the running 
 
 When you view the workflow execution graph, you will see the following:
 
-![Graph](/_static/images/user-guide/first-workflow/running-the-workflow/graph.png)
+![Graph](/_static/images/user-guide/getting-started/running-your-workflow/graph.png)
 
 Above the graph, there is metadata that describes the workflow execution, such as the
 duration and the workflow version. Next, click on the `evaluate_model` node to open up a
 sidebar that contains additional information about the task:
 
-![Sidebar](/_static/images//user-guide/first-workflow/running-the-workflow/sidebar.png)
+![Sidebar](/_static/images//user-guide/getting-started/running-your-workflow/sidebar.png)
 
 Click on the "Flyte Deck" button in the sidebar to open up visualizations generated
 by the task:
 
-![Flyte Deck](/_static/images//user-guide/first-workflow/running-the-workflow/flyte-deck.png)
+![Flyte Deck](/_static/images//user-guide/getting-started/running-your-workflow/flyte-deck.png)
 
 Now that we are familiar with the UI, let's jump into the code and see how the
 workflow is constructed.
