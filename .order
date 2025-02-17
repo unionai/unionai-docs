@@ -7,9 +7,6 @@ source/user-guide/index.md
 source/user-guide/faq.md
 source/user-guide/about-union.md
 
-
-
-
 source/user-guide/getting-started/
 source/user-guide/getting-started/index.md
 source/user-guide/getting-started/local-setup.md
@@ -211,14 +208,15 @@ sphinx_source/
 .vscode/
 __pycache__/
 
-sitemap.json
 README.md
-Makefile
+dummy_index.html
+_redirects
+docs_redirects.csv
+sitemap.json
 build.py
+Makefile
 pyproject.toml
 uv.lock
-_redirects
-_overflow
 CODEOWNERS
 .gitignore
 .gitmodules
