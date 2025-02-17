@@ -72,49 +72,10 @@ When task and workflow code is registered on Union:
 * The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-
-
-{@# DONE TO HERE #@}
-
-## ImageSpec and image building
-
-In this example the `ImageSpec` object is defined like this:
-
-```{code-block} python
-image = union.ImageSpec(
-    builder = "union",
-    name="ml-workflow-image",
-    packages=[
-        "scikit-learn==1.4.1.post1",
-        "pandas==2.2.1",
-        "matplotlib==3.8.3",
-        "pyarrow==17.0.0",
-        "union==0.1.132",
-    ]
-)
-```
-
-Specifying `builder = "union"` tells Union to build the image using its cloud image builder and register it in its own image registry,
-from where it will be pulled when the task container is spun up.
-
-Alternatively, if you do not specify `builder = "union"` the `union` CLI will use your local Docker to build the image on your local machine,
-register it to the registry that you specify (using the `registry` parameter in the `ImageSpec`).
-See [Container images](../development-cycle/container-images.md) for more information.
-
-The main advantages offered by local building are:
-
-* You can specify a custom base image to build from (whereas the cloud builder always uses the default `union` image).
-* You can store your image in a private registry.
-
-If these advantages are not important to you, we recommend using the cloud builder, as it is simpler and faster.
-
-
-## Run the workflow on Union
-
 To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run --remote src/ml_workflow.py main
+$ union run --remote hello_world.py hello_world_wf
 ```
 
 The output displays a URL that links to the workflow execution in the UI:
@@ -154,16 +115,16 @@ To do this, you can use the `union register` command to register the workflow co
 The form of the command is:
 
 ```{code-block} shell
-$ union register <path-to-src>
+$ union register <path-to-source-directory>
 ```
 
 in our case, from within the `getting-started` directory, you would do:
 
 ```{code-block} shell
-$ union register src
+$ union register .
 ```
 
-This registers all code in the `src` directory to Union but does not immediately run anything.
+This registers all code in the current directory to Union but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
