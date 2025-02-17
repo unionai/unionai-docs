@@ -209,14 +209,15 @@ sphinx_source/
 .vscode/
 __pycache__/
 
-sitemap.json
 README.md
-Makefile
+dummy_index.html
+_redirects
+docs_redirects.csv
+sitemap.json
 build.py
+Makefile
 pyproject.toml
 uv.lock
-_redirects
-_overflow
 CODEOWNERS
 .gitignore
 .gitmodules

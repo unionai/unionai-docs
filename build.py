@@ -393,6 +393,7 @@ def process_project():
             env=DOCSEARCH_CREDENTIALS[variant],
         )
     shell(f'cp ./dummy_index.html {BUILD_DIR}/index.html')
+    shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 
 if __name__ == "__main__":

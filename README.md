@@ -172,7 +172,6 @@ In BYOC:
 * `https://docs.union.ai/byoc/user-guide/administration/cli-authentication-types`
 
 
-
 ### Controlling content at the block level
 
 The content of part of a page can be conditionally included using Jinja templating syntax like this:
@@ -262,19 +261,33 @@ Again, each variant is placed in a separate subdirectory.
 
 ## Redirects
 
-When re-arranging the content of the site, it may be necessary to create redirects.
-These are defined in the `docs_redirects.csv` file which is checked in at the
-root of this repo.
+Redirects are handled in two places:
 
-The redirects must be registered separately (they do not go into effect automatically on merge to main)
+* `_redirects` (deployed automatically on merge to `main`)
+* `docs_redirects.csv` (recorded here, but requires manual uploading to Cloudflare Bulk Redirects to take effect)
 
-To register the redirects, go to the Cloudflare dashboard for the `docs-union-ai` project:
+The `_redirects` file is used to redirect the top-level URLs to two opt-level pages:
+* `docs.union.ai/` -> `docs.union.ai/byoc/user-guide`
+* `docs.union.ai/byoc` -> `docs.union.ai/byoc/user-guide`
+* `docs.union.ai/serverless` -> `docs.union.ai/serverless/user-guide`
+
+These redirects are part of the functionality and design of the website itself.
+The `_redirects` file is automatically deployed to Cloudflare Pages on merge to `main`.
+For details on how the `_redirects` file works, see the [Cloudflare Docs > Pages > Configuration > Redirects](https://developers.cloudflare.com/pages/configuration/redirects/).
+
+The `docs_redirects.csv` file is used to redirect specific URLs to other specific URLs
+due to pages and content moving around over the lifecycle of the website.
+This is done to avoid 404s in URLs that have made their way "out into the wild".
+
+The file `docs_redirects.csv` is recorded here in the Git repo but only takes effect when uploaded to Cloudflare Bulk Redirects.
+To register the `docs_redirects.csv`, go to the Cloudflare dashboard for the `docs-union-ai` project:
 
 * Go to "Bulk Redirects"
 * Select `docs_redirects` under "Bulk Redirect Lists"
 * Upload the `docs_redirects.csv` file.
 
-For details on how the redirects file works, see the [Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
+For details on how the redirects file works, see the [Cloudflare Docs > Rules > Redirects > Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
+
 
 ## PR builds
 
