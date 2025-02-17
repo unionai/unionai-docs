@@ -18,7 +18,11 @@ This will take you to the **Projects list**:
 Click on the **New Project** button and fill in the details for your new project.
 For this example, let's create a project called **My project**:
 
-![Create new project](/_static/images/user-guide/getting-started/first-project/create-new-project.png)
+```{image} /_static/images/user-guide/getting-started/first-project/create-new-project.png
+:alt: Create new project
+:width: 445px
+:align: center
+```
 
 You now have a project on Union named "My Project" (and with project ID `my-project`) into which you can register your workflows.
 
