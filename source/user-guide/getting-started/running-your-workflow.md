@@ -75,7 +75,7 @@ When task and workflow code is registered on Union:
 To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run --remote hello_world.py hello_world_wf
+$ union run --remote --project my-project --domain development hello_world.py hello_world_wf
 ```
 
 The output displays a URL that links to the workflow execution in the UI:
@@ -115,26 +115,31 @@ To do this, you can use the `union register` command to register the workflow co
 The form of the command is:
 
 ```{code-block} shell
-$ union register <path-to-source-directory>
+$ union register [<options>] <path-to-source-directory>
 ```
 
 in our case, from within the `getting-started` directory, you would do:
 
 ```{code-block} shell
-$ union register .
+$ union register --project my-project --domain development .
 ```
 
 This registers all code in the current directory to Union but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
-Successfully serialized 5 flyte objects
-[✔] Registration ml_workflow.ml_workflow.evaluate_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.train_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.get_dataset type TASK successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.main type WORKFLOW successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.main type LAUNCH_PLAN successful with version nuHakW_PUV5uk71n-to7bg
-Successfully registered 5 entities
+Running pyflyte register from /Users/my-user/scratch/my-project with images ImageConfig(default_image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/my-user/scratch/my-project',)
+Registering against demo.hosted.unionai.cloud
+Detected Root /Users/my-user/my-project, using this to create deployable package...
+Loading packages ['my-project'] under source root /Users/my-user/my-project
+No output path provided, using a temporary directory at /var/folders/vn/72xlcb5d5jbbb3kk_q71sqww0000gn/T/tmphdu9wf6_ instead
+Computed version is sSFSdBXwUmM98sYv930bSQ
+Image say-hello-image:lIpeqcBrlB8DlBq0NEMR3g found. Skip building.
+Serializing and registering 3 flyte entities
+[✔] Task: my-project.hello_world.say_hello
+[✔] Workflow: my-project.hello_world.hello_world_wf
+[✔] Launch Plan: my-project.hello_world.hello_world_wf
+Successfully registered 3 entities
 ```
 
 
@@ -163,11 +168,3 @@ duration and the workflow version. Next, click on the `evaluate_model` node to o
 sidebar that contains additional information about the task:
 
 ![Sidebar](/_static/images//user-guide/getting-started/running-your-workflow/sidebar.png)
-
-Click on the "Flyte Deck" button in the sidebar to open up visualizations generated
-by the task:
-
-![Flyte Deck](/_static/images//user-guide/getting-started/running-your-workflow/flyte-deck.png)
-
-Now that we are familiar with the UI, let's jump into the code and see how the
-workflow is constructed.
