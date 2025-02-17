@@ -82,8 +82,28 @@ When deployed to Union, the workflow function is "compiled" to construct the dir
 
 ## pyproject.toml
 
-{@# TODO #@}
+The pyproject.toml is the standard project configuration used by `uv`.
+In particular, it specifies the project dependencies and the Python version to use.
+The default `pyproject.toml` file created by `union init` from the `union-simple` template looks like this
+
+
+```{code-block} toml
+[project]
+name = "union-simple"
+version = "0.1.0"
+description = "A simple Union project"
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+dependencies = ["union"]
+```
+
+(You can update to match the actual name of your project, `my-project`, if you like).
+
+The most important part of the file is the list of dependencies, in this case consisting of only one package, `union`.
+See [uv > Configuration > Configuration files](https://docs.astral.sh/uv/configuration/files/) for details.
 
 ## uv.lock
 
-{@# TODO #@}
+The `uv.lock` file is generated from `pyproject.toml` by `uv sync` command.
+It contains the exact versions of the dependencies required by the project.
+See [uv > Concepts > Projects > Locking and syncing](https://docs.astral.sh/uv/concepts/projects/sync/) for details.
