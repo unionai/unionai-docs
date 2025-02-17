@@ -95,7 +95,7 @@ def setup(app: Sphinx) -> Dict[str, Any]:
     """
     # add extension configuration values
     app.add_config_value('pdoc_modules', [], 'env', [list, tuple])
-    app.add_config_value('pdoc_output_dir', 'rst', 'env', str)
+    app.add_config_value('pdoc_output_dir', 'api-reference', 'env', str)
     
     # Connect extension functions to Sphinx events
     app.connect('config-inited', validate_config)
