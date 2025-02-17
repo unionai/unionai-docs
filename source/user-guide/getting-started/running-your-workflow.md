@@ -1,21 +1,66 @@
 # Running your workflow
 
-## Running locally the code locally
+## Python virtual environment
+
+The first step is to ensure that your `uv.lock` file is properly generated from your `pyproject.toml` file and that your local Python virtual environment is properly set up.
+
+Using `uv`, you can install the dependencies with the command:
+
+```{code-block} shell
+$ uv sync
+```
+
+You can then activate the virtual environment with:
+
+```{code-block} shell
+source .venv/bin/activate
+```
+
+:::{admonition} `activate` vs `uv run`
+When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
+This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the-union-cli) in order to [set up its configuration](./local-setup.md#configure-the-union-cli).
+
+To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
+
+`uv run union ...`
+
+Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
+
+In our examples we assume that you are doing the latter.
+:::
+
+
+## Run the code locally
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
 You can run the workflow locally with the command [`union run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run src/ml_workflow.py main
+$ union run hello_world.py hello_world_wf
 ```
 
-If the code runs successfully, you should see output like this:
+You should see output like this:
 
 ```{code-block} shell
 Running Execution on local.
-0.9767441860465116
+Hello, world!
 ```
+
+
+You can also pass in parameters to the workflow (assuming they declared in the workflow function):
+
+```{code-block} shell
+$ union run hello_world.py hello_world_wf --name="everybody"
+```
+
+You should see output like this:
+
+```{code-block} shell
+Running Execution on local.
+Hello, everybody!
+```
+
 
 ## Running remotely on Union
 
@@ -27,45 +72,10 @@ When task and workflow code is registered on Union:
 * The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-## ImageSpec and image building
-
-In this example the `ImageSpec` object is defined like this:
-
-```{code-block} python
-image = union.ImageSpec(
-    builder = "union",
-    name="ml-workflow-image",
-    packages=[
-        "scikit-learn==1.4.1.post1",
-        "pandas==2.2.1",
-        "matplotlib==3.8.3",
-        "pyarrow==17.0.0",
-        "union==0.1.132",
-    ]
-)
-```
-
-Specifying `builder = "union"` tells Union to build the image using its cloud image builder and register it in its own image registry,
-from where it will be pulled when the task container is spun up.
-
-Alternatively, if you do not specify `builder = "union"` the `union` CLI will use your local Docker to build the image on your local machine,
-register it to the registry that you specify (using the `registry` parameter in the `ImageSpec`).
-See [Container images](../development-cycle/container-images.md) for more information.
-
-The main advantages offered by local building are:
-
-* You can specify a custom base image to build from (whereas the cloud builder always uses the default `union` image).
-* You can store your image in a private registry.
-
-If these advantages are not important to you, we recommend using the cloud builder, as it is simpler and faster.
-
-
-## Run the workflow on Union
-
 To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run --remote src/ml_workflow.py main
+$ union run --remote --project my-project --domain development hello_world.py hello_world_wf
 ```
 
 The output displays a URL that links to the workflow execution in the UI:
@@ -105,26 +115,31 @@ To do this, you can use the `union register` command to register the workflow co
 The form of the command is:
 
 ```{code-block} shell
-$ union register <path-to-src>
+$ union register [<options>] <path-to-source-directory>
 ```
 
 in our case, from within the `getting-started` directory, you would do:
 
 ```{code-block} shell
-$ union register src
+$ union register --project my-project --domain development .
 ```
 
-This registers all code in the `src` directory to Union but does not immediately run anything.
+This registers all code in the current directory to Union but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
-Successfully serialized 5 flyte objects
-[✔] Registration ml_workflow.ml_workflow.evaluate_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.train_model type TASK successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.get_dataset type TASK successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.main type WORKFLOW successful with version nuHakW_PUV5uk71n-to7bg
-[✔] Registration ml_workflow.ml_workflow.main type LAUNCH_PLAN successful with version nuHakW_PUV5uk71n-to7bg
-Successfully registered 5 entities
+Running pyflyte register from /Users/my-user/scratch/my-project with images ImageConfig(default_image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/my-user/scratch/my-project',)
+Registering against demo.hosted.unionai.cloud
+Detected Root /Users/my-user/my-project, using this to create deployable package...
+Loading packages ['my-project'] under source root /Users/my-user/my-project
+No output path provided, using a temporary directory at /var/folders/vn/72xlcb5d5jbbb3kk_q71sqww0000gn/T/tmphdu9wf6_ instead
+Computed version is sSFSdBXwUmM98sYv930bSQ
+Image say-hello-image:lIpeqcBrlB8DlBq0NEMR3g found. Skip building.
+Serializing and registering 3 flyte entities
+[✔] Task: my-project.hello_world.say_hello
+[✔] Workflow: my-project.hello_world.hello_world_wf
+[✔] Launch Plan: my-project.hello_world.hello_world_wf
+Successfully registered 3 entities
 ```
 
 
@@ -146,18 +161,10 @@ To view the workflow execution graph, click the **Graph** tab above the running 
 
 When you view the workflow execution graph, you will see the following:
 
-![Graph](/_static/images/user-guide/first-workflow/running-the-workflow/graph.png)
+![Graph](/_static/images/user-guide/getting-started/running-your-workflow/graph.png)
 
 Above the graph, there is metadata that describes the workflow execution, such as the
 duration and the workflow version. Next, click on the `evaluate_model` node to open up a
 sidebar that contains additional information about the task:
 
-![Sidebar](/_static/images//user-guide/first-workflow/running-the-workflow/sidebar.png)
-
-Click on the "Flyte Deck" button in the sidebar to open up visualizations generated
-by the task:
-
-![Flyte Deck](/_static/images//user-guide/first-workflow/running-the-workflow/flyte-deck.png)
-
-Now that we are familiar with the UI, let's jump into the code and see how the
-workflow is constructed.
+![Sidebar](/_static/images//user-guide/getting-started/running-your-workflow/sidebar.png)

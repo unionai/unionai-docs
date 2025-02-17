@@ -6,6 +6,12 @@ This section covers developing production-ready workflows for Union.
 :header-rows: 0
 :widths: 20 30
 
+* - {doc}`Project structure <project-structure>`
+  - Best practices in organizing a Union workflow project repository.
+* - {doc}`Projects and domains <projects-and-domains>`
+  - Understanding projects and domains in Union.
+* - {doc}`Building workflows <building-workflows>`
+  - Best practices in strucuring your workflows.
 * - {doc}`Setting up a project <setting-up-a-project>`
   - Create a project on Union and initialize a workflow directory on your local machine.
 * - {doc}`Local dependencies <local-dependencies>`
