@@ -40,22 +40,31 @@ EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
 # The set of variants.
-ALL_VARIANTS: list[str] = ['serverless', 'byoc']
+ALL_VARIANTS: list[str] = ['flyte', 'serverless', 'byoc', 'byok']
 
 # The display names of the variants
-VARIANT_DISPLAY_NAMES: dict[str, str] = {'serverless': 'Serverless', 'byoc': 'BYOC'}
+VARIANT_DISPLAY_NAMES: dict[str, str] = {
+    'flyte': 'Flyte',
+    'serverless': 'Serverless',
+    'byoc': 'BYOC',
+    'byok': 'BYOK'
+}
 
 # Global substitutions for Jinja2 templating.
 # Currently unused, but can be used to substitute variables in the Markdown files.
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
     'product_name': {
-        'byoc': 'Union BYOC',
+        'flyte': 'Flyte',
         'serverless': 'Union Serverless',
+        'byoc': 'Union BYOC',
+        'byok': 'Union BYOK'
     },
     'default_project': {
-        'byoc': 'flytesnacks',
+        'flyte': 'flytesnacks',
         'serverless': 'default',
+        'byoc': 'flytesnacks',
+        'byok': 'flytesnacks'
     }
 }
 

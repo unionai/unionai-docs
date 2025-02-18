@@ -1,0 +1,311 @@
+- user-guide:
+    - about-union
+    - getting-started:
+        - local-setup
+        - first-project
+        - understanding-the-code
+        - running-your-workflow
+    - core-concepts:
+        - workflows:
+            - standard-workflows
+            - subworkflows-and-sub-launch-plans
+            - dynamic-workflows
+            - eager-workflows
+            - launching-workflows
+            - viewing-workflows
+            - viewing-workflow-executions
+        - tasks:
+            - task-types
+            - task-parameters
+            - launching-tasks
+            - viewing-tasks
+            - viewing-logs
+            - task-software-environment _BYOC:
+                - imagespec _BYOC
+                - imagespec-with-ecr _BYOC
+                - imagespec-with-gar _BYOC
+                - imagespec-with-acr _BYOC
+                - environment-variables _BYOC
+            - task-hardware-environment:
+                - customizing-task-resources
+                - accelerators
+                - interruptible-instances _BYOC
+                - task-level-monitoring
+        - launch-plans:
+            - defining-launch-plans
+            - viewing-launch-plans
+            - notifications
+            - schedules
+            - activating-and-deactivating
+            - running-launch-plans
+            - reference-launch-plans
+            - mapping-over-launch-plans
+            - reactive-workflows
+        - actors:
+            - actors-and-regular-tasks
+            - actor-examples
+        - artifacts:
+            - declaring-artifacts
+            - materializing-artifacts
+            - consuming-artifacts-in-workflows
+            - connecting-workflows-with-artifact-event-triggers
+            - viewing-artifacts
+        - serving:
+            - adding-your-own-code
+            - serving-workflow-output
+            - serving-a-model
+        - caching
+    - development-cycle:
+        - project-structure
+        - projects-and-domains
+        - building-workflows
+        - setting-up-project
+        - local-dependencies
+        - image-spec
+        - running-your-code
+        - overriding-parameters
+        - details-of-union-run
+        - debugging-with-interactive-tasks
+        - managing-secrets
+        - managing-api-keys
+        - accessing-aws-s3 _SRVR
+        - task-resource-validation
+        - running-in-a-local-cluster _BYOC
+        - ci-cd-deployment _BYOC
+        - union-remote:
+            - union-remote-examples
+    - data-input-output:
+        - flyte-file-and-flyte-directory
+        - downloading-with-ff-and-fd
+        - task-input-and-output _BYOC
+        - accelerated-datasets _BYOC
+    - administration:
+        - resources
+        - cost-allocation _BYOC
+        - user-management _BYOC
+        - applications _BYOC
+        - cli-authentication-types _BYOC
+    - integrations _BYOC:
+        - enabling-aws-resources _BYOC:
+            - enabling-aws-s3 _BYOC
+            - enabling-aws-ecr _BYOC
+            - enabling-aws-secrets-manager _BYOC
+        - enabling-gcp-resources _BYOC:
+            - enabling-google-cloud-storage _BYOC
+            - enabling-google-artifact-registry _BYOC
+            - enabling-bigquery _BYOC
+            - enabling-google-secret-manager _BYOC
+        - enabling-azure-resources _BYOC:
+            - enabling-azure-blob-storage _BYOC
+            - enabling-azure-container-registry _BYOC
+            - enabling-azure-key-vault _BYOC
+        - agents _BYOC:
+            - airflow-agent _BYOC:
+                - airflow-agent-example _BYOC
+            - sagemaker-agent _BYOC:
+                - sagemaker-agent-example _BYOC
+            - databricks-agent _BYOC:
+                - databricks-agent-example _BYOC
+            - file-sensor-agent _BYOC:
+                - file-sensor-agent-example _BYOC
+            - bigquery-agent _BYOC:
+                - bigquery-agent-example _BYOC
+            - mmcloud-agent _BYOC:
+                - mmcloud-agent-example _BYOC
+            - dgx-agent _BYOC
+            - openai-agents _BYOC:
+                - batch-agent-example _BYOC
+                - chatgpt-agent-example _BYOC
+            - snowflake-agent _BYOC:
+                - snowflake-agent-example _BYOC
+    - faq _BYOC
+- tutorials:
+    - language-models:
+        - sentiment-classifier _FILE ./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py
+        - agentic-rag _FILE ./unionai-examples/tutorials/agentic_rag/agentic_rag.py
+        - soft-clustering-hdbscan _FILE ./unionai-examples/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py
+        - liger-kernel-finetuning _FILE ./unionai-examples/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py
+        - llama_edge_deployment _FILE ./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py
+        - vllm-serving-on-actor _FILE ./unionai-examples/tutorials/vllm_serving_on_actor/ner.py
+        - nim-on-actor _BYOC _FILE ./unionai-examples/tutorials/nim_on_actor/nim_on_actor.py
+        - pdf-to-podcast-blueprint _FILE ./unionai-examples/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py
+    - diffusion-models:
+        - mochi-video-generation _FILE ./unionai-examples/tutorials/mochi_video_generation/mochi_video_generation.py
+    - parallel-processing-and-job-scheduling:
+        - reddit-slack-bot _FILE ./unionai-examples/tutorials/reddit_slack_bot/reddit_slack_bot.py
+        - wikipedia-embeddings _FILE ./unionai-examples/tutorials/wikipedia_embeddings_on_actor/wikipedia_embeddings_on_actor.py
+    - time-series:
+        - gluonts-time-series _FILE ./unionai-examples/tutorials/gluonts_time_series/gluonts_time_series.py
+        - time-series-forecaster-comparison _FILE ./unionai-examples/tutorials/time_series_forecasting/workflows/time_series_workflow.py
+    - finance:
+        - credit-default-xgboost _FILE ./unionai-examples/tutorials/credit_default/credit_default.py
+    - bioinformatics:
+        - alignment _FILE ./unionai-examples/tutorials/genomic_alignment/genomic_alignment.py
+    - multimodal-ai:
+        - video-dubbing _FILE ./unionai-examples/tutorials/video_translation/video_translation.py
+- api-reference:
+    - union-sdk:
+        - design:
+            - models-files
+            - authoring-structure
+            - execution-time-support
+        - core-flytekit:
+            - basic-authoring
+            - branching-and-conditionals
+            - customizing-tasks-and-workflows
+            - dynamic-and-nested-workflows
+            - signaling
+            - scheduling
+            - notifications
+            - reference-entities
+            - core-task-types
+            - secrets-and-security-context
+            - common-flyte-idl-objects
+            - task-utilities
+            - artifacts
+            - documentation
+        - configuration:
+            - config
+            - compile-time-and-serialization-settings
+            - execution-time-settings
+        - image-spec
+        - clients
+        - unit-testing
+        - specifying-accelerators
+        - extending-flytekit
+        - flyte-deck
+        - agents _BYOC:
+            - airflow _BYOC
+            - sagemaker _BYOC
+            - file-sensor _BYOC
+            - bigquery _BYOC
+            - mmc _BYOC
+            - chatgpt _BYOC
+            - snowflake _BYOC
+            - spark _BYOC
+        - actors:
+            - actor.actorenvironment
+        - artifacts:
+            - artifacts.datacard
+            - artifacts.modelcard
+            - artifacts.onartifact
+        - union-remote:
+            - entrypoint
+            - entities
+            - entity-components
+            - execution-objects
+        - custom-tasks:
+            - base-task
+            - python-function-task
+            - shell-task
+            - sqlite3-task
+        - custom-types:
+            - structured-dataset
+            - flytefile
+            - flytedirectory
+            - iterator
+            - pytorch
+            - tensorflow
+            - sklearn
+        - experimental-features
+    - union-cli
+    - uctl-cli:
+        - uctl
+        - uctl-append _BYOC:
+            - uctl-append-identityassignments _BYOC
+        - uctl-apply _BYOC:
+            - uctl-apply-app _BYOC
+            - uctl-apply-clusterconfig _BYOC
+            - uctl-apply-clusterconfigid _BYOC
+            - uctl-apply-clusterpoolconfig _BYOC
+        - uctl-config _BYOC:
+            - uctl-config-discover _BYOC
+            - uctl-config-docs _BYOC
+            - uctl-config-init _BYOC
+            - uctl-config-validate _BYOC
+        - uctl-create:
+            - uctl-create-app
+            - uctl-create-clusterpool
+            - uctl-create-clusterpoolassignment
+            - uctl-create-execution
+            - uctl-create-policy
+            - uctl-create-project
+            - uctl-create-role
+        - uctl-delete:
+            - uctl-delete-app
+            - uctl-delete-cluster-pool-attributes
+            - uctl-delete-cluster-resource-attribute
+            - uctl-delete-cluster
+            - uctl-delete-clusterconfig
+            - uctl-delete-clusterpool
+            - uctl-delete-clusterpoolassignment
+            - uctl-delete-execution-cluster-label
+            - uctl-delete-execution-queue-attribute
+            - uctl-delete-execution
+            - uctl-delete-identityassignments
+            - uctl-delete-plugin-override
+            - uctl-delete-policy
+            - uctl-delete-role
+            - uctl-delete-task-resource-attribute
+            - uctl-delete-workflow-execution-config
+        - uctl-demo:
+            - uctl-demo-exec
+            - uctl-demo-reload
+            - uctl-demo-start
+            - uctl-demo-status
+            - uctl-demo-teardown
+        - uctl-get:
+            - uctl-get-app
+            - uctl-get-cluster-pool-attributes
+            - uctl-get-cluster-resource-attribute
+            - uctl-get-cluster
+            - uctl-get-clusterconfig
+            - uctl-get-clusterconfigs
+            - uctl-get-clusterpool
+            - uctl-get-clusterpoolconfig
+            - uctl-get-clusterswithconfig
+            - uctl-get-echo
+            - uctl-get-execution-cluster-label
+            - uctl-get-execution-queue-attribute
+            - uctl-get-execution
+            - uctl-get-executionoperation
+            - uctl-get-identityassignment
+            - uctl-get-launchplan
+            - uctl-get-plugin-override
+            - uctl-get-policy
+            - uctl-get-project
+            - uctl-get-role
+            - uctl-get-task-resource-attribute
+            - uctl-get-task
+            - uctl-get-workflow-execution-config
+            - uctl-get-workflow
+        - uctl-register:
+            - uctl-register-examples
+            - uctl-register-files
+        - uctl-update:
+            - uctl-update-cluster-pool-attributes
+            - uctl-update-cluster-resource-attribute
+            - uctl-update-execution-cluster-label
+            - uctl-update-execution-queue-attribute
+            - uctl-update-execution
+            - uctl-update-launchplan-meta
+            - uctl-update-launchplan
+            - uctl-update-plugin-override
+            - uctl-update-project
+            - uctl-update-task-meta
+            - uctl-update-task-resource-attribute
+            - uctl-update-workflow-execution-config
+            - uctl-update-workflow-meta
+        - uctl-version
+- deployment _BYOC:
+    - platform-architecture _BYOC
+    - data-plane-setup-on-aws _BYOC
+    - data-plane-setup-on-gcp _BYOC
+    - data-plane-setup-on-azure _BYOC
+    - single-sign-on-setup _BYOC:
+        - google-oidc _BYOC
+        - microsoft-entra-id _BYOC
+        - other-identity-providers _BYOC
+    - configuring-your-data-plane _BYOC
+    - multi-cluster _BYOC
+    - data-retention-policy _BYOC
