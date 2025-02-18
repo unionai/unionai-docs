@@ -4,24 +4,36 @@
 
 ```{admonition} Union Serverless
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
-Switch to [Union BYOC](https://docs.union.ai/byoc) with the version selector above.
+Switch to another variant with the version selector above.
 ```
 
 {@@ elif byoc @@}
 
 ```{admonition} Union BYOC
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to [Union Serverless](https://docs.union.ai/byoc) with the version selector above.
+Switch to another variant with the version selector above.
+```
+
+{@@ elif byok @@}
+
+```{admonition} Union BYOK
+These docs are for [**Union BYOK**](./about-union.md#union-byok).
+Switch to another variant with the version selector above.
 ```
 
 {@@ endif @@}
 
+{@@ if byok @@}
+
+Please review the User guide by navigating on the left.
+
+{@@ else @@}
+
 The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
-
+- Run complex AI workloads with performance, scale, and efficiency.
+- Achieve millisecond-level execution times with reusable containers.
+- Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
 ::::{grid} 2
 
@@ -84,3 +96,5 @@ Frequently asked questions.
 {@@ endif @@}
 
 ::::
+
+{@@ endif @@}

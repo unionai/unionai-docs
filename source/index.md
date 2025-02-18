@@ -1,14 +1,31 @@
 {@@ if serverless @@}
+
 # Union Serverless
+
 {@@ elif byoc @@}
+
 # Union BYOC
+
+{@@ elif byok @@}
+
+# Union BYOK
+
 {@@ endif @@}
 
-The Union platorm empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+{@@ if byok @@}
 
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+```{admonition} Early Release Warning
+Union BYOK is in Design Partner limited release. All documentation and procedures are subject to change as we drive towards General Availability.
+```
+
+The quick brown fox jumped over the lazy dog
+
+{@@ else @@}
+The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+
+- Run complex AI workloads with performance, scale, and efficiency.
+- Achieve millisecond-level execution times with reusable containers.
+- Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
 ::::{grid}
 
@@ -57,7 +74,9 @@ Union offers two deployment options: **Serverless** and **BYOC** (Bring Your Own
 {@@ if serverless @@}
 You are currently in the **Union Serverless** docs.
 [Switch to the Union BYOC docs](https://docs.union.ai/byoc).
-{@@  elif byoc @@}
+{@@ elif byoc @@}
 You are currently in the **Union BYOC** docs.
 [Switch to the Union Serverless docs](https://docs.union.ai/serverless).
+{@@ endif @@}
+
 {@@ endif @@}

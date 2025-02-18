@@ -100,7 +100,7 @@ expand_level = -1 # set to 0, 1, 2, or -1
 
 html_context = {
     "dir_to_title": {
-        "user-guide": "User guide",
+        "user-guide": " YYY",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
         "deployment": "Deployment",

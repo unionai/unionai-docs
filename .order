@@ -119,6 +119,7 @@ source/user-guide/administration/cost-allocation.md
 source/user-guide/administration/user-management.md
 source/user-guide/administration/applications.md
 source/user-guide/administration/cli-authentication-types.md
+source/user-guide/administration/security.md
 
 source/user-guide/integrations/
 source/user-guide/integrations/index.md
@@ -210,12 +211,12 @@ sphinx_source/
 __pycache__/
 
 README.md
+Makefile
+build.py
+doctree.yaml
 dummy_index.html
 _redirects
 docs_redirects.csv
-sitemap.json
-build.py
-Makefile
 pyproject.toml
 uv.lock
 CODEOWNERS
