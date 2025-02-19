@@ -398,11 +398,11 @@ def process_project():
     shell(f'rm -rf {BUILD_DIR}')
     shell(f'rm -rf {SPHINX_SOURCE_DIR}')
 
-    with open(DOCTREE, "r") as doctree:
-        page_node = yaml.load(doctree, Loader=yaml.CLoader)
+    with open(DOCTREE, "r") as dt:
+        page_node = yaml.load(dt, Loader=yaml.CLoader)
 
     with open(RUN_COMMANDS, "r") as rc:
-        run_commands = yaml.safe_load(rc)
+        run_commands = yaml.load(rc, Loader=yaml.CLoader)
 
     for variant in ALL_VARIANTS:
         process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
