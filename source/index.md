@@ -1,10 +1,14 @@
-{@@ if serverless @@}
+{@@ if flyte @@}
+# Flyte
+{@@ elif serverless @@}
 # Union Serverless
 {@@ elif byoc @@}
 # Union BYOC
+{@@ elif byok @@}
+# Union BYOK
 {@@ endif @@}
 
-The Union platorm empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.

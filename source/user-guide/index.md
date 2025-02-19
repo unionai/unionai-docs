@@ -1,19 +1,29 @@
 # User guide
 
-{@@ if serverless @@}
+{@@ if flyte @@}
+
+```{admonition} Flyte
+These docs are for [**Flyte**](./about-union.md#flyte).
+
+```
+{@@ elif serverless @@}
 
 ```{admonition} Union Serverless
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
-Switch to [Union BYOC](https://docs.union.ai/byoc) with the version selector above.
+Switch to another variant with the version selector above.
 ```
-
 {@@ elif byoc @@}
 
 ```{admonition} Union BYOC
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to [Union Serverless](https://docs.union.ai/byoc) with the version selector above.
+Switch to another variant with the version selector above.
 ```
+{@@ elif byok @@}
 
+```{admonition} Union BYOK
+These docs are for [**Union BYOC**](./about-union.md#union-byok).
+Switch to another variant with the version selector above.
+```
 {@@ endif @@}
 
 The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
