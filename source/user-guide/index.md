@@ -4,7 +4,7 @@
 
 ```{admonition} Flyte
 These docs are for [**Flyte**](./about-union.md#flyte).
-
+Switch to another variant with the version selector above.
 ```
 {@@ elif serverless @@}
 
