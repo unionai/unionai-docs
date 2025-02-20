@@ -41,14 +41,19 @@ EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
 # The set of variants.
-ALL_VARIANTS: list[str] = ['byoc', 'byok', 'flyte', 'serverless']
+ALL_VARIANTS: list[str] = [
+    'flyte',
+    'serverless',
+    'byoc',
+    'byok',
+]
 
 # The display names of the variants
 VARIANT_DISPLAY_NAMES: dict[str, str] = {
+    'flyte': 'Flyte',
+    'serverless': 'Serverless',
     'byoc': 'BYOC',
     'byok': 'BYOK',
-    'flyte': 'Flyte',
-    'serverless': 'Serverless'
 }
 
 # Global substitutions for Jinja2 templating.
@@ -56,32 +61,22 @@ VARIANT_DISPLAY_NAMES: dict[str, str] = {
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
     'product_name': {
+        'flyte': 'Flyte',
+        'serverless': 'Union Serverless',
         'byoc': 'Union BYOC',
         'byok': 'Union BYOK',
-        'flyte': 'Flyte',
-        'serverless': 'Union Serverless'
     },
     'default_project': {
+        'flyte': 'flytesnacks',
+        'serverless': 'default',
         'byoc': 'flytesnacks',
         'byok': 'flytesnacks',
-        'flyte': 'flytesnacks',
-        'serverless': 'default'
-    }
+    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
 
 DOCSEARCH_CREDENTIALS = {
-    "byoc": {
-        "DOCSEARCH_APP_ID": "IG23OUCJRL",
-        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
-        "DOCSEARCH_INDEX_NAME": "union",
-    },
-     "byok": {
-        "DOCSEARCH_APP_ID": "IG23OUCJRL",
-        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
-        "DOCSEARCH_INDEX_NAME": "union",
-    },
      "flyte": {
         "DOCSEARCH_APP_ID": "IG23OUCJRL",
         "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
@@ -90,6 +85,16 @@ DOCSEARCH_CREDENTIALS = {
     "serverless": {
         "DOCSEARCH_APP_ID": "DQDAK9LPRV",
         "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_SERVERLESS", ""),
+        "DOCSEARCH_INDEX_NAME": "union",
+    },
+    "byoc": {
+        "DOCSEARCH_APP_ID": "IG23OUCJRL",
+        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
+        "DOCSEARCH_INDEX_NAME": "union",
+    },
+     "byok": {
+        "DOCSEARCH_APP_ID": "IG23OUCJRL",
+        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
         "DOCSEARCH_INDEX_NAME": "union",
     },
 }
