@@ -5,6 +5,7 @@
             {"name": "local-setup", "variants": ["byoc", "serverless"]},
             {"name": "first-project", "variants": ["byoc", "serverless"]},
             {"name": "understanding-the-code", "variants": ["byoc", "serverless"]},
+            {"name": "authentication", "variants": ["byoc"]},
             {"name": "running-your-workflow", "variants": ["byoc", "serverless"]}
         ]},
         {"name": "core-concepts", "variants": ["byoc", "serverless"], "children": [
