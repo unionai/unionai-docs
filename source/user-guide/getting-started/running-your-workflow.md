@@ -151,7 +151,7 @@ To run the workflow, you need to go to the Union interface:
 2. In the left sidebar, click **Workflows**.
 3. Search for your workflow, then select the workflow from the search results.
 4. On the workflow page, click **Launch Workflow**.
-5. In the "Create New Execution" dialog, you can change the workflow version, Launch Plan, and inputs (if present). Click "Advanced options" to change the security context, labels, annotations, max parallelism, override the interruptible flag, and overwrite cached inputs.
+5. In the "Create New Execution" dialog, you can change the workflow version, launch plan, and inputs (if present). Click "Advanced options" to change the security context, labels, annotations, max parallelism, override the interruptible flag, and overwrite cached inputs.
 6. To execute the workflow, click **Launch**. You should see the workflow status change to "Running", then "Succeeded" as the execution progresses.
 
 To view the workflow execution graph, click the **Graph** tab above the running workflow.
