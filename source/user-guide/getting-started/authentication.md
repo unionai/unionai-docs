@@ -8,11 +8,11 @@ Before diving into authentication, ensure you have installed the Union CLI. See 
 
 Union CLI supports three authentication mechanisms:
 
-| Authentication Method | Works on Local? | Works on Remote? | Use Case |
-|-----------------------|-----------------|------------------|----------|
-| PKCE (default)        | ✅ Yes          | ❌ No            | Best for local machines with a browser |
-| DeviceFlow            | ✅ Yes          | ✅ Yes           | Best for remote machines without a browser |
-| ClientSecret          | ✅ Yes          | ✅ Yes           | Best for CI/CD or automation |
+| Authentication Method | Works on Local? | Works on Remote? | Use Case                                                        |
+|-----------------------|-----------------|------------------|-----------------------------------------------------------------|
+| PKCE (default)        | ✅ Yes          | ❌ No            | Best on local machines with a browser.                          |
+| DeviceFlow            | ✅ Yes          | ✅ Yes           | Best on remote machines without a browser, like an ssh session. |
+| ClientSecret          | ✅ Yes          | ✅ Yes           | Best for CI/CD or automation.                                   |
 
 :::{note}
 If you used `union create login --host <union-host-url>`, this used PKCE by default.
@@ -36,11 +36,13 @@ logger:
   show-source: true
   level: 0
 ```
-Limitations: Requires a local browser, making it unsuitable for remote machines.
+:::{note}
+PKCE requires a local browser, making it unsuitable for using the `union` CLI on remote machines within an ssh session.
+:::
 
 ## 2. DeviceFlow (Best for Remote Machines)
 
-If you are on a remote machine without a browser, use DeviceFlow. This method provides a URL that you can open in your local browser.
+If you are working with the `union` CLI on a remote machine without a browser, use DeviceFlow. This method provides a URL that you can open in your local browser.
 
 Authentication Flow:
 - Run a Union CLI command.
@@ -58,7 +60,7 @@ logger:
   level: 0
 ```
 :::{note}
-If running from an SSH session on Linux, install a keyring service to avoid needing authentication every time: `pip install keyring keyrings.alt`
+During authentication, Union attempts to store an authentication token on the keyring service of the operating system. If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default. If you find that browser based authentication is required every time you run or register your workflows, you may need to `run pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
 :::
 
 ## 3. ClientSecret (Best for CI/CD and Automation)

@@ -99,7 +99,6 @@
             {"name": "cost-allocation", "variants": ["byoc"]},
             {"name": "user-management", "variants": ["byoc"]},
             {"name": "applications", "variants": ["byoc"]},
-            {"name": "cli-authentication-types", "variants": ["byoc"]}
         ]},
         {"name": "integrations", "variants": ["byoc"], "children": [
             {"name": "enabling-aws-resources", "variants": ["byoc"], "children": [
