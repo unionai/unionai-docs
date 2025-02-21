@@ -14,7 +14,7 @@ The launch plan is declared by calling `LaunchPlan.get_or_create` with the workf
 
 ```{note}
 In the above code the `LaunchPlan` object returned by `get_or_create()` is not assigned to a variable.
-However, you can assign the launch plan object to a variable and reference the variable elsewhere in your code, allowing you to control when the launch plan is invoked. For more details, see [Running Launch Plans)(running-launch-plans).
+However, you can assign the launch plan object to a variable and reference the variable elsewhere in your code, allowing you to control when the launch plan is invoked. For more details, see [Running launch plans)(running-launch-plans).
 ```
 
 ## Launch plan inputs
