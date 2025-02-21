@@ -21,7 +21,7 @@ Switch to another variant with the version selector above.
 {@@ elif byok @@}
 
 ```{admonition} Union BYOK
-These docs are for [**Union BYOC**](./about-union.md#union-byok).
+These docs are for [**Union BYOK**](./about-union.md#union-byok).
 Switch to another variant with the version selector above.
 ```
 {@@ endif @@}
