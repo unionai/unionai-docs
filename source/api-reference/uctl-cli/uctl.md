@@ -7,7 +7,7 @@ uctl is used to interact with Union Cloud
 uctl is used to interact with Union Cloud
 
 Lets you manage Flyte entities (Projects, Domains, Workflows, Tasks, and
-Launch Plans), Users, Roles, and Union Cloud configuration.
+Launch plans), Users, Roles, and Union Cloud configuration.
 
 ## Options
 
