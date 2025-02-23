@@ -29,30 +29,37 @@ children:
               - name: viewing-logs
               - name: task-software-environment
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: imagespec
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
                   - name: imagespec-with-ecr
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
                   - name: imagespec-with-gar
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
                   - name: imagespec-with-acr
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
                   - name: environment-variables
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: task-hardware-environment
                 children:
                   - name: customizing-task-resources
                   - name: accelerators
                   - name: interruptible-instances
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
                   - name: task-level-monitoring
           - name: launch-plans
             children:
@@ -102,10 +109,12 @@ children:
           - name: task-resource-validation
           - name: running-in-a-local-cluster
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: ci-cd-deployment
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: union-remote
             children:
               - name: union-remote-examples
@@ -115,140 +124,183 @@ children:
           - name: downloading-with-ff-and-fd
           - name: task-input-and-output
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: accelerated-datasets
             variants:
-              - byoc
+              -byoc
+              -byok
       - name: administration
         children:
           - name: resources
           - name: cost-allocation
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: user-management
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: applications
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: cli-authentication-types
             variants:
-              - byoc
+              -byoc
+              -byok
+          - name: security
+            variants:
+              - byok
       - name: integrations
         variants:
-          - byoc
+          -byoc
+          -byok
         children:
           - name: enabling-aws-resources
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: enabling-aws-s3
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-aws-ecr
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-aws-secrets-manager
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: enabling-gcp-resources
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: enabling-google-cloud-storage
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-google-artifact-registry
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-bigquery
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-google-secret-manager
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: enabling-azure-resources
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: enabling-azure-blob-storage
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-azure-container-registry
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: enabling-azure-key-vault
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: agents
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: airflow-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: airflow-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: sagemaker-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: sagemaker-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: databricks-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: databricks-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: file-sensor-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: file-sensor-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: bigquery-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: bigquery-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: mmcloud-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: mmcloud-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: dgx-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: openai-agents
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: batch-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
                   - name: chatgpt-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
               - name: snowflake-agent
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
                 children:
                   - name: snowflake-agent-example
                     variants:
-                      - byoc
+                      -byoc
+                      -byok
       - name: faq
         variants:
-          - byoc
+          -byoc
+          -byok
   - name: tutorials
     children:
       - name: language-models
@@ -267,7 +319,8 @@ children:
             from_py_file: ./unionai-examples/tutorials/vllm_serving_on_actor/ner.py
           - name: nim-on-actor
             variants:
-              - byoc
+              -byoc
+              -byok
             from_py_file: ./unionai-examples/tutorials/nim_on_actor/nim_on_actor.py
           - name: pdf-to-podcast-blueprint
             from_py_file: ./unionai-examples/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py
@@ -337,32 +390,41 @@ children:
           - name: flyte-deck
           - name: agents
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: airflow
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: sagemaker
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: file-sensor
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: bigquery
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: mmc
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: chatgpt
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: snowflake
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: spark
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: actors
             children:
               - name: actor.actorenvironment
@@ -399,43 +461,55 @@ children:
           - name: uctl
           - name: uctl-append
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: uctl-append-identityassignments
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: uctl-apply
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: uctl-apply-app
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: uctl-apply-clusterconfig
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: uctl-apply-clusterconfigid
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: uctl-apply-clusterpoolconfig
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: uctl-config
             variants:
-              - byoc
+              -byoc
+              -byok
             children:
               - name: uctl-config-discover
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: uctl-config-docs
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: uctl-config-init
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
               - name: uctl-config-validate
                 variants:
-                  - byoc
+                  -byoc
+                  -byok
           - name: uctl-create
             children:
               - name: uctl-create-app
@@ -518,39 +592,51 @@ children:
           - name: uctl-version
   - name: deployment
     variants:
-      - byoc
+      -byoc
+      -byok
     children:
       - name: platform-architecture
         variants:
-          - byoc
+          -byoc
+          -byok
       - name: data-plane-setup-on-aws
         variants:
-          - byoc
+          -byoc
+          -byok
       - name: data-plane-setup-on-gcp
         variants:
-          - byoc
+          -byoc
+          -byok
       - name: data-plane-setup-on-azure
         variants:
-          - byoc
+          -byoc
+          -byok
       - name: single-sign-on-setup
         variants:
-          - byoc
+          -byoc
+          -byok
         children:
           - name: google-oidc
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: microsoft-entra-id
             variants:
-              - byoc
+              -byoc
+              -byok
           - name: other-identity-providers
             variants:
-              - byoc
+              -byoc
+              -byok
       - name: configuring-your-data-plane
         variants:
-          - byoc
+          -byoc
+          -byok
       - name: multi-cluster
         variants:
-          - byoc
+          -byoc
+          -byok
       - name: data-retention-policy
         variants:
-          - byoc
+          -byoc
+          -byok

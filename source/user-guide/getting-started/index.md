@@ -77,7 +77,7 @@ stop it manually on the Workspaces page.
 
 🎉 Congratulations! You've just run your first workflow on Union.
 
-{@@ elif byoc @@}
+{@@ elif byoc or byok @@}
 
 ## Gather your credentials
 

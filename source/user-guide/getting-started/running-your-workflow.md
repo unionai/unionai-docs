@@ -90,7 +90,7 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-{@@ elif byoc @@}
+{@@ elif byoc or byok @@}
 
 ```{code-block} shell
 👍 Build submitted!

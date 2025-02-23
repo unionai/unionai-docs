@@ -42,7 +42,6 @@ RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
 # The set of variants.
 ALL_VARIANTS: list[str] = [
-    'flyte',
     'serverless',
     'byoc',
     'byok',
@@ -50,7 +49,6 @@ ALL_VARIANTS: list[str] = [
 
 # The display names of the variants
 VARIANT_DISPLAY_NAMES: dict[str, str] = {
-    'flyte': 'Flyte',
     'serverless': 'Serverless',
     'byoc': 'BYOC',
     'byok': 'BYOK',
@@ -61,13 +59,11 @@ VARIANT_DISPLAY_NAMES: dict[str, str] = {
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
     'product_name': {
-        'flyte': 'Flyte',
         'serverless': 'Union Serverless',
         'byoc': 'Union BYOC',
         'byok': 'Union BYOK',
     },
     'default_project': {
-        'flyte': 'flytesnacks',
         'serverless': 'default',
         'byoc': 'flytesnacks',
         'byok': 'flytesnacks',
@@ -77,11 +73,6 @@ SUBS: dict[str, dict[str, str] | str] = {
 INSTALL_SDK_PACKAGE = "union"
 
 DOCSEARCH_CREDENTIALS = {
-     "flyte": {
-        "DOCSEARCH_APP_ID": "IG23OUCJRL",
-        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
-        "DOCSEARCH_INDEX_NAME": "union",
-    },
     "serverless": {
         "DOCSEARCH_APP_ID": "DQDAK9LPRV",
         "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_SERVERLESS", ""),

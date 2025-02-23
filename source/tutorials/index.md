@@ -107,7 +107,7 @@ Run the Mochi 1 text-to-video generation model by Genmo on Union.
 Leverage Union to productionize NVIDIA blueprint workflows.
 :::
 
-{@@ if byoc @@}
+{@@ if byoc or byok @@}
 :::{grid-item-card} {octicon}`server` Near-Real-Time Inference with NVIDIA NIM
 :link: language-models/nim-on-actor
 :link-type: doc

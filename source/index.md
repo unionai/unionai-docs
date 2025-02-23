@@ -1,8 +1,6 @@
-{@@ if flyte @@}
-# Flyte
-{@@ elif serverless @@}
+{@@ if serverless @@}
 # Union Serverless
-{@@ elif byoc @@}
+{@@ elif byoc or byok @@}
 # Union BYOC
 {@@ elif byok @@}
 # Union BYOK

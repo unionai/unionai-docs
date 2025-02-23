@@ -1,29 +1,30 @@
 # User guide
 
-{@@ if flyte @@}
-
-```{admonition} Flyte
-These docs are for [**Flyte**](./about-union.md#flyte).
-Switch to another variant with the version selector above.
-```
-{@@ elif serverless @@}
+{@@ if serverless @@}
 
 ```{admonition} Union Serverless
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
 Switch to another variant with the version selector above.
 ```
-{@@ elif byoc @@}
+
+{@@ elif byoc or byok @@}
 
 ```{admonition} Union BYOC
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
 Switch to another variant with the version selector above.
 ```
+
 {@@ elif byok @@}
 
 ```{admonition} Union BYOK
 These docs are for [**Union BYOK**](./about-union.md#union-byok).
 Switch to another variant with the version selector above.
 ```
+
+```{admonition} Early Release Warning
+Union BYOK is in Design Partner limited release. All documentation and procedures are subject to change as we drive towards General Availability.
+```
+
 {@@ endif @@}
 
 The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
@@ -70,7 +71,7 @@ Explore the Union development cycle from experimentation to production.
 Manage the input and output of data in your Union workflow.
 :::
 
-{@@ if byoc @@}
+{@@ if byoc or byok @@}
 :::{grid-item-card} {octicon}`person-add` Administration
 :link: administration/index
 :link-type: doc
