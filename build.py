@@ -328,6 +328,8 @@ def process_page_node(
     variants: list = page_node.get('variants', [])
     if not variants:
         variants = ALL_VARIANTS
+    if not parent_variants:
+        parent_variants = ALL_VARIANTS
     children: list = page_node.get('children', [])
 
     indent: str = parent_path.count('/') * "    "
