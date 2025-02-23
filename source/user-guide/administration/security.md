@@ -7,23 +7,23 @@
 > Contents and procedures may change before the GA release.
 > </tr></table>
 
-# Introduction
+## Introduction
 
 Union BYOK (Bring Your Own Kubernetes) is a mode of deployment where the customer manages the Data Plane while Union staff managed the Control Plane.
 
-## BYOC vs. BYOK
+### BYOC vs. BYOK
 
 The main difference between BYOC and BYOK is who manages the Data Plane.
 
 In the BYOC case, in contrast, Union staff manages all aspects of the clusters for the customer.
 
-# Architecture
+## Architecture
 
 Union’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.
 
 ![Architecture](/_static/images/user-guide/administration/security/architecture.png)
 
-## Control Plane
+### Control Plane
 
 The control plane:
 
@@ -31,17 +31,17 @@ The control plane:
 - Provides the user interface through which users can access authentication, authorization, observation, and management functions.
 - Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
-## Data Plane
+### Data Plane
 
 All your workflow and task executions are performed in the data plane, which runs within your public, private, or hybrid clouds. The data plane’s clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
 
-### Worker Nodes
+#### Worker Nodes
 
 Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes.
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (we scale to zero.)
 
-# Deployment
+## Deployment
 
 In the BYOK model, the customer deploys the Data Plane themselves. Union Data Plane runs on a standard Kubernetes cluster.
 
@@ -53,15 +53,15 @@ Union Data Plane is distributed as standard Helm Charts, with overridable values
 > to more easily integrate with the customers’ deployment systems.
 > </tr></table>
 
-# Security
+## Security
 
 Union goes to great lengths to protect our customer data. The best way to avoid exposing their data is to not hold their data in the first place. Union keeps the minimum amount of metadata possible to make the systems work. No more, no less.
 
-## SSO / Authentication / Authorization
+### SSO / Authentication / Authorization
 
 Union integrates with the customer’s Single Sign-On provider to leverage their SSO policies and enforcing their security practices.
 
-## Control Plane Data
+### Control Plane Data
 
 The Control Plane holds data responsible for coordinating and executing workflows, as well as location of where the user data resides.
 
@@ -78,7 +78,7 @@ Examples of metadata stored in the Control Plane:
 - Version information for workflows, tasks, launch plans, and artifacts
 - Artifact definitions
 
-### Literal Data
+#### Literal Data
 
 These are passed by value, not by reference, and may be stored in the Union control plane.
 
@@ -92,7 +92,7 @@ Examples:
 > be sure not to pass private information in literal form between tasks.
 > </tr></table>
 
-## Data Plane Data
+### Data Plane Data
 
 As discussed previously, the Data Plane is responsible for the execution of the workflows and tasks. All execution data resides in the Data Plane _and it is not transferred to the Control Plane._
 
@@ -103,7 +103,7 @@ Examples of execution data:
 - Workflow outputs
 - Data passed between tasks (task inputs and outputs)
 
-### Raw Data
+#### Raw Data
 
 These are passed by reference between tasks and are always stored in an object store in your data plane. This type of data is read by (and may be temporarily cached) by the control plane as needed, but is never stored there.
 
@@ -114,7 +114,7 @@ Examples:
 - Models
 - Python-pickled types
 
-## Certifications
+### Certifications
 
 Union is SOC-2 Type 2 certified.
 
