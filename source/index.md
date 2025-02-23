@@ -1,16 +1,39 @@
 {@@ if serverless @@}
+
 # Union Serverless
-{@@ elif byoc or byok @@}
+
+{@@ elif byoc @@}
+
 # Union BYOC
+
 {@@ elif byok @@}
+
 # Union BYOK
+
 {@@ endif @@}
+
+{@@ if byok @@}
+
+```{admonition} Prelimminary draft
+This document is a preliminary draft of the BYOK user manual.
+Contents and procedures may change before the GA release.
+```
+
+Union BYOK (Bring Your Own Kubernetes) is a mode of deployment where the customer providesmanages the data plane while Union staff managed the Control Plane.
+
+## BYOC vs. BYOK
+
+The main difference between BYOC and BYOK is who manages the data plane.
+
+In the BYOC case, in contrast, Union staff manages all aspects of the clusters for the customer.
+
+{@@ else @@}
 
 The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+- Run complex AI workloads with performance, scale, and efficiency.
+- Achieve millisecond-level execution times with reusable containers.
+- Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
 ::::{grid}
 
@@ -58,8 +81,12 @@ Union offers two deployment options: **Serverless** and **BYOC** (Bring Your Own
 
 {@@ if serverless @@}
 You are currently in the **Union Serverless** docs.
-[Switch to the Union BYOC docs](https://docs.union.ai/byoc).
-{@@  elif byoc @@}
+{@@ elif byoc @@}
 You are currently in the **Union BYOC** docs.
-[Switch to the Union Serverless docs](https://docs.union.ai/serverless).
+{@@ elif byoc @@}
+You are currently in the **Union BYOK** docs.
 {@@ endif @@}
+
+{@@ endif @@}
+
+You can switch to another distribution by selecting the `Version` at the top.

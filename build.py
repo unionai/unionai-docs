@@ -1,12 +1,13 @@
-import os
-import subprocess
-import shlex
-import re
-import shutil
 import jinja2
 import jupytext
-import yaml
+import os
+import re
+import shlex
+import shutil
+import subprocess
+import sys
 import typing
+import yaml
 
 from pathlib import Path
 from nbformat.notebooknode import NotebookNode
@@ -41,11 +42,21 @@ EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
 # The set of variants.
-ALL_VARIANTS: list[str] = [
-    'serverless',
-    'byoc',
-    'byok',
-]
+
+# Force specific variant only
+selected_variant = os.getenv("VARIANT", "")
+if selected_variant:
+    ALL_VARIANTS: list[str] = [
+        selected_variant,
+    ]
+    print(f"Restricting build to selected variant: {ALL_VARIANTS}")
+else:
+    ALL_VARIANTS: list[str] = [
+        'serverless',
+        'byoc',
+        'byok',
+    ]
+    print(f"Building all variants: {ALL_VARIANTS}")
 
 # The display names of the variants
 VARIANT_DISPLAY_NAMES: dict[str, str] = {

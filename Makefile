@@ -8,7 +8,7 @@ sync-examples:
 
 .PHONY: build-local
 build-local: sync-examples
-	UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
+	VARIANT=${VARIANT} UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
 
 .PHONY: clean
 clean:
