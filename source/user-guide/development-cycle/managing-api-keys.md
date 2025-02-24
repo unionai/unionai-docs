@@ -1,7 +1,7 @@
 # Managing API keys
 
 You need to create an API key to allow external systems to run compute
-on Union, e.g. a Github action that registers or runs workflows.
+on Union, e.g. a GitHub action that registers or runs workflows.
 
 ## Creating an API key
 
