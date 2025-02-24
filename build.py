@@ -225,7 +225,11 @@ def convert_tutorial_py_file_to_md(
 ):
     """Converts a tutorial Python file to a Markdown file along with its static assets."""
     log(f"converting {from_path} to {to_path}")
-    notebook = jupytext.read(from_path, fmt="py:light")
+
+    if from_path.suffix == '.ipynb':
+        notebook = jupytext.read(from_path)
+    else:
+        notebook = jupytext.read(from_path, fmt="py:light")
 
     key = from_path.relative_to(Path(EXAMPLES_REPO))
     run_cmd_src = run_commands.get(str(key), None)
