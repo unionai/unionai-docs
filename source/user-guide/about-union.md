@@ -43,7 +43,7 @@ Union Serverless provide all the features of Flyte, plus:
 
 ## Union BYOC
 
-[Union BYOC](https://docs.union.ai/byoc) (Bring Your own Cloud) let's you keep your data and workflow code on your infrastructure, while Union takes care of the management.
+[Union BYOC](https://docs.union.ai/byoc) (Bring Your own Cloud) lets you keep your data and workflow code on your infrastructure, while Union takes care of the management.
 Union BYOC provides all the features of Flyte and Union Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)
@@ -51,3 +51,10 @@ Union BYOC provides all the features of Flyte and Union Serverless, plus:
 * Multi-cluster and multi-cloud
 * Single sign-on (SSO)
 * SOC-2 Type 2 compliance.
+
+## Union BYOK
+
+[Union BYOK](https://docs.union.ai/byok) (Bring Your own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+Union BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
+The control plane continues to be located in a Union AWS account and managed by Union.
+However, none of your data ever leaves your data plane, ensuring privacy and security.
