@@ -1,40 +1,4 @@
-{@@ if flyte @@}
-
-# Flyte deployment
-
-```{admonition} Flyte
-These docs are for [**Flyte**](./about-union.md#flyte).
-Switch to another variant with the version selector above.
-```
-
-{@@ elif serverless @@}
-
-# Union Serverless deployment
-
-```{admonition} Union Serverless
-These docs are for [**Union Serverless**](./about-union.md#union-serverless).
-Switch to another variant with the version selector above.
-```
-
-{@@ elif byoc @@}
-
-# Union BYOC deployment
-
-```{admonition} Union BYOC
-These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to another variant with the version selector above.
-```
-
-{@@ elif byok @@}
-
-# Union BYOK deployment
-
-```{admonition} Union BYOK
-These docs are for [**Union BYOK**](./about-union.md#union-byok).
-Switch to another variant with the version selector above.
-```
-
-{@@ endif @@}
+# Deployment
 
 Union uses a hybrid model cloud service: Union maintains the control plane of the application on its own cloud infrastructure in Amazon Web Services (AWS).
 This is where all administration and management functionality resides.

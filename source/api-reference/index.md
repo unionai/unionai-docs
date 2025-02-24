@@ -1,41 +1,4 @@
-{@@ if flyte @@}
-
-# Flyte API reference
-
-```{admonition} Flyte
-These docs are for [**Flyte**](./about-union.md#flyte).
-Switch to another variant with the version selector above.
-```
-
-{@@ elif serverless @@}
-
-# Union Serverless API reference
-
-```{admonition} Union Serverless
-These docs are for [**Union Serverless**](./about-union.md#union-serverless).
-Switch to another variant with the version selector above.
-```
-
-{@@ elif byoc @@}
-
-# Union BYOC API reference
-
-```{admonition} Union BYOC
-These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to another variant with the version selector above.
-```
-
-{@@ elif byok @@}
-
-# Union BYOK API reference
-
-```{admonition} Union BYOK
-These docs are for [**Union BYOK**](./about-union.md#union-byok).
-Switch to another variant with the version selector above.
-```
-
-{@@ endif @@}
-
+# API reference
 
 This section provides the reference material for all Union APIs, SDKs and CLIs.
 
