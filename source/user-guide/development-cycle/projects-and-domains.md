@@ -7,7 +7,7 @@ Domains represent distinct steps through which the entities in a project transit
 
 {@@ if serverless @@}
 Union provides three domains: `development`, `staging`, and `production`.
-{@@ elif byoc @@}
+{@@ elif byoc or byok or flyte @@}
 By default, Union provides three domains: `development`, `staging`, and `production`.
 During onboarding, you can configure your Union instance to have different domains.
 Speak to the Union team for more information.

@@ -115,14 +115,14 @@ You can also trigger cache invalidation when launching an execution from the UI 
 When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
 
 ```{code-block} python
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 from flytekit.configuration import Config
 {@@ endif @@}
 from union.remote import UnionRemote
 
 {@@ if serverless @@}
 remote = UnionRemote()
-{@@ elif byoc @@}
+{@@ elif byoc or byok or flyte @@}
 remote = UnionRemote(
     config=Config.auto(),
     default_project="flytesnacks",
@@ -183,7 +183,7 @@ When a node's behavior does change though, you can bump `cache_version` to inval
 If you modify the signature of a node by adding, removing, or editing input parameters or output return types, Union invalidates the cache entries for that node.
 During the next execution, Union executes the process again and caches the outputs as new values stored under an updated key.
 
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 ### Caching when running locally
 
 The description above applies to caching when executing a node remotely on your Union cluster.

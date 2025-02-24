@@ -332,13 +332,13 @@ def process_page_node(
     run_commands: dict,
 ) -> str:
     """Recursively process a page node in the `doctree.yaml` from jinja template into sphinx format."""
+    if not parent_variants:
+        parent_variants = ALL_VARIANTS
+
     name: str = page_node.get('name', '')
     title: str = page_node.get('title', '')
-    variants: list = page_node.get('variants', [])
-    if not variants:
-        variants = ALL_VARIANTS
+    variants: list = page_node.get('variants', ALL_VARIANTS)
     children: list = page_node.get('children', [])
-
     indent: str = parent_path.count('/') * "    "
     path: str = os.path.join(parent_path, name).rstrip(' /')
 

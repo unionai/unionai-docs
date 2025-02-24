@@ -36,7 +36,7 @@ This section covers developing production-ready workflows for Union.
 {@@ endif @@}
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 * - {doc}`Running in a local cluster <running-in-a-local-cluster>`
   - Run your workflows in a local Kubernetes cluster on your machine.
 * - {doc}`CI/CD deployment <ci-cd-deployment>`

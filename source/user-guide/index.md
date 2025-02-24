@@ -12,7 +12,7 @@ Switch to another variant with the version selector above.
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
 Switch to another variant with the version selector above.
 ```
-{@@ elif byoc @@}
+{@@ elif byoc or byok or flyte @@}
 
 ```{admonition} Union BYOC
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
@@ -70,7 +70,7 @@ Explore the Union development cycle from experimentation to production.
 Manage the input and output of data in your Union workflow.
 :::
 
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 :::{grid-item-card} {octicon}`person-add` Administration
 :link: administration/index
 :link-type: doc

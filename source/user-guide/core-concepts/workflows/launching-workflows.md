@@ -28,14 +28,14 @@ Along the left side the following sections are available:
     If set and **enabled** then `interruptible=True` is used for this execution.
     If set and **disabled** then `interruptible=False` is used for this execution.
     {@# TODO: Add link to interruptible documentation #@}
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
   * **Service account**: The service account to use for this execution. If not specified, the default is used.
 {@@ endif @@}
 * **Environment variables**: Environment variables that will be available to tasks in this workflow execution.
 * **Labels**: Labels to apply to the execution resource.
 * **Notifications**: Notifications configured for this workflow execution.
 {@# TODO: Add link to notifications documentation #@}
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 * **Debug**: The workflow execution details for debugging purposes.
 {@@ endif @@}
 

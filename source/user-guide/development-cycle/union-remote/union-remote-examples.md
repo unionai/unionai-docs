@@ -75,7 +75,7 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 The steps above demonstrates the simplest way of registering and running a workflow with `UnionRemote`.
 For more options and details see [API reference > UnionRemote > Entrypoint](../../../api-reference/union-remote/entrypoint.md).
 
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 
 ## Terminating all running executions for a workflow
 
