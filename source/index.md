@@ -21,7 +21,7 @@ Contents and procedures may change before the GA release.
 
 Union BYOK (Bring Your Own Kubernetes) is a mode of deployment where the customer providesmanages the data plane while Union staff managed the Control Plane.
 
-## BYOC vs. BYOK
+**BYOC vs. BYOK**
 
 The main difference between BYOC and BYOK is who manages the data plane.
 
