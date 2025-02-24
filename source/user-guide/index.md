@@ -2,7 +2,7 @@
 
 {@@ if byok @@}
 
-```{admonition} Prelimminary draft
+```{admonition} Preliminary draft
 This document is a preliminary draft of the BYOK user manual. Contents and procedures may change before the GA release.
 ```
 
