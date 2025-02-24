@@ -7,7 +7,9 @@ Contents and procedures may change before the GA release.
 
 For details of the architecture, please see:
 
-![Architecture{clickable}](/_static/images/user-guide/administration/security/architecture.png)
+[![Architecture{clickable}](/_static/images/user-guide/administration/security/architecture.png)](../architecture.md)
+
+[Architecture <i class="fa-solid fa-arrow-up-right-from-square"></i>](../architecture.md)
 
 ## Control plane
 
@@ -19,10 +21,9 @@ The control plane:
 
 The control plane holds data responsible for coordinating and executing workflows, as well as location of where the user data resides.
 
-```{admonition} Customer data only resides on data plane.
-The control plane does not store the customer data or task code.
-Customer data lives exclusively in their data plane.
-```
+> Customer data only resides on data plane.
+> The control plane does not store the customer data or task code.
+> Customer data lives exclusively in their data plane.
 
 Examples of metadata stored in the control plane:
 
