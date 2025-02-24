@@ -12,7 +12,7 @@ Switch to another variant with the version selector above.
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
 Switch to another variant with the version selector above.
 ```
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 
 ```{admonition} Union BYOC
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
