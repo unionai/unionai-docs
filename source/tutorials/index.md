@@ -1,4 +1,41 @@
-# Tutorials
+{@@ if flyte @@}
+
+# Flyte tutorials
+
+```{admonition} Flyte
+These docs are for [**Flyte**](./about-union.md#flyte).
+Switch to another variant with the version selector above.
+```
+
+{@@ elif serverless @@}
+
+# Union Serverless tutorials
+
+```{admonition} Union Serverless
+These docs are for [**Union Serverless**](./about-union.md#union-serverless).
+Switch to another variant with the version selector above.
+```
+
+{@@ elif byoc @@}
+
+# Union BYOC tutorials
+
+```{admonition} Union BYOC
+These docs are for [**Union BYOC**](./about-union.md#union-byoc).
+Switch to another variant with the version selector above.
+```
+
+{@@ elif byok @@}
+
+# Union BYOK tutorials
+
+```{admonition} Union BYOK
+These docs are for [**Union BYOK**](./about-union.md#union-byok).
+Switch to another variant with the version selector above.
+```
+
+{@@ endif @@}
+
 
 This section provides tutorials that walk you through the process of building AI/ML applications on Union.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
