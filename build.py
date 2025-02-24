@@ -226,10 +226,7 @@ def convert_tutorial_py_file_to_md(
     """Converts a tutorial Python file to a Markdown file along with its static assets."""
     log(f"converting {from_path} to {to_path}")
 
-    if from_path.suffix == '.ipynb':
-        notebook = jupytext.read(from_path)
-    else:
-        notebook = jupytext.read(from_path, fmt="py:light")
+    notebook = jupytext.read(from_path, fmt="py:light")
 
     key = from_path.relative_to(Path(EXAMPLES_REPO))
     run_cmd_src = run_commands.get(str(key), None)
@@ -242,7 +239,13 @@ def convert_tutorial_py_file_to_md(
     for fname in ("static", "images"):
         import_static_files_from_tutorial(name, from_path, fname, notebook)
 
-    jupytext.write(notebook, to_path, fmt="md")
+    jupytext.write(
+        notebook, 
+        to_path, 
+        fmt="md", 
+        notebook_metadata_filter="-all",  # Remove all notebook metadata
+        cell_metadata_filter="-all"       # Remove all cell metadata
+    )
 
 
 # Process a single Markdown/Jinja2 file.
