@@ -56,6 +56,7 @@ The build process will generate two sets of Markdown files in the `sphinx_source
 
 To delete both the `sphinx_source` and `build` directories, run `uv run make clean`.
 
+You can specify a specific variant by adding `VARIANT=<variant>` to your `uv run` command.
 
 ## Publish the site
 

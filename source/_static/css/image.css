@@ -1,0 +1,12 @@
+p:has(img[alt*="{clickable}"]) {
+    text-align: center;
+}
+
+img[alt*="{clickable}"] {
+    max-height: 10rem;
+}
+
+p:has(img[alt*="{clickable}"]) + P {
+    text-align: center;
+    color: color-mix(in srgb, currentColor 50%, white 10%);
+}

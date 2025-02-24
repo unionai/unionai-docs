@@ -77,7 +77,7 @@ These directions apply to Union Serverless.
 To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
 :::
 
-{@@ elif byoc @@}
+{@@ elif byoc or byok @@}
 
 ```{code-block} shell
 $ union create login --host <union-host-url>
@@ -123,7 +123,7 @@ $ union info
 
 You should get a response like this:
 
-{@@ if byoc @@}
+{@@ if byoc or byok @@}
 
 ```{code-block} shell
 $ union info

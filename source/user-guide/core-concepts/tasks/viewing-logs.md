@@ -24,7 +24,7 @@ On the left side of the page you can also see the Kubernetes cluster logs for th
 
 Alongside the **Execution logs** tab in the **Execution details page**, you will also find the **Execution resources** and **Inputs & Outputs** tabs.
 
-{@@ if byoc @@}
+{@@ if byoc or byok @@}
 
 ## Cloud provider logs
 

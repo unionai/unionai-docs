@@ -1,18 +1,20 @@
-import os
-import subprocess
-import shlex
-import json
-import re
-import shutil
-from pathlib import Path
-
 import jinja2
 import jupytext
+import os
+import re
+import shlex
+import shutil
+import subprocess
+import sys
+import typing
 import yaml
+
+from pathlib import Path
 from nbformat.notebooknode import NotebookNode
 
+
 # Source directory containing content in the Markdown augmented with Jinja2 templating.
-# These files also lack toctree directives, as the `sitemap.json` defines the structure of the documentation
+# These files also lack toctree directives, as the `doctree.yaml` defines the structure of the documentation
 # and the toctrees are added during the template processing step
 # These files are processed by this python script to create proper Sphinx files.
 SOURCE_DIR: str = './source'
@@ -26,9 +28,9 @@ SPHINX_SOURCE_DIR: str = './sphinx_source'
 # Each variant has its own directory containing the final HTML tree for that variant.
 BUILD_DIR: str = './build/html'
 
-# The sitemap defines the structure of the documentation and defines which pages appear in which variants
-# The Sphinx toctrees are generated based on this sitemap and added to the Sphinx files in SPHINX_SOURCE_DIR.
-SITEMAP: str = './sitemap.json'
+# The `doctree.yaml`` defines the structure of the documentation and defines which pages appear in which variants
+# The Sphinx toctrees are generated based on this structure and added to the Sphinx files in SPHINX_SOURCE_DIR.
+DOCTREE: str = './doctree.yaml'
 
 # path of the examples submodule repository in the docs repo.
 EXAMPLES_REPO: str = "./unionai-examples"
@@ -40,36 +42,61 @@ EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
 # The set of variants.
-ALL_VARIANTS: list[str] = ['serverless', 'byoc']
+
+# Force specific variant only
+selected_variant = os.getenv("VARIANT", "")
+if selected_variant:
+    ALL_VARIANTS: list[str] = [
+        selected_variant,
+    ]
+    print(f"Restricting build to selected variant: {ALL_VARIANTS}")
+else:
+    ALL_VARIANTS: list[str] = [
+        'serverless',
+        'byoc',
+        'byok',
+    ]
+    print(f"Building all variants: {ALL_VARIANTS}")
 
 # The display names of the variants
-VARIANT_DISPLAY_NAMES: dict[str, str] = {'serverless': 'Serverless', 'byoc': 'BYOC'}
+VARIANT_DISPLAY_NAMES: dict[str, str] = {
+    'serverless': 'Serverless',
+    'byoc': 'BYOC',
+    'byok': 'BYOK',
+}
 
 # Global substitutions for Jinja2 templating.
 # Currently unused, but can be used to substitute variables in the Markdown files.
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
     'product_name': {
-        'byoc': 'Union BYOC',
         'serverless': 'Union Serverless',
+        'byoc': 'Union BYOC',
+        'byok': 'Union BYOK',
     },
     'default_project': {
-        'byoc': 'flytesnacks',
         'serverless': 'default',
-    }
+        'byoc': 'flytesnacks',
+        'byok': 'flytesnacks',
+    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
 
 DOCSEARCH_CREDENTIALS = {
+    "serverless": {
+        "DOCSEARCH_APP_ID": "DQDAK9LPRV",
+        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_SERVERLESS", ""),
+        "DOCSEARCH_INDEX_NAME": "union",
+    },
     "byoc": {
         "DOCSEARCH_APP_ID": "IG23OUCJRL",
         "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
         "DOCSEARCH_INDEX_NAME": "union",
     },
-    "serverless": {
-        "DOCSEARCH_APP_ID": "DQDAK9LPRV",
-        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_SERVERLESS", ""),
+     "byok": {
+        "DOCSEARCH_APP_ID": "IG23OUCJRL",
+        "DOCSEARCH_API_KEY": os.getenv("DOCSEARCH_API_KEY_BYOC", ""),
         "DOCSEARCH_INDEX_NAME": "union",
     },
 }
@@ -306,11 +333,16 @@ def process_page_node(
     parent_variants: list,
     run_commands: dict,
 ) -> str:
-    """Recursively process a page node in the sitemap from jinja template into sphinx format."""
+    """Recursively process a page node in the `doctree.yaml` from jinja template into sphinx format."""
     name: str = page_node.get('name', '')
     title: str = page_node.get('title', '')
-    variants: list = page_node.get('variants', '')
-    children: list = page_node.get('children', None)
+    variants: list = page_node.get('variants', [])
+    if not variants:
+        variants = ALL_VARIANTS
+    if not parent_variants:
+        parent_variants = ALL_VARIANTS
+    children: list = page_node.get('children', [])
+
     indent: str = parent_path.count('/') * "    "
     path: str = os.path.join(parent_path, name).rstrip(' /')
 
@@ -320,7 +352,7 @@ def process_page_node(
         md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
         convert_tutorial_py_file_to_md(name, py_file, md_path, current_variant, run_commands)
 
-    variants = [*reversed(variants)]  # make sure that serverless is the first element
+    variants = sorted(variants)  # make sure that variants are always in the sameorder (alphabetical)
     log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
     log(f'{indent}path: [{path}]')
 
@@ -328,7 +360,7 @@ def process_page_node(
     if set(variants) > set(parent_variants):
         raise ValueError(f'Error processing {path}: variants of current page include element not present in parent page variants. A page for a variant cannot exist unless its parent page also exists for that variant.')
 
-    # If this page does not appear in the current variant site return `None`.
+    # If this page does not appear in the current variant, return `None`.
     if current_variant not in variants:
         log(f'This page has no variant [{current_variant}]')
         return ''
@@ -375,11 +407,11 @@ def process_project():
     shell(f'rm -rf {BUILD_DIR}')
     shell(f'rm -rf {SPHINX_SOURCE_DIR}')
 
-    with open(SITEMAP, "r") as sm:
-        page_node = json.load(sm)
+    with open(DOCTREE, "r") as dt:
+        page_node = yaml.load(dt, Loader=yaml.CLoader)
 
     with open(RUN_COMMANDS, "r") as rc:
-        run_commands = yaml.safe_load(rc)
+        run_commands = yaml.load(rc, Loader=yaml.CLoader)
 
     for variant in ALL_VARIANTS:
         process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)

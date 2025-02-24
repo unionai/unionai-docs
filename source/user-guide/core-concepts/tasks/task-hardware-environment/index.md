@@ -13,7 +13,7 @@ You can customize the hardware environment in which your task code executes thro
 
 See [Customizing task resources](./customizing-task-resources.md) for details.
 
-{@@ elif byoc @@}
+{@@ elif byoc or byok @@}
 
 You can customize the hardware environment in which your task code executes.
 
