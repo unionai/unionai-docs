@@ -33,7 +33,7 @@ def generate_pdoc_docs(app: Sphinx) -> None:
     output_base = Path(app.confdir) / app.config.pdoc_output_dir
     output_base.mkdir(parents=True, exist_ok=True)
 
-    #determine the variant dynamically from the folder structure
+    # determine the variant dynamically from the folder structure
     current_variant = determine_variant(output_base, variants)
 
     # inject the variant directives
@@ -43,8 +43,8 @@ def generate_pdoc_docs(app: Sphinx) -> None:
         f"available-variants: {variants}\n"
         f"current-variant: {current_variant}\n"
         f"---\n\n",
-        "# API Reference\n\n",
-        "```{toctree}\n:maxdepth: 2\n\n"
+        "# Union SDK\n\n",
+        "```{toctree}\n:maxdepth: 2\n\n",
     ]
 
     for module_name in app.config.pdoc_modules:
@@ -54,7 +54,14 @@ def generate_pdoc_docs(app: Sphinx) -> None:
             module_root_dir = output_base / module_name
             module_root_dir.mkdir(parents=True, exist_ok=True)
 
-            if process_module_recursive(module_name, module_root_dir, api_index, output_base, current_variant, variants):
+            if process_module_recursive(
+                module_name,
+                module_root_dir,
+                api_index,
+                output_base,
+                current_variant,
+                variants,
+            ):
                 logger.info(f"Successfully processed {module_name}")
 
         except Exception as e:
@@ -81,11 +88,20 @@ def determine_variant(output_base: Path, variants: List[str]) -> str:
         if f"/{variant}/" in str(output_base) or output_base.name == variant:
             return variant
 
-    logger.warning("Could not determine variant from directory structure, defaulting to 'serverless'.")
+    logger.warning(
+        "Could not determine variant from directory structure, defaulting to 'serverless'."
+    )
     return "serverless"  # Default if no match is found
 
 
-def process_module_recursive(module_name: str, output_dir: Path, api_index: List[str], root_output: Path, current_variant: str, variants: List[str]) -> bool:
+def process_module_recursive(
+    module_name: str,
+    output_dir: Path,
+    api_index: List[str],
+    root_output: Path,
+    current_variant: str,
+    variants: List[str],
+) -> bool:
     """Recursively process a module and its submodules, placing them into structured folders."""
     try:
         module = Module.from_name(module_name)
@@ -143,8 +159,17 @@ def process_module_recursive(module_name: str, output_dir: Path, api_index: List
             for submodule in module.submodules:
                 submodule_dir = root_output / submodule.qualname.replace(".", "/")
                 submodule_dir.mkdir(parents=True, exist_ok=True)
-                if process_module_recursive(submodule.qualname, submodule_dir, sidebar_entries, root_output, current_variant, variants):
-                    sidebar_entries.append(f"{submodule.qualname.replace('.', '/')}/index\n")
+                if process_module_recursive(
+                    submodule.qualname,
+                    submodule_dir,
+                    sidebar_entries,
+                    root_output,
+                    current_variant,
+                    variants,
+                ):
+                    sidebar_entries.append(
+                        f"{submodule.qualname.replace('.', '/')}/index\n"
+                    )
 
         sidebar_entries.append("```\n")
 
