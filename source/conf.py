@@ -205,7 +205,7 @@ def process_options(app, ctx, lines):
 
 # Configure the pdoc extension
 pdoc_modules = ['union', 'flytekit']  # List of modules to document
-pdoc_output_dir = 'rst'  # Output directory for generated docs
+pdoc_output_dir = 'api-reference/union-sdk'  # Output directory for generated docs
 
 
 
