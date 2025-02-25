@@ -1,7 +1,6 @@
 {"name": "", "variants": ["byoc", "serverless"],
     "children": [
         {"name": "quick-start", "variants": ["byoc", "serverless"]},
-        {"name": "api-ref", "variants": ["byoc", "serverless"]},
         {"name": "user-guide", "variants": ["byoc", "serverless"],
             "children": [
                 {"name": "union-overview", "variants": ["byoc", "serverless"]},
@@ -274,7 +273,7 @@
         },
         {"name": "api-reference", "variants": ["byoc", "serverless"],
             "children": [
-                {"name": "union-sdk", "variants": ["byoc", "serverless"],
+                {"name": "union-sdk-development", "variants": ["byoc", "serverless"],
                     "children": [
                         {"name": "design", "variants": ["byoc", "serverless"],
                         "children": [
@@ -368,6 +367,11 @@
                         {"name": "experimental-features", "variants": ["byoc", "serverless"]}
                     ]
                 },
+                {"name": "union-sdk", "variants": ["byoc", "serverless"], 
+                "children":[
+                    {"name": "union", "variants": ["byoc", "serverless"]},
+                    {"name": "flytekit", "variants": ["byoc", "serverless"]}
+                ]},
                 {"name": "union-cli", "variants": ["byoc", "serverless"]},
                 {"name": "uctl-cli", "variants": ["byoc", "serverless"],
                     "children": [
