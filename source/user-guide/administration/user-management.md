@@ -61,24 +61,17 @@ But this is only the case due to how these particular roles are defined.
 In general, it is possible to create roles where assigning multiple ones is meaningful.
 :::
 
-## Manage roles and policies with the `uctl` CLI
-
-Roles and policies are managed using the [`uctl` CLI](../../api-reference/uctl-cli/) (not the [`union` CLI](../../api-reference/union-cli)).
-
-To manage roles and policies, you must:
-* Have permission to perform the action (for example, by being an **Admin**).
-* Have the [`uctl` CLI installed](../../api-reference/uctl-cli/) locally.
 
 ## Custom roles and policies
 
 It is possible to create new custom roles and policies.
 Custom roles and policies can, for example, be used to mix and match permissions at the organization, project, or domain level.
 
-### Example
+Roles and policies are created using the [`uctl` CLI](../../api-reference/uctl-cli/index.md) (not the [`union` CLI](../../api-reference/union-cli.md)).
+Make sure you have the [`uctl` CLI installed and configured to point to your Union instance](../../api-reference/uctl-cli/index.md).
 
-Create roles and policies to give users the ability to run workflows without being able to create new workflows or other Flyte resources.
 
-#### Create a role
+### Create a role
 
 Create a role spec file `my_role.yaml` that defines a set of actions:
 
@@ -98,7 +91,7 @@ Create the role from the command line:
 $ uctl create role --roleFile my_role.yaml
 ```
 
-#### Create a policy
+### Create a policy
 
 Create a policy spec file `my_policy.yaml` that binds roles to project/domain pairs.
 Here we create a policy that binds the **Contributor** role to `flytesnacks/development` and binds the **Workflow Runner** role (defined above) to `flytesnacks/production`:
@@ -126,7 +119,7 @@ $ uctl create policy --policyFile my_policy.yaml
 
 Any user or application to which this policy is assigned will be granted **Contributor** permissions to `flytesnacks/development` while being granted (the more restrictive) **Workflow Runner** permission to `flytesnacks/production`.
 
-#### Assign the policy to a user
+### Assign the policy to a user
 
 Once the policy is created you can assign it to a user using the **User Management** interface in the UI (see [Changing assigned policies](#changing-assigned-policies) below) or using the command line:
 

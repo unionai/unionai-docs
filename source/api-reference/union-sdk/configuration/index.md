@@ -16,9 +16,8 @@ Configuration usage can roughly be bucketed into the following areas:
 
 We recommended using command line arguments to set configuration values most of the time. See the [union CLI](../../union-cli.md) documentation for a full list of arguments for each command.
 
-### Configuration files
 
-#### YAML format
+### YAML configuration files
 
 If you are using a configuration file, we recommend YAML format. The `~/.union/config.yaml` configuration file contains settings for both `uctl` and `flytekit`. To create a boilerplate `~/.union/config.yaml` file, run `uctl config init`, and to learn about all of the configuration YAML options, run `uctl --help`.
 
@@ -31,7 +30,7 @@ If you are using a configuration file, we recommend YAML format. The `~/.union/c
 ```
 ::::
 
-#### INI format
+### INI configuration files
 
 ```{warning}
 The INI format configuration is considered a legacy configuration format. We recommend using the [YAML format](#yaml-format) instead if you're using a configuration file.
@@ -52,9 +51,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 ::::
 
 {@@ if byoc @@}
-### Python objects
-
-#### Config object
+### Config object
 
 :::{note}
 You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md) object. See [Creating a `UnionRemote` object](../../../user-guide/development-cycle/union-remote/index.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
@@ -71,7 +68,7 @@ You can use a `Config` object directly, for example, when initializing a [`Union
 ```
 {@@ endif @@}
 
-#### Compile time and serialization settings
+### Compile time and serialization settings
 
 ```{eval-rst}
 
@@ -92,7 +89,7 @@ These are compile-time and serialization settings that are usually passed in as 
 The image configurations are typically either passed in via an [`--image`](../../union-cli.md#cmdoption-union-build-i) flag, or can be specified in a [`YAML` or `ini` configuration file](#configuration-files).
 :::
 
-#### Execution time settings
+### Execution time settings
 
 You usually won't need to worry about these configurations, as they are typically set by FlytePropeller or
 FlyteAdmin. The configurations below are useful for authenticating to a Union backend, configuring data access
