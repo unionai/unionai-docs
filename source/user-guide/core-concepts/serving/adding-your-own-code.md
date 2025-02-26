@@ -32,9 +32,10 @@ import union
 # `union-runtime` must be declared as a dependency, 
 # in addition to any other dependencies needed by the app code.
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
+# If you are using `ghcr.io` as your registry, make sure the image is public.
 image = union.ImageSpec(
     name="streamlit-app",
-    packages=["union-runtime>=0.1.10", "streamlit==1.41.1"] ,
+    packages=["union-runtime>=0.1.11", "streamlit==1.41.1"] ,
     registry=os.getenv("REGISTRY"),
 )
 
@@ -45,12 +46,9 @@ image = union.ImageSpec(
 app = union.app.App(
     name="streamlit-custom-code",
     container_image=image,
-    args=["streamlit", "run", "main.py", "--server.port", "8080"],
+    args="streamlit run main.py --server.port 8080",
     port=8080,
-    include=[
-        "main.py",
-        "utils.py",
-    ],
+    include=["main.py", "utils.py"],
     limits=union.Resources(cpu="1", mem="1Gi"),
 )
 ```
@@ -104,7 +102,7 @@ $ union deploy apps app.py streamlit-custom-code
 
 When a new app is deployed for the first time (i.e., there is no app registered with the specified `name`),
 a container is spun up using the specified `container_image` and the files specified in `include` are
-copied into the container. The `command` is the then executed in the container, starting the app.
+copied into the container. The `args` is the then executed in the container, starting the app.
 
 If you alter the `include` code you need to re-deploy your app.
 When `union deploy apps` is called using an app name that corresponds to an already existing app,
