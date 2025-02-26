@@ -12,80 +12,104 @@ Here's a video with a brief explanation and demo, focused on task caching:
 Caching is implemented at the node level of the workflow directed acyclic graph (DAG).
 Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
 Caching is not available for top-level workflows or launch plans (that is, those invoked from UI or CLI).
-```
-
-
-## Caching configuration
-
 By default, caching is disabled on all tasks, subworkflows and sub-launch plans, to avoid unintended consequences when caching executions with side effects.
-
-The simplest way to enable caching is to set `cache=True` in the `@union.task` decorator (for tasks) or the `with_overrides` method (for subworkflows and sub-launch plans).
-
-
-
-
-
-
-
-
-
-```{code-block} python
-
-
-
-Caching can be configured for a task by setting the `@union.task` parameter `cache` parameter of the @union.task decorator to to a `Cache` object
-
-
-```{code-block} python
-@union.task(cache=Cache(version (Optional[str]) – The version of the task. If not provided, the version will be generated based on the cache policies.
-
-serialize (bool) – Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results.
-
-ignored_inputs (Union[Tuple[str, ...], str]) – A tuple of input names to ignore when generating the version hash.
-
-salt (str) – A salt used in the hash generation.
-
-policies (Optional[Union[List[CachePolicy], CachePolicy]]) – A list of cache policies to generate the version hash.))
 ```
 
-This sets up the
-There are four parameters and one command-line flag that pertain to caching:
 
-* `cache`(`bool`): Enables or disables caching of the workflow, task, or launch plan.
-By default, caching is disabled to avoid unintended consequences when caching executions with side effects.
-To enable caching set `cache=True`.
-* `cache_version` (`str`): Part of the cache key.
+## Cache configuration
+
+Cache configuration can be done by setting the `cache` parameter of the `@union.task` decorator or `with_overrides` method to a `Cache` object:
+
+The [Cache class](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Cache.html#flytekit-cache) takes the following parameters:
+
+* `version` (`Optional[str]`): Part of the cache key.
 A change to this parameter will invalidate the cache.
 This allows you to explicitly indicate when a change has been made to the node that should invalidate any existing cached results.
 Note that this is not the only change that will invalidate the cache (see below).
 Also, note that you can manually trigger cache invalidation per execution using the [`overwrite-cache` flag](#where-to-use-the-overwrite-cache-flag).
-* `cache_serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
+If not set, the version will be generated based on the specified cache policies.
+When using `cache=True`, [as shown below](#default-cache-configuration), the [default cache policy (`CacheFunctionBody()`)](#default-cache-policy--cachefunctionbody) generates the version.
+
+* `serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
 When enabled, Union ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
 This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
-Cache serialization is disabled by default.
-* `cache_ignore_input_vars` (`Tuple[str, ...]`): Input variables that should not be included when calculating hash for cache.
-By default, no input variables are ignored.
-This parameter only applies to task serialization.
+If not set (for example, when using `cache=True`, [as shown below](#default-cache-configuration)) cache serialization is disabled.
 
 
-### Command-line flag `overwrite-cache`
+* `ignored_inputs` (`Union[Tuple[str, ...], str]`): Input variables that should not be included when calculating the hash for the cache.
+If not set, (for example, when simply using `cache=True`, [as shown below](#default-cache-configuration)) no inputs are ignored.
 
-*  `overwrite-cache` (`bool`): Invalidates the cache and forces re-execution of the node. This flag can be used when launching an execution from [the command line](#overwrite-cache-on-the-command-line), [the UI](#overwrite-cache-in-the-ui), or [programmatically through `UnionRemote`](#overwrite-cache-programmatically).
+* `salt` (`str`): A salt used in the hash generation.
 
-## Where to specify caching parameters
+* `policies` (`Optional[Union[List[CachePolicy], CachePolicy]]`): A list of [CachePolicy]() objects.
+If no `version` is specified and one or more polices are specified then these policies generate the version.
+If no `version` is specified and no policies are specified then the [default cache policy (`CacheFunctionBody()`)](#default-cache-policy--cachefunctionbody) generates the version.
+When using `cache=True`, [as shown below](#default-cache-configuration), the [default cache policy (`CacheFunctionBody()`)](#default-cache-policy--cachefunctionbody) generates the version.
 
-* Task caching parameters can be specified at task definition time within `@union.task` decorator or at task invocation time using `with_overrides` method.
-* Workflow and launch plan caching parameters can be specified at invocation time using `with_overrides` method.
 
-
-## Example
+### Example
 
 ```{code-block} python
+:emphasize-lines: 4,19,27
+import union
+
+
+@union.task(cache=union.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
+def sum(a: int, b: int, c: int) -> int:
+    return a + b + c
+
+
+@union.workflow
+def child_wf(a: int, b: int, c: int) -> list[int]:
+    return [
+        sum(a=a, b=b, c=c)
+        for _ in range(5)
+    ]
+
+
+child_lp = union.LaunchPlan.get_or_create(child_wf)
+
+
+@union.workflow
+def parent_wf_with_subwf(input: int = 0):
+    return [
+        child_wf(a=input, b=3, c=4).with_overrides(cache=union.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
+        for i in [1, 2, 3]
+    ]
+
+
+@union.workflow
+def parent_wf_with_sublp(input: int = 0):
+     return [
+        child_lp(a=input, b=1, c=2).with_overrides(cache=union.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
+        for i in [1, 2, 3]
+    ]
+```
+
+In the above example, caching is enabled at multiple levels:
+    * At the task level, in the `@union.task` decorator of the task `sum`.
+    * At the workflow level, in the `with_overrides` method of the invocation of the workflow `child_wf`.
+    * At the launch plan level, in the `with_overrides` method of the invocation of the launch plan `child_lp`.
+
+In each case, the result of the execution is cached and reused in subsequent executions.
+Here the reuse is demonstrated by calling the `child_wf` and `child_lp` workflows multiple times with the same inputs.
+Additionally, if the same node is invoked again with the same inputs (excluding input "a", as it is ignored for purposes of versioning)
+the cached result is returned immediately instead of re-executing the process.
+This applies even if the cached node is invoked externally through the UI or CLI.
+
+
+## Default cache configuration
+
+Instead of specifying a Cache object, a simpler way to enable caching is to set `cache=True` in the `@union.task` decorator (for tasks) or the `with_overrides` method (for subworkflows and sub-launch plans).
+For example:
+
+```{code-block} python
+:emphasize-lines: 5,20,28
 import union
 from typing import List
 
 
-@union.task(cache=True, cache_version="1.0", cache_serialize=True)
+@union.task(cache=True)
 def sum(a: int, b: int, c: int) -> int:
     return a + b + c
 
@@ -104,7 +128,7 @@ child_lp = union.LaunchPlan.get_or_create(child_wf)
 @union.workflow
 def parent_wf_with_subwf(input: int = 0):
     return [
-        child_wf(a=input, b=3, c=4).with_overrides(cache=True, cache_version="1.0", cache_serialize=True)
+        child_wf(a=input, b=3, c=4).with_overrides(cache=True)
         for i in [1, 2, 3]
     ]
 
@@ -112,24 +136,27 @@ def parent_wf_with_subwf(input: int = 0):
 @union.workflow
 def parent_wf_with_sublp(input: int = 0):
      return [
-        child_lp(a=input, b=1, c=2).with_overrides(cache=True, cache_version="1.0", cache_serialize=True)
+        child_lp(a=input, b=1, c=2).with_overrides(cache=True)
         for i in [1, 2, 3]
     ]
 ```
 
-In the above example, caching is enabled at multiple levels:
-    * At the task level, in the `@union.task` decorator of the task `sum`.
-    * At the workflow level, in the `with_overrides` method of the invocation of the workflow `child_wf`.
-    * At the launch plan level, in the `with_overrides` method of the invocation of the launch plan `child_lp`.
+In this case caching is enabled with the following:
+* `version` is generated by the [default cache policy `CacheFunctionBody()`](#default-cache-policy--cachefunctionbody).
+* `serialize` is set to `False`.
+* `ignored_inputs` is not set. No parameters are ignored.
 
-In each case, the result of the execution is cached and reused in subsequent executions.
-Here the reuse is demonstrated by calling the `child_wf` and `child_lp` workflows multiple times with the same inputs.
-Additionally, if the same node is invoked again with the same inputs, even externally through the UI or CLI,
-the cached result is returned immediately instead of re-executing the process.
 
-## Where to use the `overwrite-cache` flag
+## Default cache policy: : `CacheFunctionBody`
+
+The `CacheFunctionBody` policy generates a version based on the function body of the task.
+This means that if the function body changes, the cache is invalidated.
+
+
+## The `overwrite-cache` flag
 
 When launching the execution of a workflow, launch plan or task, you can use the `overwrite-cache` flag to invalidate the cache and force re-execution.
+
 
 ### Overwrite cache on the command line
 
@@ -177,7 +204,9 @@ The **key** is composed of:
 * **Project:** A task run under one project cannot use the cached task execution from another project which would cause inadvertent results between project teams that could result in data corruption.
 * **Domain:** To separate test, staging, and production data, task executions are not shared across these environments.
 * **Cache version:** When task functionality changes, you can change the `cache_version` of the task.
-Flyte will know not to use older cached task executions and create a new cache entry on the subsequent execution.
+Union will know not to use older cached task executions and create a new cache entry on the subsequent execution.
+When cache policies are specified (and no `version` is set), the policies generate the version.
+When using `cache=True`, the [default cache policy (`CacheFunctionBody()`)](#default-cache-policy--cachefunctionbody) generates the version.
 * **Node signature:** The cache is specific to the signature associated with the execution.
 The signature comprises the name, input parameter names/types, and the output parameter name/type of the node.
 If the signature changes, the cache entry is invalidated.
@@ -195,23 +224,31 @@ When a change to code is made that should invalidate the cache for that node, yo
 For a task example, see below. (For workflows and launch plans, the parameter would be specified in the `with_overrides` method.)
 
 ```{code-block} python
-@union.task(cache=True, cache_version="1.1", cache_serialize=True)
+@union.task(cache=union.Cache(version="1.1"))
 def t(n: int) -> int:
    return n * n + 1
 ```
 
-Here the `cache_version` parameter has been bumped from `1.0`to `1.1`, resulting in the removal of the cache entries for that task.
+Here the `version` parameter has been bumped from `1.0`to `1.1`, resulting in the removal of the cache entries for that task.
 The next time the task is called it will be executed and the result re-cached under an updated key.
 
-Because the `cache_version` parameter must be explicitly changed, not every Git revision of a node will necessarily invalidate the cache.
+If used, the `version` parameter must be explicitly changed in order to invalidate the cache.
+(if not used, then a cache policy may be used to generate the version).
+
+Not every Git revision of a node will necessarily invalidate the cache.
 A change in Git SHA does not necessarily correlate to a change in functionality.
-You can refine the code without invalidating its outputs as long as you don't change the `cache_version` parameter (or the signature, see below) of the node.
+You can refine the code without invalidating its outputs as long as you use and don't change the `version` parameter (or the signature, see below) of the node.
 
 The idea behind this is to decouple syntactic sugar (for example, changed documentation or renamed variables) from changes to logic that can affect the process's result.
 When you use Git (or any version control system), you have a new version per code change.
 Since the behavior of most nodes in a Git repository will remain unchanged, you don't want their cached outputs to be lost.
 
-When a node's behavior does change though, you can bump `cache_version` to invalidate the cache entry and make the system recompute the outputs.
+When a node's behavior does change though, you can bump `version` to invalidate the cache entry and make the system recompute the outputs.
+
+Alternatively, you can use the `policies` parameter to generate the version automatically.
+
+The default cache policy is `CacheFunctionBody()`, for example, generates a version based on the function body of the task.
+
 
 ### Node signature
 
@@ -238,6 +275,7 @@ $ union local-cache clear
 which essentially removes the contents of the `~/.flyte/local-cache/` directory.
 {@@ endif @@}
 
+
 ## Cache serialization
 
 Cache serialization means only executing a single instance of a unique cacheable task (determined by the `cache_version` parameter and task signature) at a time.
@@ -250,6 +288,7 @@ It is particularly well fit for long-running or otherwise computationally expens
 * Periodically scheduled workflow where a single task evaluation duration may span multiple scheduled executions.
 * Running a commonly shared task within different workflows (which receive the same inputs).
 
+
 ### Enabling cache serialization
 
 Task cache serializing is disabled by default to avoid unexpected behavior for task executions.
@@ -259,13 +298,14 @@ The cache key definitions follow the same rules as non-serialized cache tasks.
 It is important to understand the implications of the task signature and `cache_version` parameter in defining cached results.
 
 ```{code-block} python
-@union.task(cache=True, cache_version="1.0", cache_serialize=True)
+@union.task(cache=union.Cache(cache_serialize=True))
 def t(n: int) -> int:
     return n * n
 ```
 
 In the above example calling `t(n=2)` multiple times concurrently (even in different executions or workflows) will only execute the multiplication operation once.
 Concurrently evaluated tasks will wait for completion of the first instance before reusing the cached results and subsequent evaluations will instantly reuse existing cache results.
+
 
 ### How does cache serialization work?
 
@@ -280,6 +320,7 @@ Once the initial execution completes, they will reuse the cached results as will
 Union handles execution failures using a timeout on the reservation.
 If the execution currently holding the reservation fails to extend it before it times out, another execution may acquire the reservation and begin processing.
 
+
 ## Caching of offloaded objects
 
 In some cases, the default behavior displayed by Union’s caching feature might not match the user's intuition.
@@ -293,7 +334,7 @@ def foo(a: int, b: str) -> pandas.DataFrame:
     return df
 
 
-@union.task(cache=True, cache_version="1.0")
+@union.task(cache=True)
 def bar(df: pandas.DataFrame) -> int:
     ...
 
@@ -322,7 +363,7 @@ def foo_1(a: int, b: str) -> Annotated[pandas.DataFrame, HashMethod(hash_pandas_
     return df
 
 
-@union.task(cache=True, cache_version="1.0")
+@union.task(cache=True)
 def bar_1(df: pandas.DataFrame) -> int:
     ...
 
@@ -335,6 +376,7 @@ def wf_1(a: int, b: str):
 
 Note how the output of the task `foo` is annotated with an object of type `HashMethod`.
 Essentially, it represents a function that produces a hash that is used as part of the cache key calculation in calling the task `bar`.
+
 
 ### How does caching of offloaded objects work?
 
@@ -356,7 +398,7 @@ def uncached_data_reading_task() -> Annotated[pandas.DataFrame, HashMethod(hash_
     return pandas.DataFrame({"column_1": [1, 2, 3]})
 
 
-@union.task(cache=True, cache_version="1.0")
+@union.task(cache=True)
 def cached_data_processing_task(df: pandas.DataFrame) -> pandas.DataFrame:
     time.sleep(1)
     return df * 2
