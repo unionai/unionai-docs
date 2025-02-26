@@ -4,15 +4,14 @@ The `union` CLI is the main tool developers use to interact with Union on the co
 
 ## Installation
 
-To install the latest version of the `union` CLI, run the following command:
+The recommended way to install the union CLI outside a workflow project is to use [`uv`](https://docs.astral.sh/uv/):
 
 ```{code-block} shell
-$ pip install -U union
+$ uv tool install union
 ```
 
-This will install:
-* The [`union` command line tool](./union-cli.md)
-* The [Union SDK](./union-sdk/index.md)
+This will install the `union` CLI globally on your system [as a `uv` tool](https://docs.astral.sh/uv/concepts/tools/).
+
 
 ## Configure the `union` CLI
 
