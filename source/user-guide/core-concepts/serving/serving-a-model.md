@@ -1,4 +1,4 @@
-# Serving a model from a Union Workflow
+# Serving a model from a Workflow
 
 In this section we use a Union app to serve a model created with a Union workflow.
 
@@ -160,6 +160,8 @@ This task trains a `RandomForestRegressor`, saves it to a file, and uploads it t
 a Union `Artifact`. This `Union` Artifact is retrieved layer by the FastAPI app for
 serving the model.
 
+![scikit-learn Artifact](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)
+
 Once the workflow has completed, you can deploy the app:
 
 ```{code-block} shell
@@ -168,4 +170,4 @@ $ union deploy apps app.py simple-fastapi-sklearn
 
 You can see the Swagger docs of the FastAPI endpoint, by going to `/docs`:
 
-![scikit-learn FastAPI App](/_static/images/user-guide/core-concepts/serving/fastapi-skleran.png)
+![scikit-learn FastAPI App](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-fastapi.png)
