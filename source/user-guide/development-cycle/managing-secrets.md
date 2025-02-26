@@ -47,7 +47,6 @@ To use a secret created on the command line, see the example code below. To run 
 2. Copy the following example code to a new file and save it as `using_secrets.py`.
 3. Run the script with `union run --remote using_secrets.py main`.
 
-#### Example code
 
 ```{code-block} python
 import union
@@ -83,7 +82,6 @@ To use a secret created from a file in your workflow code, you must mount it as 
 2. Copy the example code below to a new file and save it as `using_secrets_file.py`.
 4. Run the script with `union run --remote using_secrets_file.py main`.
 
-#### Example code
 
 ```{code-block} python
 import union
