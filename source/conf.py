@@ -204,7 +204,7 @@ def process_options(app, ctx, lines):
 # This section configures the documentation generation for the `union` and `flytekit` modules using `pdoc`.
 
 # Configure the pdoc extension
-pdoc_modules = ['union', 'flytekit']  # List of modules to document
+pdoc_modules = ['union', 'flytekit', 'flytekit.core', 'flytekit.models', 'flytekit.types'] # List of modules to document
 pdoc_output_dir = 'api-reference/union-sdk'  # Output directory for generated docs
 
 
