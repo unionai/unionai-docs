@@ -1,24 +1,24 @@
 # Task parameters
 
-You pass the following parameters to the `@task` decorator:
+You pass the following parameters to the `@union.task` decorator:
 
 {@# TODO: consider organizing by category rather than alphabetically. #@}
 
 * `accelerator`: The accelerator to use for this task.
   For more information, see [Specifying accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html#specifying-accelerators).
 
-* `cache`: See [Caching](../caching).
+* `cache`: See [Caching](../caching.md).
 
-* `cache_serialize`: See [Caching](../caching).
+* `cache_serialize`: See [Caching](../caching.md).
 
-* `cache_version`: See [Caching](../caching).
+* `cache_version`: See [Caching](../caching.md).
 
 * `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
 
-* `container_image`: See [Imagespec](./task-software-environment/imagespec.md).
+* `container_image`: See [`ImageSpec`](./task-software-environment/imagespec.md).
 
 * `deprecated`: A string that can be used to provide a warning message for deprecated task.
-  Absence / empty str indicates that the task is active and not deprecated
+  The absence of a string, or an empty string, indicates that the task is active and not deprecated.
 
 * `docs`: Documentation about this task.
 
@@ -26,7 +26,7 @@ You pass the following parameters to the `@task` decorator:
   (see [Decks&#x2B00;](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)).
 
   ```{code-block} python
-  @task(enable_deck=True)
+  @union.task(enable_deck=True)
   def my_task(my_str: str):
   print("hello {my_str}")
   ```
@@ -45,13 +45,13 @@ You pass the following parameters to the `@task` decorator:
   Tasks and workflows do not have this requirement.
 
   ```{code-block} python
-  @workflow
+  @union.workflow
   def workflow0():
       launchplan0 = LaunchPlan.get_or_create(workflow0)
       # Specify node_dependency_hints so that launchplan0
       # will be registered on flyteadmin, despite this being a dynamic task.
 
-  @dynamic(node_dependency_hints=[launchplan0])
+  @union.dynamic(node_dependency_hints=[launchplan0])
   def launch_dynamically():
       # To run a sub-launchplan it must have previously been registered on flyteadmin.
       return [launchplan0]*10

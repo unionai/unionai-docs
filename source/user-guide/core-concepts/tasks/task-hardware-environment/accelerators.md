@@ -2,7 +2,7 @@
 
 {@@ if serverless @@}
 
-Union allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
+Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types.
@@ -21,7 +21,7 @@ The **NVIDIA T4 Tensor Core GPU** is the default.
 To use it for a task, specify the number of GPUs required in the `limits` parameter:
 
 ```{code-block} python
-    @task(
+    @union.task(
         limits=Resources(gpu="1")
     )
     def my_task():
@@ -31,7 +31,7 @@ To use it for a task, specify the number of GPUs required in the `limits` parame
 Or, you can explicitly specify the `accelerator` parameter as follows:
 
 ```{code-block} python
-    @task(
+    @union.task(
         limits=Resources(gpu="1"),
         accelerator=GPUAccelerator("nvidia-tesla-t4")
     )
@@ -46,7 +46,7 @@ To use the **NVIDIA L4 Tensor Core GPU** for a task, you must specify the number
 ```{code-block} python
 from flytekit.extras.accelerators import L4
 
-@task(
+@union.task(
     requests=Resources(gpu="1"),
     accelerator=L4,
 )
@@ -59,7 +59,7 @@ def my_task():
 To use the **NVIDIA A100 GPU** for a task you must specify the number of GPUs required in the `limits` parameter, and also specify the `accelerator` parameter as follows:
 
 ```{code-block} python
-@task(
+@union.task(
     requests=Resources(gpu="1"),
     accelerator=GPUAccelerator("nvidia-tesla-a100"),
 )
@@ -75,7 +75,7 @@ An accelerator, in Union, is a specialized hardware device that is used to accel
 These concepts are entirely different and should not be confused.
 :::
 
-Union allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
+Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs. or other specialized hardware devices such as TPUs.
@@ -88,7 +88,7 @@ For example:
 ```{code-block} python
 from flytekit.extras.accelerators import A100
 
-    @task(
+    @union.task(
         limits=Resources(gpu="1"),
         accelerator=A100,
     )
@@ -120,7 +120,7 @@ If using the constants, you can import them directly from the module, e.g.:
 ```{code-block} python
     from flytekit.extras.accelerators import T4
 
-    @task(
+    @union.task(
         limits=Resources(gpu="1"),
         accelerator=T4,
     )
@@ -133,7 +133,7 @@ if you want to use a fractional GPU, you can use the `partitioned` method on the
 ```{code-block} python
     from flytekit.extras.accelerators import A100
 
-    @task(
+    @union.task(
         limits=Resources(gpu="1"),
         accelerator=A100.partition_2g_10gb,
     )

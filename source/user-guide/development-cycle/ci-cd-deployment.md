@@ -1,4 +1,4 @@
-# Setting up CI/CD deployment
+# CI/CD deployment
 
 So far we have covered the steps of deploying a project manually from the command line.
 In many cases, you will want to automate this process through a CI/CD system.
@@ -9,7 +9,7 @@ We will use GitHub Actions as the example CI/CD system.
 
 An app is an agent registered in your Union data plane that enables external systems to perform actions in the system.
 To enable your CI/CD system to authenticate with Union, you need to create a Union app.
-See [Applications](../administration/applications).
+See [Applications](../administration/applications.md).
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
 
@@ -74,14 +74,6 @@ admin:
 logger:
   show-source: true
   level: 1
-union:
-  connection:
-    host: dns:///<union-host-url>
-    insecure: false
-  auth:
-    clientId: example-operator
-    clientSecretEnvVar: UNION_APP_SECRET
-    type: ClientSecret
 ```
 
 :::{note}

@@ -4,16 +4,14 @@ The `union` CLI is the main tool developers use to interact with Union on the co
 
 ## Installation
 
-To install the latest version of the `union` CLI, run the following command:
+The recommended way to install the union CLI outside a workflow project is to use [`uv`](https://docs.astral.sh/uv/):
 
 ```{code-block} shell
-$ pip install -U union
+$ uv tool install union
 ```
 
-This will install:
-* The `union` command line tool
-* The [`union` SDK](./sdk/index)
-* The [`flytekit` SDK](https://docs.flyte.org/en/latest/api/flytekit/docs_index.html)
+This will install the `union` CLI globally on your system [as a `uv` tool](https://docs.astral.sh/uv/concepts/tools/).
+
 
 ## Configure the `union` CLI
 
@@ -33,7 +31,7 @@ where `<union-host-url>` is the URL of your Union instance.
 
 These command will create the file `~/.union/config.yaml` with the configuration information to connect to the desired Union instance (Serverless or your own specific BYOC).
 
-See [Quick start](../quick-start) for more details.
+See [Quick start](../quick-start.md) for more details.
 
 ## Overriding the configuration file location
 

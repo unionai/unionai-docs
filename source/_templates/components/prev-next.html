@@ -1,6 +1,6 @@
 {# Displays links to the previous and next page in the TOCtree order. #}
 <div class="prev-next-area">
-  {%- if prev %}
+  {%- if prev and pagename not in hide_prev_button %}
     <a class="prev-page" href="{{ prev.link|e }}" title="{{ _('previous page') }}">
       <div class="prev-next-caret">
         <i class="fa-solid fa-angle-left"></i>
@@ -13,7 +13,6 @@
   {%- endif %}
   {%- if next %}
     <a class="next-page" href="{{ next.link|e }}" title="{{ _('next page') }}">
-      
       <div class="prev-next-info">
         <p class="prev-next-subtitle">{{ _("Next") }}</p>
         <p class="prev-next-title">{{ next_title or next.title }}</p>

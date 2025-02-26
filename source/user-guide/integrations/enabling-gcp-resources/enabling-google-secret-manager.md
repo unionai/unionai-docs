@@ -1,7 +1,7 @@
 # Enabling Google Secret Manager
 
 ```{note}
-This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager.
+This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager.
 ```
 
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
@@ -11,7 +11,7 @@ All you need to do is:
 * Retrieve your secrets from within your task code.
 
 To access a secret stored in Secret Manager in a GCP project _other than the one that holds your data plane_ requires one additional step:
-Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](./index)) access to top the secret in the other projects.
+Granting the `<UserFlyteGSA>` (see [Enabling GCP resources](./index.md)) access to top the secret in the other projects.
 
 ## Create your secrets
 
@@ -51,27 +51,26 @@ To use a same-project GCP secret in your task code, do the following:
   * `Secret.group` is the **GCP secret name**, in this case `example-secret`(optionally, you can use the **GCP secret path** instead, but the simple name is sufficient).
   * `Secret.group_version` is the **GCP secret version** (in this case `1`)
   * `Secret.mount_requirement` is `Secret.MountType.FILE`
-* Pass that `Secret` object in the `secret_requests` parameter of the `@task` decorator.
+* Pass that `Secret` object in the `secret_requests` parameter of the `@union.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to
 `flytekit.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`.
 
 Here is an example:
 
 ```{code-block} python
-import flytekit
-from flytekit import task, workflow, Secret
+import union
 
 SECRET_GROUP = "example-secret"
 SECRET_GROUP_VERSION = "1"
 SECRET_REQUEST = Secret(
             group=SECRET_GROUP,
             group_version=SECRET_GROUP_VERSION,
-            mount_requirement=Secret.MountType.FILE
+            mount_requirement=union.Secret.MountType.FILE
         )
 
-@task(secret_requests=[SECRET_REQUEST])
+@union.task(secret_requests=[SECRET_REQUEST])
 def t1():
-    secret_val = flytekit.current_context().secrets.get(
+    secret_val = union.current_context().secrets.get(
         SECRET_GROUP,
         group_version=SECRET_GROUP_VERSION
     )
@@ -81,7 +80,7 @@ def t1():
 
 If your secret is stored in the Secret Manager of a project other than the one containing your data plane, then you will first need to grant the `<UserFlyteGSA>` permission to access it:
 
-* Find the **email identifier** of the `<UserFlyteGSA>` in your data plane GCP project (see [Enabling GCP resources](./index) for details).
+* Find the **email identifier** of the `<UserFlyteGSA>` in your data plane GCP project (see [Enabling GCP resources](./index.md) for details).
 * Go to **Security > Secret Manager** in the GCP project that contains your secret.
 * Select the secret that you want to access and select **GRANT ACCESS**.
 * In the subsequent panel, under **Add principals**, paste in the email identifier of the `<UserFlyteGSA>` that you found above.
@@ -90,38 +89,37 @@ If your secret is stored in the Secret Manager of a project other than the one c
 
 At this point, your task code will have access to the secret in the other project. To use that secret in your task code, do the following:
 
-* Define a `Secret` object where
-  * `Secret.group` is the **GCP secret path** (in this case, `projects/956281974034/secrets/example-secret`)
-  * `Secret.group_version` is the **GCP secret version** (in this case `1`)
-  * `Secret.mount_requirement` is `Secret.MountType.FILE`
-* Pass that `Secret` object in the `secret_requests` parameter of the `@task` decorator.
+* Define a `union.Secret` object where
+  * `union.Secret.group` is the **GCP secret path** (in this case, `projects/956281974034/secrets/example-secret`)
+  * `union.Secret.group_version` is the **GCP secret version** (in this case `1`)
+  * `union.Secret.mount_requirement` is `union.Secret.MountType.FILE`
+* Pass that `union.Secret` object in the `secret_requests` parameter of the `@union.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to\
-`flytekit.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`
+`union.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`
 
 :::{admonition} GCP secret name vs GCP secret path
 In your task code, the only difference between using a same-project secret and a cross-project secret is
 
-* With a _same-project secret,_ you can use either the **GCP secret name** or the **GCP secret path** as the value of the parameter `flytekit.Secret.group`.
-* With a _cross-project secret,_ you must use the **GCP secret path** as the value of the parameter `flytekit.Secret.group`.
+* With a _same-project secret,_ you can use either the **GCP secret name** or the **GCP secret path** as the value of the parameter `union.Secret.group`.
+* With a _cross-project secret,_ you must use the **GCP secret path** as the value of the parameter `union.Secret.group`.
 :::
 
 Here is an example:
 
 ```{code-block} python
-import flytekit
-from flytekit import task, workflow, Secret
+import union
 
 SECRET_GROUP = "projects/956281974034/secrets/example-secret"
 SECRET_GROUP_VERSION = "1"
-SECRET_REQUEST = Secret(
+SECRET_REQUEST = union.Secret(
             group=SECRET_GROUP,
             group_version=SECRET_GROUP_VERSION,
-            mount_requirement=Secret.MountType.FILE
+            mount_requirement=union.Secret.MountType.FILE
         )
 
-@task(secret_requests=[SECRET_REQUEST])
+@union.task(secret_requests=[SECRET_REQUEST])
 def t1():
-    secret_val = flytekit.current_context().secrets.get(
+    secret_val = union.current_context().secrets.get(
         SECRET_GROUP,
         group_version=SECRET_GROUP_VERSION
     )

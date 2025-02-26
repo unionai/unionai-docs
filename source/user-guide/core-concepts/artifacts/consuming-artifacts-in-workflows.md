@@ -1,4 +1,4 @@
-# Consuming artifacts
+# Consuming artifacts in workflows
 
 ## Defining a workflow that consumes an artifact
 

@@ -12,11 +12,11 @@ To install the DGX agent and have it enabled in your deployment, contact the Uni
 ```{code-block} python
 from typing import List
 
-from flytekit import task, workflow, ImageSpec
+import union
 from flytekitplugins.dgx import DGXConfig
 
 
-dgx_image_spec = ImageSpec(
+dgx_image_spec = union.ImageSpec(
     base_image="my-image/dgx:v24",
     packages=["torch", "transformers", "accelerate", "bitsandbytes"],
     registry="my-registry",
@@ -35,7 +35,7 @@ DEFAULT_CHAT_TEMPLATE = """
 """.strip()
 
 
-@task(container_image=dgx_image_spec, cache_version="1.0", cache=True)
+@union.task(container_image=dgx_image_spec, cache_version="1.0", cache=True)
 def form_prompt(prompt: str, system_message: str) -> List[dict]:
     return [
         {"role": "system", "content": system_message},
@@ -43,7 +43,7 @@ def form_prompt(prompt: str, system_message: str) -> List[dict]:
     ]
 
 
-@task(
+@union.task(
     task_config=DGXConfig(instance="dgxa100.80g.8.norm"),
     container_image=dgx_image_spec,
 )
@@ -84,7 +84,7 @@ def inference(messages: List[dict], n_variations: int) -> List[str]:
     return [output["generated_text"] for output in outputs]
 
 
-@workflow
+@union.workflow
 def wf(
     prompt: str = "Explain what a Mixture of Experts is in less than 100 words.",
     n_variations: int = 8,

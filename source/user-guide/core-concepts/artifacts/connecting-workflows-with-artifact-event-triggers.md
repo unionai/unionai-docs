@@ -1,6 +1,6 @@
 # Connecting workflows with artifact event triggers
 
-In the following example, we define an upstream workflow and a downstream workflow, and define a [trigger](../launch-plans/reactive-workflows) in a launch plan to connect the two workflows via an [artifact event](../launch-plans/reactive-workflows.md#artifact-events).
+In the following example, we define an upstream workflow and a downstream workflow, and define a [trigger](../launch-plans/reactive-workflows.md) in a launch plan to connect the two workflows via an [artifact event](../launch-plans/reactive-workflows.md#artifact-events).
 
 ## Imports
 

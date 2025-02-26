@@ -20,16 +20,16 @@ understand what this looks like, let's define a very basic eager workflow
 using the `@eager` decorator.
 
 ```{code-block} python
-from flytekit import task, workflow
+from union import task, workflow
 from flytekit.experimental import eager
 
 
-@task
+@union.task
 def add_one(x: int) -> int:
     return x + 1
 
 
-@task
+@union.task
 def double(x: int) -> int:
     return x * 2
 
@@ -60,7 +60,7 @@ the Python integer that is the result of `x + 1` and not a Promise.
 ## How eager workflows work
 
 When you decorate a function with `@eager`, any function invoked within it
-that's decorated with `@task`, `@workflow`, or `@eager` becomes
+that's decorated with `@union.task`, `@union.workflow`, or `@eager` becomes
 an [awaitable](https://docs.python.org/3/library/asyncio-task.html#awaitables)
 object within the lifetime of the parent eager workflow execution. Note that
 this happens automatically and you don't need to use the `async` keyword when
@@ -85,7 +85,7 @@ We're leveraging Python's native `async` capabilities in order to:
    compile-time analysis and first-class data lineage tracking.
 :::
 
-Similar to [dynamic workflows](./dynamic-workflows), eager workflows are
+Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
 a static workflow at runtime using materialized inputs, eager workflows do
 not compile any workflow at all. Instead, they use the [`FlyteRemote`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote)
@@ -128,7 +128,7 @@ Python conditionals in your eager workflows. Let's look at a more complicated
 example:
 
 ```{code-block} python
-@task
+@union.task
 def gt_100(x: int) -> bool:
     return x > 100
 
@@ -176,7 +176,7 @@ async def eager_workflow_with_for_loop(x: int) -> int:
 You can invoke static workflows from within an eager workflow:
 
 ```{code-block} python
-@workflow
+@union.workflow
 def subworkflow(x: int) -> int:
     out = add_one(x=x)
     return double(x=out)
@@ -213,7 +213,7 @@ You can catch exceptions in eager workflows through `EagerException`:
 from flytekit.experimental import EagerException
 
 
-@task
+@union.task
 def raises_exc(x: int) -> int:
     if x <= 0:
         raise TypeError
@@ -259,21 +259,21 @@ developing your workflows and tasks.
 
 ### Remote Union cluster execution
 
-Under the hood, `@eager` workflows use the [`FlyteRemote`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote)
+Under the hood, `@eager` workflows use the [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md)
 object to kick off task, static workflow, and eager workflow executions.
 
 In order to actually execute them on a Union cluster, you'll need to configure
-eager workflows with a `FlyteRemote` object and secrets configuration that
+eager workflows with a `UnionRemote` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
 ```{code-block} python
-from union.remote import FlyteRemote
+from union import UnionRemote
 from flytekit.configuration import Config
 
 @eager(
-    remote=FlyteRemote(
+    remote=UnionRemote(
         config=Config.auto(config_file="config.yaml"),
-        default_project="flytesnacks",
+        default_project="{@= default_project =@}",
         default_domain="development",
     ),
     client_secret_group="<my_client_secret_group>",
@@ -283,27 +283,24 @@ async def eager_workflow_remote(x: int) -> int:
     ...
 ```
 
-Where `config.yaml` contains a
-[flytectl](https://docs.flyte.org/projects/flytectl/en/latest/#configuration)-compatible
-config file and `my_client_secret_group` and `my_client_secret_key` are the
-secret group and key that you've configured for your Flyte
-cluster to authenticate via a client key.
+Where `config.yaml` contains a Union config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your Union
+instance.
 
 ### Sandbox Flyte cluster execution
 
-When using a sandbox cluster started with `flytectl demo start`, however, the
+When using a sandbox cluster started with `uctl demo start`, however, the
 `client_secret_group` and `client_secret_key` are not required, since the
 default sandbox configuration does not require key-based authentication.
 
 ```{code-block} python
 from flytekit.configuration import Config
-from union.remote import FlyteRemote
+from union import UnionRemote
 
 
 @eager(
     remote=FlyteRemote(
         config=Config.for_sandbox(),
-        default_project="flytesnacks",
+        default_project="{@= default_project =@}",
         default_domain="development",
     )
 )
@@ -317,14 +314,14 @@ async def eager_workflow_sandbox(x: int) -> int:
 :::{note}
 When executing eager workflows on a remote Union cluster, Union will execute the
 latest version of tasks, static workflows, and eager workflows that are on
-the `default_project` and `default_domain` as specified in the `FlyteRemote`
+the `default_project` and `default_domain` as specified in the `UnionRemote`
 object. This means that you need to pre-register all entities that are
 invoked inside of the eager workflow.
 :::
 
 ### Registering and running
 
-Assuming that your `flytekit` code is configured correctly, you will need to
+Assuming that your code is configured correctly, you will need to
 register all of the task and subworkflows that are used with your eager
 workflow with `union register`:
 
@@ -347,25 +344,25 @@ union --config <path/to/config.yaml> run \
 ```
 
 :::{note}
-You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood, which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
+You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood,
+which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
 :::
 
 ## Eager workflows in the UI
 
 Since eager workflows are an experimental feature, there is currently no first-class representation of them in the UI. When you register an eager workflow, you'll be able to see it in the task view.
 
-When you execute an eager workflow, the tasks and subworkflows invoked within it **won't show up** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually Flyte tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
+When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually Flyte tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
 
-However, at the end of execution, you'll be able to use [Flyte Decks](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html) to see a list of all the tasks and subworkflows that were executed within the
-eager workflow.
+However, at the end of execution, you'll be able to use [Flyte Decks](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html) to see a list of all the tasks and subworkflows that were executed within the eager workflow.
 
 ## Limitations
 
 As eager workflows are still experimental, there are a few limitations to keep in mind:
 
-- You cannot invoke [dynamic workflows](./dynamic-workflows), [map tasks](../tasks/task-types.md#map-tasks), or [launch plans](../launch-plans/index) inside an eager workflow.
+- You cannot invoke [dynamic workflows](./dynamic-workflows.md), [map tasks](../tasks/task-types.md#map-tasks), or [launch plans](../launch-plans/index.md) inside an eager workflow.
 - [Context managers](https://docs.python.org/3/library/contextlib.html) will only work on locally executed functions within the eager workflow, i.e. using a context manager to modify the behavior of a task or subworkflow will not work because they are executed on a completely different pod.
-- All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/flytekit-sdk/experimental-features) at runtime.
+- All exceptions raised by Flyte tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/union-sdk/experimental-features.md) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
-- Flyte entities that are invoked inside of an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
+- Union entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
 - The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.

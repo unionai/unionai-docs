@@ -4,7 +4,7 @@ In Union, each task runs in its own container. This means that a file or directo
 
 The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, theFLytekit SDK provides the [`FlyteFile`](../../api-reference/flytekit-sdk/custom-types/flytefile) and [`FlyteDirectory`](../../api-reference/flytekit-sdk/custom-types/flytedirectory) classes, which automate this process.
+Since this is such a common use case, the Union SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
 
 ## How the classes work
 
@@ -30,7 +30,7 @@ Let's say you have a local file in the container running `task_1` that you want 
 To do this, you create a `FlyteFile` object using the local path of the file, and then pass the `FlyteFile` object as part of your workflow, like this:
 
 ```{code-block} python
-@task
+@union.task
 def task_1() -> FlyteFile:
     local_path = os.path.join(current_context().working_directory, "data.txt")
     with open(local_path, mode="w") as f:
@@ -38,13 +38,13 @@ def task_1() -> FlyteFile:
     return FlyteFile(path=local_path)
 
 
-@task
+@union.task
 def task_2(ff: FlyteFile):
     with ff.open(mode="r") as f
         file_contents = f.read()
 
 
-@workflow
+@union.workflow
 def wf():
     ff = task_1()
     task_2(ff=ff)
@@ -77,7 +77,7 @@ def task1() -> FlyteDirectory:
 
     return FlyteDirectory(p)
 
-@task
+@union.task
 def task2(fd: FlyteDirectory):
     # Get a list of the directory contents using os to return strings
     items = os.listdir(fd)
@@ -90,7 +90,7 @@ def task2(fd: FlyteDirectory):
         d = f.read()
     print(f"The first line in the first file is: {d}")
 
-@workflow
+@union.workflow
 def workflow():
     fd = task1()
     task2(fd=fd)
@@ -120,9 +120,9 @@ However, you can change the upload location by setting the raw data prefix to yo
 :::{admonition} Setting up your own object store bucket
 For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 
-* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
-* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
-* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage)
+* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
+* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
+* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
 :::
 
 ### Changing the raw data prefix
@@ -130,7 +130,7 @@ For details on how to set up your own object store bucket, consult the direction
 If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
 This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
 
-{@# TODO See [Raw data prefix](raw-data-prefix) for more information. #@}
+{@# TODO See [Raw data prefix]() for more information. #@}
 
 Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
 
@@ -155,7 +155,7 @@ To preserve that file across the task boundary, Union uploaded it to the Union o
 You can also _start with a remote file_, simply by initializing the `FlyteFile` object with a URI pointing to a remote source. For example:
 
 ```{code-block} python
-@task
+@union.task
 def task_1() -> FlyteFile:
     remote_path = "https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv"
     return FlyteFile(path=remote_path)
@@ -165,6 +165,20 @@ In this case, no uploading is needed because the source file is already in a rem
 When the object is passed out of the task, it is converted into a `Blob` with the remote path as the URI.
 After the FlyteFile is passed to the next task,  you can call `FlyteFile.open()` on it, just as before.
 
+If you don't intend on passing the `FlyteFile` to the next task, and rather intend to open the contents of the remote file within the task, you can use `from_source`.
+
+```{code-block} python
+@union.task
+def load_json():
+    uri = "gs://my-bucket/my-directory/example.json"
+    my_json = FlyteFile.from_source(uri)
+
+    # Load the JSON file into a dictionary and print it
+    with open(my_json, "r") as json_file:
+        data = json.load(json_file)
+    print(data)
+```
+
 When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, including `http`, `https`(Web), `gs` (Google Cloud Storage), `s3` (AWS S3), `abfs`, and `abfss` (Azure Blob Filesystem).
 
 ### Remote directory example
@@ -172,12 +186,12 @@ When initializing a `FlyteFile` with a remote file location, all URI schemes sup
 Below is an equivalent remote example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```{code-block} python
-@task
+@union.task
 def task1() -> FlyteDirectory:
     p = "https://people.sc.fsu.edu/~jburkardt/data/csv/"
     return FlyteDirectory(p)
 
-@task
+@union.task
 def task2(fd: FlyteDirectory):
     # Get a list of the directory contents and display the first csv
     files = FlyteDirectory.listdir(fd)
@@ -186,7 +200,7 @@ def task2(fd: FlyteDirectory):
     print(f"The first csv is: \n{d}")
 
 
-@workflow
+@union.workflow
 def workflow():
     fd = task1()
     task2(fd=fd)
@@ -199,12 +213,12 @@ The object returned by `FlyteFile.open()` is a stream. In the above examples, th
 But for large files, you can iterate through the contents of the stream:
 
 ```{code-block} python
-@task
+@union.task
 def task_1() -> FlyteFile:
     remote_path = "https://sample-videos.com/csv/Sample-Spreadsheet-100000-rows.csv"
     return FlyteFile(path=remote_path)
 
-@task
+@union.task
 def task_2(ff: FlyteFile):
     with ff.open(mode="r") as f
         for row in f:
@@ -227,7 +241,7 @@ This enables many common file-related operations in Python to be performed on th
 The most prominent example of such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
 
 ```{code-block} python
-@task
+@union.task
 def task_2(ff: FlyteFile):
     with open(ff, mode="r") as f
        file_contents= f.read()
@@ -248,14 +262,14 @@ The latter calls the built-in Python function `open()`, downloads the specified 
 
 Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
 
-See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
+See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
 
 ### Explicit downloading
 
 You can also explicitly download a `FlyteFile` to the local container file system by calling `FlyteFile.download()`:
 
 ```{code-block} python
-@task
+@union.task
 def task_2(ff: FlyteFile):
     local_path = ff.download()
 ```
@@ -277,8 +291,8 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [Flytekit SDK](../../api-reference/flytekit-sdk) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/custom-types/index.md#file-type):
+The [Union SDK](../../api-reference/union-sdk/index.md) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/index.md#file-type):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -290,7 +304,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/flytekit-sdk/custom-types/index.md#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/index.md#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

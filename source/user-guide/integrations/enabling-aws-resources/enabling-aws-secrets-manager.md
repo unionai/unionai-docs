@@ -1,7 +1,7 @@
 # Enabling AWS Secrets Manager
 
 ```{note}
-This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than AWS Secrets Manager.
+This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager.
 ```
 
 To enable your code to access secrets from AWS Secrets Manager you will need to
@@ -125,35 +125,32 @@ $ aws iam create-policy \
 To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your Union data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
-See [here](./index) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.
+See [here](./index.md) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.
 
 ## Using AWS secrets in your Flyte code
 
 To use an AWS secret in your Flyte task code, do the following:
 
-* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@task` decorator.
+* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@union.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to\
   `flytekit.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
 
 Here is an example:
 
 ```{code-block} python
-
-from flytekit import task, workflow
-from flytekit import Secret
-import flytekit
+import union
 
 SECRET_GROUP = "arn:aws:secretsmanager:<Region>:<AccountId>:secret:"
 SECRET_KEY = "<SecretName>-<SixRandomCharacters>"
-SECRET_REQUEST = Secret(
+SECRET_REQUEST = union.Secret(
   group=SECRET_GROUP,
   key=SECRET_KEY,
-  mount_requirement=Secret.MountType.FILE
+  mount_requirement=union.Secret.MountType.FILE
 )
 
-@task(secret_requests=[SECRET_REQUEST])
+@union.task(secret_requests=[SECRET_REQUEST])
 def t1():
-    secret_val = flytekit.current_context().secrets.get(
+    secret_val = union.current_context().secrets.get(
         SECRET_GROUP,
         group_version=SECRET_GROUP_VERSION
     )

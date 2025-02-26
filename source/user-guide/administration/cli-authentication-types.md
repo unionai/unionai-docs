@@ -3,7 +3,7 @@
 The command line tools `uctl` or `union` must authenticate to Union in order to perform operations on the platform.
 The authentication mechanism is configured in the `config.yaml` file used by the command line tool.
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../../api-reference/union-cli) for more details.)
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
@@ -42,12 +42,6 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: https://<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: Pkce
 ```
 
 ## DeviceFlow
@@ -70,12 +64,6 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: dns:///<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: DeviceFlow
 ```
 
 :::{note}
@@ -96,7 +84,7 @@ The authentication flow with ClientSecret works like this:
 * Upon successful authentication, the command-line action completes.
 
 With this mechanism, you need to first set up an application.
-Create the app as described in [Applications](./applications), assigning it a `clientId` and recording the `AppSecret` that is returned.
+Create the app as described in [Applications](./applications.md), assigning it a `clientId` and recording the `AppSecret` that is returned.
 
 You then store the `AppSecret` in either a local file or an environment variable and set up your `config.yaml` to reference it.
 
@@ -112,14 +100,6 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: dns:///<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: ClientSecret
-    clientId: <YourAppId>
-    clientSecretLocation: /path/to/secret.txt
 ```
 
 Here is an example that uses ClientSecret with an environment variable:
@@ -134,12 +114,4 @@ admin:
 logger:
   show-source: true
   level: 0
-union:
-  connection:
-    host: dns:///<YourOrg>.hosted.unionai.cloud
-    insecure: false
-  auth:
-    type: ClientSecret
-    clientId: <YourAppId>
-    clientSecretEnvVar: YOUR_APP_SECRET
 ```

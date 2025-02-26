@@ -63,9 +63,12 @@ a:hover {
     text-decoration: underline !important;
 }
 
-a:active,
-a:visited {
+a:active {
     color: var(--pri-active-link-color) !important;
+}
+
+a:visited {
+    color: var(--pri-visited-link-color);
 }
 
 .surface {

@@ -1,4 +1,4 @@
-# Viewing workflow executions in the UI
+# Viewing workflow executions
 
 The **Executions list** shows all executions in a project and domain combination.
 An execution represents a single run of all or part of a workflow (including subworkflows and individual tasks).
@@ -22,9 +22,9 @@ For each execution in this project and domain you can see the following:
 
 * A graph of the **last 100 executions in the project**.
 * **Start time**: Select to view the [individual execution](#execution-view).
-* **Workflow/Task**: The [individual workflow](./viewing-workflows) or [individual task](../tasks/viewing-tasks) that ran in this execution.
+* **Workflow/Task**: The [individual workflow](./viewing-workflows.md) or [individual task](../tasks/viewing-tasks.md) that ran in this execution.
 * **Version**: The version of the workflow or task that ran in this execution.
-* **Launch Plan**: The [Launch Plan](../launch-plans/viewing-launch-plans) that was used to launch this execution.
+* **Launch Plan**: The [Launch Plan](../launch-plans/viewing-launch-plans.md) that was used to launch this execution.
 * **Schedule**: The schedule that was used to launch this execution (if any).
 * **Execution ID**: The ID of the execution.
 * **Status**: The status of the execution. One of **QUEUED**, **RUNNING**, **SUCCEEDED**, **FAILED** or **UNKNOWN**.
@@ -62,9 +62,9 @@ Below that, you have the following tabs: **Executions**, **Inputs**, **Outputs**
 
 The **Executions** tab gives you details on the execution of this particular node as well as access to:
 
-* **Task level monitoring**: You can access the [task-level monitoring](../tasks/task-hardware-environment/task-level-monitoring) information by selecting **View Utilization**.
+* **Task level monitoring**: You can access the [task-level monitoring](../tasks/task-hardware-environment/task-level-monitoring.md) information by selecting **View Utilization**.
 
-* **Logs**: You can access logs by clicking the text under **Logs**. See [Logging](../tasks/viewing-logs).
+* **Logs**: You can access logs by clicking the text under **Logs**. See [Logging](../tasks/viewing-logs.md).
 
 The **Inputs**, **Outputs** tabs display the data that was passed into and out of the node, respectively.
 

@@ -4,7 +4,7 @@
 
 In the following example we register and run a workflow and retrieve its output:
 
-```{code-block} bash
+```{code-block} shell
 :caption: A simple project
 
 ├── remote.py
@@ -21,13 +21,13 @@ import os
 from union import task, workflow, FlyteFile
 
 
-@task()
+@union.task()
 def create_file(message: str) -> FlyteFile:
     with open("data.txt", "w") as f:
         f.write(message)
     return FlyteFile(path="data.txt")
 
-@workflow
+@union.workflow
 def my_workflow(message: str) -> FlyteFile:
     f = create_file(message)
     return f
@@ -61,12 +61,12 @@ if __name__ == "__main__":
 
 You can run the code with:
 
-```{code-block} bash
+```{code-block} shell
 $ python remote.py
 ```
 
 The `my_workflow` workflow and the `create_file` task is registered and run.
-Once the the workflow completes, the output is passed back to the `run_workflow` function and printed out.
+Once the workflow completes, the output is passed back to the `run_workflow` function and printed out.
 
 The output is also be available via the UI, in the **Outputs** tab of the `create_file` task details view:
 

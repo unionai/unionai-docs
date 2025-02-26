@@ -54,7 +54,10 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'Union BYOC',
         'serverless': 'Union Serverless',
     },
-    'cli_name': 'uctl'
+    'default_project': {
+        'byoc': 'flytesnacks',
+        'serverless': 'default',
+    }
 }
 
 INSTALL_SDK_PACKAGE = "union"
@@ -223,6 +226,7 @@ def convert_tutorial_py_file_to_md(
 ):
     """Converts a tutorial Python file to a Markdown file along with its static assets."""
     log(f"converting {from_path} to {to_path}")
+
     notebook = jupytext.read(from_path, fmt="py:light")
 
     key = from_path.relative_to(Path(EXAMPLES_REPO))
@@ -236,7 +240,19 @@ def convert_tutorial_py_file_to_md(
     for fname in ("static", "images"):
         import_static_files_from_tutorial(name, from_path, fname, notebook)
 
+    # Hack to remove jupytext metadata when converting from ipynb to md
     jupytext.write(notebook, to_path, fmt="md")
+
+    # Now read the file and remove the header
+    with open(to_path, "r") as f:
+        content = f.read()
+    
+    # Remove the Jupytext metadata section with regex
+    clean_content = re.sub(r'---\s*jupyter:[\s\S]*?---\s*\n', '', content)
+    
+    # Write the clean content back
+    with open(to_path, "w") as f:
+        f.write(clean_content)
 
 
 # Process a single Markdown/Jinja2 file.
@@ -391,7 +407,7 @@ def process_project():
             f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
             env=DOCSEARCH_CREDENTIALS[variant],
         )
-    
+    shell(f'cp ./dummy_index.html {BUILD_DIR}/index.html')
     shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
 
 

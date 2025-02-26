@@ -1,12 +1,13 @@
 # Union documentation
 
-This repository contains the source for the Union documentation site.
+This repository contains the source for the Union documentation site [docs.union.ai](https://docs.union.ai).
 
 The site is built using a combination of the [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
 templating system and the [Sphinx](https://www.sphinx-doc.org) static site generator.
 
 The site is hosted on Cloudflare Pages in the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
 project.
+
 
 ## Set up your local Python environment
 
@@ -18,7 +19,8 @@ git clone https://github.com/unionai/docs.git
 ```
 * We use `uv`. See installation instructions for your platform [here](https://docs.astral.sh/uv/getting-started/installation/).
 
-#### Activate the virtual environment
+
+### Activate the virtual environment
 
 ```bash
 cd docs
@@ -30,13 +32,14 @@ Or, if you have multiple Python versions installed, you can specify the Python v
 uv venv .venv --python 3.12  # create a virtual environment with the specific Python 3.12 version
 ```
 
-#### Install the dependencies
+### Install the dependencies
 
 ```bash
 uv sync
 ```
 
 **Note:** It's a good idea to regularly re-install dependencies, as documentation changes sometimes introduce new or updated dependencies.
+
 
 ## Build the site
 
@@ -53,6 +56,7 @@ The build process will generate two sets of Markdown files in the `sphinx_source
 
 To delete both the `sphinx_source` and `build` directories, run `uv run make clean`.
 
+
 ## Publish the site
 
 To publish a change to the site, create a pull request here in `unionai/docs` against the `main` branch.
@@ -60,6 +64,7 @@ Once the pull request is merged, the changes will be published to `docs.union.ai
 
 PR builds are also automatically deployed to preview URLs on the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
 project in Cloudflare Pages.
+
 
 ## Build the site with Algolia DocSearch
 
@@ -79,7 +84,7 @@ Export the environment variables and run the docs build process:
 
 ```bash
 export $(cat secrets.txt | xargs)
-uv run make build-local
+make build-local
 ```
 
 
@@ -87,6 +92,21 @@ uv run make build-local
 > When you view the local docs, the search bar will surface results that will
 > redirect to the corresponding `docs.union.ai` page. This is because Algolia
 > DocSearch does not index local pages.
+
+
+## Variants
+
+The Union docs website is built to differient content depending on which
+"variant" of the product is selected in the variant switcher a the top of the page.
+
+Currently we have two variants: "Serverless" and "BYOC".
+
+The content for different variants is produced from a common single tree of source pages
+with templating logic in individual pages and configuration in the `sitemap.json` controling which
+content appears in which variant.
+
+If you are on page and switch the variant to one where the current page also exists, you will go to
+that specific page. If the current page does not exist, you will go to the root page of the site.
 
 
 ## How it works
@@ -101,6 +121,7 @@ The single source tree contains the content for all variants.
 Which content is to be displayed for a specific variant can be controlled
 at two levels: the page level and the block level.
 
+
 ### Controlling content at the page level
 
 The configuration file `sitemap.json` defines the hierarchical structure of the site
@@ -109,30 +130,18 @@ in each page's entry.
 
 For example, consider the following section of the `sitemap.json`:
 
-```
-{"name": "getting-started", "variants": ["byoc", "serverless"],
-    "children": [
-        {"name": "machine-learning-example", "variants": ["serverless"]},
-        {"name": "adding-custom-dependencies", "variants": ["serverless"]},
-        {"name": "managing-secrets", "variants": ["serverless"]},
-        {"name": "managing-apps", "variants": ["serverless"]},
-        {"name": "access-aws-s3", "variants": ["serverless"]},
-        {"name": "installing-development-tools", "variants": ["byoc"]},
-        {"name": "creating-the-project", "variants": ["byoc"]},
-        {"name": "looking-at-the-dependencies", "variants": ["byoc"]},
-        {"name": "looking-at-the-workflow-code", "variants": ["byoc"]},
-        {"name": "running-in-a-local-python-environment", "variants": ["byoc"]},
-        {"name": "running-in-a-local-cluster", "variants": ["byoc"]},
-        {"name": "setting-up-the-project-on-union", "variants": ["byoc"]},
-        {"name": "deploying-the-project-on-union", "variants": ["byoc"]},
-        {"name": "more-resources", "variants": ["byoc"]}
-    ]},
+``` json
+{"name": "administration", "variants": ["byoc", "serverless"], "children": [
+    {"name": "resources", "variants": ["byoc", "serverless"]},
+    {"name": "cost-allocation", "variants": ["byoc"]},
+    {"name": "user-management", "variants": ["byoc"]},
+    {"name": "applications", "variants": ["byoc"]},
+    {"name": "cli-authentication-types", "variants": ["byoc"]}
+]},
 ```
 
-Here we see that the `getting-started` page is included in both the `byoc` and `serverless` variants.
-But its subpages are either in one or the other variant, but never both.
-For example, the `machine-learning-example` page is only included in the `serverless` variant
-and the `installing-development-tools` page is only included in the `byoc` variant.
+Here we see that the `adminiistration` page is included in both the `byoc` and `serverless` variants.
+Its subpage `resources` is also in both, but the other subpages are only in `byoc`.
 
 Note that a subpage cannot be included in a variant in which its parent page is not included.
 In other words, the scope of a sub-page is always either equivalent to, or a subset of, the scope
@@ -141,6 +150,27 @@ of its parent page. A processing error will be raised by `build.py` if this rule
 Note also that the `sitemap.json` file is used to automatically generate `toctree` directives
 in the intermediate Sphinx Markdown, so you must not add your own `toctree` directives.
 The `sitemap.json` is the single source that defines the hierarchy of the pages.
+
+
+### Correspondence between `sitemap.json`, website, and file tree
+
+The hierarchy and ordering of pages in the `sitemap.json` correspond hierarchy and ordering of the navigation
+elements in the website, as well as the URL structure of the website.
+
+For example, the section shown above defines the following pages:
+
+In Serverless:
+* `https://docs.union.ai/serverless/user-guide/administration/`
+* `https://docs.union.ai/serverless/user-guide/administration/resources`
+
+In BYOC:
+* `https://docs.union.ai/byoc/user-guide/administration/`
+* `https://docs.union.ai/byoc/user-guide/administration/resources`
+* `https://docs.union.ai/byoc/user-guide/administration/cost-allocation`
+* `https://docs.union.ai/byoc/user-guide/administration/user-management`
+* `https://docs.union.ai/byoc/user-guide/administration/applications`
+* `https://docs.union.ai/byoc/user-guide/administration/cli-authentication-types`
+
 
 ### Controlling content at the block level
 
@@ -156,6 +186,7 @@ Content only for BYOC
 Content for all variants of the page as per its entry in the `sitemap.json`
 ```
 
+
 ### Variables
 
 Variables can be used in the content of a page using Jinja2 templating syntax like this:
@@ -165,6 +196,7 @@ Variables can be used in the content of a page using Jinja2 templating syntax li
 ```
 
 The variable values are defined in the `build.py` file in the `SUBS` constant.
+
 
 ### Comments
 
@@ -184,6 +216,7 @@ Note that this system uses a customized version of the syntax for Jinja2 templat
 
 This is done to avoid conflict with documentation content that includes the standard Jinja syntax.
 
+
 ### Pulling in tutorial examples content
 
 This repo uses the [unionai-examples](https://github.com/unionai/unionai-examples) repo as a git submodule
@@ -197,7 +230,7 @@ If you've added a new example to the `union-examples` repo, you can update the s
 To pull in a specific page from the examples repo, you can specify a `from_py_file`
 key in the `sitemap.json` file. For example:
 
-```
+``` json
 "children": [
     {
         "name": "sentiment-classifier",
@@ -212,6 +245,7 @@ When you run `make build-local`, `update-examples` will pull in the latest chang
 It will also use the YAML file in the `./unionai-examples/run_commands.yaml` repo to
 generate metadata about how to run that example.
 
+
 ### The processing pipeline
 
 The `build.py` script processes the contents in the `source/` directory,
@@ -224,11 +258,52 @@ Additionally, it adds toctree directives to each `index.md` page based on the hi
 The resulting Sphinx projects in the `sphinx_source` directory are then each proecessed by `sphinx-build` to produce the final HTML output in the `build/html` directory.
 Again, each variant is placed in a separate subdirectory.
 
+
 ## Redirects
 
-When re-arranging the content of the site, it may be necessary to create redirects.
-These are defined in the `_redirects` file which is checked in at the
-root of this repo. They are enabled automatically when the project is deployed.
+Redirects are handled in two places:
+
+* `_redirects` (deployed automatically on merge to `main`)
+* `docs_redirects.csv` (recorded here, but requires manual uploading to Cloudflare Bulk Redirects to take effect)
+
+The `_redirects` file is used to redirect the top-level URLs to two opt-level pages:
+* `docs.union.ai/` -> `docs.union.ai/byoc/user-guide`
+* `docs.union.ai/byoc` -> `docs.union.ai/byoc/user-guide`
+* `docs.union.ai/serverless` -> `docs.union.ai/serverless/user-guide`
+
+These redirects are part of the functionality and design of the website itself.
+The `_redirects` file is automatically deployed to Cloudflare Pages on merge to `main`.
+For details on how the `_redirects` file works, see the [Cloudflare Docs > Pages > Configuration > Redirects](https://developers.cloudflare.com/pages/configuration/redirects/).
+
+The `docs_redirects.csv` file is used to redirect specific URLs to other specific URLs
+due to pages and content moving around over the lifecycle of the website.
+This is done to avoid 404s in URLs that have made their way "out into the wild".
+
+The file `docs_redirects.csv` is recorded here in the Git repo but only takes effect when uploaded to Cloudflare Bulk Redirects.
+To register the `docs_redirects.csv`, go to the Cloudflare dashboard for the `docs-union-ai` project:
+
+* Go to "Bulk Redirects"
+* Select `docs_redirects` under "Bulk Redirect Lists"
+* Upload the `docs_redirects.csv` file.
+
+For details on how the redirects file works, see the [Cloudflare Docs > Rules > Redirects > Bulk Redirects](https://developers.cloudflare.com/rules/url-forwarding/bulk-redirects/).
+
+
+## PR builds
+
+In Cloudflare pages, builds are automatically created for each PR. The PR builds are available at the following URL.
+Because redirects happen at the Cloudflare Bulk Redirects level, they do not affect PR builds.
+Consequently, IN PR builds the topmost page of the srte is not redirected to the BYOC index page (as it is on the production site).
+Instead, a dummy index page is located there with links to the BYOC and Serverless index pages.
+
+
+## Ordering in VS Code explorer
+
+The file `.order` is included in the repo to control the order of files in the VS Code explorer when using the
+[SortMyFile extension](https://marketplace.visualstudio.com/items?itemName=CanklotSoftware.SortMyFiles).
+This extension allows the order of the files in the explorer to reflect the order of pages in the left navigation of the Union docs
+(with one limitation: folders will always appear above files, whereas this is not the case in website navigation).
+
 
 ## Contributing
 

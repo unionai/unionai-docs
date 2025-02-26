@@ -1,4 +1,4 @@
-# Launching workflows from the UI
+# Launching workflows
 
 From the [individual workflow view](./viewing-workflows.md#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](./viewing-workflows.md#workflows-list)) you can select **Launch Workflow** in the top right. This opens the **New Execution** dialog for workflows:
 
@@ -39,5 +39,5 @@ Along the left side the following sections are available:
 * **Debug**: The workflow execution details for debugging purposes.
 {@@ endif @@}
 
-Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions).
+Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions.md).
 

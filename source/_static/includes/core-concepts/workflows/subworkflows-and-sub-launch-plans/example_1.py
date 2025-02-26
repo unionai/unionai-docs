@@ -1,11 +1,11 @@
-@workflow
+@union.workflow
 def sub_wf(a: int, b: int) -> int:
     return t(a=a, b=b)
 
 # Get the default launch plan of sub_wf, which we name sub_wf_lp
 sub_wf_lp = LaunchPlan.get_or_create(sub_wf)
 
-@workflow
+@union.workflow
 def main_wf():
     # Invoke sub_wf directly.
     # An embedded subworkflow results.

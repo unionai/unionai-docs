@@ -1,19 +1,19 @@
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Inputs
+import union
+from flytekit.core.artifact import Inputs
 
-pandas_image = ImageSpec(
+pandas_image = union.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = union.Artifact(
     name="my_basic_artifact"
 )
 
 
-@task(container_image=pandas_image)
+@union.task(container_image=pandas_image)
 def t1(key1: str, dt: datetime, data: pd.DataFrame):
     print(f"key1: {key1}")
     print(f"Date: {dt}")
@@ -26,7 +26,7 @@ data_query = BasicArtifact.query(
 )
 
 
-@workflow
+@union.workflow
 def query_wf(
     key1: str,
     dt: datetime,

@@ -30,7 +30,7 @@ html_css_files = [
     # Font Awesome
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
 ]
-html_js_files = ["union.js"]
+html_js_files = ["union.js", "sidebar-expand.js"]
 exclude_patterns = []
 extensions = [
     "myst_parser",
@@ -47,6 +47,7 @@ extensions = [
 extensions.append("pdoc_sphinx")
 
 graphviz_output_format = "svg"
+nitpicky = True
 
 # Myst
 myst_enable_extensions = ["colon_fence"]
@@ -84,8 +85,6 @@ html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
-    "quick-start": [],
-    "deployment": [],
     "user-guide/**": [
         "custom-sidebar.html",
     ],
@@ -95,16 +94,32 @@ html_sidebars = {
     "api-reference/**": [
         "custom-sidebar.html",
     ],
+    "deployment/**": [
+        "custom-sidebar.html",
+    ],
 }
+
+# Sidebar expand
+expand_level = -1 # set to 0, 1, 2, or -1
+#   * Configure the expansion level:
+#    * 0  => All details remain closed.
+#    * 1  => Open level-1 details only.
+#    * 2  => Open level-1 and level-2 details.
+#    * -1 => Open all levels.
 
 html_context = {
     "dir_to_title": {
         "user-guide": "User guide",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
+        "deployment": "Deployment",
     },
     "github_url": os.getenv("GITHUB_URL", "https://github.com/flyteorg/flyte"),
     "slack_url": os.getenv("SLACK_URL", "https://flyte-org.slack.com/"),
+    'expand_level': expand_level,
+    'hide_prev_button': [
+        "user-guide/index",
+    ]
 }
 
 # Autodoc config
@@ -116,6 +131,10 @@ copybutton_prompt_text = "$ "
 
 # Prevent css style tags from being copied by the copy button
 copybutton_exclude = 'style[type="text/css"]'
+
+# Makes it so that the copy button copies the entire block of code
+copybutton_line_continuation_character = "\\"
+
 
 # Algolia docsearch credentials
 docsearch_app_id = os.getenv("DOCSEARCH_APP_ID")
@@ -204,7 +223,7 @@ def process_options(app, ctx, lines):
 # This section configures the documentation generation for the `union` and `flytekit` modules using `pdoc`.
 
 # Configure the pdoc extension
-pdoc_modules = ['union', 'flytekit', 'flytekit.core', 'flytekit.models', 'flytekit.types'] # List of modules to document
+pdoc_modules = ['union', 'flytekit'] # List of modules to document
 pdoc_output_dir = 'api-reference/union-sdk'  # Output directory for generated docs
 
 
@@ -241,6 +260,7 @@ class CustomWarningSuppressor(logging.Filter):
             "Include file",
             "duplicate object description",
             "unknown document",
+            "py:class reference target not found",
         )
 
         if msg.strip().startswith(filter_out):
