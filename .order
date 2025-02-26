@@ -79,7 +79,6 @@ source/user-guide/core-concepts/artifacts/viewing-artifacts.md
 source/user-guide/core-concepts/serving/
 source/user-guide/core-concepts/serving/index.md
 source/user-guide/core-concepts/serving/adding-your-own-code.md
-source/user-guide/core-concepts/serving/serving-workflow-output.md
 source/user-guide/core-concepts/serving/serving-a-model.md
 
 source/user-guide/development-cycle/
