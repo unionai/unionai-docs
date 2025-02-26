@@ -9,16 +9,47 @@ Here's a video with a brief explanation and demo, focused on task caching:
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WNkThCp-gqo?si=sFATJHv3avFRf6Tn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ```{note}
-Caching is implemented at the node level of the workflow directed acyclic graph (DAG). Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
-
-Caching is not enabled for top-level workflows or launch plans (which are not invoked from within a parent workflow but rather via the UI or CLI).
+Caching is implemented at the node level of the workflow directed acyclic graph (DAG).
+Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
+Caching is not available for top-level workflows or launch plans (that is, those invoked from UI or CLI).
 ```
+
 
 ## Caching configuration
 
-There are four parameters and one command-line flag that pertain to caching:
+By default, caching is disabled on all tasks, subworkflows and sub-launch plans, to avoid unintended consequences when caching executions with side effects.
 
-### Parameters
+The simplest way to enable caching is to set `cache=True` in the `@union.task` decorator (for tasks) or the `with_overrides` method (for subworkflows and sub-launch plans).
+
+
+
+
+
+
+
+
+
+```{code-block} python
+
+
+
+Caching can be configured for a task by setting the `@union.task` parameter `cache` parameter of the @union.task decorator to to a `Cache` object
+
+
+```{code-block} python
+@union.task(cache=Cache(version (Optional[str]) – The version of the task. If not provided, the version will be generated based on the cache policies.
+
+serialize (bool) – Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results.
+
+ignored_inputs (Union[Tuple[str, ...], str]) – A tuple of input names to ignore when generating the version hash.
+
+salt (str) – A salt used in the hash generation.
+
+policies (Optional[Union[List[CachePolicy], CachePolicy]]) – A list of cache policies to generate the version hash.))
+```
+
+This sets up the
+There are four parameters and one command-line flag that pertain to caching:
 
 * `cache`(`bool`): Enables or disables caching of the workflow, task, or launch plan.
 By default, caching is disabled to avoid unintended consequences when caching executions with side effects.
@@ -32,7 +63,10 @@ Also, note that you can manually trigger cache invalidation per execution using 
 When enabled, Union ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
 This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
 Cache serialization is disabled by default.
-* `cache_ignore_input_vars` (`Tuple[str, ...]`): Input variables that should not be included when calculating hash for cache. By default, no input variables are ignored. This parameter only applies to task serialization.
+* `cache_ignore_input_vars` (`Tuple[str, ...]`): Input variables that should not be included when calculating hash for cache.
+By default, no input variables are ignored.
+This parameter only applies to task serialization.
+
 
 ### Command-line flag `overwrite-cache`
 
@@ -42,6 +76,7 @@ Cache serialization is disabled by default.
 
 * Task caching parameters can be specified at task definition time within `@union.task` decorator or at task invocation time using `with_overrides` method.
 * Workflow and launch plan caching parameters can be specified at invocation time using `with_overrides` method.
+
 
 ## Example
 
