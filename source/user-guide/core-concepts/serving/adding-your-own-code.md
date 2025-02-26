@@ -102,7 +102,7 @@ $ union deploy apps app.py streamlit-custom-code
 
 When a new app is deployed for the first time (i.e., there is no app registered with the specified `name`),
 a container is spun up using the specified `container_image` and the files specified in `include` are
-copied into the container. The `command` is the then executed in the container, starting the app.
+copied into the container. The `args` is the then executed in the container, starting the app.
 
 If you alter the `include` code you need to re-deploy your app.
 When `union deploy apps` is called using an app name that corresponds to an already existing app,
