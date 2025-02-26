@@ -61,6 +61,14 @@ But this is only the case due to how these particular roles are defined.
 In general, it is possible to create roles where assigning multiple ones is meaningful.
 :::
 
+## Manage roles and policies with the `uctl` CLI
+
+Roles and policies are managed using the [`uctl` CLI](../../api-reference/uctl-cli/) (not the [`union` CLI](../../api-reference/union-cli)).
+
+To manage roles and policies, you must:
+* Have permission to perform the action (for example, by being an **Admin**).
+* Have the [`uctl` CLI installed](../../api-reference/uctl-cli/) locally.
+
 ## Custom roles and policies
 
 It is possible to create new custom roles and policies.
