@@ -172,9 +172,7 @@ The output displays the console URL and endpoint for the FastAPI App:
 
 ```{code-block} shell
 ✨ Deploying Application: simple-fastapi-sklearn
-🔎 Console URL:
- https://<union-host-url>/org/thomasjpfan/projects/default/domains/development/apps/simple-fastapi-skl
-earn
+🔎 Console URL: https://<union-host-url>/org/...
 [Status] Pending: OutOfDate: The Configuration is still working to reflect the latest desired
 specification.
 [Status] Pending: IngressNotConfigured: Ingress has not yet been reconciled.
