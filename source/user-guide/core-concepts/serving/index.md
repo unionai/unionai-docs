@@ -25,30 +25,32 @@ The file `app.py` contains the app declaration:
 ```{code-block} python
 :caption: app.py
 
-""" A simple Union app using Streamlit"""
+"""A simple Union app using Streamlit"""
 
 import union
+import os
 
 # The `ImageSpec` for the container that will run the `App`.
-# `union-runtime` must be declared as a dependency, 
+# `union-runtime` must be declared as a dependency,
 # in addition to any other dependencies needed by the app code.
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
+# If you are using `ghcr.io` as your registry, make sure the image is public.
 image = union.ImageSpec(
     name="streamlit-app",
-    packages=["union-runtime>=0.1.10", "streamlit==1.41.1"],
+    packages=["union-runtime>=0.1.11", "streamlit==1.41.1"],
     registry=os.getenv("REGISTRY"),
 )
 
 # The `App` declaration.
 # Uses the `ImageSpec` declared above.
-# In this case we do not need to supply any app code 
+# In this case we do not need to supply any app code
 # as we are using the built-in Streamlit `hello` app.
 app = union.app.App(
     name="streamlit-hello",
     container_image=image,
-    args=["streamlit", "hello", "--server.port", "8080"],
+    args="streamlit hello --server.port 8080",
     port=8080,
-    limits=union.Resources(cpu="2", mem="3Gi"),
+    limits=union.Resources(cpu="1", mem="1Gi"),
 )
 ```
 
@@ -56,7 +58,7 @@ Here the `App` constructor is initialized with the following parameters:
 
 * `name`: The name of the app. This name will be displayed in app listings (via CLI and UI) and used to refer to the app when deploying and stopping.
 * `container_image`: The container image that will be used to for the container that will run the app. Here we use a prebuilt container provided by Union that support Streamlit.
-* `command`: The command that will be used within the container to start the app. The individual strings in this array will be concatenated and the invoked as a single command.
+* `args`: The command that will be used within the container to start the app. The individual strings in this array will be concatenated and the invoked as a single command.
 * `port`: The port of the app container from which the app will be served.
 * `limits`: A `union.Resources` object defining the resource limits for the app container.
   The same object is used for the same purpose in the `@union.task` decorator in Union workflows.
