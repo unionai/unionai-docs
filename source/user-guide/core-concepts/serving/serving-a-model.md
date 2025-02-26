@@ -1,10 +1,10 @@
 # Serving a model from a Workflow
 
-In this section we use a Union app to serve a model created with a Union workflow.
+In this section, we create a Union app to serve a scikit-learn model created by a Union workflow.
 
 ## Example app
 
-In this example we first use a Union workflow to train a model and output it as a Union `Artifact`.
+In this example, we first use a Union workflow to train a model and output it as a Union `Artifact`.
 We then use a Union app to serve the model using `FastAPI`.
 
 In a local directory, create the following files:
@@ -166,6 +166,22 @@ Once the workflow has completed, you can deploy the app:
 
 ```{code-block} shell
 $ union deploy apps app.py simple-fastapi-sklearn
+```
+
+The output displays the console URL and endpoint for the FastAPI App:
+
+```{code-block} shell
+✨ Deploying Application: simple-fastapi-sklearn
+🔎 Console URL:
+ https://<union-host-url>/org/thomasjpfan/projects/default/domains/development/apps/simple-fastapi-skl
+earn
+[Status] Pending: OutOfDate: The Configuration is still working to reflect the latest desired
+specification.
+[Status] Pending: IngressNotConfigured: Ingress has not yet been reconciled.
+[Status] Pending: Uninitialized: Waiting for load balancer to be ready
+[Status] Started: Service is ready
+
+🚀 Deployed Endpoint: https://<unique-subhost>.apps.<union-host-url>
 ```
 
 You can see the Swagger docs of the FastAPI endpoint, by going to `/docs`:
