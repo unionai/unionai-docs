@@ -1,10 +1,10 @@
-# Serving a model
+# Serving a model from a Workflow
 
-In this section we use a Union app to serve a model created with a Union workflow.
+In this section, we create a Union app to serve a scikit-learn model created by a Union workflow.
 
 ## Example app
 
-In this example we first use a Union workflow to train a model and output it as a Union `Artifact`.
+In this example, we first use a Union workflow to train a model and output it as a Union `Artifact`.
 We then use a Union app to serve the model using `FastAPI`.
 
 In a local directory, create the following files:
@@ -12,10 +12,13 @@ In a local directory, create the following files:
 ```{code-block} shell
 ├── app.py
 ├── main.py
-└── wf.py
+└── train_wf.py
 ```
 
-## App declaration
+## App configuration
+
+First, we declare the resources, runtime image, and the Scikit-learn model required
+by the FastAPI app.
 
 ```{code-block} python
 :caption: app.py
@@ -28,9 +31,10 @@ import union
 SklearnModel = union.Artifact(name="sklearn-model")
 
 # The `ImageSpec` for the container that will run the `App`.
-# `union-runtime` must be declared as a dependency, 
+# `union-runtime` must be declared as a dependency,
 # in addition to any other dependencies needed by the app code.
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
+# If you are using `ghcr.io` as your registry, make sure the image is public.
 image_spec = union.ImageSpec(
     name="union-serve-sklearn-fastapi",
     packages=["union-runtime>=0.1.10", "scikit-learn==1.5.2", "fastapi[standard]"],
@@ -39,27 +43,34 @@ image_spec = union.ImageSpec(
 
 # The `App` declaration.
 # Uses the `ImageSpec` declared above.
-# Your core logic of the app resides in the files declared 
+# Your core logic of the app resides in the files declared
 # in the `include` parameter, in this case, `main.py`.
-# Input arttifacts are declared in the `inputs` parameter
+# Input artifacts are declared in the `inputs` parameter
 fast_api_app = union.app.App(
     name="simple-fastapi-sklearn",
     inputs=[
         union.app.Input(
-            name="sklearn_model",
             value=SklearnModel.query(),
             download=True,
+            env_var="SKLEARN_MODEL",
         )
     ],
     container_image=image_spec,
-    limits=Resources(cpu="1", mem="1Gi"),
+    limits=union.Resources(cpu="1", mem="1Gi"),
     port=8082,
     include=["main.py"],
-    args=["fastapi", "dev", "--port", "8082"],
+    args="fastapi dev --port 8082",
 )
 ```
 
-## main.py
+Note that the Artifact is provided as an `Input` to the App definition. With `download=True`,
+the model is downloaded to the container's working directory. The full local path to the
+model is set to `SKLEARN_MODEL` by the runtime.
+
+## FastAPI App
+
+During startup, the FastAPI app loads the model using the `SKLEARN_MODEL` environment
+variable. Then it serves an endpoint
 
 ```{code-block} python
 :caption: main.py
@@ -67,6 +78,7 @@ fast_api_app = union.app.App(
 """Set up the FastAPI app."""
 
 from contextlib import asynccontextmanager
+import os
 
 import joblib
 from fastapi import FastAPI
@@ -74,16 +86,13 @@ import union_runtime
 
 ml_models = {}
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    model_file = union_runtime.get_input("sklearn_model")
+    model_file = os.getenv("SKLEARN_MODEL")
     ml_models["model"] = joblib.load(model_file)
     yield
 
-
 app = FastAPI(lifespan=lifespan)
-
 
 @app.get("/predict")
 async def predict(x: float, y: float) -> float:
@@ -91,85 +100,51 @@ async def predict(x: float, y: float) -> float:
     return {"result": result}
 ```
 
-## wf.py
+## Training workflow
+
+The training workflow trains a random forest regression and saves it to an Union
+`Artifact`.
 
 ```{code-block} python
-:caption: wf.py
+:caption: train_wf.py
 
-"""A Union workflow that trains a model and evaluates it."""
+"""A Union workflow that trains a model."""
 
+import os
 from pathlib import Path
 from typing import Annotated
 
 import joblib
-import numpy as np
-import union
 from sklearn.datasets import make_regression
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_percentage_error
-from sklearn.model_selection import train_test_split
+
+import union
 
 # Declare the `Artifact`.
 SklearnModel = union.Artifact(name="sklearn-model")
 
 # The `ImageSpec` for the container that runs the tasks.
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
+# If you are using `ghcr.io` as your registry, make sure the image is public.
 image_spec = union.ImageSpec(
     packages=["scikit-learn==1.5.2"],
     registry=os.getenv("REGISTRY"),
 )
 
-
-# The `task` that generates the example data
-# and splits it into training and testing sets.
-@union.task(
-    cache=True,
-    cache_version="2",
-    container_image=image_spec,
-)
-def load_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Generate the example using sklearn.datasets.make_regression and split it into training and testing sets."""
-    X, y = make_regression(n_samples=3)
-    return train_test_split(X, y, random_state=42)
-
-
 # The `task` that trains a `RandomForestRegressor` model.
 @union.task(
-    limits=union.Resources(cpu="2", mem="4Gi"),
-    cache=True,
-    cache_version="2",
+    limits=union.Resources(cpu="2", mem="2Gi"),
     container_image=image_spec,
 )
-def train_model(X_train: np.ndarray, y_train: np.ndarray) -> Annotated[union.FlyteFile, SklearnModel]:
+def train_model() -> Annotated[union.FlyteFile, SklearnModel]:
     """Train a RandomForestRegressor model and save it as a file."""
+    X, y = make_regression(n_features=2, random_state=42)
     working_dir = Path(union.current_context().working_directory)
     model_file = working_dir / "model.joblib"
 
-    rf = RandomForestRegressor().fit(X_train, y_train)
+    rf = RandomForestRegressor().fit(X, y)
     joblib.dump(rf, model_file)
     return model_file
-
-
-# The `task` that evaluates the model.
-@union.task(
-    container_image=image_spec,
-    limits=union.Resources(cpu="2", mem="2Gi"),
-    cache=True,
-    cache_version="2",
-)
-def evaluate_model(model: union.FlyteFile, X_test: np.ndarray, y_test: np.ndarray) -> float:
-    """Evaluate the model using mean absolute percentage error."""
-    model_ = joblib.load(model.download())
-    y_pred = model_.predict(X_test)
-    return float(mean_absolute_percentage_error(y_test, y_pred))
-
-# The `workflow` that trains a model and evaluates it.
-@union.workflow
-def wf() -> float:
-    """Train a model and evaluate it."""
-    X_train, X_test, y_train, y_test = load_data()
-    model = train_model(X_train=X_train, y_train=y_train)
-    return evaluate_model(model=model, X_test=X_test, y_test=y_test)
 ```
 
 ## Run the example
@@ -178,15 +153,35 @@ To run this example you will need to register and run the workflow first:
 
 ```{code-block} shell
 :caption: Run the workflow
-$ union run --remote wf.py wf
+$ union run --remote train_wf.py train_model
 ```
 
-The workflow first uses `sklearn.datasets.make_regression` to generate a random regression problem.
-It then trains a model against that problem, evaluates the model and saves it as a file.
-The file is defined as a Union `Artifact`, enabling it to be retrieved later by the serving app for display.
+This task trains a `RandomForestRegressor`, saves it to a file, and uploads it to
+a Union `Artifact`. This `Union` Artifact is retrieved layer by the FastAPI app for
+serving the model.
+
+![scikit-learn Artifact](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)
 
 Once the workflow has completed, you can deploy the app:
 
 ```{code-block} shell
 $ union deploy apps app.py simple-fastapi-sklearn
 ```
+
+The output displays the console URL and endpoint for the FastAPI App:
+
+```{code-block} shell
+✨ Deploying Application: simple-fastapi-sklearn
+🔎 Console URL: https://<union-host-url>/org/...
+[Status] Pending: OutOfDate: The Configuration is still working to reflect the latest desired
+specification.
+[Status] Pending: IngressNotConfigured: Ingress has not yet been reconciled.
+[Status] Pending: Uninitialized: Waiting for load balancer to be ready
+[Status] Started: Service is ready
+
+🚀 Deployed Endpoint: https://<unique-subhost>.apps.<union-host-url>
+```
+
+You can see the Swagger docs of the FastAPI endpoint, by going to `/docs`:
+
+![scikit-learn FastAPI App](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-fastapi.png)
