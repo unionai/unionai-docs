@@ -61,7 +61,6 @@
             ]},
             {"name": "serving", "variants": ["byoc", "serverless"], "children": [
                 {"name": "adding-your-own-code", "variants": ["byoc", "serverless"]},
-                {"name": "serving-workflow-output", "variants": ["byoc", "serverless"]},
                 {"name": "serving-a-model", "variants": ["byoc", "serverless"]}
             ]},
             {"name": "caching", "variants": ["byoc", "serverless"]}
