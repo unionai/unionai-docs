@@ -1,3 +1,14 @@
+# DO NOT EDIT OR ADD AGAINST THESE --- START -- Flyte public merge folders
+source/_static/gifs/
+source/_static/images/
+source/_static/includes/
+source/_static/public/
+source/api-reference/
+source/deployment/
+source/index.md
+source/tutorials/
+source/user-guide/
+# DO NOT EDIT OR ADD AGAINST THESE --- END -- Flyte public merge folders
 
 
 # Byte-compiled / optimized / DLL files
