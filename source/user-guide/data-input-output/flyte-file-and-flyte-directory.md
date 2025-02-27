@@ -1,8 +1,182 @@
+{@@ if flyte @@}
+
+# FlyteFile and FlyteDirectory
+
+## FlyteFile
+
+Files are one of the most fundamental entities that users of Python work with,
+and they are fully supported by Flyte. In the IDL, they are known as
+[Blob](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/literals.proto#L33)
+literals which are backed by the
+[blob type](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/types.proto#L47).
+
+Let's assume our mission here is pretty simple. We download a few CSV file
+links, read them with the python built-in {py:class}`csv.DictReader` function,
+normalize some pre-specified columns, and output the normalized columns to
+another csv file.
+
+```{note}
+To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
+```
+
+First, import the libraries:
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/file.py
+:caption: data_types_and_io/file.py
+:lines: 1-8
+```
+
+Define a task that accepts {py:class}`~flytekit.types.file.FlyteFile` as an input.
+The following is a task that accepts a `FlyteFile`, a list of column names,
+and a list of column names to normalize. The task then outputs a CSV file
+containing only the normalized columns. For this example, we use z-score normalization,
+which involves mean-centering and standard-deviation-scaling.
+
+:::{note}
+The `FlyteFile` literal can be scoped with a string, which gets inserted
+into the format of the Blob type ("jpeg" is the string in
+`FlyteFile[typing.TypeVar("jpeg")]`). The format is entirely optional,
+and if not specified, defaults to `""`.
+Predefined aliases for commonly used flyte file formats are also available.
+You can find them [here](https://github.com/flyteorg/flytekit/blob/master/flytekit/types/file/__init__.py).
+:::
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/file.py
+:caption: data_types_and_io/file.py
+:pyobject: normalize_columns
+```
+
+When the image URL is sent to the task, the Flytekit engine translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
+
+If the `output_location` argument is specified, it will be passed to the `remote_path` argument of `FlyteFile`, which will use that path as the storage location instead of a random location (Flyte's object store).
+
+When this task finishes, the Flytekit engine returns the `FlyteFile` instance, uploads the file to the location, and creates a blob literal pointing to it.
+
+Lastly, define a workflow. The `normalize_csv_files` workflow has an `output_location` argument which is passed to the `location` input of the task. If it's not an empty string, the task attempts to upload its file to that location.
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/0ec8388759d34566a0ffc0c3c2d7443fd4a3a46f/examples/data_types_and_io/data_types_and_io/file.py
+:caption: data_types_and_io/file.py
+:pyobject: normalize_csv_file
+```
+
+You can run the workflow locally as follows:
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/0ec8388759d34566a0ffc0c3c2d7443fd4a3a46f/examples/data_types_and_io/data_types_and_io/file.py
+:caption: data_types_and_io/file.py
+:lines: 75-95
+```
+
+You can enable type validation if you have the [python-magic](https://pypi.org/project/python-magic/) package installed.
+
+```{eval-rst}
+.. tabs::
+
+  .. group-tab:: Mac OS
+
+    .. code-block:: bash
+
+      brew install libmagic
+
+  .. group-tab:: Linux
+
+    .. code-block:: bash
+
+      sudo apt-get install libmagic1
+```
+
+:::{note}
+Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
+:::
+
+## FlyteDirectory
+
+In addition to files, folders are another fundamental operating system primitive.
+Flyte supports folders in the form of
+[multi-part blobs](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/types.proto#L73).
+
+```{note}
+To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
+```
+
+To begin, import the libraries:
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/folder.py
+:caption: data_types_and_io/folder.py
+:lines: 1-10
+```
+
+Building upon the previous example demonstrated in the {std:ref}`file <file>` section,
+let's continue by considering the normalization of columns in a CSV file.
+
+The following task downloads a list of URLs pointing to CSV files
+and returns the folder path in a `FlyteDirectory` object.
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/folder.py
+:caption: data_types_and_io/folder.py
+:pyobject: download_files
+```
+
+:::{note}
+You can annotate a `FlyteDirectory` when you want to download or upload the contents of the directory in batches.
+For example,
+
+```{code-block}
+@task
+def t1(directory: Annotated[FlyteDirectory, BatchSize(10)]) -> Annotated[FlyteDirectory, BatchSize(100)]:
+    ...
+    return FlyteDirectory(...)
+```
+
+Flytekit efficiently downloads files from the specified input directory in 10-file chunks.
+It then loads these chunks into memory before writing them to the local disk.
+The process repeats for subsequent sets of 10 files.
+Similarly, for outputs, Flytekit uploads the resulting directory in chunks of 100.
+:::
+
+We define a helper function to normalize the columns in-place.
+
+:::{note}
+This is a plain Python function that will be called in a subsequent Flyte task. This example
+demonstrates how Flyte tasks are simply entrypoints of execution, which can themselves call
+other functions and routines that are written in pure Python.
+:::
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/folder.py
+:caption: data_types_and_io/folder.py
+:pyobject: normalize_columns
+```
+
+We then define a task that accepts the previously downloaded folder, along with some metadata about the
+column names of each file in the directory and the column names that we want to normalize.
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/folder.py
+:caption: data_types_and_io/folder.py
+:pyobject: normalize_all_files
+```
+
+Compose all of the above tasks into a workflow. This workflow accepts a list
+of URL strings pointing to a remote location containing a CSV file, a list of column names
+associated with each CSV file, and a list of columns that we want to normalize.
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/folder.py
+:caption: data_types_and_io/folder.py
+:pyobject: download_and_normalize_csv_files
+```
+
+You can run the workflow locally as follows:
+
+```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/folder.py
+:caption: data_types_and_io/folder.py
+:lines: 94-114
+```
+
+{@@ elif byoc or byok or serverless @@}
+
 # FlyteFile and FlyteDirectory
 
 In Union, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
 
-The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
+The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
 Since this is such a common use case, the Union SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
 
@@ -104,7 +278,7 @@ With Union Serverless, the remote location to which FlyteFile and FlyteDirectory
 With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 :::
 
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc or byok @@}
 
 ## Changing the data upload location
 
@@ -311,3 +485,5 @@ Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/unio
 
 These aliases can optionally be used when handling a file or directory of the specified type, although the object itself will still be a `FlyteFile` or `FlyteDirectory`.
 The aliased versions of the classes are syntactic markers that enforce agreement between type annotations in the signatures of task functions, but they do not perform any checks on the actual contents of the file.
+
+{@@ endif @@}

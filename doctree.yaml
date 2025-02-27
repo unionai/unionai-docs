@@ -129,7 +129,7 @@ children:
               - name: union-remote-examples
       - name: data-input-output
         children:
-          - name: flyte-file-and- flyte-directory
+          - name: flyte-file-and-flyte-directory
           - name: downloading-with-ff-and-fd
           - name: task-input-and-output
             variants:
@@ -141,6 +141,14 @@ children:
               - byoc
               - byok
               - flyte
+          - name: structured-dataset
+          - name: dataclass
+          - name: pydantic
+          - name: accessing-attributes
+          - name: pytorch
+          - name: enum
+          - name: pickle
+          - name: tensorflow
       - name: administration
         children:
           - name: resources
