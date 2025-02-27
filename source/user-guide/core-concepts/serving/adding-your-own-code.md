@@ -2,7 +2,7 @@
 
 In the introductory section we saw how to define and deploy a simple Streamlit app.
 The app deployed was the default hello world Streamlit example app.
-In this section we will expand on this by adding our own custom code to the app.
+In this section, we will expand on this by adding our own custom code to the app.
 
 ## Example app
 
@@ -29,19 +29,19 @@ import os
 import union
 
 # The `ImageSpec` for the container that will run the `App`.
-# `union-runtime` must be declared as a dependency, 
+# `union-runtime` must be declared as a dependency,
 # in addition to any other dependencies needed by the app code.
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
 # If you are using `ghcr.io` as your registry, make sure the image is public.
 image = union.ImageSpec(
     name="streamlit-app",
-    packages=["union-runtime>=0.1.11", "streamlit==1.41.1"] ,
+    packages=["streamlit==1.41.1", "union-runtime>=0.1.10", "pandas==2.2.3", "numpy==2.2.3"],
     registry=os.getenv("REGISTRY"),
 )
 
 # The `App` declaration.
 # Uses the `ImageSpec` declared above.
-# Your core logic of the app resides in the files declared 
+# Your core logic of the app resides in the files declared
 # in the `include` parameter, in this case, `main.py` and `utils.py`.
 app = union.app.App(
     name="streamlit-custom-code",
@@ -66,28 +66,37 @@ The file `main.py` contains the bulk of our custom code:
 ```{code-block} python
 :caption: main.py
 
-"""Custom Streamlit app code"""
-
+"""Streamlit App that plots data"""
 import streamlit as st
-from utils import process_user_input
+from utils import generate_data
 
-st.title("Custom code demo")
+all_columns = ["Apples", "Orange", "Pineapple"]
+with st.container(border=True):
+    columns = st.multiselect("Columns", all_columns, default=all_columns)
 
-user_input = st.text_input("Enter some text:")
+all_data = st.cache_data(generate_data)(columns=all_columns, seed=101)
 
-if user_input:
-    st.write("You entered:", process_user_input(user_input))
+data = all_data[columns]
+
+tab1, tab2 = st.tabs(["Chart", "Dataframe"])
+tab1.line_chart(data, height=250)
+tab2.dataframe(data, height=250, use_container_width=True)
 ```
 
-The file `utils.py` contains a supporting function that is imported into the file above.
+The file `utils.py` contains a supporting data generating function that is imported into the file above
 
 ```{code-block} python
 :caption: utils.py
 
-"""Custom Streamlit app supporting code"""
+"""Function to generate sample data."""
+import numpy as np
+import pandas as pd
 
-def process_user_input(value):
-    return f"Processing {value}"
+
+def generate_data(columns: list[str], seed: int = 42):
+    rng = np.random.default_rng(seed)
+    data = pd.DataFrame(rng.random(size=(20, len(columns))), columns=columns)
+    return data
 ```
 
 ## Deploy the app
@@ -97,6 +106,23 @@ Deploy the app with:
 ```{code-block} shell
 $ union deploy apps app.py streamlit-custom-code
 ```
+
+The output displays the console URL and endpoint for the Streamlit app:
+
+```{code-block} shell
+✨ Deploying Application: streamlit-custom-code
+🔎 Console URL:
+https://<union-host-url>/org/...
+[Status] Pending: OutOfDate: The Configuration is still working to reflect the latest desired
+specification.
+[Status] Started: Service is ready
+
+🚀 Deployed Endpoint: https://<unique-subhost>.apps.<union-host-url>
+```
+
+Navigate to the endpoint to see the Streamlit App!
+
+![Streamlit App](/_static/images/user-guide/core-concepts/serving/custom-code-streamlit.png)
 
 ## App deployment with included files
 
