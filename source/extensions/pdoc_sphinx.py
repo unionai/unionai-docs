@@ -7,45 +7,224 @@ import inspect
 import re
 import sys
 import importlib
+import importlib.util
+import pkgutil
 import traceback
-from typing import Dict, Any, List, Optional, Set
+from typing import Dict, Any, List, Optional, Set, Tuple
 
 from pdoc.doc import Module, Class, Function, Variable
 
 logger = logging.getLogger(__name__)
 
-def import_module_progressively(module_name: str, parent_module=None):
-    """Import a module progressively by importing its parents first."""
-    try:
-        # First try direct import
-        return importlib.import_module(module_name)
-    except ImportError:
-        # If direct import fails and we have a parent module
-        if parent_module:
-            try:
-                # Try to access it as an attribute of the parent
-                parts = module_name.split('.')
-                local_name = parts[-1]
-                if hasattr(parent_module, local_name):
-                    return getattr(parent_module, local_name)
-            except (ImportError, AttributeError):
-                pass
-                
-        # Try progressive importing
-        parts = module_name.split('.')
-        for i in range(1, len(parts)):
-            try:
-                # Import parent modules one level at a time
-                importlib.import_module('.'.join(parts[:i]))
-            except ImportError:
-                pass
-                
-        # Try again after importing parents
+class ModuleProcessor:
+    """
+    processes python modules for doc generation using a hybrid approach that 
+    combines pdoc's documentation generation with the module explorer's traversal abilities.
+    """
+    
+    def __init__(self, max_depth: int = 10):
+        """
+        init the module processor.
+        
+        Args:
+            max_depth: max depth to traverse when exploring submodules
+        """
+        self.max_depth = max_depth
+        self.visited_modules: Set[str] = set()
+        
+    def explore_package(self, package_name: str) -> Dict[str, Any]:
+        """
+        Explore a package and all its submodules.
+        
+        Args:
+            package_name: Name of the package to explore
+            
+        Returns:
+            Dictionary containing the module structure
+        """
         try:
+            # import the package
+            package = self._safe_import_module(package_name)
+            if not package:
+                logger.warning(f"Could not import package {package_name}")
+                return {}
+                
+            result = self._explore_module(package, depth=0)
+            return result
+        except Exception as e:
+            logger.error(f"Error exploring package {package_name}: {str(e)}")
+            logger.error(traceback.format_exc())
+            return {}
+            
+    def _safe_import_module(self, module_name: str) -> Any:
+        """Safely import a module with multiple fallback methods."""
+        # try multiple import strategies
+        try:
+            # std import
             return importlib.import_module(module_name)
-        except ImportError as e:
-            logger.warning(f"Progressive import failed for {module_name}: {str(e)}")
+        except ImportError:
+            logger.debug(f"Standard import failed for {module_name}")
+            
+            try:
+                # try with importlib.util
+                spec = importlib.util.find_spec(module_name)
+                if spec is not None:
+                    return importlib.util.module_from_spec(spec)
+            except (ImportError, AttributeError):
+                logger.debug(f"Spec-based import failed for {module_name}")
+            
+            # try progressive import approach
+            parts = module_name.split('.')
+            for i in range(1, len(parts)):
+                try:
+                    # import parent modules one level at a time
+                    parent = importlib.import_module('.'.join(parts[:i]))
+                    if hasattr(parent, parts[i]):
+                        # if the parent has the child as an attribute
+                        child = getattr(parent, parts[i])
+                        if inspect.ismodule(child):
+                            return child
+                except (ImportError, AttributeError):
+                    pass
+            
+            logger.warning(f"All import strategies failed for {module_name}")
             return None
+    
+    def _is_importable_submodule(self, parent_module: Any, submodule_name: str) -> bool:
+        """Check if a submodule is importable without actually importing it."""
+        if not hasattr(parent_module, '__path__'):
+            return False
+            
+        full_name = f"{parent_module.__name__}.{submodule_name}"
+        try:
+            return importlib.util.find_spec(full_name) is not None
+        except (ModuleNotFoundError, ValueError):
+            return False
+    
+    def _explore_module(self, module: Any, depth: int = 0) -> Dict[str, Any]:
+        """
+        Recursively explore a module and its submodules.
+        
+        Args:
+            module: The module object to explore
+            depth: Current recursion depth
+            
+        Returns:
+            Dictionary containing the module structure
+        """
+        if depth > self.max_depth:
+            return {"name": module.__name__, "type": "module", "truncated": True}
+            
+        # no revisiting modules
+        if module.__name__ in self.visited_modules:
+            return {"name": module.__name__, "type": "module", "visited": True}
+            
+        self.visited_modules.add(module.__name__)
+        
+        module_info = {
+            "name": module.__name__,
+            "type": "module" if not hasattr(module, "__path__") else "package",
+            "file": getattr(module, "__file__", None),
+            "doc": inspect.getdoc(module),
+            "members": {},
+            "submodules": []
+        }
+        
+        # if this is a package, explore its submodules
+        if hasattr(module, "__path__"):
+            # Use pkgutil to find all submodules
+            for finder, submodule_name, is_pkg in pkgutil.iter_modules(module.__path__, module.__name__ + '.'):
+                # Extract the local name (without the parent prefix)
+                local_name = submodule_name.split('.')[-1]
+                
+                try:
+                    # Try to import the submodule
+                    submodule = self._safe_import_module(submodule_name)
+                    if submodule:
+                        submodule_info = self._explore_module(submodule, depth + 1)
+                        module_info["submodules"].append(submodule_info)
+                    else:
+                        # If import failed but the submodule exists
+                        if self._is_importable_submodule(module, local_name):
+                            module_info["submodules"].append({
+                                "name": submodule_name,
+                                "type": "package" if is_pkg else "module",
+                                "import_error": True
+                            })
+                except Exception as e:
+                    logger.debug(f"Error exploring submodule {submodule_name}: {str(e)}")
+                    module_info["submodules"].append({
+                        "name": submodule_name,
+                        "error": str(e)
+                    })
+        
+        # get module members (classes, functions, etc.)
+        try:
+            for name, obj in inspect.getmembers(module):
+                # skip private members
+                if name.startswith('_') and name != '__init__':
+                    continue
+                    
+                # skip imported modules
+                if inspect.ismodule(obj):
+                    continue
+                
+                # skip objects from other modules
+                if hasattr(obj, '__module__') and obj.__module__ != module.__name__:
+                    continue
+                    
+                # get info about the member
+                if inspect.isclass(obj):
+                    member_type = "class"
+                    member_doc = inspect.getdoc(obj)
+                    member_info = self._get_class_info(obj)
+                elif inspect.isfunction(obj):
+                    member_type = "function"
+                    member_doc = inspect.getdoc(obj)
+                    member_info = self._get_function_info(obj)
+                else:
+                    member_type = type(obj).__name__
+                    member_doc = None
+                    member_info = {}
+                    
+                module_info["members"][name] = {
+                    "type": member_type,
+                    "doc": member_doc,
+                    **member_info
+                }
+        except Exception as e:
+            logger.warning(f"Error getting members from {module.__name__}: {str(e)}")
+            
+        return module_info
+    
+    def _get_class_info(self, cls: Any) -> Dict[str, Any]:
+        """Extract information about a class."""
+        methods = {}
+        
+        try:
+            for name, method in inspect.getmembers(cls, inspect.isfunction):
+                if not name.startswith('_') or name == '__init__':
+                    methods[name] = {
+                        "doc": inspect.getdoc(method),
+                        "signature": str(inspect.signature(method))
+                    }
+                    
+            return {
+                "methods": methods,
+                "bases": [base.__name__ for base in cls.__bases__ if base.__name__ != 'object']
+            }
+        except Exception as e:
+            logger.debug(f"Error getting class info for {cls.__name__}: {str(e)}")
+            return {"methods": {}, "bases": []}
+    
+    def _get_function_info(self, func: Any) -> Dict[str, Any]:
+        """Extract information about a function."""
+        try:
+            return {
+                "signature": str(inspect.signature(func))
+            }
+        except Exception:
+            return {"signature": "()"}
 
 def get_source_code(obj):
     """Extract source code if available"""
@@ -78,13 +257,6 @@ def extract_signature(method_str):
     except:
         return {}
 
-def format_docstring(docstring):
-    """Format docstring for reST"""
-    if not docstring:
-        return ""
-    formatted = docstring.replace('\n', '\n   ')
-    return f"   {formatted}\n\n"
-
 def clean_docstring(docstring: str) -> str:
     """
     Cleans docstring for Sphinx compatibility:
@@ -95,7 +267,7 @@ def clean_docstring(docstring: str) -> str:
     if not docstring:
         return ""
 
-    # 1) Convert markdown code fences -> reST code blocks
+    # 1) convert markdown code fences -> reST code blocks
     def code_replacer(match):
         code = match.group(1)
         indented = "\n".join("    " + line for line in code.splitlines())
@@ -108,7 +280,7 @@ def clean_docstring(docstring: str) -> str:
         flags=re.DOTALL
     )
 
-    # 2) Convert lines like 'param foo:' -> ':param foo:'
+    # 2) convert lines like 'param foo:' -> ':param foo:'
     #    We look for the beginning of a line (possibly with some spaces) then "param <name>:"
     docstring = re.sub(
         r"(?m)^\s*param\s+([\w_]+):",
@@ -116,14 +288,14 @@ def clean_docstring(docstring: str) -> str:
         docstring
     )
 
-    # Also handle "type foo:" -> ":type foo:"
+    # also handle "type foo:" -> ":type foo:"
     docstring = re.sub(
         r"(?m)^\s*type\s+([\w_]+):",
         r":type \1:",
         docstring
     )
 
-    # 3) Convert "returns:" / "return:" -> ":returns:"
+    # 3) convert "returns:" / "return:" -> ":returns:"
     docstring = re.sub(
         r"(?m)^\s*returns?:",
         ":returns:",
@@ -141,7 +313,7 @@ def validate_config(app: Sphinx, config: Config) -> None:
     if not isinstance(config.pdoc_modules, (list, tuple)):
         raise ValueError("pdoc_modules must be a list or tuple of module names")
         
-    # Attempt to preload the specified modules to identify potential issues early
+    # attempt to preload the specified modules to identify potential issues early
     for module_name in config.pdoc_modules:
         try:
             if importlib.util.find_spec(module_name) is None:
@@ -157,10 +329,61 @@ def generate_pdoc_docs(app: Sphinx) -> None:
     output_base = Path(app.confdir) / app.config.pdoc_output_dir
     output_base.mkdir(parents=True, exist_ok=True)
 
-    # Determine the variant dynamically from the folder structure
+    # det the variant dynamically from the folder structure
     current_variant = determine_variant(output_base, variants)
     
-    # Create the main index file (index.rst) for the doc set
+    # create the main index file (index.rst) for the doc set
+    create_main_index(app, output_base)
+    
+    # process each module
+    for module_name in app.config.pdoc_modules:
+        try:
+            logger.info(f"Generating documentation for module: {module_name}")
+
+            module_root_dir = output_base / module_name
+            module_root_dir.mkdir(parents=True, exist_ok=True)
+
+            # use the ModuleProcessor to explore the module structure
+            processor = ModuleProcessor()
+            module_info = processor.explore_package(module_name)
+            
+            if not module_info:
+                logger.warning(f"Could not explore module {module_name}, creating placeholder")
+                create_placeholder_module_doc(
+                    module_name,
+                    module_root_dir,
+                    output_base,
+                    current_variant,
+                    variants
+                )
+                continue
+            
+            # generate documentation from the module_info
+            generate_docs_from_module_info(
+                module_info, 
+                module_root_dir, 
+                output_base,
+                current_variant,
+                variants
+            )
+            
+            logger.info(f"Successfully processed {module_name}")
+
+        except Exception as e:
+            logger.error(f"Error processing module {module_name}: {str(e)}")
+            logger.error(traceback.format_exc())
+            
+            # create a placeholder for the failed module
+            create_placeholder_module_doc(
+                module_name,
+                output_base / module_name,
+                output_base,
+                current_variant,
+                variants
+            )
+
+def create_main_index(app: Sphinx, output_base: Path) -> None:
+    """Create the main index.rst file for the API documentation."""
     index_path = output_base / "index.rst"
     with open(index_path, "w", encoding="utf-8") as f:
         title = "Union SDK"
@@ -172,349 +395,235 @@ def generate_pdoc_docs(app: Sphinx) -> None:
         for module_name in app.config.pdoc_modules:
             f.write(f"   {module_name}/index\n")
         f.write("\n")
-    
-    # Process each module
-    for module_name in app.config.pdoc_modules:
-        try:
-            logger.info(f"Generating documentation for module: {module_name}")
-
-            module_root_dir = output_base / module_name
-            module_root_dir.mkdir(parents=True, exist_ok=True)
-
-            # Track processed modules to avoid duplicates
-            processed_modules = set()
-            
-            # Process the module documentation
-            build_rst_tree(
-                module_name,
-                module_root_dir,
-                output_base,
-                current_variant,
-                variants,
-                processed_modules
-            )
-            
-            logger.info(f"Successfully processed {module_name}")
-
-        except Exception as e:
-            logger.error(f"Error processing module {module_name}: {str(e)}")
-            logger.error(traceback.format_exc())
-            
-            # Create a placeholder for the failed module
-            create_placeholder_module_doc(
-                module_name,
-                output_base / module_name,
-                output_base,
-                current_variant,
-                variants
-            )
 
 def determine_variant(output_base: Path, variants: List[str]) -> str:
     """Determine the current variant dynamically based on the directory structure."""
     for variant in variants:
         if f"/{variant}/" in str(output_base) or output_base.name == variant:
             return variant
-    return "serverless"  # Default if no match is found
+    return "serverless"  # default if no match is found
 
-def generate_class_rst(cls, module_name: str, current_variant: str, variants: List[str]) -> str:
-    """Generate reST content for a class."""
-    content = []
-    title = cls.name
-    underline = "=" * len(title)
-    content.append(f"{title}\n{underline}\n\n")
-    
-    content.append(f".. currentmodule:: {module_name}\n\n")
-    content.append(f".. autoclass:: {cls.qualname}\n")
-    content.append("   :members:\n")
-    content.append("   :undoc-members:\n")
-    content.append("   :show-inheritance:\n")
-    content.append("   :special-members: __init__\n\n")
-    
-    if cls.docstring:
-        clean_doc = clean_docstring(cls.docstring)
-        content.append(f"{clean_doc}\n\n")
-    
-    # Base classes
-    if cls.bases:
-        bases = ", ".join(str(base) for base in cls.bases)
-        content.append(f"**Bases:** {bases}\n\n")
-    
-    # Methods overview
-    if cls.methods:
-        content.append("**Methods:**\n\n")
-        for method in sorted(cls.methods, key=lambda m: m.name):
-            if method.name.startswith('_') and method.name != '__init__':
-                continue
-                
-            method_str = str(method)
-            signature = extract_signature(method_str)
-            if hasattr(method, 'docstring') and method.docstring:
-                method_doc = clean_docstring(method.docstring)
-                if method_doc:
-                    content.append(f"* **{method.name}** - {method_doc.split('.')[0]}.\n")
-            else:
-                content.append(f"* **{method.name}**\n")
-        content.append("\n")
-    
-    # Source code
-    source = get_source_code(cls)
-    if source:
-        content.append("Source Code\n-----------\n\n")
-        content.append(".. code-block:: python\n\n")
-        for line in source.splitlines():
-            content.append(f"    {line}\n")
-        content.append("\n")
-    
-    return "".join(content)
-
-def generate_function_rst(func, module_name: str, current_variant: str, variants: List[str]) -> str:
-    """Generate reST content for a function."""
-    content = []
-    title = func.name
-    underline = "=" * len(title)
-    content.append(f"{title}\n{underline}\n\n")
-    
-    content.append(f".. currentmodule:: {module_name}\n\n")
-    content.append(f".. autofunction:: {func.qualname}\n\n")
-    
-    if func.docstring:
-        clean_doc = clean_docstring(func.docstring)
-        content.append(f"{clean_doc}\n\n")
-    
-    # Add parameters
-    signature = extract_signature(str(func))
-    if signature:
-        content.append("**Parameters**\n\n")
-        for param, type_hint in signature.items():
-            if type_hint:
-                content.append(f"* **{param}**: ``{type_hint}``\n")
-            else:
-                content.append(f"* **{param}**\n")
-        content.append("\n")
-    
-    # Source code
-    source = get_source_code(func)
-    if source:
-        content.append("Source Code\n-----------\n\n")
-        content.append(".. code-block:: python\n\n")
-        for line in source.splitlines():
-            content.append(f"    {line}\n")
-        content.append("\n")
-    
-    return "".join(content)
-
-def generate_variable_rst(var, module_name: str, current_variant: str, variants: List[str]) -> str:
-    """Generate reST content for a variable."""
-    content = []
-    title = var.name
-    underline = "=" * len(title)
-    content.append(f"{title}\n{underline}\n\n")
-    
-    content.append(f".. currentmodule:: {module_name}\n\n")
-    content.append(f".. autodata:: {var.qualname}\n\n")
-    
-    if var.docstring:
-        clean_doc = clean_docstring(var.docstring)
-        content.append(f"{clean_doc}\n\n")
-    
-    if hasattr(var, 'type') and var.type:
-        content.append(f"**Type:** ``{var.type}``\n\n")
-    
-    return "".join(content)
-
-def is_significant_variable(var: Variable) -> bool:
-    """Determine if a variable is significant enough to document."""
-    try:
-        if var.name.startswith('_'):
-            return False
-        
-        if var.name in ('__all__', '__version__'):
-            return True
-            
-        if var.docstring:
-            return True
-            
-        value_str = str(var.obj)
-        if value_str.startswith('<module ') or value_str.startswith('<function '):
-            return False
-            
-        return True
-    except Exception:
-        return False
-
-def build_rst_tree(
-    module_name: str,
+def generate_docs_from_module_info(
+    module_info: Dict[str, Any],
     output_dir: Path,
     root_output: Path,
     current_variant: str,
     variants: List[str],
-    processed_modules: Set[str] = None,
-    parent_module = None
-) -> bool:
-    """Build reST documentation tree following module structure."""
-    if processed_modules is None:
-        processed_modules = set()
-        
-    # Skip if already processed
-    if module_name in processed_modules:
-        return True
-        
-    processed_modules.add(module_name)
+    parent_path: str = ""
+) -> None:
+    """Generate documentation files from the module_info dictionary."""
+    module_name = module_info["name"]
+    short_name = module_name.split(".")[-1]
     
-    try:
-        # Try progressive importing first
-        module_obj = import_module_progressively(module_name, parent_module)
+    # create module directory if it doesn't exist
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # start building the index content
+    index_content = []
+    
+    # add title and module docstring
+    title = short_name
+    underline = "=" * len(title)
+    index_content.append(f"{title}\n{underline}\n\n")
+    
+    if module_info.get("doc"):
+        clean_doc = clean_docstring(module_info["doc"])
+        index_content.append(f"{clean_doc}\n\n")
+    
+    index_content.append(f".. module:: {module_name}\n\n")
+    index_content.append(f".. automodule:: {module_name}\n")
+    index_content.append("   :noindex:\n\n")
+    
+    # track all sections for the toctree
+    all_sections = []
+    
+    # process submodules
+    if module_info.get("submodules"):
+        submodules_section = []
+        submodules_section.append("Submodules\n----------\n\n")
         
-        try:
-            module = Module.from_name(module_name)
-            logger.info(f"Successfully loaded module: {module_name}")
-        except (ImportError, RuntimeError) as e:
-            logger.warning(f"Could not import module {module_name}: {str(e)}")
-            create_placeholder_module_doc(
-                module_name, 
-                output_dir, 
-                root_output, 
-                current_variant, 
-                variants
-            )
-            return True
-        
-        # Create module directory
-        module_dir = output_dir
-        module_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Start building the index content
-        index_content = []
-        
-        # Add title and module docstring
-        title = module.name.split('.')[-1]
-        underline = "=" * len(title)
-        index_content.append(f"{title}\n{underline}\n\n")
-        
-        if module.docstring:
-            clean_doc = clean_docstring(module.docstring)
-            index_content.append(f"{clean_doc}\n\n")
-        
-        index_content.append(f".. module:: {module.name}\n\n")
-        index_content.append(f".. automodule:: {module.name}\n")
-        index_content.append("   :noindex:\n\n")
-        
-        # Track all sections for the toctree
-        all_sections = []
-        
-        # Process submodules first
-        if hasattr(module, "submodules") and module.submodules:
-            submodules_section = []
-            submodules_section.append("Submodules\n----------\n\n")
+        # write each submodule
+        for submodule in sorted(module_info["submodules"], key=lambda m: m["name"]):
+            submodule_name = submodule["name"].split(".")[-1]
+            submodule_dir = output_dir / submodule_name
             
-            # Store the actual module object for use with submodules
-            try:
-                actual_module_obj = importlib.import_module(module.name)
-            except ImportError:
-                actual_module_obj = module_obj
-            
-            # Write each submodule
-            for submodule in sorted(module.submodules, key=lambda m: m.name):
-                submodule_name = submodule.name.split('.')[-1]
-                submodule_dir = output_dir / submodule_name
-                
-                if submodule.name in processed_modules:
-                    logger.warning(f"Skipping already processed submodule: {submodule.name}")
-                    continue
-                    
-                try:
-                    build_rst_tree(
-                        submodule.name,
-                        submodule_dir,
-                        root_output,
-                        current_variant,
-                        variants,
-                        processed_modules,
-                        actual_module_obj
-                    )
-                    all_sections.append(f"{submodule_name}/index")
-                    submodules_section.append(f"* :doc:`{submodule_name}/index`\n")
-                except Exception as e:
-                    logger.error(f"Error processing submodule {submodule.name}: {str(e)}")
-                    logger.error(traceback.format_exc())
-            
-            if len(submodules_section) > 1:  # Only add if we have submodules
-                submodules_section.append("\n")
-                index_content.extend(submodules_section)
+            if not submodule.get("error") and not submodule.get("import_error"):
+                # process the submodule recursively
+                generate_docs_from_module_info(
+                    submodule,
+                    submodule_dir,
+                    root_output,
+                    current_variant,
+                    variants,
+                    f"{parent_path}/{short_name}" if parent_path else short_name
+                )
+                all_sections.append(f"{submodule_name}/index")
+                submodules_section.append(f"* :doc:`{submodule_name}/index`\n")
+            else:
+                # create placeholder for failed submodule
+                create_placeholder_module_doc(
+                    submodule["name"],
+                    submodule_dir,
+                    root_output,
+                    current_variant,
+                    variants
+                )
+                all_sections.append(f"{submodule_name}/index")
+                submodules_section.append(f"* :doc:`{submodule_name}/index` (Import Failed)\n")
         
-        # Process members by category
-        for category_name, category_title, member_filter in [
-            ("classes", "Classes", lambda m: isinstance(m, Class)),
-            ("functions", "Functions", lambda m: isinstance(m, Function)),
-            ("variables", "Variables", lambda m: isinstance(m, Variable) and is_significant_variable(m))
-        ]:
-            members = [(name, member) for name, member in module.members.items() 
-                      if member_filter(member) and not (name.startswith('_') and name != '__init__')]
-            
-            if members:
-                # Create category section
-                category_section = []
-                category_section.append(f"{category_title}\n{'-' * len(category_title)}\n\n")
-                
-                category_dir = output_dir / category_name
-                category_dir.mkdir(exist_ok=True)
-                
-                # Create category index
-                category_index_content = []
-                category_index_content.append(f"{module.name} {category_title}\n")
-                category_index_content.append("=" * len(f"{module.name} {category_title}") + "\n\n")
-                category_index_content.append(".. toctree::\n")
-                category_index_content.append("   :maxdepth: 1\n\n")
-                
-                # Process each member
-                for member_name, member in sorted(members):
-                    filename = f"{member_name}.rst"
-                    filepath = category_dir / filename
-                    
-                    # Generate appropriate content
-                    if isinstance(member, Class):
-                        content = generate_class_rst(member, module.name, current_variant, variants)
-                    elif isinstance(member, Function):
-                        content = generate_function_rst(member, module.name, current_variant, variants)
-                    else:  # Variable
-                        content = generate_variable_rst(member, module.name, current_variant, variants)
-                    
-                    # Write member file
-                    with open(filepath, "w", encoding="utf-8") as f:
-                        f.write(content)
-                    
-                    # Add to category section in main index
-                    category_section.append(f"* :doc:`{category_name}/{member_name}`\n")
-                    
-                    # Add to category index
-                    category_index_content.append(f"   {member_name}\n")
-                
-                # Write category index
-                with open(category_dir / "index.rst", "w", encoding="utf-8") as f:
-                    f.write("".join(category_index_content))
-                
-                category_section.append("\n")
-                index_content.extend(category_section)
-                all_sections.append(f"{category_name}/index")
+        if len(submodules_section) > 1:  # Only add if we have submodules
+            submodules_section.append("\n")
+            index_content.extend(submodules_section)
+    
+    # process members by category
+    for category_name, category_title, member_filter in [
+        ("classes", "Classes", lambda m: m["type"] == "class"),
+        ("functions", "Functions", lambda m: m["type"] == "function"),
+        ("variables", "Variables", lambda m: m["type"] not in ["class", "function", "module"])
+    ]:
+        members = [(name, member) for name, member in module_info.get("members", {}).items() 
+                  if member_filter(member)]
         
-        # Add final toctree with all sections to make them available in navigation
+        if members:
+            # create category section
+            category_section = []
+            category_section.append(f"{category_title}\n{'-' * len(category_title)}\n\n")
+            
+            category_dir = output_dir / category_name
+            category_dir.mkdir(exist_ok=True)
+            
+            # create category index
+            category_index_content = []
+            category_index_content.append(f"{module_name} {category_title}\n")
+            category_index_content.append("=" * len(f"{module_name} {category_title}") + "\n\n")
+            category_index_content.append(".. toctree::\n")
+            category_index_content.append("   :maxdepth: 1\n\n")
+            
+            # process each member
+            for member_name, member in sorted(members):
+                filename = f"{member_name}.rst"
+                filepath = category_dir / filename
+                
+                # generate appropriate content
+                if member["type"] == "class":
+                    content = generate_class_rst(member, module_name, member_name)
+                elif member["type"] == "function":
+                    content = generate_function_rst(member, module_name, member_name) 
+                else:  # Variable
+                    content = generate_variable_rst(member, module_name, member_name)
+                
+                # write member file
+                with open(filepath, "w", encoding="utf-8") as f:
+                    f.write(content)
+                
+                # add to category section in main index
+                category_section.append(f"* :doc:`{category_name}/{member_name}`\n")
+                
+                # add to category index
+                category_index_content.append(f"   {member_name}\n")
+            
+            # write category index
+            with open(category_dir / "index.rst", "w", encoding="utf-8") as f:
+                f.write("".join(category_index_content))
+            
+            category_section.append("\n")
+            index_content.extend(category_section)
+            all_sections.append(f"{category_name}/index")
+    
+    # add final toctree with all sections to make them available in navigation
+    if all_sections:
         index_content.append(".. toctree::\n")
         index_content.append("   :maxdepth: 3\n")
         index_content.append("   :hidden:\n\n")
         
         for section in sorted(all_sections):
             index_content.append(f"   {section}\n")
-        
-        # Write the module index file
-        with open(module_dir / "index.rst", "w", encoding="utf-8") as f:
-            f.write("".join(index_content))
-        
-        return True
-        
-    except Exception as e:
-        logger.error(f"Error processing module {module_name}: {str(e)}")
-        logger.error(traceback.format_exc())
-        return False
+    
+    # write the module index file
+    with open(output_dir / "index.rst", "w", encoding="utf-8") as f:
+        f.write("".join(index_content))
+
+def generate_class_rst(member: Dict[str, Any], module_name: str, class_name: str) -> str:
+    """Generate reST content for a class from the module_info member."""
+    content = []
+    title = class_name
+    underline = "=" * len(title)
+    content.append(f"{title}\n{underline}\n\n")
+    
+    content.append(f".. currentmodule:: {module_name}\n\n")
+    content.append(f".. autoclass:: {class_name}\n")
+    content.append("   :members:\n")
+    content.append("   :undoc-members:\n")
+    content.append("   :show-inheritance:\n")
+    content.append("   :special-members: __init__\n\n")
+    
+    if member.get("doc"):
+        clean_doc = clean_docstring(member["doc"])
+        content.append(f"{clean_doc}\n\n")
+    
+    # base classes
+    if "bases" in member and member["bases"]:
+        bases = ", ".join(member["bases"])
+        content.append(f"**Bases:** {bases}\n\n")
+    
+    # methods overview
+    if "methods" in member and member["methods"]:
+        content.append("**Methods:**\n\n")
+        for method_name, method_info in sorted(member["methods"].items()):
+            if method_info.get("doc"):
+                method_doc = clean_docstring(method_info["doc"])
+                if method_doc:
+                    first_line = method_doc.split(".")[0]
+                    content.append(f"* **{method_name}** - {first_line}.\n")
+            else:
+                content.append(f"* **{method_name}**\n")
+        content.append("\n")
+    
+    return "".join(content)
+
+def generate_function_rst(member: Dict[str, Any], module_name: str, function_name: str) -> str:
+    """Generate reST content for a function from the module_info member."""
+    content = []
+    title = function_name
+    underline = "=" * len(title)
+    content.append(f"{title}\n{underline}\n\n")
+    
+    content.append(f".. currentmodule:: {module_name}\n\n")
+    content.append(f".. autofunction:: {function_name}\n\n")
+    
+    if member.get("doc"):
+        clean_doc = clean_docstring(member["doc"])
+        content.append(f"{clean_doc}\n\n")
+    
+    # add parameters if available
+    if "signature" in member:
+        signature = extract_signature(member["signature"])
+        if signature:
+            content.append("**Parameters**\n\n")
+            for param, type_hint in signature.items():
+                if type_hint:
+                    content.append(f"* **{param}**: ``{type_hint}``\n")
+                else:
+                    content.append(f"* **{param}**\n")
+            content.append("\n")
+    
+    return "".join(content)
+
+def generate_variable_rst(member: Dict[str, Any], module_name: str, variable_name: str) -> str:
+    """Generate reST content for a variable from the module_info member."""
+    content = []
+    title = variable_name
+    underline = "=" * len(title)
+    content.append(f"{title}\n{underline}\n\n")
+    
+    content.append(f".. currentmodule:: {module_name}\n\n")
+    content.append(f".. autodata:: {variable_name}\n\n")
+    
+    if member.get("doc"):
+        clean_doc = clean_docstring(member["doc"])
+        content.append(f"{clean_doc}\n\n")
+    
+    return "".join(content)
 
 def create_placeholder_module_doc(
     module_name: str,
@@ -524,8 +633,7 @@ def create_placeholder_module_doc(
     variants: List[str],
 ) -> None:
     """Create a placeholder documentation for modules that can't be imported."""
-    module_dir = output_dir
-    module_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     
     module_index_path = output_dir / "index.rst"
     short_name = module_name.split('.')[-1]
