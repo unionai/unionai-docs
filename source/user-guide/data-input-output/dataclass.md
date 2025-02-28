@@ -1,6 +1,6 @@
 # Dataclass
 
-When you've multiple values that you want to send across Flyte entities, you can use a `dataclass`.
+When you've multiple values that you want to send across {@= union_flyte_upper =@} entities, you can use a `dataclass`.
 
 {@@ if flyte @@}
 
@@ -63,7 +63,7 @@ class Datum:
     z: dict[int, str]
 ```
 
-You can send a `dataclass` between different tasks written in various languages, and input it through the Flyte console as raw JSON.
+You can send a `dataclass` between different tasks written in various languages, and input it through the {@= union_flyte_upper =@} UI as raw JSON.
 
 :::{note}
 All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
@@ -82,17 +82,14 @@ def stringify(s: int) -> Datum:
 
 @union.task(container_image=image_spec)
 def add(x: Datum, y: Datum) -> Datum:
-    """
-    Flytekit automatically converts the provided JSON into a data class.
-    If the structures don't match, it triggers a runtime failure.
-    """
     x.z.update(y.z)
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
 ```
 
-## Flyte types
+## {@= union_flyte_upper =@} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
+{@@ if flyte @@}
 ```python
 @dataclass
 class FlyteTypes:
@@ -103,18 +100,11 @@ class FlyteTypes:
 
 @union.task(container_image=image_spec)
 def upload_data() -> FlyteTypes:
-    """
-    Flytekit will upload FlyteFile, FlyteDirectory and StructuredDataset to the blob store,
-    such as GCP or S3.
-    """
-    # 1. StructuredDataset
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
-    # 2. FlyteDirectory
     temp_dir = tempfile.mkdtemp(prefix="flyte-")
     df.to_parquet(temp_dir + "/df.parquet")
 
-    # 3. FlyteFile
     file_path = tempfile.NamedTemporaryFile(delete=False)
     file_path.write(b"Hello, World!")
 
@@ -135,7 +125,7 @@ def download_data(res: FlyteTypes):
 ```
 
 A data class supports the usage of data associated with Python types, data classes,
-flyte file, flyte directory and structured dataset.
+FlyteFile, FlyteDirectory and structured dataset.
 
 We define a workflow that calls the tasks created above.
 
@@ -147,6 +137,58 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     download_data(res=o2)
     return o1, o2
 ```
+
+{@@ elif byoc or byok or serverless @@}
+
+```python
+@dataclass
+class UnionTypes:
+    dataframe: StructuredDataset
+    file: union.FlyteFile
+    directory: union.FlyteDirectory
+
+
+@union.task(container_image=image_spec)
+def upload_data() -> UnionTypes:
+    df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
+
+    temp_dir = tempfile.mkdtemp(prefix="union-")
+    df.to_parquet(temp_dir + "/df.parquet")
+
+    file_path = tempfile.NamedTemporaryFile(delete=False)
+    file_path.write(b"Hello, World!")
+
+    fs = UnionTypes(
+        dataframe=StructuredDataset(dataframe=df),
+        file=union.FlyteFile(file_path.name),
+        directory=union.FlyteDirectory(temp_dir),
+    )
+    return fs
+
+
+@union.task(container_image=image_spec)
+def download_data(res: UnionTypes):
+    assert pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]}).equals(res.dataframe.open(pd.DataFrame).all())
+    f = open(res.file, "r")
+    assert f.read() == "Hello, World!"
+    assert os.listdir(res.directory) == ["df.parquet"]
+```
+
+A data class supports the usage of data associated with Python types, data classes,
+FlyteFile, FlyteDirectory and structured dataset.
+
+We define a workflow that calls the tasks created above.
+
+```python
+@union.workflow
+def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
+    o1 = add(x=stringify(s=x), y=stringify(s=y))
+    o2 = upload_data()
+    download_data(res=o2)
+    return o1, o2
+```
+
+{@@ endif @@}
 
 You can run the workflow locally as follows:
 

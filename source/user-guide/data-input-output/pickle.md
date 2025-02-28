@@ -1,18 +1,18 @@
 # Pickle type
 
 
-Flyte enforces type safety by utilizing type information for compiling tasks and workflows,
+{@= union_flyte_upper =@} enforces type safety by utilizing type information for compiling tasks and workflows,
 enabling various features such as static analysis and conditional branching.
 
 However, we also strive to offer flexibility to end-users, so they don't have to invest heavily
-in understanding their data structures upfront before experiencing the value Flyte has to offer.
+in understanding their data structures upfront before experiencing the value {@= union_flyte_upper =@} has to offer.
 
-Flyte supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
+{@= union_flyte_upper =@} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
 enabling the serialization/deserialization of Python values to/from a pickle file.
 
 :::{important}
 Pickle can only be used to send objects between the exact same Python version.
-For optimal performance, it's advisable to either employ Python types that are supported by Flyte
+For optimal performance, it's advisable to either employ Python types that are supported by {@= union_flyte_upper =@}
 or register a custom transformer, as using pickle types can result in lower performance.
 :::
 
@@ -28,7 +28,7 @@ To clone and run the example code on this page, see the [Flytesnacks repo](https
 import union
 ```
 
-`Superhero` represents a user-defined complex type that can be serialized to a pickle file by Flytekit
+`Superhero` represents a user-defined complex type that can be serialized to a pickle file by {@= union_flytekit_upper =@}
 and transferred between tasks as both input and output data.
 
 :::{note}

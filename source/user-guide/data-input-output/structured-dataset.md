@@ -12,12 +12,12 @@ As with most type systems, Python has primitives, container types like maps and 
 ## Usage
 
 To use the `StructuredDataset` type, import `pandas` and define a task that returns a Pandas Dataframe.
-Flytekit will detect the Pandas DataFrame return signature and convert the interface for the task to
+{@= union_flytekit_upper =@} will detect the Pandas DataFrame return signature and convert the interface for the task to
 the `StructuredDataset` type.
 
 ## Example
 
-This example demonstrates how to work with a structured dataset using Flyte entities.
+This example demonstrates how to work with a structured dataset using {@= union_flyte_upper =@} entities.
 
 ```{note}
 To use the `StructuredDataset` type, you only need to import `pandas`. The other imports specified below are only necessary for this specific example.
@@ -84,7 +84,7 @@ col = union.kwtypes(Age=int)
 ```
 
 Define a task that opens a structured dataset by calling `all()`.
-When you invoke `all()` with ``pandas.DataFrame``, the Flyte engine downloads the parquet file on S3, and deserializes it to `pandas.DataFrame`.
+When you invoke `all()` with ``pandas.DataFrame``, the {@= union_flyte_upper =@} engine downloads the parquet file on S3, and deserializes it to `pandas.DataFrame`.
 Keep in mind that you can invoke ``open()`` with any dataframe type that's supported or added to structured dataset.
 For instance, you can use ``pa.Table`` to convert the Pandas DataFrame to a PyArrow table.
 
@@ -130,9 +130,9 @@ def pandas_to_csv_wf() -> Annotated[StructuredDataset, CSV]:
 
 ## Storage driver and location
 By default, the data will be written to the same place that all other pointer-types (FlyteFile, FlyteDirectory, etc.) are written to.
-This is controlled by the output data prefix option in Flyte which is configurable on multiple levels.
+This is controlled by the output data prefix option in {@= union_flyte_upper =@} which is configurable on multiple levels.
 
-That is to say, in the simple default case, Flytekit will,
+That is to say, in the simple default case, {@= union_flytekit_upper =@} will,
 
 - Look up the default format for say, Pandas dataframes,
 - Look up the default storage location based on the raw output prefix setting,
@@ -142,24 +142,24 @@ So what's an encoder? To understand that, let's look into how the structured dat
 
 ## Inner workings of a structured dataset plugin
 
-Two things need to happen with any dataframe instance when interacting with Flyte:
+Two things need to happen with any dataframe instance when interacting with {@= union_flyte_upper =@}:
 
 - Serialization/deserialization from/to the Python instance to bytes (in the format specified above).
 - Transmission/retrieval of those bits to/from somewhere.
 
 Each structured dataset plugin (called encoder or decoder) needs to perform both of these steps.
-Flytekit decides which of the loaded plugins to invoke based on three attributes:
+{@= union_flytekit_upper =@} decides which of the loaded plugins to invoke based on three attributes:
 
 - The byte format
 - The storage location
 - The Python type in the task or workflow signature.
 
-These three keys uniquely identify which encoder (used when converting a dataframe in Python memory to a Flyte value,
-e.g. when a task finishes and returns a dataframe) or decoder (used when hydrating a dataframe in memory from a Flyte value,
+These three keys uniquely identify which encoder (used when converting a dataframe in Python memory to a {@= union_flyte_upper =@} value,
+e.g. when a task finishes and returns a dataframe) or decoder (used when hydrating a dataframe in memory from a {@= union_flyte_upper =@} value,
 e.g. when a task starts and has a dataframe input) to invoke.
 
 However, it is awkward to require users to use `typing.Annotated` on every signature.
-Therefore, Flytekit has a default byte-format for every Python dataframe type registered with flytekit.
+Therefore, {@= union_flytekit_upper =@} has a default byte-format for every Python dataframe type registered with {@= union_flytekit_lower =@}.
 
 ## The `uri` argument
 
@@ -186,8 +186,8 @@ def pandas_to_bq() -> StructuredDataset:
 Replace `BUCKET_NAME` with the name of your GCS bucket and `FILE_NAME` with the name of the file the dataframe should be copied to.
 
 ### Note that no format was specified in the structured dataset constructor, or in the signature. So how did the BigQuery encoder get invoked?
-This is because the stock BigQuery encoder is loaded into Flytekit with an empty format.
-The Flytekit `StructuredDatasetTransformerEngine` interprets that to mean that it is a generic encoder
+This is because the stock BigQuery encoder is loaded into {@= union_flytekit_upper =@} with an empty format.
+The {@= union_flytekit_upper =@} `StructuredDatasetTransformerEngine` interprets that to mean that it is a generic encoder
 (or decoder) and can work across formats, if a more specific format is not found.
 
 And here's how you can define a task that converts the BigQuery table to a pandas DataFrame:
@@ -199,7 +199,7 @@ def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
 ```
 
 :::{note}
-Flyte creates a table inside the dataset in the project upon BigQuery query execution.
+{@= union_flyte_upper =@} creates a table inside the dataset in the project upon BigQuery query execution.
 :::
 
 ## How to return multiple dataframes from a task?
@@ -218,12 +218,12 @@ def t1() -> typing.Tuple[StructuredDataset, StructuredDataset]:
           StructuredDataset(df2, uri="gs://auxiliary-bucket/data")
 ```
 
-If you want to customize the Flyte interaction behavior, you'll need to wrap your dataframe in a `StructuredDataset` wrapper object.
+If you want to customize the {@= union_flyte_upper =@} interaction behavior, you'll need to wrap your dataframe in a `StructuredDataset` wrapper object.
 
 ## How to define a custom structured dataset plugin?
 
 `StructuredDataset` ships with an encoder and a decoder that handles the conversion of a
-Python value to a Flyte literal and vice-versa, respectively.
+Python value to a {@= union_flyte_upper =@} literal and vice-versa, respectively.
 Here is a quick demo showcasing how one might build a NumPy encoder and decoder,
 enabling the use of a 2D NumPy array as a valid type within structured datasets.
 
@@ -275,7 +275,7 @@ class NumpyDecodingHandler(StructuredDatasetDecoder):
 
 ### NumPy renderer
 
-Create a default renderer for numpy array, then Flytekit will use this renderer to
+Create a default renderer for numpy array, then {@= union_flytekit_upper =@} will use this renderer to
 display schema of NumPy array on the Flyte deck.
 
 ```python

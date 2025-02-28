@@ -1,12 +1,12 @@
 # PyTorch type
 
 
-Flyte advocates for the use of strongly-typed data to simplify the development of robust and testable pipelines. In addition to its application in data engineering, Flyte is primarily used for machine learning.
-To streamline the communication between Flyte tasks, particularly when dealing with tensors and models, we have introduced support for PyTorch types.
+{@= union_flyte_upper =@} advocates for the use of strongly-typed data to simplify the development of robust and testable pipelines. In addition to its application in data engineering, {@= union_flyte_upper =@} is primarily used for machine learning.
+To streamline the communication between {@= union_flyte_upper =@} tasks, particularly when dealing with tensors and models, we have introduced support for PyTorch types.
 
 ## Tensors and modules
 
-At times, you may find the need to pass tensors and modules (models) within your workflow. Without native support for PyTorch tensors and modules, Flytekit relies on [pickle](./pickle.md) for serializing and deserializing these entities, as well as any unknown types. However, this approach isn't the most efficient. As a result, we've integrated PyTorch's serialization and deserialization support into the Flyte type system.
+At times, you may find the need to pass tensors and modules (models) within your workflow. Without native support for PyTorch tensors and modules, {@= union_flytekit_upper =@} relies on [pickle](./pickle.md) for serializing and deserializing these entities, as well as any unknown types. However, this approach isn't the most efficient. As a result, we've integrated PyTorch's serialization and deserialization support into the {@= union_flyte_upper =@} type system.
 
 {@@ if flyte @@}
 ```{note}
@@ -184,4 +184,4 @@ def predict(
 ```
 
 The `predict` task will run on a CPU, and
-the device conversion from GPU to CPU will be automatically handled by Flytekit.
+the device conversion from GPU to CPU will be automatically handled by {@= union_flytekit_upper =@}.

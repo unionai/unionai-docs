@@ -147,6 +147,22 @@ This section covers how to manage data input and output in Union.
   - Use `FlyteDirectory` to easily pass directories across tasks.
 * - {doc}`Downloading with FlyteFile and FlyteDirectory <downloading-with-ff-and-fd>`
   - Details on how files and directories or downloaded with `FlyteFile` and `FlyteDirectory`.
+* - {doc}`StructuredDataset <structured-dataset>`
+  - Details on how `StructuredDataset`is used as a general dataframe type.
+* - {doc}`Dataclass <dataclass>`
+  - Details on how to uses dataclasses across tasks.
+* - {doc}`Pydantic BaseModel <pydantic>`
+  - Details on how to use pydantic models across tasks.
+* - {doc}`Accessing Attributes <accessing-attributes>`
+  - Details on how to directly access attributes on output promises for lists, dictionaries, dataclasses, and more.
+* - {doc}`Enums <enum>`
+  - Details on how use Enums across tasks.
+* - {doc}`Pickle <pickle>`
+  - Details on how use pickled objects across tasks for generalized typing of complex objects.
+* - {doc}`Pytorch <pytorch>`
+  - Details on how use torch tensors and models across tasks.
+* - {doc}`Tensorflow <tensorflow>`
+  - Details on how use tensorflow tensors and models across tasks.
 {@@ if byoc or byok @@}
 * - {doc}`Accelerated datasets <accelerated-datasets>`
   - Upload your data once and access it from any task.
