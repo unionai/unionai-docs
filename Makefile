@@ -8,7 +8,7 @@ sync-examples:
 
 .PHONY: build-local
 build-local: sync-examples
-	rsync -a --info=progress2 source.public/ source/
+	./scripts/sync_content.sh
 	UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
 
 .PHONY: clean
@@ -20,5 +20,5 @@ clean:
 build: sync-examples
 	[ -x "$(shell command -v uv)" ] || pip install uv
 	uv sync
-	rsync -a --info=progress2 source.public/ source/
+	./scripts/sync_content.sh
 	UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py

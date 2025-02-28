@@ -1,0 +1,20 @@
+name: Ensure Content <-> Build Isolation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup verify script
+        run: chmod +x ./scripts/verify_public_separation.sh
+
+      - name: Verify separation
+        run: ./scripts/verify_public_separation.sh

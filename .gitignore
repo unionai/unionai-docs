@@ -10,7 +10,6 @@ source/tutorials/
 source/user-guide/
 # DO NOT EDIT OR ADD AGAINST THESE --- END -- Flyte public merge folders
 
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
