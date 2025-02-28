@@ -8,7 +8,7 @@ As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys:
 First, we create secrets on Union by running the following command:
 
 ```{code-block} shell
-union create secret AWS_ACCESS_KEY_ID
+union create secret --name AWS_ACCESS_KEY_ID
 ```
 
 This will open a prompt where we paste in our AWS credentials:
