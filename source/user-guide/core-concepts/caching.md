@@ -22,7 +22,7 @@ Caching can be enabled by setting the `cache` parameter of the `@union.task` (fo
 For example:
 
 ```{code-block} python
-:emphasize-lines: 5,28,37
+:emphasize-lines: 5,28,36
 import union
 
 
@@ -75,7 +75,7 @@ the cached result is returned immediately instead of re-executing the process.
 This applies even if the cached node is invoked externally through the UI or CLI.
 
 
-### The `Cache` object
+## The `Cache` object
 
 The [Cache](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Cache.html#flytekit-cache) object takes the following parameters:
 
