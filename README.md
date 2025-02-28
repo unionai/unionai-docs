@@ -8,6 +8,17 @@ templating system and the [Sphinx](https://www.sphinx-doc.org) static site gener
 The site is hosted on Cloudflare Pages in the [docs-union-ai](https://dash.cloudflare.com/fcdf789dd2ac34464befdf8153c3b360/pages/view/docs-union-ai)
 project.
 
+## Content and Build separation
+
+The content and companion scripts live in two distinct folders:
+
+* `content` : *content lives here*. Restrict only to markdown, images, and
+              examples.
+* `source`  : Contains styles, scripts, and other styling and navigation.
+
+When creating new files, please pay close attention where they go, based on the
+criteria above. The `content` folder is open-source and we _do not_ want to
+expose Union-specific IP, such as build scripts, styles, etc.
 
 ## Set up your local Python environment
 
