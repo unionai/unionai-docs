@@ -8,13 +8,59 @@ To streamline the communication between Flyte tasks, particularly when dealing w
 
 At times, you may find the need to pass tensors and modules (models) within your workflow. Without native support for PyTorch tensors and modules, Flytekit relies on [pickle](./pickle.md) for serializing and deserializing these entities, as well as any unknown types. However, this approach isn't the most efficient. As a result, we've integrated PyTorch's serialization and deserialization support into the Flyte type system.
 
+{@@ if flyte @@}
 ```{note}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 ```
+{@@ endif @@}
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/pytorch_type.py
-:caption: data_types_and_io/pytorch_type.py
-:lines: 5-50
+```python
+@union.task
+def generate_tensor_2d() -> torch.Tensor:
+    return torch.tensor([[1.0, -1.0, 2], [1.0, -1.0, 9], [0, 7.0, 3]])
+
+
+@union.task
+def reshape_tensor(tensor: torch.Tensor) -> torch.Tensor:
+    # convert 2D to 3D
+    tensor.unsqueeze_(-1)
+    return tensor.expand(3, 3, 2)
+
+
+@union.task
+def generate_module() -> torch.nn.Module:
+    bn = torch.nn.BatchNorm1d(3, track_running_stats=True)
+    return bn
+
+
+@union.task
+def get_model_weight(model: torch.nn.Module) -> torch.Tensor:
+    return model.weight
+
+
+class MyModel(torch.nn.Module):
+    def __init__(self):
+        super(MyModel, self).__init__()
+        self.l0 = torch.nn.Linear(4, 2)
+        self.l1 = torch.nn.Linear(2, 1)
+
+    def forward(self, input):
+        out0 = self.l0(input)
+        out0_relu = torch.nn.functional.relu(out0)
+        return self.l1(out0_relu)
+
+
+@union.task
+def get_l1() -> torch.nn.Module:
+    model = MyModel()
+    return model.l1
+
+
+@union.workflow
+def pytorch_native_wf():
+    reshape_tensor(tensor=generate_tensor_2d())
+    get_model_weight(model=generate_module())
+    get_l1()
 ```
 
 Passing around tensors and modules is no more a hassle!
@@ -30,9 +76,62 @@ According to the PyTorch [docs](https://pytorch.org/tutorials/beginner/saving_lo
 it's recommended to store the module's `state_dict` rather than the module itself,
 although the serialization should work in either case.
 
-```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/pytorch_type.py
-:caption: data_types_and_io/pytorch_type.py
-:lines: 63-117
+```python
+from dataclasses import dataclass
+
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from dataclasses_json import dataclass_json
+from flytekit.extras.pytorch import PyTorchCheckpoint
+
+
+@dataclass_json
+@dataclass
+class Hyperparameters:
+    epochs: int
+    loss: float
+
+
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(3, 6, 5)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(6, 16, 5)
+        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 10)
+
+    def forward(self, x):
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
+        x = x.view(-1, 16 * 5 * 5)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+
+@union.task
+def generate_model(hyperparameters: Hyperparameters) -> PyTorchCheckpoint:
+    bn = Net()
+    optimizer = optim.SGD(bn.parameters(), lr=0.001, momentum=0.9)
+    return PyTorchCheckpoint(module=bn, hyperparameters=hyperparameters, optimizer=optimizer)
+
+
+@union.task
+def load(checkpoint: PyTorchCheckpoint):
+    new_bn = Net()
+    new_bn.load_state_dict(checkpoint["module_state_dict"])
+    optimizer = optim.SGD(new_bn.parameters(), lr=0.001, momentum=0.9)
+    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+
+
+@union.workflow
+def pytorch_checkpoint_wf():
+    checkpoint = generate_model(hyperparameters=Hyperparameters(epochs=10, loss=0.1))
+    load(checkpoint=checkpoint)
 ```
 
 :::{note}
@@ -50,11 +149,11 @@ However, this manual conversion recommended by PyTorch may not be very user-frie
 To address this, we added support for automatic GPU to CPU conversion (and vice versa) for PyTorch types.
 
 ```python
-from flytekit import Resources
+import union
 from typing import Tuple
 
 
-@task(requests=Resources(gpu="1"))
+@union.task(requests=union.Resources(gpu="1"))
 def train() -> Tuple[PyTorchCheckpoint, torch.Tensor, torch.Tensor, torch.Tensor]:
     ...
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -66,7 +165,7 @@ def train() -> Tuple[PyTorchCheckpoint, torch.Tensor, torch.Tensor, torch.Tensor
     ...
     return PyTorchCheckpoint(module=model), X_train, X_test, y_test
 
-@task
+@union.task
 def predict(
     checkpoint: PyTorchCheckpoint,
     X_train: torch.Tensor,
