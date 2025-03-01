@@ -25,4 +25,4 @@ jobs:
         run: uv sync
 
       - name: Build
-        run: uv run make build
+        run: VARIANT=test1 uv run make build

@@ -39,8 +39,19 @@ EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 # The run commands defines how to run the example code.
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
-# The set of variants.
-ALL_VARIANTS: list[str] = ['serverless', 'byoc']
+# Force specific variant only
+selected_variant = os.getenv("VARIANT", "")
+if selected_variant:
+    ALL_VARIANTS: list[str] = [
+        selected_variant,
+    ]
+    print(f"Restricting build to selected variant: {ALL_VARIANTS}")
+else:
+    ALL_VARIANTS: list[str] = [
+        'serverless',
+        'byoc',
+    ]
+    print(f"Building all variants: {ALL_VARIANTS}")
 
 # The display names of the variants
 VARIANT_DISPLAY_NAMES: dict[str, str] = {'serverless': 'Serverless', 'byoc': 'BYOC'}
@@ -245,10 +256,10 @@ def convert_tutorial_py_file_to_md(
     # Now read the file and remove the header
     with open(to_path, "r") as f:
         content = f.read()
-    
+
     # Remove the Jupytext metadata section with regex
     clean_content = re.sub(r'---\s*jupyter:[\s\S]*?---\s*\n', '', content)
-    
+
     # Write the clean content back
     with open(to_path, "w") as f:
         f.write(clean_content)
