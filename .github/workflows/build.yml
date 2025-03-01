@@ -15,8 +15,11 @@ jobs:
           key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: node-modules-${{ runner.os }}-
 
-      - name: Install Build Packages
-        run: npm install
+      - name: Install uv
+        run: pip install uv
+
+          #- name: Install Build Packages
+          #run: npm install
 
           #      - name: Restore Cache from R2
           #        run: |
