@@ -21,11 +21,5 @@ jobs:
       - name: Astral UV sync
         run: uv sync
 
-          #- name: Build
-          #run: uv run make build
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
       - name: Build
         run: uv run make build
