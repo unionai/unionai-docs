@@ -1,0 +1,26 @@
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Restore Cache from R2
+        run: |
+          wrangler r2 object get my-bucket/node_modules.tar.gz --file node_modules.tar.gz || true
+          [ -f node_modules.tar.gz ] && tar -xzf node_modules.tar.gz || echo "No cache found"
+
+      - name: Install Dependencies
+        run: |
+          [ -d node_modules ] || npm install
+
+      - name: Save Cache to R2
+        run: |
+          tar -czf node_modules.tar.gz node_modules
+          wrangler r2 object put my-bucket/node_modules.tar.gz --file node_modules.tar.gz
+
