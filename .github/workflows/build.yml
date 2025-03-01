@@ -4,7 +4,7 @@ on:
       - main
 
 jobs:
-  pre-requisites:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -12,13 +12,16 @@ jobs:
       - name: Install uv
         run: pip install uv
 
-      - uses: actions/cache@v4
+      - name: Cache UV
+        id: cache-uv
+        uses: actions/cache@v4
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
 
       - name: Astral UV sync
+        if: steps.cache-uv.outputs.cache-hit != 'true'
         run: uv sync
 
       - name: Build
