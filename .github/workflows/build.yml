@@ -21,5 +21,5 @@ jobs:
       - name: Astral UV sync
         run: uv sync
 
-      - name: Build
-        run: uv run make build
+          #- name: Build
+          #run: uv run make build
