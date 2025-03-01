@@ -7,14 +7,10 @@ jobs:
   cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Dependencies
+      - name: T
         run: |
-          pwd
+          cd /home/runner
           find .
-          cat package.json
-          cd ..
-          find .
-          [ -d node_modules ] || npm install
 
       - name: Install Wrangler
         run: npm install -g wrangler
