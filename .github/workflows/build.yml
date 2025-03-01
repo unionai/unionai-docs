@@ -7,6 +7,15 @@ jobs:
   cache:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Dependencies
+        run: |
+          pwd
+          find .
+          cat package.json
+          cd ..
+          find .
+          [ -d node_modules ] || npm install
+
       - name: Install Wrangler
         run: npm install -g wrangler
 
@@ -18,8 +27,10 @@ jobs:
       - name: Install Dependencies
         run: |
           pwd
-          find
+          find .
           cat package.json
+          cd ..
+          find .
           [ -d node_modules ] || npm install
 
       - name: Save Cache to R2
