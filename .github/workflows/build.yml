@@ -20,9 +20,21 @@ jobs:
           key: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: venv-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
 
+      - name: Cache UnionAI Examples
+        id: cache-unionai-examples
+        uses: actions/cache@v4
+        with:
+          path: unionai-examples
+          key: unionai-examples-${{ runner.os }}-${{ hashFiles('.git/modules/unionai-examples/refs/heads/main') }}
+          restore-keys: unionai-examples-${{ runner.os }}-${{ hashFiles('.git/modules/unionai-examples/refs/heads/main') }}
+
       - name: Astral UV sync
         if: steps.cache-uv.outputs.cache-hit != 'true'
         run: uv sync
+
+      - name: Pull UnionAI Examples Submodules
+        if: steps.cache-unionai-examples.outputs.cache-hit != 'true'
+        run: git submodule update --init unionai-examples
 
       - name: Build
         run: VARIANT=byoc uv run make build
