@@ -25,4 +25,4 @@ jobs:
         run: uv sync
 
       - name: Build
-        run: VARIANT=test1 uv run make build
+        run: VARIANT=serverless uv run make build
