@@ -39,19 +39,8 @@ EXAMPLES_GITHUB_REPO: str = "https://www.github.com/unionai/unionai-examples"
 # The run commands defines how to run the example code.
 RUN_COMMANDS: str = './unionai-examples/run_commands.yaml'
 
-# Force specific variant only
-selected_variant = os.getenv("VARIANT", "")
-if selected_variant:
-    ALL_VARIANTS: list[str] = [
-        selected_variant,
-    ]
-    print(f"Restricting build to selected variant: {ALL_VARIANTS}")
-else:
-    ALL_VARIANTS: list[str] = [
-        'serverless',
-        'byoc',
-    ]
-    print(f"Building all variants: {ALL_VARIANTS}")
+# The set of variants.
+ALL_VARIANTS: list[str] = ['serverless', 'byoc']
 
 # The display names of the variants
 VARIANT_DISPLAY_NAMES: dict[str, str] = {'serverless': 'Serverless', 'byoc': 'BYOC'}
