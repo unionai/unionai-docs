@@ -9,14 +9,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        run: pip install -g uv
+
       - uses: actions/cache@v4
         with:
           path: node_modules
           key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: node-modules-${{ runner.os }}-
 
-      - name: Install uv
-        run: pip install uv
+      - name: Astral UV sync
+        run: uv sync
 
           #- name: Install Build Packages
           #run: npm install
