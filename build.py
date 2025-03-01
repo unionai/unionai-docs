@@ -4,6 +4,8 @@ import shlex
 import json
 import re
 import shutil
+import concurrent.futures
+from collections import defaultdict
 from pathlib import Path
 
 import jinja2
@@ -56,7 +58,7 @@ SUBS: dict[str, dict[str, str] | str] = {
     'default_project': {
         'byoc': 'flytesnacks',
         'serverless': 'default',
-    }
+    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
@@ -121,17 +123,72 @@ The source code for this tutorial can be found [here {{octicon}}`mark-github`]({
 """
 LOGGING_ENABLED = False
 
+
 # Print to stdout
 def log(msg: str) -> None:
     if LOGGING_ENABLED:
         print(msg)
 
+
 # Call a shell command.
-def shell(command: str, env: dict | None = None) -> None:
+# Call a shell command.
+def shell(
+    variant: str, command: str, output_dict: dict | None = None, env: dict | None = None
+) -> None:
+    """Execute a shell command and capture stdout and stderr, while streaming output in real-time."""
+    print(f"[{variant}] Executing {command}")
     _env = os.environ.copy()
     if env:
         _env.update(env)
-    subprocess.run(shlex.split(command), env=_env)
+    try:
+        process = subprocess.Popen(
+            shlex.split(command),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=_env,
+        )
+
+        # Stream stdout and stderr in real-time
+        stdout_lines = []
+        stderr_lines = []
+        while True:
+            stdout_line = process.stdout.readline()
+            stderr_line = process.stderr.readline()
+
+            if not stdout_line and not stderr_line and process.poll() is not None:
+                break
+
+            if stdout_line:
+                try:
+                    print(f"[{variant}] {stdout_line}")
+                except:
+                    pass
+                stdout_lines.append(stdout_line)
+
+            if stderr_line:
+                try:
+                    print(f"[{variant}] (!!!) {stderr_line}")
+                except:
+                    pass
+                stderr_lines.append(stderr_line)
+
+        # Wait for the process to complete
+        process.wait()
+
+        # Collect the output
+        stdout = "".join(stdout_lines)
+        stderr = "".join(stderr_lines)
+
+        if output_dict is not None:
+            output_dict["stdout"] += stdout
+            output_dict["stderr"] += stderr
+
+    except Exception as e:
+        print(f"Command failed: {command}")
+        print(f"Error: {str(e)}")
+        if output_dict is not None:
+            output_dict["stderr"] += str(e)
 
 
 # Returns a dictionary of variables based on the global SUBS dictionary,
@@ -157,21 +214,19 @@ def contains_metadata(src: str):
     return src.startswith('"""\n---') and src.endswith('---\n"""')
 
 
-def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
+def create_run_command_node(
+    run_commands: list[str], current_variant: str, github_url: str
+) -> NotebookNode:
     variant_display = SUBS["product_name"][current_variant]
     sdk_package = INSTALL_SDK_PACKAGE
     pip_install_command = f"pip install {sdk_package}"
 
     if current_variant == "byoc":
         byoc_commands = BYOC_RUN_COMMANDS
-        run_cmd_start = RUN_COMMAND_START_BYOC.format(
-            variant=variant_display
-        )
+        run_cmd_start = RUN_COMMAND_START_BYOC.format(variant=variant_display)
     else:
         byoc_commands = ""
-        run_cmd_start = RUN_COMMAND_START_SERVERLESS.format(
-            variant=variant_display
-        )
+        run_cmd_start = RUN_COMMAND_START_SERVERLESS.format(variant=variant_display)
     run_cmd_rest = RUN_COMMAND_REST.format(
         variant=variant_display,
         sdk_package=sdk_package,
@@ -233,7 +288,9 @@ def convert_tutorial_py_file_to_md(
     github_url = f"{EXAMPLES_GITHUB_REPO}/tree/main/{key}"
 
     if run_cmd_src is not None:
-        run_command_node = create_run_command_node(run_cmd_src, current_variant, github_url)
+        run_command_node = create_run_command_node(
+            run_cmd_src, current_variant, github_url
+        )
         notebook["cells"].insert(1, run_command_node)
 
     for fname in ("static", "images"):
@@ -257,7 +314,9 @@ def convert_tutorial_py_file_to_md(
 # Process a single Markdown/Jinja2 file.
 # Note that the Jinja2 templating syntax is customized and differs from standard Jinja2 syntax.
 # This is to avoid conflict with content that uses they standard Jinja2 syntax
-def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: str = '') -> None:
+def create_sphinx_file(
+    path: str, variant: str, variants: list[str], toctree: str = ''
+) -> None:
     n = path.count('/')
     n = n - 1 if n > 0 else 0
     indent: str = "    " * n
@@ -274,7 +333,7 @@ def create_sphinx_file(path: str, variant: str, variants: list[str], toctree: st
         comment_end_string='#@}',
         trim_blocks=True,
         lstrip_blocks=True,
-        autoescape=False  # Disable autoescaping for URLs
+        autoescape=False,  # Disable autoescaping for URLs
     )
 
     input_path: str = f'{SOURCE_DIR}/{path}'
@@ -331,7 +390,9 @@ def process_page_node(
     if py_file is not None:
         py_file = Path(py_file)
         md_path = Path(SOURCE_DIR) / Path(path).with_suffix('.md')
-        convert_tutorial_py_file_to_md(name, py_file, md_path, current_variant, run_commands)
+        convert_tutorial_py_file_to_md(
+            name, py_file, md_path, current_variant, run_commands
+        )
 
     variants = [*reversed(variants)]  # make sure that serverless is the first element
     log(f'\n{indent}node: [{name} {title} {variants} {"... " if children else ""}]')
@@ -339,7 +400,9 @@ def process_page_node(
 
     # If tree is malformed, exit.
     if set(variants) > set(parent_variants):
-        raise ValueError(f'Error processing {path}: variants of current page include element not present in parent page variants. A page for a variant cannot exist unless its parent page also exists for that variant.')
+        raise ValueError(
+            f'Error processing {path}: variants of current page include element not present in parent page variants. A page for a variant cannot exist unless its parent page also exists for that variant.'
+        )
 
     # If this page does not appear in the current variant site return `None`.
     if current_variant not in variants:
@@ -385,8 +448,8 @@ def process_page_node(
 
 
 def process_project():
-    shell(f'rm -rf {BUILD_DIR}')
-    shell(f'rm -rf {SPHINX_SOURCE_DIR}')
+    shell("global", f"rm -rf {BUILD_DIR}")
+    shell("global", f"rm -rf {SPHINX_SOURCE_DIR}")
 
     with open(SITEMAP, "r") as sm:
         page_node = json.load(sm)
@@ -394,23 +457,61 @@ def process_project():
     with open(RUN_COMMANDS, "r") as rc:
         run_commands = yaml.safe_load(rc)
 
-    for variant in ALL_VARIANTS:
+    # Dictionary to store stdout and stderr for each variant
+    variant_outputs = defaultdict(lambda: {"stdout": "", "stderr": ""})
+
+    # Function to process a single variant
+    def process_variant(variant):
         process_page_node(page_node, variant, "", ALL_VARIANTS, run_commands)
-    for variant in ALL_VARIANTS:
-        shell(f'cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}')
-        shell(f'cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}')
-    for variant in ALL_VARIANTS:
         shell(
-            f'sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}',
+            variant,
+            f"cp {SOURCE_DIR}/conf.py {SPHINX_SOURCE_DIR}/{variant}",
+            variant_outputs[variant],
+        )
+        shell(
+            variant,
+            f"cp -r {SOURCE_DIR}/_static {SPHINX_SOURCE_DIR}/{variant}",
+            variant_outputs[variant],
+        )
+        shell(
+            variant,
+            f"cp -r {SOURCE_DIR}/_templates {SPHINX_SOURCE_DIR}/{variant}",
+            variant_outputs[variant],
+        )
+        shell(
+            variant,
+            f"sphinx-build {SPHINX_SOURCE_DIR}/{variant} {BUILD_DIR}/{variant}",
+            output_dict=variant_outputs[variant],
             env=DOCSEARCH_CREDENTIALS[variant],
         )
-    shell(f'cp ./dummy_index.html {BUILD_DIR}/index.html')
-    shell(f'cp ./_redirects {BUILD_DIR}/_redirects')
+
+    # Use ThreadPoolExecutor to run variants in parallel
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [
+            executor.submit(process_variant, variant) for variant in ALL_VARIANTS
+        ]
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+    # Print collected stdout and stderr for each variant
+    for variant, outputs in variant_outputs.items():
+        print(f"Variant: {variant}")
+        print("STDOUT:")
+        print(outputs["stdout"])
+        print("STDERR:")
+        print(outputs["stderr"])
+        print("-" * 40)
+
+    shell("global", f"cp ./dummy_index.html {BUILD_DIR}/index.html")
+    shell("global", f"cp ./_redirects {BUILD_DIR}/_redirects")
 
 
 if __name__ == "__main__":
     import time
+
     start = time.time()
     process_project()
     end = time.time()
