@@ -7,30 +7,33 @@ jobs:
   cache:
     runs-on: ubuntu-latest
     steps:
-      - name: T
-        run: |
-          cd /home/runner
-          find .
+      - uses: actions/checkout@v4
 
-      - name: Install Wrangler
-        run: npm install -g wrangler
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: node-modules-${{ runner.os }}-
 
-      - name: Restore Cache from R2
-        run: |
-          wrangler r2 object get my-bucket/node_modules.tar.gz --file node_modules.tar.gz || true
-          [ -f node_modules.tar.gz ] && tar -xzf node_modules.tar.gz || echo "No cache found"
+      - name: Install Build Packages
+        run: npm install
 
-      - name: Install Dependencies
-        run: |
-          pwd
-          find .
-          cat package.json
-          cd ..
-          find .
-          [ -d node_modules ] || npm install
-
-      - name: Save Cache to R2
-        run: |
-          tar -czf node_modules.tar.gz node_modules
-          wrangler r2 object put my-bucket/node_modules.tar.gz --file node_modules.tar.gz
+          #      - name: Restore Cache from R2
+          #        run: |
+          #          wrangler r2 object get my-bucket/node_modules.tar.gz --file node_modules.tar.gz || true
+          #          [ -f node_modules.tar.gz ] && tar -xzf node_modules.tar.gz || echo "No cache found"
+          #
+          #      - name: Install Dependencies
+          #        run: |
+          #          pwd
+          #          find .
+          #          cat package.json
+          #          cd ..
+          #          find .
+          #          [ -d node_modules ] || npm install
+          #
+          #      - name: Save Cache to R2
+          #        run: |
+          #          tar -czf node_modules.tar.gz node_modules
+          #          wrangler r2 object put my-bucket/node_modules.tar.gz --file node_modules.tar.gz
 
