@@ -25,8 +25,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: unionai-examples
-          key: unionai-examples-${{ runner.os }}-${{ hashFiles('.git/modules/unionai-examples/refs/heads/main') }}
-          restore-keys: unionai-examples-${{ runner.os }}-${{ hashFiles('.git/modules/unionai-examples/refs/heads/main') }}
+          key: unionai-examples-${{ runner.os }}-${{ hashFiles('.gitmodules') }}
+          restore-keys: unionai-examples-${{ runner.os }}-${{ hashFiles('.gitmodules') }}
 
       - name: Astral UV sync
         if: steps.cache-uv.outputs.cache-hit != 'true'
