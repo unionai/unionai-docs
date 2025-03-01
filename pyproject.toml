@@ -24,6 +24,8 @@ dependencies = [
     "sphinx-copybutton",
     "sphinx-docsearch",
     "sphinxext-remoteliteralinclude",
+    "tensorflow",
+    "torch",
     "union",
 ]
 
