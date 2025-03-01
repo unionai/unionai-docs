@@ -28,3 +28,6 @@ dependencies = [
     "torch",
     "union",
 ]
+
+[tool.setuptools.packages.find]
+include = ["source"]

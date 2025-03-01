@@ -1,0 +1,16 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "This repository contains the source for the Union documentation site [docs.union.ai](https://docs.union.ai).",
+  "main": "index.js",
+  "dependencies": {
+    "pnpm": "^10.5.2",
+    "wrangler": "^3.111.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

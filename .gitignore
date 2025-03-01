@@ -178,3 +178,6 @@ sphinx_source/
 # macOS
 .DS_Store
 .localized
+
+# NPM
+node_modules/
