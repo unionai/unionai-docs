@@ -19,4 +19,4 @@ clean:
 build: sync-examples
 	[ -x "$(shell command -v uv)" ] || pip install uv
 	uv sync
-	UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
+	VARIANT=${VARIANT} UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
