@@ -37,4 +37,4 @@ jobs:
         run: git submodule update --init unionai-examples
 
       - name: Build
-        run: VARIANT=byoc uv run make build
+        run: UNION_SERVERLESS_ENDPOINT= ENABLE_UNION_SERVING=1 uv run build.py
