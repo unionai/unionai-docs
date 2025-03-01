@@ -4,7 +4,7 @@ on:
       - main
 
 jobs:
-  cache:
+  pre-requisites:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,3 +23,9 @@ jobs:
 
           #- name: Build
           #run: uv run make build
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        run: uv run make build
