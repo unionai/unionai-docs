@@ -17,6 +17,9 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          pwd
+          find
+          cat package.json
           [ -d node_modules ] || npm install
 
       - name: Save Cache to R2
