@@ -31,7 +31,7 @@ Switch to another variant with the version selector above.
 ```{admonition} Early Release Warning
 Union BYOK is in Design Partner limited release. All documentation and procedures are subject to change as we drive towards General Availability.
 
-Please see [Admin guide](./admin-guide/index.md) for information about BYOK cluster administration, including installation and configuration.
+Please see [Admin guide](../admin-guide/index.md) for information about BYOK cluster administration, including installation and configuration.
 ```
 
 {@@ endif @@}
