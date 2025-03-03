@@ -76,6 +76,9 @@ html_title = "Union Docs"
 html_logo = "_static/public/icon-logo.svg"
 html_favicon = "_static/public/favicon.ico"
 html_sidebars = {
+    "admin-guide/**": [
+        "custom-sidebar.html",
+    ],
     "user-guide/**": [
         "custom-sidebar.html",
     ],
@@ -100,6 +103,7 @@ expand_level = -1 # set to 0, 1, 2, or -1
 
 html_context = {
     "dir_to_title": {
+        "admin-guide": "Admin guide",
         "user-guide": "User guide",
         "tutorials": "Tutorials",
         "api-reference": "API reference",
