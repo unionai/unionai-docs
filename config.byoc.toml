@@ -1,0 +1,5 @@
+baseURL = '/byoc/'
+
+[params]
+_merge = "deep"
+variant = "byoc"

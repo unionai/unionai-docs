@@ -1,0 +1,269 @@
+{{- $variant := .Site.Params.variant -}} {{- $access := partial
+"page-allowed.html" . -}} {{- if $access.allowed -}}
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ .Title }} | {{ .Site.Title }}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" 
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/light.css" />
+    <script type="module" 
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"></script>
+
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --text-color: #1f2937;
+        --bg-color: #ffffff;
+        --sidebar-bg: #f8fafc;
+        --border-color: #e2e8f0;
+        --menu-indent: 0.75rem;
+        --sidebar-width: 380px;
+        --header-height: 64px;
+        --content-width: 1280px;
+        --image-width: 880px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+        background: var(--bg-color);
+        overflow: hidden;
+      }
+      .header {
+        height: var(--header-height);
+        background-color: var(--bg-color);
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.25rem 1.5rem;
+        z-index: 100;
+      }
+      .tabs {
+        border-bottom: 1px solid var(--border-color);
+        z-index: 100;
+      }
+      .container {
+        display: flex;
+        height: calc(100vh - var(--header-height));
+      }
+      .sidebar {
+        width: var(--sidebar-width);
+        padding: 1rem 1.5rem;
+        background: var(--sidebar-bg);
+        border-right: 1px solid var(--border-color);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+      }
+      .main-content {
+        flex: 1;
+        padding: 2rem calc((100vw - var(--content-width)) / 2);
+        min-height: calc(100vh - var(--header-height));
+        overflow-y: auto;
+      }
+
+      .logo {
+        height: 32px;
+      }
+
+      h1 {
+        font-size: 2.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+      }
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem;
+        color: var(--text-color);
+      }
+      p {
+        margin-bottom: 1.5rem;
+        color: #4b5563;
+      }
+      a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      a:hover {
+        color: #1d4ed8;
+      }
+      code {
+        background: #f1f5f9;
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        font-size: 0.875em;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          monospace;
+      }
+      pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+      }
+      pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+      }
+      .main-content ul,
+      .main-content ol {
+        margin: 1rem 0;
+      }
+      .main-content li {
+        margin: 0 2rem;
+      }
+      .main-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 0.95rem;
+      }
+      .main-content th,
+      .main-content td {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        text-align: left;
+      }
+      .main-content th {
+        background-color: var(--sidebar-bg);
+        font-weight: 600;
+      }
+      .main-content tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+      .main-content tr:hover {
+        background-color: #f1f5f9;
+      }
+      @media (max-width: 640px) {
+        .main-content table {
+          display: block;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+      .main-content li {
+        margin: 0 2rem;
+      }
+
+      .if-variant {
+        margin: 1rem 0;
+      }
+
+      .not-allowed {
+        padding: 0.5rem 1rem;
+        border: 1px solid hsl(0, 100%, 50%);
+        background: hsl(0, 84%, 85%);
+        color: red;
+        margin-bottom: 2rem;
+      }
+
+      .allowed {
+        border: 1px solid green;
+        background-color: hsl(120, 61%, 66%);
+      }
+      .allowed.if-variant .content {
+        padding: 1rem;
+      }
+
+      .not-allowed.page-warn {
+        display: flex;
+        align-items: center;
+      }
+      .not-allowed.if-variant {
+        margin: 1rem 0;
+        padding: 0;
+      }
+      .not-allowed.if-variant .page-name {
+        padding: 1rem;
+        background-color: var(--bg-color);
+      }
+      .allowed.if-variant .title,
+      .not-allowed.if-variant .title {
+        padding: 0.5rem;
+      }
+      .allowed.if-variant .content,
+      .not-allowed.if-variant .content {
+        background-color: var(--bg-color);
+        padding: 1rem;
+      }
+
+      .err-no-title {
+        background-color: yellow;
+        padding: 0.25rem 0.5rem;
+      }
+      .err-no-title::before {
+        content: "⚠️ [NO TITLE]";
+        margin-right: 0.5rem;
+      }
+
+      .chevron {
+        height: 12px;
+        margin-right: 0.1rem;
+      }
+
+      BLOCKQUOTE {
+        border-left: 3px solid gray;
+        padding: 1rem;
+      }
+
+      BLOCKQUOTE P {
+        margin-bottom: 0;
+      }
+
+      BLOCKQUOTE P + P {
+        margin-top: 1rem;
+      }
+
+      IMG {
+        max-width: var(--image-width);
+      }
+
+      sl-alert {
+        margin: 1rem 0;
+      }
+
+      sl-alert P {
+        margin: 0;
+      }
+
+      sl-alert P + P {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">{{ partial "header.html" . }}</div>
+    <div class="tabs">{{ partial "tabs.html" . }}</div>
+    <div class="container">
+      <div class="sidebar">{{ partial "sidebar.html" . }}</div>
+      <div class="main-content">
+        {{ if $access.development }}
+        <div class="not-allowed page-warn">
+          <div style="flex: 1">
+            This page will not be available for '{{ $variant }}' in production.
+          </div>
+          <code>{{ strings.TrimSuffix "/" .RelPermalink }}</code>
+        </div>
+        {{ end }} {{ partial "breadcrumb.html" . }} {{ block "main" . }}{{ end
+        }}
+      </div>
+    </div>
+  </body>
+</html>
+{{- end -}}

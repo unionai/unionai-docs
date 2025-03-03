@@ -1,0 +1,36 @@
+{{- $title := .Get "title" -}}
+{{- $target := .Get "target" -}}
+{{- $icon := .Get "icon" -}}
+
+<style>
+    sl-card::part(base) {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Ensures the card itself stretches */
+        transition: all 0.1s ease-in-out; /* Smooth transition */
+    }
+
+    sl-card:hover::part(base) {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Elevation effect */
+        transform: translateY(-5px); /* Slight lift effect */
+        cursor: pointer;
+    }
+
+    .card-content {
+        flex-grow: 1; /* Ensures content inside grows to fill */
+    }
+
+    .card-header {
+        font-weight: bold;
+    }
+</style>
+
+<sl-card class="card-basic" onclick="document.location = '{{ $target | safeURL }}';">
+    <div class="card-content">
+        <div class="card-header">
+            {{ $title }}
+            <sl-icon-button name="{{ $icon }}" label="{{ $title }}"></sl-icon-button>
+        </div>
+        {{ .Inner | markdownify }}
+    </div>  
+</sl-card>

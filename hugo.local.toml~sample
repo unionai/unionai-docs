@@ -1,0 +1,4 @@
+[params]
+variant = "serverless"
+variant_hide_in_development = false
+variant_identify_variant_in_development = false

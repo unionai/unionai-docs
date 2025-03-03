@@ -1,0 +1,5 @@
+baseURL = '/serverless/'
+
+[params]
+_merge = "deep"
+variant = "serverless"

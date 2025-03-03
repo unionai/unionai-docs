@@ -1,0 +1,12 @@
+{{ if .Title }}
+    {{ .Title }}
+{{ else }}
+    {{ $firstLine := index (split .RawContent "\n") 0 }}
+    {{ if hasPrefix $firstLine "# " }}
+        {{ trim (strings.TrimPrefix "# " $firstLine) " " }}
+    {{ else }}
+        <div class="err-no-title">
+            {{ .Path }}
+        </div>
+    {{ end }}
+{{ end }}

@@ -1,0 +1,132 @@
+# Mapping over launch plans
+
+You can map over launch plans the same way you can [map over tasks](../tasks/task-types.md#map-tasks) to execute workflows in parallel across a series of inputs.
+
+You can either map over a `LaunchPlan` object defined in one of your Python modules or a [reference launch plan](./reference-launch-plans.md) that points to a previously registered launch plan.
+
+## Launch plan defined in your code
+
+Here we define a workflow called `interest_workflow` that we want to parallelize, along with a launch plan called `interest_workflow_lp`, in a file we'll call `map_interest_wf.py`.
+We then write a separate workflow, `map_interest_wf`, that uses a `map_task` to parallelize `interest_workflow` over a list of inputs.
+
+{{< highlight python >}}
+import union
+
+# Task to calculate monthly interest payment on a loan
+@union.task
+def calculate_interest(principal: int, rate: float, time: int) -> float:
+    return (principal * rate * time) / 12
+
+# Workflow using the calculate_interest task
+@union.workflow
+def interest_workflow(principal: int, rate: float, time: int) -> float:
+    return calculate_interest(principal=principal, rate=rate, time=time)
+
+# Create LaunchPlan for interest_workflow
+lp = union.LaunchPlan.get_or_create(
+    workflow=interest_workflow,
+    name="interest_workflow_lp",
+)
+
+# Mapping over the launch plan to calculate interest for multiple loans
+@union.workflow
+def map_interest_wf() -> list[float]:
+    principal = [1000, 5000, 10000]
+    rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
+    time = [12, 24, 36]        # Loan periods in months
+    return union.map_task(lp)(principal=principal, rate=rate, time=time)
+{{< /highlight >}}
+
+
+You can run the `map_interest` workflow locally:
+
+{{< highlight shell >}}
+union run map_interest_wf.py map_interest_wf
+{{< /highlight >}}
+
+
+You can also run the `map_interest` workflow remotely on Union:
+
+{{< highlight shell >}}
+union run --remote map_interest_wf.py map_interest_wf
+{{< /highlight >}}
+
+
+## Previously registered launch plan
+
+To demonstrate the ability to map over previously registered launch plans, in this example, we map over the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/master/examples/basics/basics/workflow.py#L25) launch plan from the basic workflow example in the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).
+
+Recall that when a workflow is registered, an associated launch plan is created automatically. One of these launch plans will be leveraged in this example, though custom launch plans can also be used.
+
+
+1. Clone the Flytesnacks repository:
+
+    {{< highlight shell >}}
+    git clone git@github.com:flyteorg/flytesnacks.git
+    {{< /highlight >}}
+
+
+2. Navigate to the `basics` directory:
+
+    {{< highlight shell >}}
+    cd flytesnacks/examples/basics
+    {{< /highlight >}}
+
+
+3. Register the `simple_wf` workflow:
+
+    {{< highlight shell >}}
+    union register --project flytesnacks --domain development --version v1 basics/workflow.py
+    {{< /highlight >}}
+
+
+    Note that the `simple_wf` workflow is defined as follows:
+
+    {{< highlight python >}}
+    @union.workflow
+    def simple_wf(x: list[int], y: list[int]) -> float:
+        slope_value = slope(x=x, y=y)
+        intercept_value = intercept(x=x, y=y, slope=slope_value)
+        return intercept_value
+    {{< /highlight >}}
+
+
+4. Create a file called `map_simple_wf.py` and copy the following code into it:
+
+    {{< highlight python >}}
+    import union
+    from flytekit import reference_launch_plan
+
+
+    @reference_launch_plan(
+        project="flytesnacks",
+        domain="development",
+        name="basics.workflow.simple_wf",
+        version="v1",
+    )
+    def simple_wf_lp(
+        x: list[int], y: list[int]
+    ) -> float:
+        pass
+
+
+    @union.workflow
+    def map_simple_wf() -> list[float]:
+        x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
+        y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
+        return union.map_task(simple_wf_lp)(x=x, y=y)
+
+    {{< /highlight >}}
+
+
+    Note the fact that the reference launch plan has an interface that corresponds exactly to the registered `simple_wf` we wish to map over.
+
+5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run it remotely.
+
+
+    {{< highlight shell >}}
+    union register map_simple_wf.py
+    {{< /highlight >}}
+
+
+6. In the Union UI, run the `map_simple_wf` workflow.

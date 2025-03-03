@@ -1,0 +1,48 @@
+{{- $nested := eq (.Get "nested") true -}}
+{{- $variant := $.Site.Params.variant -}}
+{{- $showVariantNames := $.Site.Params.variant_identify_variant_in_development -}}
+{{- $hideMismatch := .Site.Params.variant_hide_in_development }}
+{{- $var_input := (.Get 0) }}
+{{- if not $var_input -}}
+{{- $var_input = (.Get "variants") }}
+{{- end -}}
+{{- $variants := split $var_input " " -}}
+{{- $allowed := in $variants $variant -}}
+{{- if or $allowed (and (not hugo.IsProduction) (not $hideMismatch)) -}}
+    {{- if (not $allowed) -}}
+        <div class="not-allowed if-variant">
+            <div class="title">
+                {{ upper (delimit $variants " | ") }}: This will not exist in production for variant '{{ $variant }}'.
+            </div>
+            <div class="content">
+                {{ if $nested }}
+                    {{ .Inner | safeHTML }}
+                {{ else }}
+                    {{ .Inner | markdownify }}
+                {{ end }}
+            </div>
+        </div>
+    {{- else if $showVariantNames -}}
+        <div class="allowed if-variant">
+            <div class="title">
+                {{ upper (delimit $variants " | ") }}
+            </div>
+            <div class="content">
+                {{ if $nested }}
+                    {{ .Inner | safeHTML }}
+                {{ else }}
+                    {{ .Inner | markdownify }}
+                {{ end }}
+            </div>
+        </div>
+    {{- else -}}
+        {{ if $nested }}
+            {{ .Inner | safeHTML }}
+        {{ else }}
+            <div class="if-variant">
+                {{ .Inner | markdownify }}
+            </div>
+        {{ end }}
+    {{- end -}}
+{{- end -}}
+

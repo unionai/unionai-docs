@@ -1,0 +1,78 @@
+<style>
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+    .breadcrumb-item {
+        display: flex;
+        align-items: center;
+    }
+    .breadcrumb-item:not(:last-child):after {
+        content: "/";
+        margin: 0 0.5rem;
+        color: #9ca3af;
+    }
+    .breadcrumb-item a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .breadcrumb-item a:hover {
+        color: #1d4ed8;
+    }
+    .breadcrumb-item.active {
+        color: var(--text-color);
+    }
+</style>
+
+<nav class="breadcrumb" aria-label="breadcrumb">
+    {{ $url := .RelPermalink }}
+    {{ $sections := split (trim $url "/") "/" }}
+    {{ $variant := .Site.Params.variant }}
+    <div class="breadcrumb-item">
+        {{ $display := index .Site.Params.variants $variant }}
+        {{ if not $display }}
+            {{ $display = humanize $variant }}
+        {{ end }}
+        {{ if or (eq .RelPermalink .Site.BaseURL) (eq .RelPermalink "/") .Params.site_root }}
+            {{ $display }}
+        {{ else }}
+            <a href="{{ .Site.BaseURL }}">{{ $display }}</a>
+        {{ end }}
+    </div>
+    {{ range $index, $section := $sections }}
+        {{ if eq $section $variant }}
+            {{ continue }}
+        {{ end }}
+        {{ $sectionURL := printf "/%s/" (delimit (first (add $index 1) $sections) "/") }}
+        {{ $publicSectionURL := $sectionURL }}
+        {{ $hasIndex := fileExists (printf "content/%s/_index.md" (delimit (first $index $sections) "/")) }}
+        {{ if not $hasIndex }}
+            {{ $path := (delimit (after 1 (split (delimit (first (add $index 1) $sections) "/") "/")) "/") }}
+            {{ $sectionURL = printf "/%s/" $path }}
+            {{ $hasIndex = fileExists (printf "content/%s/_index.md" $path) }}
+        {{ end }}
+        {{ $title := $section }}
+        {{ with $.Site.GetPage $sectionURL }}
+            {{ $title = partial "page-title.html" . }}
+        {{ else }}
+            {{ $title = humanize $section }}
+        {{ end }}
+        <div class="breadcrumb-item{{ if eq $sectionURL $url }} active{{ end }}">
+            {{ if eq $sectionURL $url }}
+                {{ $title }}
+            {{ else if eq $index (sub (len $sections) 1) }}
+                {{ $title }}
+            {{ else if $hasIndex }}
+                <a href="{{ $publicSectionURL }}">
+                    {{ $title }}
+                </a>
+            {{ else }}
+                {{ $title }}
+            {{ end }}
+        </div>
+    {{ end }}
+</nav>

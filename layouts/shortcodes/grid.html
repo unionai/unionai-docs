@@ -1,0 +1,10 @@
+{{ $nowhere := .Inner }}
+<div class="grid-container" style="
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1rem; 
+    align-items: stretch;
+    margin: 2rem 0;
+  ">
+  {{ .Inner | safeHTML }}
+</div>

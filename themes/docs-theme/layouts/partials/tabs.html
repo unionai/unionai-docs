@@ -1,0 +1,71 @@
+<nav class="tabs-nav">
+    <div class="tabs-container">
+        {{ $currentPage := . }}
+        {{ range .Site.Sections.ByWeight }}
+            {{ $access := partial "page-allowed.html" . }}
+            {{ if and $access.allowed .Params.top_menu }}
+                <a href="{{ .RelPermalink }}" class="
+                    tab{{ if eq $currentPage.Section .Section }} active{{ end }}
+                    {{ if $access.development }}disabled{{ end }}
+                    ">
+                    {{ .Title }}
+                </a>
+            {{ end }}
+        {{ end }}
+    </div>
+</nav>
+
+<style>
+.tabs-nav {
+    height: var(--header-height);
+    background-color: var(--bg-color);
+    /* border-bottom: 1px solid var(--border-color); */
+    padding: 0 1.5rem;
+}
+
+.tabs-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: var(--content-width);
+}
+
+.tab {
+    height: 100%;
+    padding: 0 0.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.tab:hover {
+    color: var(--primary-color);
+    background-color: #f1f5f9;
+}
+
+.tab.active {
+    color: var(--primary-color);
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+.tab.disabled {
+  color: red;
+}
+.tab.disabled::after {
+    background-color: red;
+}
+</style>

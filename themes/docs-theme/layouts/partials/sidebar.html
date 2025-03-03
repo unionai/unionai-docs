@@ -1,0 +1,86 @@
+{{- $allowed := sort (index (index .Site.Data.allowed_pages.variants .Site.Params.variant) "pages") "" "desc" -}}
+<nav class="site-nav">
+  <style>
+    .site-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .site-nav > ul > li {
+      margin-bottom: var(--menu-indent) m;
+    }
+    .site-nav a {
+      text-decoration: none;
+      color: #4b5563;
+      transition: all 0.2s;
+    }
+    .site-nav a:hover {
+      color: var(--primary-color);
+      background-color: #f1f5f9;
+    }
+    .site-nav .active {
+      background-color: #e0e7ff;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+    .site-nav .section-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-color);
+      display: block;
+      padding: 0.375rem var(--menu-indent);
+    }
+    .site-nav .page-link {
+      display: block;
+      padding: 0.375rem var(--menu-indent);
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+    .site-nav .section-pages {
+      padding-left: var(--menu-indent);
+    }
+    .site-nav .disabled {
+      color: red;
+    }
+    .site-nav .disabled * {
+      color: red;
+    }
+  </style>
+  <ul>
+    {{ $current := . }}
+    {{ range .Site.Sections }}
+        {{ if eq $current.Section .Section }}
+            {{ template "section-tree-nav" (dict "page" . "current" $current "allowed" $allowed) }} 
+        {{ end }}
+    {{ end }}
+  </ul>
+</nav>
+
+{{ define "section-tree-nav" }}
+    {{ $access := partial "page-allowed.html" .page }}
+    {{ if $access.allowed }}
+        <li>
+            <a
+                href="{{ .page.RelPermalink }}"
+                class="
+                    {{ if $access.development }}disabled{{ end }}
+                    {{ if .page.IsSection }}section-title{{ else }}page-link{{ end }}
+                    {{ if eq .page.RelPermalink .current.RelPermalink }}active{{ end }}
+                "
+                >
+                    <!-- {{ if .page.IsSection }}
+                        <img src="/images/chevron-down.svg" class="chevron" />
+                    {{ end }} -->
+                    {{ partial "page-title.html" .page }}
+                </a
+            >
+            {{ if .page.IsSection }}
+                <ul class="section-pages">
+                    {{ range .page.Pages.ByWeight }}
+                        {{ template "section-tree-nav" (dict "page" . "current" $.current "allowed" $.allowed) }}
+                    {{ end }}
+                </ul>
+            {{ end }}
+        </li>
+    {{ end }}
+{{ end }}

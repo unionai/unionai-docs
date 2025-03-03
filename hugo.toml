@@ -1,0 +1,16 @@
+languageCode = 'en-us'
+title = 'Union.ai Docs'
+theme = 'docs-theme'
+disableKinds = ["RSS"]
+
+[params]
+_merge = "deep"
+variant_hide_in_development = false
+variant_identify_variant_in_development = true
+
+# Temporary variables during migration
+product_name = "Union"
+
+[params.variants]
+serverless = "Union.ai Serverless"
+byoc = "Union.ai BYOC"

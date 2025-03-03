@@ -1,0 +1,11 @@
+.DS_Store
+
+# This is only for development mode
+config/_default
+
+# Generated content
+public/
+dist/
+
+# Developer overrides
+hugo.local.toml

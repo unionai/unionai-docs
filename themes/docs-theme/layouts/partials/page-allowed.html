@@ -1,0 +1,29 @@
+{{- /* Check if the current page is in the allowed list */ -}}
+{{- $variant := .Site.Params.variant -}}
+{{- $allowedPages := index (index .Site.Data.allowed_pages.variants $variant) "pages" -}}
+{{- $isAllowed := false -}}
+
+{{- if .Path -}}
+    {{- $currentPath := .Path -}}
+    {{- range $allowedPages -}}
+        {{- if eq $currentPath . -}}
+            {{- $isAllowed = true -}}
+        {{- else -}}
+            {{- /* check if first path is the variant */ -}}
+            {{- $currentPath := split $currentPath "/" -}}
+            {{- if eq (index $currentPath 0) $variant -}}
+                {{- $currentPath := delimit (after 1 $currentPath) "/" -}}
+                {{- if eq $currentPath . -}}
+                    {{- $isAllowed = true -}}
+                {{- end -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
+{{-
+    return dict 
+        "allowed" (or $isAllowed (and (not hugo.IsProduction) (not .Site.Params.variant_hide_in_development))) 
+        "development" (and (not $isAllowed) (not hugo.IsProduction))
+        "variant" $isAllowed
+-}}

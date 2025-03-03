@@ -1,0 +1,21 @@
+{{ define "main" }}
+<article>
+    <div class="content">
+        {{ if .Content }}
+        {{ .Content }}
+        {{ else }}
+        {{ partial "no-content" . }}
+        {{ end }}
+    </div>
+    
+    <footer>
+        {{ with .PrevInSection }}
+        <a href="{{ .RelPermalink }}" class="prev">← {{ .Title }}</a>
+        {{ end }}
+        
+        {{ with .NextInSection }}
+        <a href="{{ .RelPermalink }}" class="next">{{ .Title }} →</a>
+        {{ end }}
+    </footer>
+</article>
+{{ end }}

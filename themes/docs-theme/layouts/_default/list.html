@@ -1,0 +1,26 @@
+{{ define "main" }}
+<article>
+    {{ if .Content }}
+    {{ .Content }}
+    {{ else }}
+    <header>
+        <h1>{{ .Title }}</h1>
+    </header>
+
+    {{ if .Pages }}
+    <ul>
+        {{ range .Pages.ByWeight }}
+        {{- if (partial "page-allowed.html" .).allowed -}}
+        <li>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ if .Description }}
+            <p>{{ .Description }}</p>
+            {{ end }}
+        </li>
+        {{- end -}}
+        {{ end }}
+    </ul>
+    {{ end }}
+    {{ end }}
+</article>
+{{ end }}
