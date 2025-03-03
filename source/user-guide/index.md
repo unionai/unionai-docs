@@ -1,26 +1,13 @@
 # User guide
 
-{@@ if byok @@}
+{@@ if flyte @@}
 
-```{admonition} Preliminary draft
-This document is a preliminary draft of the BYOK user manual. Contents and procedures may change before the GA release.
+```{admonition} Flyte
+These docs are for [**Flyte**](./about-union.md#flyte).
+Switch to another variant with the version selector above.
 ```
 
-**Deployment**
-
-In the BYOK model, the customer deploys the data plane themselves. Union data plane runs on a standard Kubernetes cluster.
-
-Union data plane is distributed as standard Helm Charts, with overridable values.
-
-```{admonition} Other distribution mechanisms
-Although Helm Chart is a popular and well-established standard Kubernetes distribution mechanism,
-our Engineering team is investigating other installation and distribution mechanisms, such as Terraform,
-to more easily integrate with the customers’ deployment systems.
-```
-
-{@@ else @@}
-
-{@@ if serverless @@}
+{@@ elif serverless @@}
 
 ```{admonition} Union Serverless
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
@@ -114,5 +101,3 @@ Frequently asked questions.
 {@@ endif @@}
 
 ::::
-
-{@@ endif @@}
