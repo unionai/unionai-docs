@@ -1,10 +1,5 @@
 name: ""
 children:
-  - name: admin-guide
-    children:
-      - name: cluster-requirements
-        variants:
-          - byok
   - name: user-guide
     children:
       - name: about-union
@@ -1406,3 +1401,8 @@ children:
           - byoc
           - byok
           - flyte
+  - name: admin-guide
+    children:
+      - name: cluster-requirements
+        variants:
+          - byok
