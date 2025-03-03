@@ -1,4 +1,4 @@
-# Cluster Recommendations
+# Cluster recommendations
 
 Union is capable of running on any Kubernetes cluster.  This includes managed Kubernetes services such as Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS), as well as self-managed Kubernetes clusters.
 
