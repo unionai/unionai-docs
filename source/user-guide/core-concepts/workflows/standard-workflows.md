@@ -4,7 +4,7 @@ A standard workflow is defined by a Python function decorated with the `@{@= uni
 The function is written in a domain specific language (DSL) that is a subset of Python syntax that describes directed acyclic graph (DAG) that is deployed and executed on Union.
 The syntax of a standard workflow definition can only include the following:
 
-* Calls to functions decorated with `@union.task` and assignment of variables to the returned values.
+* Calls to functions decorated with `@{@= union_flytekit_lower =@}.task` and assignment of variables to the returned values.
 * Calls to other functions decorated with `@union.workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans.md)).
 * Calls to [`LaunchPlan` objects](../launch-plans/index.md) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
 * Calls to functions decorated with `@union.dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows.md)).
