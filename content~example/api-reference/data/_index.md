@@ -1,3 +1,0 @@
----
-title: "Data Models II"
----

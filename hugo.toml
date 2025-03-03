@@ -1,6 +1,6 @@
 languageCode = 'en-us'
 title = 'Union.ai Docs'
-theme = 'docs-theme'
+theme = 'union'
 disableKinds = ["RSS"]
 
 [params]
