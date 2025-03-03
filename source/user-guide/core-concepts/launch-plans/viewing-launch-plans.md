@@ -31,7 +31,7 @@ Here you can see:
 In the top right you can see if this launch plan is active (and if it is, which version, specifically, is active). There is also a control for changing the active version or deactivating the launch plan entirely.
 See [Activating and deactivating](./activating-and-deactivating.md) for more details.
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 
 ## Viewing launch plans on the command line with `uctl`
 

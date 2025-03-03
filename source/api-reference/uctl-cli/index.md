@@ -79,7 +79,7 @@ If you have previously used Union, you may have existing configuration files tha
 To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
 ```
 
-{@@ elif byoc or byok @@}
+{@@ elif byoc or byok or flyte @@}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
 
@@ -188,7 +188,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 :header-rows: 0
 :widths: 20 30
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 * - {doc}`uctl apply <uctl-apply/index>`
   - Used for updating various Union/Flyte resources, including cluster configs.
 * - {doc}`uctl config <uctl-config/index>`

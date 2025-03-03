@@ -23,7 +23,7 @@ The Flyte type system is also used for caching, data lineage tracking, and autom
 ## Tasks are containerized
 
 While (most) tasks are locally executable, when a task is deployed to Union as part of the registration process it is containerized and run in its own independent Kubernetes pod.
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {@@ elif serverless @@}
@@ -51,7 +51,7 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 
 For details on task caching, see [Caching](../caching.md).
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 ## Workflows can contain many types of tasks
 
 One of the most powerful features of Union is the ability to run widely differing computational workloads as tasks with a single workflow.

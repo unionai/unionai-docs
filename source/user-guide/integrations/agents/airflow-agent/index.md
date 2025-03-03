@@ -37,7 +37,7 @@ which enables you to test Airflow tasks locally in Flytekit's local execution mo
 In some cases, you will need to store credentials in your local environment when testing locally.
 :::
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.

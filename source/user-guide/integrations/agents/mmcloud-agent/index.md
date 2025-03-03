@@ -25,7 +25,7 @@ To test the MMCloud agent locally, create a class for the agent task that inheri
 In some cases, you will need to store credentials in your local environment when
 :::
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 
 ## Union cluster deployment
 

@@ -46,7 +46,7 @@ You can run the above example task locally and test the agent with the following
 $ union run bigquery_task.py bigquery_doge_coin --version 10
 ```
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.

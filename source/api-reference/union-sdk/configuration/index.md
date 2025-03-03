@@ -51,7 +51,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 ```
 ::::
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 ### Python objects
 
 #### Config object

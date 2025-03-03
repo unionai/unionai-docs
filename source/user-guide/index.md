@@ -90,7 +90,7 @@ Explore the Union development cycle from experimentation to production.
 Manage the input and output of data in your Union workflow.
 :::
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 :::{grid-item-card} {octicon}`person-add` Administration
 :link: administration/index
 :link-type: doc

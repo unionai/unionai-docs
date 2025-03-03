@@ -234,7 +234,7 @@ For more details on running workflows and tasks, see [Development cycle](../deve
 
 ### Running a task or workflow remotely on the command line with `union`
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../development-cycle/setting-up-a-project.md)):
 {@@ elif serverless @@}
 To run a workflow remotely on your Union installation, use the following command:

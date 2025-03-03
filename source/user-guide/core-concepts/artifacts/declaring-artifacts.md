@@ -6,7 +6,7 @@ In order to define a task or workflow that emits an artifact, you must first dec
 
 In the following example, an artifact called `BasicTaskData` is declared, along with a task that emits that artifact. Since it is a basic artifact, it doesn't have any partitions.
 
-{@@ if byoc or byok @@}
+{@@ if byoc or byok or flyte @@}
 
 :::{note}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.

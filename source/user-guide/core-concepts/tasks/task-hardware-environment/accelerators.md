@@ -67,7 +67,7 @@ def my_task():
     ...
 ```
 
-{@@ elif byoc or byok @@}
+{@@ elif byoc or byok or flyte @@}
 
 :::{admonition} *Accelerators* and *Accelerated datasets* are entirely different things
 An accelerator, in Union, is a specialized hardware device that is used to accelerate the execution of a task.
