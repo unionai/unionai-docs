@@ -1,3 +1,3 @@
-# Admin Guide
+# Admin guide
 
-coming soon
+This section covers the administration of Union.
