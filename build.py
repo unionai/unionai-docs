@@ -1,13 +1,13 @@
+import os
+import subprocess
+import shlex
+import re
+import shutil
 import jinja2
 import jupytext
-import os
-import re
-import shlex
-import shutil
-import subprocess
+import yaml
 import sys
 import typing
-import yaml
 
 from pathlib import Path
 from nbformat.notebooknode import NotebookNode
