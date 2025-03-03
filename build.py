@@ -72,30 +72,6 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'flytesnacks',
         'byok': 'flytesnacks',
     },
-    'union_flyte_lower': {
-        'flyte': 'flyte',
-        'serverless': 'union',
-        'byoc': 'union',
-        'byok': 'union',
-    },
-    'union_flyte_upper': {
-        'flyte': 'Flyte',
-        'serverless': 'Union',
-        'byoc': 'Union',
-        'byok': 'Union',
-    },
-    'union_flytekit_lower': {
-        'flyte': 'flytekit',
-        'serverless': 'union',
-        'byoc': 'union',
-        'byok': 'union',
-    },
-    'union_flytekit_upper': {
-        'flyte': 'Flytekit',
-        'serverless': 'Union',
-        'byoc': 'Union',
-        'byok': 'Union',
-    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
