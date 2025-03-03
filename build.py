@@ -51,6 +51,7 @@ if selected_variant:
     print(f"Restricting build to selected variant: {ALL_VARIANTS}")
 else:
     ALL_VARIANTS: list[str] = [
+        'flyte',
         'serverless',
         'byoc',
         'byok',
