@@ -9,9 +9,5 @@ all:
 
 dev:
 	rm -rf public
-	if [[ ! -e hugo.local.toml ]]; then
-	  echo "FATAL: You need to have a 'hugo.local.toml' for development mode."
-		echo "       (please copy it from 'hugo.local.toml~sample' to get started)"
-		exit 1
-	fi
+	if ! scripts/dev-pre-flight.sh; then exit 1; fi
 	hugo server --config hugo.toml,hugo.local.toml

@@ -1,5 +1,3 @@
-.DS_Store
-
 # This is only for development mode
 config/_default
 
@@ -9,3 +7,7 @@ dist/
 
 # Developer overrides
 hugo.local.toml
+
+# Trash files
+.DS_Store
+*.swp
