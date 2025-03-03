@@ -20,7 +20,6 @@ children:
               - name: launching-workflows
               - name: viewing-workflows
               - name: viewing-workflow-executions
-              - name: imperative-workflows
           - name: tasks
             children:
               - name: task-types
