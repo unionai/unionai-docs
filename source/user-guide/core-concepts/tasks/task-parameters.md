@@ -84,3 +84,23 @@ You pass the following parameters to the `@union.task` decorator:
   Note that a timed-out task will be retried if it has a retry strategy defined.
   The timeout can be handled in the
   [TaskMetadata](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.TaskMetadata.html?highlight=retries.md#flytekit.TaskMetadata).
+
+## Use `partial` to provide default arguments to tasks
+
+You can use the `functools.partial` function to assign default or constant values to the parameters of your tasks:
+```{code-block} python
+import functools
+import union
+
+@union.task
+def slope(x: list[int], y: list[int]) -> float:
+    sum_xy = sum([x[i] * y[i] for i in range(len(x))])
+    sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
+    n = len(x)
+    return (n * sum_xy - sum(x) * sum(y)) / (n * sum_x_squared - sum(x) ** 2)
+
+@union.workflow
+def simple_wf_with_partial(x: list[int], y: list[int]) -> float:
+    partial_task = functools.partial(slope, x=x)
+    return partial_task(y=y)
+```
