@@ -1403,6 +1403,9 @@ children:
           - flyte
   - name: admin-guide
     children:
+      - name: installation-guide
+        variants:
+          - byok
       - name: cluster-recommendations
         variants:
           - byok
