@@ -6,7 +6,6 @@ import shutil
 import jinja2
 import jupytext
 import yaml
-import sys
 import typing
 
 from pathlib import Path
