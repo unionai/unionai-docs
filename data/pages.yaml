@@ -602,6 +602,7 @@ variants:
       - /user-guide/integrations/enabling-gcp-resources/enabling-google-artifact-registry
       - /user-guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage
       - /user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager
+      - /api-reference/union-sdk/custom-tasks/sqlite3-task
     exclude:
       - /tutorials
       - /tutorials/bioinformatics

@@ -175,6 +175,7 @@
         margin-bottom: 2rem;
       }
 
+      .if-variant.not-allowed,
       .not-in-prod.not-allowed {
         border: 1px solid hsl(0, 100%, 50%);
         background: hsl(0, 84%, 85%);
@@ -187,11 +188,12 @@
         color: rgb(109, 109, 0)
       }
 
-      .allowed {
+      .if-variant.allowed,
+      .not-in-prod.allowed {
         border: 1px solid green;
         background-color: hsl(120, 61%, 66%);
       }
-      .allowed.if-variant .content {
+      .if-variant.allowed .content {
         padding: 1rem;
       }
 
