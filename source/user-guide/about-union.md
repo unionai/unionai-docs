@@ -1,21 +1,45 @@
+{@@ if serverless or byoc or byok @@}
+
 # About Union
 
-Union builds on [Flyte](http://flyte.org), the emerging open-source standard for orchestrating machine learning and data processing workflows,
-Union offers all the features of Flyte while adding many additional capabilities.
+Union unifies your AI development on a single end-to-end platform, bringing together data, models and compute with workflows of execution on a single pane of glass.
+
+Union builds on [Flyte](http://flyte.org), the open-source standard for orchestrating AI workflows.
+It offers all the features of Flyte while adding more capability to scale, control costs and serve models.
+
 There are three deployment options for Union: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).
+
+{@@ elif flyte @@}
+
+# About Flyte
+
+[Flyte](http://docs.union.ai/flyte) is a free and open source platform that provides a full suite of powerful features for orchestrating AL workflows.
+
+{@@ endif @@}
 
 ## Flyte
 
-Flyte is free and open source. You are responsible for setting up and managing your own infrastructure. All your data and workflow code is stored there.
-Flyte provides a full suite of powerful features for orchestrating AL, ML, and data processing workflows:
+Flyte provides the building blocks need for an end-to-end AI platform:
 
 * Reusable, immutable tasks and workflows
 * Declarative task-level resource provisioning
 * GitOps-style versioning and branching
 * Strongly-typed interfaces between tasks enabling more reliable code
 * Caching, intra-task checkpointing, and spot instance provisioning
-* Task parallelism at scale with *map tasks*
+* Task parallelism with *map tasks*
 * Dynamic workflows created at runtime for process flexibility
+
+Flyte is open source and free to use.
+With Flyte, you are responsible for [setting up and managing your own infrastructure](../deployment/index.md).
+
+You can try out Flyte's technology by [signing up for Union Serverless](https://signup.union.ai).
+
+{@@ if flyte @@}
+
+{@# TODO: add link #@}
+You can also try out Flyte on your machine using a [local Flyte cluster]().
+
+{@@ endif @@}
 
 ## Union Serverless
 
@@ -31,15 +55,15 @@ Union Serverless provide all the features of Flyte, plus:
     * Optimized Propeller: more than 10 core optimizations
     * Faster cache: Revamped caching subsystem for 10x faster performance
     * Accelerated datasets: Retrieve repeated datasets and models faster
-    * Faster launchplan resolution
+    * Faster launch plan resolution
     * Reusable containers (do not pay the pod spin-up penalty)
 * Interactive tasks:
-    * Edit, debug and run tasks right in the pod through VSCode in the browser
+    * Edit, debug and run tasks right in the pod through VS Code in the browser
 * Artifacts discovery and lineage
 * Reactive workflows:
     * Launch plans trigger (and kick off workflows) on artifact creation
 * Smart defaults and automatic linking
-* UI based Workflow Builder
+* UI based workflow builder
 
 ## Union BYOC
 
