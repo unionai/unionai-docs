@@ -3,7 +3,7 @@
 Task types include:
 
 * **`PythonFunctionTask`**: This Python class represents the standard default task.
-It is the type that is created when you use the `@union.task` decorator.
+It is the type that is created when you use the `@{@= union_flytekit_lower =@}.task` decorator.
 * **`ContainerTask`**: This Python class represents a raw container.
 It allows you to install any image you like, giving you complete control of the task.
 * **Map tasks**: The map task functionality enables you to run multiple copies of the same task across multiple containers in parallel.
@@ -12,7 +12,7 @@ They implement integrations with third-party systems.
 
 ## PythonFunctionTask
 
-This is the task type that is created when you add the `@union.task` decorator to a Python function.
+This is the task type that is created when you add the `@{@= union_flytekit_lower =@}.task` decorator to a Python function.
 It represents a Python function that will be run within a single container. For example::
 
 ```{code-block} python
@@ -87,7 +87,7 @@ For more details see [Map Task example](https://github.com/unionai-oss/union-clo
 ## Specialized plugin task classes and configs
 
 Union supports a wide variety of plugin tasks.
-Some of these are enabled as specialized task classes, others as specialized configurations of the default `@union.task` (`PythonFunctionTask`).
+Some of these are enabled as specialized task classes, others as specialized configurations of the default `@{@= union_flytekit_lower =@}.task` (`PythonFunctionTask`).
 
 They enable things like:
 
@@ -97,7 +97,7 @@ They enable things like:
 * Data transformation(Great Expectations, DBT, Dolt, ONNX, Pandera).
 * Data tracking and presentation  (MLFlow, Papermill).
 
-See the [Integration section](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) of the Flyte documentation for examples.
+See the [Integration section](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for examples.
 
 
 <!-- INCORPORATE THE FOLLOWING ABOVE WHERE NECESSARY
