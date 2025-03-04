@@ -169,12 +169,22 @@
         margin: 1rem 0;
       }
 
-      .not-allowed {
+      .not-in-prod {
+        display: flex;
         padding: 0.5rem 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .not-in-prod.not-allowed {
         border: 1px solid hsl(0, 100%, 50%);
         background: hsl(0, 84%, 85%);
         color: red;
-        margin-bottom: 2rem;
+      }
+
+      .not-in-prod.excluded {
+        border: 1px solid yellow;
+        background: rgb(251, 251, 184);
+        color: rgb(109, 109, 0)
       }
 
       .allowed {
@@ -258,14 +268,24 @@
       <div class="sidebar">{{ partial "sidebar.html" . }}</div>
       <div class="main-content">
         {{ if $access.development }}
-        <div class="not-allowed page-warn">
+        <div class="
+          not-in-prod
+          {{ if not $access.excluded }}not-allowed{{end}}
+          {{ if $access.excluded }}excluded{{end}}
+          page-warn
+          ">
           <div style="flex: 1">
+            {{ if $access.excluded }}
+            This page was explicitly excluded from '{{ $variant }}'.
+            {{ else }}
             This page will not be available for '{{ $variant }}' in production.
+            {{ end }}
           </div>
           <code>{{ strings.TrimSuffix "/" .RelPermalink }}</code>
         </div>
-        {{ end }} {{ partial "breadcrumb.html" . }} {{ block "main" . }}{{ end
-        }}
+        {{ end }}
+        {{ partial "breadcrumb.html" . }}
+        {{ block "main" . }}{{ end }}
       </div>
     </div>
   </body>

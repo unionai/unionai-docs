@@ -1,4 +1,3 @@
-{{- $allowed := sort (index (index .Site.Data.allowed_pages.variants .Site.Params.variant) "pages") "" "desc" -}}
 <nav class="site-nav">
   <style>
     .site-nav ul {
@@ -43,12 +42,25 @@
     .site-nav .disabled * {
       color: red;
     }
+    .site-nav .excluded {
+      opacity: 0.25;
+    }
+    .site-nav .conflict {
+      opacity: 1;
+    }
+    .site-nav .conflict sl-icon {
+      color: red;
+    }
+    .site-nav .content {
+      display: flex;
+      align-items: center;
+    }
   </style>
   <ul>
     {{ $current := . }}
     {{ range .Site.Sections }}
         {{ if eq $current.Section .Section }}
-            {{ template "section-tree-nav" (dict "page" . "current" $current "allowed" $allowed) }} 
+            {{ template "section-tree-nav" (dict "page" . "current" $current) }} 
         {{ end }}
     {{ end }}
   </ul>
@@ -61,21 +73,30 @@
             <a
                 href="{{ .page.RelPermalink }}"
                 class="
-                    {{ if $access.development }}disabled{{ end }}
-                    {{ if .page.IsSection }}section-title{{ else }}page-link{{ end }}
+                  {{ if and $access.development (not $access.excluded) }}disabled{{ end }}
+                  {{ if $access.excluded }}excluded{{ end }}
+                  {{ if and $access.variant $access.excluded }}conflict{{ end }}
+                  {{ if .page.IsSection }}section-title{{ else }}page-link{{ end }}
                     {{ if eq .page.RelPermalink .current.RelPermalink }}active{{ end }}
                 "
                 >
+                  <div class="content">
                     <!-- {{ if .page.IsSection }}
                         <img src="/images/chevron-down.svg" class="chevron" />
                     {{ end }} -->
-                    {{ partial "page-title.html" .page }}
+                    <div style="flex: 1">{{ partial "page-title.html" .page }}</div>
+                    {{ if and $access.variant $access.excluded }}
+                    <sl-tooltip content="This page is both included and excluded from this variant.">
+                      <sl-icon name="exclamation-diamond"></sl-icon>
+                    </sl-tooltip>
+                    {{ end }}
+                  </div>
                 </a
             >
             {{ if .page.IsSection }}
                 <ul class="section-pages">
                     {{ range .page.Pages.ByWeight }}
-                        {{ template "section-tree-nav" (dict "page" . "current" $.current "allowed" $.allowed) }}
+                        {{ template "section-tree-nav" (dict "page" . "current" $.current) }}
                     {{ end }}
                 </ul>
             {{ end }}

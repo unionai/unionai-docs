@@ -602,3 +602,9 @@ variants:
       - /user-guide/integrations/enabling-gcp-resources/enabling-google-artifact-registry
       - /user-guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage
       - /user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager
+    exclude:
+      - /tutorials
+      - /tutorials/bioinformatics
+      - /tutorials/bioinformatics/alignment
+      - /tutorials/diffusion-models
+      - /tutorials/diffusion-models/mochi-video-generation
