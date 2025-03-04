@@ -26,7 +26,7 @@ Switch to another variant with the version selector above.
 ```
 {@@ endif @@}
 
-The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The {@= union_flyte_upper=@} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
