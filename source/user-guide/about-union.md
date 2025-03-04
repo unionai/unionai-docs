@@ -13,7 +13,7 @@ There are three deployment options for Union: **Serverless**, **BYOC** (Bring Yo
 
 # About Flyte
 
-[Flyte](http://docs.union.ai/flyte) is a free and open source platform that provides a full suite of powerful features for orchestrating AL workflows.
+[Flyte](http://docs.union.ai/flyte) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
 
 {@@ endif @@}
 
@@ -30,16 +30,22 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 * Dynamic workflows created at runtime for process flexibility
 
 Flyte is open source and free to use.
-With Flyte, you are responsible for [setting up and managing your own infrastructure](../deployment/index.md).
 
-You can try out Flyte's technology by [signing up for Union Serverless](https://signup.union.ai).
+{@@ if serverless or byoc or byok @@}
 
-{@@ if flyte @@}
+You can switch to the Flyte docs [here](https://docs.union.ai/flyte).
 
-{@# TODO: add link #@}
-You can also try out Flyte on your machine using a [local Flyte cluster]().
+{@@ elif flyte @@}
+
+You can try out Flyte's technology:
+
+* In the cloud with [Union Serverless](https://signup.union.ai).
+* On your machine with a [local Flyte cluster](). {@# TODO: add link #@}
+
+For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/index.md).
 
 {@@ endif @@}
+
 
 ## Union Serverless
 
@@ -65,6 +71,7 @@ Union Serverless provide all the features of Flyte, plus:
 * Smart defaults and automatic linking
 * UI based workflow builder
 
+
 ## Union BYOC
 
 [Union BYOC](https://docs.union.ai/byoc) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while Union takes care of the management.
@@ -75,6 +82,7 @@ Union BYOC provides all the features of Flyte and Union Serverless, plus:
 * Multi-cluster and multi-cloud
 * Single sign-on (SSO)
 * SOC-2 Type 2 compliance.
+
 
 ## Union BYOK
 
