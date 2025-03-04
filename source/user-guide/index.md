@@ -59,28 +59,28 @@ Union builds on the leading OSS AI platform, Flyte, to provide a powerful, scala
 :link: getting-started/index
 :link-type: doc
 
-Build your first Union workflow, exploring the major features of the platform along the way.
+Build your first {@= union_flyte_upper =@} workflow, exploring the major features of the platform along the way.
 :::
 
 :::{grid-item-card} {octicon}`mortar-board` Core concepts
 :link: core-concepts/index
 :link-type: doc
 
-Understand the core concepts of the Union platform.
+Understand the core concepts of the {@= union_flyte_upper =@} platform.
 :::
 
 :::{grid-item-card} {octicon}`iterations` Development cycle
 :link: development-cycle/index
 :link-type: doc
 
-Explore the Union development cycle from experimentation to production.
+Explore the {@= union_flyte_upper =@} development cycle from experimentation to production.
 :::
 
 :::{grid-item-card} {octicon}`arrow-switch` Data input/output
 :link: data-input-output/index
 :link-type: doc
 
-Manage the input and output of data in your Union workflow.
+Manage the input and output of data in your {@= union_flyte_upper =@} workflow.
 :::
 
 {@@ if byoc or byok or flyte @@}
@@ -88,14 +88,14 @@ Manage the input and output of data in your Union workflow.
 :link: administration/index
 :link-type: doc
 
-Union BYOC administrators can manage users, projects, and resources.
+{@= product_name =@} administrators can manage users, projects, and resources.
 :::
 
 :::{grid-item-card} {octicon}`tools` Integrations
 :link: integrations/index
 :link-type: doc
 
-Union BYOC integrates with your cloud resources and external services.
+{@= product_name =@} integrates with your cloud resources and external services.
 :::
 
 :::{grid-item-card} {octicon}`question` FAQ
