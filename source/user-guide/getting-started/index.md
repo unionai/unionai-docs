@@ -103,9 +103,7 @@ To build and deploy your first workflow, the first step is to [set up your local
 {@@ elif flyte @@}
 
 :::{admonition} Try Flyte in your browser
-You can try Flyte in your browser without any setup simply by [signing up for
-**Union Serverless**](https://signup.union.ai/).
-
+You can try Flyte in your browser without any setup simply by [signing up for **Union Serverless**](https://signup.union.ai/).
 [Union Serverless is a fully-hosted version of Flyte](https://docs.union.ai/serverless) with additional features.
 :::
 
