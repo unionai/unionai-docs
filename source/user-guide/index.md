@@ -35,12 +35,25 @@ The Union platform empowers AI development teams to rapidly ship high-quality co
 
 ::::{grid} 2
 
+{@@ if flyte @@}
+
+:::{grid-item-card} {octicon}`telescope` About Flyte
+:link: about-union
+:link-type: doc
+
+Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
+:::
+
+{@@ elif serverless or byoc or byok @@}
+
 :::{grid-item-card} {octicon}`telescope` About Union
 :link: about-union
 :link-type: doc
 
-Union builds on the leading OSS orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
+Union builds on the leading OSS AI platform, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
 :::
+
+{@@ endif @@}
 
 :::{grid-item-card} {octicon}`file-binary` Getting started
 :link: getting-started/index
