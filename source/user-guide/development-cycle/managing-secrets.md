@@ -9,7 +9,7 @@ You can use secrets to interact with external services.
 To create a secret, use the `union create secret` command:
 
 ```{code-block} shell
-union create secret --project my_project --domain my_domain my_secret
+union create secret --project my_project --domain my_domain --name my_secret
 ```
 
 You'll be prompted to enter a secret value in the terminal:
@@ -23,7 +23,7 @@ Enter secret value: ...
 To create a secret from a file, run the following command:
 
 ```{code-block} shell
-union create secret --project my_project --domain my_domain my_file_secret -f /path/to/file
+union create secret --project my_project --domain my_domain --name my_file_secret -f /path/to/file
 ```
 
 ## Listing secrets
