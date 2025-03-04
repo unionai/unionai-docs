@@ -1,6 +1,6 @@
 # Task parameters
 
-You pass the following parameters to the `@union.task` decorator:
+You pass the following parameters to the `@{@= union_flytekit_lower =@}.task` decorator:
 
 {@# TODO: consider organizing by category rather than alphabetically. #@}
 
@@ -71,7 +71,7 @@ You pass the following parameters to the `@union.task` decorator:
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Union Agents documentation](../../integrations/agents/index.md) and
+  See the [Agents documentation](../../integrations/agents/index.md) and
   [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 * `task_resolver`: Provide a custom task resolver.
