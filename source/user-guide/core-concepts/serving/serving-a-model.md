@@ -1,6 +1,7 @@
-# Serving a model from a Workflow
+# Serving a Model from a Workflow With FastAPI
 
-In this section, we create a Union app to serve a scikit-learn model created by a Union workflow.
+In this section, we create a Union app to serve a scikit-learn model created by a Union workflow
+using `FastAPI`.
 
 ## Example app
 
