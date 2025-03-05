@@ -213,7 +213,7 @@ def contains_metadata(src: str):
 
 
 def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
-    variant_display = SUBS["product_name"][current_variant]
+    variant_display = SUBS["Product_full"][current_variant]
     sdk_package = INSTALL_SDK_PACKAGE
     pip_install_command = f"pip install {sdk_package}"
 
