@@ -6,29 +6,8 @@ In [Getting started](./index.md) we showed you how to run your first workflow ri
 
 {@@ endif @@}
 
-In this section we will set up your local environment so that you can start building and deploying {@= Union =@} workflows from your local machine.
+In this section we will set up your local environment so that you can start building and deploying Union workflows from your local machine.
 
-```
-product_name: {@= product_name =@}
-
-default_project: {@= default_project =@}
-
-union_flyte_lower: {@= union_flyte_lower =@}
-union: {@= union =@}
-flyte: {@= flyte =@}
-
-union_flyte_upper: {@= union_flyte_upper =@}
-Union: {@= Union =@}
-Flyte: {@= Flyte =@}
-
-union_flytekit_lower: {@= union_flytekit_lower =@}
-unionkit: {@= unionkit =@}
-flytekit: {@= flytekit =@}
-
-union_flytekit_upper: {@= union_flytekit_upper =@}
-Unionkit: {@= Unionkit =@}
-Flytekit: {@= Flytekit =@}
-```
 
 ## Install `uv`
 
@@ -45,7 +24,7 @@ so you will have to adapt the directions as appropriate.
 
 ## Ensure the correct version of Python is installed
 
-{@= union_flyte_upper =@} requires Python `>=3.9,<3.13`.
+Union requires Python `>=3.9,<3.13`.
 We recommend using `3.12`.
 You can install it with:
 
