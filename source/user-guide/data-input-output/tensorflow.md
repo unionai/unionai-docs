@@ -1,6 +1,6 @@
 # TensorFlow types
 
-This document outlines the TensorFlow types available in {@= union_flyte_upper =@}, which facilitate the integration of TensorFlow models and datasets in {@= union_flyte_upper =@} workflows.
+This document outlines the TensorFlow types available in {@= Product =@}, which facilitate the integration of TensorFlow models and datasets in {@= Product =@} workflows.
 
 ### Import necessary libraries and modules
 ```python
@@ -17,7 +17,7 @@ import tensorflow as tf
 ```
 
 ## Tensorflow model
-{@= union_flyte_upper =@} supports the TensorFlow SavedModel format for serializing and deserializing `tf.keras.Model` instances. The `TensorFlowModelTransformer` is responsible for handling these transformations.
+{@= Product =@} supports the TensorFlow SavedModel format for serializing and deserializing `tf.keras.Model` instances. The `TensorFlowModelTransformer` is responsible for handling these transformations.
 
 ### Transformer
 - **Name:** TensorFlow Model
@@ -27,7 +27,7 @@ import tensorflow as tf
 - **Dimensionality:** `MULTIPART`
 
 ### Usage
-The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remote location and retrieve it later in your {@= union_flyte_upper =@} workflows.
+The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remote location and retrieve it later in your {@= Product =@} workflows.
 
 {@@ if flyte @@}
 ```{note}
@@ -58,7 +58,7 @@ def training_workflow(x: tf.Tensor, y: tf.Tensor) -> float:
 ```
 
 ## TFRecord files
-Flyte{@= union_flyte_upper =@} supports TFRecord files through the `TFRecordFile` type, which can handle serialized TensorFlow records. The `TensorFlowRecordFileTransformer` manages the conversion of TFRecord files to and from {@= union_flyte_upper =@} literals.
+Flyte{@= Product =@} supports TFRecord files through the `TFRecordFile` type, which can handle serialized TensorFlow records. The `TensorFlowRecordFileTransformer` manages the conversion of TFRecord files to and from {@= Product =@} literals.
 
 ### Transformer
 - **Name:** TensorFlow Record File
@@ -84,7 +84,7 @@ def tfrecord_workflow(file: TFRecordFile) -> int:
 ```
 
 ## TFRecord directories
-{@= union_flyte_upper =@} supports directories containing multiple TFRecord files through the `TFRecordsDirectory` type. The `TensorFlowRecordsDirTransformer` manages the conversion of TFRecord directories to and from {@= union_flyte_upper =@} literals.
+{@= Product =@} supports directories containing multiple TFRecord files through the `TFRecordsDirectory` type. The `TensorFlowRecordsDirTransformer` manages the conversion of TFRecord directories to and from {@= Product =@} literals.
 
 ### Transformer
 - **Name:** TensorFlow Record Directory

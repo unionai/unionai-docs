@@ -1,6 +1,6 @@
 # Dataclass
 
-When you've multiple values that you want to send across {@= union_flyte_upper =@} entities, you can use a `dataclass`.
+When you've multiple values that you want to send across {@= Product =@} entities, you can use a `dataclass`.
 
 {@@ if flyte @@}
 
@@ -63,7 +63,7 @@ class Datum:
     z: dict[int, str]
 ```
 
-You can send a `dataclass` between different tasks written in various languages, and input it through the {@= union_flyte_upper =@} UI as raw JSON.
+You can send a `dataclass` between different tasks written in various languages, and input it through the {@= Product =@} UI as raw JSON.
 
 :::{note}
 All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
@@ -86,7 +86,7 @@ def add(x: Datum, y: Datum) -> Datum:
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
 ```
 
-## {@= union_flyte_upper =@} types
+## {@= Product =@} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
 {@@ if flyte @@}

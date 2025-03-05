@@ -1,7 +1,7 @@
 # Accessing attributes
 
-You can directly access attributes on output promises for lists, dictionaries, dataclasses, and combinations of these types in {@= union_flyte_upper =@}.
-Note that while this functionality may appear to be the normal behavior of Python, code in `@workflow` functions is not actually Python, but rather a Python-like DSL that is compiled by {@= union_flyte_upper =@}.
+You can directly access attributes on output promises for lists, dictionaries, dataclasses, and combinations of these types in {@= Product =@}.
+Note that while this functionality may appear to be the normal behavior of Python, code in `@workflow` functions is not actually Python, but rather a Python-like DSL that is compiled by {@= Product =@}.
 Consequently, accessing attributes in this manner is, in fact, a specially implemented feature.
 This functionality facilitates the direct passing of output attributes within workflows, enhancing the convenience of working with complex data structures.
 
@@ -32,7 +32,7 @@ def print_message(message: str):
 You can access an output list using index notation.
 
 :::{important}
-{@= union_flyte_upper =@} currently does not support output promise access through list slicing.
+{@= Product =@} currently does not support output promise access through list slicing.
 :::
 
 ```python
