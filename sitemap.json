@@ -180,7 +180,7 @@
             {"name": "video-dubbing", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/video_translation/video_translation.py"}
         ]},
         { "name": "serving", "variants": ["byoc", "serverless"], "children": [
-            {"name": "webhook", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/webhook/app.py"}
+            {"name": "webhook", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/serving_webhook/app.py"}
         ]}
     ]},
     {"name": "api-reference", "variants": ["byoc", "serverless"], "children": [
