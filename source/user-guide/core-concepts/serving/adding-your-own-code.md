@@ -1,4 +1,4 @@
-# Adding your own code
+# Deploying your own code with Streamlit
 
 In the introductory section we saw how to define and deploy a simple Streamlit app.
 The app deployed was the default hello world Streamlit example app.
