@@ -63,7 +63,7 @@ These metrics are then processed to calculate the cost of each workflow executio
     This is calculated based on the resources requested or consumed (whichever is higher) by the containers running your workloads.
 
   * **Overhead Cost**: Cost associated with the underlying cluster infrastructure that cannot be directly allocated to specific workflows or tasks.
-    This is calculated by proportionally assigning a share of the unallocated node costs to each entity based on its consumption of allocated resources.
+    This is calculated by proportionally, assigning a share of the unallocated node costs to each entity based on its consumption of allocated resources.
 
 ## Allocated cost calculation
 
