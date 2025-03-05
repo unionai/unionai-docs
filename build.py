@@ -102,6 +102,18 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'Union',
         'byok': 'Union',
     },
+    'ctl': {
+        'flyte': 'flytectl',
+        'serverless': 'uctl',
+        'byoc': 'uctl',
+        'byok': 'uctl',
+    },
+    'Ctl': {
+        'flyte': 'Flytectl',
+        'serverless': 'Uctl',
+        'byoc': 'Uctl',
+        'byok': 'Uctl',
+    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
