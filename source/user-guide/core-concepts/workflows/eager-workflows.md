@@ -60,7 +60,7 @@ the Python integer that is the result of `x + 1` and not a Promise.
 ## How eager workflows work
 
 When you decorate a function with `@eager`, any function invoked within it
-that's decorated with `@{@= kit =@}.task`, `@{@= kit =@}.workflow`, or `@eager` becomes
+that's decorated with `@union.task`, `@union.workflow`, or `@eager` becomes
 an [awaitable](https://docs.python.org/3/library/asyncio-task.html#awaitables)
 object within the lifetime of the parent eager workflow execution. Note that
 this happens automatically and you don't need to use the `async` keyword when
@@ -77,7 +77,7 @@ We're leveraging Python's native `async` capabilities in order to:
 1. Materialize the output of tasks and subworkflows so you can operate
    on them without spinning up another pod and also determine the shape of the
    workflow graph in an extremely flexible manner.
-2. Provide an alternative way of achieving concurrency in Union. Union has
+2. Provide an alternative way of achieving concurrency in {@= Product =@}. {@= Product =@} has
    concurrency built into it, so all tasks and subworkflows will execute concurrently
    assuming that they don't have any dependencies on each other. However, eager
    workflows provide a Python-native way of doing this, with the main downside
@@ -257,12 +257,12 @@ This just uses the `asyncio.run` function to execute the eager workflow just
 like any other Python async code. This is useful for local debugging as you're
 developing your workflows and tasks.
 
-### Remote Union cluster execution
+### Remote {@= Product =@} cluster execution
 
 Under the hood, `@eager` workflows use the [`{@= Product =@}Remote`](../../../api-reference/union-sdk/union-remote/index.md)
 object to kick off task, static workflow, and eager workflow executions.
 
-In order to actually execute them on a Union cluster, you'll need to configure
+In order to actually execute them on a {@= Product =@} cluster, you'll need to configure
 eager workflows with a `{@= Product =@}Remote` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
@@ -283,7 +283,7 @@ async def eager_workflow_remote(x: int) -> int:
     ...
 ```
 
-Where `config.yaml` contains a Union config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your Union
+Where `config.yaml` contains a {@= Product =@} config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your {@= Product =@}
 instance.
 
 ### Sandbox Flyte cluster execution
@@ -312,9 +312,9 @@ async def eager_workflow_sandbox(x: int) -> int:
 ```
 
 :::{note}
-When executing eager workflows on a remote Union cluster, Union will execute the
+When executing eager workflows on a remote {@= Product =@} cluster, {@= Product =@} will execute the
 latest version of tasks, static workflows, and eager workflows that are on
-the `default_project` and `default_domain` as specified in the `UnionRemote`
+the `default_project` and `default_domain` as specified in the `{@= Product =@}Remote`
 object. This means that you need to pre-register all entities that are
 invoked inside of the eager workflow.
 :::
@@ -352,7 +352,7 @@ which means that `union run` has no way of knowing what tasks and subworkflows a
 
 Since eager workflows are an experimental feature, there is currently no first-class representation of them in the UI. When you register an eager workflow, you'll be able to see it in the task view.
 
-When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually {@= Product =@} tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
+When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually {@= Product =@} tasks under the hood and {@= Product =@} has no way of knowing the shape of the execution graph before actually executing them.
 
 However, at the end of execution, you'll be able to use [{@= Product =@} Decks](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html) to see a list of all the tasks and subworkflows that were executed within the eager workflow.
 
@@ -364,5 +364,5 @@ As eager workflows are still experimental, there are a few limitations to keep i
 - [Context managers](https://docs.python.org/3/library/contextlib.html) will only work on locally executed functions within the eager workflow, i.e. using a context manager to modify the behavior of a task or subworkflow will not work because they are executed on a completely different pod.
 - All exceptions raised by {@= Product =@} tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/union-sdk/experimental-features.md) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
-- Union entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
+- {@= Product =@} entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
 - The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.
