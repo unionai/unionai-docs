@@ -6,7 +6,7 @@ In [Getting started](./index.md) we showed you how to run your first workflow ri
 
 {@@ endif @@}
 
-In this section we will set up your local environment so that you can start building and deploying {@= Union =@} workflows from your local machine.
+In this section we will set up your local environment so that you can start building and deploying {@= Product =@} workflows from your local machine.
 
 
 ## Install `uv`
@@ -62,7 +62,7 @@ This instance of `{@= cli =@}` is only used during the configuration step, below
 
 ## Configure the `{@= cli =@}` CLI
 
-Next, you need to create a configuration file that contains your {@= Union =@} connection information.
+Next, you need to create a configuration file that contains your {@= Product =@} connection information.
 To do this, run the following command:
 
 {@@ if serverless @@}
@@ -70,17 +70,19 @@ To do this, run the following command:
 ```{code-block} shell
 $ union create login --serverless
 ```
+
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
 :::{note}
 These directions apply to Union Serverless.
 To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
+To configure a connection to your Union instance in Union BYOK, see the [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
 :::
 
 {@@ elif byoc or byok or flyte @@}
 
 ```{code-block} shell
-$ union create login --host <union-host-url>
+$ union create login --host <{@= product =@}-host-url>
 ```
 
 `<union-host-url>` is the URL of your Union instance, mentioned in [Getting started](./index.md#gather-your-credentials).

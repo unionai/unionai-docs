@@ -1,6 +1,6 @@
 # Getting started
 
-This section gives you a quick introduction to writing and running {@= union_flyte_upper =@} workflows.
+This section gives you a quick introduction to writing and running {@= Product =@} workflows.
 
 {@@ if serverless @@}
 
