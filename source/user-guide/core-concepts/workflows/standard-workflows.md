@@ -1,6 +1,6 @@
 # Standard workflows
 
-A standard workflow is defined by a Python function decorated with the `@union.workflow` decorator.
+A standard workflow is defined by a Python function decorated with the `@{@= union_flytekit_lower =@}.workflow` decorator.
 The function is written in a domain specific language (DSL) that is a subset of Python syntax that describes directed acyclic graph (DAG) that is deployed and executed on Union.
 The syntax of a standard workflow definition can only include the following:
 
