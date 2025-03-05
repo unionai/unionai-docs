@@ -66,17 +66,23 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'flytesnacks',
         'byok': 'flytesnacks',
     },
+    'Product_full': {
+        'flyte': 'Flyte',
+        'serverless': 'Union Serverless',
+        'byoc': 'Union BYOC',
+        'byok': 'Union BYOK',
+    },
     'Product': {
         'flyte': 'Flyte',
         'serverless': 'Union',
         'byoc': 'Union',
         'byok': 'Union',
     },
-    'Product_full': {
-        'flyte': 'Flyte',
-        'serverless': 'Union Serverless',
-        'byoc': 'Union BYOC',
-        'byok': 'Union BYOK',
+    'product': {
+        'flyte': 'flyte',
+        'serverless': 'union',
+        'byoc': 'union',
+        'byok': 'union',
     },
     'kit': {
         'flyte': 'flytekit',
