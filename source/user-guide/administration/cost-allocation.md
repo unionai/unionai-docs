@@ -17,7 +17,7 @@ The height of each bar is the sum of costs across each 15-minute interval.
 
 ## Suggested Usage
 
-Cost allocation is designed to show where costs are being spent and to highlight opportunities for cost reduction through right-sizing resource requests. All tables are sorted in descending order of the total cost, so users can scan across the rows to quickly identify expensive workloads with low memory, CPU, or GPU utilization. Steps can then be taken for particular workflows to reduce the necessary resource requests. Union's task-level monitoring functionality can be used to view granular resource usage for individual tasks, making this exercise straightforward.
+Cost allocation is designed to show where costs are being incurred and to highlight opportunities for cost reduction through right-sizing resource requests. All tables are sorted in descending order of total cost, so users can scan across the rows to quickly identify expensive workloads with low memory, CPU, or GPU utilization. Steps can then be taken to reduce the resource requests for particular workflows. Union's task-level monitoring functionality can be used to view granular resource usage for individual tasks, making this exercise straightforward.
 
 ## Accessing Cost Data
 
