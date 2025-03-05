@@ -17,9 +17,9 @@ Dynamic workflows become essential when you need to do the following:
 
 ## Defining a dynamic workflow
 
-You can define a dynamic workflow using the `@union.dynamic` decorator.
+You can define a dynamic workflow using the `@{@= kit =@}.dynamic` decorator.
 
-Within the `@union.dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@union.dynamic` and `@union.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
+Within the `@{@= kit =@}.dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@{@= kit =@}.dynamic` and `@{@= kit =@}.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
 
 The example below uses a dynamic workflow to count the common characters between any two strings.
 
@@ -106,7 +106,7 @@ When a dynamic task is executed, it generates the entire workflow as its output,
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.
 
 :::{note}
-Local execution works when a `@union.dynamic` decorator is used because Flytekit treats it as a task that runs with native Python inputs.
+Local execution works when a `@{@= kit =@}.dynamic` decorator is used because Flytekit treats it as a task that runs with native Python inputs.
 :::
 
 Finally, we define a workflow that triggers the dynamic workflow:
@@ -213,9 +213,9 @@ def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int =
     )
 ```
 
-By simply adding the `@union.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
+By simply adding the `@{@= kit =@}.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
 generating a workflow with four distinct nodes. These nodes run remotely on potentially different hosts,
 with Union ensuring proper data reference passing and maintaining execution order with maximum possible parallelism.
 
-`@union.dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
+`@{@= kit =@}.dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
 creating a recursive and flexible execution structure.
