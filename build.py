@@ -60,17 +60,65 @@ VARIANT_DISPLAY_NAMES: dict[str, str] = {
 # Currently unused, but can be used to substitute variables in the Markdown files.
 # using the Jinja2 templating syntax `{@= variable =@}`.
 SUBS: dict[str, dict[str, str] | str] = {
-    'product_name': {
-        'flyte': 'Flyte',
-        'serverless': 'Union Serverless',
-        'byoc': 'Union BYOC',
-        'byok': 'Union BYOK',
-    },
     'default_project': {
         'flyte': 'flytesnacks',
         'serverless': 'default',
         'byoc': 'flytesnacks',
         'byok': 'flytesnacks',
+    },
+    'Product_full': {
+        'flyte': 'Flyte',
+        'serverless': 'Union Serverless',
+        'byoc': 'Union BYOC',
+        'byok': 'Union BYOK',
+    },
+    'Product': {
+        'flyte': 'Flyte',
+        'serverless': 'Union',
+        'byoc': 'Union',
+        'byok': 'Union',
+    },
+    'product': {
+        'flyte': 'flyte',
+        'serverless': 'union',
+        'byoc': 'union',
+        'byok': 'union',
+    },
+    'kit': {
+        'flyte': 'flytekit',
+        'serverless': 'union',
+        'byoc': 'union',
+        'byok': 'union',
+    },
+    'Kit': {
+        'flyte': 'Flytekit',
+        'serverless': 'Union',
+        'byoc': 'Union',
+        'byok': 'Union',
+    },
+    'cli': {
+        'flyte': 'pyflyte',
+        'serverless': 'union',
+        'byoc': 'union',
+        'byok': 'union',
+    },
+    'Cli': {
+        'flyte': 'Pyflyte',
+        'serverless': 'Union',
+        'byoc': 'Union',
+        'byok': 'Union',
+    },
+    'ctl': {
+        'flyte': 'flytectl',
+        'serverless': 'uctl',
+        'byoc': 'uctl',
+        'byok': 'uctl',
+    },
+    'Ctl': {
+        'flyte': 'Flytectl',
+        'serverless': 'Uctl',
+        'byoc': 'Uctl',
+        'byok': 'Uctl',
     },
 }
 
@@ -183,7 +231,7 @@ def contains_metadata(src: str):
 
 
 def create_run_command_node(run_commands: list[str], current_variant: str, github_url: str) -> NotebookNode:
-    variant_display = SUBS["product_name"][current_variant]
+    variant_display = SUBS["Product_full"][current_variant]
     sdk_package = INSTALL_SDK_PACKAGE
     pip_install_command = f"pip install {sdk_package}"
 
