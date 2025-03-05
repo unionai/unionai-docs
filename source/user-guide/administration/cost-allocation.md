@@ -52,7 +52,7 @@ This tab displays the total cost of running workflows and tasks in your Union in
 
 ## Data collection and cost calculation
 
-The system collects container-level usage metrics, such as resource allocartion and usage, node scaling information, and compute node pricing data from each cloud provider. 
+The system collects container-level usage metrics, such as resource allocation and usage, node scaling information, and compute node pricing data from each cloud provider. 
 These metrics are then processed to calculate the cost of each workflow execution and individual task.
 
 ## Total cost calculation
