@@ -16,7 +16,6 @@ First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
 :::{admonition} Using `uv` as best practice
 The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
 It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
-
 You can, of course, use other tools,
 but all discussion in these pages will use `uv`,
 so you will have to adapt the directions as appropriate.
@@ -41,13 +40,13 @@ If you have a version `>=3.13` installed, you will need to uninstall it since `{
 
 ## Install the `{@= cli =@}` CLI
 
-Once `uv` is installed, use it to install the `{@= cli =@}` CLI (by installing the `{@= kit =@}` Python package):
+Once `uv` is installed, use it to install the `{@= cli =@}` CLI by installing the `{@= kit =@}` Python package:
 
 ```{code-block} shell
 $ uv tool install {@= kit =@}
 ```
 
-This will make the `{@= cli =@}` CLI a globally available on your system.
+This will make the `{@= cli =@}` CLI globally available on your system.
 
 :::{admonition} Add the install location to your PATH
 `uv` installs tools in `~/.local/bin` by default.
@@ -70,13 +69,17 @@ Your Flyte installation then pulls down these images when it spins up the contai
 
 To build and push the images you need to have Docker (or an equivalent container runtime) installed on your local machine.
 
-Go to [the Docker website](https://docs.docker.com/get-docker/) for direction on how to install Docker.
+Go to [the Docker website](https://docs.docker.com/get-docker/) for installation directions.
 
 You will also need access to a container registry where you can push your images.
-Furthermore, the pushed images will need to be accessible to the Flyte installation you are using.
+Furthermore, the pushed images will need to be accessible to the Flyte installation you are using
+(The registry must be accessible and the images themselves must also have the appropriate permissions.
+For example, a public registry like `ghcr.io` with the images set to public, would work).
 
-> NOTE: With Union you do not need to install Docker, build images, or deal with container registries.
-> Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
+:::{admonition} Union simplifies image building and registry
+With Union you do not need to install Docker, build images, or deal with container registries.
+Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
+:::
 
 ## Install `flytectl` to set up a local cluster
 
@@ -85,15 +88,15 @@ Here we are using a local cluster for experimentation and demonstration purposes
 
 To set up a local cluster you must first install the `flytectl` CLI.
 
-> NOTE:
-> `flytectl` is different from the `pyflyte`.
-> `pyflyte` is a Python program and part of the `flytekit` SDK.
-> It is the primary command-line tool used during Flyte development.
-> `flytectl` is a compiled binary (written in Go).
-> It is used for performing certain administrative tasks.
-> It can also perform many of the same tasks as `pyflyte` but is intended
-> for use in restricted environments (like CI/CD builders) where installing
-> `pyflyte` (and therefore the `flytekit` SDK and Python) may be too heavyweight.
+:::{admonition} Flytectl vs Pyflyte
+`flytectl` is different from the `pyflyte`.
+
+`pyflyte` is a Python program and part of the `flytekit` SDK
+It is the primary command-line tool used during Flyte development.
+
+`flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
+(see [Flytectl](../../api-reference/uctl-cli/index.md) for details)
+:::
 
 To install `flytectl`, follow these instructions:
 
@@ -115,6 +118,7 @@ To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and
 ```{code-block} shell
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 ```
+:::
 
 :::{tab-item} Linux
 To install `flytectl` on Linux, use `curl`.
@@ -126,7 +130,6 @@ To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and
 ```{code-block} shell
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 ```
-
 :::
 
 :::{tab-item} Windows
@@ -139,8 +142,8 @@ To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us
 ```{code-block} shell
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 ```
-
 :::
+
 ::::
 
 ## Start Docker and the local cluster
