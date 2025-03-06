@@ -14,3 +14,6 @@ product_name = "Union"
 [params.variants]
 serverless = "Union.ai Serverless"
 byoc = "Union.ai BYOC"
+
+[params.variables]
+company = "Union.ai"
