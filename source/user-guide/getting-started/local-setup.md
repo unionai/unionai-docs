@@ -79,7 +79,8 @@ For example, a public registry like `ghcr.io` with the images set to public, wou
 :::{admonition} Union simplifies image building and registry
 With Union you do not need to install Docker, build images, or deal with container registries.
 Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
-See [Union image builder]() for more details. {@# TODO: Add link #@}
+See [Union image builder]() for more details.
+{@# TODO: Add link #@}
 :::
 
 ## Install `flytectl` to set up a local cluster
