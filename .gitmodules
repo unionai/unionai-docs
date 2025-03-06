@@ -1,0 +1,3 @@
+[submodule "assets/flytesnacks"]
+	path = assets/flytesnacks
+	url = https://github.com/flyteorg/flytesnacks
