@@ -7,7 +7,26 @@
 {{- /* Example usage: */ -}}
 {{- /*     {{< code file="path/to/file" lang="html" from="1" to="5" >}} */ -}}
 
-{{- $file := .Get "file" | readFile -}}
+{{- $fileName := .Get "file" -}}
+
+{{- /* Define allowed prefixes */ -}}
+{{- $allowedPrefixes := slice "/static/" "/assets/" -}}
+{{- $isAllowed := false -}}
+
+{{- /* Check if fileName has an allowed prefix */ -}}
+{{- range $prefix := $allowedPrefixes -}}
+  {{- if hasPrefix $fileName $prefix -}}
+    {{- $isAllowed = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Fail if fileName doesn't have an allowed prefix */ -}}
+{{- if not $isAllowed -}}
+  {{- $callingFile := .Page.File.Path -}}
+  {{- errorf "File path must start with one of the allowed prefixes: %s. Got: %s (called from: %s)" (delimit $allowedPrefixes ", ") $fileName $callingFile -}}
+{{- end -}}
+
+{{- $file := $fileName | readFile -}}
 {{- $lang := .Get "lang" -}}
 
 {{- $lineStart := .Get "from" -}}
