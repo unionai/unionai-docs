@@ -79,6 +79,7 @@ For example, a public registry like `ghcr.io` with the images set to public, wou
 :::{admonition} Union simplifies image building and registry
 With Union you do not need to install Docker, build images, or deal with container registries.
 Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
+See [Union image builder]() for more details. {@# TODO: Add link #@}
 :::
 
 ## Install `flytectl` to set up a local cluster
@@ -158,9 +159,12 @@ Once you have installed Docker and `flytectl`, do the following:
 $ flytectl demo start
 ```
 
-> NOTE: With Union you do not need to install a local cluster.
-> You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
-> You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
+:::{admonition} Union simplifies the development cycle
+With Union you do not need to install a local cluster.
+You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
+You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
+See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
+:::
 
 {@@ endif @@}
 
