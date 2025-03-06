@@ -32,34 +32,6 @@ Union provides a default project (called **{@= default_project =@}**) where all 
 In this section, however, we will be using the project we just created, not the default.
 :::
 
-
-## Initialize a local project
-
-We will use the `union init` command to initialize a new local project, corresponding to the project created on your Union instance:
-
-```{code-block} shell
-$ union init --template union-simple my-project
-```
-
-Here we use the `union-simple` template to create a new local project directory called `my-project`.
-The resulting directory will look like this:
-
-```{code-block} shell
-.
-├── LICENSE
-├── README.md
-├── hello_world.py
-├── pyproject.toml
-└── uv.lock
-```
-
-:::{admonition} Local project directory name same as Union project ID
-It is good practice to name your local project directory the same as your Union project ID, as we have done here.
-:::
-
-Next, let's look at the contents of the local project directory.
-[Understanding the code](understanding-the-code.md).
-
 {@@ elif flyte @@}
 
 ## Create a new Flyte project
@@ -83,13 +55,14 @@ Flyte provides a default project (called `flytesnacks`) where all your workflows
 In this section, however, we will be using the project we just created, not the default.
 :::
 
+{@@ endif @@}
 
 ## Initialize a local project
 
-We will use the `pyflyte init` command to initialize a new local project corresponding to the project created on your local Flyte cluster:
+We will use the `{@= cli =@} init` command to initialize a new local project corresponding to the project created on your {@= Product =@} instance:
 
 ```{code-block} shell
-$ pyflyte init my-project
+$ {@= cli =@} init --template {@= product =@}-simple my-project
 ```
 
 The resulting directory will look like this:
@@ -98,17 +71,14 @@ The resulting directory will look like this:
 my-project
 ├── LICENSE
 ├── README.md
-├── requirements.txt
-└── workflows
-    ├── __init__.py
-    └── example.py
+├── hello_world.py
+├── pyproject.toml
+└── uv.lock
 ```
 
-:::{admonition} Local project directory name same as Flyte project ID
-It is good practice to name your local project directory the same as your Flyte project ID, as we have done here.
+:::{admonition} Local project directory name same as {@= Product =@} project ID
+It is good practice to name your local project directory the same as your {@= Product =@} project ID, as we have done here.
 :::
 
 Next, let's look at the contents of the local project directory.
 Continue to [Understanding the code](understanding-the-code.md).
-
-{@@ endif @@}

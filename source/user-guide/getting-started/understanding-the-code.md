@@ -3,7 +3,7 @@
 This is a simple "Hello, world!" example consisting of flat directory:
 
 ```{code-block} shell
-.
+my-project
 ├── LICENSE
 ├── README.md
 ├── hello_world.py
