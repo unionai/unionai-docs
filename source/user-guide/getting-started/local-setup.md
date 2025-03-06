@@ -132,7 +132,7 @@ To install `flytectl` on Linux, use `curl` or download the binary manually.
 
 **curl**
 
-To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command
+To use `curl`, set `BINDIR` to the installation location (it defaults to `./bin`) and run the following command
 (note that [jq](https://jqlang.org/) needs to be installed to run this script):
 
 ```{code-block} shell
@@ -221,6 +221,9 @@ These directions apply to Union BYOC, where you connect to your own dedicated Un
 To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 :::
 
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
+{@# TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content #@}
+
 {@@ endif @@}
 
 {@@ if serverless or byoc or byok @@}
@@ -244,15 +247,23 @@ If you have previously used Union, you may have configuration files left over th
 Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 ```
 
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
+{@# TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content #@}
+
 {@@ elif flyte @@}
 
-By default, the `pyflyte` and `flytectl` CLIs will look for a configuration file at `~/.union/config-sandbox.yaml`. (See [Pyflyte CLI](../../api-reference/union-cli.md) and [Flytectl CLI](../../api-reference/uctl-cli/index.md) for more details.)
+## Configure the connection to your Flyte instance
 
-You can override this behavior to specify a different configuration file by setting the `FLYTECTL_CONFIG` environment variable:
+To configure the connection from `pyflyte` and `flytectl` to to your Flyte instance, set the `FLYTECTL_CONFIG` environment variable to point to the configuration file that `flytectl` created:
 
 ```{code-block} shell
-export FLYTECTL_CONFIG=~/.my-config-location/my-config.yaml
+export FLYTECTL_CONFIG=~/.flyte/config-sandbox.yaml
 ```
+
+This will allow you to interact with your local Flyte cluster.
+
+To interact with a Flyte cluster in the cloud you will need to adjust the configuration
+and point the environment variable to the new configuration file.
 
 Alternatively, you can always specify the configuration file on the command line when invoking `pyflyte` or `flytectl` by using the `--config` flag.
 For example:
@@ -261,7 +272,10 @@ For example:
 $ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
-{@@ endif}
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
+{@# TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content #@}
+
+{@@ endif @@}
 
 ## Check your CLI configuration
 

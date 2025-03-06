@@ -2,8 +2,9 @@
 
 In this section we will set up a new project.
 This involves creating a local project directory holding your project code
-and a corresponding Union project to which you will deploy that code using the `union` CLI.
+and a corresponding {@= Product =@} project to which you will deploy that code using the `{@= cli =@}` CLI.
 
+{@@ if serverless or byoc or byok @@}
 
 ## Create a new Union project
 
@@ -57,3 +58,55 @@ It is good practice to name your local project directory the same as your Union 
 :::
 
 Next, let's look at the contents of the local project directory.
+
+{@@ elif flyte @@}
+
+## Create a new Flyte project
+
+Create a project on the demo cluster to correspond to your local Flyte project:
+
+```{code-block} shell
+$ flytectl create project \
+      --id "my-project" \
+      --labels "my-label=my-project" \
+      --description "My Flyte project" \
+      --name "My project"
+```
+
+You can see the project you just created by going to `http://localhost:30080` in your browser:
+
+![Welcome to Flyte](/_static/images/user-guide/getting-started/first-project/welcome-to-flyte.png)
+
+:::{admonition} Default project
+Flyte provides a default project (called `flytesnacks`) where all your workflows will be registered unless you specify otherwise.
+In this section, however, we will be using the project we just created, not the default.
+:::
+
+
+## Initialize a local project
+
+We will use the `pyflyte init` command to initialize a new local project:
+
+```{code-block} shell
+$ pyflyte init my-project
+```
+
+The resulting directory will look like this:
+
+```{code-block} shell
+my-project
+├── LICENSE
+├── README.md
+├── requirements.txt
+└── workflows
+    ├── __init__.py
+    └── example.py
+```
+
+:::{admonition} Local project directory name same as Flyte project ID
+It is good practice to name your local project directory the same as your Flyte project ID, as we have done here.
+:::
+
+Next, let's look at the contents of the local project directory.
+
+{@@ endif @@}
