@@ -35,7 +35,7 @@ In this section, however, we will be using the project we just created, not the 
 
 ## Initialize a local project
 
-We will use the `union init` command to initialize a new local project:
+We will use the `union init` command to initialize a new local project, corresponding to the project created on your Union instance:
 
 ```{code-block} shell
 $ union init --template union-simple my-project
@@ -58,12 +58,13 @@ It is good practice to name your local project directory the same as your Union 
 :::
 
 Next, let's look at the contents of the local project directory.
+[Understanding the code](understanding-the-code.md).
 
 {@@ elif flyte @@}
 
 ## Create a new Flyte project
 
-Create a project on the demo cluster to correspond to your local Flyte project:
+Create a new project on your local Flyte cluster:
 
 ```{code-block} shell
 $ flytectl create project \
@@ -85,7 +86,7 @@ In this section, however, we will be using the project we just created, not the 
 
 ## Initialize a local project
 
-We will use the `pyflyte init` command to initialize a new local project:
+We will use the `pyflyte init` command to initialize a new local project corresponding to the project created on your local Flyte cluster:
 
 ```{code-block} shell
 $ pyflyte init my-project
@@ -108,5 +109,6 @@ It is good practice to name your local project directory the same as your Flyte 
 :::
 
 Next, let's look at the contents of the local project directory.
+Continue to [Understanding the code](understanding-the-code.md).
 
 {@@ endif @@}
