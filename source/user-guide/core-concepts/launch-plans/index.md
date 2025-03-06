@@ -37,13 +37,13 @@ For more details, see [Running launch plans](./running-launch-plans.md).
 
 ## Registering a launch plan
 
-### Registering a launch plan on the command line with `union` or `uctl`
+### Registering a launch plan on the command line
 
-In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `union` or `uctl` (see [Running your code](../../development-cycle/running-your-code.md)).
+In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using the CLI (see [Running your code](../../development-cycle/running-your-code.md)).
 
-### Registering a launch plan in Python with `UnionRemote`
+### Registering a launch plan in Python with `{@= Product =@}Remote`
 
-As with all Union command line actions, you can also perform registration of launch plans programmatically with [`UnionRemote`](../../development-cycle/union-remote/index.md), specifically, `UnionRemote.register_launch_plan`.
+As with all {@= Product =@} command line actions, you can also perform registration of launch plans programmatically with [`{@= Product =@}Remote`](../../development-cycle/union-remote/index.md), specifically, `{@= Product =@}Remote.register_launch_plan`.
 
 ### Results of registration
 
