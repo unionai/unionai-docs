@@ -1,0 +1,47 @@
+{{- /* This shortcode is used to render code blocks with line numbers and highlighting. */ -}}
+{{- /* It takes the following parameters: */ -}}
+{{- /* - file: The path to the file to be rendered. */ -}}
+{{- /* - lang: The language of the code block. */ -}}
+{{- /* - from: The starting line number of the code block. */ -}}
+{{- /* - to: The ending line number of the code block. */ -}}
+{{- /* Example usage: */ -}}
+{{- /*     {{< code file="path/to/file" lang="html" from="1" to="5" >}} */ -}}
+
+{{- $file := .Get "file" | readFile -}}
+{{- $lang := .Get "lang" -}}
+
+{{- $lineStart := .Get "from" -}}
+{{- $lineEnd := .Get "to" -}}
+{{- $highlight := .Get "highlight" -}}
+
+{{- $lines := split $file "\n" -}}
+{{- $filteredLines := slice -}}
+
+{{/* Filter lines based on lineStart and lineEnd if provided */}}
+{{- if and $lineStart $lineEnd -}}
+  {{- $start := int $lineStart -}}
+  {{- $end := int $lineEnd -}}
+  {{- $filteredLines = first (add (sub $end $start) 1) (after (sub $start 1) $lines) -}}
+{{- else -}}
+  {{- $filteredLines = $lines -}}
+{{- end -}}
+
+{{/* Prepare content with line numbers and highlighting */}}
+{{- $content := "" -}}
+{{- range $index, $line := $filteredLines -}}
+  {{- $lineNum := 0 -}}
+  {{- if $lineStart -}}
+    {{- $lineNum = add $index (int $lineStart) -}}
+  {{- else -}}
+    {{- $lineNum = add $index 1 -}}
+  {{- end -}}
+  {{- $content = print $content $line "\n" -}}
+{{- end -}}
+
+{{/* Add highlighting information as a data attribute if provided */}}
+{{- $highlightAttr := "" -}}
+{{- if $highlight -}}
+  {{- $highlightAttr = printf " data-line=\"%s\"" $highlight -}}
+{{- end -}}
+
+{{- (printf "```%s%s\n%s```" $lang $highlightAttr $content) | markdownify -}}
