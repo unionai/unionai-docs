@@ -60,6 +60,107 @@ You will not be using this globally installed instance of `{@= cli =@}`.
 This instance of `{@= cli =@}` is only used during the configuration step, below, when no projects yet exist.
 :::
 
+{@@ if flyte @@}
+
+## Install Docker and get access to a container registry
+
+Flyte tasks are run in containers. Every container requires a container image that defines its software environment.
+When developing and running Flyte tasks and workflows, an important part of the process is building those images and pushing them to a container registry.
+Your Flyte installation then pulls down these images when it spins up the containers that run your tasks.
+
+To build and push the images you need to have Docker (or an equivalent container runtime) installed on your local machine.
+
+Go to [the Docker website](https://docs.docker.com/get-docker/) for direction on how to install Docker.
+
+You will also need access to a container registry where you can push your images.
+Furthermore, the pushed images will need to be accessible to the Flyte installation you are using.
+
+> NOTE: With Union you do not need to install Docker, build images, or deal with container registries.
+> Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
+
+## Install `flytectl` to set up a local cluster
+
+For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment/index.md)).
+Here we are using a local cluster for experimentation and demonstration purposes.
+
+To set up a local cluster you must first install the `flytectl` CLI.
+
+> NOTE:
+> `flytectl` is different from the `pyflyte`.
+> `pyflyte` is a Python program and part of the `flytekit` SDK.
+> It is the primary command-line tool used during Flyte development.
+> `flytectl` is a compiled binary (written in Go).
+> It is used for performing certain administrative tasks.
+> It can also perform many of the same tasks as `pyflyte` but is intended
+> for use in restricted environments (like CI/CD builders) where installing
+> `pyflyte` (and therefore the `flytekit` SDK and Python) may be too heavyweight.
+
+To install `flytectl`, follow these instructions:
+
+::::{tab-set}
+
+:::{tab-item} macOS
+To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/) or `curl`.
+
+**Homebrew**
+
+```{code-block} shell
+$ brew tap unionai/homebrew-tap
+$ brew install uctl
+```
+**curl**
+
+To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+
+```{code-block} shell
+$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+```
+
+:::{tab-item} Linux
+To install `flytectl` on Linux, use `curl`.
+
+**curl**
+
+To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+
+```{code-block} shell
+$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+```
+
+:::
+
+:::{tab-item} Windows
+To install `flytectl` on Windows, use `curl`.
+
+**curl**
+
+To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+
+```{code-block} shell
+$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+```
+
+:::
+::::
+
+## Start Docker and the local cluster
+
+Once you have installed Docker and `flytectl`, do the following:
+
+1. Start the Docker daemon.
+
+2. Use `flytectl` to set up a local Flyte cluster by running:
+
+```{code-block} shell
+$ flytectl demo start
+```
+
+> NOTE: With Union you do not need to install a local cluster.
+> You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
+> You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
+
+{@@ endif @@}
+
 ## Configure the `{@= cli =@}` CLI
 
 Next, you need to create a configuration file that contains your {@= Product =@} connection information.
