@@ -104,45 +104,59 @@ To install `flytectl`, follow these instructions:
 ::::{tab-set}
 
 :::{tab-item} macOS
-To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/) or `curl`.
+To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or download the binary manually.
 
 **Homebrew**
 
 ```{code-block} shell
-$ brew tap unionai/homebrew-tap
-$ brew install uctl
+$ brew tap flyteorg/homebrew-tap
+$ brew install flytectl
 ```
+
 **curl**
 
 To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
 ```{code-block} shell
-$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+$ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 ```
+
+**Manual download**
+
+To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 :::
 
 :::{tab-item} Linux
-To install `flytectl` on Linux, use `curl`.
+To install `flytectl` on Linux, use `curl` or download the binary manually.
 
 **curl**
 
-To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command
+(note that [jq](https://jqlang.org/) needs to be installed to run this script):
 
 ```{code-block} shell
-$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+$ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 ```
+
+**Manual download**
+
+To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 :::
 
 :::{tab-item} Windows
-To install `flytectl` on Windows, use `curl`.
+To install `flytectl` on Windows, use `curl` , or download the binary manually.
 
 **curl**
 
 To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
 ```{code-block} shell
-$ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
+$ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 ```
+
+**Manual download**
+
+To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 :::
 
 ::::
@@ -159,6 +173,11 @@ Once you have installed Docker and `flytectl`, do the following:
 $ flytectl demo start
 ```
 
+This will start a local Flyte cluster on your machine and place a configuration file in `~/.flyte/config-sandbox.yaml`
+that contains the connection information to connect `pyflyte` (and `flytectl`) to that cluster.
+
+The local Flyte cluster will be available at `localhost:30080`.
+
 :::{admonition} Union simplifies the development cycle
 With Union you do not need to install a local cluster.
 You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
@@ -166,14 +185,11 @@ You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
 See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
 :::
 
-{@@ endif @@}
+{@@ elif serverless @@}
 
-## Configure the `{@= cli =@}` CLI
+## Configure the connection to your Union Serverless instance
 
-Next, you need to create a configuration file that contains your {@= Product =@} connection information.
-To do this, run the following command:
-
-{@@ if serverless @@}
+Next, you need to create a configuration file that contains your {@= Product =@} connection information:
 
 ```{code-block} shell
 $ union create login --serverless
@@ -187,10 +203,12 @@ To configure a connection to your Union instance in Union BYOC, see the [BYOC ve
 To configure a connection to your Union instance in Union BYOK, see the [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
 :::
 
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc or byok @@}
+
+## Configure the connection to your {@= Product_full =@} instance
 
 ```{code-block} shell
-$ union create login --host <{@= product =@}-host-url>
+$ union create login --host <union-host-url>
 ```
 
 `<union-host-url>` is the URL of your Union instance, mentioned in [Getting started](./index.md#gather-your-credentials).
@@ -203,6 +221,8 @@ To configure a connection to Union Serverless, see the [Serverless version of th
 :::
 
 {@@ endif @@}
+
+{@@ if serverless or byoc or byok @@}
 
 By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
@@ -223,17 +243,36 @@ If you have previously used Union, you may have configuration files left over th
 Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 ```
 
-## Check your `union` CLI configuration
+{@@ elif flyte @@}
 
-To check your `union` CLI configuration, run:
+By default, the `pyflyte` and `flytectl` CLIs will look for a configuration file at `~/.union/config-sandbox.yaml`. (See [Pyflyte CLI](../../api-reference/union-cli.md) and [Flytectl CLI](../../api-reference/uctl-cli/index.md) for more details.)
+
+You can override this behavior to specify a different configuration file by setting the `FLYTECTL_CONFIG` environment variable:
 
 ```{code-block} shell
-$ union info
+export FLYTECTL_CONFIG=~/.my-config-location/my-config.yaml
+```
+
+Alternatively, you can always specify the configuration file on the command line when invoking `pyflyte` or `flytectl` by using the `--config` flag.
+For example:
+
+```{code-block} shell
+$ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
+```
+
+{@@ endif}
+
+## Check your CLI configuration
+
+To check your CLI configuration, run:
+
+```{code-block} shell
+$ {@= cli =@} info
 ```
 
 You should get a response like this:
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc or byok @@}
 
 ```{code-block} shell
 $ union info
@@ -263,6 +302,22 @@ $ union info
 │ Flytekit Version : 1.14.3                                                                                                             │
 │ Union Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
 │ Config Source    : <path-to-config> file                                                                                              │
+│                                                                                                                                       │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
+{@@ elif flyte @@}
+
+```{code-block} shell
+$ pyflyte info
+╭────────────────────────────────────────────────────────── Flytekit CLI Info ──────────────────────────────────────────────────────────╮
+│                                                                                                                                       │
+│ This CLI is meant to be used within a virtual environment that has Flytekit installed. Ideally it is used to iterate on your Flyte    │
+│ workflows and tasks.                                                                                                                  │
+│                                                                                                                                       │
+│ Flytekit Version: 1.15.0                                                                                                              │
+│ Flyte Backend Version: <flyte-backend-version>                                                                                        │
+│ Flyte Backend Endpoint: <flyte-host-url>                                                                                              │
 │                                                                                                                                       │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
