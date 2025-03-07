@@ -3,7 +3,7 @@
 Task types include:
 
 * **`PythonFunctionTask`**: This Python class represents the standard default task.
-It is the type that is created when you use the `@{@= union_flytekit_lower =@}.task` decorator.
+It is the type that is created when you use the `@union.task` decorator.
 * **`ContainerTask`**: This Python class represents a raw container.
 It allows you to install any image you like, giving you complete control of the task.
 * **Map tasks**: The map task functionality enables you to run multiple copies of the same task across multiple containers in parallel.
@@ -13,7 +13,7 @@ They implement integrations with third-party systems.
 
 ## PythonFunctionTask
 
-This is the task type that is created when you add the `@{@= union_flytekit_lower =@}.task` decorator to a Python function.
+This is the task type that is created when you add the `@union.task` decorator to a Python function.
 It represents a Python function that will be run within a single container. For example::
 
 ```{code-block} python
@@ -188,7 +188,7 @@ if __name__ == "__main__":
 ## Specialized plugin task classes and configs
 
 {@= Product =@} supports a wide variety of plugin tasks.
-Some of these are enabled as specialized task classes, others as specialized configurations of the default `@{@= kit =@}.task` (`PythonFunctionTask`).
+Some of these are enabled as specialized task classes, others as specialized configurations of the default `@union.task` (`PythonFunctionTask`).
 
 They enable things like:
 

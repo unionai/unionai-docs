@@ -1,6 +1,6 @@
 # Task parameters
 
-You pass the following parameters to the `@{@= union_flytekit_lower =@}.task` decorator:
+You pass the following parameters to the `@union.task` decorator:
 
 {@# TODO: consider organizing by category rather than alphabetically. #@}
 

@@ -15,6 +15,8 @@ This is where Flyte's imperative workflows come into play, allowing you to progr
 To begin, we define the `slope` and `intercept` tasks:
 
 ```{code-block} python
+import union
+
 @union.task
 def slope(x: list[int], y: list[int]) -> float:
     sum_xy = sum([x[i] * y[i] for i in range(len(x))])
