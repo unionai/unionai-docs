@@ -120,6 +120,30 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'Uctl',
         'byok': 'Uctl',
     },
+    'at-task': {
+        'flyte': '@fl.task',
+        'serverless': '@union.task',
+        'byoc': '@union.task',
+        'byok': '@union.task',
+    },
+    '@task': {
+        'flyte': '@fl.task',
+        'serverless': '@union.task',
+        'byoc': '@union.task',
+        'byok': '@union.task',
+    },
+    '@workflow': {
+        'flyte': '@fl.workflow',
+        'serverless': '@union.workflow',
+        'byoc': '@union.workflow',
+        'byok': '@union.workflow',
+    },
+    'at-workflow': {
+        'flyte': '@fl.workflow',
+        'serverless': '@union.workflow',
+        'byoc': '@union.workflow',
+        'byok': '@union.workflow',
+    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
