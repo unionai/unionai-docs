@@ -132,7 +132,7 @@ requires-python = ">=3.9,<3.13"
 dependencies = ["{@= kit =@}"]
 ```
 
-(You can update to match the actual name of your project, `my-project`, if you like).
+(You can update the `name` and `description` to match the actual name of your project, `my-project`, if you like).
 
 The most important part of the file is the list of dependencies, in this case consisting of only one package, `{@= kit =@}`.
 See [uv > Configuration > Configuration files](https://docs.astral.sh/uv/configuration/files/) for details.
