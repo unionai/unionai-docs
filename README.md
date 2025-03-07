@@ -51,6 +51,21 @@ The developer site will show you in red any pages missing from the variant. For 
 
 ## Building Production
 
-    make
+    make dist
+
+### Testing Production Build
+
+You can run a local webserver and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
+
+To start a server:
+
+    make serve PORT=<nnnnn>
+
+Example:
+
+    make server PORT=4444
+
+Then you open the browser on `http://localhost:<port>` to see the content. In the example above, it would be `http://localhost:4444/`
+
 
 This will create all the variants into the `dist` folder.
