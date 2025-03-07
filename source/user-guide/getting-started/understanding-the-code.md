@@ -92,7 +92,7 @@ See [ImageSpec](../development-cycle/image-spec.md) for more information.
 
 ### Tasks
 
-The `{@= @task =@}` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
+The `{@= task =@}` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
 A task tasks some input and produces an output.
 When deployed to Union cluster, each task runs in its own Kubernetes pod.
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
@@ -100,15 +100,15 @@ For a full list of task parameters, see [Task parameters](../core-concepts/tasks
 
 ### Workflow
 
-The `{@= @workflow =@}` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
+The `{@= workflow =@}` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
 This function contains references to the tasks defined elsewhere in the code.
 
 A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
 
 When deployed to Union, the workflow function is compiled to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-:::{admonition} `{@= @task =@}` and `{@= at-workflow =@}` syntax
-* The `{@= @task =@}` and `{@= at-workflow =@}` decorators will only work on functions at the top-level scope of the module.
+:::{admonition} `{@= task =@}` and `{@= workflow =@}` syntax
+* The `{@= task =@}` and `{@= workflow =@}` decorators will only work on functions at the top-level scope of the module.
 * You can invoke tasks and workflows as regular Python functions and even import and use them in other Python modules or scripts.
 * Task and workflow function signatures must be type-annotated with Python type hints.
 * Task and workflow functions must be invoked with keyword arguments.
