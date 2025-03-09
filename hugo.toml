@@ -20,7 +20,7 @@ byoc = "Union"
 byok = "Union"
 
 [params.vars.product_name]
-flyte = ""
+flyte = "Flyte"
 serverless = "Union Serverless"
 byoc = "Union BYOC"
 byok = "Union BYOK"

@@ -16,7 +16,7 @@
             {{ end }}
             {{ range $variants }}
             <option value="{{ . }}" {{ if eq . $.Site.Params.variant }}selected{{ end }}>
-                {{ index $.Site.Params.vars "product_name" $.Site.Params.variant }}
+                {{ index $.Site.Params.vars "product_name" . }}
             </option>
         {{ end }}
     </select>
