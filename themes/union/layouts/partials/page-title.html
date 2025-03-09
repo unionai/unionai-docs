@@ -6,7 +6,9 @@
         {{ trim (strings.TrimPrefix "# " $firstLine) " " }}
     {{ else }}
         <div class="err-no-title">
+            {{ with .File }}
             {{ .Path }}
+            {{ end }}
         </div>
     {{ end }}
 {{ end }}

@@ -1,4 +1,66 @@
-<h1>Union</h1>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <meta http-equiv="refresh" content="0; url=/byoc" />
+        <style>
+            body {
+                font-family: 'Open Sans', sans-serif;
+            }
+            .container {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                border: 2px solid #333;
+                border-radius: 8px;
+                padding: 2rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                background-color: white;
+            }
+            .logo {
+                height: 96px;
+            }
+            H1 {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        </style>
+        <script>
+            // Set up error handler immediately
+            document.addEventListener('DOMContentLoaded', function() {
+                const logo = document.getElementById('logo');
+                logo.onerror = function() {
+                    // If main logo fails, try fallback path
+                    console.log('Primary logo failed to load, trying fallback');
+                    this.src = 'static/images/icon-logo.svg';
 
-<p><a href="serverless/user-guide">Serverless</a></p>
-<p><a href="byoc/user-guide">BYOC</a></p>
+                    // Add second error handler for fallback
+                    this.onerror = function() {
+                        console.error('Failed to load logo image from both paths');
+                        logo.style.display = 'none';
+                    };
+                };
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <img id="logo" src="/images/icon-logo.svg" class="logo" />
+                Union.ai
+            </h1>
+
+            <p>You are being automatically redirected to the documentation.</p>
+
+            <p>
+                If this page does not automatically refresh, please <a href="/byoc">click here</a>.
+            </p>
+        </div>
+    </body>
+</html>
+

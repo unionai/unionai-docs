@@ -5,8 +5,8 @@ disableKinds = ["RSS"]
 
 [params]
 _merge = "deep"
-variant_hide_in_development = false
-variant_identify_variant_in_development = true
+variant_hide_in_development = true
+variant_identify_variant_in_development = false
 
 #----------------------------------------------------------
 # Variables (keyed per variant)

@@ -5,8 +5,17 @@
 {{- $isAllowed := false -}}
 {{- $isExcluded := false -}}
 
-{{- if .Path -}}
-    {{- $currentPath := .Path -}}
+{{- $path := "" }}
+{{- with.File -}}
+    {{- $path = replaceRE "\\.md$" "" .Path -}}
+    {{- $path = replaceRE "/_index" "" $path -}}
+    {{- $path = replaceRE "_index" "" $path -}}
+    {{- $path = printf "%s%s" "/" $path -}}
+{{- else -}}
+    {{- $path = "/" -}}
+{{- end -}}
+{{- if $path -}}
+    {{- $currentPath := $path -}}
     {{- range $allowedPages -}}
         {{- if eq $currentPath . -}}
             {{- $isAllowed = true -}}

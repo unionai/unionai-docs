@@ -14,3 +14,4 @@ hugo.local.toml
 
 # Ignore test file
 content/test.md
+layouts/shortcodes/test.html
