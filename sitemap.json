@@ -5,7 +5,6 @@
             {"name": "local-setup", "variants": ["byoc", "serverless"]},
             {"name": "first-project", "variants": ["byoc", "serverless"]},
             {"name": "understanding-the-code", "variants": ["byoc", "serverless"]},
-            {"name": "authentication", "variants": ["byoc"]},
             {"name": "running-your-workflow", "variants": ["byoc", "serverless"]}
         ]},
         {"name": "core-concepts", "variants": ["byoc", "serverless"], "children": [
@@ -67,6 +66,7 @@
             {"name": "caching", "variants": ["byoc", "serverless"]}
         ]},
         {"name": "development-cycle", "variants": ["byoc", "serverless"], "children": [
+            {"name": "authentication", "variants": ["byoc"]},
             {"name": "project-structure", "variants": ["byoc", "serverless"]},
             {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
             {"name": "building-workflows", "variants": ["byoc", "serverless"]},
