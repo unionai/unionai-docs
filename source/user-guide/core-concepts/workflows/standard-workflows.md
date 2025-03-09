@@ -1,7 +1,7 @@
 # Standard workflows
 
 A standard workflow is defined by a Python function decorated with the `@union.workflow` decorator.
-The function is written in a domain specific language (DSL) that is a subset of Python syntax that describes directed acyclic graph (DAG) that is deployed and executed on Union.
+The function is written in a domain specific language (DSL), a subset of Python syntax that describes the directed acyclic graph (DAG) that is deployed and executed on {@= Product =@}.
 The syntax of a standard workflow definition can only include the following:
 
 * Calls to functions decorated with `@union.task` and assignment of variables to the returned values.
@@ -16,10 +16,10 @@ The syntax of a standard workflow definition can only include the following:
 
 {@@ if byoc or byok or flyte @@}
 When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code.md#running-a-script-in-local-python-with-union-run) it is executed as a normal Python function.
-However, when it is registered to Union, the top level `@union.workflow`-decorated function is evaluated as follows:
+However, when it is registered to {@= Product =@}, the top level `@union.workflow`-decorated function is evaluated as follows:
 {@@ elif serverless @@}
 When a standard workflow is run locally in a Python environment it is executed as a normal Python function.
-However, when it is registered to Union, the top level `@union.workflow`-decorated function is evaluated as follows:
+However, when it is registered to {@= Product =@}, the top level `@union.workflow`-decorated function is evaluated as follows:
 {@@ endif @@}
 
 * Inputs to the workflow are materialized as lazily-evaluated promises which are propagated to downstream tasks and subworkflows.
@@ -31,17 +31,17 @@ The actual evaluation of these promises occurs when the tasks (or dynamic or eag
 ## Conditional construct
 
 Because standard workflows cannot directly include Python `if` statements, a special `conditional` construct is provided that allows you to define conditional logic in a workflow.
-For details, see [Conditionals](https://docs.flyte.org/en/latest/user_guide/advanced_composition/conditionals.html).
+For details, see [Conditionals](..../programming/conditionals.md).
 
 ## Chaining operator
 
-When Union builds the DAG for a standard workflow, it uses the passing of values from one task to another to determine the dependency relationships between tasks.
+When {@= Product =@} builds the DAG for a standard workflow, it uses the passing of values from one task to another to determine the dependency relationships between tasks.
 
 There may be cases where you want to define a dependency between two tasks that is not based on the output of one task being passed as an input to another.
 
 In that case, you can use the chaining operator `>>` to define the dependencies between tasks.
 
-For details, see [Chaining Flyte entities](https://docs.flyte.org/en/latest/user_guide/advanced_composition/chaining_flyte_entities.html).
+For details, see [Chaining entities](..../programming/chaining.md)
 
 ## Workflow decorator parameters
 

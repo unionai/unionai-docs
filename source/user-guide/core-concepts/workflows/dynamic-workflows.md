@@ -106,7 +106,7 @@ When a dynamic task is executed, it generates the entire workflow as its output,
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.
 
 :::{note}
-Local execution works when a `@union.dynamic` decorator is used because Flytekit treats it as a task that runs with native Python inputs.
+Local execution works when a `@union.dynamic` decorator is used because {@= Kit =@}  treats it as a task that runs with native Python inputs.
 :::
 
 Finally, we define a workflow that triggers the dynamic workflow:
