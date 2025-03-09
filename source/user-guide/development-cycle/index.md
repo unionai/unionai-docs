@@ -6,6 +6,8 @@ This section covers developing production-ready workflows for Union.
 :header-rows: 0
 :widths: 20 30
 
+* - {doc}`Authentication <project-structure>`
+  - How to authenticate with Union.
 * - {doc}`Project structure <project-structure>`
   - Best practices in organizing a Union workflow project repository.
 * - {doc}`Projects and domains <projects-and-domains>`

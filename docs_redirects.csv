@@ -93,6 +93,7 @@ docs.union.ai/byoc/platform-architecture,https://docs.union.ai/byoc/deployment/p
 docs.union.ai/byoc/quick-start,https://docs.union.ai/byoc/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/tutorials/machine-learning/credit-default-xgboost,https://docs.union.ai/byoc/tutorials/finance/credit-default-xgboost,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/union-overview,https://docs.union.ai/byoc/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/user-guide/administration/cli-authetication-types,https://docs.union.ai/byoc/user-guide/development-cycle/authentication,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/administration/usage,https://docs.union.ai/byoc/user-guide/administration/resources,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/core-concepts/tasks/task-caching,https://docs.union.ai/byoc/user-guide/core-concepts/caching,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/imagespec,https://docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE

@@ -66,6 +66,7 @@
             {"name": "caching", "variants": ["byoc", "serverless"]}
         ]},
         {"name": "development-cycle", "variants": ["byoc", "serverless"], "children": [
+            {"name": "authentication", "variants": ["byoc"]},
             {"name": "project-structure", "variants": ["byoc", "serverless"]},
             {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
             {"name": "building-workflows", "variants": ["byoc", "serverless"]},
@@ -96,8 +97,7 @@
             {"name": "resources", "variants": ["byoc", "serverless"]},
             {"name": "cost-allocation", "variants": ["byoc"]},
             {"name": "user-management", "variants": ["byoc"]},
-            {"name": "applications", "variants": ["byoc"]},
-            {"name": "cli-authentication-types", "variants": ["byoc"]}
+            {"name": "applications", "variants": ["byoc"]}
         ]},
         {"name": "integrations", "variants": ["byoc"], "children": [
             {"name": "enabling-aws-resources", "variants": ["byoc"], "children": [

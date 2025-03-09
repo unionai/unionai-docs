@@ -245,10 +245,10 @@ def convert_tutorial_py_file_to_md(
     # Now read the file and remove the header
     with open(to_path, "r") as f:
         content = f.read()
-    
+
     # Remove the Jupytext metadata section with regex
     clean_content = re.sub(r'---\s*jupyter:[\s\S]*?---\s*\n', '', content)
-    
+
     # Write the clean content back
     with open(to_path, "w") as f:
         f.write(clean_content)
