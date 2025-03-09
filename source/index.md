@@ -1,14 +1,20 @@
 {@@ if serverless @@}
-# Union Serverless Root
+
+# Union Serverless
+
 {@@ elif byoc @@}
-# Union BYOC Root
+
+# Union BYOC
+
+{@@ elif byok @@}
+
+# Union BYOK
+
 {@@ endif @@}
 
-This page will not appear on the public site.
+This page does not appear on the public website.
+It is automatically redirected as follows:
 
-The root page of each variant is instead redirected to the top page of the User guide:
-
-```
-docs.union.ai/serverless/ -> docs.union.ai/serverless/user-guide/
-docs.union.ai/byoc/ -> docs.union.ai/byoc/user-guide/
-```
+* `docs.union.ai/byoc` -> `docs.union.ai/byoc/user-guide`
+* `docs.union.ai/byok` -> `docs.union.ai/byok/user-guide`
+* `docs.union.ai/serverless` -> `docs.union.ai/serverless/user-guide`

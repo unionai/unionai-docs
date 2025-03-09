@@ -17,14 +17,14 @@ source .venv/bin/activate
 ```
 
 :::{admonition} `activate` vs `uv run`
-When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
-This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the-union-cli) in order to [set up its configuration](./local-setup.md#configure-the-union-cli).
+When running the `{@= cli =@}` CLI within your local project you must run it in the virtual environment _associated with_ that project.
+This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the--cli--cli) in order to [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
 
-To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
+To run `{@= cli =@}` within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
 
-`uv run union ...`
+`uv run {@= cli =@} ...`
 
-Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
+Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `{@= cli =@}` command directly.
 
 In our examples we assume that you are doing the latter.
 :::
@@ -34,10 +34,10 @@ In our examples we assume that you are doing the latter.
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
-You can run the workflow locally with the command [`union run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
+You can run the workflow locally with the command [`{@= cli =@} run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
-$ union run hello_world.py hello_world_wf
+$ {@= cli =@} run hello_world.py hello_world_wf
 ```
 
 You should see output like this:
@@ -47,11 +47,10 @@ Running Execution on local.
 Hello, world!
 ```
 
-
-You can also pass in parameters to the workflow (assuming they declared in the workflow function):
+You can also pass in parameters to the workflow (assuming they are declared in the workflow function):
 
 ```{code-block} shell
-$ union run hello_world.py hello_world_wf --name="everybody"
+$ {@= cli =@} run hello_world.py hello_world_wf --name="everybody"
 ```
 
 You should see output like this:
@@ -61,18 +60,18 @@ Running Execution on local.
 Hello, everybody!
 ```
 
+## Running remotely on Union in the cloud
 
-## Running remotely on Union
+Running you code in your local Python environment is useful for testing and debugging.
 
-Local execution is useful for testing and debugging your workflows.
-But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance.
+But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance in the cloud.
 
-When task and workflow code is registered on Union:
+When task and workflow code is registered:
 
 * The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
+To run the workflow on Union in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
 
 ```{code-block} shell
 $ union run --remote --project my-project --domain development hello_world.py hello_world_wf
@@ -90,7 +89,7 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-{@@ elif byoc @@}
+{@@ elif byoc or byok or flyte @@}
 
 ```{code-block} shell
 👍 Build submitted!

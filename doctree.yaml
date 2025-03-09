@@ -1,0 +1,731 @@
+name: ""
+children:
+  - name: user-guide
+    children:
+      - name: about-union
+      - name: getting-started
+        children:
+          - name: local-setup
+          - name: first-project
+          - name: understanding-the-code
+          - name: running-your-workflow
+      - name: core-concepts
+        children:
+          - name: workflows
+            children:
+              - name: standard-workflows
+              - name: subworkflows-and-sub-launch-plans
+              - name: dynamic-workflows
+              - name: eager-workflows
+              - name: launching-workflows
+              - name: viewing-workflows
+              - name: viewing-workflow-executions
+              - name: imperative-workflows
+          - name: tasks
+            children:
+              - name: task-types
+              - name: task-parameters
+              - name: launching-tasks
+              - name: viewing-tasks
+              - name: viewing-logs
+              - name: task-software-environment
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: imagespec
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+                  - name: imagespec-with-ecr
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+                  - name: imagespec-with-gar
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+                  - name: imagespec-with-acr
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+                  - name: environment-variables
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: task-hardware-environment
+                children:
+                  - name: customizing-task-resources
+                  - name: accelerators
+                  - name: interruptible-instances
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+                  - name: task-level-monitoring
+          - name: launch-plans
+            children:
+              - name: defining-launch-plans
+              - name: viewing-launch-plans
+              - name: notifications
+              - name: schedules
+              - name: activating-and-deactivating
+              - name: running-launch-plans
+              - name: reference-launch-plans
+              - name: mapping-over-launch-plans
+              - name: reactive-workflows
+          - name: actors
+            children:
+              - name: actors-and-regular-tasks
+              - name: actor-examples
+          - name: artifacts
+            children:
+              - name: declaring-artifacts
+              - name: materializing-artifacts
+              - name: consuming-artifacts-in-workflows
+              - name: connecting-workflows-with-artifact-event-triggers
+              - name: viewing-artifacts
+          - name: serving
+            children:
+              - name: adding-your-own-code
+              - name: serving-workflow-output
+              - name: serving-a-model
+          - name: caching
+      - name: development-cycle
+        children:
+          - name: project-structure
+          - name: projects-and-domains
+          - name: building-workflows
+          - name: setting-up-project
+          - name: local-dependencies
+          - name: image-spec
+          - name: running-your-code
+          - name: overriding-parameters
+          - name: details-of-union-run
+          - name: debugging-with-interactive-tasks
+          - name: managing-secrets
+          - name: managing-api-keys
+          - name: accessing-aws-s3
+            variants:
+              - serverless
+          - name: task-resource-validation
+          - name: running-in-a-local-cluster
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: ci-cd-deployment
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: union-remote
+            children:
+              - name: union-remote-examples
+      - name: data-input-output
+        children:
+          - name: flyte-file-and-flyte-directory
+          - name: downloading-with-ff-and-fd
+          - name: task-input-and-output
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: accelerated-datasets
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: structured-dataset
+          - name: dataclass
+          - name: pydantic
+          - name: accessing-attributes
+          - name: pytorch
+          - name: enum
+          - name: pickle
+          - name: tensorflow
+      - name: administration
+        children:
+          - name: resources
+          - name: cost-allocation
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: user-management
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: applications
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: cli-authentication-types
+            variants:
+              - byoc
+              - byok
+              - flyte
+      - name: integrations
+        variants:
+          - byoc
+          - byok
+          - flyte
+        children:
+          - name: enabling-aws-resources
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: enabling-aws-s3
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-aws-ecr
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-aws-secrets-manager
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: enabling-gcp-resources
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: enabling-google-cloud-storage
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-google-artifact-registry
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-bigquery
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-google-secret-manager
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: enabling-azure-resources
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: enabling-azure-blob-storage
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-azure-container-registry
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: enabling-azure-key-vault
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: agents
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: airflow-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: airflow-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: sagemaker-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: sagemaker-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: databricks-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: databricks-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: file-sensor-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: file-sensor-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: bigquery-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: bigquery-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: mmcloud-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: mmcloud-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: dgx-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: openai-agents
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: batch-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+                  - name: chatgpt-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+              - name: snowflake-agent
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+                children:
+                  - name: snowflake-agent-example
+                    variants:
+                      - byoc
+                      - byok
+                      - flyte
+      - name: faq
+        variants:
+          - byoc
+          - byok
+          - flyte
+  - name: tutorials
+    children:
+      - name: language-models
+        children:
+          - name: sentiment-classifier
+            from_py_file: ./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py
+          - name: agentic-rag
+            from_py_file: ./unionai-examples/tutorials/agentic_rag/agentic_rag.py
+          - name: soft-clustering-hdbscan
+            from_py_file: ./unionai-examples/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py
+          - name: liger-kernel-finetuning
+            from_py_file: ./unionai-examples/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py
+          - name: llama_edge_deployment
+            from_py_file: ./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py
+          - name: vllm-serving-on-actor
+            from_py_file: ./unionai-examples/tutorials/vllm_serving_on_actor/ner.py
+          - name: nim-on-actor
+            variants:
+              - byoc
+              - byok
+              - flyte
+            from_py_file: ./unionai-examples/tutorials/nim_on_actor/nim_on_actor.py
+          - name: pdf-to-podcast-blueprint
+            from_py_file: ./unionai-examples/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py
+      - name: diffusion-models
+        children:
+          - name: mochi-video-generation
+            from_py_file: ./unionai-examples/tutorials/mochi_video_generation/mochi_video_generation.py
+      - name: parallel-processing-and-job-scheduling
+        children:
+          - name: reddit-slack-bot
+            from_py_file: ./unionai-examples/tutorials/reddit_slack_bot/reddit_slack_bot.py
+          - name: wikipedia-embeddings
+            from_py_file: ./unionai-examples/tutorials/wikipedia_embeddings_on_actor/wikipedia_embeddings_on_actor.py
+      - name: time-series
+        children:
+          - name: gluonts-time-series
+            from_py_file: ./unionai-examples/tutorials/gluonts_time_series/gluonts_time_series.py
+          - name: time-series-forecaster-comparison
+            from_py_file: ./unionai-examples/tutorials/time_series_forecasting/workflows/time_series_workflow.py
+      - name: finance
+        children:
+          - name: credit-default-xgboost
+            from_py_file: ./unionai-examples/tutorials/credit_default/credit_default.py
+      - name: bioinformatics
+        children:
+          - name: alignment
+            from_py_file: ./unionai-examples/tutorials/genomic_alignment/genomic_alignment.py
+      - name: multimodal-ai
+        children:
+          - name: video-dubbing
+            from_py_file: ./unionai-examples/tutorials/video_translation/video_translation.py
+  - name: api-reference
+    children:
+      - name: union-sdk
+        children:
+          - name: design
+            children:
+              - name: models-files
+              - name: authoring-structure
+              - name: execution-time-support
+          - name: core- flytekit
+            children:
+              - name: basic-authoring
+              - name: branching-and-conditionals
+              - name: customizing-tasks-and-workflows
+              - name: dynamic-and-nested-workflows
+              - name: signaling
+              - name: scheduling
+              - name: notifications
+              - name: reference-entities
+              - name: core-task-types
+              - name: secrets-and-security-context
+              - name: common- flyte-idl-objects
+              - name: task-utilities
+              - name: artifacts
+              - name: documentation
+          - name: configuration
+            children:
+              - name: config
+              - name: compile-time-and-serialization-settings
+              - name: execution-time-settings
+          - name: image-spec
+          - name: clients
+          - name: unit-testing
+          - name: specifying-accelerators
+          - name: extending- flytekit
+          - name: flyte-deck
+          - name: agents
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: airflow
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: sagemaker
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: file-sensor
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: bigquery
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: mmc
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: chatgpt
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: snowflake
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: spark
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: actors
+            children:
+              - name: actor.actorenvironment
+          - name: artifacts
+            children:
+              - name: artifacts.datacard
+              - name: artifacts.modelcard
+              - name: artifacts.onartifact
+          - name: union-remote
+            children:
+              - name: entrypoint
+              - name: entities
+              - name: entity-components
+              - name: execution-objects
+          - name: custom-tasks
+            children:
+              - name: base-task
+              - name: python-function-task
+              - name: shell-task
+              - name: sqlite3-task
+          - name: custom-types
+            children:
+              - name: structured-dataset
+              - name: flytefile
+              - name: flytedirectory
+              - name: iterator
+              - name: pytorch
+              - name: tensorflow
+              - name: sklearn
+          - name: experimental-features
+      - name: union-cli
+      - name: uctl-cli
+        children:
+          - name: uctl
+          - name: uctl-append
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: uctl-append-identityassignments
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: uctl-apply
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: uctl-apply-app
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: uctl-apply-clusterconfig
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: uctl-apply-clusterconfigid
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: uctl-apply-clusterpoolconfig
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: uctl-config
+            variants:
+              - byoc
+              - byok
+              - flyte
+            children:
+              - name: uctl-config-discover
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: uctl-config-docs
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: uctl-config-init
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+              - name: uctl-config-validate
+                variants:
+                  - byoc
+                  - byok
+                  - flyte
+          - name: uctl-create
+            children:
+              - name: uctl-create-app
+              - name: uctl-create-clusterpool
+              - name: uctl-create-clusterpoolassignment
+              - name: uctl-create-execution
+              - name: uctl-create-policy
+              - name: uctl-create-project
+              - name: uctl-create-role
+          - name: uctl-delete
+            children:
+              - name: uctl-delete-app
+              - name: uctl-delete-cluster-pool-attributes
+              - name: uctl-delete-cluster-resource-attribute
+              - name: uctl-delete-cluster
+              - name: uctl-delete-clusterconfig
+              - name: uctl-delete-clusterpool
+              - name: uctl-delete-clusterpoolassignment
+              - name: uctl-delete-execution-cluster-label
+              - name: uctl-delete-execution-queue-attribute
+              - name: uctl-delete-execution
+              - name: uctl-delete-identityassignments
+              - name: uctl-delete-plugin-override
+              - name: uctl-delete-policy
+              - name: uctl-delete-role
+              - name: uctl-delete-task-resource-attribute
+              - name: uctl-delete-workflow-execution-config
+          - name: uctl-demo
+            children:
+              - name: uctl-demo-exec
+              - name: uctl-demo-reload
+              - name: uctl-demo-start
+              - name: uctl-demo-status
+              - name: uctl-demo-teardown
+          - name: uctl-get
+            children:
+              - name: uctl-get-app
+              - name: uctl-get-cluster-pool-attributes
+              - name: uctl-get-cluster-resource-attribute
+              - name: uctl-get-cluster
+              - name: uctl-get-clusterconfig
+              - name: uctl-get-clusterconfigs
+              - name: uctl-get-clusterpool
+              - name: uctl-get-clusterpoolconfig
+              - name: uctl-get-clusterswithconfig
+              - name: uctl-get-echo
+              - name: uctl-get-execution-cluster-label
+              - name: uctl-get-execution-queue-attribute
+              - name: uctl-get-execution
+              - name: uctl-get-executionoperation
+              - name: uctl-get-identityassignment
+              - name: uctl-get-launchplan
+              - name: uctl-get-plugin-override
+              - name: uctl-get-policy
+              - name: uctl-get-project
+              - name: uctl-get-role
+              - name: uctl-get-task-resource-attribute
+              - name: uctl-get-task
+              - name: uctl-get-workflow-execution-config
+              - name: uctl-get-workflow
+          - name: uctl-register
+            children:
+              - name: uctl-register-examples
+              - name: uctl-register-files
+          - name: uctl-update
+            children:
+              - name: uctl-update-cluster-pool-attributes
+              - name: uctl-update-cluster-resource-attribute
+              - name: uctl-update-execution-cluster-label
+              - name: uctl-update-execution-queue-attribute
+              - name: uctl-update-execution
+              - name: uctl-update-launchplan-meta
+              - name: uctl-update-launchplan
+              - name: uctl-update-plugin-override
+              - name: uctl-update-project
+              - name: uctl-update-task-meta
+              - name: uctl-update-task-resource-attribute
+              - name: uctl-update-workflow-execution-config
+              - name: uctl-update-workflow-meta
+          - name: uctl-version
+  - name: deployment
+    variants:
+      - byoc
+      - byok
+      - flyte
+    children:
+      - name: platform-architecture
+        variants:
+          - byoc
+          - byok
+          - flyte
+      - name: data-plane-setup-on-aws
+        variants:
+          - byoc
+          - byok
+          - flyte
+      - name: data-plane-setup-on-gcp
+        variants:
+          - byoc
+          - byok
+          - flyte
+      - name: data-plane-setup-on-azure
+        variants:
+          - byoc
+          - byok
+          - flyte
+      - name: single-sign-on-setup
+        variants:
+          - byoc
+          - byok
+          - flyte
+        children:
+          - name: google-oidc
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: microsoft-entra-id
+            variants:
+              - byoc
+              - byok
+              - flyte
+          - name: other-identity-providers
+            variants:
+              - byoc
+              - byok
+              - flyte
+      - name: configuring-your-data-plane
+        variants:
+          - byoc
+          - byok
+          - flyte
+      - name: multi-cluster
+        variants:
+          - byoc
+          - byok
+          - flyte
+      - name: data-retention-policy
+        variants:
+          - byoc
+          - byok
+          - flyte

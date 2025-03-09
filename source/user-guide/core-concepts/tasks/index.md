@@ -1,6 +1,6 @@
 # Tasks
 
-Tasks are the fundamental units of compute in Union.
+Tasks are the fundamental units of compute in {@= Product =@}.
 They are independently executable, strongly typed, and containerized building blocks that make up workflows.
 Workflows are constructed by chaining together tasks, with the output of one task feeding into the input of the next to form a directed acyclic graph.
 
@@ -16,16 +16,16 @@ Because they are independently executable, tasks can also be shared and reused a
 Tasks have strongly typed inputs and outputs, which are validated at deployment time.
 This helps catch bugs early and ensures that the data passing through tasks and workflows is compatible with the explicitly stated types.
 
-Under the hood, Union uses the [Flyte type system](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto) and translates between the Flyte types and the SDK language types, in this case Python.
+Under the hood, {@= Product =@} uses the [Flyte type system](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto) and translates between the Flyte types and the SDK language types, in this case Python.
 Python type annotations make sure that the data passing through tasks and workflows is compatible with the explicitly stated types defined through a function signature.
 The Flyte type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
 
 ## Tasks are containerized
 
-While (most) tasks are locally executable, when a task is deployed to Union as part of the registration process it is containerized and run in its own independent Kubernetes pod.
-{@@ if byoc @@}
+While (most) tasks are locally executable, when a task is deployed to {@= Product =@} as part of the registration process it is containerized and run in its own independent Kubernetes pod.
+{@@ if byoc or byok or flyte @@}
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
-For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
+For example, a task that requires a GPU can be deployed to {@= Product =@} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {@@ elif serverless @@}
 This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
@@ -51,12 +51,12 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 
 For details on task caching, see [Caching](../caching.md).
 
-{@@ if byoc @@}
+{@@ if byoc or byok or flyte @@}
 ## Workflows can contain many types of tasks
 
-One of the most powerful features of Union is the ability to run widely differing computational workloads as tasks with a single workflow.
+One of the most powerful features of {@= Product =@} is the ability to run widely differing computational workloads as tasks with a single workflow.
 
-Because of the way that Union and Flyte are architected, tasks within a single workflow can differ along many dimensions. While the total number of ways that tasks can be configured is quite large, the options fall into three categories:
+Because of the way that {@= Product =@} is architected, tasks within a single workflow can differ along many dimensions. While the total number of ways that tasks can be configured is quite large, the options fall into three categories:
 
 * **Task type**: These include standard Python tasks, map tasks, raw container tasks, and many specialized plugin tasks. For more information, see [Task types](./task-types.md).
 * **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index.md).
@@ -75,7 +75,7 @@ For example, a workflow might contain:
 * A **plugin task** running a Spark job that spawns its own cluster-in-a-cluster.
 * A **map task** that runs multiple copies of a Python task in parallel.
 
-The ability to build workflows from such a wide variety of heterogeneous tasks makes Union uniquely flexible.
+The ability to build workflows from such a wide variety of heterogeneous tasks makes {@= Product =@} uniquely flexible.
 
 :::{note}
 Not all parameters are compatible. For example, with specialized plugin task types, some configurations are not available (this depends on task plugin details).
