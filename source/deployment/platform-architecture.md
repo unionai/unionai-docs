@@ -21,11 +21,7 @@ Union operates one control plane for each supported region, which supports all d
 
 Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In Union, we distinguish between default nodes and worker nodes.
 
-#### Default nodes
-
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
-
-#### Worker nodes
 
 Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](./data-plane-setup/configuring-your-data-plane.md#worker-node-groups).
 

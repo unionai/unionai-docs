@@ -176,7 +176,7 @@ In Union (using `uctl`):
 
 * Bind `<CustomRole>` to the project-domain pair desired.
 
-#### Create the IAM role
+### Create the IAM role
 
 1. Sign in to the AWS Management Console as an administrator of your account, and open the IAM console.
 2. In the navigation pane, choose **Roles** and then choose **Create role**.
@@ -201,7 +201,7 @@ In Union (using `uctl`):
 10. Select **Create role**.
 11. In the **Summary** section of the new role's details pane, note the ARN value.
 
-#### Configure the cluster to use the new IAM role
+### Configure the cluster to use the new IAM role
 
 Repeat the following steps for each project-domain pair:
 

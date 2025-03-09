@@ -179,4 +179,36 @@ workflow = remote.fetch_workflow(name=WF_NAME, version=VERSION)
 [remote.execute(workflow, inputs=X) for X in inputs]
 ```
 
+## Filtering for executions using a `Filter`
+
+This example shows how to use a `Filter` to only query for the executions you want.
+
+```python
+from flytekit.models import filters
+from union import UnionRemote
+
+WF_NAME = "your_workflow_name"
+LP_NAME = "your_launchplan_name"
+PROJECT = "your_project"
+DOMAIN = "production"
+ENDPOINT = "union.example.com"
+
+remote = UnionRemote.for_endpoint(ENDPOINT)
+
+# Only query executions from your project
+project_filter = filters.Filter.from_python_std(f"eq(workflow.name,{WF_NAME})")
+project_executions = remote.recent_executions(project=PROJECT, domain=DOMAIN, filters=[project_filter])
+
+# Query for the latest execution that succeeded and was between 8 and 16 minutes
+latest_success = remote.recent_executions(
+    limit=1,
+    filters=[
+        filters.Equal("launch_plan.name", LP_NAME),
+        filters.Equal("phase", "SUCCEEDED"),
+        filters.GreaterThan("duration", 8 * 60),
+        filters.LessThan("duration", 16 * 60),
+    ],
+)
+```
+
 {@@ endif @@}

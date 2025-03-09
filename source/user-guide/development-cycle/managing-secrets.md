@@ -1,6 +1,6 @@
 # Managing secrets
 
-You can use secrets to interact with external services through API keys.
+You can use secrets to interact with external services.
 
 ## Creating secrets
 
@@ -9,7 +9,7 @@ You can use secrets to interact with external services through API keys.
 To create a secret, use the `union create secret` command:
 
 ```{code-block} shell
-union create secret my_secret
+union create secret --project my_project --domain my_domain --name my_secret
 ```
 
 You'll be prompted to enter a secret value in the terminal:
@@ -23,7 +23,7 @@ Enter secret value: ...
 To create a secret from a file, run the following command:
 
 ```{code-block} shell
-union create secret my_file_secret -f /path/to/file
+union create secret --project my_project --domain my_domain --name my_file_secret -f /path/to/file
 ```
 
 ## Listing secrets
@@ -31,10 +31,13 @@ union create secret my_file_secret -f /path/to/file
 You can list existing secrets with the `union get secret` command:
 
 ```{code-block} shell
-union get secret
+union get secret --project my_project --domain my_domain
 ```
 
 ## Using secrets in workflow code
+
+Note that secrets are stored per project/domain pair.
+A workflow can only access secrets created within its own project and domain.
 
 ### Using a secret created on the command line
 
@@ -44,7 +47,6 @@ To use a secret created on the command line, see the example code below. To run 
 2. Copy the following example code to a new file and save it as `using_secrets.py`.
 3. Run the script with `union run --remote using_secrets.py main`.
 
-#### Example code
 
 ```{code-block} python
 import union
@@ -80,7 +82,6 @@ To use a secret created from a file in your workflow code, you must mount it as 
 2. Copy the example code below to a new file and save it as `using_secrets_file.py`.
 4. Run the script with `union run --remote using_secrets_file.py main`.
 
-#### Example code
 
 ```{code-block} python
 import union
@@ -111,7 +112,7 @@ The `get_secrets_file` method takes the secret key and returns the path to the s
 To update a secret, run the `union update secret` command. You will be prompted to enter a new value:
 
 ```{code-block} shell
-union update secret my_secret
+union update secret --project my_project --domain my_domain my_secret
 ```
 
 ## Deleting secrets
@@ -119,6 +120,5 @@ union update secret my_secret
 To delete a secret, use the `union delete secret` command:
 
 ```{code-block} shell
-union delete secret my_secret
+union delete secret --project my_project --domain my_domain my_secret
 ```
-

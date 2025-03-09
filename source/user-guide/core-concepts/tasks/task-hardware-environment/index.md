@@ -41,7 +41,7 @@ This requires that you coordinate with Union to set up the required machine type
 
 In your task definition you then use a `PodTemplate` that that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
 
-#### `pod_template` and `pod_template_name` @union.task parameters
+### `pod_template` and `pod_template_name` @union.task parameters
 
 The `pod_template` parameter can be used to supply a custom Kubernetes `PodTemplate` to the task.
 This can be used to define details about node selectors, affinity, tolerations, and other Kubernetes-specific settings.
