@@ -120,6 +120,18 @@ SUBS: dict[str, dict[str, str] | str] = {
         'byoc': 'Uctl',
         'byok': 'Uctl',
     },
+    'task': {
+        'flyte': '@fl.task',
+        'serverless': '@union.task',
+        'byoc': '@union.task',
+        'byok': '@union.task',
+    },
+    'workflow': {
+        'flyte': '@fl.workflow',
+        'serverless': '@union.workflow',
+        'byoc': '@union.workflow',
+        'byok': '@union.workflow',
+    },
 }
 
 INSTALL_SDK_PACKAGE = "union"
@@ -192,7 +204,7 @@ The source code for this tutorial can be found [here {{octicon}}`mark-github`]({
 
 ::::
 """
-LOGGING_ENABLED = False
+LOGGING_ENABLED = True
 
 # Print to stdout
 def log(msg: str) -> None:

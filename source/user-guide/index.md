@@ -26,7 +26,7 @@ Switch to another variant with the version selector above.
 ```
 {@@ endif @@}
 
-The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The {@= Product =@} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
@@ -35,39 +35,52 @@ The Union platform empowers AI development teams to rapidly ship high-quality co
 
 ::::{grid} 2
 
+{@@ if flyte @@}
+
+:::{grid-item-card} {octicon}`telescope` About Flyte
+:link: about-union
+:link-type: doc
+
+Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
+:::
+
+{@@ elif serverless or byoc or byok @@}
+
 :::{grid-item-card} {octicon}`telescope` About Union
 :link: about-union
 :link-type: doc
 
-Union builds on the leading OSS orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
+Union builds on the leading OSS AI platform, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
 :::
+
+{@@ endif @@}
 
 :::{grid-item-card} {octicon}`file-binary` Getting started
 :link: getting-started/index
 :link-type: doc
 
-Build your first Union workflow, exploring the major features of the platform along the way.
+Build your first {@= Product =@} workflow, exploring the major features of the platform along the way.
 :::
 
 :::{grid-item-card} {octicon}`mortar-board` Core concepts
 :link: core-concepts/index
 :link-type: doc
 
-Understand the core concepts of the Union platform.
+Understand the core concepts of the {@= Product =@} platform.
 :::
 
 :::{grid-item-card} {octicon}`iterations` Development cycle
 :link: development-cycle/index
 :link-type: doc
 
-Explore the Union development cycle from experimentation to production.
+Explore the {@= Product =@} development cycle from experimentation to production.
 :::
 
 :::{grid-item-card} {octicon}`arrow-switch` Data input/output
 :link: data-input-output/index
 :link-type: doc
 
-Manage the input and output of data in your Union workflow.
+Manage the input and output of data in your {@= Product =@} workflow.
 :::
 
 {@@ if byoc or byok or flyte @@}
@@ -75,14 +88,14 @@ Manage the input and output of data in your Union workflow.
 :link: administration/index
 :link-type: doc
 
-Union BYOC administrators can manage users, projects, and resources.
+{@= Product_full =@} administrators can manage users, projects, and resources.
 :::
 
 :::{grid-item-card} {octicon}`tools` Integrations
 :link: integrations/index
 :link-type: doc
 
-Union BYOC integrates with your cloud resources and external services.
+{@= Product_full =@} integrates with your cloud resources and external services.
 :::
 
 :::{grid-item-card} {octicon}`question` FAQ
