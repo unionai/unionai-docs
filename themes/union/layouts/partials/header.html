@@ -11,7 +11,7 @@
     {{ end }}
     >
             {{ $variants := slice }}
-            {{ range $key, $value := (index $.Site.Params.vars "product_name") }}
+            {{ range $key, $value := (index $.Site.Params.vars "product") }}
                 {{ $variants = $variants | append $key }}
             {{ end }}
             {{ range $variants }}

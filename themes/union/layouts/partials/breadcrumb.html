@@ -33,7 +33,7 @@
     {{ $sections := split (trim $url "/") "/" }}
     {{ $variant := .Site.Params.variant }}
     <div class="breadcrumb-item">
-        {{ $display := index .Site.Params.variants $variant }}
+        {{ $display := index .Site.Params.vars "product_name" $variant }}
         {{ if not $display }}
             {{ $display = humanize $variant }}
         {{ end }}

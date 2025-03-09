@@ -1,6 +1,0 @@
-{{ $key := .Get 0 }}
-{{ if eq $key "id" }}
-{{ index .Site.Params.variants .Site.Params.variant }}
-{{ else }}
-{{ .Site.Params.variant }}
-{{ end}}
