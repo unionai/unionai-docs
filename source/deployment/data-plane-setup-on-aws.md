@@ -66,7 +66,7 @@ When an update is required:
 
 To perform the update on your system, copy the template URL and follow the directions here:
 
-#### Update your CloudFormation template
+### Update your CloudFormation template
 
 1. Log in to the AWS web console and navigate to **CloudFormation** for the region within which your data plane is deployed.
 2. Select the `UnionCloudAccess` stack.
