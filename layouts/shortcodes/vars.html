@@ -1,1 +1,2 @@
-{{ index .Site.Params.variables (.Get 0) }}
+{{- $variant := $.Site.Params.variant -}}
+{{- index .Site.Params.vars (.Get 0) $variant -}}

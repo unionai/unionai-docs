@@ -8,12 +8,73 @@ _merge = "deep"
 variant_hide_in_development = false
 variant_identify_variant_in_development = true
 
-# Temporary variables during migration
-product_name = "Union"
+#----------------------------------------------------------
+# Variables (keyed per variant)
 
-[params.variants]
-serverless = "Union.ai Serverless"
-byoc = "Union.ai BYOC"
+[params.vars]
 
-[params.variables]
-company = "Union.ai"
+[params.vars.product]
+flyte = "Flyte"
+serverless = "Union"
+byoc = "Union"
+byok = "Union"
+
+[params.vars.product_name]
+flyte = ""
+serverless = "Union Serverless"
+byoc = "Union BYOC"
+byok = "Union BYOK"
+
+[params.vars.default_project]
+flyte = "flytesnacks"
+serverless = "default"
+byoc = "flytesnacks"
+byok = "flytesnacks"
+
+[params.vars.kit]
+flyte = "flytekit"
+serverless = "union"
+byoc = "union"
+byok = "union"
+
+[params.vars.kit_name]
+flyte = "Flytekit"
+serverless = "Union"
+byoc = "Union"
+byok = "Union"
+
+[params.vars.cli]
+flyte = "pyflyte"
+serverless = "union"
+byoc = "union"
+byok = "union"
+
+[params.vars.cli_name]
+flyte = "Pyflyte CLI"
+serverless = "Union CLI"
+byoc = "Union CLI"
+byok = "Union CLI"
+
+[params.vars.ctl]
+flyte = "flytectl"
+serverless = "uctl"
+byoc = "uctl"
+byok = "uctl"
+
+[params.vars.ctl_name]
+flyte = "Flyte Control Interface (flytectl)"
+serverless = "Union Control Interface (uctl)"
+byoc = "Union Control Interface (uctl)"
+byok = "Union Control Interface (uctl)"
+
+[params.vars.task]
+flyte = "@fl.task"
+serverless = "@union.task"
+byoc = "@union.task"
+byok = "@union.task"
+
+[params.vars.workflow]
+flyte = "@fl.workflow"
+serverless = "@union.workflow"
+byoc = "@union.workflow"
+byok = "@union.workflow"
