@@ -11,3 +11,6 @@ hugo.local.toml
 # Trash files
 .DS_Store
 *.swp
+
+# Ignore test file
+content/test.md
