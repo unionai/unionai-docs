@@ -191,9 +191,9 @@ pages:
   - /tutorials/parallel-processing-and-job-scheduling/wikipedia-embeddings
   - /tutorials/time-series
   - /tutorials/time-series/gluonts-time-series
-  - /tutorials/time-series/time-series-forecaster-comparison      
+  - /tutorials/time-series/time-series-forecaster-comparison
   - /user-guide
-  # - /user-guide/about-union
+  - /user-guide/about-union
   - /user-guide/administration
   - /user-guide/administration/applications
   - /user-guide/administration/cli-authentication-types
@@ -312,3 +312,4 @@ pages:
   - /user-guide/integrations/enabling-gcp-resources/enabling-google-artifact-registry
   - /user-guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage
   - /user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager
+exclude: []

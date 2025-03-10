@@ -131,6 +131,7 @@ pages:
   - /api-reference/union-sdk/custom-tasks/base-task
   - /api-reference/union-sdk/custom-tasks/python-function-task
   - /api-reference/union-sdk/custom-tasks/shell-task
+  - /api-reference/union-sdk/custom-tasks/sqlite3-task
   - /api-reference/union-sdk/custom-types
   - /api-reference/union-sdk/custom-types/flytedirectory
   - /api-reference/union-sdk/custom-types/flytefile
@@ -167,6 +168,30 @@ pages:
   - /deployment/single-sign-on-setup/microsoft-entra-id
   - /deployment/single-sign-on-setup/other-identity-providers
   - /tutorials
+  - /tutorials/bioinformatics
+  - /tutorials/bioinformatics/alignment
+  - /tutorials/diffusion-models
+  - /tutorials/diffusion-models/mochi-video-generation
+  - /tutorials/finance
+  - /tutorials/finance/credit-default-xgboost
+  - /tutorials/language-models
+  - /tutorials/language-models/agentic-rag
+  - /tutorials/language-models/contextual-rag
+  - /tutorials/language-models/liger-kernel-finetuning
+  - /tutorials/language-models/llama_edge_deployment
+  - /tutorials/language-models/nim-on-actor
+  - /tutorials/language-models/pdf-to-podcast-blueprint
+  - /tutorials/language-models/sentiment-classifier
+  - /tutorials/language-models/soft-clustering-hdbscan
+  - /tutorials/language-models/vllm-serving-on-actor
+  - /tutorials/multimodal-ai
+  - /tutorials/multimodal-ai/video-dubbing
+  - /tutorials/parallel-processing-and-job-scheduling
+  - /tutorials/parallel-processing-and-job-scheduling/reddit-slack-bot
+  - /tutorials/parallel-processing-and-job-scheduling/wikipedia-embeddings
+  - /tutorials/time-series
+  - /tutorials/time-series/gluonts-time-series
+  - /tutorials/time-series/time-series-forecaster-comparison
   - /user-guide
   - /user-guide/about-union
   - /user-guide/administration
@@ -287,10 +312,4 @@ pages:
   - /user-guide/integrations/enabling-gcp-resources/enabling-google-artifact-registry
   - /user-guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage
   - /user-guide/integrations/enabling-gcp-resources/enabling-google-secret-manager
-  - /api-reference/union-sdk/custom-tasks/sqlite3-task
-exclude:
-  - /tutorials
-  - /tutorials/bioinformatics
-  - /tutorials/bioinformatics/alignment
-  - /tutorials/diffusion-models
-  - /tutorials/diffusion-models/mochi-video-generation
+exclude: []
