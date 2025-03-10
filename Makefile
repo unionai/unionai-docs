@@ -27,5 +27,5 @@ dev:
 serve:
 	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
 	@if [ -z ${PORT} ]; then make usage; echo "FATAL: Port missing"; exit 1; fi
-	cd dist
-	python3 -m http.server ${PORT}
+	@echo "Open browser @ http://localhost:${PORT}"
+	cd dist; python3 -m http.server ${PORT}
