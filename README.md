@@ -1,5 +1,10 @@
 # Union.ai Docs Builder
 
+**[docs.union.ai](https://docs.union.ai)**
+
+This repository builds and publishes all Union.ai documentation.
+The ite is automatically published when the PR targetting `main` branch is merged.
+
 ## Requirements
 
 - Hugo (https://gohugo.io/)
@@ -10,12 +15,13 @@
 
     make dev
 
-This will launch the site in development mode. The changes are hot reloaded: just change in your favorite editor and it will refresh immediately on the browser.
+This will launch the site in development mode.
+The changes are hot reloaded: just change in your favorite editor and it will refresh immediately on the browser.
 
 ### Changing 'variants'
 
-Variants are flavors of the site (that you can change at the top). During
-development, you can render any variant by setting them in `hugo.local.toml`:
+Variants are flavors of the site (that you can change at the top).
+During development, you can render any variant by setting them in `hugo.local.toml`:
 
     variant = "byoc"
 
@@ -47,7 +53,9 @@ For a full-developer experience, set:
 
 ### Identifying Problems
 
-The developer site will show you in red any pages missing from the variant. For a page to exist in the variant, it must be listed in the `allowed_pages.yaml` file. Clicking on the red page will give you the path you must add to the appropriate variant in the YAML file.
+The developer site will show you in red any pages missing from the variant.
+For a page to exist in the variant, it must be listed in the `allowed_pages.yaml` file.
+Clicking on the red page will give you the path you must add to the appropriate variant in the YAML file.
 
 ## Building Production
 
