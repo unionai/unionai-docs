@@ -9,7 +9,6 @@ base:
 	rm -rf dist
 	mkdir dist
 	cp index.html dist/
-	#rsync -a --progress static/ dist/
 	cp -R static/* dist/
 
 dist: base
