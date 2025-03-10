@@ -14,67 +14,67 @@ variant_identify_variant_in_development = false
 [params.vars]
 
 [params.vars.product]
-flyte = "Flyte"
+#flyte = "Flyte"
 serverless = "Union"
 byoc = "Union"
-byok = "Union"
+#byok = "Union"
 
 [params.vars.product_name]
-flyte = "Flyte"
+#flyte = "Flyte"
 serverless = "Union Serverless"
 byoc = "Union BYOC"
-byok = "Union BYOK"
+#byok = "Union BYOK"
 
 [params.vars.default_project]
-flyte = "flytesnacks"
+#flyte = "flytesnacks"
 serverless = "default"
 byoc = "flytesnacks"
-byok = "flytesnacks"
+#byok = "flytesnacks"
 
 [params.vars.kit]
-flyte = "flytekit"
+#flyte = "flytekit"
 serverless = "union"
 byoc = "union"
-byok = "union"
+#byok = "union"
 
 [params.vars.kit_name]
-flyte = "Flytekit"
+#flyte = "Flytekit"
 serverless = "Union"
 byoc = "Union"
-byok = "Union"
+#byok = "Union"
 
 [params.vars.cli]
-flyte = "pyflyte"
+#flyte = "pyflyte"
 serverless = "union"
 byoc = "union"
-byok = "union"
+#byok = "union"
 
 [params.vars.cli_name]
-flyte = "Pyflyte CLI"
+#flyte = "Pyflyte CLI"
 serverless = "Union CLI"
 byoc = "Union CLI"
-byok = "Union CLI"
+#byok = "Union CLI"
 
 [params.vars.ctl]
-flyte = "flytectl"
+#flyte = "flytectl"
 serverless = "uctl"
 byoc = "uctl"
-byok = "uctl"
+#byok = "uctl"
 
 [params.vars.ctl_name]
-flyte = "Flyte Control Interface (flytectl)"
+#flyte = "Flyte Control Interface (flytectl)"
 serverless = "Union Control Interface (uctl)"
 byoc = "Union Control Interface (uctl)"
-byok = "Union Control Interface (uctl)"
+#byok = "Union Control Interface (uctl)"
 
 [params.vars.task]
-flyte = "@fl.task"
+#flyte = "@fl.task"
 serverless = "@union.task"
 byoc = "@union.task"
-byok = "@union.task"
+#byok = "@union.task"
 
 [params.vars.workflow]
-flyte = "@fl.workflow"
+#flyte = "@fl.workflow"
 serverless = "@union.workflow"
 byoc = "@union.workflow"
-byok = "@union.workflow"
+#byok = "@union.workflow"
