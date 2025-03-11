@@ -1,3 +1,8 @@
+---
+title: Integrations
+weight: 7
+---
+
 # Integrations
 
 {@@ if serverless @@}

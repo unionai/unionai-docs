@@ -1,4 +1,9 @@
-# Data input/output
+---
+title: Data Input/Output
+weight: 5
+---
+
+# Data Input/Output
 
 This section covers how to manage data input and output in Union.
 

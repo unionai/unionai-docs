@@ -1,4 +1,9 @@
-# Development cycle
+---
+title: Development Cycle
+weight: 4
+---
+
+# Development Cycle
 
 This section covers developing production-ready workflows for Union.
 

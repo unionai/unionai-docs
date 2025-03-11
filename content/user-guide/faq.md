@@ -1,3 +1,8 @@
+---
+title: FAQ
+weight: 8
+---
+
 # FAQ
 
 ## Onboarding my organization to Union BYOC

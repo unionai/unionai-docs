@@ -1,4 +1,9 @@
-# Getting started
+---
+title: Getting Started
+weight: 2
+---
+
+# Getting Started
 
 This section gives you a quick introduction to writing and running Union workflows.
 

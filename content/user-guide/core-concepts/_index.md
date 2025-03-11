@@ -1,4 +1,9 @@
-# Core concepts
+---
+title: Core Concepts
+weight: 3
+---
+
+# Core Concepts
 
 Union is a platform for building and orchestrating the execution of interconnected software processes across machines in a computer cluster.
 In Union terminology, the software processes are called *tasks* and the overall organization of connections between tasks is called a *workflow*.
