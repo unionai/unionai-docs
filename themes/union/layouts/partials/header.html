@@ -11,12 +11,12 @@
     {{ end }}
     >
             {{ $variants := slice }}
-            {{ range $key, $value := (index $.Site.Params.vars "product") }}
+            {{ range $key, $value := (index $.Site.Params.var "product_full") }}
                 {{ $variants = $variants | append $key }}
             {{ end }}
             {{ range $variants }}
             <option value="{{ . }}" {{ if eq . $.Site.Params.variant }}selected{{ end }}>
-                {{ index $.Site.Params.vars "product_name" . }}
+                {{ index $.Site.Params.var "product_full" . }}
             </option>
         {{ end }}
     </select>
