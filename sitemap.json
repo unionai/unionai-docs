@@ -24,10 +24,10 @@
                 {"name": "viewing-tasks", "variants": ["byoc", "serverless"]},
                 {"name": "viewing-logs", "variants": ["byoc", "serverless"]},
                 {"name": "task-software-environment", "variants": ["byoc"], "children": [
-                    {"name": "imagespec", "variants": ["byoc"]},
-                    {"name": "imagespec-with-ecr", "variants": ["byoc"]},
-                    {"name": "imagespec-with-gar", "variants": ["byoc"]},
-                    {"name": "imagespec-with-acr", "variants": ["byoc"]},
+                    {"name": "image-spec", "variants": ["byoc"]},
+                    {"name": "image-spec-with-ecr", "variants": ["byoc"]},
+                    {"name": "image-spec-with-gar", "variants": ["byoc"]},
+                    {"name": "image-spec-with-acr", "variants": ["byoc"]},
                     {"name": "environment-variables", "variants": ["byoc"]}
                 ]},
                 {"name": "task-hardware-environment", "variants": ["byoc", "serverless"], "children": [
@@ -70,7 +70,7 @@
             {"name": "project-structure", "variants": ["byoc", "serverless"]},
             {"name": "projects-and-domains", "variants": ["byoc", "serverless"]},
             {"name": "building-workflows", "variants": ["byoc", "serverless"]},
-            {"name": "setting-up-project", "variants": ["byoc", "serverless"]},
+            {"name": "setting-up-a-project", "variants": ["byoc", "serverless"]},
             {"name": "local-dependencies", "variants": ["byoc", "serverless"]},
             {"name": "image-spec", "variants": ["byoc", "serverless"]},
             {"name": "running-your-code", "variants": ["byoc", "serverless"]},
@@ -225,12 +225,12 @@
                 {"name": "spark", "variants": ["byoc"]}
             ]},
             {"name": "actors", "variants": ["byoc", "serverless"], "children":[
-                {"name": "actor.actorenvironment", "variants": ["byoc", "serverless"]}
+                {"name": "actor-environment", "variants": ["byoc", "serverless"]}
             ]},
             {"name": "artifacts", "variants": ["byoc", "serverless"], "children": [
-                {"name": "artifacts.datacard", "variants": ["byoc", "serverless"]},
-                {"name": "artifacts.modelcard", "variants": ["byoc", "serverless"]},
-                {"name": "artifacts.onartifact", "variants": ["byoc", "serverless"]}
+                {"name": "artifacts-data-card", "variants": ["byoc", "serverless"]},
+                {"name": "artifacts-model-card", "variants": ["byoc", "serverless"]},
+                {"name": "artifacts-on-artifact", "variants": ["byoc", "serverless"]}
             ]},
             {"name": "union-remote", "variants": ["byoc", "serverless"], "children": [
                 {"name": "entrypoint", "variants": ["byoc", "serverless"]},
