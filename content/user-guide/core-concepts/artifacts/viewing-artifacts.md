@@ -1,3 +1,9 @@
+---
+title: Viewing artifacts
+weight: 6
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Viewing artifacts
 
 ## Artifacts list

@@ -1,3 +1,9 @@
+---
+title: Declaring artifacts
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Declaring artifacts
 
 In order to define a task or workflow that emits an artifact, you must first declare the artifact and the keys for any [partitions](./index.md#partitions) you wish for it to have. For the `Artifact` class parameters and methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
@@ -6,18 +12,13 @@ In order to define a task or workflow that emits an artifact, you must first dec
 
 In the following example, an artifact called `BasicTaskData` is declared, along with a task that emits that artifact. Since it is a basic artifact, it doesn't have any partitions.
 
-{{< if-variant byoc >}}
-
-> To use the example code on this page, you will need to add your `registry`
-> to the `pandas_image` ImageSpec block.
-
+{{< if-variant "byoc byok flyte" >}}
+{{< note >}}
+To use the example code on this page, you will need to add your `registry`
+to the `pandas_image` ImageSpec block.
+{{< /note >}}
 {{< /if-variant >}}
 
-{{< if-variant "serverless byok" >}}
-
-> Now I can write it here just fine. It auto-refreshes.
-
-{{< /if-variant >}}
 
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/basic.py
 :caption: basic.py

@@ -1,3 +1,9 @@
+---
+title: Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use
+weight: 9
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use
 
 ## Overview
@@ -60,7 +66,7 @@ This example takes NVIDIA's [PDF-to-podcast blueprint agent](https://github.com/
 
 First, let's import all the necessary dependencies.
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -90,7 +96,7 @@ union run --copy all --remote pdf_to_podcast.py pdf_to_podcast
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py).
 
-::::
+--/dropdown--
 
 ```python
 import functools

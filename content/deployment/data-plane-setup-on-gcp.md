@@ -1,3 +1,9 @@
+---
+title: Data plane setup on GCP
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Data plane setup on GCP
 
 To set up your data plane on Google Cloud Platform (GCP) you must allow Union to provision and maintain compute resources under your GCP account.
@@ -40,27 +46,27 @@ If you have not done so already, you will be guided to [enable the required APIs
 
 Assuming you have the [`gcloud` tool ](https://cloud.google.com/sdk/gcloud)installed locally and are logged into `<UnionDataPlaneProjectID>`, you can check the existing workflow identity pools in your project with:
 
-{{< highlight shell >}}
+```shell
 $ gcloud iam workload-identity-pools list --location="global"
-{{< /highlight >}}
+```
 
 To create the workload identity pool, do:
 
-{{< highlight shell >}}
+```shell
 $ gcloud iam workload-identity-pools create unionai \
     --location="global" \
     --description="Union AI WIF" \
     --display-name="unionai"
-{{< /highlight >}}
+```
 
 To add the provider, do:
 
-{{< highlight shell >}}
+```shell
 $ gcloud iam workload-identity-pools providers create-aws unionai-aws \
     --location="global"  \
     --workload-identity-pool="unionai" \
     --account-id="479331373192"
-{{< /highlight >}}
+```
 
 ## Create a role for Union AI admin
 
@@ -75,11 +81,11 @@ This file is the role definition. It is a list of the privileges that will make 
 
 Assuming you have the above file (`union-ai-admin-role.yaml`) in your current directory and substituting your project ID, do:
 
-{{< highlight shell >}}
+```shell
 $ gcloud iam roles create UnionaiAdministrator \
     --project=<ProjectId> \
     --file=union-ai-admin-role.yaml
-{{< /highlight >}}
+```
 
 ## Create the Union AI admin service account
 
@@ -98,18 +104,18 @@ _If you use a different ID (though this is not recommended) then you must inform
 
 Create the service account like this:
 
-{{< highlight shell >}}
+```shell
 $ gcloud iam service-accounts create unionai-administrator \
     --project <ProjectId>
-{{< /highlight >}}
+```
 
 Bind the service account to the project and add the Union AI Administrator role like this (again, substituting your project ID):
 
-{{< highlight shell >}}
+```shell
 $ gcloud projects add-iam-policy-binding <ProjectId> \
     --member="serviceAccount:unionai-administrator@<ProjectId>.iam.gserviceaccount.com" \
     --role="projects/<ProjectId>/roles/UnionaiAdministrator"
-{{< /highlight >}}
+```
 
 ## Grant access for the Workflow Identity Pool to the Service Account
 
@@ -125,12 +131,12 @@ $ gcloud projects add-iam-policy-binding <ProjectId> \
 To grant the WIP access to the service account, do the following.
 Notice that you must substitute your `<ProjectId>` and your `<ProjectNumber>`.
 
-{{< highlight shell >}}
+```shell
 $ gcloud iam service-accounts add-iam-policy-binding unionai-administrator@<ProjectId>.iam.gserviceaccount.com \
       --project=<ProjectId> \
       --role="roles/iam.workloadIdentityUser" \
       --member="principalSet://iam.googleapis.com/projects/<ProjectNumber>/locations/global/workloadIdentityPools/unionai/*"
-{{< /highlight >}}
+```
 
 ## Enable services API
 
@@ -164,7 +170,7 @@ Go to [Google Cloud API library](https://console.cloud.google.com/apis/library) 
 
 Perform the following `gcloud` commands:
 
-{{< highlight shell >}}
+```shell
 $ gcloud services enable artifactregistry.googleapis.com
 $ gcloud services enable autoscaling.googleapis.com
 $ gcloud services enable cloudkms.googleapis.com
@@ -182,7 +188,7 @@ $ gcloud services enable servicenetworking.googleapis.com
 $ gcloud services enable sts.googleapis.com
 $ gcloud services enable sqladmin.googleapis.com
 $ gcloud services enable storage-api.googleapis.com
-{{< /highlight >}}
+```
 
 ## Export Workflow Identity Config
 

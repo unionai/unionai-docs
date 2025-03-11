@@ -1,3 +1,9 @@
+---
+title: Enabling Google Artifact Registry
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Enabling Google Artifact Registry
 
 ## Access to Artifact Registry in the same project is enabled by default
@@ -16,23 +22,23 @@ This is the infrastructure-level access that we discussed [earlier](./index.md#i
 It is mediated by the a specific Google Service Account (GSA) which we will refer to here as `<FlyteWorkerGSA>`
 (recall that this is in contrast to the task code access, which is mediated by a different default GSA, `<UserFlyteGSA>`).
 
-:::--admonition-- `<FlyteWorkerGSA>`
+{{< note "`<FlyteWorkerGSA>`" >}}
 Here we refer to the default global-access GSA as`<FlyteWorkerGSA>`because the precise name differs across installations.
 This GSA is identified by name and email of the following form:
 
-- Name: `<OrgName>-flyteworker-<Suffix>`
-- Email: `<OrgName>-flyteworker-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
-  :::
+* Name: `<OrgName>-flyteworker-<Suffix>`
+* Email: `<OrgName>-flyteworker-<Suffix>@<OrgName>-gcp-dataplane.iam.gserviceaccount.com`
+{{< /note >}}
 
 To enable access to the GAR repository in the other account, do the following:
 
-- In your data plane GCP project, go to **IAM > Service Accounts**.
+* In your data plane GCP project, go to **IAM > Service Accounts**.
   Find the GSA `<FlyteWorkerGSA>` and copy its email.
   We will call this `<FlyteWorkerGSAEmail>`.
-- In the other GCP project account (the one that contains the GAR instance), go to **Artifact Registry > Repositories**.
-- Find the GAR repository you want to enable and select the checkbox beside it.
-- Under **Permissions** in the side panel, select **Add Principal**.
-- Specify the `<FlyteWorkerGSAEmail>` as a **Principal** and assign (at least) the role **Artifact Registry Reader**.
-- Select **Save**.
+* In the other GCP project account (the one that contains the GAR instance), go to **Artifact Registry > Repositories**.
+* Find the GAR repository you want to enable and select the checkbox beside it.
+* Under **Permissions** in the side panel, select **Add Principal**.
+* Specify the `<FlyteWorkerGSAEmail>` as a **Principal** and assign (at least) the role **Artifact Registry Reader**.
+* Select **Save**.
 
 Your Union data plane infrastructure should now be able to pull images from the GAR repository.

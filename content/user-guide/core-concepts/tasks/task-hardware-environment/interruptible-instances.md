@@ -1,10 +1,16 @@
+---
+title: Interruptible instances
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Interruptible instances
 
-:::--note--
+{{< note >}}
 In AWS, the term *spot instance* is used.
 In GCP, the equivalent term is *spot vm*.
 Here we use the term *interruptible instance* generically for both providers.
-:::
+{{< /note >}}
 
 An interruptible instance is a machine instance made available to your cluster by your cloud provider that is not guaranteed to be always available.
 As a result, interruptible instances are cheaper than regular instances.
@@ -21,9 +27,9 @@ This on-demand node group will be used as a fallback when attempts to complete t
 To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@union.task` decorator.
 For example:
 
-{{< highlight python >}}
+```python
 @union.task(interruptible=True, retries=3)
-{{< /highlight >}}
+```
 
 * A task will only be scheduled on a interruptible instance if it has the parameter `interruptible=True` (or if its workflow has the parameter `interruptible=True` and the task does not have an explicit `interruptible` parameter).
 * An interruptible task, like any other task, can have a `retries` parameter.

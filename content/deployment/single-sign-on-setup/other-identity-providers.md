@@ -1,3 +1,9 @@
+---
+title: Other identity providers
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Other identity providers
 
 Depending on the type of identity provider you are using, open the appropriate directions below on the Okta site:

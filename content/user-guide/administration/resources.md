@@ -1,3 +1,9 @@
+---
+title: Resources
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Resources
 
 Select **Resources** in the top right of the Union interface to open a view showing the overall health and utilization of your Union installation.
@@ -86,16 +92,16 @@ Under the hood, Union uses Kubernetes to run workloads. To deliver multi-tenancy
 
 Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/policy/resource-quotas/) is set for each resource type (memory, CPU, GPU). This dashboard displays the current point-in-time quota consumption for memory, CPU, and GPU. Quotas are defined as part of the set-up of the instance types in your data plane. To change them, talk to the Union team.
 
-{@# TODO: Add section back in when we have screenshots for specific percentage examples
+{{/* TODO: Add section back in when we have screenshots for specific percentage examples
 
 ### Examples
 
 In Flyte you set resource requests and limits at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources.md)):
 
-{{< highlight python >}}
+```python
 @union.task(requests=Resources(cpu="1", mem="1Gi"),
       limits=Resources(cpu="10", mem="10Gi"))
-{{< /highlight >}}
+```
 
 
 This task (which will manifest as a Kubernetes pod) requests 1 CPU and 1 gibibyte of memory. It sets a limit of 10 CPUs and 10 gibibytes of memory.
@@ -108,7 +114,7 @@ Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashb
 
 ![Resource Quotas 100%](/_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
 
-#@}
+*/}}
 
 ### Quota Consumption
 
@@ -145,20 +151,20 @@ The dashboard provides the following information:
 
 In the screenshot above, there is a `t3a.xlarge` with `3670m` (3670 millicores) of allocatable CPU, and a larger `c5.4xlarge` with `15640m` of allocatable CPU. In order to schedule a workload on the smaller node, you could specify the following in a task definition:
 
-{{< highlight python >}}
+```python
 @union.task(requests=Resources(cpu="3670m", mem="1Gi"),
       limits=Resources(cpu="3670m", mem="1Gi"))
-{{< /highlight >}}
+```
 
 
 In the absence of confounding factors (for example, other workloads fully utilizing all `t3a.xlarge` instances), this task will spin up a `t3a.xlarge` instance and run the execution on it, taking all available allocatable CPU resources.
 
 Conversely, if a user requests the following:
 
-{{< highlight python >}}
+```python
 @union.task(requests=Resources(cpu="4000m", mem="1Gi"),
       limits=Resources(cpu="4000m", mem="1Gi"))
-{{< /highlight >}}
+```
 
 
 The workload will schedule on a larger instance (like the `c5.4xlarge`) because `4000m` exceeds the allocatable CPU on the `t3a.xlarge`, despite the fact that this instance type is [marketed](https://instances.vantage.sh/aws/ec2/t3a.xlarge) as having 4 CPU cores. The discrepancy is due to overheads and holdbacks introduced by Kubernetes to ensure adequate resources to schedule pods on the node.

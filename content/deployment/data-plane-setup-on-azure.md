@@ -1,3 +1,9 @@
+---
+title: Data plane setup on Azure
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Data plane setup on Azure
 
 To set up your data plane on Azure, you must allow Union to provision and maintain compute resources under your Azure subscription. To do this, you will need to provision an Azure app registration with sufficient permissions to an Azure subscription.
@@ -7,12 +13,12 @@ To set up your data plane on Azure, you must allow Union to provision and mainta
 - Select the tenant ID for your organization. Refer to [Microsoft Entra ID service page](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) from the Azure portal.
 - We highly recommend creating a new subscription for Union-specific services. This helps isolate service quotas and Azure costs from your other Azure resources.
   - Ensure the subscription is tied to an active billing account.
-- Provide the Tenant and Suscription ID to Union.
+- Provide the Tenant and Subscription ID to Union.
 
 ## Create a Microsoft Entra Application Registration
 
 Union uses [Microsoft Entra for AKS authentication and Kubernetes RBAC for authorization](https://learn.microsoft.com/en-us/azure/aks/azure-ad-rbac?tabs=portal). This step involves
-creating a Union specific App and granting it sufficient permission to managed the dataplane.
+creating a Union specific App and granting it sufficient permission to manage the dataplane.
 
 1. Navigate to the [Application Registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) page.
 2. Create a new registration.
@@ -77,11 +83,11 @@ Union requires permissions to read Azure network resources and assign the `Netwo
 
 This configuration will provide the Union application with the necessary permissions to interact with and manage resources within the specified VNet.
 
-:::--admonition-- Creating Azure role assignments
+{{< note "Creating Azure role assignments" >}}
 
 For more detailed instructions on creating role assignments, refer to the [official Azure documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
 
-:::
+{{< /note >}}
 
 ### Required VNet properties
 
@@ -117,8 +123,6 @@ Once your VPC is set up, provide the following to Union:
 
 Union configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
 
-:::--admonition-- Setting up Tasks for Fault Tolerance
-
+{{< note "Setting up Tasks for Fault Tolerance" >}}
 During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimize failed executions.
-
-:::
+{{< /note >}}

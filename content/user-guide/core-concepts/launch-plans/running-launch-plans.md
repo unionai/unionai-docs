@@ -1,3 +1,9 @@
+---
+title: Running launch plans
+weight: 7
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Running launch plans
 
 ## Running a launch plan in the UI
@@ -9,22 +15,22 @@ To invoke a launch plan, go to the **Workflows** list, select the desired workfl
 
 To invoke a launch plan via the command line, first generate the execution spec file for the launch plan:
 
-{{< highlight shell >}}
+```shell
 $ uctl get launchplan \
        --project <project-id>
        --domain <domain> \
        <launch-plan-name> \
        --execFile <execution-spec-file-name>.yaml
-{{< /highlight >}}
+```
 
 Then you can execute the launch plan with the following command:
 
-{{< highlight shell >}}
+```shell
 $ uctl create execution \
        --project <project-id> \
        --domain <domain> \
        --execFile <execution-spec-file-name>.yaml
-{{< /highlight >}}
+```
 
 See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
@@ -32,14 +38,14 @@ See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
 The following code executes a launch plan using `UnionRemote`:
 
-{{< highlight python >}}
+```python
 from union.remote import UnionRemote
 from flytekit.remote import Config
 
 remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
 launch_plan = remote.fetch_launch_plan(name=<launch-plan-name>, version=<launch-plan-version>)
 remote.execute(launch_plan, inputs=<inputs>)
-{{< /highlight >}}
+```
 
 See the [UnionRemote](../../development-cycle/union-remote/index.md) for more details.
 

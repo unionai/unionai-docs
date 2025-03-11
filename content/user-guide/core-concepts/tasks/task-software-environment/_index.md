@@ -1,3 +1,9 @@
+---
+title: Task software environment
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Task software environment
 
 The @union.task decorator provides the following parameters to specify the software environment in which a task runs:

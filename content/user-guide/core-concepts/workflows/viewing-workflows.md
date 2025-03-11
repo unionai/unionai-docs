@@ -1,3 +1,9 @@
+---
+title: Viewing workflows
+weight: 7
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Viewing workflows
 
 ## Workflows list
@@ -41,3 +47,7 @@ This view provides:
 The workflow versions list shows the  a list of all versions of this workflow along with a graph view of the workflow structure:
 
 ![Workflow version list](/_static/images/user-guide/core-concepts/workflows/viewing-workflows/workflow-versions-list.png)
+
+### Workflow and task descriptions
+
+{@= Product =@} enables the use of docstrings to document your code. Docstrings are stored in the control plane and displayed on the UI for each workflow or task.

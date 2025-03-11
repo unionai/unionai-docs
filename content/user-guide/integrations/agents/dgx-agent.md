@@ -1,3 +1,9 @@
+---
+title: NVIDIA DGX agent
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # NVIDIA DGX agent
 
 You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/data-center/dgx-platform/) with the DGX agent.
@@ -9,7 +15,7 @@ To install the DGX agent and have it enabled in your deployment, contact the Uni
 
 ## Example usage
 
-{{< highlight python >}}
+```python
 from typing import List
 
 import union
@@ -92,4 +98,4 @@ def wf(
 ) -> List[str]:
     messages = form_prompt(prompt=prompt, system_message=system_message)
     return inference(messages=messages, n_variations=n_variations)
-{{< /highlight >}}
+```

@@ -1,3 +1,9 @@
+---
+title: Data plane setup on AWS
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Data plane setup on AWS
 
 To set up your data plane on Amazon Web Services (AWS) you must allow Union to provision and maintain compute resources under your AWS account.
@@ -24,14 +30,14 @@ Ensure that you are logged into the desired AWS account and then select the appr
 | `eu-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
 | `eu-central-1` | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
 
-:::--admonition-- CloudFormation template
+{{< note "CloudFormation template" >}}
 All of these buttons launch the same CloudFormation template, just in different regions.
 The CloudFormation template itself is available at this URL:
 
 - [https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml)
 
 For details on the functionality enabled by each of the permissions, see the [release notes](https://github.com/unionai/union-cloud-infrastructure/releases).
-:::
+{{< /note >}}
 
 ### Confirm the details
 
@@ -91,7 +97,7 @@ First, copy the policy document `UnionIAMPolicy.json` below to an editor and rep
 
 You will use this policy in a later step.
 
-{{< highlight json >}}
+```json
 :caption: UnionIAMPolicy.json
 
 {
@@ -626,7 +632,7 @@ You will use this policy in a later step.
 }
 ]
 }
-{{< /highlight >}}
+```
 
 ### Create the role manually
 

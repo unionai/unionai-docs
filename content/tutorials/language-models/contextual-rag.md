@@ -1,3 +1,9 @@
+---
+title: Building a Contextual RAG Workflow with Together AI
+weight: 10
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Building a Contextual RAG Workflow with Together AI
 
 This notebook walks you through building a Contextual RAG (Retrieval-Augmented Generation) workflow using Together's embedding, reranker, and chat models. It ties together web scraping, embedding generation, and serving into one cohesive application.
@@ -78,7 +84,7 @@ actor = ActorEnvironment(
     ),
     secret_requests=[
         fl.Secret(
-            key="together-api-key", 
+            key="together-api-key",
             env_var="TOGETHER_API_KEY",
             mount_requirement=union.Secret.MountType.ENV_VAR,
         ),
@@ -154,7 +160,7 @@ def scrape_pg_essays(document: Document) -> Document:
         response = requests.get(document.url)
     except Exception as e:
         raise FlyteRecoverableException(f"Failed to scrape {document.url}: {str(e)}")
-    
+
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
     content = soup.find("font")
@@ -285,7 +291,7 @@ def create_vector_index(
 
     if not document.contextual_chunks:
         return document  # Exit early if there are no contextual chunks
-    
+
     # Generate embeddings for chunks
     embeddings = [get_embedding(chunk[:512], embedding_model) for chunk in document.contextual_chunks] # NOTE: Trimming the chunk for the embedding model's context window
     embeddings_np = np.array(embeddings, dtype=np.float32)
@@ -383,7 +389,7 @@ def build_indices_wf(
     union.map_task(
         functools.partial(
             create_vector_index, embedding_model=embedding_model, local=local
-        ), 
+        ),
         concurrency=2
     )(document=contextual_chunks)
     bm25s_index, contextual_chunks_json_file = create_bm25s_index(
@@ -414,20 +420,20 @@ def retrieve(
     import numpy as np
     from pymilvus import MilvusClient
 
-    client = MilvusClient("test_milvus.db")    
-    
+    client = MilvusClient("test_milvus.db")
+
     # Generate embeddings for the queries using Together
     query_embeddings = [
         get_embedding(query, embedding_model) for query in queries
     ]
     query_embeddings_np = np.array(query_embeddings, dtype=np.float32)
 
-    collection_name = "paul_graham_collection" 
+    collection_name = "paul_graham_collection"
     results = client.search(
-        collection_name, 
-        query_embeddings_np, 
-        limit=5, 
-        search_params={"metric_type": "COSINE"}, 
+        collection_name,
+        query_embeddings_np,
+        limit=5,
+        search_params={"metric_type": "COSINE"},
         anns_field="embedding",
         output_fields=["document_index", "title"]
     )
@@ -487,7 +493,7 @@ indices_execution = remote.execute(build_indices_wf, inputs={"local": False})
 print(indices_execution.execution_url)
 ```
 
-We define a launch plan to run the workflow daily. A [launch plan](https://docs.union.ai/serverless/user-guide/core-concepts/launch-plans/) serves as a template for invoking the workflow. 
+We define a launch plan to run the workflow daily. A [launch plan](https://docs.union.ai/serverless/user-guide/core-concepts/launch-plans/) serves as a template for invoking the workflow.
 
 The scheduled launch plan ensures that the vector database and keyword index are regularly updated, keeping the data fresh and synchronized.
 
@@ -503,7 +509,7 @@ lp = fl.LaunchPlan.get_or_create(
     auto_activate=True,
 )
 
-registered_lp = remote.register_launch_plan(entity=lp) 
+registered_lp = remote.register_launch_plan(entity=lp)
 ```
 
 ## Deploy apps
@@ -558,8 +564,8 @@ fastapi_app = App(
     max_replicas=1,
     secrets=[
         fl.Secret(
-            key="together-api-key", 
-            env_var="TOGETHER_API_KEY", 
+            key="together-api-key",
+            env_var="TOGETHER_API_KEY",
             mount_requirement=union.Secret.MountType.ENV_VAR
         ),
         fl.Secret(

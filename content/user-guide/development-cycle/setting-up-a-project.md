@@ -1,8 +1,14 @@
+---
+title: Setting up a project
+weight: 6
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Setting up a project
 
 In Union, your work is organized in a hierarchy with the following structure:
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 
 * **Account**: Your account on Union, tied to your GitHub identity.
 * **Domains**: Within your account there are three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
@@ -13,7 +19,8 @@ When you start working on `my_workflow` you would typically register it in the p
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code.md).
 
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
@@ -25,7 +32,7 @@ When you start work on `my_workflow` you would typically register it in the proj
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually `my_project/production`.
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code.md).
 
-{@@ endif @@}
+{{< /if-variant >}}
 
 ## Terminology
 
@@ -65,22 +72,22 @@ We will use the `union init` command to create a new workflow directory on your 
 
 To create the workflow directory, run the following command:
 
-{{< highlight shell >}}
+```shell
 $ union init --template basic-union-template basic-example
-{{< /highlight >}}
+```
 
 ## Directory structure
 
 In the `basic-example` directory you’ll see the following file structure:
 
-{{< highlight shell >}}
+```shell
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
 └── workflows
     ├── __init__.py
     └── example.py
-{{< /highlight >}}
+```
 
 You can create your own conventions and file structure for your Union projects.
 The `union init` command just provides a good starting point.

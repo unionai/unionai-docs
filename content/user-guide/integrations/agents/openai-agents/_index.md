@@ -1,3 +1,9 @@
+---
+title: OpenAI agents
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # OpenAI agents
 
 There are two OpenAI agents:

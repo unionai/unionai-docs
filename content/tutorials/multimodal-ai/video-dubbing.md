@@ -1,3 +1,9 @@
+---
+title: Video Dubbing
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Video Dubbing
 
 This tutorial demonstrates a video dubbing workflow using open-source models.
@@ -12,7 +18,7 @@ The workflow consists of the following steps:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -40,7 +46,7 @@ union run --remote --copy-all video_translation.py video_translation_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/video_translation/video_translation.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

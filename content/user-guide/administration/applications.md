@@ -1,3 +1,9 @@
+---
+title: Applications
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Applications
 
 A Union application is an identity through which external systems can perform actions in the system.
@@ -7,13 +13,13 @@ Applications are managed through the [`uctl` CLI](../../api-reference/uctl-cli/i
 
 ## List existing apps
 
-{{< highlight shell >}}
+```shell
 $ uctl get apps
-{{< /highlight >}}
+```
 
 Output:
 
-{{< highlight shell >}}
+```shell
  -------------------- --------------------- ---------------- ----------------------------------------
 | ID (4)             | CLIENT NAME        | RESPONSE TYPES | GRANT TYPES                             |
  -------------------- -------------------- ---------------- -----------------------------------------
@@ -23,22 +29,22 @@ Output:
  -------------------- -------------------- ---------------- -----------------------------------------
 | contoso-operator   | contoso operator   | [CODE]         | [CLIENT_CREDENTIALS AUTHORIZATION_CODE] |
  -------------------- -------------------- ---------------- -----------------------------------------
-{{< /highlight >}}
+```
 
-:::--note--
+{{< note >}}
 These 3 apps are built into the system.
 Modifying these by editing, deleting or recreating them will disrupt the system.
-:::
+{{< /note >}}
 
 ## Exporting the spec of an existing app
 
-{{< highlight shell >}}
+```shell
 $ uctl get apps contoso-operator --appSpecFile app.yaml
-{{< /highlight >}}
+```
 
 Output:
 
-{{< highlight yaml >}}
+```yaml
 clientId: contoso-operator
 clientName: contoso operator
 grantTypes:
@@ -49,13 +55,13 @@ redirectUris:
 responseTypes:
   - CODE
 tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
-{{< /highlight >}}
+```
 
 ## Creating a new app
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
 
-{{< highlight yaml >}}
+```yaml
 clientId: example-operator
 clientName: Example Operator
 grantTypes:
@@ -66,23 +72,23 @@ redirectUris:
 responseTypes:
 - CODE
 tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
-{{< /highlight >}}
+```
 
 Now, create the app using the specification file:
 
-{{< highlight shell >}}
+```shell
 $ uctl create app --appSpecFile app.yaml
-{{< /highlight >}}
+```
 
 The response should look something like this:
 
-{{< highlight shell >}}
+```shell
  ------------------ ------------------- ------------- ---------
 | NAME             | CLIENT NAME       | SECRET      | CREATED |
  ------------------ ------------------- ------------- ---------
 | example-operator |  Example Operator | <AppSecret> |         |
  ------------------ ------------------- ------------- ---------
-{{< /highlight >}}
+```
 
 Copy the `<AppSecret>` to an editor for later use.
 This is the only time that the secret will be displayed.
@@ -92,14 +98,14 @@ The secret is not stored by Union.
 
 To update an existing app, update its specification file as desired while leaving the `clientId` the same, to identify which app is to be updated, and then do:
 
-{{< highlight shell >}}
+```shell
 $ uctl apply app --appSpecFile app.yaml
-{{< /highlight >}}
+```
 
 ## Delete an app
 
 To delete an app use the `uctl delete app` command and specify the app by ID:
 
-{{< highlight shell >}}
+```shell
 $ uctl delete app example-operator
-{{< /highlight >}}
+```

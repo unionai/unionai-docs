@@ -1,3 +1,9 @@
+---
+title: Serving NVIDIA NIM Models with Union Actors
+weight: 8
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Serving NVIDIA NIM Models with Union Actors
 
 This tutorial shows you how to serve NVIDIA NIM-supported models using Union actors.
@@ -10,7 +16,7 @@ Let’s dive in by importing the necessary libraries and modules:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -38,7 +44,7 @@ union run --remote nim_on_actor.py batch_inference_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/nim_on_actor/nim_on_actor.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

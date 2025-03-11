@@ -1,6 +1,7 @@
 ---
 title: Tutorials
 weight: 2
+variants: "+flyte +serverless +byoc +byok"
 top_menu: true
 ---
 
@@ -9,124 +10,73 @@ top_menu: true
 This section provides tutorials that walk you through the process of building AI/ML applications on Union.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
-::::{grid} 2
+{{< grid >}}
 
-:::{grid-item-card} {octicon}`heart-fill` Sentiment Classification with DistilBERT
-:link: language-models/sentiment-classifier
-:link-type: doc
+{{< link-card target="language-models/sentiment-classifier" icon="heart-fill" title="Sentiment Classification with DistilBERT" >}}
+Fine-tune a pre-trained language model in the IMDB dataset for sentiment classification.
+{{< /link-card >}}
 
-Fine-tune a pre-trained language model in the IMDB dataset for sentiment
-classification.
-:::
-
-:::{grid-item-card} {octicon}`dependabot` Agentic Retrieval Augmented Generation
-:link: language-models/agentic-rag
-:link-type: doc
-
+{{< link-card target="language-models/agentic-rag" icon="dependabot" title="Agentic Retrieval Augmented Generation" >}}
 Build an agentic retrieval augmented generation system with ChromaDB and Langchain.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`dependabot` HDBSCAN Soft Clustering With Headline Embeddings with GPUs
-:link: language-models/soft-clustering-hdbscan
-:link-type: doc
-
+{{< link-card target="language-models/soft-clustering-hdbscan" icon="dependabot" title="HDBSCAN Soft Clustering With Headline Embeddings with GPUs" >}}
 Use HDBSCAN soft clustering with headline embeddings and UMAP on GPUs.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`device-mobile` Deploy a Fine-Tuned Llama Model to an iOS App with MLC-LLM
-:link: language-models/llama_edge_deployment
-:link-type: doc
-
+{{< link-card target="language-models/llama_edge_deployment" icon="device-mobile" title="Deploy a Fine-Tuned Llama Model to an iOS App with MLC-LLM" >}}
 Fine-tunes a Llama 3 model on the Cohere Aya Telugu subset and generates a model artifact for deployment as an iOS app.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`hubot` Reddit Slack Bot on a Schedule
-:link: parallel-processing-and-job-scheduling/reddit-slack-bot
-:link-type: doc
+{{< link-card target="parallel-processing-and-job-scheduling/reddit-slack-bot" icon="hubot" title="Reddit Slack Bot on a Schedule" >}}
+Securely store Reddit and Slack authentication data while pushing relevant Reddit posts to slack on a consistent basis.
+{{< /link-card >}}
 
-Securely store Reddit and Slack authentication data while pushing relevant
-Reddit posts to slack on a consistent basis.
-:::
-
-:::{grid-item-card} {octicon}`book` Wikipedia Embeddings Generation
-:link: parallel-processing-and-job-scheduling/wikipedia-embeddings
-:link-type: doc
-
+{{< link-card target="parallel-processing-and-job-scheduling/wikipedia-embeddings" icon="book" title=" Wikipedia Embeddings Generation" >}}
 Create embeddings for the Wikipedia dataset, powered by Union actors.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`graph` Time Series Forecaster Comparison
-:link: time-series/time-series-forecaster-comparison
-:link-type: doc
-
+{{< link-card target="time-series/time-series-forecaster-comparison" icon="graph" title="Time Series Forecaster Comparison" >}}
 Visually compare the output of various time series forecasters while
 maintaining lineage of the training and forecasted data.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`graph` GluonTS Time Series On GPUs
-:link: time-series/gluonts-time-series
-:link-type: doc
-
+{{< link-card target="time-series/gluontst-time-series" icon="graph" title="GluonTS Time Series On GPUs" >}}
 Train and evaluate a time series forecasting model with GluonTS.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`graph` Credit Default Prediction with XGBoost & NVIDIA RAPIDS
-:link: finance/credit-default-xgboost
-:link-type: doc
-
+{{< link-card target="finance/credit-default-xgboost" icon="graph" title="Credit Default Prediction with XGBoost & NVIDIA RAPIDS" >}}
 Use NVIDIA RAPIDS `cuDF` DataFrame library and `cuML` machine learning to predict credit default.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`beaker` Genomic Alignment using Bowtie 2
-:link: bioinformatics/alignment
-:link-type: doc
+{{< link-card target="bioinformatics/alignment" icon="beaker" title="Genomic Alignment using Bowtie 2" >}}
+Pre-process raw sequencing reads, build an index, and perform alignment to a reference genome using the Bowtie2 aligner.
+{{< /link-card >}}
 
-Pre-process raw sequencing reads, build an index, and perform alignment
-to the a reference genome using the Bowtie2 aligner.
-:::
-
-:::{grid-item-card} {octicon}`video` Video Dubbing with Open-Source Models
-:link: multimodal-ai/video-dubbing
-:link-type: doc
-
+{{< link-card target="multimodal-ai/video-dubbing" icon="video" title="Video Dubbing with Open-Source Models" >}}
 Use open-source models to dub videos.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`accessibility-inset` Efficient Named Entity Recognition with vLLM
-:link: language-models/vllm-serving-on-actor
-:link-type: doc
-
+{{< link-card target="language-models/vllm-serving-on-actor" icon="accessibility-inset" title="Efficient Named Entity Recognition with vLLM" >}}
 Serve a vLLM model on a warm container and trigger inference automatically with artifacts.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`video` Video Generation with Mochi
-:link: diffusion-models/mochi-video-generation
-:link-type: doc
-
+{{< link-card target="diffusion-models/mochi-video-generation" icon="video" title="Video Generation with Mochi" >}}
 Run the Mochi 1 text-to-video generation model by Genmo on Union.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`play` Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use
-:link: language-models/pdf-to-podcast-blueprint
-:link-type: doc
-
+{{< link-card target="language-models/pdf-to-podcast-blueprint" icon="play" title="Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use" >}}
 Leverage Union to productionize NVIDIA blueprint workflows.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`book` Contextual RAG with Together AI
-:link: language-models/contextual-rag
-:link-type: doc
-
+{{< link-card target="language-models/contextual-rag" icon="book" title=" Contextual RAG with Together AI" >}}
 Build a contextual RAG workflow for enterprise use.
-:::
+{{< /link-card >}}
 
-{@@ if byoc @@}
-:::{grid-item-card} {octicon}`server` Near-Real-Time Inference with NVIDIA NIM
-:link: language-models/nim-on-actor
-:link-type: doc
-
+{{< if-variant variants=byoc nested=true >}}
+{{< link-card target="language-models/nim-on-actor" icon="server" title="Near-Real-Time Inference with NVIDIA NIM" >}}
 Serve NVIDIA NIM-supported language models, powered by Union actors.
-:::
-{@@ endif @@}
+{{< /link-card >}}
+{{< /if-variant >}}
 
-::::
+{{< /grid >}}

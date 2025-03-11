@@ -1,3 +1,9 @@
+---
+title: Forecasting with GluonTS & PyTorch on GPUs
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Forecasting with GluonTS & PyTorch on GPUs
 
 In this tutorial, we learn how to train and evaluate a time series forecasting model
@@ -8,7 +14,7 @@ specify dependencies for this workflow, and visualize our results with Flyte Dec
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -36,7 +42,7 @@ union run --remote gluonts_time_series.py gluonts_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/gluonts_time_series/gluonts_time_series.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

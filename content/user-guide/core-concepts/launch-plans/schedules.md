@@ -1,3 +1,9 @@
+---
+title: Schedules
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Schedules
 
 Launch plans let you schedule the invocation of your workflows.

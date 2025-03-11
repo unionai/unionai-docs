@@ -1,3 +1,9 @@
+---
+title: Running your workflow
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Running your workflow
 
 ## Python virtual environment
@@ -6,98 +12,101 @@ The first step is to ensure that your `uv.lock` file is properly generated from 
 
 Using `uv`, you can install the dependencies with the command:
 
-{{< highlight shell >}}
+```shell
 $ uv sync
-{{< /highlight >}}
+```
 
 You can then activate the virtual environment with:
 
-{{< highlight shell >}}
+```shell
 source .venv/bin/activate
-{{< /highlight >}}
+```
 
-:::--admonition-- `activate` vs `uv run`
-When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
-This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the-union-cli) in order to [set up its configuration](./local-setup.md#configure-the-union-cli).
+{{< note "`activate` vs `uv run`" >}}
+When running the `{@= cli =@}` CLI within your local project you must run it in the virtual environment _associated with_ that project.
+This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the--cli--cli) in order to [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
 
-To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
+To run `{@= cli =@}` within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
 
-`uv run union ...`
+`uv run {@= cli =@} ...`
 
-Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
+Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `{@= cli =@}` command directly.
 
 In our examples we assume that you are doing the latter.
-:::
+{{< /note >}}
+
 
 ## Run the code locally
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
-You can run the workflow locally with the command [`union run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
+You can run the workflow locally with the command [`{@= cli =@} run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
 
-{{< highlight shell >}}
-$ union run hello_world.py hello_world_wf
-{{< /highlight >}}
+```shell
+$ {@= cli =@} run hello_world.py hello_world_wf
+```
 
 You should see output like this:
 
-{{< highlight shell >}}
+```shell
 Running Execution on local.
 Hello, world!
-{{< /highlight >}}
+```
 
 You can also pass in parameters to the workflow (assuming they declared in the workflow function):
 
-{{< highlight shell >}}
-$ union run hello_world.py hello_world_wf --name="everybody"
-{{< /highlight >}}
+```shell
+$ {@= cli =@} run hello_world.py hello_world_wf --name="everybody"
+```
 
 You should see output like this:
 
-{{< highlight shell >}}
+```shell
 Running Execution on local.
 Hello, everybody!
-{{< /highlight >}}
+```
 
-## Running remotely on Union
+## Running remotely on Union in the cloud
 
-Local execution is useful for testing and debugging your workflows.
-But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance.
+Running you code in your local Python environment is useful for testing and debugging.
 
-When task and workflow code is registered on Union:
+But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance in the cloud.
 
-- The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
-- The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
+When task and workflow code is registered:
 
-To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
+* The `{@= task =@}` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
+* The `{@= workflow =@}` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-{{< highlight shell >}}
+To run the workflow on Union in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
+
+```shell
 $ union run --remote --project my-project --domain development hello_world.py hello_world_wf
-{{< /highlight >}}
+```
 
 The output displays a URL that links to the workflow execution in the UI:
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 
-{{< highlight shell >}}
+```shell
 👍 Build submitted!
 ⏳ Waiting for build to finish at: https://serverless.union.ai/org/...
 ✅ Build completed in 0:01:57!
 
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
-{{< /highlight >}}
+```
 
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 
-{{< highlight shell >}}
+```shell
 👍 Build submitted!
 ⏳ Waiting for build to finish at: https://<union-host-url>/org/...
 ✅ Build completed in 0:01:57!
 
 [✔] Go to https://<union-host-url>/org/... to see execution in the UI.
-{{< /highlight >}}
+```
 
-{@@ endif @@}
+{{< /if-variant >}}
 
 Click the link to see the execution in the UI.
 
@@ -111,20 +120,20 @@ To do this, you can use the `union register` command to register the workflow co
 
 The form of the command is:
 
-{{< highlight shell >}}
+```shell
 $ union register [<options>] <path-to-source-directory>
-{{< /highlight >}}
+```
 
 in our case, from within the `getting-started` directory, you would do:
 
-{{< highlight shell >}}
+```shell
 $ union register --project my-project --domain development .
-{{< /highlight >}}
+```
 
 This registers all code in the current directory to Union but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
-{{< highlight shell >}}
+```shell
 Running pyflyte register from /Users/my-user/scratch/my-project with images ImageConfig(default*image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/my-user/scratch/my-project',)
 Registering against demo.hosted.unionai.cloud
 Detected Root /Users/my-user/my-project, using this to create deployable package...
@@ -137,7 +146,7 @@ Serializing and registering 3 flyte entities
 [✔] Workflow: my-project.hello_world.hello_world_wf
 [✔] Launch Plan: my-project.hello_world.hello_world_wf
 Successfully registered 3 entities
-{{< /highlight >}}
+```
 
 ## Run the workflow from the Union interface
 

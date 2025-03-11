@@ -1,3 +1,9 @@
+---
+title: CI/CD deployment
+weight: 17
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # CI/CD deployment
 
 So far we have covered the steps of deploying a project manually from the command line.
@@ -13,7 +19,7 @@ See [Applications](../administration/applications.md).
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
 
-{{< highlight yaml >}}
+```yaml
 clientId: example-operator
 clientName: Example Operator
 grantTypes:
@@ -24,24 +30,24 @@ redirectUris:
 responseTypes:
 - CODE
 tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
-{{< /highlight >}}
+```
 
 Now, create the app using the specification file:
 
-{{< highlight shell >}}
+```shell
 [~/wine-classification]:wine-classification
 $ uctl create app --appSpecFile app.yaml
-{{< /highlight >}}
+```
 
 The response should look something like this:
 
-{{< highlight shell >}}
+```shell
  ------------------ ------------------- ------------- ---------
 | NAME             | CLIENT NAME       | SECRET      | CREATED |
  ------------------ ------------------- ------------- ---------
 | example-operator |  Example Operator | <AppSecret> |         |
  ------------------ ------------------- ------------- ---------
-{{< /highlight >}}
+```
 
 Copy the `<AppSecret>` to an editor for later use.
 This is the only time that the secret will be displayed.
@@ -65,7 +71,7 @@ For the CI/CD system you need to create one right in the same repository that ho
 
 Create `example-project/ci-config.yaml`:
 
-{{< highlight yaml >}}
+```yaml
 admin:
   endpoint: dns:///<union-host-url>
   clientId: example-operator
@@ -74,19 +80,19 @@ admin:
 logger:
   show-source: true
   level: 1
-{{< /highlight >}}
+```
 
-:::--note--
+{{< note >}}
 Note that the value of`clientSecretEnvVar`(in his case, `UNION_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
 
 It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
-:::
+{{< /note >}}
 
 ## Set up your CI/CD configuration file
 
 Finally, you need to set up the CI/CD configuration file. For GitHub Actions you might create the file `example-project/.github/workflows/deploy.yaml` that looks like this:
 
-{{< highlight yaml >}}
+```yaml
 name: Deploy
 
 on:
@@ -144,16 +150,16 @@ jobs:
             --domain production \
             --archive ./${{ env.PROJECT }}/flyte-package.tgz \
             --version ${{ github.sha }}
-{{< /highlight >}}
+```
 
-:::--note--
+{{< note >}}
 Note this section:
 
-{{< highlight yaml >}}
+```yaml
 - name: Register
   env:
     UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
-{{< /highlight >}}
+```
 
 The first instance of the name`UNION_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
 
@@ -162,6 +168,6 @@ Because we have followed the practice of using the same name for the secret stor
 You will also see other secrets and environment variables accessed in this configuration file.
 These are related to the container build process, project name and so forth.
 For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
-:::
+{{< /note >}}
 
 Once this is set up, every push to the main branch in you repository will build and deploy your project to Union.

@@ -1,15 +1,21 @@
+---
+title: Enabling AWS S3
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Enabling AWS S3
 
 For Union customers whose data plane is in AWS, we walk through setting up access to your own AWS S3 bucket.
 
-:::--admonition-- AWS S3 in the Union environment
+{{< note "AWS S3 in the Union environment" >}}
 Your data plane is set up with a Kubernetes cluster and other resources.
 Among these are a number of S3 buckets used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
 
 **These **_**are not**_** the S3 bucket we are talking about in this section.**
 
 **We are discussing the case where you have **_**your own S3 bucket**_** that you set up to store input and output data used by your workflows.**
-:::
+{{< /note >}}
 
 ## Add permissions to your custom policy
 
@@ -24,26 +30,26 @@ _In order to enable S3 access in particular, in the step_ [#add-permissions-to-y
 
 Here is a sample JSON policy document that grants these permissions:
 
-{{< highlight json >}}
+```json
 {
-"Version": "2012-10-17",
-"Statement": [
-{
-"Sid": "AllowReadWriteBucket",
-"Effect": "Allow",
-"Action": [
-"s3:ListBucket",
-"s3:GetObject",
-"s3:PutObject"
-],
-"Resource": [
-"arn:aws:s3:::<BucketName>/*",
-"arn:aws:s3:::<BucketName>"
-]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowReadWriteBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BucketName>/*",
+        "arn:aws:s3:::<BucketName>"
+      ]
+    }
+  ]
 }
-]
-}
-{{< /highlight >}}
+```
 
 In the `Resource` field, replace `<BucketName>` with the actual name of your S3 bucket.
 

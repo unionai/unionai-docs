@@ -1,3 +1,9 @@
+---
+title: Enabling AWS ECR
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Enabling AWS ECR
 
 ## Access to ECR in the same account is enabled by default
@@ -32,7 +38,7 @@ We will call this `<FlyteWorkerNodeGroupRoleARN>`.
   * `ecr:BatchGetImage`: This permission allows your data plane to retrieve image manifests and image layer information from the registry.
 * To specify the above parameters via JSON, select **Edit policy JSON** and use the following policy document:
 
-{{< highlight json >}}
+```json
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -50,7 +56,7 @@ We will call this `<FlyteWorkerNodeGroupRoleARN>`.
     }
   ]
 }
-{{< /highlight >}}
+```
 
 * Select **Save**.
 

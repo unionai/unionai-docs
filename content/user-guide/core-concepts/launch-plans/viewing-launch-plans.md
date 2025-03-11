@@ -1,3 +1,9 @@
+---
+title: Viewing launch plans
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Viewing launch plans
 
 ## Viewing launch plans in the UI
@@ -31,35 +37,35 @@ Here you can see:
 In the top right you can see if this launch plan is active (and if it is, which version, specifically, is active). There is also a control for changing the active version or deactivating the launch plan entirely.
 See [Activating and deactivating](./activating-and-deactivating.md) for more details.
 
-{@@ if byoc @@}
+{{< if-variant byoc byok flyte >}}
 
 ## Viewing launch plans on the command line with `uctl`
 
 To view all launch plans within a project and domain:
 
-{{< highlight shell >}}
+```shell
 $ uctl get launchplans \
        --project <project-id> \
        --domain <domain>
-{{< /highlight >}}
+```
 
 
 To view a specific launch plan:
 
-{{< highlight shell >}}
+```shell
 $ uctl get launchplan \
        --project <project-id> \
        --domain <domain> \
        <launch-plan-name>
-{{< /highlight >}}
+```
 
 
 See the [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
-{@@ endif @@}
+{{< /if-variant >}}
 
 ## Viewing launch plans in Python with `UnionRemote`
 
 Use the method `UnionRemote.client.list_launch_plans_paginated` to get the list of launch plans.
 
-{@# TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. #@}
+{{/* TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. */}}

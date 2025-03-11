@@ -1,3 +1,9 @@
+---
+title: File sensor agent example
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # File sensor agent example
 
 This example shows how to use the `FileSensor` to detect files appearing in your local or remote filesystem.
@@ -25,8 +31,8 @@ To use the FileSensor created in the previous step, you must specify the `path` 
 
 You can also use the S3 or GCS file system. We have already set the minio credentials in the agent by default. If you test the sandbox example locally, you will need to set the AWS credentials in your environment variables:
 
-{{< highlight shell >}}
+```shell
 export FLYTE_AWS_ENDPOINT="http://localhost:30002"
 export FLYTE_AWS_ACCESS_KEY_ID="minio"
 export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
-{{< /highlight >}}
+```

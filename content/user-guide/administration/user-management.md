@@ -1,3 +1,9 @@
+---
+title: User management
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # User management
 
 Union comes with role-based access control management out of the box.
@@ -53,13 +59,13 @@ A user or application with no policies will have no permissions but will not be 
 For example, in the case of users, they will still appear on the [list of users](#managing-users-and-assigning-policies).
 A user or application with multiple policies will have the union of the permission sets of those policies.
 
-:::--note--
+{{< note >}}
 The default roles that come out of the box are hierarchical.
 The **Admin** permission set is a superset of the **Contributor** permission set and the **Contributor** permission set is a superset of **Viewer** permission set.
 This means, for example, that if you make a user an **Admin**, then additionally assigning them **Contributor** or **Viewer** will make no difference.
 But this is only the case due to how these particular roles are defined.
 In general, it is possible to create roles where assigning multiple ones is meaningful.
-:::
+{{< /note >}}
 
 
 ## Custom roles and policies
@@ -75,7 +81,7 @@ Make sure you have the [`uctl` CLI installed and configured to point to your Uni
 
 Create a role spec file `my_role.yaml` that defines a set of actions:
 
-{{< highlight yaml >}}
+```yaml
 :name: my_role.yaml
 
 name: Workflow Runner
@@ -83,14 +89,14 @@ actions:
 - view_flyte_inventory
 - view_flyte_executions
 - create_flyte_executions
-{{< /highlight >}}
+```
 
 
 Create the role from the command line:
 
-{{< highlight shell >}}
+```shell
 $ uctl create role --roleFile my_role.yaml
-{{< /highlight >}}
+```
 
 
 ### Create a policy
@@ -98,7 +104,7 @@ $ uctl create role --roleFile my_role.yaml
 Create a policy spec file `my_policy.yaml` that binds roles to project/domain pairs.
 Here we create a policy that binds the **Contributor** role to `flytesnacks/development` and binds the **Workflow Runner** role (defined above) to `flytesnacks/production`:
 
-{{< highlight yaml >}}
+```yaml
 :name: my_policy.yaml
 
 name: Workflow Developer Policy
@@ -111,14 +117,14 @@ bindings:
   resource:
     project: flytesnacks
     domain: development
-{{< /highlight >}}
+```
 
 
 Create the policy from the command line:
 
-{{< highlight shell >}}
+```shell
 $ uctl create policy --policyFile my_policy.yaml
-{{< /highlight >}}
+```
 
 
 Any user or application to which this policy is assigned will be granted **Contributor** permissions to `flytesnacks/development` while being granted (the more restrictive) **Workflow Runner** permission to `flytesnacks/production`.
@@ -127,20 +133,20 @@ Any user or application to which this policy is assigned will be granted **Contr
 
 Once the policy is created you can assign it to a user using the **User Management** interface in the UI (see [Changing assigned policies](#changing-assigned-policies) below) or using the command line:
 
-{{< highlight shell >}}
+```shell
 $ uctl append identityassignments \
        --user "bob@contoso.com" \
        --policy "Workflow Developer Policy"
-{{< /highlight >}}
+```
 
 
 Similarly, you can assign the policy to an application through the command line (there is currently no facility to assign policies to applications in the UI):
 
-{{< highlight shell >}}
+```shell
 $ uctl append identityassignments \
        --application "contoso-operator" \
        --policy "Workflow Developer Policy"
-{{< /highlight >}}
+```
 
 
 ## Initial onboarding

@@ -1,3 +1,9 @@
+---
+title: Configuring your data plane
+weight: 6
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Configuring your data plane
 
 After you set up your data plane account(s), the next step is to specify the infrastructure you want to deploy.
@@ -92,11 +98,11 @@ The maximum node number. This setting must be explicitly set to a value greater 
 
 ### Interruptible instances
 
-:::--note--
+{{< note >}}
 In AWS, the term *spot instance* is used.
 In GCP, the equivalent term is *spot vm*.
 Here we use the term *interruptible instance* generically for both providers.
-:::
+{{< /note >}}
 
 Specify whether this will be a **interruptible instance** or an **on-demand instance** node group.
 
@@ -114,7 +120,7 @@ If so, it will be configured with a *taint* so that only tasks configured with a
 
 Typically, only GPU node groups fall into this specialized category, and they will always be assigned taints in any case. It is not common to place taints on other types of node groups, but you can do so if you wish.
 
-{@# TODO ADD: For more detail on how taints and tolerations work see [Taints and tolerations](). #@}
+{{/* TODO ADD: For more detail on how taints and tolerations work see [Taints and tolerations](). */}}
 
 ### Disk
 
@@ -128,7 +134,7 @@ For example, in an node instance rated at `16GiB`, some of that is held back for
 ## Example specification
 Values provided by you are in single quotes (').
 
-{{< highlight yaml >}}
+```yaml
 - Cloud provider: 'AWS'
 - Multi-cluster: 'True'
     - Mapping: 'domain -> cluster'
@@ -193,7 +199,7 @@ Values provided by you are in single quotes (').
                 - Spot: 'False'
                 - Taints: 'False'
                 - Disk: '1500 GiB'
-{{< /highlight >}}
+```
 
 ## After deployment
 

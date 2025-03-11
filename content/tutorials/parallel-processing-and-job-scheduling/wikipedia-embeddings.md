@@ -1,3 +1,9 @@
+---
+title: Generating Wikipedia Embeddings
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Generating Wikipedia Embeddings
 
 This tutorial demonstrates how to create embeddings for the Wikipedia dataset using Union actors.
@@ -9,7 +15,7 @@ Let’s get started by importing the necessary libraries and modules:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -39,7 +45,7 @@ union run --remote wikipedia_embeddings_on_actor.py embed_wikipedia
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/wikipedia_embeddings_on_actor/wikipedia_embeddings_on_actor.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

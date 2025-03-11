@@ -1,3 +1,9 @@
+---
+title: Platform architecture
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Platform architecture
 
 The Union architecture consists of two virtual private clouds, referred to as planes—the control plane and the data plane.

@@ -1,3 +1,9 @@
+---
+title: Apache Airflow agent example
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Apache Airflow agent example
 
 ```--rli-- https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/airflow_agent/airflow_agent/airflow_agent_example_usage.py

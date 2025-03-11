@@ -1,6 +1,7 @@
 <div>
 <sl-alert open>
     <sl-icon slot="icon" name="info-circle"></sl-icon>
+    <strong>{{ .Get 0 | markdownify }}</strong><br>
     {{ .Inner | markdownify }}
 </sl-alert>
 </div>

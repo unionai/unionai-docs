@@ -1,3 +1,9 @@
+---
+title: CLI authentication types
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # CLI authentication types
 
 The command line tools `uctl` or `union` must authenticate to Union in order to perform operations on the platform.
@@ -6,16 +12,16 @@ The authentication mechanism is configured in the `config.yaml` file used by the
 By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [union CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
-{{< highlight shell >}}
+```shell
 export UNION_CONFIG=~/.my-config-location/my-config.yaml
-{{< /highlight >}}
+```
 
 
 Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag:
 
-{{< highlight shell >}}
+```shell
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
-{{< /highlight >}}
+```
 
 ```--warning--
 If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
@@ -35,7 +41,7 @@ It opens a browser window allowing the user to login. The authentication flow wi
 
 Here is an example `config.yaml` that uses PKCE:
 
-{{< highlight yaml >}}
+```yaml
 admin:
   endpoint: https://<YourOrg>.hosted.unionai.cloud
   insecure: false
@@ -43,7 +49,7 @@ admin:
 logger:
   show-source: true
   level: 0
-{{< /highlight >}}
+```
 
 ## DeviceFlow
 
@@ -57,7 +63,7 @@ The authentication flow with this mechanism works like this:
 
 Here is an example `config.yaml` that uses DeviceFlow:
 
-{{< highlight yaml >}}
+```yaml
 admin:
   endpoint: dns:///<YourOrg>.hosted.unionai.cloud
   insecure: false
@@ -65,15 +71,15 @@ admin:
 logger:
   show-source: true
   level: 0
-{{< /highlight >}}
+```
 
 
-:::--note--
+{{< note >}}
 During authentication, Union attempts to store an authentication token on the keyring service of the operating system.
 If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default.
 If you find that browser based authentication is required every time you run or register your workflows, you may need to run
 `pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
-:::
+{{< /note >}}
 
 ## ClientSecret
 
@@ -92,7 +98,7 @@ You then store the `AppSecret` in either a local file or an environment variable
 
 Here is an example `config.yaml` that uses ClientSecret with a file:
 
-{{< highlight yaml >}}
+```yaml
 admin:
   endpoint: dns:///<YourOrg>.hosted.unionai.cloud
   insecure: false
@@ -102,12 +108,12 @@ admin:
 logger:
   show-source: true
   level: 0
-{{< /highlight >}}
+```
 
 
 Here is an example that uses ClientSecret with an environment variable:
 
-{{< highlight yaml >}}
+```yaml
 admin:
   endpoint: dns:///<YourOrg>.hosted.unionai.cloud
   insecure: false
@@ -117,4 +123,4 @@ admin:
 logger:
   show-source: true
   level: 0
-{{< /highlight >}}
+```

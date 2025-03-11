@@ -1,3 +1,9 @@
+---
+title: Reference launch plans
+weight: 8
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Reference launch plans
 
 A reference launch plan references previously defined, serialized, and registered launch plans. You can reference launch plans from other projects and create workflows that use launch plans declared by others.
@@ -14,26 +20,26 @@ In this example, we create a reference launch plan for the [`simple_wf`](https:/
 
 1. Clone the Flytesnacks repository:
 
-{{< highlight shell >}}
+```shell
 git clone git@github.com:flyteorg/flytesnacks.git
-{{< /highlight >}}
+```
 
 2. Navigate to the `basics` directory:
 
-{{< highlight shell >}}
+```shell
 cd flytesnacks/examples/basics
-{{< /highlight >}}
+```
 
 3. Register the `simple_wf` workflow:
 
-{{< highlight shell >}}
+```shell
 union register --project flytesnacks --domain development --version v1 basics/workflow.py.
-{{< /highlight >}}
+```
 
 
 4. Create a file called `simple_wf_ref_lp.py` and copy the following code into it:
 
-{{< highlight python >}}
+```python
 import union
 from flytekit import reference_launch_plan
 
@@ -55,14 +61,14 @@ def run_simple_wf() -> float:
     x = [-8, 2, 4]
     y = [-2, 4, 7]
     return simple_wf_lp(x=x, y=y)
-{{< /highlight >}}
+```
 
 
 5. Register the `run_simple_wf` workflow:
 
-{{< highlight shell >}}
+```shell
 union register simple_wf_ref_lp.py
-{{< /highlight >}}
+```
 
 6. In the Union UI, run the workflow `run_simple_wf`.
 

@@ -1,3 +1,9 @@
+---
+title: Benchmarking LLM training with the Liger Kernel
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Benchmarking LLM training with the Liger Kernel
 
 [Liger Kernel](https://github.com/linkedin/Liger-Kernel) is a set of Triton kernels
@@ -22,7 +28,7 @@ First, let's import the necessary libraries:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -54,7 +60,7 @@ union run --remote liger_kernel_finetuning.py benchmarking_experiment --inputs-f
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

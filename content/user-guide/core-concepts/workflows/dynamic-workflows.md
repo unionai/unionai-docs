@@ -1,3 +1,9 @@
+---
+title: Dynamic workflows
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Dynamic workflows
 
 A workflow whose directed acyclic graph (DAG) is computed at run-time is a [`dynamic()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.dynamic.html#flytekit.dynamic) workflow.
@@ -25,40 +31,40 @@ The example below uses a dynamic workflow to count the common characters between
 
 To begin, we import `union`:
 
-{{< highlight python >}}
+```python
 import union
-{{< /highlight >}}
+```
 
 We define a task that returns the index of a character, where A-Z/a-z is equivalent to 0-25:
 
-{{< highlight python >}}
+```python
 @union.task
 def return_index(character: str) -> int:
     if character.islower():
         return ord(character) - ord("a")
     else:
         return ord(character) - ord("A")
-{{< /highlight >}}
+```
 
 We also create a task that prepares a list of 26 characters by populating the frequency of each character:
 
-{{< highlight python >}}
+```python
 @union.task
 def update_list(freq_list: list[int], list_index: int) -> list[int]:
     freq_list[list_index] += 1
     return freq_list
-{{< /highlight >}}
+```
 
 We define a task to calculate the number of common characters between the two strings:
 
-{{< highlight python >}}
+```python
 @union.task
 def derive_count(freq1: list[int], freq2: list[int]) -> int:
     count = 0
     for i in range(26):
         count += min(freq1[i], freq2[i])
     return count
-{{< /highlight >}}
+```
 
 We define a dynamic workflow to accomplish the following:
 
@@ -69,7 +75,7 @@ We define a dynamic workflow to accomplish the following:
 
 The looping process depends on the number of characters in both strings, which is unknown until runtime:
 
-{{< highlight python >}}
+```python
 @union.dynamic
 def count_characters(s1: str, s2: str) -> int:
     # s1 and s2 should be accessible
@@ -96,7 +102,7 @@ def count_characters(s1: str, s2: str) -> int:
 
     # Count the common characters between s1 and s2
     return derive_count(freq1=freq1, freq2=freq2)
-{{< /highlight >}}
+```
 
 A dynamic workflow is modeled as a task in the Union backend, but the body of the function is executed to produce a workflow at runtime. In both dynamic and static workflows, the output of tasks are Promise objects.
 
@@ -105,24 +111,24 @@ FlytePropeller executes the dynamic task within its Kubernetes pod, resulting in
 When a dynamic task is executed, it generates the entire workflow as its output, termed the *futures file*.
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.
 
-:::--note--
-Local execution works when a `@union.dynamic` decorator is used because Flytekit treats it as a task that runs with native Python inputs.
-:::
+{{< note >}}
+Local execution works when a `@union.dynamic` decorator is used because {@= Kit =@}  treats it as a task that runs with native Python inputs.
+{{< /note >}}
 
 Finally, we define a workflow that triggers the dynamic workflow:
 
-{{< highlight python >}}
+```python
 @union.workflow
 def dynamic_wf(s1: str, s2: str) -> int:
     return count_characters(s1=s1, s2=s2)
-{{< /highlight >}}
+```
 
 You can run the workflow locally as follows:
 
-{{< highlight python >}}
+```python
 if __name__ == "__main__":
     print(dynamic_wf(s1="Pear", s2="Earth"))
-{{< /highlight >}}
+```
 
 ## Advantages of dynamic workflows
 
@@ -152,7 +158,7 @@ In contrast, [map tasks](../tasks/task-types.md#map-tasks) prove efficient for s
 Merge sort is a perfect example to showcase how to seamlessly achieve recursion using dynamic workflows.
 Union imposes limitations on the depth of recursion to prevent misuse and potential impacts on the overall stability of the system.
 
-{{< highlight python >}}
+```python
 from typing import Tuple
 
 import union
@@ -211,7 +217,7 @@ def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int =
         .else_()
         .then(merge_sort_remotely(numbers=numbers, run_local_at_count=run_local_at_count))
     )
-{{< /highlight >}}
+```
 
 By simply adding the `@union.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
 generating a workflow with four distinct nodes. These nodes run remotely on potentially different hosts,

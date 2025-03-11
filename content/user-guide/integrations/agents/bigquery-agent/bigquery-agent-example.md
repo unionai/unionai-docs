@@ -1,3 +1,9 @@
+---
+title: Google BigQuery agent example
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Google BigQuery agent example
 
 This example shows how to use a BigQueryTask to execute a query.

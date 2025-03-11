@@ -1,3 +1,9 @@
+---
+title: Mapping over launch plans
+weight: 9
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Mapping over launch plans
 
 You can map over launch plans the same way you can [map over tasks](../tasks/task-types.md#map-tasks) to execute workflows in parallel across a series of inputs.
@@ -9,7 +15,7 @@ You can either map over a `LaunchPlan` object defined in one of your Python modu
 Here we define a workflow called `interest_workflow` that we want to parallelize, along with a launch plan called `interest_workflow_lp`, in a file we'll call `map_interest_wf.py`.
 We then write a separate workflow, `map_interest_wf`, that uses a `map_task` to parallelize `interest_workflow` over a list of inputs.
 
-{{< highlight python >}}
+```python
 import union
 
 # Task to calculate monthly interest payment on a loan
@@ -35,21 +41,21 @@ def map_interest_wf() -> list[float]:
     rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
     time = [12, 24, 36]        # Loan periods in months
     return union.map_task(lp)(principal=principal, rate=rate, time=time)
-{{< /highlight >}}
+```
 
 
 You can run the `map_interest` workflow locally:
 
-{{< highlight shell >}}
+```shell
 union run map_interest_wf.py map_interest_wf
-{{< /highlight >}}
+```
 
 
 You can also run the `map_interest` workflow remotely on Union:
 
-{{< highlight shell >}}
+```shell
 union run --remote map_interest_wf.py map_interest_wf
-{{< /highlight >}}
+```
 
 
 ## Previously registered launch plan
@@ -61,39 +67,39 @@ Recall that when a workflow is registered, an associated launch plan is created 
 
 1. Clone the Flytesnacks repository:
 
-    {{< highlight shell >}}
+    ```shell
     git clone git@github.com:flyteorg/flytesnacks.git
-    {{< /highlight >}}
+    ```
 
 
 2. Navigate to the `basics` directory:
 
-    {{< highlight shell >}}
+    ```shell
     cd flytesnacks/examples/basics
-    {{< /highlight >}}
+    ```
 
 
 3. Register the `simple_wf` workflow:
 
-    {{< highlight shell >}}
+    ```shell
     union register --project flytesnacks --domain development --version v1 basics/workflow.py
-    {{< /highlight >}}
+    ```
 
 
     Note that the `simple_wf` workflow is defined as follows:
 
-    {{< highlight python >}}
+    ```python
     @union.workflow
     def simple_wf(x: list[int], y: list[int]) -> float:
         slope_value = slope(x=x, y=y)
         intercept_value = intercept(x=x, y=y, slope=slope_value)
         return intercept_value
-    {{< /highlight >}}
+    ```
 
 
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
 
-    {{< highlight python >}}
+    ```python
     import union
     from flytekit import reference_launch_plan
 
@@ -116,7 +122,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
         y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
         return union.map_task(simple_wf_lp)(x=x, y=y)
 
-    {{< /highlight >}}
+    ```
 
 
     Note the fact that the reference launch plan has an interface that corresponds exactly to the registered `simple_wf` we wish to map over.
@@ -124,9 +130,9 @@ Recall that when a workflow is registered, an associated launch plan is created 
 5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run it remotely.
 
 
-    {{< highlight shell >}}
+    ```shell
     union register map_simple_wf.py
-    {{< /highlight >}}
+    ```
 
 
 6. In the Union UI, run the `map_simple_wf` workflow.

@@ -1,3 +1,9 @@
+---
+title: ImageSpec
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # ImageSpec
 
 With Union, every task in a workflow runs within its own dedicated container.
@@ -6,33 +12,33 @@ You can specify the container image to be used by a task by defining an `ImageSp
 When you register the workflow, the container image is built locally and pushed to the container registry that you specify.
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
 
-:::--note--
+{{< note >}}
 See the [Flytekit documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec) for full documentation of `ImageSpec` class parameters and methods.
-:::
+{{< /note >}}
 
 To illustrate the process, we will walk through an example.
 
 ## Project structure
 
-{{< highlight shell >}}
+```shell
 ├── requirements.txt
 └── workflows
     ├── __init__.py
     └── imagespec-simple-example.py
-{{< /highlight >}}
+```
 
 
 ### requirements.txt
 
-{{< highlight shell >}}
+```shell
 union
 pandas
-{{< /highlight >}}
+```
 
 
 ### imagespec-simple-example.py
 
-{{< highlight python >}}
+```python
 import typing
 import pandas as pd
 import union
@@ -53,7 +59,7 @@ def get_pandas_dataframe() -> typing.Tuple[pd.DataFrame, pd.Series]:
 @union.workflow()
 def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
-{{< /highlight >}}
+```
 
 
 ## Install and configure `union` and Docker
@@ -102,17 +108,17 @@ You can now run the workflow locally.
 In the project root directory, run: `union run workflows/imagespec-simple-example.py wf`.
 See [Running your code](../../../development-cycle/running-your-code.md) for more details.
 
-:::--note--
+{{< note >}}
 When you run the workflow in your local Python environment, the image is not built or pushed (in fact, no container image is used at all).
-:::
+{{< /note >}}
 
 ## Register the workflow
 
 To register the workflow to Union, in the local project root, run:
 
-{{< highlight shell >}}
+```shell
 $ union register workflows/imagespec-simple-example.py
-{{< /highlight >}}
+```
 
 
 `union` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
@@ -129,7 +135,7 @@ See [Configuring a package's access control and visibility](https://docs.github.
 
 Assuming your image is publicly accessible, you can now run the workflow on Union by clicking **Launch Workflow**.
 
-:::--warning--
+{{< warning >}}
 If you try to run a workflow that uses a private container image or an image that is inaccessible for some other reason, the system will return an error:
 
 ```
@@ -138,4 +144,4 @@ If you try to run a workflow that uses a private container image or an image tha
 ... Back-off pulling image ...
 ... Error: ImagePullBackOff
 ```
-:::
+{{< /warning >}}

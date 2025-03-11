@@ -1,3 +1,9 @@
+---
+title: Defining launch plans
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Defining launch plans
 
 You can define a launch plan with the [`flytekit.LaunchPlan` class](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.LaunchPlan.html#flytekit.LaunchPlan).

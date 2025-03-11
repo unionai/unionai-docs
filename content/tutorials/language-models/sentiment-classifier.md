@@ -1,3 +1,9 @@
+---
+title: Sentiment Classification with Language Models
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Sentiment Classification with Language Models
 
 This tutorial demonstrates how to fine-tune a pre-trained language model to
@@ -7,7 +13,7 @@ sentiment.
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -35,7 +41,7 @@ union run --remote tutorials/sentiment_classifier/sentiment_classifier.py main -
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/sentiment_classifier/sentiment_classifier.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

@@ -1,8 +1,357 @@
+---
+title: FlyteFile and FlyteDirectory
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # FlyteFile and FlyteDirectory
+
+{{< if-variant flyte >}}
+
+## FlyteFile
+
+Files are one of the most fundamental entities that users of Python work with,
+and they are fully supported by Flyte. In the IDL, they are known as
+[Blob](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/literals.proto#L33)
+literals which are backed by the
+[blob type](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/types.proto#L47).
+
+Let's assume our mission here is pretty simple. We download a few CSV file
+links, read them with the python built-in `csv.DictReader` function,
+normalize some pre-specified columns, and output the normalized columns to
+another CSV file.
+
+{{< note >}}
+To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
+{{< /note >}}
+First, import the libraries:
+
+```python
+import csv
+from collections import defaultdict
+from pathlib import Path
+from typing import List
+
+import union
+```
+
+Define a task that accepts `FlyteFile` as an input.
+The following is a task that accepts a `FlyteFile`, a list of column names,
+and a list of column names to normalize. The task then outputs a CSV file
+containing only the normalized columns. For this example, we use z-score normalization,
+which involves mean-centering and standard-deviation-scaling.
+
+{{< note >}}
+The `FlyteFile` literal can be scoped with a string, which gets inserted
+into the format of the Blob type ("jpeg" is the string in
+`FlyteFile[typing.TypeVar("jpeg")]`). The format is entirely optional,
+and if not specified, defaults to `""`.
+Predefined aliases for commonly used flyte file formats are also available.
+You can find them [here](https://github.com/flyteorg/flytekit/blob/master/flytekit/types/file/__init__.py).
+{{< /note >}}
+
+```python
+@union.task
+def normalize_columns(
+    csv_url: union.FlyteFile,
+    column_names: List[str],
+    columns_to_normalize: List[str],
+    output_location: str,
+) -> union.FlyteFile:
+    # read the data from the raw csv file
+    parsed_data = defaultdict(list)
+    with open(csv_url, newline="\n") as input_file:
+        reader = csv.DictReader(input_file, fieldnames=column_names)
+        next(reader)  # Skip header
+        for row in reader:
+            for column in columns_to_normalize:
+                parsed_data[column].append(float(row[column].strip()))
+
+    # normalize the data
+    normalized_data = defaultdict(list)
+    for colname, values in parsed_data.items():
+        mean = sum(values) / len(values)
+        std = (sum([(x - mean) ** 2 for x in values]) / len(values)) ** 0.5
+        normalized_data[colname] = [(x - mean) / std for x in values]
+
+    # write to local path
+    out_path = str(Path(flytekit.current_context().working_directory) / f"normalized-{Path(csv_url.path).stem}.csv")
+    with open(out_path, mode="w") as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=columns_to_normalize)
+        writer.writeheader()
+        for row in zip(*normalized_data.values()):
+            writer.writerow({k: row[i] for i, k in enumerate(columns_to_normalize)})
+
+    if output_location:
+        return union.FlyteFile(path=str(out_path), remote_path=output_location)
+    else:
+        return union.FlyteFile(path=str(out_path))
+```
+
+When the image URL is sent to the task, the Flytekit engine translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
+
+If the `output_location` argument is specified, it will be passed to the `remote_path` argument of `FlyteFile`, which will use that path as the storage location instead of a random location (Flyte's object store).
+
+When this task finishes, the Flytekit engine returns the `FlyteFile` instance, uploads the file to the location, and creates a blob literal pointing to it.
+
+Lastly, define a workflow. The `normalize_csv_files` workflow has an `output_location` argument which is passed to the `location` input of the task. If it's not an empty string, the task attempts to upload its file to that location.
+
+```python
+@union.workflow
+def normalize_csv_file(
+    csv_url: union.FlyteFile,
+    column_names: List[str],
+    columns_to_normalize: List[str],
+    output_location: str = "",
+) -> union.FlyteFile:
+    return normalize_columns(
+        csv_url=csv_url,
+        column_names=column_names,
+        columns_to_normalize=columns_to_normalize,
+        output_location=output_location,
+    )
+```
+
+You can run the workflow locally as follows:
+
+```python
+if __name__ == "__main__":
+    default_files = [
+        (
+            "https://raw.githubusercontent.com/flyteorg/flytesnacks/refs/heads/master/examples/data_types_and_io/test_data/biostats.csv",
+            ["Name", "Sex", "Age", "Heights (in)", "Weight (lbs)"],
+            ["Age"],
+        ),
+        (
+            "https://raw.githubusercontent.com/flyteorg/flytesnacks/refs/heads/master/examples/data_types_and_io/test_data/faithful.csv",
+            ["Index", "Eruption length (mins)", "Eruption wait (mins)"],
+            ["Eruption length (mins)"],
+        ),
+    ]
+    print(f"Running {__file__} main...")
+    for index, (csv_url, column_names, columns_to_normalize) in enumerate(default_files):
+        normalized_columns = normalize_csv_file(
+            csv_url=csv_url,
+            column_names=column_names,
+            columns_to_normalize=columns_to_normalize,
+        )
+        print(f"Running normalize_csv_file workflow on {csv_url}: " f"{normalized_columns}")
+```
+
+You can enable type validation if you have the [python-magic](https://pypi.org/project/python-magic/) package installed.
+
+{{< tabs >}}
+{{< tab "Mac OS" >}}
+
+```shell
+$  brew install libmagic
+```
+
+{{< /tab>}}
+{{< tab "Linux" >}}
+
+```shell
+$ sudo apt-get install libmagic1
+```
+
+{{< /tab >}}
+{{< /tabs >}}
+
+{{< note >}}
+Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
+{{< /note >}}
+
+## Streaming support
+
+Flyte `1.5` introduced support for streaming `FlyteFile` types via the `fsspec` library.
+This integration enables efficient, on-demand access to remote files, eliminating the need for fully downloading them to local storage.
+
+{{< note >}}
+This feature is marked as experimental. We'd love feedback on the API!
+{{< /note >}}
+
+Here is a simple example of removing some columns from a CSV file and writing the result to a new file:
+
+```python
+@union.task()
+def remove_some_rows(ff: union.FlyteFile) -> union.FlyteFile:
+    """
+    Remove the rows that the value of city is 'Seattle'.
+    This is an example with streaming support.
+    """
+    new_file = union.FlyteFile.new_remote_file("data_without_seattle.csv")
+    with ff.open("r") as r:
+        with new_file.open("w") as w:
+            df = pd.read_csv(r)
+            df = df[df["City"] != "Seattle"]
+            df.to_csv(w, index=False)
+```
+
+## FlyteDirectory
+
+In addition to files, folders are another fundamental operating system primitive.
+Flyte supports folders in the form of
+[multi-part blobs](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/types.proto#L73).
+
+To begin, import the libraries:
+
+```python
+import csv
+import urllib.request
+from collections import defaultdict
+from pathlib import Path
+from typing import List
+
+import union
+```
+
+Building upon the previous example demonstrated in the {std:ref}`file <file>` section,
+let's continue by considering the normalization of columns in a CSV file.
+
+The following task downloads a list of URLs pointing to CSV files
+and returns the folder path in a `FlyteDirectory` object.
+
+```python
+@union.task
+def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
+    working_dir = union.current_context().working_directory
+    local_dir = Path(working_dir) / "csv_files"
+    local_dir.mkdir(exist_ok=True)
+
+    # get the number of digits needed to preserve the order of files in the local directory
+    zfill_len = len(str(len(csv_urls)))
+    for idx, remote_location in enumerate(csv_urls):
+        # prefix the file name with the index location of the file in the original csv_urls list
+        local_image = Path(local_dir) / f"{str(idx).zfill(zfill_len)}_{Path(remote_location).name}"
+        urllib.request.urlretrieve(remote_location, local_image)
+    return union.FlyteDirectory(path=str(local_dir))
+```
+
+{{< note >}}
+You can annotate a `FlyteDirectory` when you want to download or upload the contents of the directory in batches.
+For example,
+
+```python
+@union.task
+def t1(directory: Annotated[union.FlyteDirectory, BatchSize(10)]) -> Annotated[union.FlyteDirectory, BatchSize(100)]:
+    ...
+    return union.FlyteDirectory(...)
+```
+
+Flytekit efficiently downloads files from the specified input directory in 10-file chunks.
+It then loads these chunks into memory before writing them to the local disk.
+The process repeats for subsequent sets of 10 files.
+Similarly, for outputs, Flytekit uploads the resulting directory in chunks of 100.
+{{< /note >}}
+
+We define a helper function to normalize the columns in-place.
+
+{{< note >}}
+This is a plain Python function that will be called in a subsequent Flyte task. This example
+demonstrates how Flyte tasks are simply entrypoints of execution, which can themselves call
+other functions and routines that are written in pure Python.
+{{< /note >}}
+
+```python
+def normalize_columns(
+    local_csv_file: str,
+    column_names: List[str],
+    columns_to_normalize: List[str],
+):
+    # read the data from the raw csv file
+    parsed_data = defaultdict(list)
+    with open(local_csv_file, newline="\n") as input_file:
+        reader = csv.DictReader(input_file, fieldnames=column_names)
+        for row in (x for i, x in enumerate(reader) if i > 0):
+            for column in columns_to_normalize:
+                parsed_data[column].append(float(row[column].strip()))
+
+    # normalize the data
+    normalized_data = defaultdict(list)
+    for colname, values in parsed_data.items():
+        mean = sum(values) / len(values)
+        std = (sum([(x - mean) ** 2 for x in values]) / len(values)) ** 0.5
+        normalized_data[colname] = [(x - mean) / std for x in values]
+
+    # overwrite the csv file with the normalized columns
+    with open(local_csv_file, mode="w") as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=columns_to_normalize)
+        writer.writeheader()
+        for row in zip(*normalized_data.values()):
+            writer.writerow({k: row[i] for i, k in enumerate(columns_to_normalize)})
+```
+
+We then define a task that accepts the previously downloaded folder, along with some metadata about the
+column names of each file in the directory and the column names that we want to normalize.
+
+```python
+@union.task
+def normalize_all_files(
+    csv_files_dir: union.FlyteDirectory,
+    columns_metadata: List[List[str]],
+    columns_to_normalize_metadata: List[List[str]],
+) -> union.FlyteDirectory:
+    for local_csv_file, column_names, columns_to_normalize in zip(
+        # make sure we sort the files in the directory to preserve the original order of the csv urls
+        list(sorted(Path(csv_files_dir).iterdir())),
+        columns_metadata,
+        columns_to_normalize_metadata,
+    ):
+        normalize_columns(local_csv_file, column_names, columns_to_normalize)
+    return union.FlyteDirectory(path=csv_files_dir.path)
+```
+
+Compose all of the above tasks into a workflow. This workflow accepts a list
+of URL strings pointing to a remote location containing a CSV file, a list of column names
+associated with each CSV file, and a list of columns that we want to normalize.
+
+```python
+@union.workflow
+def download_and_normalize_csv_files(
+    csv_urls: List[str],
+    columns_metadata: List[List[str]],
+    columns_to_normalize_metadata: List[List[str]],
+) -> union.FlyteDirectory:
+    directory = download_files(csv_urls=csv_urls)
+    return normalize_all_files(
+        csv_files_dir=directory,
+        columns_metadata=columns_metadata,
+        columns_to_normalize_metadata=columns_to_normalize_metadata,
+    )
+```
+
+You can run the workflow locally as follows:
+
+```python
+if __name__ == "__main__":
+    csv_urls = [
+        "https://raw.githubusercontent.com/flyteorg/flytesnacks/refs/heads/master/examples/data_types_and_io/test_data/biostats.csv",
+        "https://raw.githubusercontent.com/flyteorg/flytesnacks/refs/heads/master/examples/data_types_and_io/test_data/faithful.csv",
+    ]
+    columns_metadata = [
+        ["Name", "Sex", "Age", "Heights (in)", "Weight (lbs)"],
+        ["Index", "Eruption length (mins)", "Eruption wait (mins)"],
+    ]
+    columns_to_normalize_metadata = [
+        ["Age"],
+        ["Eruption length (mins)"],
+    ]
+
+    print(f"Running {__file__} main...")
+    directory = download_and_normalize_csv_files(
+        csv_urls=csv_urls,
+        columns_metadata=columns_metadata,
+        columns_to_normalize_metadata=columns_to_normalize_metadata,
+    )
+    print(f"Running download_and_normalize_csv_files on {csv_urls}: " f"{directory}")
+```
+
+{{< /if-variant >}}
+{{< if-variant "byoc byok" >}}
 
 In Union, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
 
-The natural way to solve this problem is for the source task to to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
+The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
 Since this is such a common use case, the Union SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
 
@@ -19,52 +368,52 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 
 ## Local examples
 
-:::--admonition-- Local means local to the container
+{{< note "Local means local to the container" >}}
 The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
 They do not refer to a file or directory on your local machine.
-:::
+{{< /note >}}
 
 ### Local file example
 
 Let's say you have a local file in the container running `task_1` that you want to make accessible in the next task, `task_2`.
 To do this, you create a `FlyteFile` object using the local path of the file, and then pass the `FlyteFile` object as part of your workflow, like this:
 
-{{< highlight python >}}
+```python
 @union.task
 def task_1() -> FlyteFile:
-local_path = os.path.join(current_context().working_directory, "data.txt")
-with open(local_path, mode="w") as f:
-f.write("Here is some sample data.")
-return FlyteFile(path=local_path)
+    local_path = os.path.join(current_context().working_directory, "data.txt")
+    with open(local_path, mode="w") as f:
+        f.write("Here is some sample data.")
+    return FlyteFile(path=local_path)
 
 @union.task
 def task_2(ff: FlyteFile):
-with ff.open(mode="r") as f
-file_contents = f.read()
+    with ff.open(mode="r") as f
+    file_contents = f.read()
 
 @union.workflow
 def wf():
-ff = task_1()
-task_2(ff=ff)
-{{< /highlight >}}
+    ff = task_1()
+    task_2(ff=ff)
+```
 
 Union handles the passing of the `FlyteFile` `ff` in the workflow `wf` from `task_1` to `task_2`:
 
-- The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
-- When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a unique location in the Union object store. A randomly generated, universally unique location is used to ensure that subsequent uploads of other files never overwrite each other.
-- The object store location is used to initialize the URI attribute of a Flyte `Blob` object. Note that Flyte objects are not Python objects. They exist at the workflow level and are used to pass data between task containers. For more details, see [Flyte Core Language Specification > Literals](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto).
-- The `Blob` object is passed to `task_2`.
-- Because the type of the input parameter of `task_2` is `FlyteFile`, Union converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
-- Inside `task_2` you can now perform a [`FlyteFile.open()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit.types.file.FlyteFile.open) and read the file contents.
+* The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
+* When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a unique location in the Union object store. A randomly generated, universally unique location is used to ensure that subsequent uploads of other files never overwrite each other.
+* The object store location is used to initialize the URI attribute of a Flyte `Blob` object. Note that Flyte objects are not Python objects. They exist at the workflow level and are used to pass data between task containers. For more details, see [Flyte Core Language Specification > Literals](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto).
+* The `Blob` object is passed to `task_2`.
+* Because the type of the input parameter of `task_2` is `FlyteFile`, Union converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
+* Inside `task_2` you can now perform a [`FlyteFile.open()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit.types.file.FlyteFile.open) and read the file contents.
 
 ### Local directory example
 
 Below is an equivalent local example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
-{{< highlight python >}}
+```python
 def task1() -> FlyteDirectory: # Create new local directory
-p = os.path.join(current_context().working_directory, "my_new_directory")
-os.makedirs(p)
+    p = os.path.join(current_context().working_directory, "my_new_directory")
+    os.makedirs(p)
 
     # Create and write to two files
     with open(os.path.join(p, "file_1.txt"), 'w') as file1:
@@ -76,8 +425,8 @@ os.makedirs(p)
 
 @union.task
 def task2(fd: FlyteDirectory): # Get a list of the directory contents using os to return strings
-items = os.listdir(fd)
-print(type(items[0]))
+    items = os.listdir(fd)
+    print(type(items[0]))
 
     # Get a list of the directory contents using FlyteDirectory to return FlyteFiles
     files = FlyteDirectory.listdir(fd)
@@ -88,45 +437,48 @@ print(type(items[0]))
 
 @union.workflow
 def workflow():
-fd = task1()
-task2(fd=fd)
-{{< /highlight >}}
+    fd = task1()
+    task2(fd=fd)
+```
 
-{@@ if serverless @@}
 
-:::--admonition-- Upload location
+{{< /if-variant >}}
+{{< if-variant serverless >}}
+
+{{< note "Upload location" >}}
 With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
 
 With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
-:::
+{{< /note >}}
 
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 
 ## Changing the data upload location
 
-:::--admonition-- Upload location
+{{< note "Upload location" >}}
 With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
 
 With Union BYOC, the upload location is configurable.
-:::
+{{< /note >}}
 
 By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store).
 However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
 
-:::--admonition-- Setting up your own object store bucket
+{{< note "Setting up your own object store bucket" >}}
 For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 
-- [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
-- [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
-- [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
-  :::
+* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
+* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
+* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
+{{< /note >}}
 
 ### Changing the raw data prefix
 
 If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
 This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
 
-{@# TODO See [Raw data prefix]() for more information. #@}
+{{/* TODO See [Raw data prefix]() for more information. */}}
 
 Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
 
@@ -134,12 +486,12 @@ Union will create a directory with a unique, random name in your bucket for each
 
 If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
 
-:::--admonition-- Using `remote_path` will overwrite data
+{{< note "Using remote_path will overwrite data" >}}
 If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
 If you want to use a dynamically generated path, you will have to generate it yourself.
-:::
+{{< /note >}}
 
-{@@ endif @@}
+{{< /if-variant >}}
 
 ## Remote examples
 
@@ -150,12 +502,12 @@ To preserve that file across the task boundary, Union uploaded it to the Union o
 
 You can also _start with a remote file_, simply by initializing the `FlyteFile` object with a URI pointing to a remote source. For example:
 
-{{< highlight python >}}
+```python
 @union.task
 def task_1() -> FlyteFile:
-remote_path = "https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv"
-return FlyteFile(path=remote_path)
-{{< /highlight >}}
+    remote_path = "https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv"
+    return FlyteFile(path=remote_path)
+```
 
 In this case, no uploading is needed because the source file is already in a remote location.
 When the object is passed out of the task, it is converted into a `Blob` with the remote path as the URI.
@@ -163,18 +515,17 @@ After the FlyteFile is passed to the next task, you can call `FlyteFile.open()` 
 
 If you don't intend on passing the `FlyteFile` to the next task, and rather intend to open the contents of the remote file within the task, you can use `from_source`.
 
-{{< highlight python >}}
+```python
 @union.task
 def load_json():
-uri = "gs://my-bucket/my-directory/example.json"
-my_json = FlyteFile.from_source(uri)
+    uri = "gs://my-bucket/my-directory/example.json"
+    my_json = FlyteFile.from_source(uri)
 
     # Load the JSON file into a dictionary and print it
     with open(my_json, "r") as json_file:
         data = json.load(json_file)
     print(data)
-
-{{< /highlight >}}
+```
 
 When initializing a `FlyteFile` with a remote file location, all URI schemes supported by `fsspec` are supported, including `http`, `https`(Web), `gs` (Google Cloud Storage), `s3` (AWS S3), `abfs`, and `abfss` (Azure Blob Filesystem).
 
@@ -182,24 +533,24 @@ When initializing a `FlyteFile` with a remote file location, all URI schemes sup
 
 Below is an equivalent remote example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
-{{< highlight python >}}
+```python
 @union.task
 def task1() -> FlyteDirectory:
-p = "https://people.sc.fsu.edu/~jburkardt/data/csv/"
-return FlyteDirectory(p)
+    p = "https://people.sc.fsu.edu/~jburkardt/data/csv/"
+    return FlyteDirectory(p)
 
 @union.task
 def task2(fd: FlyteDirectory): # Get a list of the directory contents and display the first csv
-files = FlyteDirectory.listdir(fd)
-with open(files[0], mode="r") as f:
-d = f.read()
-print(f"The first csv is: \n{d}")
+    files = FlyteDirectory.listdir(fd)
+    with open(files[0], mode="r") as f:
+    d = f.read()
+    print(f"The first csv is: \n{d}")
 
 @union.workflow
 def workflow():
-fd = task1()
-task2(fd=fd)
-{{< /highlight >}}
+    fd = task1()
+    task2(fd=fd)
+```
 
 ## Streaming
 
@@ -207,18 +558,18 @@ In the above examples, we showed how to access the contents of `FlyteFile` by ca
 The object returned by `FlyteFile.open()` is a stream. In the above examples, the files were small, so a simple `read()` was used.
 But for large files, you can iterate through the contents of the stream:
 
-{{< highlight python >}}
+```python
 @union.task
 def task_1() -> FlyteFile:
-remote_path = "https://sample-videos.com/csv/Sample-Spreadsheet-100000-rows.csv"
-return FlyteFile(path=remote_path)
+    remote_path = "https://sample-videos.com/csv/Sample-Spreadsheet-100000-rows.csv"
+    return FlyteFile(path=remote_path)
 
 @union.task
 def task_2(ff: FlyteFile):
-with ff.open(mode="r") as f
-for row in f:
-do_something(row)
-{{< /highlight >}}
+    with ff.open(mode="r") as f
+    for row in f:
+        do_something(row)
+```
 
 ## Downloading
 
@@ -235,14 +586,14 @@ This enables many common file-related operations in Python to be performed on th
 
 The most prominent example of such an operation is calling Python's built-in `open()` method with a `FlyteFile`:
 
-{{< highlight python >}}
+```python
 @union.task
 def task_2(ff: FlyteFile):
-with open(ff, mode="r") as f
-file_contents= f.read()
-{{< /highlight >}}
+    with open(ff, mode="r") as f
+    file_contents= f.read()
+```
 
-:::--admonition-- `open()` vs `ff.open()`
+{{< note "open() vs ff.open()" >}}
 Note the difference between
 
 `ff.open(mode="r")`
@@ -253,25 +604,25 @@ and
 
 The former calls the `FlyteFile.open()` method and returns an iterator without downloading the file.
 The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system, and returns a handle to that file.
-:::
 
 Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
 
 See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
+{{< /note >}}
 
 ### Explicit downloading
 
 You can also explicitly download a `FlyteFile` to the local container file system by calling `FlyteFile.download()`:
 
-{{< highlight python >}}
+```python
 @union.task
 def task_2(ff: FlyteFile):
-local_path = ff.download()
-{{< /highlight >}}
+    local_path = ff.download()
+```
 
 This method is typically used when you want to download the file without immediately reading it.
 
-{@# TODO: Explain:
+{{/* TODO: Explain:
 classmethod FlyteFile.from_source()
 classmethod FlyteFile.new_remote_file()
 
@@ -282,27 +633,27 @@ classmethod FlyteDirectory.new_remote()
 FlyteDirectory.crawl()
 FlyteDirectory.new_dir()
 FlyteDirectory.new_file()
-#@}
+*/}}
 
 ## Typed aliases
 
 The [Union SDK](../../api-reference/union-sdk/index.md) defines some aliases of `FlyteFile` with specific type annotations.
 Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/index.md#file-type):
 
-- `HDF5EncodedFile`
-- `HTMLPage`
-- `JoblibSerializedFile`
-- `JPEGImageFile`
-- `PDFFile`
-- `PNGImageFile`
-- `PythonPickledFile`
-- `PythonNotebook`
-- `SVGImageFile`
+* `HDF5EncodedFile`
+* `HTMLPage`
+* `JoblibSerializedFile`
+* `JPEGImageFile`
+* `PDFFile`
+* `PNGImageFile`
+* `PythonPickledFile`
+* `PythonNotebook`
+* `SVGImageFile`
 
 Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/index.md#directory-type):
 
-- `TensorboardLogs`
-- `TFRecordsDirectory`
+* `TensorboardLogs`
+* `TFRecordsDirectory`
 
 These aliases can optionally be used when handling a file or directory of the specified type, although the object itself will still be a `FlyteFile` or `FlyteDirectory`.
 The aliased versions of the classes are syntactic markers that enforce agreement between type annotations in the signatures of task functions, but they do not perform any checks on the actual contents of the file.

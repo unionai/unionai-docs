@@ -1,6 +1,7 @@
 ---
 title: API Reference
 weight: 3
+variants: "+flyte +serverless +byoc +byok"
 top_menu: true
 ---
 
@@ -10,36 +11,24 @@ This section provides the reference material for all Union APIs, SDKs and CLIs.
 
 To get started, install `union`:
 
-```
+```shell
 pip install -U union
 ```
 
 This will install the Union SDK and the `union` CLI.
 
-::::{grid}
+{{< grid >}}
 
-:::{grid-item-card} {octicon}`workflow` Union SDK
-:link: union-sdk/index
-:link-type: doc
-:columns: 12
+{{< link-card target="union-sdk" icon="workflow" title="Union SDK" >}}
+The Union SDK provides the Python API for building Union workflows and apps.
+{{< /link-card >}}
 
-The Union SDK provides the Python API for building Union workflows.
-:::
-
-:::{grid-item-card} {octicon}`terminal` Union CLI
-:link: union-cli
-:link-type: doc
-:columns: 6
-
+{{< link-card target="union-cli" icon="terminal" title="Union CLI" >}}
 The Union CLI is the command-line interface for interacting with your Union instance.
-:::
+{{< /link-card >}}
 
-:::{grid-item-card} {octicon}`terminal` Uctl CLI
-:link: uctl-cli/index
-:link-type: doc
-:columns: 6
+{{< link-card target="uctl-cli" icon="terminal" title="Uctl CLI" >}}
+The Uctl CLI is an alternative CLI for performing administrative tasks and for use in CI/CD environments.
+{{< /link-card >}}
 
-`uctl` is an alternative CLI for performing administrative tasks and for use in CI/CD environments.
-:::
-
-::::
+{{< /grid >}}

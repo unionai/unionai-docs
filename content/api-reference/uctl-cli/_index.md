@@ -1,76 +1,85 @@
+---
+title: Uctl CLI
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Uctl CLI
 
 The `uctl` CLI provides functionality for Union administrators to manage Union-specific entities like users, roles, and Union configuration.
 
 It also includes much of the functionality of the [`union` CLI](../union-cli.md), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `union` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
 
-:::--note--
+{{< note >}}
 If you are not a Union administrator, or if you will be interacting with Union in an environment where Python is installed, you should use the [`union` CLI](../union-cli.md) instead.
-:::
+{{< /note >}}
 
 ## Installation
 
-::::{tab-set}
+{{< tabs >}}
+{{<tab "macOS" >}}
 
-:::{tab-item} macOS
 To install `uctl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or manually download the binary.
 
 **Homebrew**
 
-{{< highlight shell >}}
+```shell
 $ brew tap unionai/homebrew-tap
 $ brew install uctl
-{{< /highlight >}}
+```
 
 **curl**
 
 To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
-{{< highlight shell >}}
+```shell
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
-{{< /highlight >}}
+```
 
 **Manual download**
 
 To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
-:::
 
-:::{tab-item} Linux
+{{< /tab >}}
+{{<tab "Linux" >}}
+
 To install `uctl` on Linux, use `curl` or manually download the binary.
 
 **curl**
 
 To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
-{{< highlight shell >}}
+```shell
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
-{{< /highlight >}}
+```
 
 **Manual download**
 
 To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
-:::
 
-:::{tab-item} Windows
+{{< /tab >}}
+{{<tab "Windows" >}}
+
 To install `uctl` on Windows, use `curl` or manually download the binary.
 
 **curl**
 
 To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
 
-{{< highlight shell >}}
+```shell
 $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
-{{< /highlight >}}
+```
 
 **Manual download**
 
 To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
-:::
-::::
+
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Configuration
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 
 `uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
 
@@ -80,22 +89,23 @@ If you have previously used Union, you may have existing configuration files tha
 To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
 ```
 
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 
-To create a configuration file that contains your Union connection information, run the following command, replacing `{union-host-url}` with the URL of your Union instance:
+To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
 
-{{< highlight shell >}}
-$ uctl config init --host {union-host-url}
-{{< /highlight >}}
+```shell
+$ uctl config init --host <union-host-url>
+```
 
 This will create a new configuration file at `~/.union/config.yaml`:
 
-{{< highlight yaml >}}
+```yaml
 admin:
-  endpoint: dns:///{union-host-url}
+  endpoint: dns:///<union-host-url>
   insecure: false
   authType: Pkce
-{{< /highlight >}}
+```
 
 ```--note--
 PKCE is the default authentication type. To specify a different authentication type in the configuration file, see [CLI authentication types](../../user-guide/administration/cli-authentication-types.md).
@@ -105,13 +115,13 @@ PKCE is the default authentication type. To specify a different authentication t
 
 By default, the `uctl` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union instance unless you override it. `uctl` searches for configuration files in the following order:
 
-* `--config {path-to-config}` flag
+* `--config <path-to-config>` flag
 * `UNION_CONFIG` environment variable
 * `UCTL_CONFIG` environment variable
 * `~/.union/config.yaml` file
 * `~/.uctl/config.yaml` file
 
-{@@ endif @@}
+{{< /if-variant >}}
 
 ## Options
 
@@ -185,43 +195,43 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 
 ## Commands
 
-{@@ if byoc @@}
-* - {doc}`uctl apply {uctl-apply/index}`
+{{< if-variant byoc >}}
+* - {doc}`uctl apply <uctl-apply/index>`
   - Used for updating various Union/Flyte resources, including cluster configs.
-* - {doc}`uctl config {uctl-config/index}`
+* - {doc}`uctl config <uctl-config/index>`
   - Runs various config commands.
-{@@ endif @@}
-* - {doc}`uctl create {uctl-create/index}`
+{{< /if-variant >}}
+* - {doc}`uctl create <uctl-create/index>`
   - Creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl delete {uctl-delete/index}`
+* - {doc}`uctl delete <uctl-delete/index>`
   - Terminates/deletes various Flyte resources, such as executions and resource attributes.
-* - {doc}`uctl demo {uctl-demo/index}`
+* - {doc}`uctl demo <uctl-demo/index>`
   - Provides commands for starting and interacting with a standalone minimal local environment for running Flyte.
-* - {doc}`uctl get {uctl-get/index}`
+* - {doc}`uctl get <uctl-get/index>`
   - Fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl register {uctl-register/index}`
+* - {doc}`uctl register <uctl-register/index>`
   - Registers tasks, workflows, and launch plans from a list of generated serialized files.
-* - {doc}`uctl update {uctl-update/index}`
+* - {doc}`uctl update <uctl-update/index>`
   - Update Flyte resources e.g., projects.
-* - {doc}`uctl version {uctl-version}`
+* - {doc}`uctl version <uctl-version>`
   - Fetches `uctl` version.
 
 ## Entities
 
 | Entity | Commands |
 |--------|----------|
-| Cluster resource attribute | [`uctl get cluster-resource-attribute`](./uctl-get/uctl-get-cluster-resource-attribute.md), [`uctl update cluster resource attribute`](./uctl-update/uctl-update-cluster-resource-attribute.md),  [`uctl delete cluster resource attribute`](./uctl-delete/uctl-delete-cluster-resource-attribute.md) |
-| Config |  [`uctl config init`](./uctl-config/uctl-config-init.md),  [`uctl config discover`](./uctl-config/uctl-config-discover.md),  [`uctl config docs`](./uctl-config/uctl-config-docs.md),  [`uctl config validate`](./uctl-config/uctl-config-validate.md) |
-| Demo |  [`uctl demo start`](./uctl-demo/uctl-demo-start.md),  [`uctl demo status`](./uctl-demo/uctl-demo-status.md),  [`uctl demo exec`](./uctl-demo/uctl-demo-exec.md),  [`uctl demo reload`](./uctl-demo/uctl-demo-reload.md),  [`uctl demo teardown`](./uctl-demo/uctl-demo-teardown.md) |
-| Execution |  [`uctl create execution`](./uctl-create/uctl-create-execution.md),  [`uctl get execution`](./uctl-get/uctl-get-execution.md),  [`uctl update execution`](./uctl-update/uctl-update-execution.md),  [`uctl delete execution`](./uctl-delete/uctl-delete-execution.md) |
-| Execution cluster label |  [`uctl get execution-cluster-label`](./uctl-get/uctl-get-execution-cluster-label.md),  [`uctl update execution-cluster-label`](./uctl-update/uctl-update-execution-cluster-label.md),  [`uctl delete execution-cluster-label`](./uctl-delete/uctl-delete-execution-cluster-label.md) |
-| Execution queue attribute |  [`uctl get execution-queue-attribute`](./uctl-get/uctl-get-execution-queue-attribute.md),  [`uctl update execution-queue-attribute`](./uctl-update/uctl-update-execution-queue-attribute.md),  [`uctl delete execution-queue-attribute`](./uctl-delete/uctl-delete-execution-queue-attribute.md) |
+| Cluster resource attribute | [`uctl get cluster-resource-attribute`](./uctl-get/uctl-get-cluster-resource-attribute.md) <br /> [`uctl update cluster resource attribute`](./uctl-update/uctl-update-cluster-resource-attribute.md) <br />  [`uctl delete cluster resource attribute`](./uctl-delete/uctl-delete-cluster-resource-attribute.md) |
+| Config |  [`uctl config init`](./uctl-config/uctl-config-init.md) <br />  [`uctl config discover`](./uctl-config/uctl-config-discover.md) <br />  [`uctl config docs`](./uctl-config/uctl-config-docs.md) <br />  [`uctl config validate`](./uctl-config/uctl-config-validate.md) |
+| Demo |  [`uctl demo start`](./uctl-demo/uctl-demo-start.md) <br />  [`uctl demo status`](./uctl-demo/uctl-demo-status.md) <br />  [`uctl demo exec`](./uctl-demo/uctl-demo-exec.md) <br />  [`uctl demo reload`](./uctl-demo/uctl-demo-reload.md) <br />  [`uctl demo teardown`](./uctl-demo/uctl-demo-teardown.md) |
+| Execution |  [`uctl create execution`](./uctl-create/uctl-create-execution.md) <br />  [`uctl get execution`](./uctl-get/uctl-get-execution.md) <br />  [`uctl update execution`](./uctl-update/uctl-update-execution.md) <br />  [`uctl delete execution`](./uctl-delete/uctl-delete-execution.md) |
+| Execution cluster label |  [`uctl get execution-cluster-label`](./uctl-get/uctl-get-execution-cluster-label.md) <br />  [`uctl update execution-cluster-label`](./uctl-update/uctl-update-execution-cluster-label.md) <br />  [`uctl delete execution-cluster-label`](./uctl-delete/uctl-delete-execution-cluster-label.md) |
+| Execution queue attribute |  [`uctl get execution-queue-attribute`](./uctl-get/uctl-get-execution-queue-attribute.md) <br />  [`uctl update execution-queue-attribute`](./uctl-update/uctl-update-execution-queue-attribute.md) <br />  [`uctl delete execution-queue-attribute`](./uctl-delete/uctl-delete-execution-queue-attribute.md) |
 | Files |  [`uctl regiser files`](./uctl-register/uctl-register-files.md) |
-| Launch plan | [`uctl get launchplan`](./uctl-get/uctl-get-launchplan.md), [`uctl update launchplan`](./uctl-update/uctl-update-launchplan.md), [`uctl update launchplan-meta`](./uctl-update/uctl-update-launchplan-meta.md) |
-| Plugin override | [`uctl get plugin-override`](./uctl-get/uctl-get-plugin-override.md), [`uctl update plugin-override`](./uctl-update/uctl-update-plugin-override.md), [`uctl delete plugin-override`](./uctl-delete/uctl-delete-plugin-override.md) |
-| Project | [`uctl create project`](./uctl-create/uctl-create-project.md), [`uctl get project`](./uctl-get/uctl-get-project.md), [`uctl update project`](./uctl-update/uctl-update-project.md) |
-| Task | [`uctl get task`](./uctl-get/uctl-get-task.md), [`uctl update task-meta`](./uctl-update/uctl-update-task-meta.md) |
-| Task resource attribute | [`uctl get task-resource-attribute`](./uctl-get/uctl-get-task-resource-attribute.md), [`uctl update task-resource-attribute`](./uctl-update/uctl-update-task-resource-attribute.md), [`uctl delete task-resource-attribute`](./uctl-delete/uctl-delete-task-resource-attribute.md) |
-| Workflow | [`uctl get workflow`](./uctl-get/uctl-get-workflow.md), [`uctl update workflow-meta`](./uctl-update/uctl-update-workflow-meta.md) |
-| Workflow execution config | [`uctl get workflow-execution-config`](./uctl-get/uctl-get-workflow-execution-config.md), [`uctl update workflow-execution-config`](./uctl-update/uctl-update-workflow-execution-config.md), [`uctl delete workflow-execution-config`](./uctl-delete/uctl-delete-workflow-execution-config.md) |
+| Launch plan | [`uctl get launchplan`](./uctl-get/uctl-get-launchplan.md) <br /> [`uctl update launchplan`](./uctl-update/uctl-update-launchplan.md) <br /> [`uctl update launchplan-meta`](./uctl-update/uctl-update-launchplan-meta.md) |
+| Plugin override | [`uctl get plugin-override`](./uctl-get/uctl-get-plugin-override.md) <br /> [`uctl update plugin-override`](./uctl-update/uctl-update-plugin-override.md) <br /> [`uctl delete plugin-override`](./uctl-delete/uctl-delete-plugin-override.md) |
+| Project | [`uctl create project`](./uctl-create/uctl-create-project.md) <br /> [`uctl get project`](./uctl-get/uctl-get-project.md) <br /> [`uctl update project`](./uctl-update/uctl-update-project.md) |
+| Task | [`uctl get task`](./uctl-get/uctl-get-task.md) <br /> [`uctl update task-meta`](./uctl-update/uctl-update-task-meta.md) |
+| Task resource attribute | [`uctl get task-resource-attribute`](./uctl-get/uctl-get-task-resource-attribute.md) <br /> [`uctl update task-resource-attribute`](./uctl-update/uctl-update-task-resource-attribute.md) <br /> [`uctl delete task-resource-attribute`](./uctl-delete/uctl-delete-task-resource-attribute.md) |
+| Workflow | [`uctl get workflow`](./uctl-get/uctl-get-workflow.md) <br /> [`uctl update workflow-meta`](./uctl-update/uctl-update-workflow-meta.md) |
+| Workflow execution config | [`uctl get workflow-execution-config`](./uctl-get/uctl-get-workflow-execution-config.md) <br /> [`uctl update workflow-execution-config`](./uctl-update/uctl-update-workflow-execution-config.md) <br /> [`uctl delete workflow-execution-config`](./uctl-delete/uctl-delete-workflow-execution-config.md) |
 

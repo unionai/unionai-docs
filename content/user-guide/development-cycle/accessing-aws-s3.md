@@ -1,3 +1,9 @@
+---
+title: Accessing AWS S3 buckets
+weight: 15
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Accessing AWS S3 buckets
 
 Here we will take a look at how to access data on AWS S3 Buckets from Union.
@@ -7,15 +13,15 @@ As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys:
 
 First, we create secrets on Union by running the following command:
 
-{{< highlight shell >}}
-union create secret AWS_ACCESS_KEY_ID
-{{< /highlight >}}
+```shell
+$ union create secret AWS_ACCESS_KEY_ID
+```
 
 This will open a prompt where we paste in our AWS credentials:
 
-{{< highlight shell >}}
+```shell
 Enter secret value: 🗝️
-{{< /highlight >}}
+```
 
 Repeat this process for all other AWS credentials, such as `AWS_SECRET_ACCESS_KEY`.
 
@@ -23,15 +29,15 @@ Repeat this process for all other AWS credentials, such as `AWS_SECRET_ACCESS_KE
 
 Next, we can use the secrets directly in a task! With AWS CLI, we create a small text file and move it to a AWS bucket
 
-{{< highlight shell >}}
-aws s3 mb s3://test_bucket
-echo "Hello Union" > my_file.txt
-aws s3 cp my_file.txt s3://test_bucket/my_file.txt
-{{< /highlight >}}
+```shell
+$ aws s3 mb s3://test_bucket
+$ echo "Hello Union" > my_file.txt
+$ aws s3 cp my_file.txt s3://test_bucket/my_file.txt
+```
 
 Next, we give a task access to our AWS secrets by supplying them through `secret_requests`. For this guide, save the following snippet as `aws-s3-access.py` and run:
 
-{{< highlight python >}}
+```python
 import union
 
 @union.task(
@@ -56,13 +62,13 @@ def read_s3_data() -> str:
 @union.workflow
 def main():
     read_s3_data()
-{{< /highlight >}}
+```
 
 Within the task, the secrets are available through `current_context().secrets` and passed to `s3fs`. Running the following command to execute the workflow:
 
-{{< highlight shell >}}
+```shell
 union run --remote aws-s3-access.py main
-{{< /highlight >}}
+```
 
 ## Conclusion
 

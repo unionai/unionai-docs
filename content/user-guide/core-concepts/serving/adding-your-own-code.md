@@ -1,3 +1,9 @@
+---
+title: Adding your own code
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Adding your own code
 
 In the introductory section we saw how to define and deploy a simple Streamlit app.
@@ -10,18 +16,18 @@ We will initialize the app in `app.py` as before, but now we will add two files 
 
 In a local directory, create the following files:
 
-{{< highlight shell >}}
+```shell
 ├── app.py
 ├── main.py
 └── utils.py
-{{< /highlight >}}
+```
 
 
 ## App declaration
 
 The file `app.py` contains the app declaration:
 
-{{< highlight python >}}
+```python
 :caption: app.py
 
 """A Union app with custom code"""
@@ -52,7 +58,7 @@ app = union.app.App(
     include=["main.py", "utils.py"],
     limits=union.Resources(cpu="1", mem="1Gi"),
 )
-{{< /highlight >}}
+```
 
 
 Compared to the first example we have added one more parameter:
@@ -65,7 +71,7 @@ In this example we include two files containing custom logic: `main.py` and `uti
 
 The file `main.py` contains the bulk of our custom code:
 
-{{< highlight python >}}
+```python
 :caption: main.py
 
 """Streamlit App that plots data"""
@@ -83,12 +89,12 @@ data = all_data[columns]
 tab1, tab2 = st.tabs(["Chart", "Dataframe"])
 tab1.line_chart(data, height=250)
 tab2.dataframe(data, height=250, use_container_width=True)
-{{< /highlight >}}
+```
 
 
 The file `utils.py` contains a supporting data generating function that is imported into the file above
 
-{{< highlight python >}}
+```python
 :caption: utils.py
 
 """Function to generate sample data."""
@@ -100,21 +106,21 @@ def generate_data(columns: list[str], seed: int = 42):
     rng = np.random.default_rng(seed)
     data = pd.DataFrame(rng.random(size=(20, len(columns))), columns=columns)
     return data
-{{< /highlight >}}
+```
 
 
 ## Deploy the app
 
 Deploy the app with:
 
-{{< highlight shell >}}
+```shell
 $ union deploy apps app.py streamlit-custom-code
-{{< /highlight >}}
+```
 
 
 The output displays the console URL and endpoint for the Streamlit app:
 
-{{< highlight shell >}}
+```shell
 ✨ Deploying Application: streamlit-custom-code
 🔎 Console URL:
 https://<union-host-url>/org/...
@@ -123,7 +129,7 @@ specification.
 [Status] Started: Service is ready
 
 🚀 Deployed Endpoint: https://<unique-subhost>.apps.<union-host-url>
-{{< /highlight >}}
+```
 
 
 Navigate to the endpoint to see the Streamlit App!

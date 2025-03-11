@@ -1,6 +1,7 @@
 ---
 title: FAQ
 weight: 8
+variants: "+flyte +serverless +byoc +byok"
 ---
 
 # FAQ
@@ -11,7 +12,7 @@ weight: 8
 
 When you initially onboard your organization to Union BYOC you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
-For details, see [Configuring your data plane](./data-plane-setup/configuring-your-data-plane.md).
+For details, see [Configuring your data plane](../deployment/configuring-your-data-plane.md).
 
 ### How do I change the machine types in my cluster?
 
@@ -59,7 +60,7 @@ Having said that, since the data plane is yours, you are ultimately responsible 
 
 Yes, but you probably don't need to.
 
-[`s3fs`](https://github.com/s3fs-fuse/s3fs-fuse) is a FUSE-based filesystem backed by Amazon S3.
+[`s3fs`](https://github.com/s3fs-fuse/s3fs-fuse) is a FUSE-based file system backed by Amazon S3.
 It is possible to set up `s3fs` in your task container image and use it from within your task code.
 
 However, in most cases using either `FlyteFile`/`FlyteDirectory` or a library like `boto3` to access an S3 bucket directly is preferred (and easier).
@@ -74,9 +75,9 @@ See [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3.md).
 * In your task code, invoke the `s3fs` command line tool to mount the S3-backed volume.
 For example:
 
-{{< highlight python >}}
+```python
 subprocess.run(['s3fs', bucket_and_path, mount_point, '-o', 'iam_role=auto'], check=True)
-{{< /highlight >}}
+```
 
 See also:
 
@@ -124,9 +125,9 @@ You should install the `union` SDK, which will install the `union` and `flytekit
 
 To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following command:
 
-{{< highlight shell >}}
+```shell
 pip install union
-{{< /highlight >}}
+```
 
 ### How do I authenticate `uctl` and `union` to Union?
 
@@ -163,16 +164,16 @@ You should use the `union` CLI to register and run workflows and perform other o
 
 To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following command:
 
-{{< highlight shell >}}
+```shell
 pip install union
-{{< /highlight >}}
+```
 
 ### How do I fix import errors when running workflows remotely?
 
 If you run your workflows with `union run --remote ...`, you may encounter import errors when importing functions, classes, or variables from other modules in your project repository.
 For example, if you have the following repository structure and you want to import a model from `my_model.py`, some constants from `constants.py`, and a helper function from `utils.py` in a task that is defined in `my_workflow.py`, you will encounter import errors unless these Python modules were explicitly added to the image used by the task, since the container running the task does not recognize these modules by default.
 
-{{< highlight shell >}}
+```shell
 ├── requirements.txt
 └── my_lib
     ├── __init__.py
@@ -186,7 +187,7 @@ For example, if you have the following repository structure and you want to impo
         └── workflow_helper_functions
             ├── __init__.py
             └── utils.py
-{{< /highlight >}}
+```
 
 Instead of building a custom Dockerfile that copies all the files and modules in your repository structure, you can do one of the following:
 1. Use the `--copy-all` flag in `union run --remote ...`
@@ -210,7 +211,7 @@ There are two levers to control the parallelism of a workflow: `max_parallelism`
 Another way of thinking about this is that `max_parallelism` controls the number of simultaneous executions of all tasks _except_ for map tasks which are controlled separately.
 This means that the total number of simultaneous executions during a workflow run cannot exceed `max_parallelism * concurrency` which would be the case if each parallel execution at the workflow level had its own map task.
 
-By default `max_parallelism` is set to 25. If `concurrency` is not set for a map task, the current default behavior is to execute over all inputs to the map task.
+By default, `max_parallelism` is set to 25. If `concurrency` is not set for a map task, the current default behavior is to execute over all inputs to the map task.
 The trade-off that must be balanced when setting `max_parallelism` and `concurrency` is with resource availability at a workflow level.
 If parallelism is too high, tasks can time out before resources can be allocated to them, making it important to consider the resource requirements of your tasks that will run in parallel.
 

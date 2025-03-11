@@ -1,3 +1,9 @@
+---
+title: Genomic Alignment
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Genomic Alignment
 
 This tutorial demonstrates how to use Flyte to build a workflow that
@@ -15,7 +21,7 @@ The tutorial is divided into the following sections:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -43,7 +49,7 @@ union run --remote genomic_alignment.py alignment_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/genomic_alignment/genomic_alignment.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

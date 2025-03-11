@@ -1,3 +1,9 @@
+---
+title: Consuming artifacts in workflows
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Consuming artifacts in workflows
 
 ## Defining a workflow that consumes an artifact
@@ -6,13 +12,13 @@ You can define a workflow that consumes an artifact by defining a query and pass
 
 The following code defines a query, `data_query`, that searches across all versions of `BasicArtifact` that match the partition values. This query binds parameters to the workflow's `key1` and `time_partition` inputs and returns the most recent version of the artifact.
 
-{@@ if byoc @@}
+{{< if-variant "byoc byok flyte" >}}
 
-:::--note--
+{{< note >}}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
-:::
+{{< /note >}}
 
-{@@ endif @@}
+{{< /if-variant >}}
 
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/query.py
 :caption: query.py
@@ -22,13 +28,13 @@ To use the example code on this page, you will need to add your `registry` to th
 
 You can also directly reference a particular artifact version in a query using the `get()` method:
 
-{{< highlight python >}}
+```python
 data = BasicArtifact.get(<organization>/<domain>/BasicArtifact@<artifact-version>)
-{{< /highlight >}}
+```
 
-:::--note--
+{{< note >}}
 For a full list of Artifact class methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
-:::
+{{< /note >}}
 
 ## Launching a workflow that consumes an artifact
 

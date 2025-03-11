@@ -1,3 +1,9 @@
+---
+title: Actors
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Actors
 
 Actors allow you to reuse a container and environment between tasks, avoiding the cost of starting a new container for each task. This can be useful when you have a task that requires a lot of setup or has a long startup time.
@@ -6,11 +12,12 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 ### `ActorEnvironment` parameters
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
-{@@ endif @@}
+{{< /if-variant >}}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
 * **limits:** Compute resource limits.
 * **replica_count:** The number of workers to provision that are able to accept tasks.
@@ -20,17 +27,18 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/hello_world.py
 :caption: hello_world.py
 
 ```
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/hello_world.py
 :caption: hello_world.py
 
 ```
-{@@ endif @@}
+{{< /if-variant >}}
 
 
 You can learn more about the tradeoffs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks.md).
@@ -41,34 +49,35 @@ The `@actor_cache` decorator provides a powerful mechanism to cache the results 
 
 ### When to Use `@actor_cache`
 
-- **Shared Initialization Costs:**  
+- **Shared Initialization Costs:**
   For expensive, shared initialization processes that multiple tasks rely on.
 
-- **Repetitive Task Execution:**  
+- **Repetitive Task Execution:**
   When tasks repeatedly require the same resource or computation on the same actor replica.
 
-- **Complex Object Caching:**  
+- **Complex Object Caching:**
   Use custom Python objects as keys to define unique cache entries.
 
 
 Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_basic.py
 :caption: caching_basic.py
 
 ```
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_basic.py
 :caption: caching_basic.py
 ```
 ```--note--
 In order to get the `@actor_cache` functionality, you must pin `union` to at least `0.1.121`.
 ```
-{@@ endif @@}
+{{< /if-variant >}}
 
 ![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
 
-You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time. 
+You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time.
 
 You can see examples of more advanced actor usage [here](actor-examples.md).

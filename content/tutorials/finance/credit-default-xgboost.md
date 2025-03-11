@@ -1,3 +1,9 @@
+---
+title: Credit Default Prediction with XGBoost & NVIDIA RAPIDS
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Credit Default Prediction with XGBoost & NVIDIA RAPIDS
 
 In this tutorial, we will use NVIDIA RAPIDS `cudf` DataFrame library for preprocessing
@@ -7,7 +13,7 @@ for specifying our python dependencies.
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -35,7 +41,7 @@ union run --remote credit_default.py credit_default_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/credit_default/credit_default.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

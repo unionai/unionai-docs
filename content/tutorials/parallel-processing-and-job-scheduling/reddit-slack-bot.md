@@ -1,3 +1,9 @@
+---
+title: Reddit Slack Bot
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Reddit Slack Bot
 
 This tutorial demonstrates how to set up a simple workflow to search for
@@ -8,7 +14,7 @@ interested in.
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -37,7 +43,7 @@ union run --remote tutorials/reddit_slack_bot/reddit_slack_bot.py reddit_wf --ki
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/reddit_slack_bot/reddit_slack_bot.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

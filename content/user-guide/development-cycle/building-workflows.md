@@ -1,3 +1,9 @@
+---
+title: Building workflows
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Building workflows
 
 ## When should I decompose tasks?

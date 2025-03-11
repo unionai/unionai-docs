@@ -1,3 +1,9 @@
+---
+title: Deploying a Fine-Tuned Llama Model to an iOS App with MLC-LLM
+weight: 6
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Deploying a Fine-Tuned Llama Model to an iOS App with MLC-LLM
 
 [MLC-LLM](https://llm.mlc.ai/) is a powerful ML compiler and high-performance deployment engine designed specifically for LLMs.
@@ -9,7 +15,7 @@ Start by importing the necessary libraries and modules:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -45,7 +51,7 @@ union run --remote --copy-all llama_edge_deployment.py finetuning_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/llama_edge_deployment/llama_edge_deployment.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

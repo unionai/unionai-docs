@@ -1,9 +1,15 @@
+---
+title: Eager workflows
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Eager workflows
 
-:::{important}
+{{< note >}}
 This feature is experimental and the API is subject to breaking changes.
 If you encounter any issues please reach out to the Union team.
-:::
+{{< /note >}}
 
 Eager workflows allow you to create workflows that give you runtime access to
 intermediary task/subworkflow outputs.
@@ -19,7 +25,7 @@ the Python constructs that you're familiar with via the `asyncio` API. To
 understand what this looks like, let's define a very basic eager workflow
 using the `@eager` decorator.
 
-{{< highlight python >}}
+```python
 from union import task, workflow
 from flytekit.experimental import eager
 
@@ -40,7 +46,7 @@ async def simple_eager_workflow(x: int) -> int:
     if out < 0:
         return -1
     return await double(x=out)
-{{< /highlight >}}
+```
 
 As we can see in the code above, we define an `async` function called
 `simple_eager_workflow` that takes an integer as input and returns an integer.
@@ -66,7 +72,7 @@ object within the lifetime of the parent eager workflow execution. Note that
 this happens automatically and you don't need to use the `async` keyword when
 defining a task or workflow that you want to invoke within an eager workflow.
 
-:::--note--
+{{< note >}}
 With eager workflows, you basically have access to the Python `asyncio`
 interface to define extremely flexible execution graphs. The trade-off is that
 you lose the compile-time type safety that you get with regular static workflows
@@ -77,13 +83,13 @@ We're leveraging Python's native `async` capabilities in order to:
 1. Materialize the output of tasks and subworkflows so you can operate
    on them without spinning up another pod and also determine the shape of the
    workflow graph in an extremely flexible manner.
-2. Provide an alternative way of achieving concurrency in Union. Union has
+2. Provide an alternative way of achieving concurrency in {@= Product =@}. {@= Product =@} has
    concurrency built into it, so all tasks and subworkflows will execute concurrently
    assuming that they don't have any dependencies on each other. However, eager
    workflows provide a Python-native way of doing this, with the main downside
    being that you lose the benefits of statically compiled workflows, such as
    compile-time analysis and first-class data lineage tracking.
-:::
+{{< /note >}}
 
 Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
@@ -106,7 +112,7 @@ One of the biggest benefits of eager workflows is that you can materialize
 task and subworkflow outputs as Python values and do operations on them just
 like you would in any other Python function. Let's look at another example:
 
-{{< highlight python >}}
+```python
 @eager
 async def another_eager_workflow(x: int) -> int:
     out = await add_one(x=x)
@@ -115,7 +121,7 @@ async def another_eager_workflow(x: int) -> int:
     out = out - 1
 
     return await double(x=out)
-{{< /highlight >}}
+```
 
 Since `out` is an actual Python integer and not a Promise, we can do operations
 on it at runtime, inside the eager workflow function body. This is not possible
@@ -127,7 +133,7 @@ As you saw in the `simple_eager_workflow` workflow above, you can use regular
 Python conditionals in your eager workflows. Let's look at a more complicated
 example:
 
-{{< highlight python >}}
+```python
 @union.task
 def gt_100(x: int) -> bool:
     return x > 100
@@ -146,7 +152,7 @@ async def eager_workflow_with_conditionals(x: int) -> int:
 
     assert out >= -1
     return out
-{{< /highlight >}}
+```
 
 In the above example, we're using the eager workflow's Python runtime
 to check if `out` is negative, but we're also using the `gt_100` task in the
@@ -156,7 +162,7 @@ to check if `out` is negative, but we're also using the `gt_100` task in the
 
 You can gather the outputs of multiple tasks or subworkflows into a list:
 
-{{< highlight python >}}
+```python
 import asyncio
 
 
@@ -169,13 +175,13 @@ async def eager_workflow_with_for_loop(x: int) -> int:
 
     outputs = await asyncio.gather(*outputs)
     return await double(x=sum(outputs))
-{{< /highlight >}}
+```
 
 ### Static subworkflows
 
 You can invoke static workflows from within an eager workflow:
 
-{{< highlight python >}}
+```python
 @union.workflow
 def subworkflow(x: int) -> int:
     out = add_one(x=x)
@@ -187,13 +193,13 @@ async def eager_workflow_with_static_subworkflow(x: int) -> int:
     out = await subworkflow(x=x)
     assert out == (x + 1) * 2
     return out
-{{< /highlight >}}
+```
 
 ### Eager subworkflows
 
 You can have nested eager subworkflows inside a parent eager workflow:
 
-{{< highlight python >}}
+```python
 @eager
 async def eager_subworkflow(x: int) -> int:
     return await add_one(x=x)
@@ -203,13 +209,13 @@ async def eager_subworkflow(x: int) -> int:
 async def nested_eager_workflow(x: int) -> int:
     out = await eager_subworkflow(x=x)
     return await double(x=out)
-{{< /highlight >}}
+```
 
 ### Catching exceptions
 
 You can catch exceptions in eager workflows through `EagerException`:
 
-{{< highlight python >}}
+```python
 from flytekit.experimental import EagerException
 
 
@@ -226,20 +232,20 @@ async def eager_workflow_with_exception(x: int) -> int:
         return await raises_exc(x=x)
     except EagerException:
         return -1
-{{< /highlight >}}
+```
 
 Even though the `raises_exc` exception task raises a `TypeError`, the
 `eager_workflow_with_exception` runtime will raise an `EagerException` and
 you'll need to specify `EagerException` as the exception type in your `try... except`
 block.
 
-:::--note--
+{{< note >}}
 This is a current limitation in the `@eager` workflow implementation.
-:::
+{{< /note >}}
 
 ## Executing eager workflows
 
-As with most Flyte constructs, you can execute eager workflows both locally
+As with most {@= Product =@} constructs, you can execute eager workflows both locally
 and remotely.
 
 ### Local execution
@@ -247,11 +253,11 @@ and remotely.
 You can execute eager workflows locally by simply calling them like a regular
 `async` function:
 
-{{< highlight python >}}
+```python
 if __name__ == "__main__":
     result = asyncio.run(simple_eager_workflow(x=5))
     print(f"Result: {result}")  # "Result: 12"
-{{< /highlight >}}
+```
 
 This just uses the `asyncio.run` function to execute the eager workflow just
 like any other Python async code. This is useful for local debugging as you're
@@ -266,7 +272,7 @@ In order to actually execute them on a Union cluster, you'll need to configure
 eager workflows with a `UnionRemote` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
-{{< highlight python >}}
+```python
 from union import UnionRemote
 from flytekit.configuration import Config
 
@@ -281,7 +287,7 @@ from flytekit.configuration import Config
 )
 async def eager_workflow_remote(x: int) -> int:
     ...
-{{< /highlight >}}
+```
 
 Where `config.yaml` contains a Union config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your Union
 instance.
@@ -292,7 +298,7 @@ When using a sandbox cluster started with `uctl demo start`, however, the
 `client_secret_group` and `client_secret_key` are not required, since the
 default sandbox configuration does not require key-based authentication.
 
-{{< highlight python >}}
+```python
 from flytekit.configuration import Config
 from union import UnionRemote
 
@@ -309,15 +315,15 @@ async def eager_workflow_sandbox(x: int) -> int:
     if out < 0:
         return -1
     return await double(x=out)
-{{< /highlight >}}
+```
 
-:::--note--
+{{< note >}}
 When executing eager workflows on a remote Union cluster, Union will execute the
 latest version of tasks, static workflows, and eager workflows that are on
 the `default_project` and `default_domain` as specified in the `UnionRemote`
 object. This means that you need to pre-register all entities that are
 invoked inside of the eager workflow.
-:::
+{{< /note >}}
 
 ### Registering and running
 
@@ -325,28 +331,28 @@ Assuming that your code is configured correctly, you will need to
 register all of the task and subworkflows that are used with your eager
 workflow with `union register`:
 
-{{< highlight shell >}}
+```shell
 union --config <path/to/config.yaml> register \
  --project <project> \
  --domain <domain> \
  --image <image> \
  path/to/eager_workflows.py
-{{< /highlight >}}
+```
 
 And then run it with `union run`:
 
-{{< highlight shell >}}
+```shell
 union --config <path/to/config.yaml> run \
  --project <project> \
  --domain <domain> \
  --image <image> \
  path/to/eager_workflows.py simple_eager_workflow --x 10
-{{< /highlight >}}
+```
 
-:::--note--
+{{< note >}}
 You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood,
 which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
-:::
+{{< /note >}}
 
 ## Eager workflows in the UI
 

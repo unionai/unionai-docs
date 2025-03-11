@@ -1,3 +1,9 @@
+---
+title: Managing secrets
+weight: 13
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Managing secrets
 
 You can use secrets to interact with external services.
@@ -8,9 +14,9 @@ You can use secrets to interact with external services.
 
 To create a secret, use the `union create secret` command:
 
-{{< highlight shell >}}
+```shell
 union create secret --project my_project --domain my_domain my_secret
-{{< /highlight >}}
+```
 
 You'll be prompted to enter a secret value in the terminal:
 
@@ -22,17 +28,17 @@ Enter secret value: ...
 
 To create a secret from a file, run the following command:
 
-{{< highlight shell >}}
+```shell
 union create secret --project my_project --domain my_domain my_file_secret -f /path/to/file
-{{< /highlight >}}
+```
 
 ## Listing secrets
 
 You can list existing secrets with the `union get secret` command:
 
-{{< highlight shell >}}
+```shell
 union get secret --project my_project --domain my_domain
-{{< /highlight >}}
+```
 
 ## Using secrets in workflow code
 
@@ -48,7 +54,7 @@ To use a secret created on the command line, see the example code below. To run 
 3. Run the script with `union run --remote using_secrets.py main`.
 
 
-{{< highlight python >}}
+```python
 import union
 
 @union.task(secret_requests=[union.Secret(key="my_secret")])
@@ -56,7 +62,7 @@ def t1():
     secret_value = union.current_context().secrets.get(key="my_secret")
     # do something with the secret. For example, communication with an external API.
     ...
-{{< /highlight >}}
+```
 
 ```--warning--
 Do not return secret values from tasks, as this will expose secrets to the control plane.
@@ -65,14 +71,14 @@ Do not return secret values from tasks, as this will expose secrets to the contr
 With `env_var`, you can automatically load the secret into the environment. This is useful
 with libraries that expect the secret to have a specific name:
 
-{{< highlight python >}}
+```python
 import union
 
 @union.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
 def t1():
     # Authenticates the remote with UNION_API_KEY
     remote = union.UnionRemote(default_project="flytesnacks", default_domain="development")
-{{< /highlight >}}
+```
 
 ### Using a secret created from a file
 
@@ -83,7 +89,7 @@ To use a secret created from a file in your workflow code, you must mount it as 
 4. Run the script with `union run --remote using_secrets_file.py main`.
 
 
-{{< highlight python >}}
+```python
 import union
 
 @union.task(
@@ -97,28 +103,28 @@ def t1():
         secret_value = f.read()
     # do something with the secret. For example, communication with an external API.
     ...
-{{< /highlight >}}
+```
 
 ```--warning--
 Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
 
-:::--note--
+{{< note >}}
 The `get_secrets_file` method takes the secret key and returns the path to the secret file.
-:::
+{{< /note >}}
 
 ## Updating secrets
 
 To update a secret, run the `union update secret` command. You will be prompted to enter a new value:
 
-{{< highlight shell >}}
+```shell
 union update secret --project my_project --domain my_domain my_secret
-{{< /highlight >}}
+```
 
 ## Deleting secrets
 
 To delete a secret, use the `union delete secret` command:
 
-{{< highlight shell >}}
+```shell
 union delete secret --project my_project --domain my_domain my_secret
-{{< /highlight >}}
+```

@@ -1,3 +1,9 @@
+---
+title: Project structure
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Project structure
 
 Organizing a workflow project repository effectively is key for ensuring scalability, collaboration, and easy maintenance.
@@ -8,7 +14,7 @@ Here are best practices for structuring a Union workflow project repo, covering 
 
 A typical Union workflow project structure could look like this:
 
-{{< highlight bash >}}
+```shell
 .
 ├── .github/workflows/
 ├── .gitignore
@@ -36,7 +42,7 @@ A typical Union workflow project structure could look like this:
 ├── uv.lock
 └── pyproject.toml
 
-{{< /highlight >}}
+```
 
 This structure is designed to ensure each project component has a clear, logical home, making it easy for team members to find and modify files.
 

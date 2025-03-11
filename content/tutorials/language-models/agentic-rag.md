@@ -1,3 +1,9 @@
+---
+title: Agentic Retrieval Augmented Generation
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Agentic Retrieval Augmented Generation
 
 This tutorial demonstrates how to implement an agentic retrieval-augmented
@@ -7,7 +13,7 @@ vector store, and [GPT4](https://openai.com/) for the language model.
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -40,7 +46,7 @@ union run --remote agentic_rag.py agentic_rag_workflow --user_message "Tell me a
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/agentic_rag/agentic_rag.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

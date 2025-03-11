@@ -1,3 +1,9 @@
+---
+title: Enabling Azure resources
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Enabling Azure resources
 
 Components of your Union data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
@@ -11,11 +17,11 @@ You can always contact the Union team for help enabling additional resources as 
 
 There are two categories of access that you are likely to have to deal with:
 
-- **Infrastructure access**:
+* **Infrastructure access**:
   Enabling access to a resource for your data plane infrastructure.
   The most common case occurs when using your container registry task container images.
   In that case, refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) to configure the Union data plane to access that registry.
-- **Task code access**:
+* **Task code access**:
   Enabling access to a resource for your task code.
   For example, your task code might need to access Azure Blob Storage at runtime.
   This involves granting permission to the [User-assigned managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) attached to the Kubernetes cluster within which your task code runs.
@@ -30,19 +36,19 @@ Union tasks run within a Union-managed Kubernetes pod in your data plane. Union 
 
 Union on Azure has two types of access arrangements:
 
-- **Domain-scoped access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied only to a specific Union domain.
-- **Global access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied to an entire Azure subscription or resource group.
+* **Domain-scoped access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied only to a specific Union domain.
+* **Global access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied to an entire Azure subscription or resource group.
 
-:::--admonition-- Azure only supports scoping by domain
+{{< note "Azure only supports scoping by domain" >}}
 
 In AWS-based data planes, scoping by both project _and_ domain is supported.
 However, due to intrinsic architectural constraints, Azure-based data planes only support scoping by domain.
 
-:::
+{{< /note >}}
 
 Global access is recommended for most use cases since it is simpler. Still, if you have a compelling reason to restrict access, then the subscription/resource group-domain-scoped access is available at the cost of additional complexity in setup.
 
-:::--admonition-- Relationship with RBAC
+{{< note "Relationship with RBAC" >}}
 
 The permissions being discussed here are attached to a domain.
 This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management.md)).
@@ -50,10 +56,10 @@ But, the two types of permissions are related.
 
 For example, for a user (or machine application) to have read access to a blob storage container, two things are required:
 
-- The user (or machine application) must have **execute** permission for the project and domain where the code that does the reading resides.
-- The domain must have read permission for the blob storage container.
+* The user (or machine application) must have **execute** permission for the project and domain where the code that does the reading resides.
+* The domain must have read permission for the blob storage container.
 
-:::
+{{< /note >}}
 
 ## Domain-scoped access
 

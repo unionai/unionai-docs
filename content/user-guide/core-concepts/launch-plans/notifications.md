@@ -1,3 +1,9 @@
+---
+title: Notifications
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Notifications
 
 A launch plan may be associated with one or more notifications, which are triggered when the launch plan's workflow is completed.

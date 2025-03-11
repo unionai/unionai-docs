@@ -1,3 +1,9 @@
+---
+title: Viewing workflow executions
+weight: 8
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Viewing workflow executions
 
 The **Executions list** shows all executions in a project and domain combination.
@@ -38,10 +44,10 @@ An execution represents a single run of all or part of a workflow (including sub
 
 ![Execution view - nodes](/_static/images/user-guide/core-concepts/workflows/viewing-workflow-executions/execution-view-nodes.png)
 
-:::--note--
+{{< note >}}
 An execution usually represents the run of an entire workflow.
 But, because workflows are composed of tasks (and sometimes subworkflows) and Union caches the outputs of those independently of the workflows in which they participate, it sometimes makes sense to execute a task or subworkflow independently.
-:::
+{{< /note >}}
 
 The top part of execution view provides detailed general information about the execution.
 

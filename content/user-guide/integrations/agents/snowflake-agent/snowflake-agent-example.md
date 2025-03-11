@@ -1,3 +1,9 @@
+---
+title: Snowflake agent example
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Snowflake agent example
 
 This example shows how to use the `SnowflakeTask` to execute a query in Snowflake.
@@ -10,7 +16,7 @@ allowing for seamless integration and manipulation of the query data within subs
 1. Instantiate a `flytekitplugins.snowflake.SnowflakeTask` to execute a query.
 2. Incorporate `flytekitplugins.snowflake.SnowflakeConfig` within the task to define the appropriate configuration.
 
-{{< highlight python >}}
+```python
 import union
 from flytekit import kwtypes
 from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
@@ -28,12 +34,12 @@ snowflake_task_no_io = SnowflakeTask(
         warehouse="COMPUTE_WH",
     ),
 )
-{{< /highlight >}}
+```
 
 You can parameterize the query to filter results for a specific country.
 This country will be provided as user input, using a nation key to specify it.
 
-{{< highlight python >}}
+```python
 snowflake_task_templatized_query = SnowflakeTask(
     name="sql.snowflake.w_io",
     # Define inputs as well as their types that can be used to customize the query.
@@ -48,11 +54,11 @@ snowflake_task_templatized_query = SnowflakeTask(
     ),
     query_template="SELECT * from CUSTOMER where C_NATIONKEY =  %(nation_key)s limit 100",
 )
-{{< /highlight >}}
+```
 
 Insert data into a Snowflake table.
 
-{{< highlight python >}}
+```python
 snowflake_task_insert_query = SnowflakeTask(
     name="insert-query",
     inputs=kwtypes(id=int, name=str, age=int),
@@ -68,7 +74,7 @@ snowflake_task_insert_query = SnowflakeTask(
             VALUES (%(id)s, %(name)s, %(age)s);
             """,
 )
-{{< /highlight >}}
+```
 
 ```--note--
 Make sure to create a secret for the python task to access the Snowflake table.
@@ -77,7 +83,7 @@ Make sure to create a secret for the python task to access the Snowflake table.
 
 ```
 
-{{< highlight python >}}
+```python
 image = union.ImageSpec(
     registry="ghcr.io/unionai",
     packages=["flytekitplugins-snowflake", "pyarrow", "pandas"],
@@ -100,14 +106,14 @@ def snowflake_wf(nation_key: int):
 if __name__ == "__main__":
     print(snowflake_task_no_io())
     print(snowflake_wf(nation_key=10))
-{{< /highlight >}}
+```
 
 ## Writing data to Snowflake
 
 You can also create a pandas  DataFrame and save it as a table within your Snowflake data warehouse to enable
 further high-performance data analysis and storage.
 
-{{< highlight python >}}
+```python
 image = union.ImageSpec(
     registry="ghcr.io/unionai",
     packages=["flytekitplugins-snowflake", "pyarrow", "pandas"],
@@ -121,4 +127,4 @@ def write_table() -> StructuredDataset:
         "AGE": [30, 30, 30]
     })
     return StructuredDataset(dataframe=df, uri="snowflake://<USER>/<ACCOUNT>/<WAREHOUSE>/<DATABASE>/<SCHEMA>/<TABLE>")
-{{< /highlight >}}
+```

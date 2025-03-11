@@ -1,3 +1,10 @@
+---
+title: Projects and domains
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
+
 # Projects and domains
 
 Projects and domains are the principle organizational categories into which you group your workflows in Union.
@@ -5,34 +12,27 @@ Projects and domains are the principle organizational categories into which you 
 Projects define groups of task, workflows, launch plans and other entities that share a functional purpose.
 Domains represent distinct steps through which the entities in a project transition as they proceed through the development cycle.
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
+
 Union provides three domains: `development`, `staging`, and `production`.
-{@@ elif byoc @@}
+
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
+
 By default, Union provides three domains: `development`, `staging`, and `production`.
 During onboarding, you can configure your Union instance to have different domains.
 Speak to the Union team for more information.
-{@@ endif @@}
+
+{{< /if-variant >}}
 
 Projects and domains are orthogonal to each other, meaning that a project has multiple domains and a domain has multiple projects.
 Here is an example arrangement:
 
-:::--list-table-- Projects and domains
-:widths: auto
-:header-rows: 1
-:stub-columns: 1
-*   -
-    - Development
-    - Staging
-    - Production
-*   - Project_1
-    - workflow_1 (v=2.0)
-    - workflow_1 (v=1.0)
-    - workflow_1 (v=1.0)
-*   - Project_2
-    - workflow_2 (v=2.0)
-    - workflow_2 (v=1.0)
-    - workflow_2 (v=1.0)
-:::
+|           | Development       | Staging           | Production        |
+|-----------|-------------------|-------------------|-------------------|
+| Project 1 | workflow_1 (v2.0) | workflow_1 (v1.0) | workflow_1 (v1.0) |
+| Project 2 | workflow_2 (v2.0) | workflow_2 (v1.0) | workflow_2 (v1.0) |
+
 
 ## Projects
 
@@ -75,9 +75,11 @@ Union uses a project-domain pair to create isolated configurations for workflows
 
 * **Configuring Secrets**: Union allows you to configure secrets at the project-domain level, ensuring sensitive information, such as API keys and tokens, is accessible only within the specific workflows that need them. This enhances security by isolating secrets according to the project and domain, reducing the risk of unauthorized access across environments. More details [here](https://docs.union.ai/byoc/user-guide/development-cycle/managing-secrets#managing-secrets).
 
+
 ## Domains: Clear Environment Separation
 
 Domains represent distinct environments within Union, allowing clear separation between development, staging, and production. This structure helps prevent cross-environment interference, ensuring that changes made in development or testing do not affect production workflows. Using domains for this separation ensures that workflows can evolve in a controlled manner across different stages, from initial development through to production deployment.
+
 
 ## Projects: Organizing Workflows by Teams, Business Areas, or Applications
 

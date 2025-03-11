@@ -1,3 +1,9 @@
+---
+title: Serving
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Serving
 
 Union lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
@@ -14,16 +20,16 @@ In this case we will use the default Streamlit "Hello, World!" app.
 
 In a local directory, create the following file:
 
-{{< highlight shell >}}
+```shell
 └── app.py
-{{< /highlight >}}
+```
 
 
 ## App declaration
 
 The file `app.py` contains the app declaration:
 
-{{< highlight python >}}
+```python
 :caption: app.py
 
 """A simple Union app using Streamlit"""
@@ -53,7 +59,7 @@ app = union.app.App(
     port=8080,
     limits=union.Resources(cpu="1", mem="1Gi"),
 )
-{{< /highlight >}}
+```
 
 
 Here the `App` constructor is initialized with the following parameters:
@@ -74,17 +80,17 @@ There are a few additional available parameters that we do not use in this examp
 * `inputs`: A `List` of `union.app.Input` objects. Used to provide default inputs to the app on startup.
 * `requests`: A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@union.task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
 * `min_replicas`: The minimum number of replica containers permitted for this app.
-  This defines the lower bound for auto-scaling the app. The default is 0 {@# TODO: (see [App autoscaling]() for details) #@}.
+  This defines the lower bound for auto-scaling the app. The default is 0 {{/* TODO: (see [App autoscaling]() for details) */}}.
 * `max_replicas`: The maximum number of replica containers permitted for this app.
-  This defines the upper bound for auto-scaling the app. The default is 1 {@# TODO: (see [App autoscaling]() for details) #@}.
+  This defines the upper bound for auto-scaling the app. The default is 1 {{/* TODO: (see [App autoscaling]() for details) */}}.
 
 ## Deploy the app
 
 Deploy the app with:
 
-{{< highlight shell >}}
+```shell
 $ union deploy apps APP_FILE APP_NAME
-{{< /highlight >}}
+```
 
 
 * `APP_FILE` is the Python file that contains one or more app declarations.
@@ -95,17 +101,17 @@ If an app by that name already exists then this command stops the app, updates i
 
 In this case, we do the following:
 
-{{< highlight shell >}}
+```shell
 $ union deploy apps app.py streamlit-hello
-{{< /highlight >}}
+```
 
 
 This will return output like the following:
 
-{{< highlight shell >}}
+```shell
 ✨ Creating Application: streamlit-demo
 Created Endpoint at: https://withered--firefly--8ca31.apps.demo.hosted.unionai.cloud/
-{{< /highlight >}}
+```
 
 
 Click on the displayed endpoint to go to the app:
@@ -128,14 +134,14 @@ Buttons to **Copy Endpoint** and **Start app** are available at the top of the v
 
 You can also view all apps deployed in your Union instance from the command-line with:
 
-{{< highlight shell >}}
+```shell
 $ union get apps
-{{< /highlight >}}
+```
 
 
 This will display the app list:
 
-{{< highlight shell >}}
+```shell
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━━━┓
 ┃ Name                                    ┃ Link       ┃ Status     ┃ Desired State ┃ CPU ┃ Memory ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━━━┩
@@ -144,16 +150,16 @@ This will display the app list:
 │ streamlit-query-3                       │ Click Here │ Started    │ Started       │ 2   │ 2Gi    │
 │ streamlit-demo                          │ Click Here │ Unassigned │ Started       │ 2   │ 2Gi    │
 └─────────────────────────────────────────┴────────────┴────────────┴───────────────┴─────┴────────┘
-{{< /highlight >}}
+```
 
 
 ## Stopping apps
 
 To stop an app from the command-line, perform the following command:
 
-{{< highlight shell >}}
+```shell
 $ union stop apps --name APP_NAME
-{{< /highlight >}}
+```
 
 
 * `APP_NAME` is the name of an app deployed on the Union instance.

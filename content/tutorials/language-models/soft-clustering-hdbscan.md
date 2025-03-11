@@ -1,3 +1,9 @@
+---
+title: HDBSCAN Soft Clustering With Headline Embeddings on GPUs
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # HDBSCAN Soft Clustering With Headline Embeddings on GPUs
 
 HDBSCAN is a state-of-the-art, density-based clustering algorithm that is used to
@@ -9,7 +15,7 @@ NVIDIA's `A100` accelerators to embed the dataset and RAPIDS `cuML` for clusteri
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -37,7 +43,7 @@ union run --remote soft_clustering_hdbscan.py hdscan_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

@@ -1,3 +1,9 @@
+---
+title: Data retention policy
+weight: 8
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Data retention policy
 
 Data retention polices allow you to control what data is stored in your data plane and for how long.
@@ -26,9 +32,9 @@ Each category of data is stored in a separate Union-managed object store bucket 
 This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
 The result is that there are four distinct retention policies to specify (though in most cases you can stick with the defaults, see below).
 
-:::--admonition-- Object versions are not the same as Union entity versions
+{{< note "Object versions are not the same as Union entity versions" >}}
 The versions discussed here are at the object level and are not related to the versions of workflows, tasks and other Union entities that you see in the Union UI.
-:::
+{{< /note >}}
 
 ## How policies are specified
 

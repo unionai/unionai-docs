@@ -1,3 +1,9 @@
+---
+title: Actors and regular tasks
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Actors and regular tasks
 
 When deciding whether to use actors or traditional tasks in your workflows, it's important to consider the benefits

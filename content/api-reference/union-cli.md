@@ -1,3 +1,9 @@
+---
+title: Union CLI
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Union CLI
 
 The `union` CLI is the main tool developers use to interact with Union on the command line.
@@ -6,32 +12,38 @@ The `union` CLI is the main tool developers use to interact with Union on the co
 
 The recommended way to install the union CLI outside a workflow project is to use [`uv`](https://docs.astral.sh/uv/):
 
-{{< highlight shell >}}
+```shell
 $ uv tool install union
-{{< /highlight >}}
+```
 
 This will install the `union` CLI globally on your system [as a `uv` tool](https://docs.astral.sh/uv/concepts/tools/).
 
 
 ## Configure the `union` CLI
 
+{{< if-variant serverless >}}
 To configure the `union` CLI to connect to Union Serverless, run the following command:
 
-{{< highlight shell >}}
+```shell
 $ union create login --serverless
-{{< /highlight >}}
+```
 
-To configure the `union` CLI to connect to you Union BYOC instance, run the following command:
+{{< /if-variant >}}
+{{< if-variant "byoc byok" >}}
 
-{{< highlight shell >}}
+To configure the `union` CLI to connect to you Union BYOC or BYOK instance, run the following command:
+
+```shell
 $ union create login --host <union-host-url>
-{{< /highlight >}}
+```
 
 where `<union-host-url>` is the URL of your Union instance.
 
-These command will create the file `~/.union/config.yaml` with the configuration information to connect to the desired Union instance (Serverless or your own specific BYOC).
+{{< /if-variant >}}
 
-See [Quick start](../quick-start.md) for more details.
+These command will create the file `~/.union/config.yaml` with the configuration information to connect to the Union instance.
+
+See [Getting started > Local setup](../user-guide/getting-started/local-setup.md) for more details.
 
 ## Overriding the configuration file location
 
@@ -39,15 +51,15 @@ By default, the `union` CLI will look for a configuration file at `~/.union/conf
 
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
-{{< highlight shell >}}
+```shell
 export UNION_CONFIG=~/.my-config-location/my-config.yaml
-{{< /highlight >}}
+```
 
 Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag:
 
-{{< highlight shell >}}
+```shell
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
-{{< /highlight >}}
+```
 
 ## `union` CLI configuration search path
 
@@ -70,10 +82,3 @@ If none of these are present, the CLI will raise an error.
 
 ## `union` CLI commands
 
-```--eval-rst--
-
-.. click:: union.cli._main:main
-    :prog: union
-    :nested: full
-
-```

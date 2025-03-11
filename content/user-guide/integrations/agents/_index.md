@@ -1,3 +1,9 @@
+---
+title: Agents
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Agents
 
 Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
@@ -28,9 +34,9 @@ There are two types of agents: **async** and **sync**.
   The vast majority of agents are async agents.
 * **Sync agents** enable request/response services that return immediate outputs (e.g. calling an internal API to fetch data or communicating with the OpenAI API).
 
-:::--note--
+{{< note >}}
 While agents can be written in any programming language since they use a protobuf interface, we currently only support Python agents. We may support other languages in the future.
-:::
+{{< /note >}}
 
 ### Async agent interface specification
 
@@ -56,8 +62,8 @@ To test your agent locally, create a class for the agent task that inherits from
 
 For testing examples, see the [BigQuery agent](./bigquery-agent/index.md#local-testing) and [Databricks agent](./databricks-agent/index.md#local-testing) documentation.
 
-{@@ if byoc @@}
+{{< if-variant byoc >}}
 ### Enabling your agent in your Union deployment
 
 After you have finished testing your agent locally, you can contact the Union team to enable the agent in your Union deployment to use it in production.
-{@@ endif @@}
+{{< /if-variant >}}

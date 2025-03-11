@@ -1,3 +1,9 @@
+---
+title: Video Generation with Mochi
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Video Generation with Mochi
 
 This tutorial demonstrates how to run the [Mochi 1](https://huggingface.co/genmo/mochi-1-preview)
@@ -15,7 +21,7 @@ Let's begin by importing the necessary dependencies:
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -43,7 +49,7 @@ union run --remote mochi_video_generation.py genmo_video_generation_with_actor
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/mochi_video_generation/mochi_video_generation.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

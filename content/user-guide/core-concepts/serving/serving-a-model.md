@@ -1,6 +1,13 @@
-# Serving a model from a Workflow
+---
+title: Serving a Model from a Workflow With FastAPI
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
 
-In this section, we create a Union app to serve a scikit-learn model created by a Union workflow.
+# Serving a Model from a Workflow With FastAPI
+
+In this section, we create a Union app to serve a scikit-learn model created by a Union workflow
+using `FastAPI`.
 
 ## Example app
 
@@ -9,11 +16,11 @@ We then use a Union app to serve the model using `FastAPI`.
 
 In a local directory, create the following files:
 
-{{< highlight shell >}}
+```shell
 ├── app.py
 ├── main.py
 └── train_wf.py
-{{< /highlight >}}
+```
 
 
 ## App configuration
@@ -21,7 +28,7 @@ In a local directory, create the following files:
 First, we declare the resources, runtime image, and the Scikit-learn model required
 by the FastAPI app.
 
-{{< highlight python >}}
+```python
 :caption: app.py
 
 """A Union app that uses FastAPI to serve model created by a Union workflow."""
@@ -62,7 +69,7 @@ fast_api_app = union.app.App(
     include=["main.py"],
     args="fastapi dev --port 8082",
 )
-{{< /highlight >}}
+```
 
 
 Note that the Artifact is provided as an `Input` to the App definition. With `download=True`,
@@ -74,7 +81,7 @@ model is set to `SKLEARN_MODEL` by the runtime.
 During startup, the FastAPI app loads the model using the `SKLEARN_MODEL` environment
 variable. Then it serves an endpoint
 
-{{< highlight python >}}
+```python
 :caption: main.py
 
 """Set up the FastAPI app."""
@@ -100,7 +107,7 @@ app = FastAPI(lifespan=lifespan)
 async def predict(x: float, y: float) -> float:
     result = ml_models["model"]([[x, y]])
     return {"result": result}
-{{< /highlight >}}
+```
 
 
 ## Training workflow
@@ -108,7 +115,7 @@ async def predict(x: float, y: float) -> float:
 The training workflow trains a random forest regression and saves it to an Union
 `Artifact`.
 
-{{< highlight python >}}
+```python
 :caption: train_wf.py
 
 """A Union workflow that trains a model."""
@@ -148,17 +155,17 @@ def train_model() -> Annotated[union.FlyteFile, SklearnModel]:
     rf = RandomForestRegressor().fit(X, y)
     joblib.dump(rf, model_file)
     return model_file
-{{< /highlight >}}
+```
 
 
 ## Run the example
 
 To run this example you will need to register and run the workflow first:
 
-{{< highlight shell >}}
+```shell
 :caption: Run the workflow
 $ union run --remote train_wf.py train_model
-{{< /highlight >}}
+```
 
 
 This task trains a `RandomForestRegressor`, saves it to a file, and uploads it to
@@ -169,14 +176,14 @@ serving the model.
 
 Once the workflow has completed, you can deploy the app:
 
-{{< highlight shell >}}
+```shell
 $ union deploy apps app.py simple-fastapi-sklearn
-{{< /highlight >}}
+```
 
 
 The output displays the console URL and endpoint for the FastAPI App:
 
-{{< highlight shell >}}
+```shell
 ✨ Deploying Application: simple-fastapi-sklearn
 🔎 Console URL: https://<union-host-url>/org/...
 [Status] Pending: OutOfDate: The Configuration is still working to reflect the latest desired
@@ -186,7 +193,7 @@ specification.
 [Status] Started: Service is ready
 
 🚀 Deployed Endpoint: https://<unique-subhost>.apps.<union-host-url>
-{{< /highlight >}}
+```
 
 
 You can see the Swagger docs of the FastAPI endpoint, by going to `/docs`:

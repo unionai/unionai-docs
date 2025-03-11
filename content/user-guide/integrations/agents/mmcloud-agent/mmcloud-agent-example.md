@@ -1,3 +1,9 @@
+---
+title: MemVerge Memory Machine Cloud (MMC) agent example
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # MemVerge Memory Machine Cloud (MMC) agent example
 
 This example shows how to use the MMCloud agent to execute tasks on MemVerge Memory Machine Cloud.

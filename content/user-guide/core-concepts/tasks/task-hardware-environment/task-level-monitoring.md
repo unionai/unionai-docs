@@ -1,3 +1,9 @@
+---
+title: Task-level monitoring
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Task-level monitoring
 
 In the [Execution view](../../workflows/viewing-workflow-executions.md), selecting a task within the list will open the right panel.
@@ -14,12 +20,12 @@ Clicking this will take you to the **task-level monitoring** page:
 This tab displays details about the resources used by this specific task.
 As an example, let's say that the definition of this task in your Python code has the following task decorator:
 
-{{< highlight python >}}
+```python
 @union.task(
    requests=Resources(cpu="44", mem="120Gi"),
    limits=Resources(cpu="44", mem="120Gi")
 )
-{{< /highlight >}}
+```
 
 These parameters are reflected in the displayed **Memory Quota** and **CPU Cores Quota** charts as explained below:
 

@@ -1,3 +1,9 @@
+---
+title: Launching tasks
+weight: 4
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Launching tasks
 
 From the [task view](./viewing-tasks.md#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](./viewing-tasks.md#tasks-list)) you can select **Launch Task** in the top right:
@@ -22,22 +28,22 @@ Along the left side the following sections are available:
     This field is for specifying this setting at the workflow execution level.
     If this field is filled in it overrides any settings at higher levels.
     The parameter is expected to be a URL to a writable resource (for example, `http://s3.amazonaws.com/my-bucket/`).
-    {@# TODO: Add link to raw data documentation #@}
+    {{/* TODO: Add link to raw data documentation */}}
   * **Max parallelism**: Number of workflow nodes that can be executed in parallel. If not specified, project/domain defaults are used. If 0 then no limit is applied.
   * **Force interruptible**: A three valued setting for overriding the interruptible setting of the workflow for this particular execution.
     If not set, the workflow's interruptible setting is used.
     If set and **enabled** then `interruptible=True` is used for this execution.
     If set and **disabled** then `interruptible=False` is used for this execution.
-    {@# TODO: Add link to interruptible documentation #@}
-{@@ if byoc @@}
+    {{/* TODO: Add link to interruptible documentation */}}
+{{< if-variant "byoc byok flyte" >}}
   * **Service account**: The service account to use for this execution. If not specified, the default is used.
-{@@ endif @@}
+{{< /if-variant >}}
 * **Environment variables**: Environment variables that will be available to tasks in this workflow execution.
 * **Labels**: Labels to apply to the execution resource.
 * **Notifications**: Notifications configured for this workflow execution.
-{@# TODO: Add link to notifications documentation #@}
-{@@ if byoc @@}
+{{/* TODO: Add link to notifications documentation */}}
+{{< if-variant "byoc byok flyte" >}}
 * **Debug**: The workflow execution details for debugging purposes.
-{@@ endif @@}
+{{< /if-variant >}}
 
 Select **Launch** to launch the task execution. This will take you to the [Execution view](../workflows/viewing-workflow-executions.md).

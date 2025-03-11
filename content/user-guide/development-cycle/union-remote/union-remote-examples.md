@@ -1,21 +1,27 @@
+---
+title: UnionRemote examples
+weight: 2
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # UnionRemote examples
 
 ## Registering and running a workflow
 
 In the following example we register and run a workflow and retrieve its output:
 
-{{< highlight shell >}}
+```shell
 :caption: A simple project
 
 ├── remote.py
 └── workflow
     ├── __init__.py
     └── example.py
-{{< /highlight >}}
+```
 
 The workflow code that will be registered and run on Union resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
 
-{{< highlight python >}}
+```python
 :caption: example.py
 import os
 from union import task, workflow, FlyteFile
@@ -31,11 +37,11 @@ def create_file(message: str) -> FlyteFile:
 def my_workflow(message: str) -> FlyteFile:
     f = create_file(message)
     return f
-{{< /highlight >}}
+```
 
 The file `remote.py` contains the `UnionRemote` logic. It is not part of the workflow code, and is meant to be run on your local machine.
 
-{{< highlight python >}}
+```python
 :caption: remote.py
 from union import UnionRemote
 from workflow.example import my_workflow
@@ -57,13 +63,13 @@ def run_workflow():
 
 if __name__ == "__main__":
     run_workflow()
-{{< /highlight >}}
+```
 
 You can run the code with:
 
-{{< highlight shell >}}
+```shell
 $ python remote.py
-{{< /highlight >}}
+```
 
 The `my_workflow` workflow and the `create_file` task is registered and run.
 Once the workflow completes, the output is passed back to the `run_workflow` function and printed out.
@@ -75,13 +81,13 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 The steps above demonstrates the simplest way of registering and running a workflow with `UnionRemote`.
 For more options and details see [API reference > UnionRemote > Entrypoint](../../../api-reference/union-remote/entrypoint.md).
 
-{@@ if byoc @@}
+{{< if-variant "byoc byok flyte" >}}
 
 ## Terminating all running executions for a workflow
 
 This example shows how to terminate all running executions in a given workflow name.
 
-{{< highlight python >}}
+```python
 from union.remote import UnionRemote
 from dataclasses import dataclass
 import json
@@ -124,13 +130,13 @@ with open('terminated_executions.json', 'w') as f:
     json.dump([{'name': e.name, 'link': e.link} for e in executions_of_interest], f, indent=2)
 
 print(f"Terminated {len(executions_of_interest)} executions.")
-{{< /highlight >}}
+```
 
 ## Rerunning all failed executions of a workflow
 
 This example shows how to identify all failed executions from a given workflow since a certain time, and re-run them with the same inputs and a pinned workflow version.
 
-{{< highlight python >}}
+```python
 import datetime
 import pytz
 from union.remote import UnionRemote
@@ -177,6 +183,37 @@ workflow = remote.fetch_workflow(name=WF_NAME, version=VERSION)
 
 # execute new workflow for each failed previous execution
 [remote.execute(workflow, inputs=X) for X in inputs]
-{{< /highlight >}}
+```
 
-{@@ endif @@}
+## Filtering for executions using a `Filter`
+
+This example shows how to use a `Filter` to only query for the executions you want.
+
+```python
+from flytekit.models import filters
+from union import UnionRemote
+
+WF_NAME = "your_workflow_name"
+LP_NAME = "your_launchplan_name"
+PROJECT = "your_project"
+DOMAIN = "production"
+ENDPOINT = "union.example.com"
+
+remote = UnionRemote.for_endpoint(ENDPOINT)
+
+# Only query executions from your project
+project_filter = filters.Filter.from_python_std(f"eq(workflow.name,{WF_NAME})")
+project_executions = remote.recent_executions(project=PROJECT, domain=DOMAIN, filters=[project_filter])
+
+# Query for the latest execution that succeeded and was between 8 and 16 minutes
+latest_success = remote.recent_executions(
+    limit=1,
+    filters=[
+        filters.Equal("launch_plan.name", LP_NAME),
+        filters.Equal("phase", "SUCCEEDED"),
+        filters.GreaterThan("duration", 8 * 60),
+        filters.LessThan("duration", 16 * 60),
+    ],
+)
+```
+{{< /if-variant >}}

@@ -1,12 +1,19 @@
 ---
-title: Development Cycle
+title: Development cycle
 weight: 4
+variants: "+flyte +serverless +byoc +byok"
 ---
 
-# Development Cycle
+# Development cycle
 
 This section covers developing production-ready workflows for Union.
 
+```--list-table--
+:header-rows: 0
+:widths: 20 30
+
+* - {doc}`Authentication <project-structure>`
+  - How to authenticate with Union.
 * - {doc}`Project structure <project-structure>`
   - Best practices in organizing a Union workflow project repository.
 * - {doc}`Projects and domains <projects-and-domains>`
@@ -31,17 +38,18 @@ This section covers developing production-ready workflows for Union.
   - Create and manage secrets to connect to third-party services.
 * - {doc}`Managing apps <managing-apps>`
   - Create applications to allow external systems to run compute on Union.
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 * - {doc}`Accessing AWS S3 buckets <accessing-aws-s3>`
   - Access data in AWS S3 Buckets from Union.
-{@@ endif @@}
+{{< /if-variant >}}
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
-{@@ if byoc @@}
+{{< if-variant byoc >}}
 * - {doc}`Running in a local cluster <running-in-a-local-cluster>`
   - Run your workflows in a local Kubernetes cluster on your machine.
 * - {doc}`CI/CD deployment <ci-cd-deployment>`
   - Automate workflow registration and execution.
-{@@ endif @@}
+{{< /if-variant >}}
 * - {doc}`UnionRemote <union-remote>`
   - Programmatically perform Union operations in Python.
+```

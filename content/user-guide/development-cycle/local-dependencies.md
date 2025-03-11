@@ -1,3 +1,9 @@
+---
+title: Local dependencies
+weight: 7
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Local dependencies
 
 During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union.
@@ -11,7 +17,7 @@ We recommend using the [`uv` tool](https://docs.astral.sh/uv/) for project and d
 
 When using the best way declare your dependencies is to list them under `dependencies` in your `pyproject.toml` file, like this:
 
-{{< highlight toml >}}
+```toml
 [project]
 name = "union-simple"
 version = "0.1.0"
@@ -19,7 +25,7 @@ description = "A simple Union project"
 readme = "README.md"
 requires-python = ">=3.9,<3.13"
 dependencies = ["union"]
-{{< /highlight >}}
+```
 
 ## Create a Python virtual environment
 
@@ -27,17 +33,17 @@ Ensure that your Python virtual environment is properly set up with the required
 
 Using `uv`, you can install the dependencies with the command:
 
-{{< highlight shell >}}
+```shell
 $ uv sync
-{{< /highlight >}}
+```
 
 You can then activate the virtual environment with:
 
-{{< highlight shell >}}
+```shell
 source .venv/bin/activate
-{{< /highlight >}}
+```
 
-:::--admonition-- `activate` vs `uv run`
+{{< note "`activate` vs `uv run`" >}}
 When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
 
 To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
@@ -46,7 +52,7 @@ To run union within your project's virtual environment using `uv`, you can prefi
 
 Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
 In our examples we assume that you are doing the latter.
-:::
+{{< /note >}}
 
 Having installed your dependencies in your local environment, you can now [run your workflows locally using `union run`](./running-your-code.md).
 

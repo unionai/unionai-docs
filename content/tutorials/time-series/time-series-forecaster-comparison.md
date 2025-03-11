@@ -1,3 +1,9 @@
+---
+title: Time Series Model Comparison
+weight: 3
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Time Series Model Comparison
 
 This tutorial demonstrates how to set up a simple workflow to visually
@@ -9,7 +15,7 @@ Artifacts.
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -37,7 +43,7 @@ union run --remote --copy-all workflows/time_series_workflow.py time_series_work
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/time_series_forecasting/workflows/time_series_workflow.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 

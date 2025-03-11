@@ -1,16 +1,17 @@
 ---
-title: Core Concepts
+title: Core concepts
 weight: 3
+variants: "+flyte +serverless +byoc +byok"
 ---
 
-# Core Concepts
+# Core concepts
 
 Union is a platform for building and orchestrating the execution of interconnected software processes across machines in a computer cluster.
 In Union terminology, the software processes are called *tasks* and the overall organization of connections between tasks is called a *workflow*.
 The tasks in a workflow are connected to each other by their inputs and outputs. The output of one task becomes the input of another.
 
 More precisely, a workflow in Union is a *directed acyclic graph (DAG)* of *nodes* where each node is a unit of execution and the edges between nodes represent the flow of data between them.
-The most common type of node is a task node (which encapsulates a task), though the are also workflow node (which encapsulate subworkflows) and branch nodes.
+The most common type of node is a task node (which encapsulates a task), though there are also workflow nodes (which encapsulate subworkflows) and branch nodes.
 In most contexts we just say that a workflow is a DAG of tasks.
 
 You define tasks and workflows in Python using the Flytekit SDK. The Flytekit SDK provides a set of decorators and classes that allow you to define tasks and workflows in a way that is easy to understand and work with.
@@ -25,7 +26,7 @@ Triggering a launch plan will launch its associated workflow with the specified 
 Using the Flytekit SDK, tasks and workflows are defined as Python functions using the `@union.task` and `@union.workflow` decorators, respectively:
 
 **`./workflows/my_example.py`**
-{{< highlight python >}}
+```python
 import union
 
 @union.task
@@ -45,7 +46,7 @@ def my_workflow(a: int, b: int, c: int, m: int, n: int) -> int:
     x = task_1(a=a, b=b, c=c)
     y = task_2(m=m, n=n)
     return task_3(x=x, y=y)
-{{< /highlight >}}
+```
 
 Here we see three tasks defined using the `@union.task` decorator and a workflow defined using the `@union.workflow` decorator.
 The workflow calls `task_1` and `task_2` and passes the results to `task_3` before finally outputting the result of `task_3`.
@@ -78,9 +79,9 @@ See [Workflows](./workflows/index.md) for more details.
 
 In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `union` or `uctl` For example:
 
-{{< highlight shell >}}
+```shell
 union register ./workflows --project my_project --domain development
-{{< /highlight >}}
+```
 
 Tasks can also be registered individually, but it is more common to register alongside the workflow that uses them.
 
@@ -154,21 +155,21 @@ The sections in the task view are as follows:
 
 To view all tasks within a project and domain:
 
-{{< highlight shell >}}
+```shell
 $ uctl get workflows \
        --project <project-id> \
        --domain <domain>
-{{< /highlight >}}
+```
 
 To view a specific workflow:
 
-{{< highlight shell >}}
+```shell
 $ uctl get workflow \
        --project <project-id> \
        --domain <domain> \
        <workflow-name>
        <workflow-version>
-{{< /highlight >}}
+```
 
 See [Uctl CLI](../../api-reference/uctl-cli/index.md) for more details.
 
@@ -176,21 +177,21 @@ See [Uctl CLI](../../api-reference/uctl-cli/index.md) for more details.
 
 To view all tasks within a project and domain:
 
-{{< highlight shell >}}
+```shell
 $ uctl get tasks \
        --project <project-id> \
        --domain <domain>
-{{< /highlight >}}
+```
 
 To view a specific task:
 
-{{< highlight shell >}}
+```shell
 $ uctl get task \
        --project <project-id> \
        --domain <domain> \
        <task-name>
        <task-version>
-{{< /highlight >}}
+```
 
 See [Uctl CLI](../../api-reference/uctl-cli/index.md) for more details.
 
@@ -215,39 +216,40 @@ You can also run individual tasks in the UI by clicking the **Launch Task** butt
 You can execute a Flyte workflow or task locally simply by calling it just like any regular Python function.
 For example, you can add the following to the above code:
 
-{{< highlight shell >}}
+```shell
 if __name__ == "__main__":
    my_workflow(a=1, b=2, c=3, m=4, n=5)
-{{< /highlight >}}
+```
 
 If the file is saved as `my_example.py`, you can run it locally using the following command:
 
-{{< highlight shell >}}
+```shell
 $ python my_example.py
-{{< /highlight >}}
+```
 
 Alternatively, you can run the task locally with the `union` command line tool:
 
 To run it locally, you can use the following `union run` command:
 
-{{< highlight shell >}}
+```shell
 $ union run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
-{{< /highlight >}}
+```
 
 This has the advantage of allowing you to specify the input values as command line arguments.
 For more details on running workflows and tasks, see [Development cycle](../development-cycle/index.md).
 
 ### Running a task or workflow remotely on the command line with `union`
 
-{@@ if byoc @@}
+{{< if-variant "byoc byok flyte" >}}
 To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../development-cycle/setting-up-a-project.md)):
-{@@ elif serverless @@}
+{{< /if-variant >}}
+{{< if-variant "serverless" >}}
 To run a workflow remotely on your Union installation, use the following command:
-{@@ endif @@}
+{{< /if-variant >}}
 
-{{< highlight shell >}}
+```shell
 $ union run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
-{{< /highlight >}}
+```
 
 ### Running a task or workflow remotely in Python with `FlyteRemote`
 

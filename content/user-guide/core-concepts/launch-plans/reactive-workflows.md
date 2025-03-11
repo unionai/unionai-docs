@@ -1,3 +1,9 @@
+---
+title: Reactive workflows
+weight: 10
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Reactive workflows
 
 Reactive workflows leverage [artifacts](../artifacts/index.md) as the medium of exchange between workflows, such that when an upstream workflow emits an artifact, an artifact-driven trigger in a downstream workflow passes the artifact to a new downstream workflow execution.
@@ -6,9 +12,9 @@ A trigger is a rule defined in a launch plan that specifies that when a certain 
 
 Updating any trigger associated with a launch plan will create a new version of the launch plan, similar to how schedules are handled today. This means that multiple launch plans, each with different triggers, can be created to act on the same underlying workflow. Launch plans with triggers must be activated in order for the trigger to work.
 
-:::--note--
+{{< note >}}
 Currently, there are only artifact event-based triggers, but in the future, triggers will be expanded to include other event-based workflow triggering mechanisms.
-:::
+{{< /note >}}
 
 ## Scope
 

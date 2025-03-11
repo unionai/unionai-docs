@@ -1,14 +1,20 @@
+---
+title: Connecting workflows with artifact event triggers
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Connecting workflows with artifact event triggers
 
 In the following example, we define an upstream workflow and a downstream workflow, and define a [trigger](../launch-plans/reactive-workflows.md) in a launch plan to connect the two workflows via an [artifact event](../launch-plans/reactive-workflows.md#artifact-events).
 
 ## Imports
 
-{@@ if byoc @@}
-:::--note--
+{{< if-variant "byoc byok flyte" >}}
+{{< note >}}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
-:::
-{@@ endif @@}
+{{< /note >}}
+{{< /if-variant >}}
 
 First we import the required packages:
 
@@ -60,9 +66,9 @@ Finally we create a launch plan with a trigger set to an `OnArtifact` object to 
 :lines: 49-53
 ```
 
-:::--note--
+{{< note >}}
 The `OnArtifact` object must be attached to a launch plan in order for the launch plan to be triggered by the creation of a new version of the artifact.
-:::
+{{< /note >}}
 
 ## Full example code
 

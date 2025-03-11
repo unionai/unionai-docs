@@ -1,3 +1,9 @@
+---
+title: Single sign on setup
+weight: 1
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Single sign on setup
 
 Union authentication uses OAuth2 with Okta and supports SAML and OIDC-compliant identity providers (IdP) to configure single sign on (SSO).

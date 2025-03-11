@@ -1,3 +1,9 @@
+---
+title: Running in a local cluster
+weight: 16
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Running in a local cluster
 
 ## Running in a local Kubernetes cluster
@@ -8,9 +14,9 @@ First, ensure that you have [Docker](https://www.docker.com/products/docker-desk
 
 Then start the demo cluster using `uctl`:
 
-{{< highlight shell >}}
+```shell
 $ uctl demo start
-{{< /highlight >}}
+```
 
 ### Configuration
 
@@ -18,7 +24,7 @@ When `uctl` starts the cluster in your local container engine it also writes con
 
 Most importantly, it creates the file `~/.uctl/config-sandbox.yaml`. This file holds (among other things) the location of the Kubernetes cluster to which we will be deploying the workflow:
 
-{{< highlight yaml >}}
+```yaml
 admin:
   endpoint: localhost:30080
   authType: Pkce
@@ -28,7 +34,7 @@ console:
 logger:
   show-source: true
   level: 0
-{{< /highlight >}}
+```
 
 Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your Union cluster.
 
@@ -40,27 +46,27 @@ Later invocations of `uctl` or `union` will need to know the location of the tar
 2. Setting the environment variable `FLYTECTL_CONFIG`to the location of the config file:
    * `export FLYTECTL_CONFIG=~/.uctl/config-sandbox.yaml`
 
-:::--note--
+{{< note >}}
 In this guide, we assume that you have set the`FLYTECTL_CONFIG` environment variable in your shell to the location of the configuration file.
-:::
+{{< /note >}}
 
 ### Start the workflow
 
 Now you can run your workflow in the local cluster simply by adding the `--remote` flag to your `union` command:
 
-{{< highlight shell >}}
+```shell
 [~/wine-classification]:wine-classification
 $ union run --remote \
           workflows/example.py \
           training_workflow \
           --hyperparameters '{"C": 0.1}'
-{{< /highlight >}}
+```
 
 The output supplies a URL to your workflow execution in the Flyte console. It should look something like this:
 
-{{< highlight shell >}}
+```shell
 Go to http://localhost:30080/console/projects/flytesnacks/domains/development/executions/f6ac3844ff43b4be69a9 to see execution in the console.
-{{< /highlight >}}
+```
 
 ### Inspect the results
 
@@ -68,9 +74,9 @@ Navigate to the URL produced by `union run` to see your workflow in the Union UI
 
 ## Local cluster with default image
 
-{{< highlight shell >}}
+```shell
 $ union run --remote my_file.py my_workflow
-{{< /highlight >}}
+```
 
 _Where `union` is configured to point to the local cluster started with `uctl demo start`._
 
@@ -85,12 +91,12 @@ _Where `union` is configured to point to the local cluster started with `uctl de
 
 ## Local cluster with custom image
 
-{{< highlight shell >}}
+```shell
 $ union run --remote \
               --image my_cr.io/my_org/my_image:latest \
               my_file.py \
               my_workflow
-{{< /highlight >}}
+```
 
 _Where `union` is configured to point to the local cluster started with `uctl demo start`._
 

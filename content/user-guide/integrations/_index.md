@@ -1,13 +1,15 @@
 ---
 title: Integrations
 weight: 7
+variants: "+flyte +serverless +byoc +byok"
 ---
 
 # Integrations
 
-{@@ if serverless @@}
+{{< if-variant serverless >}}
 This section describes how to enable agent integrations that connect to other services, such as Apache Airflow, ChatGPT, Databricks, Snowflake, and more.
-{@@ elif byoc @@}
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 This section describes how to enable integrations with AWS and GCP cloud resources as well as how to use integrations that connect to other services, such as Apache Airflow, ChatGPT, dbt, Databricks, NVidia DGX, Snowflake, and more.
 
 ## AWS cloud resources integrations
@@ -65,4 +67,4 @@ A variety of agents and plugins enable you to integrate Union with additional ex
 ### Misc
 
 * [File sensor agent](./agents/file-sensor-agent/index.md) Detect files appearing in your local or remote filesystem.
-{@@ endif @@}
+{{< /if-variant >}}

@@ -1,10 +1,16 @@
+---
+title: Accelerated datasets
+weight: 5
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Accelerated datasets
 
-:::--admonition-- _Accelerated datasets_ and _Accelerators_ are entirely different things
+{{< note "*Accelerated datasets* and *Accelerators* are entirely different things" >}}
 Accelerated datasets is a Union feature that enables quick access to large datasets from within a task.
 An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators.md), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
 These concepts are entirely different and should not be confused.
-:::
+{{< /note >}}
 
 Many of the workflows that you may want to run in Union will involve tasks that use large static assets such as reference genomes, training datasets, or pre-trained models.
 These assets are often stored in an object store and need to be downloaded to the task pod each time before the task can run.
@@ -13,22 +19,22 @@ This can be a significant bottleneck, especially if the data must be loaded into
 To remedy this, Union provides a way to preload large static assets into a shared object store that is mounted to all machine nodes in your cluster by default.
 This allows you to upload your data once and then access it from any task without needing to download it each time.
 
-Data items stored in this way are called _accelerated datasets_.
+Data items stored in this way are called *accelerated datasets*.
 
-:::--admonition-- Only on S3
+{{< note "Only on S3" >}}
 Currently, this feature is only available for AWS S3.
-:::
+{{< /note >}}
 
 ## How it works
 
-- Each customer has a dedicated S3 bucket where they can store their accelerated datasets.
-- The naming and set up of this bucket must be coordinated with the Union team, in order that a suitable name is chosen. In general it will usually be something like `s3://union-<org-name>-persistent`.
-- You can upload any data you wish to this bucket.
-- The bucket will be automatically mounted into every node in your cluster.
-- To your task logic, it will appear to be a local directory in the task container.
-- To use it, initialize a `FlyteFile` object with the path to the data file and pass it into a task as an input.
-  - Note that in order for the system to recognize the file as an accelerated dataset, it must be created as a `FlyteFile` and that `FLyteFile` must be passed _into_ a task.
-    If you try to access the file directly from the object store, it will not be recognized as an accelerated dataset and the data will not be found.
+* Each customer has a dedicated S3 bucket where they can store their accelerated datasets.
+* The naming and set up of this bucket must be coordinated with the Union team, in order that a suitable name is chosen. In general it will usually be something like `s3://union-<org-name>-persistent`.
+* You can upload any data you wish to this bucket.
+* The bucket will be automatically mounted into every node in your cluster.
+* To your task logic, it will appear to be a local directory in the task container.
+* To use it, initialize a `FlyteFile` object with the path to the data file and pass it into a task as an input.
+    * Note that in order for the system to recognize the file as an accelerated dataset, it must be created as a `FlyteFile` and that `FLyteFile` must be passed *into* a task.
+      If you try to access the file directly from the object store, it will not be recognized as an accelerated dataset and the data will not be found.
 
 ## Example usage
 
@@ -36,19 +42,19 @@ Assuming that your organization is called `my-company` and the file you want to 
 
 The code to access the data looks like this:
 
-{{< highlight python >}}
+```python
 from flytekit.types.file import FlyteFile
 
 @union.task
 def my_task(f: FlyteFile) -> int:
-with open(f, newline="\n") as input_file:
-data = input_file.read()
-// Do something with the data
+    with open(f, newline="\n") as input_file:
+    data = input_file.read()
+    // Do something with the data
 
 @union.workflow
 def my_wf()
-my_task(f=FlyteFile("s3://union-my-company-persistent/my_data.csv"))
-{{< /highlight >}}
+    my_task(f=FlyteFile("s3://union-my-company-persistent/my_data.csv"))
+```
 
 Note that you do not have to invoke `FlyteFile.download()` because the file will already have been made available locally within the container.
 

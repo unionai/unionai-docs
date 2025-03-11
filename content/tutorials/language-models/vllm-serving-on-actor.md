@@ -1,3 +1,9 @@
+---
+title: Serve vLLM on Union Actors for Named Entity Recognition
+weight: 7
+variants: "+flyte +serverless +byoc +byok"
+---
+
 # Serve vLLM on Union Actors for Named Entity Recognition
 
 This tutorial demonstrates how to deploy an automated, low-latency, named entity recognition workflow. Given some
@@ -9,7 +15,7 @@ utilization and reduces redundant computations.
 
 <!-- #region -->
 
-::::--dropdown-- {fas}`circle-play` Run on Union BYOC
+--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
 
@@ -39,7 +45,7 @@ union run --remote ner.py ner_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/vllm_serving_on_actor/ner.py).
 
-::::
+--/dropdown--
 
 <!-- #endregion -->
 
