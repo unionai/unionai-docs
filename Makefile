@@ -8,7 +8,10 @@ all: usage
 usage:
 	@./scripts/make_usage.sh
 
-base:
+predist:
+	@if ! scripts/pre-build-checks.sh; then exit 1; fi
+
+base: predist
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
 	mkdir -p dist
