@@ -60,8 +60,6 @@ This example takes NVIDIA's [PDF-to-podcast blueprint agent](https://github.com/
 
 First, let's import all the necessary dependencies.
 
-<!-- #region -->
-
 ::::--dropdown-- {fas}`circle-play` Run on Union BYOC
 :open:
 :color: warning
@@ -93,8 +91,6 @@ union run --copy all --remote pdf_to_podcast.py pdf_to_podcast
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py).
 
 ::::
-
-<!-- #endregion -->
 
 ```python
 import functools
@@ -1030,10 +1026,7 @@ We use this workflow to process PDFs, select speaker voices, generate dialogues,
 
 Here's an example monologue generated with this workflow:
 
-<audio controls>
-  <source src="https://github.com/unionai/unionai-examples/raw/refs/heads/main/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/static/nvidia-monologue.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+{{< audio "https://github.com/unionai/unionai-examples/raw/refs/heads/main/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/static/nvidia-monologue.mp3" >}}
 
 ## Key benefits of using Union
 

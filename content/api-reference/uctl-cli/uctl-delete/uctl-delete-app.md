@@ -60,7 +60,7 @@ Delete application
 | `--auth.appAuth.selfAuthServer.accessTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "30m0s") |
 | `--auth.appAuth.selfAuthServer.authorizationCodeLifespan` | string | Defines the lifespan of issued access tokens. (default "5m0s") |
 | `--auth.appAuth.selfAuthServer.claimSymmetricEncryptionKeySecretName` | string | OPTIONAL: Secret name to use to encrypt claims in authcode token. (default "claim_symmetric_key") |
-| `--auth.appAuth.selfAuthServer.issuer` | string | Defines the issuer to use when issuing and validating tokens. The default value is https://<requestUri.HostAndPort>/ |
+| `--auth.appAuth.selfAuthServer.issuer` | string | Defines the issuer to use when issuing and validating tokens. The default value is https://{requestUri.HostAndPort}/ |
 | `--auth.appAuth.selfAuthServer.oldTokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve Old RSA Signing Key. This can be useful during key rotation to continue to accept older tokens. (default "token_rsa_key_old.pem") |
 | `--auth.appAuth.selfAuthServer.refreshTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "1h0m0s") |
 | `--auth.appAuth.selfAuthServer.tokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve RSA Signing Key. (default "token_rsa_key.pem") |
@@ -79,7 +79,7 @@ Delete application
 | `--auth.userAuth.cookieSetting.domain` | string | OPTIONAL: Allows you to set the domain attribute on the auth cookies. |
 | `--auth.userAuth.cookieSetting.sameSitePolicy` | string | OPTIONAL: Allows you to declare if your cookie should be restricted to a first-party or same-site context.Wrapper around http.SameSite. (default "DefaultMode") |
 | `--auth.userAuth.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
-| `--auth.userAuth.idpQueryParameter` | string | idp query parameter used for selecting a particular IDP for doing user authentication. Eg: for Okta passing idp=<IDP-ID> forces the authentication to happen with IDP-ID |
+| `--auth.userAuth.idpQueryParameter` | string | idp query parameter used for selecting a particular IDP for doing user authentication. Eg: for Okta passing idp={IDP-ID} forces the authentication to happen with IDP-ID |
 | `--auth.userAuth.openId.baseUrl` | string |  |
 | `--auth.userAuth.openId.clientId` | string |  |
 | `--auth.userAuth.openId.clientSecretFile` | string |  |
@@ -109,7 +109,7 @@ Delete application
 | `--authorizer.userCloudsClient.clientSecretName` | string | UserCloud client secret name to read from the secret manager. (default "userclouds-client-secret") |
 | `--authorizer.userCloudsClient.enableLogging` | | Enable userclouds client's internal logging. Calls to post logs take 250-350 ms and will impact p99 latency,  enable with caution. |
 | `--authorizer.userCloudsClient.tenantID` | string | UserClouds tenant id. Should be a UUID. |
-| `--authorizer.userCloudsClient.tenantUrl` | string | Something like https://<yourtenant>.tenant.userclouds.com |
+| `--authorizer.userCloudsClient.tenantUrl` | string | Something like https://{yourtenant}.tenant.userclouds.com |
 | `--config` | string | config file (default is /Users/andrew/.union/config.yaml) |
 | `--connection.environment` | string |  |
 | `--connection.region` | string |  |
