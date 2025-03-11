@@ -53,7 +53,7 @@ The UI does not support deactivating launch plans that do not have schedules att
 You can deactivate them with `uctl` or `UnionRemote`.
 :::
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 
 ## Activating and deactivating a launch plan on the command line with `uctl`
 

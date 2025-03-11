@@ -41,7 +41,7 @@ Create a secret file that contains the Snowflake private key:
 sudo vim /etc/secrets/snowflake
 ```
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.

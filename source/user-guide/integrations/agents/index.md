@@ -56,7 +56,7 @@ To test your agent locally, create a class for the agent task that inherits from
 
 For testing examples, see the [BigQuery agent](./bigquery-agent/index.md#local-testing) and [Databricks agent](./databricks-agent/index.md#local-testing) documentation.
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 ### Enabling your agent in your Union deployment
 
 After you have finished testing your agent locally, you can contact the Union team to enable the agent in your Union deployment to use it in production.

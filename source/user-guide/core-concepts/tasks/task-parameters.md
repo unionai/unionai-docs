@@ -71,7 +71,7 @@ You pass the following parameters to the `@union.task` decorator:
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Agents documentation](../../integrations/agents/index.md) and
+  See the [Union Agents documentation](../../integrations/agents/index.md) and
   [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 * `task_resolver`: Provide a custom task resolver.
@@ -84,102 +84,3 @@ You pass the following parameters to the `@union.task` decorator:
   Note that a timed-out task will be retried if it has a retry strategy defined.
   The timeout can be handled in the
   [TaskMetadata](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.TaskMetadata.html?highlight=retries.md#flytekit.TaskMetadata).
-
-## Use `partial` to provide default arguments to tasks
-
-You can use the `functools.partial` function to assign default or constant values to the parameters of your tasks:
-```{code-block} python
-import functools
-import union
-
-@union.task
-def slope(x: list[int], y: list[int]) -> float:
-    sum_xy = sum([x[i] * y[i] for i in range(len(x))])
-    sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
-    n = len(x)
-    return (n * sum_xy - sum(x) * sum(y)) / (n * sum_x_squared - sum(x) ** 2)
-
-@union.workflow
-def simple_wf_with_partial(x: list[int], y: list[int]) -> float:
-    partial_task = functools.partial(slope, x=x)
-    return partial_task(y=y)
-```
-
-## Named outputs
-
-By default, {@= Product =@} employs a standardized convention to assign names to the outputs of tasks or workflows.
-Each output is sequentially labeled as `o1`, `o2`, `o3`, ... `on`, where `o` serves as the standard prefix,
-and `1`, `2`, ... `n` indicates the positional index within the returned values.
-
-However, {@= Product =@} allows the customization of output names for tasks or workflows.
-This customization becomes beneficial when you're returning multiple outputs
-and you wish to assign a distinct name to each of them.
-
-The following example illustrates the process of assigning names to outputs for both a task and a workflow.
-
-
-Define a `NamedTuple` and assign it as an output to a task:
-
-```{code-block} python
-import union
-from typing import NamedTuple
-
-slope_value = NamedTuple("slope_value", [("slope", float)])
-
-@union.task
-def slope(x: list[int], y: list[int]) -> slope_value:
-    sum_xy = sum([x[i] * y[i] for i in range(len(x))])
-    sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
-    n = len(x)
-    return (n * sum_xy - sum(x) * sum(y)) / (n * sum_x_squared - sum(x) ** 2)
-```
-
-Likewise, assign a `NamedTuple` to the output of `intercept` task:
-
-```{code-block} python
-intercept_value = NamedTuple("intercept_value", [("intercept", float)])
-
-@union.task
-def intercept(x: list[int], y: list[int], slope: float) -> intercept_value:
-    mean_x = sum(x) / len(x)
-    mean_y = sum(y) / len(y)
-    intercept = mean_y - slope * mean_x
-    return intercept
-```
-
-:::{note}
-While it's possible to create `NamedTuple`s directly within the code,
-it's often better to declare them explicitly. This helps prevent potential linting errors in tools like mypy.
-
-```{code-block} python
-def slope() -> NamedTuple("slope_value", slope=float):
-    pass
-```
-:::
-
-You can easily unpack the `NamedTuple` outputs directly within a workflow.
-Additionally, you can also have the workflow return a `NamedTuple` as an output.
-
-:::{note}
-Remember that we are extracting individual task execution outputs by dereferencing them.
-This is necessary because `NamedTuple`s function as tuples and require this dereferencing:
-:::
-
-```{code-block} python
-slope_and_intercept_values = NamedTuple("slope_and_intercept_values", [("slope", float), ("intercept", float)])
-
-
-@union.workflow
-def simple_wf_with_named_outputs(x: list[int] = [-3, 0, 3], y: list[int] = [7, 4, -2]) -> slope_and_intercept_values:
-    slope_value = slope(x=x, y=y)
-    intercept_value = intercept(x=x, y=y, slope=slope_value.slope)
-    return slope_and_intercept_values(slope=slope_value.slope, intercept=intercept_value.intercept)
-
-```
-
-You can run the workflow locally as follows:
-
-```{code-block} python
-if __name__ == "__main__":
-    print(f"Running simple_wf_with_named_outputs() {simple_wf_with_named_outputs()}")
-```

@@ -2,7 +2,7 @@
 
 The Union workflow engine automatically manages the passing of data from task to task, and to the workflow output.
 
-This mechanism relies on enforcing strong typing of task function parameters and return values.
+This mechanism relies on on enforcing strong typing of task function parameters and return values.
 This enables the workflow engine to efficiently marshall and unmarshall values from one task container to the next.
 
 The actual data is temporarily stored in Union's internal object store within your data plane (AWS S3, Google Cloud Storage, or Azure Blob Storage, depending on your cloud provider).

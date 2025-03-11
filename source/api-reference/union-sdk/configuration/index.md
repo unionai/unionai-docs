@@ -50,10 +50,8 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 ```
 ::::
 
-{@@ if byoc or byok or flyte @@}
-### Python objects
-
-#### Config object
+{@@ if byoc @@}
+### Config object
 
 :::{note}
 You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md) object. See [Creating a `UnionRemote` object](../../../user-guide/development-cycle/union-remote/index.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.

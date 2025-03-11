@@ -209,12 +209,12 @@ sphinx_source/
 __pycache__/
 
 README.md
-Makefile
-build.py
-doctree.yaml
 dummy_index.html
 _redirects
 docs_redirects.csv
+sitemap.json
+build.py
+Makefile
 pyproject.toml
 uv.lock
 CODEOWNERS

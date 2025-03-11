@@ -57,7 +57,7 @@ GPUs should only be specified in the `limits` section of the task decorator:
 
 The `accelerator` setting further specifies the *type* of GPU required for the task.
 
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 
 The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
 This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
@@ -84,7 +84,7 @@ This makes it possible for a pod to get evicted if a node doesn't have enough st
 ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction.
 :::
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 
 ## Task resource validation
 

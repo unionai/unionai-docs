@@ -13,7 +13,7 @@ The `union` CLI provides a set of commands that allow you to deploy and run your
 1. `union run`: For deploying and running a single script immediately in your local Python environment.
 2. `union run --remote`: For deploying and running a single script immediately in the cloud on Union.
 3. `union register`: For deploying multiple scripts to Union and running them from the Web interface.
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 4. `union package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
 
 ```{note}
@@ -55,7 +55,7 @@ Here we are invoking `union run --remote` and passing:
 
 This command will:
 * Build the container image defined in your `ImageSpec`.
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 * Push the image to the container registry specified in that `ImageSpec`.
   * (Don't forget make the image accessible to Union. For example, if you are using GitHub Container Registry, you will need to make the image public.)
 {@@ endif @@}
@@ -83,7 +83,7 @@ The command will not run the workflow. You can run it from the Web interface.
 
 This command is useful for deploying your full set of workflows to Union for testing.
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 
 ## Deploying your code to production with `union package` and `uctl register`
 

@@ -4,7 +4,7 @@ The basic idea behind `FlyteFile` and `FlyteDirectory` is that they represent fi
 When you work with these objects in your tasks, you are working with references to the remote files and directories.
 
 Of course, at some point you will need to access the actual contents of these files and directories,
-which means that they have to be downloaded to the local file system of the task container.
+which means that they has to be downloaded to the local file system of the task container.
 
 The actual files and directories of a `FlyteFile` or `FlyteDirectory` are downloaded to the local file system of the task container in two ways:
 * Explicitly, through a call to the `download` method.

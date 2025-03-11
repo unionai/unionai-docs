@@ -13,7 +13,7 @@ When you start working on `my_workflow` you would typically register it in the p
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code.md).
 
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.

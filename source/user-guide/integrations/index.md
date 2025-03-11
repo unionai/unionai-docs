@@ -2,7 +2,7 @@
 
 {@@ if serverless @@}
 This section describes how to enable agent integrations that connect to other services, such as Apache Airflow, ChatGPT, Databricks, Snowflake, and more.
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 This section describes how to enable integrations with AWS and GCP cloud resources as well as how to use integrations that connect to other services, such as Apache Airflow, ChatGPT, dbt, Databricks, NVidia DGX, Snowflake, and more.
 
 ## AWS cloud resources integrations

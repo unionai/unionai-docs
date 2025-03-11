@@ -8,7 +8,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 {@@ if serverless @@}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
 {@@ endif @@}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
@@ -25,7 +25,7 @@ The following example shows how to create a basic `ActorEnvironment` and use it 
 :caption: hello_world.py
 
 ```
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/hello_world.py
 :caption: hello_world.py
 
@@ -41,13 +41,13 @@ The `@actor_cache` decorator provides a powerful mechanism to cache the results 
 
 ### When to Use `@actor_cache`
 
-- **Shared Initialization Costs:**
+- **Shared Initialization Costs:**  
   For expensive, shared initialization processes that multiple tasks rely on.
 
-- **Repetitive Task Execution:**
+- **Repetitive Task Execution:**  
   When tasks repeatedly require the same resource or computation on the same actor replica.
 
-- **Complex Object Caching:**
+- **Complex Object Caching:**  
   Use custom Python objects as keys to define unique cache entries.
 
 
@@ -58,7 +58,7 @@ Below is a simplified example showcasing the use of `@actor_cache` for caching r
 :caption: caching_basic.py
 
 ```
-{@@ elif byoc or byok or flyte @@}
+{@@ elif byoc @@}
 ```{rli} https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_basic.py
 :caption: caching_basic.py
 ```
@@ -69,6 +69,6 @@ In order to get the `@actor_cache` functionality, you must pin `union` to at lea
 
 ![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
 
-You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time.
+You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time. 
 
 You can see examples of more advanced actor usage [here](actor-examples.md).

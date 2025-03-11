@@ -4,7 +4,7 @@ In the following example, we define an upstream workflow and a downstream workfl
 
 ## Imports
 
-{@@ if byoc or byok or flyte @@}
+{@@ if byoc @@}
 :::{note}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
 :::
