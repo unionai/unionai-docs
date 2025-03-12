@@ -103,16 +103,20 @@
         
         // Add click event to toggle visibility
         title.addEventListener('click', function(e) {
-          // Prevent default link behavior
-          e.preventDefault();
-          
-          // Toggle collapsed class
-          sectionPages.classList.toggle('collapsed');
-          
-          // Toggle chevron rotation if it exists
-          if (chevron) {
-            chevron.classList.toggle('rotated');
+          // Check if the click was on the chevron
+          if (e.target.classList.contains('chevron') || e.target.closest('.chevron')) {
+            // Prevent default link behavior only when clicking on chevron
+            e.preventDefault();
+
+            // Toggle collapsed class
+            sectionPages.classList.toggle('collapsed');
+
+            // Toggle chevron rotation if it exists
+            if (chevron) {
+              chevron.classList.toggle('rotated');
+            }
           }
+          // If click was not on chevron, default link behavior will navigate to the page
         });
       });
     });
