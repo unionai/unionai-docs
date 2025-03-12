@@ -57,7 +57,7 @@ Here, the `ImageSpec` class is used to specify the container image to be used fo
 When you execute the `union run` or `union register` command, Union will build the container image defined in `ImageSpec` block
 (as well as registering the tasks and workflows defined in your code).
 
-{{< if-variant serverless >}}
+{{< if-variant variants=serverless nested=true >}}
 
 ## Union cloud image builder
 
@@ -73,7 +73,7 @@ See [Local image builder](https://docs.unionai/byoc/user-guide/development-cycle
 {{< /note >}}
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok" >}}
+{{< if-variant variants="byoc byok" nested=true >}}
 
 ## Union cloud image builder
 

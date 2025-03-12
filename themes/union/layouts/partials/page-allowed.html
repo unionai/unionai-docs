@@ -14,7 +14,9 @@
     {{- $path = "/" -}}
 {{- end -}}
 
-{{- $entry := index (index (index .Site.Data.pages $variant) "pages") $path }}
+{{- $variantData := index .Site.Data.pages $variant | default dict }}
+{{- $pages := index $variantData "pages" | default dict }}
+{{- $entry := index $pages $path | default nil }}
 
 {{- $isAllowed := and (ne $entry nil) (ne $entry "exclude") }}
 {{- $isExcluded := eq $entry "exclude" }}

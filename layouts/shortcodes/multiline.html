@@ -1,0 +1,17 @@
+{{- /* {{< multiline >}}
+     markdown line 1
+     markdown line 2
+     ...
+     {{< /multiline >}} */ -}}
+
+{{- $content := .Inner -}}
+{{- $lines := split $content "\n" -}}
+
+<div class="multiline">
+  {{- range $index, $line := $lines -}}
+    {{- if and (ne $line "") (ne $line " ") -}}
+      {{- $line | markdownify -}}
+      {{- if ne $index (sub (len $lines) 1) -}}<br/>{{- end -}}
+    {{- end -}}
+  {{- end -}}
+</div>

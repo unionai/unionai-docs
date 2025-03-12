@@ -4,7 +4,7 @@
 	    {{ .Parent.Scratch.Set "tabs" slice }}
 	{{ end }}
 	{{ with .Inner }}
-        {{ $.Parent.Scratch.Add "tabs" (dict "name" $name "content" . ) }}
+        {{ $.Parent.Scratch.Add "tabs" (dict "name" $name "content" (. | markdownify) ) }}
 	{{ end }}
 {{ else }}
 	{{- errorf "[%s] %q: tab shortcode missing its parent" site.Language.Lang .Page.Path -}}

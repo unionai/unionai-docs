@@ -6,6 +6,6 @@
     {{ end }}
   
     {{ range $idx, $tab := .Scratch.Get "tabs" }}
-        <sl-tab-panel name="{{ .name }}">{{ .content | markdownify }}</sl-tab-panel>
+        <sl-tab-panel name="{{ .name }}">{{ .content }}</sl-tab-panel>
     {{ end }}
   </sl-tab-group>
