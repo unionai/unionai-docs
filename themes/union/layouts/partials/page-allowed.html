@@ -1,7 +1,6 @@
 {{- /* Check if the current page is in the allowed list */ -}}
 {{- $variant := .Site.Params.variant -}}
-{{- $allowedPages := index (index .Site.Data.pages $variant) "pages" -}}
-{{- $excludedPages := index (index .Site.Data.pages $variant) "exclude" | default (slice) -}}
+
 {{- $isAllowed := false -}}
 {{- $isExcluded := false -}}
 
@@ -14,37 +13,11 @@
 {{- else -}}
     {{- $path = "/" -}}
 {{- end -}}
-{{- if $path -}}
-    {{- $currentPath := $path -}}
-    {{- range $allowedPages -}}
-        {{- if eq $currentPath . -}}
-            {{- $isAllowed = true -}}
-        {{- else -}}
-            {{- /* check if first path is the variant */ -}}
-            {{- $currentPath := split $currentPath "/" -}}
-            {{- if eq (index $currentPath 0) $variant -}}
-                {{- $currentPath := delimit (after 1 $currentPath) "/" -}}
-                {{- if eq $currentPath . -}}
-                    {{- $isAllowed = true -}}
-                {{- end -}}
-            {{- end -}}
-        {{- end -}}
-    {{- end -}}
-    {{- range $excludedPages -}}
-        {{- if eq $currentPath . -}}
-            {{- $isExcluded = true -}}
-        {{- else -}}
-            {{- /* check if first path is the variant */ -}}
-            {{- $currentPath := split $currentPath "/" -}}
-            {{- if eq (index $currentPath 0) $variant -}}
-                {{- $currentPath := delimit (after 1 $currentPath) "/" -}}
-                {{- if eq $currentPath . -}}
-                    {{- $isExcluded = true -}}
-                {{- end -}}
-            {{- end -}}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
+
+{{- $entry := index (index (index .Site.Data.pages $variant) "pages") $path }}
+
+{{- $isAllowed := and (ne $entry nil) (ne $entry "exclude") }}
+{{- $isExcluded := eq $entry "exclude" }}
 
 {{-
     return dict 
