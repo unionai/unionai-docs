@@ -22,7 +22,7 @@
         --bg-color: #ffffff;
         --sidebar-bg: #f8fafc;
         --border-color: #e2e8f0;
-        --menu-indent: 1.25rem;
+        --menu-indent: 0.75rem;
         --sidebar-width: 380px;
         --header-height: 64px;
         --content-width: 1280px;
@@ -110,7 +110,6 @@
         font-size: 0.875em;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           monospace;
-        white-space: nowrap;
       }
       pre {
         background: #1e293b;
@@ -124,7 +123,6 @@
         background: none;
         color: inherit;
         padding: 0;
-        white-space: pre;
       }
       .main-content ul,
       .main-content ol {
@@ -179,15 +177,6 @@
       .if-variant.not-allowed,
       .not-in-prod.not-allowed {
         border: 1px solid hsl(0, 100%, 50%);
-        background: hsl(0, 84%, 85%);
-      }
-
-      .if-variant.allowed .title {
-        color: green;
-      }
-
-      .if-variant.not-allowed .title {
-        color: red;
       }
 
       .not-in-prod.excluded {
@@ -199,7 +188,6 @@
       .if-variant.allowed,
       .not-in-prod.allowed {
         border: 1px solid green;
-        background-color: hsl(120, 61%, 66%);
       }
       .if-variant.allowed .content {
         padding: 1rem;
@@ -220,6 +208,14 @@
       .allowed.if-variant .title,
       .not-allowed.if-variant .title {
         padding: 0.5rem;
+      }
+      .not-allowed.if-variant .title {
+        background: hsl(0, 84%, 85%);
+        color: red;
+      }
+      .allowed.if-variant .title {
+        background-color: hsl(120, 61%, 66%);
+        color: green;
       }
       .allowed.if-variant .content,
       .not-allowed.if-variant .content {
