@@ -110,6 +110,7 @@
         font-size: 0.875em;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           monospace;
+        white-space: nowrap;
       }
       pre {
         background: #1e293b;
@@ -178,6 +179,13 @@
       .not-in-prod.not-allowed {
         border: 1px solid hsl(0, 100%, 50%);
         background: hsl(0, 84%, 85%);
+      }
+
+      .if-variant.allowed .title {
+        color: green;
+      }
+
+      .if-variant.not-allowed .title {
         color: red;
       }
 
