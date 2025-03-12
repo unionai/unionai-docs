@@ -1,5 +1,5 @@
-baseURL = '/byok/'
+baseURL = '/flyte/'
 
 [params]
 _merge = "deep"
-variant = "byok"
+variant = "flyte"

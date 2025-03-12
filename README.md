@@ -3,7 +3,7 @@
 **[docs.union.ai](https://docs.union.ai)**
 
 This repository builds and publishes all Union.ai documentation.
-The ite is automatically published when the PR targetting `main` branch is merged.
+The site is automatically published when the PR targeting `main` branch is merged.
 
 ## Requirements
 

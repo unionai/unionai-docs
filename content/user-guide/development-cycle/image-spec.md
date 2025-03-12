@@ -12,8 +12,6 @@ so you will need to ensure that the required dependencies are installed in both 
 Here we will explain how to set up the dependencies for your workflow to run remotely on Union.
 For information on how to make your dependencies available locally, see [Local dependencies](./local-dependencies.md).
 
-## ImageSpec
-
 When a workflow is deployed to Union, each task is set up to run in its own container in the Kubernetes cluster.
 You specify the dependencies as part of the definition of the container image to be used for each task using the `ImageSpec` class.
 For example::
@@ -80,14 +78,14 @@ See [Local image builder](https://docs.unionai/byoc/user-guide/development-cycle
 ## Union cloud image builder
 
 If you have specified `builder="union"` in the `ImageSpec`, Union will build the image using its `ImageBuilder` service in the cloud
-and registered the image in Union's own container registry. From there it will be pulled and installed in the task container when it speins up.
+and registered the image in Union's own container registry. From there it will be pulled and installed in the task container when it spins up.
 All this is done transparently and does not require any set up by the user.
 
 ## Local image builder
 
 {{< note "Local image build in BYOC" >}}
 In Union BYOC, you can build images from ImageSpec either using the Union cloud image builder (by specifying `builder="union"`) or on your local machine
-(by omitting the `builder parameter or specifying `builder="envd").
+(by omitting the `builder` parameter or specifying `builder="envd"`).
 In Union Serverless, images defined by `ImageSpec` are always built using the Union cloud image builder.
 Local image building is not supported in Serverless.
 {{< /note >}}
