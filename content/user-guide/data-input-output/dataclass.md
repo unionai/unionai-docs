@@ -197,30 +197,10 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
 
 {{< /if-variant >}}
 
-You can run the workflow locally as follows:
+To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
 
-```python
-if __name__ == "__main__":
-    dataclass_wf(x=10, y=20)
+```shell
+$ {{< var cli_lower >}} run dataclass.py add --x dataclass_input.json --y dataclass_input.json
 ```
 
-{{< if-variant flyte >}}
-
-To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
-```
-pyflyte run \
-  https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
-  add --x dataclass_input.json --y dataclass_input.json
-```
-
-{{< /if-variant >}}
-{{< if-variant "byoc byok serverless" >}}
-
-To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
-```
-union run \
-  https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
-  add --x dataclass_input.json --y dataclass_input.json
-```
-
-{{< /if-variant >}}
+where `dataclass.py` is the file containing the above code and `add` is the name of the task you are triggering.

@@ -20,9 +20,32 @@ to the `pandas_image` ImageSpec block.
 {{< /if-variant >}}
 
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/basic.py
-:caption: basic.py
-:language: python
+```python
+# basic.py
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicTaskData = Artifact(
+    name="my_basic_artifact"
+)
+
+
+@task(container_image=pandas_image)
+def t1() -> Annotated[pd.DataFrame, BasicTaskData]:
+    my_df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+    return BasicTaskData.create_from(my_df)
+
+
+@workflow
+def wf() -> pd.DataFrame:
+    return t1()
 ```
 
 ## Time-partitioned artifact
@@ -33,19 +56,75 @@ You must also pass a value to `time_partition`, which you can do at runtime or b
 
 ### Passing a value to `time_partition` at runtime
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/time_partition_runtime.py
-:caption: time_partition_runtime.py
-:language: python
-:emphasize-lines: 1,5,14-15,21-23
+```python
+# time_partition_runtime.py
+
+from datetime import datetime
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact, Granularity
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicArtifact = Artifact(
+    name="my_basic_artifact",
+    time_partitioned=True,
+    time_partition_granularity=Granularity.HOUR
+)
+
+
+@task(container_image=pandas_image)
+def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
+    df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+    dt = datetime.now()
+    return BasicArtifact.create_from(df, time_partition=dt)
+
+
+@workflow
+def wf() -> pd.DataFrame:
+    return t1()
 ```
+{{/* :emphasize-lines: 1,5,14-15,21-23 */}}
 
 ### Passing a value to `time_partition` by input
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/time_partition_input.py
-:caption: time_partition_input.py
-:language: python
-:emphasize-lines: 20-21,28
+```python
+# time_partition_input.py
+
+from datetime import datetime
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact, Granularity
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicArtifact = Artifact(
+    name="my_basic_artifact",
+    time_partitioned=True,
+    time_partition_granularity=Granularity.HOUR
+)
+
+
+@task(container_image=pandas_image)
+def t1(date: datetime)\
+     -> Annotated[pd.DataFrame, BasicArtifact]:
+    df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+    return BasicArtifact.create_from(df, time_partition=date)
+
+
+@workflow
+def wf(run_date: datetime):
+    return t1(date=run_date)
 ```
+{{/* :emphasize-lines: 20-21,28 &/}}
 
 ## Artifact with custom partition keys
 
@@ -53,26 +132,130 @@ You can specify up to 10 custom partition keys when declaring an artifact. Custo
 
 ### Passing a value to a custom partition key at runtime
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_runtime.py
-:caption: partition_keys_runtime.py
-:language: python
-:emphasize-lines: 16,35-36
+```python
+# partition_keys_runtime.py
+
+from datetime import datetime
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact, Inputs, Granularity
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicArtifact = Artifact(
+    name="my_basic_artifact",
+    time_partitioned=True,
+    time_partition_granularity=Granularity.HOUR,
+    partition_keys=["key1"]
+)
+
+
+@task(container_image=pandas_image)
+def t1(
+    key1: str, date: datetime
+) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:
+    df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+    return BasicArtifact.create_from(
+        df,
+        time_partition=date
+    )
+
+
+@workflow
+def wf():
+    run_date = datetime.now()
+    values = ["value1", "value2", "value3"]
+    for value in values:
+        t1(key1=value, date=run_date)
 ```
+{{/* :emphasize-lines: 16,35-36 */}}
+
 
 ### Passing a value to a custom partition key by input
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_input.py
-:caption: partition_keys_input.py
-:language: python
-:emphasize-lines: 16,34
+```python
+# partition_keys_input.py
+
+from datetime import datetime
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact, Inputs, Granularity
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicArtifact = Artifact(
+    name="my_basic_artifact",
+    time_partitioned=True,
+    time_partition_granularity=Granularity.HOUR,
+    partition_keys=["key1"]
+)
+
+
+@task(container_image=pandas_image)
+def t1(
+    key1: str, dt: datetime
+) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:
+    df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+    return BasicArtifact.create_from(
+        df,
+        time_partition=dt,
+        key1=key1
+    )
+
+
+@workflow
+def wf(dt: datetime, val: str):
+    t1(key1=val, dt=dt)
 ```
+{{/* :emphasize-lines: 16,34 */}}
 
 ## Artifact with model card example
 
 You can attach a model card with additional metadata to your artifact, formatted in Markdown:
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/model_card.py
-:caption: model_card.py
-:language: python
-:emphasize-lines: 4,14-17,26
+```python
+# model_card.py
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact
+from union.artifacts import ModelCard
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicArtifact = Artifact(name="my_basic_artifact")
+
+
+def generate_md_contents(df: pd.DataFrame) -> str:
+    contents = "# Dataset Card\n" "\n" "## Tabular Data\n"
+    contents = contents + df.to_markdown()
+    return contents
+
+
+@task(container_image=pandas_image)
+def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
+    df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+
+    return BasicArtifact.create_from(
+        df,
+        ModelCard(generate_md_contents(df))
+    )
+
+
+@workflow
+def wf():
+    t1()
 ```
+{{/* :emphasize-lines: 4,14-17,26 */}}
+

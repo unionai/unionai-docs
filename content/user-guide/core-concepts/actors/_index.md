@@ -28,20 +28,74 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
 {{< if-variant serverless >}}
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/hello_world.py
-:caption: hello_world.py
 
+```python
+# hello_world.py
+
+import union
+
+
+actor = union.ActorEnvironment(
+    name="my-actor",
+    replica_count=1,
+    ttl_seconds=30,
+    requests=union.Resources(
+        cpu="2",
+        mem="300Mi",
+    ),
+)
+
+
+@actor.task
+def say_hello() -> str:
+    return "hello"
+
+
+@union.workflow
+def wf():
+    say_hello()
 ```
+
 {{< /if-variant >}}
 {{< if-variant "byoc byok flyte" >}}
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/hello_world.py
-:caption: hello_world.py
 
+```python
+# hello_world.py
+
+import os
+
+import union
+
+image = union.ImageSpec(
+    registry=os.environ.get("DOCKER_REGISTRY", None),
+    packages=["union"],
+)
+
+actor = union.ActorEnvironment(
+    name="my-actor",
+    replica_count=1,
+    ttl_seconds=30,
+    requests=union.Resources(
+        cpu="2",
+        mem="300Mi",
+    ),
+    container_image=image,
+)
+
+
+@actor.task
+def say_hello() -> str:
+    return "hello"
+
+
+@union.workflow
+def wf():
+    say_hello()
 ```
+
 {{< /if-variant >}}
 
-
-You can learn more about the tradeoffs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks.md).
+You can learn more about the trade-offs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks.md).
 
 ## Caching on Actor Replicas
 
@@ -62,18 +116,90 @@ The `@actor_cache` decorator provides a powerful mechanism to cache the results 
 Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
 {{< if-variant serverless >}}
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/serverless/caching_basic.py
-:caption: caching_basic.py
 
+```python
+# caching_basic.py
+
+from time import sleep
+
+import union
+
+
+actor = union.ActorEnvironment(
+    name="my-actor",
+    replica_count=1,
+)
+
+
+@union.actor_cache
+def load_model(state: int) -> callable:
+    sleep(4)  # simulate model loading
+    return lambda value: state + value
+
+
+@actor.task
+def evaluate(value: int, state: int) -> int:
+    model = load_model(state=state)
+    return model(value)
+
+
+@union.workflow
+def wf(init_value: int = 1, state: int = 3) -> int:
+    out = evaluate(value=init_value, state=state)
+    out = evaluate(value=out, state=state)
+    out = evaluate(value=out, state=state)
+    out = evaluate(value=out, state=state)
+    return out
 ```
+
 {{< /if-variant >}}
 {{< if-variant "byoc byok flyte" >}}
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_basic.py
-:caption: caching_basic.py
+
+```python
+# caching_basic.py
+
+from time import sleep
+import os
+
+import union
+
+image = union.ImageSpec(
+    registry=os.environ.get("DOCKER_REGISTRY", None),
+    packages=["union"],
+)
+
+actor = union.ActorEnvironment(
+    name="my-actor",
+    container_image=image,
+    replica_count=1,
+)
+
+
+@union.actor_cache
+def load_model(state: int) -> callable:
+    sleep(4)  # simulate model loading
+    return lambda value: state + value
+
+
+@actor.task
+def evaluate(value: int, state: int) -> int:
+    model = load_model(state=state)
+    return model(value)
+
+
+@union.workflow
+def wf(init_value: int = 1, state: int = 3) -> int:
+    out = evaluate(value=init_value, state=state)
+    out = evaluate(value=out, state=state)
+    out = evaluate(value=out, state=state)
+    out = evaluate(value=out, state=state)
+    return out
 ```
-```--note--
+
+{{< note >}}
 In order to get the `@actor_cache` functionality, you must pin `union` to at least `0.1.121`.
-```
+{{< /note >}}
+
 {{< /if-variant >}}
 
 ![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
