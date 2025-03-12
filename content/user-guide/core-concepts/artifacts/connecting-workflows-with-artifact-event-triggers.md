@@ -10,7 +10,7 @@ In the following example, we define an upstream workflow and a downstream workfl
 
 ## Imports
 
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant variants="byoc byok flyte" nested=true >}}
 {{< note >}}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
 {{< /note >}}

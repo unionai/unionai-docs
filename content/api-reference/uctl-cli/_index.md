@@ -196,42 +196,42 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 ## Commands
 
 {{< if-variant byoc >}}
-* - {doc}`uctl apply <uctl-apply/index>`
+* - {doc}`uctl apply {uctl-apply/index}`
   - Used for updating various Union/Flyte resources, including cluster configs.
-* - {doc}`uctl config <uctl-config/index>`
+* - {doc}`uctl config {uctl-config/index}`
   - Runs various config commands.
 {{< /if-variant >}}
-* - {doc}`uctl create <uctl-create/index>`
+* - {doc}`uctl create {uctl-create/index}`
   - Creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl delete <uctl-delete/index>`
+* - {doc}`uctl delete {uctl-delete/index}`
   - Terminates/deletes various Flyte resources, such as executions and resource attributes.
-* - {doc}`uctl demo <uctl-demo/index>`
+* - {doc}`uctl demo {uctl-demo/index}`
   - Provides commands for starting and interacting with a standalone minimal local environment for running Flyte.
-* - {doc}`uctl get <uctl-get/index>`
+* - {doc}`uctl get {uctl-get/index}`
   - Fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl register <uctl-register/index>`
+* - {doc}`uctl register {uctl-register/index}`
   - Registers tasks, workflows, and launch plans from a list of generated serialized files.
-* - {doc}`uctl update <uctl-update/index>`
+* - {doc}`uctl update {uctl-update/index}`
   - Update Flyte resources e.g., projects.
-* - {doc}`uctl version <uctl-version>`
+* - {doc}`uctl version {uctl-version>`
   - Fetches `uctl` version.
 
 ## Entities
 
 | Entity | Commands |
 |--------|----------|
-| Cluster resource attribute | [`uctl get cluster-resource-attribute`](./uctl-get/uctl-get-cluster-resource-attribute.md) <br /> [`uctl update cluster resource attribute`](./uctl-update/uctl-update-cluster-resource-attribute.md) <br />  [`uctl delete cluster resource attribute`](./uctl-delete/uctl-delete-cluster-resource-attribute.md) |
-| Config |  [`uctl config init`](./uctl-config/uctl-config-init.md) <br />  [`uctl config discover`](./uctl-config/uctl-config-discover.md) <br />  [`uctl config docs`](./uctl-config/uctl-config-docs.md) <br />  [`uctl config validate`](./uctl-config/uctl-config-validate.md) |
-| Demo |  [`uctl demo start`](./uctl-demo/uctl-demo-start.md) <br />  [`uctl demo status`](./uctl-demo/uctl-demo-status.md) <br />  [`uctl demo exec`](./uctl-demo/uctl-demo-exec.md) <br />  [`uctl demo reload`](./uctl-demo/uctl-demo-reload.md) <br />  [`uctl demo teardown`](./uctl-demo/uctl-demo-teardown.md) |
-| Execution |  [`uctl create execution`](./uctl-create/uctl-create-execution.md) <br />  [`uctl get execution`](./uctl-get/uctl-get-execution.md) <br />  [`uctl update execution`](./uctl-update/uctl-update-execution.md) <br />  [`uctl delete execution`](./uctl-delete/uctl-delete-execution.md) |
-| Execution cluster label |  [`uctl get execution-cluster-label`](./uctl-get/uctl-get-execution-cluster-label.md) <br />  [`uctl update execution-cluster-label`](./uctl-update/uctl-update-execution-cluster-label.md) <br />  [`uctl delete execution-cluster-label`](./uctl-delete/uctl-delete-execution-cluster-label.md) |
-| Execution queue attribute |  [`uctl get execution-queue-attribute`](./uctl-get/uctl-get-execution-queue-attribute.md) <br />  [`uctl update execution-queue-attribute`](./uctl-update/uctl-update-execution-queue-attribute.md) <br />  [`uctl delete execution-queue-attribute`](./uctl-delete/uctl-delete-execution-queue-attribute.md) |
+| Cluster resource attribute | [`uctl get cluster-resource-attribute`](./uctl-get/uctl-get-cluster-resource-attribute.md), [`uctl update cluster resource attribute`](./uctl-update/uctl-update-cluster-resource-attribute.md),  [`uctl delete cluster resource attribute`](./uctl-delete/uctl-delete-cluster-resource-attribute.md) |
+| Config |  [`uctl config init`](./uctl-config/uctl-config-init.md),  [`uctl config discover`](./uctl-config/uctl-config-discover.md),  [`uctl config docs`](./uctl-config/uctl-config-docs.md),  [`uctl config validate`](./uctl-config/uctl-config-validate.md) |
+| Demo |  [`uctl demo start`](./uctl-demo/uctl-demo-start.md),  [`uctl demo status`](./uctl-demo/uctl-demo-status.md),  [`uctl demo exec`](./uctl-demo/uctl-demo-exec.md),  [`uctl demo reload`](./uctl-demo/uctl-demo-reload.md),  [`uctl demo teardown`](./uctl-demo/uctl-demo-teardown.md) |
+| Execution |  [`uctl create execution`](./uctl-create/uctl-create-execution.md),  [`uctl get execution`](./uctl-get/uctl-get-execution.md),  [`uctl update execution`](./uctl-update/uctl-update-execution.md),  [`uctl delete execution`](./uctl-delete/uctl-delete-execution.md) |
+| Execution cluster label |  [`uctl get execution-cluster-label`](./uctl-get/uctl-get-execution-cluster-label.md),  [`uctl update execution-cluster-label`](./uctl-update/uctl-update-execution-cluster-label.md),  [`uctl delete execution-cluster-label`](./uctl-delete/uctl-delete-execution-cluster-label.md) |
+| Execution queue attribute |  [`uctl get execution-queue-attribute`](./uctl-get/uctl-get-execution-queue-attribute.md),  [`uctl update execution-queue-attribute`](./uctl-update/uctl-update-execution-queue-attribute.md),  [`uctl delete execution-queue-attribute`](./uctl-delete/uctl-delete-execution-queue-attribute.md) |
 | Files |  [`uctl regiser files`](./uctl-register/uctl-register-files.md) |
-| Launch plan | [`uctl get launchplan`](./uctl-get/uctl-get-launchplan.md) <br /> [`uctl update launchplan`](./uctl-update/uctl-update-launchplan.md) <br /> [`uctl update launchplan-meta`](./uctl-update/uctl-update-launchplan-meta.md) |
-| Plugin override | [`uctl get plugin-override`](./uctl-get/uctl-get-plugin-override.md) <br /> [`uctl update plugin-override`](./uctl-update/uctl-update-plugin-override.md) <br /> [`uctl delete plugin-override`](./uctl-delete/uctl-delete-plugin-override.md) |
-| Project | [`uctl create project`](./uctl-create/uctl-create-project.md) <br /> [`uctl get project`](./uctl-get/uctl-get-project.md) <br /> [`uctl update project`](./uctl-update/uctl-update-project.md) |
-| Task | [`uctl get task`](./uctl-get/uctl-get-task.md) <br /> [`uctl update task-meta`](./uctl-update/uctl-update-task-meta.md) |
-| Task resource attribute | [`uctl get task-resource-attribute`](./uctl-get/uctl-get-task-resource-attribute.md) <br /> [`uctl update task-resource-attribute`](./uctl-update/uctl-update-task-resource-attribute.md) <br /> [`uctl delete task-resource-attribute`](./uctl-delete/uctl-delete-task-resource-attribute.md) |
-| Workflow | [`uctl get workflow`](./uctl-get/uctl-get-workflow.md) <br /> [`uctl update workflow-meta`](./uctl-update/uctl-update-workflow-meta.md) |
-| Workflow execution config | [`uctl get workflow-execution-config`](./uctl-get/uctl-get-workflow-execution-config.md) <br /> [`uctl update workflow-execution-config`](./uctl-update/uctl-update-workflow-execution-config.md) <br /> [`uctl delete workflow-execution-config`](./uctl-delete/uctl-delete-workflow-execution-config.md) |
+| Launch plan | [`uctl get launchplan`](./uctl-get/uctl-get-launchplan.md), [`uctl update launchplan`](./uctl-update/uctl-update-launchplan.md), [`uctl update launchplan-meta`](./uctl-update/uctl-update-launchplan-meta.md) |
+| Plugin override | [`uctl get plugin-override`](./uctl-get/uctl-get-plugin-override.md), [`uctl update plugin-override`](./uctl-update/uctl-update-plugin-override.md), [`uctl delete plugin-override`](./uctl-delete/uctl-delete-plugin-override.md) |
+| Project | [`uctl create project`](./uctl-create/uctl-create-project.md), [`uctl get project`](./uctl-get/uctl-get-project.md), [`uctl update project`](./uctl-update/uctl-update-project.md) |
+| Task | [`uctl get task`](./uctl-get/uctl-get-task.md), [`uctl update task-meta`](./uctl-update/uctl-update-task-meta.md) |
+| Task resource attribute | [`uctl get task-resource-attribute`](./uctl-get/uctl-get-task-resource-attribute.md), [`uctl update task-resource-attribute`](./uctl-update/uctl-update-task-resource-attribute.md), [`uctl delete task-resource-attribute`](./uctl-delete/uctl-delete-task-resource-attribute.md) |
+| Workflow | [`uctl get workflow`](./uctl-get/uctl-get-workflow.md), [`uctl update workflow-meta`](./uctl-update/uctl-update-workflow-meta.md) |
+| Workflow execution config | [`uctl get workflow-execution-config`](./uctl-get/uctl-get-workflow-execution-config.md), [`uctl update workflow-execution-config`](./uctl-update/uctl-update-workflow-execution-config.md), [`uctl delete workflow-execution-config`](./uctl-delete/uctl-delete-workflow-execution-config.md) |
 
