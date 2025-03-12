@@ -6,6 +6,7 @@ usage:
 	@./scripts/make_usage.sh
 
 base:
+	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
 	mkdir dist
 	cp index.html dist/
@@ -22,8 +23,9 @@ variant:
 	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 
 dev:
+	@if ! ./scripts/pre-flight.sh; then exit 1; fi
+	@if ! ./scripts/dev-pre-flight.sh; then exit 1; fi
 	rm -rf public
-	if ! ./scripts/dev-pre-flight.sh; then exit 1; fi
 	hugo server --config hugo.toml,hugo.local.toml
 
 serve:
