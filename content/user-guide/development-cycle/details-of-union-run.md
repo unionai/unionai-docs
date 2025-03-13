@@ -1,7 +1,7 @@
 ---
 title: Details of union run
 weight: 11
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Details of union run

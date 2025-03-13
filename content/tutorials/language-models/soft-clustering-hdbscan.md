@@ -1,7 +1,7 @@
 ---
 title: HDBSCAN Soft Clustering With Headline Embeddings on GPUs
 weight: 4
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # HDBSCAN Soft Clustering With Headline Embeddings on GPUs

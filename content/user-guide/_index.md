@@ -1,7 +1,7 @@
 ---
 title: User guide
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 top_menu: true
 site_root: true
 ---

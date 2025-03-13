@@ -1,7 +1,7 @@
 ---
 title: Sentiment Classification with Language Models
 weight: 2
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Sentiment Classification with Language Models

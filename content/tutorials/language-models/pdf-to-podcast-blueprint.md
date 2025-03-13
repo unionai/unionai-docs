@@ -1,7 +1,7 @@
 ---
 title: Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use
 weight: 9
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use

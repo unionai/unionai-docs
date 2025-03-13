@@ -1,7 +1,7 @@
 ---
 title: Generating Wikipedia Embeddings
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Generating Wikipedia Embeddings

@@ -1,7 +1,7 @@
 ---
 title: AWS SageMaker inference agent
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # AWS SageMaker inference agent

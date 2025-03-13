@@ -1,7 +1,7 @@
 ---
 title: Enabling GCP resources
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Enabling GCP resources

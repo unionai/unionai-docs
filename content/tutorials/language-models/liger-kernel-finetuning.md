@@ -1,7 +1,7 @@
 ---
 title: Benchmarking LLM training with the Liger Kernel
 weight: 5
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Benchmarking LLM training with the Liger Kernel

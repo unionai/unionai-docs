@@ -1,7 +1,7 @@
 ---
 title: Parallel Processing and Job Scheduling
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Parallel Processing and Job Scheduling

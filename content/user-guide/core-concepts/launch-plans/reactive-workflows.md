@@ -1,7 +1,7 @@
 ---
 title: Reactive workflows
 weight: 10
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Reactive workflows

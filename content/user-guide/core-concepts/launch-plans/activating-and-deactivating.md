@@ -1,7 +1,7 @@
 ---
 title: Activating and deactivating
 weight: 6
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Activating and deactivating

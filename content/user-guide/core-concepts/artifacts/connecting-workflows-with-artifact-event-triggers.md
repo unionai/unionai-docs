@@ -1,7 +1,7 @@
 ---
 title: Connecting workflows with artifact event triggers
 weight: 5
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Connecting workflows with artifact event triggers

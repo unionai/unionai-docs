@@ -1,7 +1,7 @@
 ---
 title: Downloading with FlyteFile and FlyteDirectory
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Downloading with FlyteFile and FlyteDirectory

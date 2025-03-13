@@ -1,7 +1,7 @@
 ---
 title: Materializing artifacts
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Materializing artifacts

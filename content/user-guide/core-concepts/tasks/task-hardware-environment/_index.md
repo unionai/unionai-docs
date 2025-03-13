@@ -1,7 +1,7 @@
 ---
 title: Task hardware environment
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Task hardware environment

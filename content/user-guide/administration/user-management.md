@@ -1,7 +1,7 @@
 ---
 title: User management
 weight: 4
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # User management

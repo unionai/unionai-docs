@@ -1,7 +1,7 @@
 ---
 title: Mapping over launch plans
 weight: 9
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Mapping over launch plans

@@ -1,7 +1,7 @@
 ---
 title: ImageSpec with GAR
 weight: 4
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # ImageSpec with GAR

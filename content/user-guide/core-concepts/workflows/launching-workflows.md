@@ -1,7 +1,7 @@
 ---
 title: Launching workflows
 weight: 6
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Launching workflows

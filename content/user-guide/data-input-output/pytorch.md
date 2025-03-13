@@ -1,7 +1,7 @@
 ---
 title: PyTorch type
 weight: 11
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # PyTorch type

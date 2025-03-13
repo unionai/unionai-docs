@@ -1,7 +1,7 @@
 ---
 title: Agentic Retrieval Augmented Generation
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Agentic Retrieval Augmented Generation

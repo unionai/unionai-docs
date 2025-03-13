@@ -1,7 +1,7 @@
 ---
 title: Environment variables
 weight: 6
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Environment variables

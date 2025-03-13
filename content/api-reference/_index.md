@@ -1,7 +1,7 @@
 ---
 title: API reference
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 top_menu: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS ECR
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Enabling AWS ECR

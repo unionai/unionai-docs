@@ -206,6 +206,20 @@
     background-color: var(--bg-color);
     padding: 1rem;
   }
+  .not-allowed.how-to-fix {
+    display: inline-block;
+    padding: 0 1rem;
+    border: 1px solid gray;
+    border-radius: 4px;
+    margin-left: 1rem;
+  }
+  .not-allowed.how-to-fix:hover {
+    background: hsl(0, 84%, 90%);
+  }
+  .not-allowed.how-to-fix A {
+    color: gray;
+    font-size: 10pt;
+  }
 
   .err-no-title {
     background-color: yellow;

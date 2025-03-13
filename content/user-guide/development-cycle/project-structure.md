@@ -1,7 +1,7 @@
 ---
 title: Project structure
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Project structure

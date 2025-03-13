@@ -1,7 +1,7 @@
 ---
 title: Serve vLLM on Union Actors for Named Entity Recognition
 weight: 7
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Serve vLLM on Union Actors for Named Entity Recognition

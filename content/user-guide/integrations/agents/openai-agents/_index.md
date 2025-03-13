@@ -1,7 +1,7 @@
 ---
 title: OpenAI agents
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # OpenAI agents

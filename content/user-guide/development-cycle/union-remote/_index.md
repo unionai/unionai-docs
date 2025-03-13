@@ -1,7 +1,7 @@
 ---
 title: UnionRemote
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # UnionRemote

@@ -1,7 +1,7 @@
 ---
 title: Credit Default Prediction with XGBoost & NVIDIA RAPIDS
 weight: 2
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Credit Default Prediction with XGBoost & NVIDIA RAPIDS

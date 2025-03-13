@@ -1,7 +1,7 @@
 ---
 title: Enabling Azure resources
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Enabling Azure resources

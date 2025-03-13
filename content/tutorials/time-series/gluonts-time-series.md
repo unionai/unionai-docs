@@ -1,7 +1,7 @@
 ---
 title: Forecasting with GluonTS & PyTorch on GPUs
 weight: 2
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Forecasting with GluonTS & PyTorch on GPUs

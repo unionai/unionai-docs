@@ -1,7 +1,7 @@
 ---
 title: Subworkflows and sub-launch plans
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Subworkflows and sub-launch plans

@@ -1,7 +1,7 @@
 ---
 title: Eager workflows
 weight: 5
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Eager workflows

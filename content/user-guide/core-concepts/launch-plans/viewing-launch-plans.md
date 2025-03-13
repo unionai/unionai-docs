@@ -1,7 +1,7 @@
 ---
 title: Viewing launch plans
 weight: 3
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Viewing launch plans

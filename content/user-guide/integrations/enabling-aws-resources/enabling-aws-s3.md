@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS S3
 weight: 2
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Enabling AWS S3

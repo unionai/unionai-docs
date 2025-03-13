@@ -1,7 +1,7 @@
 ---
 title: Understanding the code
 weight: 4
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Understanding the code

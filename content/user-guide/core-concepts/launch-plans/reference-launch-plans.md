@@ -1,7 +1,7 @@
 ---
 title: Reference launch plans
 weight: 8
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Reference launch plans

@@ -1,7 +1,7 @@
 ---
 title: Running launch plans
 weight: 7
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Running launch plans

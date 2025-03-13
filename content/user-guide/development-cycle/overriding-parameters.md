@@ -1,7 +1,7 @@
 ---
 title: Overriding parameters
 weight: 10
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Overriding parameters

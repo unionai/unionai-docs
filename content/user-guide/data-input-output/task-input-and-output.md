@@ -1,7 +1,7 @@
 ---
 title: Task input and output
 weight: 4
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Task input and output

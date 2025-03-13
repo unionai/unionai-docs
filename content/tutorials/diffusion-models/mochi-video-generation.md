@@ -1,7 +1,7 @@
 ---
 title: Video Generation with Mochi
 weight: 2
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Video Generation with Mochi

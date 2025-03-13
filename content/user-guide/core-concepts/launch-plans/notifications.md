@@ -1,7 +1,7 @@
 ---
 title: Notifications
 weight: 4
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Notifications

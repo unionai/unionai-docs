@@ -1,7 +1,7 @@
 ---
 title: Deploying a Fine-Tuned Llama Model to an iOS App with MLC-LLM
 weight: 6
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Deploying a Fine-Tuned Llama Model to an iOS App with MLC-LLM

@@ -1,7 +1,7 @@
 ---
 title: About Union
 weight: 1
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 {{< if-variant serverless byoc byok >}}

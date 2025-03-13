@@ -39,7 +39,10 @@
             {{ if $access.excluded }}
             This page was explicitly excluded from '{{ $variant }}'.
             {{ else }}
-            This page will not be available for '{{ $variant }}' in production.
+            This page visibility is not declared for '{{ $variant }}'.
+            <div class="not-allowed how-to-fix">
+              <a href="https://github.com/unionai/docs-builder/blob/master/AUTHOR.md#page-visibility">How to fix?</a>
+            </div>
             {{ end }}
           </div>
           <code>{{ strings.TrimSuffix "/" .RelPermalink }}</code>

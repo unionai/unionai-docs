@@ -1,7 +1,7 @@
 ---
 title: TensorFlow types
 weight: 13
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # TensorFlow types

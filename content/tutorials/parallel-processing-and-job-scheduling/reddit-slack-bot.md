@@ -1,7 +1,7 @@
 ---
 title: Reddit Slack Bot
 weight: 2
-variants: "+flyte +serverless +byoc +byok"
+variants: +flyte +serverless +byoc +byok
 ---
 
 # Reddit Slack Bot
