@@ -19,11 +19,9 @@ allow for running the model with a minimum of 22GB VRAM.
 
 Let's begin by importing the necessary dependencies:
 
-<!-- #region -->
 
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon="arrow_forward" >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -49,9 +47,8 @@ union run --remote mochi_video_generation.py genmo_video_generation_with_actor
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/mochi_video_generation/mochi_video_generation.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ```python
 from dataclasses import dataclass

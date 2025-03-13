@@ -1,0 +1,6 @@
+{{/* Reference: https://gohugo.io/functions/emojify/ */}}
+{{- $title := .Get "title" -}}
+{{- $icon := .Get "icon" -}}
+<sl-details summary="{{ transform.Emojify (print ":" $icon ":") }} {{ $title | markdownify }}">
+  {{ .Inner | safeHTML }}
+</sl-details>

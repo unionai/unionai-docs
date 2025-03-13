@@ -19,12 +19,8 @@ The tutorial is divided into the following sections:
 3. Define the tasks
 4. Define the workflow
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
-
+{{< dropdown title="Run on Union BYOC" icon="arrow_forward" >}}
+{{< markdown >}}
 Once you have a Union account, install `union`:
 
 ```shell
@@ -49,9 +45,9 @@ union run --remote genomic_alignment.py alignment_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/genomic_alignment/genomic_alignment.py).
 
---/dropdown--
+{{< /markdown >}}
+{{< /dropdown >}}
 
-<!-- #endregion -->
 
 ```python
 import os
