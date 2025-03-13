@@ -22,7 +22,7 @@ You can then activate the virtual environment with:
 source .venv/bin/activate
 ```
 
-{{-- note "`activate` vs `uv run`" >}}
+{{< note "`activate` vs `uv run`" >}}
 When running the `{@= cli =@}` CLI within your local project you must run it in the virtual environment _associated with_ that project.
 This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the--cli--cli) in order to [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
 
@@ -33,7 +33,7 @@ To run `{@= cli =@}` within your project's virtual environment using `uv`, you c
 Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `{@= cli =@}` command directly.
 
 In our examples we assume that you are doing the latter.
-{{-- /note >}}
+{{< /note >}}
 
 
 ## Run the code locally
@@ -96,7 +96,7 @@ The output displays a URL that links to the workflow execution in the UI:
 ```
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 
 ```shell
 👍 Build submitted!

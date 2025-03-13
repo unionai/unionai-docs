@@ -8,7 +8,7 @@ variants: "+flyte +serverless +byoc +byok"
 
 For Union customers whose data plane is in Azure, we walk through setting up access to your own Azure Blob Storage container.
 
-{{-- note "Azure Blob Storage in the Union environment" >}}
+{{< note "Azure Blob Storage in the Union environment" >}}
 
 Your data plane is set up with a Kubernetes cluster and other resources.
 Among these are a number of Azure Storage containers used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
@@ -17,7 +17,7 @@ Among these are a number of Azure Storage containers used internally by the Unio
 
 **We are discussing the case where you have **_**your own Azure Blob Storage container**_**that you set up to store input and output data used by your workflows.**
 
-{{-- /note >}}
+{{< /note >}}
 
 ## Providing permissions to Azure Blob Storage container
 
@@ -45,8 +45,8 @@ The simplest, most flexible approach is to provide Union the ability to add role
 
 Managing permissions directly is required if it is not desirable to grant role assigning permissions to Union. [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal)) assigning the `Storage Blob Data Contributor` role to the `userflyterole` user assigned identity scoped the blob storage container.
 
-{{-- note "Union managed user-assigned identities" >}}
+{{< note "Union managed user-assigned identities" >}}
 
 Refer to [Azure portal&#39;s user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user assigned managed identity within the same resource group as the Union data plane.
 
-{{-- /note >}}
+{{< /note >}}

@@ -30,7 +30,7 @@ The Flyte type system is also used for caching, data lineage tracking, and autom
 
 While (most) tasks are locally executable, when a task is deployed to {@= Product =@} as part of the registration process it is containerized and run in its own independent Kubernetes pod.
 
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to {@= Product =@} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {{< /if-variant >}}
@@ -59,7 +59,7 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 
 For details on task caching, see [Caching](../caching.md).
 
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ## Workflows can contain many types of tasks
 
 One of the most powerful features of {@= Product =@} is the ability to run widely differing computational workloads as tasks with a single workflow.
@@ -85,9 +85,9 @@ For example, a workflow might contain:
 
 The ability to build workflows from such a wide variety of heterogeneous tasks makes {@= Product =@} uniquely flexible.
 
-{{-- note >}}
+{{< note >}}
 Not all parameters are compatible. For example, with specialized plugin task types, some configurations are not available (this depends on task plugin details).
-{{-- /note >}}
+{{< /note >}}
 
 ## Task configuration
 

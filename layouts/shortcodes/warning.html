@@ -1,7 +1,10 @@
+{{- $title := .Get 0 -}}
 <div>
 <sl-alert variant="warning" open>
     <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
-    <strong>{{ .Get 0 | markdownify }}</strong><br>
+    {{ if $title }}
+    <strong>{{ $title | markdownify }}</strong><br />
+    {{ end }}
     {{ .Inner | markdownify }}
 </sl-alert>
 </div>

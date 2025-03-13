@@ -19,7 +19,7 @@ The `union` CLI provides a set of commands that allow you to deploy and run your
 1. `union run`: For deploying and running a single script immediately in your local Python environment.
 2. `union run --remote`: For deploying and running a single script immediately in the cloud on Union.
 3. `union register`: For deploying multiple scripts to Union and running them from the Web interface.
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 4. `union package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
 
 ```--note--
@@ -89,7 +89,7 @@ The command will not run the workflow. You can run it from the Web interface.
 
 This command is useful for deploying your full set of workflows to Union for testing.
 
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 ## Deploying your code to production with `union package` and `uctl register`
 

@@ -12,19 +12,19 @@ This example demonstrates how to deploy and serve an XGBoost model on SageMaker 
 
 We train an XGBoost model on the Pima Indians Diabetes dataset and generate a `tar.gz` file to be stored in an S3 bucket.
 
-{{-- note >}}
+{{< note >}}
 The model artifact needs to be available in an S3 bucket for SageMaker to be able to access.
-{{-- /note >}}
+{{< /note >}}
 
 ```--rli-- https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
 :language: python
 :lines: 11-62
 ```
 
-{{-- note >}}
+{{< note >}}
 Replace `ghcr.io/flyteorg` with a container registry to which you can publish.
 To upload the image to the local registry in the demo cluster, indicate the registry as `localhost:30000`.
-{{-- /note >}}
+{{< /note >}}
 
 The above workflow generates a compressed model artifact that can be stored in an S3 bucket. Take note of the S3 URI.
 
@@ -45,15 +45,15 @@ By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True
 
 `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
 
-{{-- note >}}
+{{< note >}}
 For more detailed instructions on using your custom inference image, refer to the [Amazon SageMaker documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/your-algorithms-inference-code.html).
-{{-- /note >}}
+{{< /note >}}
 
 If the plugin attempts to create a deployment that already exists, it will return the existing ARNs instead of raising an error.
 
-{{-- note >}}
+{{< note >}}
 When two executions run in parallel and attempt to create the same endpoint, one execution will proceed with creating the endpoint while both will wait until the endpoint creation process is complete.
-{{-- /note >}}
+{{< /note >}}
 
 To receive inference requests, the container built with `sagemaker_image` must have a web server
 listening on port 8080 and must accept POST and GET requests to the `/invocations` and `/ping` endpoints, respectively.

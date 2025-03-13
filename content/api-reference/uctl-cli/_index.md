@@ -80,17 +80,21 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 ## Configuration
 
 {{< if-variant serverless >}}
+{{< markdown >}}
 
 `uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
 
-```--warning--
+{{< /markdown >}}
+
+{{< warning >}}
 If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
 
 To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
-```
+{{< /warning >}}
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
+{{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
 
@@ -106,10 +110,13 @@ admin:
   insecure: false
   authType: Pkce
 ```
+{{< /markdown >}}
 
-```--note--
+{{< note >}}
 PKCE is the default authentication type. To specify a different authentication type in the configuration file, see [CLI authentication types](../../user-guide/administration/cli-authentication-types.md).
-```
+{{< /note >}}
+
+{{< markdown >}}
 
 ### Configuration file location hierarchy
 
@@ -121,6 +128,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 * `~/.union/config.yaml` file
 * `~/.uctl/config.yaml` file
 
+{{< /markdown >}}
 {{< /if-variant >}}
 
 ## Options
@@ -196,25 +204,20 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 ## Commands
 
 {{< if-variant byoc >}}
-* - {doc}`uctl apply {uctl-apply/index}`
-  - Used for updating various Union/Flyte resources, including cluster configs.
-* - {doc}`uctl config {uctl-config/index}`
-  - Runs various config commands.
+{{< markdown >}}
+* `uctl apply {uctl-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
+* `uctl config {uctl-config/index}` runs various config commands.
+{{< /markdown >}}
 {{< /if-variant >}}
-* - {doc}`uctl create {uctl-create/index}`
-  - Creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl delete {uctl-delete/index}`
-  - Terminates/deletes various Flyte resources, such as executions and resource attributes.
-* - {doc}`uctl demo {uctl-demo/index}`
-  - Provides commands for starting and interacting with a standalone minimal local environment for running Flyte.
-* - {doc}`uctl get {uctl-get/index}`
-  - Fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* - {doc}`uctl register {uctl-register/index}`
-  - Registers tasks, workflows, and launch plans from a list of generated serialized files.
-* - {doc}`uctl update {uctl-update/index}`
-  - Update Flyte resources e.g., projects.
-* - {doc}`uctl version {uctl-version>`
-  - Fetches `uctl` version.
+* `uctl create {uctl-create/index}` creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
+* `uctl delete {uctl-delete/index}` terminates/deletes various Flyte resources, such as executions and resource attributes.
+* `uctl demo {uctl-demo/index}` provides commands for starting and interacting with a standalone minimal 
+                                local environment for running Flyte.
+* `uctl get {uctl-get/index}` fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
+* `uctl register {uctl-register/index}` registers tasks, workflows, and launch plans from a list of generated serialized files.
+* `uctl update {uctl-update/index}` update Flyte resources e.g., projects.
+* `uctl version {uctl-version>` fetches `uctl` version.
+
 
 ## Entities
 

@@ -83,11 +83,11 @@ Union requires permissions to read Azure network resources and assign the `Netwo
 
 This configuration will provide the Union application with the necessary permissions to interact with and manage resources within the specified VNet.
 
-{{-- note "Creating Azure role assignments" >}}
+{{< note "Creating Azure role assignments" >}}
 
 For more detailed instructions on creating role assignments, refer to the [official Azure documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal).
 
-{{-- /note >}}
+{{< /note >}}
 
 ### Required VNet properties
 
@@ -123,6 +123,6 @@ Once your VPC is set up, provide the following to Union:
 
 Union configures a four hour maintainence window to run monthly on the first Sunday at 3AM with respect to the Azure location's timezone.
 
-{{-- note "Setting up Tasks for Fault Tolerance" >}}
+{{< note "Setting up Tasks for Fault Tolerance" >}}
 During this time window Flyte execution pods could be potentially interrupted. We recommend leveraging [Flyte fault tolerance](https://docs.flyte.org/en/latest/concepts/tasks.html#fault-tolerance) and [checkpointing](https://docs.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html) to efficiently minimize failed executions.
-{{-- /note >}}
+{{< /note >}}

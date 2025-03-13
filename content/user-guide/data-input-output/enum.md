@@ -12,16 +12,16 @@ This common requirement is usually met by using Enum types in programming langua
 You can create a Python Enum type and utilize it as an input or output for a task.
 {@= Kit =@} will automatically convert it and constrain the inputs and outputs to the predefined set of values.
 
-{{-- note >}}
+{{< note >}}
 Currently, only string values are supported as valid enum values.
 {@= Product =@} assumes the first value in the list as the default, and Enum types cannot be optional.
 Therefore, when defining enums, it's important to design them with the first value as a valid default.
-{{-- /note >}}
+{{< /note >}}
 
 {{< if-variant flyte >}}
-{{-- note >}}
+{{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{-- /note >}}
+{{< /note >}}
 {{< /if-variant >}}
 
 To begin, import the dependencies:
@@ -82,7 +82,7 @@ pyflyte run \
 ```
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 You can send a string to the `coffee_maker_enum` workflow during its execution, like this:
 ```

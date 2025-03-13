@@ -10,10 +10,10 @@ In the following example, we define an upstream workflow and a downstream workfl
 
 ## Imports
 
-{{< if-variant variants="byoc byok flyte" nested=true >}}
-{{-- note >}}
+{{< if-variant byoc byok flyte >}}
+{{< note >}}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
-{{-- /note >}}
+{{< /note >}}
 {{< /if-variant >}}
 
 First we import the required packages:
@@ -66,9 +66,9 @@ Finally we create a launch plan with a trigger set to an `OnArtifact` object to 
 :lines: 49-53
 ```
 
-{{-- note >}}
+{{< note >}}
 The `OnArtifact` object must be attached to a launch plan in order for the launch plan to be triggered by the creation of a new version of the artifact.
-{{-- /note >}}
+{{< /note >}}
 
 ## Full example code
 

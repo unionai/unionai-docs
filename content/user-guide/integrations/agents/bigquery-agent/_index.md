@@ -24,9 +24,9 @@ To test the BigQuery agent locally, create a class for the agent task that inher
 
 To test the BigQuery agent, copy the following code to a file called `bigquery_task.py`, modifying as needed.
 
-{{-- note >}}
+{{< note >}}
 When testing the BigQuery integration locally, you will need to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
-{{-- /note >}}
+{{< /note >}}
 
 Add `AsyncAgentExecutorMixin` to this class to tell flytekit to use the agent to run the task:
 ```python

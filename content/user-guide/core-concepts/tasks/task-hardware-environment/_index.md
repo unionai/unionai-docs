@@ -20,7 +20,7 @@ You can customize the hardware environment in which your task code executes thro
 See [Customizing task resources](./customizing-task-resources.md) for details.
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 
 You can customize the hardware environment in which your task code executes.
 

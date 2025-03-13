@@ -109,9 +109,9 @@ def t1():
 Do not return secret values from tasks, as this will expose secrets to the control plane.
 ```
 
-{{-- note >}}
+{{< note >}}
 The `get_secrets_file` method takes the secret key and returns the path to the secret file.
-{{-- /note >}}
+{{< /note >}}
 
 ## Updating secrets
 

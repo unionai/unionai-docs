@@ -17,11 +17,11 @@ With the 1.14 release, `flytekit` adopted `MessagePack` as the serialization for
 
 In earlier versions, Protobuf’s `struct` converted integer types to floats, requiring users to write boilerplate code to work around this issue.
 
-{{-- note >}}
+{{< note >}}
 If you're using Flytekit version < v1.11.1, you will need to add `from dataclasses_json import dataclass_json` to your imports and decorate your dataclass with `@dataclass_json`.
-{{-- /note >}}
+{{< /note >}}
 
-{{-- note >}}
+{{< note >}}
 Flytekit version < v1.14.0 will produce protobuf `struct` literal for dataclasses.
 
 Flytekit version >= v1.14.0 will produce msgpack bytes literal for dataclasses.
@@ -30,11 +30,11 @@ If you're using Flytekit version >= v1.14.0 and you want to produce protobuf `st
 set environment variable  `FLYTE_USE_OLD_DC_FORMAT` to `true`.
 
 For more details, you can refer the MSGPACK IDL RFC: https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md
-{{-- /note >}}
+{{< /note >}}
 
-{{-- note >}}
+{{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{-- /note >}}
+{{< /note >}}
 
 {{< /if-variant >}}
 
@@ -71,9 +71,9 @@ class Datum:
 
 You can send a `dataclass` between different tasks written in various languages, and input it through the {@= Product =@} UI as raw JSON.
 
-{{-- note >}}
+{{< note >}}
 All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
-{{-- /note >}}
+{{< /note >}}
 
 Once declared, a dataclass can be returned as an output or accepted as an input.
 
@@ -145,7 +145,7 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
 ```
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 ```python
 @dataclass
@@ -214,7 +214,7 @@ pyflyte run \
 ```
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
 ```

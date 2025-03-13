@@ -20,7 +20,7 @@ As you work on successive iterations of the workflow you might promote `my_workf
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code.md).
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.

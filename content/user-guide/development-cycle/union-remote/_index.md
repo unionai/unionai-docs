@@ -8,11 +8,11 @@ variants: "+flyte +serverless +byoc +byok"
 
 The `UnionRemote` Python API supports functionality similar to that of the `union` CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
 
-{{-- note >}}
+{{< note >}}
 The primary use case of `UnionRemote` is to automate the deployment of Union entities. As such, it is intended for use within scripts *external* to actual Union workflow and task code, for example CI/CD pipeline scripts.
 
 In other words: _Do not use `UnionRemote` within task code._
-{{-- /note >}}
+{{< /note >}}
 
 ## Creating a `UnionRemote` object
 
@@ -28,7 +28,7 @@ By default, when created with a no-argument constructor, `UnionRemote` will use 
 
 In the default case, as with the `union` CLI, all operations will be applied to the default project, `{@= default_project =@}` and default domain, `development`.
 
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 
 Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 

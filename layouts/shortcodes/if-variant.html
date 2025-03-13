@@ -1,12 +1,13 @@
-{{- $nested := eq (.Get "nested") true -}}
 {{- $variant := $.Site.Params.variant -}}
 {{- $showVariantNames := $.Site.Params.variant_identify_variant_in_development -}}
 {{- $hideMismatch := .Site.Params.variant_hide_in_development }}
-{{- $var_input := (.Get 0) }}
-{{- if not $var_input -}}
-{{- $var_input = (.Get "variants") }}
+{{- $variants := slice -}}
+{{- range .Params -}}
+    {{- if strings.Contains . " " -}}
+        {{- warnf "Variant names cannot contain spaces: '%q'. You need to specify a list (without spaces)" . -}}
+    {{- end -}}
+    {{- $variants = $variants | append . -}}
 {{- end -}}
-{{- $variants := split $var_input " " -}}
 {{- $allowed := in $variants $variant -}}
 {{- if or $allowed (and (not hugo.IsProduction) (not $hideMismatch)) -}}
     {{- if (not $allowed) -}}
@@ -15,11 +16,7 @@
                 {{ upper (delimit $variants " | ") }}: This will not exist in production for variant '{{ $variant }}'.
             </div>
             <div class="content">
-                {{ if $nested }}
-                    {{ .Inner | safeHTML }}
-                {{ else }}
-                    {{ .Inner | markdownify }}
-                {{ end }}
+                {{ .Inner | safeHTML }}
             </div>
         </div>
     {{- else if $showVariantNames -}}
@@ -28,21 +25,11 @@
                 {{ upper (delimit $variants " | ") }}
             </div>
             <div class="content">
-                {{ if $nested }}
-                    {{ .Inner | safeHTML }}
-                {{ else }}
-                    {{ .Inner | markdownify }}
-                {{ end }}
+                {{ .Inner | safeHTML }}
             </div>
         </div>
     {{- else -}}
-        {{ if $nested }}
-            {{ .Inner | safeHTML }}
-        {{ else }}
-            <div class="if-variant">
-                {{ .Inner | markdownify }}
-            </div>
-        {{ end }}
+        {{ .Inner | safeHTML }}
     {{- end -}}
 {{- end -}}
 

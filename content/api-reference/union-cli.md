@@ -29,7 +29,7 @@ $ union create login --serverless
 ```
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok" >}}
+{{< if-variant byoc byok >}}
 
 To configure the `union` CLI to connect to you Union BYOC or BYOK instance, run the following command:
 

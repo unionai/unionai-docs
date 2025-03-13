@@ -21,13 +21,13 @@ See [Enable Google Artifact Registry](../../../integrations/enabling-gcp-resourc
 Unlike GitHub Container Registry, GAR does not allow you to simply push an arbitrarily named image to the registry.
 Instead, you must first create a repository in the GAR instance and then push the image to that repository.
 
-{{-- note "Registry, repository, and image" >}}
+{{< note "Registry, repository, and image" >}}
 In GAR terminology the **registry** is the top-level storage service. The registry holds a collection of **repositories**. Each repository in turn holds some number of images, and each specific image name can have different versions.
 
 Note that this differs from the arrangement in AWS ECR where the repository name and image name are essentially the same.
 
 When you push an image to GAR, you are actually pushing it to an image name within a repository within that registry. Strictly speaking, the term *image* refers to a specific *image version* within that repository.
-{{-- /note >}}
+{{< /note >}}
 
 This means that you have to decide on the name of your repository and create it, before registering your workflow. You can, however, decide on the image name later, when you push the image to the repository. We will assume the following:
 
@@ -60,7 +60,7 @@ Directions can be found in the GAR console interface. Click on **Setup Instructi
 
 The directions are also reproduced below. (We show the directions for the `us-east1` region. You may need to adjust the command accordingly):
 
-{{-- note "Setup Instructions" >}}
+{{< note "Setup Instructions" >}}
 Follow the steps below to configure your client to push and pull packages using this repository.
 You can also [view more detailed instructions here](https://cloud.google.com/artifact-registry/docs/docker/authentication?authuser=1).
 For more information about working with artifacts in this repository, see the [documentation](https://cloud.google.com/artifact-registry/docs/docker?authuser=1).
@@ -78,7 +78,7 @@ Run the following command to configure `gcloud` as the credential helper for the
 $ gcloud auth configure-docker us-east1-docker.pkg.dev
 ```
 
-{{-- /note >}}
+{{< /note >}}
 
 ## Register your workflow to Union
 

@@ -4,7 +4,7 @@ weight: 1
 variants: "+flyte +serverless +byoc +byok"
 ---
 
-{{< if-variant "serverless byoc byok" >}}
+{{< if-variant serverless byoc byok >}}
 
 # About Union
 
@@ -37,7 +37,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 You can switch to the Flyte docs [here](https://docs.union.ai/flyte).
 

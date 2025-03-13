@@ -73,7 +73,7 @@ This section covers how to manage data input and output in Union.
 | [`Tensorflow](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok" >}}
+{{< if-variant byoc byok >}}
 
 This section covers how to manage data input and output in Union.
 

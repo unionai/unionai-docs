@@ -82,11 +82,11 @@ logger:
   level: 1
 ```
 
-{{-- note >}}
+{{< note >}}
 Note that the value of`clientSecretEnvVar`(in his case, `UNION_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
 
 It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
-{{-- /note >}}
+{{< /note >}}
 
 ## Set up your CI/CD configuration file
 
@@ -152,7 +152,7 @@ jobs:
             --version ${{ github.sha }}
 ```
 
-{{-- note >}}
+{{< note >}}
 Note this section:
 
 ```yaml
@@ -168,6 +168,6 @@ Because we have followed the practice of using the same name for the secret stor
 You will also see other secrets and environment variables accessed in this configuration file.
 These are related to the container build process, project name and so forth.
 For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
-{{-- /note >}}
+{{< /note >}}
 
 Once this is set up, every push to the main branch in you repository will build and deploy your project to Union.

@@ -8,14 +8,14 @@ variants: "+flyte +serverless +byoc +byok"
 
 For Union customers whose data plane is in GCP, we walk through setting up access to your own Google Cloud Storage bucket.
 
-{{-- note "Google Cloud Storage in the Union environment" >}}
+{{< note "Google Cloud Storage in the Union environment" >}}
 Your data plane is set up with a Kubernetes cluster and other resources.
 Among these are a number of Google Cloud Storage (GCS) buckets used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
 
 **These are not the GCS buckets we are talking about in this section.**
 
 **We are discussing the case where you have **_**your own GCS bucket**_** that you set up to store input and output data used by your workflows.**
-{{-- /note >}}
+{{< /note >}}
 
 ## Grant `<UserFlyteGSA>` access to the bucket
 
@@ -38,7 +38,7 @@ To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Ser
 
 Your bucket should now be **globally accessible** to task code in all Flyte projects and domains in your Union organization.
 
-{{-- note "Domain-scoped permissions are not self-service" >}}
+{{< note "Domain-scoped permissions are not self-service" >}}
 If you want to assign permissions in a more fine-grained way, per project and/or domain, you need to contact the Union team.
 See [Domain-scoped access](./index.md#domain-scoped-access).
-{{-- /note >}}
+{{< /note >}}

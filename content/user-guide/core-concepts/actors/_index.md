@@ -15,7 +15,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 {{< if-variant serverless >}}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
 {{< /if-variant >}}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
@@ -33,7 +33,7 @@ The following example shows how to create a basic `ActorEnvironment` and use it 
 
 ```
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/hello_world.py
 :caption: hello_world.py
 
@@ -67,7 +67,7 @@ Below is a simplified example showcasing the use of `@actor_cache` for caching r
 
 ```
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_basic.py
 :caption: caching_basic.py
 ```

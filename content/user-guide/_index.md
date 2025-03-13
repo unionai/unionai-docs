@@ -8,36 +8,36 @@ site_root: true
 
 # User guide
 
-{{< if-variant variants=flyte nested=true >}}
+{{< if-variant flyte >}}
 
-{{-- note "Flyte" >}}
+{{< note "Flyte" >}}
 These docs are for [**Flyte**](./about-union.md#flyte).
 Switch to another variant with the version selector above.
-{{-- /note >}}
+{{< /note >}}
 
 {{< /if-variant >}}
-{{< if-variant variants=serverless nested=true >}}
+{{< if-variant serverless >}}
 
-{{-- note "Union Serverless" >}}
+{{< note "Union Serverless" >}}
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
 Switch to another variant with the version selector above.
-{{-- /note >}}
+{{< /note >}}
 
 {{< /if-variant >}}
-{{< if-variant variants=byoc nested=true >}}
+{{< if-variant byoc >}}
 
-{{-- note "Union BYOC" >}}
+{{< note "Union BYOC" >}}
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
 Switch to another variant with the version selector above.
-{{-- /note >}}
+{{< /note >}}
 
 {{< /if-variant >}}
-{{< if-variant variants=byok nested=true >}}
+{{< if-variant byok >}}
 
-{{-- note "Union BYOK" >}}
+{{< note "Union BYOK" >}}
 These docs are for [**Union BYOK**](./about-union.md#union-byok).
 Switch to another variant with the version selector above.
-{{-- /note >}}
+{{< /note >}}
 
 {{< /if-variant >}}
 
@@ -49,14 +49,14 @@ The {{< var product_upper >}} platform empowers AI development teams to rapidly 
 
 {{< grid >}}
 
-{{< if-variant variants=flyte nested=true >}}
+{{< if-variant flyte >}}
 
 {{< link-card target="about-union" icon="lightbulb" title="About Flyte" >}}
 Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
 {{< /link-card >}}
 
 {{< /if-variant >}}
-{{< if-variant variants="serverless byoc byok" nested=true >}}
+{{< if-variant serverless byoc byok >}}
 
 {{< link-card target="about-union" icon="lightbulb" title="About Union" >}}
 Union builds on the leading OSS AI platform, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
@@ -80,7 +80,7 @@ Explore the {{< var product_upper >}} development cycle from experimentation to 
 Manage the input and output of data in your {{< var product_upper >}} workflow.
 {{< /link-card >}}
 
-{{< if-variant variants="byoc byok flyte" nested=true >}}
+{{< if-variant byoc byok flyte >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< var product_full >}} administrators can manage users, projects, and resources.

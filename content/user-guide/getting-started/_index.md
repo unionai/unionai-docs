@@ -84,7 +84,7 @@ stop it manually on the Workspaces page.
 🎉 Congratulations! You've just run your first workflow on Union.
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok " >}}
+{{< if-variant byoc byok >}}
 
 ## Gather your credentials
 
@@ -108,12 +108,12 @@ Since you are just starting out, it will be empty.
 To build and deploy your first workflow, the first step is to [set up your local environment](./local-setup.md).
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok " >}}
+{{< if-variant byoc byok >}}
 
-{{-- note "Try Flyte in your browser" >}}
+{{< note "Try Flyte in your browser" >}}
 You can try Flyte in your browser without any setup simply by [signing up for **Union Serverless**](https://signup.union.ai/).
 [Union Serverless is a fully-hosted version of Flyte](https://docs.union.ai/serverless) with additional features.
-{{-- /note >}}
+{{< /note >}}
 
 ## Try Flyte on your local machine
 

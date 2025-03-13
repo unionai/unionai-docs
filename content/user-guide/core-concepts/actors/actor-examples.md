@@ -29,7 +29,7 @@ In this example, the `actor.task`-decorated task is invoked multiple times in on
 
 ```
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/plus_one.py
 :caption: plus_one.py
 
@@ -46,7 +46,7 @@ Every task execution in the following example will execute in the same `ActorEnv
 
 ```
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/multiple_tasks.py
 :caption: multiple_tasks.py
 
@@ -72,7 +72,7 @@ With map tasks, each task is executed within the same environment, making actors
 
 ```
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_map_task.py
 :caption: caching_map_task.py
 
@@ -89,7 +89,7 @@ Finally, we can cache custom objects by defining the `__hash__` and `__eq__` met
 
 ```
 {{< /if-variant >}}
-{{< if-variant "byoc byok flyte" >}}
+{{< if-variant byoc byok flyte >}}
 ```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/actors/byoc/caching_custom_object.py
 :caption: caching_custom_object.py
 
