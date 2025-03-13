@@ -26,7 +26,7 @@ dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	@if ! ./scripts/dev-pre-flight.sh; then exit 1; fi
 	rm -rf public
-	hugo server --config hugo.toml,hugo.local.toml
+	hugo server --config hugo.toml,hugo.dev.toml,hugo.local.toml
 
 serve:
 	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
