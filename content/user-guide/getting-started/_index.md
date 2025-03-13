@@ -14,13 +14,11 @@ This section gives you a quick introduction to writing and running Union workflo
 ## Sign up for Union Serverless
 
 First, sign up for Union Serverless:
+{{< /markdown >}}
 
---button-link-- https://signup.union.ai/
-:color: secondary
+{{< button-link text="Create an account" target="https://signup.union.ai/" variant="warning" >}}
 
-Create an account
---/button-link--
-
+{{< markdown >}}
 Once you've received confirmation that your sign-up succeeded, navigate to
 the UI at [serverless.union.ai](https://serverless.union.ai).
 

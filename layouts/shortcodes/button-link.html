@@ -1,0 +1,8 @@
+{{ $text := .Get "text" }}
+{{ $variant := .Get "variant" | default "default" }}
+{{ $target := .Get "target" }}
+<div style="margin-bottom: 1rem;">
+    <sl-button href="{{ $target }}" target="_blank" variant="{{ $variant }}">
+        {{ $text }}
+    </sl-button>
+</div>
