@@ -19,11 +19,48 @@ To use the example code on this page, you will need to add your `registry` to th
 
 {{< /if-variant >}}
 
-```--rli-- https://raw.githubusercontent.com/unionai/unionai-examples/main/user_guide/core_concepts/artifacts/partition_keys_runtime.py
-:caption: partition_keys_runtime.py
-:language: python
+```python
+# partition_keys_runtime.py
+
+from datetime import datetime
+
+import pandas as pd
+from flytekit import ImageSpec, task, workflow
+from flytekit.core.artifact import Artifact, Inputs, Granularity
+from typing_extensions import Annotated
+
+pandas_image = ImageSpec(
+    packages=["pandas==2.2.2"]
+)
+
+BasicArtifact = Artifact(
+    name="my_basic_artifact",
+    time_partitioned=True,
+    time_partition_granularity=Granularity.HOUR,
+    partition_keys=["key1"]
+)
+
+
+@task(container_image=pandas_image)
+def t1(
+    key1: str, date: datetime
+) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:
+    df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
+    return BasicArtifact.create_from(
+        df,
+        time_partition=date
+    )
+
+
+@workflow
+def wf():
+    run_date = datetime.now()
+    values = ["value1", "value2", "value3"]
+    for value in values:
+        t1(key1=value, date=run_date)
 ```
 
 {{< note >}}
-You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`. For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/index.md).
+You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`.
+For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/index.md).
 {{< /note >}}

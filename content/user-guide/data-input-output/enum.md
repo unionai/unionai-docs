@@ -24,17 +24,16 @@ To clone and run the example code on this page, see the [Flytesnacks repo](https
 {{< /note >}}
 {{< /if-variant >}}
 
-To begin, import the dependencies:
-
-```python
-from enum import Enum
-from union
-```
-
 We define an enum and a simple coffee maker workflow that accepts an order and brews coffee ☕️ accordingly.
 The assumption is that the coffee maker only understands enum inputs:
 
+{{< if-variant "byoc byok serverless" >}}
+
 ```python
+from enum import Enum
+
+import union
+
 class Coffee(Enum):
     ESPRESSO = "espresso"
     AMERICANO = "americano"
@@ -64,10 +63,43 @@ def coffee_maker_enum(coffee_enum: Coffee) -> str:
     return prep_order(coffee_enum=coffee_enum)
 ```
 
-The workflow can also accept an enum value:
+{{< /if-variant >}}
+{{< if-variant flyte >}}
 
 ```python
-@union.workflow
+from enum import Enum
+
+import flytekit as fl
+
+
+# Define an enum and a simple coffee maker workflow that accepts an order
+# and brews coffee ☕️ accordingly.
+# The assumption is that the coffee maker only understands enum inputs.
+class Coffee(Enum):
+    ESPRESSO = "espresso"
+    AMERICANO = "americano"
+    LATTE = "latte"
+    CAPPUCCINO = "cappucccino"
+
+
+@fl.task
+def take_order(coffee: str) -> Coffee:
+    return Coffee(coffee)
+
+
+@tfl.ask
+def prep_order(coffee_enum: Coffee) -> str:
+    return f"Preparing {coffee_enum.value} ..."
+
+
+@wfl.orkflow
+def coffee_maker(coffee: str) -> str:
+    coffee_enum = take_order(coffee=coffee)
+    return prep_order(coffee_enum=coffee_enum)
+
+
+# The workflow can also accept an enum value
+@fl.workflow
 def coffee_maker_enum(coffee_enum: Coffee) -> str:
     return prep_order(coffee_enum=coffee_enum)
 ```
@@ -93,10 +125,10 @@ union run \
 
 {{< /if-variant >}}
 
-You can run the workflows locally:
+You can send a string to the `coffee_maker_enum` workflow, like this:
 
-```python
-if __name__ == "__main__":
-    print(coffee_maker(coffee="latte"))
-    print(coffee_maker_enum(coffee_enum=Coffee.LATTE))
 ```
+$ {{< var cli_lower>}} run coffe_maker.py coffee_maker_enum --coffee_enum="latte"
+```
+
+where `coffee_maker.py` is the name of the file containing the above code.

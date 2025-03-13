@@ -30,8 +30,6 @@ For more details, you can refer the MESSAGEPACK IDL RFC: [https://github.com/fly
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
 
-
-
 {{< note >}}
 You can put Dataclass and FlyteTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
 {{< /note >}}
@@ -100,7 +98,7 @@ def add(x: Datum, y: Datum) -> Datum:
 ## {@= Product =@} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
-{{< if-variant flyte >}}
+{{< if-variant "byoc byok serverless" >}}
 
 ```python
 class FlyteTypes(BaseModel):
@@ -211,11 +209,10 @@ def basemodel_wf(x: int, y: int) -> (Datum, UnionTypes):
 
 {{< /if-variant >}}
 
-You can run the workflow locally as follows:
+To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
 
-```python
-if __name__ == "__main__":
-    basemodel_wf(x=10, y=20)
+```
+$ {{< var cli_lower >}} run dataclass.py basemodel_wf --x 1 --y 2
 ```
 
 {{< if-variant flyte >}}

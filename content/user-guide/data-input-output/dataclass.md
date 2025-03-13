@@ -197,11 +197,10 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
 
 {{< /if-variant >}}
 
-You can run the workflow locally as follows:
+To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
 
-```python
-if __name__ == "__main__":
-    dataclass_wf(x=10, y=20)
+```shell
+$ {{< var cli_lower >}} run dataclass.py add --x dataclass_input.json --y dataclass_input.json
 ```
 
 {{< if-variant flyte >}}
