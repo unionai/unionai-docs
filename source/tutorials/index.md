@@ -13,11 +13,11 @@ Fine-tune a pre-trained language model in the IMDB dataset for sentiment
 classification.
 :::
 
-:::{grid-item-card} {octicon}`dependabot` Agentic Retrieval Augmented Generation
-:link: language-models/agentic-rag
+:::{grid-item-card} {octicon}`dependabot` Connectoric Retrieval Augmented Generation
+:link: language-models/connectoric-rag
 :link-type: doc
 
-Build an agentic retrieval augmented generation system with ChromaDB and Langchain.
+Build an connectoric retrieval augmented generation system with ChromaDB and Langchain.
 :::
 
 :::{grid-item-card} {octicon}`dependabot` HDBSCAN Soft Clustering With Headline Embeddings with GPUs

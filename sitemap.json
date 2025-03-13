@@ -116,32 +116,32 @@
                 {"name": "enabling-azure-container-registry", "variants": ["byoc"]},
                 {"name": "enabling-azure-key-vault", "variants": ["byoc"]}
             ]},
-            {"name": "agents", "variants": ["byoc"], "children": [
-                {"name": "airflow-agent", "variants": ["byoc"], "children": [
-                    {"name": "airflow-agent-example", "variants": ["byoc"]}
+            {"name": "connectors", "variants": ["byoc"], "children": [
+                {"name": "airflow-connector", "variants": ["byoc"], "children": [
+                    {"name": "airflow-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "sagemaker-agent", "variants": ["byoc"], "children": [
-                    {"name": "sagemaker-agent-example", "variants": ["byoc"]}
+                {"name": "sagemaker-connector", "variants": ["byoc"], "children": [
+                    {"name": "sagemaker-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "databricks-agent", "variants": ["byoc"], "children": [
-                    {"name": "databricks-agent-example", "variants": ["byoc"]}
+                {"name": "databricks-connector", "variants": ["byoc"], "children": [
+                    {"name": "databricks-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "file-sensor-agent", "variants": ["byoc"], "children": [
-                    {"name": "file-sensor-agent-example", "variants": ["byoc"]}
+                {"name": "file-sensor-connector", "variants": ["byoc"], "children": [
+                    {"name": "file-sensor-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "bigquery-agent", "variants": ["byoc"], "children": [
-                    {"name": "bigquery-agent-example", "variants": ["byoc"]}
+                {"name": "bigquery-connector", "variants": ["byoc"], "children": [
+                    {"name": "bigquery-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "mmcloud-agent", "variants": ["byoc"], "children": [
-                    {"name": "mmcloud-agent-example", "variants": ["byoc"]}
+                {"name": "mmcloud-connector", "variants": ["byoc"], "children": [
+                    {"name": "mmcloud-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "dgx-agent", "variants": ["byoc"]},
-                {"name": "openai-agents", "variants": ["byoc"], "children": [
-                    {"name": "batch-agent-example", "variants": ["byoc"]},
-                    {"name": "chatgpt-agent-example", "variants": ["byoc"]}
+                {"name": "dgx-connector", "variants": ["byoc"]},
+                {"name": "openai-connectors", "variants": ["byoc"], "children": [
+                    {"name": "batch-connector-example", "variants": ["byoc"]},
+                    {"name": "chatgpt-connector-example", "variants": ["byoc"]}
                 ]},
-                {"name": "snowflake-agent", "variants": ["byoc"], "children": [
-                    {"name": "snowflake-agent-example", "variants": ["byoc"]}
+                {"name": "snowflake-connector", "variants": ["byoc"], "children": [
+                    {"name": "snowflake-connector-example", "variants": ["byoc"]}
                 ]}
             ]}
         ]},
@@ -150,7 +150,7 @@
     {"name": "tutorials", "variants": ["byoc", "serverless"], "children": [
         {"name": "language-models", "variants": ["byoc", "serverless"], "children": [
             {"name": "sentiment-classifier", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/sentiment_classifier/sentiment_classifier.py"},
-            {"name": "agentic-rag", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/agentic_rag/agentic_rag.py"},
+            {"name": "connectoric-rag", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/connectoric_rag/connectoric_rag.py"},
             {"name": "soft-clustering-hdbscan", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py"},
             {"name": "liger-kernel-finetuning", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/liger_kernel_finetuning/liger_kernel_finetuning.py"},
             {"name": "llama_edge_deployment", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py"},
@@ -214,7 +214,7 @@
             {"name": "specifying-accelerators", "variants": ["byoc", "serverless"]},
             {"name": "extending-flytekit", "variants": ["byoc", "serverless"]},
             {"name": "flyte-deck", "variants": ["byoc", "serverless"]},
-            {"name": "agents", "variants": ["byoc"], "children": [
+            {"name": "connectors", "variants": ["byoc"], "children": [
                 {"name": "airflow", "variants": ["byoc"]},
                 {"name": "sagemaker", "variants": ["byoc"]},
                 {"name": "file-sensor", "variants": ["byoc"]},

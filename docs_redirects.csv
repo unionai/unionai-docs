@@ -171,7 +171,7 @@ docs.union.ai/getting-started/setting-up-ci-cd-deployment,https://docs.union.ai/
 docs.union.ai/getting-started/setting-up-the-project-on-union,https://docs.union.ai/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/setting-up-the-project-on-union-cloud,https://docs.union.ai/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/integrations,https://docs.union.ai/byoc/user-guide/integrations,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/integrations/additional-integrations,https://docs.union.ai/byoc/user-guide/integrations/agents,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/integrations/additional-integrations,https://docs.union.ai/byoc/user-guide/integrations/connectors,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/onboarding/onboard-with-amazon-web-services,https://docs.union.ai/byoc/deployment/data-plane-setup-on-aws,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/onboarding/onboard-with-google-cloud-platform,https://docs.union.ai/byoc/deployment/data-plane-setup-on-gcp,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/onboarding/README,https://docs.union.ai/byoc/deployment,302,TRUE,FALSE,TRUE,TRUE

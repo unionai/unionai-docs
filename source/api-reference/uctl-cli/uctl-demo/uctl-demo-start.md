@@ -83,7 +83,7 @@ Usage
 | `--dev` | | Optional. Only start minio and postgres in the sandbox. |
 | Option | Type | Description |
 |--------|------|-------------|
-| `--disable-agent` | | Optional. Disable the agent service. |
+| `--disable-connector` | | Optional. Disable the connector service. |
 | Option | Type | Description |
 |--------|------|-------------|
 | `--dryRun` | | Optional. Only print the docker commands to bring up flyte sandbox/demo container.This will still call github api's to get the latest flyte release to use' |

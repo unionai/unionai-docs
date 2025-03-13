@@ -7,7 +7,7 @@ We will use GitHub Actions as the example CI/CD system.
 
 ## Create a Union app
 
-An app is an agent registered in your Union data plane that enables external systems to perform actions in the system.
+An app is an connector registered in your Union data plane that enables external systems to perform actions in the system.
 To enable your CI/CD system to authenticate with Union, you need to create a Union app.
 See [Applications](../administration/applications.md).
 

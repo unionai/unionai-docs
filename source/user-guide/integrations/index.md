@@ -1,7 +1,7 @@
 # Integrations
 
 {@@ if serverless @@}
-This section describes how to enable agent integrations that connect to other services, such as Apache Airflow, ChatGPT, Databricks, Snowflake, and more.
+This section describes how to enable connector integrations that connect to other services, such as Apache Airflow, ChatGPT, Databricks, Snowflake, and more.
 {@@ elif byoc @@}
 This section describes how to enable integrations with AWS and GCP cloud resources as well as how to use integrations that connect to other services, such as Apache Airflow, ChatGPT, dbt, Databricks, NVidia DGX, Snowflake, and more.
 
@@ -19,26 +19,26 @@ This section describes how to enable integrations with AWS and GCP cloud resourc
 
 ## Additional integrations
 
-A variety of agents and plugins enable you to integrate Union with additional external services. If you don't see the integration you need, you can [create your own](./agents/index.md#creating-a-new-agent).
+A variety of connectors and plugins enable you to integrate Union with additional external services. If you don't see the integration you need, you can [create your own](./connectors/index.md#creating-a-new-connector).
 
 ### AI integrations
 
-* [OpenAI agents](./agents/openai-agents/index.md) Send prompts to ChatGPT and receive responses.
+* [OpenAI connectors](./connectors/openai-connectors/index.md) Send prompts to ChatGPT and receive responses.
 
 ### Database integrations
 
 * [DuckDB plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/duckdb_plugin/index.html) Run analytical queries using DuckDB.
-* [Google BigQuery agent](./agents/bigquery-agent/index.md) Query Google BigQuery tables from your workflows.
+* [Google BigQuery connector](./connectors/bigquery-connector/index.md) Query Google BigQuery tables from your workflows.
 * [SQL plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/sql_plugin/index.html) Execute SQL queries as tasks.
 
 ### Data pipeline integrations
 
-* [Apache Airflow agent](./agents/airflow-agent/index.md) Run Apache Airflow jobs in your workflows.
-* [Databricks agent](./agents/databricks-agent/index.md) Run Databricks jobs in your workflows.
+* [Apache Airflow connector](./connectors/airflow-connector/index.md) Run Apache Airflow jobs in your workflows.
+* [Databricks connector](./connectors/databricks-connector/index.md) Run Databricks jobs in your workflows.
 * [dbt plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/dbt_plugin/index.html) Run and test your `dbt` pipelines in Flyte.
-* [MemVerge Memory Machine Cloud agent](./agents/mmcloud-agent/index.md) Execute tasks using the MemVerge Memory Machine Cloud agent
-* [NVIDIA DGX agent](./agents/dgx-agent.md) Run jobs on the NVIDIA DGX platform.
-* [Snowflake agent](./agents/snowflake-agent/index.md) Run Snowflake jobs in your workflow.
+* [MemVerge Memory Machine Cloud connector](./connectors/mmcloud-connector/index.md) Execute tasks using the MemVerge Memory Machine Cloud connector
+* [NVIDIA DGX connector](./connectors/dgx-connector.md) Run jobs on the NVIDIA DGX platform.
+* [Snowflake connector](./connectors/snowflake-connector/index.md) Run Snowflake jobs in your workflow.
 
 ### Data science tooling integrations
 
@@ -59,5 +59,5 @@ A variety of agents and plugins enable you to integrate Union with additional ex
 
 ### Misc
 
-* [File sensor agent](./agents/file-sensor-agent/index.md) Detect files appearing in your local or remote filesystem.
+* [File sensor connector](./connectors/file-sensor-connector/index.md) Detect files appearing in your local or remote filesystem.
 {@@ endif @@}

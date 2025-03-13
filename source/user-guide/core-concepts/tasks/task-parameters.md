@@ -71,7 +71,7 @@ You pass the following parameters to the `@union.task` decorator:
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Union Agents documentation](../../integrations/agents/index.md) and
+  See the [Union Connectors documentation](../../integrations/connectors/index.md) and
   [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 * `task_resolver`: Provide a custom task resolver.

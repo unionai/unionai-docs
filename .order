@@ -141,42 +141,42 @@ source/user-guide/integrations/enabling-azure-resources/enabling-azure-blob-stor
 source/user-guide/integrations/enabling-azure-resources/enabling-azure-container-registry.md
 source/user-guide/integrations/enabling-azure-resources/enabling-azure-key-vault.md
 
-source/user-guide/integrations/agents/
-source/user-guide/integrations/agents/index.md
-source/user-guide/integrations/agents/dgx-agent.md
+source/user-guide/integrations/connectors/
+source/user-guide/integrations/connectors/index.md
+source/user-guide/integrations/connectors/dgx-connector.md
 
-source/user-guide/integrations/agents/airflow-agent/
-source/user-guide/integrations/agents/airflow-agent/index.md
-source/user-guide/integrations/agents/airflow-agent/airflow-agent-example.md
+source/user-guide/integrations/connectors/airflow-connector/
+source/user-guide/integrations/connectors/airflow-connector/index.md
+source/user-guide/integrations/connectors/airflow-connector/airflow-connector-example.md
 
-source/user-guide/integrations/agents/sagemaker-agent/
-source/user-guide/integrations/agents/sagemaker-agent/index.md
-source/user-guide/integrations/agents/sagemaker-agent/sagemaker-agent-example.md
+source/user-guide/integrations/connectors/sagemaker-connector/
+source/user-guide/integrations/connectors/sagemaker-connector/index.md
+source/user-guide/integrations/connectors/sagemaker-connector/sagemaker-connector-example.md
 
-source/user-guide/integrations/agents/databricks-agent/
-source/user-guide/integrations/agents/databricks-agent/index.md
-source/user-guide/integrations/agents/databricks-agent/databricks-agent-example.md
+source/user-guide/integrations/connectors/databricks-connector/
+source/user-guide/integrations/connectors/databricks-connector/index.md
+source/user-guide/integrations/connectors/databricks-connector/databricks-connector-example.md
 
-source/user-guide/integrations/agents/file-sensor-agent/
-source/user-guide/integrations/agents/file-sensor-agent/index.md
-source/user-guide/integrations/agents/file-sensor-agent/file-sensor-agent-example.md
+source/user-guide/integrations/connectors/file-sensor-connector/
+source/user-guide/integrations/connectors/file-sensor-connector/index.md
+source/user-guide/integrations/connectors/file-sensor-connector/file-sensor-connector-example.md
 
-source/user-guide/integrations/agents/bigquery-agent/
-source/user-guide/integrations/agents/bigquery-agent/index.md
-source/user-guide/integrations/agents/bigquery-agent/bigquery-agent-example.md
+source/user-guide/integrations/connectors/bigquery-connector/
+source/user-guide/integrations/connectors/bigquery-connector/index.md
+source/user-guide/integrations/connectors/bigquery-connector/bigquery-connector-example.md
 
-source/user-guide/integrations/agents/mmcloud-agent/
-source/user-guide/integrations/agents/mmcloud-agent/index.md
-source/user-guide/integrations/agents/mmcloud-agent/mmcloud-agent-example.md
+source/user-guide/integrations/connectors/mmcloud-connector/
+source/user-guide/integrations/connectors/mmcloud-connector/index.md
+source/user-guide/integrations/connectors/mmcloud-connector/mmcloud-connector-example.md
 
-source/user-guide/integrations/agents/openai-agents/
-source/user-guide/integrations/agents/openai-agents/index.md
-source/user-guide/integrations/agents/openai-agents/batch-agent-example.md
-source/user-guide/integrations/agents/openai-agents/chatgpt-agent-example.md
+source/user-guide/integrations/connectors/openai-connectors/
+source/user-guide/integrations/connectors/openai-connectors/index.md
+source/user-guide/integrations/connectors/openai-connectors/batch-connector-example.md
+source/user-guide/integrations/connectors/openai-connectors/chatgpt-connector-example.md
 
-source/user-guide/integrations/agents/snowflake-agent/
-source/user-guide/integrations/agents/snowflake-agent/index.md
-source/user-guide/integrations/agents/snowflake-agent/snowflake-agent-example.md
+source/user-guide/integrations/connectors/snowflake-connector/
+source/user-guide/integrations/connectors/snowflake-connector/index.md
+source/user-guide/integrations/connectors/snowflake-connector/snowflake-connector-example.md
 
 source/tutorials/
 
