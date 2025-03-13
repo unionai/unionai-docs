@@ -20,9 +20,9 @@ Union CLI supports three authentication mechanisms:
 | DeviceFlow            | ✅ Yes          | ✅ Yes           | Best on remote machines without a browser, like an ssh session. |
 | ClientSecret          | ✅ Yes          | ✅ Yes           | Best for CI/CD or automation.                                   |
 
-{{< note >}}
+{{-- note >}}
 If you used `union create login --host <union-host-url>`, this used PKCE by default.
-{{< /note >}}
+{{-- /note >}}
 
 ## 1. PKCE (Proof Key of Code Exchange)
 
@@ -43,9 +43,9 @@ logger:
   level: 0
 ```
 
-{{< note >}}
+{{-- note >}}
 PKCE requires a local browser, making it unsuitable for using the `union` CLI on remote machines within an ssh session.
-{{< /note >}}
+{{-- /note >}}
 
 ## 2. DeviceFlow (Best for Remote Machines)
 
@@ -66,9 +66,9 @@ logger:
   show-source: true
   level: 0
 ```
-{{< note >}}
+{{-- note >}}
 During authentication, Union attempts to store an authentication token on the keyring service of the operating system. If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default. If you find that browser based authentication is required every time you run or register your workflows, you may need to `run pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
-{{< /note >}}
+{{-- /note >}}
 
 ## 3. ClientSecret (Best for CI/CD and Automation)
 
@@ -112,9 +112,9 @@ Steps to Set Up ClientSecret Authentication:
     export UNION_API_KEY="<SECRET>"
     ```
 
-{{< note >}}
+{{-- note >}}
 Never commit API keys to version control. Use environment variables or a secure vault.
-{{< /note >}}
+{{-- /note >}}
 
 
 ## Managing Authentication Configuration

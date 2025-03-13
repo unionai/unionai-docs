@@ -47,7 +47,7 @@ The `requests` setting tells the system that the task requires _at least_ the re
 The `limits` setting serves as a hard upper bound on the resource profile of nodes to be scheduled to run the task.
 The task will not be scheduled on a node that exceeds the resource profile specified (in any of the specified attributes).
 
-{{< note "GPUs take only `limits`" >}}
+{{-- note "GPUs take only `limits`" >}}
 GPUs should only be specified in the `limits` section of the task decorator:
 
 * You should specify GPU requirements only in `limits`, not in `requests`, because Kubernetes will use the `limits` value as the `requests` value anyway.
@@ -55,7 +55,7 @@ GPUs should only be specified in the `limits` section of the task decorator:
 * You _can_ specify GPU in both `limits` and `requests` but the two values must be equal.
 
 * You cannot specify GPU `requests` without specifying `limits`.
-  {{< /note >}}
+  {{-- /note >}}
 
 ## The `accelerator` setting
 
@@ -84,11 +84,11 @@ This will open a dialog:
 
 ![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-dialog.png)
 
-{{< note "Note on ephemeral storage" >}}
+{{-- note "Note on ephemeral storage" >}}
 An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.
 This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on
 ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction.
-{{< /note >}}
+{{-- /note >}}
 
 {{< if-variant byoc >}}
 

@@ -8,9 +8,9 @@ variants: "+flyte +serverless +byoc +byok"
 
 Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3.md), [AWS Elastic Container Registry](./enabling-aws-ecr.md), and so forth.
 
-{{< note "Secret management" >}}
+{{-- note "Secret management" >}}
 We strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager.md).
-{{< /note >}}
+{{-- /note >}}
 
 As much as possible, access to the resources you need will be pre-configured by the Union team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
@@ -58,7 +58,7 @@ There are two main options for setting this up:
 
 Global access is recommended for most use cases since it is simpler, but if you have a compelling reason to restrict access, then the project-domain-scoped access is available, at the cost of some additional complexity in setup.
 
-{{< note "Relationship with RBAC" >}}
+{{-- note "Relationship with RBAC" >}}
 The permissions being discussed here are attached to a project and domain.
 This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management.md)).
 But, the two types of permissions are related.
@@ -67,7 +67,7 @@ For example, for a user (or machine application) to have read access to an S3 bu
 
 * The user (or machine application) must have **execute** permission for the project and domain where the code that does the reading resides.
 * The project and domain must have read permission for the S3 bucket.
-  {{< /note >}}
+  {{-- /note >}}
 
 ## Background
 
@@ -83,7 +83,7 @@ Within that cluster, the Kubernetes pods allocated to run your task code are org
   This policy contains all the permissions granted to your task code when your data plane was set up.
   If you requested permissions for resources specific to your organization at set up time, they will have been added here.
 
-{{< note "`<UserFlyteRole>` vs `userflyterole`" >}}
+{{-- note "`<UserFlyteRole>` vs `userflyterole`" >}}
 The entity that we refer to here as `<UserFlyteRole>` is an IAM role.
 As mentioned the actual name of this role in your system will be of the form `<YourOrgPrefix>-userflyterole.`
 
@@ -91,15 +91,15 @@ By default, this role has an attached IAM policy called `userflyterole`.
 This is the literal name used in all AWS-based data planes.
 
 **Be aware of the difference and don't get these two things confused!**
-{{< /note >}}
+{{-- /note >}}
 
-{{< note "`<UserFlyteRole>`vs `<AdminFlyteRole>`" >}}
+{{-- note "`<UserFlyteRole>`vs `<AdminFlyteRole>`" >}}
 In addition to the task pods, your cluster also contains pods that run Union services, which are used to manage tasks and to connect your cluster to the control plane.
 These pods are bound to a different default role, `<AdminFlyteRole>` (again, its actual name differs from organization to organization).
 The separation of this role from `<UserFlyteRole>` serves to provide isolation between Union administrative logic and your workflow logic.
 
 **You should not alter any settings associated with `<AdminFlyteRole>`**.
-{{< /note >}}
+{{-- /note >}}
 
 ## Enabling access
 
@@ -141,20 +141,20 @@ To create a new policy:
 
 To set up global access, you must bind the `<CustomPolicy>` that you created above to the role `<UserFlyteRole>`.
 
-{{< note >}}
+{{-- note >}}
 As mentioned above, the actual name of `<UserFlyteRole>` has the form:
 
 **`<YourOrgPrefix>-userflyterole`**
 
 You should be able to find the role by searching in your AWS IAM console for roles with names that follow that pattern.
-{{< /note >}}
+{{-- /note >}}
 
 * Go to **IAM > Access management > Roles**.
 * Find `<UserFlyteRole>` and select the checkbox beside it.
 * In the **Add Permissions** drop-down menu, select **Attach Policies**.
 * In the displayed list find `<CustomPolicy>` and select its checkbox, then select **Add permissions**.
 
-{{< note >}}
+{{-- note >}}
 Alternatively, you can perform the binding from the command line like this:
 
 ```shell
@@ -164,7 +164,7 @@ $ aws iam attach-role-policy \
 ```
 
 Notice that in this case, you have to use `<CustomPolicyArn>` here instead of `<CustomPolicy>`.
-{{< /note >}}
+{{-- /note >}}
 
 **At this point, all task code in your organization will have access to the cloud resource as defined by your custom policy.**
 

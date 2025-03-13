@@ -8,9 +8,9 @@ variants: "+flyte +serverless +byoc +byok"
 
 To set up your Union instance to use Google OpenID Connect as the identity provider, follow the directions below.
 
-{{< note "Google documentation" >}}
+{{-- note "Google documentation" >}}
 In this article, we cover the same steps as in the [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation, but with additional directions specific to Union.
-{{< /note >}}
+{{-- /note >}}
 
 ## Setting up OAuth 2.0
 

@@ -66,11 +66,11 @@ and registered the image in Union's own container registry.
 From there it will be pulled and installed in the task container when it spins up.
 All this is done transparently and does not require any set up by the user.
 
-{{< note "Local image build in BYOC" >}}
+{{-- note "Local image build in BYOC" >}}
 In Union Serverless images defined by `ImageSpec` are always built using the Union cloud image builder.
 In Union BYOC, you can optionally build images from the `ImageSpec` on your local machine by specifying `builder="envd"` in the `ImageSpec`.
 See [Local image builder](https://docs.unionai/byoc/user-guide/development-cycle/remote-dependencies-with-image-spec.md#local-image-builder) in the BYOC documentation for more details.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant variants="byoc byok" nested=true >}}
@@ -83,12 +83,12 @@ All this is done transparently and does not require any set up by the user.
 
 ## Local image builder
 
-{{< note "Local image build in BYOC" >}}
+{{-- note "Local image build in BYOC" >}}
 In Union BYOC, you can build images from ImageSpec either using the Union cloud image builder (by specifying `builder="union"`) or on your local machine
 (by omitting the `builder` parameter or specifying `builder="envd"`).
 In Union Serverless, images defined by `ImageSpec` are always built using the Union cloud image builder.
 Local image building is not supported in Serverless.
-{{< /note >}}
+{{-- /note >}}
 
 If you have not specified a `builder` or have specified `builder="envd"`, Union will build the image locally on your machine and push it to the registry you specify.
 This also requires that you specify a `registry` parameter in the `ImageSpec`.
@@ -131,12 +131,12 @@ Follow the directions in [Working with the Container registry > Authenticating t
 
 In addition to making sure your registry is accessible from your local machine, you will need to ensure that the specific image, once pushed to the registry, is itself publicly accessible.
 
-{{< note "Make your image public" >}}
+{{-- note "Make your image public" >}}
 Note that in the case of our example registry (GHCR), making the image public can only be done once the image _has been_ pushed.
 This means that you will need to register your workflow first, then make the image public and then run the workflow from the Union UI.
 If you try to run the workflow before making the image public (for example by doing a `union run` which both registers and runs immediately)
 the workflow execution will fail with an `ImagePullBackOff `error.
-{{< /note >}}
+{{-- /note >}}
 
 In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
 

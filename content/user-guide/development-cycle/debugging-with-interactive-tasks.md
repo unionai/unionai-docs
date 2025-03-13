@@ -18,10 +18,10 @@ To enable interactive tasks, you need to:
 The `@vscode` decorator, when applied, converts a task into a Visual Studio Code server during runtime.
 This process overrides the standard execution of the task’s function body, initiating a command to start a Visual Studio Code server instead.
 
-{{< note "No need for ingress or port forwarding" >}}
+{{-- note "No need for ingress or port forwarding" >}}
 The Union interactive tasks feature is an adaptation of the open-source [FlyteInteractive plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/flyteinteractive_plugin/index.html).
 It improves on the open-source version by removing the need for ingress configuration or port forwarding, providing a more seamless debugging experience.
-{{< /note >}}
+{{-- /note >}}
 
 ## Basic example
 
@@ -125,9 +125,9 @@ To run the task in VSCode, click the _Run and debug_ symbol on the left rail of 
 Click the **Play** button beside the configuration drop-down to run the task.
 This will run your task with inputs from the previous task. To inspect intermediate states, set breakpoints in the Python code and use the debugger for tracing.
 
-{{< note "No task output written to Union storage" >}}
+{{-- note "No task output written to Union storage" >}}
 It’s important to note that during the debugging phase the task runs entirely within VSCode and does not write the output to Union storage.
-{{< /note >}}
+{{-- /note >}}
 
 ## Update your code
 
@@ -140,9 +140,9 @@ You will have to manually copy and paste the changes back to your local environm
 After you finish debugging, you can resume your task with updated code by executing the **Resume Task** configuration.
 This will terminate the code server, run the task with inputs from the previous task, and write the output to Union storage.
 
-{{< note "Remember to persist your code" >}}
+{{-- note "Remember to persist your code" >}}
 Remember to persist your code (for example, by checking it into GitHub) before resuming the task, since you will lose the connection to the VSCode server afterwards.
-{{< /note >}}
+{{-- /note >}}
 
 ![Resume task](/_static/images/user-guide/development-cycle/debugging-with-interactive-tasks/resume-task.png)
 

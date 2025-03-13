@@ -25,14 +25,14 @@ the `StructuredDataset` type.
 
 This example demonstrates how to work with a structured dataset using {@= Product =@} entities.
 
-{{< note >}}
+{{-- note >}}
 To use the `StructuredDataset` type, you only need to import `pandas`. The other imports specified below are only necessary for this specific example.
-{{< /note >}}
+{{-- /note >}}
 
 {{< if-variant flyte >}}
-{{< note >}}
+{{-- note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
+{{-- /note >}}
 {{< /if-variant >}}
 
 To begin, import the dependencies for the example:
@@ -204,9 +204,9 @@ def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
    return sd.open(pd.DataFrame).all()
 ```
 
-{{< note >}}
+{{-- note >}}
 {@= Product =@} creates a table inside the dataset in the project upon BigQuery query execution.
-{{< /note >}}
+{{-- /note >}}
 
 ## How to return multiple dataframes from a task?
 For instance, how would a task return say two dataframes:
@@ -323,9 +323,9 @@ def numpy_wf() -> Annotated[StructuredDataset, None, PARQUET]:
     return to_numpy(sd=generate_pd_df_with_str())
 ```
 
-{{< note >}}
+{{-- note >}}
 `pyarrow` raises an `Expected bytes, got a 'int' object` error when the dataframe contains integers.
-{{< /note >}}
+{{-- /note >}}
 
 You can run the code locally as follows:
 
@@ -342,9 +342,9 @@ if __name__ == "__main__":
 Like most storage formats (e.g. Avro, Parquet, and BigQuery), StructuredDataset support nested field structures.
 
 {{< if-variant flyte >}}
-{{< note >}}
+{{-- note >}}
 Nested field StructuredDataset should be run when flytekit version > 1.11.0.
-{{< /note >}}
+{{-- /note >}}
 {{< /if-variant >}}
 
 ```python

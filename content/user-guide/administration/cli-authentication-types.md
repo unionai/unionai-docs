@@ -74,12 +74,12 @@ logger:
 ```
 
 
-{{< note >}}
+{{-- note >}}
 During authentication, Union attempts to store an authentication token on the keyring service of the operating system.
 If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default.
 If you find that browser based authentication is required every time you run or register your workflows, you may need to run
 `pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
-{{< /note >}}
+{{-- /note >}}
 
 ## ClientSecret
 

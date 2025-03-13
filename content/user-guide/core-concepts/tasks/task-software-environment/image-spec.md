@@ -12,9 +12,9 @@ You can specify the container image to be used by a task by defining an `ImageSp
 When you register the workflow, the container image is built locally and pushed to the container registry that you specify.
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
 
-{{< note >}}
+{{-- note >}}
 See the [Flytekit documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec) for full documentation of `ImageSpec` class parameters and methods.
-{{< /note >}}
+{{-- /note >}}
 
 To illustrate the process, we will walk through an example.
 
@@ -108,9 +108,9 @@ You can now run the workflow locally.
 In the project root directory, run: `union run workflows/imagespec-simple-example.py wf`.
 See [Running your code](../../../development-cycle/running-your-code.md) for more details.
 
-{{< note >}}
+{{-- note >}}
 When you run the workflow in your local Python environment, the image is not built or pushed (in fact, no container image is used at all).
-{{< /note >}}
+{{-- /note >}}
 
 ## Register the workflow
 

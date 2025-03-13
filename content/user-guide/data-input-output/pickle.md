@@ -16,18 +16,18 @@ in understanding their data structures upfront before experiencing the value {@=
 {@= Product =@} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
 enabling the serialization/deserialization of Python values to/from a pickle file.
 
-{{< note >}}
+{{-- note >}}
 Pickle can only be used to send objects between the exact same Python version.
 For optimal performance, it's advisable to either employ Python types that are supported by {@= Product =@}
 or register a custom transformer, as using pickle types can result in lower performance.
-{{< /note >}}
+{{-- /note >}}
 
 This example demonstrates how you can utilize custom objects without registering a transformer.
 
 {{< if-variant flyte >}}
-{{< note >}}
+{{-- note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
+{{-- /note >}}
 {{< /if-variant >}}
 
 ```python
@@ -37,10 +37,10 @@ import union
 `Superhero` represents a user-defined complex type that can be serialized to a pickle file by {@= Kit =@}
 and transferred between tasks as both input and output data.
 
-{{< note >}}
+{{-- note >}}
 Alternatively, you can [turn this object into a dataclass](./dataclass.md) for improved performance.
 We have used a simple object here for demonstration purposes.
-{{< /note >}}
+{{-- /note >}}
 
 ```python
 class Superhero:

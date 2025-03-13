@@ -21,9 +21,14 @@ links, read them with the python built-in `csv.DictReader` function,
 normalize some pre-specified columns, and output the normalized columns to
 another CSV file.
 
+{{< /if-variant >}}
+{{< if-variant variants=flyte nested=true >}}
 {{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
+{{< /if-variant >}}
+{{< if-variant variants=flyte >}}
+
 First, import the libraries:
 
 ```python
@@ -41,6 +46,8 @@ and a list of column names to normalize. The task then outputs a CSV file
 containing only the normalized columns. For this example, we use z-score normalization,
 which involves mean-centering and standard-deviation-scaling.
 
+{{< /if-variant >}}
+{{< if-variant variants=flyte nested=true >}}
 {{< note >}}
 The `FlyteFile` literal can be scoped with a string, which gets inserted
 into the format of the Blob type ("jpeg" is the string in
@@ -49,6 +56,8 @@ and if not specified, defaults to `""`.
 Predefined aliases for commonly used flyte file formats are also available.
 You can find them [here](https://github.com/flyteorg/flytekit/blob/master/flytekit/types/file/__init__.py).
 {{< /note >}}
+{{< /if-variant >}}
+{{< if-variant variants=flyte >}}
 
 ```python
 @union.task
@@ -140,6 +149,8 @@ if __name__ == "__main__":
 
 You can enable type validation if you have the [python-magic](https://pypi.org/project/python-magic/) package installed.
 
+{{< /if-variant >}}
+{{< if-variant variants=flyte nested=true >}}
 {{< tabs >}}
 {{< tab "Mac OS" >}}
 
@@ -160,15 +171,24 @@ $ sudo apt-get install libmagic1
 {{< note >}}
 Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
 {{< /note >}}
+{{< /if-variant >}}
+{{< if-variant variants=flyte >}}
+
 
 ## Streaming support
 
 Flyte `1.5` introduced support for streaming `FlyteFile` types via the `fsspec` library.
 This integration enables efficient, on-demand access to remote files, eliminating the need for fully downloading them to local storage.
 
+{{< /if-variant >}}
+{{< if-variant variants=flyte nested=true >}}
+
 {{< note >}}
 This feature is marked as experimental. We'd love feedback on the API!
 {{< /note >}}
+
+{{< /if-variant >}}
+{{< if-variant variants=flyte >}}
 
 Here is a simple example of removing some columns from a CSV file and writing the result to a new file:
 
@@ -226,6 +246,9 @@ def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
         urllib.request.urlretrieve(remote_location, local_image)
     return union.FlyteDirectory(path=str(local_dir))
 ```
+
+{{< /if-variant >}}
+{{< if-variant variants=flyte nested=true >}}
 
 {{< note >}}
 You can annotate a `FlyteDirectory` when you want to download or upload the contents of the directory in batches.
@@ -347,7 +370,7 @@ if __name__ == "__main__":
 ```
 
 {{< /if-variant >}}
-{{< if-variant "byoc byok" >}}
+{{< if-variant variants="byoc byok" >}}
 
 In Union, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
 
@@ -368,10 +391,16 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 
 ## Local examples
 
+{{< /if-variant >}}
+{{< if-variant variants="byoc byok" nested=true >}}
+
 {{< note "Local means local to the container" >}}
 The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
 They do not refer to a file or directory on your local machine.
 {{< /note >}}
+
+{{< /if-variant >}}
+{{< if-variant variants="byoc byok" >}}
 
 ### Local file example
 
@@ -445,16 +474,19 @@ def workflow():
 {{< /if-variant >}}
 {{< if-variant serverless >}}
 
-{{< note "Upload location" >}}
+{{-- note "Upload location" >}}
 With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
 
 With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant "byoc byok flyte" >}}
 
 ## Changing the data upload location
+
+{{< /if-variant >}}
+{{< if-variant variants="byoc byok flyte" nested=true >}}
 
 {{< note "Upload location" >}}
 With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
@@ -462,8 +494,14 @@ With Union Serverless, the remote location to which FlyteFile and FlyteDirectory
 With Union BYOC, the upload location is configurable.
 {{< /note >}}
 
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
+
 By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store).
 However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
+
+{{< /if-variant >}}
+{{< if-variant variants="byoc byok flyte" nested=true >}}
 
 {{< note "Setting up your own object store bucket" >}}
 For details on how to set up your own object store bucket, consult the direction for your cloud provider:
@@ -472,6 +510,9 @@ For details on how to set up your own object store bucket, consult the direction
 * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
 * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
 {{< /note >}}
+
+{{< /if-variant >}}
+{{< if-variant "byoc byok flyte" >}}
 
 ### Changing the raw data prefix
 
@@ -485,6 +526,9 @@ Union will create a directory with a unique, random name in your bucket for each
 ### Specifying `remote_path` for a `FlyteFile` or `FlyteDirectory`
 
 If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
+
+{{< /if-variant >}}
+{{< if-variant variants="byoc byok flyte" nested=true >}}
 
 {{< note "Using remote_path will overwrite data" >}}
 If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.

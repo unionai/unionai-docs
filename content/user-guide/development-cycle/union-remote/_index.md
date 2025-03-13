@@ -8,11 +8,11 @@ variants: "+flyte +serverless +byoc +byok"
 
 The `UnionRemote` Python API supports functionality similar to that of the `union` CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
 
-{{< note >}}
+{{-- note >}}
 The primary use case of `UnionRemote` is to automate the deployment of Union entities. As such, it is intended for use within scripts *external* to actual Union workflow and task code, for example CI/CD pipeline scripts.
 
 In other words: _Do not use `UnionRemote` within task code._
-{{< /note >}}
+{{-- /note >}}
 
 ## Creating a `UnionRemote` object
 

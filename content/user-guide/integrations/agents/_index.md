@@ -34,9 +34,9 @@ There are two types of agents: **async** and **sync**.
   The vast majority of agents are async agents.
 * **Sync agents** enable request/response services that return immediate outputs (e.g. calling an internal API to fetch data or communicating with the OpenAI API).
 
-{{< note >}}
+{{-- note >}}
 While agents can be written in any programming language since they use a protobuf interface, we currently only support Python agents. We may support other languages in the future.
-{{< /note >}}
+{{-- /note >}}
 
 ### Async agent interface specification
 

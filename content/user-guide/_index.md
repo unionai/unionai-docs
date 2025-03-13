@@ -10,34 +10,34 @@ site_root: true
 
 {{< if-variant variants=flyte nested=true >}}
 
-{{< note "Flyte" >}}
+{{-- note "Flyte" >}}
 These docs are for [**Flyte**](./about-union.md#flyte).
 Switch to another variant with the version selector above.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant variants=serverless nested=true >}}
 
-{{< note "Union Serverless" >}}
+{{-- note "Union Serverless" >}}
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
 Switch to another variant with the version selector above.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant variants=byoc nested=true >}}
 
-{{< note "Union BYOC" >}}
+{{-- note "Union BYOC" >}}
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
 Switch to another variant with the version selector above.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant variants=byok nested=true >}}
 
-{{< note "Union BYOK" >}}
+{{-- note "Union BYOK" >}}
 These docs are for [**Union BYOK**](./about-union.md#union-byok).
 Switch to another variant with the version selector above.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 

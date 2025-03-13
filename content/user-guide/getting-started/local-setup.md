@@ -18,14 +18,14 @@ In this section we will set up your local environment so that you can start buil
 
 First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
 
-{{< note "Using `uv` as best practice" >}}
+{{-- note "Using `uv` as best practice" >}}
 The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
 It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
 
 You can, of course, use other tools,
 but all discussion in these pages will use `uv`,
 so you will have to adapt the directions as appropriate.
-{{< /note >}}
+{{-- /note >}}
 
 ## Ensure the correct version of Python is installed
 
@@ -37,11 +37,11 @@ You can install it with:
 $ uv python install 3.12
 ```
 
-{{< note "Uninstall higher versions of Python" >}}
+{{-- note "Uninstall higher versions of Python" >}}
 When installing Python packages "as tools" (as we do below with the `{{< var kit_lower >}}`),
 `uv` will default to the latest version of Python available on your system.
 If you have a version `>=3.13` installed, you will need to uninstall it since `{{< var kit_lower >}}` requires `>=3.9,<3.13`.
-{{< /note >}}
+{{-- /note >}}
 
 ## Install the `{{< var cli_lower >}}` CLI
 
@@ -53,7 +53,7 @@ $ uv tool install {{< var kit_lower >}}
 
 This will make the `{{< var cli_lower >}}` CLI globally available on your system.
 
-{{< note "Add the installation location to your PATH" >}}
+{{-- note "Add the installation location to your PATH" >}}
 `uv` installs tools in `~/.local/bin` by default.
 Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
 `uv` provides a convenience command to do this: `uv tool update-shell`.
@@ -62,9 +62,9 @@ Note that later in this guide we will be running the `{{< var cli_lower >}}` CLI
 In those cases you will be running `{{< var cli_lower >}}` within the Python virtual environment of your workflow project.
 You will not be using this globally installed instance of `{{< var cli_lower >}}`.
 This instance of `{{< var cli_lower >}}` is only used during the configuration step, below, when no projects yet exist.
-{{< /note >}}
+{{-- /note >}}
 
-{{< if-variant flyte >}}
+{{< if-variant variants=flyte nested=true >}}
 
 ## Install Docker and get access to a container registry
 
@@ -95,7 +95,7 @@ Here we are using a local cluster for experimentation and demonstration purposes
 
 To set up a local cluster you must first install the `flytectl` CLI.
 
-{{< note "Flytectl vs Pyflyte" >}}
+{{-- note "Flytectl vs Pyflyte" >}}
 `flytectl` is different from the `pyflyte`.
 
 `pyflyte` is a Python program and part of the `flytekit` SDK
@@ -103,14 +103,14 @@ It is the primary command-line tool used during Flyte development.
 
 `flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
 (see [Flytectl](../../api-reference/uctl-cli/index.md) for details)
-{{< /note >}}
+{{-- /note >}}
 
 To install `flytectl`, follow these instructions:
 
 
 
 {{< tabs >}}
-{{% tab "macOS" %}}
+{{< tab "macOS" >}}
 
 To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or download the binary manually.
 
@@ -133,8 +133,8 @@ $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 
 To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 
-{{% /tab %}}
-{{% tab "Linux" %}}
+{{< /tab >}}
+{{< tab "Linux" >}}
 
 To install `flytectl` on Linux, use `curl` or download the binary manually.
 
@@ -151,8 +151,8 @@ $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 
 To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 
-{{% /tab %}}
-{{% tab "Windows" %}}
+{{< /tab >}}
+{{< tab "Windows" >}}
 
 To install `flytectl` on Windows, use `curl` , or download the binary manually.
 
@@ -168,7 +168,7 @@ $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 
 To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 
-{{% /tab %}}
+{{< /tab >}}
 {{< /tabs >}}
 
 
@@ -189,12 +189,12 @@ that contains the connection information to connect `pyflyte` (and `flytectl`) t
 
 The local Flyte cluster will be available at `localhost:30080`.
 
-{{< note "Union simplifies the development cycle" >}}
+{{-- note "Union simplifies the development cycle" >}}
 With Union you do not need to install a local cluster.
 You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
 You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
 See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant "byoc byok serverless" >}}
@@ -212,10 +212,10 @@ $ union create login --serverless
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
-{{< note "These directions apply to Union Serverless" >}}
+{{-- note "These directions apply to Union Serverless" >}}
 To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
 To configure a connection to your Union instance in Union BYOK, see the [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant "byoc byok" >}}
@@ -228,16 +228,16 @@ $ union create login --host <union-host-url>
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
-{{< note >}}
+{{-- note >}}
 These directions apply to Union BYOC and BYOK, where you connect to your own dedicated Union instance.
 To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
-{{< /note >}}
+{{-- /note >}}
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
 {{< /if-variant >}}
-{{< if-variant "serverless byoc byok" >}}
+{{< if-variant variants="serverless byoc byok" nested=true >}}
 
 By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:

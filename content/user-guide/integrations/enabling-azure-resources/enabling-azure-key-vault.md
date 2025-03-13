@@ -12,11 +12,11 @@ This documentation exists for customers who must use Azure Key Vault for organiz
 
 The Union-managed `userflyterole` identity must be granted permission to access [Azure Key Vault secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/about-secrets).
 
-{{< note "Managing Azure Key Vault secrets" >}}
+{{-- note "Managing Azure Key Vault secrets" >}}
 
 Refer to [Azure official documentation](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) for details on creating and managing secrets.
 
-{{< /note >}}
+{{-- /note >}}
 
 ## Providing permissions to Azure Key Vault
 
@@ -24,11 +24,11 @@ Union data plane tasks employ Azure Workload Identity Federation to access Azure
 
 [Create a role assignment](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) assigning the `Key Vault Secrets User` role to the `userflyterole` user-assigned identity. Make sure it is scoped to the Azure Key Vault Secret.
 
-{{< note "Union managed user-assigned identities" >}}
+{{-- note "Union managed user-assigned identities" >}}
 
 Refer to [Azure portal's user assigned managed identitites](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) if assistance is required identifying the `userflyterole` user-assigned identity within the Union data plane resource group.
 
-{{< /note >}}
+{{-- /note >}}
 
 ## Accessing the secret within Union
 

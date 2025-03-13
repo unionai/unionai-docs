@@ -10,38 +10,38 @@ variants: "+flyte +serverless +byoc +byok"
 `flytekit` version >=1.14 supports natively the `JSON` format that Pydantic `BaseModel` produces,  enhancing the
 interoperability of Pydantic BaseModels with the Flyte type system.
 
-{{< note >}}
+{{-- note >}}
 Pydantic BaseModel V2 only works when you are using flytekit version >= v1.14.0.
-{{< /note >}}
+{{-- /note >}}
 
 With the 1.14 release, `flytekit` adopted `MessagePack` as the serialization format for Pydantic `BaseModel`,
 overcoming a major limitation of serialization into a JSON string within a Protobuf `struct` datatype like the previous versions do:
 
 to store `int` types, Protobuf's `struct` converts them to `float`, forcing users to write boilerplate code to work around this issue.
 
-{{< note >}}
+{{-- note >}}
 By default, `flytekit >= 1.14` will produce `msgpack` bytes literals when serializing, preserving the types defined in your `BaseModel` class.
 If you're serializing `BaseModel` using `flytekit` version >= v1.14.0 and you want to produce Protobuf `struct` literal instead, you can set environment variable `FLYTE_USE_OLD_DC_FORMAT` to `true`.
 
 For more details, you can refer the MESSAGEPACK IDL RFC: [https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md](https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md)
-{{< /note >}}
+{{-- /note >}}
 
-{{< note >}}
+{{-- note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
+{{-- /note >}}
 
 
 
-{{< note >}}
+{{-- note >}}
 You can put Dataclass and FlyteTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 {{< if-variant "byoc byok serverless" >}}
 
-{{< note >}}
+{{-- note >}}
 You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 
@@ -76,9 +76,9 @@ class Datum(BaseModel):
 
 You can send a `pydantic basemodel` between different tasks written in various languages, and input it through the {@= Product =@} console as raw JSON.
 
-{{< note >}}
+{{-- note >}}
 All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
-{{< /note >}}
+{{-- /note >}}
 
 Once declared, a dataclass can be returned as an output or accepted as an input.
 

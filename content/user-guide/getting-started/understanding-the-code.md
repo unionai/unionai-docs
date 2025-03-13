@@ -117,12 +117,12 @@ A workflow appears to be a Python function but is actually a [DSL](https://en.wi
 
 When deployed to Union, the workflow function is compiled to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-{{< note "`{@= task =@}` and `{@= workflow =@}` syntax" >}}
+{{-- note "`{@= task =@}` and `{@= workflow =@}` syntax" >}}
 * The `{@= task =@}` and `{@= workflow =@}` decorators will only work on functions at the top-level scope of the module.
 * You can invoke tasks and workflows as regular Python functions and even import and use them in other Python modules or scripts.
 * Task and workflow function signatures must be type-annotated with Python type hints.
 * Task and workflow functions must be invoked with keyword arguments.
-{{< /note >}}
+{{-- /note >}}
 
 
 ## pyproject.toml

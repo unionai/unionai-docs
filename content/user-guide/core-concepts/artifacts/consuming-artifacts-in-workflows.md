@@ -14,9 +14,9 @@ The following code defines a query, `data_query`, that searches across all versi
 
 {{< if-variant variants="byoc byok flyte" nested=true >}}
 
-{{< note >}}
+{{-- note >}}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
-{{< /note >}}
+{{-- /note >}}
 
 {{< /if-variant >}}
 
@@ -32,9 +32,9 @@ You can also directly reference a particular artifact version in a query using t
 data = BasicArtifact.get(<organization>/<domain>/BasicArtifact@<artifact-version>)
 ```
 
-{{< note >}}
+{{-- note >}}
 For a full list of Artifact class methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
-{{< /note >}}
+{{-- /note >}}
 
 ## Launching a workflow that consumes an artifact
 
