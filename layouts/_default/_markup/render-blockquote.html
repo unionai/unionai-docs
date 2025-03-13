@@ -1,0 +1,19 @@
+{{ if .AlertType }}
+<div>
+    <sl-alert open
+        {{ if eq .AlertType "note" }}variant="primary"{{end}}
+        {{ if eq .AlertType "warning" }}variant="warning"{{end}}
+        {{ if eq .AlertType "caution" }}variant="danger"{{end}}
+    >
+        <sl-icon slot="icon" name="info-circle"></sl-icon>
+        {{ if .AlertTitle }}
+        <strong>{{ .AlertTitle }}</strong><br />
+        {{ end }}
+        {{ .Text }}
+    </sl-alert>
+</div>
+{{ else }}
+<blockquote>
+    {{ .Text }}
+</blockquote>
+{{ end }}

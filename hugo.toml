@@ -8,6 +8,12 @@ _merge = "deep"
 variant_hide_in_development = true
 variant_identify_variant_in_development = false
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+        block = true
+
 #----------------------------------------------------------
 # Variables (keyed per variant)
 
