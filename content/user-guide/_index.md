@@ -1,5 +1,5 @@
 ---
-title: User Guide
+title: User guide
 weight: 1
 variants: "+flyte +serverless +byoc +byok"
 top_menu: true

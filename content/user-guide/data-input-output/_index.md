@@ -1,5 +1,5 @@
 ---
-title: Data Types and IO
+title: Data input/output
 weight: 5
 variants: "+flyte +serverless +byoc +byok"
 ---
