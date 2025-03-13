@@ -98,7 +98,7 @@ def add(x: Datum, y: Datum) -> Datum:
 ## {@= Product =@} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 ```python
 class FlyteTypes(BaseModel):

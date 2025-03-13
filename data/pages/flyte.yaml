@@ -104,6 +104,14 @@ pages:
   /user-guide/data-input-output/downloading-with-ff-and-fd: include
   /user-guide/data-input-output/flyte-file-and-flyte-directory: include
   /user-guide/data-input-output/task-input-and-output: include
+  /user-guide/data-input-output/pickle: include
+  /user-guide/data-input-output/structured-dataset: include
+  /user-guide/data-input-output/pytorch: include
+  /user-guide/data-input-output/accessing-attributes: include
+  /user-guide/data-input-output/enum: include
+  /user-guide/data-input-output/tensorflow: include
+  /user-guide/data-input-output/pydantic: include
+  /user-guide/data-input-output/dataclass: include
   /user-guide/development-cycle: include
   /user-guide/development-cycle/accessing-aws-s3: include
   /user-guide/development-cycle/building-workflows: include

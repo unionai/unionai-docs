@@ -34,7 +34,7 @@ While (most) tasks are locally executable, when a task is deployed to {@= Produc
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to {@= Product =@} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {{< /if-variant >}}
-{{< if-variant "serverless" >}}
+{{< if-variant serverless >}}
 This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 {{< /if-variant >}}

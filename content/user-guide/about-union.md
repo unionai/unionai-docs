@@ -15,7 +15,7 @@ It offers all the features of Flyte while adding more capability to scale, contr
 
 There are three deployment options for Union: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).
 {{< /if-variant >}}
-{{< if-variant "flyte" >}}
+{{< if-variant flyte >}}
 
 # About Flyte
 
@@ -42,7 +42,7 @@ Flyte is open source and free to use.
 You can switch to the Flyte docs [here](https://docs.union.ai/flyte).
 
 {{< /if-variant >}}
-{{< if-variant "flyte" >}}
+{{< if-variant flyte >}}
 
 You can try out Flyte's technology:
 
