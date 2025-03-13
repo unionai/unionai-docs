@@ -27,7 +27,7 @@ To clone and run the example code on this page, see the [Flytesnacks repo](https
 We define an enum and a simple coffee maker workflow that accepts an order and brews coffee ☕️ accordingly.
 The assumption is that the coffee maker only understands enum inputs:
 
-{{< if-variant "byoc byok serverless" >}}
+{{< if-variant byoc byok serverless >}}
 
 ```python
 from enum import Enum
@@ -103,7 +103,7 @@ def coffee_maker(coffee: str) -> str:
 def coffee_maker_enum(coffee_enum: Coffee) -> str:
     return prep_order(coffee_enum=coffee_enum)
 ```
-
+{{</ if-variant >}}
 {{< if-variant flyte >}}
 
 You can send a string to the `coffee_maker_enum` workflow during its execution, like this:
