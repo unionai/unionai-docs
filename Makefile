@@ -1,3 +1,5 @@
+PREFIX := docs
+
 .PHONY: all dist variant dev
 
 all: usage
@@ -9,9 +11,11 @@ base:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
 	mkdir -p dist
+	mkdir -p dist/docs
 	mkdir -p dist/_static
-	cp index.html dist/
-	cp -R static/* dist/
+	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/index.html
+	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/docs/index.html
+	cp -R static/* dist/${PREFIX}/
 	cp -R content/_static/* dist/_static/
 
 dist: base

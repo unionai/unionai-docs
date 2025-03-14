@@ -6,17 +6,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ .Title }} | {{ .Site.Title }}</title>
-    <link rel="icon" href="/images/favicon.ico"/>
-    <link rel="stylesheet" href="/css/api.css" />
-    <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/breadcrumb.css" />
-    <link rel="stylesheet" href="/css/card.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/images.css" />
-    <link rel="stylesheet" href="/css/markdown.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/tabs.css" />
+    <link rel="icon" href="{{ "images/favicon.ico" | relURL }}"/>
+    <link rel="stylesheet" href="{{ "css/base.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/breadcrumb.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/card.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/footer.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/header.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/images.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/markdown.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/sidebar.css" | relURL }}" />
+    <link rel="stylesheet" href="{{ "css/tabs.css" | relURL }}" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"

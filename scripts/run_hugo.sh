@@ -11,7 +11,8 @@ if [[ -z $VARIANT ]]; then
     exit 1
 fi
 
-hugo --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT} \
+hugo --config hugo.toml,config.${VARIANT}.toml \
+    --destination dist/docs/${VARIANT} \
     --panicOnWarning 1> "$run_log" 2>&1
 
 err=$?

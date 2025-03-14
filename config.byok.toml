@@ -1,4 +1,4 @@
-baseURL = '/byok/'
+baseURL = '/docs/byok/'
 
 [params]
 _merge = "deep"

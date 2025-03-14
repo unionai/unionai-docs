@@ -1,4 +1,4 @@
-baseURL = '/serverless/'
+baseURL = '/docs/serverless/'
 
 [params]
 _merge = "deep"
