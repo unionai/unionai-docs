@@ -112,8 +112,7 @@ code {
   padding: 0.2em 0.4em;
   border-radius: 4px;
   font-size: 0.875em;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 pre {
   background: var(--pre-bg);
@@ -186,7 +185,7 @@ pre code {
 .not-in-prod.excluded {
   border: 1px solid yellow;
   background: rgb(251, 251, 184);
-  color: rgb(109, 109, 0)
+  color: rgb(109, 109, 0);
 }
 
 .if-variant.allowed,
@@ -214,8 +213,7 @@ pre code {
   padding: 0.5rem;
 }
 .not-allowed.if-variant .title,
-.not-allowed.page-warn
- {
+.not-allowed.page-warn {
   background: hsl(0, 84%, 85%);
   color: red;
 }

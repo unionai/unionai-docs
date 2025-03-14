@@ -1,27 +1,27 @@
 .breadcrumb {
-    display: flex;
-    align-items: center;
-    margin-bottom: 2rem;
-    font-size: 0.875rem;
-    color: #6b7280;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+  color: #6b7280;
 }
 .breadcrumb-item {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 .breadcrumb-item:not(:last-child):after {
-    content: "/";
-    margin: 0 0.5rem;
-    color: #9ca3af;
+  content: "/";
+  margin: 0 0.5rem;
+  color: #9ca3af;
 }
 .breadcrumb-item a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.2s;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 .breadcrumb-item a:hover {
-    color: #1d4ed8;
+  color: #1d4ed8;
 }
 .breadcrumb-item.active {
-    color: var(--text-color);
+  color: var(--text-color);
 }
