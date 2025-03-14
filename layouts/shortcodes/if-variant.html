@@ -10,7 +10,6 @@
 {{- end -}}
 {{- $allowed := in $variants $variant -}}
 {{- if or $allowed (and (not hugo.IsProduction) (not $hideMismatch)) -}}
-    {{- .Scratch.Set "container" true -}}
     {{- if (not $allowed) -}}
         <div class="not-allowed if-variant">
             <div class="title">

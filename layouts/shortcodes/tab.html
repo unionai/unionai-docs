@@ -7,5 +7,14 @@
         {{ $.Parent.Scratch.Add "tabs" (dict "name" $name "content" (. | markdownify) ) }}
 	{{ end }}
 {{ else }}
-	{{- errorf "[%s] %q: tab shortcode missing its parent" site.Language.Lang .Page.Path -}}
+	{{ warnf "[tab is orphan] You specified {{< tab >}} inside {{< tabs >}}. File: %s" .Page.File.Path }}
+	<div class="layout-error">
+		<div class="error">
+			You specified a <code>&#123;&#123;&lt; tab &gt;&#125;&#125;</code> outside <code>&#123;&#123;&lt; tabs &gt;&#125;&#125;</code>.
+		</div>
+
+		<div class="content">
+			{{ .Inner | markdownify }}
+		</div>
+	</div>
 {{ end }}

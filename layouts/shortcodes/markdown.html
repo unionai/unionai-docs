@@ -1,24 +1,24 @@
 
 {{ if .Parent }}
-    {{ if .Parent.Scratch.Get "container" }}
+    {{ if in (slice "if-variant" "dropdown") .Parent.Name }}
         {{/* This is where container-specific behavior would go */}}
         {{ .Inner | markdownify }}
     {{ else }}
-        {{ warnf "[Markdown without container] You specified {{< markdown >}} but it does not belong to a container. File:%s" .Page.File.Path }}
+        {{ warnf "[Markdown without container] You specified {{< markdown >}} inside {{< %s >}} but it does not belong to a container. File: %s" .Parent.Name .Page.File.Path }}
         <div class="layout-error">
             <div class="error">
-                You specified a <code>&#123;&#123;&lt; markdown &gt;&#125;&#125;</code> but it does not belong to a container.
+                You specified a <code>&#123;&#123;&lt; markdown &gt;&#125;&#125;</code> inside <code>&#123;&#123;&lt; {{ .Parent.Name }} &gt;&#125;&#125;</code>
+                but that is not an allowed container.
             </div>
 
             <div class="content">
-                {{ .Parent.Name }}
-                {{ .Parent.Scratch.Get "container" }}
                 {{ .Inner | markdownify }}
             </div>
         </div>
     {{ end }}
 {{ else }}
-    {{ warnf "[Markdown without container] You specified {{< markdown >}} without having a container for it. This is not necessary, as the page is markdown already. File:%s" .Page.File.Path }}
+    {{ warnf "[Markdown without container] You specified {{< markdown >}} without having a container for it. This is not necessary, as the page is markdown already. File:%s" 
+            .Page.File.Path }}
     <div class="layout-error">
         <div class="error">
             You specified a <code>&#123;&#123;&lt; markdown &gt;&#125;&#125;</code> without having a container for it.
