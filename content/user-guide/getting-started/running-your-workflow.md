@@ -22,18 +22,22 @@ You can then activate the virtual environment with:
 source .venv/bin/activate
 ```
 
-{{< note "`activate` vs `uv run`" >}}
-When running the `{@= cli =@}` CLI within your local project you must run it in the virtual environment _associated with_ that project.
-This differs from our earlier usage of the tool when [we installed `union` globally](./local-setup.md#install-the--cli--cli) in order to [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
-
-To run `{@= cli =@}` within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
-
-`uv run {@= cli =@} ...`
-
-Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `{@= cli =@}` command directly.
-
-In our examples we assume that you are doing the latter.
-{{< /note >}}
+> [!NOTE] `activate` vs `uv run`
+> When running the `{@= cli =@}` CLI within your local project you must run it in the virtual 
+> environment _associated > with_ that project.
+> This differs from our earlier usage of the tool when
+> [we installed `union` globally](./local-setup.> md#install-the--cli--cli) in order to
+> [set up its configuration](./local-setup.> md#configure-the-connection-to-your--product_full--instance).
+> 
+> To run `{@= cli =@}` within your project's virtual environment using `uv`, 
+> you can prefix it use the `uv run` > command. For example:
+> 
+> `uv run {@= cli =@} ...`
+> 
+> Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then 
+> run the `{@= cli > =@}` command directly.
+> 
+> In our examples we assume that you are doing the latter.
 
 
 ## Run the code locally
@@ -86,6 +90,7 @@ $ union run --remote --project my-project --domain development hello_world.py he
 The output displays a URL that links to the workflow execution in the UI:
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```shell
 👍 Build submitted!
@@ -95,8 +100,11 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
+
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ```shell
 👍 Build submitted!
@@ -106,6 +114,7 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 
 Click the link to see the execution in the UI.

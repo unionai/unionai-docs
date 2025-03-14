@@ -11,6 +11,7 @@ This involves creating a local project directory holding your project code
 and a corresponding {@= Product =@} project to which you will deploy that code using the `{@= cli =@}` CLI.
 
 {{< variant serverless byoc byok >}}
+{{< markdown >}}
 
 ## Create a new Union project
 
@@ -25,21 +26,19 @@ This will take you to the **Projects list**:
 Click on the **New Project** button and fill in the details for your new project.
 For this example, let's create a project called **My project**:
 
-```--image-- /_static/images/user-guide/getting-started/first-project/create-new-project.png
-:alt: Create new project
-:width: 445px
-:align: center
-```
+![Create new project](/_static/images/user-guide/getting-started/first-project/create-new-project.png "small")
 
 You now have a project on Union named "My Project" (and with project ID `my-project`) into which you can register your workflows.
 
-{{< note "Default project" >}}
-Union provides a default project (called **{@= default_project =@}**) where all your workflows will be registered unless you specify otherwise.
-In this section, however, we will be using the project we just created, not the default.
-{{< /note >}}
+> [!NOTE] Default project
+> Union provides a default project (called **{{< var default_project >}}**) where all your workflows will be registered > unless you specify otherwise.
+> In this section, however, we will be using the project we just created, not the default.
 
+{{< /markdown >}}
 {{< /variant >}}
+
 {{< variant flyte >}}
+{{< markdown >}}
 
 ## Create a new Flyte project
 
@@ -57,11 +56,12 @@ You can see the project you just created by going to `http://localhost:30080` in
 
 ![Welcome to Flyte](/_static/images/user-guide/getting-started/first-project/welcome-to-flyte.png)
 
-{{< note "Default project" >}}
-Flyte provides a default project (called `flytesnacks`) where all your workflows will be registered unless you specify otherwise.
-In this section, however, we will be using the project we just created, not the default.
-{{< /note >}}
+> [!NOTE] Default project
+> Flyte provides a default project (called `flytesnacks`) where all your workflows will be 
+> registered unless you > specify otherwise.
+> In this section, however, we will be using the project we just created, not the default.
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Initialize a local project
@@ -83,9 +83,9 @@ The resulting directory will look like this:
 └── uv.lock
 ```
 
-{{< note "Local project directory name same as {@= Product =@} project ID" >}}
-It is good practice to name your local project directory the same as your {@= Product =@} project ID, as we have done here.
-{{< /note >}}
+> [!NOTE] Local project directory name same as {@= Product =@} project ID
+> It is good practice to name your local project directory the same as your 
+> {@= Product =@} project ID, as we have > done here.
 
 Next, let's look at the contents of the local project directory.
 Continue to [Understanding the code](understanding-the-code.md).
