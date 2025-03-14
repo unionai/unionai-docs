@@ -5,8 +5,8 @@ disableKinds = ["RSS"]
 
 [params]
 _merge = "deep"
-variant_hide_in_development = true
-variant_identify_variant_in_development = false
+show_inactive = false
+highlight_active = false
 
 [markup]
   [markup.goldmark]

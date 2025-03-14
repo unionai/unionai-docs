@@ -27,20 +27,30 @@ The changes are hot reloaded: just change in your favorite editor and it will re
 ### Changing 'variants'
 
 Variants are flavors of the site (that you can change at the top).
-During development, you can render any variant by setting them in `hugo.local.toml`:
+During development, you can render any variant by setting it in `hugo.local.toml`:
 
-    variant = "byoc"
+```
+variant = "byoc"
+```
 
-> You can copy it from `hugo.local.toml~sample` to get started.
+We call this the "active" variant.
 
-Also note that you can render multiple variant content at the same time. You can
-customize them by setting these in `hugo.local.toml`:
+You can also render variant content from other variants at the same time as well as highlighting the content of your active variant:
 
-    # Shows variants that do not match
-    variant_hide_in_development = false
+To show the content from variants other than the currently active one set:
 
-    # Shows all variants at once (green = matches, red = not)
-    variant_identify_variant_in_development = true
+```
+show_inactive = true
+```
+
+To highlight the content of the currently active variant (to distinguish it from common content that applies to all variants), set:
+
+```
+highlight_active = true
+```
+
+> You can create you own copy of `hugo.local.toml` by copying from `hugo.local.toml~sample` to get started.
+
 
 ### Identifying Problems: Missing Content
 
@@ -49,13 +59,13 @@ you can adjust the variant show/hide in development mode.
 
 For a production-like look set:
 
-    variant_hide_in_development = true
-    variant_identify_variant_in_development = false
+    show_inactive = false
+    highlight_active = false
 
 For a full-developer experience, set:
 
-    variant_hide_in_development = false
-    variant_identify_variant_in_development = true
+    show_inactive = true
+    highlight_active = true
 
 ### Identifying Problems: Page Visibility
 
