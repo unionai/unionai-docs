@@ -15,77 +15,77 @@ variant_identify_variant_in_development = false
         block = true
 
 #----------------------------------------------------------
-# Variables (keyed per variant)
+# Keywords
 
-[params.var]
+[params.key]
 
-[params.var.default_project]
+[params.key.default_project]
 flyte = "flytesnacks"
 serverless = "default"
 byoc = "flytesnacks"
 byok = "flytesnacks"
 
-[params.var.product_full]
+[params.key.product_full_name]
 flyte = "Flyte"
 serverless = "Union Serverless"
 byoc = "Union BYOC"
 byok = "Union BYOK"
 
-[params.var.product_upper]
+[params.key.product_name]
 flyte = "Flyte"
 serverless = "Union"
 byoc = "Union"
 byok = "Union"
 
-[params.var.product_lower]
+[params.key.product]
 flyte = "flyte"
 serverless = "union"
 byoc = "union"
 byok = "union"
 
-[params.var.kit_upper]
+[params.key.kit_name]
 flyte = "Flytekit"
 serverless = "Union"
 byoc = "Union"
 byok = "Union"
 
-[params.var.kit_lower]
+[params.key.kit]
 flyte = "flytekit"
 serverless = "union"
 byoc = "union"
 #byok = "union"
 
-[params.var.cli_upper]
+[params.key.cli_name]
 flyte = "Pyflyte"
 serverless = "Union"
 byoc = "Union"
 byok = "Union"
 
-[params.var.cli_lower]
+[params.key.cli]
 flyte = "pyflyte"
 serverless = "union"
 byoc = "union"
 byok = "union"
 
-[params.var.ctl_upper]
+[params.key.ctl_name]
 flyte = "Flytectl"
 serverless = "Uctl"
 byoc = "Uctl"
 byok = "Uctl"
 
-[params.var.ctl_lower]
+[params.key.ctl]
 flyte = "flytectl"
 serverless = "uctl"
 byoc = "uctl"
 byok = "uctl"
 
-[params.var.at_task]
+[params.key.at_task]
 flyte = "@fl.task"
 serverless = "@union.task"
 byoc = "@union.task"
 byok = "@union.task"
 
-[params.var.at_workflow]
+[params.key.at_workflow]
 flyte = "@fl.workflow"
 serverless = "@union.workflow"
 byoc = "@union.workflow"

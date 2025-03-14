@@ -18,12 +18,12 @@ As with most type systems, Python has primitives, container types like maps and 
 ## Usage
 
 To use the `StructuredDataset` type, import `pandas` and define a task that returns a Pandas Dataframe.
-{{< var kit_upper >}} will detect the Pandas DataFrame return signature and convert the interface for the task to
+{{< key kit_name >}} will detect the Pandas DataFrame return signature and convert the interface for the task to
 the `StructuredDataset` type.
 
 ## Example
 
-This example demonstrates how to work with a structured dataset using {{< var product_upper >}} entities.
+This example demonstrates how to work with a structured dataset using {{< key product_name >}} entities.
 
 > [!NOTE]
 > To use the `StructuredDataset` type, you only need to import `pandas`. The other imports specified below are only necessary for this specific example.
@@ -92,7 +92,7 @@ col = union.kwtypes(Age=int)
 ```
 
 Define a task that opens a structured dataset by calling `all()`.
-When you invoke `all()` with ``pandas.DataFrame``, the {{< var product_upper >}} engine downloads the parquet file on S3, and deserializes it to `pandas.DataFrame`.
+When you invoke `all()` with ``pandas.DataFrame``, the {{< key product_name >}} engine downloads the parquet file on S3, and deserializes it to `pandas.DataFrame`.
 Keep in mind that you can invoke ``open()`` with any dataframe type that's supported or added to structured dataset.
 For instance, you can use ``pa.Table`` to convert the Pandas DataFrame to a PyArrow table.
 
@@ -138,9 +138,9 @@ def pandas_to_csv_wf() -> Annotated[StructuredDataset, CSV]:
 
 ## Storage driver and location
 By default, the data will be written to the same place that all other pointer-types (FlyteFile, FlyteDirectory, etc.) are written to.
-This is controlled by the output data prefix option in {{< var product_upper >}} which is configurable on multiple levels.
+This is controlled by the output data prefix option in {{< key product_name >}} which is configurable on multiple levels.
 
-That is to say, in the simple default case, {{< var kit_upper >}} will,
+That is to say, in the simple default case, {{< key kit_name >}} will,
 
 - Look up the default format for say, Pandas dataframes,
 - Look up the default storage location based on the raw output prefix setting,
@@ -150,24 +150,24 @@ So what's an encoder? To understand that, let's look into how the structured dat
 
 ## Inner workings of a structured dataset plugin
 
-Two things need to happen with any dataframe instance when interacting with {{< var product_upper >}}:
+Two things need to happen with any dataframe instance when interacting with {{< key product_name >}}:
 
 - Serialization/deserialization from/to the Python instance to bytes (in the format specified above).
 - Transmission/retrieval of those bits to/from somewhere.
 
 Each structured dataset plugin (called encoder or decoder) needs to perform both of these steps.
-{{< var kit_upper >}} decides which of the loaded plugins to invoke based on three attributes:
+{{< key kit_name >}} decides which of the loaded plugins to invoke based on three attributes:
 
 - The byte format
 - The storage location
 - The Python type in the task or workflow signature.
 
-These three keys uniquely identify which encoder (used when converting a dataframe in Python memory to a {{< var product_upper >}} value,
-e.g. when a task finishes and returns a dataframe) or decoder (used when hydrating a dataframe in memory from a {{< var product_upper >}} value,
+These three keys uniquely identify which encoder (used when converting a dataframe in Python memory to a {{< key product_name >}} value,
+e.g. when a task finishes and returns a dataframe) or decoder (used when hydrating a dataframe in memory from a {{< key product_name >}} value,
 e.g. when a task starts and has a dataframe input) to invoke.
 
 However, it is awkward to require users to use `typing.Annotated` on every signature.
-Therefore, {{< var kit_upper >}} has a default byte-format for every Python dataframe type registered with {@= union_flytekit_lower =@}.
+Therefore, {{< key kit_name >}} has a default byte-format for every Python dataframe type registered with {@= union_flytekit_lower =@}.
 
 ## The `uri` argument
 
@@ -194,8 +194,8 @@ def pandas_to_bq() -> StructuredDataset:
 Replace `BUCKET_NAME` with the name of your GCS bucket and `FILE_NAME` with the name of the file the dataframe should be copied to.
 
 ### Note that no format was specified in the structured dataset constructor, or in the signature. So how did the BigQuery encoder get invoked?
-This is because the stock BigQuery encoder is loaded into {{< var kit_upper >}} with an empty format.
-The {{< var kit_upper >}} `StructuredDatasetTransformerEngine` interprets that to mean that it is a generic encoder
+This is because the stock BigQuery encoder is loaded into {{< key kit_name >}} with an empty format.
+The {{< key kit_name >}} `StructuredDatasetTransformerEngine` interprets that to mean that it is a generic encoder
 (or decoder) and can work across formats, if a more specific format is not found.
 
 And here's how you can define a task that converts the BigQuery table to a pandas DataFrame:
@@ -207,7 +207,7 @@ def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
 ```
 
 > [!NOTE]
-> {{< var product_upper >}} creates a table inside the dataset in the project upon BigQuery query execution.
+> {{< key product_name >}} creates a table inside the dataset in the project upon BigQuery query execution.
 
 ## How to return multiple dataframes from a task?
 For instance, how would a task return say two dataframes:
@@ -225,12 +225,12 @@ def t1() -> typing.Tuple[StructuredDataset, StructuredDataset]:
           StructuredDataset(df2, uri="gs://auxiliary-bucket/data")
 ```
 
-If you want to customize the {{< var product_upper >}} interaction behavior, you'll need to wrap your dataframe in a `StructuredDataset` wrapper object.
+If you want to customize the {{< key product_name >}} interaction behavior, you'll need to wrap your dataframe in a `StructuredDataset` wrapper object.
 
 ## How to define a custom structured dataset plugin?
 
 `StructuredDataset` ships with an encoder and a decoder that handles the conversion of a
-Python value to a {{< var product_upper >}} literal and vice-versa, respectively.
+Python value to a {{< key product_name >}} literal and vice-versa, respectively.
 Here is a quick demo showcasing how one might build a NumPy encoder and decoder,
 enabling the use of a 2D NumPy array as a valid type within structured datasets.
 
@@ -282,7 +282,7 @@ class NumpyDecodingHandler(StructuredDatasetDecoder):
 
 ### NumPy renderer
 
-Create a default renderer for numpy array, then {{< var kit_upper >}} will use this renderer to
+Create a default renderer for numpy array, then {{< key kit_name >}} will use this renderer to
 display schema of NumPy array on the Flyte deck.
 
 ```python

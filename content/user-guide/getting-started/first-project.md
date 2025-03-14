@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 In this section we will set up a new project.
 This involves creating a local project directory holding your project code
-and a corresponding {{< var product_upper >}} project to which you will deploy that code using the `{{< var cli_lower >}}` CLI.
+and a corresponding {{< key product_name >}} project to which you will deploy that code using the `{{< key cli >}}` CLI.
 
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
@@ -31,7 +31,7 @@ For this example, let's create a project called **My project**:
 You now have a project on Union named "My Project" (and with project ID `my-project`) into which you can register your workflows.
 
 > [!NOTE] Default project
-> Union provides a default project (called **{{< var default_project >}}**) where all your workflows will be registered unless you specify otherwise.
+> Union provides a default project (called **{{< key default_project >}}**) where all your workflows will be registered unless you specify otherwise.
 > In this section, however, we will be using the project we just created, not the default.
 
 {{< /markdown >}}
@@ -66,10 +66,10 @@ You can see the project you just created by going to `http://localhost:30080` in
 
 ## Initialize a local project
 
-We will use the `{{< var cli_lower >}} init` command to initialize a new local project corresponding to the project created on your {{< var product_upper >}} instance:
+We will use the `{{< key cli >}} init` command to initialize a new local project corresponding to the project created on your {{< key product_name >}} instance:
 
 ```shell
-$ {{< var cli_lower >}} init --template {{< var product_lower >}}-simple my-project
+$ {{< key cli >}} init --template {{< key product >}}-simple my-project
 ```
 
 The resulting directory will look like this:
@@ -83,9 +83,9 @@ The resulting directory will look like this:
 └── uv.lock
 ```
 
-> [!NOTE] Local project directory name same as {{< var product_upper >}} project ID
+> [!NOTE] Local project directory name same as {{< key product_name >}} project ID
 > It is good practice to name your local project directory the same as your
-> {{< var product_upper >}} project ID, as we have done here.
+> {{< key product_name >}} project ID, as we have done here.
 
 Next, let's look at the contents of the local project directory.
 Continue to [Understanding the code](understanding-the-code.md).

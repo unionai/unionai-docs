@@ -74,7 +74,7 @@ class Datum(BaseModel):
 ```
 
 You can send a `pydantic basemodel` between different tasks written in various
-languages, and input it through the {{< var product_upper >}} console as raw
+languages, and input it through the {{< key product_name >}} console as raw
 JSON.
 
 > [!NOTE]
@@ -98,7 +98,7 @@ def add(x: Datum, y: Datum) -> Datum:
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
 ```
 
-## {{< var product_upper >}} types
+## {{< key product_name >}} types
 
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and
 `FlyteDirectory`.
@@ -218,10 +218,10 @@ def basemodel_wf(x: int, y: int) -> (Datum, UnionTypes):
 {{< /markdown >}}
 {{< /variant >}}
 
-To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
+To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 
 ```
-$ {{< var cli_lower >}} run dataclass.py basemodel_wf --x 1 --y 2
+$ {{< key cli >}} run dataclass.py basemodel_wf --x 1 --y 2
 ```
 
 {{< variant flyte >}}

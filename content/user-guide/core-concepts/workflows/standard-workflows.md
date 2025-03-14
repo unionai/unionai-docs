@@ -7,7 +7,7 @@ variants: +flyte +serverless +byoc +byok
 # Standard workflows
 
 A standard workflow is defined by a Python function decorated with the `@union.workflow` decorator.
-The function is written in a domain specific language (DSL), a subset of Python syntax that describes the directed acyclic graph (DAG) that is deployed and executed on {{< var product_upper >}}.
+The function is written in a domain specific language (DSL), a subset of Python syntax that describes the directed acyclic graph (DAG) that is deployed and executed on {{< key product_name >}}.
 The syntax of a standard workflow definition can only include the following:
 
 * Calls to functions decorated with `@union.task` and assignment of variables to the returned values.

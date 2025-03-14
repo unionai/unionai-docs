@@ -14,30 +14,30 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< markdown >}}`](#-markdown-)
   - [`{{< multiline >}}`](#-multiline-)
   - [`{{< tabs >}}` and `{{< tab >}}`](#-tabs--and--tab-)
-  - [`{{< var >}}`](#-var-)
+  - [`{{< key >}}`](#-key-)
 
-## How to specify a "short code"
+## How to specify a "shortcode"
 
-The short code is a string that is used to generate the code that is displayed.
+The shortcode is a string that is used to generate the HTML that is displayed.
 
-You can specify parameteres, when applicable, or have content inside of it, if applicable.
+You can specify parameters, when applicable, or have content inside it, if applicable.
 
 > If you specify content, you have to have a close tag.
 
 Examples:
 
-    # A code that just output something
+    # A shortcode that just outputs something
 
-    {{< var product_name >}}
+    {{< key product_name >}}
 
-    # A code that has inside content
+    # A shortcode that has content inside
 
     {{< markdown >}}
     * You markdown
     * goes here
     {{< /markdown >}}
 
-    # A code with parameters
+    # A shortcode with parameters
 
     {{< link-card target="union-sdk" icon="workflow" title="Union SDK" >}}
     The Union SDK provides the Python API for building Union workflows and apps.
@@ -100,7 +100,6 @@ A floatable, clickable, navigatable card.
 
 > TODO(peeter): document parameters
 
-
 ### `{{< markdown >}}`
 
 Generates a markdown block, to be used inside containers such as `{{< dropdown >}}` or `{{< variant >}}`.
@@ -119,23 +118,31 @@ Generates a tab panel with content switching per tab.
 
 > TODO(peeter): document parameters
 
-### `{{< var >}}`
+### `{{< key >}}`
 
-Prints one of the pre-defined product text, such as "Product Name". Used to not hardcode these across the page,
-and allow changing them per-variant.
+Outputs one of the pre-defined keywords.
+Enables inline text that differs per-variant without using the heavy-weight `{{< variant>}}...{{< /variant >}}` construct.
 
-> `{{< var >}}` is variant sensitive, and it will change its content based on the current variant.
+Take, for example, the following:
 
-You can specify which value, per variant, in `hugo.toml`.
+```
+The {{< key product_name >}} platform is awesome.
+```
 
-Example:
+In the Flyte variant of the site this will render as:
 
-    [params.var.product_full]
-    flyte = "Flyte"
-    serverless = "Union Serverless"
-    byoc = "Union BYOC"
-    byok = "Union BYOK"
+> The Flyte platform is awesome.
 
-You can use it directly inside the code:
+While, in the BYOC, BYOK and Serverless variants of the site it will render as:
 
-    The {{< var product_name >}} platform empowers AI development teams to rapidly ship high-quality
+> The Union platform is awesome.
+
+You can add keywords and specify their value, per variant, in `hugo.toml`:
+
+```
+[params.key.product_full_name]
+flyte = "Flyte"
+serverless = "Union Serverless"
+byoc = "Union BYOC"
+byok = "Union BYOK"
+```
