@@ -11,11 +11,8 @@ classify the sentiment of IMDB movie reviews. We're going to use the
 `transformers` library and the `imdb` dataset to classify the movie review
 sentiment.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -41,9 +38,8 @@ union run --remote tutorials/sentiment_classifier/sentiment_classifier.py main -
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/sentiment_classifier/sentiment_classifier.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ## Overview
 

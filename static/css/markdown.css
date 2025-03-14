@@ -11,3 +11,7 @@
 .layout-error .content {
     margin: 1rem;
 }
+
+.markdown.top-margin {
+    margin-top: 2rem;
+}

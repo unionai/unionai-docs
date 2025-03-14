@@ -12,11 +12,8 @@ of `secrets` to store Reddit and Slack credentials, and `LaunchPlans` to schedul
 workflows at constant interval, so we never miss a Reddit post we might be
 interested in.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -43,11 +40,8 @@ union run --remote tutorials/reddit_slack_bot/reddit_slack_bot.py reddit_wf --ki
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/reddit_slack_bot/reddit_slack_bot.py).
 
---/dropdown--
-
-<!-- #endregion -->
-
-<!-- #region -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ## Creating Secrets to Access Reddit and Slack
 
@@ -66,9 +60,6 @@ and paste the client ID when prompted.
 
 After, we can do the same for `reddit_secret_key`.
 
-<!-- #endregion -->
-
-<!-- #region -->
 
 For Slack, we will need a Slack API bot token which can be configured and created for
 a specific channel by following
@@ -80,7 +71,6 @@ we securely store the `slack_token` in the CLI using:
 union create secret slack_token
 ```
 
-<!-- #endregion -->
 
 Once our secrets are set up, we continue by importing some of the workflow dependencies
 and setting some constants like the frequency in which we want to run the workflow,
@@ -274,8 +264,6 @@ LaunchPlan.get_or_create(
 )
 ```
 
-<!-- #region -->
-
 To register and activate this `LaunchPlan` we run:
 
 ```bash
@@ -283,14 +271,8 @@ union register tutorials/reddit_slack_bot/
 union launchplan flyte_reddit_posts --activate
 ```
 
-<!-- #endregion -->
-
-<!-- #region -->
-
 Our workflow will now run on the configured schedule until we deactivate the `LaunchPlan` either in the UI or using:
 
 ```bash
 union launchplan flyte_reddit_posts --deactivate
 ```
-
-<!-- #endregion -->

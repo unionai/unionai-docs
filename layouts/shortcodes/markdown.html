@@ -1,4 +1,6 @@
 
+{{- $class := .Get "class" -}}
+<div class="markdown {{ $class }}">
 {{ if .Parent }}
     {{ if in (slice "variant" "dropdown" "tab") .Parent.Name }}
         {{/* This is where container-specific behavior would go */}}
@@ -30,3 +32,4 @@
         </div>
     </div>
 {{ end }}
+</div>

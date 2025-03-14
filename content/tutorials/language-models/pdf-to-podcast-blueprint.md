@@ -66,9 +66,8 @@ This example takes NVIDIA's [PDF-to-podcast blueprint agent](https://github.com/
 
 First, let's import all the necessary dependencies.
 
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -96,7 +95,8 @@ union run --copy all --remote pdf_to_podcast.py pdf_to_podcast
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py).
 
---/dropdown--
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ```python
 import functools

@@ -11,11 +11,8 @@ data and XGBoost, an optimized gradient boosting library, for credit default pre
 We'll learn how to declare NVIDIA `A100` for our training function and `ImageSpec`
 for specifying our python dependencies.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -41,9 +38,8 @@ union run --remote credit_default.py credit_default_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/credit_default/credit_default.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ## Declaring workflow dependencies
 
@@ -188,8 +184,6 @@ def plot_feature_importances(model: FlyteFile):
     decks.insert(0, importances_deck)
 ```
 
-<!-- #region -->
-
 ## Full Workflow
 
 Finally, we define the workflow that calls `download_data` and passes it's output
@@ -198,8 +192,6 @@ to `train_xgboost`. We run the workflow by:
 ```bash
 union run --remote credit_default.py credit_default_wf
 ```
-
-<!-- #endregion -->
 
 ```python
 @workflow

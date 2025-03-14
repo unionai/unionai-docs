@@ -16,11 +16,8 @@ The workflow consists of the following steps:
 4. Clone the original speaker's voice using Coqui TTS.
 5. Lip sync the cloned voice to the video using SadTalker.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -46,9 +43,8 @@ union run --remote --copy-all video_translation.py video_translation_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/video_translation/video_translation.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 Start by importing the necessary libraries and modules:
 

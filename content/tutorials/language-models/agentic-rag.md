@@ -11,11 +11,9 @@ generation (RAG) workflow on Union using [Langchain](https://python.langchain.co
 for the RAG building blocks, [ChromaDB](https://www.trychroma.com/) as the
 vector store, and [GPT4](https://openai.com/) for the language model.
 
-<!-- #region -->
 
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -46,9 +44,8 @@ union run --remote agentic_rag.py agentic_rag_workflow --user_message "Tell me a
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/agentic_rag/agentic_rag.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ## Overview
 
@@ -89,8 +86,6 @@ from utils import openai_env_secret
 MAX_REWRITES = 10
 ```
 
-<!-- #region -->
-
 ## Creating Secrets for an OpenAI API key
 
 Go to the [OpenAI website](https://platform.openai.com/api-keys) to get an
@@ -103,8 +98,6 @@ union create secret openai_api_key
 then paste the client ID when prompted. We'll use the `openai_api_key` secret
 throughout this tutorial to authenticate with the OpenAI API and use GPT4 as
 the underlying LLM.
-
-<!-- #endregion -->
 
 ## Defining the container image
 
@@ -146,8 +139,6 @@ actor = ActorEnvironment(
 )
 ```
 
-<!-- #region -->
-
 ## Creating a vector store `Artifact`
 
 We also use Union `Artifact`s to persist the vector store of documents. We do
@@ -170,8 +161,6 @@ union run --remote agentic_rag.py create_vector_store --query "CRISPR therapy" -
 ```
 
 This will get `10` documents from pubmed matching the `"CRISPR therapy"` query.
-
-<!-- #endregion -->
 
 ```python
 AgenticRagVectorStore = fk.Artifact(name="agentic-rag-vector-store")
@@ -715,8 +704,6 @@ def agentic_rag_workflow(
     return return_answer(state=state)
 ```
 
-<!-- #region -->
-
 Now you can run the entire workflow with:
 
 ```bash
@@ -739,4 +726,3 @@ You can also:
 - Expand the number of tools beyond just the `retriever_tool`.
 - Add more `GraderAction` values to perform more complex actions beyond
 rewriting the question or generating the answer.
-<!-- #endregion -->

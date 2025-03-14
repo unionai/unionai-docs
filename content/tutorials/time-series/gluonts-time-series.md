@@ -12,11 +12,8 @@ with [GluonTS](https://ts.gluon.ai/stable/) on GPUs. We'll train a
 produces probabilistic forecasts. On Union, we show how to easily request for an A100,
 specify dependencies for this workflow, and visualize our results with Flyte Deck.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -42,9 +39,8 @@ union run --remote gluonts_time_series.py gluonts_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/gluonts_time_series/gluonts_time_series.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ## Managing Dependencies
 
@@ -211,8 +207,6 @@ def compute_forecasts(dataset: FlyteFile, predictor_directory: FlyteDirectory):
     ctx.decks.insert(1, metrics_deck)
 ```
 
-<!-- #region -->
-
 ## Complete Workflow
 
 Finally, we define the workflow that calls `train_predictor` and passes it's output
@@ -221,8 +215,6 @@ to `compute_forecasts`. We run the workflow by:
 ```bash
 union run --remote gluonts_time_series.py gluonts_wf
 ```
-
-<!-- #endregion -->
 
 ```python
 @workflow

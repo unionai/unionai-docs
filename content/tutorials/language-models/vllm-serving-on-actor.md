@@ -13,11 +13,8 @@ maintain state. To further maximize inference efficiency, we will serve a Huggin
 vLLM. vLLM achieves state-of-the-art throughput with dynamic batching and caching mechanisms that maximize GPU
 utilization and reduces redundant computations.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -45,13 +42,10 @@ union run --remote ner.py ner_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/vllm_serving_on_actor/ner.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ![Flyte Deck Example](/_static/_tutorials/vllm-serving-on-actor/diagram.png)
-
-<!-- #region -->
 
 ## Creating Secrets to Pull Hugging Face Models
 
@@ -69,8 +63,6 @@ and paste the access token when prompted.
 
 With our Hugging Face credentials set up and saved on Union, we can import our dependencies and set some constants
 that we will use for our vLLM server and for saving the results:
-
-<!-- #endregion -->
 
 ```python
 import os
@@ -110,7 +102,6 @@ workflow will run on a schedule and return a `TextSample` dataclass that is anno
 Union artifact. By using Union artifacts, we can have Union automatically trigger our downstream vLLM inference
 workflow automatically while maintaining data lineage between workflows.
 
-<!-- #region -->
 
 ```python
 from dataclasses import dataclass
@@ -124,9 +115,6 @@ class TextSample:
 TextSampleArtifact = Artifact(name="text_sample")
 ```
 
-<!-- #endregion -->
-
-<!-- #region -->
 
 ```python
 import random
@@ -153,9 +141,6 @@ def upstream_wf() -> Annotated[TextSample, TextSampleArtifact]:
     return get_text()
 ```
 
-<!-- #endregion -->
-
-<!-- #region -->
 
 Separately, we can define launch plans that will run our upstream workflow on a schedule and automatically run our
 downstream `ner_wf` upon the creation of a `TextSampleArtifact` artifact.
@@ -177,7 +162,6 @@ ner_lp = LaunchPlan.get_or_create(
 
 Now, let's look into how we can create our downstream `ner_wf` workflow for named entity recognition.
 
-<!-- #endregion -->
 
 ## Defining a Container Image
 
@@ -375,8 +359,6 @@ def ner_wf(text: TextSample = TextSampleArtifact.query()):
     put_object_task(bucket=S3_BUCKET, key=file_name, body=named_entities)
 ```
 
-<!-- #region -->
-
 To register and activate this `LaunchPlan` we run:
 
 ```bash
@@ -385,9 +367,6 @@ union launchplan ner_lp --activate
 union launchplan upstream_lp --activate
 ```
 
-<!-- #endregion -->
-
-<!-- #region -->
 
 The upstream workflow will run on its configured scedule, triggering the NEW workflow until the launch plans are
 deactivated either in the UI or using:
@@ -396,5 +375,3 @@ deactivated either in the UI or using:
 union launchplan ner_lp --deactivate
 union launchplan upstream_lp --deactivate
 ```
-
-<!-- #endregion -->

@@ -13,11 +13,8 @@ In this tutorial, we will use the NVIDIA RAPIDS `cuML`'s version of HDBSCAN and 
 to find soft clusters in a headlines dataset. We'll configure Flyte tasks to use
 NVIDIA's `A100` accelerators to embed the dataset and RAPIDS `cuML` for clustering.
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -43,9 +40,8 @@ union run --remote soft_clustering_hdbscan.py hdscan_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/soft_clustering_hdbscan/soft_clustering_hdbscan.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ## Downloading data
 
@@ -282,16 +278,12 @@ def plot_cluster_membership_uncertainty(
 
 ## Workflow
 
-<!-- #region -->
-
 Finally, we define the workflow that calls each Flyte task and route the data between
 each task. We run the workflow with:
 
 ```bash
 union run --remote soft_clustering_hdbscan.py hdscan_wf
 ```
-
-<!-- #endregion -->
 
 ```python
 @workflow

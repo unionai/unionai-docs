@@ -30,22 +30,21 @@ This will take you to `{@= default_project =@}` project dashboard:
 ## Run your first workflow
 
 Run your first workflow on a Union Workspace.
+{{< /markdown >}}
 
---dropdown-- {octicon}`play` Start workspace
-:open:
-:animate: fade-in
-:color: light
+{{< dropdown title="Start workspace" icon=arrow_forward >}}
+{{< markdown >}}
 
 Select **Workspaces** in the left navigation bar.
 
 Start the default workspace by clicking on the `default` workspace item.
 
 ![Start workspace](/_static/gifs/start-workspace.gif)
---/dropdown--
+{{< /markdown >}}
+{{< /dropdown >}}
 
---dropdown-- {octicon}`book` Open workspace
-:animate: fade-in
-:color: light
+{{< dropdown title="Open workspace" icon=arrow_forward >}}
+{{< markdown >}}
 
 When the `Status` is `Active` on the `default` workspace, you can click on it
 again to open the workspace.
@@ -53,11 +52,12 @@ again to open the workspace.
 _It will take a few moments to load the VSCode interface._
 
 ![Open workspace](/_static/gifs/open-workspace.gif)
---/dropdown--
 
---dropdown-- {octicon}`check-circle-fill` Complete walkthrough
-:animate: fade-in
-:color: light
+{{< /markdown >}}
+{{< /dropdown >}}
+
+{{< dropdown title="Complete walkthrough" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once the workspace is open, you should see a VSCode interface in your browser.
 
@@ -68,22 +68,29 @@ In the walkthrough, you'll learn how to:
 1. 🤖 Train a model
 2. 🔀 Parallelize model training
 3. 📘 Iterate on a Jupyter Notebook
---/dropdown--
 
---dropdown-- {octicon}`stop` Stop workspace
-:animate: fade-in
-:color: light
+{{< /markdown >}}
+{{< /dropdown >}}
+
+{{< dropdown title="Stop workspace" icon=arrow_forward >}}
+{{< markdown >}}
+
 
 The workspace will terminate after 20 minutes of idle time, but you can also
 stop it manually on the Workspaces page.
 
 ![Open workspace](/_static/gifs/stop-workspace.gif)
---/dropdown--
+
+{{< /markdown >}}
+{{< /dropdown >}}
+
+{{< markdown class="top-margin" >}}
 
 🎉 Congratulations! You've just run your first workflow on Union.
 
 {{< /markdown >}}
 {{< /variant >}}
+
 {{< variant byoc byok >}}
 {{< markdown >}}
 

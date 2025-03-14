@@ -13,11 +13,8 @@ This tutorial guides you through the process of fine-tuning and deploying a Llam
 
 Start by importing the necessary libraries and modules:
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -51,9 +48,8 @@ union run --remote --copy-all llama_edge_deployment.py finetuning_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/llama_edge_deployment/llama_edge_deployment.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ```python
 import subprocess
@@ -81,8 +77,6 @@ from .utils import (
 )
 ```
 
-<!-- #region -->
-
 ## Creating secrets and defining a dataclass
 
 To securely manage your Weights and Biases and HuggingFace tokens, create secrets using the following commands:
@@ -94,8 +88,6 @@ union create secret hf-api-key
 
 Replace the placeholders `WANDB_PROJECT`, `WANDB_ENTITY`, and `HF_REPO_ID` with the actual values for your Weights & Biases
 project and entity settings, as well as the Hugging Face repository ID, before running the workflow.
-
-<!-- #endregion -->
 
 ```python
 WANDB_SECRET = Secret(key="wandb-api-key")

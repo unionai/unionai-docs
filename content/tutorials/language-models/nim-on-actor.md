@@ -14,11 +14,8 @@ as long as the actor is running, enabling "near-real-time" inference.
 
 Let’s dive in by importing the necessary libraries and modules:
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -44,9 +41,8 @@ union run --remote nim_on_actor.py batch_inference_wf
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/nim_on_actor/nim_on_actor.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ```python
 import functools
@@ -59,8 +55,6 @@ from flytekit.extras.accelerators import A10G
 from flytekitplugins.inference import NIM, NIMSecrets
 from union.actor import ActorEnvironment
 ```
-
-<!-- #region -->
 
 ## Creating secrets
 
@@ -99,7 +93,6 @@ kubectl create -n <PROJECT>-<DEMO> secret docker-registry nvcrio-cred \
 
 - **`NGC_IMAGE_SECRET`:** Required to pull the container image from NGC.
 - **`NGC_KEY`:** Used to pull models from NGC after the container is up and running.
-<!-- #endregion -->
 
 ```python
 HF_KEY = "hf-api-key"

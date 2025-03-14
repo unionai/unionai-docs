@@ -13,11 +13,8 @@ In short, setting up an actor task enables us to transform a standard batch job 
 
 Let’s get started by importing the necessary libraries and modules:
 
-<!-- #region -->
-
---dropdown-- {fas}`circle-play` Run on Union BYOC
-:open:
-:color: warning
+{{< dropdown title="Run on Union BYOC" icon=arrow_forward >}}
+{{< markdown >}}
 
 Once you have a Union account, install `union`:
 
@@ -45,9 +42,8 @@ union run --remote wikipedia_embeddings_on_actor.py embed_wikipedia
 
 The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/wikipedia_embeddings_on_actor/wikipedia_embeddings_on_actor.py).
 
---/dropdown--
-
-<!-- #endregion -->
+{{< /markdown >}}
+{{< /dropdown >}}
 
 ```python
 import functools
@@ -66,8 +62,6 @@ from flytekit.types.directory import FlyteDirectory
 from union.actor import ActorEnvironment
 ```
 
-<!-- #region -->
-
 ## Creating a secret
 
 This workflow requires a HuggingFace API key. To set up the secret:
@@ -78,8 +72,6 @@ This workflow requires a HuggingFace API key. To set up the secret:
 ```bash
 union create secret hf-api-key
 ```
-
-<!-- #endregion -->
 
 ```python
 SERVERLESS_HF_KEY = "hf-api-key"
