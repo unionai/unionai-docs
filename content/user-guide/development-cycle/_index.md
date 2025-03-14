@@ -8,6 +8,8 @@ variants: +flyte +serverless +byoc +byok
 
 This section covers developing production-ready workflows for Union.
 
+{{/* TODO: Convert this list-table into a regular markdown table */}}
+
 ```--list-table--
 :header-rows: 0
 :widths: 20 30

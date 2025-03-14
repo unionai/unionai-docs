@@ -10,9 +10,7 @@ You can define a launch plan with the [`flytekit.LaunchPlan` class](https://docs
 
 For example:
 
-```--literalinclude-- ../../../_static/includes/core-concepts/launch-plans/defining-launch-plans/example_1.py
-:language: python
-```
+{{< code file="/_static/includes/core-concepts/launch-plans/defining-launch-plans/example_1.py" lang="python" >}}
 
 In this example, we define a task `my_task` and a workflow `my_workflow`.
 We then define a launch plan for `my_workflow`.

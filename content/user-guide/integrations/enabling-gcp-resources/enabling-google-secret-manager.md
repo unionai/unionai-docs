@@ -132,6 +132,6 @@ def t1():
     ...
 ```
 
-```--warning--
-Do not return secret values from tasks, as this will expose secrets to the control plane.
-```
+> [!WARNING]
+> Do not return secret values from tasks, as this will expose secrets to the control plane.
+

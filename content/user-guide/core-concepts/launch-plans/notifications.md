@@ -21,6 +21,4 @@ Separate notifications can be sent depending on the specific end state of the wo
 * `WorkflowExecutionPhase.TIMED_OUT`
 
 For example:
-```--literalinclude-- ../../../_static/includes/core-concepts/launch-plans/notifications/example_1.py
-:language: python
-```
+{{< code file="/_static/includes/core-concepts/launch-plans/notifications/example_1.py" lang="python" >}}

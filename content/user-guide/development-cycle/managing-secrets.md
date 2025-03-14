@@ -64,9 +64,8 @@ def t1():
     ...
 ```
 
-```--warning--
-Do not return secret values from tasks, as this will expose secrets to the control plane.
-```
+> [!WARNING]
+> Do not return secret values from tasks, as this will expose secrets to the control plane.
 
 With `env_var`, you can automatically load the secret into the environment. This is useful
 with libraries that expect the secret to have a specific name:
@@ -105,9 +104,9 @@ def t1():
     ...
 ```
 
-```--warning--
-Do not return secret values from tasks, as this will expose secrets to the control plane.
-```
+> [!WARNING]
+> Do not return secret values from tasks, as this will expose secrets to the control plane.
+
 
 > [!NOTE]
 > The `get_secrets_file` method takes the secret key and returns the path to the secret file.

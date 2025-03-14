@@ -23,10 +23,9 @@ Alternatively, you can always specify the configuration file on the command line
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
-```--warning--
-If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
-Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
-```
+> [!WARNING]
+> If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
+> Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 
 There are three authentication mechanisms available: **PKCE**, **DeviceFlow**, and **ClientSecret**.
 

@@ -20,9 +20,7 @@ The only difference is that it happens to have been kicked off from within anoth
 
 Here is an example:
 
-```--literalinclude-- ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_1.py
-:language: python
-```
+{{< code file="/_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_1.py" lang="python" >}}
 
 ## When to use subworkflows
 
@@ -33,9 +31,7 @@ Consequently, all nodes of a subworkflow adhere to the overall constraints impos
 
 Here's an example illustrating the calculation of slope, intercept and the corresponding y-value.
 
-```--literalinclude-- ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_2.py
-:language: python
-```
+{{< code file="/_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_2.py" lang="python" >}}
 
 The `slope_intercept_wf` computes the slope and intercept of the regression line.
 Subsequently, the `regression_line_wf` triggers `slope_intercept_wf` and then computes the y-value.
@@ -44,9 +40,7 @@ It is possible to nest a workflow that contains a subworkflow within yet another
 Workflows can be easily constructed from other workflows, even if they also function as standalone entities.
 For example, each workflow in the example below has the capability to exist and run independently:
 
-```--literalinclude-- ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_3.py
-:language: python
-```
+{{< code file="/_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_3.py" lang="python" >}}
 
 ## When to use sub-launch plans
 
@@ -57,7 +51,4 @@ They are executed as separate top-level entities, allowing for better parallelis
 
 Here is an example of invoking a workflow multiple times through its launch plan:
 
-```--literalinclude-- ../../../_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_4.py
-:language: python
-:emphasize-lines: 2, 15, 18-20
-```
+{{< code file="/_static/includes/core-concepts/workflows/subworkflows-and-sub-launch-plans/example_4.py" lang="python" >}}
