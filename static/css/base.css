@@ -14,6 +14,7 @@
   --menu-indent: 0.75rem;
   --sidebar-width: 380px;
   --header-height: 64px;
+  --tabs-height: 64px;
   --content-width: 1280px;
   --image-width: 880px;
   --union-color: #fcb51f;
@@ -61,7 +62,7 @@ body {
 }
 .container {
   display: flex;
-  height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-height) - var(--tabs-height));
 }
 .sidebar {
   width: var(--sidebar-width);
@@ -75,7 +76,7 @@ body {
 .main-content {
   flex: 1;
   padding: 2rem calc((100vw - var(--content-width)) / 2);
-  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100vh - var(--header-height) - var(--tabs-height));
   overflow-y: auto;
 }
 
