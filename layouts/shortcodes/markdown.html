@@ -19,7 +19,7 @@
         </div>
     {{ end }}
 {{ else }}
-    {{ warnf "[Markdown without container] You specified {{< markdown >}} without having a container for it. This is not necessary, as the page is markdown already. File:%s" 
+    {{ warnf "[Markdown without container] You specified {{< markdown >}} without having a container for it. This is not necessary, as the page is markdown already. File:%s"
             .Page.File.Path }}
     <div class="layout-error">
         <div class="error">

@@ -152,23 +152,21 @@ def intercept(x: list[int], y: list[int], slope: float) -> intercept_value:
     return intercept
 ```
 
-{{< note >}}
-While it's possible to create `NamedTuple`s directly within the code,
-it's often better to declare them explicitly. This helps prevent potential linting errors in tools like mypy.
-
-```python
-def slope() -> NamedTuple("slope_value", slope=float):
-    pass
-```
-{{< /note >}}
+> [!NOTE]
+> While it's possible to create `NamedTuple`s directly within the code,
+> it's often better to declare them explicitly. This helps prevent potential linting errors in tools like mypy.
+>
+> ```python
+> def slope() -> NamedTuple("slope_value", slope=float):
+>     pass
+> ```
 
 You can easily unpack the `NamedTuple` outputs directly within a workflow.
 Additionally, you can also have the workflow return a `NamedTuple` as an output.
 
-{{< note >}}
-Remember that we are extracting individual task execution outputs by dereferencing them.
-This is necessary because `NamedTuple`s function as tuples and require this dereferencing:
-{{< /note >}}
+> [!NOTE]
+> Remember that we are extracting individual task execution outputs by dereferencing them.
+> This is necessary because `NamedTuple`s function as tuples and require this dereferencing:
 
 ```python
 slope_and_intercept_values = NamedTuple("slope_and_intercept_values", [("slope", float), ("intercept", float)])

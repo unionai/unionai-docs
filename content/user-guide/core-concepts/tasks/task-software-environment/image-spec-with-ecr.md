@@ -18,11 +18,12 @@ If you want to store your task container images in an ECR instance in an AWS acc
 
 Unlike GitHub Container Registry, ECR does not allow you to simply push an arbitrarily named image to the registry. Instead, you must first create a repository in the ECR instance and then push the image to that repository.
 
-{{< note "Registry, repository, and image" >}}
-In ECR terminology the **registry** is the top-level storage service. The registry holds a collection of **repositories**. Each repository corresponds to a named image and holds all versions of that image.
-
-When you push an image to a registry, you are actually pushing it to a repository within that registry. Strictly speaking, the term *image* refers to a specific *image version* within that repository.
-{{< /note >}}
+> [!NOTE] Registry, repository, and image
+> In ECR terminology the **registry** is the top-level storage service. The registry holds a collection of **repositories**.
+> Each repository corresponds to a named image and holds all versions of that image.
+>
+> When you push an image to a registry, you are actually pushing it to a repository within that registry.
+> Strictly speaking, the term *image* refers to a specific *image version* within that repository.
 
 This means that you have to decide on the name of your image and create a repository by that name first, before registering your workflow. We will assume the following:
 

@@ -16,11 +16,10 @@ in understanding their data structures upfront before experiencing the value {{<
 {{< var product_upper >}} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
 enabling the serialization/deserialization of Python values to/from a pickle file.
 
-{{< note >}}
-Pickle can only be used to send objects between the exact same Python version.
-For optimal performance, it's advisable to either employ Python types that are supported by {{< var product_upper >}}
-or register a custom transformer, as using pickle types can result in lower performance.
-{{< /note >}}
+> [!NOTE]
+> Pickle can only be used to send objects between the exact same Python version.
+> For optimal performance, it's advisable to either employ Python types that are supported by {{< var product_upper >}}
+> or register a custom transformer, as using pickle types can result in lower performance.
 
 This example demonstrates how you can utilize custom objects without registering a transformer.
 
@@ -37,10 +36,9 @@ import union
 `Superhero` represents a user-defined complex type that can be serialized to a pickle file by {{< var kit_upper >}}
 and transferred between tasks as both input and output data.
 
-{{< note >}}
-Alternatively, you can [turn this object into a dataclass](./dataclass.md) for improved performance.
-We have used a simple object here for demonstration purposes.
-{{< /note >}}
+> [!NOTE]
+> Alternatively, you can [turn this object into a dataclass](./dataclass.md) for improved performance.
+> We have used a simple object here for demonstration purposes.
 
 ```python
 class Superhero:

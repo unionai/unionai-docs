@@ -33,11 +33,11 @@ Ensure that you are logged into the desired AWS account and then select the appr
 > [!NOTE] CloudFormation template
 > All of these buttons launch the same CloudFormation template, just in different regions.
 > The CloudFormation template itself is available at this URL:
-> 
-> [https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml](https://union-public.s3.> amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml)
-> 
-> For details on the functionality enabled by each of the permissions, 
-> see the [release notes](https://github.com/> unionai/union-cloud-infrastructure/releases).
+>
+> [https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml)
+>
+> For details on the functionality enabled by each of the permissions,
+> see the [release notes](https://github.com/unionai/union-cloud-infrastructure/releases).
 
 ### Confirm the details
 

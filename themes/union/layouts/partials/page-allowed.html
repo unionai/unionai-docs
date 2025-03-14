@@ -32,7 +32,7 @@
 {{ end }}
 
 {{-
-    return dict 
+    return dict
         "allowed" (or $isAllowed (and (not hugo.IsProduction) (not .Site.Params.variant_hide_in_development)))
         "excluded" (and $isExcluded (not hugo.IsProduction))
         "development" (and (not $isAllowed) (not hugo.IsProduction))

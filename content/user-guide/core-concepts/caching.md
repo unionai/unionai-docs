@@ -14,12 +14,11 @@ Here's a video with a brief explanation and demo, focused on task caching:
 
 {{< youtube WNkThCp-gqo >}}
 
-```--note--
-* Caching is available and individiually enablable for all nodes *within* a workflow directed acyclic graph (DAG).
-* Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
-* Caching is *not available* for top-level workflows or launch plans (that is, those invoked from UI or CLI).
-* By default, caching is *disabled* on all tasks, subworkflows and sub-launch plans, to avoid unintended consequences when caching executions with side effects. It must be explcitly enabled on any node where caching is desired.
-```
+> [!NOTE]
+> * Caching is available and individiually enablable for all nodes *within* a workflow directed acyclic graph (DAG).
+> * Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
+> * Caching is *not available* for top-level workflows or launch plans (that is, those invoked from UI or CLI).
+> * By default, caching is *disabled* on all tasks, subworkflows and sub-launch plans, to avoid unintended consequences when caching executions with side effects. It must be explcitly enabled on any node where caching is desired.
 
 ## Enabling and configuring caching
 

@@ -47,28 +47,28 @@ The `requests` setting tells the system that the task requires _at least_ the re
 The `limits` setting serves as a hard upper bound on the resource profile of nodes to be scheduled to run the task.
 The task will not be scheduled on a node that exceeds the resource profile specified (in any of the specified attributes).
 
-{{< note "GPUs take only `limits`" >}}
-GPUs should only be specified in the `limits` section of the task decorator:
-
-* You should specify GPU requirements only in `limits`, not in `requests`, because Kubernetes will use the `limits` value as the `requests` value anyway.
-
-* You _can_ specify GPU in both `limits` and `requests` but the two values must be equal.
-
-* You cannot specify GPU `requests` without specifying `limits`.
-  {{< /note >}}
+> [!NOTE] GPUs take only `limits`
+> GPUs should only be specified in the `limits` section of the task decorator:
+>   * You should specify GPU requirements only in `limits`, not in `requests`, because Kubernetes will use the `limits` value as the `requests` value anyway.
+>   * You _can_ specify GPU in both `limits` and `requests` but the two values must be equal.
+>   * You cannot specify GPU `requests` without specifying `limits`.
 
 ## The `accelerator` setting
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 The `accelerator` setting further specifies the *type* of GPU required for the task.
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
 This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
 
+{{< /markdown >}}
 {{< /variant >}}
 
 See [Accelerators](./accelerators.md) for more information.
@@ -84,13 +84,13 @@ This will open a dialog:
 
 ![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-dialog.png)
 
-{{< note "Note on ephemeral storage" >}}
-An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.
-This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on
-ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction.
-{{< /note >}}
+> [!NOTE] Note on ephemeral storage
+> An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.
+> This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on
+> ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction.
 
 {{< variant byoc >}}
+{{< markdown >}}
 
 ## Task resource validation
 
@@ -105,6 +105,7 @@ To make changes to your cluster configuration, go to the [Union Support Portal](
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## The `with_overrides` method

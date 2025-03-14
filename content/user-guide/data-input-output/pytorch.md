@@ -140,9 +140,8 @@ def pytorch_checkpoint_wf():
     load(checkpoint=checkpoint)
 ```
 
-{{< note >}}
-`PyTorchCheckpoint` supports serializing hyperparameters of types `dict`, `NamedTuple` and `dataclass`.
-{{< /note >}}
+> [!NOTE]
+> `PyTorchCheckpoint` supports serializing hyperparameters of types `dict`, `NamedTuple` and `dataclass`.
 
 ## Auto GPU to CPU and CPU to GPU conversion
 

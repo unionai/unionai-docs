@@ -37,9 +37,8 @@ def print_message(message: str):
 ## List
 You can access an output list using index notation.
 
-{{< note >}}
-{{< var product_upper >}} currently does not support output promise access through list slicing.
-{{< /note >}}
+> [!NOTE]
+> {{< var product_upper >}} currently does not support output promise access through list slicing.
 
 ```python
 @union.task

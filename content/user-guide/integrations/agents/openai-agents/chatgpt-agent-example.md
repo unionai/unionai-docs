@@ -1866,9 +1866,8 @@ if __name__ == "__main__":
 
 ### Summarize the latest MLOps trend from Medium to Twitter
 
-{{< note >}}
-This example only works in a local environment.
-{{< /note >}}
+> [!NOTE]
+> This example only works in a local environment.
 
 ```python
 # %% [markdown]

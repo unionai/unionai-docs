@@ -20,14 +20,13 @@ In this section we will set up your local environment so that you can start buil
 
 First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
 
-{{< note "Using `uv` as best practice" >}}
-The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
-It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
-
-You can, of course, use other tools,
-but all discussion in these pages will use `uv`,
-so you will have to adapt the directions as appropriate.
-{{< /note >}}
+> [!NOTE] Using `uv` as best practice
+> The `uv` tool is our [recommended package and project manager](https://docs.astral.sh/uv/).
+> It replaces `pip`, `pip-tools`, `pipx`, `poetry`, `pyenv`, `twine`, `virtualenv`, and more.
+>
+> You can, of course, use other tools,
+> but all discussion in these pages will use `uv`,
+> so you will have to adapt the directions as appropriate.
 
 ## Ensure the correct version of Python is installed
 
@@ -39,11 +38,10 @@ You can install it with:
 $ uv python install 3.12
 ```
 
-{{< note "Uninstall higher versions of Python" >}}
-When installing Python packages "as tools" (as we do below with the `{{< var kit_lower >}}`),
-`uv` will default to the latest version of Python available on your system.
-If you have a version `>=3.13` installed, you will need to uninstall it since `{{< var kit_lower >}}` requires `>=3.9,<3.13`.
-{{< /note >}}
+> [!NOTE] Uninstall higher versions of Python
+> When installing Python packages "as tools" (as we do below with the `{{< var kit_lower >}}`),
+> `uv` will default to the latest version of Python available on your system.
+> If you have a version `>=3.13` installed, you will need to uninstall it since `{{< var kit_lower >}}` requires `>=3.9,<3.13`.
 
 ## Install the `{{< var cli_lower >}}` CLI
 
@@ -55,16 +53,15 @@ $ uv tool install {{< var kit_lower >}}
 
 This will make the `{{< var cli_lower >}}` CLI globally available on your system.
 
-{{< note "Add the installation location to your PATH" >}}
-`uv` installs tools in `~/.local/bin` by default.
-Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
-`uv` provides a convenience command to do this: `uv tool update-shell`.
-
-Note that later in this guide we will be running the `{{< var cli_lower >}}` CLI to run your workflows.
-In those cases you will be running `{{< var cli_lower >}}` within the Python virtual environment of your workflow project.
-You will not be using this globally installed instance of `{{< var cli_lower >}}`.
-This instance of `{{< var cli_lower >}}` is only used during the configuration step, below, when no projects yet exist.
-{{< /note >}}
+> [!NOTE] Add the installation location to your PATH
+> `uv` installs tools in `~/.local/bin` by default.
+> Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
+> `uv` provides a convenience command to do this: `uv tool update-shell`.
+>
+> Note that later in this guide we will be running the `{{< var cli_lower >}}` CLI to run your workflows.
+> In those cases you will be running `{{< var cli_lower >}}` within the Python virtual environment of your workflow project.
+> You will not be using this globally installed instance of `{{< var cli_lower >}}`.
+> This instance of `{{< var cli_lower >}}` is only used during the configuration step, below, when no projects yet exist.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -85,12 +82,11 @@ Furthermore, the pushed images will need to be accessible to the Flyte installat
 For example, a public registry like `ghcr.io` with the images set to public, would work).
 {{< /markdown >}}
 
-{{< note "Union simplifies image building and registry" >}}
-With Union you do not need to install Docker, build images, or deal with container registries.
-Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
-See [Union image builder]() for more details.
-{{/* TODO: Add link */}}
-{{< /note >}}
+> [!NOTE] Union simplifies image building and registry
+> With Union you do not need to install Docker, build images, or deal with container registries.
+> Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
+> See [Union image builder]() for more details.
+> {{/* TODO: Add link */}}
 
 {{< markdown >}}
 
@@ -102,15 +98,14 @@ Here we are using a local cluster for experimentation and demonstration purposes
 To set up a local cluster you must first install the `flytectl` CLI.
 {{< /markdown >}}
 
-{{< note "Flytectl vs Pyflyte" >}}
-`flytectl` is different from the `pyflyte`.
-
-`pyflyte` is a Python program and part of the `flytekit` SDK
-It is the primary command-line tool used during Flyte development.
-
-`flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
-(see [Flytectl](../../api-reference/uctl-cli/index.md) for details)
-{{< /note >}}
+> [!NOTE] Flytectl vs Pyflyte
+> `flytectl` is different from the `pyflyte`.
+>
+> `pyflyte` is a Python program and part of the `flytekit` SDK
+> It is the primary command-line tool used during Flyte development.
+>
+> `flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
+> (see [Flytectl](../../api-reference/uctl-cli/index.md) for details)
 
 To install `flytectl`, follow these instructions:
 
@@ -201,12 +196,11 @@ that contains the connection information to connect `pyflyte` (and `flytectl`) t
 
 The local Flyte cluster will be available at `localhost:30080`.
 
-{{< note "Union simplifies the development cycle" >}}
-With Union you do not need to install a local cluster.
-You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
-You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
-See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
-{{< /note >}}
+> [!NOTE] Union simplifies the development cycle
+> With Union you do not need to install a local cluster.
+> You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
+> You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
+> See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
 
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
@@ -228,10 +222,10 @@ $ union create login --serverless
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
 > [!NOTE] These directions apply to Union Serverless
-> To configure a connection to your Union instance in Union BYOC, see the 
-> [BYOC version of this page](https://docs.>union.ai/byoc/quick-start#configure-the-union-cli).
+> To configure a connection to your Union instance in Union BYOC, see the
+> [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
 > To configure a connection to your Union instance in Union BYOK, see the
-> [BYOK version of this page](https://docs.>union.ai/byok/quick-start#configure-the-union-cli).
+> [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -248,7 +242,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 
 > [!NOTE]
 > These directions apply to Union BYOC and BYOK, where you connect to your own dedicated Union instance.
-> To configure a connection to Union Serverless, see the 
+> To configure a connection to Union Serverless, see the
 > [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
@@ -274,12 +268,12 @@ $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workfl
 ```
 
 > [!WARNING]
-> If you have previously used Union, you may have configuration files left over that will interfere with 
+> If you have previously used Union, you may have configuration files left over that will interfere with
 > access to Union Serverless through the `union` CLI tool.
-> Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment 
+> Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment
 > variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on 
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on
 the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 

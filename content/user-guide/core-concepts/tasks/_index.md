@@ -95,7 +95,7 @@ For example, a workflow might contain:
 The ability to build workflows from such a wide variety of heterogeneous tasks makes {{< var product_upper >}} uniquely flexible.
 
 > [!NOTE]
-> Not all parameters are compatible. For example, with specialized plugin task types, some configurations are 
+> Not all parameters are compatible. For example, with specialized plugin task types, some configurations are
 > not available (this depends on task plugin details).
 
 ## Task configuration

@@ -11,8 +11,8 @@ The `uctl` CLI provides functionality for Union administrators to manage Union-s
 It also includes much of the functionality of the [`union` CLI](../union-cli.md), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `union` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
 
 > [!NOTE]
-> If you are not a Union administrator, or if you will be interacting with Union in an environment where 
-> Python is > installed, you should use the [`union` CLI](../union-cli.md) instead.
+> If you are not a Union administrator, or if you will be interacting with Union in an environment where
+> Python is installed, you should use the [`union` CLI](../union-cli.md) instead.
 
 ## Installation
 
@@ -214,7 +214,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 {{< /variant >}}
 * `uctl create {uctl-create/index}` creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
 * `uctl delete {uctl-delete/index}` terminates/deletes various Flyte resources, such as executions and resource attributes.
-* `uctl demo {uctl-demo/index}` provides commands for starting and interacting with a standalone minimal 
+* `uctl demo {uctl-demo/index}` provides commands for starting and interacting with a standalone minimal
                                 local environment for running Flyte.
 * `uctl get {uctl-get/index}` fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
 * `uctl register {uctl-register/index}` registers tasks, workflows, and launch plans from a list of generated serialized files.

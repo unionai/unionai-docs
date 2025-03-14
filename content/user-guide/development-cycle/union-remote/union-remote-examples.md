@@ -82,6 +82,7 @@ The steps above demonstrates the simplest way of registering and running a workf
 For more options and details see [API reference > UnionRemote > Entrypoint](../../../api-reference/union-remote/entrypoint.md).
 
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ## Terminating all running executions for a workflow
 
@@ -216,4 +217,6 @@ latest_success = remote.recent_executions(
     ],
 )
 ```
+
+{{< /markdown >}}
 {{< /variant >}}

@@ -327,9 +327,8 @@ downstream_triggered = LaunchPlan.create(
 ```
 {{/* :lines: 49-53 */}}
 
-{{< note >}}
-The `OnArtifact` object must be attached to a launch plan in order for the launch plan to be triggered by the creation of a new version of the artifact.
-{{< /note >}}
+> [!NOTE]
+> The `OnArtifact` object must be attached to a launch plan in order for the launch plan to be triggered by the creation of a new version of the artifact.
 
 ## Full example code
 

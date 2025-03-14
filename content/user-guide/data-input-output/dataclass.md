@@ -9,6 +9,7 @@ variants: +flyte +serverless +byoc +byok
 When you've multiple values that you want to send across {{< var product_upper >}} entities, you can use a `dataclass`.
 
 {{< variant flyte >}}
+{{< markdown >}}
 
 Flytekit uses the [Mashumaro library](https://github.com/Fatal1ty/mashumaro)
 to serialize and deserialize dataclasses.
@@ -17,25 +18,23 @@ With the 1.14 release, `flytekit` adopted `MessagePack` as the serialization for
 
 In earlier versions, Protobuf’s `struct` converted integer types to floats, requiring users to write boilerplate code to work around this issue.
 
-{{< note >}}
-If you're using Flytekit version < v1.11.1, you will need to add `from dataclasses_json import dataclass_json` to your imports and decorate your dataclass with `@dataclass_json`.
-{{< /note >}}
+> [!NOTE]
+> If you're using Flytekit version < v1.11.1, you will need to add `from dataclasses_json import dataclass_json` to your imports and decorate your dataclass with `@dataclass_json`.
 
-{{< note >}}
-Flytekit version < v1.14.0 will produce protobuf `struct` literal for dataclasses.
+> [!NOTE]
+> Flytekit version < v1.14.0 will produce protobuf `struct` literal for dataclasses.
+>
+> Flytekit version >= v1.14.0 will produce msgpack bytes literal for dataclasses.
+>
+> If you're using Flytekit version >= v1.14.0 and you want to produce protobuf `struct` literal for dataclasses, you can
+> set environment variable  `FLYTE_USE_OLD_DC_FORMAT` to `true`.
+>
+> For more details, you can refer the MSGPACK IDL RFC: https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md
 
-Flytekit version >= v1.14.0 will produce msgpack bytes literal for dataclasses.
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
-If you're using Flytekit version >= v1.14.0 and you want to produce protobuf `struct` literal for dataclasses, you can
-set environment variable  `FLYTE_USE_OLD_DC_FORMAT` to `true`.
-
-For more details, you can refer the MSGPACK IDL RFC: https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md
-{{< /note >}}
-
-{{< note >}}
-To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
-
+{{< /markdown >}}
 {{< /variant >}}
 
 To begin, import the necessary dependencies:
@@ -71,9 +70,8 @@ class Datum:
 
 You can send a `dataclass` between different tasks written in various languages, and input it through the {{< var product_upper >}} UI as raw JSON.
 
-{{< note >}}
-All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
-{{< /note >}}
+> [!NOTE]
+> All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
 
 Once declared, a dataclass can be returned as an output or accepted as an input.
 
@@ -96,6 +94,8 @@ def add(x: Datum, y: Datum) -> Datum:
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
 {{< variant flyte >}}
+{{< markdown >}}
+
 ```python
 @dataclass
 class FlyteTypes:
@@ -144,8 +144,10 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     return o1, o2
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 
 ```python
 @dataclass
@@ -195,6 +197,7 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     return o1, o2
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 
 To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
@@ -204,22 +207,28 @@ $ {{< var cli_lower >}} run dataclass.py add --x dataclass_input.json --y datacl
 ```
 
 {{< variant flyte >}}
+{{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
+
 ```
 pyflyte run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
   add --x dataclass_input.json --y dataclass_input.json
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
+
 ```
 union run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
   add --x dataclass_input.json --y dataclass_input.json
 ```
 
+{{< /markdown >}}
 {{< /variant >}}

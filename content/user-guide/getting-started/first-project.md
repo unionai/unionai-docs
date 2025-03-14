@@ -31,7 +31,7 @@ For this example, let's create a project called **My project**:
 You now have a project on Union named "My Project" (and with project ID `my-project`) into which you can register your workflows.
 
 > [!NOTE] Default project
-> Union provides a default project (called **{{< var default_project >}}**) where all your workflows will be registered > unless you specify otherwise.
+> Union provides a default project (called **{{< var default_project >}}**) where all your workflows will be registered unless you specify otherwise.
 > In this section, however, we will be using the project we just created, not the default.
 
 {{< /markdown >}}
@@ -57,8 +57,8 @@ You can see the project you just created by going to `http://localhost:30080` in
 ![Welcome to Flyte](/_static/images/user-guide/getting-started/first-project/welcome-to-flyte.png)
 
 > [!NOTE] Default project
-> Flyte provides a default project (called `flytesnacks`) where all your workflows will be 
-> registered unless you > specify otherwise.
+> Flyte provides a default project (called `flytesnacks`) where all your workflows will be
+> registered unless you specify otherwise.
 > In this section, however, we will be using the project we just created, not the default.
 
 {{< /markdown >}}
@@ -84,8 +84,8 @@ The resulting directory will look like this:
 ```
 
 > [!NOTE] Local project directory name same as {{< var product_upper >}} project ID
-> It is good practice to name your local project directory the same as your 
-> {{< var product_upper >}} project ID, as we have > done here.
+> It is good practice to name your local project directory the same as your
+> {{< var product_upper >}} project ID, as we have done here.
 
 Next, let's look at the contents of the local project directory.
 Continue to [Understanding the code](understanding-the-code.md).

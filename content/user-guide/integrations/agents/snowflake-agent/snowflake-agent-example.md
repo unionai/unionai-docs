@@ -76,13 +76,12 @@ snowflake_task_insert_query = SnowflakeTask(
 )
 ```
 
-{{< note >}}
-Make sure to create a secret for the python task to access the Snowflake table.
-
-```shell
-$ unionai create secret snowflake --value-file <SNOWFLAKE_PRIVATE_KEY>
-```
-{{< /note >}}
+> [!NOTE]
+> Make sure to create a secret for the python task to access the Snowflake table.
+>
+> ```shell
+> $ unionai create secret snowflake --value-file <SNOWFLAKE_PRIVATE_KEY>
+> ```
 
 ```python
 image = union.ImageSpec(

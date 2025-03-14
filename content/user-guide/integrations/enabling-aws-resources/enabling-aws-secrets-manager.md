@@ -6,9 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Enabling AWS Secrets Manager
 
-```--note--
-This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager.
-```
+> [!NOTE]
+> This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the 
+> [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager.
 
 To enable your code to access secrets from AWS Secrets Manager you will need to
 
@@ -25,10 +25,9 @@ Contact the Union team if you are unsure.
 
 ## Create your secrets
 
-{{< note >}}
-Secrets must be defined within the same region as your Union data plane.
-For example, if your Union data plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
-{{< /note >}}
+> [!NOTE]
+> Secrets must be defined within the same region as your Union data plane.
+> For example, if your Union data plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
 
 Create your secrets in **AWS Secrets Manager** (see the [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) for details):
 
@@ -58,18 +57,17 @@ A secret ARN looks like this:
 arn:aws:secretsmanager:<Region>:<AccountId>:secret:<SecretName>-<SixRandomCharacters>
 ```
 
-{{< note >}}
-You will need your secret ARN when you access your secret from within your code.
-Specifically, you will need to divide it into two strings:
-
-* **`SECRET_GROUP`**: The part of the ARN up to and including `:secret:`
-Above, it is `arn:aws:secretsmanager:<Region>:<AccountId>:secret:`.
-
-* **`SECRET_KEY`**: The part of the ARN after `:secret:`
-Above, it is `<SecretName>-<SixRandomCharacters>`.
-
-See [Using AWS secrets in your Flyte code](./enabling-aws-secrets-manager.md#using-aws-secrets-in-your-flyte-code) for details on how these are used.
-{{< /note >}}
+> [!NOTE]
+> You will need your secret ARN when you access your secret from within your code.
+> Specifically, you will need to divide it into two strings:
+>
+> * **`SECRET_GROUP`**: The part of the ARN up to and including `:secret:`
+> Above, it is `arn:aws:secretsmanager:<Region>:<AccountId>:secret:`.
+>
+> * **`SECRET_KEY`**: The part of the ARN after `:secret:`
+> Above, it is `<SecretName>-<SixRandomCharacters>`.
+>
+> See [Using AWS secrets in your Flyte code](./enabling-aws-secrets-manager.md#using-aws-secrets-in-your-flyte-code) for details on how these are used.
 
 ## Create a policy providing access to your secrets
 
@@ -92,11 +90,10 @@ To provide access to your newly created secrets in your code, you will first nee
 }
 ```
 
-{{< note >}}
-The`Resource`entry takes a wildcard string that must match the ARNs of the secrets in your environment that you want to grant access to.
-This can be all the secrets in your environment (as shown above) or some subset (achieved by making the wildcard match more specific).
-Be sure to substitute the appropriate`<Region>`and`<AccountNumber>`.
-{{< /note >}}
+> [!NOTE]
+> The`Resource`entry takes a wildcard string that must match the ARNs of the secrets in your environment that you want to grant access to.
+> This can be all the secrets in your environment (as shown above) or some subset (achieved by making the wildcard match more specific).
+> Be sure to substitute the appropriate`<Region>`and`<AccountNumber>`.
 
 * Select **Next: Tags** and add tags if you wish.
 * Select **Next: Review** and enter a **Name** for the policy
@@ -106,25 +103,24 @@ Be sure to substitute the appropriate`<Region>`and`<AccountNumber>`.
 It should be at the top of the policy summary page.
 We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<SecretManagerPolicyArn>`.
 
-{{< note >}}
-Alternatively, you can create the policy from the command line like this (remember to substitute the`<Region>`and`<AccountId>`appropriately):
-
-```shell
-$ aws iam create-policy \
-      --policy-name <YourPolicyName> \
-      --policy-document \
-      { \
-        "Version": "2012-10-17", \
-        "Statement": [ \
-          { \
-            "Effect": "Allow", \
-            "Action": "secretsmanager:GetSecretValue", \
-            "Resource": "arn:aws:secretsmanager:<Region>:<AccountId>:secret:*" \
-          } \
-        ]\
-      }
-```
-{{< /note >}}
+> [!NOTE]
+> Alternatively, you can create the policy from the command line like this (remember to substitute the`<Region>`and`<AccountId>`appropriately):
+>
+> ```shell
+> $ aws iam create-policy \
+>       --policy-name <YourPolicyName> \
+>       --policy-document \
+>       { \
+>         "Version": "2012-10-17", \
+>         "Statement": [ \
+>           { \
+>             "Effect": "Allow", \
+>             "Action": "secretsmanager:GetSecretValue", \
+>             "Resource": "arn:aws:secretsmanager:<Region>:<AccountId>:secret:*" \
+>           } \
+>         ]\
+>       }
+> ```
 
 ## Bind the policy to the User Flyte Role
 

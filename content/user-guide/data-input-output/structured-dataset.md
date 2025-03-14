@@ -25,9 +25,8 @@ the `StructuredDataset` type.
 
 This example demonstrates how to work with a structured dataset using {{< var product_upper >}} entities.
 
-{{< note >}}
-To use the `StructuredDataset` type, you only need to import `pandas`. The other imports specified below are only necessary for this specific example.
-{{< /note >}}
+> [!NOTE]
+> To use the `StructuredDataset` type, you only need to import `pandas`. The other imports specified below are only necessary for this specific example.
 
 {{< variant flyte >}}
 {{< note >}}
@@ -204,9 +203,8 @@ def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
    return sd.open(pd.DataFrame).all()
 ```
 
-{{< note >}}
-{{< var product_upper >}} creates a table inside the dataset in the project upon BigQuery query execution.
-{{< /note >}}
+> [!NOTE]
+> {{< var product_upper >}} creates a table inside the dataset in the project upon BigQuery query execution.
 
 ## How to return multiple dataframes from a task?
 For instance, how would a task return say two dataframes:
@@ -323,9 +321,8 @@ def numpy_wf() -> Annotated[StructuredDataset, None, PARQUET]:
     return to_numpy(sd=generate_pd_df_with_str())
 ```
 
-{{< note >}}
-`pyarrow` raises an `Expected bytes, got a 'int' object` error when the dataframe contains integers.
-{{< /note >}}
+> [!NOTE]
+> `pyarrow` raises an `Expected bytes, got a 'int' object` error when the dataframe contains integers.
 
 You can run the code locally as follows:
 

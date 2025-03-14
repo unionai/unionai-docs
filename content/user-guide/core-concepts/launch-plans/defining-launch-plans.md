@@ -18,10 +18,9 @@ In this example, we define a task `my_task` and a workflow `my_workflow`.
 We then define a launch plan for `my_workflow`.
 The launch plan is declared by calling `LaunchPlan.get_or_create` with the workflow name, launch plan name, and the desired default and fixed inputs. If you do not supply a launch plan name, the default launch plan (which has the same name as the workflow) is assumed.
 
-```--note--
-In the above code the `LaunchPlan` object returned by `get_or_create()` is not assigned to a variable.
-However, you can assign the launch plan object to a variable and reference the variable elsewhere in your code, allowing you to control when the launch plan is invoked. For more details, see [Running launch plans)(running-launch-plans).
-```
+> [!NOTE]
+> In the above code the `LaunchPlan` object returned by `get_or_create()` is not assigned to a variable.
+> However, you can assign the launch plan object to a variable and reference the variable elsewhere in your code, allowing you to control when the launch plan is invoked. For more details, see [Running launch plans)(running-launch-plans).
 
 ## Launch plan inputs
 

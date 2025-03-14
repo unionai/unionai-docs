@@ -6,9 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Enabling Google Secret Manager
 
-```--note--
-This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager.
-```
+> [!NOTE]
+> This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the
+> [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager.
 
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
 All you need to do is:
@@ -103,12 +103,11 @@ At this point, your task code will have access to the secret in the other projec
 * Inside the task code, retrieve the value of the secret with a call to\
 `union.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`
 
-{{< note "GCP secret name vs GCP secret path" >}}
-In your task code, the only difference between using a same-project secret and a cross-project secret is
-
-* With a _same-project secret,_ you can use either the **GCP secret name** or the **GCP secret path** as the value of the parameter `union.Secret.group`.
-* With a _cross-project secret,_ you must use the **GCP secret path** as the value of the parameter `union.Secret.group`.
-{{< /note >}}
+> [!NOTE] GCP secret name vs GCP secret path
+> In your task code, the only difference between using a same-project secret and a cross-project secret is
+>
+> * With a _same-project secret,_ you can use either the **GCP secret name** or the **GCP secret path** as the value of the parameter `union.Secret.group`.
+> * With a _cross-project secret,_ you must use the **GCP secret path** as the value of the parameter `union.Secret.group`.
 
 Here is an example:
 

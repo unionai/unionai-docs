@@ -82,11 +82,10 @@ logger:
   level: 1
 ```
 
-{{< note >}}
-Note that the value of`clientSecretEnvVar`(in his case, `UNION_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
-
-It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
-{{< /note >}}
+> [!NOTE]
+> Note that the value of`clientSecretEnvVar`(in his case, `UNION_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
+>
+> It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
 
 ## Set up your CI/CD configuration file
 
@@ -152,22 +151,21 @@ jobs:
             --version ${{ github.sha }}
 ```
 
-{{< note >}}
-Note this section:
-
-```yaml
-- name: Register
-  env:
-    UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
-```
-
-The first instance of the name`UNION_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
-
-Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.UNION_APP_SECRET.`
-
-You will also see other secrets and environment variables accessed in this configuration file.
-These are related to the container build process, project name and so forth.
-For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
-{{< /note >}}
+> [!NOTE]
+> Note this section:
+>
+> ```yaml
+> - name: Register
+>   env:
+>     UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
+> ```
+>
+> The first instance of the name`UNION_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
+>
+> Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.UNION_APP_SECRET.`
+>
+> You will also see other secrets and environment variables accessed in this configuration file.
+> These are related to the container build process, project name and so forth.
+> For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
 
 Once this is set up, every push to the main branch in you repository will build and deploy your project to Union.

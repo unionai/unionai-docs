@@ -43,16 +43,15 @@ You can then activate the virtual environment with:
 source .venv/bin/activate
 ```
 
-{{< note "`activate` vs `uv run`" >}}
-When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
-
-To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
-
-`uv run union ...`
-
-Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
-In our examples we assume that you are doing the latter.
-{{< /note >}}
+> [!NOTE] `activate` vs `uv run`
+> When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
+>
+> To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
+>
+> `uv run union ...`
+>
+> Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
+> In our examples we assume that you are doing the latter.
 
 Having installed your dependencies in your local environment, you can now [run your workflows locally using `union run`](./running-your-code.md).
 

@@ -4,7 +4,7 @@
     {{ range $idx, $tab := .Scratch.Get "tabs" }}
         <sl-tab slot="nav" panel="{{ .name }}">{{ .name }}</sl-tab>
     {{ end }}
-  
+ 
     {{ range $idx, $tab := .Scratch.Get "tabs" }}
         <sl-tab-panel name="{{ .name }}">{{ .content }}</sl-tab-panel>
     {{ end }}

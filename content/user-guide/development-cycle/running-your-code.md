@@ -20,13 +20,15 @@ The `union` CLI provides a set of commands that allow you to deploy and run your
 2. `union run --remote`: For deploying and running a single script immediately in the cloud on Union.
 3. `union register`: For deploying multiple scripts to Union and running them from the Web interface.
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 4. `union package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
 
-```--note--
-In some cases, you may want to test your code in a local cluster before deploying it to Union.
-This step corresponds to using the commands 2, 3, or 4, but targeting your local cluster instead of Union.
-For more details, see [Running in a local cluster](./running-in-a-local-cluster.md).
-```
+> [!NOTE]
+> In some cases, you may want to test your code in a local cluster before deploying it to Union.
+> This step corresponds to using the commands 2, 3, or 4, but targeting your local cluster instead of Union.
+> For more details, see [Running in a local cluster](./running-in-a-local-cluster.md).
+
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Running a script in local Python with `union run`

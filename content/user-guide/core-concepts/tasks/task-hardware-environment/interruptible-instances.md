@@ -6,11 +6,10 @@ variants: +flyte +serverless +byoc +byok
 
 # Interruptible instances
 
-{{< note >}}
-In AWS, the term *spot instance* is used.
-In GCP, the equivalent term is *spot vm*.
-Here we use the term *interruptible instance* generically for both providers.
-{{< /note >}}
+> [!NOTE]
+> In AWS, the term *spot instance* is used.
+> In GCP, the equivalent term is *spot vm*.
+> Here we use the term *interruptible instance* generically for both providers.
 
 An interruptible instance is a machine instance made available to your cluster by your cloud provider that is not guaranteed to be always available.
 As a result, interruptible instances are cheaper than regular instances.

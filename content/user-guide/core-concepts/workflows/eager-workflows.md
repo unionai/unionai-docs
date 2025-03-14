@@ -6,10 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Eager workflows
 
-{{< note >}}
-This feature is experimental and the API is subject to breaking changes.
-If you encounter any issues please reach out to the Union team.
-{{< /note >}}
+> [!NOTE]
+> This feature is experimental and the API is subject to breaking changes.
+> If you encounter any issues please reach out to the Union team.
 
 Eager workflows allow you to create workflows that give you runtime access to
 intermediary task/subworkflow outputs.
@@ -72,24 +71,23 @@ object within the lifetime of the parent eager workflow execution. Note that
 this happens automatically and you don't need to use the `async` keyword when
 defining a task or workflow that you want to invoke within an eager workflow.
 
-{{< note >}}
-With eager workflows, you basically have access to the Python `asyncio`
-interface to define extremely flexible execution graphs. The trade-off is that
-you lose the compile-time type safety that you get with regular static workflows
-and to a lesser extent, dynamic workflows.
-
-We're leveraging Python's native `async` capabilities in order to:
-
-1. Materialize the output of tasks and subworkflows so you can operate
-   on them without spinning up another pod and also determine the shape of the
-   workflow graph in an extremely flexible manner.
-2. Provide an alternative way of achieving concurrency in {{< var product_upper >}}. {{< var product_upper >}} has
-   concurrency built into it, so all tasks and subworkflows will execute concurrently
-   assuming that they don't have any dependencies on each other. However, eager
-   workflows provide a Python-native way of doing this, with the main downside
-   being that you lose the benefits of statically compiled workflows, such as
-   compile-time analysis and first-class data lineage tracking.
-{{< /note >}}
+> [!NOTE]
+> With eager workflows, you basically have access to the Python `asyncio`
+> interface to define extremely flexible execution graphs. The trade-off is that
+> you lose the compile-time type safety that you get with regular static workflows
+> and to a lesser extent, dynamic workflows.
+>
+> We're leveraging Python's native `async` capabilities in order to:
+>
+> 1. Materialize the output of tasks and subworkflows so you can operate
+>    on them without spinning up another pod and also determine the shape of the
+>    workflow graph in an extremely flexible manner.
+> 2. Provide an alternative way of achieving concurrency in {{< var product_upper >}}. {{< var product_upper >}} has
+>    concurrency built into it, so all tasks and subworkflows will execute concurrently
+>    assuming that they don't have any dependencies on each other. However, eager
+>    workflows provide a Python-native way of doing this, with the main downside
+>    being that you lose the benefits of statically compiled workflows, such as
+>    compile-time analysis and first-class data lineage tracking.
 
 Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
@@ -239,9 +237,8 @@ Even though the `raises_exc` exception task raises a `TypeError`, the
 you'll need to specify `EagerException` as the exception type in your `try... except`
 block.
 
-{{< note >}}
-This is a current limitation in the `@eager` workflow implementation.
-{{< /note >}}
+> [!NOTE]
+> This is a current limitation in the `@eager` workflow implementation.
 
 ## Executing eager workflows
 
@@ -317,13 +314,12 @@ async def eager_workflow_sandbox(x: int) -> int:
     return await double(x=out)
 ```
 
-{{< note >}}
-When executing eager workflows on a remote Union cluster, Union will execute the
-latest version of tasks, static workflows, and eager workflows that are on
-the `default_project` and `default_domain` as specified in the `UnionRemote`
-object. This means that you need to pre-register all entities that are
-invoked inside of the eager workflow.
-{{< /note >}}
+> [!NOTE]
+> When executing eager workflows on a remote Union cluster, Union will execute the
+> latest version of tasks, static workflows, and eager workflows that are on
+> the `default_project` and `default_domain` as specified in the `UnionRemote`
+> object. This means that you need to pre-register all entities that are
+> invoked inside of the eager workflow.
 
 ### Registering and running
 
@@ -349,10 +345,9 @@ union --config <path/to/config.yaml> run \
  path/to/eager_workflows.py simple_eager_workflow --x 10
 ```
 
-{{< note >}}
-You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood,
-which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
-{{< /note >}}
+> [!NOTE]
+> You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood,
+> which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
 
 ## Eager workflows in the UI
 

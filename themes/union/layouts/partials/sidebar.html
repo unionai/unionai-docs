@@ -3,7 +3,7 @@
     {{ $current := . }}
     {{ range .Site.Sections }}
         {{ if eq $current.Section .Section }}
-            {{ template "section-tree-nav" (dict "page" . "current" $current) }} 
+            {{ template "section-tree-nav" (dict "page" . "current" $current) }}
         {{ end }}
     {{ end }}
   </ul>
@@ -12,18 +12,18 @@
     document.addEventListener('DOMContentLoaded', function() {
       // Get all section titles
       const sectionTitles = document.querySelectorAll('.section-title');
-      
+     
       // Add click event listener to each section title
       sectionTitles.forEach(title => {
         const parentLi = title.closest('li');
         const sectionPages = parentLi.querySelector('.section-pages');
         const chevron = title.querySelector('.chevron');
-        
+       
         // Set initial chevron state based on whether the section is collapsed
         if (sectionPages.classList.contains('collapsed') && chevron) {
           chevron.classList.add('rotated');
         }
-        
+       
         // Add click event to toggle visibility
         title.addEventListener('click', function(e) {
           // Check if the click was on the chevron

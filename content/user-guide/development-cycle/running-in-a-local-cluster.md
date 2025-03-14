@@ -46,9 +46,8 @@ Later invocations of `uctl` or `union` will need to know the location of the tar
 2. Setting the environment variable `FLYTECTL_CONFIG`to the location of the config file:
    * `export FLYTECTL_CONFIG=~/.uctl/config-sandbox.yaml`
 
-{{< note >}}
-In this guide, we assume that you have set the`FLYTECTL_CONFIG` environment variable in your shell to the location of the configuration file.
-{{< /note >}}
+> [!NOTE]
+> In this guide, we assume that you have set the`FLYTECTL_CONFIG` environment variable in your shell to the location of the configuration file.
 
 ### Start the workflow
 

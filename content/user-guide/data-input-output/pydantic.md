@@ -7,40 +7,38 @@ variants: +flyte +serverless +byoc +byok
 # Pydantic BaseModel
 
 {{< variant flyte >}}
+{{< markdown >}}
+
 `flytekit` version >=1.14 supports natively the `JSON` format that Pydantic `BaseModel` produces,  enhancing the
 interoperability of Pydantic BaseModels with the Flyte type system.
 
-{{< note >}}
-Pydantic BaseModel V2 only works when you are using flytekit version >= v1.14.0.
-{{< /note >}}
+> [!NOTE]
+> Pydantic BaseModel V2 only works when you are using flytekit version >= v1.14.0.
 
 With the 1.14 release, `flytekit` adopted `MessagePack` as the serialization format for Pydantic `BaseModel`,
 overcoming a major limitation of serialization into a JSON string within a Protobuf `struct` datatype like the previous versions do:
 
 to store `int` types, Protobuf's `struct` converts them to `float`, forcing users to write boilerplate code to work around this issue.
 
-{{< note >}}
-By default, `flytekit >= 1.14` will produce `msgpack` bytes literals when serializing, preserving the types defined in your `BaseModel` class.
-If you're serializing `BaseModel` using `flytekit` version >= v1.14.0 and you want to produce Protobuf `struct` literal instead, you can set environment variable `FLYTE_USE_OLD_DC_FORMAT` to `true`.
+> [!NOTE]
+> By default, `flytekit >= 1.14` will produce `msgpack` bytes literals when serializing, preserving the types defined in your `BaseModel` class.
+> If you're serializing `BaseModel` using `flytekit` version >= v1.14.0 and you want to produce Protobuf `struct` literal instead, you can set environment variable `FLYTE_USE_OLD_DC_FORMAT` to `true`.
+>
+> For more details, you can refer the MESSAGEPACK IDL RFC: [https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md](https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md)
 
-For more details, you can refer the MESSAGEPACK IDL RFC: [https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md](https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md)
-{{< /note >}}
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
-{{< note >}}
-To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
+> [!NOTE]
+> You can put Dataclass and FlyteTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
 
-{{< note >}}
-You can put Dataclass and FlyteTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
-{{< /note >}}
-
+{{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok serverless >}}
 
+{{< variant byoc byok serverless >}}
 {{< note >}}
 You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
 {{< /note >}}
-
 {{< /variant >}}
 
 To begin, import the necessary dependencies:
@@ -72,11 +70,13 @@ class Datum(BaseModel):
     z: dict[int, str]
 ```
 
-You can send a `pydantic basemodel` between different tasks written in various languages, and input it through the {{< var product_upper >}} console as raw JSON.
+You can send a `pydantic basemodel` between different tasks written in various
+languages, and input it through the {{< var product_upper >}} console as raw
+JSON.
 
-{{< note >}}
-All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
-{{< /note >}}
+> [!NOTE]
+> All variables in a data class should be **annotated with their type**. Failure
+> to do will result in an error.
 
 Once declared, a dataclass can be returned as an output or accepted as an input.
 
@@ -96,9 +96,12 @@ def add(x: Datum, y: Datum) -> Datum:
 ```
 
 ## {{< var product_upper >}} types
-We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
+
+We also define a data class that accepts `StructuredDataset`, `FlyteFile` and
+`FlyteDirectory`.
 
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 
 ```python
 class FlyteTypes(BaseModel):
@@ -138,8 +141,8 @@ def download_data(res: FlyteTypes):
     assert os.listdir(res.directory) == ["df.parquet"], "Directory contents do not match!"
 ```
 
-A data class supports the usage of data associated with Python types, data classes,
-FlyteFile, FlyteDirectory and StructuredDataset.
+A data class supports the usage of data associated with Python types, data
+classes, FlyteFile, FlyteDirectory and StructuredDataset.
 
 We define a workflow that calls the tasks created above.
 
@@ -152,8 +155,10 @@ def basemodel_wf(x: int, y: int) -> (Datum, FlyteTypes):
     return o1, o2
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 
 ```python
 class UnionTypes(BaseModel):
@@ -207,6 +212,7 @@ def basemodel_wf(x: int, y: int) -> (Datum, UnionTypes):
     return o1, o2
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 
 To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
@@ -216,6 +222,7 @@ $ {{< var cli_lower >}} run dataclass.py basemodel_wf --x 1 --y 2
 ```
 
 {{< variant flyte >}}
+{{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
 ```
@@ -224,8 +231,10 @@ pyflyte run \
   basemodel_wf --x 1 --y 2
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
 ```
@@ -234,4 +243,5 @@ union run \
   basemodel_wf --x 1 --y 2
 ```
 
+{{< /markdown >}}
 {{< /variant >}}

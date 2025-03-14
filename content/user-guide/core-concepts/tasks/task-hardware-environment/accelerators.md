@@ -81,7 +81,7 @@ def my_task():
 
 > [!NOTE] _Accelerators_ and _Accelerated datasets_ are entirely different things
 > An accelerator, in Union, is a specialized hardware device that is used to accelerate the execution of a task.
-> [Accelerated datasets](../../../data-input-output/accelerated-datasets), on the other hand, is a Union feature that > enables quick access to large datasets from within a task.
+> [Accelerated datasets](../../../data-input-output/accelerated-datasets), on the other hand, is a Union feature that enables quick access to large datasets from within a task.
 > These concepts are entirely different and should not be confused.
 
 Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.

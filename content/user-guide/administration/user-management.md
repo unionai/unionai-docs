@@ -59,13 +59,12 @@ A user or application with no policies will have no permissions but will not be 
 For example, in the case of users, they will still appear on the [list of users](#managing-users-and-assigning-policies).
 A user or application with multiple policies will have the union of the permission sets of those policies.
 
-{{< note >}}
-The default roles that come out of the box are hierarchical.
-The **Admin** permission set is a superset of the **Contributor** permission set and the **Contributor** permission set is a superset of **Viewer** permission set.
-This means, for example, that if you make a user an **Admin**, then additionally assigning them **Contributor** or **Viewer** will make no difference.
-But this is only the case due to how these particular roles are defined.
-In general, it is possible to create roles where assigning multiple ones is meaningful.
-{{< /note >}}
+> [!NOTE]
+> The default roles that come out of the box are hierarchical.
+> The **Admin** permission set is a superset of the **Contributor** permission set and the **Contributor** permission set is a superset of **Viewer** permission set.
+> This means, for example, that if you make a user an **Admin**, then additionally assigning them **Contributor** or **Viewer** will make no difference.
+> But this is only the case due to how these particular roles are defined.
+> In general, it is possible to create roles where assigning multiple ones is meaningful.
 
 
 ## Custom roles and policies

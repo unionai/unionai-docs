@@ -48,7 +48,11 @@ sudo vim /etc/secrets/snowflake
 ```
 
 {{< variant byoc byok >}}
+{{< markdown >}}
+
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+
+{{< /markdown >}}
 {{< /variant >}}

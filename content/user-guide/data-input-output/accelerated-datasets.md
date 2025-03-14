@@ -6,11 +6,10 @@ variants: +flyte +serverless +byoc +byok
 
 # Accelerated datasets
 
-{{< note "*Accelerated datasets* and *Accelerators* are entirely different things" >}}
-Accelerated datasets is a Union feature that enables quick access to large datasets from within a task.
-An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators.md), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
-These concepts are entirely different and should not be confused.
-{{< /note >}}
+> [!NOTE] *Accelerated datasets* and *Accelerators* are entirely different things
+> Accelerated datasets is a Union feature that enables quick access to large datasets from within a task.
+> An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators.md), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
+> These concepts are entirely different and should not be confused.
 
 Many of the workflows that you may want to run in Union will involve tasks that use large static assets such as reference genomes, training datasets, or pre-trained models.
 These assets are often stored in an object store and need to be downloaded to the task pod each time before the task can run.
@@ -21,9 +20,8 @@ This allows you to upload your data once and then access it from any task withou
 
 Data items stored in this way are called *accelerated datasets*.
 
-{{< note "Only on S3" >}}
-Currently, this feature is only available for AWS S3.
-{{< /note >}}
+> [!NOTE] Only on S3
+> Currently, this feature is only available for AWS S3.
 
 ## How it works
 

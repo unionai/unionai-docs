@@ -31,10 +31,9 @@ Output:
  -------------------- -------------------- ---------------- -----------------------------------------
 ```
 
-{{< note >}}
-These 3 apps are built into the system.
-Modifying these by editing, deleting or recreating them will disrupt the system.
-{{< /note >}}
+> [!NOTE]
+> These 3 apps are built into the system.
+> Modifying these by editing, deleting or recreating them will disrupt the system.
 
 ## Exporting the spec of an existing app
 

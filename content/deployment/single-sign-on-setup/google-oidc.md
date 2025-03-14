@@ -8,13 +8,15 @@ variants: +flyte +serverless +byoc +byok
 
 To set up your Union instance to use Google OpenID Connect as the identity provider, follow the directions below.
 
-{{< note "Google documentation" >}}
-In this article, we cover the same steps as in the [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation, but with additional directions specific to Union.
-{{< /note >}}
+> [!NOTE] Google Documentation
+> In this article, we cover the same steps as in the
+> [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation,
+> but with additional directions specific to Union.
 
 ## Setting up OAuth 2.0
 
-First, select an existing project or set up a new project in the [Google Cloud Console](https://console.cloud.google.com).
+First, select an existing project or set up a new project in the
+[Google Cloud Console](https://console.cloud.google.com).
 
 1. Navigate to the **Clients** section for [Google Auth Platform](https://console.cloud.google.com/auth/).
 
@@ -22,7 +24,8 @@ First, select an existing project or set up a new project in the [Google Cloud C
 
 3. Under **Create OAuth client ID**, select **Web application** as the application type and assign a name.
 
-4. Under **Authorized redirect URIs**, add an entry with the following callback URI: `https://signin.hosted.unionai.cloud/oauth2/v1/authorize/callback`.
+4. Under **Authorized redirect URIs**, add an entry with the following callback URI:
+   `https://signin.hosted.unionai.cloud/oauth2/v1/authorize/callback`.
 
 5. Click **Create**.
 

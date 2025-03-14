@@ -35,14 +35,18 @@ Along the left side the following sections are available:
     If set and **disabled** then `interruptible=False` is used for this execution.
     {{/* TODO: Add link to interruptible documentation */}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
   * **Service account**: The service account to use for this execution. If not specified, the default is used.
+{{< /markdown >}}
 {{< /variant >}}
 * **Environment variables**: Environment variables that will be available to tasks in this workflow execution.
 * **Labels**: Labels to apply to the execution resource.
 * **Notifications**: Notifications configured for this workflow execution.
 {{/* TODO: Add link to notifications documentation */}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 * **Debug**: The workflow execution details for debugging purposes.
+{{< /markdown >}}
 {{< /variant >}}
 
 Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions.md).

@@ -12,11 +12,9 @@ In the example below, to materialize the `BasicArtifact` artifact, the `t1` task
 Note that each time `t1` is executed, it emits a new version of the `BasicArtifact` artifact.
 
 {{< variant byoc byok flyte >}}
-
 {{< note >}}
 To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
 {{< /note >}}
-
 {{< /variant >}}
 
 ```python
@@ -60,7 +58,6 @@ def wf():
         t1(key1=value, date=run_date)
 ```
 
-{{< note >}}
-You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`.
-For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/index.md).
-{{< /note >}}
+> [!NOTE]
+> You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`.
+> For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/index.md).

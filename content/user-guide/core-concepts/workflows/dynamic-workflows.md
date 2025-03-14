@@ -111,9 +111,8 @@ FlytePropeller executes the dynamic task within its Kubernetes pod, resulting in
 When a dynamic task is executed, it generates the entire workflow as its output, termed the *futures file*.
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.
 
-{{< note >}}
-Local execution works when a `@union.dynamic` decorator is used because {{< var kit_upper >}}  treats it as a task that runs with native Python inputs.
-{{< /note >}}
+> [!NOTE]
+> Local execution works when a `@union.dynamic` decorator is used because {{< var kit_upper >}}  treats it as a task that runs with native Python inputs.
 
 Finally, we define a workflow that triggers the dynamic workflow:
 

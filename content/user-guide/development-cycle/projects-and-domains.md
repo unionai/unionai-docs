@@ -13,19 +13,25 @@ Projects define groups of task, workflows, launch plans and other entities that 
 Domains represent distinct steps through which the entities in a project transition as they proceed through the development cycle.
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 Union provides three domains: `development`, `staging`, and `production`.
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 By default, Union provides three domains: `development`, `staging`, and `production`.
 During onboarding, you can configure your Union instance to have different domains.
 Speak to the Union team for more information.
 
+{{< /markdown >}}
 {{< /variant >}}
 
-Projects and domains are orthogonal to each other, meaning that a project has multiple domains and a domain has multiple projects.
+Projects and domains are orthogonal to each other, meaning that a project has
+multiple domains and a domain has multiple projects.
+
 Here is an example arrangement:
 
 |           | Development       | Staging           | Production        |
@@ -36,36 +42,48 @@ Here is an example arrangement:
 
 ## Projects
 
-Projects represent independent workflows related to specific teams, business areas, or applications.
-Each project is isolated from others, but workflows can reference entities (workflows or tasks) from other projects to reuse generalizable resources.
+Projects represent independent workflows related to specific teams, business
+areas, or applications.  Each project is isolated from others, but workflows can
+reference entities (workflows or tasks) from other projects to reuse
+generalizable resources.
 
 
 ## Domains
 
-Domains represent distinct environments orthogonal to the set of projects in your org within Union, such as development, staging, and production.
-These enable dedicated configurations, permissions, secrets, cached execution history, and resource allocations for each environment, preventing unintended impact on other projects and/or domains.
+Domains represent distinct environments orthogonal to the set of projects in
+your org within Union, such as development, staging, and production.  These
+enable dedicated configurations, permissions, secrets, cached execution history,
+and resource allocations for each environment, preventing unintended impact on
+other projects and/or domains.
 
-Using domains allows for a clear separation between environments, helping ensure that development and testing don't interfere with production workflows.
+Using domains allows for a clear separation between environments, helping ensure
+that development and testing don't interfere with production workflows.
 
-A production domain ensures a “clean slate” so that cached development executions do not result in unexpected behavior.
-Additionally, secrets may be configured for external production data sources.
+A production domain ensures a “clean slate” so that cached development
+executions do not result in unexpected behavior.  Additionally, secrets may be
+configured for external production data sources.
 
 
 ## When to use different Union projects?
 
-Projects help group independent workflows related to specific teams, business areas, or applications.
-Generally speaking, each independent team or ML product should have its own Union project.
-Even though these are isolated from one another, teams may reference entities (workflows or tasks) from other Union projects to reuse generalizable resources.
-For example, one team may create a generalizable task to train common model types.
-However, this requires advanced collaboration and common coding standards.
+Projects help group independent workflows related to specific teams, business
+areas, or applications.  Generally speaking, each independent team or ML product
+should have its own Union project.  Even though these are isolated from one
+another, teams may reference entities (workflows or tasks) from other Union
+projects to reuse generalizable resources.  For example, one team may create a
+generalizable task to train common model types.  However, this requires advanced
+collaboration and common coding standards.
 
-When setting up workflows in Union, effective use of **projects** and **domains** is key to managing environments, permissions, and resource allocation.
-Below are best practices to consider when organizing workflows in Union.
+When setting up workflows in Union, effective use of **projects** and
+**domains** is key to managing environments, permissions, and resource
+allocation.  Below are best practices to consider when organizing workflows in
+Union.
 
 
 ## Projects and Domains: The Power of the Project-Domain Pair
 
-Union uses a project-domain pair to create isolated configurations for workflows. This pairing allows for:
+Union uses a project-domain pair to create isolated configurations for
+workflows. This pairing allows for:
 
 * **Dedicated Permissions**: Through Role-Based Access Control (RBAC), users can be assigned roles with tailored permissions—such as contributor or admin—specific to individual project-domain pairs. This allows fine-grained control over who can manage or execute workflows within each pair, ensuring that permissions are both targeted and secure. More details [here](https://docs.union.ai/byoc/user-guide/administration/user-management#custom-roles-and-policies).
 

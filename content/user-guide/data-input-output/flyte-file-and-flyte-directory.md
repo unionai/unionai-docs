@@ -164,9 +164,8 @@ $ sudo apt-get install libmagic1
 {{< /tab >}}
 {{< /tabs >}}
 
-{{< note >}}
-Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
-{{< /note >}}
+> [!NOTE]
+> Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
 
 {{< markdown >}}
 
@@ -457,10 +456,10 @@ def workflow():
 {{< markdown >}}
 
 > [!NOTE] Upload location
-> With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated > (universally unique) location in Union's internal object store. It cannot be changed.
+> With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
 >
 > With Union BYOC, the upload location is configurable.
-> See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.>union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+> See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -617,10 +616,10 @@ def task_2(ff: FlyteFile):
 >
 > The former calls the `FlyteFile.open()` method and returns an iterator without downloading the file.
 > The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system,
-> and returns a > handle to that file.
+> and returns a handle to that file.
 >
 > Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile`
-> object and > result in an automatic download.
+> object and result in an automatic download.
 >
 > See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
 

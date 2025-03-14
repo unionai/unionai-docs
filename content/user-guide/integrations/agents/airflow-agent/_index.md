@@ -9,9 +9,8 @@ variants: +flyte +serverless +byoc +byok
 [Apache Airflow](https://airflow.apache.org) is a widely used open source platform for managing workflows with a robust ecosystem. Flyte provides an Airflow plugin that allows you to run Airflow tasks as Flyte tasks.
 This allows you to use the Airflow plugin ecosystem in conjunction with Flyte's powerful task execution and orchestration capabilities.
 
-{{< note >}}
-The Airflow agent does not support all [Airflow operators](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html). We have tested many, but if you run into issues, please [file a bug report](https://github.com/flyteorg/flyte/issues/new?assignees=&labels=bug%2Cuntriaged&projects=&template=bug_report.yaml&title=%5BBUG%5D+) or reach out to the Union team.
-{{< /note >}}
+> [!NOTE]
+> The Airflow agent does not support all [Airflow operators](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html). We have tested many, but if you run into issues, please [file a bug report](https://github.com/flyteorg/flyte/issues/new?assignees=&labels=bug%2Cuntriaged&projects=&template=bug_report.yaml&title=%5BBUG%5D+) or reach out to the Union team.
 
 ## Installation
 
@@ -27,10 +26,9 @@ This integration has two components:
 
 ## Example usage
 
-{{< note >}}
-You don't need an Airflow cluster to run Airflow tasks, since Flytekit will
-automatically compile Airflow tasks to Flyte tasks and execute them on the Airflow agent.
-{{< /note >}}
+> [!NOTE]
+> You don't need an Airflow cluster to run Airflow tasks, since Flytekit will
+> automatically compile Airflow tasks to Flyte tasks and execute them on the Airflow agent.
 
 For a usage example, see [Airflow agent example](./airflow-agent-example.md).
 
@@ -39,12 +37,15 @@ For a usage example, see [Airflow agent example](./airflow-agent-example.md).
 Airflow doesn't support local execution natively. However, Flyte compiles Airflow tasks to Flyte tasks,
 which enables you to test Airflow tasks locally in Flytekit's local execution mode.
 
-{{< note >}}
-In some cases, you will need to store credentials in your local environment when testing locally.
-{{< /note >}}
+> [!NOTE]
+> In some cases, you will need to store credentials in your local environment when testing locally.
 
 {{< variant byoc >}}
+{{< markdown >}}
+
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+
+{{< /markdown >}}
 {{< /variant >}}

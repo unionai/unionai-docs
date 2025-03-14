@@ -23,20 +23,20 @@ source .venv/bin/activate
 ```
 
 > [!NOTE] `activate` vs `uv run`
-> When running the `{{< var cli_lower >}}` CLI within your local project you must run it in the virtual 
-> environment _associated > with_ that project.
+> When running the `{{< var cli_lower >}}` CLI within your local project you must run it in the virtual
+> environment _associated with_ that project.
 > This differs from our earlier usage of the tool when
-> [we installed `union` globally](./local-setup.> md#install-the--cli--cli) in order to
-> [set up its configuration](./local-setup.> md#configure-the-connection-to-your--product_full--instance).
-> 
-> To run `{{< var cli_lower >}}` within your project's virtual environment using `uv`, 
-> you can prefix it use the `uv run` > command. For example:
-> 
+> [we installed `union` globally](./local-setup.md#install-the--cli--cli) in order to
+> [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
+>
+> To run `{{< var cli_lower >}}` within your project's virtual environment using `uv`,
+> you can prefix it use the `uv run` command. For example:
+>
 > `uv run {{< var cli_lower >}} ...`
-> 
-> Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then 
+>
+> Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then
 > run the `{{< var cli_lower >}}` command directly.
-> 
+>
 > In our examples we assume that you are doing the latter.
 
 

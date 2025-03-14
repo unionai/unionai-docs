@@ -39,16 +39,20 @@ This section covers developing production-ready workflows for Union.
 * - {doc}`Managing apps <managing-apps>`
   - Create applications to allow external systems to run compute on Union.
 {{< variant serverless >}}
+{{< markdown >}}
 * - {doc}`Accessing AWS S3 buckets <accessing-aws-s3>`
   - Access data in AWS S3 Buckets from Union.
+{{< /markdown >}}
 {{< /variant >}}
 * - {doc}`Task resource validation <task-resource-validation>`
   - How Union handles workflows with unsatisfiable resource requests.
 {{< variant byoc >}}
+{{< markdown >}}
 * - {doc}`Running in a local cluster <running-in-a-local-cluster>`
   - Run your workflows in a local Kubernetes cluster on your machine.
 * - {doc}`CI/CD deployment <ci-cd-deployment>`
   - Automate workflow registration and execution.
+{{< /markdown >}}
 {{< /variant >}}
 * - {doc}`UnionRemote <union-remote>`
   - Programmatically perform Union operations in Python.

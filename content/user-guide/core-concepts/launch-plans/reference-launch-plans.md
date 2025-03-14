@@ -10,9 +10,8 @@ A reference launch plan references previously defined, serialized, and registere
 
 When you create a reference launch plan, be sure to verify that the workflow interface corresponds to that of the referenced workflow.
 
-```--note--
-Reference launch plans cannot be run locally. To test locally, mock them out.
-```
+> [!NOTE]
+> Reference launch plans cannot be run locally. To test locally, mock them out.
 
 ## Example
 
