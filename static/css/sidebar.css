@@ -24,7 +24,7 @@
 }
 .site-nav .section-title {
   /* font-weight: 600; */
-  /* font-size: 1rem; */
+  font-size: 1rem;
   color: var(--text-color);
   display: block;
   padding: 0.375rem var(--menu-indent);
@@ -34,7 +34,7 @@
   display: block;
   padding: 0.375rem var(--menu-indent);
   border-radius: 4px;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 .site-nav .section-pages {
   padding-left: var(--menu-indent);
