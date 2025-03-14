@@ -53,7 +53,13 @@ byok = "Union"
 flyte = "flytekit"
 serverless = "union"
 byoc = "union"
-#byok = "union"
+byok = "union"
+
+[params.key.kit_as]
+flyte = "fl"
+serverless = "union"
+byoc = "union"
+byok = "union"
 
 [params.key.cli_name]
 flyte = "Pyflyte"
@@ -79,14 +85,8 @@ serverless = "uctl"
 byoc = "uctl"
 byok = "uctl"
 
-[params.key.at_task]
-flyte = "@fl.task"
-serverless = "@union.task"
-byoc = "@union.task"
-byok = "@union.task"
-
-[params.key.at_workflow]
-flyte = "@fl.workflow"
-serverless = "@union.workflow"
-byoc = "@union.workflow"
-byok = "@union.workflow"
+[params.key.kit_as]
+flyte = "fl"
+serverless = "union"
+byoc = "union"
+byok = "union"

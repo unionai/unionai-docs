@@ -109,7 +109,7 @@ See [ImageSpec](../development-cycle/image-spec.md) for more information.
 
 ### Tasks
 
-The `{{< key at_task >}}` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
+The `@{{< key kit_as >}}.task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
 A task tasks some input and produces an output.
 When deployed to Union cluster, each task runs in its own Kubernetes pod.
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
@@ -117,15 +117,15 @@ For a full list of task parameters, see [Task parameters](../core-concepts/tasks
 
 ### Workflow
 
-The `{{< key at_workflow >}}` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
+The `@{{< key kit_as >}}.workflow` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
 This function contains references to the tasks defined elsewhere in the code.
 
 A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
 
 When deployed to Union, the workflow function is compiled to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-> [!NOTE] `{{< key at_task >}}` and `{{< key at_workflow >}}` syntax
-> * The `{{< key at_task >}}` and `{{< key at_workflow >}}` decorators will only work on functions at the top-level
+> [!NOTE] `@{{< key kit_as >}}.task` and `@{{< key kit_as >}}.workflow` syntax
+> * The `@{{< key kit_as >}}.task` and `@{{< key kit_as >}}.workflow` decorators will only work on functions at the top-level
 >   scope of the module.
 > * You can invoke tasks and workflows as regular Python functions and even import and use them in
 >   other Python modules or scripts.

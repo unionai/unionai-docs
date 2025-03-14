@@ -78,8 +78,8 @@ But to run them at scale, you will need to deploy them (or as we say, "register"
 
 When task and workflow code is registered:
 
-* The `{{< key at_task >}}` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
-* The `{{< key at_workflow >}}` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
+* The `@{{< key kit_as >}}.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
+* The `@{{< key kit_as >}}.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
 To run the workflow on Union in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
 

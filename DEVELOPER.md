@@ -1,5 +1,5 @@
 <!-- omit from toc -->
-# Local Environment & Developer
+# Local environment & developer
 
 You can run the full environment locally and have live preview and other niceties.
 
@@ -17,9 +17,11 @@ You can run the full environment locally and have live preview and other nicetie
 
       MacOS$ brew install hugo
 
-## Running Locally
+## Building and running locally
 
-    make dev
+```
+$ make dev
+```
 
 This will launch the site in development mode.
 The changes are hot reloaded: just change in your favorite editor and it will refresh immediately on the browser.
@@ -77,19 +79,25 @@ Please refer to [Authoring Content](AUTHOR.md) for more details.
 
 ## Building Production
 
-    make dist
+```
+$ make dist
+```
 
 ### Testing Production Build
 
-You can run a local webserver and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
+You can run a local web server and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
 
 To start a server:
 
-    make serve PORT=<nnnnn>
+```
+$ make serve PORT=<nnnnn>
+```
 
 Example:
 
-    make server PORT=4444
+```
+$ make server PORT=4444
+```
 
 Then you open the browser on `http://localhost:<port>` to see the content. In the example above, it would be `http://localhost:4444/`
 
