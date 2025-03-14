@@ -1,6 +1,6 @@
 {{- $variant := $.Site.Params.variant -}}
-{{- $showVariantNames := $.Site.Params.variant_identify_variant_in_development -}}
-{{- $hideMismatch := .Site.Params.variant_hide_in_development }}
+{{- $showVariantNames := $.Site.Params.highlight_active -}}
+{{- $hideMismatch := not .Site.Params.show_inactive -}}
 {{- $variants := slice -}}
 {{- range .Params -}}
     {{- if strings.Contains . " " -}}
