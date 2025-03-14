@@ -28,8 +28,6 @@ In a local directory, create the following files:
 The file `app.py` contains the app declaration:
 
 ```python
-:caption: app.py
-
 """A Union app with custom code"""
 
 import os
@@ -72,8 +70,6 @@ In this example we include two files containing custom logic: `main.py` and `uti
 The file `main.py` contains the bulk of our custom code:
 
 ```python
-:caption: main.py
-
 """Streamlit App that plots data"""
 import streamlit as st
 from utils import generate_data
@@ -95,8 +91,6 @@ tab2.dataframe(data, height=250, use_container_width=True)
 The file `utils.py` contains a supporting data generating function that is imported into the file above
 
 ```python
-:caption: utils.py
-
 """Function to generate sample data."""
 import numpy as np
 import pandas as pd

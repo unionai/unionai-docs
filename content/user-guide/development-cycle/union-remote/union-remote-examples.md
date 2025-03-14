@@ -11,8 +11,6 @@ variants: +flyte +serverless +byoc +byok
 In the following example we register and run a workflow and retrieve its output:
 
 ```shell
-:caption: A simple project
-
 ├── remote.py
 └── workflow
     ├── __init__.py
@@ -22,7 +20,6 @@ In the following example we register and run a workflow and retrieve its output:
 The workflow code that will be registered and run on Union resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
 
 ```python
-:caption: example.py
 import os
 from union import task, workflow, FlyteFile
 
@@ -42,7 +39,6 @@ def my_workflow(message: str) -> FlyteFile:
 The file `remote.py` contains the `UnionRemote` logic. It is not part of the workflow code, and is meant to be run on your local machine.
 
 ```python
-:caption: remote.py
 from union import UnionRemote
 from workflow.example import my_workflow
 

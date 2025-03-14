@@ -555,6 +555,7 @@ At batch sizes of 48 and 56, the vanilla `transformers` implementation of the Ph
 model will error out with an out-of-memory error, while the Liger kernel implementation
 can still train the model successfully.
 
+{{/* TODO: add image */}}
 ![analysis results](/_static/_tutorials/liger-kernel-finetuning/analysis_results.png)
 
 ## Appendix

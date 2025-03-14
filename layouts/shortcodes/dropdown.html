@@ -5,7 +5,7 @@
 {{ if $icon }}
   {{- $emoji = transform.Emojify (print ":" $icon ":") -}}
 {{ end }}
-<div>
+<div style="margin-bottom: 1rem;">
   <sl-details summary="{{ $emoji }} {{ $title | markdownify }}">
     {{ .Inner | safeHTML }}
   </sl-details>

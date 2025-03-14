@@ -30,8 +30,6 @@ In a local directory, create the following file:
 The file `app.py` contains the app declaration:
 
 ```python
-:caption: app.py
-
 """A simple Union app using Streamlit"""
 
 import union

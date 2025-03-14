@@ -29,8 +29,6 @@ First, we declare the resources, runtime image, and the Scikit-learn model requi
 by the FastAPI app.
 
 ```python
-:caption: app.py
-
 """A Union app that uses FastAPI to serve model created by a Union workflow."""
 
 import os
@@ -82,8 +80,6 @@ During startup, the FastAPI app loads the model using the `SKLEARN_MODEL` enviro
 variable. Then it serves an endpoint
 
 ```python
-:caption: main.py
-
 """Set up the FastAPI app."""
 
 from contextlib import asynccontextmanager
@@ -116,8 +112,6 @@ The training workflow trains a random forest regression and saves it to an Union
 `Artifact`.
 
 ```python
-:caption: train_wf.py
-
 """A Union workflow that trains a model."""
 
 import os
@@ -163,7 +157,6 @@ def train_model() -> Annotated[union.FlyteFile, SklearnModel]:
 To run this example you will need to register and run the workflow first:
 
 ```shell
-:caption: Run the workflow
 $ union run --remote train_wf.py train_model
 ```
 
