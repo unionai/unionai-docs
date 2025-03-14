@@ -62,18 +62,19 @@ Here's a breakdown of these mappings:
 
 This section covers how to manage data input and output in Union.
 
+| Section | Description |
 |----------------------------------------------------|----------------------------------------------------|
 | [`FlyteFile`](./flyte-file-and-flyte-directory.md) | Use `FlyteFile` to easily pass files across tasks. |
-| [`FlyteDirectory](./flyte-file-and-flyte-directory.md) | Use `FlyteDirectory` to easily pass directories across tasks. |
-| [`Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) | Details on how files and directories or downloaded with `FlyteFile` and `FlyteDirectory`. |
-| [`StructuredDataset](./structured-dataset.md) | Details on how `StructuredDataset`is used as a general dataframe type. |
-| [`Dataclass](./dataclass.md) | Details on how to uses dataclasses across tasks. |
-| [`Pydantic BaseModel](./pydantic.md) | Details on how to use pydantic models across tasks. |
-| [`Accessing Attributes](./accessing-attributes.md) | Details on how to directly access attributes on output promises for lists, dictionaries, dataclasses, and more. |
-| [`Enums](./enum.md) | Details on how use Enums across tasks. |
-| [`Pickle](./pickle.md) | Details on how use pickled objects across tasks for generalized typing of complex objects. |
-| [`Pytorch](./pytorch.md) | Details on how use torch tensors and models across tasks. |
-| [`Tensorflow](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
+| [`FlyteDirectory`](./flyte-file-and-flyte-directory.md) | Use `FlyteDirectory` to easily pass directories across tasks. |
+| [`Downloading with FlyteFile and FlyteDirectory`](./downloading-with-ff-and-fd.md) | Details on how files and directories or downloaded with `FlyteFile` and `FlyteDirectory`. |
+| [`StructuredDataset`](./structured-dataset.md) | Details on how `StructuredDataset`is used as a general dataframe type. |
+| [`Dataclass`](./dataclass.md) | Details on how to uses dataclasses across tasks. |
+| [`Pydantic BaseModel`](./pydantic.md) | Details on how to use pydantic models across tasks. |
+| [`Accessing Attributes`](./accessing-attributes.md) | Details on how to directly access attributes on output promises for lists, dictionaries, dataclasses, and more. |
+| [`Enums`](./enum.md) | Details on how use Enums across tasks. |
+| [`Pickle`](./pickle.md) | Details on how use pickled objects across tasks for generalized typing of complex objects. |
+| [`Pytorch`](./pytorch.md) | Details on how use torch tensors and models across tasks. |
+| [`Tensorflow`](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -82,19 +83,20 @@ This section covers how to manage data input and output in Union.
 
 This section covers how to manage data input and output in Union.
 
+| Section | Description |
 |---------------------------------------------------|----------------------------------------------------|
-| [`FlyteFile](./flyte-file-and-flyte-directory.md) | Use `FlyteFile` to easily pass files across tasks. |
-| [`FlyteDirectory](./flyte-file-and-flyte-directory.md) | Use `FlyteDirectory` to easily pass directories across tasks. |
-| [`Downloading with FlyteFile and FlyteDirectory`](./downloading-wi Details on how files and directories or downloaded with `FlyteFile`. |
-| [`StructuredDataset](./structured-dataset.md) | Details on how `StructuredDataset`is used as a general dataframe type. |
-| [`Dataclass](./dataclass.md) | Details on how to uses dataclasses across tasks. |
-| [`Pydantic BaseModel](./pydantic.md) | Details on how to use pydantic models across tasks. |
-| [`Accessing Attributes](./accessing-attributes.md) | Details on how to directly access attributes on output promises for |
-| [`Enums](./enum.md) | Details on how use Enums across tasks. |
-| [`Pickle](./pickle.md) | Details on how use pickled objects across tasks for generalized typ |
-| [`Pytorch](./pytorch.md) | Details on how use torch tensors and models across tasks. |
-| [`Tensorflow](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
-| [`Accelerated datasets](./accelerated-datasets.md) | Upload your data once and access it from any task. |
+| [`FlyteFile`](./flyte-file-and-flyte-directory.md) | Use `FlyteFile` to easily pass files across tasks. |
+| [`FlyteDirectory`](./flyte-file-and-flyte-directory.md) | Use `FlyteDirectory` to easily pass directories across tasks. |
+| [`Downloading with FlyteFile and FlyteDirectory`](./downloading-with-ff-and-fd) | Details on how files and directories or downloaded with `FlyteFile`. |
+| [`StructuredDataset`](./structured-dataset.md) | Details on how `StructuredDataset`is used as a general dataframe type. |
+| [`Dataclass`](./dataclass.md) | Details on how to uses dataclasses across tasks. |
+| [`Pydantic BaseModel`](./pydantic.md) | Details on how to use pydantic models across tasks. |
+| [`Accessing Attributes`](./accessing-attributes.md) | Details on how to directly access attributes on output promises for |
+| [`Enums`](./enum.md) | Details on how use Enums across tasks. |
+| [`Pickle`](./pickle.md) | Details on how use pickled objects across tasks for generalized typ |
+| [`Pytorch`](./pytorch.md) | Details on how use torch tensors and models across tasks. |
+| [`Tensorflow`](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
+| [`Accelerated datasets`](./accelerated-datasets.md) | Upload your data once and access it from any task. |
 
 {{< /markdown >}}
 {{< /variant >}}

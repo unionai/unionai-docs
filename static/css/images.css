@@ -2,3 +2,9 @@ img[title="small"] {
   max-width: 450px;
   height: auto;
 }
+
+img[title="medium"] {
+    max-width: 600px;
+    height: auto;
+  }
+  
