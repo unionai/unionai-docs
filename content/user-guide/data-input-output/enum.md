@@ -18,9 +18,12 @@ You can create a Python Enum type and utilize it as an input or output for a tas
 > Therefore, when defining enums, it's important to design them with the first value as a valid default.
 
 {{< variant flyte >}}
-{{< note >}}
-To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
+{{< markdown >}}
+
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
+
+{{< /markdown >}}
 {{< /variant >}}
 
 We define an enum and a simple coffee maker workflow that accepts an order and brews coffee ☕️ accordingly.

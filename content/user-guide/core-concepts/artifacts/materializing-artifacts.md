@@ -12,9 +12,10 @@ In the example below, to materialize the `BasicArtifact` artifact, the `t1` task
 Note that each time `t1` is executed, it emits a new version of the `BasicArtifact` artifact.
 
 {{< variant byoc byok flyte >}}
-{{< note >}}
-To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
-{{< /note >}}
+{{< markdown >}}
+> [!NOTE]
+> To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
+{{< /markdown >}}
 {{< /variant >}}
 
 ```python

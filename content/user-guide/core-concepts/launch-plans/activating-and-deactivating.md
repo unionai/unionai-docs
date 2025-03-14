@@ -41,11 +41,10 @@ Note that at most one version (and therefore at most one schedule) of a launch p
 Selecting the launch plan version and clicking **Update** activates the launch plan version and schedule.
 The launch plan version and schedule are now activated. The launch plan will be triggered according to the schedule going forward.
 
-{{< warning >}}
-Non-scheduled launch plans cannot be activated via the UI.
-The UI does not support activating launch plans that do not have schedules attached.
-You can activate them with `uctl` or `UnionRemote`.
-{{< /warning >}}
+> [!WARNING]
+> Non-scheduled launch plans cannot be activated via the UI.
+> The UI does not support activating launch plans that do not have schedules attached.
+> You can activate them with `uctl` or `UnionRemote`.
 
 To deactivate a launch plan, navigate to a launch plan with an active schedule, click the **...** icon in the top-right corner of the screen beside **Active launch plan**, and click “Deactivate”.
 
@@ -53,11 +52,10 @@ To deactivate a launch plan, navigate to a launch plan with an active schedule, 
 
 A confirmation modal will appear, allowing you to deactivate the launch plan and its schedule.
 
-{{< warning >}}
-Non-scheduled launch plans cannot be deactivated via the UI.
-The UI does not support deactivating launch plans that do not have schedules attached.
-You can deactivate them with `uctl` or `UnionRemote`.
-{{< /warning >}}
+> [!WARNING]
+> Non-scheduled launch plans cannot be deactivated via the UI.
+> The UI does not support deactivating launch plans that do not have schedules attached.
+> You can deactivate them with `uctl` or `UnionRemote`.
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
@@ -105,4 +103,4 @@ To deactivate a launch plan version using `UnionRemote`:
 {{< code lang="python"
        file="/_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py" >}}
 
-{{/* TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. */}}
+<!-- TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. -->

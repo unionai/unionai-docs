@@ -90,14 +90,12 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 
 `uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
 
+> [!WARNING]
+> If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
+>
+> To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
+
 {{< /markdown >}}
-
-{{< warning >}}
-If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
-
-To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
-{{< /warning >}}
-
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
@@ -294,4 +292,3 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 [`uctl update workflow-execution-config`](./uctl-update/uctl-update-workflow-execution-config.md)
 [`uctl delete workflow-execution-config`](./uctl-delete/uctl-delete-workflow-execution-config.md)
 {{< /multiline >}} |
-

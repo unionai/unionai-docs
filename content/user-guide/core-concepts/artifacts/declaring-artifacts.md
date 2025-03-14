@@ -13,12 +13,14 @@ In order to define a task or workflow that emits an artifact, you must first dec
 In the following example, an artifact called `BasicTaskData` is declared, along with a task that emits that artifact. Since it is a basic artifact, it doesn't have any partitions.
 
 {{< variant byoc byok flyte >}}
-{{< note >}}
-To use the example code on this page, you will need to add your `registry`
-to the `pandas_image` ImageSpec block.
-{{< /note >}}
-{{< /variant >}}
+{{< markdown >}}
 
+> [!NOTE]
+> To use the example code on this page, you will need to add your `registry`
+> to the `pandas_image` ImageSpec block.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ```python
 # basic.py
@@ -88,7 +90,7 @@ def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
 def wf() -> pd.DataFrame:
     return t1()
 ```
-{{/* :emphasize-lines: 1,5,14-15,21-23 */}}
+<!-- :emphasize-lines: 1,5,14-15,21-23 -->
 
 ### Passing a value to `time_partition` by input
 
@@ -114,8 +116,7 @@ BasicArtifact = Artifact(
 
 
 @task(container_image=pandas_image)
-def t1(date: datetime)\
-     -> Annotated[pd.DataFrame, BasicArtifact]:
+def t1(date: datetime) -> Annotated[pd.DataFrame, BasicArtifact]:
     df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
     return BasicArtifact.create_from(df, time_partition=date)
 
@@ -124,7 +125,7 @@ def t1(date: datetime)\
 def wf(run_date: datetime):
     return t1(date=run_date)
 ```
-{{/* :emphasize-lines: 20-21,28 &/}}
+<!-- :emphasize-lines: 20-21,28 -->
 
 ## Artifact with custom partition keys
 
@@ -172,7 +173,7 @@ def wf():
     for value in values:
         t1(key1=value, date=run_date)
 ```
-{{/* :emphasize-lines: 16,35-36 */}}
+<!-- :emphasize-lines: 16,35-36 -->
 
 
 ### Passing a value to a custom partition key by input
@@ -215,7 +216,7 @@ def t1(
 def wf(dt: datetime, val: str):
     t1(key1=val, dt=dt)
 ```
-{{/* :emphasize-lines: 16,34 */}}
+<!-- :emphasize-lines: 16,34 -->
 
 ## Artifact with model card example
 
@@ -257,5 +258,5 @@ def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
 def wf():
     t1()
 ```
-{{/* :emphasize-lines: 4,14-17,26 */}}
+<!-- :emphasize-lines: 4,14-17,26 -->
 

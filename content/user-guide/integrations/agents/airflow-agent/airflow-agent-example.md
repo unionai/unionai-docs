@@ -44,7 +44,7 @@ def bash_sensor():
     op = BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
     op >> t1()
 ```
-{{/* :lines: 11-18 */}}
+<!-- :lines: 11-18 -->
 
 
 Use the Airflow `FileSensor` to wait for a file to appear before running the task:
@@ -87,7 +87,7 @@ def bash_sensor():
     op = BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
     op >> t1()
 ```
-{{/* :lines: 24-27 */}}
+<!-- :lines: 24-27 -->
 
 Use the Airflow `BashOperator` to run a bash command:
 
@@ -129,4 +129,4 @@ def bash_sensor():
     op = BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
     op >> t1()
 ```
-{{/* :lines: 33-36 */}}
+<!-- :lines: 33-36 -->

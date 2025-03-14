@@ -377,7 +377,7 @@ def tweet_wf(url: str = "https://medium.com/tag/flyte"):
 if __name__ == "__main__":
     tweet_wf()
 ```
-{{/* :lines: 11-15 */}}
+<!-- :lines: 11-15 -->
 
 You have to specify your `name`, `openai_organization` and `chatgpt_config`.
 
@@ -750,7 +750,7 @@ def tweet_wf(url: str = "https://medium.com/tag/flyte"):
 if __name__ == "__main__":
     tweet_wf()
 ```
-{{/* :lines: 27-50 */}}
+<!-- :lines: 27-50 -->
 
 You can execute the workflow locally.
 
@@ -1119,7 +1119,7 @@ def tweet_wf(url: str = "https://medium.com/tag/flyte"):
 if __name__ == "__main__":
     tweet_wf()
 ```
-{{/* :lines: 56-58 */}}
+<!-- :lines: 56-58 -->
 
 ## ChatGPT summary bot
 These examples show you a real use case of ChatGPT in the production mode.
@@ -1493,7 +1493,7 @@ def tweet_wf(url: str = "https://medium.com/tag/flyte"):
 if __name__ == "__main__":
     tweet_wf()
 ```
-{{/* :lines: 69-140 */}}
+<!-- :lines: 69-140 -->
 
 ### Summarize Flyte's latest YouTube Video to Slack
 
@@ -1862,7 +1862,7 @@ def tweet_wf(url: str = "https://medium.com/tag/flyte"):
 if __name__ == "__main__":
     tweet_wf()
 ```
-{{/* :lines: 146-271 */}}
+<!-- :lines: 146-271 -->
 
 ### Summarize the latest MLOps trend from Medium to Twitter
 
@@ -2234,4 +2234,4 @@ def tweet_wf(url: str = "https://medium.com/tag/flyte"):
 if __name__ == "__main__":
     tweet_wf()
 ```
-{{/* :lines: 277-363 */}}
+<!-- :lines: 277-363 -->

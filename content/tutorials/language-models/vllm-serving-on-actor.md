@@ -45,7 +45,7 @@ The source code for this tutorial can be found [here {octicon}`mark-github`](htt
 {{< /markdown >}}
 {{< /dropdown >}}
 
-{{/* TODO: add image */}}
+<!-- TODO: add image -->
 ![Flyte Deck Example](/_static/_tutorials/vllm-serving-on-actor/diagram.png)
 
 ## Creating Secrets to Pull Hugging Face Models

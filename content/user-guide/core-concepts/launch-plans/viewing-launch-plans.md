@@ -70,4 +70,4 @@ See the [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
 Use the method `UnionRemote.client.list_launch_plans_paginated` to get the list of launch plans.
 
-{{/* TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. */}}
+<!-- TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. -->

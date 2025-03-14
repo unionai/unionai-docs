@@ -6,14 +6,15 @@ variants: +flyte +serverless +byoc +byok
 
 # Connecting workflows with artifact event triggers
 
-In the following example, we define an upstream workflow and a downstream workflow, and define a [trigger](../launch-plans/reactive-workflows.md) in a launch plan to connect the two workflows via an [artifact event](../launch-plans/reactive-workflows.md#artifact-events).
+In the following example, we define an upstream workflow and a downstream workflow, and define a [trigger](../launch-plans/reactive-workflows/) in a launch plan to connect the two workflows via an [artifact event](../launch-plans/reactive-workflows#artifact-events).
 
 ## Imports
 
 {{< variant byoc byok flyte >}}
-{{< note >}}
-To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
-{{< /note >}}
+{{< markdown >}}
+> [!NOTE]
+> To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.
+{{< /markdown >}}
 {{< /variant >}}
 
 First we import the required packages:
@@ -75,7 +76,7 @@ downstream_triggered = LaunchPlan.create(
     trigger=on_upstream_artifact
 )
 ```
-{{/* lines: 1-7 */}}
+<!-- lines: 1-7 -->
 
 
 ## Upstream artifact and workflow definition
@@ -136,7 +137,7 @@ downstream_triggered = LaunchPlan.create(
     trigger=on_upstream_artifact
 )
 ```
-{{/* lines: 13-31 */}}
+<!-- lines: 13-31 -->
 
 ## Artifact event definition
 
@@ -199,7 +200,7 @@ downstream_triggered = LaunchPlan.create(
     trigger=on_upstream_artifact
 )
 ```
-{{/* :lines: 34-36 */}}
+<!-- :lines: 34-36 -->
 
 ## Downstream workflow definition
 
@@ -262,7 +263,7 @@ downstream_triggered = LaunchPlan.create(
     trigger=on_upstream_artifact
 )
 ```
-{{/* :lines: 34-36 :lines: 39-46 */}}
+<!-- :lines: 34-36 :lines: 39-46 -->
 
 ## Launch plan with trigger definition
 
@@ -325,7 +326,7 @@ downstream_triggered = LaunchPlan.create(
     trigger=on_upstream_artifact
 )
 ```
-{{/* :lines: 49-53 */}}
+<!-- :lines: 49-53 -->
 
 > [!NOTE]
 > The `OnArtifact` object must be attached to a launch plan in order for the launch plan to be triggered by the creation of a new version of the artifact.

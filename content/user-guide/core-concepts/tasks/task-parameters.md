@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 You pass the following parameters to the `@union.task` decorator:
 
-{{/* TODO: consider organizing by category rather than alphabetically. */}}
+<!-- TODO: consider organizing by category rather than alphabetically. -->
 
 * `accelerator`: The accelerator to use for this task.
   For more information, see [Specifying accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html#specifying-accelerators).

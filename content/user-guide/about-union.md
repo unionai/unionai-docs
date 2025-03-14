@@ -57,7 +57,8 @@ You can try out Flyte's technology:
 
 * In the cloud with [Union Serverless](https://signup.union.ai).
 * On your machine with a [local Flyte cluster]().
-{{/* TODO: add link */}}
+
+<!-- TODO: add link ^ -->
 
 For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/index.md).
 

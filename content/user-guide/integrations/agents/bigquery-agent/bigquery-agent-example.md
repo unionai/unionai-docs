@@ -77,7 +77,7 @@ def full_bigquery_wf(version: int) -> pd.DataFrame:
 # Check query result on bigquery console: `https://console.cloud.google.com/bigquery`
 #
 ```
-{{/* :lines: 7-10 */}}
+<!-- :lines: 7-10 -->
 
 This is the world's simplest query. Note that in order for registration to work properly, you'll need to give your BigQuery task a name that's unique across your project/domain for your Union deployment.
 
@@ -150,7 +150,7 @@ def full_bigquery_wf(version: int) -> pd.DataFrame:
 # Check query result on bigquery console: `https://console.cloud.google.com/bigquery`
 #
 ```
-{{/* :lines: 16-26 */}}
+<!-- :lines: 16-26 -->
 
 Of course, in real world applications, we are usually more interested in using BigQuery to query a dataset.
 In this case we use crypto_dogecoin data, which is a public dataset in BigQuery [here](https://console.cloud.google.com/bigquery?project=bigquery-public-data&page=table&d=crypto_dogecoin&p=bigquery-public-data&t=transactions).
@@ -226,7 +226,7 @@ def full_bigquery_wf(version: int) -> pd.DataFrame:
 # Check query result on bigquery console: `https://console.cloud.google.com/bigquery`
 #
 ```
-{{/* :lines: 38-47 */}}
+<!-- :lines: 38-47 -->
 
 The `StructuredDataset` transformer can convert query result to a `pandas` dataframe here.
 We can also change `pandas.datafram"` to `pyarrow.Table`, and convert the result to an Arrow table.
@@ -300,6 +300,6 @@ def full_bigquery_wf(version: int) -> pd.DataFrame:
 # Check query result on bigquery console: `https://console.cloud.google.com/bigquery`
 #
 ```
-{{/* :lines: 54-62 */}}
+<!-- :lines: 54-62 -->
 
 You can check the query result on the [BigQuery console](https://console.cloud.google.com/bigquery).

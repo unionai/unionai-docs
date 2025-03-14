@@ -9,9 +9,9 @@ variants: +flyte +serverless +byoc +byok
 Union lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
 using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne).
 
-```--warning--
-Serving on Union is an experimental feature. The API is subject to change.
-```
+> [!WARNING]
+> Serving on Union is an experimental feature. The API is subject to change.
+
 
 ## Example app
 
@@ -59,7 +59,6 @@ app = union.app.App(
 )
 ```
 
-
 Here the `App` constructor is initialized with the following parameters:
 
 * `name`: The name of the app. This name will be displayed in app listings (via CLI and UI) and used to refer to the app when deploying and stopping.
@@ -78,9 +77,10 @@ There are a few additional available parameters that we do not use in this examp
 * `inputs`: A `List` of `union.app.Input` objects. Used to provide default inputs to the app on startup.
 * `requests`: A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@union.task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
 * `min_replicas`: The minimum number of replica containers permitted for this app.
-  This defines the lower bound for auto-scaling the app. The default is 0 {{/* TODO: (see [App autoscaling]() for details) */}}.
+  This defines the lower bound for auto-scaling the app. The default is 0 <!-- TODO: (see [App autoscaling]() for details) -->.
 * `max_replicas`: The maximum number of replica containers permitted for this app.
-  This defines the upper bound for auto-scaling the app. The default is 1 {{/* TODO: (see [App autoscaling]() for details) */}}.
+  This defines the upper bound for auto-scaling the app. The default is 1 <!-- TODO: (see [App autoscaling]() for details) -->.
+
 
 ## Deploy the app
 
@@ -89,7 +89,6 @@ Deploy the app with:
 ```shell
 $ union deploy apps APP_FILE APP_NAME
 ```
-
 
 * `APP_FILE` is the Python file that contains one or more app declarations.
 * `APP_NAME` is the name of (one of) the declared apps in APP_FILE. The name of an app is the value of the `name` parameter passed into the `App` constructor.
@@ -103,7 +102,6 @@ In this case, we do the following:
 $ union deploy apps app.py streamlit-hello
 ```
 
-
 This will return output like the following:
 
 ```shell
@@ -111,10 +109,10 @@ This will return output like the following:
 Created Endpoint at: https://withered--firefly--8ca31.apps.demo.hosted.unionai.cloud/
 ```
 
-
 Click on the displayed endpoint to go to the app:
 
 ![A simple app](/_static/images/user-guide/core-concepts/serving/streamlit-hello.png)
+
 
 ## Viewing deployed apps
 
@@ -135,7 +133,6 @@ You can also view all apps deployed in your Union instance from the command-line
 ```shell
 $ union get apps
 ```
-
 
 This will display the app list:
 
@@ -159,5 +156,4 @@ To stop an app from the command-line, perform the following command:
 $ union stop apps --name APP_NAME
 ```
 
-
-* `APP_NAME` is the name of an app deployed on the Union instance.
+`APP_NAME` is the name of an app deployed on the Union instance.

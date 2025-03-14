@@ -118,7 +118,6 @@ To register the workflow to Union, in the local project root, run:
 $ union register workflows/imagespec-simple-example.py
 ```
 
-
 `union` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
 It will then register the workflow to Union.
 
@@ -133,13 +132,12 @@ See [Configuring a package's access control and visibility](https://docs.github.
 
 Assuming your image is publicly accessible, you can now run the workflow on Union by clicking **Launch Workflow**.
 
-{{< warning >}}
-If you try to run a workflow that uses a private container image or an image that is inaccessible for some other reason, the system will return an error:
-
-```
-... Failed to pull image ...
-... Error: ErrImagePull
-... Back-off pulling image ...
-... Error: ImagePullBackOff
-```
-{{< /warning >}}
+> [!WARNING] Make sure your image is accessible
+> If you try to run a workflow that uses a private container image or an image that is inaccessible for some other reason, the system will return an error:
+>
+> ```
+> ... Failed to pull image ...
+> ... Error: ErrImagePull
+> ... Back-off pulling image ...
+> ... Error: ImagePullBackOff
+> ```

@@ -56,7 +56,7 @@ if __name__ == "__main__":
 # export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
 # ```
 ```
-{{/* :lines: 9-10 */}}
+<!-- :lines: 9-10 -->
 
 Next, create a FileSensor task:
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 # export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
 # ```
 ```
-{{/* :lines: 16 */}}
+<!-- :lines: 16 -->
 
 To use the FileSensor created in the previous step, you must specify the `path` parameter. In the sandbox, you can use the S3 path:
 
@@ -156,7 +156,7 @@ if __name__ == "__main__":
 # export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
 # ```
 ```
-{{/* :lines: 23-34 */}}
+<!-- :lines: 23-34 -->
 
 You can also use the S3 or GCS file system. We have already set the minio credentials in the agent by default. If you test the sandbox example locally, you will need to set the AWS credentials in your environment variables:
 

@@ -14,7 +14,7 @@ If you have not already done so, follow the [Getting started](../getting-started
 
 The `union` CLI provides a set of commands that allow you to deploy and run your code at different stages of the development cycle:
 
-{{/* TODO: Link to the union commands below to the union CLI reference section */}}
+<!-- TODO: Link to the union commands below to the union CLI reference section -->
 
 1. `union run`: For deploying and running a single script immediately in your local Python environment.
 2. `union run --remote`: For deploying and running a single script immediately in the cloud on Union.

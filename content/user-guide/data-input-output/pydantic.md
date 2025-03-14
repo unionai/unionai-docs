@@ -36,9 +36,12 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 {{< /variant >}}
 
 {{< variant byoc byok serverless >}}
-{{< note >}}
-You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
-{{< /note >}}
+{{< markdown >}}
+
+> [!NOTE]
+> You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
+
+{{< /markdown >}}
 {{< /variant >}}
 
 To begin, import the necessary dependencies:

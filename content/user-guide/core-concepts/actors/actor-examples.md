@@ -48,7 +48,7 @@ def distance_add_wf(point_a: list[int], point_b: list[int]) -> float:
 def is_even_wf(point_a: list[int]) -> list[bool]:
     return fl.map_task(is_even)(number=point_a)
 ```
-{{/*:emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24 */}}
+<!--:emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24 -->
 
 > [!NOTE]
 > The `union` package is a superset of `flytekit` and the following examples use `union` to define Flyte tasks, workflows, resources, etc.

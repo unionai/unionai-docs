@@ -80,15 +80,12 @@ You will also need access to a container registry where you can push your images
 Furthermore, the pushed images will need to be accessible to the Flyte installation you are using
 (The registry must be accessible and the images themselves must also have the appropriate permissions.
 For example, a public registry like `ghcr.io` with the images set to public, would work).
-{{< /markdown >}}
 
 > [!NOTE] Union simplifies image building and registry
 > With Union you do not need to install Docker, build images, or deal with container registries.
 > Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
-> See [Union image builder]() for more details.
-> {{/* TODO: Add link */}}
+> See [Union image builder]() for more details. <!-- TODO: Add link -->
 
-{{< markdown >}}
 
 ## Install `flytectl` to set up a local cluster
 
@@ -96,7 +93,6 @@ For production use you will need to install Flyte in your cloud infrastructure (
 Here we are using a local cluster for experimentation and demonstration purposes.
 
 To set up a local cluster you must first install the `flytectl` CLI.
-{{< /markdown >}}
 
 > [!NOTE] Flytectl vs Pyflyte
 > `flytectl` is different from the `pyflyte`.
@@ -110,7 +106,7 @@ To set up a local cluster you must first install the `flytectl` CLI.
 To install `flytectl`, follow these instructions:
 
 
-
+{{< /markdown >}}
 {{< tabs >}}
 {{< tab "macOS" >}}
 {{< markdown >}}
@@ -157,8 +153,10 @@ $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 
 To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Windows" >}}
+{{< markdown >}}
 
 To install `flytectl` on Windows, use `curl` , or download the binary manually.
 
@@ -177,7 +175,7 @@ To download manually, see the [`flytectl` releases](https://github.com/flyteorg/
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
-
+{{< markdown >}}
 
 ## Start Docker and the local cluster
 
@@ -202,6 +200,7 @@ The local Flyte cluster will be available at `localhost:30080`.
 > You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
 > See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
@@ -246,7 +245,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 > [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
-{{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
+<!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -275,7 +274,7 @@ $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workfl
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on
 the format of the `yaml` file.
-{{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
+<!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -303,7 +302,7 @@ $ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_work
 ```
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
-{{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
+<!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
 {{< /markdown >}}
 {{< /variant >}}

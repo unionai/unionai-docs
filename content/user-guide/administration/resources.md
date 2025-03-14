@@ -92,7 +92,7 @@ Under the hood, Union uses Kubernetes to run workloads. To deliver multi-tenancy
 
 Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/policy/resource-quotas/) is set for each resource type (memory, CPU, GPU). This dashboard displays the current point-in-time quota consumption for memory, CPU, and GPU. Quotas are defined as part of the set-up of the instance types in your data plane. To change them, talk to the Union team.
 
-{{/* TODO: Add section back in when we have screenshots for specific percentage examples
+<!-- TODO: Add section back in when we have screenshots for specific percentage examples
 
 ### Examples
 
@@ -114,7 +114,7 @@ Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashb
 
 ![Resource Quotas 100%](/_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
 
-*/}}
+-->
 
 ### Quota Consumption
 

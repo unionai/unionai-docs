@@ -490,7 +490,7 @@ However, you can change the upload location by setting the raw data prefix to yo
 If you would like files or directories to be uploaded to your own bucket, you can specify the AWS, GCS, or Azure bucket in the **raw data prefix** parameter at the workflow level on registration or per execution on the command line or in the UI.
 This setting can be done at the workflow level on registration or per execution on the command line or in the UI.
 
-{{/* TODO See [Raw data prefix]() for more information. */}}
+<!-- TODO See [Raw data prefix]() for more information. -->
 
 Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
 
@@ -635,7 +635,7 @@ def task_2(ff: FlyteFile):
 
 This method is typically used when you want to download the file without immediately reading it.
 
-{{/* TODO: Explain:
+<!-- TODO: Explain:
 classmethod FlyteFile.from_source()
 classmethod FlyteFile.new_remote_file()
 
@@ -646,7 +646,7 @@ classmethod FlyteDirectory.new_remote()
 FlyteDirectory.crawl()
 FlyteDirectory.new_dir()
 FlyteDirectory.new_file()
-*/}}
+-->
 
 ## Typed aliases
 

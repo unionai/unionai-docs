@@ -15,9 +15,12 @@ To streamline the communication between {{< var product_upper >}} tasks, particu
 At times, you may find the need to pass tensors and modules (models) within your workflow. Without native support for PyTorch tensors and modules, {{< var kit_upper >}} relies on [pickle](./pickle.md) for serializing and deserializing these entities, as well as any unknown types. However, this approach isn't the most efficient. As a result, we've integrated PyTorch's serialization and deserialization support into the {{< var product_upper >}} type system.
 
 {{< variant flyte >}}
-{{< note >}}
-To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
+{{< markdown >}}
+
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
+
+{{< /markdown >}}
 {{< /variant >}}
 
 ```python

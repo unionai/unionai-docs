@@ -9,31 +9,40 @@ site_root: true
 # User guide
 
 {{< variant flyte >}}
-{{< note "Flyte" >}}
-These docs are for [**Flyte**](./about-union.md#flyte).
-Switch to another variant with the version selector above.
-{{< /note >}}
-{{< /variant >}}
+{{< markdown >}}
 
+> [!NOTE] Flyte
+> These docs are for [**Flyte**](./about-union.md#flyte).
+> Switch to another variant with the version selector above.
+
+{{< /markdown >}}
+{{< /variant >}}
 {{< variant serverless >}}
-{{< note "Union Serverless" >}}
-These docs are for [**Union Serverless**](./about-union.md#union-serverless).
-Switch to another variant with the version selector above.
-{{< /note >}}
-{{< /variant >}}
+{{< markdown >}}
 
+> [!NOTE] Union Serverless
+> These docs are for [**Union Serverless**](./about-union.md#union-serverless).
+> Switch to another variant with the version selector above.
+
+{{< /markdown >}}
+{{< /variant >}}
 {{< variant byoc >}}
-{{< note "Union BYOC" >}}
-These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to another variant with the version selector above.
-{{< /note >}}
-{{< /variant >}}
+{{< markdown >}}
 
+> [!NOTE] Union BYOC
+> These docs are for [**Union BYOC**](./about-union.md#union-byoc).
+> Switch to another variant with the version selector above.
+
+{{< /markdown >}}
+{{< /variant >}}
 {{< variant byok >}}
-{{< note "Union BYOK" >}}
-These docs are for [**Union BYOK**](./about-union.md#union-byok).
-Switch to another variant with the version selector above.
-{{< /note >}}
+{{< markdown >}}
+
+> [!NOTE] "Union BYOK
+> These docs are for [**Union BYOK**](./about-union.md#union-byok).
+> Switch to another variant with the version selector above.
+
+{{< /markdown >}}
 {{< /variant >}}
 
 The {{< var product_upper >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.

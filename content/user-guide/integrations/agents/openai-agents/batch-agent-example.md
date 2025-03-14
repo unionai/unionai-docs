@@ -118,7 +118,7 @@ def jsonl_wf(
 #
 # You can find more info about the [Batch API in the OpenAI docs](https://help.openai.com/en/articles/9197833-batch-api-faq).
 ```
-{{/* :lines: 16-64 */}}
+<!-- :lines: 16-64 -->
 
 The `create_batch` function returns an imperative workflow responsible for uploading the JSON data to OpenAI, creating a batch, polling the status of the batch to check for completion, and downloading the output and error files. It also accepts a `config` parameter, allowing you to provide `metadata`, `endpoint`, and `completion_window` values. These parameters default to their respective default values.
 
@@ -228,7 +228,7 @@ def jsonl_wf(
 #
 # You can find more info about the [Batch API in the OpenAI docs](https://help.openai.com/en/articles/9197833-batch-api-faq).
 ```
-{{/* :lines: 79-91 */}}
+<!-- :lines: 79-91 -->
 
 The iterator **streams JSON objects to a JSONL file**. If you have large batches of requests or have distinct JSON objects that you want to run predictions on, we recommend you use the iterator.
 
