@@ -1,0 +1,11 @@
+footer {
+    display: flex;
+}
+
+footer .prev {
+    margin-right: auto; /* Pushes element to the left */
+}
+
+footer .next {
+    margin-left: auto; /* Pushes element to the right */
+}

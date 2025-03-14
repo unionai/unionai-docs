@@ -19,7 +19,7 @@ $ uctl get apps
 
 Output:
 
-```shell
+```text
  -------------------- --------------------- ---------------- ----------------------------------------
 | ID (4)             | CLIENT NAME        | RESPONSE TYPES | GRANT TYPES                             |
  -------------------- -------------------- ---------------- -----------------------------------------
@@ -81,7 +81,7 @@ $ uctl create app --appSpecFile app.yaml
 
 The response should look something like this:
 
-```shell
+```text
  ------------------ ------------------- ------------- ---------
 | NAME             | CLIENT NAME       | SECRET      | CREATED |
  ------------------ ------------------- ------------- ---------
