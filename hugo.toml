@@ -84,9 +84,3 @@ flyte = "flytectl"
 serverless = "uctl"
 byoc = "uctl"
 byok = "uctl"
-
-[params.key.kit_as]
-flyte = "fl"
-serverless = "union"
-byoc = "union"
-byok = "union"
