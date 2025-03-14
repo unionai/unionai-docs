@@ -18,6 +18,7 @@ If you are not a Union administrator, or if you will be interacting with Union i
 
 {{< tabs >}}
 {{< tab "macOS" >}}
+{{< markdown >}}
 
 To install `uctl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or manually download the binary.
 
@@ -40,8 +41,10 @@ $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 
 To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
 
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Linux" >}}
+{{< markdown >}}
 
 To install `uctl` on Linux, use `curl` or manually download the binary.
 
@@ -57,8 +60,10 @@ $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 
 To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
 
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Windows" >}}
+{{< markdown >}}
 
 To install `uctl` on Windows, use `curl` or manually download the binary.
 
@@ -74,6 +79,7 @@ $ curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
 
 To download the binary manually, see the [`uctl` releases page](https://github.com/unionai/uctl/releases).
 
+{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 

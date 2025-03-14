@@ -1,6 +1,6 @@
 
 {{ if .Parent }}
-    {{ if in (slice "variant" "dropdown") .Parent.Name }}
+    {{ if in (slice "variant" "dropdown" "tab") .Parent.Name }}
         {{/* This is where container-specific behavior would go */}}
         {{ .Inner | markdownify }}
     {{ else }}

@@ -7,9 +7,11 @@ variants: +flyte +serverless +byoc +byok
 # Local setup
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 In [Getting started](./index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
 
+{{< /markdown >}}
 {{< /variant >}}
 
 In this section we will set up your local environment so that you can start building and deploying {{< var product_upper >}} workflows from your local machine.
@@ -65,6 +67,7 @@ This instance of `{{< var cli_lower >}}` is only used during the configuration s
 {{< /note >}}
 
 {{< variant flyte >}}
+{{< markdown >}}
 
 ## Install Docker and get access to a container registry
 
@@ -80,6 +83,7 @@ You will also need access to a container registry where you can push your images
 Furthermore, the pushed images will need to be accessible to the Flyte installation you are using
 (The registry must be accessible and the images themselves must also have the appropriate permissions.
 For example, a public registry like `ghcr.io` with the images set to public, would work).
+{{< /markdown >}}
 
 {{< note "Union simplifies image building and registry" >}}
 With Union you do not need to install Docker, build images, or deal with container registries.
@@ -88,12 +92,15 @@ See [Union image builder]() for more details.
 {{/* TODO: Add link */}}
 {{< /note >}}
 
+{{< markdown >}}
+
 ## Install `flytectl` to set up a local cluster
 
 For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment/index.md)).
 Here we are using a local cluster for experimentation and demonstration purposes.
 
 To set up a local cluster you must first install the `flytectl` CLI.
+{{< /markdown >}}
 
 {{< note "Flytectl vs Pyflyte" >}}
 `flytectl` is different from the `pyflyte`.

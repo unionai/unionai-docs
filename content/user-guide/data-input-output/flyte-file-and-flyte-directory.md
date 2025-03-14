@@ -7,6 +7,7 @@ variants: +flyte +serverless +byoc +byok
 # FlyteFile and FlyteDirectory
 
 {{< variant flyte >}}
+{{< markdown >}}
 
 ## FlyteFile
 
@@ -21,13 +22,9 @@ links, read them with the python built-in `csv.DictReader` function,
 normalize some pre-specified columns, and output the normalized columns to
 another CSV file.
 
-{{< /variant >}}
-{{< variant flyte >}}
-{{< note >}}
-To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
-{{< /note >}}
-{{< /variant >}}
-{{< variant flyte >}}
+> [!NOTE]
+> To clone and run the example code on this page, see the
+> [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
 First, import the libraries:
 
@@ -46,18 +43,13 @@ and a list of column names to normalize. The task then outputs a CSV file
 containing only the normalized columns. For this example, we use z-score normalization,
 which involves mean-centering and standard-deviation-scaling.
 
-{{< /variant >}}
-{{< variant flyte >}}
-{{< note >}}
-The `FlyteFile` literal can be scoped with a string, which gets inserted
-into the format of the Blob type ("jpeg" is the string in
-`FlyteFile[typing.TypeVar("jpeg")]`). The format is entirely optional,
-and if not specified, defaults to `""`.
-Predefined aliases for commonly used flyte file formats are also available.
-You can find them [here](https://github.com/flyteorg/flytekit/blob/master/flytekit/types/file/__init__.py).
-{{< /note >}}
-{{< /variant >}}
-{{< variant flyte >}}
+> [!NOTE]
+> The `FlyteFile` literal can be scoped with a string, which gets inserted
+> into the format of the Blob type ("jpeg" is the string in
+> `FlyteFile[typing.TypeVar("jpeg")]`). The format is entirely optional,
+> and if not specified, defaults to `""`.
+> Predefined aliases for commonly used flyte file formats are also available.
+> You can find them [here](https://github.com/flyteorg/flytekit/blob/master/flytekit/types/file/__init__.py).
 
 ```python
 @union.task
@@ -149,46 +141,43 @@ if __name__ == "__main__":
 
 You can enable type validation if you have the [python-magic](https://pypi.org/project/python-magic/) package installed.
 
-{{< /variant >}}
-{{< variant flyte >}}
+{{< /markdown >}}
+
 {{< tabs >}}
 {{< tab "Mac OS" >}}
+{{< markdown >}}
 
 ```shell
 $  brew install libmagic
 ```
 
+{{< /markdown >}}
 {{< /tab>}}
 {{< tab "Linux" >}}
+{{< markdown >}}
 
 ```shell
 $ sudo apt-get install libmagic1
 ```
 
+{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 {{< note >}}
 Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
 {{< /note >}}
-{{< /variant >}}
-{{< variant flyte >}}
 
+{{< markdown >}}
 
 ## Streaming support
 
 Flyte `1.5` introduced support for streaming `FlyteFile` types via the `fsspec` library.
 This integration enables efficient, on-demand access to remote files, eliminating the need for fully downloading them to local storage.
 
-{{< /variant >}}
-{{< variant flyte >}}
 
-{{< note >}}
-This feature is marked as experimental. We'd love feedback on the API!
-{{< /note >}}
-
-{{< /variant >}}
-{{< variant flyte >}}
+> [!NOTE]
+> This feature is marked as experimental. We'd love feedback on the API!
 
 Here is a simple example of removing some columns from a CSV file and writing the result to a new file:
 
@@ -247,33 +236,28 @@ def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
     return union.FlyteDirectory(path=str(local_dir))
 ```
 
-{{< /variant >}}
-{{< variant flyte >}}
 
-{{< note >}}
-You can annotate a `FlyteDirectory` when you want to download or upload the contents of the directory in batches.
-For example,
-
-```python
-@union.task
-def t1(directory: Annotated[union.FlyteDirectory, BatchSize(10)]) -> Annotated[union.FlyteDirectory, BatchSize(100)]:
-    ...
-    return union.FlyteDirectory(...)
-```
-
-Flytekit efficiently downloads files from the specified input directory in 10-file chunks.
-It then loads these chunks into memory before writing them to the local disk.
-The process repeats for subsequent sets of 10 files.
-Similarly, for outputs, Flytekit uploads the resulting directory in chunks of 100.
-{{< /note >}}
+> [!NOTE]
+> You can annotate a `FlyteDirectory` when you want to download or upload the contents of the directory in batches.
+> For example,
+>
+> ```python
+> @union.task
+> def t1(directory: Annotated[union.FlyteDirectory, BatchSize(10)]) -> Annotated[union.FlyteDirectory, BatchSize(100)]:
+>     ...
+>     return union.FlyteDirectory(...)
+>
+> Flytekit efficiently downloads files from the specified input directory in 10-file chunks.
+> It then loads these chunks into memory before writing them to the local disk.
+> The process repeats for subsequent sets of 10 files.
+> Similarly, for outputs, Flytekit uploads the resulting directory in chunks of 100.
 
 We define a helper function to normalize the columns in-place.
 
-{{< note >}}
-This is a plain Python function that will be called in a subsequent Flyte task. This example
-demonstrates how Flyte tasks are simply entrypoints of execution, which can themselves call
-other functions and routines that are written in pure Python.
-{{< /note >}}
+> [!NOTE]
+> This is a plain Python function that will be called in a subsequent Flyte task. This example
+> demonstrates how Flyte tasks are simply entrypoints of execution, which can themselves call
+> other functions and routines that are written in pure Python.
 
 ```python
 def normalize_columns(
@@ -369,8 +353,11 @@ if __name__ == "__main__":
     print(f"Running download_and_normalize_csv_files on {csv_urls}: " f"{directory}")
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
+
 {{< variant byoc byok >}}
+{{< markdown >}}
 
 In Union, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
 
@@ -391,16 +378,9 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 
 ## Local examples
 
-{{< /variant >}}
-{{< variant byoc byok >}}
-
-{{< note "Local means local to the container" >}}
-The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
-They do not refer to a file or directory on your local machine.
-{{< /note >}}
-
-{{< /variant >}}
-{{< variant byoc byok >}}
+> [!NOTE] Local means local to the container
+> The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
+> They do not refer to a file or directory on your local machine.
 
 ### Local file example
 
@@ -470,49 +450,41 @@ def workflow():
     task2(fd=fd)
 ```
 
-
+{{< /markdown >}}
 {{< /variant >}}
+
 {{< variant serverless >}}
+{{< markdown >}}
 
-{{< note "Upload location" >}}
-With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
+> [!NOTE] Upload location
+> With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated > (universally unique) location in Union's internal object store. It cannot be changed.
+>
+> With Union BYOC, the upload location is configurable.
+> See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.>union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 
-With Union BYOC, the upload location is configurable. See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
-{{< /note >}}
-
+{{< /markdown >}}
 {{< /variant >}}
+
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ## Changing the data upload location
 
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
-
-{{< note "Upload location" >}}
-With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
-
-With Union BYOC, the upload location is configurable.
-{{< /note >}}
-
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
+> [!NOTE] Upload location
+> With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local
+> files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
+>
+> With Union BYOC, the upload location is configurable.
 
 By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store).
 However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
 
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
-
-{{< note "Setting up your own object store bucket" >}}
-For details on how to set up your own object store bucket, consult the direction for your cloud provider:
-
-* [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
-* [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
-* [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
-{{< /note >}}
-
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
+> [!NOTE] Setting up your own object store bucket
+> For details on how to set up your own object store bucket, consult the direction for your cloud provider:
+>
+> * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
+> * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
+> * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
 
 ### Changing the raw data prefix
 
@@ -527,14 +499,11 @@ Union will create a directory with a unique, random name in your bucket for each
 
 If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDirectory`), the underlying data is written to that precise location with no randomization.
 
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
+> [!NOTE] Using remote_path will overwrite data
+> If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
+> If you want to use a dynamically generated path, you will have to generate it yourself.
 
-{{< note "Using remote_path will overwrite data" >}}
-If you set `remote_path` to a static string, subsequent runs of the same task will overwrite the file.
-If you want to use a dynamically generated path, you will have to generate it yourself.
-{{< /note >}}
-
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Remote examples
@@ -637,22 +606,23 @@ def task_2(ff: FlyteFile):
     file_contents= f.read()
 ```
 
-{{< note "open() vs ff.open()" >}}
-Note the difference between
-
-`ff.open(mode="r")`
-
-and
-
-`open(ff, mode="r")`
-
-The former calls the `FlyteFile.open()` method and returns an iterator without downloading the file.
-The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system, and returns a handle to that file.
-
-Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile` object and result in an automatic download.
-
-See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
-{{< /note >}}
+> [!NOTE] open() vs ff.open()
+> Note the difference between
+>
+> `ff.open(mode="r")`
+>
+> and
+>
+> `open(ff, mode="r")`
+>
+> The former calls the `FlyteFile.open()` method and returns an iterator without downloading the file.
+> The latter calls the built-in Python function `open()`, downloads the specified `FlyteFile` to the local container file system,
+> and returns a > handle to that file.
+>
+> Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile`
+> object and > result in an automatic download.
+>
+> See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
 
 ### Explicit downloading
 

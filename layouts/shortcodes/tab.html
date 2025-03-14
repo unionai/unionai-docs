@@ -4,7 +4,7 @@
 	    {{ .Parent.Scratch.Set "tabs" slice }}
 	{{ end }}
 	{{ with .Inner }}
-        {{ $.Parent.Scratch.Add "tabs" (dict "name" $name "content" (. | markdownify) ) }}
+        {{ $.Parent.Scratch.Add "tabs" (dict "name" $name "content" (. | safeHTML) ) }}
 	{{ end }}
 {{ else }}
 	{{ warnf "[tab is orphan] You specified {{< tab >}} inside {{< tabs >}}. File: %s" .Page.File.Path }}
@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="content">
-			{{ .Inner | markdownify }}
+			{{ .Inner | safeHTML }}
 		</div>
 	</div>
 {{ end }}
