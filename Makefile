@@ -8,9 +8,11 @@ usage:
 base:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
-	mkdir dist
+	mkdir -p dist
+	mkdir -p dist/_static
 	cp index.html dist/
 	cp -R static/* dist/
+	cp -R content/_static/* dist/_static/
 
 dist: base
 	make variant VARIANT=flyte
