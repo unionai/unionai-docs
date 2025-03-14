@@ -38,7 +38,6 @@
 }
 .site-nav .section-pages {
   padding-left: var(--menu-indent);
-  max-height: 1000px;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 }
