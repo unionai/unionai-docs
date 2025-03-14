@@ -91,7 +91,7 @@ html_sidebars = {
 }
 
 # Sidebar expand
-expand_level = -1 # set to 0, 1, 2, or -1
+expand_level = 1 # set to 0, 1, 2, or -1
 #   * Configure the expansion level:
 #    * 0  => All details remain closed.
 #    * 1  => Open level-1 details only.

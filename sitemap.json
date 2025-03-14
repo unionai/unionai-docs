@@ -63,7 +63,8 @@
                 {"name": "adding-your-own-code", "variants": ["byoc", "serverless"]},
                 {"name": "serving-a-model", "variants": ["byoc", "serverless"]}
             ]},
-            {"name": "caching", "variants": ["byoc", "serverless"]}
+            {"name": "caching", "variants": ["byoc", "serverless"]},
+            {"name": "workspaces", "variants": ["byoc", "serverless"]}
         ]},
         {"name": "development-cycle", "variants": ["byoc", "serverless"], "children": [
             {"name": "authentication", "variants": ["byoc"]},
