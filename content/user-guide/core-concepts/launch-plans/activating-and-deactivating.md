@@ -60,6 +60,7 @@ You can deactivate them with `uctl` or `UnionRemote`.
 {{< /warning >}}
 
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ## Activating and deactivating a launch plan on the command line with `uctl`
 
@@ -89,20 +90,19 @@ $ uctl update launchplan \
 
 See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Activating and deactivating a launch plan in Python with `UnionRemote`
 
 To activate a launch plan using version `UnionRemote`:
 
-```--literalinclude-- ../../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_1.py
-:language: python
-```
+{{< code lang="python"
+       file="/_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_1.py" >}}
 
 To deactivate a launch plan version using `UnionRemote`:
 
-```--literalinclude-- ../../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py
-:language: python
-```
+{{< code lang="python"
+       file="/_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py" >}}
 
 {{/* TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. */}}

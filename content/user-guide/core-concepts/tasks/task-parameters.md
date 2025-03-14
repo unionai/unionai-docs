@@ -112,11 +112,11 @@ def simple_wf_with_partial(x: list[int], y: list[int]) -> float:
 
 ## Named outputs
 
-By default, {@= Product =@} employs a standardized convention to assign names to the outputs of tasks or workflows.
+By default, {{< var product_upper >}} employs a standardized convention to assign names to the outputs of tasks or workflows.
 Each output is sequentially labeled as `o1`, `o2`, `o3`, ... `on`, where `o` serves as the standard prefix,
 and `1`, `2`, ... `n` indicates the positional index within the returned values.
 
-However, {@= Product =@} allows the customization of output names for tasks or workflows.
+However, {{< var product_upper >}} allows the customization of output names for tasks or workflows.
 This customization becomes beneficial when you're returning multiple outputs
 and you wish to assign a distinct name to each of them.
 

@@ -59,6 +59,7 @@ The `union` package is a superset of `flytekit` and the following examples use `
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```python
 # plus_one.py
@@ -87,8 +88,10 @@ def wf(input: int = 0) -> int:
     return plus_one(input=c)
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ```python
 # plus_one.py
@@ -126,6 +129,7 @@ def wf(input: int = 0) -> int:
 
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Multiple tasks
@@ -134,6 +138,7 @@ Every task execution in the following example will execute in the same `ActorEnv
 You can use the same environment for multiple tasks in the same workflow and tasks across workflow definitions, using both subworkflows and launch plans:
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```python
 # multiple_tasks.py
@@ -174,8 +179,10 @@ def my_parent_wf(name: str) -> str:
     return my_child_wf_lp(name=b)
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ```python
 # multiple_tasks.py
@@ -223,6 +230,7 @@ def my_parent_wf(name: str) -> str:
     return my_child_wf_lp(name=b)
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Custom PodTemplates
@@ -298,6 +306,7 @@ def wf() -> tuple[str,str]:
 With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```python
 # caching_map_task.py
@@ -357,8 +366,10 @@ def run_inference(values: list[int] = list(range(20))) -> list[int]:
     return union.map_task(inference_)(value=values)
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ```python
 # caching_map_task.py
@@ -425,6 +436,7 @@ def run_inference(values: list[int] = list(range(20))) -> list[int]:
     return union.map_task(inference_)(value=values)
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Example: Caching with Custom Objects
@@ -432,6 +444,7 @@ def run_inference(values: list[int] = list(range(20))) -> list[int]:
 Finally, we can cache custom objects by defining the `__hash__` and `__eq__` methods. These methods allow `@actor_cache` to determine if an object is the same between runs, ensuring that expensive operations are skipped if the object hasn’t changed.
 
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```python
 # caching_custom_object.py
@@ -479,8 +492,10 @@ def wf(state: int = 2) -> int:
     return value
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ```python
 # caching_custom_object.py
@@ -534,4 +549,5 @@ def wf(state: int = 2) -> int:
     return value
 ```
 
+{{< /markdown >}}
 {{< /variant >}}

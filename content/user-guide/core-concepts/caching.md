@@ -249,6 +249,7 @@ If you modify the signature of a node by adding, removing, or editing input para
 During the next execution, Union executes the process again and caches the outputs as new values stored under an updated key.
 
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 ### Caching when running locally
 
@@ -268,6 +269,7 @@ $ union local-cache clear
 
 This removes the contents of the `~/.flyte/local-cache/` directory.
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Cache serialization

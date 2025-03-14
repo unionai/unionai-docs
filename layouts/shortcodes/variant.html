@@ -13,7 +13,7 @@
     {{- if (not $allowed) -}}
         <div class="not-allowed variant">
             <div class="title">
-                {{ upper (delimit $variants " | ") }}: This will not exist in production for variant '{{ $variant }}'.
+                {{ upper (delimit $variants " | ") }}: Omitted in production for variant '{{ $variant }}'.
             </div>
             <div class="content">
                 {{ .Inner | safeHTML }}

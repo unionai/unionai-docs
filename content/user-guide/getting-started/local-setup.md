@@ -118,6 +118,7 @@ To install `flytectl`, follow these instructions:
 
 {{< tabs >}}
 {{< tab "macOS" >}}
+{{< markdown >}}
 
 To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or download the binary manually.
 
@@ -140,8 +141,11 @@ $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 
 To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 
+{{< /markdown >}}
 {{< /tab >}}
+
 {{< tab "Linux" >}}
+{{< markdown >}}
 
 To install `flytectl` on Linux, use `curl` or download the binary manually.
 
@@ -175,6 +179,7 @@ $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
 
 To download manually, see the [`flytectl` releases](https://github.com/flyteorg/flytectl/releases).
 
+{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -205,13 +210,16 @@ See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-g
 
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
+{{< markdown >}}
 
 ## Configure the connection to your Union instance
 
 Next, you need to create a configuration file that contains your Union connection information:
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```shell
 $ union create login --serverless
@@ -219,13 +227,16 @@ $ union create login --serverless
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
 
-{{< note "These directions apply to Union Serverless" >}}
-To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
-To configure a connection to your Union instance in Union BYOK, see the [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
-{{< /note >}}
+> [!NOTE] These directions apply to Union Serverless
+> To configure a connection to your Union instance in Union BYOC, see the 
+> [BYOC version of this page](https://docs.>union.ai/byoc/quick-start#configure-the-union-cli).
+> To configure a connection to your Union instance in Union BYOK, see the
+> [BYOK version of this page](https://docs.>union.ai/byok/quick-start#configure-the-union-cli).
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok >}}
+{{< markdown >}}
 
 ```shell
 $ union create login --host <union-host-url>
@@ -235,16 +246,18 @@ $ union create login --host <union-host-url>
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 
-{{< note >}}
-These directions apply to Union BYOC and BYOK, where you connect to your own dedicated Union instance.
-To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
-{{< /note >}}
+> [!NOTE]
+> These directions apply to Union BYOC and BYOK, where you connect to your own dedicated Union instance.
+> To configure a connection to Union Serverless, see the 
+> [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless byoc byok >}}
+{{< markdown >}}
 
 By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
@@ -260,16 +273,20 @@ For example:
 $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
-{{< warning >}}
-If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
-Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
-{{< /warning >}}
+> [!WARNING]
+> If you have previously used Union, you may have configuration files left over that will interfere with 
+> access to Union Serverless through the `union` CLI tool.
+> Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment 
+> variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on 
+the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
+{{< markdown >}}
 
 ## Configure the connection to your Flyte instance
 
@@ -294,6 +311,7 @@ $ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_work
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
+{{< /markdown >}}
 {{< /variant >}}
 
 ## Check your CLI configuration
@@ -307,6 +325,7 @@ $ {{<var cli_lower >}} info
 You should get a response like this:
 
 {{< variant byoc byok >}}
+{{< markdown >}}
 
 ```shell
 $ union info
@@ -324,8 +343,10 @@ $ union info
 
 For more details on connection configuration see [CLI authentication types](../administration/cli-authentication-types.md).
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless >}}
+{{< markdown >}}
 
 ```shell
 $ union info
@@ -341,8 +362,10 @@ $ union info
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
+{{< markdown >}}
 
 ```shell
 $ pyflyte info
@@ -358,4 +381,5 @@ $ pyflyte info
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+{{< /markdown >}}
 {{< /variant >}}

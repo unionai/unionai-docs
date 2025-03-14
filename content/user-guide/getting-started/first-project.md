@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 In this section we will set up a new project.
 This involves creating a local project directory holding your project code
-and a corresponding {@= Product =@} project to which you will deploy that code using the `{@= cli =@}` CLI.
+and a corresponding {{< var product_upper >}} project to which you will deploy that code using the `{{< var cli_lower >}}` CLI.
 
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
@@ -66,10 +66,10 @@ You can see the project you just created by going to `http://localhost:30080` in
 
 ## Initialize a local project
 
-We will use the `{@= cli =@} init` command to initialize a new local project corresponding to the project created on your {@= Product =@} instance:
+We will use the `{{< var cli_lower >}} init` command to initialize a new local project corresponding to the project created on your {{< var product_upper >}} instance:
 
 ```shell
-$ {@= cli =@} init --template {@= product =@}-simple my-project
+$ {{< var cli_lower >}} init --template {{< var product_lower >}}-simple my-project
 ```
 
 The resulting directory will look like this:
@@ -83,9 +83,9 @@ The resulting directory will look like this:
 └── uv.lock
 ```
 
-> [!NOTE] Local project directory name same as {@= Product =@} project ID
+> [!NOTE] Local project directory name same as {{< var product_upper >}} project ID
 > It is good practice to name your local project directory the same as your 
-> {@= Product =@} project ID, as we have > done here.
+> {{< var product_upper >}} project ID, as we have > done here.
 
 Next, let's look at the contents of the local project directory.
 Continue to [Understanding the code](understanding-the-code.md).

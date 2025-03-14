@@ -13,7 +13,7 @@ It is the type that is created when you use the `@union.task` decorator.
 * **`ContainerTask`**: This Python class represents a raw container.
 It allows you to install any image you like, giving you complete control of the task.
 * **Map tasks**: The map task functionality enables you to run multiple copies of the same task across multiple containers in parallel.
-* **Shell tasks**: Use them to execute `bash` scripts within {@= Product }.
+* **Shell tasks**: Use them to execute `bash` scripts within {{< var product_upper >}}.
 * **Specialized plugin tasks**: These include both specialized classes and specialized configurations of the `PythonFunctionTask`.
 They implement integrations with third-party systems.
 
@@ -196,13 +196,13 @@ if __name__ == "__main__":
 
 ## Specialized plugin task classes and configs
 
-{@= Product =@} supports a wide variety of plugin tasks.
+{{< var product_upper >}} supports a wide variety of plugin tasks.
 Some of these are enabled as specialized task classes, others as specialized configurations of the default `@union.task` (`PythonFunctionTask`).
 
 They enable things like:
 
 * Querying external databases (AWS Athena, BigQuery, DuckDB, SQL, Snowflake, Hive).
-* Executing specialized processing right in {@= Product =@} (Spark in virtual cluster, Dask in Virtual cluster, Sagemaker, Airflow, Modin, Ray, MPI and Horovod).
+* Executing specialized processing right in {{< var product_upper >}} (Spark in virtual cluster, Dask in Virtual cluster, Sagemaker, Airflow, Modin, Ray, MPI and Horovod).
 * Handing off processing to external services(AWS Batch, Spark on Databricks, Ray on external cluster).
 * Data transformation (Great Expectations, DBT, Dolt, ONNX, Pandera).
 * Data tracking and presentation  (MLFlow, Papermill).

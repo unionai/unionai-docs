@@ -83,7 +83,7 @@ We're leveraging Python's native `async` capabilities in order to:
 1. Materialize the output of tasks and subworkflows so you can operate
    on them without spinning up another pod and also determine the shape of the
    workflow graph in an extremely flexible manner.
-2. Provide an alternative way of achieving concurrency in {@= Product =@}. {@= Product =@} has
+2. Provide an alternative way of achieving concurrency in {{< var product_upper >}}. {{< var product_upper >}} has
    concurrency built into it, so all tasks and subworkflows will execute concurrently
    assuming that they don't have any dependencies on each other. However, eager
    workflows provide a Python-native way of doing this, with the main downside
@@ -245,7 +245,7 @@ This is a current limitation in the `@eager` workflow implementation.
 
 ## Executing eager workflows
 
-As with most {@= Product =@} constructs, you can execute eager workflows both locally
+As with most {{< var product_upper >}} constructs, you can execute eager workflows both locally
 and remotely.
 
 ### Local execution
@@ -279,7 +279,7 @@ from flytekit.configuration import Config
 @eager(
     remote=UnionRemote(
         config=Config.auto(config_file="config.yaml"),
-        default_project="{@= default_project =@}",
+        default_project="{{< var default_project >}}",
         default_domain="development",
     ),
     client_secret_group="<my_client_secret_group>",
@@ -306,7 +306,7 @@ from union import UnionRemote
 @eager(
     remote=FlyteRemote(
         config=Config.for_sandbox(),
-        default_project="{@= default_project =@}",
+        default_project="{{< var default_project >}}",
         default_domain="development",
     )
 )

@@ -23,19 +23,19 @@ source .venv/bin/activate
 ```
 
 > [!NOTE] `activate` vs `uv run`
-> When running the `{@= cli =@}` CLI within your local project you must run it in the virtual 
+> When running the `{{< var cli_lower >}}` CLI within your local project you must run it in the virtual 
 > environment _associated > with_ that project.
 > This differs from our earlier usage of the tool when
 > [we installed `union` globally](./local-setup.> md#install-the--cli--cli) in order to
 > [set up its configuration](./local-setup.> md#configure-the-connection-to-your--product_full--instance).
 > 
-> To run `{@= cli =@}` within your project's virtual environment using `uv`, 
+> To run `{{< var cli_lower >}}` within your project's virtual environment using `uv`, 
 > you can prefix it use the `uv run` > command. For example:
 > 
-> `uv run {@= cli =@} ...`
+> `uv run {{< var cli_lower >}} ...`
 > 
 > Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then 
-> run the `{@= cli > =@}` command directly.
+> run the `{{< var cli_lower >}}` command directly.
 > 
 > In our examples we assume that you are doing the latter.
 
@@ -44,10 +44,10 @@ source .venv/bin/activate
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
-You can run the workflow locally with the command [`{@= cli =@} run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
+You can run the workflow locally with the command [`{{< var cli_lower >}} run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
 
 ```shell
-$ {@= cli =@} run hello_world.py hello_world_wf
+$ {{< var cli_lower >}} run hello_world.py hello_world_wf
 ```
 
 You should see output like this:
@@ -60,7 +60,7 @@ Hello, world!
 You can also pass in parameters to the workflow (assuming they declared in the workflow function):
 
 ```shell
-$ {@= cli =@} run hello_world.py hello_world_wf --name="everybody"
+$ {{< var cli_lower >}} run hello_world.py hello_world_wf --name="everybody"
 ```
 
 You should see output like this:
@@ -78,8 +78,8 @@ But to run them at scale, you will need to deploy them (or as we say, "register"
 
 When task and workflow code is registered:
 
-* The `{@= task =@}` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
-* The `{@= workflow =@}` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
+* The `{{< var at_task >}}` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
+* The `{{< var at_workflow >}}` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
 To run the workflow on Union in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
 

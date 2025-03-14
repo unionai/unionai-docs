@@ -47,9 +47,9 @@ For more details, see [Running launch plans](./running-launch-plans.md).
 
 In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using the CLI (see [Running your code](../../development-cycle/running-your-code.md)).
 
-### Registering a launch plan in Python with `{@= Product =@}Remote`
+### Registering a launch plan in Python with `{{< var product_upper >}}Remote`
 
-As with all {@= Product =@} command line actions, you can also perform registration of launch plans programmatically with [`{@= Product =@}Remote`](../../development-cycle/union-remote/index.md), specifically, `{@= Product =@}Remote.register_launch_plan`.
+As with all {{< var product_upper >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< var product_upper >}}Remote`](../../development-cycle/union-remote/index.md), specifically, `{{< var product_upper >}}Remote.register_launch_plan`.
 
 ### Results of registration
 

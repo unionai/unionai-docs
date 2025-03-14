@@ -25,7 +25,6 @@ Triggering a launch plan will launch its associated workflow with the specified 
 
 Using the Flytekit SDK, tasks and workflows are defined as Python functions using the `@union.task` and `@union.workflow` decorators, respectively:
 
-**`./workflows/my_example.py`**
 ```python
 import union
 
@@ -241,10 +240,14 @@ For more details on running workflows and tasks, see [Development cycle](../deve
 ### Running a task or workflow remotely on the command line with `union`
 
 {{< variant byoc byok flyte >}}
+{{< markdown >}}
 To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../development-cycle/setting-up-a-project.md)):
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless >}}
+{{< markdown >}}
 To run a workflow remotely on your Union installation, use the following command:
+{{< /markdown >}}
 {{< /variant >}}
 
 ```shell

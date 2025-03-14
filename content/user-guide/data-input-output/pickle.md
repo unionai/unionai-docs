@@ -7,18 +7,18 @@ variants: +flyte +serverless +byoc +byok
 # Pickle type
 
 
-{@= Product =@} enforces type safety by utilizing type information for compiling tasks and workflows,
+{{< var product_upper >}} enforces type safety by utilizing type information for compiling tasks and workflows,
 enabling various features such as static analysis and conditional branching.
 
 However, we also strive to offer flexibility to end-users, so they don't have to invest heavily
-in understanding their data structures upfront before experiencing the value {@= Product =@} has to offer.
+in understanding their data structures upfront before experiencing the value {{< var product_upper >}} has to offer.
 
-{@= Product =@} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
+{{< var product_upper >}} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
 enabling the serialization/deserialization of Python values to/from a pickle file.
 
 {{< note >}}
 Pickle can only be used to send objects between the exact same Python version.
-For optimal performance, it's advisable to either employ Python types that are supported by {@= Product =@}
+For optimal performance, it's advisable to either employ Python types that are supported by {{< var product_upper >}}
 or register a custom transformer, as using pickle types can result in lower performance.
 {{< /note >}}
 
@@ -34,7 +34,7 @@ To clone and run the example code on this page, see the [Flytesnacks repo](https
 import union
 ```
 
-`Superhero` represents a user-defined complex type that can be serialized to a pickle file by {@= Kit =@}
+`Superhero` represents a user-defined complex type that can be serialized to a pickle file by {{< var kit_upper >}}
 and transferred between tasks as both input and output data.
 
 {{< note >}}

@@ -19,7 +19,7 @@ This is a simple "Hello, world!" example consisting of flat directory:
 
 ## Python code
 
-The `hello_world.py` file illustrates the essential components of a {@= Product =@} workflow:
+The `hello_world.py` file illustrates the essential components of a {{< var product_upper >}} workflow:
 
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
@@ -109,7 +109,7 @@ See [ImageSpec](../development-cycle/image-spec.md) for more information.
 
 ### Tasks
 
-The `{@= task =@}` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
+The `{{< var at_task >}}` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
 A task tasks some input and produces an output.
 When deployed to Union cluster, each task runs in its own Kubernetes pod.
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
@@ -117,15 +117,15 @@ For a full list of task parameters, see [Task parameters](../core-concepts/tasks
 
 ### Workflow
 
-The `{@= workflow =@}` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
+The `{{< var at_workflow >}}` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
 This function contains references to the tasks defined elsewhere in the code.
 
 A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
 
 When deployed to Union, the workflow function is compiled to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
-> [!NOTE] `{@= task =@}` and `{@= workflow =@}` syntax"
-> * The `{@= task =@}` and `{@= workflow =@}` decorators will only work on functions at the top-level 
+> [!NOTE] `{{< var at_task >}}` and `{{< var at_workflow >}}` syntax
+> * The `{{< var at_task >}}` and `{{< var at_workflow >}}` decorators will only work on functions at the top-level 
 >   scope of the > module.
 > * You can invoke tasks and workflows as regular Python functions and even import and use them in
 >   other Python > modules or scripts.
@@ -137,21 +137,21 @@ When deployed to Union, the workflow function is compiled to construct the direc
 
 The `pyproject.toml` is the standard project configuration used by `uv`.
 In particular, it specifies the project dependencies and the Python version to use.
-The default `pyproject.toml` file created by `{@= cli =@} init` from the `{@= product =@}-simple` template looks like this
+The default `pyproject.toml` file created by `{{< var cli_lower >}} init` from the `{{< var product_lower >}}-simple` template looks like this
 
 ```toml
 [project]
-name = "{@= product =@}-simple"
+name = "{{< var product_lower >}}-simple"
 version = "0.1.0"
-description = "A simple {@= Product =@} project"
+description = "A simple {{< var product_upper >}} project"
 readme = "README.md"
 requires-python = ">=3.9,<3.13"
-dependencies = ["{@= kit =@}"]
+dependencies = ["{{< var kit_lower >}}"]
 ```
 
 (You can update the `name` and `description` to match the actual name of your project, `my-project`, if you like).
 
-The most important part of the file is the list of dependencies, in this case consisting of only one package, `{@= kit =@}`.
+The most important part of the file is the list of dependencies, in this case consisting of only one package, `{{< var kit_lower >}}`.
 See [uv > Configuration > Configuration files](https://docs.astral.sh/uv/configuration/files/) for details.
 
 ## uv.lock

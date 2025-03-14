@@ -10,9 +10,9 @@ The `uctl` CLI provides functionality for Union administrators to manage Union-s
 
 It also includes much of the functionality of the [`union` CLI](../union-cli.md), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `union` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
 
-{{< note >}}
-If you are not a Union administrator, or if you will be interacting with Union in an environment where Python is installed, you should use the [`union` CLI](../union-cli.md) instead.
-{{< /note >}}
+> [!NOTE]
+> If you are not a Union administrator, or if you will be interacting with Union in an environment where 
+> Python is > installed, you should use the [`union` CLI](../union-cli.md) instead.
 
 ## Installation
 
@@ -116,13 +116,10 @@ admin:
   insecure: false
   authType: Pkce
 ```
-{{< /markdown >}}
 
-{{< note >}}
-PKCE is the default authentication type. To specify a different authentication type in the configuration file, see [CLI authentication types](../../user-guide/administration/cli-authentication-types.md).
-{{< /note >}}
-
-{{< markdown >}}
+> [!NOTE]
+> PKCE is the default authentication type. To specify a different authentication type in the configuration file,
+> see [CLI authentication types](../../user-guide/administration/cli-authentication-types.md).
 
 ### Configuration file location hierarchy
 
