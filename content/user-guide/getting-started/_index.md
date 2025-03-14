@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 This section gives you a quick introduction to writing and running Union workflows.
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 {{< markdown >}}
 
 ## Sign up for Union Serverless
@@ -83,8 +83,8 @@ stop it manually on the Workspaces page.
 🎉 Congratulations! You've just run your first workflow on Union.
 
 {{< /markdown >}}
-{{< /if-variant >}}
-{{< if-variant byoc byok >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
 {{< markdown >}}
 
 ## Gather your credentials
@@ -109,8 +109,8 @@ Since you are just starting out, it will be empty.
 To build and deploy your first workflow, the first step is to [set up your local environment](./local-setup.md).
 
 {{< /markdown >}}
-{{< /if-variant >}}
-{{< if-variant byoc byok >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
 
 {{< note "Try Flyte in your browser" >}}
 You can try Flyte in your browser without any setup simply by [signing up for **Union Serverless**](https://signup.union.ai/).
@@ -125,4 +125,4 @@ You can also install Flyte's SDK (called `flytekit`) and a local Flyte cluster t
 To get started, follow the instructions on the next page, [Local setup](./local-setup.md).
 
 {{< /markdown >}}
-{{< /if-variant >}}
+{{< /variant >}}

@@ -6,11 +6,11 @@ variants: +flyte +serverless +byoc +byok
 
 # Local setup
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 In [Getting started](./index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 In this section we will set up your local environment so that you can start building and deploying {{< var product_upper >}} workflows from your local machine.
 
@@ -64,7 +64,7 @@ You will not be using this globally installed instance of `{{< var cli_lower >}}
 This instance of `{{< var cli_lower >}}` is only used during the configuration step, below, when no projects yet exist.
 {{< /note >}}
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 ## Install Docker and get access to a container registry
 
@@ -196,15 +196,15 @@ You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
 See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 ## Configure the connection to your Union instance
 
 Next, you need to create a configuration file that contains your Union connection information:
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 ```shell
 $ union create login --serverless
@@ -217,8 +217,8 @@ To configure a connection to your Union instance in Union BYOC, see the [BYOC ve
 To configure a connection to your Union instance in Union BYOK, see the [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant byoc byok >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
 
 ```shell
 $ union create login --host <union-host-url>
@@ -236,8 +236,8 @@ To configure a connection to Union Serverless, see the [Serverless version of th
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
-{{< /if-variant >}}
-{{< if-variant serverless byoc byok >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
 
 By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
@@ -261,8 +261,8 @@ Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the envi
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
-{{< /if-variant >}}
-{{< if-variant flyte >}}
+{{< /variant >}}
+{{< variant flyte >}}
 
 ## Configure the connection to your Flyte instance
 
@@ -287,7 +287,7 @@ $ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_work
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
 {{/* TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content */}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Check your CLI configuration
 
@@ -299,7 +299,7 @@ $ {{<var cli_lower >}} info
 
 You should get a response like this:
 
-{{< if-variant byoc byok >}}
+{{< variant byoc byok >}}
 
 ```shell
 $ union info
@@ -317,8 +317,8 @@ $ union info
 
 For more details on connection configuration see [CLI authentication types](../administration/cli-authentication-types.md).
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 ```shell
 $ union info
@@ -334,8 +334,8 @@ $ union info
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-{{< /if-variant >}}
-{{< if-variant flyte >}}
+{{< /variant >}}
+{{< variant flyte >}}
 
 ```shell
 $ pyflyte info
@@ -351,4 +351,4 @@ $ pyflyte info
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}

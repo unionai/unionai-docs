@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Data input/output
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 Flyte being a data-aware orchestration platform, types play a vital role within it.
 This section provides an introduction to the wide range of data types that Flyte supports.
@@ -54,8 +54,8 @@ Here's a breakdown of these mappings:
 | `sklearn.base.BaseEstimator` | File | Plugin Required | To utilize the type, install the `scikit-learn` library. Use `sklearn.base.BaseEstimator` and its derived types. |
 | User defined types| Any| Custom transformers | The `FlytePickle` transformer is the default option, but you can also define custom transformers. For instructions on building custom type transformers, please refer to [this section](https://docs.flyte.org/en/latest/user_guide/extending/custom_types.html#advanced-custom-types). |
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 This section covers how to manage data input and output in Union.
 
@@ -72,8 +72,8 @@ This section covers how to manage data input and output in Union.
 | [`Pytorch](./pytorch.md) | Details on how use torch tensors and models across tasks. |
 | [`Tensorflow](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
 
-{{< /if-variant >}}
-{{< if-variant byoc byok >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
 
 This section covers how to manage data input and output in Union.
 
@@ -91,4 +91,4 @@ This section covers how to manage data input and output in Union.
 | [`Tensorflow](./tensorflow.md) | Details on how use tensorflow tensors and models across tasks. |
 | [`Accelerated datasets](./accelerated-datasets.md) | Upload your data once and access it from any task. |
 
-{{< /if-variant >}}
+{{< /variant >}}

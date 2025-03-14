@@ -8,38 +8,38 @@ site_root: true
 
 # User guide
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 {{< note "Flyte" >}}
 These docs are for [**Flyte**](./about-union.md#flyte).
 Switch to another variant with the version selector above.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 {{< note "Union Serverless" >}}
 These docs are for [**Union Serverless**](./about-union.md#union-serverless).
 Switch to another variant with the version selector above.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant byoc >}}
+{{< /variant >}}
+{{< variant byoc >}}
 
 {{< note "Union BYOC" >}}
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
 Switch to another variant with the version selector above.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant byok >}}
+{{< /variant >}}
+{{< variant byok >}}
 
 {{< note "Union BYOK" >}}
 These docs are for [**Union BYOK**](./about-union.md#union-byok).
 Switch to another variant with the version selector above.
 {{< /note >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 The {{< var product_upper >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
@@ -49,20 +49,20 @@ The {{< var product_upper >}} platform empowers AI development teams to rapidly 
 
 {{< grid >}}
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 {{< link-card target="about-union" icon="lightbulb" title="About Flyte" >}}
 Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
 {{< /link-card >}}
 
-{{< /if-variant >}}
-{{< if-variant serverless byoc byok >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
 
 {{< link-card target="about-union" icon="lightbulb" title="About Union" >}}
 Union builds on the leading OSS AI platform, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
 {{< /link-card >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 {{< link-card target="getting-started" icon="123" title="Getting started" >}}
 Build your first {{< var product_upper >}} workflow, exploring the major features of the platform along the way.
@@ -80,7 +80,7 @@ Explore the {{< var product_upper >}} development cycle from experimentation to 
 Manage the input and output of data in your {{< var product_upper >}} workflow.
 {{< /link-card >}}
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< var product_full >}} administrators can manage users, projects, and resources.
@@ -94,6 +94,6 @@ Manage the input and output of data in your {{< var product_upper >}} workflow.
 Frequently asked questions.
 {{< /link-card >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 {{< /grid >}}

@@ -12,12 +12,12 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 ### `ActorEnvironment` parameters
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 * **container_image:** The container image to use for the task. This container must have the `union` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
-{{< /if-variant >}}
+{{< /variant >}}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
 * **limits:** Compute resource limits.
 * **replica_count:** The number of workers to provision that are able to accept tasks.
@@ -27,7 +27,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 ```python
 # hello_world.py
@@ -56,8 +56,8 @@ def wf():
     say_hello()
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 ```python
 # hello_world.py
@@ -93,7 +93,7 @@ def wf():
     say_hello()
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 You can learn more about the trade-offs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks.md).
 
@@ -115,7 +115,7 @@ The `@actor_cache` decorator provides a powerful mechanism to cache the results 
 
 Below is a simplified example showcasing the use of `@actor_cache` for caching repetitive tasks. This dummy example demonstrates caching model that is loaded by the `load_model` task.
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 ```python
 # caching_basic.py
@@ -152,8 +152,8 @@ def wf(init_value: int = 1, state: int = 3) -> int:
     return out
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 ```python
 # caching_basic.py
@@ -200,7 +200,7 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 In order to get the `@actor_cache` functionality, you must pin `union` to at least `0.1.121`.
 {{< /note >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 ![Actor caching example 1](/_static/images/user-guide/core-concepts/actors/caching/actor-cache-example-1.png)
 

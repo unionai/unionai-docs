@@ -28,7 +28,7 @@ By default, when created with a no-argument constructor, `UnionRemote` will use 
 
 In the default case, as with the `union` CLI, all operations will be applied to the default project, `{@= default_project =@}` and default domain, `development`.
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 
 Alternatively, you can initialize `UnionRemote` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a Union instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
@@ -72,8 +72,8 @@ remote = FlyteRemote(
 
 For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/union-sdk/configuration/index.md)
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 Alternatively, you can initialize `UnionRemote` by explicitly specifying a project, and a domain:
 
@@ -86,5 +86,5 @@ remote = UnionRemote(
 )
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 

@@ -9,7 +9,7 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< audio >}}`](#-audio-)
   - [`{{< code >}}` (deprecated as we will inline all code)](#-code--deprecated-as-we-will-inline-all-code)
   - [`{{< grid >}}`](#-grid-)
-  - [`{{< if-variant >}}`](#-if-variant-)
+  - [`{{< variant >}}`](#-variant-)
   - [`{{< link-card >}}`](#-link-card-)
   - [`{{< markdown >}}`](#-markdown-)
   - [`{{< multiline >}}`](#-multiline-)
@@ -53,20 +53,20 @@ we generate multiple "flavors" of the documentation that are slightly different
 from each other. We are calling these "variants."
 
 When you are writing your content, and you want a specific part of the content
-to be conditional to a flavor, say "BYOC", you surround that with `if-variant`.
+to be conditional to a flavor, say "BYOC", you surround that with `variant`.
 
-> `if-variant` is a container, so inside you will specify what you are wrapping.
+> `variant` is a container, so inside you will specify what you are wrapping.
 > You can wrap any of the shortcodes listed in this document.
 
 Example:
 
-    {{< if-variant serverless byoc >}}
+    {{< variant serverless byoc >}}
         {{< markdown >}}
         **The quick brown fox signed up for Union!**
         {{< /markdown >}}
 
         {{< link-button text="Contact Us" target="https://union.ai/contact" >}}
-    {{< /if-variant >}}
+    {{< /variant >}}
 
 ## Component Library
 
@@ -88,7 +88,7 @@ Creates a fixed column grid for lining up content.
 
 > TODO(peeter): document parameters
 
-### `{{< if-variant >}}`
+### `{{< variant >}}`
 
 Filters content based on which flavor you're seeing.
 
@@ -103,7 +103,7 @@ A floatable, clickable, navigatable card.
 
 ### `{{< markdown >}}`
 
-Generates a markdown block, to be used inside containers such as `{{< dropdown >}}` or `{{< if-variant >}}`.
+Generates a markdown block, to be used inside containers such as `{{< dropdown >}}` or `{{< variant >}}`.
 
 > TODO(peeter): document parameters
 

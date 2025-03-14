@@ -20,9 +20,9 @@ For example::
 import union
 
 image_spec = union.ImageSpec(
-{{< if-variant byoc byok >}}
+{{< variant byoc byok >}}
     builder="union",
-{{< /if-variant >}}
+{{< /variant >}}
     name="say-hello-image",
     requirements="uv.lock",
 )
@@ -39,11 +39,11 @@ def hello_world_wf(name: str = "world") -> str:
 
 Here, the `ImageSpec` class is used to specify the container image to be used for the `say_hello` task.
 
-{{< if-variant byoc byok >}}
+{{< variant byoc byok >}}
 * The `builder` parameter specifies how the image should be built. The value `union` means that the image will be built using Union's built-in cloud builder.
   In some cases you may want to build the image locally on your machine and push it to a container registry. In that case, you would remove the `builder` parameter
   (or set it to `envd`) and add a `registry` parameter with the URL of the registry to push the image to. See below for more details.
-{{< /if-variant >}}
+{{< /variant >}}
 
 * The `name` parameter specifies the name of the image. This name will be used to identify the image in the container registry.
 
@@ -57,7 +57,7 @@ Here, the `ImageSpec` class is used to specify the container image to be used fo
 When you execute the `union run` or `union register` command, Union will build the container image defined in `ImageSpec` block
 (as well as registering the tasks and workflows defined in your code).
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 ## Union cloud image builder
 
@@ -72,8 +72,8 @@ In Union BYOC, you can optionally build images from the `ImageSpec` on your loca
 See [Local image builder](https://docs.unionai/byoc/user-guide/development-cycle/remote-dependencies-with-image-spec.md#local-image-builder) in the BYOC documentation for more details.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant byoc byok >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
 
 ## Union cloud image builder
 
@@ -141,4 +141,4 @@ the workflow execution will fail with an `ImagePullBackOff `error.
 In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
 
 At this point, you can run the workflow from the Union interface.
-{{< /if-variant >}}
+{{< /variant >}}

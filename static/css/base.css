@@ -167,7 +167,7 @@ pre code {
   margin: 0 2rem;
 }
 
-.if-variant {
+.variant {
   margin: 1rem 0;
 }
 
@@ -177,7 +177,7 @@ pre code {
   margin-bottom: 2rem;
 }
 
-.if-variant.not-allowed,
+.variant.not-allowed,
 .not-in-prod.not-allowed {
   border: 1px solid hsl(0, 100%, 50%);
 }
@@ -188,11 +188,11 @@ pre code {
   color: rgb(109, 109, 0);
 }
 
-.if-variant.allowed,
+.variant.allowed,
 .not-in-prod.allowed {
   border: 1px solid green;
 }
-.if-variant.allowed .content {
+.variant.allowed .content {
   padding: 1rem;
 }
 
@@ -200,29 +200,29 @@ pre code {
   display: flex;
   align-items: center;
 }
-.not-allowed.if-variant {
+.not-allowed.variant {
   margin: 1rem 0;
   padding: 0;
 }
-.not-allowed.if-variant .page-name {
+.not-allowed.variant .page-name {
   padding: 1rem;
   background-color: var(--bg-color);
 }
-.allowed.if-variant .title,
-.not-allowed.if-variant .title {
+.allowed.variant .title,
+.not-allowed.variant .title {
   padding: 0.5rem;
 }
-.not-allowed.if-variant .title,
+.not-allowed.variant .title,
 .not-allowed.page-warn {
   background: hsl(0, 84%, 85%);
   color: red;
 }
-.allowed.if-variant .title {
+.allowed.variant .title {
   background-color: hsl(120, 61%, 66%);
   color: green;
 }
-.allowed.if-variant .content,
-.not-allowed.if-variant .content {
+.allowed.variant .content,
+.not-allowed.variant .content {
   background-color: var(--bg-color);
   padding: 1rem;
 }

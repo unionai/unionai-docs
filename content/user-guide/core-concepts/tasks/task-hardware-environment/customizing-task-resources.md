@@ -59,17 +59,17 @@ GPUs should only be specified in the `limits` section of the task decorator:
 
 ## The `accelerator` setting
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 The `accelerator` setting further specifies the *type* of GPU required for the task.
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
 This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 See [Accelerators](./accelerators.md) for more information.
 
@@ -90,7 +90,7 @@ This makes it possible for a pod to get evicted if a node doesn't have enough st
 ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction.
 {{< /note >}}
 
-{{< if-variant byoc >}}
+{{< variant byoc >}}
 
 ## Task resource validation
 
@@ -105,7 +105,7 @@ To make changes to your cluster configuration, go to the [Union Support Portal](
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## The `with_overrides` method
 

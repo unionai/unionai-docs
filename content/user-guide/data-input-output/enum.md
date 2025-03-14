@@ -18,16 +18,16 @@ Currently, only string values are supported as valid enum values.
 Therefore, when defining enums, it's important to design them with the first value as a valid default.
 {{< /note >}}
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 {{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 We define an enum and a simple coffee maker workflow that accepts an order and brews coffee ☕️ accordingly.
 The assumption is that the coffee maker only understands enum inputs:
 
-{{< if-variant byoc byok serverless >}}
+{{< variant byoc byok serverless >}}
 
 ```python
 from enum import Enum
@@ -63,8 +63,8 @@ def coffee_maker_enum(coffee_enum: Coffee) -> str:
     return prep_order(coffee_enum=coffee_enum)
 ```
 
-{{< /if-variant >}}
-{{< if-variant flyte >}}
+{{< /variant >}}
+{{< variant flyte >}}
 
 ```python
 from enum import Enum
@@ -103,8 +103,8 @@ def coffee_maker(coffee: str) -> str:
 def coffee_maker_enum(coffee_enum: Coffee) -> str:
     return prep_order(coffee_enum=coffee_enum)
 ```
-{{</ if-variant >}}
-{{< if-variant flyte >}}
+{{</ variant >}}
+{{< variant flyte >}}
 
 You can send a string to the `coffee_maker_enum` workflow during its execution, like this:
 ```
@@ -113,8 +113,8 @@ pyflyte run \
   coffee_maker_enum --coffee_enum="latte"
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 You can send a string to the `coffee_maker_enum` workflow during its execution, like this:
 ```
@@ -123,7 +123,7 @@ union run \
   coffee_maker_enum --coffee_enum="latte"
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 You can send a string to the `coffee_maker_enum` workflow, like this:
 

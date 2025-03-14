@@ -73,10 +73,10 @@ Leverage Union to productionize NVIDIA blueprint workflows.
 Build a contextual RAG workflow for enterprise use.
 {{< /link-card >}}
 
-{{< if-variant byoc >}}
+{{< variant byoc >}}
 {{< link-card target="language-models/nim-on-actor" icon="server" title="Near-Real-Time Inference with NVIDIA NIM" >}}
 Serve NVIDIA NIM-supported language models, powered by Union actors.
 {{< /link-card >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 {{< /grid >}}

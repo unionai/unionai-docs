@@ -11,7 +11,7 @@ Note that while this functionality may appear to be the normal behavior of Pytho
 Consequently, accessing attributes in this manner is, in fact, a specially implemented feature.
 This functionality facilitates the direct passing of output attributes within workflows, enhancing the convenience of working with complex data structures.
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 {{< note >}}
 Flytekit version >= v1.14.0 supports Pydantic BaseModel V2, you can do attribute access on Pydantic BaseModel V2 as well.
 {{< /note >}}
@@ -19,7 +19,7 @@ Flytekit version >= v1.14.0 supports Pydantic BaseModel V2, you can do attribute
 {{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 To begin, import the required dependencies and define a common task for subsequent use:
 

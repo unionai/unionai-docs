@@ -44,7 +44,7 @@ customize them by setting these in `hugo.local.toml`:
 
 ### Identifying Problems: Missing Content
 
-Content may be hidden due to `{{< if-variant ... >}}` blocks. To see what's missing,
+Content may be hidden due to `{{< variant ... >}}` blocks. To see what's missing,
 you can adjust the variant show/hide in development mode.
 
 For a production-like look set:

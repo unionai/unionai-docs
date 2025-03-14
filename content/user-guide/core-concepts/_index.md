@@ -240,12 +240,12 @@ For more details on running workflows and tasks, see [Development cycle](../deve
 
 ### Running a task or workflow remotely on the command line with `union`
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 To run a workflow remotely on your Union installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../development-cycle/setting-up-a-project.md)):
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 To run a workflow remotely on your Union installation, use the following command:
-{{< /if-variant >}}
+{{< /variant >}}
 
 ```shell
 $ union run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5

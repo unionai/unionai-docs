@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Accelerators
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU to be used.
@@ -73,8 +73,8 @@ def my_task():
     ...
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 {{< note "_Accelerators_ and _Accelerated datasets_ are entirely different things" >}}
 An accelerator, in Union, is a specialized hardware device that is used to accelerate the execution of a task.
@@ -175,4 +175,4 @@ def my_task():
 For more information see [Specifying Accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html) in the Flyte documentation.
 For more information on partitioning, see [Partitioned GPUs](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#partitioning).
 
-{{< /if-variant >}}
+{{< /variant >}}

@@ -29,11 +29,11 @@ This example demonstrates how to work with a structured dataset using {@= Produc
 To use the `StructuredDataset` type, you only need to import `pandas`. The other imports specified below are only necessary for this specific example.
 {{< /note >}}
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 {{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 To begin, import the dependencies for the example:
 
@@ -341,11 +341,11 @@ if __name__ == "__main__":
 
 Like most storage formats (e.g. Avro, Parquet, and BigQuery), StructuredDataset support nested field structures.
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 {{< note >}}
 Nested field StructuredDataset should be run when flytekit version > 1.11.0.
 {{< /note >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 ```python
 data = [

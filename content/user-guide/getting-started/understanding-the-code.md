@@ -21,7 +21,7 @@ This is a simple "Hello, world!" example consisting of flat directory:
 
 The `hello_world.py` file illustrates the essential components of a {@= Product =@} workflow:
 
-{{< if-variant serverless byoc byok >}}
+{{< variant serverless byoc byok >}}
 
 ```python
 """Hello World"""
@@ -51,8 +51,8 @@ def hello_world_wf(name: str = "world") -> str:
     return greeting
 ```
 
-{{< /if-variant >}}
-{{< if-variant flyte >}}
+{{< /variant >}}
+{{< variant flyte >}}
 
 ```python
 """Hello World"""
@@ -78,7 +78,7 @@ def hello_world_wf(name: str = "world") -> str:
     return greeting
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 
 ### ImageSpec
@@ -87,11 +87,11 @@ The `ImageSpec` object is used to define the container image that will run the t
 
 Here we have the simplest possible `ImageSpec` object, which specifies:
 
-{{< if-variant serverless byoc byok >}}
+{{< variant serverless byoc byok >}}
 
 * The `builder` to use to build the image. We specify `union` to indicate that the image is built using Union's cloud image builder.
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 * The `name` of the image. This name will be used to identify the image in the container registry.
 

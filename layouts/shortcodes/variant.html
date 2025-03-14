@@ -11,7 +11,7 @@
 {{- $allowed := in $variants $variant -}}
 {{- if or $allowed (and (not hugo.IsProduction) (not $hideMismatch)) -}}
     {{- if (not $allowed) -}}
-        <div class="not-allowed if-variant">
+        <div class="not-allowed variant">
             <div class="title">
                 {{ upper (delimit $variants " | ") }}: This will not exist in production for variant '{{ $variant }}'.
             </div>
@@ -20,7 +20,7 @@
             </div>
         </div>
     {{- else if $showVariantNames -}}
-        <div class="allowed if-variant">
+        <div class="allowed variant">
             <div class="title">
                 {{ upper (delimit $variants " | ") }}
             </div>

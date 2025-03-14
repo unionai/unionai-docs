@@ -30,14 +30,14 @@ The Flyte type system is also used for caching, data lineage tracking, and autom
 
 While (most) tasks are locally executable, when a task is deployed to {@= Product =@} as part of the registration process it is containerized and run in its own independent Kubernetes pod.
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to {@= Product =@} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Tasks are named, versioned, and immutable
 
@@ -59,7 +59,7 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 
 For details on task caching, see [Caching](../caching.md).
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 ## Workflows can contain many types of tasks
 
 One of the most powerful features of {@= Product =@} is the ability to run widely differing computational workloads as tasks with a single workflow.
@@ -94,4 +94,4 @@ Not all parameters are compatible. For example, with specialized plugin task typ
 The `@union.task` decorator can take a number of parameters that allow you to configure the task's behavior.
 For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more.
 For more information, see [Task parameters](./task-parameters.md).
-{{< /if-variant >}}
+{{< /variant >}}

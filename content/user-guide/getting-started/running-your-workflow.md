@@ -85,7 +85,7 @@ $ union run --remote --project my-project --domain development hello_world.py he
 
 The output displays a URL that links to the workflow execution in the UI:
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 ```shell
 👍 Build submitted!
@@ -95,8 +95,8 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://serverless.union.ai/org/... to see execution in the UI.
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 ```shell
 👍 Build submitted!
@@ -106,7 +106,7 @@ The output displays a URL that links to the workflow execution in the UI:
 [✔] Go to https://<union-host-url>/org/... to see execution in the UI.
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 Click the link to see the execution in the UI.
 

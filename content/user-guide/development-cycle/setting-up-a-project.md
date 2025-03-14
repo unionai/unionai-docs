@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 In Union, your work is organized in a hierarchy with the following structure:
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 * **Account**: Your account on Union, tied to your GitHub identity.
 * **Domains**: Within your account there are three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
@@ -19,8 +19,8 @@ When you start working on `my_workflow` you would typically register it in the p
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code.md).
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 * **Organization**: Your company's Union instance, accessible at a specific URL like `union.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
@@ -32,7 +32,7 @@ When you start work on `my_workflow` you would typically register it in the proj
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually `my_project/production`.
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code.md).
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Terminology
 

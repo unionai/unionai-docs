@@ -51,8 +51,8 @@ The Spark task will run locally if the `raw-output-data-prefix` is not set.
 $ union run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_task.py hello_spark
 ```
 
-{{< if-variant byoc >}}
+{{< variant byoc >}}
 ## Union cluster deployment
 
 After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
-{{< /if-variant >}}
+{{< /variant >}}

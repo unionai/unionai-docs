@@ -21,15 +21,15 @@ This will install the `union` CLI globally on your system [as a `uv` tool](https
 
 ## Configure the `union` CLI
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 To configure the `union` CLI to connect to Union Serverless, run the following command:
 
 ```shell
 $ union create login --serverless
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
 
 To configure the `union` CLI to connect to you Union BYOC or BYOK instance, run the following command:
 
@@ -39,7 +39,7 @@ $ union create login --host <union-host-url>
 
 where `<union-host-url>` is the URL of your Union instance.
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 These command will create the file `~/.union/config.yaml` with the configuration information to connect to the Union instance.
 

@@ -12,18 +12,18 @@ Projects and domains are the principle organizational categories into which you 
 Projects define groups of task, workflows, launch plans and other entities that share a functional purpose.
 Domains represent distinct steps through which the entities in a project transition as they proceed through the development cycle.
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 Union provides three domains: `development`, `staging`, and `production`.
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 By default, Union provides three domains: `development`, `staging`, and `production`.
 During onboarding, you can configure your Union instance to have different domains.
 Speak to the Union team for more information.
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 Projects and domains are orthogonal to each other, meaning that a project has multiple domains and a domain has multiple projects.
 Here is an example arrangement:

@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 When you've multiple values that you want to send across {@= Product =@} entities, you can use a `dataclass`.
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 Flytekit uses the [Mashumaro library](https://github.com/Fatal1ty/mashumaro)
 to serialize and deserialize dataclasses.
@@ -36,7 +36,7 @@ For more details, you can refer the MSGPACK IDL RFC: https://github.com/flyteorg
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 To begin, import the necessary dependencies:
 
@@ -95,7 +95,7 @@ def add(x: Datum, y: Datum) -> Datum:
 ## {@= Product =@} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 ```python
 @dataclass
 class FlyteTypes:
@@ -144,8 +144,8 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     return o1, o2
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 ```python
 @dataclass
@@ -195,7 +195,7 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     return o1, o2
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
 
@@ -203,7 +203,7 @@ To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >
 $ {{< var cli_lower >}} run dataclass.py add --x dataclass_input.json --y dataclass_input.json
 ```
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
 ```
@@ -212,8 +212,8 @@ pyflyte run \
   add --x dataclass_input.json --y dataclass_input.json
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
 ```
@@ -222,4 +222,4 @@ union run \
   add --x dataclass_input.json --y dataclass_input.json
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}

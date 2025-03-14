@@ -10,7 +10,7 @@ In this section we will set up a new project.
 This involves creating a local project directory holding your project code
 and a corresponding {@= Product =@} project to which you will deploy that code using the `{@= cli =@}` CLI.
 
-{{< if-variant serverless byoc byok >}}
+{{< variant serverless byoc byok >}}
 
 ## Create a new Union project
 
@@ -38,8 +38,8 @@ Union provides a default project (called **{@= default_project =@}**) where all 
 In this section, however, we will be using the project we just created, not the default.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant flyte >}}
+{{< /variant >}}
+{{< variant flyte >}}
 
 ## Create a new Flyte project
 
@@ -62,7 +62,7 @@ Flyte provides a default project (called `flytesnacks`) where all your workflows
 In this section, however, we will be using the project we just created, not the default.
 {{< /note >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Initialize a local project
 

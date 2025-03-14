@@ -38,7 +38,7 @@ flytekitplugins-flyteinteractive
 
 ### example.py
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 ```python
 """Union workflow example of interactive tasks (@vscode)"""
 
@@ -63,8 +63,8 @@ def wf(name: str = "world") -> str:
 greeting = say_hello(name=name)
 return greeting
 ```
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode)"""
@@ -89,17 +89,17 @@ def wf(name: str = "world") -> str:
 greeting = say_hello(name=name)
 return greeting
 ```
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Register and run the workflow
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 To register the code to a project on Union and run the workflow, follow the directions in
 [Running your code](../development-cycle/running-your-code)
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 To register the code to a project on Union as usual and run the workflow.
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Access the IDE
 
@@ -184,7 +184,7 @@ Additional extensions can be added by defining a configuration object and passin
 
 ### example-extensions.py
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with extensions"""
@@ -217,8 +217,8 @@ def wf(name: str = "world") -> str:
     return greeting
 ```
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 ```python
 """Union workflow example of interactive tasks (@vscode) with extensions"""
 
@@ -248,7 +248,7 @@ def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
 ```
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Manage resources
 
@@ -259,7 +259,7 @@ The `max_idle_seconds` parameter can be used to set the maximum number of second
 
 ### example-manage-resources.py
 
-{{< if-variant byoc >}}
+{{< variant byoc >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with max_idle_seconds"""
@@ -286,8 +286,8 @@ def wf(name: str = "world") -> str:
     return greeting
 ```
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with max_idle_seconds"""
@@ -312,7 +312,7 @@ def wf(name: str = "world") -> str:
 greeting = say_hello(name=name)
 return greeting
 ```
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Pre and post hooks
 
@@ -321,7 +321,7 @@ This can be used for tasks requiring setup or cleanup.
 
 ### example-pre-post-hooks.py
 
-{{< if-variant byoc >}}
+{{< variant byoc >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with pre and post hooks"""
@@ -354,8 +354,8 @@ def wf(name: str = "world") -> str:
     return greeting
 ```
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with pre and post hooks"""
@@ -386,7 +386,7 @@ def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
 ```
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Only initiate VSCode on task failure
 
@@ -395,7 +395,7 @@ This is done by setting the `run_task_first` parameter to `True`.
 
 ### example-run-task-first.py
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with run_task_first"""
@@ -422,8 +422,8 @@ def wf(name: str = "world") -> str:
     return greeting
 ```
 
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 
 ```python
 """Union workflow example of interactive tasks (@vscode) with run_task_first"""
@@ -448,4 +448,4 @@ def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
 ```
-{{< /if-variant >}}
+{{< /variant >}}

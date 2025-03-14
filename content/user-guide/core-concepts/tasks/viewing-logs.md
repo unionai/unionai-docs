@@ -30,7 +30,7 @@ On the left side of the page you can also see the Kubernetes cluster logs for th
 
 Alongside the **Execution logs** tab in the **Execution details page**, you will also find the **Execution resources** and **Inputs & Outputs** tabs.
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 
 ## Cloud provider logs
 
@@ -40,4 +40,4 @@ In addition to the **Task Logs** link, you will also see a link to your cloud pr
 
 Assuming you are logged into your cloud provider account with the appropriate permissions, this link will take you to the logs specific to the container in which this particular task execution is running.
 
-{{< /if-variant >}}
+{{< /variant >}}

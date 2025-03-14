@@ -35,11 +35,11 @@ import tensorflow as tf
 ### Usage
 The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remote location and retrieve it later in your {@= Product =@} workflows.
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 {{< note >}}
 To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 {{< /note >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 ```python
 @union.task

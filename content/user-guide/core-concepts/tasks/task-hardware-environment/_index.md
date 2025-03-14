@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 ## Customizing task resources
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 
 You can customize the hardware environment in which your task code executes through configuration in the `@union.task` decorator by specifying `requests` and `limits` on:
 
@@ -19,8 +19,8 @@ You can customize the hardware environment in which your task code executes thro
 
 See [Customizing task resources](./customizing-task-resources.md) for details.
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 
 You can customize the hardware environment in which your task code executes.
 
@@ -57,7 +57,7 @@ The `pod_template_name` is a related parameter that can be used to specify the n
 
 For details see [Configuring task pods with Kubernetes PodTemplates](https://docs.flyte.org/en/latest/deployment/configuration/general.html#deployment-configuration-general).
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Accelerators
 

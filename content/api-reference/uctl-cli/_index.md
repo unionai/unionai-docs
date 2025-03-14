@@ -79,7 +79,7 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 
 ## Configuration
 
-{{< if-variant serverless >}}
+{{< variant serverless >}}
 {{< markdown >}}
 
 `uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
@@ -92,8 +92,8 @@ If you have previously used Union, you may have existing configuration files tha
 To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
 {{< /warning >}}
 
-{{< /if-variant >}}
-{{< if-variant byoc byok flyte >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
@@ -129,7 +129,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 * `~/.uctl/config.yaml` file
 
 {{< /markdown >}}
-{{< /if-variant >}}
+{{< /variant >}}
 
 ## Options
 
@@ -203,12 +203,12 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 
 ## Commands
 
-{{< if-variant byoc >}}
+{{< variant byoc >}}
 {{< markdown >}}
 * `uctl apply {uctl-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
 * `uctl config {uctl-config/index}` runs various config commands.
 {{< /markdown >}}
-{{< /if-variant >}}
+{{< /variant >}}
 * `uctl create {uctl-create/index}` creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
 * `uctl delete {uctl-delete/index}` terminates/deletes various Flyte resources, such as executions and resource attributes.
 * `uctl demo {uctl-demo/index}` provides commands for starting and interacting with a standalone minimal 

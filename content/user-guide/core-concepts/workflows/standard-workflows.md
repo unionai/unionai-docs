@@ -20,14 +20,14 @@ The syntax of a standard workflow definition can only include the following:
 
 ## Evaluation of a standard workflow
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code.md#running-a-script-in-local-python-with-union-run) it is executed as a normal Python function.
 However, when it is registered to Union, the top level `@union.workflow`-decorated function is evaluated as follows:
-{{< /if-variant >}}
-{{< if-variant serverless >}}
+{{< /variant >}}
+{{< variant serverless >}}
 When a standard workflow is run locally in a Python environment it is executed as a normal Python function.
 However, when it is registered to Union, the top level `@union.workflow`-decorated function is evaluated as follows:
-{{< /if-variant >}}
+{{< /variant >}}
 
 * Inputs to the workflow are materialized as lazily-evaluated promises which are propagated to downstream tasks and subworkflows.
 * All values returned by calls to functions decorated with `@union.task` , `@union.dynamic`and `@eager` are also materialized as lazily-evaluated promises.
@@ -56,9 +56,9 @@ The `@union.workflow` decorator can take the following parameters:
 
 * `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.WorkflowFailurePolicy.html#flytekit.WorkflowFailurePolicy).
 
-{{< if-variant byoc byok flyte >}}
+{{< variant byoc byok flyte >}}
 * `interruptible`: Indicates if tasks launched from this workflow are interruptible by default. See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances.md).
-{{< /if-variant >}}
+{{< /variant >}}
 
 * `on_failure`: Invoke this workflow or task on failure. The workflow specified must have the same parameter signature as the current workflow, with an additional parameter called `error`.
 

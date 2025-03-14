@@ -65,7 +65,7 @@ Example:
 
 ## Conditional Content
 
-The site has "flavors" of the documentation. We leverage the `{{< if-variant >}}` tag to control
+The site has "flavors" of the documentation. We leverage the `{{< variant >}}` tag to control
 which content is rendered on which flavor.
 
 Refer to [**Variants**](SHORTCODES.md#variants) for detailed explanation.

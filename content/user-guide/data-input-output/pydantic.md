@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Pydantic BaseModel
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 `flytekit` version >=1.14 supports natively the `JSON` format that Pydantic `BaseModel` produces,  enhancing the
 interoperability of Pydantic BaseModels with the Flyte type system.
 
@@ -34,14 +34,14 @@ To clone and run the example code on this page, see the [Flytesnacks repo](https
 You can put Dataclass and FlyteTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
 {{< /note >}}
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 {{< note >}}
 You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
 {{< /note >}}
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 To begin, import the necessary dependencies:
 
@@ -98,7 +98,7 @@ def add(x: Datum, y: Datum) -> Datum:
 ## {@= Product =@} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
-{{< if-variant byoc byok serverless >}}
+{{< variant byoc byok serverless >}}
 
 ```python
 class FlyteTypes(BaseModel):
@@ -152,8 +152,8 @@ def basemodel_wf(x: int, y: int) -> (Datum, FlyteTypes):
     return o1, o2
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 ```python
 class UnionTypes(BaseModel):
@@ -207,7 +207,7 @@ def basemodel_wf(x: int, y: int) -> (Datum, UnionTypes):
     return o1, o2
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
 
 To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
 
@@ -215,7 +215,7 @@ To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >
 $ {{< var cli_lower >}} run dataclass.py basemodel_wf --x 1 --y 2
 ```
 
-{{< if-variant flyte >}}
+{{< variant flyte >}}
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
 ```
@@ -224,8 +224,8 @@ pyflyte run \
   basemodel_wf --x 1 --y 2
 ```
 
-{{< /if-variant >}}
-{{< if-variant byoc byok serverless >}}
+{{< /variant >}}
+{{< variant byoc byok serverless >}}
 
 To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
 ```
@@ -234,4 +234,4 @@ union run \
   basemodel_wf --x 1 --y 2
 ```
 
-{{< /if-variant >}}
+{{< /variant >}}
