@@ -7,18 +7,18 @@ variants: +flyte +serverless +byoc +byok
 # Pickle type
 
 
-{{< var product_upper >}} enforces type safety by utilizing type information for compiling tasks and workflows,
+{{< key product_name >}} enforces type safety by utilizing type information for compiling tasks and workflows,
 enabling various features such as static analysis and conditional branching.
 
 However, we also strive to offer flexibility to end-users, so they don't have to invest heavily
-in understanding their data structures upfront before experiencing the value {{< var product_upper >}} has to offer.
+in understanding their data structures upfront before experiencing the value {{< key product_name >}} has to offer.
 
-{{< var product_upper >}} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
+{{< key product_name >}} supports the `FlytePickle` transformer, which converts any unrecognized type hint into `FlytePickle`,
 enabling the serialization/deserialization of Python values to/from a pickle file.
 
 > [!NOTE]
 > Pickle can only be used to send objects between the exact same Python version.
-> For optimal performance, it's advisable to either employ Python types that are supported by {{< var product_upper >}}
+> For optimal performance, it's advisable to either employ Python types that are supported by {{< key product_name >}}
 > or register a custom transformer, as using pickle types can result in lower performance.
 
 This example demonstrates how you can utilize custom objects without registering a transformer.
@@ -36,7 +36,7 @@ This example demonstrates how you can utilize custom objects without registering
 import union
 ```
 
-`Superhero` represents a user-defined complex type that can be serialized to a pickle file by {{< var kit_upper >}}
+`Superhero` represents a user-defined complex type that can be serialized to a pickle file by {{< key kit_name >}}
 and transferred between tasks as both input and output data.
 
 > [!NOTE]

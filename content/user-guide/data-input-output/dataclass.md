@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Dataclass
 
-When you've multiple values that you want to send across {{< var product_upper >}} entities, you can use a `dataclass`.
+When you've multiple values that you want to send across {{< key product_name >}} entities, you can use a `dataclass`.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -68,7 +68,7 @@ class Datum:
     z: dict[int, str]
 ```
 
-You can send a `dataclass` between different tasks written in various languages, and input it through the {{< var product_upper >}} UI as raw JSON.
+You can send a `dataclass` between different tasks written in various languages, and input it through the {{< key product_name >}} UI as raw JSON.
 
 > [!NOTE]
 > All variables in a data class should be **annotated with their type**. Failure to do will result in an error.
@@ -90,7 +90,7 @@ def add(x: Datum, y: Datum) -> Datum:
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
 ```
 
-## {{< var product_upper >}} types
+## {{< key product_name >}} types
 We also define a data class that accepts `StructuredDataset`, `FlyteFile` and `FlyteDirectory`.
 
 {{< variant flyte >}}
@@ -200,10 +200,10 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
 {{< /markdown >}}
 {{< /variant >}}
 
-To trigger a task that accepts a dataclass as an input with `{{< var cli_lower >}} run`, you can provide a JSON file as an input:
+To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 
 ```shell
-$ {{< var cli_lower >}} run dataclass.py add --x dataclass_input.json --y dataclass_input.json
+$ {{< key cli >}} run dataclass.py add --x dataclass_input.json --y dataclass_input.json
 ```
 
 {{< variant flyte >}}

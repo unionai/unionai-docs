@@ -10,11 +10,11 @@ At times, you might need to limit the acceptable values for inputs or outputs to
 This common requirement is usually met by using Enum types in programming languages.
 
 You can create a Python Enum type and utilize it as an input or output for a task.
-{{< var kit_upper >}} will automatically convert it and constrain the inputs and outputs to the predefined set of values.
+{{< key kit_name >}} will automatically convert it and constrain the inputs and outputs to the predefined set of values.
 
 > [!NOTE]
 > Currently, only string values are supported as valid enum values.
-> {{< var product_upper >}} assumes the first value in the list as the default, and Enum types cannot be optional.
+> {{< key product_name >}} assumes the first value in the list as the default, and Enum types cannot be optional.
 > Therefore, when defining enums, it's important to design them with the first value as a valid default.
 
 {{< variant flyte >}}
@@ -143,7 +143,7 @@ union run \
 You can send a string to the `coffee_maker_enum` workflow, like this:
 
 ```
-$ {{< var cli_lower>}} run coffe_maker.py coffee_maker_enum --coffee_enum="latte"
+$ {{< key cli>}} run coffe_maker.py coffee_maker_enum --coffee_enum="latte"
 ```
 
 where `coffee_maker.py` is the name of the file containing the above code.

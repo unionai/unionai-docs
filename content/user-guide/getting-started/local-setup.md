@@ -14,7 +14,7 @@ In [Getting started](./index.md) we showed you how to run your first workflow ri
 {{< /markdown >}}
 {{< /variant >}}
 
-In this section we will set up your local environment so that you can start building and deploying {{< var product_upper >}} workflows from your local machine.
+In this section we will set up your local environment so that you can start building and deploying {{< key product_name >}} workflows from your local machine.
 
 ## Install `uv`
 
@@ -30,7 +30,7 @@ First, [install `uv`](https://docs.astral.sh/uv/#getting-started).
 
 ## Ensure the correct version of Python is installed
 
-{{< var kit_upper >}} requires Python `>=3.9,<3.13`.
+{{< key kit_name >}} requires Python `>=3.9,<3.13`.
 We recommend using `3.12`.
 You can install it with:
 
@@ -39,29 +39,29 @@ $ uv python install 3.12
 ```
 
 > [!NOTE] Uninstall higher versions of Python
-> When installing Python packages "as tools" (as we do below with the `{{< var kit_lower >}}`),
+> When installing Python packages "as tools" (as we do below with the `{{< key kit >}}`),
 > `uv` will default to the latest version of Python available on your system.
-> If you have a version `>=3.13` installed, you will need to uninstall it since `{{< var kit_lower >}}` requires `>=3.9,<3.13`.
+> If you have a version `>=3.13` installed, you will need to uninstall it since `{{< key kit >}}` requires `>=3.9,<3.13`.
 
-## Install the `{{< var cli_lower >}}` CLI
+## Install the `{{< key cli >}}` CLI
 
-Once `uv` is installed, use it to install the `{{< var cli_lower >}}` CLI by installing the `{{< var kit_lower >}}` Python package:
+Once `uv` is installed, use it to install the `{{< key cli >}}` CLI by installing the `{{< key kit >}}` Python package:
 
 ```shell
-$ uv tool install {{< var kit_lower >}}
+$ uv tool install {{< key kit >}}
 ```
 
-This will make the `{{< var cli_lower >}}` CLI globally available on your system.
+This will make the `{{< key cli >}}` CLI globally available on your system.
 
 > [!NOTE] Add the installation location to your PATH
 > `uv` installs tools in `~/.local/bin` by default.
 > Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
 > `uv` provides a convenience command to do this: `uv tool update-shell`.
 >
-> Note that later in this guide we will be running the `{{< var cli_lower >}}` CLI to run your workflows.
-> In those cases you will be running `{{< var cli_lower >}}` within the Python virtual environment of your workflow project.
-> You will not be using this globally installed instance of `{{< var cli_lower >}}`.
-> This instance of `{{< var cli_lower >}}` is only used during the configuration step, below, when no projects yet exist.
+> Note that later in this guide we will be running the `{{< key cli >}}` CLI to run your workflows.
+> In those cases you will be running `{{< key cli >}}` within the Python virtual environment of your workflow project.
+> You will not be using this globally installed instance of `{{< key cli >}}`.
+> This instance of `{{< key cli >}}` is only used during the configuration step, below, when no projects yet exist.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -312,7 +312,7 @@ See [Running in a local cluster](../development-cycle/running-in-a-local-cluster
 To check your CLI configuration, run:
 
 ```shell
-$ {{<var cli_lower >}} info
+$ {{< key cli >}} info
 ```
 
 You should get a response like this:

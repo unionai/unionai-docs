@@ -50,4 +50,4 @@ The workflow versions list shows the  a list of all versions of this workflow al
 
 ### Workflow and task descriptions
 
-{{< var product_upper >}} enables the use of docstrings to document your code. Docstrings are stored in the control plane and displayed on the UI for each workflow or task.
+{{< key product_name >}} enables the use of docstrings to document your code. Docstrings are stored in the control plane and displayed on the UI for each workflow or task.

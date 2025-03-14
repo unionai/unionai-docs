@@ -22,8 +22,8 @@ First, sign up for Union Serverless:
 Once you've received confirmation that your sign-up succeeded, navigate to
 the UI at [serverless.union.ai](https://serverless.union.ai).
 
-To get started, try selecting the default project, called `{{< var default_project >}}`, from the list of projects.
-This will take you to `{{< var default_project >}}` project dashboard:
+To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
+This will take you to `{{< key default_project >}}` project dashboard:
 
 ![Union UI](/_static/images/quick-start/serverless-dashboard.png)
 
@@ -106,8 +106,8 @@ After your administrator has onboarded you to Union (see [Deployment](../../depl
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
 Once you have logged in you should see the Union UI.
 
-To get started, try selecting the default project, called `{{< var default_project >}}`, from the list of projects.
-This will take you to `{{< var default_project >}}` project dashboard:
+To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
+This will take you to `{{< key default_project >}}` project dashboard:
 
 ![Union UI](/_static/images/quick-start/byoc-dashboard.png)
 
