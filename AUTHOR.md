@@ -2,13 +2,16 @@
 # Contributing content
 
 **Table of contents**
-- [Getting Started](#getting-started)
+- [Getting started](#getting-started)
+- [Live preview](#live-preview)
 - [Pull Requests + Site Preview](#pull-requests--site-preview)
-- [Live Preview](#live-preview)
 - [Page Visibility](#page-visibility)
-- [Page Order](#page-order)
+- [Page order](#page-order)
+- [weight: 3](#weight-3)
 - [Conditional Content](#conditional-content)
 - [Special Content Generation](#special-content-generation)
+- [Python Generated Content](#python-generated-content)
+  - [Run on Union Instructions](#run-on-union-instructions)
 
 
 ## Getting started
@@ -90,3 +93,54 @@ Refer to [**Variants**](SHORTCODES.md#variants) for detailed explanation.
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
 
 Refer to [**Content Generation**](SHORTCODES.md) for more information.
+
+## Python Generated Content
+
+You can generate pages from Python markdown-decorated files.
+
+Declaring the file: At the top of your .md file, add:
+
+    ---
+    layout: py_example
+    example_file: /path/to/your/file.py
+    ---
+
+A file like this:
+
+    # # Credit Default Prediction with XGBoost & NVIDIA RAPIDS
+    #
+    # In this tutorial, we will use NVIDIA RAPIDS `cudf` DataFrame library for preprocessing
+    # data and XGBoost, an optimized gradient boosting library, for credit default prediction.
+    # We'll learn how to declare NVIDIA  `A100` for our training function and `ImageSpec`
+    # for specifying our python dependencies.
+
+    # {{run-on-union}}
+
+    # ## Declaring workflow dependencies
+    #
+    # First, we start by importing all the dependencies that is required by this workflow:
+
+    import os
+    import gc
+    from pathlib import Path
+    from typing import Tuple
+
+    import fsspec
+    from flytekit import task, workflow, current_context, Resources, ImageSpec, Deck
+    from flytekit.types.file import FlyteFile
+    from flytekit.extras.accelerators import A100
+
+Note that all markdown are as comments, and code blocks are as normal python code.
+
+The generator will convert the markdown into a page and the code into blocks.
+
+### Run on Union Instructions
+
+We can add the run on Union instructions anywhere in the content.
+Annotate the location you want to include it with `{{run-on-union}}`. Like this:
+
+    # The quick brown fox wants to see the Union instructions.
+    #
+    # {{run-on-union}}
+    #
+    # And it shall have it.
