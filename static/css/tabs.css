@@ -26,8 +26,18 @@
 }
 
 .tab:hover {
+  color: unset;
+}
+
+.tab .text {
+  padding: 0.25rem 0.5rem;
+}
+
+.tab .text:hover {
   color: var(--union-color);
-  background-color: #f1f5f9;
+  background-color: var(--union-color-very-light);
+  border-radius: 6px;
+  transition: color 0.2s, background-color 0.2s;
 }
 
 .tab.active {

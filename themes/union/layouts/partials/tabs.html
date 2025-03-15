@@ -8,7 +8,9 @@
                     tab{{ if eq $currentPage.Section .Section }} active{{ end }}
                     {{ if $access.development }}disabled{{ end }}
                     ">
+                    <div class="text">
                     {{ .Title }}
+                    </div>
                 </a>
             {{ end }}
         {{ end }}

@@ -22,6 +22,8 @@
     />
     <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/light.css" />
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" />
     <script type="module"
       src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"></script>
     <script>
@@ -29,6 +31,9 @@
       function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
+
+        // Set the theme in the HTML element
+        document.documentElement.className = theme === 'dark' ? 'sl-theme-dark' : '';
 
         // Set cookie for 24 hours
         const date = new Date();

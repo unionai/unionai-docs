@@ -36,6 +36,8 @@
   --blockquote-border: #4a5568;
   --table-row-even: #1e293b;
   --table-row-hover: #2d3748;
+  --union-color-light: #817457;
+  --union-color-very-light: #766e5e;
 }
 * {
   margin: 0;

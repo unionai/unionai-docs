@@ -44,23 +44,23 @@
 }
 
 #variant-selector {
-  appearance: none;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
+  /* appearance: none; */
+  /* background-color: white; */
+  /* border: 1px solid #e2e8f0; */
+  /* border-radius: 0.375rem; */
   padding: 0.5rem 2rem 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #1a202c;
+  /* font-size: 0.875rem; */
+  /* line-height: 1.25rem; */
+  /* color: #1a202c; */
   cursor: pointer;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease; */
 }
 
-#variant-selector:hover {
+/* #variant-selector:hover {
   border-color: #cbd5e0;
 }
 
@@ -69,15 +69,15 @@
   outline-offset: 2px;
   border-color: #4299e1;
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
-}
+} */
 
 #devwarn {
   color: gray;
   position: absolute;
   left: 500px;
-  background: #fff;
+  background: yellow;
   padding: 4px 8px;
-  border: 1px solid #ccc;
+  border: 1px solid yellow;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-left: 10px;
@@ -104,5 +104,5 @@
   transform: translateY(-50%);
   border-width: 8px 8px 8px 0;
   border-style: solid;
-  border-color: transparent #fff transparent transparent;
+  border-color: transparent yellow transparent transparent;
 }
