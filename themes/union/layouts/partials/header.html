@@ -36,9 +36,9 @@
 function handleVariantChange(event) {
     const newVariant = event.target.options[event.target.selectedIndex].value;
     const newTarget = new URL(document.location.toString());
-    const pathParts = newTarget.pathname.split('/')
-    pathParts[1] = newVariant
-    newTarget.pathname = pathParts.join('/');
+    const oldPrefix = "{{ .Site.BaseURL }}";
+    const newPrefix = "{{ .Site.BaseURL }}".replace("{{ .Site.Params.variant }}", newVariant);
+    newTarget.pathname = newTarget.pathname.replace(oldPrefix, newPrefix);
     console.log('Reloading', newTarget.toString());
     redirect(newTarget);
 }
