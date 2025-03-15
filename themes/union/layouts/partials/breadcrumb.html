@@ -13,6 +13,14 @@
             <a href="{{ .Site.BaseURL }}">{{ $display }}</a>
         {{ end }}
     </div>
+
+    {{ $baseUrl := urls.Parse .Site.BaseURL }}
+    {{ $basePath := $baseUrl.Path }}
+    {{ $basePathCount := sub (len (split $basePath "/")) 2 }}
+
+    {{/* Extract the base path from the breadcrumbs */}}
+    {{ $sections = after $basePathCount $sections }}
+
     {{ range $index, $section := $sections }}
         {{ if eq $section $variant }}
             {{ continue }}
@@ -37,7 +45,7 @@
             {{ else if eq $index (sub (len $sections) 1) }}
                 {{ $title }}
             {{ else if $hasIndex }}
-                <a href="{{ $publicSectionURL }}">
+                <a href="{{ $.Site.BaseURL }}{{ $publicSectionURL }}">
                     {{ $title }}
                 </a>
             {{ else }}
