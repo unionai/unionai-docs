@@ -1,0 +1,6 @@
+{{- $emoji := transform.Emojify ":arrow_forward:" -}}
+<div style="margin-bottom: 1rem;">
+  <sl-details summary="{{ $emoji }} Run in Union">
+    {{ partial "run-on-union.md" | markdownify }}
+  </sl-details>
+</div>
