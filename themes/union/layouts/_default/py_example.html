@@ -1,7 +1,4 @@
 {{ define "main" }}
-    <div style="border: 3px solid purple; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-      CONVERTED
-    </div>
   <div class="markdown-content">
     {{ $content := readFile .Params.example_file }}
     {{ $lines := split $content "\n" }}
