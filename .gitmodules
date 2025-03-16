@@ -4,3 +4,6 @@
 [submodule "assets/unionai-examples"]
 	path = assets/unionai-examples
 	url = git@github.com:unionai/unionai-examples
+[submodule "assets/flytekit"]
+	path = assets/flytekit
+	url = git@github.com:flyteorg/flytekit
