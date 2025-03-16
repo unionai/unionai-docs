@@ -10,7 +10,7 @@
 {{- $fileName := .Get "file" -}}
 
 {{- /* Define allowed prefixes */ -}}
-{{- $allowedPrefixes := slice "/static/" "/assets/" "/_static/" -}}
+{{- $allowedPrefixes := slice "/static/" "/assets/" "/_static/" "/external/" -}}
 {{- $isAllowed := false -}}
 
 {{- /* Check if fileName has an allowed prefix */ -}}
