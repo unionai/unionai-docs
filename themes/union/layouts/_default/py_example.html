@@ -1,6 +1,9 @@
 {{ define "main" }}
   <div class="markdown-content">
     {{ $content := readFile .Params.example_file }}
+    {{ if not $content }}
+    {{ warnf "Could not find example file %s" .Params.example_file }}
+    {{ end }}
     {{ $lines := split $content "\n" }}
     {{ $inCodeBlock := false }}
     {{ $buffer := slice }}
