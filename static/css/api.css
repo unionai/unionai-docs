@@ -1,0 +1,21 @@
+.api LI P {
+    margin: 0;
+}
+
+.api .version {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.api .version DIV {
+    border: 1px solid #ddd;
+    color: #999;
+    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.api .version DIV::before {
+    content: "v."
+}

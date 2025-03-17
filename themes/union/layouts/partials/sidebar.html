@@ -61,7 +61,7 @@
                 "
                 >
                   <div class="content">
-                    {{ if .page.IsSection }}
+                    {{ if and .page.IsSection (gt (len .page.Pages) 0) }}
                         {{ $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) }}
                         <img src="/images/chevron-down.svg" class="chevron{{ if not $isActive }} rotated{{ end }}" />
                     {{ end }}
