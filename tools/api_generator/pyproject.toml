@@ -3,5 +3,6 @@ name = "api-generator"
 version = "0.1.0"
 description = "Generates API for integration with this site"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=999.9" # This is just so you can't start it here!
+                            # Read README.md
 dependencies = []
