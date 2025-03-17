@@ -1,6 +1,6 @@
 ---
 title: Debugging with interactive tasks
-weight: 12
+weight: 11
 variants: +flyte +serverless +byoc +byok
 ---
 

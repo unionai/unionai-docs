@@ -1,6 +1,6 @@
 ---
 title: ChatGPT agent example
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +byok
 ---
 

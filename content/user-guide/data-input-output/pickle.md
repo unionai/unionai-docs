@@ -1,6 +1,6 @@
 ---
 title: Pickle type
-weight: 9
+weight: 8
 variants: +flyte +serverless +byoc +byok
 ---
 

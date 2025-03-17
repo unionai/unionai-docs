@@ -1,6 +1,6 @@
 ---
 title: PyTorch type
-weight: 11
+weight: 10
 variants: +flyte +serverless +byoc +byok
 ---
 

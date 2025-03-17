@@ -1,6 +1,6 @@
 ---
 title: Viewing workflows
-weight: 7
+weight: 6
 variants: +flyte +serverless +byoc +byok
 ---
 

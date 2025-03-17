@@ -1,6 +1,6 @@
 ---
 title: Serving a Model from a Workflow With FastAPI
-weight: 3
+weight: 2
 variants: +flyte +serverless +byoc +byok
 ---
 

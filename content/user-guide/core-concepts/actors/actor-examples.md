@@ -1,6 +1,6 @@
 ---
 title: Actor examples
-weight: 3
+weight: 2
 variants: +flyte +serverless +byoc +byok
 ---
 

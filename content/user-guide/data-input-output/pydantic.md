@@ -1,6 +1,6 @@
 ---
 title: Pydantic BaseModel
-weight: 10
+weight: 9
 variants: +flyte +serverless +byoc +byok
 ---
 

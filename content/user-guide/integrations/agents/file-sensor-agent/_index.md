@@ -1,6 +1,6 @@
 ---
 title: File sensor agent
-weight: 1
+weight: 4
 variants: +flyte +serverless +byoc +byok
 ---
 

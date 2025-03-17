@@ -1,6 +1,6 @@
 ---
 title: Accessing AWS S3 buckets
-weight: 15
+weight: 14
 variants: +flyte +serverless +byoc +byok
 ---
 

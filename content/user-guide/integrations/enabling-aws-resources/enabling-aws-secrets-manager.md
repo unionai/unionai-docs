@@ -1,13 +1,13 @@
 ---
 title: Enabling AWS Secrets Manager
-weight: 4
+weight: 3
 variants: +flyte +serverless +byoc +byok
 ---
 
 # Enabling AWS Secrets Manager
 
 > [!NOTE]
-> This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the 
+> This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the
 > [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager.
 
 To enable your code to access secrets from AWS Secrets Manager you will need to

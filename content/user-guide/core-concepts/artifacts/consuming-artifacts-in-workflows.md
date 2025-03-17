@@ -1,6 +1,6 @@
 ---
 title: Consuming artifacts in workflows
-weight: 4
+weight: 3
 variants: +flyte +serverless +byoc +byok
 ---
 

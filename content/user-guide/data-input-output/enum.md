@@ -1,6 +1,6 @@
 ---
 title: Enum type
-weight: 8
+weight: 7
 variants: +flyte +serverless +byoc +byok
 ---
 

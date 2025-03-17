@@ -1,6 +1,6 @@
 ---
 title: Enabling BigQuery
-weight: 5
+weight: 4
 variants: +flyte +serverless +byoc +byok
 ---
 
