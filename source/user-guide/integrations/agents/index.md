@@ -19,7 +19,7 @@ Alternatively, you can also create your own agent.
 
 ## Creating a new agent
 
-You can implement an agent as a Python class, test it locally, and have the Union team enable it in your Union deployment.
+You can implement an agent as a Python class, test it locally, and have the Union.ai team enable it in your Union.ai deployment.
 Your teammates will then be able to create tasks of the corresponding task type to connect to the external service.
 
 There are two types of agents: **async** and **sync**.
@@ -57,7 +57,7 @@ To test your agent locally, create a class for the agent task that inherits from
 For testing examples, see the [BigQuery agent](./bigquery-agent/index.md#local-testing) and [Databricks agent](./databricks-agent/index.md#local-testing) documentation.
 
 {@@ if byoc @@}
-### Enabling your agent in your Union deployment
+### Enabling your agent in your Union.ai deployment
 
-After you have finished testing your agent locally, you can contact the Union team to enable the agent in your Union deployment to use it in production.
+After you have finished testing your agent locally, you can contact the Union.ai team to enable the agent in your Union.ai deployment to use it in production.
 {@@ endif @@}

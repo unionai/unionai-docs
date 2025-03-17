@@ -86,13 +86,13 @@ For more details see [Map Task example](https://github.com/unionai-oss/union-clo
 
 ## Specialized plugin task classes and configs
 
-Union supports a wide variety of plugin tasks.
+Union.ai supports a wide variety of plugin tasks.
 Some of these are enabled as specialized task classes, others as specialized configurations of the default `@union.task` (`PythonFunctionTask`).
 
 They enable things like:
 
 * Querying external databases (AWS Athena, BigQuery, DuckDB, SQL, Snowflake, Hive).
-* Executing specialized processing right in Union (Spark in virtual cluster, Dask in Virtual cluster, Sagemaker, Airflow, Modin, Ray, MPI and Horovod).
+* Executing specialized processing right in Union.ai (Spark in virtual cluster, Dask in Virtual cluster, Sagemaker, Airflow, Modin, Ray, MPI and Horovod).
 * Handing off processing to external services(AWS Batch, Spark on Databricks, Ray on external cluster).
 * Data transformation(Great Expectations, DBT, Dolt, ONNX, Pandera).
 * Data tracking and presentation  (MLFlow, Papermill).

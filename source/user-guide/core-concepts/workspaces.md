@@ -1,7 +1,7 @@
 # Workspaces
 
 Workspaces provide a convenient VSCode development environment for iterating on
-your Union tasks, workflows, and apps.
+your Union.ai tasks, workflows, and apps.
 
 With workspaces, you can:
 
@@ -135,7 +135,7 @@ You can also set the resources for your workspace:
 {@@ if serverless @@}
 
 These resources must be compatible with the resource limits available to you
-on your Union serverless account. Go the the top-level dashboard to view your
+on your Union.ai serverless account. Go the the top-level dashboard to view your
 execution settings:
 
 ![Execution Settings](/_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
@@ -163,7 +163,7 @@ a file from the web, specify custom `on_startup` commands:
 
 ## Specifying custom container images
 
-By default, the workspace will use a Union-provided container image which contains
+By default, the workspace will use a Union.ai-provided container image which contains
 the following Python libraries:
 
 - `union`
@@ -190,7 +190,7 @@ task execution details page:
 
 You can specify:
 - Any public container image URI
-- Images built with the Union [image builder service](../development-cycle/image-spec.md)
+- Images built with the Union.ai [image builder service](../development-cycle/image-spec.md)
 - Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr.md), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry.md))
 
 {@@ endif @@}

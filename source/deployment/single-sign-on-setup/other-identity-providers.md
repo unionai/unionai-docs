@@ -19,25 +19,25 @@ Now, referencing those directions, follow the steps below:
 1. The last step in the setup will generate the **client secret**. Copy this value to a text file on your computer.
    Make a copy of this value.
 
-## Share the client secret securely with the Union team
+## Share the client secret securely with the Union.ai team
 
-1. Copy the public key provided by Union here: [**public-key.txt**](/_static/public/public-key.txt)
+1. Copy the public key provided by Union.ai here: [**public-key.txt**](/_static/public/public-key.txt)
 
 1. Go to [https://pgptool.org](https://pgptool.org/).
 
 1. Click the **Encrypt** tab.
 
-1. Upload the public key provided by Union under **Receiver's public key**.
+1. Upload the public key provided by Union.ai under **Receiver's public key**.
 
 1. Skip the **Signer’s Private Key** section.
 
 1. Enter the **client secret** in plain text and encrypt it.
 
-1. Download the encrypted text and share it with the Union team over Slack.
+1. Download the encrypted text and share it with the Union.ai team over Slack.
 
 1. Delete the client secret from the text file on your computer.
 
-## Share the application (client) ID with Union
+## Share the application (client) ID with Union.ai
 
-Share the **application (client) ID** with the Union team over Slack.
+Share the **application (client) ID** with the Union.ai team over Slack.
 This value does not have to be encrypted.

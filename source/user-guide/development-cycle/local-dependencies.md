@@ -1,9 +1,9 @@
 # Local dependencies
 
-During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union.
+During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union.ai.
 To enable this, you need to ensure that the required dependencies are installed in both places.
 Here we will explain how to install your dependencies locally.
-For information on how to make your dependencies available on Union, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec.md).
+For information on how to make your dependencies available on Union.ai, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec.md).
 
 ## Define your dependencies in your `pyproject.toml`
 
@@ -15,7 +15,7 @@ When using the best way declare your dependencies is to list them under `depende
 [project]
 name = "union-simple"
 version = "0.1.0"
-description = "A simple Union project"
+description = "A simple Union.ai project"
 readme = "README.md"
 requires-python = ">=3.9,<3.13"
 dependencies = ["union"]
@@ -51,4 +51,4 @@ In our examples we assume that you are doing the latter.
 
 Having installed your dependencies in your local environment, you can now [run your workflows locally using `union run`](./running-your-code.md).
 
-The next step is to ensure that the same dependencies are also [available in the remote environment on Union](./remote-dependencies-with-image-spec.md).
+The next step is to ensure that the same dependencies are also [available in the remote environment on Union.ai](./remote-dependencies-with-image-spec.md).

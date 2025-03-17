@@ -1,7 +1,7 @@
 # Data plane setup on AWS
 
-To set up your data plane on Amazon Web Services (AWS) you must allow Union to provision and maintain compute resources under your AWS account.
-You will need to set up an IAM role for Union to use that has sufficient permissions to do this provisioning.
+To set up your data plane on Amazon Web Services (AWS) you must allow Union.ai to provision and maintain compute resources under your AWS account.
+You will need to set up an IAM role for Union.ai to use that has sufficient permissions to do this provisioning.
 Setting the permissions can be done either through CloudFormation or the AWS console.
 
 Additionally, if you wish to manage your own Virtual Private Cloud (VPC) then you will need to set up the VPC according to the guidelines described below.
@@ -17,12 +17,12 @@ Ensure that you are logged into the desired AWS account and then select the appr
 
 | Region         | Launch Stack |
 |----------------|--------------|
-| `us-east-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-east-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-central-1` | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=UnionCloudAccess\&param_CrossAccountRoleName=union-ai-admin) |
+| `us-east-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=Union.aiCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-east-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=Union.aiCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=Union.aiCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-1`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=Union.aiCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-2`    | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=Union.aiCloudAccess\&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-central-1` | [![Launch AWS CloudFormation Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.11%2Funion-ai-admin-role.template.yaml\&stackName=Union.aiCloudAccess\&param_CrossAccountRoleName=union-ai-admin) |
 
 :::{admonition} CloudFormation template
 All of these buttons launch the same CloudFormation template, just in different regions.
@@ -39,29 +39,29 @@ Once you have selected **Launch Stack**, you will be taken to the CloudFormation
 1. Check the profile name in the top right corner to confirm that you are in the correct account.
 1. Leave the default values in place:
     * `union-ai-admin` for **Cross Account Role Name**.
-    * `UnionCloudAccess` for the **Stack Name**.
+    * `Union.aiCloudAccess` for the **Stack Name**.
 1. Select the checkbox indicating that you acknowledge that AWS CloudFormation may create IAM resources with custom names.
 1. Select **Create Stack**.
 
 ### Share the role ARN
 
-Once the above steps are completed, you will need to get the ARN of the newly created role (`union-ai-admin`) and send it to the Union team:
+Once the above steps are completed, you will need to get the ARN of the newly created role (`union-ai-admin`) and send it to the Union.ai team:
 
 1. In the navigation pane of the IAM console, choose **Roles**.
 1. In the list of roles, choose the `union-ai-admin` role.
 1. In the **Summary** section of the details pane, copy the **role ARN** value.
-1. Share the ARN with the Union team.
-1. The Union team will get back to you to verify that they are able to assume the role.
+1. Share the ARN with the Union.ai team.
+1. The Union.ai team will get back to you to verify that they are able to assume the role.
 
 ### Updating permissions through CloudFormation
 
-From time to time Union may need to update the `union-ai-admin` role to support new or improved functionality.
+From time to time Union.ai may need to update the `union-ai-admin` role to support new or improved functionality.
 
 If you used CloudFormation to set up your stack in the first place, you will have to perform the update by replacing your CloudFormation template with a new one.
 
 When an update is required:
 
-* The Union team will inform you that you need to perform the update.
+* The Union.ai team will inform you that you need to perform the update.
 * The URL of the template will be published above, in the **CloudFormation template** info box. This is always kept up to date with the latest template.
 
 To perform the update on your system, copy the template URL and follow the directions here:
@@ -69,14 +69,14 @@ To perform the update on your system, copy the template URL and follow the direc
 ### Update your CloudFormation template
 
 1. Log in to the AWS web console and navigate to **CloudFormation** for the region within which your data plane is deployed.
-2. Select the `UnionCloudAccess` stack.
+2. Select the `Union.aiCloudAccess` stack.
 3. Select **Stack Actions > Create change set for current stack**.
 4. Select **Replace current template**.
-5. Input the new CloudFormation template URL provided to you by the Union team (and published above in the **Current template** info box).
+5. Input the new CloudFormation template URL provided to you by the Union.ai team (and published above in the **Current template** info box).
 6. Select **Next**.
 7. On the **Specify stack details** page, accept the defaults and select **Next**.
 8. On the **Configure stack options** page, accept the defaults and select **Next**.
-9. On the **Review UnionCloudAccess** page, accept the acknowledgment at the bottom of the page and select **Submit**.
+9. On the **Review Union.aiCloudAccess** page, accept the acknowledgment at the bottom of the page and select **Submit**.
 10. Wait for the changeset to be generated by AWS (refresh the page if necessary).
 11. Select **Execute change set**.
 
@@ -86,12 +86,12 @@ If you want to perform the setup manually, instead of using the CloudFormation m
 
 ### Prepare the policy documents
 
-First, copy the policy document `UnionIAMPolicy.json` below to an editor and replace`${AWS::Region}` with the correct region and `${AWS::AccountID}` with your account ID.
+First, copy the policy document `Union.aiIAMPolicy.json` below to an editor and replace`${AWS::Region}` with the correct region and `${AWS::AccountID}` with your account ID.
 
 You will use this policy in a later step.
 
 ```{code-block} json
-:caption: UnionIAMPolicy.json
+:caption: Union.aiIAMPolicy.json
 
 {
 	"Version": "2012-10-17",
@@ -613,7 +613,7 @@ You will use this policy in a later step.
         "arn:aws:ecr:*:${AWS::AccountID}:repository/union/*"
       ],
       "Effect": "Allow",
-      "Sid": "UnionImageBuilderRepoAdmin"
+      "Sid": "Union.aiImageBuilderRepoAdmin"
     },
     {
       "Action": [
@@ -621,7 +621,7 @@ You will use this policy in a later step.
       ],
       "Resource": "*",
       "Effect": "Allow",
-      "Sid": "UnionAdminAuthToken"
+      "Sid": "Union.aiAdminAuthToken"
     }
 	]
 }
@@ -635,7 +635,7 @@ Next, you must create the role. Follow the directions here:
 2. Choose **Roles** and then select **Create role**.
 3. Under **Select trusted entity**, choose **AWS account**.
 4. Under **An AWS account**, select **Another AWS account**.
-5. In the **Account ID** field, enter the Union account ID: `479331373192`.
+5. In the **Account ID** field, enter the Union.ai account ID: `479331373192`.
 6. Under **Options,** you will see two items: **Require external ID** and **Require MFA**. At this point in the process, you can leave these unchecked.
 7. Select **Next**. This will take you to the **Add permissions** page.
 8. Select **Next**. We will setup permissions in a later step.
@@ -646,9 +646,9 @@ Next, you must create the role. Follow the directions here:
 13. Search for the `union-ai-admin` role in the IAM Roles list and click on it.
 14. Click **Add permissions** and select **Create inline policy** from the drop down menu.
 15. On the Create policy screen, click the **JSON** tab.
-16. Replace the contents of the policy editor with the **UnionIAMPolicy.json** file that you edited earlier.
+16. Replace the contents of the policy editor with the **Union.aiIAMPolicy.json** file that you edited earlier.
 17. Click **Review policy**.
-18. Name the policy **UnionIAMPolicyManual** and click **Create policy**.
+18. Name the policy **Union.aiIAMPolicyManual** and click **Create policy**.
 
 ### Share the role ARN
 
@@ -658,26 +658,26 @@ Now you must obtain the Amazon Resource Name (ARN) of the role, a unique identif
 2. In the list of roles, choose the `union-ai-admin` role.
 3. In the **Summary** section of the details pane, copy the **role ARN** value.
 
-Share the ARN with the Union team.
-The Union team will get back to you to verify that they are able to assume the role.
+Share the ARN with the Union.ai team.
+The Union.ai team will get back to you to verify that they are able to assume the role.
 
 ### Updating permissions manually
 
-From time to time Union may need to update the `union-ai-admin` role to support new or improved functionality.
+From time to time Union.ai may need to update the `union-ai-admin` role to support new or improved functionality.
 If you set up your role manually in the first place (as opposed to using CloudFormation), you will have to perform the update manually as well.
 follow the directions here:
 
 1. Sign in to the **AWS Management Console** as an administrator of your account, and open the **IAM console**.
 2. Choose **Roles**
 3. Search for the `union-ai-admin` role in the IAM Roles list and click on it.
-4. Under **Permissions policies**, select the previously created policy (if you followed the above directions, it should be called **UnionIAMPolicyManual**).
+4. Under **Permissions policies**, select the previously created policy (if you followed the above directions, it should be called **Union.aiIAMPolicyManual**).
 5. The next screen will display the JSON for current policy.
-6. Replace the current policy JSON with the updated copy of **UnionIAMPolicy.json** and click **Next**.
+6. Replace the current policy JSON with the updated copy of **Union.aiIAMPolicy.json** and click **Next**.
 7. On the next page, review the new policy and click **Save changes**.
 
 ## Setting up and managing your own VPC (optional)
 
-If you decide to manage your own VPC, instead of leaving it to Union, then you will need to set it up yourself.
+If you decide to manage your own VPC, instead of leaving it to Union.ai, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics.
 
 * **Multiple availability zones**:
@@ -697,7 +697,7 @@ The VPC should be configured with the following characteristics.
     * Ensure the security groups allow all traffic from within the VPC.
     * Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with data plane services.
 
-Once your VPC is set up, you will need to provide the Union team with the following information:
+Once your VPC is set up, you will need to provide the Union.ai team with the following information:
 
 * **VPC ID**
   * Example: `vpc-8580ec61d96caf837`

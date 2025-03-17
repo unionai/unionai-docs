@@ -38,7 +38,7 @@ You pass the following parameters to the `@union.task` decorator:
 * `limits`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md).
 
 * `node_dependency_hints`: A list of tasks, launch plans, or workflows that this task depends on.
-  This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime.
+  This is only for dynamic tasks/workflows, where Union.ai cannot automatically determine the dependencies prior to runtime.
   Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier,
   because it allows registration to be done the same as for static tasks/workflows.
   For example this is useful to run launch plans dynamically, because launch plans must be registered on Flyteadmin before they can be run.
@@ -71,7 +71,7 @@ You pass the following parameters to the `@union.task` decorator:
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Union Agents documentation](../../integrations/agents/index.md) and
+  See the [Union.ai Agents documentation](../../integrations/agents/index.md) and
   [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 * `task_resolver`: Provide a custom task resolver.

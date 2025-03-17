@@ -71,7 +71,7 @@ import union
 @union.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
 def t1():
     # Authenticates the remote with UNION_API_KEY
-    remote = union.UnionRemote(default_project="flytesnacks", default_domain="development")
+    remote = union.Union.aiRemote(default_project="flytesnacks", default_domain="development")
 ```
 
 ### Using a secret created from a file

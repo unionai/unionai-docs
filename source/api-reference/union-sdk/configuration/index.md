@@ -54,7 +54,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 ### Config object
 
 :::{note}
-You can use a `Config` object directly, for example, when initializing a [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md) object. See [Creating a `UnionRemote` object](../../../user-guide/development-cycle/union-remote/index.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
+You can use a `Config` object directly, for example, when initializing a [`Union.aiRemote`](../../../api-reference/union-sdk/union-remote/index.md) object. See [Creating a `Union.aiRemote` object](../../../user-guide/development-cycle/union-remote/index.md#creating-a-unionremote-object) for examples on how to specify a `Config` object.
 :::
 
 ```{eval-rst}
@@ -92,7 +92,7 @@ The image configurations are typically either passed in via an [`--image`](../..
 ### Execution time settings
 
 You usually won't need to worry about these configurations, as they are typically set by FlytePropeller or
-FlyteAdmin. The configurations below are useful for authenticating to a Union backend, configuring data access
+FlyteAdmin. The configurations below are useful for authenticating to a Union.ai backend, configuring data access
 credentials, secrets, and `statsd` metrics.
 
 ```{eval-rst}

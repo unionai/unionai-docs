@@ -2,7 +2,7 @@
 
 ## Running in a local Kubernetes cluster
 
-Ultimately you will be running your workflows in a Kubernetes cluster in Union. But it can be handy to try out a workflow in a cluster on your local machine. Flyte enables this.
+Ultimately you will be running your workflows in a Kubernetes cluster in Union.ai. But it can be handy to try out a workflow in a cluster on your local machine. Flyte enables this.
 
 First, ensure that you have [Docker](https://www.docker.com/products/docker-desktop/) (or a similar OCI-compliant container engine) installed locally and that _the daemon is running_.
 
@@ -30,7 +30,7 @@ logger:
   level: 0
 ```
 
-Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your Union cluster.
+Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your Union.ai cluster.
 
 Later invocations of `uctl` or `union` will need to know the location of the target cluster. This can be provided in two ways:
 
@@ -64,7 +64,7 @@ Go to http://localhost:30080/console/projects/flytesnacks/domains/development/ex
 
 ### Inspect the results
 
-Navigate to the URL produced by `union run` to see your workflow in the Union UI.
+Navigate to the URL produced by `union run` to see your workflow in the Union.ai UI.
 
 ## Local cluster with default image
 

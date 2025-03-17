@@ -1,9 +1,9 @@
 # Google OpenID Connect
 
-To set up your Union instance to use Google OpenID Connect as the identity provider, follow the directions below.
+To set up your Union.ai instance to use Google OpenID Connect as the identity provider, follow the directions below.
 
 :::{admonition} Google documentation
-In this article, we cover the same steps as in the [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation, but with additional directions specific to Union.
+In this article, we cover the same steps as in the [OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) Google documentation, but with additional directions specific to Union.ai.
 :::
 
 ## Setting up OAuth 2.0
@@ -12,7 +12,7 @@ First, select an existing project or set up a new project in the [Google Cloud C
 
 1. Navigate to the **Clients** section for [Google Auth Platform](https://console.cloud.google.com/auth/).
 
-2. Click **CREATE CLIENT**. If this is your first client, you might need to provide additional app details. There is no special configuration needed from the Union side.
+2. Click **CREATE CLIENT**. If this is your first client, you might need to provide additional app details. There is no special configuration needed from the Union.ai side.
 
 3. Under **Create OAuth client ID**, select **Web application** as the application type and assign a name.
 
@@ -26,13 +26,13 @@ Next, retrieve your credentials: Click on your configured client and copy the va
 
 ![OAuth 2.0 credentials](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/google-oidc/oauth-credentials.png)
 
-## Share the client ID and client secret securely with Union
+## Share the client ID and client secret securely with Union.ai
 
-Finally, you will need to share the client ID and client secret securely with Union:
+Finally, you will need to share the client ID and client secret securely with Union.ai:
 
-1. Copy the public key provided by Union here: [**public-key.txt**](/_static/public/public-key.txt)
+1. Copy the public key provided by Union.ai here: [**public-key.txt**](/_static/public/public-key.txt)
 
 2. Encrypt the given text file on your computer with a PGP tool of your choice.
 
-3. Share the encrypted message with the Union team over Slack.
+3. Share the encrypted message with the Union.ai team over Slack.
 
