@@ -1,7 +1,7 @@
 ---
 title: ImageSpec with ECR
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless +byoc +byok
 ---
 
 # ImageSpec with ECR

@@ -1,7 +1,7 @@
 ---
 title: NVIDIA DGX agent
 weight: 7
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless +byoc +byok
 ---
 
 # NVIDIA DGX agent
