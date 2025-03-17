@@ -3,12 +3,13 @@ all: parser generate
 
 .PHONY: parser
 parser:
-	cd tools/api_generator; \
-		python main_parser.py --package flytekit > /tmp/flytekit.api.yaml
+	cd tools/api_generator && \
+		python main_parser.py --package flytekit > /tmp/flytekit.api.yaml && \
+		sync
 
 .PHONY: generate
 generate:
-	cd tools/api_generator; \
+	cd tools/api_generator && \
 		python main_generate.py \
 			/tmp/flytekit.api.yaml \
 			../../content/api-reference/flytekit \
