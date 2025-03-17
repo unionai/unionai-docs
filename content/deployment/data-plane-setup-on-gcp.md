@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on GCP
 weight: 4
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless +byoc +byok
 ---
 
 # Data plane setup on GCP

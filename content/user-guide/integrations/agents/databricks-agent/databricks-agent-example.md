@@ -1,7 +1,7 @@
 ---
 title: Databricks agent example
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless +byoc +byok
 ---
 
 # Databricks agent example

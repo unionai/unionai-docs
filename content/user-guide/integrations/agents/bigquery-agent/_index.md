@@ -1,7 +1,7 @@
 ---
 title: Google BigQuery agent
 weight: 5
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless +byoc +byok
 ---
 
 # Google BigQuery agent

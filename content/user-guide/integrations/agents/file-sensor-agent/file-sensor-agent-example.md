@@ -1,7 +1,7 @@
 ---
 title: File sensor agent example
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless +byoc +byok
 ---
 
 # File sensor agent example
