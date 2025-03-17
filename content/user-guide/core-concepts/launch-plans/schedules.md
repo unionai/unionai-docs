@@ -12,13 +12,58 @@ If a schedule is activated on a launch plan, the workflow will be invoked automa
 
 To add a schedule to a launch plan, add a schedule object to the launch plan, like this:
 
-{{< code file="/_static/includes/core-concepts/launch-plans/schedules/example_1.py" lang="python" >}}
+```python
+from datetime import timedelta
+
+import union
+from flytekit import FixedRate
+
+@union.task
+def my_task(a: int, b: int, c: int) -> int:
+    return a + b + c
+
+@union.workflow
+def my_workflow(a: int, b: int, c: int) -> int:
+    return my_task(a=a, b=b, c=c)
+
+union.LaunchPlan.get_or_create(
+    workflow=my_workflow,
+    name="my_workflow_custom_lp",
+    fixed_inputs={"a": 3},
+    default_inputs={"b": 4, "c": 5},
+    schedule=FixedRate(
+        duration=timedelta(minutes=10)
+    )
+)
+```
 
 Here we specify a [FixedRate](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.FixedRate.html#flytekit.FixedRate) schedule that will invoke the workflow every 10 minutes. Fixed rate schedules can also be defined using days or hours.
 
 Alternatively, you can specify a [CronSchedule](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.CronSchedule.html#flytekit.CronSchedule) that uses the Unix standard [cron format](https://en.wikipedia.org/wiki/Cron)(See [crontab guru](https://crontab.guru/) for a handy helper for cron expressions):
 
-{{< code file="/_static/includes/core-concepts/launch-plans/schedules/example_2.py" lang="python" >}}
+```python
+import union
+from flytekit import CronSchedule
+
+
+@union.task
+def my_task(a: int, b: int, c: int) -> int:
+    return a + b + c
+
+@union.workflow
+def my_workflow(a: int, b: int, c: int) -> int:
+    return my_task(a=a, b=b, c=c)
+
+union.LaunchPlan.get_or_create(
+    workflow=my_workflow,
+    name="my_workflow_custom_lp",
+    fixed_inputs={"a": 3},
+    default_inputs={"b": 4, "c": 5},
+    schedule=CronSchedule(
+        schedule="*/10 * * * *"
+    )
+)
+```
 
 ## kickoff_time_input_arg
 
@@ -28,6 +73,30 @@ This parameter is used to specify the name of a workflow input argument.
 Each time the system invokes the workflow via this schedule, the time of the invocation will be passed to the workflow through the specified parameter.
 For example:
 
-{{< code file="/_static/includes/core-concepts/launch-plans/schedules/example_3.py" lang="python" >}}
+```python
+from datetime import datetime, timedelta
+
+import union
+from flytekit import FixedRate
+
+@union.task
+def my_task(a: int, b: int, c: int) -> int:
+    return a + b + c
+
+@union.workflow
+def my_workflow(a: int, b: int, c: int, kickoff_time: datetime ) -> str:
+    return f"sum: {my_task(a=a, b=b, c=c)} at {kickoff_time}"
+
+union.LaunchPlan.get_or_create(
+    workflow=my_workflow,
+    name="my_workflow_custom_lp",
+    fixed_inputs={"a": 3},
+    default_inputs={"b": 4, "c": 5},
+    schedule=FixedRate(
+        duration=timedelta(minutes=10),
+        kickoff_time_input_arg="kickoff_time"
+    )
+)
+```
 
 Here, each time the schedule calls `my_workflow`, the invocation time is passed in the `kickoff_time` argument.
