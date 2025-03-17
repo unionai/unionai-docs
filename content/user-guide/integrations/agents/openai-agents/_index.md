@@ -1,6 +1,6 @@
 ---
 title: OpenAI agents
-weight: 1
+weight: 8
 variants: +flyte +serverless +byoc +byok
 ---
 

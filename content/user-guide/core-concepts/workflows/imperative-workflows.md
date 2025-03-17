@@ -1,12 +1,12 @@
 ---
 title: Imperative workflows
-weight: 1
+weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 
 # Imperative workflows
 
-Workflows are commonly created by applying the `@union.workflow` decorator to Python functions.
+Workflows are commonly created by applying the `@{{< key kit_as >}}.workflow` decorator to Python functions.
 During compilation, this involves processing the function's body and utilizing subsequent calls to
 underlying tasks to establish and record the workflow structure. This is the *declarative* approach
 and is suitable when manually drafting the workflow.

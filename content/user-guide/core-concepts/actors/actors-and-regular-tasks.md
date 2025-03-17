@@ -1,6 +1,6 @@
 ---
 title: Actors and regular tasks
-weight: 2
+weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
 

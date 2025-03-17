@@ -1,6 +1,6 @@
 ---
 title: Enabling GCP resources
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +byok
 ---
 

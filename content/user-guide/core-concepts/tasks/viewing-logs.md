@@ -1,6 +1,6 @@
 ---
 title: Viewing logs
-weight: 6
+weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 

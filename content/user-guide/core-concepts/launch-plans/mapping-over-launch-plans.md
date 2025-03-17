@@ -1,6 +1,6 @@
 ---
 title: Mapping over launch plans
-weight: 9
+weight: 8
 variants: +flyte +serverless +byoc +byok
 ---
 

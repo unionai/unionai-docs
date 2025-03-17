@@ -1,6 +1,6 @@
 ---
 title: Task-level monitoring
-weight: 5
+weight: 4
 variants: +flyte +serverless +byoc +byok
 ---
 

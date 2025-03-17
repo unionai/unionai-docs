@@ -1,6 +1,6 @@
 ---
 title: Activating and deactivating
-weight: 6
+weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 

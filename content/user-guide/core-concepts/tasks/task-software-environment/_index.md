@@ -1,6 +1,6 @@
 ---
 title: Task software environment
-weight: 1
+weight: 6
 variants: +flyte +serverless +byoc +byok
 ---
 

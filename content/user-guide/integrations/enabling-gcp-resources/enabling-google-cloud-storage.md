@@ -1,6 +1,6 @@
 ---
 title: Enabling Google Cloud Storage
-weight: 2
+weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
 

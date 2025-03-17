@@ -1,6 +1,6 @@
 ---
 title: Enabling Azure Blob Storage
-weight: 2
+weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
 

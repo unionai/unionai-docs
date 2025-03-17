@@ -1,6 +1,6 @@
 ---
 title: Overriding parameters
-weight: 10
+weight: 9
 variants: +flyte +serverless +byoc +byok
 ---
 

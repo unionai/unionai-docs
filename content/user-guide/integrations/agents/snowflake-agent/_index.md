@@ -1,6 +1,6 @@
 ---
 title: Snowflake agent
-weight: 1
+weight: 9
 variants: +flyte +serverless +byoc +byok
 ---
 
