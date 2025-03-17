@@ -1,6 +1,6 @@
 ---
 title: Viewing workflow executions
-weight: 7
+weight: 8
 variants: +flyte +serverless +byoc +byok
 ---
 
