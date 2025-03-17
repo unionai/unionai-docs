@@ -23,9 +23,9 @@ Dynamic workflows become essential when you need to do the following:
 
 ## Defining a dynamic workflow
 
-You can define a dynamic workflow using the `@union.dynamic` decorator.
+You can define a dynamic workflow using the `@{{< key kit_as >}}.dynamic` decorator.
 
-Within the `@union.dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@union.dynamic` and `@union.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
+Within the `@{{< key kit_as >}}.dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@{{< key kit_as >}}.dynamic` and `@{{< key kit_as >}}.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
 
 The example below uses a dynamic workflow to count the common characters between any two strings.
 
@@ -38,7 +38,7 @@ import union
 We define a task that returns the index of a character, where A-Z/a-z is equivalent to 0-25:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def return_index(character: str) -> int:
     if character.islower():
         return ord(character) - ord("a")
@@ -49,7 +49,7 @@ def return_index(character: str) -> int:
 We also create a task that prepares a list of 26 characters by populating the frequency of each character:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def update_list(freq_list: list[int], list_index: int) -> list[int]:
     freq_list[list_index] += 1
     return freq_list
@@ -58,7 +58,7 @@ def update_list(freq_list: list[int], list_index: int) -> list[int]:
 We define a task to calculate the number of common characters between the two strings:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def derive_count(freq1: list[int], freq2: list[int]) -> int:
     count = 0
     for i in range(26):
@@ -76,7 +76,7 @@ We define a dynamic workflow to accomplish the following:
 The looping process depends on the number of characters in both strings, which is unknown until runtime:
 
 ```python
-@union.dynamic
+@{{< key kit_as >}}.dynamic
 def count_characters(s1: str, s2: str) -> int:
     # s1 and s2 should be accessible
 
@@ -112,12 +112,12 @@ When a dynamic task is executed, it generates the entire workflow as its output,
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.
 
 > [!NOTE]
-> Local execution works when a `@union.dynamic` decorator is used because {{< key kit_name >}} treats it as a task that runs with native Python inputs.
+> Local execution works when a `@{{< key kit_as >}}.dynamic` decorator is used because {{< key kit_name >}} treats it as a task that runs with native Python inputs.
 
 Finally, we define a workflow that triggers the dynamic workflow:
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def dynamic_wf(s1: str, s2: str) -> int:
     return count_characters(s1=s1, s2=s2)
 ```
@@ -165,7 +165,7 @@ from flytekit import conditional
 
 
 
-@union.task
+@{{< key kit_as >}}.task
 def split(numbers: list[int]) -> Tuple[list[int], list[int], int, int]:
     return (
         numbers[0 : int(len(numbers) / 2)],
@@ -175,7 +175,7 @@ def split(numbers: list[int]) -> Tuple[list[int], list[int], int, int]:
     )
 
 
-@union.task
+@{{< key kit_as >}}.task
 def merge(sorted_list1: list[int], sorted_list2: list[int]) -> list[int]:
     result = []
     while len(sorted_list1) > 0 and len(sorted_list2) > 0:
@@ -194,12 +194,12 @@ def merge(sorted_list1: list[int], sorted_list2: list[int]) -> list[int]:
     return result
 
 
-@union.task
+@{{< key kit_as >}}.task
 def sort_locally(numbers: list[int]) -> list[int]:
     return sorted(numbers)
 
 
-@union.dynamic
+@{{< key kit_as >}}.dynamic
 def merge_sort_remotely(numbers: list[int], run_local_at_count: int) -> list[int]:
     split1, split2, new_count1, new_count2 = split(numbers=numbers)
     sorted1 = merge_sort(numbers=split1, numbers_count=new_count1, run_local_at_count=run_local_at_count)
@@ -207,7 +207,7 @@ def merge_sort_remotely(numbers: list[int], run_local_at_count: int) -> list[int
     return merge(sorted_list1=sorted1, sorted_list2=sorted2)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int = 5) -> list[int]:
     return (
         conditional("terminal_case")
@@ -218,9 +218,9 @@ def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int =
     )
 ```
 
-By simply adding the `@union.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
+By simply adding the `@{{< key kit_as >}}.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
 generating a workflow with four distinct nodes. These nodes run remotely on potentially different hosts,
 with Union ensuring proper data reference passing and maintaining execution order with maximum possible parallelism.
 
-`@union.dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
+`@{{< key kit_as >}}.dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
 creating a recursive and flexible execution structure.

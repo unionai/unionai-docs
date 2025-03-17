@@ -84,7 +84,7 @@ JSON.
 Once declared, a dataclass can be returned as an output or accepted as an input.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def stringify(s: int) -> Datum:
     """
     A Pydantic model return will be treated as a single complex JSON return.
@@ -92,7 +92,7 @@ def stringify(s: int) -> Datum:
     return Datum(x=s, y=str(s), z={s: str(s)})
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def add(x: Datum, y: Datum) -> Datum:
     x.z.update(y.z)
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
@@ -113,7 +113,7 @@ class FlyteTypes(BaseModel):
     directory: union.FlyteDirectory
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def upload_data() -> FlyteTypes:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
@@ -132,7 +132,7 @@ def upload_data() -> FlyteTypes:
     return fs
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def download_data(res: FlyteTypes):
     expected_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
     actual_df = res.dataframe.open(pd.DataFrame).all()
@@ -150,7 +150,7 @@ classes, FlyteFile, FlyteDirectory and StructuredDataset.
 We define a workflow that calls the tasks created above.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def basemodel_wf(x: int, y: int) -> (Datum, FlyteTypes):
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()
@@ -170,7 +170,7 @@ class UnionTypes(BaseModel):
     directory: union.FlyteDirectory
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def upload_data() -> UnionTypes:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
@@ -189,7 +189,7 @@ def upload_data() -> UnionTypes:
     return fs
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def download_data(res: UnionTypes):
     expected_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
     actual_df = res.dataframe.open(pd.DataFrame).all()
@@ -207,7 +207,7 @@ FlyteFile, FlyteDirectory and StructuredDataset.
 We define a workflow that calls the tasks created above.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def basemodel_wf(x: int, y: int) -> (Datum, UnionTypes):
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()

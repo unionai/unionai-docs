@@ -100,7 +100,7 @@ The ability to build workflows from such a wide variety of heterogeneous tasks m
 
 ## Task configuration
 
-The `@union.task` decorator can take a number of parameters that allow you to configure the task's behavior.
+The `@{{< key kit_as >}}.task` decorator can take a number of parameters that allow you to configure the task's behavior.
 For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more.
 For more information, see [Task parameters](./task-parameters.md).
 {{< /markdown >}}

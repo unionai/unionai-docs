@@ -27,11 +27,11 @@ image_spec = union.ImageSpec(
     requirements="uv.lock",
 )
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def hello_world_wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting

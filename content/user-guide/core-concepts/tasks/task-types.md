@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 Task types include:
 
 * **`PythonFunctionTask`**: This Python class represents the standard default task.
-It is the type that is created when you use the `@union.task` decorator.
+It is the type that is created when you use the `@{{< key kit_as >}}.task` decorator.
 * **`ContainerTask`**: This Python class represents a raw container.
 It allows you to install any image you like, giving you complete control of the task.
 * **Map tasks**: The map task functionality enables you to run multiple copies of the same task across multiple containers in parallel.
@@ -19,11 +19,11 @@ They implement integrations with third-party systems.
 
 ## PythonFunctionTask
 
-This is the task type that is created when you add the `@union.task` decorator to a Python function.
+This is the task type that is created when you add the `@{{< key kit_as >}}.task` decorator to a Python function.
 It represents a Python function that will be run within a single container. For example::
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def get_data() -> pd.DataFrame:
     """Get the wine dataset."""
     return load_wine(as_frame=True).frame
@@ -76,11 +76,11 @@ Just like normal tasks, map tasks are automatically parallelized to the extent p
 ```python
 THRESHOLD = 11
 
-@union.task
+@{{< key kit_as >}}.task
 def detect_anomalies(data_point: int) -> bool:
     return data_point > THRESHOLD
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) -> list[bool]:
     # Use the map task to apply the anomaly detection function to each data point
     return map_task(detect_anomalies)(data_point=data)
@@ -161,7 +161,7 @@ We define a task to instantiate `FlyteFile` and `FlyteDirectory`.
 A `.gitkeep` file is created in the FlyteDirectory as a placeholder to ensure the directory exists:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def create_entities() -> Tuple[FlyteFile, FlyteDirectory]:
     working_dir = Path(flytekit.current_context().working_directory)
     flytefile = working_dir / "test.txt"
@@ -177,7 +177,7 @@ def create_entities() -> Tuple[FlyteFile, FlyteDirectory]:
 We create a workflow to define the dependencies between the tasks:
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def shell_task_wf() -> FlyteFile:
     x, y = create_entities()
     t1_out = t1(x=x)
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 ## Specialized plugin task classes and configs
 
 {{< key product_name >}} supports a wide variety of plugin tasks.
-Some of these are enabled as specialized task classes, others as specialized configurations of the default `@union.task` (`PythonFunctionTask`).
+Some of these are enabled as specialized task classes, others as specialized configurations of the default `@{{< key kit_as >}}.task` (`PythonFunctionTask`).
 
 They enable things like:
 
@@ -210,7 +210,7 @@ See the [Integration section](https://docs.flyte.org/en/latest/flytesnacks/integ
 
 <!-- INCORPORATE THE FOLLOWING ABOVE WHERE NECESSARY
 
-## @union.task parameters
+## @{{< key kit_as >}}.task parameters
 
 `task_config`: This argument provides configuration for a specific task types. Please refer to the plugins documentation for the right object to use.
 It is impossible to define the unit of execution of a task in the same

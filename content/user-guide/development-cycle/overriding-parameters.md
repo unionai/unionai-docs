@@ -41,7 +41,7 @@ For example, you can use `with_overrides(name="my_task")` to give a specific nam
 The name specified can be chosen or generated at invocation time without modifying the task definition.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf() -> int:
     my_task(a=1, b=1, c=1).with_overrides(name="my_task_1")
     my_task(a=2, b=2, c=2).with_overrides(name="my_task_2", node_name="my_node_2")

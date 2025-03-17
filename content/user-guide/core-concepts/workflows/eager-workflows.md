@@ -29,12 +29,12 @@ from union import task, workflow
 from flytekit.experimental import eager
 
 
-@union.task
+@{{< key kit_as >}}.task
 def add_one(x: int) -> int:
     return x + 1
 
 
-@union.task
+@{{< key kit_as >}}.task
 def double(x: int) -> int:
     return x * 2
 
@@ -65,7 +65,7 @@ the Python integer that is the result of `x + 1` and not a Promise.
 ## How eager workflows work
 
 When you decorate a function with `@eager`, any function invoked within it
-that's decorated with `@union.task`, `@union.workflow`, or `@eager` becomes
+that's decorated with `@{{< key kit_as >}}.task`, `@{{< key kit_as >}}.workflow`, or `@eager` becomes
 an [awaitable](https://docs.python.org/3/library/asyncio-task.html#awaitables)
 object within the lifetime of the parent eager workflow execution. Note that
 this happens automatically and you don't need to use the `async` keyword when
@@ -132,7 +132,7 @@ Python conditionals in your eager workflows. Let's look at a more complicated
 example:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def gt_100(x: int) -> bool:
     return x > 100
 
@@ -180,7 +180,7 @@ async def eager_workflow_with_for_loop(x: int) -> int:
 You can invoke static workflows from within an eager workflow:
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def subworkflow(x: int) -> int:
     out = add_one(x=x)
     return double(x=out)
@@ -217,7 +217,7 @@ You can catch exceptions in eager workflows through `EagerException`:
 from flytekit.experimental import EagerException
 
 
-@union.task
+@{{< key kit_as >}}.task
 def raises_exc(x: int) -> int:
     if x <= 0:
         raise TypeError

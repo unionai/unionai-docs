@@ -133,7 +133,7 @@ See [here](./index.md) for directions. Once the binding is done, your secrets ar
 
 To use an AWS secret in your Flyte task code, do the following:
 
-* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@union.task` decorator.
+* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to\
   `flytekit.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
 
@@ -150,7 +150,7 @@ SECRET_REQUEST = union.Secret(
   mount_requirement=union.Secret.MountType.FILE
 )
 
-@union.task(secret_requests=[SECRET_REQUEST])
+@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
 def t1():
     secret_val = union.current_context().secrets.get(
         SECRET_GROUP,

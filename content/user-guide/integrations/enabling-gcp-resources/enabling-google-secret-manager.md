@@ -57,7 +57,7 @@ To use a same-project GCP secret in your task code, do the following:
   * `Secret.group` is the **GCP secret name**, in this case `example-secret`(optionally, you can use the **GCP secret path** instead, but the simple name is sufficient).
   * `Secret.group_version` is the **GCP secret version** (in this case `1`)
   * `Secret.mount_requirement` is `Secret.MountType.FILE`
-* Pass that `Secret` object in the `secret_requests` parameter of the `@union.task` decorator.
+* Pass that `Secret` object in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to
   `flytekit.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`.
 
@@ -74,7 +74,7 @@ SECRET_REQUEST = Secret(
             mount_requirement=union.Secret.MountType.FILE
         )
 
-@union.task(secret_requests=[SECRET_REQUEST])
+@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
 def t1():
     secret_val = union.current_context().secrets.get(
         SECRET_GROUP,
@@ -99,7 +99,7 @@ At this point, your task code will have access to the secret in the other projec
   * `union.Secret.group` is the **GCP secret path** (in this case, `projects/956281974034/secrets/example-secret`)
   * `union.Secret.group_version` is the **GCP secret version** (in this case `1`)
   * `union.Secret.mount_requirement` is `union.Secret.MountType.FILE`
-* Pass that `union.Secret` object in the `secret_requests` parameter of the `@union.task` decorator.
+* Pass that `union.Secret` object in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to\
 `union.current_context().secrets.get(SECRET_GROUP, group_version=SECRET_GROUP_VERSION)`
 
@@ -122,7 +122,7 @@ SECRET_REQUEST = union.Secret(
             mount_requirement=union.Secret.MountType.FILE
         )
 
-@union.task(secret_requests=[SECRET_REQUEST])
+@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
 def t1():
     secret_val = union.current_context().secrets.get(
         SECRET_GROUP,

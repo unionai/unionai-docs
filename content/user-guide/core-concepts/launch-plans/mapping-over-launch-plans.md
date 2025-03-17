@@ -19,12 +19,12 @@ We then write a separate workflow, `map_interest_wf`, that uses a `map_task` to 
 import union
 
 # Task to calculate monthly interest payment on a loan
-@union.task
+@{{< key kit_as >}}.task
 def calculate_interest(principal: int, rate: float, time: int) -> float:
     return (principal * rate * time) / 12
 
 # Workflow using the calculate_interest task
-@union.workflow
+@{{< key kit_as >}}.workflow
 def interest_workflow(principal: int, rate: float, time: int) -> float:
     return calculate_interest(principal=principal, rate=rate, time=time)
 
@@ -35,7 +35,7 @@ lp = union.LaunchPlan.get_or_create(
 )
 
 # Mapping over the launch plan to calculate interest for multiple loans
-@union.workflow
+@{{< key kit_as >}}.workflow
 def map_interest_wf() -> list[float]:
     principal = [1000, 5000, 10000]
     rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
@@ -89,7 +89,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
     Note that the `simple_wf` workflow is defined as follows:
 
     ```python
-    @union.workflow
+    @{{< key kit_as >}}.workflow
     def simple_wf(x: list[int], y: list[int]) -> float:
         slope_value = slope(x=x, y=y)
         intercept_value = intercept(x=x, y=y, slope=slope_value)
@@ -116,7 +116,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
         pass
 
 
-    @union.workflow
+    @{{< key kit_as >}}.workflow
     def map_simple_wf() -> list[float]:
         x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
         y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]

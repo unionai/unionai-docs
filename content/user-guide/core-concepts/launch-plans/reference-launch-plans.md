@@ -55,7 +55,7 @@ def simple_wf_lp(
     return 1.0
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def run_simple_wf() -> float:
     x = [-8, 2, 4]
     y = [-2, 4, 7]

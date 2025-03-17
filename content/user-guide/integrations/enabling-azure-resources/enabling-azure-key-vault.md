@@ -30,7 +30,7 @@ Union data plane tasks employ Azure Workload Identity Federation to access Azure
   * `Secret.group` is the a HTTP URI of the format `https://<KEY_VAULT_NAME>.vault.azure.net/secrets/<SECRET_NAME>`
   * `Secret.group_version` can be omitted to retrieve the latest version or set to an explicit secret version
   * `Secret.mount_requirement` is `Secret.MountType.FILE`
-* Pass that `Secret` object in the `secret_requests` parameter of the `@union.task` decorator.
+* Pass that `Secret` object in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with:
   * `flytekit.current_context().secrets.get(<SECRET_NAME>)` if `Secret.group_version` was omitted.
   * `flytekit.current_context().secrets.get(<SECRET_NAME>, group_version=SECRET_GROUP_VERSION)` if `Secret.group_version` was specified.
@@ -52,7 +52,7 @@ SECRET_REQUEST_WITH_VERSION = union.Secret(
   mount_requirement=union.Secret.MountType.FILE
 )
 
-@union.task(secret_requests=[SECRET_REQUEST_WITH_VERSION])
+@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST_WITH_VERSION])
 def task_with_versioned_secret():
     secret_val = union.current_context().secrets.get(
         SECRET_NAME,
@@ -64,7 +64,7 @@ SECRET_REQUEST_FOR_LATEST = union.Secret(
   mount_requirement=union.Secret.MountType.FILE
 )
 
-@union.task(secret_requests=[SECRET_REQUEST_FOR_LATEST])
+@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST_FOR_LATEST])
 def task_with_latest_secret():
     secret_val = union.current_context().secrets.get(
         SECRET_NAME

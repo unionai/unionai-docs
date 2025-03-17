@@ -64,7 +64,7 @@ from typing_extensions import Annotated
 Define a task that returns a Pandas DataFrame.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def generate_pandas_df(a: int) -> pd.DataFrame:
     return pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [a, 22], "Height": [160, 178]})
 ```
@@ -97,14 +97,14 @@ Keep in mind that you can invoke ``open()`` with any dataframe type that's suppo
 For instance, you can use ``pa.Table`` to convert the Pandas DataFrame to a PyArrow table.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def get_subset_pandas_df(df: Annotated[StructuredDataset, all_cols]) -> Annotated[StructuredDataset, col]:
     df = df.open(pd.DataFrame).all()
     df = pd.concat([df, pd.DataFrame([[30]], columns=["Age"])])
     return StructuredDataset(dataframe=df)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def simple_sd_wf(a: int = 19) -> Annotated[StructuredDataset, col]:
     pandas_df = generate_pandas_df(a=a)
     return get_subset_pandas_df(df=pandas_df)
@@ -125,12 +125,12 @@ from flytekit.types.structured.structured_dataset import CSV
 register_csv_handlers()
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def pandas_to_csv(df: pd.DataFrame) -> Annotated[StructuredDataset, CSV]:
     return StructuredDataset(dataframe=df)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def pandas_to_csv_wf() -> Annotated[StructuredDataset, CSV]:
     pandas_df = generate_pandas_df(a=19)
     return pandas_to_csv(df=pandas_df)
@@ -185,7 +185,7 @@ Before writing DataFrame to a BigQuery table,
 Here's how you can define a task that converts a pandas DataFrame to a BigQuery table:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def pandas_to_bq() -> StructuredDataset:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
     return StructuredDataset(dataframe=df, uri="gs://<BUCKET_NAME>/<FILE_NAME>")
@@ -201,7 +201,7 @@ The {{< key kit_name >}} `StructuredDatasetTransformerEngine` interprets that to
 And here's how you can define a task that converts the BigQuery table to a pandas DataFrame:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
    return sd.open(pd.DataFrame).all()
 ```
@@ -218,7 +218,7 @@ If you want the default behavior (which is itself configurable based on which pl
 you can work just with your current raw dataframe classes.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def t1() -> typing.Tuple[StructuredDataset, StructuredDataset]:
    ...
    return StructuredDataset(df1, uri="bq://project:flyte.table"), \
@@ -308,18 +308,18 @@ StructuredDatasetTransformerEngine.register_renderer(np.ndarray, NumpyRenderer()
 You can now use `numpy.ndarray` to deserialize the parquet file to NumPy and serialize a task's output (NumPy array) to a parquet file.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def generate_pd_df_with_str() -> pd.DataFrame:
     return pd.DataFrame({"Name": ["Tom", "Joseph"]})
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def to_numpy(sd: StructuredDataset) -> Annotated[StructuredDataset, None, PARQUET]:
     numpy_array = sd.open(np.ndarray).all()
     return StructuredDataset(dataframe=numpy_array)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def numpy_wf() -> Annotated[StructuredDataset, None, PARQUET]:
     return to_numpy(sd=generate_pd_df_with_str())
 ```
@@ -396,7 +396,7 @@ MyNestedDataClassDataset = Annotated[StructuredDataset, union.kwtypes(info=union
 image = union.ImageSpec(packages=["pandas", "pyarrow", "pandas", "tabulate"], registry="ghcr.io/flyteorg")
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def create_parquet_file() -> StructuredDataset:
     from tabulate import tabulate
 
@@ -406,7 +406,7 @@ def create_parquet_file() -> StructuredDataset:
     return StructuredDataset(dataframe=df)
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_arg(sd: MyArgDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -415,7 +415,7 @@ def print_table_by_arg(sd: MyArgDataset) -> pd.DataFrame:
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_dict(sd: MyDictDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -424,7 +424,7 @@ def print_table_by_dict(sd: MyDictDataset) -> pd.DataFrame:
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_list_dict(sd: MyDictListDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -433,7 +433,7 @@ def print_table_by_list_dict(sd: MyDictListDataset) -> pd.DataFrame:
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_top_dataclass(sd: MyTopDataClassDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -442,7 +442,7 @@ def print_table_by_top_dataclass(sd: MyTopDataClassDataset) -> pd.DataFrame:
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_top_dict(sd: MyTopDictDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -451,7 +451,7 @@ def print_table_by_top_dict(sd: MyTopDictDataset) -> pd.DataFrame:
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_second_dataclass(sd: MySecondDataClassDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -460,7 +460,7 @@ def print_table_by_second_dataclass(sd: MySecondDataClassDataset) -> pd.DataFram
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_nested_dataclass(sd: MyNestedDataClassDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
@@ -469,7 +469,7 @@ def print_table_by_nested_dataclass(sd: MyNestedDataClassDataset) -> pd.DataFram
     return t
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def contacts_wf():
     sd = create_parquet_file()
     print_table_by_arg(sd=sd)

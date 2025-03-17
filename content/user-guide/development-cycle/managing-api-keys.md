@@ -31,11 +31,11 @@ For this example, copy the following workflow into a file called `hello.py`:
 ```python
 import union
 
-@union.task
+@{{< key kit_as >}}.task
 def welcome(name: str) -> str:
     return f"Welcome to Union! {name}"
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def main(name: str) -> str:
     return welcome(name=name)
 ```

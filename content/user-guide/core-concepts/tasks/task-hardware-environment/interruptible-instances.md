@@ -23,11 +23,11 @@ This on-demand node group will be used as a fallback when attempts to complete t
 
 ## Configuring tasks to use interruptible instances
 
-To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@union.task` decorator.
+To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@{{< key kit_as >}}.task` decorator.
 For example:
 
 ```python
-@union.task(interruptible=True, retries=3)
+@{{< key kit_as >}}.task(interruptible=True, retries=3)
 ```
 
 * A task will only be scheduled on a interruptible instance if it has the parameter `interruptible=True` (or if its workflow has the parameter `interruptible=True` and the task does not have an explicit `interruptible` parameter).
