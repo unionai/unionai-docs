@@ -10,7 +10,24 @@ You can define a launch plan with the [`flytekit.LaunchPlan` class](https://docs
 
 For example:
 
-{{< code file="/_static/includes/core-concepts/launch-plans/defining-launch-plans/example_1.py" lang="python" >}}
+```python
+import union
+
+@union.task
+def my_task(a: int, b: int, c: int) -> int:
+    return a + b + c
+
+@union.workflow
+def my_workflow(a: int, b: int, c: int) -> int:
+    return my_task(a=a, b=b, c=c)
+
+union.LaunchPlan.get_or_create(
+    workflow=my_workflow,
+    name="my_workflow_custom_lp",
+    fixed_inputs={"a": 3},
+    default_inputs={"b": 4, "c": 5}
+)
+```
 
 In this example, we define a task `my_task` and a workflow `my_workflow`.
 We then define a launch plan for `my_workflow`.

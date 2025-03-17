@@ -95,12 +95,24 @@ See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
 To activate a launch plan using version `UnionRemote`:
 
-{{< code lang="python"
-       file="/_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_1.py" >}}
+```python
+from union.remote import UnionRemote
+from flytekit.configuration import Config
+
+remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
+launch_plan = remote.fetch_launch_plan(ame=<launch-plan-name>, version=<launch-plan-version>).id
+remote.client.update_launch_plan(launch_plan.id, "ACTIVE")
+```
 
 To deactivate a launch plan version using `UnionRemote`:
 
-{{< code lang="python"
-       file="/_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py" >}}
+```python
+from union.remote import UnionRemote
+from flytekit.remote import Config
+
+remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
+launch_plan = remote.fetch_launch_plan(ame=<launch-plan-name>, version=<launch-plan-version>)
+remote.client.update_launch_plan(launch_plan.id, "INACTIVE")
+```
 
 <!-- TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. -->

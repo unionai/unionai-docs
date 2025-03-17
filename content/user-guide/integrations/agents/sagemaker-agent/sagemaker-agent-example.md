@@ -6,15 +6,6 @@ variants: +flyte -serverless +byoc +byok
 
 # AWS SageMaker agent example
 
-## Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
-
-This example demonstrates how to deploy and serve an XGBoost model on SageMaker using FastAPI custom inference.
-
-We train an XGBoost model on the Pima Indians Diabetes dataset and generate a `tar.gz` file to be stored in an S3 bucket.
-
-> [!NOTE]
-> The model artifact needs to be available in an S3 bucket for SageMaker to be able to access.
-
 ```python
 # %% [markdown]
 # (sagemaker_inference_agent_example_usage)=
@@ -1523,13 +1514,13 @@ def deployment_deletion_workflow():
 #
 # You have the option to execute the SageMaker tasks independently. The following tasks are available for use:
 #
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
+# - [`awssagemaker_inference.SageMakerModelTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerModelTask.html#flytekitplugins.awssagemaker_inference.SageMakerModelTask)
+# - [`awssagemaker_inference.SageMakerEndpointConfigTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask.html#flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask)
+# - [`awssagemaker_inference.SageMakerEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerEndpointTask)
+# - [`awssagemaker_inference.SageMakerDeleteEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask)
+# - [`awssagemaker_inference.SageMakerDeleteEndpointConfigTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask)
+# - [`awssagemaker_inference.SageMakerDeleteModelTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask)
+# - [`awssagemaker_inference.SageMakerInvokeEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask)
 #
 # All tasks except the {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
 # inherit the {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask`.
@@ -1537,20 +1528,3 @@ def deployment_deletion_workflow():
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
-<!-- :lines: 255-266 -->
-
-You need to provide the endpoint name, endpoint config name, and the model name to execute this deletion, which removes the endpoint, endpoint config, and the model.
-
-## Available tasks
-
-You have the option to execute the SageMaker tasks independently. The following tasks are available for use:
-
-- [`awssagemaker_inference.SageMakerModelTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerModelTask.html#flytekitplugins.awssagemaker_inference.SageMakerModelTask)
-- [`awssagemaker_inference.SageMakerEndpointConfigTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask.html#flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask)
-- [`awssagemaker_inference.SageMakerEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerEndpointTask)
-- [`awssagemaker_inference.SageMakerDeleteEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask)
-- [`awssagemaker_inference.SageMakerDeleteEndpointConfigTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask)
-- [`awssagemaker_inference.SageMakerDeleteModelTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask)
-- [`awssagemaker_inference.SageMakerInvokeEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask)
-
-All tasks except the `awssagemaker_inference.SageMakerEndpointTask` inherit the `awssagemaker_inference.BotoTask`. The `awssagemaker_inference.BotoTask` provides the flexibility to invoke any [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method. If you need to interact with the Boto3 APIs, you can use this task.
