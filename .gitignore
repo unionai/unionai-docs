@@ -11,6 +11,7 @@ hugo.local.toml
 # Trash files
 .DS_Store
 *.swp
+__pycache__/
 
 # Ignore test file
 content/test.md

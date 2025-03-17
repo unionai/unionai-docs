@@ -1,0 +1,101 @@
+import argparse
+import io
+import os
+from typing import Dict, List, Tuple
+
+import yaml
+
+from generate.hugo import set_variants, set_version, write_front_matter
+from ptypes import ClassDetails, ClassMap, ClassPackageMap, MethodInfo, ParsedInfo
+
+
+def generate_decl(name: str, method: MethodInfo, output: io.TextIOWrapper):
+    # Filter out 'self' parameter
+    filtered_params = [param for param in method["params"] if param["name"] != "self"]
+
+    output.write("```python\n")
+    try:
+        if len(filtered_params) == 0:
+            output.write(f"def {name}()\n")
+            return
+
+        output.write(f"def {name}(\n")
+        for param in filtered_params:
+            output.write(f"    {param['name']}")
+            if "type" in param and param["type"]:
+                output.write(
+                    f": {format_type(param["name"], param['type'], code=True)}"
+                )
+            output.write(",\n")
+        output.write("):\n")
+    finally:
+        output.write("```\n")
+
+
+def format_type(name: str, type: str | None, code=False) -> str:
+    output = ""
+    if name == "kwargs":
+        output = "`**kwargs`"
+    elif name == "args":
+        output = "`*args`"
+    elif type and type.startswith("<class '") and type.endswith("'>"):
+        output = type[8:-2]
+    else:
+        output = type if type != "" else ""
+
+    if output == "":
+        return ""
+
+    return f"`{output}`" if not code else str(output)
+
+
+def generate_params(method: MethodInfo, output: io.TextIOWrapper):
+    # Filter out 'self' parameter
+    filtered_params = [param for param in method["params"] if param["name"] != "self"]
+
+    # Check if there are any parameters left after filtering
+    if not filtered_params:
+        output.write("No parameters\n")
+        return
+
+    multiline_start = "{{< multiline >}}\n"
+    multiline_end = "{{< /multiline >}}\n"
+
+    output.write("| Parameter | Type |\n")
+    output.write("|-|-|\n")
+    for param in filtered_params:
+        typeOutput = format_type(
+            param["name"], param["type"] if "type" in param else ""
+        )
+        doc = param["doc"] if "doc" in param else ""
+        if doc:
+            output.write(
+                f"| `{param['name']}` | {multiline_start}{typeOutput}\ndoc: {doc}\n{multiline_end} |\n"
+            )
+        else:
+            output.write(f"| `{param['name']}` | {typeOutput} |\n")
+
+
+def generate_signature(method: MethodInfo):
+    params = []
+    for param in method["params"]:
+        param_str = param["name"]
+        if "type" in param and param["type"]:
+            param_str += f": {param['type']}"
+        params.append(param_str)
+
+    return f"{method['name']}({', '.join(params)}) -> {method['return_type']}"
+
+
+def generate_signature_simple(method: MethodInfo, name: str = ""):
+    result = "".join(
+        [
+            name if name else method["name"],
+            "(",
+            ", ".join([param["name"] for param in method["params"]]),
+            ")",
+            " -> ",
+            method["return_type"],
+        ]
+    )
+    return result

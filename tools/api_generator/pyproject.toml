@@ -1,0 +1,7 @@
+[project]
+name = "api-generator"
+version = "0.1.0"
+description = "Generates API for integration with this site"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
