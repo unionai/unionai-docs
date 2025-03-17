@@ -11,3 +11,4 @@ Based on what you want to do now, please refer to:
 - [**Authoring Content**](AUTHOR.md)
 - [**Developer & Local environment**](DEVELOPER.md)
 - [**Advanced Content Creation**](SHORTCODES.md)
+- [**Building API content**](APIS.md)
