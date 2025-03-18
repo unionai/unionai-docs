@@ -96,7 +96,7 @@ stop it manually on the Workspaces page.
 
 ## Gather your credentials
 
-After your administrator has onboarded you to Union (see [Deployment](../../deployment/index.md)), you should have the following at hand:
+After your administrator has onboarded you to Union (see [Deployment](../../deployment/_index.md)), you should have the following at hand:
 
 - Your Union credentials.
 - The URL of your Union instance. We will refer to this as `<union-host-url>` below.

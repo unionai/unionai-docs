@@ -29,7 +29,7 @@ from dataclasses import dataclass
 import union
 
 
-@union.task
+@{{< key kit_as >}}.task
 def print_message(message: str):
     print(message)
     return
@@ -42,12 +42,12 @@ You can access an output list using index notation.
 > {{< key product_name >}} currently does not support output promise access through list slicing.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def list_task() -> list[str]:
     return ["apple", "banana"]
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def list_wf():
     items = list_task()
     first_item = items[0]
@@ -58,12 +58,12 @@ def list_wf():
 Access the output dictionary by specifying the key.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def dict_task() -> dict[str, str]:
     return {"fruit": "banana"}
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def dict_wf():
     fruit_dict = dict_task()
     print_message(message=fruit_dict["fruit"])
@@ -77,11 +77,11 @@ Directly access an attribute of a dataclass.
 class Fruit:
     name: str
 
-@union.task
+@{{< key kit_as >}}.task
 def dataclass_task() -> Fruit:
     return Fruit(name="banana")
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def dataclass_wf():
     fruit_instance = dataclass_task()
     print_message(message=fruit_instance.name)
@@ -91,19 +91,19 @@ def dataclass_wf():
 Combinations of list, dict and dataclass also work effectively.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def advance_task() -> (dict[str, list[str]], list[dict[str, str]], dict[str, Fruit]):
     return {"fruits": ["banana"]}, [{"fruit": "banana"}], {"fruit": Fruit(name="banana")}
 
-@union.task
+@{{< key kit_as >}}.task
 def print_list(fruits: list[str]):
     print(fruits)
 
-@union.task
+@{{< key kit_as >}}.task
 def print_dict(fruit_dict: dict[str, str]):
     print(fruit_dict)
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def advanced_workflow():
     dictionary_list, list_dict, dict_dataclass = advance_task()
     print_message(message=dictionary_list["fruits"][0])
@@ -131,12 +131,12 @@ The following workflow fails because it attempts to access indices and keys that
 from flytekit import WorkflowFailurePolicy
 
 
-@union.task
+@{{< key kit_as >}}.task
 def failed_task() -> (list[str], dict[str, str], Fruit):
     return ["apple", "banana"], {"fruit": "banana"}, Fruit(name="banana")
 
 
-@union.workflow(
+@{{< key kit_as >}}.workflow(
     # The workflow remains unaffected if one of the nodes encounters an error, as long as other executable nodes are still available
     failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE
 )

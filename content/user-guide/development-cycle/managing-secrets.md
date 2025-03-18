@@ -57,7 +57,7 @@ To use a secret created on the command line, see the example code below. To run 
 ```python
 import union
 
-@union.task(secret_requests=[union.Secret(key="my_secret")])
+@{{< key kit_as >}}.task(secret_requests=[union.Secret(key="my_secret")])
 def t1():
     secret_value = union.current_context().secrets.get(key="my_secret")
     # do something with the secret. For example, communication with an external API.
@@ -73,7 +73,7 @@ with libraries that expect the secret to have a specific name:
 ```python
 import union
 
-@union.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
+@{{< key kit_as >}}.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="UNION_API_KEY")])
 def t1():
     # Authenticates the remote with UNION_API_KEY
     remote = union.UnionRemote(default_project="flytesnacks", default_domain="development")
@@ -91,7 +91,7 @@ To use a secret created from a file in your workflow code, you must mount it as 
 ```python
 import union
 
-@union.task(
+@{{< key kit_as >}}.task(
     secret_requests=[
         union.Secret(key="my_file_secret", mount_requirement=Secret.MountType.FILE),
     ]

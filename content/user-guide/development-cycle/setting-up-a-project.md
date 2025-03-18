@@ -69,7 +69,7 @@ The next step is to set up a local workflow directory.
 
 ## Creating a local workflow directory using `union init`
 
-Earlier, in the [First workflow](../first-workflow/index.md) section of the guide, we started with a pre-existing example project, cloned from git.
+Earlier, in the [First workflow](../first-workflow/_index.md) section of the guide, we started with a pre-existing example project, cloned from git.
 In this section we'll start from scratch and create a new project using the `union` CLI tool.
 
 We will use the `union init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).

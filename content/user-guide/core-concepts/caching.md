@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Caching
 
-Union allows you to cache the output of nodes ([tasks](./tasks/index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
+Union allows you to cache the output of nodes ([tasks](./tasks/_index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
 
 Caching is useful when many executions of identical code with the same input may occur.
 
@@ -22,22 +22,21 @@ Here's a video with a brief explanation and demo, focused on task caching:
 
 ## Enabling and configuring caching
 
-Caching can be enabled by setting the `cache` parameter of the `@union.task` (for tasks) decorator or `with_overrides` method (for subworkflows or sub-launch plans) to a `Cache` object. The parameters of the `Cache` object are used to configure the caching behavior.
+Caching can be enabled by setting the `cache` parameter of the `@{{< key kit_as >}}.task` (for tasks) decorator or `with_overrides` method (for subworkflows or sub-launch plans) to a `Cache` object. The parameters of the `Cache` object are used to configure the caching behavior.
 For example:
 
 ```python
-:emphasize-lines: 5,28,36
 import union
 
 # Define a task and enable caching for it
 
-@union.task(cache=union.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
+@{{< key kit_as >}}.task(cache={{< key kit_as >}}.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
 def sum(a: int, b: int, c: int) -> int:
     return a + b + c
 
 # Define a workflow to be used as a subworkflow
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def child*wf(a: int, b: int, c: int) -> list[int]:
     return [
         sum(a=a, b=b, c=c)
@@ -46,31 +45,31 @@ def child*wf(a: int, b: int, c: int) -> list[int]:
 
 # Define a launch plan to be used as a sub-launch plan
 
-child_lp = union.LaunchPlan.get_or_create(child_wf)
+child_lp = {{< key kit_as >}}.LaunchPlan.get_or_create(child_wf)
 
 # Define a parent workflow that uses the subworkflow
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def parent_wf_with_subwf(input: int = 0):
     return [
         # Enable caching on the subworkflow
-        child_wf(a=input, b=3, c=4).with_overrides(cache=union.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
+        child_wf(a=input, b=3, c=4).with_overrides(cache={{< key kit_as >}}.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
         for i in [1, 2, 3]
     ]
 
 # Define a parent workflow that uses the sub-launch plan
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def parent_wf_with_sublp(input: int = 0):
     return [
-        child_lp(a=input, b=1, c=2).with_overrides(cache=union.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
+        child_lp(a=input, b=1, c=2).with_overrides(cache={{< key kit_as >}}.Cache(version="1.0", serialize=True, ignored_inputs=["a"]))
         for i in [1, 2, 3]
     ]
 ```
 
 In the above example, caching is enabled at multiple levels:
 
-* At the task level, in the `@union.task` decorator of the task `sum`.
+* At the task level, in the `@{{< key kit_as >}}.task` decorator of the task `sum`.
 * At the workflow level, in the `with_overrides` method of the invocation of the workflow `child_wf`.
 * At the launch plan level, in the `with_overrides` method of the invocation of the launch plan `child_lp`.
 
@@ -110,7 +109,7 @@ The [Cache](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Cac
 
 ## Enabling caching with the default configuration
 
-Instead of specifying a `Cache` object, a simpler way to enable caching is to set `cache=True` in the `@union.task` decorator (for tasks) or the `with_overrides` method (for subworkflows and sub-launch plans).
+Instead of specifying a `Cache` object, a simpler way to enable caching is to set `cache=True` in the `@{{< key kit_as >}}.task` decorator (for tasks) or the `with_overrides` method (for subworkflows and sub-launch plans).
 
 When `cache=True` is set, caching is enabled with the following configuration:
 
@@ -118,10 +117,10 @@ When `cache=True` is set, caching is enabled with the following configuration:
 * `serialize` is set to `False`.
 * `ignored_inputs` is not set. No parameters are ignored.
 
-You can convert the example above to use the default configuration throughout by changing each instance of `cache=union.Cache(...)` to `cache=True`. For example, the task `sum` would now be:
+You can convert the example above to use the default configuration throughout by changing each instance of `cache={{< key kit_as >}}.Cache(...)` to `cache=True`. For example, the task `sum` would now be:
 
 ```python
-@union.task(cache=True)
+@{{< key kit_as >}}.task(cache=True)
 def sum(a: int, b: int, c: int) -> int:
     return a + b + c
 ```
@@ -133,7 +132,7 @@ Automatic version generation is useful when you want to generate the version bas
 You can enable automatic version generation by specifying `cache=Cache(...)` with one or more `CachePolicy` classes in the `policies` parameter of the `Cache` object (and by not specifying an explicit `version` parameter), like this:
 
 ```python
-@union.task(cache=Cache(policies=[CacheFunctionBody()]))
+@{{< key kit_as >}}.task(cache=Cache(policies=[CacheFunctionBody()]))
 def sum(a: int, b: int, c: int) -> int:
     return a + b + c
 ```
@@ -147,7 +146,7 @@ Automatic version generation using the default cache policy is used
 * if you set `cache=True`, or
 * if you set `cache=Cache(...)` but do not specify an explicit `version` or `policies` parameters within the `Cache` object.
 
-The default cache policy is `union.cache.CacheFunctionBody`.
+The default cache policy is `{{< key kit_as >}}.cache.CacheFunctionBody`.
 This policy generates a version by hashing the text of the function body of the task.
 This means that if the code in the function body changes, the version changes, and the cache is invalidated. Note that `CacheFunctionBody` does not recursively check for changes in functions or classes referenced in the function body.
 
@@ -173,26 +172,54 @@ You can also trigger cache invalidation when launching an execution from the UI 
 
 When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
 
-```python
-{{< variant byoc byok flyte >}}
-from flytekit.configuration import Config
-{{{< /variant >}}
-from union.remote import UnionRemote
 
-{{< variant serverless >}}
-remote = UnionRemote()
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
-remote = UnionRemote(
-config=Config.auto(),
-default_project="flytesnacks",
-default_domain="development"
+{{< variant flyte >}}
+{{< markdown >}}
+```python
+from flytekit.configuration import Config
+from flytekit.remote import FlyteRemote
+
+remote = FlyeRemote(
+    config=Config.auto(),
+    default_project="flytesnacks",
+    default_domain="development"
 )
-{{< /variant >}}
 
 wf = remote.fetch_workflow(name="workflows.example.wf")
 execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
+{{< markdown >}}
+```python
+from flytekit.configuration import Config
+from union.remote import UnionRemote
+
+remote = UnionRemote(
+    config=Config.auto(),
+    default_project="flytesnacks",
+    default_domain="development"
+)
+
+wf = remote.fetch_workflow(name="workflows.example.wf")
+execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
+```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless >}}
+{{< markdown >}}
+```python
+from union.remote import UnionRemote
+
+remote = UnionRemote()
+
+wf = remote.fetch_workflow(name="workflows.example.wf")
+execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
+```
+{{< /markdown >}}
+{{< /variant >}}
+
 
 ## How caching works
 
@@ -220,7 +247,7 @@ When a change to code is made that should invalidate the cache for that node, yo
 For a task example, see below. (For workflows and launch plans, the parameter would be specified in the `with_overrides` method.)
 
 ```python
-@union.task(cache=union.Cache(version="1.1"))
+@{{< key kit_as >}}.task(cache={{< key kit_as >}}.Cache(version="1.1"))
 def t(n: int) -> int:
     return n \* n + 1
 ```
@@ -286,11 +313,11 @@ It is particularly well fit for long-running or otherwise computationally expens
 ### Enabling cache serialization
 
 Task cache serializing is disabled by default to avoid unexpected behavior for task executions.
-To enable, set `serialize=True` in the `@union.task` decorator.
+To enable, set `serialize=True` in the `@{{< key kit_as >}}.task` decorator.
 The cache key definitions follow the same rules as non-serialized cache tasks.
 
 ```python
-@union.task(cache=union.Cache(version="1.1", serialize=True))
+@{{< key kit_as >}}.task(cache={{< key kit_as >}}.Cache(version="1.1", serialize=True))
 def t(n: int) -> int:
 return n \* n
 ```
@@ -317,17 +344,17 @@ In some cases, the default behavior displayed by Union’s caching feature might
 For example, this code makes use of pandas dataframes:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def foo(a: int, b: str) -> pandas.DataFrame:
     df = pandas.DataFrame(...)
     ...
     return df
 
-@union.task(cache=True)
+@{{< key kit_as >}}.task(cache=True)
 def bar(df: pandas.DataFrame) -> int:
     ...
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(a: int, b: str):
     df = foo(a=a, b=b)
     v = bar(df=df)
@@ -343,17 +370,17 @@ For example, in order to cache the result of calls to `bar`, you can rewrite the
 def hash_pandas_dataframe(df: pandas.DataFrame) -> str:
     return str(pandas.util.hash_pandas_object(df))
 
-@union.task
+@{{< key kit_as >}}.task
 def foo_1(a: int, b: str) -> Annotated[pandas.DataFrame, HashMethod(hash_pandas_dataframe)]:
     df = pandas.DataFrame(...)
     ...
     return df
 
-@union.task(cache=True)
+@{{< key kit_as >}}.task(cache=True)
 def bar_1(df: pandas.DataFrame) -> int:
     ...
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf_1(a: int, b: str):
     df = foo(a=a, b=b)
     v = bar(df=df)
@@ -376,20 +403,20 @@ Here’s a complete example of the feature:
 def hash_pandas_dataframe(df: pandas.DataFrame) -> str:
     return str(pandas.util.hash_pandas_object(df))
 
-@union.task
+@{{< key kit_as >}}.task
 def uncached_data_reading_task() -> Annotated[pandas.DataFrame, HashMethod(hash_pandas_dataframe)]:
     return pandas.DataFrame({"column_1": [1, 2, 3]})
 
-@union.task(cache=True)
+@{{< key kit_as >}}.task(cache=True)
 def cached_data_processing_task(df: pandas.DataFrame) -> pandas.DataFrame:
     time.sleep(1)
     return df \* 2
 
-@union.task
+@{{< key kit_as >}}.task
 def compare_dataframes(df1: pandas.DataFrame, df2: pandas.DataFrame):
     assert df1.equals(df2)
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def cached_dataframe_wf():
     raw_data = uncached_data_reading_task()
 

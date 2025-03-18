@@ -70,7 +70,7 @@ remote = FlyteRemote(
 ```
 
 
-For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/union-sdk/configuration/index.md)
+For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/union-sdk/configuration/_index.md)
 
 {{< /markdown >}}
 {{< /variant >}}

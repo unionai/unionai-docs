@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Declaring artifacts
 
-In order to define a task or workflow that emits an artifact, you must first declare the artifact and the keys for any [partitions](./index.md#partitions) you wish for it to have. For the `Artifact` class parameters and methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
+In order to define a task or workflow that emits an artifact, you must first declare the artifact and the keys for any [partitions](./_index.md#partitions) you wish for it to have. For the `Artifact` class parameters and methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
 
 ## Basic artifact
 

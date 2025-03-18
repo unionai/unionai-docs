@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 ## Set up your development environment
 
-If you have not already done so, follow the [Getting started](../getting-started/index.md) section to sign in to Union, and set up your local environment.
+If you have not already done so, follow the [Getting started](../getting-started/_index.md) section to sign in to Union, and set up your local environment.
 
 ## CLI commands for running your code
 
@@ -114,5 +114,5 @@ $ uctl register files --project basic-example --domain development \
        --archive flyte-package.tgz --version 1.0
 ```
 
-See [Uctl CLI](../../api-reference/uctl-cli/index.md) for more details.
+See [Uctl CLI](../../api-reference/uctl-cli/_index.md) for more details.
 {{< /variant >}}

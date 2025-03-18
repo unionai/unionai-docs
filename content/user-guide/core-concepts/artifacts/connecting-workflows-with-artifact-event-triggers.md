@@ -27,7 +27,7 @@ import pandas as pd
 from flytekit import ImageSpec, task, workflow, LaunchPlan
 from flytekit.core.artifact import Artifact, Inputs
 from typing_extensions import Annotated
-from union.artifacts import OnArtifact
+from {{< key kit >}}.artifacts import OnArtifact
 ```
 
 

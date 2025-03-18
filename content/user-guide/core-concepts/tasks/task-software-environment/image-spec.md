@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 With Union, every task in a workflow runs within its own dedicated container.
 Since a container requires a container image to run, every task in Union must have a container image associated with it.
-You can specify the container image to be used by a task by defining an `ImageSpec` object and passing it to the `container_image` parameter of the `@union.task` decorator.
+You can specify the container image to be used by a task by defining an `ImageSpec` object and passing it to the `container_image` parameter of the `@{{< key kit_as >}}.task` decorator.
 When you register the workflow, the container image is built locally and pushed to the container registry that you specify.
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
 
@@ -49,13 +49,13 @@ image_spec = union.ImageSpec(
     requirements="requirements.txt"
 )
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def get_pandas_dataframe() -> typing.Tuple[pd.DataFrame, pd.Series]:
     df = pd.read_csv("https://storage.googleapis.com/download.tensorflow.org/data/heart.csv")
     print(df.head())
     return df[["age", "thalach", "trestbps", "chol", "oldpeak"]], df.pop("target")
 
-@union.workflow()
+@{{< key kit_as >}}.workflow()
 def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```

@@ -33,7 +33,7 @@ While (most) tasks are locally executable, when a task is deployed to {{< key pr
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 
-This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
+This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/_index.md).
 For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
@@ -41,7 +41,7 @@ For example, a task that requires a GPU can be deployed to {{< key product_name 
 {{< variant serverless >}}
 {{< markdown >}}
 
-This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index.md).
+This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/_index.md).
 For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
@@ -76,8 +76,8 @@ One of the most powerful features of {{< key product_name >}} is the ability to 
 Because of the way that {{< key product_name >}} is architected, tasks within a single workflow can differ along many dimensions. While the total number of ways that tasks can be configured is quite large, the options fall into three categories:
 
 * **Task type**: These include standard Python tasks, map tasks, raw container tasks, and many specialized plugin tasks. For more information, see [Task types](./task-types.md).
-* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index.md).
-* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/index.md).
+* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/_index.md).
+* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/_index.md).
 
 ### Mix and match task characteristics
 
@@ -100,7 +100,7 @@ The ability to build workflows from such a wide variety of heterogeneous tasks m
 
 ## Task configuration
 
-The `@union.task` decorator can take a number of parameters that allow you to configure the task's behavior.
+The `@{{< key kit_as >}}.task` decorator can take a number of parameters that allow you to configure the task's behavior.
 For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more.
 For more information, see [Task parameters](./task-parameters.md).
 {{< /markdown >}}

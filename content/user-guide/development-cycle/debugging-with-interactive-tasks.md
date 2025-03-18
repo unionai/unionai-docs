@@ -58,13 +58,13 @@ base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
 requirements="requirements.txt"
 )
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode
 def say_hello(name: str) -> str:
 s = f"Hello, {name}!"
 return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
 greeting = say_hello(name=name)
 return greeting
@@ -87,13 +87,13 @@ name="interactive-tasks-example",
 requirements="requirements.txt"
 )
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode
 def say_hello(name: str) -> str:
 s = f"Hello, {name}!"
 return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
 greeting = say_hello(name=name)
 return greeting
@@ -221,13 +221,13 @@ config.add_extensions(
     "https://open-vsx.org/api/vscodevim/vim/1.27.0/file/vscodevim.vim-1.27.0.vsix"
 ) # Copy raw URL from Open VSX
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(config=config)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
     return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -256,13 +256,13 @@ config.add_extensions(
     "https://open-vsx.org/api/vscodevim/vim/1.27.0/file/vscodevim.vim-1.27.0.vsix"
 ) # Copy raw URL from Open VSX
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(config=config)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
     return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -296,13 +296,13 @@ image = union.ImageSpec(
     requirements="requirements.txt"
 )
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(max_idle_seconds=60000)
 def say_hello(name: str) -> str:
    s = f"Hello, {name}!"
    return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -325,13 +325,13 @@ image = union.ImageSpec(
     requirements="requirements.txt"
 )
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(max_idle_seconds=60000)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
 return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
 greeting = say_hello(name=name)
 return greeting
@@ -369,13 +369,13 @@ def set_up_proxy():
 def push_code():
     print("push code")
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(pre_execute=set_up_proxy, post_execute=push_code)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
     return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -404,13 +404,13 @@ print("set up")
 def push_code():
 print("push code")
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(pre_execute=set_up_proxy, post_execute=push_code)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
     return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -442,13 +442,13 @@ image = union.ImageSpec(
     requirements="requirements.txt"
 )
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(run_task_first=True)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
     return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -471,13 +471,13 @@ image = union.ImageSpec(
    requirements="requirements.txt"
 )
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 @vscode(run_task_first=True)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
     return s
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting

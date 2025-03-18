@@ -13,11 +13,11 @@ For example:
 ```python
 import union
 
-@union.task
+@{{< key kit_as >}}.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 

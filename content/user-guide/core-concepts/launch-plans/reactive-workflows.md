@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Reactive workflows
 
-Reactive workflows leverage [artifacts](../artifacts/index.md) as the medium of exchange between workflows, such that when an upstream workflow emits an artifact, an artifact-driven trigger in a downstream workflow passes the artifact to a new downstream workflow execution.
+Reactive workflows leverage [artifacts](../artifacts/_index.md) as the medium of exchange between workflows, such that when an upstream workflow emits an artifact, an artifact-driven trigger in a downstream workflow passes the artifact to a new downstream workflow execution.
 
 A trigger is a rule defined in a launch plan that specifies that when a certain event occurs -- for instance, a new version of a particular artifact is materialized -- a particular launch plan will be executed. Triggers allow downstream data consumers, such as machine learning engineers, to automate their workflows to react to the output of upstream data producers, such as data engineers, while maintaining separation of concerns and eliminating the need for staggered schedules and manual executions.
 

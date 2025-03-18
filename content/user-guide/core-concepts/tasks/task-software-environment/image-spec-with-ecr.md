@@ -63,7 +63,7 @@ See [Private registry authentication](https://docs.aws.amazon.com/AmazonECR/late
 
 You can register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use the example repository shown here, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
+For example, to use the example repository shown here, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(

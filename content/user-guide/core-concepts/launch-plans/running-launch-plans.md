@@ -32,7 +32,7 @@ $ uctl create execution \
        --execFile <execution-spec-file-name>.yaml
 ```
 
-See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
+See [Uctl CLI](../../../api-reference/uctl-cli/_index.md) for more details.
 
 ## Running a launch plan in Python with `UnionRemote`
 
@@ -47,7 +47,7 @@ launch_plan = remote.fetch_launch_plan(name=<launch-plan-name>, version=<launch-
 remote.execute(launch_plan, inputs=<inputs>)
 ```
 
-See the [UnionRemote](../../development-cycle/union-remote/index.md) for more details.
+See the [UnionRemote](../../development-cycle/union-remote/_index.md) for more details.
 
 ## Sub-launch plans
 

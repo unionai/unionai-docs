@@ -61,6 +61,12 @@ serverless = "union"
 byoc = "union"
 byok = "union"
 
+[params.key.kit_import]
+flyte = "flytekit as fl"
+serverless = "union"
+byoc = "union"
+byok = "union"
+
 [params.key.cli_name]
 flyte = "Pyflyte"
 serverless = "Union"
@@ -84,3 +90,11 @@ flyte = "flytectl"
 serverless = "uctl"
 byoc = "uctl"
 byok = "uctl"
+
+[params.key.config_env]
+flyte = "FLYTECTL_CONFIG"
+serverless = "UNION_CONFIG"
+byoc = "UNION_CONFIG"
+byok = "UNION_CONFIG"
+
+

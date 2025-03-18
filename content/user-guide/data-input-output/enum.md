@@ -44,24 +44,24 @@ class Coffee(Enum):
     CAPPUCCINO = "cappucccino"
 
 
-@union.task
+@{{< key kit_as >}}.task
 def take_order(coffee: str) -> Coffee:
     return Coffee(coffee)
 
 
-@union.task
+@{{< key kit_as >}}.task
 def prep_order(coffee_enum: Coffee) -> str:
     return f"Preparing {coffee_enum.value} ..."
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def coffee_maker(coffee: str) -> str:
     coffee_enum = take_order(coffee=coffee)
     return prep_order(coffee_enum=coffee_enum)
 
 
 # The workflow can also accept an enum value
-@union.workflow
+@{{< key kit_as >}}.workflow
 def coffee_maker_enum(coffee_enum: Coffee) -> str:
     return prep_order(coffee_enum=coffee_enum)
 ```

@@ -72,8 +72,8 @@ A user or application with multiple policies will have the union of the permissi
 It is possible to create new custom roles and policies.
 Custom roles and policies can, for example, be used to mix and match permissions at the organization, project, or domain level.
 
-Roles and policies are created using the [`uctl` CLI](../../api-reference/uctl-cli/index.md) (not the [`union` CLI](../../api-reference/union-cli.md)).
-Make sure you have the [`uctl` CLI installed and configured to point to your Union instance](../../api-reference/uctl-cli/index.md).
+Roles and policies are created using the [`uctl` CLI](../../api-reference/uctl-cli/_index.md) (not the [`union` CLI](../../api-reference/union-cli.md)).
+Make sure you have the [`uctl` CLI installed and configured to point to your Union instance](../../api-reference/uctl-cli/_index.md).
 
 
 ### Create a role

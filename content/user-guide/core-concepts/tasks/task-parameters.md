@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Task parameters
 
-You pass the following parameters to the `@union.task` decorator:
+You pass the following parameters to the `@{{< key kit_as >}}.task` decorator:
 
 <!-- TODO: consider organizing by category rather than alphabetically. -->
 
@@ -32,7 +32,7 @@ You pass the following parameters to the `@union.task` decorator:
   (see [Decks&#x2B00;](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)).
 
 ```python
-@union.task(enable_deck=True)
+@{{< key kit_as >}}.task(enable_deck=True)
 def my_task(my_str: str):
     print("hello {my_str}")
 ```
@@ -51,20 +51,20 @@ def my_task(my_str: str):
   Tasks and workflows do not have this requirement.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def workflow0():
   launchplan0 = LaunchPlan.get_or_create(workflow0)
     # Specify node_dependency_hints so that launchplan0
     # will be registered on flyteadmin, despite this being a dynamic task.
-@union.dynamic(node_dependency_hints=[launchplan0])
+@{{< key kit_as >}}.dynamic(node_dependency_hints=[launchplan0])
 def launch_dynamically():
     # To run a sub-launchplan it must have previously been registered on flyteadmin.
     return [launchplan0]*10
 ```
 
-* `pod_template`: See [Task hardware environment](./task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
+* `pod_template`: See [Task hardware environment](./task-hardware-environment/_index.md#pod_template-and-pod_template_name-task-parameters).
 
-* `pod_template_name`: See [Task hardware environment](./task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
+* `pod_template_name`: See [Task hardware environment](./task-hardware-environment/_index.md#pod_template-and-pod_template_name-task-parameters).
 
 * `requests`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md)
 
@@ -76,7 +76,7 @@ def launch_dynamically():
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Union Agents documentation](../../integrations/agents/index.md) and
+  See the [Union Agents documentation](../../integrations/agents/_index.md) and
   [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 * `task_resolver`: Provide a custom task resolver.
@@ -97,14 +97,14 @@ You can use the `functools.partial` function to assign default or constant value
 import functools
 import union
 
-@union.task
+@{{< key kit_as >}}.task
 def slope(x: list[int], y: list[int]) -> float:
     sum_xy = sum([x[i] * y[i] for i in range(len(x))])
     sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
     n = len(x)
     return (n * sum_xy - sum(x) * sum(y)) / (n * sum_x_squared - sum(x) ** 2)
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def simple_wf_with_partial(x: list[int], y: list[int]) -> float:
     partial_task = functools.partial(slope, x=x)
     return partial_task(y=y)
@@ -131,7 +131,7 @@ from typing import NamedTuple
 
 slope_value = NamedTuple("slope_value", [("slope", float)])
 
-@union.task
+@{{< key kit_as >}}.task
 def slope(x: list[int], y: list[int]) -> slope_value:
     sum_xy = sum([x[i] * y[i] for i in range(len(x))])
     sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
@@ -144,7 +144,7 @@ Likewise, assign a `NamedTuple` to the output of `intercept` task:
 ```python
 intercept_value = NamedTuple("intercept_value", [("intercept", float)])
 
-@union.task
+@{{< key kit_as >}}.task
 def intercept(x: list[int], y: list[int], slope: float) -> intercept_value:
     mean_x = sum(x) / len(x)
     mean_y = sum(y) / len(y)
@@ -172,7 +172,7 @@ Additionally, you can also have the workflow return a `NamedTuple` as an output.
 slope_and_intercept_values = NamedTuple("slope_and_intercept_values", [("slope", float), ("intercept", float)])
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def simple_wf_with_named_outputs(x: list[int] = [-3, 0, 3], y: list[int] = [7, 4, -2]) -> slope_and_intercept_values:
     slope_value = slope(x=x, y=y)
     intercept_value = intercept(x=x, y=y, slope=slope_value.slope)

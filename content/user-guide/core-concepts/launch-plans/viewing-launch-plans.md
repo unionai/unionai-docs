@@ -61,7 +61,7 @@ $ uctl get launchplan \
 ```
 
 
-See the [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
+See the [Uctl CLI](../../../api-reference/uctl-cli/_index.md) for more details.
 
 {{< /markdown >}}
 {{< /variant >}}

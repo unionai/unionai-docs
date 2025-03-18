@@ -87,7 +87,7 @@ See also:
 ### Can I use BigQuery from within a task?
 
 If your Union data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
-For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/index.md).
+For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/_index.md).
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery.md).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
@@ -149,10 +149,10 @@ Note that if you wish to run or register workflows in a remote SSH session, you 
 ### How do I specify resource requirements for a task?
 
 You can specify either `requests` or `limits` (or both) on the resources that will be used by a specific task when it runs in its container.
-This is done by setting the `requests` or `limits` property in the `@union.task` decorator to a `Resources` configuration object.
+This is done by setting the `requests` or `limits` property in the `@{{< key kit_as >}}.task` decorator to a `Resources` configuration object.
 Within the `Resources` object you can specify the number of CPU cores, the number of GPU cores, the amount of main memory, the amount of persistent storage, and the amount of ephemeral storage.
 
-You can also override the settings in the `@union.task` in a for more fine-grained control using the `with_overrides` method when invoking the task function.
+You can also override the settings in the `@{{< key kit_as >}}.task` in a for more fine-grained control using the `with_overrides` method when invoking the task function.
 
 See also:
 

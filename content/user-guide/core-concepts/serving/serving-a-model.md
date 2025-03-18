@@ -136,7 +136,7 @@ image_spec = union.ImageSpec(
 )
 
 # The `task` that trains a `RandomForestRegressor` model.
-@union.task(
+@{{< key kit_as >}}.task(
     limits=union.Resources(cpu="2", mem="2Gi"),
     container_image=image_spec,
 )

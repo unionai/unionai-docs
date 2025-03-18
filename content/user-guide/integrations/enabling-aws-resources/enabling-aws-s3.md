@@ -19,7 +19,7 @@ For Union customers whose data plane is in AWS, we walk through setting up acces
 ## Add permissions to your custom policy
 
 In order to enable access to an AWS resource (in this case S3) you need to create a custom policy in AWS IAM with the required permissions and attach it to either the existing _User Flyte Role_ associated with your data plane Kubernetes cluster or to a custom role which you have created and attached to the cluster.
-The general procedure is covered in [Enabling AWS resources](./index.md).
+The general procedure is covered in [Enabling AWS resources](./_index.md).
 
 _In order to enable S3 access in particular, in the step_ [#add-permissions-to-your-custom-policy](./enabling-aws-s3.md#add-permissions-to-your-custom-policy) _you must specify the needed permissions. For example:_
 

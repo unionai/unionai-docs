@@ -40,7 +40,7 @@ Next, we give a task access to our AWS secrets by supplying them through `secret
 ```python
 import union
 
-@union.task(
+@{{< key kit_as >}}.task(
     secret_requests=[
         union.Secret(key="AWS_ACCESS_KEY_ID"),
         union.Secret(key="AWS_SECRET_ACCESS_KEY"),
@@ -59,7 +59,7 @@ def read_s3_data() -> str:
         content = f.read().decode("utf-8")
     return content
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def main():
     read_s3_data()
 ```

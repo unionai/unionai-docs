@@ -13,7 +13,7 @@ Notice that converting a non-actor workflow to use actors is as simple as replac
 ```diff
 import flytekit as fl
 
-+ from union.actor import ActorEnvironment
++ from {{< key kit_as >}}.actor import ActorEnvironment
 +
 + actor_env = ActorEnvironment(
 +    name = "myenv",
@@ -67,11 +67,11 @@ In this example, the `actor.task`-decorated task is invoked multiple times in on
 import union
 
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=1,
     ttl_seconds=300,
-    requests=union.Resources(cpu="2", mem="500Mi"),
+    requests={{< key kit_as >}}.Resources(cpu="2", mem="500Mi"),
 )
 
 
@@ -80,7 +80,7 @@ def plus_one(input: int) -> int:
     return input + 1
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(input: int = 0) -> int:
     a = plus_one(input=input)
     b = plus_one(input=a)
@@ -100,16 +100,16 @@ import os
 
 import union
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),
     packages=["union"],
 )
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=1,
     ttl_seconds=300,
-    requests=union.Resources(cpu="2", mem="500Mi"),
+    requests={{< key kit_as >}}.Resources(cpu="2", mem="500Mi"),
     container_image=image,
 )
 
@@ -119,7 +119,7 @@ def plus_one(input: int) -> int:
     return input + 1
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(input: int = 0) -> int:
     a = plus_one(input=input)
     b = plus_one(input=a)
@@ -146,11 +146,11 @@ You can use the same environment for multiple tasks in the same workflow and tas
 import union
 
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=1,
     ttl_seconds=30,
-    requests=union.Resources(cpu="1", mem="450Mi"),
+    requests={{< key kit_as >}}.Resources(cpu="1", mem="450Mi"),
 )
 
 
@@ -164,15 +164,15 @@ def scream_hello(name: str) -> str:
     return f"HELLO {name}"
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_child_wf(name: str) -> str:
     return scream_hello(name=name)
 
 
-my_child_wf_lp = union.LaunchPlan.get_default_launch_plan(union.current_context(), my_child_wf)
+my_child_wf_lp = {{< key kit_as >}}.LaunchPlan.get_default_launch_plan({{< key kit_as >}}.current_context(), my_child_wf)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_parent_wf(name: str) -> str:
     a = say_hello(name=name)
     b = my_child_wf(name=a)
@@ -191,16 +191,16 @@ import os
 
 import union
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),
     packages=["union"],
 )
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=1,
     ttl_seconds=30,
-    requests=union.Resources(cpu="1", mem="450Mi"),
+    requests={{< key kit_as >}}.Resources(cpu="1", mem="450Mi"),
     container_image=image,
 )
 
@@ -215,15 +215,15 @@ def scream_hello(name: str) -> str:
     return f"HELLO {name}"
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_child_wf(name: str) -> str:
     return scream_hello(name=name)
 
 
-my_child_wf_lp = union.LaunchPlan.get_default_launch_plan(union.current_context(), my_child_wf)
+my_child_wf_lp = {{< key kit_as >}}.LaunchPlan.get_default_launch_plan({{< key kit_as >}}.current_context(), my_child_wf)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_parent_wf(name: str) -> str:
     a = say_hello(name=name)
     b = my_child_wf(name=a)
@@ -250,12 +250,12 @@ from kubernetes.client.models import (
 )
 import union
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),
     packages=["union", "flytekitplugins-pod"],
 )
 
-pod_template = union.PodTemplate(
+pod_template = {{< key kit_as >}}.PodTemplate(
     primary_container_name="primary",
     pod_spec=V1PodSpec(
         containers=[
@@ -278,7 +278,7 @@ pod_template = union.PodTemplate(
     ),
 )
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=1,
     ttl_seconds=30,
@@ -296,7 +296,7 @@ def check_set() -> str:
     return os.getenv("RUN_KEY_EX")
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf() -> tuple[str,str]:
     return get_and_set(), check_set()
 ```
@@ -317,7 +317,7 @@ from time import sleep
 
 import union
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=2,
 )
@@ -333,16 +333,16 @@ class MyModel:
         return self.model_state * value
 
 
-@union.task(cache=True, cache_version="v1")
-def create_model_state() -> union.FlyteFile:
-    working_dir = Path(union.current_context().working_directory)
+@{{< key kit_as >}}.task(cache=True, cache_version="v1")
+def create_model_state() -> {{< key kit_as >}}.FlyteFile:
+    working_dir = Path({{< key kit_as >}}.current_context().working_directory)
     model_state_path = working_dir / "model_state.txt"
     model_state_path.write_text("4")
     return model_state_path
 
 
-@union.actor_cache
-def load_model(model_state_path: union.FlyteFile) -> MyModel:
+@{{< key kit_as >}}.actor_cache
+def load_model(model_state_path: {{< key kit_as >}}.FlyteFile) -> MyModel:
     # Simulate model loading time. This can take a long time
     # because the FlyteFile download is large, or when the
     # model is loaded onto the GPU.
@@ -354,16 +354,16 @@ def load_model(model_state_path: union.FlyteFile) -> MyModel:
 
 
 @actor.task
-def inference(value: int, model_state_path: union.FlyteFile) -> int:
+def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int:
     model = load_model(model_state_path)
     return model(value)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def run_inference(values: list[int] = list(range(20))) -> list[int]:
     model_state = create_model_state()
     inference_ = partial(inference, model_state_path=model_state)
-    return union.map_task(inference_)(value=values)
+    return {{< key kit_as >}}.map_task(inference_)(value=values)
 ```
 
 {{< /markdown >}}
@@ -381,12 +381,12 @@ import os
 
 import union
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),
     packages=["union"],
 )
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     container_image=image,
     replica_count=2,
@@ -403,16 +403,16 @@ class MyModel:
         return self.model_state * value
 
 
-@union.task(container_image=image, cache=True, cache_version="v1")
-def create_model_state() -> union.FlyteFile:
-    working_dir = Path(union.current_context().working_directory)
+@{{< key kit_as >}}.task(container_image=image, cache=True, cache_version="v1")
+def create_model_state() -> {{< key kit_as >}}.FlyteFile:
+    working_dir = Path({{< key kit_as >}}.current_context().working_directory)
     model_state_path = working_dir / "model_state.txt"
     model_state_path.write_text("4")
     return model_state_path
 
 
-@union.actor_cache
-def load_model(model_state_path: union.FlyteFile) -> MyModel:
+@{{< key kit_as >}}.actor_cache
+def load_model(model_state_path: {{< key kit_as >}}.FlyteFile) -> MyModel:
     # Simulate model loading time. This can take a long time
     # because the FlyteFile download is large, or when the
     # model is loaded onto the GPU.
@@ -424,16 +424,16 @@ def load_model(model_state_path: union.FlyteFile) -> MyModel:
 
 
 @actor.task
-def inference(value: int, model_state_path: union.FlyteFile) -> int:
+def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int:
     model = load_model(model_state_path)
     return model(value)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def run_inference(values: list[int] = list(range(20))) -> list[int]:
     model_state = create_model_state()
     inference_ = partial(inference, model_state_path=model_state)
-    return union.map_task(inference_)(value=values)
+    return {{< key kit_as >}}.map_task(inference_)(value=values)
 ```
 
 {{< /markdown >}}
@@ -454,7 +454,7 @@ from time import sleep
 import union
 
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     replica_count=1,
 )
@@ -471,7 +471,7 @@ class MyObj:
         return self.state == other.state
 
 
-@union.actor_cache
+@{{< key kit_as >}}.actor_cache
 def get_state(obj: MyObj) -> int:
     sleep(2)
     return obj.state
@@ -483,7 +483,7 @@ def construct_and_get_value(state: int) -> int:
     return get_state(obj)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(state: int = 2) -> int:
     value = construct_and_get_value(state=state)
     value = construct_and_get_value(state=value)
@@ -505,12 +505,12 @@ import os
 
 import union
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),
     packages=["union"],
 )
 
-actor = union.ActorEnvironment(
+actor = {{< key kit_as >}}.ActorEnvironment(
     name="my-actor",
     container_image=image,
     replica_count=1,
@@ -528,7 +528,7 @@ class MyObj:
         return self.state == other.state
 
 
-@union.actor_cache
+@{{< key kit_as >}}.actor_cache
 def get_state(obj: MyObj) -> int:
     sleep(2)
     return obj.state
@@ -540,7 +540,7 @@ def construct_and_get_value(state: int) -> int:
     return get_state(obj)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(state: int = 2) -> int:
     value = construct_and_get_value(state=state)
     value = construct_and_get_value(state=value)

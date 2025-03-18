@@ -127,13 +127,13 @@ We will refer to the name as `<SecretManagerPolicyName>` and the ARN as `<Secret
 To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your Union data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
-See [here](./index.md) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.
+See [here](./_index.md) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.
 
 ## Using AWS secrets in your Flyte code
 
 To use an AWS secret in your Flyte task code, do the following:
 
-* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@union.task` decorator.
+* Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to\
   `flytekit.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
 
@@ -150,7 +150,7 @@ SECRET_REQUEST = union.Secret(
   mount_requirement=union.Secret.MountType.FILE
 )
 
-@union.task(secret_requests=[SECRET_REQUEST])
+@{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
 def t1():
     secret_val = union.current_context().secrets.get(
         SECRET_GROUP,

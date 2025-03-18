@@ -23,11 +23,11 @@ This on-demand node group will be used as a fallback when attempts to complete t
 
 ## Configuring tasks to use interruptible instances
 
-To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@union.task` decorator.
+To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@{{< key kit_as >}}.task` decorator.
 For example:
 
 ```python
-@union.task(interruptible=True, retries=3)
+@{{< key kit_as >}}.task(interruptible=True, retries=3)
 ```
 
 * A task will only be scheduled on a interruptible instance if it has the parameter `interruptible=True` (or if its workflow has the parameter `interruptible=True` and the task does not have an explicit `interruptible` parameter).
@@ -38,7 +38,7 @@ For example:
 
 ## Workflow level interruptible
 
-Interruptible is also available [at the workflow level](../../workflows/index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
+Interruptible is also available [at the workflow level](../../workflows/_index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
 
 ## Advantages and disadvantages of interruptible instances
 
