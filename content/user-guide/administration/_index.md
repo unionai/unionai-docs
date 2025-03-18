@@ -6,4 +6,4 @@ variants: +flyte +serverless +byoc +byok
 
 # Administration
 
-This section covers the administration of Union.
+This section covers the administration of {{< key product_name >}}.

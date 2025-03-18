@@ -171,7 +171,7 @@ You can also trigger cache invalidation when launching an execution from the UI 
 
 ### Overwrite cache programmatically
 
-When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.{{< key product_name >}}Remote.execute`]() method:
+When using `{{< key product_name >}}Remote`, you can use the `overwrite_cache` parameter in the [`{{< key product_name >}}Remote.execute`]() method:
 <!-- TODO: Add link to API -->
 
 {{< variant flyte >}}
@@ -224,7 +224,7 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 
 ## How caching works
 
-When a node (with caching enabled) completes on Union, a **key-value entry** is created in the **caching table**. The **value** of the entry is the output.
+When a node (with caching enabled) completes on {{< key product_name >}}, a **key-value entry** is created in the **caching table**. The **value** of the entry is the output.
 The **key** is composed of:
 
 * **Project:** A task run under one project cannot use the cached task execution from another project which would cause inadvertent results between project teams that could result in data corruption.
@@ -234,7 +234,7 @@ The **key** is composed of:
 * **Node signature:** The cache is specific to the signature associated with the execution.
   The signature comprises the name, input parameter names/types, and the output parameter name/type of the node.
   If the signature changes, the cache entry is invalidated.
-* **Input values:** A well-formed Union node always produces deterministic outputs.
+* **Input values:** A well-formed {{< key product_name >}} node always produces deterministic outputs.
   This means that, given a set of input values, every execution should have identical outputs.
   When an execution is cached, the input values are part of the cache key.
   If a node is run with a new set of inputs, a new cache entry is created for the combination of that particular entity with those particular inputs.
@@ -272,15 +272,15 @@ When a node's behavior does change though, you can bump `version` to invalidate 
 
 ### Node signature
 
-If you modify the signature of a node by adding, removing, or editing input parameters or output return types, Union invalidates the cache entries for that node.
-During the next execution, Union executes the process again and caches the outputs as new values stored under an updated key.
+If you modify the signature of a node by adding, removing, or editing input parameters or output return types, {{< key product_name >}} invalidates the cache entries for that node.
+During the next execution, {{< key product_name >}} executes the process again and caches the outputs as new values stored under an updated key.
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 
 ### Caching when running locally
 
-The description above applies to caching when executing a node remotely on your Union cluster.
+The description above applies to caching when executing a node remotely on your {{< key product_name >}} cluster.
 Caching is also available [when running on a local cluster](../development-cycle/running-in-a-local-cluster.md).
 
 When running locally the caching mechanism is the same except that the cache key does not include **project** or **domain** (since there are none).
@@ -329,19 +329,19 @@ Concurrently evaluated tasks will wait for completion of the first instance befo
 ### How does cache serialization work?
 
 The cache serialization paradigm introduces a new artifact reservation system. Executions with cache serialization enabled use this reservation system to acquire an artifact reservation, indicating that they are actively evaluating a node, and release the reservation once the execution is completed.
-Union uses a clock-skew algorithm to define reservation timeouts. Therefore, executions are required to periodically extend the reservation during their run.
+{{< key product_name >}} uses a clock-skew algorithm to define reservation timeouts. Therefore, executions are required to periodically extend the reservation during their run.
 
 The first execution of a serializable node will successfully acquire the artifact reservation.
 Execution will be performed as usual and upon completion, the results are written to the cache, and the reservation is released.
 Concurrently executed node instances (those that would otherwise run in parallel with the initial execution) will observe an active reservation, in which case these instances will wait until the next reevaluation and perform another check.
 Once the initial execution completes, they will reuse the cached results as will any subsequent instances of the same node.
 
-Union handles execution failures using a timeout on the reservation.
+{{< key product_name >}} handles execution failures using a timeout on the reservation.
 If the execution currently holding the reservation fails to extend it before it times out, another execution may acquire the reservation and begin processing.
 
 ## Caching of offloaded objects
 
-In some cases, the default behavior displayed by Union’s caching feature might not match the user's intuition.
+In some cases, the default behavior displayed by {{< key product_name >}}’s caching feature might not match the user's intuition.
 For example, this code makes use of pandas dataframes:
 
 ```python
@@ -361,9 +361,9 @@ def wf(a: int, b: str):
     v = bar(df=df)
 ```
 
-If run twice with the same inputs, one would expect that `bar` would trigger a cache hit, but that’s not the case because of the way dataframes are represented in Union.
+If run twice with the same inputs, one would expect that `bar` would trigger a cache hit, but that’s not the case because of the way dataframes are represented in {{< key product_name >}}.
 
-However, Union provides a new way to control the caching behavior of literals.
+However, {{< key product_name >}} provides a new way to control the caching behavior of literals.
 This is done via a `typing.Annotated` call on the node signature.
 For example, in order to cache the result of calls to `bar`, you can rewrite the code above like this:
 
