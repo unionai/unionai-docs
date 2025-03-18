@@ -45,7 +45,7 @@ def my_task(my_str: str):
 * `limits`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md).
 
 * `node_dependency_hints`: A list of tasks, launch plans, or workflows that this task depends on.
-  This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime.
+  This is only for dynamic tasks/workflows, where {{< key product_name >}} cannot automatically determine the dependencies prior to runtime.
   Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier,
   because it allows registration to be done the same as for static tasks/workflows.
   For example this is useful to run launch plans dynamically, because launch plans must be registered before they can be run.
@@ -77,7 +77,7 @@ def launch_dynamically():
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Union Agents documentation](../../integrations/agents/_index.md) and
+  See the [{{< key product_name >}} Agents documentation](../../integrations/agents/_index.md) and
   [{{< key product_name >}} plugins documentation]() for the right object to use.
   <!-- TODO: Add link to API -->
 

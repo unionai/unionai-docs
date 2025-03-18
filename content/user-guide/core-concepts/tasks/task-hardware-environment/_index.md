@@ -47,7 +47,24 @@ See [Customizing task resources](./customizing-task-resources.md) for details.
 
 If your needs are more complex, you can use Kubernetes-level configuration to constrain a task to only run on a specific machine type.
 
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+This requires that you set up the required machine types and node groups with the appropriate node assignment configuration (node selector labels, node affinities, taints, tolerations, etc.)
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
+{{< markdown >}}
+
 This requires that you coordinate with Union to set up the required machine types and node groups with the appropriate node assignment configuration (node selector labels, node affinities, taints, tolerations, etc.)
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 In your task definition you then use a `PodTemplate` that that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
 

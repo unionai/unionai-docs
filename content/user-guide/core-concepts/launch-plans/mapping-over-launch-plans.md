@@ -51,7 +51,7 @@ union run map_interest_wf.py map_interest_wf
 ```
 
 
-You can also run the `map_interest` workflow remotely on Union:
+You can also run the `map_interest` workflow remotely on {{< key product_name >}}:
 
 ```shell
 union run --remote map_interest_wf.py map_interest_wf
@@ -127,7 +127,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
 
     Note the fact that the reference launch plan has an interface that corresponds exactly to the registered `simple_wf` we wish to map over.
 
-5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to Union and run it remotely.
+5. Register the `map_simple_wf` workflow. Reference launch plans cannot be run locally, so we will register the `map_simple_wf` workflow to {{< key product_name >}} and run it remotely.
 
 
     ```shell
@@ -135,4 +135,4 @@ Recall that when a workflow is registered, an associated launch plan is created 
     ```
 
 
-6. In the Union UI, run the `map_simple_wf` workflow.
+6. In the {{< key product_name >}} UI, run the `map_simple_wf` workflow.

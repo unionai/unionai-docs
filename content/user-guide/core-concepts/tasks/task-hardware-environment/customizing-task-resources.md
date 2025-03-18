@@ -7,7 +7,7 @@ variants: +flyte +serverless +byoc +byok
 # Customizing task resources
 
 When defining a task function, you can specify resource requirements for the pod that runs the task.
-Union will take this into account to ensure that the task pod is scheduled to run on a Kubernetes node that meets the specified resource profile.
+{{< key product_name >}} will take this into account to ensure that the task pod is scheduled to run on a Kubernetes node that meets the specified resource profile.
 
 Resources are specified in the `@{{< key kit_as >}}.task` decorator. Here is an example:
 
@@ -41,7 +41,13 @@ The `requests` and `limits` settings each takes a [`Resource`]() object, which i
 
 Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2500m"` means two and a half CPU cores and `gpu="3000m"`, meaning three GPU cores.
 
+{{< variant byoc byok >}}
+{{< markdown >}}
+
 The type of ephemeral storage used depends on the node type and configuration you request from the Union team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the Union team configure your cluster to use the attached NVMe as ephemeral storage for that node type.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 The `requests` setting tells the system that the task requires _at least_ the resources specified and therefore the pod running this task should be scheduled only on a node that meets or exceeds the resource profile specified.
 
@@ -88,9 +94,9 @@ This will open a dialog:
 > [!NOTE] Note on ephemeral storage
 > An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.
 > This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on
-> ephemeral storage, we recommend being explicit with the ephemeral storage you request so as to avoid pod eviction.
+> ephemeral storage, we recommend being explicit with the ephemeral storage you request to avoid pod eviction.
 
-{{< variant byoc >}}
+{{< variant byoc byok >}}
 {{< markdown >}}
 
 ## Task resource validation
@@ -98,14 +104,32 @@ This will open a dialog:
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
 
 To remedy such a failure, you should make sure that the appropriate node types are:
+
 * Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
+
+
 To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 
 See also [Customizing Task Resources]().
 <!-- TODO: Add link -->
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+## Task resource validation
+
+If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
+
+To remedy such a failure, you should make sure that the appropriate node types are:
+
+* Physically available in your cluster, meaning you have configured them correctly when [deploying your Flyte cluster](../../../../deployment/_index.md).
+
+* Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 {{< /markdown >}}
 {{< /variant >}}

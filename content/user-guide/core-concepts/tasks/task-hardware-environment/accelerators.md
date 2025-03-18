@@ -76,7 +76,7 @@ def my_task():
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc byok >}}
 {{< markdown >}}
 
 > [!NOTE] _Accelerators_ and _Accelerated datasets_ are entirely different things
@@ -87,7 +87,7 @@ def my_task():
 Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
 
-You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs. or other specialized hardware devices such as TPUs.
+You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs, or other specialized hardware devices such as TPUs.
 
 Your Union installation will come pre-configured with the GPUs and other hardware that you requested during onboarding.
 Each device type has a constant name that you can use to specify the device in the `accelerator` parameter.
@@ -108,7 +108,7 @@ from flytekit.extras.accelerators import A100
 ## Finding your available accelerators
 
 You can find the accelerators available in your Union installation by going to the **Usage > Compute** dashboard in the Union Console.
-In the **Accelerators** section, you will see a list of available accelerators and the the named constants to be used in code to refer to them.
+In the **Accelerators** section, you will see a list of available accelerators and the named constants to be used in code to refer to them.
 
 ## Requesting the provisioning of accelerators
 
@@ -123,6 +123,45 @@ The predefined list is not exhaustive, but it includes the most common accelerat
 If you know the name of the accelerator, but there is no predefined constant for it, you can simply pass the string name to the task decorator directly.
 
 Note that in order for a specific accelerator to be available in your Union installation, it must have been provisioned by the Union team.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+Flyte allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
+However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
+
+You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs, or other specialized hardware devices such as TPUs.
+
+Each device type has a constant name that you can use to specify the device in the `accelerator` parameter.
+For example:
+
+```python
+from flytekit.extras.accelerators import A100
+
+    @{{< key kit_as >}}.task(
+        limits=Resources(gpu="1"),
+        accelerator=A100,
+    )
+    def my_task():
+        ...
+
+```
+
+## Using predefined accelerator constants
+
+There are a number of predefined accelerator constants available in the `flytekit.extras.accelerators` module.
+
+The predefined list is not exhaustive, but it includes the most common accelerators.
+If you know the name of the accelerator, but there is no predefined constant for it, you can simply pass the string name to the task decorator directly.
+
+Note that in order for a specific accelerator to be available in your Flyte installation, it must have been provisioned in your Flyte cluster as part of your [deployment](../../../../deployment/_index.md).
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc byok flyte >}}
+{{< markdown >}}
 
 If using the constants, you can import them directly from the module, e.g.:
 
@@ -174,9 +213,8 @@ def my_task():
     * `A100_80GB.partition_4g_40gb`: 4GB partition of an A100 80GB GPU - 8x5GB slices with 4/7th of the SM.
     * `A100_80GB.partition_7g_80gb`: 7GB partition of an A100 80GB GPU - 16x5GB slices with 7/7th of the SM.
 
-For more information see [Specifying Accelerators]().
 For more information on partitioning, see [Partitioned GPUs](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#partitioning).
-<!-- TODO: Add link -->
+
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -70,5 +70,5 @@ def run_simple_wf() -> float:
 union register simple_wf_ref_lp.py
 ```
 
-6. In the Union UI, run the workflow `run_simple_wf`.
+6. In the {{< key product_name >}} UI, run the workflow `run_simple_wf`.
 
