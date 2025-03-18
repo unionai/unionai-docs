@@ -11,7 +11,8 @@ You pass the following parameters to the `@{{< key kit_as >}}.task` decorator:
 <!-- TODO: consider organizing by category rather than alphabetically. -->
 
 * `accelerator`: The accelerator to use for this task.
-  For more information, see [Specifying accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html#specifying-accelerators).
+  For more information, see [Specifying accelerators]().
+  <!-- TODO: Add link to API -->
 
 * `cache`: See [Caching](../caching.md).
 
@@ -28,8 +29,8 @@ You pass the following parameters to the `@{{< key kit_as >}}.task` decorator:
 
 * `docs`: Documentation about this task.
 
-* `enable_deck`: If true, this task will output a Flyte Deck which can be used to visualize the task execution
-  (see [Decks&#x2B00;](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)).
+* `enable_deck`: If true, this task will output a Deck which can be used to visualize the task execution. See [Decks]().
+  <!-- TODO: Add link -->
 
 ```python
 @{{< key kit_as >}}.task(enable_deck=True)
@@ -47,7 +48,7 @@ def my_task(my_str: str):
   This is only for dynamic tasks/workflows, where Union cannot automatically determine the dependencies prior to runtime.
   Even on dynamic tasks this is optional, but in some scenarios it will make registering the workflow easier,
   because it allows registration to be done the same as for static tasks/workflows.
-  For example this is useful to run launch plans dynamically, because launch plans must be registered on Flyteadmin before they can be run.
+  For example this is useful to run launch plans dynamically, because launch plans must be registered before they can be run.
   Tasks and workflows do not have this requirement.
 
 ```python
@@ -77,7 +78,8 @@ def launch_dynamically():
 
 * `task_config`: Configuration for a specific task type.
   See the [Union Agents documentation](../../integrations/agents/_index.md) and
-  [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
+  [{{< key product_name >}} plugins documentation]() for the right object to use.
+  <!-- TODO: Add link to API -->
 
 * `task_resolver`: Provide a custom task resolver.
 
@@ -88,7 +90,8 @@ def launch_dynamically():
   It is possible for task authors to define a timeout period, after which the task is marked as `failure`.
   Note that a timed-out task will be retried if it has a retry strategy defined.
   The timeout can be handled in the
-  [TaskMetadata](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.TaskMetadata.html?highlight=retries.md#flytekit.TaskMetadata).
+  [TaskMetadata]().
+  <!-- TODO: Add link to API -->
 
 ## Use `partial` to provide default arguments to tasks
 

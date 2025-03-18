@@ -55,7 +55,7 @@ The bottom part provides three tabs displaying different aspects of the executio
 ### Nodes
 
 The default tab within the execution view is the **Nodes** tab.
-It shows a list of the Flyte nodes that make up this execution (A node in Flyte is either a task or a (sub-)workflow).
+It shows a list of the {{< key product_name >}} nodes that make up this execution (A node in {{< key product_name >}} is either a task or a (sub-)workflow).
 
 Selecting an item in the list opens the right panel showing more details of that specific node:
 

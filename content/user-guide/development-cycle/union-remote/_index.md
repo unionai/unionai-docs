@@ -56,7 +56,7 @@ In some cases, you may be running a script with `UnionRemote` in a CI/CD pipelin
 from union import UnionRemote
 from flytekit.configuration import Config, PlatformConfig
 
-remote = FlyteRemote(
+remote = {{< key product_name >}}Remote(
         config=Config(
             platform=PlatformConfig(
                 endpoint="union.example.com",

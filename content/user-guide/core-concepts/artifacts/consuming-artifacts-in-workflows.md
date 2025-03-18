@@ -67,7 +67,8 @@ data = BasicArtifact.get(<organization>/<domain>/BasicArtifact@<artifact-version
 ```
 
 > [!NOTE]
-> For a full list of Artifact class methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
+> For a full list of Artifact class methods, see the [Artifact API documentation]().
+<!-- TODO: Add link to API -->
 
 ## Launching a workflow that consumes an artifact
 

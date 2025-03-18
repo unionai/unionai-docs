@@ -42,7 +42,8 @@ The actual evaluation of these promises occurs when the tasks (or dynamic or eag
 ## Conditional construct
 
 Because standard workflows cannot directly include Python `if` statements, a special `conditional` construct is provided that allows you to define conditional logic in a workflow.
-For details, see [Conditionals](https://docs.flyte.org/en/latest/user_guide/advanced_composition/conditionals.html).
+For details, see [Conditionals]().
+<!-- TODO: Add link to API -->
 
 ## Chaining operator
 
@@ -52,13 +53,15 @@ There may be cases where you want to define a dependency between two tasks that 
 
 In that case, you can use the chaining operator `>>` to define the dependencies between tasks.
 
-For details, see [Chaining Flyte entities](https://docs.flyte.org/en/latest/user_guide/advanced_composition/chaining_flyte_entities.html).
+For details, see [Chaining {{< key product_name >}} entities]().
+<!-- TODO: Add link to API -->
 
 ## Workflow decorator parameters
 
 The `@{{< key kit_as >}}.workflow` decorator can take the following parameters:
 
-* `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.WorkflowFailurePolicy.html#flytekit.WorkflowFailurePolicy).
+* `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`]().
+<!-- TODO: Add link to API -->
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}

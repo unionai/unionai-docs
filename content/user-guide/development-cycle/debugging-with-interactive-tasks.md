@@ -20,6 +20,7 @@ server during runtime.  This process overrides the standard execution of the
 task’s function body, initiating a command to start a Visual Studio Code server
 instead.
 
+<!-- TODO: Remove mention of flytesnacks -->
 > [!NOTE] No need for ingress or port forwarding
 > The Union interactive tasks feature is an adaptation of the open-source
 > [FlyteInteractive plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/flyteinteractive_plugin/index.html).

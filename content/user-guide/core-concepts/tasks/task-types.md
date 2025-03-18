@@ -90,7 +90,8 @@ def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) ->
 > [!NOTE]
 > Map tasks can also map over launch plans. For more information and example code, see [Mapping over launch plans](../launch-plans/mapping-over-launch-plans.md).
 
-For more details see [Map Task example](https://github.com/unionai-oss/union-cloud-docs-examples/tree/main/map_task) in the `unionai-examples` repository and [Map Tasks](https://docs.flyte.org/en/latest/user_guide/advanced_composition/map_tasks.html#map-task) in the Flyte docs.
+For more details see [Map Task example](https://github.com/unionai-oss/union-cloud-docs-examples/tree/main/map_task) in the `unionai-examples` repository and [Map Tasks]() section.
+<!-- TODO: Add link to API -->
 
 ## Shell tasks
 
@@ -110,9 +111,9 @@ t1 = ShellTask(
     debug=True,
     script="""
     set -ex
-    echo "Hey there! Let's run some bash scripts using Flyte's ShellTask."
-    echo "Showcasing Flyte's Shell Task." >> {inputs.x}
-    if grep "Flyte" {inputs.x}
+    echo "Hey there! Let's run some bash scripts using a shell task."
+    echo "Showcasing shell tasks." >> {inputs.x}
+    if grep "shell" {inputs.x}
     then
         echo "Found it!" >> {inputs.x}
     else
@@ -158,7 +159,7 @@ Here's a breakdown of the parameters of the `ShellTask`:
 - The `debug` parameter is helpful for debugging purposes
 
 We define a task to instantiate `FlyteFile` and `FlyteDirectory`.
-A `.gitkeep` file is created in the FlyteDirectory as a placeholder to ensure the directory exists:
+A `.gitkeep` file is created in the `FlyteDirectory` as a placeholder to ensure the directory exists:
 
 ```python
 @{{< key kit_as >}}.task
@@ -205,7 +206,8 @@ They enable things like:
 * Data transformation (Great Expectations, DBT, Dolt, ONNX, Pandera).
 * Data tracking and presentation  (MLFlow, Papermill).
 
-See the [Integration section](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for examples.
+See the [Integration section]() for examples.
+<!-- TODO: Add link to API -->
 
 
 <!-- INCORPORATE THE FOLLOWING ABOVE WHERE NECESSARY

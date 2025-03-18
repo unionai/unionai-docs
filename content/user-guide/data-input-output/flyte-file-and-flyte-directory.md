@@ -4,6 +4,9 @@ weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
 
+
+<!-- TODO: CHeck for variant accuracy -->
+
 # FlyteFile and FlyteDirectory
 
 {{< variant flyte >}}
@@ -89,11 +92,11 @@ def normalize_columns(
         return union.FlyteFile(path=str(out_path))
 ```
 
-When the image URL is sent to the task, the Flytekit engine translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
+When the image URL is sent to the task, the system translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
 
 If the `output_location` argument is specified, it will be passed to the `remote_path` argument of `FlyteFile`, which will use that path as the storage location instead of a random location (Flyte's object store).
 
-When this task finishes, the Flytekit engine returns the `FlyteFile` instance, uploads the file to the location, and creates a blob literal pointing to it.
+When this task finishes, the system returns the `FlyteFile` instance, uploads the file to the location, and creates a blob literal pointing to it.
 
 Lastly, define a workflow. The `normalize_csv_files` workflow has an `output_location` argument which is passed to the `location` input of the task. If it's not an empty string, the task attempts to upload its file to that location.
 
@@ -459,7 +462,7 @@ def workflow():
 > With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
 >
 > With Union BYOC, the upload location is configurable.
-> See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+> See [FlyteFile and FlyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 
 {{< /markdown >}}
 {{< /variant >}}

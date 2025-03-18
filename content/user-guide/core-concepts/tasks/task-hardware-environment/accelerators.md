@@ -174,8 +174,9 @@ def my_task():
     * `A100_80GB.partition_4g_40gb`: 4GB partition of an A100 80GB GPU - 8x5GB slices with 4/7th of the SM.
     * `A100_80GB.partition_7g_80gb`: 7GB partition of an A100 80GB GPU - 16x5GB slices with 7/7th of the SM.
 
-For more information see [Specifying Accelerators](https://docs.flyte.org/en/latest/api/flytekit/extras.accelerators.html) in the Flyte documentation.
+For more information see [Specifying Accelerators]().
 For more information on partitioning, see [Partitioned GPUs](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#partitioning).
+<!-- TODO: Add link -->
 
 {{< /markdown >}}
 {{< /variant >}}

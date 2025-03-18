@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Caching
 
-Union allows you to cache the output of nodes ([tasks](./tasks/_index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
+{{< key product_name >}} allows you to cache the output of nodes ([tasks](./tasks/_index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
 
 Caching is useful when many executions of identical code with the same input may occur.
 
@@ -81,7 +81,8 @@ This applies even if the cached node is invoked externally through the UI or CLI
 
 ## The `Cache` object
 
-The [Cache](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Cache.html#flytekit-cache) object takes the following parameters:
+The [Cache]() object takes the following parameters:
+<!-- TODO: Add link to API -->
 
 * `version` (`Optional[str]`): Part of the cache key.
   A change to this parameter from one invocation to the next will invalidate the cache.
@@ -92,7 +93,7 @@ The [Cache](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Cac
   When using `cache=True`, [as shown below](#enabling-caching-with-the-default-configuration), the [default cache policy](#default-cache-policy) generates the version.
 
 * `serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
-  When enabled, Union ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
+  When enabled, {{< key product_name >}} ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
   This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
   If not set, cache serialization is disabled.
 
@@ -170,8 +171,8 @@ You can also trigger cache invalidation when launching an execution from the UI 
 
 ### Overwrite cache programmatically
 
-When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
-
+When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.{{< key product_name >}}Remote.execute`]() method:
+<!-- TODO: Add link to API -->
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -301,7 +302,7 @@ This removes the contents of the `~/.flyte/local-cache/` directory.
 ## Cache serialization
 
 Cache serialization means only executing a single instance of a unique cacheable task (determined by the `cache_version` parameter and task signature) at a time.
-Using this mechanism, Flyte ensures that during multiple concurrent executions of a task only a single instance is evaluated, and all others wait until completion and reuse the resulting cached outputs.
+Using this mechanism, {{< key product_name >}} ensures that during multiple concurrent executions of a task only a single instance is evaluated, and all others wait until completion and reuse the resulting cached outputs.
 
 Ensuring serialized evaluation requires a small degree of overhead to coordinate executions using a lightweight artifact reservation system.
 Therefore, this should be viewed as an extension to rather than a replacement for non-serialized cacheable tasks.

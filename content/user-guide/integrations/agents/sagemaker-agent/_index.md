@@ -22,7 +22,7 @@ For a usage example, see [AWS SageMaker inference agent example](./sagemaker-age
 
 ## Local testing
 
-To test the SageMaker inference agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L278-382). This mixin can handle synchronous tasks and allows Flytekit to mimic FlytePropeller's behavior in calling the agent.
+To test the SageMaker inference agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L278-382). This mixin can handle synchronous tasks and allows {{< key kit_name >}} to mimic FlytePropeller's behavior in calling the agent.
 
 {{< variant byoc byok >}}
 {{< markdown >}}

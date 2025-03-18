@@ -117,7 +117,7 @@ To build and deploy your first workflow, the first step is to [set up your local
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant flyte >}}
 {{< markdown >}}
 
 > [!NOTE] Try Flyte in your browser

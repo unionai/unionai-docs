@@ -19,7 +19,7 @@ Through the assigned policies, the user or application acquires permission to pe
 A user is a person, registered and identified by **email address**.
 An application is an automated process (a bot, service, or other type of program), registered and identified by **application ID**.
 * **Organization**: A set of projects associated with a company, department, or other organization.
-* **Project**: A set of associated workflows, tasks, launch plans, and other Flyte entities.
+* **Project**: A set of associated workflows, tasks, launch plans, and other {{< key product_name >}} entities.
 * **Domain**: Categories representing the standard environments used in the development process: **development**, **staging**, and **production**.
 * **Project-domain pair**: The set of projects is divided orthogonally by the three **domains**.
 The result is a set of project-domain pairs.

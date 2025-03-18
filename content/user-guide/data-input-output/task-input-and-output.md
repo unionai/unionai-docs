@@ -32,8 +32,9 @@ The raw data store is, by default, also located in the dedicated Union object st
 
 However, this location can be overridden per workflow or per execution using the **raw data prefix** parameter.
 
-The data in the raw data store is not accessible to the control plane and will only be surfaced in the UI if your code explicitly does so (for example, in a Flyte Deck).
+The data in the raw data store is not accessible to the control plane and will only be surfaced in the UI if your code explicitly does so (for example, in a Deck).
 
+<!-- TODO: incorporate the referenced page here -->
 For more details, see [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/concepts/data_management.html).
 
 ## Changing the raw data storage location

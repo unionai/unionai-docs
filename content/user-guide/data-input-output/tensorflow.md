@@ -38,6 +38,7 @@ The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remo
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: Remove mention of flytesnacks -->
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -67,7 +68,7 @@ def training_workflow(x: tf.Tensor, y: tf.Tensor) -> float:
 ```
 
 ## TFRecord files
-Flyte{{< key product_name >}} supports TFRecord files through the `TFRecordFile` type, which can handle serialized TensorFlow records. The `TensorFlowRecordFileTransformer` manages the conversion of TFRecord files to and from {{< key product_name >}} literals.
+{{< key product_name >}} supports TFRecord files through the `TFRecordFile` type, which can handle serialized TensorFlow records. The `TensorFlowRecordFileTransformer` manages the conversion of TFRecord files to and from {{< key product_name >}} literals.
 
 ### Transformer
 - **Name:** TensorFlow Record File

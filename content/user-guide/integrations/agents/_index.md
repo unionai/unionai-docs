@@ -4,6 +4,8 @@ weight: 4
 variants: +flyte -serverless +byoc +byok
 ---
 
+
+<!-- Check for vartiant accuracy -->
 # Agents
 
 Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
@@ -57,7 +59,7 @@ For an example implementation, see the [ChatGPT agent code](https://github.com/f
 
 ### Testing your agent locally
 
-To test your agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/f99d50e4c71a77b8f1c9f8e0fe7aa402e1d1b910/flytekit/extend/backend/base_agent.py#L316). This mixin can handle both asynchronous tasks and synchronous tasks and allows Flytekit to mimic FlytePropeller's behavior in calling the agent.
+To test your agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/f99d50e4c71a77b8f1c9f8e0fe7aa402e1d1b910/flytekit/extend/backend/base_agent.py#L316). This mixin can handle both asynchronous tasks and synchronous tasks and allows {{< key kit_name >}} to mimic FlytePropeller's behavior in calling the agent.
 
 For testing examples, see the [BigQuery agent](./bigquery-agent/_index.md#local-testing) and [Databricks agent](./databricks-agent/_index.md#local-testing) documentation.
 

@@ -31,7 +31,8 @@ There are three separate resource-related settings:
 
 ## The `requests` and `limits` settings
 
-The `requests` and `limits` settings each takes a [`Resource`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Resources.html#flytekit-resources) object, which itself has five possible attributes:
+The `requests` and `limits` settings each takes a [`Resource`]() object, which itself has five possible attributes:
+<!-- TODO: Add link to API -->
 
 * `cpu`: Number of CPU cores (in whole numbers or millicores (`m`)).
 * `gpu`: Number of GPU cores (in whole numbers or millicores (`m`)).
@@ -103,7 +104,8 @@ To remedy such a failure, you should make sure that the appropriate node types a
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
 To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 
-See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
+See also [Customizing Task Resources]().
+<!-- TODO: Add link -->
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -112,7 +114,9 @@ See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deploymen
 
 When `requests`, `limits`, or `accelerator` are specified in the `@{{< key kit_as >}}.task` decorator, they apply every time that a task is invoked from a workflow.
 In some cases, you may wish to change the resources specified from one invocation to another.
-To do that, use the [`with_overrides` method](https://docs.flyte.org/en/latest/flytesnacks/examples/productionizing/customizing_resources.html#resource-with-overrides) of the task function.
+To do that, use the [`with_overrides` method]() of the task function.
+<!-- TODO: Add link to API -->
+
 For example:
 
 ```python

@@ -57,7 +57,7 @@ You can also run the `map_interest` workflow remotely on Union:
 union run --remote map_interest_wf.py map_interest_wf
 ```
 
-
+<!-- TODO: Remove up the mention of Flytesnacks below -->
 ## Previously registered launch plan
 
 To demonstrate the ability to map over previously registered launch plans, in this example, we map over the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/master/examples/basics/basics/workflow.py#L25) launch plan from the basic workflow example in the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).

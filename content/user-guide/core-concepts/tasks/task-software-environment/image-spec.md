@@ -13,7 +13,8 @@ When you register the workflow, the container image is built locally and pushed 
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
 
 > [!NOTE]
-> See the [Flytekit documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec) for full documentation of `ImageSpec` class parameters and methods.
+> See the [ImageSpec API documentation]() for full documentation of `ImageSpec` class parameters and methods.
+<!-- TODO: Add link to API -->
 
 To illustrate the process, we will walk through an example.
 

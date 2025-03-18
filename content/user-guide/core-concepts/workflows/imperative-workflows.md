@@ -14,7 +14,7 @@ and is suitable when manually drafting the workflow.
 However, in cases where workflows are constructed programmatically, an imperative style is more appropriate.
 For instance, if tasks have been defined already, their sequence and dependencies might have been specified in textual form (perhaps during a transition from a legacy system).
 In such scenarios, you want to orchestrate these tasks.
-This is where Flyte's imperative workflows come into play, allowing you to programmatically construct workflows.
+This is where {{< key product_name >}}'s imperative workflows come into play, allowing you to programmatically construct workflows.
 
 ## Example
 
