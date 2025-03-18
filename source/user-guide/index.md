@@ -16,7 +16,7 @@ Switch to [Union.ai Serverless](https://docs.union.ai/byoc) with the version sel
 
 {@@ endif @@}
 
-The Union.ai platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
