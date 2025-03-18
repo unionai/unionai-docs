@@ -6,9 +6,23 @@ variants: +flyte +serverless +byoc +byok
 
 # Eager workflows
 
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
 > [!NOTE]
 > This feature is experimental, so the API is subject to breaking changes.
 > If you encounter any issues please reach out to the Union team.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+> [!NOTE]
+> This feature is experimental, so the API is subject to breaking changes.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 Eager workflows allow you to create workflows that give you runtime access to
 intermediary task or subworkflow outputs.
@@ -260,21 +274,24 @@ This just uses the `asyncio.run` function to execute the eager workflow just
 like any other Python async code. This is useful for local debugging as you're
 developing your workflows and tasks.
 
-### Remote Union cluster execution
+### Remote {{< key product_name >}} execution
 
-Under the hood, `@eager` workflows use the [`UnionRemote`](../../../api-reference/union-sdk/union-remote/_index.md)
+Under the hood, `@eager` workflows use the [`{{< key product_name >}}Remote`](../../../api-reference/union-sdk/union-remote/_index.md)
 object to kick off task, static workflow, and eager workflow executions.
 
-In order to actually execute them on a Union cluster, you'll need to configure
-eager workflows with a `UnionRemote` object and secrets configuration that
+In order to actually execute them on a {{< key product_name >}} cluster, you'll need to configure
+eager workflows with a `{{< key product_name >}}Remote` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
+
+<!-- TODO: Adjust for serverless vs everything else -->
+
 ```python
-from union import UnionRemote
+from union import {{< key product_name >}}Remote
 from flytekit.configuration import Config
 
 @eager(
-    remote=UnionRemote(
+    remote={{< key product_name >}}Remote(
         config=Config.auto(config_file="config.yaml"),
         default_project="{{< key default_project >}}",
         default_domain="development",
@@ -286,7 +303,7 @@ async def eager_workflow_remote(x: int) -> int:
     ...
 ```
 
-Where `config.yaml` contains a Union config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your Union
+Where `config.yaml` contains a {{< key product_name >}} config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your {{< key product_name >}}
 instance.
 
 <!-- TODO: make this section Flyte-only -->
@@ -298,7 +315,7 @@ default sandbox configuration does not require key-based authentication.
 
 ```python
 from flytekit.configuration import Config
-from union import UnionRemote
+from union import {{< key product_name >}}Remote
 
 
 @eager(
@@ -316,9 +333,9 @@ async def eager_workflow_sandbox(x: int) -> int:
 ```
 
 > [!NOTE]
-> When executing eager workflows on a remote Union cluster, Union will execute the
+> When executing eager workflows on a remote {{< key product_name >}} cluster, {{< key product_name >}} will execute the
 > latest version of tasks, static workflows, and eager workflows that are on
-> the `default_project` and `default_domain` as specified in the `UnionRemote`
+> the `default_project` and `default_domain` as specified in the `{{< key product_name >}}Remote`
 > object. This means that you need to pre-register all entities that are
 > invoked inside the eager workflow.
 
@@ -354,7 +371,7 @@ union --config <path/to/config.yaml> run \
 
 Since eager workflows are an experimental feature, there is currently no first-class representation of them in the UI. When you register an eager workflow, you'll be able to see it in the task view.
 
-When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually {{< key product_name >}} tasks under the hood and Union has no way of knowing the shape of the execution graph before actually executing them.
+When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually {{< key product_name >}} tasks under the hood and {{< key product_name >}} has no way of knowing the shape of the execution graph before actually executing them.
 
 However, at the end of execution, you'll be able to use [Decks]() to see a list of all the tasks and subworkflows that were executed within the eager workflow.
 <!-- TODO: Add link to API -->
@@ -367,5 +384,5 @@ As eager workflows are still experimental, there are a few limitations to keep i
 - [Context managers](https://docs.python.org/3/library/contextlib.html) will only work on locally executed functions within the eager workflow, i.e. using a context manager to modify the behavior of a task or subworkflow will not work because they are executed on a completely different pod.
 - All exceptions raised by {{< key product_name >}} tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/union-sdk/experimental-features.md) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
-- Union entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
+- {{< key product_name >}} entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
 - The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.

@@ -6,6 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Pydantic BaseModel
 
+
+<!-- TODO: check for variant accuracy -->
+
 {{< variant flyte >}}
 {{< markdown >}}
 

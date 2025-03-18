@@ -23,13 +23,13 @@ The syntax of a standard workflow definition can only include the following:
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code.md#running-a-script-in-local-python-with-union-run) it is executed as a normal Python function.
-However, when it is registered to Union, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
+However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless >}}
 {{< markdown >}}
 When a standard workflow is run locally in a Python environment it is executed as a normal Python function.
-However, when it is registered to Union, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
+However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -47,7 +47,7 @@ For details, see [Conditionals]().
 
 ## Chaining operator
 
-When Union builds the DAG for a standard workflow, it uses the passing of values from one task to another to determine the dependency relationships between tasks.
+When {{< key product_name >}} builds the DAG for a standard workflow, it uses the passing of values from one task to another to determine the dependency relationships between tasks.
 
 There may be cases where you want to define a dependency between two tasks that is not based on the output of one task being passed as an input to another.
 

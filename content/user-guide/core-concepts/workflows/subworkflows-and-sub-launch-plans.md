@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Subworkflows and sub-launch plans
 
-In Union it is possible to invoke one workflow from within another.
+In {{< key product_name >}} it is possible to invoke one workflow from within another.
 A parent workflow can invoke a child workflow in two ways: as a **subworkflow** or via a [**sub-launch plan**](../launch-plans/running-launch-plans.md#sub-launch-plans).
 
 In both cases the child workflow is defined and registered normally, exists in the system normally, and can be run independently.
