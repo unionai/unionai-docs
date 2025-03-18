@@ -7,11 +7,11 @@ variants: +flyte +serverless +byoc +byok
 # Eager workflows
 
 > [!NOTE]
-> This feature is experimental and the API is subject to breaking changes.
+> This feature is experimental, so the API is subject to breaking changes.
 > If you encounter any issues please reach out to the Union team.
 
 Eager workflows allow you to create workflows that give you runtime access to
-intermediary task/subworkflow outputs.
+intermediary task or subworkflow outputs.
 
 Both static and dynamic workflows have a key limitation: while they provide
 compile-time and runtime type safety, respectively, they both suffer from
@@ -19,8 +19,8 @@ inflexibility in expressing asynchronous execution graphs that many Python
 programmers may be accustomed to by using, for example, the
 [asyncio](https://docs.python.org/3/library/asyncio.html) library.
 
-Unlike static and dynamic workflows, eager workflows allow you to use all of
-the Python constructs that you're familiar with via the `asyncio` API. To
+Unlike static and dynamic workflows, eager workflows allow you to use all
+the Python constructs that you are familiar with via the `asyncio` API. To
 understand what this looks like, let's define a very basic eager workflow
 using the `@eager` decorator.
 
@@ -92,7 +92,7 @@ defining a task or workflow that you want to invoke within an eager workflow.
 Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
 a static workflow at runtime using materialized inputs, eager workflows do
-not compile any workflow at all. Instead, they use the [`FlyteRemote`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote)
+not compile any workflow at all. Instead, they use the [`{{< key product_name >}}Remote`]() <!-- TODO: add link to API -->
 object together with Python's `asyncio` API to kick off tasks and subworkflow
 executions eagerly whenever you `await` on a coroutine. This means that eager
 workflows can materialize an output of a task or subworkflow and use it as a
@@ -233,8 +233,8 @@ async def eager_workflow_with_exception(x: int) -> int:
 ```
 
 Even though the `raises_exc` exception task raises a `TypeError`, the
-`eager_workflow_with_exception` runtime will raise an `EagerException` and
-you'll need to specify `EagerException` as the exception type in your `try... except`
+`eager_workflow_with_exception` runtime will raise an `EagerException`, and
+you'll need to specify `EagerException` as the exception type in your `try...except`
 block.
 
 > [!NOTE]
@@ -319,12 +319,12 @@ async def eager_workflow_sandbox(x: int) -> int:
 > latest version of tasks, static workflows, and eager workflows that are on
 > the `default_project` and `default_domain` as specified in the `UnionRemote`
 > object. This means that you need to pre-register all entities that are
-> invoked inside of the eager workflow.
+> invoked inside the eager workflow.
 
 ### Registering and running
 
 Assuming that your code is configured correctly, you will need to
-register all of the task and subworkflows that are used with your eager
+register all the task and subworkflows that are used with your eager
 workflow with `union register`:
 
 ```shell
@@ -347,7 +347,7 @@ union --config <path/to/config.yaml> run \
 
 > [!NOTE]
 > You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood,
-> which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside of it.
+> which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside it.
 
 ## Eager workflows in the UI
 

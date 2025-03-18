@@ -6,11 +6,11 @@ variants: +flyte +serverless +byoc +byok
 
 # Dynamic workflows
 
-A workflow whose directed acyclic graph (DAG) is computed at run-time is a [`dynamic()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.dynamic.html#flytekit.dynamic) workflow.
+A workflow whose directed acyclic graph (DAG) is computed at run-time is a [`dynamic()`]() workflow. <!-- TODO: add link to API -->
 
-The tasks in a dynamic workflow are executed at runtime using dynamic inputs. A dynamic workflow shares similarities with the [`workflow()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.workflow.html#flytekit.workflow), as it uses a Python-esque domain-specific language to declare dependencies between the tasks or define new workflows.
+The tasks in a dynamic workflow are executed at runtime using dynamic inputs. A dynamic workflow shares similarities with the [`workflow()`]()<!-- TODO: add link to API -->, as it uses a Python-esque domain-specific language to declare dependencies between the tasks or define new workflows.
 
-A key distinction lies in the dynamic workflow being assessed at runtime. This means that the inputs are initially materialized and forwarded to the dynamic workflow, resembling the behavior of a task. However, the return value from a dynamic workflow is a [`Promise`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.extend.Promise.html#flytekit.extend.Promise) object, which can be materialized by the subsequent tasks.
+A key distinction lies in the dynamic workflow being assessed at runtime. This means that the inputs are initially materialized and forwarded to the dynamic workflow, resembling the behavior of a task. However, the return value from a dynamic workflow is a [`Promise`]() <!-- TODO: add link to API --> object, which can be materialized by the subsequent tasks.
 
 Think of a dynamic workflow as a combination of a task and a workflow. It is used to dynamically decide the parameters of a workflow at runtime and is both compiled and executed at run-time.
 
@@ -21,23 +21,20 @@ Dynamic workflows become essential when you need to do the following:
 - Build AutoML pipelines
 - Tune hyperparameters during execution
 
+
 ## Defining a dynamic workflow
 
 You can define a dynamic workflow using the `@{{< key kit_as >}}.dynamic` decorator.
 
-Within the `@{{< key kit_as >}}.dynamic` context, each invocation of a [`task()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit.task) or a derivative of the [`Task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.core.base_task.Task.html#flytekit.core.base_task.Task) class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@{{< key kit_as >}}.dynamic` and `@{{< key kit_as >}}.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
+Within the `@{{< key kit_as >}}.dynamic` context, each invocation of a [`task()`]() <!-- TODO: add link to API --> or a derivative of the [`Task`]() <!-- TODO: add link to API --> class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@{{< key kit_as >}}.dynamic` and `@{{< key kit_as >}}.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
 
 The example below uses a dynamic workflow to count the common characters between any two strings.
-
-To begin, we import `union`:
-
-```python
-import union
-```
 
 We define a task that returns the index of a character, where A-Z/a-z is equivalent to 0-25:
 
 ```python
+import {{< key kit_import >}}
+
 @{{< key kit_as >}}.task
 def return_index(character: str) -> int:
     if character.islower():
@@ -106,19 +103,19 @@ def count_characters(s1: str, s2: str) -> int:
 
 A dynamic workflow is modeled as a task in the Union backend, but the body of the function is executed to produce a workflow at runtime. In both dynamic and static workflows, the output of tasks are Promise objects.
 
-FlytePropeller executes the dynamic task within its Kubernetes pod, resulting in a compiled DAG, which is then accessible in the UI. It uses the information acquired during the dynamic task's execution to schedule and execute each node within the dynamic task. Visualization of the dynamic workflow's graph in the UI is only available after the dynamic task has completed its execution.
+{{< key product_name >}} executes the dynamic workflow within its container, resulting in a compiled DAG, which is then accessible in the UI. It uses the information acquired during the dynamic task's execution to schedule and execute each task within the dynamic workflow. Visualization of the dynamic workflow's graph in the UI is only available after it has completed its execution.
 
-When a dynamic task is executed, it generates the entire workflow as its output, termed the *futures file*.
+When a dynamic workflow is executed, it generates the entire workflow structure as its output, termed the *futures file*.
 This name reflects the fact that the workflow has yet to be executed, so all subsequent outputs are considered futures.
 
 > [!NOTE]
 > Local execution works when a `@{{< key kit_as >}}.dynamic` decorator is used because {{< key kit_name >}} treats it as a task that runs with native Python inputs.
 
-Finally, we define a workflow that triggers the dynamic workflow:
+Finally, we define a standard workflow that triggers the dynamic workflow:
 
 ```python
 @{{< key kit_as >}}.workflow
-def dynamic_wf(s1: str, s2: str) -> int:
+def start_wf(s1: str, s2: str) -> int:
     return count_characters(s1=s1, s2=s2)
 ```
 
@@ -126,7 +123,7 @@ You can run the workflow locally as follows:
 
 ```python
 if __name__ == "__main__":
-    print(dynamic_wf(s1="Pear", s2="Earth"))
+    print(start_wf(s1="Pear", s2="Earth"))
 ```
 
 ## Advantages of dynamic workflows
@@ -162,7 +159,6 @@ from typing import Tuple
 
 import union
 from flytekit import conditional
-
 
 
 @{{< key kit_as >}}.task

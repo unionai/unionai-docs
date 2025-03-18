@@ -76,10 +76,10 @@ See [Workflows](./workflows/_index.md) for more details.
 
 ### Registering on the command line with `{{< key cli >}}` or `{{< key ctl >}}`
 
-In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `union` or `uctl` For example:
+In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `{{< key cli >}}` or `{{< key ctl >}}` For example:
 
 ```shell
-union register ./workflows --project my_project --domain development
+{{< key cli >}} register ./workflows --project my_project --domain development
 ```
 
 Tasks can also be registered individually, but it is more common to register alongside the workflow that uses them.
@@ -88,9 +88,10 @@ See [Running your code](../development-cycle/running-your-code.md).
 
 ### Registering in Python with `{{< key product_name >}}Remote`
 
-As with all {{< key product_name >}} command line actions, you can also perform registration of workflows and tasks programmatically with [`FlyteRemote`](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html), specifically, [`FlyteRemote.register_script`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.register_script),
-[`FlyteRemote.register_workflow`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.register_workflow), and
-[`FlyteRemote.register_task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.register_task).
+As with all {{< key product_name >}} command line actions, you can also perform registration of workflows and tasks programmatically with [`{{< key product_name >}}Remote`](), specifically, [`{{< key product_name >}}Remote.register_script`](),
+[`{{< key product_name >}}Remote.register_workflow`](), and
+[`{{< key product_name >}}Remote.register_task`]().
+<!-- TODO: Add link to API -->
 
 ## Results of registration
 
@@ -197,30 +198,12 @@ See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index.md) for more 
 
 ### Inspecting tasks and workflows in Python with `{{< key product_name >}}Remote`
 
-{{< variant flyte >}}
-{{< markdown >}}
+Use the method [`{{< key product_name >}}Remote.fetch_workflow`]() or [`{{< key product_name >}}Remote.client.get_workflow`]() to get a workflow.
+See [`{{< key product_name >}}Remote`]() for more options and details.
 
-Use the method [`FlyteRemote.fetch_workflow`]() or [`FlyteRemote.client.get_workflow`]() to get a workflow.
-See [FlyteRemote]() for more options and details.
-
-Use the method [`FlyteRemote.fetch_task`]() or [`FlyteRemote.client.get_task`]() to get a task.
-See [FlyteRemote]() for more options and details.
-
-{{< markdown >}}
-{{< /variant >}}
-{{< variant serverless byoc byok >}}
-{{< markdown >}}
-
-Use the method [`UnionRemote.fetch_workflow`]() or [`UnionRemote.client.get_workflow`]() to get a workflow.
-See [UnionRemote]() for more options and details.
-
-Use the method [`UnionRemote.fetch_task`]() or [`UnionRemote.client.get_task`]() to get a task.
-See [UnionRemote]() for more options and details.
-
-{{< markdown >}}
-{{< /variant >}}
-
-<!-- TODO: Add links to API reference docs for FlyteRemote and UnionRemote -->
+Use the method [`{{< key product_name >}}Remote.fetch_task`]() or [`{{< key product_name >}}Remote.client.get_task`]() to get a task.
+See [`{{< key product_name >}}Remote`]() for more options and details.
+<!-- TODO: Add links to API -->
 
 ## Running tasks and workflows
 
@@ -266,21 +249,8 @@ $  {{< key cli >}} run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 
 ```
 
 
-### Running a task or workflow remotely in Python with ` {{< key product_name >}}Remote`
+### Running a task or workflow remotely in Python with `{{< key product_name >}}Remote`
 
-{{< variant flyte >}}
-{{< markdown >}}
+To run a workflow or task remotely in Python, use the method [`{{< key product_name >}}Remote.execute`](). See [`{{< key product_name >}}Remote`]() for more options and details.
 
-To run a workflow or task remotely in Python, use the method [`FlyteRemote.execute`](). See [FlyteRemote]() for more options and details.
-
-{{< markdown >}}
-{{< /variant >}}
-{{< variant serverless byoc byok >}}
-{{< markdown >}}
-
-To run a workflow or task remotely in Python, use the method [`UnionRemote.execute`](). See [UnionRemote]() for more options and details.
-
-{{< markdown >}}
-{{< /variant >}}
-
-<!-- TODO: Add links to API reference docs for FlyteRemote and UnionRemote -->
+<!-- TODO: Add links to API -->
