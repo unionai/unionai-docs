@@ -194,13 +194,33 @@ $ {{< key ctl >}} get task \
 
 See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index.md) for more details.
 
+
 ### Inspecting tasks and workflows in Python with `{{< key product_name >}}Remote`
 
-Use the method [`FlyteRemote.fetch_workflow`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.fetch_workflow) or [`FlyteRemote.client.get_workflow`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.clients.friendly.SynchronousFlyteClient.html#flytekit.clients.friendly.SynchronousFlyteClient.get_workflow) to get a workflow.
-See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
+{{< variant flyte >}}
+{{< markdown >}}
 
-Use the method [`FlyteRemote.fetch_task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.fetch_task) or [`FlyteRemote.client.get_task`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.clients.friendly.SynchronousFlyteClient.html#flytekit.clients.friendly.SynchronousFlyteClient.get_task) to get a task.
-See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
+Use the method [`FlyteRemote.fetch_workflow`]() or [`FlyteRemote.client.get_workflow`]() to get a workflow.
+See [FlyteRemote]() for more options and details.
+
+Use the method [`FlyteRemote.fetch_task`]() or [`FlyteRemote.client.get_task`]() to get a task.
+See [FlyteRemote]() for more options and details.
+
+{{< markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
+Use the method [`UnionRemote.fetch_workflow`]() or [`UnionRemote.client.get_workflow`]() to get a workflow.
+See [UnionRemote]() for more options and details.
+
+Use the method [`UnionRemote.fetch_task`]() or [`UnionRemote.client.get_task`]() to get a task.
+See [UnionRemote]() for more options and details.
+
+{{< markdown >}}
+{{< /variant >}}
+
+<!-- TODO: Add links to API reference docs for FlyteRemote and UnionRemote -->
 
 ## Running tasks and workflows
 
@@ -210,9 +230,9 @@ To run a workflow in the UI, click the **Launch Workflow** button in the workflo
 
 You can also run individual tasks in the UI by clicking the **Launch Task** button in the task view.
 
-### Running a task or workflow locally on the command line with `union` or `python`
+### Running a task or workflow locally on the command line with `{{< key cli >}}` or `python`
 
-You can execute a Flyte workflow or task locally simply by calling it just like any regular Python function.
+You can execute a {{< key product_name >}} workflow or task locally simply by calling it just like any regular Python function.
 For example, you can add the following to the above code:
 
 ```shell
@@ -226,36 +246,41 @@ If the file is saved as `my_example.py`, you can run it locally using the follow
 $ python my_example.py
 ```
 
-Alternatively, you can run the task locally with the `union` command line tool:
+Alternatively, you can run the task locally with the `{{< key cli >}}` command line tool:
 
-To run it locally, you can use the following `union run` command:
+To run it locally, you can use the following `{{< key cli >}} run` command:
 
 ```shell
-$ union run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
+$ {{< key cli >}} run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
 
 This has the advantage of allowing you to specify the input values as command line arguments.
 For more details on running workflows and tasks, see [Development cycle](../development-cycle/_index.md).
 
-### Running a task or workflow remotely on the command line with `union`
+### Running a task or workflow remotely on the command line with `{{< key cli >}}`
 
-{{< variant byoc byok flyte >}}
-{{< markdown >}}
-To run a workflow remotely on your {{< key product_name >}} installation, use the following command (this assumes that you have your [FLYTECTL_CONFIG set up correctly](../development-cycle/setting-up-a-project.md)):
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-To run a workflow remotely on your {{< key product_name >}} installation, use the following command:
-{{< /markdown >}}
-{{< /variant >}}
+To run a workflow remotely on your {{< key product_name >}} installation, use the following command (this assumes that you have your [{{<key config_env >}} set up correctly](../development-cycle/setting-up-a-project.md)):
 
 ```shell
-$ union run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
+$  {{< key cli >}} run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
 
-### Running a task or workflow remotely in Python with `FlyteRemote`
 
-To run a workflow remotely in Python, use the method [`FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute). See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
+### Running a task or workflow remotely in Python with ` {{< key product_name >}}Remote`
 
-To run a task remotely in Python, use the method [`FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute). See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
+{{< variant flyte >}}
+{{< markdown >}}
+
+To run a workflow or task remotely in Python, use the method [`FlyteRemote.execute`](). See [FlyteRemote]() for more options and details.
+
+{{< markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
+To run a workflow or task remotely in Python, use the method [`UnionRemote.execute`](). See [UnionRemote]() for more options and details.
+
+{{< markdown >}}
+{{< /variant >}}
+
+<!-- TODO: Add links to API reference docs for FlyteRemote and UnionRemote -->
