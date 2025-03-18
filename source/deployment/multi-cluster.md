@@ -14,7 +14,7 @@ If you choose domain isolation, then you would have one GCP project or AWS subac
 
 ## Project isolation
 
-If you choose project isolation, then you would have one GCP project or AWS subaccount for each Union project-domain pair. For example:
+If you choose project isolation, then you would have one GCP project or AWS subaccount for each Union.ai project-domain pair. For example:
 
 | Domain/Project          | GCP Project or AWS Subaccount               |
 |-------------------------|---------------------------------------------|
@@ -28,10 +28,10 @@ If you choose project isolation, then you would have one GCP project or AWS suba
 | `production/project-2`  | `aws-subaccount-union-production-project-1` |
 | `production/project-3`  | `aws-subaccount-union-production-project-1` |
 
-The precise set of GCP projects and/or AWS subaccounts depends on the number of Union domains and projects that you have.
+The precise set of GCP projects and/or AWS subaccounts depends on the number of Union.ai domains and projects that you have.
 
 :::{admonition} Limitations of project per GCP project/AWS subaccount
-Note that if you choose to map each Union project to its own GCP project/AWS subaccount, you will need to define the set of such projects up front. This is because the Union project will have to be created when the GCP project/AWS subaccount is set up.
+Note that if you choose to map each Union.ai project to its own GCP project/AWS subaccount, you will need to define the set of such projects up front. This is because the Union.ai project will have to be created when the GCP project/AWS subaccount is set up.
 
 If you also want the ability to create projects on demand, this can be supported by having an additional *default* GCP project/AWS subaccount. Any projects created *after* onboarding will be created in that default GCP project/AWS subaccount.
 :::
@@ -40,9 +40,9 @@ If you also want the ability to create projects on demand, this can be supported
 
 Each domain or project is isolated within its own AWS account or Google project, and therefore provides the level of compute and data isolation intrinsic to that arrangement. Specifically, execution-time isolation per domain or project is maintained for both compute and user data stored in blob store (or other configured storage).
 
-In addition, metadata specific to the internals of Union can be either isolated or shared across clusters, depending on the configuration you choose.
+In addition, metadata specific to the internals of Union.ai can be either isolated or shared across clusters, depending on the configuration you choose.
 
 Specifically, the sharing of metadata is controlled by the cluster pool to which a cluster belongs. If two clusters are in the same cluster pool, then they *must* share the same metadata bucket. If they are in different cluster pools, then they *must* have different metadata buckets. You could, for example, have a single metadata bucket for all your development clusters, and a separate one for all your production clusters, by grouping the clusters into cluster pools accordingly. Alternatively you could have a separate metadata bucket for each cluster, by putting each cluster in its own cluster pool.
 
-You specify the cluster pool to which a cluster belongs when you [configure your data plane](./configuring-your-data-plane.md) with the help of the Union team.
+You specify the cluster pool to which a cluster belongs when you [configure your data plane](./configuring-your-data-plane.md) with the help of the Union.ai team.
 

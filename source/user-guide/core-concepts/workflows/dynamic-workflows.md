@@ -98,7 +98,7 @@ def count_characters(s1: str, s2: str) -> int:
     return derive_count(freq1=freq1, freq2=freq2)
 ```
 
-A dynamic workflow is modeled as a task in the Union backend, but the body of the function is executed to produce a workflow at runtime. In both dynamic and static workflows, the output of tasks are Promise objects.
+A dynamic workflow is modeled as a task in the Union.ai backend, but the body of the function is executed to produce a workflow at runtime. In both dynamic and static workflows, the output of tasks are Promise objects.
 
 FlytePropeller executes the dynamic task within its Kubernetes pod, resulting in a compiled DAG, which is then accessible in the UI. It uses the information acquired during the dynamic task's execution to schedule and execute each node within the dynamic task. Visualization of the dynamic workflow's graph in the UI is only available after the dynamic task has completed its execution.
 
@@ -134,7 +134,7 @@ according to the unique requirements of your project. This level of adaptability
 ### Lower pressure on `etcd`
 
 The workflow Custom Resource Definition (CRD) and the states associated with static workflows are stored in `etcd`,
-the Kubernetes database. This database maintains Union workflow CRDs as key-value pairs, tracking the status of each node's execution.
+the Kubernetes database. This database maintains Union.ai workflow CRDs as key-value pairs, tracking the status of each node's execution.
 
 However, `etcd` has a hard limit on data size, encompassing the workflow and node status sizes, so it is important to ensure that static workflows don't excessively consume memory.
 
@@ -150,7 +150,7 @@ In contrast, [map tasks](../tasks/task-types.md#map-tasks) prove efficient for s
 ## Using dynamic workflows to achieve recursion
 
 Merge sort is a perfect example to showcase how to seamlessly achieve recursion using dynamic workflows.
-Union imposes limitations on the depth of recursion to prevent misuse and potential impacts on the overall stability of the system.
+Union.ai imposes limitations on the depth of recursion to prevent misuse and potential impacts on the overall stability of the system.
 
 ```{code-block} python
 from typing import Tuple
@@ -215,7 +215,7 @@ def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int =
 
 By simply adding the `@union.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,
 generating a workflow with four distinct nodes. These nodes run remotely on potentially different hosts,
-with Union ensuring proper data reference passing and maintaining execution order with maximum possible parallelism.
+with Union.ai ensuring proper data reference passing and maintaining execution order with maximum possible parallelism.
 
 `@union.dynamic` is essential in this context because the number of times `merge_sort` needs to be triggered is unknown at compile time. The dynamic workflow calls a static workflow, which subsequently calls the dynamic workflow again,
 creating a recursive and flexible execution structure.

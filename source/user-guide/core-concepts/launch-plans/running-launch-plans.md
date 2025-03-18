@@ -28,20 +28,20 @@ $ uctl create execution \
 
 See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
-## Running a launch plan in Python with `UnionRemote`
+## Running a launch plan in Python with `Union.aiRemote`
 
-The following code executes a launch plan using `UnionRemote`:
+The following code executes a launch plan using `Union.aiRemote`:
 
 ```{code-block} python
-from union.remote import UnionRemote
+from union.remote import Union.aiRemote
 from flytekit.remote import Config
 
-remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
+remote = Union.aiRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
 launch_plan = remote.fetch_launch_plan(name=<launch-plan-name>, version=<launch-plan-version>)
 remote.execute(launch_plan, inputs=<inputs>)
 ```
 
-See the [UnionRemote](../../development-cycle/union-remote/index.md) for more details.
+See the [Union.aiRemote](../../development-cycle/union-remote/index.md) for more details.
 
 ## Sub-launch plans
 

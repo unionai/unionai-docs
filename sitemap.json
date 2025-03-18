@@ -157,8 +157,7 @@
             {"name": "llama_edge_deployment", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/llama_edge_deployment/llama_edge_deployment.py"},
             {"name": "vllm-serving-on-actor", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/vllm_serving_on_actor/ner.py"},
             {"name": "nim-on-actor", "variants": ["byoc"], "from_py_file": "./unionai-examples/tutorials/nim_on_actor/nim_on_actor.py"},
-            {"name": "pdf-to-podcast-blueprint", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py"},
-            {"name": "contextual-rag", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/together_contextual_rag/contextual_rag.ipynb"}
+            {"name": "pdf-to-podcast-blueprint", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/nvidia_blueprints/pdf_to_podcast/union_workflow/pdf_to_podcast.py"}
         ]},
         {"name": "diffusion-models", "variants": ["byoc", "serverless"], "children": [
             {"name": "mochi-video-generation", "variants": ["byoc", "serverless"], "from_py_file": "./unionai-examples/tutorials/mochi_video_generation/mochi_video_generation.py"}

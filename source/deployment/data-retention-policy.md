@@ -3,9 +3,9 @@
 Data retention polices allow you to control what data is stored in your data plane and for how long.
 This allows you to reduce costs by ensuring that you only keep data that you actually need.
 
-Each data plane has its own Union-internal object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a Union administrator, you can specify retention policies for this data when setting up your data plane.
-The policies are specified in discussion with the Union team when you set up your Union instance.
+Each data plane has its own Union.ai-internal object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
+As a Union.ai administrator, you can specify retention policies for this data when setting up your data plane.
+The policies are specified in discussion with the Union.ai team when you set up your Union.ai instance.
 They are not adjustable through the UI or CLI.
 
 ## Data categories
@@ -17,17 +17,17 @@ The retention policy system distinguishes three categories of data:
     * `FlyteFile`/`FlyteDirectory` and other large offloaded data objects (like `DataFrame`s) both in their default locations and in any custom `raw-data-prefix` locations that may have been specified at execution time
     * Flyte `Deck` data.
     * Artifact data.
-    * Internal metadata used by Union.
+    * Internal metadata used by Union.ai.
 2. Fast-registered code:
     * Local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
 3. Flyte plugin metadata (for example, Spark history server data).
 
-Each category of data is stored in a separate Union-managed object store bucket and versioning is enabled on these buckets.
+Each category of data is stored in a separate Union.ai-managed object store bucket and versioning is enabled on these buckets.
 This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
 The result is that there are four distinct retention policies to specify (though in most cases you can stick with the defaults, see below).
 
-:::{admonition} Object versions are not the same as Union entity versions
-The versions discussed here are at the object level and are not related to the versions of workflows, tasks and other Union entities that you see in the Union UI.
+:::{admonition} Object versions are not the same as Union.ai entity versions
+The versions discussed here are at the object level and are not related to the versions of workflows, tasks and other Union.ai entities that you see in the Union.ai UI.
 :::
 
 ## How policies are specified

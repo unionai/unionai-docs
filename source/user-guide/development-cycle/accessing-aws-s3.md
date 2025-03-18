@@ -1,11 +1,11 @@
 # Accessing AWS S3 buckets
 
-Here we will take a look at how to access data on AWS S3 Buckets from Union.
+Here we will take a look at how to access data on AWS S3 Buckets from Union.ai.
 As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 
-## Creating secrets on Union
+## Creating secrets on Union.ai
 
-First, we create secrets on Union by running the following command:
+First, we create secrets on Union.ai by running the following command:
 
 ```{code-block} shell
 union create secret --name AWS_ACCESS_KEY_ID
@@ -25,7 +25,7 @@ Next, we can use the secrets directly in a task! With AWS CLI, we create a small
 
 ```{code-block} shell
 aws s3 mb s3://test_bucket
-echo "Hello Union" > my_file.txt
+echo "Hello Union.ai" > my_file.txt
 aws s3 cp my_file.txt s3://test_bucket/my_file.txt
 ```
 

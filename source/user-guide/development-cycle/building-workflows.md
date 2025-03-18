@@ -40,7 +40,7 @@ By utilizing “fine-grained” caching, one may reap the significant cost savin
 ## When should I parallelize tasks?
 
 In general, parallelize early and often.
-A lot of Union’s powerful ergonomics like caching and workflow recovery happen at the task level, as mentioned above.
+A lot of Union.ai’s powerful ergonomics like caching and workflow recovery happen at the task level, as mentioned above.
 Decomposing into smaller tasks and parallelizing enables for a performant and fault-tolerant workflow.
 
 One caveat is for very short duration tasks, where the overhead of spinning up a pod and cleaning it up negates any benefits of parallelism.
@@ -51,7 +51,7 @@ Please be mindful to keep the sequencing of inputs within a batch, and of the ba
 
 ### Parallelization constructs
 
-The two main parallelization constructs in Union are the [map task](../core-concepts/tasks/task-types.md#map-tasks) and the [dynamic workflow](../core-concepts/workflows/dynamic-workflows.md).
+The two main parallelization constructs in Union.ai are the [map task](../core-concepts/tasks/task-types.md#map-tasks) and the [dynamic workflow](../core-concepts/workflows/dynamic-workflows.md).
 They accomplish roughly the same goal but are implemented quite differently and have different advantages.
 
 Dynamic tasks are more akin to a `for` loop, iterating over inputs sequentially.

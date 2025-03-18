@@ -2,21 +2,21 @@
 
 {@@ if serverless @@}
 
-```{admonition} Union Serverless
-These docs are for [**Union Serverless**](./about-union.md#union-serverless).
-Switch to [Union BYOC](https://docs.union.ai/byoc) with the version selector above.
+```{admonition} Union.ai Serverless
+These docs are for [**Union.ai Serverless**](./about-union.md#union-serverless).
+Switch to [Union.ai BYOC](https://docs.union.ai/byoc) with the version selector above.
 ```
 
 {@@ elif byoc @@}
 
-```{admonition} Union BYOC
-These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to [Union Serverless](https://docs.union.ai/byoc) with the version selector above.
+```{admonition} Union.ai BYOC
+These docs are for [**Union.ai BYOC**](./about-union.md#union-byoc).
+Switch to [Union.ai Serverless](https://docs.union.ai/byoc) with the version selector above.
 ```
 
 {@@ endif @@}
 
-The Union platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+The Union.ai platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
@@ -25,39 +25,39 @@ The Union platform empowers AI development teams to rapidly ship high-quality co
 
 ::::{grid} 2
 
-:::{grid-item-card} {octicon}`telescope` About Union
+:::{grid-item-card} {octicon}`telescope` About Union.ai
 :link: about-union
 :link-type: doc
 
-Union builds on the leading OSS orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
+Union.ai builds on the leading OSS orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
 :::
 
 :::{grid-item-card} {octicon}`file-binary` Getting started
 :link: getting-started/index
 :link-type: doc
 
-Build your first Union workflow, exploring the major features of the platform along the way.
+Build your first Union.ai workflow, exploring the major features of the platform along the way.
 :::
 
 :::{grid-item-card} {octicon}`mortar-board` Core concepts
 :link: core-concepts/index
 :link-type: doc
 
-Understand the core concepts of the Union platform.
+Understand the core concepts of the Union.ai platform.
 :::
 
 :::{grid-item-card} {octicon}`iterations` Development cycle
 :link: development-cycle/index
 :link-type: doc
 
-Explore the Union development cycle from experimentation to production.
+Explore the Union.ai development cycle from experimentation to production.
 :::
 
 :::{grid-item-card} {octicon}`arrow-switch` Data input/output
 :link: data-input-output/index
 :link-type: doc
 
-Manage the input and output of data in your Union workflow.
+Manage the input and output of data in your Union.ai workflow.
 :::
 
 {@@ if byoc @@}
@@ -65,14 +65,14 @@ Manage the input and output of data in your Union workflow.
 :link: administration/index
 :link-type: doc
 
-Union BYOC administrators can manage users, projects, and resources.
+Union.ai BYOC administrators can manage users, projects, and resources.
 :::
 
 :::{grid-item-card} {octicon}`tools` Integrations
 :link: integrations/index
 :link-type: doc
 
-Union BYOC integrates with your cloud resources and external services.
+Union.ai BYOC integrates with your cloud resources and external services.
 :::
 
 :::{grid-item-card} {octicon}`question` FAQ
