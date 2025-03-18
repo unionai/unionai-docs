@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 A launch plan is a template for a workflow invocation.
 It brings together:
 
-* A [workflow](../workflows/index.md)
+* A [workflow](../workflows/_index.md)
 * A (possibly partial) set of inputs required to initiate that workflow
 * Optionally, [notifications](./notifications.md) and [schedules](./schedules.md)
 
@@ -49,7 +49,7 @@ In most cases, launch plans are defined alongside the workflows and tasks in you
 
 ### Registering a launch plan in Python with `{{< key product_name >}}Remote`
 
-As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key product_name >}}Remote`](../../development-cycle/union-remote/index.md), specifically, `{{< key product_name >}}Remote.register_launch_plan`.
+As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key product_name >}}Remote`](../../development-cycle/union-remote/_index.md), specifically, `{{< key product_name >}}Remote.register_launch_plan`.
 
 ### Results of registration
 

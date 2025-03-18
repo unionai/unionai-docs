@@ -62,9 +62,9 @@ def launch_dynamically():
     return [launchplan0]*10
 ```
 
-* `pod_template`: See [Task hardware environment](./task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
+* `pod_template`: See [Task hardware environment](./task-hardware-environment/_index.md#pod_template-and-pod_template_name-task-parameters).
 
-* `pod_template_name`: See [Task hardware environment](./task-hardware-environment/index.md#pod_template-and-pod_template_name-task-parameters).
+* `pod_template_name`: See [Task hardware environment](./task-hardware-environment/_index.md#pod_template-and-pod_template_name-task-parameters).
 
 * `requests`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md)
 
@@ -76,7 +76,7 @@ def launch_dynamically():
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
 
 * `task_config`: Configuration for a specific task type.
-  See the [Union Agents documentation](../../integrations/agents/index.md) and
+  See the [Union Agents documentation](../../integrations/agents/_index.md) and
   [Flyte plugins documentation](https://docs.flyte.org/en/latest/flytesnacks/integrations.html) for the right object to use.
 
 * `task_resolver`: Provide a custom task resolver.

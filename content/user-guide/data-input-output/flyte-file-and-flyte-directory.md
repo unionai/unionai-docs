@@ -650,8 +650,8 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [Union SDK](../../api-reference/union-sdk/index.md) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/index.md#file-type):
+The [Union SDK](../../api-reference/union-sdk/_index.md) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/_index.md#file-type):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -663,7 +663,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/index.md#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/_index.md#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

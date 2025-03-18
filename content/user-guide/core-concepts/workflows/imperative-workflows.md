@@ -52,7 +52,7 @@ imperative_wf.add_workflow_input("x", list[int])
 imperative_wf.add_workflow_input("y", list[int])
 ```
 
-> If you want to assign default values to the workflow inputs, you can create a [launch plan](../launch-plans/index.md).
+> If you want to assign default values to the workflow inputs, you can create a [launch plan](../launch-plans/_index.md).
 
 Add the tasks that need to be triggered from within the workflow:
 

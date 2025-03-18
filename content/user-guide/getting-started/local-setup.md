@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant serverless >}}
 {{< markdown >}}
 
-In [Getting started](./index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
+In [Getting started](./_index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -89,7 +89,7 @@ For example, a public registry like `ghcr.io` with the images set to public, wou
 
 ## Install `flytectl` to set up a local cluster
 
-For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment/index.md)).
+For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment/_index.md)).
 Here we are using a local cluster for experimentation and demonstration purposes.
 
 To set up a local cluster you must first install the `flytectl` CLI.
@@ -101,7 +101,7 @@ To set up a local cluster you must first install the `flytectl` CLI.
 > It is the primary command-line tool used during Flyte development.
 >
 > `flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
-> (see [Flytectl](../../api-reference/uctl-cli/index.md) for details)
+> (see [Flytectl](../../api-reference/uctl-cli/_index.md) for details)
 
 To install `flytectl`, follow these instructions:
 
@@ -235,7 +235,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 $ union create login --host <union-host-url>
 ```
 
-`<union-host-url>` is the URL of your Union instance, mentioned in [Getting started](./index.md#gather-your-credentials).
+`<union-host-url>` is the URL of your Union instance, mentioned in [Getting started](./_index.md#gather-your-credentials).
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
 

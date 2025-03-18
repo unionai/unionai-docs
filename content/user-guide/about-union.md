@@ -60,7 +60,7 @@ You can try out Flyte's technology:
 
 <!-- TODO: add link ^ -->
 
-For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/index.md).
+For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index.md).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -78,7 +78,7 @@ Union Serverless provide all the features of Flyte, plus:
     * Launch plan caching: Cache launch plans, 10-100x speed-up
     * Optimized Propeller: more than 10 core optimizations
     * Faster cache: Revamped caching subsystem for 10x faster performance
-    * Accelerated datasets: Retrieve repeated datasets and models faster
+    * Accelerated datasets: Retrieve repeated datasets and models more quickly
     * Faster launch plan resolution
     * Reusable containers (do not pay the pod spin-up penalty)
 * Interactive tasks:
@@ -99,7 +99,7 @@ Union BYOC provides all the features of Flyte and Union Serverless, plus:
 * Managed Ray and Spark
 * Multi-cluster and multi-cloud
 * Single sign-on (SSO)
-* SOC-2 Type 2 compliance.
+* SOC-2 Type 2 compliance
 
 
 ## Union BYOK

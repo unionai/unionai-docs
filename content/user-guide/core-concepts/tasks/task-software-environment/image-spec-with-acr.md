@@ -25,7 +25,7 @@ Refer to [Individual login with Microsoft Entra ID](https://learn.microsoft.com/
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use an existing ACR repository, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
+For example, to use an existing ACR repository, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(

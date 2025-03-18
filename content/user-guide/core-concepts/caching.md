@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Caching
 
-Union allows you to cache the output of nodes ([tasks](./tasks/index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
+Union allows you to cache the output of nodes ([tasks](./tasks/_index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
 
 Caching is useful when many executions of identical code with the same input may occur.
 

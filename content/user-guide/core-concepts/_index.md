@@ -17,7 +17,7 @@ In most contexts we just say that a workflow is a DAG of tasks.
 You define tasks and workflows in Python using the {{< key kit_name >}} SDK. The {{< key kit_name >}} SDK provides a set of decorators and classes that allow you to define tasks and workflows in a way that is easy to understand and work with.
 Once defined, tasks and workflows are deployed to your {{< key product_name >}} instance (we say they are *registered* to the instance), where they are compiled into a form that can be executed on your {{< key product_name >}} cluster.
 
-In addition to tasks and workflows, another important concept in {{< key product_name >}} is the [*launch plan*](./launch-plans/index.md).
+In addition to tasks and workflows, another important concept in {{< key product_name >}} is the [*launch plan*](./launch-plans/_index.md).
 A launch plan is like a template that can be used to define the inputs to a workflow.
 Triggering a launch plan will launch its associated workflow with the specified parameters.
 
@@ -61,7 +61,7 @@ For example, the workflow above results in the following DAG:
 One important difference between {{< key product_name >}} and generic Python is that in {{< key product_name >}} all inputs and outputs *must be type annotated*.
 This is because tasks are strongly typed, meaning that the types of the inputs and outputs are validated at deployment time.
 
-See [Tasks are strongly typed](./tasks/index.md#tasks-are-strongly-typed) for more details.
+See [Tasks are strongly typed](./tasks/_index.md#tasks-are-strongly-typed) for more details.
 
 ### Workflows *are not* full Python functions
 
@@ -70,7 +70,7 @@ but only *a subset of Python syntax is allowed*, because it must also be compile
 
 *Technically then, the language of a workflow function is a domain-specific language (DSL) that is a subset of Python.*
 
-See [Workflows](./workflows/index.md) for more details.
+See [Workflows](./workflows/_index.md) for more details.
 
 ## Registering tasks and workflows
 
@@ -96,9 +96,9 @@ As with all {{< key product_name >}} command line actions, you can also perform 
 
 When the code above is registered to {{< key product_name >}}, it results in the creation of five objects:
 
-* The tasks `workflows.my_example.task_1`, `workflows.my_example.task_2`, and `workflows.my_example.task_3` (see [Task fundamentals](./tasks/index.md) for more details).
+* The tasks `workflows.my_example.task_1`, `workflows.my_example.task_2`, and `workflows.my_example.task_3` (see [Task fundamentals](./tasks/_index.md) for more details).
 * The workflow `workflows.my_example.my_workflow`.
-* The default launch plan `workflows.my_example.my_workflow` (see [Launch plans](./launch-plans/index.md) for more details).
+* The default launch plan `workflows.my_example.my_workflow` (see [Launch plans](./launch-plans/_index.md) for more details).
 
 Notice that the task and workflow names are derived from the path, file name and function name of the Python code that defines them: `<folder>.<file>.<function>`.
 The default launch plan for a workflow always has the same name as its workflow.
@@ -143,19 +143,19 @@ The sections in the task view are as follows:
   Select a version to see the **Task version view**:
   This view shows the task details and a list of all version of the task.
   You can switch between versions with the radio buttons.
-  See [Tasks](./tasks/index.md) for more information.
+  See [Tasks](./tasks/_index.md) for more information.
 
 * **All Executions in the Task**: A list of all executions of this task.
   Click on an execution to go to the execution view.
 
 * **Launch Task button**: In the top right of the task view, you can click the **Launch Task** button to run the task with the default inputs.
 
-### Inspecting workflows on the command line with `uctl`
+### Inspecting workflows on the command line with `{{< key ctl >}}`
 
 To view all tasks within a project and domain:
 
 ```shell
-$ uctl get workflows \
+$ {{< key ctl >}} get workflows \
        --project <project-id> \
        --domain <domain>
 ```
@@ -163,21 +163,21 @@ $ uctl get workflows \
 To view a specific workflow:
 
 ```shell
-$ uctl get workflow \
+$ {{< key ctl >}} get workflow \
        --project <project-id> \
        --domain <domain> \
        <workflow-name>
        <workflow-version>
 ```
 
-See [Uctl CLI](../../api-reference/uctl-cli/index.md) for more details.
+See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index.md) for more details.
 
-### Inspecting tasks on the command line with `uctl`
+### Inspecting tasks on the command line with `{{< key ctl >}}`
 
 To view all tasks within a project and domain:
 
 ```shell
-$ uctl get tasks \
+$ {{< key ctl >}} get tasks \
        --project <project-id> \
        --domain <domain>
 ```
@@ -185,16 +185,16 @@ $ uctl get tasks \
 To view a specific task:
 
 ```shell
-$ uctl get task \
+$ {{< key ctl >}} get task \
        --project <project-id> \
        --domain <domain> \
        <task-name>
        <task-version>
 ```
 
-See [Uctl CLI](../../api-reference/uctl-cli/index.md) for more details.
+See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index.md) for more details.
 
-### Inspecting tasks and workflows in Python with `FlyteRemote`
+### Inspecting tasks and workflows in Python with `{{< key product_name >}}Remote`
 
 Use the method [`FlyteRemote.fetch_workflow`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.fetch_workflow) or [`FlyteRemote.client.get_workflow`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.clients.friendly.SynchronousFlyteClient.html#flytekit.clients.friendly.SynchronousFlyteClient.get_workflow) to get a workflow.
 See [FlyteRemote](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html) for more options and details.
@@ -235,7 +235,7 @@ $ union run my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
 
 This has the advantage of allowing you to specify the input values as command line arguments.
-For more details on running workflows and tasks, see [Development cycle](../development-cycle/index.md).
+For more details on running workflows and tasks, see [Development cycle](../development-cycle/_index.md).
 
 ### Running a task or workflow remotely on the command line with `union`
 

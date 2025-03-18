@@ -9,7 +9,7 @@ variants: +flyte -serverless +byoc +byok
 A Union application is an identity through which external systems can perform actions in the system.
 An application can be bound to policies and granted permissions just like a human user.
 
-Applications are managed through the [`uctl` CLI](../../api-reference/uctl-cli/index.md).
+Applications are managed through the [`uctl` CLI](../../api-reference/uctl-cli/_index.md).
 
 ## List existing apps
 

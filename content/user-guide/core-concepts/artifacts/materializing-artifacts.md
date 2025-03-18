@@ -61,4 +61,4 @@ def wf():
 
 > [!NOTE]
 > You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`.
-> For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/index.md).
+> For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/_index.md).

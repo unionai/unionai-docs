@@ -87,7 +87,7 @@ See also:
 ### Can I use BigQuery from within a task?
 
 If your Union data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
-For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/index.md).
+For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/_index.md).
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery.md).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.

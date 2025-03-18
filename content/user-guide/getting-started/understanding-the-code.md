@@ -109,7 +109,7 @@ See [ImageSpec](../development-cycle/image-spec.md) for more information.
 
 ### Tasks
 
-The `@{{< key kit_as >}}.task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
+The `@{{< key kit_as >}}.task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/_index.md).
 A task tasks some input and produces an output.
 When deployed to Union cluster, each task runs in its own Kubernetes pod.
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
@@ -117,7 +117,7 @@ For a full list of task parameters, see [Task parameters](../core-concepts/tasks
 
 ### Workflow
 
-The `@{{< key kit_as >}}.workflow` decorator indicates a function that defines a [workflow](../core-concepts/workflows/index.md).
+The `@{{< key kit_as >}}.workflow` decorator indicates a function that defines a [workflow](../core-concepts/workflows/_index.md).
 This function contains references to the tasks defined elsewhere in the code.
 
 A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.

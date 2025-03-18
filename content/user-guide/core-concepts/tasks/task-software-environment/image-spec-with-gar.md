@@ -83,7 +83,7 @@ The directions are also reproduced below. (We show the directions for the `us-ea
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
+For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(

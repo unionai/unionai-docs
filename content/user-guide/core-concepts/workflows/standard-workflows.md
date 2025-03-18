@@ -12,7 +12,7 @@ The syntax of a standard workflow definition can only include the following:
 
 * Calls to functions decorated with `@{{< key kit_as >}}.task` and assignment of variables to the returned values.
 * Calls to other functions decorated with `@{{< key kit_as >}}.workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans.md)).
-* Calls to [`LaunchPlan` objects](../launch-plans/index.md) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
+* Calls to [`LaunchPlan` objects](../launch-plans/_index.md) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
 * Calls to functions decorated with `@{{< key kit_as >}}.dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows.md)).
 * Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows.md)).
 * The special [`conditional` construct](#conditional-construct).

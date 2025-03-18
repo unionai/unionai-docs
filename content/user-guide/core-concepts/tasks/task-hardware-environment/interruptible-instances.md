@@ -38,7 +38,7 @@ For example:
 
 ## Workflow level interruptible
 
-Interruptible is also available [at the workflow level](../../workflows/index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
+Interruptible is also available [at the workflow level](../../workflows/_index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
 
 ## Advantages and disadvantages of interruptible instances
 
