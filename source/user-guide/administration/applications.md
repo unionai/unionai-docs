@@ -1,6 +1,6 @@
 # Applications
 
-A Union.ai application is an identity through which external systems can perform actions in the system.
+A Union application is an identity through which external systems can perform actions in the system.
 An application can be bound to policies and granted permissions just like a human user.
 
 Applications are managed through the [`uctl` CLI](../../api-reference/uctl-cli/index.md).
@@ -86,7 +86,7 @@ The response should look something like this:
 
 Copy the `<AppSecret>` to an editor for later use.
 This is the only time that the secret will be displayed.
-The secret is not stored by Union.ai.
+The secret is not stored by Union.
 
 ## Update an existing app
 

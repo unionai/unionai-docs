@@ -1,12 +1,12 @@
-# Union.aiRemote
+# UnionRemote
 
-`Union.aiRemote` is a superset of `FlyteRemote` that provides additional methods specific to Union.ai.
+`UnionRemote` is a superset of `FlyteRemote` that provides additional methods specific to Union.
 
 ## Entrypoint
 
 |       |        |
 |-------|--------|
-| [`Union.aiRemote`](./entrypoint.md#union.remote.Union.aiRemote) | Main entrypoint for programmatically accessing a Union.ai remote backend.|
+| [`UnionRemote`](./entrypoint.md#union.remote.UnionRemote) | Main entrypoint for programmatically accessing a Union remote backend.|
 | [`Options`](./entrypoint.md#flytekit.remote.remote.Options) | Options that can be configured for a launch plan during registration or overridden during an execution.|
 
 ## Entities

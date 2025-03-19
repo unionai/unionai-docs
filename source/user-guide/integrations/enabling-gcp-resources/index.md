@@ -1,17 +1,17 @@
 # Enabling GCP resources
 
-Components of your Union.ai data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage.md), [Artifact Registry](./enabling-google-artifact-registry.md), [BigQuery](./enabling-bigquery.md), and so forth.
+Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage.md), [Artifact Registry](./enabling-google-artifact-registry.md), [BigQuery](./enabling-bigquery.md), and so forth.
 
 :::{admonition} Secret management
-We strongly recommend using the [Union.ai secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager.md).
+We strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager.md).
 :::
 
-As much as possible, access to the resources you need will be pre-configured by the Union.ai team when they set up your data plane.
+As much as possible, access to the resources you need will be pre-configured by the Union team when they set up your data plane.
 For example, if you want your task code to have access to a specific Cloud Storage bucket or BigQuery, this can be pre-configured.
 **You just have to inform the team of your specific requirements before the setup process begins**.
 
 As your projects evolve, your needs may change.
-You can always contact the Union.ai team for help enabling additional resources as required.
+You can always contact the Union team for help enabling additional resources as required.
 
 **There are also some cases where you may want to configure things on your own.**
 **Below we give a general overview of these self-configuration options.**
@@ -24,7 +24,7 @@ Broadly speaking, there are two categories of access that you are likely to have
 * **Infrastructure access**:
 Enabling access to a resource for your data plane infrastructure.
 The most common case occurs when you are using Artifact Registry for your task container images and it resides in a project other than the one containing your data plane.
-In that case, some configuration is required to enable the Union.ai operator on your data plane to pull images from the registry when registering your workflows and tasks.
+In that case, some configuration is required to enable the Union operator on your data plane to pull images from the registry when registering your workflows and tasks.
 **If you are using an Artifact Registry instance within the same project as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
 Enabling access to a resource for your task code.
@@ -59,7 +59,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 :::{admonition} Relationship with RBAC
 The permissions being discussed here are attached to a domain.
-This is independent of the permissions granted to users and machine applications through Union.ai's role-based access control (see [User management](../../administration/user-management.md)).
+This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management.md)).
 But, the two types of permissions are related.
 
 For example, for a user (or machine application) to have read access to a Cloud Storage bucket, two things are required:
@@ -70,17 +70,17 @@ For example, for a user (or machine application) to have read access to a Cloud 
 
 ## Domain-scoped access
 
-**Because of the way that GCP works internally, domain-scoped access can only be configured by the Union.ai team.**
+**Because of the way that GCP works internally, domain-scoped access can only be configured by the Union team.**
 
-Please work directly with the Union.ai team if you have requirements that involve domain-scoped access to cloud resources.
+Please work directly with the Union team if you have requirements that involve domain-scoped access to cloud resources.
 
 If you need to add or change domain-scoped access after your data plane has been set up, you should also contact the team.
 
 ## Globally-scoped access
 
-You can manage the configuration of globally-scoped access to GCP resources yourself without involving the Union.ai team.
+You can manage the configuration of globally-scoped access to GCP resources yourself without involving the Union team.
 
-In a GCP-based Union.ai data plane, globally-scoped access to resources is mediated by a single Google Service Account (GSA) that is configured as part of the data plane setup.
+In a GCP-based Union data plane, globally-scoped access to resources is mediated by a single Google Service Account (GSA) that is configured as part of the data plane setup.
 We refer to it as `<UserFlyteGSA>`.
 
 `<UserFlyteGSA>` is bound to all the pods in your data plane's Kubernetes cluster that run your Flyte code.

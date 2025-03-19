@@ -1,17 +1,17 @@
 # Enabling AWS resources
 
-Components of your Union.ai data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3.md), [AWS Elastic Container Registry](./enabling-aws-ecr.md), and so forth.
+Components of your Union data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3.md), [AWS Elastic Container Registry](./enabling-aws-ecr.md), and so forth.
 
 :::{admonition} Secret management
-We strongly recommend using the [Union.ai secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager.md).
+We strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager.md).
 :::
 
-As much as possible, access to the resources you need will be pre-configured by the Union.ai team when they set up your data plane.
+As much as possible, access to the resources you need will be pre-configured by the Union team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
 **You just have to inform the team of your specific requirements before the setup process begins**.
 
 As your projects evolve, your needs may change.
-You can always contact the Union.ai team for help enabling additional resources as required.
+You can always contact the Union team for help enabling additional resources as required.
 
 **There are also some cases where you may want to configure things on your own.**
 **Below we give a general overview of these self-configuration options.**
@@ -24,7 +24,7 @@ Broadly speaking, there are two categories of access that you are likely to have
 * **Infrastructure access**:
 Enabling access to a resource for your data plane infrastructure.
 The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr.md) for your task container images, and it resides in an AWS account other than the one containing your data plane.
-In that case, some configuration is required to enable the Union.ai operator on your data plane to pull images from the registry when registering your workflows and tasks.
+In that case, some configuration is required to enable the Union operator on your data plane to pull images from the registry when registering your workflows and tasks.
 **If you are using an ECR instance within the same AWS account as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
 Enabling access to a resource for your task code.
@@ -54,7 +54,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 :::{admonition} Relationship with RBAC
 The permissions being discussed here are attached to a project and domain.
-This is independent of the permissions granted to users and machine applications through Union.ai's role-based access control (see [User management](../../administration/user-management.md)).
+This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management.md)).
 But, the two types of permissions are related.
 
 For example, for a user (or machine application) to have read access to an S3 bucket, two things are required:
@@ -88,9 +88,9 @@ This is the literal name used in all AWS-based data planes.
 :::
 
 :::{admonition} `<UserFlyteRole>`vs `<AdminFlyteRole>`
-In addition to the task pods, your cluster also contains pods that run Union.ai services, which are used to manage tasks and to connect your cluster to the control plane.
+In addition to the task pods, your cluster also contains pods that run Union services, which are used to manage tasks and to connect your cluster to the control plane.
 These pods are bound to a different default role, `<AdminFlyteRole>` (again, its actual name differs from organization to organization).
-The separation of this role from `<UserFlyteRole>` serves to provide isolation between Union.ai administrative logic and your workflow logic.
+The separation of this role from `<UserFlyteRole>` serves to provide isolation between Union administrative logic and your workflow logic.
 
 **You should not alter any settings associated with `<AdminFlyteRole>`**.
 :::
@@ -172,7 +172,7 @@ In AWS:
 * Add the `userflyterole` policy to `<CustomRole>`.
 * Add `<CustomPolicy>` to `<CustomRole>`.
 
-In Union.ai (using `uctl`):
+In Union (using `uctl`):
 
 * Bind `<CustomRole>` to the project-domain pair desired.
 
@@ -185,7 +185,7 @@ In Union.ai (using `uctl`):
 5. Choose `sts.amazonaws.com` as the **Audience** and select **Next**.
 6. On the **Add permissions** page, search for the `userflyterole` policy and check the box beside it and select **Next**.
 7. Enter a name and description for this role.
-8.  Under **Step 1: Select trusted entities**, click edit and _replace_ the `Condition` block with the following, where `oidc.eks.<Suffix>` is the value from step 4, and `<Project>`, and `<Domain>` are the Union.ai project and domain pairs you want to set custom permissions for. Repeat for each project-domain pair.
+8.  Under **Step 1: Select trusted entities**, click edit and _replace_ the `Condition` block with the following, where `oidc.eks.<Suffix>` is the value from step 4, and `<Project>`, and `<Domain>` are the Union project and domain pairs you want to set custom permissions for. Repeat for each project-domain pair.
 
     ```{code-block} json
     "Condition": {
@@ -213,7 +213,7 @@ Repeat the following steps for each project-domain pair:
     domain: <domain>
     project: <project>
     ```
-2.  Run the following command to override the IAM role used for Union.ai Tasks in this Project-Domain:
+2.  Run the following command to override the IAM role used for Union Tasks in this Project-Domain:
 
     ```{code-block} shell
     uctl update cluster-resource-attribute --attrFile cluster_resource_attributes.yaml

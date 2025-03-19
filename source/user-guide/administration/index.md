@@ -1,3 +1,3 @@
 # Administration
 
-This section covers the administration of Union.ai.
+This section covers the administration of Union.

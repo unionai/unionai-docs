@@ -1,6 +1,6 @@
 # Tutorials
 
-This section provides tutorials that walk you through the process of building AI/ML applications on Union.ai.
+This section provides tutorials that walk you through the process of building AI/ML applications on Union.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
 ::::{grid} 2
@@ -46,7 +46,7 @@ Reddit posts to slack on a consistent basis.
 :link: parallel-processing-and-job-scheduling/wikipedia-embeddings
 :link-type: doc
 
-Create embeddings for the Wikipedia dataset, powered by Union.ai actors.
+Create embeddings for the Wikipedia dataset, powered by Union actors.
 :::
 
 :::{grid-item-card} {octicon}`graph` Time Series Forecaster Comparison
@@ -97,14 +97,14 @@ Serve a vLLM model on a warm container and trigger inference automatically with 
 :link: diffusion-models/mochi-video-generation
 :link-type: doc
 
-Run the Mochi 1 text-to-video generation model by Genmo on Union.ai.
+Run the Mochi 1 text-to-video generation model by Genmo on Union.
 :::
 
 :::{grid-item-card} {octicon}`play` Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use
 :link: language-models/pdf-to-podcast-blueprint
 :link-type: doc
 
-Leverage Union.ai to productionize NVIDIA blueprint workflows.
+Leverage Union to productionize NVIDIA blueprint workflows.
 :::
 
 :::{grid-item-card} {octicon}`book` Contextual RAG with Together AI
@@ -119,7 +119,7 @@ Build a contextual RAG workflow for enterprise use.
 :link: language-models/nim-on-actor
 :link-type: doc
 
-Serve NVIDIA NIM-supported language models, powered by Union.ai actors.
+Serve NVIDIA NIM-supported language models, powered by Union actors.
 :::
 {@@ endif @@}
 

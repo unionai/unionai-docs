@@ -1,7 +1,7 @@
 # Enabling AWS Secrets Manager
 
 ```{note}
-This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the [Union.ai secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager.
+This documentation is for customers who must use AWS Secrets Manager for organizational reasons. For everyone else, we strongly recommend using the [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager.
 ```
 
 To enable your code to access secrets from AWS Secrets Manager you will need to
@@ -9,19 +9,19 @@ To enable your code to access secrets from AWS Secrets Manager you will need to
 * Make sure AWS Secrets Manager is enabled.
 * Create your secrets in AWS Secrets Manager.
 * Create an AWS policy granting access to your secrets.
-* Bind that policy to the User Flyte Role in your Union.ai data plane.
+* Bind that policy to the User Flyte Role in your Union data plane.
 * Retrieve your secrets from within your Flyte code.
 
 ## Ensure that AWS Secrets Manager is enabled
 
 The first step is to make sure that AWS Secrets Manager is enabled in your AWS environment.
-Contact the Union.ai team if you are unsure.
+Contact the Union team if you are unsure.
 
 ## Create your secrets
 
 :::{note}
-Secrets must be defined within the same region as your Union.ai data plane.
-For example, if your Union.ai data plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
+Secrets must be defined within the same region as your Union data plane.
+For example, if your Union data plane is located in `us-west-2`, ensure that the secrets are also in `us-west-2`.
 :::
 
 Create your secrets in **AWS Secrets Manager** (see the [AWS documentation](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create_secret.html) for details):
@@ -122,7 +122,7 @@ $ aws iam create-policy \
 
 ## Bind the policy to the User Flyte Role
 
-To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your Union.ai data plane.
+To grant your code the permissions defined in the policy above, you must bind that policy to the `<UserFlyteRole>` used in your Union data plane.
 The precise name of this role differs by organization.
 You will need this name as well as the ARN of the policy (`<SecretManagerPolicyArn>`, above) to perform the binding.
 See [here](./index.md) for directions. Once the binding is done, your secrets are now accessible from within your Flyte code.

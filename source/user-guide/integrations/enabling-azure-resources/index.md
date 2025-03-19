@@ -1,11 +1,11 @@
 # Enabling Azure resources
 
-Components of your Union.ai data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
+Components of your Union data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
 
-[Data plane setup on Azure](../../data-plane-setup/data-plane-setup-on-azure.md) provides Union.ai with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-Union.ai Azure resources is subject to Azure limitations and will require additional configuration.
+[Data plane setup on Azure](../../data-plane-setup/data-plane-setup-on-azure.md) provides Union with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-Union Azure resources is subject to Azure limitations and will require additional configuration.
 
 As your projects evolve, your needs may change.
-You can always contact the Union.ai team for help enabling additional resources as required.
+You can always contact the Union team for help enabling additional resources as required.
 
 ## Types of access
 
@@ -14,7 +14,7 @@ There are two categories of access that you are likely to have to deal with:
 * **Infrastructure access**:
 Enabling access to a resource for your data plane infrastructure.
 The most common case occurs when using your container registry task container images.
-In that case, refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) to configure the Union.ai data plane to access that registry.
+In that case, refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) to configure the Union data plane to access that registry.
 * **Task code access**:
 Enabling access to a resource for your task code.
 For example, your task code might need to access Azure Blob Storage at runtime.
@@ -22,15 +22,15 @@ This involves granting permission to the [User-assigned managed identity](https:
 
 ## Infrastructure-level access
 
-Infrastructure access with non-Union.ai-managed Azure resources will require additional configuration. Refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) if you need access to images within an existing or non-Union.ai-managed container registry.
+Infrastructure access with non-Union-managed Azure resources will require additional configuration. Refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) if you need access to images within an existing or non-Union-managed container registry.
 
 ## Task code access
 
-Union.ai tasks run within a Union.ai-managed Kubernetes pod in your data plane. Union.ai uses [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview?tabs=dotnet) to create user-assigned managed identities and access Union.ai-managed Azure resources. Additional permissions can be granted to the user-assigned managed identity to access Azure resources within the same Tenant.
+Union tasks run within a Union-managed Kubernetes pod in your data plane. Union uses [Microsoft Entra Workload ID](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview?tabs=dotnet) to create user-assigned managed identities and access Union-managed Azure resources. Additional permissions can be granted to the user-assigned managed identity to access Azure resources within the same Tenant.
 
-Union.ai on Azure has two types of access arrangements:
+Union on Azure has two types of access arrangements:
 
-* **Domain-scoped access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied only to a specific Union.ai domain.
+* **Domain-scoped access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied only to a specific Union domain.
 * **Global access**: With this arrangement, you define permissions you want to grant to your tasks, which are applied to an entire Azure subscription or resource group.
 
 :::{admonition} Azure only supports scoping by domain
@@ -45,7 +45,7 @@ Global access is recommended for most use cases since it is simpler. Still, if y
 :::{admonition} Relationship with RBAC
 
 The permissions being discussed here are attached to a domain.
-This is independent of the permissions granted to users and machine applications through Union.ai's role-based access control (see [User management](../../administration/user-management.md)).
+This is independent of the permissions granted to users and machine applications through Union's role-based access control (see [User management](../../administration/user-management.md)).
 But, the two types of permissions are related.
 
 For example, for a user (or machine application) to have read access to a blob storage container, two things are required:
@@ -57,12 +57,12 @@ For example, for a user (or machine application) to have read access to a blob s
 
 ## Domain-scoped access
 
-**Because of the way that Azure works internally, domain-scoped access can only be configured by the Union.ai team.**
+**Because of the way that Azure works internally, domain-scoped access can only be configured by the Union team.**
 
-Please work directly with the Union.ai team if you have requirements that involve domain-scoped access to cloud resources.
+Please work directly with the Union team if you have requirements that involve domain-scoped access to cloud resources.
 
 ## Globally-scoped access
 
-Union.ai creates a managed identity prefixed with `flyteuser` within the resource group that contains the other Union.ai-managed data plane Azure resources. Navigate to [Azure portal Managed Identities](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) to find respective managed identity details.
+Union creates a managed identity prefixed with `flyteuser` within the resource group that contains the other Union-managed data plane Azure resources. Navigate to [Azure portal Managed Identities](https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.ManagedIdentity%2FuserAssignedIdentities) to find respective managed identity details.
 
 Follow [Azure's official assigned roles documentation](https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal) to assign an appropriate role to scope.

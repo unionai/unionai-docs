@@ -5,7 +5,7 @@
 :widths: 20 30
 
 * - {doc}`Apache Airflow agent <airflow>`
-  - Run Airflow tasks as Union.ai tasks.
+  - Run Airflow tasks as Union tasks.
 * - {doc}`AWS Sagemaker inference agent <sagemaker>`
   - Deploy models and create and trigger inference endpoints.
 * - {doc}`File sensor agent <file-sensor>`
@@ -13,7 +13,7 @@
 * - {doc}`Google BigQuery agent <bigquery>`
   - Execute queries on Google BigQuery.
 * - {doc}`MemVerge Memory Machine Cloud (MMC) agent <mmc>`
-  - Execute Union.ai tasks using MemVerge Memory Machine Cloud.
+  - Execute Union tasks using MemVerge Memory Machine Cloud.
 * - {doc}`OpenAI ChatGPT agent <chatgpt>`
   - Send prompts to ChatGPT.
 * - {doc}`Snowflake agent <snowflake>`

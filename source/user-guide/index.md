@@ -11,7 +11,7 @@ Switch to [Union BYOC](https://docs.union.ai/byoc) with the version selector abo
 
 ```{admonition} Union BYOC
 These docs are for [**Union BYOC**](./about-union.md#union-byoc).
-Switch to [Union.Serverless](https://docs.union.ai/byoc) with the version selector above.
+Switch to [Union Serverless](https://docs.union.ai/byoc) with the version selector above.
 ```
 
 {@@ endif @@}

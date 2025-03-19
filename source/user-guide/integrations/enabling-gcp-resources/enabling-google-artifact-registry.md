@@ -2,7 +2,7 @@
 
 ## Access to Artifact Registry in the same project is enabled by default
 
-When registering tasks and workflows, the Union.ai infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
+When registering tasks and workflows, the Union infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
 If your data plane is on GCP then you may want to use Google Artifact Registry (GAR) to store these images.
 
 **In most cases, you will be using a GAR repository in the same GCP project as your data plane.**
@@ -35,4 +35,4 @@ We will call this `<FlyteWorkerGSAEmail>`.
 * Specify the `<FlyteWorkerGSAEmail>` as a **Principal** and assign (at least) the role **Artifact Registry Reader**.
 * Select **Save**.
 
-Your Union.ai data plane infrastructure should now be able to pull images from the GAR repository.
+Your Union data plane infrastructure should now be able to pull images from the GAR repository.

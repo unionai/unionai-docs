@@ -1,4 +1,4 @@
-# Union.aiRemote examples
+# UnionRemote examples
 
 ## Registering and running a workflow
 
@@ -13,7 +13,7 @@ In the following example we register and run a workflow and retrieve its output:
     └── example.py
 ```
 
-The workflow code that will be registered and run on Union.ai resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
+The workflow code that will be registered and run on Union resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
 
 ```{code-block} python
 :caption: example.py
@@ -33,16 +33,16 @@ def my_workflow(message: str) -> FlyteFile:
     return f
 ```
 
-The file `remote.py` contains the `Union.aiRemote` logic. It is not part of the workflow code, and is meant to be run on your local machine.
+The file `remote.py` contains the `UnionRemote` logic. It is not part of the workflow code, and is meant to be run on your local machine.
 
 ```{code-block} python
 :caption: remote.py
-from union import Union.aiRemote
+from union import UnionRemote
 from workflow.example import my_workflow
 
 
 def run_workflow():
-    remote = Union.aiRemote()
+    remote = UnionRemote()
     remote.fast_register_workflow(entity=my_workflow)
     execution = remote.execute(
         entity=my_workflow,
@@ -72,8 +72,8 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 
 ![Outputs](/_static/images/user-guide/development-cycle/union-remote/outputs.png)
 
-The steps above demonstrates the simplest way of registering and running a workflow with `Union.aiRemote`.
-For more options and details see [API reference > Union.aiRemote > Entrypoint](../../../api-reference/union-sdk/union-remote/entrypoint.md).
+The steps above demonstrates the simplest way of registering and running a workflow with `UnionRemote`.
+For more options and details see [API reference > UnionRemote > Entrypoint](../../../api-reference/union-sdk/union-remote/entrypoint.md).
 
 {@@ if byoc @@}
 
@@ -82,7 +82,7 @@ For more options and details see [API reference > Union.aiRemote > Entrypoint](.
 This example shows how to terminate all running executions in a given workflow name.
 
 ```{code-block} python
-from union.remote import Union.aiRemote
+from union.remote import UnionRemote
 from dataclasses import dataclass
 import json
 from flytekit.configuration import Config
@@ -101,7 +101,7 @@ PROJECT = "your_project"
 DOMAIN = "production"
 ENDPOINT = "union.example.com"
 
-remote = Union.aiRemote(
+remote = UnionRemote(
     config=Config.for_endpoint(endpoint=ENDPOINT),
     default_project=PROJECT,
     default_domain=DOMAIN,
@@ -133,7 +133,7 @@ This example shows how to identify all failed executions from a given workflow s
 ```{code-block} python
 import datetime
 import pytz
-from union.remote import Union.aiRemote
+from union.remote import UnionRemote
 from flytekit.models.core.execution import NodeExecutionPhase
 
 SOME_LARGE_LIMIT = 5000
@@ -143,7 +143,7 @@ DOMAIN = "production"
 ENDPOINT = "union.example.com"
 VERSION = "your_target_workflow_version"
 
-remote = Union.aiRemote(
+remote = UnionRemote(
     config=Config.for_endpoint(endpoint=ENDPOINT),
     default_project=PROJECT,
     default_domain=DOMAIN,
@@ -185,7 +185,7 @@ This example shows how to use a `Filter` to only query for the executions you wa
 
 ```python
 from flytekit.models import filters
-from union import Union.aiRemote
+from union import UnionRemote
 
 WF_NAME = "your_workflow_name"
 LP_NAME = "your_launchplan_name"
@@ -193,7 +193,7 @@ PROJECT = "your_project"
 DOMAIN = "production"
 ENDPOINT = "union.example.com"
 
-remote = Union.aiRemote.for_endpoint(ENDPOINT)
+remote = UnionRemote.for_endpoint(ENDPOINT)
 
 # Only query executions from your project
 project_filter = filters.Filter.from_python_std(f"eq(workflow.name,{WF_NAME})")

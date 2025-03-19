@@ -2,13 +2,13 @@
 
 So far we have covered the steps of deploying a project manually from the command line.
 In many cases, you will want to automate this process through a CI/CD system.
-In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on Union.ai.
+In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on Union.
 We will use GitHub Actions as the example CI/CD system.
 
-## Create a Union.ai app
+## Create a Union app
 
-An app is an agent registered in your Union.ai data plane that enables external systems to perform actions in the system.
-To enable your CI/CD system to authenticate with Union.ai, you need to create a Union.ai app.
+An app is an agent registered in your Union data plane that enables external systems to perform actions in the system.
+To enable your CI/CD system to authenticate with Union, you need to create a Union app.
 See [Applications](../administration/applications.md).
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
@@ -45,7 +45,7 @@ The response should look something like this:
 
 Copy the `<AppSecret>` to an editor for later use.
 This is the only time that the secret will be displayed.
-The secret is not stored by Union.ai.
+The secret is not stored by Union.
 
 ## Store the secret in your CI/CD secrets store
 
@@ -58,7 +58,7 @@ In GitHub, from the repository page:
 4. Paste in the string from above as the value.
 5. Click **Add secret**.
 
-## Create a Union.ai configuration file
+## Create a Union configuration file
 
 Until now the configuration file we have used has been local (`~/.union/config.yaml`, for example).
 For the CI/CD system you need to create one right in the same repository that holds your workflow code.
@@ -164,4 +164,4 @@ These are related to the container build process, project name and so forth.
 For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
 :::
 
-Once this is set up, every push to the main branch in you repository will build and deploy your project to Union.ai.
+Once this is set up, every push to the main branch in you repository will build and deploy your project to Union.

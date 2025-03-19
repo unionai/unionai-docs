@@ -1,11 +1,11 @@
 # Uctl CLI
 
-The `uctl` CLI provides functionality for Union.ai administrators to manage Union.ai-specific entities like users, roles, and Union.ai configuration.
+The `uctl` CLI provides functionality for Union administrators to manage Union-specific entities like users, roles, and Union configuration.
 
 It also includes much of the functionality of the [`union` CLI](../union-cli.md), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `union` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
 
 :::{note}
-If you are not a Union.ai administrator, or if you will be interacting with Union.ai in an environment where Python is installed, you should use the [`union` CLI](../union-cli.md) instead.
+If you are not a Union administrator, or if you will be interacting with Union in an environment where Python is installed, you should use the [`union` CLI](../union-cli.md) instead.
 :::
 
 ## Installation
@@ -71,17 +71,17 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 
 {@@ if serverless @@}
 
-`uctl` will automatically connect to Union.ai Serverless. You do not need to create a configuration file.
+`uctl` will automatically connect to Union Serverless. You do not need to create a configuration file.
 
 ```{warning}
-If you have previously used Union.ai, you may have existing configuration files that will interfere with command line access to Union.ai Serverless.
+If you have previously used Union, you may have existing configuration files that will interfere with command line access to Union Serverless.
 
 To avoid connection errors, remove any configuration files in the `~/.unionai/` or `~/.union/` directories and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG`.
 ```
 
 {@@ elif byoc @@}
 
-To create a configuration file that contains your Union.ai connection information, run the following command, replacing `<union-host-url>` with the URL of your Union.ai instance:
+To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
 
 ```{code-block} shell
 $ uctl config init --host <union-host-url>
@@ -102,7 +102,7 @@ PKCE is the default authentication type. To specify a different authentication t
 
 ### Configuration file location hierarchy
 
-By default, the `uctl` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union.ai instance unless you override it. `uctl` searches for configuration files in the following order:
+By default, the `uctl` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union instance unless you override it. `uctl` searches for configuration files in the following order:
 
 * `--config <path-to-config>` flag
 * `UNION_CONFIG` environment variable
@@ -190,7 +190,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 
 {@@ if byoc @@}
 * - {doc}`uctl apply <uctl-apply/index>`
-  - Used for updating various Union.ai/Flyte resources, including cluster configs.
+  - Used for updating various Union/Flyte resources, including cluster configs.
 * - {doc}`uctl config <uctl-config/index>`
   - Runs various config commands.
 {@@ endif @@}
