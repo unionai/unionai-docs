@@ -1,5 +1,5 @@
 ---
-title: About {{< key product_name >}}
+title: About Union
 weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
