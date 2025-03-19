@@ -42,10 +42,12 @@ For more details, see [Understand How Flyte Handles Data](https://docs.flyte.org
 There are a number of ways to change the raw data location:
 
 * When registering your workflow:
-  * With [`uctl register`](https://docs.flyte.org/en/latest/flytectl/gen/flytectl_register.html), use the flag `--files.outputLocationPrefix`.
-  * With [`{{< key cli >}} register`](https://docs.flyte.org/en/latest/api/flytekit/pyflyte.html#pyflyte-register), use the flag `--raw-data-prefix`.
+  * With [`uctl register`](), use the flag `--files.outputLocationPrefix`.
+  * With [`{{< key cli >}} register`](), use the flag `--raw-data-prefix`.
 * At the execution level:
   * In the UI, set the **Raw output data config** parameter in the execution dialog.
+
+<!-- TODO: add links above -->
 
 These options change the raw data location for **all large types** (`FlyteFile`, `FlyteDirectory`, `DataFrame`, any other large data object).
 

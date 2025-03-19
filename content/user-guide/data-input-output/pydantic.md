@@ -235,8 +235,9 @@ $ {{< key cli >}} run dataclass.py basemodel_wf --x 1 --y 2
 {{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
-```
-pyflyte run \
+
+```shell
+$ pyflyte run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/b71e01d45037cea883883f33d8d93f258b9a5023/examples/data_types_and_io/data_types_and_io/pydantic_basemodel.py \
   basemodel_wf --x 1 --y 2
 ```
