@@ -143,7 +143,7 @@ This registers all code in the current directory to {{< key product_name >}} but
 You should see the following output (or similar) in your terminal:
 
 ```shell
-Running pyflyte register from /Users/my-user/scratch/my-project with images ImageConfig(default*image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/my-user/scratch/my-project',)
+Running {{< key cli >}} register from /Users/my-user/scratch/my-project with images ImageConfig(default*image=Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None), images=[Image(name='default', fqn='cr.flyte.org/flyteorg/flytekit', tag='py3.12-1.14.6', digest=None)]) and image destination folder /root on 1 package(s) ('/Users/my-user/scratch/my-project',)
 Registering against demo.hosted.unionai.cloud
 Detected Root /Users/my-user/my-project, using this to create deployable package...
 Loading packages ['my-project'] under source root /Users/my-user/my-project

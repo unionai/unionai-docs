@@ -118,7 +118,7 @@ You can send a string to the `coffee_maker_enum` workflow during its execution,
 like this:
 
 ```shell
-$pyflyte run \
+$ pyflyte run \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/enum_type.py \
     coffee_maker_enum --coffee_enum="latte"
 ```
