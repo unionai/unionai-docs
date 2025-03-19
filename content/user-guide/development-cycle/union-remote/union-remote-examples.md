@@ -1,5 +1,5 @@
 ---
-title: {{< key product_name >}}Remote examples
+title: UnionRemote examples
 weight: 1
 variants: +flyte +serverless +byoc +byok
 ---

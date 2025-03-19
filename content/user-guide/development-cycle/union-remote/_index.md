@@ -1,5 +1,5 @@
 ---
-title: {{< key product_name >}}Remote
+title: UnionRemote
 weight: 18
 variants: +flyte +serverless +byoc +byok
 ---
@@ -30,7 +30,7 @@ In the default case, as with the {{< key cli_name >}} CLI, all operations will b
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 
-Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionally the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
+Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionall, the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
 ```python
 from union import {{< key kit_remote >}}
