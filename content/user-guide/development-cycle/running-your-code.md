@@ -63,10 +63,15 @@ Here we are invoking `{{< key cli >}} run --remote` and passing:
 
 This command will:
 * Build the container image defined in your `ImageSpec`.
+
 {{< variant flyte >}}
-* Push the image to the container registry specified in that `ImageSpec`.
-  * (Don't forget make the image accessible to {{< key product_name >}}. For example, if you are using GitHub Container Registry, you will need to make the image public.)
+{{< markdown >}}
+
+* Push the image to the container registry specified in that `ImageSpec`. Don't forget make the image accessible to {{< key product_name >}}. For example, if you are using GitHub Container Registry, you will need to make the image public.
+
+{{< /markdown >}}
 {{< /variant >}}
+
 * Package up your code and deploy it to the specified project and domain in {{< key product_name >}}.
 * Run the workflow on {{< key product_name >}}.
 
