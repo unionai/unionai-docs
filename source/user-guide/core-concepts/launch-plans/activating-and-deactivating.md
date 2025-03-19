@@ -17,7 +17,7 @@ Upon registration of a new launch plan, the first version is automatically inact
 If it has a schedule attached, the schedule is also inactive.
 Once activated, a launch plan version remains active even as new, later, versions are registered.
 
-A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../../user-guide/development-cycle/union-remote/index.md).
+A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`Union.aiRemote`](../../../user-guide/development-cycle/union-remote/index.md).
 
 ## Activating and deactivating a launch plan in the UI
 
@@ -38,7 +38,7 @@ The launch plan version and schedule are now activated. The launch plan will be 
 :::{warning}
 Non-scheduled launch plans cannot be activated via the UI.
 The UI does not support activating launch plans that do not have schedules attached.
-You can activate them with `uctl` or `UnionRemote`.
+You can activate them with `uctl` or `Union.aiRemote`.
 :::
 
 To deactivate a launch plan, navigate to a launch plan with an active schedule, click the **...** icon in the top-right corner of the screen beside **Active launch plan**, and click “Deactivate”.
@@ -50,7 +50,7 @@ A confirmation modal will appear, allowing you to deactivate the launch plan and
 :::{warning}
 Non-scheduled launch plans cannot be deactivated via the UI.
 The UI does not support deactivating launch plans that do not have schedules attached.
-You can deactivate them with `uctl` or `UnionRemote`.
+You can deactivate them with `uctl` or `Union.aiRemote`.
 :::
 
 {@@ if byoc @@}
@@ -83,18 +83,18 @@ See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
 
 {@@ endif @@}
 
-## Activating and deactivating a launch plan in Python with `UnionRemote`
+## Activating and deactivating a launch plan in Python with `Union.aiRemote`
 
-To activate a launch plan using version `UnionRemote`:
+To activate a launch plan using version `Union.aiRemote`:
 
 ```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_1.py
 :language: python
 ```
 
-To deactivate a launch plan version using `UnionRemote`:
+To deactivate a launch plan version using `Union.aiRemote`:
 
 ```{literalinclude} ../../../_static/includes/core-concepts/launch-plans/activating-and-deactivating/example_2.py
 :language: python
 ```
 
-{@# TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. #@}
+{@# TODO need to add and link to full Union.aiRemote documentation to Union.ai docs -- current Union.aiRemote page does not document all launch plan methods. #@}

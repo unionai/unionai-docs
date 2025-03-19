@@ -1,10 +1,10 @@
 # Enabling AWS S3
 
-For Union customers whose data plane is in AWS, we walk through setting up access to your own AWS S3 bucket.
+For Union.ai customers whose data plane is in AWS, we walk through setting up access to your own AWS S3 bucket.
 
-:::{admonition} AWS S3 in the Union environment
+:::{admonition} AWS S3 in the Union.ai environment
 Your data plane is set up with a Kubernetes cluster and other resources.
-Among these are a number of S3 buckets used internally by the Union operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
+Among these are a number of S3 buckets used internally by the Union.ai operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
 
 **These **_**are not**_** the S3 bucket we are talking about in this section.**
 

@@ -1,12 +1,12 @@
 # Authentication
 
-Authentication is required to interact with Union using the command-line interface (CLI). The authentication method depends on whether you are working on a local or remote machine. This guide walks you through different authentication mechanisms and helps you choose the best one for your use case.
+Authentication is required to interact with Union.ai using the command-line interface (CLI). The authentication method depends on whether you are working on a local or remote machine. This guide walks you through different authentication mechanisms and helps you choose the best one for your use case.
 
-Before diving into authentication, ensure you have installed the Union CLI. See [Local Setup](./local-setup.md) for details.
+Before diving into authentication, ensure you have installed the Union.ai CLI. See [Local Setup](./local-setup.md) for details.
 
 ## Authentication Methods
 
-Union CLI supports three authentication mechanisms:
+Union.ai CLI supports three authentication mechanisms:
 
 | Authentication Method | Works on Local? | Works on Remote? | Use Case                                                        |
 |-----------------------|-----------------|------------------|-----------------------------------------------------------------|
@@ -20,10 +20,10 @@ If you used `union create login --host <union-host-url>`, this used PKCE by defa
 
 ## 1. PKCE (Proof Key of Code Exchange)
 
-PKCE is the default authentication method. When you run a Union CLI command, it opens a browser window for authentication.
+PKCE is the default authentication method. When you run a Union.ai CLI command, it opens a browser window for authentication.
 
 Authentication Flow:
-- Run a Union CLI command.
+- Run a Union.ai CLI command.
 - You are redirected to your default browser and log in.
 
 Example Configuration:
@@ -45,7 +45,7 @@ PKCE requires a local browser, making it unsuitable for using the `union` CLI on
 If you are working with the `union` CLI on a remote machine without a browser, use DeviceFlow. This method provides a URL that you can open in your local browser.
 
 Authentication Flow:
-- Run a Union CLI command.
+- Run a Union.ai CLI command.
 - The CLI returns a URL.
 - Open the URL in your local browser and log in.
 
@@ -60,7 +60,7 @@ logger:
   level: 0
 ```
 :::{note}
-During authentication, Union attempts to store an authentication token on the keyring service of the operating system. If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default. If you find that browser based authentication is required every time you run or register your workflows, you may need to `run pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
+During authentication, Union.ai attempts to store an authentication token on the keyring service of the operating system. If you are authenticating from within an SSH session on a Linux based machine, there may not be a keyring service by default. If you find that browser based authentication is required every time you run or register your workflows, you may need to `run pip install keyring` or `pip install keyrings.alt` to install a keyring service on your machine.
 :::
 
 ## 3. ClientSecret (Best for CI/CD and Automation)
@@ -111,7 +111,7 @@ Steps to Set Up ClientSecret Authentication:
 
 ## Managing Authentication Configuration
 
-By default, the Union CLI looks for configuration files in `~/.union/config.yaml`. You can override this by:
+By default, the Union.ai CLI looks for configuration files in `~/.union/config.yaml`. You can override this by:
 
 - Setting the `UNION_CONFIG` environment variable:
     ```

@@ -1,7 +1,7 @@
 # ImageSpec
 
-With Union, every task in a workflow runs within its own dedicated container.
-Since a container requires a container image to run, every task in Union must have a container image associated with it.
+With Union.ai, every task in a workflow runs within its own dedicated container.
+Since a container requires a container image to run, every task in Union.ai must have a container image associated with it.
 You can specify the container image to be used by a task by defining an `ImageSpec` object and passing it to the `container_image` parameter of the `@union.task` decorator.
 When you register the workflow, the container image is built locally and pushed to the container registry that you specify.
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
@@ -56,15 +56,15 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 ## Install and configure `union` and Docker
 
 To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling.md).
-To configure `union` to connect to your Union instance, see [Quick start](../../../../quick-start.md).
+To configure `union` to connect to your Union.ai instance, see [Quick start](../../../../quick-start.md).
 
 ## Set up an image registry
 
-You will need an image registry where the container image can be stored and pulled by Union when the task is executed.
+You will need an image registry where the container image can be stored and pulled by Union.ai when the task is executed.
 You can use any image registry that you have access to, including public registries like Docker Hub or GitHub Container Registry.
 Alternatively, you can use a registry that is part of your organization's infrastructure such as AWS Elastic Container Registry (ECR) or Google Artifact Registry (GAR).
 
-The registry that you choose must be one that is accessible to the Union instance where the workflow will be executed.
+The registry that you choose must be one that is accessible to the Union.ai instance where the workflow will be executed.
 Additionally, you will need to ensure that the specific image, once pushed to the registry, is itself publicly accessible.
 
 In this example, we use GitHub's `ghcr.io` container registry.
@@ -79,9 +79,9 @@ You will need to set up your local Docker client to authenticate with GHCR. This
 
 Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 
-## Set up your project and domain on Union
+## Set up your project and domain on Union.ai
 
-You will need to set up a project on your Union instance to which you can register your workflow.
+You will need to set up a project on your Union.ai instance to which you can register your workflow.
 See [Setting up the project](../../../development-cycle/setting-up-a-project.md).
 
 ## Understand the requirements
@@ -105,25 +105,25 @@ When you run the workflow in your local Python environment, the image is not bui
 
 ## Register the workflow
 
-To register the workflow to Union, in the local project root, run:
+To register the workflow to Union.ai, in the local project root, run:
 
 ```{code-block} shell
 $ union register workflows/imagespec-simple-example.py
 ```
 
 `union` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
-It will then register the workflow to Union.
+It will then register the workflow to Union.ai.
 
 To see the registered workflow, go to the UI and navigate to the project and domain that you created above.
 
 ## Ensure that the image is publicly accessible
 
-If you are using the `ghcr.io` image registry, you must switch the visibility of your container image to Public before you can run your workflow on Union.
+If you are using the `ghcr.io` image registry, you must switch the visibility of your container image to Public before you can run your workflow on Union.ai.
 See [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
 
-## Run the workflow on Union
+## Run the workflow on Union.ai
 
-Assuming your image is publicly accessible, you can now run the workflow on Union by clicking **Launch Workflow**.
+Assuming your image is publicly accessible, you can now run the workflow on Union.ai by clicking **Launch Workflow**.
 
 :::{warning}
 If you try to run a workflow that uses a private container image or an image that is inaccessible for some other reason, the system will return an error:

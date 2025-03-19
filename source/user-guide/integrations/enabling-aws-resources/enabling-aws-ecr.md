@@ -2,7 +2,7 @@
 
 ## Access to ECR in the same account is enabled by default
 
-When registering tasks and workflows, the Union infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
+When registering tasks and workflows, the Union.ai infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
 If your data plane is on AWS then you may want to use AWS Elastic Container Registry (ECR) to store these images.
 
 For details on how to use ECR when building and deploying your workflows, see [ImageSpec with ECR](../../core-concepts/tasks/task-software-environment/imagespec-with-ecr.md).
@@ -16,7 +16,7 @@ For details on how to use ECR when building and deploying your workflows, see [I
 If you want to store your task container images in an ECR instance in an AWS account _other than the one that holds your data plane_, then you will have to configure that ECR instance to permit access from your data plane.
 Here are the details:
 
-* Your Union data plane comes pre-configured with a specific role, which we will refer to here as `<FlyteWorkerNodeGroupRole>`.
+* Your Union.ai data plane comes pre-configured with a specific role, which we will refer to here as `<FlyteWorkerNodeGroupRole>`.
 * The actual name of this role depends on your organization's name. It will be of the form `unionai-<YourOrganizationName>-flyteworker-node-group`.
 
 To enable access to the ECR instance in the other account, do the following:
@@ -54,4 +54,4 @@ We will call this `<FlyteWorkerNodeGroupRoleARN>`.
 
 * Select **Save**.
 
-Your Union data plane infrastructure should now be able to pull images from the ECR instance. For more information see [How can I allow a secondary account to push or pull images in my Amazon ECR image repository?](https://repost.aws/knowledge-center/secondary-account-access-ecr)
+Your Union.ai data plane infrastructure should now be able to pull images from the ECR instance. For more information see [How can I allow a secondary account to push or pull images in my Amazon ECR image repository?](https://repost.aws/knowledge-center/secondary-account-access-ecr)

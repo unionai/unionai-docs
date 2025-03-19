@@ -13,7 +13,7 @@ This is a simple "Hello, world!" example consisting of flat directory:
 
 ## Python code
 
-The `hello_world.py` file illustrates the essential components of a Union workflow:
+The `hello_world.py` file illustrates the essential components of a Union.ai workflow:
 
 ```{code-block} python
 """Hello World"""
@@ -22,7 +22,7 @@ import union
 
 image_spec = union.ImageSpec(
 
-    # Build the image using Union's built-in cloud builder (not locally on your machine)
+    # Build the image using Union.ai's built-in cloud builder (not locally on your machine)
     builder="union",
 
     # The name of the image. This image will be used byt he say_hello task
@@ -48,7 +48,7 @@ The `ImageSpec` object is used to define the container image that will run the t
 
 Here we have the simplest possible `ImageSpec` object, which specifies:
 
-* The `builder` to use to build the image. We specify `union` to indicate that the image is built using Union's cloud image builder.
+* The `builder` to use to build the image. We specify `union` to indicate that the image is built using Union.ai's cloud image builder.
 * The `name` of the image. This name will be used to identify the image in the container registry.
 * The `requirements` parameter. We specify that the requirements should be read from the `uv.lock` file.
 
@@ -59,7 +59,7 @@ See [ImageSpec](../development-cycle/image-spec.md) for more information.
 
 The `@union.task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks/index.md).
 A task tasks some input and produces an output.
-When deployed to Union cluster, each task runs in its own Kubernetes pod.
+When deployed to Union.ai cluster, each task runs in its own Kubernetes pod.
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters.md).
 
 
@@ -70,7 +70,7 @@ This function contains references to the tasks defined elsewhere in the code.
 
 A workflow appears to be a Python function but is actually a [DSL](https://en.wikipedia.org/wiki/Domain-specific_language) that only supports a subset of Python syntax and semantics.
 
-When deployed to Union, the workflow function is "compiled" to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
+When deployed to Union.ai, the workflow function is "compiled" to construct the directed acyclic graph (DAG) of tasks, defining the order of execution of task pods and the data flow dependencies between them.
 
 :::{admonition} `@union.task` and `@union.workflow` syntax
 * The `@union.task` and `@union.workflow` decorators will only work on functions at the top-level scope of the module.
@@ -91,7 +91,7 @@ The default `pyproject.toml` file created by `union init` from the `union-simple
 [project]
 name = "union-simple"
 version = "0.1.0"
-description = "A simple Union project"
+description = "A simple Union.ai project"
 readme = "README.md"
 requires-python = ">=3.9,<3.13"
 dependencies = ["union"]

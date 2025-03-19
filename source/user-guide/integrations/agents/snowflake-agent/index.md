@@ -1,6 +1,6 @@
 # Snowflake agent
 
-Union can be seamlessly integrated with the [Snowflake](https://www.snowflake.com) service,
+Union.ai can be seamlessly integrated with the [Snowflake](https://www.snowflake.com) service,
 allowing you to easily query data in Snowflake.
 
 ## Installation
@@ -42,7 +42,7 @@ sudo vim /etc/secrets/snowflake
 ```
 
 {@@ if byoc @@}
-## Union cluster deployment
+## Union.ai cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the Union.ai team to enable it in your cluster.
 {@@ endif @@}

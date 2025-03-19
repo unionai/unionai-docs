@@ -1,12 +1,12 @@
 # Getting started
 
-This section gives you a quick introduction to writing and running Union workflows.
+This section gives you a quick introduction to writing and running Union.ai workflows.
 
 {@@ if serverless @@}
 
-## Sign up for Union Serverless
+## Sign up for Union.ai Serverless
 
-First, sign up for Union Serverless:
+First, sign up for Union.ai Serverless:
 
 :::{button-link} https://signup.union.ai/
 :color: secondary
@@ -20,11 +20,11 @@ the UI at [serverless.union.ai](https://serverless.union.ai).
 To get started, try selecting the default project, called `{@= default_project =@}`, from the list of projects.
 This will take you to `{@= default_project =@}` project dashboard:
 
-![Union UI](/_static/images/quick-start/serverless-dashboard.png)
+![Union.ai UI](/_static/images/quick-start/serverless-dashboard.png)
 
 ## Run your first workflow
 
-Run your first workflow on a Union Workspace.
+Run your first workflow on a Union.ai Workspace.
 
 :::{dropdown} {octicon}`play` Start workspace
 :open:
@@ -75,26 +75,26 @@ stop it manually on the Workspaces page.
 ![Stop workspace](/_static/images/quick-start/serverless-workspace-stop.png)
 :::
 
-🎉 Congratulations! You've just run your first workflow on Union.
+🎉 Congratulations! You've just run your first workflow on Union.ai.
 
 {@@ elif byoc @@}
 
 ## Gather your credentials
 
-After your administrator has onboarded you to Union (see [Deployment](../../deployment/index.md)), you should have the following at hand:
+After your administrator has onboarded you to Union.ai (see [Deployment](../../deployment/index.md)), you should have the following at hand:
 
-* Your Union credentials.
-* The URL of your Union instance. We will refer to this as `<union-host-url>` below.
+* Your Union.ai credentials.
+* The URL of your Union.ai instance. We will refer to this as `<union-host-url>` below.
 
-## Log into Union
+## Log into Union.ai
 
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
-Once you have logged in you should see the Union UI.
+Once you have logged in you should see the Union.ai UI.
 
 To get started, try selecting the default project, called `{@= default_project =@}`, from the list of projects.
 This will take you to `{@= default_project =@}` project dashboard:
 
-![Union UI](/_static/images/quick-start/byoc-dashboard.png)
+![Union.ai UI](/_static/images/quick-start/byoc-dashboard.png)
 
 This dashboard gives you an overview of the workflows and tasks in your project.
 Since you are just starting out, it will be empty.

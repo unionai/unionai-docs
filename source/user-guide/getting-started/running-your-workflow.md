@@ -62,17 +62,17 @@ Hello, everybody!
 ```
 
 
-## Running remotely on Union
+## Running remotely on Union.ai
 
 Local execution is useful for testing and debugging your workflows.
-But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance.
+But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union.ai instance.
 
-When task and workflow code is registered on Union:
+When task and workflow code is registered on Union.ai:
 
 * The `@union.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@union.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-To run the workflow on Union, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
+To run the workflow on Union.ai, add the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands):
 
 ```{code-block} shell
 $ union run --remote --project my-project --domain development hello_world.py hello_world_wf
@@ -106,11 +106,11 @@ Click the link to see the execution in the UI.
 
 ## Register the workflow without running
 
-Above we used the `union run --remote` to register and immediately run a workflow on Union.
+Above we used the `union run --remote` to register and immediately run a workflow on Union.ai.
 
-This is useful for quick testing, but for more complex workflows you may want to register the workflow first and then run it from the Union interface.
+This is useful for quick testing, but for more complex workflows you may want to register the workflow first and then run it from the Union.ai interface.
 
-To do this, you can use the `union register` command to register the workflow code with Union.
+To do this, you can use the `union register` command to register the workflow code with Union.ai.
 
 The form of the command is:
 
@@ -124,7 +124,7 @@ in our case, from within the `getting-started` directory, you would do:
 $ union register --project my-project --domain development .
 ```
 
-This registers all code in the current directory to Union but does not immediately run anything.
+This registers all code in the current directory to Union.ai but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
 ```{code-block} shell
@@ -143,11 +143,11 @@ Successfully registered 3 entities
 ```
 
 
-## Run the workflow from the Union interface
+## Run the workflow from the Union.ai interface
 
-To run the workflow, you need to go to the Union interface:
+To run the workflow, you need to go to the Union.ai interface:
 
-1. Navigate to the Union dashboard.
+1. Navigate to the Union.ai dashboard.
 2. In the left sidebar, click **Workflows**.
 3. Search for your workflow, then select the workflow from the search results.
 4. On the workflow page, click **Launch Workflow**.
@@ -157,7 +157,7 @@ To run the workflow, you need to go to the Union interface:
 To view the workflow execution graph, click the **Graph** tab above the running workflow.
 
 
-## View the workflow execution on Union
+## View the workflow execution on Union.ai
 
 When you view the workflow execution graph, you will see the following:
 

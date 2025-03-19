@@ -1,28 +1,28 @@
 # FAQ
 
-## Onboarding my organization to Union BYOC
+## Onboarding my organization to Union.ai BYOC
 
-### What information does Union need to set up my service?
+### What information does Union.ai need to set up my service?
 
-When you initially onboard your organization to Union BYOC you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
+When you initially onboard your organization to Union.ai BYOC you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
 For details, see [Configuring your data plane](./data-plane-setup/configuring-your-data-plane.md).
 
 ### How do I change the machine types in my cluster?
 
-If you have already been onboarded and wish to change your machine types, Union will need to re-configure your node groups (in AWS) or instance groups (in GCP).
+If you have already been onboarded and wish to change your machine types, Union.ai will need to re-configure your node groups (in AWS) or instance groups (in GCP).
 To initiate the process, submit the [Node Group Configuration Change form](https://wkf.ms/3pGNJqh).
 
 ## Data storage and handling
 
-### How does Union store my data?
+### How does Union.ai store my data?
 
 When data is passed from task to task in a workflow (and output at the end of the workflow), the workflow engine manages the transfer of these values.
 
 The system distinguishes between metadata and raw data.
 Primitive values (`int`, `str`, etc.) are stored directly in the metadata store
 while complex data objects (`pandas.DataFrame`, `FlyteFile`, etc.) are stored by reference with the reference in metadata and the actual data in the raw data store.
-By default, both metadata and raw data are stored in Union's internal object store, located in your data plane in a pre-configured S3/GCS bucket.
+By default, both metadata and raw data are stored in Union.ai's internal object store, located in your data plane in a pre-configured S3/GCS bucket.
 
 For more details see [Task input and output](./data-input-output/task-input-and-output.md)
 
@@ -46,7 +46,7 @@ No.
 Your raw data resides in your data plane and is stored either in the default raw data storage or in storage that you set up yourself.
 In either case, you control access to it.
 
-The Union team does have access to your data plane for purposes of maintenance but does not have access to your raw data, secrets in secret managers, database, etc. unless you choose to permit such access.
+The Union.ai team does have access to your data plane for purposes of maintenance but does not have access to your raw data, secrets in secret managers, database, etc. unless you choose to permit such access.
 
 Having said that, since the data plane is yours, you are ultimately responsible for preventing access by malicious third parties.
 
@@ -80,7 +80,7 @@ See also:
 
 ### Can I use BigQuery from within a task?
 
-If your Union data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
+If your Union.ai data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
 For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/index.md).
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery.md).
 
@@ -91,14 +91,14 @@ For details see [BigQuery agent](https://docs.flyte.org/en/latest/flytesnacks/ex
 
 ### Where do `FlyteFile` and `FlyteDirectory` store their data?
 
-[`FlyteFile` and `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) are two Python classes provided by Union to make it easy to pass files from one task to the next within a workflow.
-They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to Union's internal object store to persist it
+[`FlyteFile` and `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) are two Python classes provided by Union.ai to make it easy to pass files from one task to the next within a workflow.
+They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to Union.ai's internal object store to persist it
 across task containers.
 
 ### Can I accidentally overwrite `FlyteFil`e data?
 
 In general, no.
-When a task returns a [`FlyteFile` or `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory.md) whose source is local to the origin container, Union automatically uploads it to a location with a randomized path in the raw data store.
+When a task returns a [`FlyteFile` or `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory.md) whose source is local to the origin container, Union.ai automatically uploads it to a location with a randomized path in the raw data store.
 This ensures that subsequent runs will not overwrite earlier data.
 
 ### Can I use my own blob store for `FlyteFile` and `FlyteDirectory` data storage?
@@ -115,7 +115,7 @@ For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-
 
 ### What SDK should I download and use in workflow code?
 
-You should install the `union` SDK, which will install the `union` and `flytekit` SDKs and the `union` command-line tool. You will need to use the `flytekit` SDK the majority of the time in the code to import core features and use the `union` SDK for Union-specific features, such as artifacts.
+You should install the `union` SDK, which will install the `union` and `flytekit` SDKs and the `union` command-line tool. You will need to use the `flytekit` SDK the majority of the time in the code to import core features and use the `union` SDK for Union.ai-specific features, such as artifacts.
 
 To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following command:
 
@@ -123,9 +123,9 @@ To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following c
 pip install union
 ```
 
-### How do I authenticate `uctl` and `union` to Union?
+### How do I authenticate `uctl` and `union` to Union.ai?
 
-The command-line tools `uctl` and `union` need to authenticate in order to connect with your Union instance (for example, when registering a workflow).
+The command-line tools `uctl` and `union` need to authenticate in order to connect with your Union.ai instance (for example, when registering a workflow).
 There are three ways to set up authentication.
 
 1. **PKCE**: This is the default method.
@@ -134,7 +134,7 @@ When using this method, a browser pops up to authenticate the user.
 Navigate to it in your browser and follow the directions.
 3. **ClientSecret:** This is the headless option.
 It can be used, for example, by CI bots.
-With this method, you create a Union application and configure your tools to pass the Client ID and App Secret to Union.
+With this method, you create a Union.ai application and configure your tools to pass the Client ID and App Secret to Union.ai.
 
 These methods are all configured in the `config.yaml` that your `uctl` or `union` command uses. See [CLI authentication types](./administration/cli-authentication-types.md) for full details.
 
@@ -184,13 +184,13 @@ For example, if you have the following repository structure and you want to impo
 ```
 Instead of building a custom Dockerfile that copies all the files and modules in your repository structure, you can do one of the following:
 1. Use the `--copy-all` flag in `union run --remote ...`
-2. Use `union register` to register your workflow and run it later using the Union console, `UnionRemote`, a `LaunchPlan`, `Artifact` triggers, or other options.
+2. Use `union register` to register your workflow and run it later using the Union.ai console, `Union.aiRemote`, a `LaunchPlan`, `Artifact` triggers, or other options.
 Both of these methods work by adding all the files within your local project root to the container running your tasks. The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
 
 ### What happens if an automated process launches a very large number of workflows?
 
-By default, Union has a built-in limiting mechanism that prevents more than 10,000 concurrent workflow executions per data plane cluster (equivalently, per organization).
-This limit can be adjusted on a per-customer basis (talk to the Union team).
+By default, Union.ai has a built-in limiting mechanism that prevents more than 10,000 concurrent workflow executions per data plane cluster (equivalently, per organization).
+This limit can be adjusted on a per-customer basis (talk to the Union.ai team).
 
 Executions beyond the limit will be executed as soon as resources become available.
 While waiting, the workflow execution will be reported as in the UNKNOWN state.

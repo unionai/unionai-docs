@@ -1,7 +1,7 @@
 {@@ if serverless @@}
-# Union Serverless Root
+# Union.ai Serverless Root
 {@@ elif byoc @@}
-# Union BYOC Root
+# Union.ai BYOC Root
 {@@ endif @@}
 
 This page will not appear on the public site.
