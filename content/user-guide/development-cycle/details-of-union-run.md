@@ -4,29 +4,29 @@ weight: 10
 variants: +flyte +serverless +byoc +byok
 ---
 
-# Details of union run
+# Details of {{< key cli >}} run
 
-The `union run` command is used to run a specific workflow or task in your local Python environment or on {{< key product_name >}}.
+The `{{< key cli >}} run` command is used to run a specific workflow or task in your local Python environment or on {{< key product_name >}}.
 In this section we will discuss some of the details of how and why to use it.
 
 ## Passing parameters
 
-`union run` enables you to execute a specific workflow using the syntax:
+`{{< key cli >}} run` enables you to execute a specific workflow using the syntax:
 
 ```shell
-$ union run <path/to/script.py> <workflow_or_task_function_name>
+$ {{< key cli >}} run <path/to/script.py> <workflow_or_task_function_name>
 ```
 
-Keyword arguments can be supplied to `union run` by passing them in like this:
+Keyword arguments can be supplied to `{{< key cli >}} run` by passing them in like this:
 
 ```shell
 --<keyword> <value>
 ```
 
-For example, above we invoked `union run` with script `example.py`, workflow `wf`, and named parameter `name`:
+For example, above we invoked `{{< key cli >}} run` with script `example.py`, workflow `wf`, and named parameter `name`:
 
 ```shell
-$ union run example.py wf --name 'Albert'
+$ {{< key cli >}} run example.py wf --name 'Albert'
 ```
 
 The value `Albert` is passed for the parameter `name`.
@@ -35,12 +35,12 @@ With `snake_case` argument names, you have to convert them to `kebab-case`. For 
 if the code were altered to accept a `last_name` parameter then the following command:
 
 ```shell
-$ union run example.py wf --last-name 'Einstein'
+$ {{< key cli >}} run example.py wf --last-name 'Einstein'
 ```
 
 would pass the value `Einstein` for that parameter.
 
-## Why `union run` rather than `python`?
+## Why `{{< key cli >}} run` rather than `python`?
 
 You could add a `main` guard at the end of the script like this:
 
@@ -67,4 +67,4 @@ if __name__ == "__main__":
 
 ```
 
-`union run` lets you dispense with this verbosity and run the workflow with the desired arguments conveniently.
+`{{< key cli >}} run` lets you dispense with this verbosity and run the workflow with the desired arguments conveniently.

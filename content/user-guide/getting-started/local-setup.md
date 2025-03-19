@@ -55,7 +55,7 @@ This will make the `{{< key cli >}}` CLI globally available on your system.
 
 > [!NOTE] Add the installation location to your PATH
 > `uv` installs tools in `~/.local/bin` by default.
-> Make sure this location is in your `PATH`, so you can run the `union` command from anywhere.
+> Make sure this location is in your `PATH`, so you can run the `{{< key cli >}}` command from anywhere.
 > `uv` provides a convenience command to do this: `uv tool update-shell`.
 >
 > Note that later in this guide we will be running the `{{< key cli >}}` CLI to run your workflows.
@@ -215,7 +215,7 @@ Next, you need to create a configuration file that contains your {{< key product
 {{< markdown >}}
 
 ```shell
-$ union create login --serverless
+$ {{< key cli >}} create login --serverless
 ```
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to {{< key product_name >}} Serverless.
@@ -232,7 +232,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 {{< markdown >}}
 
 ```shell
-$ union create login --host <union-host-url>
+$ {{< key cli >}} create login --host <union-host-url>
 ```
 
 `<union-host-url>` is the URL of your {{< key product_name >}} instance, mentioned in [Getting started](./_index.md#gather-your-credentials).
@@ -256,14 +256,14 @@ By default, the {{< key cli_name >}} CLI will look for a configuration file at `
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```shell
-export UNION_CONFIG=~/.my-config-location/my-config.yaml
+$ export UNION_CONFIG=~/.my-config-location/my-config.yaml
 ```
 
-Alternatively, you can always specify the configuration file on the command line when invoking `union` by using the `--config` flag.
+Alternatively, you can always specify the configuration file on the command line when invoking `{{< key cli >}}` by using the `--config` flag.
 For example:
 
 ```shell
-$ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
+$ {{< key cli >}} --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
 > [!WARNING]
@@ -286,7 +286,7 @@ the format of the `yaml` file.
 To configure the connection from `pyflyte` and `flytectl` to your Flyte instance, set the `FLYTECTL_CONFIG` environment variable to point to the configuration file that `flytectl` created:
 
 ```shell
-export FLYTECTL_CONFIG=~/.flyte/config-sandbox.yaml
+$ export FLYTECTL_CONFIG=~/.flyte/config-sandbox.yaml
 ```
 
 This will allow you to interact with your local Flyte cluster.
@@ -321,10 +321,10 @@ You should get a response like this:
 {{< markdown >}}
 
 ```shell
-$ union info
+$ {{< key cli >}} info
 ╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
 │                                                                                                                                       │
-│ union is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│ {{< key cli >}} is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
 │                                                                                                                                       │
 │ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │
@@ -342,10 +342,10 @@ For more details on connection configuration see [CLI authentication types](../a
 {{< markdown >}}
 
 ```shell
-$ union info
+$ {{< key cli >}} info
 ╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
 │                                                                                                                                       │
-│ union is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│ {{< key cli >}} is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
 │                                                                                                                                       │
 │ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │

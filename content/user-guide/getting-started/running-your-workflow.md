@@ -19,14 +19,14 @@ $ uv sync
 You can then activate the virtual environment with:
 
 ```shell
-source .venv/bin/activate
+$ source .venv/bin/activate
 ```
 
 > [!NOTE] `activate` vs `uv run`
 > When running the `{{< key cli >}}` CLI within your local project you must run it in the virtual
 > environment _associated with_ that project.
 > This differs from our earlier usage of the tool when
-> [we installed `union` globally](./local-setup.md#install-the--cli--cli) in order to
+> [we installed `{{< key cli >}}` globally](./local-setup.md#install-the--cli--cli) in order to
 > [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
 >
 > To run `{{< key cli >}}` within your project's virtual environment using `uv`,
@@ -84,7 +84,7 @@ When task and workflow code is registered:
 To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
 
 ```shell
-$ union run --remote --project my-project --domain development hello_world.py hello_world_wf
+$ {{< key cli >}} run --remote --project my-project --domain development hello_world.py hello_world_wf
 ```
 
 The output displays a URL that links to the workflow execution in the UI:
@@ -121,22 +121,22 @@ Click the link to see the execution in the UI.
 
 ## Register the workflow without running
 
-Above we used the `union run --remote` to register and immediately run a workflow on {{< key product_name >}}.
+Above we used the `{{< key cli >}} run --remote` to register and immediately run a workflow on {{< key product_name >}}.
 
 This is useful for quick testing, but for more complex workflows you may want to register the workflow first and then run it from the {{< key product_name >}} interface.
 
-To do this, you can use the `union register` command to register the workflow code with {{< key product_name >}}.
+To do this, you can use the `{{< key cli >}} register` command to register the workflow code with {{< key product_name >}}.
 
 The form of the command is:
 
 ```shell
-$ union register [<options>] <path-to-source-directory>
+$ {{< key cli >}} register [<options>] <path-to-source-directory>
 ```
 
 in our case, from within the `getting-started` directory, you would do:
 
 ```shell
-$ union register --project my-project --domain development .
+$ {{< key cli >}} register --project my-project --domain development .
 ```
 
 This registers all code in the current directory to {{< key product_name >}} but does not immediately run anything.

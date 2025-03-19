@@ -67,7 +67,7 @@ Your repository is now created.
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with ECR. This is needed for `union` to be able to push the image built according to the `ImageSpec` to ECR.
+You will need to set up your local Docker client to authenticate with ECR. This is needed for `{{< key cli >}}` to be able to push the image built according to the `ImageSpec` to ECR.
 
 To do this, you will need to [install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), use it to run the `aws ecr get-login-password` command to get the appropriate password, then perform a `docker login` with that password.
 

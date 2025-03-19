@@ -48,7 +48,7 @@ bigquery_doge_coin = BigQueryTask(
 You can run the above example task locally and test the agent with the following command:
 
 ```shell
-$ union run bigquery_task.py bigquery_doge_coin --version 10
+$ {{< key cli >}} run bigquery_task.py bigquery_doge_coin --version 10
 ```
 
 {{< variant byoc >}}

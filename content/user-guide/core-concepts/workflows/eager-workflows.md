@@ -343,29 +343,29 @@ async def eager_workflow_sandbox(x: int) -> int:
 
 Assuming that your code is configured correctly, you will need to
 register all the task and subworkflows that are used with your eager
-workflow with `union register`:
+workflow with `{{< key cli >}} register`:
 
 ```shell
-union --config <path/to/config.yaml> register \
- --project <project> \
- --domain <domain> \
- --image <image> \
- path/to/eager_workflows.py
+$ {{< key cli >}} --config <path/to/config.yaml> register \
+        --project <project> \
+        --domain <domain> \
+        --image <image> \
+        path/to/eager_workflows.py
 ```
 
-And then run it with `union run`:
+And then run it with `{{< key cli >}} run`:
 
 ```shell
-union --config <path/to/config.yaml> run \
- --project <project> \
- --domain <domain> \
- --image <image> \
- path/to/eager_workflows.py simple_eager_workflow --x 10
+$ {{< key cli >}} --config <path/to/config.yaml> run \
+        --project <project> \
+        --domain <domain> \
+        --image <image> \
+        path/to/eager_workflows.py simple_eager_workflow --x 10
 ```
 
 > [!NOTE]
 > You need to register the tasks/workflows associated with your eager workflow because eager workflows are actually tasks under the hood,
-> which means that `union run` has no way of knowing what tasks and subworkflows are invoked inside it.
+> which means that `{{< key cli >}} run` has no way of knowing what tasks and subworkflows are invoked inside it.
 
 ## Eager workflows in the UI
 

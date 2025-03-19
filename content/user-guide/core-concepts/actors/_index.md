@@ -14,12 +14,12 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 
 {{< variant serverless >}}
 {{< markdown >}}
-* **container_image:** The container image to use for the task. This container must have the `union` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
+* **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
-* **container_image:** The container image to use for the task. This container must have the `union` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
+* **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
 {{< /markdown >}}
 {{< /variant >}}
 * **environment:** Environment variables as key, value pairs in a Python dictionary.
@@ -208,7 +208,7 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 ```
 
 > [!NOTE]
-> In order to get the `@actor_cache` functionality, you must pin `union` to at least `0.1.121`.
+> In order to get the `@actor_cache` functionality, you must pin `{{< key kit >}}` to at least `0.1.121`.
 
 {{< /markdown >}}
 {{< /variant >}}

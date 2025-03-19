@@ -15,7 +15,6 @@ Here are best practices for structuring a {{< key product_name >}} workflow proj
 A typical {{< key product_name >}} workflow project structure could look like this:
 
 ```shell
-.
 ├── .github/workflows/
 ├── .gitignore
 ├── docs/

@@ -43,7 +43,7 @@ There are a number of ways to change the raw data location:
 
 * When registering your workflow:
   * With [`uctl register`](https://docs.flyte.org/en/latest/flytectl/gen/flytectl_register.html), use the flag `--files.outputLocationPrefix`.
-  * With [`union register`](https://docs.flyte.org/en/latest/api/flytekit/pyflyte.html#pyflyte-register), use the flag `--raw-data-prefix`.
+  * With [`{{< key cli >}} register`](https://docs.flyte.org/en/latest/api/flytekit/pyflyte.html#pyflyte-register), use the flag `--raw-data-prefix`.
 * At the execution level:
   * In the UI, set the **Raw output data config** parameter in the execution dialog.
 

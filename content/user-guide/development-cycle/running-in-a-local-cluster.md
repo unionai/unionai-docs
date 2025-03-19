@@ -54,7 +54,6 @@ Later invocations of `{{< key ctl >}}` or `{{< key cli >}}` will need to know th
 Now you can run your workflow in the local cluster simply by adding the `--remote` flag to your `{{< key cli >}}` command:
 
 ```shell
-[~/wine-classification]:wine-classification
 $ {{< key cli >}} run --remote \
           workflows/example.py \
           training_workflow \

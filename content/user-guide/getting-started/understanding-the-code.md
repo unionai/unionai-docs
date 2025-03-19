@@ -9,7 +9,6 @@ variants: +flyte +serverless +byoc +byok
 This is a simple "Hello, world!" example consisting of flat directory:
 
 ```shell
-.
 ├── LICENSE
 ├── README.md
 ├── hello_world.py

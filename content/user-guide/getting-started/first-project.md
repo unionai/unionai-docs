@@ -75,7 +75,6 @@ $ {{< key cli >}} init --template {{< key product >}}-simple my-project
 The resulting directory will look like this:
 
 ```shell
-.
 ├── LICENSE
 ├── README.md
 ├── hello_world.py

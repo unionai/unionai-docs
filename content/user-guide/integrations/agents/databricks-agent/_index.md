@@ -47,7 +47,7 @@ This configuration ensures that flytekit transfers the input data to the blob st
 > The Spark task will run locally if the `raw-output-data-prefix` is not set.
 
 ```shell
-$ union run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_task.py hello_spark
+$ {{< key cli >}} run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_task.py hello_spark
 ```
 
 {{< variant byoc >}}

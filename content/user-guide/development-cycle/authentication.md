@@ -21,7 +21,7 @@ Before diving into authentication, ensure you have installed the {{< key cli_nam
 | ClientSecret          | ✅ Yes          | ✅ Yes           | Best for CI/CD or automation.                                   |
 
 > [!NOTE]
-> If you used `union create login --host <union-host-url>`, this used PKCE by default.
+> If you used `{{< key cli >}} create login --host <union-host-url>`, this used PKCE by default.
 
 ## 1. PKCE (Proof Key of Code Exchange)
 
@@ -75,7 +75,7 @@ Steps to Set Up ClientSecret Authentication:
 
 1. Create an API Key:
     ```
-    $ union create api-key admin --name my-custom-name
+    $ {{< key cli >}} create api-key admin --name my-custom-name
     ```
     The output provides a Client ID and API Key. Store the API Key securely, as it will not be shown again.
 
@@ -124,7 +124,7 @@ By default, the {{< key cli_name >}} CLI looks for configuration files in `~/.un
 
 - Using the `--config` flag:
     ```
-    $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
+    $ {{< key cli >}} --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
     ```
 
 ## Troubleshooting Authentication Issues

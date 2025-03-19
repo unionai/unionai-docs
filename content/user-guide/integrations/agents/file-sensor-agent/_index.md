@@ -12,7 +12,7 @@ To execute the provided example in a [local cluster](../../../development-cycle/
 copy the [file sensor agent example](./file-sensor-agent-example.md) to a file called "file_sensor_example.py" and run the following command:
 
 ```shell
-$ union run --remote file_sensor_example.py wf
+$ {{< key cli >}} run --remote file_sensor_example.py wf
 ```
 
 ## {{< key product_name >}} cluster deployment

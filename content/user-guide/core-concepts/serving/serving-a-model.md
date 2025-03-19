@@ -157,7 +157,7 @@ def train_model() -> Annotated[union.FlyteFile, SklearnModel]:
 To run this example you will need to register and run the workflow first:
 
 ```shell
-$ union run --remote train_wf.py train_model
+$ {{< key cli >}} run --remote train_wf.py train_model
 ```
 
 
@@ -170,7 +170,7 @@ serving the model.
 Once the workflow has completed, you can deploy the app:
 
 ```shell
-$ union deploy apps app.py simple-fastapi-sklearn
+$ {{< key cli >}} deploy apps app.py simple-fastapi-sklearn
 ```
 
 
