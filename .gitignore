@@ -19,3 +19,4 @@ layouts/shortcodes/test.html
 
 # IDEs
 .vscode
+.idea

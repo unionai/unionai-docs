@@ -2,7 +2,7 @@
 {{- $class := .Get "class" -}}
 <div class="markdown {{ $class }}">
 {{ if .Parent }}
-    {{ if in (slice "variant" "dropdown" "tab") .Parent.Name }}
+    {{ if in (slice "variant" "dropdown" "tab" "grid") .Parent.Name }}
         {{/* This is where container-specific behavior would go */}}
         {{ .Inner | markdownify }}
     {{ else }}

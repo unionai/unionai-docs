@@ -1,7 +1,8 @@
+import inspect
 import json
 from typing import TypedDict, Optional
 
-from ptypes import ParamDict, ParamInfo
+from lib.ptypes import ParamDict, ParamInfo
 
 
 class DocstringInfo(TypedDict):
@@ -10,9 +11,22 @@ class DocstringInfo(TypedDict):
     return_type: Optional[str]
 
 
-def parse_docstring(docstring: str | None) -> Optional[DocstringInfo]:
+def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
     if not docstring:
         return None
+
+    if "See help(type(self)) for accurate signature." in docstring:
+        return None
+
+    try:
+        # Attempt to check if the signature matches. If yes, we have no docs.
+        #if f"inspect.signature(source) == inspect.signature(eval(docstring)):
+        #    return None
+        method_decl = f"{source.__name__}{inspect.signature(source)}"
+        if method_decl.startswith(docstring):
+            return None
+    except:
+        pass
 
     lines = docstring.split("\n")
     # print(lines)
@@ -85,6 +99,10 @@ def parse_docstring(docstring: str | None) -> Optional[DocstringInfo]:
                 result["return_type"] = line[7:].strip()
                 continue
 
+            if line.startswith(":result:"):
+                result["return_type"] = line[8:].strip()
+                continue
+
             if not current_param and not line.startswith(":param"):
                 result["docstring"] += line + "\n"
 
@@ -139,7 +157,7 @@ def test_parse_params():
           as above but only for the storage format. Error if already set,\n  unless\
           override is specified.
     """
-    print(json.dumps(parse_docstring(test), indent=2))
+    print(json.dumps(parse_docstring(test, source=None), indent=2))
 
 
 def test_parse_args():
@@ -169,7 +187,7 @@ def test_parse_args():
         copy: List of files/directories to copy to /root. e.g. ["src/file1.txt", "src/file2.txt"]
         python_exec: Python executable to use for install packages
     """
-    print(json.dumps(parse_docstring(doc_with_args), indent=2))
+    print(json.dumps(parse_docstring(doc_with_args, source=None), indent=2))
 
 
 def main():

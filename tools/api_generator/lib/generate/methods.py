@@ -1,15 +1,9 @@
-import argparse
 import io
-import os
-from typing import Dict, List, Tuple
 
-import yaml
-
-from generate.hugo import set_variants, set_version, write_front_matter
-from ptypes import ClassDetails, ClassMap, ClassPackageMap, MethodInfo, ParsedInfo
+from lib.ptypes import MethodInfo
 
 
-def generate_decl(name: str, method: MethodInfo, output: io.TextIOWrapper):
+def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper):
     # Filter out 'self' parameter
     filtered_params = [param for param in method["params"] if param["name"] != "self"]
 
@@ -55,11 +49,11 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
 
     # Check if there are any parameters left after filtering
     if not filtered_params:
-        output.write("No parameters\n")
+        # output.write("No parameters\n")
         return
 
-    multiline_start = "{{< multiline >}}\n"
-    multiline_end = "{{< /multiline >}}\n"
+    multiline_start = "{{< multiline >}}"
+    multiline_end = "{{< /multiline >}}"
 
     output.write("| Parameter | Type |\n")
     output.write("|-|-|\n")
@@ -74,6 +68,7 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
             )
         else:
             output.write(f"| `{param['name']}` | {typeOutput} |\n")
+    output.write("\n")
 
 
 def generate_signature(method: MethodInfo):

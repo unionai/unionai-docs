@@ -1,4 +1,10 @@
-from typing import Dict, List, NotRequired, Optional, TypedDict
+from types import ModuleType
+from typing import Dict, List, MutableSequence, NotRequired, Optional, TypedDict
+
+
+class PackageInfo(TypedDict):
+    name: str
+    doc: NotRequired[Optional[str]]
 
 
 class VariableInfo(TypedDict):
@@ -20,7 +26,7 @@ class ParamInfo(TypedDict):
 
 class MethodInfo(TypedDict):
     name: str
-    docstring: Optional[str]
+    doc: Optional[str]
     signature: str
     params: List[ParamInfo]
     params_doc: Optional[ParamDict]
@@ -29,13 +35,14 @@ class MethodInfo(TypedDict):
 
 class PropertyInfo(TypedDict):
     name: str
-    docstring: Optional[str]
+    type: NotRequired[Optional[str]]
+    doc: NotRequired[Optional[str]]
 
 
 class ClassDetails(TypedDict):
     name: str
     path: str
-    docstring: Optional[str]
+    doc: Optional[str]
     module: str
     bases: List[str]
     is_exception: bool
@@ -50,5 +57,5 @@ type ClassPackageMap = dict[str, ClassMap]
 
 class ParsedInfo(TypedDict):
     version: str
-    packages: list[str]
+    packages: List[PackageInfo]
     classes: ClassPackageMap

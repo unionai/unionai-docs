@@ -1,47 +1,42 @@
 import importlib
 import inspect
 import sys
-from typing import Dict, Optional
+from types import ModuleType
+from typing import Dict, List, Optional
 
 import yaml
 
+from lib.parser.docstring import parse_docstring
+from lib.parser.packages import get_package
+from lib.ptypes import ClassDetails, MethodInfo, PackageInfo, PropertyInfo, VariableInfo
 
-from ptypes import ClassDetails, MethodInfo, PropertyInfo, VariableInfo
-from parser.docstring import parse_docstring
 
+def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDetails]:
+    # Skip if any private packages
+    if any(p.startswith("_") for p in source["name"].split(".")):
+        return {}
 
-def get_classes(package_name: str) -> Dict[str, ClassDetails]:
     classes = {}
 
-    try:
-        # Import the package
-        package = importlib.import_module(package_name)
+    package_name = source["name"]
 
-        # Get all members of the package
-        for name, obj in inspect.getmembers(package):
-            # Skip private members, modules, and non-classes
-            if (
-                name.startswith("_")
-                or inspect.ismodule(obj)
-                or not inspect.isclass(obj)
-            ):
-                continue
+    # Get all members of the package
+    for name, obj in inspect.getmembers(package):
+        # Skip private members, modules, and non-classes
+        if name.startswith("_") or inspect.ismodule(obj) or not inspect.isclass(obj):
+            continue
 
-            path = f"{package_name}.{name}"
+        path = f"{package_name}.{name}"
 
-            # Get class information
-            class_info = get_class_details(path)
-            if not class_info:
-                continue
+        # Get class information
+        class_info = get_class_details(path)
+        if not class_info:
+            continue
 
-            # Add to the list
-            classes[path] = class_info
+        # Add to the list
+        classes[path] = class_info
 
-        return classes
-
-    except ImportError:
-        print(f"Could not import package {package_name}")
-        return {}
+    return classes
 
 
 def get_class_details(class_path: str) -> Optional[ClassDetails]:
@@ -59,11 +54,11 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
             return None
 
         # Basic class info
-        doc_info = parse_docstring(inspect.getdoc(cls))
+        doc_info = parse_docstring(inspect.getdoc(cls), source=cls)
         class_info = ClassDetails(
             name=class_name,
             path=class_path,
-            docstring=doc_info["docstring"] if doc_info else None,
+            doc=doc_info["docstring"] if doc_info else None,
             module=cls.__module__,
             bases=[
                 base.__name__ for base in cls.__bases__ if base.__name__ != "object"
@@ -82,7 +77,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
 
             # Methods
             if inspect.isfunction(member) or inspect.ismethod(member):
-                doc_info = parse_docstring(inspect.getdoc(member))
+                doc_info = parse_docstring(inspect.getdoc(member), source=member)
                 docstr = doc_info["docstring"] if doc_info else None
                 params_docs = doc_info["params"] if doc_info else None
                 sig = inspect.signature(member)
@@ -105,7 +100,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
                 )
                 method_info = MethodInfo(
                     name=name,
-                    docstring=docstr,
+                    doc=docstr,
                     signature=str(sig),
                     params=[
                         {
@@ -127,9 +122,11 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
 
             # Properties
             elif isinstance(member, property):
+                doc_info = parse_docstring(inspect.getdoc(member), source=member)
+                docstr = doc_info["docstring"] if doc_info else None
                 property_info = PropertyInfo(
                     name=name,
-                    docstring=inspect.getdoc(member),
+                    doc=docstr,
                 )
                 class_info["properties"].append(property_info)
 
@@ -162,7 +159,12 @@ def main():
         package_name = "calendar"
 
     print(f"Finding classes in {package_name}...")
-    classes = get_classes(package_name)
+    pkg_mod = get_package(package_name)
+    if pkg_mod is None:
+        print(f"Package {package_name} not found", file=sys.stderr)
+        exit(1)
+    info, pkg = pkg_mod
+    classes = get_classes(info, pkg)
 
     yaml_output = yaml.dump(
         {

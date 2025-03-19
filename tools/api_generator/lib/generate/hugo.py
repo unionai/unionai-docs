@@ -21,5 +21,5 @@ def write_front_matter(title: str, output: io.TextIOWrapper):
     output.write(f"title: {title}\n")
     output.write(f"version: {version}\n")
     output.write(f"variants: {variants}\n")
-    output.write(f"layout: api\n")
+    output.write(f"layout: py_api\n")
     output.write(f"---\n\n")
