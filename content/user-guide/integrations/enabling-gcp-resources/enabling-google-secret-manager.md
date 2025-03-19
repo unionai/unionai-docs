@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 > [!NOTE]
 > This documentation exists for customers who must use Google Secret Manager for organizational reasons. For everyone else, we strongly recommend using the
-> [Union secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager.
+> [{{< key product_name >}} secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Google Secret Manager.
 
 Access to a secret stored in Secret Manager in the same GCP project as the data plane is enabled by default.
 All you need to do is:

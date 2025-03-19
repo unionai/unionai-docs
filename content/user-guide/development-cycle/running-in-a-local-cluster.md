@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 ## Running in a local Kubernetes cluster
 
-Ultimately you will be running your workflows in a Kubernetes cluster in Union. But it can be handy to try out a workflow in a cluster on your local machine.
+Ultimately you will be running your workflows in a Kubernetes cluster in {{< key product_name >}}. But it can be handy to try out a workflow in a cluster on your local machine.
 
 First, ensure that you have [Docker](https://www.docker.com/products/docker-desktop/) (or a similar OCI-compliant container engine) installed locally and that _the daemon is running_.
 
@@ -36,7 +36,7 @@ logger:
   level: 0
 ```
 
-Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your Union cluster.
+Right now this file indicates that the target cluster is your local Docker instance (`localhost:30080`), but later we will change it to point to your {{< key product_name >}} cluster.
 
 Later invocations of `{{< key ctl >}}` or `{{< key cli >}}` will need to know the location of the target cluster. This can be provided in two ways:
 
@@ -65,7 +65,7 @@ The output supplies a URL to your workflow execution in the UI.
 
 ### Inspect the results
 
-Navigate to the URL produced by `{{< key cli >}} run` to see your workflow in the Union UI.
+Navigate to the URL produced by `{{< key cli >}} run` to see your workflow in the {{< key product_name >}} UI.
 
 ## Local cluster with default image
 

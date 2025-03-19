@@ -8,24 +8,24 @@ variants: +flyte +serverless +byoc +byok
 
 ## Set up your development environment
 
-If you have not already done so, follow the [Getting started](../getting-started/_index.md) section to sign in to Union, and set up your local environment.
+If you have not already done so, follow the [Getting started](../getting-started/_index.md) section to sign in to {{< key product_name >}}, and set up your local environment.
 
 ## CLI commands for running your code
 
-The `union` CLI provides a set of commands that allow you to deploy and run your code at different stages of the development cycle:
+The {{< key cli_name >}} CLI provides a set of commands that allow you to deploy and run your code at different stages of the development cycle:
 
-<!-- TODO: Link to the union commands below to the union CLI reference section -->
+<!-- TODO: Link to the union commands below to the reference section -->
 
 1. `union run`: For deploying and running a single script immediately in your local Python environment.
-2. `union run --remote`: For deploying and running a single script immediately in the cloud on Union.
-3. `union register`: For deploying multiple scripts to Union and running them from the Web interface.
+2. `union run --remote`: For deploying and running a single script immediately in the cloud on {{< key product_name >}}.
+3. `union register`: For deploying multiple scripts to {{< key product_name >}} and running them from the Web interface.
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 4. `union package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
 
 > [!NOTE]
-> In some cases, you may want to test your code in a local cluster before deploying it to Union.
-> This step corresponds to using the commands 2, 3, or 4, but targeting your local cluster instead of Union.
+> In some cases, you may want to test your code in a local cluster before deploying it to {{< key product_name >}}.
+> This step corresponds to using the commands 2, 3, or 4, but targeting your local cluster instead of {{< key product_name >}}.
 > For more details, see [Running in a local cluster](./running-in-a-local-cluster.md).
 
 {{< /markdown >}}
@@ -46,9 +46,9 @@ In addition, you are passing the named parameter `name` and its value.
 This command is useful for quickly testing a workflow locally to check for basic errors.
 For more details see [union run details](./details-of-union-run.md).
 
-## Running a script on Union with `union run --remote`
+## Running a script on {{< key product_name >}} with `union run --remote`
 
-To quickly run a workflow on Union, use `union run --remote`:
+To quickly run a workflow on {{< key product_name >}}, use `union run --remote`:
 
 ```shell
 $ union run --remote --project basic-example --domain development workflows/example.py wf --name 'Albert'
@@ -65,15 +65,15 @@ This command will:
 * Build the container image defined in your `ImageSpec`.
 {{< variant flyte >}}
 * Push the image to the container registry specified in that `ImageSpec`.
-  * (Don't forget make the image accessible to Union. For example, if you are using GitHub Container Registry, you will need to make the image public.)
+  * (Don't forget make the image accessible to {{< key product_name >}}. For example, if you are using GitHub Container Registry, you will need to make the image public.)
 {{< /variant >}}
-* Package up your code and deploy it to the specified project and domain in Union.
-* Run the workflow on Union.
+* Package up your code and deploy it to the specified project and domain in {{< key product_name >}}.
+* Run the workflow on {{< key product_name >}}.
 
-This command is useful for quickly deploying and running a specific workflow on Union.
+This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
 For more details see [union run details](./details-of-union-run.md).
 
-## Deploying your code to Union with `union register`
+## Deploying your code to {{< key product_name >}} with `union register`
 
 ```shell
 $ union register workflows --project basic-example --domain development
@@ -83,13 +83,13 @@ Here we are registering all the code in the `workflows` directory to the project
 
 This command will:
 * Build the container image defined in your `ImageSpec`.
-* Package up your code and deploy it to the specified project and domain in Union.
+* Package up your code and deploy it to the specified project and domain in {{< key product_name >}}.
   The package will contain the code in the Python package located in the `workflows` directory.
   Note that the presence of the `__init__.py` file in this directory is necessary in order to make it a Python package.
 
 The command will not run the workflow. You can run it from the Web interface.
 
-This command is useful for deploying your full set of workflows to Union for testing.
+This command is useful for deploying your full set of workflows to {{< key product_name >}} for testing.
 
 {{< variant byoc byok serverless >}}
 

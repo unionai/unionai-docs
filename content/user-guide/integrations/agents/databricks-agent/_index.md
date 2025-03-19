@@ -6,7 +6,7 @@ variants: +flyte -serverless +byoc +byok
 
 # Databricks agent
 
-Union can be integrated with the [Databricks](https://www.databricks.com/) service,
+{{< key product_name >}} can be integrated with the [Databricks](https://www.databricks.com/) service,
 enabling you to submit Spark jobs to the Databricks platform.
 
 ## Installation
@@ -53,9 +53,9 @@ $ union run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_tas
 {{< variant byoc >}}
 {{< markdown >}}
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

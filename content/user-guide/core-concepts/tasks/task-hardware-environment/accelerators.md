@@ -9,18 +9,18 @@ variants: +flyte +serverless +byoc +byok
 {{< variant serverless >}}
 {{< markdown >}}
 
-Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
+{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types.
 
-Union Serverless comes with three GPU types available:
+{{< key product_name >}} Serverless comes with three GPU types available:
 
 * [NVIDIA T4 Tensor Core GPU](#nvidia-t4-tensor-core-gpu)
 * [NVIDIA L4 Tensor Core GPU](#nvidia-l4-tensor-core-gpu)
 * [NVIDIA A100 GPU](#nvidia-a100-gpu)
 
-Pricing for these GPUs can found on the [Union Pricing page](https://www.union.ai/pricing#:~:text=*Serverless%20compute%20pricing).
+Pricing for these GPUs can found on the [{{< key product_name >}} Pricing page](https://www.union.ai/pricing#:~:text=*Serverless%20compute%20pricing).
 
 ## NVIDIA T4 Tensor Core GPU
 
@@ -80,16 +80,16 @@ def my_task():
 {{< markdown >}}
 
 > [!NOTE] _Accelerators_ and _Accelerated datasets_ are entirely different things
-> An accelerator, in Union, is a specialized hardware device that is used to accelerate the execution of a task.
-> [Accelerated datasets](../../../data-input-output/accelerated-datasets), on the other hand, is a Union feature that enables quick access to large datasets from within a task.
+> An accelerator, in {{< key product_name >}}, is a specialized hardware device that is used to accelerate the execution of a task.
+> [Accelerated datasets](../../../data-input-output/accelerated-datasets), on the other hand, is a {{< key product_name >}} feature that enables quick access to large datasets from within a task.
 > These concepts are entirely different and should not be confused.
 
-Union allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
+{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs, or other specialized hardware devices such as TPUs.
 
-Your Union installation will come pre-configured with the GPUs and other hardware that you requested during onboarding.
+Your {{< key product_name >}} installation will come pre-configured with the GPUs and other hardware that you requested during onboarding.
 Each device type has a constant name that you can use to specify the device in the `accelerator` parameter.
 For example:
 
@@ -107,13 +107,13 @@ from flytekit.extras.accelerators import A100
 
 ## Finding your available accelerators
 
-You can find the accelerators available in your Union installation by going to the **Usage > Compute** dashboard in the Union Console.
+You can find the accelerators available in your {{< key product_name >}} installation by going to the **Usage > Compute** dashboard in the UI.
 In the **Accelerators** section, you will see a list of available accelerators and the named constants to be used in code to refer to them.
 
 ## Requesting the provisioning of accelerators
 
-If you need a specific accelerator that is not available in your Union installation, you can request it by contacting the Union team.
-Just click on the **Adjust Configuration** button under **Usage** in the Union Console (or go [here](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30)).
+If you need a specific accelerator that is not available in your {{< key product_name >}} installation, you can request it by contacting the {{< key product_name >}} team.
+Just click on the **Adjust Configuration** button under **Usage** in the UI (or go [here](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30)).
 
 ## Using predefined accelerator constants
 
@@ -122,7 +122,7 @@ There are a number of predefined accelerator constants available in the `flyteki
 The predefined list is not exhaustive, but it includes the most common accelerators.
 If you know the name of the accelerator, but there is no predefined constant for it, you can simply pass the string name to the task decorator directly.
 
-Note that in order for a specific accelerator to be available in your Union installation, it must have been provisioned by the Union team.
+Note that in order for a specific accelerator to be available in your {{< key product_name >}} installation, it must have been provisioned by the {{< key product_name >}} team.
 
 {{< /markdown >}}
 {{< /variant >}}

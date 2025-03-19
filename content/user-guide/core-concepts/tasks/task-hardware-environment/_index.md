@@ -59,7 +59,7 @@ This requires that you set up the required machine types and node groups with th
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-This requires that you coordinate with Union to set up the required machine types and node groups with the appropriate node assignment configuration (node selector labels, node affinities, taints, tolerations, etc.)
+This requires that you coordinate with {{< key product_name >}} to set up the required machine types and node groups with the appropriate node assignment configuration (node selector labels, node affinities, taints, tolerations, etc.)
 
 {{< /markdown >}}
 {{< /variant >}}

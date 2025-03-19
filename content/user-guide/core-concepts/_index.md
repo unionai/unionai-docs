@@ -86,11 +86,11 @@ Tasks can also be registered individually, but it is more common to register alo
 
 See [Running your code](../development-cycle/running-your-code.md).
 
-### Registering in Python with `{{< key product_name >}}Remote`
+### Registering in Python with `{{< key kit_remote >}}`
 
-As with all {{< key product_name >}} command line actions, you can also perform registration of workflows and tasks programmatically with [`{{< key product_name >}}Remote`](), specifically, [`{{< key product_name >}}Remote.register_script`](),
-[`{{< key product_name >}}Remote.register_workflow`](), and
-[`{{< key product_name >}}Remote.register_task`]().
+As with all {{< key product_name >}} command line actions, you can also perform registration of workflows and tasks programmatically with [`{{< key kit_remote >}}`](), specifically, [`{{< key kit_remote >}}.register_script`](),
+[`{{< key kit_remote >}}.register_workflow`](), and
+[`{{< key kit_remote >}}.register_task`]().
 <!-- TODO: Add link to API -->
 
 ## Results of registration
@@ -196,13 +196,13 @@ $ {{< key ctl >}} get task \
 See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index.md) for more details.
 
 
-### Inspecting tasks and workflows in Python with `{{< key product_name >}}Remote`
+### Inspecting tasks and workflows in Python with `{{< key kit_remote >}}`
 
-Use the method [`{{< key product_name >}}Remote.fetch_workflow`]() or [`{{< key product_name >}}Remote.client.get_workflow`]() to get a workflow.
-See [`{{< key product_name >}}Remote`]() for more options and details.
+Use the method [`{{< key kit_remote >}}.fetch_workflow`]() or [`{{< key kit_remote >}}.client.get_workflow`]() to get a workflow.
+See [`{{< key kit_remote >}}`]() for more options and details.
 
-Use the method [`{{< key product_name >}}Remote.fetch_task`]() or [`{{< key product_name >}}Remote.client.get_task`]() to get a task.
-See [`{{< key product_name >}}Remote`]() for more options and details.
+Use the method [`{{< key kit_remote >}}.fetch_task`]() or [`{{< key kit_remote >}}.client.get_task`]() to get a task.
+See [`{{< key kit_remote >}}`]() for more options and details.
 <!-- TODO: Add links to API -->
 
 ## Running tasks and workflows
@@ -249,8 +249,8 @@ $  {{< key cli >}} run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 
 ```
 
 
-### Running a task or workflow remotely in Python with `{{< key product_name >}}Remote`
+### Running a task or workflow remotely in Python with `{{< key kit_remote >}}`
 
-To run a workflow or task remotely in Python, use the method [`{{< key product_name >}}Remote.execute`](). See [`{{< key product_name >}}Remote`]() for more options and details.
+To run a workflow or task remotely in Python, use the method [`{{< key kit_remote >}}.execute`](). See [`{{< key kit_remote >}}`]() for more options and details.
 
 <!-- TODO: Add links to API -->

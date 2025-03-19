@@ -46,6 +46,8 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 > [!NOTE]
 > You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
 
+<!-- TODO: check above for variant accuracy -->
+
 {{< /markdown >}}
 {{< /variant >}}
 

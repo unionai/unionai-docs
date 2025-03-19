@@ -13,7 +13,7 @@ In this section we explain how to set up and use AWS Elastic Container Registry 
 
 ## Prerequisites
 
-If you are using ECR in the same AWS account as your Union data plane, then you do not need to configure anything. Access to ECR in the same account is enabled by default.
+If you are using ECR in the same AWS account as your {{< key product_name >}} data plane, then you do not need to configure anything. Access to ECR in the same account is enabled by default.
 
 If you want to store your task container images in an ECR instance in an AWS account _other than the one that holds your data plane_, then you will have to configure that ECR instance to permit access from your data plane. See [Enable AWS ECR](../../../integrations/enabling-aws-resources/enabling-aws-ecr.md) for details.
 
@@ -42,7 +42,7 @@ In the AWS console, go to **Amazon ECR > Repositories** and find the correct ECR
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-If you are in the same account as your Union data plane you should go directly to the ECR registry that was set up for you by Union. If there are multiple ECR registries present, consult with your Union administrator to find out which one to use.
+If you are in the same account as your {{< key product_name >}} data plane you should go directly to the ECR registry that was set up for you by {{< key product_name >}}. If there are multiple ECR registries present, consult with your {{< key product_name >}} administrator to find out which one to use.
 
 {{< /markdown >}}
 {{< /variant >}}

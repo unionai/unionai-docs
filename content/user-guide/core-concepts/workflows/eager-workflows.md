@@ -11,7 +11,7 @@ variants: +flyte +serverless +byoc +byok
 
 > [!NOTE]
 > This feature is experimental, so the API is subject to breaking changes.
-> If you encounter any issues please reach out to the Union team.
+> If you encounter any issues please reach out to the {{< key product_name >}} team.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -106,7 +106,7 @@ defining a task or workflow that you want to invoke within an eager workflow.
 Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
 a static workflow at runtime using materialized inputs, eager workflows do
-not compile any workflow at all. Instead, they use the [`{{< key product_name >}}Remote`]() <!-- TODO: add link to API -->
+not compile any workflow at all. Instead, they use the [`{{< key kit_remote >}}`]() <!-- TODO: add link to API -->
 object together with Python's `asyncio` API to kick off tasks and subworkflow
 executions eagerly whenever you `await` on a coroutine. This means that eager
 workflows can materialize an output of a task or subworkflow and use it as a
@@ -276,22 +276,22 @@ developing your workflows and tasks.
 
 ### Remote {{< key product_name >}} execution
 
-Under the hood, `@eager` workflows use the [`{{< key product_name >}}Remote`](../../../api-reference/union-sdk/union-remote/_index.md)
+Under the hood, `@eager` workflows use the [`{{< key kit_remote >}}`](../../../api-reference/union-sdk/union-remote/_index.md)
 object to kick off task, static workflow, and eager workflow executions.
 
 In order to actually execute them on a {{< key product_name >}} cluster, you'll need to configure
-eager workflows with a `{{< key product_name >}}Remote` object and secrets configuration that
+eager workflows with a `{{< key kit_remote >}}` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
 
 <!-- TODO: Adjust for serverless vs everything else -->
 
 ```python
-from union import {{< key product_name >}}Remote
+from union import {{< key kit_remote >}}
 from flytekit.configuration import Config
 
 @eager(
-    remote={{< key product_name >}}Remote(
+    remote={{< key kit_remote >}}(
         config=Config.auto(config_file="config.yaml"),
         default_project="{{< key default_project >}}",
         default_domain="development",
@@ -315,11 +315,11 @@ default sandbox configuration does not require key-based authentication.
 
 ```python
 from flytekit.configuration import Config
-from union import {{< key product_name >}}Remote
+from union import {{< key kit_remote >}}
 
 
 @eager(
-    remote=FlyteRemote(
+    remote={{< key kit_remote >}}(
         config=Config.for_sandbox(),
         default_project="{{< key default_project >}}",
         default_domain="development",
@@ -335,7 +335,7 @@ async def eager_workflow_sandbox(x: int) -> int:
 > [!NOTE]
 > When executing eager workflows on a remote {{< key product_name >}} cluster, {{< key product_name >}} will execute the
 > latest version of tasks, static workflows, and eager workflows that are on
-> the `default_project` and `default_domain` as specified in the `{{< key product_name >}}Remote`
+> the `default_project` and `default_domain` as specified in the `{{< key kit_remote >}}`
 > object. This means that you need to pre-register all entities that are
 > invoked inside the eager workflow.
 

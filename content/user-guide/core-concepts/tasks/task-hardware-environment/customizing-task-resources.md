@@ -44,7 +44,7 @@ Note that CPU and GPU allocations can be specified either as whole numbers or in
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-The type of ephemeral storage used depends on the node type and configuration you request from the Union team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the Union team configure your cluster to use the attached NVMe as ephemeral storage for that node type.
+The type of ephemeral storage used depends on the node type and configuration you request from the {{< key product_name >}} team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the {{< key product_name >}} team configure your cluster to use the attached NVMe as ephemeral storage for that node type.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -105,13 +105,13 @@ If you attempt to execute a workflow with unsatisfiable resource requests, the e
 
 To remedy such a failure, you should make sure that the appropriate node types are:
 
-* Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
+* Physically available in your cluster, meaning you have arranged with the {{< key product_name >}} team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
 
 
-To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
+To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 
 See also [Customizing Task Resources]().
 <!-- TODO: Add link -->

@@ -7,11 +7,11 @@ variants: +flyte +serverless +byoc +byok
 # Managing API keys
 
 You need to create an API key to allow external systems to run compute
-on Union, e.g. a GitHub action that registers or runs workflows.
+on {{< key product_name >}}, e.g. a GitHub action that registers or runs workflows.
 
 ## Creating an API key
 
-To create an API key, run the following with the `union` CLI with any name.
+To create an API key, run the following with the {{< key cli_name >}} CLI with any name.
 
 ```shell
 union create api-key admin --name my-custom-name
@@ -33,7 +33,7 @@ import union
 
 @{{< key kit_as >}}.task
 def welcome(name: str) -> str:
-    return f"Welcome to Union! {name}"
+    return f"Welcome to {{< key product_name >}}! {name}"
 
 @{{< key kit_as >}}.workflow
 def main(name: str) -> str:
@@ -45,7 +45,7 @@ environment variable:
 
 ```shell
 export UNION_API_KEY="<SECRET>"
-union run --remote hello.py main --name "Union"
+union run --remote hello.py main --name "{{< key product_name >}}"
 ```
 
 ## Listing and deleting applications

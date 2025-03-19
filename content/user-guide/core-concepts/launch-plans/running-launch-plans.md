@@ -35,20 +35,20 @@ $ uctl create execution \
 See [Uctl CLI](../../../api-reference/uctl-cli/_index.md) for more details.
 
 <!-- TODO: adjust Remote code for serverless vs everything else -->
-## Running a launch plan in Python with `{{< key product_name >}}Remote`
+## Running a launch plan in Python with `{{< key kit_remote >}}`
 
-The following code executes a launch plan using `{{< key product_name >}}Remote`:
+The following code executes a launch plan using `{{< key kit_remote >}}`:
 
 ```python
-from union.remote import {{< key product_name >}}Remote
+from union.remote import {{< key kit_remote >}}
 from flytekit.remote import Config
 
-remote = {{< key product_name >}}Remote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
+remote = {{< key kit_remote >}}(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
 launch_plan = remote.fetch_launch_plan(name=<launch-plan-name>, version=<launch-plan-version>)
 remote.execute(launch_plan, inputs=<inputs>)
 ```
 
-See the [{{< key product_name >}}Remote](../../development-cycle/union-remote/_index.md) for more details.
+See the [{{< key kit_remote >}}](../../development-cycle/union-remote/_index.md) for more details.
 
 ## Sub-launch plans
 

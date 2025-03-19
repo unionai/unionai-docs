@@ -70,18 +70,18 @@ Running Execution on local.
 Hello, everybody!
 ```
 
-## Running remotely on Union in the cloud
+## Running remotely on {{< key product_name >}} in the cloud
 
 Running you code in your local Python environment is useful for testing and debugging.
 
-But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your Union instance in the cloud.
+But to run them at scale, you will need to deploy them (or as we say, "register" them) on to your {{< key product_name >}} instance in the cloud.
 
 When task and workflow code is registered:
 
 * The `@{{< key kit_as >}}.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@{{< key kit_as >}}.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-To run the workflow on Union in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
+To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
 
 ```shell
 $ union run --remote --project my-project --domain development hello_world.py hello_world_wf
@@ -121,11 +121,11 @@ Click the link to see the execution in the UI.
 
 ## Register the workflow without running
 
-Above we used the `union run --remote` to register and immediately run a workflow on Union.
+Above we used the `union run --remote` to register and immediately run a workflow on {{< key product_name >}}.
 
-This is useful for quick testing, but for more complex workflows you may want to register the workflow first and then run it from the Union interface.
+This is useful for quick testing, but for more complex workflows you may want to register the workflow first and then run it from the {{< key product_name >}} interface.
 
-To do this, you can use the `union register` command to register the workflow code with Union.
+To do this, you can use the `union register` command to register the workflow code with {{< key product_name >}}.
 
 The form of the command is:
 
@@ -139,7 +139,7 @@ in our case, from within the `getting-started` directory, you would do:
 $ union register --project my-project --domain development .
 ```
 
-This registers all code in the current directory to Union but does not immediately run anything.
+This registers all code in the current directory to {{< key product_name >}} but does not immediately run anything.
 You should see the following output (or similar) in your terminal:
 
 ```shell
@@ -157,11 +157,11 @@ Serializing and registering 3 flyte entities
 Successfully registered 3 entities
 ```
 
-## Run the workflow from the Union interface
+## Run the workflow from the {{< key product_name >}} interface
 
-To run the workflow, you need to go to the Union interface:
+To run the workflow, you need to go to the {{< key product_name >}} interface:
 
-1. Navigate to the Union dashboard.
+1. Navigate to the {{< key product_name >}} dashboard.
 2. In the left sidebar, click **Workflows**.
 3. Search for your workflow, then select the workflow from the search results.
 4. On the workflow page, click **Launch Workflow**.
@@ -170,7 +170,7 @@ To run the workflow, you need to go to the Union interface:
 
 To view the workflow execution graph, click the **Graph** tab above the running workflow.
 
-## View the workflow execution on Union
+## View the workflow execution on {{< key product_name >}}
 
 When you view the workflow execution graph, you will see the following:
 

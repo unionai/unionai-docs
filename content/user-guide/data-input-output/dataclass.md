@@ -4,6 +4,7 @@ weight: 6
 variants: +flyte +serverless +byoc +byok
 ---
 
+<!-- check for variant accuracy -->
 # Dataclass
 
 When you've multiple values that you want to send across {{< key product_name >}} entities, you can use a `dataclass`.

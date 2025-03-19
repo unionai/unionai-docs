@@ -36,7 +36,7 @@ more.
 
 ## Additional integrations
 
-A variety of agents and plugins enable you to integrate Union with additional external services. If you don't see the integration you need, you can [create your own](./agents/_index.md#creating-a-new-agent).
+A variety of agents and plugins enable you to integrate {{< key product_name >}} with additional external services. If you don't see the integration you need, you can [create your own](./agents/_index.md#creating-a-new-agent).
 
 ### AI integrations
 

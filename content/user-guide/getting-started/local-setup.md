@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant serverless >}}
 {{< markdown >}}
 
-In [Getting started](./_index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
+In [Getting started](./_index.md) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -81,10 +81,10 @@ Furthermore, the pushed images will need to be accessible to the Flyte installat
 (The registry must be accessible and the images themselves must also have the appropriate permissions.
 For example, a public registry like `ghcr.io` with the images set to public, would work).
 
-> [!NOTE] Union simplifies image building and registry
-> With Union you do not need to install Docker, build images, or deal with container registries.
-> Union offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
-> See [Union image builder]() for more details. <!-- TODO: Add link -->
+> [!NOTE] {{< key product_name >}} simplifies image building and registry
+> With {{< key product_name >}} you do not need to install Docker, build images, or deal with container registries.
+> {{< key product_name >}} offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
+> See [{{< key product_name >}} image builder]() for more details. <!-- TODO: Add link -->
 
 
 ## Install `flytectl` to set up a local cluster
@@ -194,20 +194,20 @@ that contains the connection information to connect `pyflyte` (and `flytectl`) t
 
 The local Flyte cluster will be available at `localhost:30080`.
 
-> [!NOTE] Union simplifies the development cycle
-> With Union you do not need to install a local cluster.
-> You can start experimenting immediately on a full cloud deployment by connecting to Union Serverless.
-> You can even use the Union Workspaces in-browser IDE to quickly iterate on code.
-> See [Union Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
+> [!NOTE] {{< key product_name >}} simplifies the development cycle
+> With {{< key product_name >}} you do not need to install a local cluster.
+> You can start experimenting immediately on a full cloud deployment by connecting to {{< key product_name >}} Serverless.
+> You can even use the {{< key product_name >}} Workspaces in-browser IDE to quickly iterate on code.
+> See [{{< key product_name >}} Serverless > Getting started](https://docs.union.ai/serverless/user-guide/getting-started/index.html) for more details.
 
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 
-## Configure the connection to your Union instance
+## Configure the connection to your {{< key product_name >}} instance
 
-Next, you need to create a configuration file that contains your Union connection information:
+Next, you need to create a configuration file that contains your {{< key product_name >}} connection information:
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -218,12 +218,12 @@ Next, you need to create a configuration file that contains your Union connectio
 $ union create login --serverless
 ```
 
-This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
+This will create the `~/.union/config.yaml` with the configuration information to connect to {{< key product_name >}} Serverless.
 
-> [!NOTE] These directions apply to Union Serverless
-> To configure a connection to your Union instance in Union BYOC, see the
+> [!NOTE] These directions apply to {{< key product_name >}} Serverless
+> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOC, see the
 > [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
-> To configure a connection to your Union instance in Union BYOK, see the
+> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOK, see the
 > [BYOK version of this page](https://docs.union.ai/byok/quick-start#configure-the-union-cli).
 
 {{< /markdown >}}
@@ -235,13 +235,13 @@ This will create the `~/.union/config.yaml` with the configuration information t
 $ union create login --host <union-host-url>
 ```
 
-`<union-host-url>` is the URL of your Union instance, mentioned in [Getting started](./_index.md#gather-your-credentials).
+`<union-host-url>` is the URL of your {{< key product_name >}} instance, mentioned in [Getting started](./_index.md#gather-your-credentials).
 
-This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
+This will create the `~/.union/config.yaml` with the configuration information to connect to your {{< key product_name >}} instance.
 
 > [!NOTE]
-> These directions apply to Union BYOC and BYOK, where you connect to your own dedicated Union instance.
-> To configure a connection to Union Serverless, see the
+> These directions apply to {{< key product_name >}} BYOC and BYOK, where you connect to your own dedicated {{< key product_name >}} instance.
+> To configure a connection to {{< key product_name >}} Serverless, see the
 > [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
@@ -252,7 +252,7 @@ See [Running in a local cluster](../development-cycle/running-in-a-local-cluster
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](../../api-reference/union-cli.md) for more details.)
+By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```shell
@@ -267,8 +267,8 @@ $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workfl
 ```
 
 > [!WARNING]
-> If you have previously used Union, you may have configuration files left over that will interfere with
-> access to Union Serverless through the `union` CLI tool.
+> If you have previously used {{< key product_name >}}, you may have configuration files left over that will interfere with
+> access to {{< key product_name >}} Serverless through the {{< key cli_name >}} CLI tool.
 > Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment
 > variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 
@@ -322,13 +322,13 @@ You should get a response like this:
 
 ```shell
 $ union info
-╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
+╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
 │                                                                                                                                       │
-│ union is the CLI to interact with Union. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│ union is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
 │                                                                                                                                       │
-│ Union Version    : 0.1.132                                                                                                            │
+│ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │
-│ Union Endpoint   : <union-host-url>                                                                                                   │
+│ {{< key product_name >}} Endpoint   : <union-host-url>                                                                                                   │
 │ Config Source    : <path-to-config> file                                                                                              │
 │                                                                                                                                       │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
@@ -343,13 +343,13 @@ For more details on connection configuration see [CLI authentication types](../a
 
 ```shell
 $ union info
-╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
+╭────────────────────────────────────────────────────────── {{< key product_name >}} CLI Info ─────────────────────────────────────────────────────────────╮
 │                                                                                                                                       │
-│ union is the CLI to interact with Union. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│ union is the CLI to interact with {{< key product_name >}}. Use the CLI to register, create and track task and workflow executions locally and remotely. │
 │                                                                                                                                       │
-│ Union Version    : 0.1.132                                                                                                            │
+│ {{< key product_name >}} Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │
-│ Union Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
+│ {{< key product_name >}} Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
 │ Config Source    : <path-to-config> file                                                                                              │
 │                                                                                                                                       │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯

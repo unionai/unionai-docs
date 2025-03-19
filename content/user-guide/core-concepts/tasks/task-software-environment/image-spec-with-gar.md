@@ -14,7 +14,7 @@ In this section we explain how to set up and use Google Artifact Registry (GAR) 
 
 ## Prerequisites
 
-If you are using GAR in the same Google Cloud Platform (GCP) project as your Union data plane, then you do not need to configure anything.
+If you are using GAR in the same Google Cloud Platform (GCP) project as your {{< key product_name >}} data plane, then you do not need to configure anything.
 Access to GAR in the same project is enabled by default.
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
@@ -46,7 +46,7 @@ This means that you have to decide on the name of your repository and create it,
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-In the GCP console, within your Union data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by Union. For your own work you should create a new one. Click **Create Repository**:
+In the GCP console, within your {{< key product_name >}} data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by {{< key product_name >}}. For your own work you should create a new one. Click **Create Repository**:
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -68,7 +68,7 @@ On the **Create repository** page,
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-* Select the region. If you want to access the GAR without further configuration, make sure this the same region as your Union data plane.
+* Select the region. If you want to access the GAR without further configuration, make sure this the same region as your {{< key product_name >}} data plane.
 
 {{< /markdown >}}
 {{< /variant >}}

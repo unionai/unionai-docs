@@ -6,12 +6,12 @@ variants: -flyte +serverless -byoc -byok
 
 # Accessing AWS S3 buckets
 
-Here we will take a look at how to access data on AWS S3 Buckets from Union.
+Here we will take a look at how to access data on AWS S3 Buckets from {{< key product_name >}}.
 As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 
-## Creating secrets on Union
+## Creating secrets on {{< key product_name >}}
 
-First, we create secrets on Union by running the following command:
+First, we create secrets on {{< key product_name >}} by running the following command:
 
 ```shell
 $ union create secret AWS_ACCESS_KEY_ID
@@ -31,7 +31,7 @@ Next, we can use the secrets directly in a task! With AWS CLI, we create a small
 
 ```shell
 $ aws s3 mb s3://test_bucket
-$ echo "Hello Union" > my_file.txt
+$ echo "Hello {{< key product_name >}}" > my_file.txt
 $ aws s3 cp my_file.txt s3://test_bucket/my_file.txt
 ```
 

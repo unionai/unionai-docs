@@ -18,7 +18,7 @@ In order to use an interruptible instance for a compute workload you have to be 
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-When onboarding your organization onto Union, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
+When onboarding your organization onto {{< key product_name >}}, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
 Among the options available is the choice of whether to use interruptible instances.
 
 For each interruptible instance node group that you specify, an additional on-demand node group (though identical in every other respect to the interruptible one) will also be configured.

@@ -171,14 +171,14 @@ You can also trigger cache invalidation when launching an execution from the UI 
 
 ### Overwrite cache programmatically
 
-When using `{{< key product_name >}}Remote`, you can use the `overwrite_cache` parameter in the [`{{< key product_name >}}Remote.execute`]() method:
+When using `{{< key kit_remote >}}`, you can use the `overwrite_cache` parameter in the [`{{< key kit_remote >}}.execute`]() method:
 <!-- TODO: Add link to API -->
 
 {{< variant flyte >}}
 {{< markdown >}}
 ```python
 from flytekit.configuration import Config
-from flytekit.remote import FlyteRemote
+from flytekit.remote import {{< key kit_remote >}}
 
 remote = FlyeRemote(
     config=Config.auto(),
@@ -195,9 +195,9 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 {{< markdown >}}
 ```python
 from flytekit.configuration import Config
-from union.remote import UnionRemote
+from union.remote import {{< key kit_remote >}}
 
-remote = UnionRemote(
+remote = {{< key kit_remote >}}(
     config=Config.auto(),
     default_project="flytesnacks",
     default_domain="development"
@@ -211,9 +211,9 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 {{< variant serverless >}}
 {{< markdown >}}
 ```python
-from union.remote import UnionRemote
+from union.remote import {{< key kit_remote >}}
 
-remote = UnionRemote()
+remote = {{< key kit_remote >}}()
 
 wf = remote.fetch_workflow(name="workflows.example.wf")
 execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)

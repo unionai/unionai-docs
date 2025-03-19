@@ -1,10 +1,10 @@
 ---
-title: UnionRemote examples
+title: {{< key product_name >}}Remote examples
 weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
 
-# UnionRemote examples
+# {{< key kit_remote >}} examples
 
 ## Registering and running a workflow
 
@@ -17,7 +17,7 @@ In the following example we register and run a workflow and retrieve its output:
     └── example.py
 ```
 
-The workflow code that will be registered and run on Union resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
+The workflow code that will be registered and run on {{< key product_name >}} resides in the `workflow` directory and consists of an empty `__init__.py` file and the workflow and task code in `example.py`:
 
 ```python
 import os
@@ -36,15 +36,15 @@ def my_workflow(message: str) -> FlyteFile:
     return f
 ```
 
-The file `remote.py` contains the `UnionRemote` logic. It is not part of the workflow code, and is meant to be run on your local machine.
+The file `remote.py` contains the `{{< key kit_remote >}}` logic. It is not part of the workflow code, and is meant to be run on your local machine.
 
 ```python
-from union import UnionRemote
+from union import {{< key kit_remote >}}
 from workflow.example import my_workflow
 
 
 def run_workflow():
-    remote = UnionRemote()
+    remote = {{< key kit_remote >}}()
     remote.fast_register_workflow(entity=my_workflow)
     execution = remote.execute(
         entity=my_workflow,
@@ -74,8 +74,8 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 
 ![Outputs](/_static/images/user-guide/development-cycle/union-remote/outputs.png)
 
-The steps above demonstrates the simplest way of registering and running a workflow with `UnionRemote`.
-For more options and details see [API reference > UnionRemote > Entrypoint](../../../api-reference/union-remote/entrypoint.md).
+The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
+For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint](../../../api-reference/union-remote/entrypoint.md).
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
@@ -85,7 +85,7 @@ For more options and details see [API reference > UnionRemote > Entrypoint](../.
 This example shows how to terminate all running executions in a given workflow name.
 
 ```python
-from union.remote import UnionRemote
+from union.remote import {{< key kit_remote >}}
 from dataclasses import dataclass
 import json
 from flytekit.configuration import Config
@@ -104,7 +104,7 @@ PROJECT = "your_project"
 DOMAIN = "production"
 ENDPOINT = "union.example.com"
 
-remote = UnionRemote(
+remote = {{< key kit_remote >}}(
     config=Config.for_endpoint(endpoint=ENDPOINT),
     default_project=PROJECT,
     default_domain=DOMAIN,
@@ -136,7 +136,7 @@ This example shows how to identify all failed executions from a given workflow s
 ```python
 import datetime
 import pytz
-from union.remote import UnionRemote
+from union.remote import {{< key kit_remote >}}
 from flytekit.models.core.execution import NodeExecutionPhase
 
 SOME_LARGE_LIMIT = 5000
@@ -146,7 +146,7 @@ DOMAIN = "production"
 ENDPOINT = "union.example.com"
 VERSION = "your_target_workflow_version"
 
-remote = UnionRemote(
+remote = {{< key kit_remote >}}(
     config=Config.for_endpoint(endpoint=ENDPOINT),
     default_project=PROJECT,
     default_domain=DOMAIN,
@@ -188,7 +188,7 @@ This example shows how to use a `Filter` to only query for the executions you wa
 
 ```python
 from flytekit.models import filters
-from union import UnionRemote
+from union import {{< key kit_remote >}}
 
 WF_NAME = "your_workflow_name"
 LP_NAME = "your_launchplan_name"
@@ -196,7 +196,7 @@ PROJECT = "your_project"
 DOMAIN = "production"
 ENDPOINT = "union.example.com"
 
-remote = UnionRemote.for_endpoint(ENDPOINT)
+remote = {{< key kit_remote >}}.for_endpoint(ENDPOINT)
 
 # Only query executions from your project
 project_filter = filters.Filter.from_python_std(f"eq(workflow.name,{WF_NAME})")

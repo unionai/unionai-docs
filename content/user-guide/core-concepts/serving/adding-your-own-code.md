@@ -28,7 +28,7 @@ In a local directory, create the following files:
 The file `app.py` contains the app declaration:
 
 ```python
-"""A Union app with custom code"""
+"""A {{< key product_name >}} app with custom code"""
 
 import os
 import union
