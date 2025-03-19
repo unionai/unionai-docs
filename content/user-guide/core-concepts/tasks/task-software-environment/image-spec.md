@@ -62,10 +62,10 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 ```
 
 
-## Install and configure `union` and Docker
+## Install and configure `{{< key cli >}}` and Docker
 
 To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling.md).
-To configure `union` to connect to your {{< key product_name >}} instance, see [Quick start](../../../../quick-start.md).
+To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Quick start](../../../../quick-start.md).
 
 ## Set up an image registry
 
@@ -84,7 +84,7 @@ For an example using Google Artifact Registry see [ImageSpec with GAR](./imagesp
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GHCR. This is needed for `union` to be able to push the image built according to the `ImageSpec` to GHCR.
+You will need to set up your local Docker client to authenticate with GHCR. This is needed for `{{< key cli >}}` CLI to be able to push the image built according to the `ImageSpec` to GHCR.
 
 Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 
@@ -95,7 +95,7 @@ See [Setting up the project](../../../development-cycle/setting-up-a-project.md)
 
 ## Understand the requirements
 
-The `requirements.txt` file contains the `union` package and the `pandas` package, both of which are needed by the task.
+The `requirements.txt` file contains the `{{< key kit >}}` package and the `pandas` package, both of which are needed by the task.
 
 ## Set up a virtual Python environment
 
@@ -105,7 +105,7 @@ Assuming you are in the local project root, run `pip install -r requirements.txt
 ## Run the workflow locally
 
 You can now run the workflow locally.
-In the project root directory, run: `union run workflows/imagespec-simple-example.py wf`.
+In the project root directory, run: `{{< key cli >}} run workflows/imagespec-simple-example.py wf`.
 See [Running your code](../../../development-cycle/running-your-code.md) for more details.
 
 > [!NOTE]
@@ -116,10 +116,10 @@ See [Running your code](../../../development-cycle/running-your-code.md) for mor
 To register the workflow to {{< key product_name >}}, in the local project root, run:
 
 ```shell
-$ union register workflows/imagespec-simple-example.py
+$ {{< key cli >}} register workflows/imagespec-simple-example.py
 ```
 
-`union` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
+`{{< key cli >}}` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
 It will then register the workflow to {{< key product_name >}}.
 
 To see the registered workflow, go to the UI and navigate to the project and domain that you created above.

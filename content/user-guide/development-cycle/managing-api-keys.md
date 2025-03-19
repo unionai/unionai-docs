@@ -14,7 +14,7 @@ on {{< key product_name >}}, e.g. a GitHub action that registers or runs workflo
 To create an API key, run the following with the {{< key cli_name >}} CLI with any name.
 
 ```shell
-union create api-key admin --name my-custom-name
+$ {{< key cli >}} create api-key admin --name my-custom-name
 
 Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
@@ -44,8 +44,8 @@ You can run this workflow from any machine by setting the `UNION_API_KEY`
 environment variable:
 
 ```shell
-export UNION_API_KEY="<SECRET>"
-union run --remote hello.py main --name "{{< key product_name >}}"
+$ export UNION_API_KEY="<SECRET>"
+$ {{< key cli >}} run --remote hello.py main --name "{{< key product_name >}}"
 ```
 
 ## Listing and deleting applications
@@ -53,7 +53,7 @@ union run --remote hello.py main --name "{{< key product_name >}}"
 You can list all your application by running:
 
 ```shell
-union get api-key admin
+$ {{< key cli >}} get api-key admin
 ```
 
 ```shell
@@ -65,10 +65,10 @@ union get api-key admin
 ```
 
 The `client_id` contains your custom application name and a prefix that contains your
-user name.
+username.
 
 Finally, you can delete your application by running:
 
 ```shell
-union delete api-key admin --name my-custom-name
+$ {{< key cli >}} delete api-key admin --name my-custom-name
 ```

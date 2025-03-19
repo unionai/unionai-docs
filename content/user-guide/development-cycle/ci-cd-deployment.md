@@ -35,7 +35,6 @@ tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
 Now, create the app using the specification file:
 
 ```shell
-[~/wine-classification]:wine-classification
 $ uctl create app --appSpecFile app.yaml
 ```
 
@@ -136,7 +135,7 @@ jobs:
       - name: Package
         working-directory: ./${{ env.PROJECT }}
         run: |
-          union --pkgs workflows package \
+          {{< key cli >}} --pkgs workflows package \
             --output ./flyte-package.tgz \
             --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
       - name: Register

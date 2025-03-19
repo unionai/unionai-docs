@@ -157,10 +157,10 @@ When launching the execution of a workflow, launch plan or task, you can use the
 
 ### Overwrite cache on the command line
 
-The `overwrite-cache` flag can be used from the command line with the `union run` command. For example:
+The `overwrite-cache` flag can be used from the command line with the `{{< key cli >}} run` command. For example:
 
 ```shell
-$ union run --remote --overwrite-cache example.py wf
+$ {{< key cli >}} run --remote --overwrite-cache example.py wf
 ```
 
 ### Overwrite cache in the UI
@@ -291,7 +291,7 @@ Similar to the remote case, a local cache entry for a node will be invalidated i
 In addition, the local cache can also be emptied by running
 
 ```shell
-$ union local-cache clear
+$ {{< key cli >}} local-cache clear
 ```
 
 This removes the contents of the `~/.flyte/local-cache/` directory.

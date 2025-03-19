@@ -108,7 +108,7 @@ def generate_data(columns: list[str], seed: int = 42):
 Deploy the app with:
 
 ```shell
-$ union deploy apps app.py streamlit-custom-code
+$ {{< key cli >}} deploy apps app.py streamlit-custom-code
 ```
 
 
@@ -137,7 +137,7 @@ a container is spun up using the specified `container_image` and the files speci
 copied into the container. The `args` is the then executed in the container, starting the app.
 
 If you alter the `include` code you need to re-deploy your app.
-When `union deploy apps` is called using an app name that corresponds to an already existing app,
+When `{{< key cli >}} deploy apps` is called using an app name that corresponds to an already existing app,
 the app code is updated in the container and the app is restarted.
 
 You can iterate on your app easily by changing your `include` code and re-deploying.

@@ -105,7 +105,7 @@ Projects in {{< key product_name >}} are designed to group independent workflows
 
 {{< key product_name >}}’s CLI tools and SDKs provide options to specify projects and domains easily:
 
-* **CLI Commands**: In most commands within the `union` and `uctl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](https://docs.union.ai/byoc/api-reference/union-cli) and [here](https://docs.union.ai/byoc/api-reference/uctl-cli/).
+* **CLI Commands**: In most commands within the `{{< key cli >}}` and `uctl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](https://docs.union.ai/byoc/api-reference/union-cli) and [here](https://docs.union.ai/byoc/api-reference/uctl-cli/).
 
 * **Python SDK**: When working with the `{{< key kit >}}` SDK, you can leverage `{{< key kit_remote >}}` to define the project and domain for workflow interactions programmatically, ensuring that all actions occur in the intended environment. More details [here](https://docs.union.ai/byoc/user-guide/development-cycle/union-remote#unionremote) and [here](https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html).
 

@@ -246,9 +246,9 @@ pyflyte run \
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 
-To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
+To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 ```
-union run \
+{{< key cli >}} run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/b71e01d45037cea883883f33d8d93f258b9a5023/examples/data_types_and_io/data_types_and_io/pydantic_basemodel.py \
   basemodel_wf --x 1 --y 2
 ```

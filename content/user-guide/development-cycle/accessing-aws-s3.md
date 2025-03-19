@@ -14,7 +14,7 @@ As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys:
 First, we create secrets on {{< key product_name >}} by running the following command:
 
 ```shell
-$ union create secret AWS_ACCESS_KEY_ID
+$ {{< key cli >}} create secret AWS_ACCESS_KEY_ID
 ```
 
 This will open a prompt where we paste in our AWS credentials:
@@ -67,9 +67,9 @@ def main():
 Within the task, the secrets are available through `current_context().secrets` and passed to `s3fs`. Running the following command to execute the workflow:
 
 ```shell
-union run --remote aws-s3-access.py main
+$ {{< key cli >}} run --remote aws-s3-access.py main
 ```
 
 ## Conclusion
 
-You can easily access your AWS S3 buckets by running union create secret and configuring your tasks to access the secrets!
+You can easily access your AWS S3 buckets by running `{{< key cli >}} create secret` and configuring your tasks to access the secrets!

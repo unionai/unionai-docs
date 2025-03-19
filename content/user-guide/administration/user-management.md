@@ -57,7 +57,7 @@ In other words:
 Users and applications are assigned to zero or more policies.
 A user or application with no policies will have no permissions but will not be [removed](#removing-a-user).
 For example, in the case of users, they will still appear on the [list of users](#managing-users-and-assigning-policies).
-A user or application with multiple policies will have the union of the permission sets of those policies.
+A user or application with multiple policies will have the logical union of the permission sets of those policies.
 
 > [!NOTE]
 > The default roles that come out of the box are hierarchical.

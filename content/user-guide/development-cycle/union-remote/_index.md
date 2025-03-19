@@ -15,10 +15,10 @@ The `{{< key kit_remote >}}` Python API supports functionality similar to that o
 
 ## Creating a `{{< key kit_remote >}}` object
 
-Ensure that you have the `union` SDK installed, import the `{{< key kit_remote >}}` class and create the object like this:
+Ensure that you have the {{<key kit_name >}} SDK installed, import the `{{< key kit_remote >}}` class and create the object like this:
 
 ```python
-from union import {{< key kit_remote >}}
+from {{< key cli >}} import {{< key kit_remote >}}
 
 remote = {{< key kit_remote >}}()
 ```
@@ -33,7 +33,7 @@ In the default case, as with the {{< key cli_name >}} CLI, all operations will b
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionall, the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
 ```python
-from union import {{< key kit_remote >}}
+from {{< key cli >}} import {{< key kit_remote >}}
 from flytekit.configuration import Config
 
 remote = {{< key kit_remote >}}(
@@ -53,7 +53,7 @@ In general, you have all the same options as you would when specifying a connect
 In some cases, you may be running a script with `{{< key kit_remote >}}` in a CI/CD pipeline or via SSH, where you don't have access to a browser for the default authentication flow. In such scenarios, you can use the [client secret](../../administration/cli-authentication-types.md#clientsecret) authentication method to establish a connection to {{< key product_name >}}. After [creating an API key](../managing-api-keys.md), you can initialize `{{< key kit_remote >}}` as follows:
 
 ```python
-from union import {{< key kit_remote >}}
+from {{< key cli >}} import {{< key kit_remote >}}
 from flytekit.configuration import Config, PlatformConfig
 
 remote = {{< key kit_remote >}}(
@@ -80,7 +80,7 @@ For details see [the API docs for `flytekit.configuration.Config`](../../../api-
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a project, and a domain:
 
 ```python
-from union import {{< key kit_remote >}}
+from {{< key cli >}} import {{< key kit_remote >}}
 
 remote = {{< key kit_remote >}}(
     default_project="my-project",

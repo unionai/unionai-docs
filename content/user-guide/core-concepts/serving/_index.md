@@ -87,7 +87,7 @@ There are a few additional available parameters that we do not use in this examp
 Deploy the app with:
 
 ```shell
-$ union deploy apps APP_FILE APP_NAME
+$ {{< key cli >}} deploy apps APP_FILE APP_NAME
 ```
 
 * `APP_FILE` is the Python file that contains one or more app declarations.
@@ -99,7 +99,7 @@ If an app by that name already exists then this command stops the app, updates i
 In this case, we do the following:
 
 ```shell
-$ union deploy apps app.py streamlit-hello
+$ {{< key cli >}} deploy apps app.py streamlit-hello
 ```
 
 This will return output like the following:
@@ -131,7 +131,7 @@ Buttons to **Copy Endpoint** and **Start app** are available at the top of the v
 You can also view all apps deployed in your {{< key product_name >}} instance from the command-line with:
 
 ```shell
-$ union get apps
+$ {{< key cli >}} get apps
 ```
 
 This will display the app list:
@@ -153,7 +153,7 @@ This will display the app list:
 To stop an app from the command-line, perform the following command:
 
 ```shell
-$ union stop apps --name APP_NAME
+$ {{< key cli >}} stop apps --name APP_NAME
 ```
 
 `APP_NAME` is the name of an app deployed on the {{< key product_name >}} instance.

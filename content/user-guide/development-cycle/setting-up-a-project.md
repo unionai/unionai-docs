@@ -67,17 +67,17 @@ Click on the **New Project** button and fill in the details for your new project
 You now have a project on {{< key product_name >}} into which you can register your workflows.
 The next step is to set up a local workflow directory.
 
-## Creating a local workflow directory using `union init`
+## Creating a local workflow directory using `{{< key cli >}} init`
 
 Earlier, in the [First workflow](../first-workflow/_index.md) section of the guide, we started with a pre-existing example project, cloned from git.
 In this section we'll start from scratch and create a new project using the {{< key cli_name >}} CLI tool.
 
-We will use the `union init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
+We will use the `{{< key cli >}} init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
 
 To create the workflow directory, run the following command:
 
 ```shell
-$ union init --template basic-union-template basic-example
+$ {{< key cli >}} init --template basic-union-template basic-example
 ```
 
 ## Directory structure
@@ -94,7 +94,7 @@ In the `basic-example` directory you’ll see the following file structure:
 ```
 
 You can create your own conventions and file structure for your {{< key product_name >}} projects.
-The `union init` command just provides a good starting point.
+The `{{< key cli >}} init` command just provides a good starting point.
 
 However, the separate `workflows` subdirectory and the contained `__init__.py` file are significant.
 We will discuss them when we cover the [registration process](./running-your-code.md).

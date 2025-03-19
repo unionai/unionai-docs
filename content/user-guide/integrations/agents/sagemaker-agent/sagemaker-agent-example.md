@@ -922,8 +922,8 @@ Create a file named `serve` to serve the model. In our case, we are using FastAP
 !/bin/bash
 
 _term() {
-echo "Caught SIGTERM signal!"
-kill -TERM "$child" 2>/dev/null
+    echo "Caught SIGTERM signal!"
+    kill -TERM "$child" 2>/dev/null
 }
 
 trap _term SIGTERM

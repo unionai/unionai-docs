@@ -123,12 +123,21 @@ For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-
 
 ### What SDK should I download and use in workflow code?
 
-You should install the `union` package, which will install the Union and Flytekit SDKs and the `union` command-line tool. You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for Union-specific features, such as artifacts.
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+You should install the `{{< key kit >}}` package, which will install the Union and Flytekit SDKs and the `{{< key cli >}}` command-line tool. You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for Union-specific features, such as artifacts.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+You should install the `flytekit` package, which will install the Flytekit SDK and the `pyflyte` command-line tool.
+{{< /markdown >}}
+{{< /variant >}}
 
 
-### How do I authenticate `uctl` and `union` to {{< key product_name >}}?
+### How do I authenticate `{{< key ctl >}}` and `{{< key cli >}}` CLIs to {{< key product_name >}}?
 
-The command-line tools `uctl` and `union` need to authenticate in order to connect with your {{< key product_name >}} instance (for example, when registering a workflow).
+The command-line tools `{{< key ctl >}}` and `{{< key cli >}}` need to authenticate in order to connect with your {{< key product_name >}} instance (for example, when registering a workflow).
 There are three ways to set up authentication.
 
 1. **PKCE**: This is the default method.
@@ -139,7 +148,7 @@ Navigate to it in your browser and follow the directions.
 It can be used, for example, by CI bots.
 With this method, you create a {{< key product_name >}} application and configure your tools to pass the Client ID and App Secret to {{< key product_name >}}.
 
-These methods are all configured in the `config.yaml` that your `uctl` or `union` command uses. See [CLI authentication types](./administration/cli-authentication-types.md) for full details.
+These methods are all configured in the `config.yaml` that your `{{< key ctl >}}` or `{{< key cli >}}` command uses. See [CLI authentication types](./administration/cli-authentication-types.md) for full details.
 
 Note that if you wish to run or register workflows in a remote SSH session, you will need to authenticate using the DeviceFlow or ClientSecret methods as PKCE attempts to open a local browser from the CLI.
 
@@ -157,18 +166,25 @@ See also:
 
 ### What command-line tools should I use to register and run workflows?
 
-You should use the {{< key cli_name >}} CLI to register and run workflows and perform other operations on the command line. The {{< key cli_name >}} CLI is installed when you install the `union` package, which will also install the `union` SDK and `flytekit` SDK.
 
-To install the `union` SDK, `flytekit SDK`, and {{< key cli_name >}} CLI, run the following command:
 
-```shell
-pip install union
-```
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+You should use the `{{< key cli >}}` CLI to register and run workflows and perform other operations on the command line. The `{{< key cli >}}` CLI is installed when you install the `{{< key kit >}}` package, which will also install the Union and Flytekit SDKs.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+You should use the `pyflyte` CLI to register and run workflows and perform other operations on the command line. The  `pyflyte` CLI is installed when you install the `flytekit` package, which will also install the Union and Flytekit SDKs.
+{{< /markdown >}}
+{{< /variant >}}
+
+
 
 ### How do I fix import errors when running workflows remotely?
 
-If you run your workflows with `union run --remote ...`, you may encounter import errors when importing functions, classes, or variables from other modules in your project repository.
-For example, if you have the following repository structure and you want to import a model from `my_model.py`, some constants from `constants.py`, and a helper function from `utils.py` in a task that is defined in `my_workflow.py`, you will encounter import errors unless these Python modules were explicitly added to the image used by the task, since the container running the task does not recognize these modules by default.
+If you run your workflows with `{{< key cli >}} run --remote ...`, you may encounter import errors when importing functions, classes, or variables from other modules in your project repository.
+For example, if you have the following repository structure, and you want to import a model from `my_model.py`, some constants from `constants.py`, and a helper function from `utils.py` in a task that is defined in `my_workflow.py`, you will encounter import errors unless these Python modules were explicitly added to the image used by the task, since the container running the task does not recognize these modules by default.
 
 ```shell
 ├── requirements.txt
@@ -187,8 +203,9 @@ For example, if you have the following repository structure and you want to impo
 ```
 
 Instead of building a custom Dockerfile that copies all the files and modules in your repository structure, you can do one of the following:
-1. Use the `--copy-all` flag in `union run --remote ...`
-2. Use `union register` to register your workflow and run it later using the {{< key product_name >}} console, `{{< key kit_remote >}}`, a `LaunchPlan`, `Artifact` triggers, or other options.
+1. Use the `--copy-all` flag in `{{< key cli >}} run --remote ...`
+2. Use `{{< key cli >}} register` to register your workflow and run it later.
+
 Both of these methods work by adding all the files within your local project root to the container running your tasks. The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
 
 ### What happens if an automated process launches a very large number of workflows?

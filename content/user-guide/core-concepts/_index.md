@@ -79,7 +79,7 @@ See [Workflows](./workflows/_index.md) for more details.
 In most cases, workflows and tasks (and possibly other things, such as launch plans) are defined in your project code and registered as a bundle using `{{< key cli >}}` or `{{< key ctl >}}` For example:
 
 ```shell
-{{< key cli >}} register ./workflows --project my_project --domain development
+$ {{< key cli >}} register ./workflows --project my_project --domain development
 ```
 
 Tasks can also be registered individually, but it is more common to register alongside the workflow that uses them.
@@ -218,9 +218,9 @@ You can also run individual tasks in the UI by clicking the **Launch Task** butt
 You can execute a {{< key product_name >}} workflow or task locally simply by calling it just like any regular Python function.
 For example, you can add the following to the above code:
 
-```shell
+```python
 if __name__ == "__main__":
-   my_workflow(a=1, b=2, c=3, m=4, n=5)
+    my_workflow(a=1, b=2, c=3, m=4, n=5)
 ```
 
 If the file is saved as `my_example.py`, you can run it locally using the following command:
