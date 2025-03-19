@@ -1,8 +1,8 @@
-# About Union
+# About Union.ai
 
-Union builds on [Flyte](http://flyte.org), the emerging open-source standard for orchestrating machine learning and data processing workflows,
-Union offers all the features of Flyte while adding many additional capabilities.
-There are two deployment options for Union: **Serverless** and **BYOC** (Bring Your Own Cloud).
+Union.ai builds on [Flyte](http://flyte.org), the emerging open-source standard for orchestrating machine learning and data processing workflows,
+Union.ai offers all the features of Flyte while adding many additional capabilities.
+There are two deployment options for Union.ai: **Serverless** and **BYOC** (Bring Your Own Cloud).
 
 ## Flyte
 
@@ -17,12 +17,12 @@ Flyte provides a full suite of powerful features for orchestrating AL, ML, and d
 * Task parallelism at scale with *map tasks*
 * Dynamic workflows created at runtime for process flexibility
 
-## Union Serverless
+## Union.ai Serverless
 
-[Union Serverless](https://docs.union.ai/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[Union.ai Serverless](https://docs.union.ai/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
-Your Data and workflow code stored safely and securely in Union's cloud infrastructure.
-Union Serverless provide all the features of Flyte, plus:
+Your Data and workflow code stored safely and securely in Union.ai's cloud infrastructure.
+Union.ai Serverless provide all the features of Flyte, plus:
 
 * Granular, task-level resource monitoring
 * Fine-grained role-based access control (RBAC)
@@ -41,10 +41,10 @@ Union Serverless provide all the features of Flyte, plus:
 * Smart defaults and automatic linking
 * UI based Workflow Builder
 
-## Union BYOC
+## Union.ai BYOC
 
-[Union BYOC](https://docs.union.ai/byoc) (Bring Your own Cloud) let's you keep your data and workflow code on your infrastructure, while Union takes care of the management.
-Union BYOC provides all the features of Flyte and Union Serverless, plus:
+[Union.ai BYOC](https://docs.union.ai/byoc) (Bring Your own Cloud) let's you keep your data and workflow code on your infrastructure, while Union.ai takes care of the management.
+Union.ai BYOC provides all the features of Flyte and Union.ai Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)
 * Managed Ray and Spark

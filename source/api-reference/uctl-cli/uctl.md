@@ -1,13 +1,13 @@
 # uctl
 
-uctl is used to interact with Union Cloud
+uctl is used to interact with Union.ai Cloud
 
 ## Synopsis
 
-uctl is used to interact with Union Cloud
+uctl is used to interact with Union.ai Cloud
 
 Lets you manage Flyte entities (Projects, Domains, Workflows, Tasks, and
-Launch plans), Users, Roles, and Union Cloud configuration.
+Launch plans), Users, Roles, and Union.ai Cloud configuration.
 
 ## Options
 

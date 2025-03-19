@@ -1,7 +1,7 @@
 # Managing API keys
 
 You need to create an API key to allow external systems to run compute
-on Union, e.g. a GitHub action that registers or runs workflows.
+on Union.ai, e.g. a GitHub action that registers or runs workflows.
 
 ## Creating an API key
 
@@ -27,7 +27,7 @@ import union
 
 @union.task
 def welcome(name: str) -> str:
-    return f"Welcome to Union! {name}"
+    return f"Welcome to Union.ai! {name}"
 
 @union.workflow
 def main(name: str) -> str:
@@ -39,7 +39,7 @@ environment variable:
 
 ```{code-block} shell
 export UNION_API_KEY="<SECRET>"
-union run --remote hello.py main --name "Union"
+union run --remote hello.py main --name "Union.ai"
 ```
 
 ## Listing and deleting applications

@@ -7,7 +7,7 @@ This example shows how to use a BigQueryTask to execute a query.
 :lines: 7-10
 ```
 
-This is the world's simplest query. Note that in order for registration to work properly, you'll need to give your BigQuery task a name that's unique across your project/domain for your Union deployment.
+This is the world's simplest query. Note that in order for registration to work properly, you'll need to give your BigQuery task a name that's unique across your project/domain for your Union.ai deployment.
 
 ```{rli} https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/bigquery_agent/bigquery_agent/bigquery_agent_example_usage.py
 :language: python

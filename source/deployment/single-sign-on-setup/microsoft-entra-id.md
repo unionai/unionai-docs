@@ -1,9 +1,9 @@
 # Microsoft Entra ID (formerly Azure AD)
 
-To set up your Union instance to use Microsoft Entra ID as the identity provider, follow the directions below.
+To set up your Union.ai instance to use Microsoft Entra ID as the identity provider, follow the directions below.
 
 :::{admonition} Microsoft documentation
-In this article, we cover the same steps as the [Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) Microsoft documentation, but with additional directions specific to Union.
+In this article, we cover the same steps as the [Quickstart: Register an application with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) Microsoft documentation, but with additional directions specific to Union.ai.
 :::
 
 ## Register an Entra ID application
@@ -14,7 +14,7 @@ In this article, we cover the same steps as the [Quickstart: Register an applica
 
 1. Browse to **Identity > Applications > App registrations** and select **New registration**.
 
-1. Under **Name**, enter an appropriate display name. For example, `Union Production`.
+1. Under **Name**, enter an appropriate display name. For example, `Union.ai Production`.
 
 1. Under **Supported account types**, select **Accounts in this organizational directory only**.
 
@@ -30,9 +30,9 @@ To enable the app, in the Microsoft Entra admin center, navigate to **Identity >
 Then, on the **Properties** page, toggle **Visible to users?** to **Yes**.
 :::
 
-## Copy the values needed by the Union team
+## Copy the values needed by the Union.ai team
 
-When registration finishes, the Microsoft Entra admin center will display the app registration's **Overview** page, from which you can copy the Application (client) ID, Directory (tenant) ID, and client secret needed by the Union team.
+When registration finishes, the Microsoft Entra admin center will display the app registration's **Overview** page, from which you can copy the Application (client) ID, Directory (tenant) ID, and client secret needed by the Union.ai team.
 
 ### Application (client) ID and directory (tenant) ID
 
@@ -51,25 +51,25 @@ Copy the **Value** of this secret to a plain text file on your computer.
 
 ![Client secret](/_static/images/user-guide/data-plane-setup/single-sign-on-setup/microsoft-entra-id/entra-id-client-secret.png)
 
-## Share the client secret securely with Union
+## Share the client secret securely with Union.ai
 
-1. Copy the public key provided by Union here: [**public-key.txt**](/_static/public/public-key.txt)
+1. Copy the public key provided by Union.ai here: [**public-key.txt**](/_static/public/public-key.txt)
 
 1. Go to [https://pgptool.org](https://pgptool.org/).
 
 1. Click the **Encrypt** tab.
 
-1. Upload the public key provided by Union under **Receiver's public key**.
+1. Upload the public key provided by Union.ai under **Receiver's public key**.
 
 1. Skip the **Signer’s Private Key** section.
 
 1. Enter the **client secret** in plain text and encrypt it.
 
-1. Download the encrypted text and share it with the Union team over Slack.
+1. Download the encrypted text and share it with the Union.ai team over Slack.
 
 1. Delete the **client secret** from the text file on your computer.
 
-## Share the IDs with Union
+## Share the IDs with Union.ai
 
-Share the **application (client) ID** and **directory (tenant) ID** with the Union team over Slack.
+Share the **application (client) ID** and **directory (tenant) ID** with the Union.ai team over Slack.
 These values do not have to be encrypted.

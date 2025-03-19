@@ -2,11 +2,11 @@
 
 {@@ if serverless @@}
 
-In [Getting started](./index.md) we showed you how to run your first workflow right in the Union interface, in the browser.
+In [Getting started](./index.md) we showed you how to run your first workflow right in the Union.ai interface, in the browser.
 
 {@@ endif @@}
 
-In this section we will set up your local environment so that you can start building and deploying Union workflows from your local machine.
+In this section we will set up your local environment so that you can start building and deploying Union.ai workflows from your local machine.
 
 
 ## Install `uv`
@@ -24,7 +24,7 @@ so you will have to adapt the directions as appropriate.
 
 ## Ensure the correct version of Python is installed
 
-Union requires Python `>=3.9,<3.13`.
+Union.ai requires Python `>=3.9,<3.13`.
 We recommend using `3.12`.
 You can install it with:
 
@@ -62,7 +62,7 @@ This instance of `union` is only used during the configuration step, below, when
 
 ## Configure the `union` CLI
 
-Next, you need to create a configuration file that contains your Union connection information.
+Next, you need to create a configuration file that contains your Union.ai connection information.
 To do this, run the following command:
 
 {@@ if serverless @@}
@@ -70,11 +70,11 @@ To do this, run the following command:
 ```{code-block} shell
 $ union create login --serverless
 ```
-This will create the `~/.union/config.yaml` with the configuration information to connect to Union Serverless.
+This will create the `~/.union/config.yaml` with the configuration information to connect to Union.ai Serverless.
 
 :::{note}
-These directions apply to Union Serverless.
-To configure a connection to your Union instance in Union BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
+These directions apply to Union.ai Serverless.
+To configure a connection to your Union.ai instance in Union.ai BYOC, see the [BYOC version of this page](https://docs.union.ai/byoc/quick-start#configure-the-union-cli).
 :::
 
 {@@ elif byoc @@}
@@ -83,18 +83,18 @@ To configure a connection to your Union instance in Union BYOC, see the [BYOC ve
 $ union create login --host <union-host-url>
 ```
 
-`<union-host-url>` is the URL of your Union instance, mentioned in [Getting started](./index.md#gather-your-credentials).
+`<union-host-url>` is the URL of your Union.ai instance, mentioned in [Getting started](./index.md#gather-your-credentials).
 
-This will create the `~/.union/config.yaml` with the configuration information to connect to your Union instance.
+This will create the `~/.union/config.yaml` with the configuration information to connect to your Union.ai instance.
 
 :::{note}
-These directions apply to Union BYOC, where you connect to your own dedicated Union instance.
-To configure a connection to Union Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
+These directions apply to Union.ai BYOC, where you connect to your own dedicated Union.ai instance.
+To configure a connection to Union.ai Serverless, see the [Serverless version of this page](https://docs.union.ai/serverless/quick-start#configure-the-union-cli).
 :::
 
 {@@ endif @@}
 
-By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union CLI](../../api-reference/union-cli.md) for more details.)
+By default, the `union` CLI will look for a configuration file at `~/.union/config.yaml`. (See [Union.ai CLI](../../api-reference/union-cli.md) for more details.)
 You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
 
 ```{code-block} shell
@@ -109,7 +109,7 @@ $ union --config ~/.my-config-location/my-config.yaml run my_script.py my_workfl
 ```
 
 ```{warning}
-If you have previously used Union, you may have configuration files left over that will interfere with access to Union Serverless through the `union` CLI tool.
+If you have previously used Union.ai, you may have configuration files left over that will interfere with access to Union.ai Serverless through the `union` CLI tool.
 Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 ```
 
@@ -127,13 +127,13 @@ You should get a response like this:
 
 ```{code-block} shell
 $ union info
-╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
+╭────────────────────────────────────────────────────────── Union.ai CLI Info ─────────────────────────────────────────────────────────────╮
 │                                                                                                                                       │
-│ union is the CLI to interact with Union. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│ union is the CLI to interact with Union.ai. Use the CLI to register, create and track task and workflow executions locally and remotely. │
 │                                                                                                                                       │
-│ Union Version    : 0.1.132                                                                                                            │
+│ Union.ai Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │
-│ Union Endpoint   : <union-host-url>                                                                                                   │
+│ Union.ai Endpoint   : <union-host-url>                                                                                                   │
 │ Config Source    : <path-to-config> file                                                                                              │
 │                                                                                                                                       │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
@@ -145,13 +145,13 @@ For more details on connection configuration see [CLI authentication types](../a
 
 ```{code-block} shell
 $ union info
-╭────────────────────────────────────────────────────────── Union CLI Info ─────────────────────────────────────────────────────────────╮
+╭────────────────────────────────────────────────────────── Union.ai CLI Info ─────────────────────────────────────────────────────────────╮
 │                                                                                                                                       │
-│ union is the CLI to interact with Union. Use the CLI to register, create and track task and workflow executions locally and remotely. │
+│ union is the CLI to interact with Union.ai. Use the CLI to register, create and track task and workflow executions locally and remotely. │
 │                                                                                                                                       │
-│ Union Version    : 0.1.132                                                                                                            │
+│ Union.ai Version    : 0.1.132                                                                                                            │
 │ Flytekit Version : 1.14.3                                                                                                             │
-│ Union Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
+│ Union.ai Endpoint   : serverless-1.us-east-2.s.union.ai                                                                                  │
 │ Config Source    : <path-to-config> file                                                                                              │
 │                                                                                                                                       │
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯

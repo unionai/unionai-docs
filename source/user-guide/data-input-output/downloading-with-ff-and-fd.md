@@ -26,7 +26,7 @@ def my_task(ff: FlyteFile):
     print(os.path.isfile(ff.path))  # This will print True as the FlyteFile was downloaded
 ```
 
-Note that we use `ff.path` which is of type `typing.Union[str, os.PathLike]` rather than using `ff` in `os.path.isfile` directly.
+Note that we use `ff.path` which is of type `typing.Union.ai[str, os.PathLike]` rather than using `ff` in `os.path.isfile` directly.
 In the next example, we will see that using `os.path.isfile(ff)` invokes `__fspath__` which downloads the file.
 
 **Implicit downloading by `__fspath__`**
@@ -59,7 +59,7 @@ def my_task(fd: FlyteDirectory):
     print(os.listdir(fd.path))  # This will print the files present in the directory as it has been downloaded
 ```
 
-Similar to how the `path` argument was used above for the `FlyteFile`, note that we use `fd.path` which is of type `typing.Union[str, os.PathLike]` rather than using `fd` in `os.listdir` directly.
+Similar to how the `path` argument was used above for the `FlyteFile`, note that we use `fd.path` which is of type `typing.Union.ai[str, os.PathLike]` rather than using `fd` in `os.listdir` directly.
 Again, we will see that this is because of the invocation of `__fspath__` when `os.listdir(fd)` is called.
 
 **Implicit downloading by `__fspath__`**

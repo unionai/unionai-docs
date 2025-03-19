@@ -1,6 +1,6 @@
 # User management
 
-Union comes with role-based access control management out of the box.
+Union.ai comes with role-based access control management out of the box.
 The system is based on the following concepts:
 
 * **Action**: An action that can be performed by a **user** or **application**.
@@ -21,7 +21,7 @@ For example: `flytesnacks/development`, `flytesnacks/staging`, and `flytesnacks/
 
 ## Actions
 
-The following is the full list of actions available in the Union system:
+The following is the full list of actions available in the Union.ai system:
 
 * `administer_project`: Permission to [archive and update a project](https://docs.flyte.org/en/latest/flytectl/gen/flytectl_update.html) and manage [customizable resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html).
 * `manage_permissions`: Permission to manage user and machine applications and their policy assignments.
@@ -32,7 +32,7 @@ The following is the full list of actions available in the Union system:
 
 ## Built-in policies
 
-Union ships with three built-in policies: **Admin**, **Contributor**, and **Viewer**.
+Union.ai ships with three built-in policies: **Admin**, **Contributor**, and **Viewer**.
 
 * An **Admin** has permission to perform all actions (`administer_project`, `manage_permissions`, `create_flyte_executions`, `register_flyte_inventory`, `view_flyte_executions`, `view_flyte_inventory`) across the organization (in all projects and domains).
 In other words:
@@ -68,7 +68,7 @@ It is possible to create new custom roles and policies.
 Custom roles and policies can, for example, be used to mix and match permissions at the organization, project, or domain level.
 
 Roles and policies are created using the [`uctl` CLI](../../api-reference/uctl-cli/index.md) (not the [`union` CLI](../../api-reference/union-cli.md)).
-Make sure you have the [`uctl` CLI installed and configured to point to your Union instance](../../api-reference/uctl-cli/index.md).
+Make sure you have the [`uctl` CLI installed and configured to point to your Union.ai instance](../../api-reference/uctl-cli/index.md).
 
 
 ### Create a role
@@ -139,7 +139,7 @@ $ uctl append identityassignments \
 
 ## Initial onboarding
 
-The initial Union onboarding process will set up your organization with at least one **Admin** user who will have permission to invite teammates and manage their roles.
+The initial Union.ai onboarding process will set up your organization with at least one **Admin** user who will have permission to invite teammates and manage their roles.
 
 ## Managing users and assigning policies
 
@@ -163,7 +163,7 @@ In the **Add User** dialog, fill in the name and email of the new user and selec
 ![](/_static/images/user-guide/administration/user-management/add-user.png)
 
 The new user should expect to see an email invite from Okta after they have been added through this dialog.
-They should accept the invite and set up a password. At that point, they will be able to access the Union UI.
+They should accept the invite and set up a password. At that point, they will be able to access the Union.ai UI.
 
 ### Changing assigned policies
 

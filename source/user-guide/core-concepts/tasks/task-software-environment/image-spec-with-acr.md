@@ -2,7 +2,7 @@
 
 In this section we explain how to use [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/products/container-registry) to build and deploy task container images using `ImageSpec`.
 
-Before proceeding, make sure that you have [enabled Azure Container Registry](../../../integrations/enabling-azure-resources/enabling-azure-container-registry.md) for you Union installation.
+Before proceeding, make sure that you have [enabled Azure Container Registry](../../../integrations/enabling-azure-resources/enabling-azure-container-registry.md) for you Union.ai installation.
 
 ## Authenticate to the registry
 
@@ -15,7 +15,7 @@ az acr login --name <acrName>
 
 Refer to [Individual login with Microsoft Entra ID](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#individual-login-with-microsoft-entra-id) in the Azure documentation for additional details.
 
-## Register your workflow to Union
+## Register your workflow to Union.ai
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 

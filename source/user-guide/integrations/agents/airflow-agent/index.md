@@ -4,7 +4,7 @@
 This allows you to use the Airflow plugin ecosystem in conjunction with Flyte's powerful task execution and orchestration capabilities.
 
 :::{note}
-The Airflow agent does not support all [Airflow operators](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html). We have tested many, but if you run into issues, please [file a bug report](https://github.com/flyteorg/flyte/issues/new?assignees=&labels=bug%2Cuntriaged&projects=&template=bug_report.yaml&title=%5BBUG%5D+) or reach out to the Union team.
+The Airflow agent does not support all [Airflow operators](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html). We have tested many, but if you run into issues, please [file a bug report](https://github.com/flyteorg/flyte/issues/new?assignees=&labels=bug%2Cuntriaged&projects=&template=bug_report.yaml&title=%5BBUG%5D+) or reach out to the Union.ai team.
 :::
 
 ## Installation
@@ -38,7 +38,7 @@ In some cases, you will need to store credentials in your local environment when
 :::
 
 {@@ if byoc @@}
-## Union cluster deployment
+## Union.ai cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the Union.ai team to enable it in your cluster.
 {@@ endif @@}

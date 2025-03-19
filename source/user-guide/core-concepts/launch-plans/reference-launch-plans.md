@@ -59,5 +59,5 @@ def run_simple_wf() -> float:
 ```{code-block} shell
 union register simple_wf_ref_lp.py
 ```
-6. In the Union UI, run the workflow `run_simple_wf`.
+6. In the Union.ai UI, run the workflow `run_simple_wf`.
 

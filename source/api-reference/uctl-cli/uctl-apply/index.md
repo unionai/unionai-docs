@@ -5,7 +5,7 @@ tasks/workflows/launchplans/executions/project.
 
 ## Synopsis
 
-Eg: Update Union resources of app for a tenant: :
+Eg: Update Union.ai resources of app for a tenant: :
 
     uctl apply app --appSpecFile Tenant-AppSpec.yaml
 
