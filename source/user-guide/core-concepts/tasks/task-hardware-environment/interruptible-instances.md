@@ -10,7 +10,7 @@ An interruptible instance is a machine instance made available to your cluster b
 As a result, interruptible instances are cheaper than regular instances.
 In order to use an interruptible instance for a compute workload you have to be prepared for the possibility that an attempt to run the workload could fail due to lack of available resources and will need to be retried.
 
-When onboarding your organization onto Union.ai, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
+When onboarding your organization onto Union, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
 Among the options available is the choice of whether to use interruptible instances.
 
 For each interruptible instance node group that you specify, an additional on-demand node group (though identical in every other respect to the interruptible one) will also be configured.
@@ -48,4 +48,4 @@ Clearly, this may be a problem for time-critical tasks.
 When this happens, the task may hang indefinitely until an interruptible instance becomes available.
 Note that this is a distinct failure mode from the previous one where an interruptible node is successfully scheduled but is then interrupted.
 
-In general, Union.ai recommends that you use interruptible instances whenever available, but only for tasks that are not time-critical.
+In general, Union recommends that you use interruptible instances whenever available, but only for tasks that are not time-critical.

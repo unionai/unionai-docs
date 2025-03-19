@@ -17,11 +17,11 @@ The height of each bar is the sum of costs across each 15-minute interval.
 
 ## Suggested Usage
 
-Cost allocation is designed to show where costs are being incurred and to highlight opportunities for cost reduction through right-sizing resource requests. All tables are sorted in descending order of total cost, so users can scan across the rows to quickly identify expensive workloads with low memory, CPU, or GPU utilization. Steps can then be taken to reduce the resource requests for particular workflows. Union.ai's task-level monitoring functionality can be used to view granular resource usage for individual tasks, making this exercise straightforward.
+Cost allocation is designed to show where costs are being incurred and to highlight opportunities for cost reduction through right-sizing resource requests. All tables are sorted in descending order of total cost, so users can scan across the rows to quickly identify expensive workloads with low memory, CPU, or GPU utilization. Steps can then be taken to reduce the resource requests for particular workflows. Union's task-level monitoring functionality can be used to view granular resource usage for individual tasks, making this exercise straightforward.
 
 ## Accessing Cost Data
 
-Cost data is accessed by selecting the **Cost** button in the top right of the Union.ai interface:
+Cost data is accessed by selecting the **Cost** button in the top right of the Union interface:
 
 ![Cost link](/_static/images/user-guide/administration/cost-allocation/cost-link.png)
 
@@ -46,7 +46,7 @@ It includes information on total cost of worker nodes, total uptime by node type
 
 ### Invoices
 
-This tab displays the total cost of running workflows and tasks in your Union.ai installation broken out by invoice.
+This tab displays the total cost of running workflows and tasks in your Union installation broken out by invoice.
 
 ![Invoices](/_static/images/user-guide/administration/cost-allocation/invoices.png)
 
@@ -99,7 +99,7 @@ Overhead cost allocation is an approximation and might not perfectly reflect the
 In particular, overhead costs are only evaluated within the scope of a single 15-second scrape interval.
 This means that the system can still fail to allocate costs to nodes which are left running after a given execution completes.
 
-Union.ai services and fees such as platform fees are not reflected in the dashboards.
+Union services and fees such as platform fees are not reflected in the dashboards.
 Cost is scoped to nodes that have been used in running executions.
 The accuracy of cost allocation depends on the accuracy of the underlying resource metrics as well as per-node pricing information.
 
@@ -114,4 +114,4 @@ Future enhancements may include:
 * Data export
 * Per-task cost allocation granularity
 
-If you have an idea for what you and your business would like to see, please reach out to the Union.ai team.
+If you have an idea for what you and your business would like to see, please reach out to the Union team.

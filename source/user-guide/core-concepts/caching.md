@@ -1,6 +1,6 @@
 # Caching
 
-Union.ai allows you to cache the output of nodes ([tasks](./tasks/index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
+Union allows you to cache the output of nodes ([tasks](./tasks/index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
 
 Caching is useful when many executions of identical code with the same input may occur.
 
@@ -88,14 +88,14 @@ If not set, the version will be generated based on the specified cache policies.
 When using `cache=True`, [as shown below](#enabling-caching-with-the-default-configuration), the [default cache policy](#default-cache-policy) generates the version.
 
 * `serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
-When enabled, Union.ai ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
+When enabled, Union ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
 This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
 If not set, cache serialization is disabled.
 
-* `ignored_inputs` (`Union.ai[Tuple[str, ...], str]`): Input variables that should not be included when calculating the hash for the cache.
+* `ignored_inputs` (`Union[Tuple[str, ...], str]`): Input variables that should not be included when calculating the hash for the cache.
 If not set, no inputs are ignored.
 
-* `policies` (`Optional[Union.ai[List[CachePolicy], CachePolicy]]`): A list of [CachePolicy]() objects used for automatic version generation.
+* `policies` (`Optional[Union[List[CachePolicy], CachePolicy]]`): A list of [CachePolicy]() objects used for automatic version generation.
 If no `version` is specified and one or more polices are specified then these policies automatically generate the version.
 Policies are applied in the order they are specified to produce the final `version`.
 If no `version` is specified and no policies are specified then the [default cache policy](#default-cache-policy) generates the version.
@@ -170,18 +170,18 @@ You can also trigger cache invalidation when launching an execution from the UI 
 
 ### Overwrite cache programmatically
 
-When using `Union.aiRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
+When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
 
 ```{code-block} python
 {@@ if byoc @@}
 from flytekit.configuration import Config
 {@@ endif @@}
-from union.remote import Union.aiRemote
+from union.remote import UnionRemote
 
 {@@ if serverless @@}
-remote = Union.aiRemote()
+remote = UnionRemote()
 {@@ elif byoc @@}
-remote = Union.aiRemote(
+remote = UnionRemote(
     config=Config.auto(),
     default_project="flytesnacks",
     default_domain="development"
@@ -194,7 +194,7 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 
 ## How caching works
 
-When a node (with caching enabled) completes on Union.ai, a **key-value entry** is created in the **caching table**. The **value** of the entry is the output.
+When a node (with caching enabled) completes on Union, a **key-value entry** is created in the **caching table**. The **value** of the entry is the output.
 The **key** is composed of:
 
 * **Project:** A task run under one project cannot use the cached task execution from another project which would cause inadvertent results between project teams that could result in data corruption.
@@ -204,7 +204,7 @@ If the version changes (either explicitly or automatically), the cache entry is 
 * **Node signature:** The cache is specific to the signature associated with the execution.
 The signature comprises the name, input parameter names/types, and the output parameter name/type of the node.
 If the signature changes, the cache entry is invalidated.
-* **Input values:** A well-formed Union.ai node always produces deterministic outputs.
+* **Input values:** A well-formed Union node always produces deterministic outputs.
 This means that, given a set of input values, every execution should have identical outputs.
 When an execution is cached, the input values are part of the cache key.
 If a node is run with a new set of inputs, a new cache entry is created for the combination of that particular entity with those particular inputs.
@@ -244,15 +244,15 @@ When a node's behavior does change though, you can bump `version` to invalidate 
 
 ### Node signature
 
-If you modify the signature of a node by adding, removing, or editing input parameters or output return types, Union.ai invalidates the cache entries for that node.
-During the next execution, Union.ai executes the process again and caches the outputs as new values stored under an updated key.
+If you modify the signature of a node by adding, removing, or editing input parameters or output return types, Union invalidates the cache entries for that node.
+During the next execution, Union executes the process again and caches the outputs as new values stored under an updated key.
 
 {@@ if byoc @@}
 
 
 ### Caching when running locally
 
-The description above applies to caching when executing a node remotely on your Union.ai cluster.
+The description above applies to caching when executing a node remotely on your Union cluster.
 Caching is also available [when running on a local cluster](../development-cycle/running-in-a-local-cluster.md).
 
 When running locally the caching mechanism is the same except that the cache key does not include **project** or **domain** (since there are none).
@@ -303,20 +303,20 @@ Concurrently evaluated tasks will wait for completion of the first instance befo
 ### How does cache serialization work?
 
 The cache serialization paradigm introduces a new artifact reservation system. Executions with cache serialization enabled use this reservation system to acquire an artifact reservation, indicating that they are actively evaluating a node, and release the reservation once the execution is completed.
-Union.ai uses a clock-skew algorithm to define reservation timeouts. Therefore, executions are required to periodically extend the reservation during their run.
+Union uses a clock-skew algorithm to define reservation timeouts. Therefore, executions are required to periodically extend the reservation during their run.
 
 The first execution of a serializable node will successfully acquire the artifact reservation.
 Execution will be performed as usual and upon completion, the results are written to the cache, and the reservation is released.
 Concurrently executed node instances (those that would otherwise run in parallel with the initial execution) will observe an active reservation, in which case these instances will wait until the next reevaluation and perform another check.
 Once the initial execution completes, they will reuse the cached results as will any subsequent instances of the same node.
 
-Union.ai handles execution failures using a timeout on the reservation.
+Union handles execution failures using a timeout on the reservation.
 If the execution currently holding the reservation fails to extend it before it times out, another execution may acquire the reservation and begin processing.
 
 
 ## Caching of offloaded objects
 
-In some cases, the default behavior displayed by Union.ai’s caching feature might not match the user's intuition.
+In some cases, the default behavior displayed by Union’s caching feature might not match the user's intuition.
 For example, this code makes use of pandas dataframes:
 
 ```{code-block} python
@@ -338,9 +338,9 @@ def wf(a: int, b: str):
     v = bar(df=df)
 ```
 
-If run twice with the same inputs, one would expect that `bar` would trigger a cache hit, but that’s not the case because of the way dataframes are represented in Union.ai.
+If run twice with the same inputs, one would expect that `bar` would trigger a cache hit, but that’s not the case because of the way dataframes are represented in Union.
 
-However, Union.ai provides a new way to control the caching behavior of literals.
+However, Union provides a new way to control the caching behavior of literals.
 This is done via a `typing.Annotated` call on the node signature.
 For example, in order to cache the result of calls to `bar`, you can rewrite the code above like this:
 

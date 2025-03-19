@@ -1,7 +1,7 @@
 # Customizing task resources
 
 When defining a task function, you can specify resource requirements for the pod that runs the task.
-Union.ai will take this into account to ensure that the task pod is scheduled to run on a Kubernetes node that meets the specified resource profile.
+Union will take this into account to ensure that the task pod is scheduled to run on a Kubernetes node that meets the specified resource profile.
 
 Resources are specified in the `@union.task` decorator. Here is an example:
 
@@ -34,7 +34,7 @@ The `requests` and `limits` settings each takes a [`Resource`](https://docs.flyt
 
 Note that CPU and GPU allocations can be specified either as whole numbers or in millicores (`m`). For example, `cpu="2500m"` means two and a half CPU cores and `gpu="3000m"`, meaning three GPU cores.
 
-The type of ephemeral storage used depends on the node type and configuration you request from the Union.ai team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the Union.ai team configure your cluster to use the attached NVMe as ephemeral storage for that node type.
+The type of ephemeral storage used depends on the node type and configuration you request from the Union team. By default, all nodes will use network-attached storage for ephemeral storage. However, if a node type has attached NVMe SSD storage, you can request that the Union team configure your cluster to use the attached NVMe as ephemeral storage for that node type.
 
 The `requests` setting tells the system that the task requires _at least_ the resources specified and therefore the pod running this task should be scheduled only on a node that meets or exceeds the resource profile specified.
 
@@ -91,11 +91,11 @@ ephemeral storage, we recommend being explicit with the ephemeral storage you re
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
 
 To remedy such a failure, you should make sure that the appropriate node types are:
-* Physically available in your cluster, meaning you have arranged with the Union.ai team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
+* Physically available in your cluster, meaning you have arranged with the Union team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
-To make changes to your cluster configuration, go to the [Union.ai Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
+To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 
 See also [Customizing Task Resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html#task-resources) in the Flyte OSS docs.
 

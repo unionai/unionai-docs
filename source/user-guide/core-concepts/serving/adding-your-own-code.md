@@ -23,7 +23,7 @@ The file `app.py` contains the app declaration:
 ```{code-block} python
 :caption: app.py
 
-"""A Union.ai app with custom code"""
+"""A Union app with custom code"""
 
 import os
 import union

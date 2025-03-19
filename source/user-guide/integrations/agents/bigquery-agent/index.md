@@ -47,7 +47,7 @@ $ union run bigquery_task.py bigquery_doge_coin --version 10
 ```
 
 {@@ if byoc @@}
-## Union.ai cluster deployment
+## Union cluster deployment
 
-After you have finished testing the agent locally, contact the Union.ai team to enable it in your cluster.
+After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
 {@@ endif @@}

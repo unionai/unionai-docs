@@ -19,7 +19,7 @@ This section describes how to enable integrations with AWS and GCP cloud resourc
 
 ## Additional integrations
 
-A variety of agents and plugins enable you to integrate Union.ai with additional external services. If you don't see the integration you need, you can [create your own](./agents/index.md#creating-a-new-agent).
+A variety of agents and plugins enable you to integrate Union with additional external services. If you don't see the integration you need, you can [create your own](./agents/index.md#creating-a-new-agent).
 
 ### AI integrations
 

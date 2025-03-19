@@ -1,12 +1,12 @@
 # Serving a Model from a Workflow With FastAPI
 
-In this section, we create a Union.ai app to serve a scikit-learn model created by a Union.ai workflow
+In this section, we create a Union app to serve a scikit-learn model created by a Union workflow
 using `FastAPI`.
 
 ## Example app
 
-In this example, we first use a Union.ai workflow to train a model and output it as a Union.ai `Artifact`.
-We then use a Union.ai app to serve the model using `FastAPI`.
+In this example, we first use a Union workflow to train a model and output it as a Union `Artifact`.
+We then use a Union app to serve the model using `FastAPI`.
 
 In a local directory, create the following files:
 
@@ -24,7 +24,7 @@ by the FastAPI app.
 ```{code-block} python
 :caption: app.py
 
-"""A Union.ai app that uses FastAPI to serve model created by a Union.ai workflow."""
+"""A Union app that uses FastAPI to serve model created by a Union workflow."""
 
 import os
 import union
@@ -103,13 +103,13 @@ async def predict(x: float, y: float) -> float:
 
 ## Training workflow
 
-The training workflow trains a random forest regression and saves it to an Union.ai
+The training workflow trains a random forest regression and saves it to an Union
 `Artifact`.
 
 ```{code-block} python
 :caption: train_wf.py
 
-"""A Union.ai workflow that trains a model."""
+"""A Union workflow that trains a model."""
 
 import os
 from pathlib import Path
@@ -158,7 +158,7 @@ $ union run --remote train_wf.py train_model
 ```
 
 This task trains a `RandomForestRegressor`, saves it to a file, and uploads it to
-a Union.ai `Artifact`. This `Union.ai` Artifact is retrieved layer by the FastAPI app for
+a Union `Artifact`. This `Union` Artifact is retrieved layer by the FastAPI app for
 serving the model.
 
 ![scikit-learn Artifact](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)

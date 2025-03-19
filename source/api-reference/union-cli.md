@@ -1,6 +1,6 @@
-# Union.ai CLI
+# Union CLI
 
-The `union` CLI is the main tool developers use to interact with Union.ai on the command line.
+The `union` CLI is the main tool developers use to interact with Union on the command line.
 
 ## Installation
 
@@ -15,21 +15,21 @@ This will install the `union` CLI globally on your system [as a `uv` tool](https
 
 ## Configure the `union` CLI
 
-To configure the `union` CLI to connect to Union.ai Serverless, run the following command:
+To configure the `union` CLI to connect to Union Serverless, run the following command:
 
 ```{code-block} shell
 $ union create login --serverless
 ```
 
-To configure the `union` CLI to connect to you Union.ai BYOC instance, run the following command:
+To configure the `union` CLI to connect to you Union BYOC instance, run the following command:
 
 ```{code-block} shell
 $ union create login --host <union-host-url>
 ```
 
-where `<union-host-url>` is the URL of your Union.ai instance.
+where `<union-host-url>` is the URL of your Union instance.
 
-These command will create the file `~/.union/config.yaml` with the configuration information to connect to the desired Union.ai instance (Serverless or your own specific BYOC).
+These command will create the file `~/.union/config.yaml` with the configuration information to connect to the desired Union instance (Serverless or your own specific BYOC).
 
 See [Quick start](../quick-start.md) for more details.
 

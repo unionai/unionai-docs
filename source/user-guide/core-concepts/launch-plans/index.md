@@ -41,13 +41,13 @@ For more details, see [Running launch plans](./running-launch-plans.md).
 
 In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using `union` or `uctl` (see [Running your code](../../development-cycle/running-your-code.md)).
 
-### Registering a launch plan in Python with `Union.aiRemote`
+### Registering a launch plan in Python with `UnionRemote`
 
-As with all Union.ai command line actions, you can also perform registration of launch plans programmatically with [`Union.aiRemote`](../../development-cycle/union-remote/index.md), specifically, `Union.aiRemote.register_launch_plan`.
+As with all Union command line actions, you can also perform registration of launch plans programmatically with [`UnionRemote`](../../development-cycle/union-remote/index.md), specifically, `UnionRemote.register_launch_plan`.
 
 ### Results of registration
 
-When the code above is registered to Union.ai, it results in the creation of four objects:
+When the code above is registered to Union, it results in the creation of four objects:
 
 * The task `workflows.launch_plan_example.my_task`
 * The workflow `workflows.launch_plan_example.my_workflow`

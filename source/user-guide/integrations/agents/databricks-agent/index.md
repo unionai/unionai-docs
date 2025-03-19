@@ -1,6 +1,6 @@
 # Databricks agent
 
-Union.ai can be integrated with the [Databricks](https://www.databricks.com/) service,
+Union can be integrated with the [Databricks](https://www.databricks.com/) service,
 enabling you to submit Spark jobs to the Databricks platform.
 
 ## Installation
@@ -46,7 +46,7 @@ $ union run --raw-output-data-prefix s3://my-s3-bucket/databricks databricks_tas
 ```
 
 {@@ if byoc @@}
-## Union.ai cluster deployment
+## Union cluster deployment
 
-After you have finished testing the agent locally, contact the Union.ai team to enable it in your cluster.
+After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
 {@@ endif @@}

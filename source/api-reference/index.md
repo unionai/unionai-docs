@@ -1,6 +1,6 @@
 # API reference
 
-This section provides the reference material for all Union.ai APIs, SDKs and CLIs.
+This section provides the reference material for all Union APIs, SDKs and CLIs.
 
 To get started, install `union`:
 
@@ -8,24 +8,24 @@ To get started, install `union`:
 pip install -U union
 ```
 
-This will install the Union.ai SDK and the `union` CLI.
+This will install the Union SDK and the `union` CLI.
 
 ::::{grid}
 
-:::{grid-item-card} {octicon}`workflow` Union.ai SDK
+:::{grid-item-card} {octicon}`workflow` Union SDK
 :link: union-sdk/index
 :link-type: doc
 :columns: 12
 
-The Union.ai SDK provides the Python API for building Union.ai workflows.
+The Union SDK provides the Python API for building Union workflows.
 :::
 
-:::{grid-item-card} {octicon}`terminal` Union.ai CLI
+:::{grid-item-card} {octicon}`terminal` Union CLI
 :link: union-cli
 :link-type: doc
 :columns: 6
 
-The Union.ai CLI is the command-line interface for interacting with your Union.ai instance.
+The Union CLI is the command-line interface for interacting with your Union instance.
 :::
 
 :::{grid-item-card} {octicon}`terminal` Uctl CLI
