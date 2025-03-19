@@ -47,14 +47,14 @@ def map_interest_wf() -> list[float]:
 You can run the `map_interest` workflow locally:
 
 ```shell
-union run map_interest_wf.py map_interest_wf
+$ union run map_interest_wf.py map_interest_wf
 ```
 
 
 You can also run the `map_interest` workflow remotely on {{< key product_name >}}:
 
 ```shell
-union run --remote map_interest_wf.py map_interest_wf
+$ union run --remote map_interest_wf.py map_interest_wf
 ```
 
 <!-- TODO: Remove up the mention of Flytesnacks below -->
