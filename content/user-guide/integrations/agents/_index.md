@@ -4,6 +4,8 @@ weight: 4
 variants: +flyte -serverless +byoc +byok
 ---
 
+
+<!-- Check for vartiant accuracy -->
 # Agents
 
 Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
@@ -25,7 +27,7 @@ Alternatively, you can also create your own agent.
 
 ## Creating a new agent
 
-You can implement an agent as a Python class, test it locally, and have the Union team enable it in your Union deployment.
+You can implement an agent as a Python class, test it locally, and have the {{< key product_name >}} team enable it in your {{< key product_name >}} deployment.
 Your teammates will then be able to create tasks of the corresponding task type to connect to the external service.
 
 There are two types of agents: **async** and **sync**.
@@ -57,16 +59,16 @@ For an example implementation, see the [ChatGPT agent code](https://github.com/f
 
 ### Testing your agent locally
 
-To test your agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/f99d50e4c71a77b8f1c9f8e0fe7aa402e1d1b910/flytekit/extend/backend/base_agent.py#L316). This mixin can handle both asynchronous tasks and synchronous tasks and allows Flytekit to mimic FlytePropeller's behavior in calling the agent.
+To test your agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/f99d50e4c71a77b8f1c9f8e0fe7aa402e1d1b910/flytekit/extend/backend/base_agent.py#L316). This mixin can handle both asynchronous tasks and synchronous tasks and allows {{< key kit_name >}} to mimic FlytePropeller's behavior in calling the agent.
 
 For testing examples, see the [BigQuery agent](./bigquery-agent/_index.md#local-testing) and [Databricks agent](./databricks-agent/_index.md#local-testing) documentation.
 
 {{< variant byoc >}}
 {{< markdown >}}
 
-### Enabling your agent in your Union deployment
+### Enabling your agent in your {{< key product_name >}} deployment
 
-After you have finished testing your agent locally, you can contact the Union team to enable the agent in your Union deployment to use it in production.
+After you have finished testing your agent locally, you can contact the {{< key product_name >}} team to enable the agent in your {{< key product_name >}} deployment to use it in production.
 
 {{< /markdown >}}
 {{< /variant >}}

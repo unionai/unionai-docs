@@ -1,16 +1,16 @@
 ---
 title: Serving
 weight: 6
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Serving
 
-Union lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
+{{< key product_name >}} lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
 using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne).
 
 > [!WARNING]
-> Serving on Union is an experimental feature. The API is subject to change.
+> Serving on {{< key product_name >}} is an experimental feature. The API is subject to change.
 
 
 ## Example app
@@ -30,7 +30,7 @@ In a local directory, create the following file:
 The file `app.py` contains the app declaration:
 
 ```python
-"""A simple Union app using Streamlit"""
+"""A simple {{< key product_name >}} app using Streamlit"""
 
 import union
 import os
@@ -62,11 +62,11 @@ app = union.app.App(
 Here the `App` constructor is initialized with the following parameters:
 
 * `name`: The name of the app. This name will be displayed in app listings (via CLI and UI) and used to refer to the app when deploying and stopping.
-* `container_image`: The container image that will be used to for the container that will run the app. Here we use a prebuilt container provided by Union that support Streamlit.
+* `container_image`: The container image that will be used to for the container that will run the app. Here we use a prebuilt container provided by {{< key product_name >}} that support Streamlit.
 * `args`: The command that will be used within the container to start the app. The individual strings in this array will be concatenated and the invoked as a single command.
 * `port`: The port of the app container from which the app will be served.
 * `limits`: A `union.Resources` object defining the resource limits for the app container.
-  The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in Union workflows.
+  The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in {{< key product_name >}} workflows.
   See [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details.
 
 The parameters above are the minimum needed to initialize the app.
@@ -75,7 +75,7 @@ There are a few additional available parameters that we do not use in this examp
 
 * `include`: A list of files to be added to the container at deployment time, containing the custom code that defines the specific functionality of your app.
 * `inputs`: A `List` of `union.app.Input` objects. Used to provide default inputs to the app on startup.
-* `requests`: A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in Union workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
+* `requests`: A `flytekit.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in {{< key product_name >}} workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
 * `min_replicas`: The minimum number of replica containers permitted for this app.
   This defines the lower bound for auto-scaling the app. The default is 0 <!-- TODO: (see [App autoscaling]() for details) -->.
 * `max_replicas`: The maximum number of replica containers permitted for this app.
@@ -116,7 +116,7 @@ Click on the displayed endpoint to go to the app:
 
 ## Viewing deployed apps
 
-Go to **Apps** in the left sidebar in Union to see a list of all your deployed apps:
+Go to **Apps** in the left sidebar in {{< key product_name >}} to see a list of all your deployed apps:
 
 ![Apps list](/_static/images/user-guide/core-concepts/serving/apps-list.png)
 
@@ -128,7 +128,7 @@ This will take you to the **App view**:
 
 Buttons to **Copy Endpoint** and **Start app** are available at the top of the view.
 
-You can also view all apps deployed in your Union instance from the command-line with:
+You can also view all apps deployed in your {{< key product_name >}} instance from the command-line with:
 
 ```shell
 $ union get apps
@@ -156,4 +156,4 @@ To stop an app from the command-line, perform the following command:
 $ union stop apps --name APP_NAME
 ```
 
-`APP_NAME` is the name of an app deployed on the Union instance.
+`APP_NAME` is the name of an app deployed on the {{< key product_name >}} instance.

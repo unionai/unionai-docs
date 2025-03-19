@@ -34,7 +34,7 @@ class BigQueryTask(AsyncAgentExecutorMixin, SQLTask[BigQueryConfig]):
         ...
 ```
 
-Flytekit will automatically use the agent to run the task in the local execution.
+{{< key kit_name >}} will automatically use the agent to run the task in the local execution.
 ```python
 bigquery_doge_coin = BigQueryTask(
     name=f"bigquery.doge_coin",
@@ -54,9 +54,9 @@ $ union run bigquery_task.py bigquery_doge_coin --version 10
 {{< variant byoc >}}
 {{< markdown >}}
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -4,6 +4,9 @@ weight: 1
 variants: +flyte +serverless +byoc +byok
 ---
 
+
+<!-- TODO: CHeck for variant accuracy -->
+
 # FlyteFile and FlyteDirectory
 
 {{< variant flyte >}}
@@ -89,11 +92,11 @@ def normalize_columns(
         return union.FlyteFile(path=str(out_path))
 ```
 
-When the image URL is sent to the task, the Flytekit engine translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
+When the image URL is sent to the task, the system translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
 
 If the `output_location` argument is specified, it will be passed to the `remote_path` argument of `FlyteFile`, which will use that path as the storage location instead of a random location (Flyte's object store).
 
-When this task finishes, the Flytekit engine returns the `FlyteFile` instance, uploads the file to the location, and creates a blob literal pointing to it.
+When this task finishes, the system returns the `FlyteFile` instance, uploads the file to the location, and creates a blob literal pointing to it.
 
 Lastly, define a workflow. The `normalize_csv_files` workflow has an `output_location` argument which is passed to the `location` input of the task. If it's not an empty string, the task attempts to upload its file to that location.
 
@@ -358,19 +361,19 @@ if __name__ == "__main__":
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-In Union, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
+In {{< key product_name >}}, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
 
-The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the Union object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
+The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the {{< key product_name >}} object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, the Union SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
+Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
 
 ## How the classes work
 
 The classes work by wrapping a file or directory location path and, if necessary, maintaining the persistence of the referenced file or directory across task containers.
 
-When you return a `FlyteFile` (or `FlyteDirectory`) object from a task, Union checks to see if the underlying file or directory is local to the task container or if it already exists in a remote location.
+When you return a `FlyteFile` (or `FlyteDirectory`) object from a task, {{< key product_name >}} checks to see if the underlying file or directory is local to the task container or if it already exists in a remote location.
 
-If it is local to the source container, then Union automatically uploads it to an object store so that it is not lost when the task container is discarded on task completion.
+If it is local to the source container, then {{< key product_name >}} automatically uploads it to an object store so that it is not lost when the task container is discarded on task completion.
 If the file or directory is already remote, then no upload is performed.
 
 When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the location of the source file (or directory) is available within the object and it can be downloaded or streamed.
@@ -378,7 +381,7 @@ When the `FlyteFile` (or `FlyteDirectory`) is passed into the next task, the loc
 ## Local examples
 
 > [!NOTE] Local means local to the container
-> The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in Union.
+> The terms _local file_ and _local_directory_ in this section refer to a file or directory local to the container running a task in {{< key product_name >}}.
 > They do not refer to a file or directory on your local machine.
 
 ### Local file example
@@ -405,13 +408,13 @@ def wf():
     task_2(ff=ff)
 ```
 
-Union handles the passing of the `FlyteFile` `ff` in the workflow `wf` from `task_1` to `task_2`:
+{{< key product_name >}} handles the passing of the `FlyteFile` `ff` in the workflow `wf` from `task_1` to `task_2`:
 
 * The `FlyteFile` object is initialized with the path (local to the `task_1` container) of the file you wish to share.
-* When the `FlyteFile` is passed out of `task_1`, Union uploads the local file to a unique location in the Union object store. A randomly generated, universally unique location is used to ensure that subsequent uploads of other files never overwrite each other.
+* When the `FlyteFile` is passed out of `task_1`, {{< key product_name >}} uploads the local file to a unique location in the {{< key product_name >}} object store. A randomly generated, universally unique location is used to ensure that subsequent uploads of other files never overwrite each other.
 * The object store location is used to initialize the URI attribute of a Flyte `Blob` object. Note that Flyte objects are not Python objects. They exist at the workflow level and are used to pass data between task containers. For more details, see [Flyte Core Language Specification > Literals](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto).
 * The `Blob` object is passed to `task_2`.
-* Because the type of the input parameter of `task_2` is `FlyteFile`, Union converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
+* Because the type of the input parameter of `task_2` is `FlyteFile`, {{< key product_name >}} converts the `Blob` back into a `FlyteFile` and sets the `remote_source` attribute of that `FlyteFile` to the URI of the `Blob` object.
 * Inside `task_2` you can now perform a [`FlyteFile.open()`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.types.file.FlyteFile.html#flytekit.types.file.FlyteFile.open) and read the file contents.
 
 ### Local directory example
@@ -456,10 +459,10 @@ def workflow():
 {{< markdown >}}
 
 > [!NOTE] Upload location
-> With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
+> With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
 >
-> With Union BYOC, the upload location is configurable.
-> See [FlyteFile and FLyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+> With {{< key product_name >}} BYOC, the upload location is configurable.
+> See [FlyteFile and FlyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -470,12 +473,12 @@ def workflow():
 ## Changing the data upload location
 
 > [!NOTE] Upload location
-> With Union Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local
-> files is always a randomly generated (universally unique) location in Union's internal object store. It cannot be changed.
+> With {{< key product_name >}} Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local
+> files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
 >
-> With Union BYOC, the upload location is configurable.
+> With {{< key product_name >}} BYOC, the upload location is configurable.
 
-By default, Union uploads local files or directories to the default **raw data store** (Union's dedicated internal object store).
+By default, {{< key product_name >}} uploads local files or directories to the default **raw data store** ({{< key product_name >}}'s dedicated internal object store).
 However, you can change the upload location by setting the raw data prefix to your own bucket or specifying the `remote_path` for a `FlyteFile` or `FlyteDirectory`.
 
 > [!NOTE] Setting up your own object store bucket
@@ -492,7 +495,7 @@ This setting can be done at the workflow level on registration or per execution 
 
 <!-- TODO See [Raw data prefix]() for more information. -->
 
-Union will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
+{{< key product_name >}} will create a directory with a unique, random name in your bucket for each `FlyteFile` or `FlyteDirectory` data write to guarantee that you never overwrite your data.
 
 ### Specifying `remote_path` for a `FlyteFile` or `FlyteDirectory`
 
@@ -510,7 +513,7 @@ If you specify the `remote_path` when initializing your `FlyteFile` (or `FlyteDi
 ### Remote file example
 
 In the example above, we started with a local file.
-To preserve that file across the task boundary, Union uploaded it to the Union object store before passing it to the next task.
+To preserve that file across the task boundary, {{< key product_name >}} uploaded it to the {{< key product_name >}} object store before passing it to the next task.
 
 You can also _start with a remote file_, simply by initializing the `FlyteFile` object with a URI pointing to a remote source. For example:
 
@@ -650,7 +653,7 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [Union SDK](../../api-reference/union-sdk/_index.md) defines some aliases of `FlyteFile` with specific type annotations.
+The [{{< key kit_name >}} SDK](../../api-reference/union-sdk/_index.md) defines some aliases of `FlyteFile` with specific type annotations.
 Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/_index.md#file-type):
 
 * `HDF5EncodedFile`

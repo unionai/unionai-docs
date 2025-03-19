@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Details of union run
 
-The `union run` command is used to run a specific workflow or task in your local Python environment or on Union.
+The `union run` command is used to run a specific workflow or task in your local Python environment or on {{< key product_name >}}.
 In this section we will discuss some of the details of how and why to use it.
 
 ## Passing parameters

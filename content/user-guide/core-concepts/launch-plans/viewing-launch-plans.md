@@ -66,8 +66,8 @@ See the [Uctl CLI](../../../api-reference/uctl-cli/_index.md) for more details.
 {{< /markdown >}}
 {{< /variant >}}
 
-## Viewing launch plans in Python with `UnionRemote`
+## Viewing launch plans in Python with `{{< key kit_remote >}}`
 
-Use the method `UnionRemote.client.list_launch_plans_paginated` to get the list of launch plans.
+Use the method `{{< key kit_remote >}}.client.list_launch_plans_paginated` to get the list of launch plans.
 
 <!-- TODO need to add and link to full UnionRemote documentation to Union docs -- current UnionRemote page does not document all launch plan methods. -->

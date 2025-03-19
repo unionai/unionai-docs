@@ -15,6 +15,7 @@ When you create a reference launch plan, be sure to verify that the workflow int
 
 ## Example
 
+<!-- Remove the mention of Flytesnacks below -->
 In this example, we create a reference launch plan for the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/master/examples/basics/basics/workflow.py#L25) workflow from the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).
 
 1. Clone the Flytesnacks repository:
@@ -69,5 +70,5 @@ def run_simple_wf() -> float:
 union register simple_wf_ref_lp.py
 ```
 
-6. In the Union UI, run the workflow `run_simple_wf`.
+6. In the {{< key product_name >}} UI, run the workflow `run_simple_wf`.
 

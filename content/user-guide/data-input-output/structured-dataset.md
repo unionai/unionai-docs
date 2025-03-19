@@ -31,6 +31,8 @@ This example demonstrates how to work with a structured dataset using {{< key pr
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: Remove mention of Flytesnacks repos below -->
+
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -48,7 +50,9 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
+import flytekit as fl
 import union
+
 from flytekit.models import literals
 from flytekit.models.literals import StructuredDatasetMetadata
 from flytekit.types.structured.structured_dataset import (
@@ -243,7 +247,7 @@ The `encode` function converts NumPy array to an intermediate format (parquet fi
 class NumpyEncodingHandler(StructuredDatasetEncoder):
     def encode(
         self,
-        ctx: union.FlyteContext,
+        ctx: fl.FlyteContext,
         structured_dataset: StructuredDataset,
         structured_dataset_type: union.StructuredDatasetType,
     ) -> literals.StructuredDataset:
@@ -261,16 +265,17 @@ class NumpyEncodingHandler(StructuredDatasetEncoder):
         )
 ```
 
+<!-- TODO: clean up code -->
 ### NumPy decoder
 
-Extend {py:class}`StructuredDatasetDecoder` and implement the {py:meth}`~StructuredDatasetDecoder.decode` function.
-The {py:meth}`~StructuredDatasetDecoder.decode` function converts the parquet file to a `numpy.ndarray`.
+Extend `StructuredDatasetDecoder` and implement the `StructuredDatasetDecoder.decode` function.
+The `StructuredDatasetDecoder.decode` function converts the parquet file to a `numpy.ndarray`.
 
 ```python
 class NumpyDecodingHandler(StructuredDatasetDecoder):
     def decode(
         self,
-        ctx: union.FlyteContext,
+        ctx: fl.FlyteContext,
         flyte_value: literals.StructuredDataset,
         current_task_metadata: StructuredDatasetMetadata,
     ) -> np.ndarray:

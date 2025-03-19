@@ -15,6 +15,6 @@ copy the [file sensor agent example](./file-sensor-agent-example.md) to a file c
 $ union run --remote file_sensor_example.py wf
 ```
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.

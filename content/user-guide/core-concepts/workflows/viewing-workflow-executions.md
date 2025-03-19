@@ -46,7 +46,7 @@ An execution represents a single run of all or part of a workflow (including sub
 
 > [!NOTE]
 > An execution usually represents the run of an entire workflow.
-> But, because workflows are composed of tasks (and sometimes subworkflows) and Union caches the outputs of those independently of the workflows in which they participate, it sometimes makes sense to execute a task or subworkflow independently.
+> But, because workflows are composed of tasks (and sometimes subworkflows) and {{< key product_name >}} caches the outputs of those independently of the workflows in which they participate, it sometimes makes sense to execute a task or subworkflow independently.
 
 The top part of execution view provides detailed general information about the execution.
 
@@ -55,7 +55,7 @@ The bottom part provides three tabs displaying different aspects of the executio
 ### Nodes
 
 The default tab within the execution view is the **Nodes** tab.
-It shows a list of the Flyte nodes that make up this execution (A node in Flyte is either a task or a (sub-)workflow).
+It shows a list of the {{< key product_name >}} nodes that make up this execution (A node in {{< key product_name >}} is either a task or a (sub-)workflow).
 
 Selecting an item in the list opens the right panel showing more details of that specific node:
 

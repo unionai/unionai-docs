@@ -1,7 +1,7 @@
 ---
 title: Materializing artifacts
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Materializing artifacts
@@ -60,5 +60,5 @@ def wf():
 ```
 
 > [!NOTE]
-> You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`.
-> For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/_index.md).
+> You can also materialize an artifact by executing the `create_artifact` method of `{{< key kit_remote >}}`.
+> For more information, see the [{{< key kit_remote >}} documentation](../../../api-reference/union-sdk/union-remote/_index.md).

@@ -6,7 +6,7 @@ variants: +flyte -serverless +byoc +byok
 
 # MemVerge Memory Machine Cloud (MMC) agent
 
-[MemVerge](https://memverge.com/) [Memory Machine Cloud](https://www.mmcloud.io/) (MMCloud)—available on AWS, GCP, and AliCloud—empowers users to continuously optimize cloud resources during runtime, safely execute stateful tasks on spot instances, and monitor resource usage in real time. These capabilities make it an excellent fit for long-running batch workloads. Flyte can be integrated with MMCloud, allowing you to execute Flyte tasks using MMCloud.
+[MemVerge](https://memverge.com/) [Memory Machine Cloud](https://www.mmcloud.io/) (MMCloud)—available on AWS, GCP, and AliCloud—empowers users to continuously optimize cloud resources during runtime, safely execute stateful tasks on spot instances, and monitor resource usage in real time. These capabilities make it an excellent fit for long-running batch workloads. {{< key product_name >}} can be integrated with MMCloud, allowing you to execute {{< key product_name >}} tasks using MMCloud.
 
 ## Installation
 
@@ -33,9 +33,9 @@ To test the MMCloud agent locally, create a class for the agent task that inheri
 {{< variant byoc >}}
 {{< markdown >}}
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

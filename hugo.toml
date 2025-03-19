@@ -67,6 +67,12 @@ serverless = "union"
 byoc = "union"
 byok = "union"
 
+[params.key.kit_remote]
+flyte = "FlyteRemote"
+serverless = "UnionRemote"
+byoc = "UnionRemote"
+byok = "UnionRemote"
+
 [params.key.cli_name]
 flyte = "Pyflyte"
 serverless = "Union"
@@ -96,5 +102,3 @@ flyte = "FLYTECTL_CONFIG"
 serverless = "UNION_CONFIG"
 byoc = "UNION_CONFIG"
 byok = "UNION_CONFIG"
-
-

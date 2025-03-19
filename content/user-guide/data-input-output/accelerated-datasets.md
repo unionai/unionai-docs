@@ -1,21 +1,21 @@
 ---
 title: Accelerated datasets
 weight: 4
-variants: +flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +byok
 ---
 
 # Accelerated datasets
 
 > [!NOTE] *Accelerated datasets* and *Accelerators* are entirely different things
-> Accelerated datasets is a Union feature that enables quick access to large datasets from within a task.
+> Accelerated datasets is a {{< key product_name >}} feature that enables quick access to large datasets from within a task.
 > An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators.md), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
 > These concepts are entirely different and should not be confused.
 
-Many of the workflows that you may want to run in Union will involve tasks that use large static assets such as reference genomes, training datasets, or pre-trained models.
+Many of the workflows that you may want to run in {{< key product_name >}} will involve tasks that use large static assets such as reference genomes, training datasets, or pre-trained models.
 These assets are often stored in an object store and need to be downloaded to the task pod each time before the task can run.
 This can be a significant bottleneck, especially if the data must be loaded into memory to be randomly accessed and therefore cannot be streamed.
 
-To remedy this, Union provides a way to preload large static assets into a shared object store that is mounted to all machine nodes in your cluster by default.
+To remedy this, {{< key product_name >}} provides a way to preload large static assets into a shared object store that is mounted to all machine nodes in your cluster by default.
 This allows you to upload your data once and then access it from any task without needing to download it each time.
 
 Data items stored in this way are called *accelerated datasets*.
@@ -26,7 +26,7 @@ Data items stored in this way are called *accelerated datasets*.
 ## How it works
 
 * Each customer has a dedicated S3 bucket where they can store their accelerated datasets.
-* The naming and set up of this bucket must be coordinated with the Union team, in order that a suitable name is chosen. In general it will usually be something like `s3://union-<org-name>-persistent`.
+* The naming and set up of this bucket must be coordinated with the {{< key product_name >}} team, in order that a suitable name is chosen. In general it will usually be something like `s3://union-<org-name>-persistent`.
 * You can upload any data you wish to this bucket.
 * The bucket will be automatically mounted into every node in your cluster.
 * To your task logic, it will appear to be a local directory in the task container.

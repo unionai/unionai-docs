@@ -1,7 +1,7 @@
 ---
 title: Launch plans
 weight: 3
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Launch plans
@@ -47,13 +47,13 @@ For more details, see [Running launch plans](./running-launch-plans.md).
 
 In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using the CLI (see [Running your code](../../development-cycle/running-your-code.md)).
 
-### Registering a launch plan in Python with `{{< key product_name >}}Remote`
+### Registering a launch plan in Python with `{{< key kit_remote >}}`
 
-As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key product_name >}}Remote`](../../development-cycle/union-remote/_index.md), specifically, `{{< key product_name >}}Remote.register_launch_plan`.
+As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key kit_remote >}}`](../../development-cycle/union-remote/_index.md), specifically, `{{< key kit_remote >}}.register_launch_plan`.
 
 ### Results of registration
 
-When the code above is registered to Union, it results in the creation of four objects:
+When the code above is registered to {{< key product_name >}}, it results in the creation of four objects:
 
 * The task `workflows.launch_plan_example.my_task`
 * The workflow `workflows.launch_plan_example.my_workflow`

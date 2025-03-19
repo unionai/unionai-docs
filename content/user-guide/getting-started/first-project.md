@@ -13,9 +13,9 @@ and a corresponding {{< key product_name >}} project to which you will deploy th
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
 
-## Create a new Union project
+## Create a new {{< key product_name >}} project
 
-Create a new project in the Union UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
+Create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
 
 ![Select all projects](/_static/images/user-guide/getting-started/first-project/select-all-projects.png)
 
@@ -28,10 +28,10 @@ For this example, let's create a project called **My project**:
 
 ![Create new project](/_static/images/user-guide/getting-started/first-project/create-new-project.png "small")
 
-You now have a project on Union named "My Project" (and with project ID `my-project`) into which you can register your workflows.
+You now have a project on {{< key product_name >}} named "My Project" (and with project ID `my-project`) into which you can register your workflows.
 
 > [!NOTE] Default project
-> Union provides a default project (called **{{< key default_project >}}**) where all your workflows will be registered unless you specify otherwise.
+> {{< key product_name >}} provides a default project (called **{{< key default_project >}}**) where all your workflows will be registered unless you specify otherwise.
 > In this section, however, we will be using the project we just created, not the default.
 
 {{< /markdown >}}

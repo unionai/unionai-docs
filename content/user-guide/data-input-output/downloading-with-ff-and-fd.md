@@ -18,7 +18,7 @@ The actual files and directories of a `FlyteFile` or `FlyteDirectory` are downlo
   This occurs when an external function is called on the `FlyteFile` or `FlyteDirectory` that itself calls the `__fspath__` method.
 
 To write efficient and performant task and workflow code, it is particularly important to have a solid understanding of when exactly downloading occurs.
-Let's look at some examples showing when the content `FlyteFiles` and `FlyteDirectories` are downloaded to the local task container filesystem.
+Let's look at some examples showing when the content `FlyteFile` objects and `FlyteDirectory` objects are downloaded to the local task container file system.
 
 ## FlyteFile
 

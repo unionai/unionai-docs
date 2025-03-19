@@ -13,7 +13,7 @@ Workflows are constructed by chaining together tasks, with the output of one tas
 ## Tasks are independently executable
 
 Tasks are designed to be independently executable, meaning that they can be run in isolation from other tasks.
-And since most tasks are just Python functions, they can be executed on your local machine, making it easy to unit test and debug tasks locally before deploying them to Union.
+And since most tasks are just Python functions, they can be executed on your local machine, making it easy to unit test and debug tasks locally before deploying them to {{< key product_name >}}.
 
 Because they are independently executable, tasks can also be shared and reused across multiple workflows and, as long as their logic is deterministic, their input and outputs can be [cached](../caching.md) to save compute resources and execution time.
 
@@ -22,9 +22,10 @@ Because they are independently executable, tasks can also be shared and reused a
 Tasks have strongly typed inputs and outputs, which are validated at deployment time.
 This helps catch bugs early and ensures that the data passing through tasks and workflows is compatible with the explicitly stated types.
 
-Under the hood, {{< key product_name >}} uses the [Flyte type system](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto) and translates between the Flyte types and the SDK language types, in this case Python.
+Under the hood, {{< key product_name >}} uses the [{{< key product_name >}} type system]() and translates between the {{< key product_name >}} types and the SDK language types, in this case Python.
 Python type annotations make sure that the data passing through tasks and workflows is compatible with the explicitly stated types defined through a function signature.
-The Flyte type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
+The {{< key product_name >}} type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
+<!-- TODO: Add link to API -->
 
 ## Tasks are containerized
 
@@ -42,7 +43,7 @@ For example, a task that requires a GPU can be deployed to {{< key product_name 
 {{< markdown >}}
 
 This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/_index.md).
-For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
+For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
 {{< /variant >}}

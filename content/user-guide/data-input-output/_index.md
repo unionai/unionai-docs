@@ -6,6 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Data input/output
 
+<!-- TODO: Double check this seciton for variant acccuracy -->
 {{< variant flyte >}}
 {{< markdown >}}
 
@@ -60,7 +61,7 @@ Here's a breakdown of these mappings:
 {{< variant serverless >}}
 {{< markdown >}}
 
-This section covers how to manage data input and output in Union.
+This section covers how to manage data input and output in {{< key product_name >}}.
 
 | Section | Description |
 |----------------------------------------------------|----------------------------------------------------|
@@ -81,7 +82,7 @@ This section covers how to manage data input and output in Union.
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-This section covers how to manage data input and output in Union.
+This section covers how to manage data input and output in {{< key product_name >}}.
 
 | Section | Description |
 |---------------------------------------------------|----------------------------------------------------|

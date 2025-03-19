@@ -6,6 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Pydantic BaseModel
 
+
+<!-- TODO: check for variant accuracy -->
+
 {{< variant flyte >}}
 {{< markdown >}}
 
@@ -26,6 +29,8 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 >
 > For more details, you can refer the MESSAGEPACK IDL RFC: [https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md](https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md)
 
+<!-- TODO: remove mention of flytesnacks repos here -->
+
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -40,6 +45,8 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 
 > [!NOTE]
 > You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
+
+<!-- TODO: check above for variant accuracy -->
 
 {{< /markdown >}}
 {{< /variant >}}
