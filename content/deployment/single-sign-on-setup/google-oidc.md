@@ -39,7 +39,8 @@ Next, retrieve your credentials: Click on your configured client and copy the va
 
 Finally, you will need to share the client ID and client secret securely with Union:
 
-1. Copy the public key provided by Union here: [**public-key.txt**](/_static/public/public-key.txt)
+1. Copy the public key provided by Union here:
+   {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
 
 2. Encrypt the given text file on your computer with a PGP tool of your choice.
 

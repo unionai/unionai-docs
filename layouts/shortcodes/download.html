@@ -1,0 +1,17 @@
+{{ $url := .Get 0 }}
+{{ $name := path.Base $url }}
+{{ if .Get 1 }}
+    {{ $name = .Get 1 }}
+{{ end }}
+{{ $description := .Get 2 }}
+<span class="download">
+    <a href="{{ $url }}" download="{{ $name }}">
+        <sl-icon name="cloud-download"></sl-icon>
+        {{ $name }}
+    </a>
+    {{ if .Get 2 }}
+        <div class="description">
+            {{ $description }}
+        </div>
+    {{ end }}
+</span>

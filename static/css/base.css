@@ -272,3 +272,7 @@ sl-alert P {
 sl-alert P + P {
   margin-top: 1rem;
 }
+
+.download {
+  display: inline-flex;
+}
