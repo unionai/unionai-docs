@@ -1,7 +1,7 @@
 ---
-title: UnionRemote
-weight: 18
-variants: -flyte +serverless +byoc +byok
+title: FlyteRemote
+weight: 19
+variants: +flyte -serverless -byoc -byok
 ---
 
 # {{< key kit_remote >}}

@@ -6,13 +6,13 @@ variants: +flyte +serverless +byoc +byok
 
 # Defining launch plans
 
-You can define a launch plan with the [`flytekit.LaunchPlan` class]().
+You can define a launch plan with the [`LaunchPlan` class]().
 <!-- TODO: Add link to API -->
 
 For example:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task
 def my_task(a: int, b: int, c: int) -> int:
@@ -22,7 +22,7 @@ def my_task(a: int, b: int, c: int) -> int:
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},

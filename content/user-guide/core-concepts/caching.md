@@ -180,7 +180,7 @@ When using `{{< key kit_remote >}}`, you can use the `overwrite_cache` parameter
 from flytekit.configuration import Config
 from flytekit.remote import {{< key kit_remote >}}
 
-remote = FlyeRemote(
+remote = {{< key kit_remote >}}(
     config=Config.auto(),
     default_project="flytesnacks",
     default_domain="development"

@@ -96,7 +96,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
 4. Create a file called `map_simple_wf.py` and copy the following code into it:
 
     ```python
-    import union
+    import {{< key kit_import >}}
     from flytekit import reference_launch_plan
 
 

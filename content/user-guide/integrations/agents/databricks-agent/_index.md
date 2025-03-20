@@ -31,7 +31,7 @@ def hello_spark(partitions: int) -> float:
     print("Starting Spark with Partitions: {}".format(partitions))
 
     n = 100000 * partitions
-    sess = flytekit.current_context().spark_session
+    sess = {{< key kit_as >}}.current_context().spark_session
     count = (
         sess.sparkContext.parallelize(range(1, n + 1), partitions).map(f).reduce(add)
     )
@@ -41,7 +41,7 @@ def hello_spark(partitions: int) -> float:
 ```
 
 To execute the Spark task on the agent, you must configure the `raw-output-data-prefix` with a remote path.
-This configuration ensures that flytekit transfers the input data to the blob storage and allows the Spark job running on Databricks to access the input data directly from the designated bucket.
+This configuration ensures that {{< key product_name >}} transfers the input data to the blob storage and allows the Spark job running on Databricks to access the input data directly from the designated bucket.
 
 > [!NOTE]
 > The Spark task will run locally if the `raw-output-data-prefix` is not set.

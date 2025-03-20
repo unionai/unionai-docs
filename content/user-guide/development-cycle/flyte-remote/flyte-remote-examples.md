@@ -1,7 +1,7 @@
 ---
-title: UnionRemote examples
+title: FlyteRemote examples
 weight: 1
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # {{< key kit_remote >}} examples
@@ -21,7 +21,7 @@ The workflow code that will be registered and run on {{< key product_name >}} re
 
 ```python
 import os
-import {{< key kit_import >}}
+import {{< key kit_as >}}
 
 @{{< key kit_as >}}.task()
 def create_file(message: str) -> {{< key kit_as >}}.FlyteFile:
@@ -56,6 +56,7 @@ def run_workflow():
     print(read_lines)
 ```
 
+
 The `my_workflow` workflow and the `create_file` task is registered and run.
 Once the workflow completes, the output is passed back to the `run_workflow` function and printed out.
 
@@ -74,7 +75,7 @@ For more options and details see [API reference > {{< key kit_remote >}} > Entry
 This example shows how to terminate all running executions in a given workflow name.
 
 ```python
-from union.remote import {{< key kit_remote >}}
+import {{< key kit_remote >}}
 from dataclasses import dataclass
 import json
 from flytekit.configuration import Config
@@ -126,7 +127,6 @@ This example shows how to identify all failed executions from a given workflow s
 import datetime
 import pytz
 import {{< key kit_remote >}}
-from flytekit.configuration import Config
 from flytekit.models.core.execution import NodeExecutionPhase
 
 SOME_LARGE_LIMIT = 5000
@@ -169,7 +169,7 @@ inputs = [remote.sync(execution).inputs for execution in windowed]
 workflow = remote.fetch_workflow(name=WF_NAME, version=VERSION)
 
 # execute new workflow for each failed previous execution
-remote.execute(workflow, inputs=X) for X in inputs
+[remote.execute(workflow, inputs=X) for X in inputs]
 ```
 
 ## Filtering for executions using a `Filter`

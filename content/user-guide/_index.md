@@ -38,7 +38,7 @@ site_root: true
 {{< variant byok >}}
 {{< markdown >}}
 
-> [!NOTE] "{{< key product_name >}} BYOK
+> [!NOTE] {{< key product_name >}} BYOK
 > These docs are for [**{{< key product_name >}} BYOK**](./about-union.md#union-byok).
 > Switch to another variant with the version selector above.
 
@@ -62,7 +62,7 @@ Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flex
 {{< /variant >}}
 {{< variant serverless byoc byok >}}
 
-{{< link-card target="about-union" icon="lightbulb" title="About {{< key product_name >}}" >}}
+{{< link-card target="about-union" icon="lightbulb" title="About Union" >}}
 {{< key product_name >}} builds on the leading OSS AI platform, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
 {{< /link-card >}}
 

@@ -19,10 +19,10 @@ variants: +flyte -serverless +byoc +byok
 
 from airflow.operators.bash import BashOperator
 from airflow.sensors.filesystem import FileSensor
-from flytekit import task, workflow
+import {{< key kit_import >}}
 
 
-@task()
+@{{< key kit_as >}}.task()
 def t1():
     print("success")
 
@@ -30,7 +30,7 @@ def t1():
 # %% [markdown]
 # Use the Airflow `FileSensor` to wait for a file to appear before running the task.
 # %%
-@workflow
+@{{< key kit_as >}}.workflow
 def file_sensor():
     sensor = FileSensor(task_id="id", filepath="/tmp/1234")
     sensor >> t1()
@@ -39,7 +39,7 @@ def file_sensor():
 # %% [markdown]
 # Use the Airflow `BashOperator` to run a bash command.
 # %%
-@workflow
+@{{< key kit_as >}}.workflow
 def bash_sensor():
     op = BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
     op >> t1()
