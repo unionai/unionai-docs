@@ -180,4 +180,4 @@ Above the graph, there is metadata that describes the workflow execution, such a
 duration and the workflow version. Next, click on the `evaluate_model` node to open up a
 sidebar that contains additional information about the task:
 
-![Sidebar](/_static/images//user-guide/getting-started/running-your-workflow/sidebar.png)
+![Sidebar](/_static/images/user-guide/getting-started/running-your-workflow/sidebar.png)
