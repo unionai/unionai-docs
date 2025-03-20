@@ -3,6 +3,7 @@ title: Deployment
 weight: 4
 variants: +flyte -serverless +byoc +byok
 top_menu: true
+mermaid: true
 ---
 
 # Deployment
@@ -23,6 +24,7 @@ Union supports data planes on Amazon WebServices (AWS), Google Cloud Platform (G
 {{< markdown >}}
 
 Flyte is distributed as a Helm chart with different deployment scenarios supported as described in the following diagram:
+
 ```mermaid
 flowchart TD
     A("Deployment paths") --> n1["Testing/evaluating"] & n4["Production <br>deployment"]
@@ -45,6 +47,7 @@ flowchart TD
     n9@{ shape: rect}
     n10@{ shape: rect}
 ```
+
 This section walks you through the process to create a Flyte cluster and cover topics related to enabling and configuring plugins, authentication, performance tuning, and maintaining Flyte as a production-grade service.
 
 {{< /markdown >}}
