@@ -1,11 +1,8 @@
 ---
 title: About Union
-weight: 1
-variants: +flyte +serverless +byoc +byok
+weight: 2
+variants: -flyte +serverless +byoc +byok
 ---
-
-{{< variant serverless byoc byok >}}
-{{< markdown >}}
 
 # About {{< key product_name >}}
 
@@ -15,18 +12,6 @@ variants: +flyte +serverless +byoc +byok
 It offers all the features of Flyte while adding more capability to scale, control costs and serve models.
 
 There are three deployment options for {{< key product_name >}}: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant flyte >}}
-{{< markdown >}}
-
-# About Flyte
-
-[Flyte](http://docs.union.ai/flyte) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
-
-{{< /markdown >}}
-{{< /variant >}}
 
 ## Flyte
 
@@ -42,16 +27,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-{{< variant byoc byok serverless >}}
-{{< markdown >}}
-
 You can switch to the Flyte docs [here](/flyte).
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant flyte >}}
-{{< markdown >}}
 
 You can try out Flyte's technology:
 

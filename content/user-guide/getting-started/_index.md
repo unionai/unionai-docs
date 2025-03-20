@@ -1,6 +1,6 @@
 ---
 title: Getting started
-weight: 2
+weight: 3
 variants: +flyte +serverless +byoc +byok
 ---
 
