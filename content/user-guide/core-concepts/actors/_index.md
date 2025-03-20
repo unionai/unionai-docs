@@ -37,7 +37,7 @@ The following example shows how to create a basic `ActorEnvironment` and use it 
 ```python
 # hello_world.py
 
-import union
+import {{< key kit_import >}}
 
 
 actor = {{< key kit_as >}}.ActorEnvironment(
@@ -71,7 +71,7 @@ def wf():
 
 import os
 
-import union
+import {{< key kit_import >}}
 
 image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),
@@ -131,7 +131,7 @@ Below is a simplified example showcasing the use of `@actor_cache` for caching r
 
 from time import sleep
 
-import union
+import {{< key kit_import >}}
 
 
 actor = {{< key kit_as >}}.ActorEnvironment(
@@ -172,7 +172,7 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 from time import sleep
 import os
 
-import union
+import {{< key kit_import >}}
 
 image = {{< key kit_as >}}.ImageSpec(
     registry=os.environ.get("DOCKER_REGISTRY", None),

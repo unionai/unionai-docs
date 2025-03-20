@@ -6,6 +6,8 @@ variants: +flyte -serverless +byoc +byok
 
 # Integrations
 
+<!-- TODO: clean up refernces when examples are moved to new repo -->
+
 {{< variant serverless >}}
 {{< markdown >}}
 

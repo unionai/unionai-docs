@@ -20,7 +20,7 @@ Client ID: my-custom-name
 The following API key will only be shown once. Be sure to keep it safe!
 Configure your headless CLI by setting the following environment variable:
 
-export UNION_API_KEY="<SECRET>"
+export {{< key env_prefix >}}_API_KEY="<SECRET>"
 ```
 
 Store the `<SECRET>` in a secure location. For `git` development, make sure to not check in the `<SECRET>` into your repository.
@@ -29,7 +29,7 @@ Within a GitHub action, you can use [Github Secrets](https://docs.github.com/en/
 For this example, copy the following workflow into a file called `hello.py`:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task
 def welcome(name: str) -> str:
@@ -40,11 +40,11 @@ def main(name: str) -> str:
     return welcome(name=name)
 ```
 
-You can run this workflow from any machine by setting the `UNION_API_KEY`
+You can run this workflow from any machine by setting the `{{< key env_prefix >}}_API_KEY`
 environment variable:
 
 ```shell
-$ export UNION_API_KEY="<SECRET>"
+$ export {{< key env_prefix >}}_API_KEY="<SECRET>"
 $ {{< key cli >}} run --remote hello.py main --name "{{< key product_name >}}"
 ```
 

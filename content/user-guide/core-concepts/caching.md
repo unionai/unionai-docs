@@ -26,7 +26,7 @@ Caching can be enabled by setting the `cache` parameter of the `@{{< key kit_as 
 For example:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 # Define a task and enable caching for it
 
@@ -182,7 +182,7 @@ from flytekit.remote import {{< key kit_remote >}}
 
 remote = {{< key kit_remote >}}(
     config=Config.auto(),
-    default_project="flytesnacks",
+    default_project="{{< key default_ project >}}",
     default_domain="development"
 )
 
@@ -199,7 +199,7 @@ from union.remote import {{< key kit_remote >}}
 
 remote = {{< key kit_remote >}}(
     config=Config.auto(),
-    default_project="flytesnacks",
+    default_project="{{< key default_ project >}}",
     default_domain="development"
 )
 

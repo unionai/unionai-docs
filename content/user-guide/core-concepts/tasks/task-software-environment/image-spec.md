@@ -41,7 +41,7 @@ pandas
 ```python
 import typing
 import pandas as pd
-import union
+import {{< key kit_import >}}
 
 image_spec = union.ImageSpec(
     registry="ghcr.io/<my-github-org>",

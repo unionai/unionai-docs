@@ -45,7 +45,7 @@ The only caveat is that you must ensure that your task code has access to the st
 
 ### Can I control access to my own blob store?
 
-Yes. As with all resources used by your Flyte task code, the storage must be accessible from within the cluster running your code on your data plane.
+Yes. As with all resources used by your task code, the storage must be accessible from within the cluster running that code on your data plane.
 However, the data plane is your own, and you have full control over access (see [Enabling AWS S3](./integrations/enabling-aws-resources/enabling-aws-s3.md) or [Enabling Google Cloud Storage](./integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)).
 
 ### Could someone maliciously delete or otherwise access my raw data?
@@ -93,7 +93,9 @@ For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/_
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery.md).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
-For details see [BigQuery agent](https://docs.flyte.org/en/latest/flytesnacks/examples/bigquery_agent/index.html).
+For details see [BigQuery agent]().
+
+<!-- TODO: add link^^ -->
 
 ## `FlyteFile` and `FlyteDirectory`
 
