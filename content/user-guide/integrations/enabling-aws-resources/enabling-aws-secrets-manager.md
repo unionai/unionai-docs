@@ -135,24 +135,24 @@ To use an AWS secret in your task code, do the following:
 
 * Define a `Secret` class using the `SECRET_GROUP` and `SECRET_KEY` derived from the secret ARN, above, and pass it in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with a call to\
-  `flytekit.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
+  `{{< key kit_as >}}.current_context().secrets.get(SECRET_GROUP, SECRET_KEY)`.
 
 Here is an example:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 SECRET_GROUP = "arn:aws:secretsmanager:<Region>:<AccountId>:secret:"
 SECRET_KEY = "<SecretName>-<SixRandomCharacters>"
-SECRET_REQUEST = union.Secret(
+SECRET_REQUEST = {{< key kit_as >}}.Secret(
   group=SECRET_GROUP,
   key=SECRET_KEY,
-  mount_requirement=union.Secret.MountType.FILE
+  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
 )
 
 @{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST])
 def t1():
-    secret_val = union.current_context().secrets.get(
+    secret_val = {{< key kit_as >}}.current_context().secrets.get(
         SECRET_GROUP,
         group_version=SECRET_GROUP_VERSION
     )

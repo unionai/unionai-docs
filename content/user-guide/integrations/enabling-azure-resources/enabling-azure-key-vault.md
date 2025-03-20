@@ -32,13 +32,13 @@ The {{< key product_name >}}-managed `userflyterole` identity must be granted pe
   * `Secret.mount_requirement` is `Secret.MountType.FILE`
 * Pass that `Secret` object in the `secret_requests` parameter of the `@{{< key kit_as >}}.task` decorator.
 * Inside the task code, retrieve the value of the secret with:
-  * `flytekit.current_context().secrets.get(<SECRET_NAME>)` if `Secret.group_version` was omitted.
-  * `flytekit.current_context().secrets.get(<SECRET_NAME>, group_version=SECRET_GROUP_VERSION)` if `Secret.group_version` was specified.
+  * `{{< key kit_as >}}.current_context().secrets.get(<SECRET_NAME>)` if `Secret.group_version` was omitted.
+  * `{{< key kit_as >}}.current_context().secrets.get(<SECRET_NAME>, group_version=SECRET_GROUP_VERSION)` if `Secret.group_version` was specified.
 
 Here are examples:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 VAULT_NAME = "examplevault"
 SECRET_NAME = "example-secret"
@@ -46,27 +46,27 @@ SECRET_NAME = "example-secret"
 SECRET_GROUP = f"https://{VAULT_NAME}.vault.azure.net/secrets/{SECRET_NAME}"
 SECRET_GROUP_VERSION = "12345"
 
-SECRET_REQUEST_WITH_VERSION = union.Secret(
+SECRET_REQUEST_WITH_VERSION = {{< key kit_as >}}.Secret(
   group=SECRET_GROUP,
   group_version=SECRET_GROUP_VERSION,
-  mount_requirement=union.Secret.MountType.FILE
+  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
 )
 
 @{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST_WITH_VERSION])
 def task_with_versioned_secret():
-    secret_val = union.current_context().secrets.get(
+    secret_val = {{< key kit_as >}}.current_context().secrets.get(
         SECRET_NAME,
         group_version=SECRET_GROUP_VERSION
     )
 
 SECRET_REQUEST_FOR_LATEST = union.Secret(
   group=SECRET_GROUP,
-  mount_requirement=union.Secret.MountType.FILE
+  mount_requirement={{< key kit_as >}}.Secret.MountType.FILE
 )
 
 @{{< key kit_as >}}.task(secret_requests=[SECRET_REQUEST_FOR_LATEST])
 def task_with_latest_secret():
-    secret_val = union.current_context().secrets.get(
+    secret_val = {{< key kit_as >}}.current_context().secrets.get(
         SECRET_NAME
     )
 ```

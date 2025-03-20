@@ -10,9 +10,9 @@ variants: +flyte +serverless +byoc +byok
 {{< variant flyte >}}
 {{< markdown >}}
 
-Flyte being a data-aware orchestration platform, types play a vital role within it.
-This section provides an introduction to the wide range of data types that Flyte supports.
-These types serve a dual purpose by not only validating the data but also enabling seamless
+{{< key product_name >}} being a data-aware orchestration platform, types play a vital role within it.
+This section provides an introduction to the wide range of data types that {{< key product_name >}} supports.
+These types serve a dual-purpose by not only validating the data but also enabling seamless
 transfer of data between local and cloud storage.
 They enable:
 
@@ -22,11 +22,11 @@ They enable:
 - Simplifying access to data
 - Auto generated CLI and launch UI
 
-For a more comprehensive understanding of how Flyte manages data, refer to the [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/user_guide/concepts/main_concepts/data_management.html#divedeep-data-management) guide.
+For a more comprehensive understanding of how Flyte manages data, refer to [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/user_guide/concepts/main_concepts/data_management.html#divedeep-data-management).
 
 ## Mapping Python to Flyte types
 
-Flytekit automatically translates most Python types into Flyte types.
+{{< key kit_name >}} automatically translates most Python types into Flyte types.
 Here's a breakdown of these mappings:
 
 | Python Type | Flyte Type | Conversion | Comment |

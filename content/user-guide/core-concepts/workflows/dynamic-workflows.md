@@ -157,7 +157,7 @@ Merge sort is a perfect example to showcase how to seamlessly achieve recursion 
 ```python
 from typing import Tuple
 
-import union
+import {{< key kit_import >}}
 from flytekit import conditional
 
 

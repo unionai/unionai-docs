@@ -115,7 +115,7 @@ Yes. If you do not want to use the default raw output store that is provided wit
 
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
-You may notice that `flytekit` defines some aliases of `FlyteFile` with specific type annotations such as `PDFFile`, `JPEGImageFile`, and so forth.
+`FlyteFile` and `FlyteDirectory` include specific type annotations such as `PDFFile`, `JPEGImageFile`, and so forth.
 These aliases can be used when handling a file or directory of the specified type.
 For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-output/flyte-file-and-flyte-directory.md#typed-aliases).
 
@@ -175,7 +175,7 @@ You should use the `{{< key cli >}}` CLI to register and run workflows and perfo
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
-You should use the `pyflyte` CLI to register and run workflows and perform other operations on the command line. The  `pyflyte` CLI is installed when you install the `flytekit` package, which will also install the Union and Flytekit SDKs.
+You should use the `pyflyte` CLI to register and run workflows and perform other operations on the command line. The `pyflyte` CLI is installed when you install the `flytekit` package, which will also install the Flytekit SDK.
 {{< /markdown >}}
 {{< /variant >}}
 

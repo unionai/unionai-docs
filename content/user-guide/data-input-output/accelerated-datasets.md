@@ -41,17 +41,17 @@ Assuming that your organization is called `my-company` and the file you want to 
 The code to access the data looks like this:
 
 ```python
-from flytekit.types.file import FlyteFile
+import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task
-def my_task(f: FlyteFile) -> int:
+def my_task(f: {{< key kit_as >}}.FlyteFile) -> int:
     with open(f, newline="\n") as input_file:
     data = input_file.read()
     // Do something with the data
 
 @{{< key kit_as >}}.workflow
 def my_wf()
-    my_task(f=FlyteFile("s3://union-my-company-persistent/my_data.csv"))
+    my_task(f={{< key kit_as >}}.FlyteFile("s3://union-my-company-persistent/my_data.csv"))
 ```
 
 Note that you do not have to invoke `FlyteFile.download()` because the file will already have been made available locally within the container.

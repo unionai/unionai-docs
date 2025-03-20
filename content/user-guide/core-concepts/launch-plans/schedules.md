@@ -15,7 +15,7 @@ To add a schedule to a launch plan, add a schedule object to the launch plan, li
 ```python
 from datetime import timedelta
 
-import union
+import {{< key kit_import >}}
 from flytekit import FixedRate
 
 @{{< key kit_as >}}.task
@@ -26,7 +26,7 @@ def my_task(a: int, b: int, c: int) -> int:
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},
@@ -45,7 +45,7 @@ Alternatively, you can specify a [CronSchedule]():
 <!-- TODO: Add link to API -->
 
 ```python
-import union
+import {{< key kit_import >}}
 from flytekit import CronSchedule
 
 
@@ -57,7 +57,7 @@ def my_task(a: int, b: int, c: int) -> int:
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},
@@ -79,7 +79,7 @@ For example:
 ```python
 from datetime import datetime, timedelta
 
-import union
+import {{< key kit_import >}}
 from flytekit import FixedRate
 
 @{{< key kit_as >}}.task
@@ -90,7 +90,7 @@ def my_task(a: int, b: int, c: int) -> int:
 def my_workflow(a: int, b: int, c: int, kickoff_time: datetime ) -> str:
     return f"sum: {my_task(a=a, b=b, c=c)} at {kickoff_time}"
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},

@@ -15,7 +15,7 @@ variants: +flyte -serverless +byoc +byok
 # First, import the required libraries.
 
 # %%
-from flytekit import task, workflow
+import {{< key kit_import >}}
 from flytekit.sensor.file_sensor import FileSensor
 
 # %% [markdown]
@@ -29,26 +29,12 @@ sensor = FileSensor(name="test_file_sensor")
 
 
 # %%
-@task()
+@{{< key kit_as >}}.task()
 def t1():
     print("SUCCEEDED")
 
 
-@workflow()
+@{{< key kit_as >}}.workflow()
 def wf():
     sensor(path="s3://my-s3-bucket/file.txt") >> t1()
-
-
-if __name__ == "__main__":
-    wf()
-
-# %% [markdown]
-# You can also use the S3 or GCS file system.
-# We have already set the minio credentials in the agent by default. If you test the sandbox example locally, you will need to set the AWS credentials in your environment variables.
-#
-# ```{prompt} bash
-# export FLYTE_AWS_ENDPOINT="http://localhost:30002"
-# export FLYTE_AWS_ACCESS_KEY_ID="minio"
-# export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
-# ```
 ```

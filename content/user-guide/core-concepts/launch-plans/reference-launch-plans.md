@@ -39,7 +39,7 @@ In this example, we create a reference launch plan for the [`simple_wf`](https:/
 4. Create a file called `simple_wf_ref_lp.py` and copy the following code into it:
 
     ```python
-    import union
+    import {{< key kit_import >}}
     from flytekit import reference_launch_plan
 
 

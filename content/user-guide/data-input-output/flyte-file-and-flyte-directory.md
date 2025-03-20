@@ -37,7 +37,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import List
 
-import union
+import {{< key kit_import >}}
 ```
 
 Define a task that accepts `FlyteFile` as an input.
@@ -61,7 +61,7 @@ def normalize_columns(
     column_names: List[str],
     columns_to_normalize: List[str],
     output_location: str,
-) -> union.FlyteFile:
+) -> {{< key kit_as >}}.FlyteFile:
     # read the data from the raw csv file
     parsed_data = defaultdict(list)
     with open(csv_url, newline="\n") as input_file:
@@ -79,7 +79,7 @@ def normalize_columns(
         normalized_data[colname] = [(x - mean) / std for x in values]
 
     # write to local path
-    out_path = str(Path(flytekit.current_context().working_directory) / f"normalized-{Path(csv_url.path).stem}.csv")
+    out_path = str(Path({{< key kit_as >}}.current_context().working_directory) / f"normalized-{Path(csv_url.path).stem}.csv")
     with open(out_path, mode="w") as output_file:
         writer = csv.DictWriter(output_file, fieldnames=columns_to_normalize)
         writer.writeheader()
@@ -103,11 +103,11 @@ Lastly, define a workflow. The `normalize_csv_files` workflow has an `output_loc
 ```python
 @{{< key kit_as >}}.workflow
 def normalize_csv_file(
-    csv_url: union.FlyteFile,
+    csv_url: {{< key kit_as >}}.FlyteFile,
     column_names: List[str],
     columns_to_normalize: List[str],
     output_location: str = "",
-) -> union.FlyteFile:
+) -> {{< key kit_as >}}.FlyteFile:
     return normalize_columns(
         csv_url=csv_url,
         column_names=column_names,
@@ -185,12 +185,12 @@ Here is a simple example of removing some columns from a CSV file and writing th
 
 ```python
 @{{< key kit_as >}}.task()
-def remove_some_rows(ff: union.FlyteFile) -> union.FlyteFile:
+def remove_some_rows(ff: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     """
     Remove the rows that the value of city is 'Seattle'.
     This is an example with streaming support.
     """
-    new_file = union.FlyteFile.new_remote_file("data_without_seattle.csv")
+    new_file = {{< key kit_as >}}.FlyteFile.new_remote_file("data_without_seattle.csv")
     with ff.open("r") as r:
         with new_file.open("w") as w:
             df = pd.read_csv(r)
@@ -213,7 +213,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import List
 
-import union
+import {{< key kit_import >}}
 ```
 
 Building upon the previous example demonstrated in the {std:ref}`file <file>` section,
@@ -225,7 +225,7 @@ and returns the folder path in a `FlyteDirectory` object.
 ```python
 @{{< key kit_as >}}.task
 def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
-    working_dir = union.current_context().working_directory
+    working_dir = {{< key kit_as >}}.current_context().working_directory
     local_dir = Path(working_dir) / "csv_files"
     local_dir.mkdir(exist_ok=True)
 
@@ -235,7 +235,7 @@ def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
         # prefix the file name with the index location of the file in the original csv_urls list
         local_image = Path(local_dir) / f"{str(idx).zfill(zfill_len)}_{Path(remote_location).name}"
         urllib.request.urlretrieve(remote_location, local_image)
-    return union.FlyteDirectory(path=str(local_dir))
+    return {{< key kit_as >}}.FlyteDirectory(path=str(local_dir))
 ```
 
 
@@ -245,20 +245,20 @@ def download_files(csv_urls: List[str]) -> union.FlyteDirectory:
 >
 > ```python
 > @{{< key kit_as >}}.task
-> def t1(directory: Annotated[union.FlyteDirectory, BatchSize(10)]) -> Annotated[union.FlyteDirectory, BatchSize(100)]:
+> def t1(directory: Annotated[{{< key kit_as >}}.FlyteDirectory, BatchSize(10)]) -> Annotated[{{< key kit_as >}}.FlyteDirectory, BatchSize(100)]:
 >     ...
->     return union.FlyteDirectory(...)
+>     return {{< key kit_as >}}.FlyteDirectory(...)
 >
-> Flytekit efficiently downloads files from the specified input directory in 10-file chunks.
+> {{< key kit_name >}} efficiently downloads files from the specified input directory in 10-file chunks.
 > It then loads these chunks into memory before writing them to the local disk.
 > The process repeats for subsequent sets of 10 files.
-> Similarly, for outputs, Flytekit uploads the resulting directory in chunks of 100.
+> Similarly, for outputs, {{< key kit_name >}} uploads the resulting directory in chunks of 100.
 
 We define a helper function to normalize the columns in-place.
 
 > [!NOTE]
-> This is a plain Python function that will be called in a subsequent Flyte task. This example
-> demonstrates how Flyte tasks are simply entrypoints of execution, which can themselves call
+> This is a plain Python function that will be called in a subsequent {{< key product_name >}} task. This example
+> demonstrates how {{< key product_name >}} tasks are simply entrypoints of execution, which can themselves call
 > other functions and routines that are written in pure Python.
 
 ```python
@@ -296,7 +296,7 @@ column names of each file in the directory and the column names that we want to 
 ```python
 @{{< key kit_as >}}.task
 def normalize_all_files(
-    csv_files_dir: union.FlyteDirectory,
+    csv_files_dir: {{< key kit_as >}}.FlyteDirectory,
     columns_metadata: List[List[str]],
     columns_to_normalize_metadata: List[List[str]],
 ) -> union.FlyteDirectory:
@@ -307,12 +307,12 @@ def normalize_all_files(
         columns_to_normalize_metadata,
     ):
         normalize_columns(local_csv_file, column_names, columns_to_normalize)
-    return union.FlyteDirectory(path=csv_files_dir.path)
+    return {{< key kit_as >}}.FlyteDirectory(path=csv_files_dir.path)
 ```
 
-Compose all of the above tasks into a workflow. This workflow accepts a list
-of URL strings pointing to a remote location containing a CSV file, a list of column names
-associated with each CSV file, and a list of columns that we want to normalize.
+Compose all the above tasks into a workflow.
+This workflow accepts a list of URL strings pointing to a remote location containing a CSV file,
+a list of column names associated with each CSV file, and a list of columns that we want to normalize.
 
 ```python
 @{{< key kit_as >}}.workflow
@@ -320,7 +320,7 @@ def download_and_normalize_csv_files(
     csv_urls: List[str],
     columns_metadata: List[List[str]],
     columns_to_normalize_metadata: List[List[str]],
-) -> union.FlyteDirectory:
+) -> {{< key kit_as >}}.FlyteDirectory:
     directory = download_files(csv_urls=csv_urls)
     return normalize_all_files(
         csv_files_dir=directory,
@@ -391,14 +391,14 @@ To do this, you create a `FlyteFile` object using the local path of the file, an
 
 ```python
 @{{< key kit_as >}}.task
-def task_1() -> FlyteFile:
+def task_1() -> {{< key kit_as >}}.FlyteFile:
     local_path = os.path.join(current_context().working_directory, "data.txt")
     with open(local_path, mode="w") as f:
         f.write("Here is some sample data.")
-    return FlyteFile(path=local_path)
+    return {{< key kit_as >}}.FlyteFile(path=local_path)
 
 @{{< key kit_as >}}.task
-def task_2(ff: FlyteFile):
+def task_2(ff: {{< key kit_as >}}.FlyteFile):
     with ff.open(mode="r") as f
     file_contents = f.read()
 
@@ -422,7 +422,7 @@ def wf():
 Below is an equivalent local example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```python
-def task1() -> FlyteDirectory: # Create new local directory
+def task1() -> {{< key kit_as >}}.FlyteDirectory: # Create new local directory
     p = os.path.join(current_context().working_directory, "my_new_directory")
     os.makedirs(p)
 
@@ -432,15 +432,15 @@ def task1() -> FlyteDirectory: # Create new local directory
     with open(os.path.join(p, "file_2.txt"), 'w') as file2:
         file2.write("This is file 2.")
 
-    return FlyteDirectory(p)
+    return {{< key kit_as >}}.FlyteDirectory(p)
 
 @{{< key kit_as >}}.task
-def task2(fd: FlyteDirectory): # Get a list of the directory contents using os to return strings
+def task2(fd: {{< key kit_as >}}.FlyteDirectory): # Get a list of the directory contents using os to return strings
     items = os.listdir(fd)
     print(type(items[0]))
 
     # Get a list of the directory contents using FlyteDirectory to return FlyteFiles
-    files = FlyteDirectory.listdir(fd)
+    files = {{< key kit_as >}}.FlyteDirectory.listdir(fd)
     print(type(files[0]))
     with open(files[0], mode="r") as f:
         d = f.read()
@@ -473,7 +473,7 @@ def workflow():
 ## Changing the data upload location
 
 > [!NOTE] Upload location
-> With {{< key product_name >}} Serverless, the remote location to which FlyteFile and FlyteDirectory upload container-local
+> With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local
 > files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
 >
 > With {{< key product_name >}} BYOC, the upload location is configurable.
@@ -519,14 +519,14 @@ You can also _start with a remote file_, simply by initializing the `FlyteFile` 
 
 ```python
 @{{< key kit_as >}}.task
-def task_1() -> FlyteFile:
+def task_1() -> {{< key kit_as >}}.FlyteFile:
     remote_path = "https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv"
-    return FlyteFile(path=remote_path)
+    return {{< key kit_as >}}.FlyteFile(path=remote_path)
 ```
 
 In this case, no uploading is needed because the source file is already in a remote location.
 When the object is passed out of the task, it is converted into a `Blob` with the remote path as the URI.
-After the FlyteFile is passed to the next task, you can call `FlyteFile.open()` on it, just as before.
+After the `FlyteFile` is passed to the next task, you can call `FlyteFile.open()` on it, just as before.
 
 If you don't intend on passing the `FlyteFile` to the next task, and rather intend to open the contents of the remote file within the task, you can use `from_source`.
 
@@ -550,13 +550,13 @@ Below is an equivalent remote example for `FlyteDirectory`. The process of passi
 
 ```python
 @{{< key kit_as >}}.task
-def task1() -> FlyteDirectory:
+def task1() -> {{< key kit_as >}}.FlyteDirectory:
     p = "https://people.sc.fsu.edu/~jburkardt/data/csv/"
-    return FlyteDirectory(p)
+    return {{< key kit_as >}}.FlyteDirectory(p)
 
 @{{< key kit_as >}}.task
-def task2(fd: FlyteDirectory): # Get a list of the directory contents and display the first csv
-    files = FlyteDirectory.listdir(fd)
+def task2(fd: {{< key kit_as >}}.FlyteDirectory): # Get a list of the directory contents and display the first csv
+    files = {{< key kit_as >}}.FlyteDirectory.listdir(fd)
     with open(files[0], mode="r") as f:
     d = f.read()
     print(f"The first csv is: \n{d}")
@@ -575,12 +575,12 @@ But for large files, you can iterate through the contents of the stream:
 
 ```python
 @{{< key kit_as >}}.task
-def task_1() -> FlyteFile:
+def task_1() -> {{< key kit_as >}}.FlyteFile:
     remote_path = "https://sample-videos.com/csv/Sample-Spreadsheet-100000-rows.csv"
-    return FlyteFile(path=remote_path)
+    return {{< key kit_as >}}.FlyteFile(path=remote_path)
 
 @{{< key kit_as >}}.task
-def task_2(ff: FlyteFile):
+def task_2(ff: {{< key kit_as >}}.FlyteFile):
     with ff.open(mode="r") as f
     for row in f:
         do_something(row)
@@ -603,7 +603,7 @@ The most prominent example of such an operation is calling Python's built-in `op
 
 ```python
 @{{< key kit_as >}}.task
-def task_2(ff: FlyteFile):
+def task_2(ff: {{< key kit_as >}}.FlyteFile):
     with open(ff, mode="r") as f
     file_contents= f.read()
 ```
@@ -632,7 +632,7 @@ You can also explicitly download a `FlyteFile` to the local container file syste
 
 ```python
 @{{< key kit_as >}}.task
-def task_2(ff: FlyteFile):
+def task_2(ff: {{< key kit_as >}}.FlyteFile):
     local_path = ff.download()
 ```
 

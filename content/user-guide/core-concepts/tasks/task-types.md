@@ -102,9 +102,9 @@ To create a shell task, provide a name for it, specify the bash script to be exe
 from pathlib import Path
 from typing import Tuple
 
-import union
-from union import kwtypes
-from union.extras.tasks.shell import OutputLocation, ShellTask
+import {{< key kit_import >}}
+from flytekit import kwtypes
+from flytekit.extras.tasks.shell import OutputLocation, ShellTask
 
 t1 = ShellTask(
     name="task_1",
@@ -163,8 +163,8 @@ A `.gitkeep` file is created in the `FlyteDirectory` as a placeholder to ensure 
 
 ```python
 @{{< key kit_as >}}.task
-def create_entities() -> Tuple[FlyteFile, FlyteDirectory]:
-    working_dir = Path(flytekit.current_context().working_directory)
+def create_entities() -> Tuple[{{< key kit_as >}}.FlyteFile, {{< key kit_as >}}.FlyteDirectory]:
+    working_dir = Path({{< key kit_as >}}.current_context().working_directory)
     flytefile = working_dir / "test.txt"
     flytefile.touch()
 
@@ -179,7 +179,7 @@ We create a workflow to define the dependencies between the tasks:
 
 ```python
 @{{< key kit_as >}}.workflow
-def shell_task_wf() -> FlyteFile:
+def shell_task_wf() -> {{< key kit_as >}}.FlyteFile:
     x, y = create_entities()
     t1_out = t1(x=x)
     t2_out = t2(x=t1_out, y=y)

@@ -39,7 +39,7 @@ understand what this looks like, let's define a very basic eager workflow
 using the `@eager` decorator.
 
 ```python
-from union import task, workflow
+import {{< key kit_import >}}
 from flytekit.experimental import eager
 
 
@@ -287,11 +287,11 @@ allows you to authenticate into the cluster via a client secret key.
 <!-- TODO: Adjust for serverless vs everything else -->
 
 ```python
-from union import {{< key kit_remote >}}
+import {{< key kit_import >}}
 from flytekit.configuration import Config
 
 @eager(
-    remote={{< key kit_remote >}}(
+    remote={{< key kit_as >}}.{{< key kit_remote >}}(
         config=Config.auto(config_file="config.yaml"),
         default_project="{{< key default_project >}}",
         default_domain="development",
@@ -314,12 +314,12 @@ When using a sandbox cluster started with `uctl demo start`, however, the
 default sandbox configuration does not require key-based authentication.
 
 ```python
+import {{< key kit_import >}}
 from flytekit.configuration import Config
-from union import {{< key kit_remote >}}
 
 
 @eager(
-    remote={{< key kit_remote >}}(
+    remote={{< key kit_as >}}.{{< key kit_remote >}}(
         config=Config.for_sandbox(),
         default_project="{{< key default_project >}}",
         default_domain="development",
