@@ -45,29 +45,7 @@ flowchart TD
     n9@{ shape: rect}
     n10@{ shape: rect}
 ```
+This section walks you through the process to create a Flyte cluster and cover topics related to enabling and configuring plugins, authentication, performance tuning, and maintaining Flyte as a production-grade service.
 
-```mermaid
-  sequenceDiagram
-    %%{config: { 'fontFamily': 'Menlo', 'fontSize': 10, 'fontWeight': 100} }%%
-        autonumber
-        User->>+Browser: /home
-        Browser->>+Console: /home
-        Console->>-Browser: 302 /login
-        Browser->>+Admin: /login
-        Admin->>-Browser: Idp.com/oidc
-        Browser->>+Idp: Idp.com/oidc
-        Idp->>-Browser: 302 /login
-        Browser->>-User: Enter user/pass
-        User->>+Browser: login
-        Browser->>+Idp: Submit username/pass
-        Idp->>-Browser: admin/?authCode=<abc>
-        Browser->>+Admin: admin/authCode=<abc>
-        Admin->>+Idp: Exchange Tokens
-        Idp->>-Admin: idt, at, rt
-        Admin->>+Browser: Write Cookies & Redirect to /console
-        Browser->>+Console: /home
-        Browser->>-User: Render /home
-
-```
 {{< /markdown >}}
 {{< /variant >}}
