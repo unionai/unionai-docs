@@ -47,7 +47,7 @@ import {{< key kit_import >}}
 def my_task(f: {{< key kit_as >}}.FlyteFile) -> int:
     with open(f, newline="\n") as input_file:
     data = input_file.read()
-    // Do something with the data
+    # Do something with the data
 
 @{{< key kit_as >}}.workflow
 def my_wf()

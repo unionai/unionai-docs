@@ -27,7 +27,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-You can switch to the Flyte docs [here](/flyte).
+You can switch to the Flyte docs [here](/docs/flyte).
 
 You can try out Flyte's technology:
 
