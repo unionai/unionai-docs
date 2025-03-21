@@ -67,7 +67,20 @@
     {{ if .Params.mermaid }}
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
-      mermaid.initialize({ startOnLoad: true });
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+          primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--union-color').trim(),
+          primaryTextColor: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim(),
+          primaryBorderColor: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim(),
+          lineColor: getComputedStyle(document.documentElement).getPropertyValue('--border-color').trim(),
+          background: getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim(),
+          edgeLabelBackground: getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim(),
+          secondaryColor: getComputedStyle(document.documentElement).getPropertyValue('--union-color-very-light').trim(),
+          tertiaryColor: getComputedStyle(document.documentElement).getPropertyValue('--union-color-very-light').trim(),
+        }
+      });
     </script>
     {{ end }}
   </head>
