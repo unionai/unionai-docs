@@ -23,7 +23,9 @@ Union supports data planes on Amazon WebServices (AWS), Google Cloud Platform (G
 {{< variant flyte >}}
 {{< markdown >}}
 
-Flyte is distributed as a Helm chart with different deployment scenarios supported as described in the following diagram:
+Flyte is distributed as a Helm chart with different supported deployment scenarios.  
+Union is the platform built on top of Flyte that extends its capabilities to include RBAC, instant containers, real-time serving and more.  
+The following diagram describes the available deployment paths for both options:
 
 ```mermaid
 flowchart TD
@@ -33,8 +35,8 @@ flowchart TD
     n4 --> n5["Run Flyte"] & n8["Run Union"]
     n5 -- small scale --> n6["flyte-binary<br>Helm chart"]
     n5 -- large scale --> n7["flyte-core<br>Helm chart"]
-    n8 -- "You manage your data plane. Union manage the control plane" --> n9["Bring your own K8s<br>(BYOK)"]
-    n8 -- Union manage control and data planes --> n10["Bring Your Own Cloud<br>(BYOC)"]
+    n8 -- "You manage your data plane. Union manages the control plane" --> n9["Bring Your Own K8s<br>(BYOK)"]
+    n8 -- Union manages control and data planes --> n10["Bring Your Own Cloud<br>(BYOC)"]
 
     n1@{ shape: diam}
     n4@{ shape: rect}
