@@ -1,3 +1,18 @@
-<pre class="mermaid">
-  {{ .Inner | htmlEscape | safeHTML }}
-</pre>
+{{ if page.Params.mermaid }}
+    <pre class="mermaid">
+        {{ .Inner | htmlEscape | safeHTML }}
+    </pre>
+{{ else }}
+    {{ warnf "[Mermaid not enabled] You specified a Mermaid code block, but you did not mark the page as Mermaid-enabled. File: %s" .Page.File.Path }}
+    <div class="layout-error">
+        <div class="error">
+          You specified a Mermaid code block, but you did not mark the page as Mermaid-enabled. Please set <code>mermaid: true</code> at the top of the page.
+        </div>
+
+        <div class="content">
+          <pre>```mermaid
+{{ .Inner | htmlEscape | safeHTML }}
+```</pre>
+        </div>
+    </div>
+{{ end }}
