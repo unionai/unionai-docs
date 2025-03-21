@@ -290,7 +290,7 @@ class NumpyDecodingHandler(StructuredDatasetDecoder):
 ### NumPy renderer
 
 Create a default renderer for numpy array, then {{< key kit_name >}} will use this renderer to
-display schema of NumPy array on the Flyte deck.
+display schema of NumPy array on the Deck.
 
 ```python
 class NumpyRenderer:

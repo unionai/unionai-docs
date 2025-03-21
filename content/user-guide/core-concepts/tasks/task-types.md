@@ -95,6 +95,7 @@ For more details see [Map Task example](https://github.com/unionai-oss/union-clo
 
 ## Shell tasks
 
+Shell tasks enable the execution of shell scripts within {{<key product_name >}}.
 To create a shell task, provide a name for it, specify the bash script to be executed, and define inputs and outputs if needed:
 
 ### Example

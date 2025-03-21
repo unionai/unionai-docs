@@ -34,7 +34,7 @@ This example demonstrates how you can utilize custom objects without registering
 {{< /variant >}}
 
 ```python
-import union
+import {{< key kit_import >}}
 ```
 
 `Superhero` represents a user-defined complex type that can be serialized to a pickle file by {{< key kit_name >}}

@@ -21,7 +21,7 @@ This is where {{< key product_name >}}'s imperative workflows come into play, al
 To begin, we define the `slope` and `intercept` tasks:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task
 def slope(x: list[int], y: list[int]) -> float:

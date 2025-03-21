@@ -23,18 +23,20 @@ An application is an automated process (a bot, service, or other type of program
 * **Domain**: Categories representing the standard environments used in the development process: **development**, **staging**, and **production**.
 * **Project-domain pair**: The set of projects is divided orthogonally by the three **domains**.
 The result is a set of project-domain pairs.
-For example: `flytesnacks/development`, `flytesnacks/staging`, and `flytesnacks/production`.
+For example: `{{< key default_project >}}/development`, `{{< key default_project >}}/staging`, and `{{< key default_project >}}/production`.
 
 ## Actions
 
 The following is the full list of actions available in the {{< key product_name >}} system:
 
-* `administer_project`: Permission to [archive and update a project](https://docs.flyte.org/en/latest/flytectl/gen/flytectl_update.html) and manage [customizable resources](https://docs.flyte.org/en/latest/deployment/configuration/customizable_resources.html).
+* `administer_project`: Permission to [archive and update a project]() and manage [customizable resources]().
 * `manage_permissions`: Permission to manage user and machine applications and their policy assignments.
 * `create_flyte_executions`: Permission to launch new flyte executions.
 * `register_flyte_inventory`: Permission to register workflows, tasks, and launch plans.
 * `view_flyte_executions`: Permission to view historical flyte execution data.
 * `view_flyte_inventory`: Permission to view registered workflows, tasks, and launch plans.
+
+<!-- TODO: add links^^-->
 
 ## Built-in policies
 
@@ -101,7 +103,7 @@ $ uctl create role --roleFile my_role.yaml
 ### Create a policy
 
 Create a policy spec file `my_policy.yaml` that binds roles to project/domain pairs.
-Here we create a policy that binds the **Contributor** role to `flytesnacks/development` and binds the **Workflow Runner** role (defined above) to `flytesnacks/production`:
+Here we create a policy that binds the **Contributor** role to `{{< key default_project >}}/development` and binds the **Workflow Runner** role (defined above) to `{{< key default_project >}}/production`:
 
 ```yaml
 :name: my_policy.yaml
@@ -110,11 +112,11 @@ name: Workflow Developer Policy
 bindings:
 - role: Workflow Runner
   resource:
-    project: flytesnacks
+    project: {{< key default_project >}}
     domain: production
 - role: contributor # Boilerplate system role
   resource:
-    project: flytesnacks
+    project: {{< key default_project >}}
     domain: development
 ```
 
@@ -126,7 +128,7 @@ $ uctl create policy --policyFile my_policy.yaml
 ```
 
 
-Any user or application to which this policy is assigned will be granted **Contributor** permissions to `flytesnacks/development` while being granted (the more restrictive) **Workflow Runner** permission to `flytesnacks/production`.
+Any user or application to which this policy is assigned will be granted **Contributor** permissions to `{{< key default_project >}}/development` while being granted (the more restrictive) **Workflow Runner** permission to `{{< key default_project >}}/production`.
 
 ### Assign the policy to a user
 

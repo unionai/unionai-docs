@@ -253,10 +253,10 @@ See [Running in a local cluster](../development-cycle/running-in-a-local-cluster
 {{< markdown >}}
 
 By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli.md) for more details.)
-You can override this behavior to specify a different configuration file by setting the `UNION_CONFIG` environment variable:
+You can override this behavior to specify a different configuration file by setting the `{{< key config_env >}}` environment variable:
 
 ```shell
-$ export UNION_CONFIG=~/.my-config-location/my-config.yaml
+$ export{{< key config_env >}}=~/.my-config-location/my-config.yaml
 ```
 
 Alternatively, you can always specify the configuration file on the command line when invoking `{{< key cli >}}` by using the `--config` flag.

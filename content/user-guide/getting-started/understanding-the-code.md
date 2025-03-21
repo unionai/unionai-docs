@@ -26,7 +26,7 @@ The `hello_world.py` file illustrates the essential components of a {{< key prod
 ```python
 """Hello World"""
 
-import union
+import {{< key kit_import >}}
 
 image_spec = union.ImageSpec(
 

@@ -4,7 +4,8 @@ weight: 6
 variants: +flyte +serverless +byoc +byok
 ---
 
-<!-- check for variant accuracy -->
+<!-- TODO: check for variant accuracy, remove mention of flytesnacks figure out "UnionTypes" -->
+
 # Dataclass
 
 When you've multiple values that you want to send across {{< key product_name >}} entities, you can use a `dataclass`.
@@ -46,7 +47,7 @@ import tempfile
 from dataclasses import dataclass
 
 import pandas as pd
-import union
+import {{< key kit_import >}}
 from flytekit.types.structured import StructuredDataset
 ```
 

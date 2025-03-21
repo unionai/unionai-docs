@@ -158,7 +158,7 @@ However, this manual conversion recommended by PyTorch may not be very user-frie
 To address this, we added support for automatic GPU to CPU conversion (and vice versa) for PyTorch types.
 
 ```python
-import union
+import {{< key kit_import >}}
 from typing import Tuple
 
 
