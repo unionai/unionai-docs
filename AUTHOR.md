@@ -12,6 +12,7 @@
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
   - [Run on Union Instructions](#run-on-union-instructions)
+- [Mermaid Graphs](#mermaid-graphs)
 
 
 ## Getting started
@@ -144,3 +145,7 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
     # {{run-on-union}}
     #
     # And it shall have it.
+
+## Mermaid Graphs
+
+TODO(David Espejo): Please add documentation here.
