@@ -1,6 +1,9 @@
 import io
+from typing import List
 
 from lib.ptypes import MethodInfo
+from lib.generate.docstring import docstring_summary
+from lib.generate.helper import generate_anchor_from_name
 
 
 def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper):
@@ -26,7 +29,7 @@ def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper
         output.write("```\n")
 
 
-def format_type(name: str, type: str | None, code=False) -> str:
+def format_type(name: str, type: str | None, code=False, escape_or=False) -> str:
     output = ""
     if name == "kwargs":
         output = "`**kwargs`"
@@ -39,6 +42,9 @@ def format_type(name: str, type: str | None, code=False) -> str:
 
     if output == "":
         return ""
+
+    if escape_or:
+        output = output.replace("|", "\\|")
 
     return f"`{output}`" if not code else str(output)
 
@@ -59,7 +65,7 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
     output.write("|-|-|\n")
     for param in filtered_params:
         typeOutput = format_type(
-            param["name"], param["type"] if "type" in param else ""
+            param["name"], param["type"] if "type" in param else "", escape_or=True
         )
         doc = param["doc"] if "doc" in param else ""
         if doc:
@@ -94,3 +100,32 @@ def generate_signature_simple(method: MethodInfo, name: str = ""):
         ]
     )
     return result
+
+
+def generate_method_list(
+    methods: List[MethodInfo], output: io.TextIOWrapper, doc_level: int
+):
+    output.write(f"{'#' * (doc_level)} Methods\n\n")
+
+    output.write("| Method | Description |\n")
+    output.write("|-|-|\n")
+
+    for method in methods:
+        output.write(
+            f"| [`{method['name']}()`]({generate_method_link(method['name'])}) | {docstring_summary(method['doc'])} |\n"
+        )
+
+    output.write("\n\n")
+
+
+def generate_method_link(name: str) -> str:
+    anchor = generate_anchor_from_name(name)
+    return f"#{anchor}"
+
+
+def generate_method(method: MethodInfo, output: io.TextIOWrapper, doc_level: int):
+    output.write(f"{'#' * (doc_level+1)} {method['name']}()\n\n")
+    generate_method_decl(method["name"], method, output)
+    if method["doc"]:
+        output.write(f"{method['doc']}\n\n")
+    generate_params(method, output)

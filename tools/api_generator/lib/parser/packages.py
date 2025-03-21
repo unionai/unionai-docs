@@ -1,10 +1,12 @@
+import inspect
 import pkgutil
 import importlib
 from sys import stderr
 from types import ModuleType
 from typing import Dict, List, Optional, Tuple
 
-from lib.ptypes import PackageInfo
+from lib.ptypes import MethodInfo, PackageInfo, VariableInfo
+from lib.parser.methods import parse_method, parse_variable
 
 
 def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
@@ -63,6 +65,24 @@ def get_subpackages(package_name: str) -> List[Tuple[PackageInfo, ModuleType]]:
     except ImportError as e:
         print(f"FATAL: Could not import package '{package_name}': {e}", file=stderr)
         exit(1)
+
+
+def get_functions(info, pkg) -> List[MethodInfo]:
+    result = []
+    for name, member in inspect.getmembers(pkg):
+        method_info = parse_method(name, member)
+        if method_info:
+            result.append(method_info)
+    return result
+
+
+def get_variables(info, pkg) -> List[VariableInfo]:
+    result = []
+    for name, member in inspect.getmembers(pkg):
+        variable_info = parse_variable(name, member)
+        if variable_info:
+            result.append(variable_info)
+    return result
 
 
 def main():

@@ -6,6 +6,8 @@ from lib.generate.classes import generate_class_details, generate_classes_and_er
 from lib.generate.docstring import docstring_summary
 from lib.generate.hugo import write_front_matter
 from lib.ptypes import ClassPackageMap, PackageInfo
+from lib.generate.methods import generate_method, generate_method_list
+from lib.generate.properties import generate_props
 
 type PackageTree = Dict[str, List[str]]
 
@@ -43,11 +45,18 @@ def generate_package_index(
             clss = classes[pkg["name"]]
             if len(clss) == 0:
                 continue
-            index.write(f"| [`{pkg['name']}`]({pkg['name']}) | {docstring_summary(pkg["doc"] if "doc" in pkg else None)} |\n")
+            doc = pkg["doc"] if "doc" in pkg else ""
+            index.write(
+                f"| [`{pkg['name']}`]({pkg['name']}) | {docstring_summary(doc)} |\n"
+            )
 
 
 def generate_package_folders(
-    packages: List[PackageInfo], classes: ClassPackageMap, pkg_root: str, flatten: bool, ignore_types: List[str]
+    packages: List[PackageInfo],
+    classes: ClassPackageMap,
+    pkg_root: str,
+    flatten: bool,
+    ignore_types: List[str],
 ):
     print("Generating package folders")
 
@@ -86,6 +95,19 @@ def generate_package_folders(
                 relative_to_file=pkg_index,
                 flatten=flatten,
             )
+
+            if len(pkg["methods"]) > 0:
+                generate_method_list(pkg["methods"], output=index, doc_level=3)
+
+            if len(pkg["variables"]) > 0:
+                index.write("### Variables\n\n")
+                generate_props(pkg["variables"], output=index)
+
+            if len(pkg["methods"]) > 0:
+                index.write("## Methods\n\n")
+
+                for method in pkg["methods"]:
+                    generate_method(method, output=index, doc_level=3)
 
             if flatten:
                 for cls, clsInfo in classes[pkg["name"]].items():

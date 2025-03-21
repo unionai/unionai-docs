@@ -17,7 +17,7 @@ def main():
     parser.add_argument("--variants", nargs="+", help="List of variants to use")
     parser.add_argument("--include", nargs="+", help="List of files to include")
     parser.add_argument("--no-flatten", type=bool, help="Flatten the package structure", default=False)
-    parser.add_argument("--ignore_types", nargs="+", help="Types to skip generation")
+    parser.add_argument("--ignore_types", nargs="+", help="Types to skip generation", default=[])
     args = parser.parse_args()
 
     # Read out.yaml file, parse and convert to ptypes.ParsedInfo

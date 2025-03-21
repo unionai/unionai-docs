@@ -8,7 +8,8 @@ import yaml
 
 from lib.parser.docstring import parse_docstring
 from lib.parser.packages import get_package
-from lib.ptypes import ClassDetails, MethodInfo, PackageInfo, PropertyInfo, VariableInfo
+from lib.ptypes import ClassDetails, PackageInfo
+from lib.parser.methods import parse_method, parse_property, parse_variable
 
 
 def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDetails]:
@@ -76,67 +77,18 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
                 continue
 
             # Methods
-            if inspect.isfunction(member) or inspect.ismethod(member):
-                doc_info = parse_docstring(inspect.getdoc(member), source=member)
-                docstr = doc_info["docstring"] if doc_info else None
-                params_docs = doc_info["params"] if doc_info else None
-                sig = inspect.signature(member)
-                param_types = {
-                    name: (
-                        param.annotation
-                        if str(param.annotation) != "<class 'inspect._empty'>"
-                        else ""
-                    )
-                    for name, param in sig.parameters.items()
-                }
-                return_type = (
-                    doc_info["return_type"]
-                    if doc_info != None and "return_type" in doc_info
-                    else (
-                        sig.return_annotation
-                        if str(sig.return_annotation) != "<class 'inspect._empty'>"
-                        else "None"
-                    )
-                )
-                method_info = MethodInfo(
-                    name=name,
-                    doc=docstr,
-                    signature=str(sig),
-                    params=[
-                        {
-                            "name": param.name,
-                            "default": (
-                                str(param.default)
-                                if param.default != inspect.Parameter.empty
-                                else None
-                            ),
-                            "kind": str(param.kind),
-                            "type": str(param_types[param.name]),
-                        }
-                        for param in inspect.signature(member).parameters.values()
-                    ],
-                    params_doc=params_docs,
-                    return_type=str(return_type),
-                )
+            method_info = parse_method(name, member)
+            if method_info:
                 class_info["methods"].append(method_info)
 
             # Properties
-            elif isinstance(member, property):
-                doc_info = parse_docstring(inspect.getdoc(member), source=member)
-                docstr = doc_info["docstring"] if doc_info else None
-                property_info = PropertyInfo(
-                    name=name,
-                    doc=docstr,
-                )
+            property_info = parse_property(name, member)
+            if property_info:
                 class_info["properties"].append(property_info)
 
             # Class variables (excluding methods and properties)
-            elif not callable(member) and not isinstance(member, type):
-                var_info = VariableInfo(
-                    name=name,
-                    type=type(member).__name__,
-                    value=str(member),
-                )
+            var_info = parse_variable(name, member)
+            if var_info:
                 class_info["class_variables"].append(var_info)
 
         # Sort members by name

@@ -2,11 +2,6 @@ from types import ModuleType
 from typing import Dict, List, MutableSequence, NotRequired, Optional, TypedDict
 
 
-class PackageInfo(TypedDict):
-    name: str
-    doc: NotRequired[Optional[str]]
-
-
 class VariableInfo(TypedDict):
     name: str
     type: str
@@ -53,6 +48,13 @@ class ClassDetails(TypedDict):
 
 type ClassMap = dict[str, ClassDetails]
 type ClassPackageMap = dict[str, ClassMap]
+
+
+class PackageInfo(TypedDict):
+    name: str
+    doc: NotRequired[Optional[str]]
+    methods: List[MethodInfo]
+    variables: List[VariableInfo]
 
 
 class ParsedInfo(TypedDict):

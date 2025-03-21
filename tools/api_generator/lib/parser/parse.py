@@ -2,7 +2,7 @@ from importlib import metadata
 from sys import stderr
 
 from lib.parser.classes import get_classes
-from lib.parser.packages import get_subpackages
+from lib.parser.packages import get_functions, get_subpackages, get_variables
 from lib.ptypes import ParsedInfo
 
 
@@ -24,6 +24,8 @@ def parse(package: str) -> ParsedInfo:
     for pp in pkgAndMods:
         info, pkg = pp
         clss[info["name"]] = get_classes(info, pkg)
+        info["methods"] = get_functions(info, pkg)
+        info["variables"] = get_variables(info, pkg)
 
     pkgs = [info for info, _ in pkgAndMods]
 

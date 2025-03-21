@@ -5,30 +5,17 @@ from typing import Dict, List, Tuple
 
 from lib.generate.docstring import docstring_summary
 from lib.generate.hugo import write_front_matter
-from lib.generate.methods import generate_method_decl, generate_params
+from lib.generate.methods import (
+    generate_method,
+    generate_method_decl,
+    generate_method_list,
+    generate_params,
+)
 from lib.generate.properties import generate_props
 from lib.ptypes import ClassDetails, ClassMap, ClassPackageMap, PackageInfo
+from lib.generate.helper import generate_anchor_from_name
 
 type PackageTree = Dict[str, List[str]]
-
-
-def generate_anchor_from_name(name: str) -> str:
-    return name.lower().replace("(", "").replace(")", "").replace(".", "")
-
-def generate_class_link(fullname: str, pkg_root: str, relative_to_file: str, flatten: bool) -> str:
-    nameParts = fullname.split(".")
-    pkg_base = os.path.relpath(pkg_root, os.path.dirname(relative_to_file))
-    if flatten:
-        anchor = generate_anchor_from_name(fullname)
-        result = f"{os.path.join("..", pkg_base, ".".join(nameParts[0:-1])).lower()}#{anchor}"
-        return result
-    else:
-        result = os.path.join(pkg_base, ".".join(nameParts[0:-1]), nameParts[-1]).lower()
-        return result
-
-def generate_method_link(name: str) -> str:
-    anchor = generate_anchor_from_name(name)
-    return f"#{anchor}"
 
 
 def generate_class_filename(fullname: str, pkg_root: str) -> str:
@@ -47,7 +34,29 @@ def sift_class_and_errors(classes: ClassMap) -> Tuple[List[str], List[str]]:
     return classList, exceptions
 
 
-def generate_class_index(output_folder: str, classes: ClassPackageMap, pkg_root: str, flatten: bool, ignore_types: List[str]):
+def generate_class_link(
+    fullname: str, pkg_root: str, relative_to_file: str, flatten: bool
+) -> str:
+    nameParts = fullname.split(".")
+    pkg_base = os.path.relpath(pkg_root, os.path.dirname(relative_to_file))
+    if flatten:
+        anchor = generate_anchor_from_name(fullname)
+        result = f"{os.path.join("..", pkg_base, ".".join(nameParts[0:-1])).lower()}#{anchor}"
+        return result
+    else:
+        result = os.path.join(
+            pkg_base, ".".join(nameParts[0:-1]), nameParts[-1]
+        ).lower()
+        return result
+
+
+def generate_class_index(
+    output_folder: str,
+    classes: ClassPackageMap,
+    pkg_root: str,
+    flatten: bool,
+    ignore_types: List[str],
+):
     if flatten:
         pkg_index = os.path.join(output_folder, "classes.md")
     else:
@@ -73,9 +82,14 @@ def generate_class_index(output_folder: str, classes: ClassPackageMap, pkg_root:
                 if cls in ignore_types:
                     continue
                 class_link = generate_class_link(
-                    fullname=cls, relative_to_file=pkg_index, pkg_root=pkg_root, flatten=flatten
+                    fullname=cls,
+                    relative_to_file=pkg_index,
+                    pkg_root=pkg_root,
+                    flatten=flatten,
                 )
-                index.write(f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n")
+                index.write(
+                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n"
+                )
 
 
 def generate_class(fullname: str, info: ClassDetails, pkg_root: str):
@@ -89,7 +103,9 @@ def generate_class(fullname: str, info: ClassDetails, pkg_root: str):
         generate_class_details(info, output, doc_level=2)
 
 
-def generate_class_details(info: ClassDetails, output: io.TextIOWrapper, doc_level: int):
+def generate_class_details(
+    info: ClassDetails, output: io.TextIOWrapper, doc_level: int
+):
     if info["doc"]:
         output.write(f"{info['doc']}\n\n")
 
@@ -108,22 +124,10 @@ def generate_class_details(info: ClassDetails, output: io.TextIOWrapper, doc_lev
     methods = [method for method in info["methods"] if method["name"] != "__init__"]
 
     if methods:
-        output.write(f"{'#' * (doc_level)} Methods\n\n")
-        
-        output.write("| Method | Description |\n")
-        output.write("|-|-|\n")
+        generate_method_list(methods, output, doc_level)
 
         for method in methods:
-            output.write(f"| [`{method['name']}()`]({generate_method_link(method['name'])}) | {docstring_summary(method['doc'])} |\n")
-
-        output.write("\n\n")
-
-        for method in methods:
-            output.write(f"{'#' * (doc_level+1)} {method['name']}()\n\n")
-            generate_method_decl(method["name"], method, output)
-            if method["doc"]:
-                output.write(f"{method['doc']}\n\n")
-            generate_params(method, output)
+            generate_method(method, output, doc_level)
 
     if info["properties"]:
         output.write(f"{'#' * (doc_level)} Properties\n\n")
@@ -149,9 +153,9 @@ def generate_classes_and_error_list(
 ):
     classes, exceptions = sift_class_and_errors(clss)
 
-    output.write(f"{'#' * (doc_level)} Classes\n\n")
-
     if len(classes) > 0:
+        output.write(f"{'#' * (doc_level)} Classes\n\n")
+
         output.write(f"| Class | Description |\n")
         output.write("|-|-|\n")
 
@@ -165,15 +169,16 @@ def generate_classes_and_error_list(
             )
 
             output.write(
-                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])}. |\n"
+                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")
-    else:
-        output.write(f"No classes in this package.\n\n")
 
     if len(exceptions) > 0:
         output.write(f"{'#' * (doc_level)} Errors\n\n")
+
+        output.write(f"| Exception | Description |\n")
+        output.write("|-|-|\n")
 
         for exc in exceptions:
             clsInfo = clss[exc]
@@ -183,6 +188,8 @@ def generate_classes_and_error_list(
                 pkg_root=pkg_root,
                 flatten=flatten,
             )
-            output.write(f"* [`{clsInfo["name"]}`]({classLink})\n")
+            output.write(
+                f"| [`{clsInfo["name"]}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+            )
 
         output.write("\n")
