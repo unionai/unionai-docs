@@ -6,14 +6,15 @@ variants: +flyte -serverless +byoc +byok
 
 # ImageSpec
 
-With Union, every task in a workflow runs within its own dedicated container.
-Since a container requires a container image to run, every task in Union must have a container image associated with it.
-You can specify the container image to be used by a task by defining an `ImageSpec` object and passing it to the `container_image` parameter of the `@union.task` decorator.
+With {{< key product_name >}}, every task in a workflow runs within its own dedicated container.
+Since a container requires a container image to run, every task in {{< key product_name >}} must have a container image associated with it.
+You can specify the container image to be used by a task by defining an `ImageSpec` object and passing it to the `container_image` parameter of the `@{{< key kit_as >}}.task` decorator.
 When you register the workflow, the container image is built locally and pushed to the container registry that you specify.
 When the workflow is executed, the container image is pulled from that registry and used to run the task.
 
 > [!NOTE]
-> See the [Flytekit documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.image_spec.ImageSpec.html#flytekit.image_spec.ImageSpec) for full documentation of `ImageSpec` class parameters and methods.
+> See the [ImageSpec API documentation]() for full documentation of `ImageSpec` class parameters and methods.
+<!-- TODO: Add link to API -->
 
 To illustrate the process, we will walk through an example.
 
@@ -49,30 +50,30 @@ image_spec = union.ImageSpec(
     requirements="requirements.txt"
 )
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def get_pandas_dataframe() -> typing.Tuple[pd.DataFrame, pd.Series]:
     df = pd.read_csv("https://storage.googleapis.com/download.tensorflow.org/data/heart.csv")
     print(df.head())
     return df[["age", "thalach", "trestbps", "chol", "oldpeak"]], df.pop("target")
 
-@union.workflow()
+@{{< key kit_as >}}.workflow()
 def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```
 
 
-## Install and configure `union` and Docker
+## Install and configure `{{< key cli >}}` and Docker
 
 To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling.md).
-To configure `union` to connect to your Union instance, see [Quick start](../../../../quick-start.md).
+To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Quick start](../../../../quick-start.md).
 
 ## Set up an image registry
 
-You will need an image registry where the container image can be stored and pulled by Union when the task is executed.
+You will need an image registry where the container image can be stored and pulled by {{< key product_name >}} when the task is executed.
 You can use any image registry that you have access to, including public registries like Docker Hub or GitHub Container Registry.
 Alternatively, you can use a registry that is part of your organization's infrastructure such as AWS Elastic Container Registry (ECR) or Google Artifact Registry (GAR).
 
-The registry that you choose must be one that is accessible to the Union instance where the workflow will be executed.
+The registry that you choose must be one that is accessible to the {{< key product_name >}} instance where the workflow will be executed.
 Additionally, you will need to ensure that the specific image, once pushed to the registry, is itself publicly accessible.
 
 In this example, we use GitHub's `ghcr.io` container registry.
@@ -83,18 +84,18 @@ For an example using Google Artifact Registry see [ImageSpec with GAR](./imagesp
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GHCR. This is needed for `union` to be able to push the image built according to the `ImageSpec` to GHCR.
+You will need to set up your local Docker client to authenticate with GHCR. This is needed for `{{< key cli >}}` CLI to be able to push the image built according to the `ImageSpec` to GHCR.
 
 Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
 
-## Set up your project and domain on Union
+## Set up your project and domain on {{< key product_name >}}
 
-You will need to set up a project on your Union instance to which you can register your workflow.
+You will need to set up a project on your {{< key product_name >}} instance to which you can register your workflow.
 See [Setting up the project](../../../development-cycle/setting-up-a-project.md).
 
 ## Understand the requirements
 
-The `requirements.txt` file contains the `union` package and the `pandas` package, both of which are needed by the task.
+The `requirements.txt` file contains the `{{< key kit >}}` package and the `pandas` package, both of which are needed by the task.
 
 ## Set up a virtual Python environment
 
@@ -104,7 +105,7 @@ Assuming you are in the local project root, run `pip install -r requirements.txt
 ## Run the workflow locally
 
 You can now run the workflow locally.
-In the project root directory, run: `union run workflows/imagespec-simple-example.py wf`.
+In the project root directory, run: `{{< key cli >}} run workflows/imagespec-simple-example.py wf`.
 See [Running your code](../../../development-cycle/running-your-code.md) for more details.
 
 > [!NOTE]
@@ -112,25 +113,25 @@ See [Running your code](../../../development-cycle/running-your-code.md) for mor
 
 ## Register the workflow
 
-To register the workflow to Union, in the local project root, run:
+To register the workflow to {{< key product_name >}}, in the local project root, run:
 
 ```shell
-$ union register workflows/imagespec-simple-example.py
+$ {{< key cli >}} register workflows/imagespec-simple-example.py
 ```
 
-`union` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
-It will then register the workflow to Union.
+`{{< key cli >}}` will build the container image and push it to the registry that you specified in the `ImageSpec` object.
+It will then register the workflow to {{< key product_name >}}.
 
 To see the registered workflow, go to the UI and navigate to the project and domain that you created above.
 
 ## Ensure that the image is publicly accessible
 
-If you are using the `ghcr.io` image registry, you must switch the visibility of your container image to Public before you can run your workflow on Union.
+If you are using the `ghcr.io` image registry, you must switch the visibility of your container image to Public before you can run your workflow on {{< key product_name >}}.
 See [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
 
-## Run the workflow on Union
+## Run the workflow on {{< key product_name >}}
 
-Assuming your image is publicly accessible, you can now run the workflow on Union by clicking **Launch Workflow**.
+Assuming your image is publicly accessible, you can now run the workflow on {{< key product_name >}} by clicking **Launch Workflow**.
 
 > [!WARNING] Make sure your image is accessible
 > If you try to run a workflow that uses a private container image or an image that is inaccessible for some other reason, the system will return an error:

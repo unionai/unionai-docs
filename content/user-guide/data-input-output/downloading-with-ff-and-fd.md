@@ -18,14 +18,14 @@ The actual files and directories of a `FlyteFile` or `FlyteDirectory` are downlo
   This occurs when an external function is called on the `FlyteFile` or `FlyteDirectory` that itself calls the `__fspath__` method.
 
 To write efficient and performant task and workflow code, it is particularly important to have a solid understanding of when exactly downloading occurs.
-Let's look at some examples showing when the content `FlyteFiles` and `FlyteDirectories` are downloaded to the local task container filesystem.
+Let's look at some examples showing when the content `FlyteFile` objects and `FlyteDirectory` objects are downloaded to the local task container file system.
 
 ## FlyteFile
 
 **Calling `download` on a FlyteFile**
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def my_task(ff: FlyteFile):
     print(os.path.isfile(ff.path))  # This will print False as nothing has been downloaded
     ff.download()
@@ -41,7 +41,7 @@ In order to make use of some functions like `os.path.isfile` that you may be use
 implements a `__fspath__` method that downloads the remote contents to the `path` of `FlyteFile` local to the container.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def my_task(ff: FlyteFile):
     print(os.path.isfile(ff.path))  # This will print False as nothing has been downloaded
     print(os.path.isfile(ff))  # This will print True as os.path.isfile(ff) downloads via __fspath__
@@ -58,7 +58,7 @@ or similarly calling `shutil.copy` or `pathlib.Path` directly on a `FlyteFile`.
 **Calling `download` on a FlyteDirectory**
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def my_task(fd: FlyteDirectory):
     print(os.listdir(fd.path))  # This will print nothing as the directory has not been downloaded
     fd.download()
@@ -74,7 +74,7 @@ In order to make use of some functions like `os.listdir` that you may be used to
 implements a `__fspath__` method that downloads the remote contents to the `path` of `FlyteDirectory` local to the container.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def my_task(fd: FlyteDirectory):
     print(os.listdir(fd.path))  # This will print nothing as the directory has not been downloaded
     print(os.listdir(fd))  # This will print the files present in the directory as os.listdir(fd) downloads via __fspath__
@@ -92,7 +92,7 @@ results in the contents being downloaded to the task container. If this should b
 the contents of the directory without calling `__fspath__` and therefore downloading the directory contents.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def task1() -> FlyteDirectory:
     p = os.path.join(current_context().working_directory, "my_new_directory")
     os.makedirs(p)
@@ -105,7 +105,7 @@ def task1() -> FlyteDirectory:
 
     return FlyteDirectory(p)
 
-@union.task
+@{{< key kit_as >}}.task
 def task2(fd: FlyteDirectory):
     print(os.listdir(fd.path))  # This will print nothing as the directory has not been downloaded
     print(list(fd.crawl()))  # This will print the files present in the remote blob storage

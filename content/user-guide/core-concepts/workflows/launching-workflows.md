@@ -13,7 +13,7 @@ From the [individual workflow view](./viewing-workflows.md#workflow-view) (acces
 At the top you can select:
 
 * The specific version of this workflow that you want to launch.
-* The launch plan to be used to launch this workflow (by default it is set to the [default launch plan of the workflow](../launch-plans/index.md#default-launch-plan)).
+* The launch plan to be used to launch this workflow (by default it is set to the [default launch plan of the workflow](../launch-plans/_index.md#default-launch-plan)).
 
 Along the left side the following sections are available:
 

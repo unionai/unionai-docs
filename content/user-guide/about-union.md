@@ -1,32 +1,17 @@
 ---
 title: About Union
-weight: 1
-variants: +flyte +serverless +byoc +byok
+weight: 2
+variants: -flyte +serverless +byoc +byok
 ---
 
-{{< variant serverless byoc byok >}}
-{{< markdown >}}
+# About {{< key product_name >}}
 
-# About Union
+{{< key product_name >}} unifies your AI development on a single end-to-end platform, bringing together data, models and compute with workflows of execution on a single pane of glass.
 
-Union unifies your AI development on a single end-to-end platform, bringing together data, models and compute with workflows of execution on a single pane of glass.
-
-Union builds on [Flyte](http://flyte.org), the open-source standard for orchestrating AI workflows.
+{{< key product_name >}} builds on [Flyte](http://flyte.org), the open-source standard for orchestrating AI workflows.
 It offers all the features of Flyte while adding more capability to scale, control costs and serve models.
 
-There are three deployment options for Union: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant flyte >}}
-{{< markdown >}}
-
-# About Flyte
-
-[Flyte](http://docs.union.ai/flyte) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
-
-{{< /markdown >}}
-{{< /variant >}}
+There are three deployment options for {{< key product_name >}}: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).
 
 ## Flyte
 
@@ -42,35 +27,24 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-{{< variant byoc byok serverless >}}
-{{< markdown >}}
-
-You can switch to the Flyte docs [here](/flyte).
-
-{{< /markdown >}}
-{{< /variant >}}
-
-{{< variant flyte >}}
-{{< markdown >}}
+You can switch to the Flyte docs [here](/docs/flyte).
 
 You can try out Flyte's technology:
 
-* In the cloud with [Union Serverless](https://signup.union.ai).
+* In the cloud with [{{< key product_name >}} Serverless](https://signup.union.ai).
 * On your machine with a [local Flyte cluster]().
 
 <!-- TODO: add link ^ -->
 
-For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/index.md).
+For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index.md).
 
-{{< /markdown >}}
-{{< /variant >}}
 
-## Union Serverless
+## {{< key product_name >}} Serverless
 
-[Union Serverless](https://docs.union.ai/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[{{< key product_name >}} Serverless](https://docs.union.ai/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
-Your Data and workflow code stored safely and securely in Union's cloud infrastructure.
-Union Serverless provide all the features of Flyte, plus:
+Your Data and workflow code stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
+{{< key product_name >}} Serverless provide all the features of Flyte, plus:
 
 * Granular, task-level resource monitoring
 * Fine-grained role-based access control (RBAC)
@@ -78,7 +52,7 @@ Union Serverless provide all the features of Flyte, plus:
     * Launch plan caching: Cache launch plans, 10-100x speed-up
     * Optimized Propeller: more than 10 core optimizations
     * Faster cache: Revamped caching subsystem for 10x faster performance
-    * Accelerated datasets: Retrieve repeated datasets and models faster
+    * Accelerated datasets: Retrieve repeated datasets and models more quickly
     * Faster launch plan resolution
     * Reusable containers (do not pay the pod spin-up penalty)
 * Interactive tasks:
@@ -90,21 +64,21 @@ Union Serverless provide all the features of Flyte, plus:
 * UI based workflow builder
 
 
-## Union BYOC
+## {{< key product_name >}} BYOC
 
-[Union BYOC](https://docs.union.ai/byoc) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while Union takes care of the management.
-Union BYOC provides all the features of Flyte and Union Serverless, plus:
+[{{< key product_name >}} BYOC](https://docs.union.ai/byoc) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+{{< key product_name >}} BYOC provides all the features of Flyte and {{< key product_name >}} Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)
 * Managed Ray and Spark
 * Multi-cluster and multi-cloud
 * Single sign-on (SSO)
-* SOC-2 Type 2 compliance.
+* SOC-2 Type 2 compliance
 
 
-## Union BYOK
+## {{< key product_name >}} BYOK
 
-[Union BYOK](https://docs.union.ai/byok) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
-Union BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
-The control plane continues to be located in a Union AWS account and managed by Union.
+[{{< key product_name >}} BYOK](https://docs.union.ai/byok) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+{{< key product_name >}} BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
+The control plane continues to be located in a {{< key product_name >}} AWS account and managed by {{< key product_name >}}.
 However, none of your data ever leaves your data plane, ensuring privacy and security.

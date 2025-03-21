@@ -21,13 +21,11 @@ import os
 import tarfile
 from pathlib import Path
 
-import flytekit
-from flytekit import ImageSpec, task, workflow
-from flytekit.types.file import FlyteFile
+import {{< key kit_import >}}
 from numpy import loadtxt
 from sklearn.model_selection import train_test_split
 
-train_model_image = ImageSpec(
+train_model_image = {{< key kit_as >}}.ImageSpec(
     name="xgboost-train",
     registry="ghcr.io/flyteorg",
     packages=["xgboost"],
@@ -37,8 +35,8 @@ if train_model_image.is_container():
     from xgboost import XGBClassifier
 
 
-@task(container_image=train_model_image)
-def train_model(dataset: FlyteFile) -> FlyteFile:
+@{{< key kit_as >}}.task(container_image=train_model_image)
+def train_model(dataset: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     dataset = loadtxt(dataset.download(), delimiter=",")
     X = dataset[:, 0:8]
     Y = dataset[:, 8]
@@ -47,26 +45,26 @@ def train_model(dataset: FlyteFile) -> FlyteFile:
     model = XGBClassifier()
     model.fit(X_train, y_train)
 
-    serialized_model = str(Path(flytekit.current_context().working_directory) / "xgboost_model.json")
+    serialized_model = str(Path({{< key kit_as >}}.current_context().working_directory) / "xgboost_model.json")
     booster = model.get_booster()
     booster.save_model(serialized_model)
 
-    return FlyteFile(path=serialized_model)
+    return {{< key kit_as >}}.FlyteFile(path=serialized_model)
 
 
-@task
-def convert_to_tar(model: FlyteFile) -> FlyteFile:
+@{{< key kit_as >}}.task
+def convert_to_tar(model: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     tf = tarfile.open("model.tar.gz", "w:gz")
     tf.add(model.download(), arcname="xgboost_model")
     tf.close()
 
-    return FlyteFile("model.tar.gz")
+    return {{< key kit_as >}}.FlyteFile("model.tar.gz")
 
 
 @workflow
 def sagemaker_xgboost_wf(
-    dataset: FlyteFile = "https://dub.sh/VZrumbQ",
-) -> FlyteFile:
+    dataset: {{< key kit_as >}}.FlyteFile = "https://dub.sh/VZrumbQ",
+) -> {{< key kit_as >}}.FlyteFile:
     serialized_model = train_model(dataset=dataset)
     return convert_to_tar(model=serialized_model)
 
@@ -80,7 +78,7 @@ def sagemaker_xgboost_wf(
 # The above workflow generates a compressed model artifact that can be stored in an S3 bucket.
 # Take note of the S3 URI.
 #
-# To deploy the model on SageMaker, use the {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# To deploy the model on SageMaker, use the `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 # %%
 from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
@@ -89,7 +87,7 @@ REGION = "us-east-2"
 S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
-sagemaker_image = ImageSpec(
+sagemaker_image ={{< key kit_as >}}. ImageSpec(
     name="sagemaker-xgboost",
     registry="ghcr.io/flyteorg",  # Amazon EC2 Container Registry or a Docker registry accessible from your VPC.
     packages=["xgboost", "fastapi", "uvicorn", "scikit-learn"],
@@ -134,7 +132,7 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # %% [markdown]
 # This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration
 # and initializing an endpoint. Configurations relevant to these tasks are passed to the
-# {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
 # By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
@@ -255,18 +253,18 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 )
 
 # %% [markdown]
-# The {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
+# The `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
-# To delete the deployment, you can instantiate a {py:func}`~flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
+# To delete the deployment, you can instantiate a `flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
 # %%
 from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 
 sagemaker_deployment_deletion_wf = delete_sagemaker_deployment(name="sagemaker-deployment-deletion", region="us-east-2")
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def deployment_deletion_workflow():
     sagemaker_deployment_deletion_wf(
         endpoint_name="YOUR_ENDPOINT_NAME_HERE",
@@ -283,21 +281,21 @@ def deployment_deletion_workflow():
 #
 # You have the option to execute the SageMaker tasks independently. The following tasks are available for use:
 #
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
 #
-# All tasks except the {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# inherit the {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask`.
-# The {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
+# All tasks except the `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# inherit the `flytekitplugins.awssagemaker_inference.BotoTask`.
+# The `flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
-<!-- :lines: 11-62 -->
+<!-- TODO:emphasize lines: 11-62 -->
 
 > [!NOTE]
 > Replace `ghcr.io/flyteorg` with a container registry to which you can publish.
@@ -322,13 +320,11 @@ import os
 import tarfile
 from pathlib import Path
 
-import flytekit
-from flytekit import ImageSpec, task, workflow
-from flytekit.types.file import FlyteFile
+import {{< key kit_import >}}
 from numpy import loadtxt
 from sklearn.model_selection import train_test_split
 
-train_model_image = ImageSpec(
+train_model_image = {{< key kit_as >}}.ImageSpec(
     name="xgboost-train",
     registry="ghcr.io/flyteorg",
     packages=["xgboost"],
@@ -338,8 +334,8 @@ if train_model_image.is_container():
     from xgboost import XGBClassifier
 
 
-@task(container_image=train_model_image)
-def train_model(dataset: FlyteFile) -> FlyteFile:
+@{{< key kit_as >}}.task(container_image=train_model_image)
+def train_model(dataset: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     dataset = loadtxt(dataset.download(), delimiter=",")
     X = dataset[:, 0:8]
     Y = dataset[:, 8]
@@ -348,26 +344,26 @@ def train_model(dataset: FlyteFile) -> FlyteFile:
     model = XGBClassifier()
     model.fit(X_train, y_train)
 
-    serialized_model = str(Path(flytekit.current_context().working_directory) / "xgboost_model.json")
+    serialized_model = str(Path({{< key kit_as >}}..current_context().working_directory) / "xgboost_model.json")
     booster = model.get_booster()
     booster.save_model(serialized_model)
 
-    return FlyteFile(path=serialized_model)
+    return {{< key kit_as >}}.FlyteFile(path=serialized_model)
 
 
 @task
-def convert_to_tar(model: FlyteFile) -> FlyteFile:
+def convert_to_tar(model: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     tf = tarfile.open("model.tar.gz", "w:gz")
     tf.add(model.download(), arcname="xgboost_model")
     tf.close()
 
-    return FlyteFile("model.tar.gz")
+    return {{< key kit_as >}}.FlyteFile("model.tar.gz")
 
 
 @workflow
 def sagemaker_xgboost_wf(
-    dataset: FlyteFile = "https://dub.sh/VZrumbQ",
-) -> FlyteFile:
+    dataset: {{< key kit_as >}}.FlyteFile = "https://dub.sh/VZrumbQ",
+) -> {{< key kit_as >}}.FlyteFile:
     serialized_model = train_model(dataset=dataset)
     return convert_to_tar(model=serialized_model)
 
@@ -390,7 +386,7 @@ REGION = "us-east-2"
 S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
-sagemaker_image = ImageSpec(
+sagemaker_image = {{< key kit_as >}}.ImageSpec(
     name="sagemaker-xgboost",
     registry="ghcr.io/flyteorg",  # Amazon EC2 Container Registry or a Docker registry accessible from your VPC.
     packages=["xgboost", "fastapi", "uvicorn", "scikit-learn"],
@@ -435,7 +431,7 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # %% [markdown]
 # This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration
 # and initializing an endpoint. Configurations relevant to these tasks are passed to the
-# {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
 # By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
@@ -556,7 +552,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 )
 
 # %% [markdown]
-# The {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
+# The `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
@@ -584,17 +580,17 @@ def deployment_deletion_workflow():
 #
 # You have the option to execute the SageMaker tasks independently. The following tasks are available for use:
 #
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
 #
-# All tasks except the {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# inherit the {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask`.
-# The {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
+# All tasks except the `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# inherit the `flytekitplugins.awssagemaker_inference.BotoTask`.
+# The `flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
@@ -872,7 +868,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 )
 
 # %% [markdown]
-# The {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
+# The `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
@@ -900,17 +896,17 @@ def deployment_deletion_workflow():
 #
 # You have the option to execute the SageMaker tasks independently. The following tasks are available for use:
 #
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
 #
-# All tasks except the {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# inherit the {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask`.
-# The {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
+# All tasks except the `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# inherit the `flytekitplugins.awssagemaker_inference.BotoTask`.
+# The `flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
@@ -922,8 +918,8 @@ Create a file named `serve` to serve the model. In our case, we are using FastAP
 !/bin/bash
 
 _term() {
-echo "Caught SIGTERM signal!"
-kill -TERM "$child" 2>/dev/null
+    echo "Caught SIGTERM signal!"
+    kill -TERM "$child" 2>/dev/null
 }
 
 trap _term SIGTERM
@@ -955,13 +951,11 @@ import os
 import tarfile
 from pathlib import Path
 
-import flytekit
-from flytekit import ImageSpec, task, workflow
-from flytekit.types.file import FlyteFile
+import {{< key kit_import >}}
 from numpy import loadtxt
 from sklearn.model_selection import train_test_split
 
-train_model_image = ImageSpec(
+train_model_image = {{< key kit_as >}}.ImageSpec(
     name="xgboost-train",
     registry="ghcr.io/flyteorg",
     packages=["xgboost"],
@@ -971,8 +965,8 @@ if train_model_image.is_container():
     from xgboost import XGBClassifier
 
 
-@task(container_image=train_model_image)
-def train_model(dataset: FlyteFile) -> FlyteFile:
+@{{< key kit_as >}}.task(container_image=train_model_image)
+def train_model(dataset: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     dataset = loadtxt(dataset.download(), delimiter=",")
     X = dataset[:, 0:8]
     Y = dataset[:, 8]
@@ -981,26 +975,26 @@ def train_model(dataset: FlyteFile) -> FlyteFile:
     model = XGBClassifier()
     model.fit(X_train, y_train)
 
-    serialized_model = str(Path(flytekit.current_context().working_directory) / "xgboost_model.json")
+    serialized_model = str(Path({{< key kit_as >}}.current_context().working_directory) / "xgboost_model.json")
     booster = model.get_booster()
     booster.save_model(serialized_model)
 
-    return FlyteFile(path=serialized_model)
+    return {{< key kit_as >}}.FlyteFile(path=serialized_model)
 
 
-@task
-def convert_to_tar(model: FlyteFile) -> FlyteFile:
+@{{< key kit_as >}}.task
+def convert_to_tar(model: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     tf = tarfile.open("model.tar.gz", "w:gz")
     tf.add(model.download(), arcname="xgboost_model")
     tf.close()
 
-    return FlyteFile("model.tar.gz")
+    return {{< key kit_as >}}.FlyteFile("model.tar.gz")
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def sagemaker_xgboost_wf(
-    dataset: FlyteFile = "https://dub.sh/VZrumbQ",
-) -> FlyteFile:
+    dataset: {{< key kit_as >}}.FlyteFile = "https://dub.sh/VZrumbQ",
+) -> {{< key kit_as >}}.FlyteFile:
     serialized_model = train_model(dataset=dataset)
     return convert_to_tar(model=serialized_model)
 
@@ -1023,7 +1017,7 @@ REGION = "us-east-2"
 S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
-sagemaker_image = ImageSpec(
+sagemaker_image = {{< key kit_as >}}.ImageSpec(
     name="sagemaker-xgboost",
     registry="ghcr.io/flyteorg",  # Amazon EC2 Container Registry or a Docker registry accessible from your VPC.
     packages=["xgboost", "fastapi", "uvicorn", "scikit-learn"],
@@ -1189,7 +1183,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 )
 
 # %% [markdown]
-# The {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
+# The `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
@@ -1200,7 +1194,7 @@ from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 sagemaker_deployment_deletion_wf = delete_sagemaker_deployment(name="sagemaker-deployment-deletion", region="us-east-2")
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def deployment_deletion_workflow():
     sagemaker_deployment_deletion_wf(
         endpoint_name="YOUR_ENDPOINT_NAME_HERE",
@@ -1217,17 +1211,17 @@ def deployment_deletion_workflow():
 #
 # You have the option to execute the SageMaker tasks independently. The following tasks are available for use:
 #
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
-# - {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteEndpointConfigTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask`
+# - `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask`
 #
-# All tasks except the {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# inherit the {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask`.
-# The {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
+# All tasks except the `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# inherit the `flytekitplugins.awssagemaker_inference.BotoTask`.
+# The `flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
@@ -1252,13 +1246,11 @@ import os
 import tarfile
 from pathlib import Path
 
-import flytekit
-from flytekit import ImageSpec, task, workflow
-from flytekit.types.file import FlyteFile
+import {{< key kit_import >}}
 from numpy import loadtxt
 from sklearn.model_selection import train_test_split
 
-train_model_image = ImageSpec(
+train_model_image = {{< key kit_as >}}.ImageSpec(
     name="xgboost-train",
     registry="ghcr.io/flyteorg",
     packages=["xgboost"],
@@ -1268,8 +1260,8 @@ if train_model_image.is_container():
     from xgboost import XGBClassifier
 
 
-@task(container_image=train_model_image)
-def train_model(dataset: FlyteFile) -> FlyteFile:
+@{{< key kit_as >}}.task(container_image=train_model_image)
+def train_model(dataset: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     dataset = loadtxt(dataset.download(), delimiter=",")
     X = dataset[:, 0:8]
     Y = dataset[:, 8]
@@ -1282,22 +1274,22 @@ def train_model(dataset: FlyteFile) -> FlyteFile:
     booster = model.get_booster()
     booster.save_model(serialized_model)
 
-    return FlyteFile(path=serialized_model)
+    return {{< key kit_as >}}.FlyteFile(path=serialized_model)
 
 
 @task
-def convert_to_tar(model: FlyteFile) -> FlyteFile:
+def convert_to_tar(model: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.FlyteFile:
     tf = tarfile.open("model.tar.gz", "w:gz")
     tf.add(model.download(), arcname="xgboost_model")
     tf.close()
 
-    return FlyteFile("model.tar.gz")
+    return {{< key kit_as >}}.FlyteFile("model.tar.gz")
 
 
 @workflow
 def sagemaker_xgboost_wf(
-    dataset: FlyteFile = "https://dub.sh/VZrumbQ",
-) -> FlyteFile:
+    dataset: {{< key kit_as >}}.FlyteFile = "https://dub.sh/VZrumbQ",
+) -> {{< key kit_as >}}.FlyteFile:
     serialized_model = train_model(dataset=dataset)
     return convert_to_tar(model=serialized_model)
 
@@ -1320,7 +1312,7 @@ REGION = "us-east-2"
 S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
-sagemaker_image = ImageSpec(
+sagemaker_image = {{< key kit_as >}}.ImageSpec(
     name="sagemaker-xgboost",
     registry="ghcr.io/flyteorg",  # Amazon EC2 Container Registry or a Docker registry accessible from your VPC.
     packages=["xgboost", "fastapi", "uvicorn", "scikit-learn"],
@@ -1486,7 +1478,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 )
 
 # %% [markdown]
-# The {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
+# The `flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask` invokes an endpoint asynchronously, resulting in an
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
@@ -1497,7 +1489,7 @@ from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 sagemaker_deployment_deletion_wf = delete_sagemaker_deployment(name="sagemaker-deployment-deletion", region="us-east-2")
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def deployment_deletion_workflow():
     sagemaker_deployment_deletion_wf(
         endpoint_name="YOUR_ENDPOINT_NAME_HERE",
@@ -1522,9 +1514,9 @@ def deployment_deletion_workflow():
 # - [`awssagemaker_inference.SageMakerDeleteModelTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask.html#flytekitplugins.awssagemaker_inference.SageMakerDeleteModelTask)
 # - [`awssagemaker_inference.SageMakerInvokeEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask)
 #
-# All tasks except the {py:class}`~flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
-# inherit the {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask`.
-# The {py:class}`~flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
+# All tasks except the `flytekitplugins.awssagemaker_inference.SageMakerEndpointTask`
+# inherit the `flytekitplugins.awssagemaker_inference.BotoTask`.
+# The `flytekitplugins.awssagemaker_inference.BotoTask` provides the flexibility to invoke any
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```

@@ -38,6 +38,7 @@ The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remo
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: Remove mention of flytesnacks -->
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -45,7 +46,7 @@ The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remo
 {{< /variant >}}
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def train_model() -> tf.keras.Model:
     model = tf.keras.Sequential(
         [tf.keras.layers.Dense(128, activation="relu"), tf.keras.layers.Dense(10, activation="softmax")]
@@ -54,20 +55,20 @@ def train_model() -> tf.keras.Model:
     return model
 
 
-@union.task
+@{{< key kit_as >}}.task
 def evaluate_model(model: tf.keras.Model, x: tf.Tensor, y: tf.Tensor) -> float:
     loss, accuracy = model.evaluate(x, y)
     return accuracy
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def training_workflow(x: tf.Tensor, y: tf.Tensor) -> float:
     model = train_model()
     return evaluate_model(model=model, x=x, y=y)
 ```
 
 ## TFRecord files
-Flyte{{< key product_name >}} supports TFRecord files through the `TFRecordFile` type, which can handle serialized TensorFlow records. The `TensorFlowRecordFileTransformer` manages the conversion of TFRecord files to and from {{< key product_name >}} literals.
+{{< key product_name >}} supports TFRecord files through the `TFRecordFile` type, which can handle serialized TensorFlow records. The `TensorFlowRecordFileTransformer` manages the conversion of TFRecord files to and from {{< key product_name >}} literals.
 
 ### Transformer
 - **Name:** TensorFlow Record File
@@ -79,7 +80,7 @@ Flyte{{< key product_name >}} supports TFRecord files through the `TFRecordFile`
 The `TensorFlowRecordFileTransformer` enables you to work with single TFRecord files, making it easy to read and write data in TensorFlow's TFRecord format.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def process_tfrecord(file: TFRecordFile) -> int:
     count = 0
     for record in tf.data.TFRecordDataset(file):
@@ -87,7 +88,7 @@ def process_tfrecord(file: TFRecordFile) -> int:
     return count
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def tfrecord_workflow(file: TFRecordFile) -> int:
     return process_tfrecord(file=file)
 ```
@@ -107,7 +108,7 @@ The `TensorFlowRecordsDirTransformer` allows you to work with directories of TFR
 
 #### Example
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def process_tfrecords_dir(dir: TFRecordsDirectory) -> int:
     count = 0
     for record in tf.data.TFRecordDataset(dir.path):
@@ -115,7 +116,7 @@ def process_tfrecords_dir(dir: TFRecordsDirectory) -> int:
     return count
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def tfrecords_dir_workflow(dir: TFRecordsDirectory) -> int:
     return process_tfrecords_dir(dir=dir)
 ```

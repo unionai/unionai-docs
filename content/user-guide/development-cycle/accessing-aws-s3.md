@@ -6,15 +6,15 @@ variants: -flyte +serverless -byoc -byok
 
 # Accessing AWS S3 buckets
 
-Here we will take a look at how to access data on AWS S3 Buckets from Union.
+Here we will take a look at how to access data on AWS S3 Buckets from {{< key product_name >}}.
 As a prerequisite, we assume that our AWS S3 bucket is accessible with API keys: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 
-## Creating secrets on Union
+## Creating secrets on {{< key product_name >}}
 
-First, we create secrets on Union by running the following command:
+First, we create secrets on {{< key product_name >}} by running the following command:
 
 ```shell
-$ union create secret AWS_ACCESS_KEY_ID
+$ {{< key cli >}} create secret AWS_ACCESS_KEY_ID
 ```
 
 This will open a prompt where we paste in our AWS credentials:
@@ -31,7 +31,7 @@ Next, we can use the secrets directly in a task! With AWS CLI, we create a small
 
 ```shell
 $ aws s3 mb s3://test_bucket
-$ echo "Hello Union" > my_file.txt
+$ echo "Hello {{< key product_name >}}" > my_file.txt
 $ aws s3 cp my_file.txt s3://test_bucket/my_file.txt
 ```
 
@@ -40,7 +40,7 @@ Next, we give a task access to our AWS secrets by supplying them through `secret
 ```python
 import union
 
-@union.task(
+@{{< key kit_as >}}.task(
     secret_requests=[
         union.Secret(key="AWS_ACCESS_KEY_ID"),
         union.Secret(key="AWS_SECRET_ACCESS_KEY"),
@@ -59,7 +59,7 @@ def read_s3_data() -> str:
         content = f.read().decode("utf-8")
     return content
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def main():
     read_s3_data()
 ```
@@ -67,9 +67,9 @@ def main():
 Within the task, the secrets are available through `current_context().secrets` and passed to `s3fs`. Running the following command to execute the workflow:
 
 ```shell
-union run --remote aws-s3-access.py main
+$ {{< key cli >}} run --remote aws-s3-access.py main
 ```
 
 ## Conclusion
 
-You can easily access your AWS S3 buckets by running union create secret and configuring your tasks to access the secrets!
+You can easily access your AWS S3 buckets by running `{{< key cli >}} create secret` and configuring your tasks to access the secrets!

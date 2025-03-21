@@ -7,15 +7,14 @@ variants: +flyte +serverless +byoc +byok
 # Project structure
 
 Organizing a workflow project repository effectively is key for ensuring scalability, collaboration, and easy maintenance.
-Here are best practices for structuring a Union workflow project repo, covering task organization, workflow management, dependency handling, and documentation.
+Here are best practices for structuring a {{< key product_name >}} workflow project repo, covering task organization, workflow management, dependency handling, and documentation.
 
 
 ## Recommended Directory Structure
 
-A typical Union workflow project structure could look like this:
+A typical {{< key product_name >}} workflow project structure could look like this:
 
 ```shell
-.
 ├── .github/workflows/
 ├── .gitignore
 ├── docs/
@@ -49,7 +48,7 @@ This structure is designed to ensure each project component has a clear, logical
 
 ## Organizing Tasks and Workflows
 
-In Union, tasks are the building blocks of workflows, so it’s important to structure them intuitively:
+In {{< key product_name >}}, tasks are the building blocks of workflows, so it’s important to structure them intuitively:
 
 * **Tasks**: Store each task in its own file within the `tasks/` directory. If multiple tasks are closely related, consider grouping them within a module. Alternatively, each task can have its own module to allow more granular organization and sub-directories could be used to group similar tasks.
 
@@ -60,7 +59,7 @@ In Union, tasks are the building blocks of workflows, so it’s important to str
 
 Include a directory, such as `orchestration/` or `union_utils/`, for constructs that facilitate workflow orchestration. This can house helper files like:
 
-* **Secrets**: Definitions for accessing secrets (e.g., API keys) in Union.
+* **Secrets**: Definitions for accessing secrets (e.g., API keys) in {{< key product_name >}}.
 
 * **ImageSpec**: A tool that simplifies container management, allowing you to avoid writing Dockerfiles directly.
 
@@ -76,7 +75,7 @@ Adding `__init__.py` files within each directory is essential:
 
 * **For Imports**: These files make the directory a Python package, enabling proper imports across modules.
 
-* **For Union's Fast Registration**: When performing fast registration, Union considers the first directory without an `__init__.py` as the root. Union will then package the root and its contents into a tarball, streamlining the registration process and avoiding the need to rebuild the container image every time you make code changes.
+* **For {{< key product_name >}}'s Fast Registration**: When performing fast registration, {{< key product_name >}} considers the first directory without an `__init__.py` as the root. {{< key product_name >}} will then package the root and its contents into a tarball, streamlining the registration process and avoiding the need to rebuild the container image every time you make code changes.
 
 
 ## Monorepo vs Multi-repo: Choosing a structure
@@ -97,4 +96,4 @@ The GitHub action should:
 
 ## Documentation and Docstrings
 
-Writing clear docstrings is encouraged, as they are automatically propagated to the Union UI. This provides useful context for anyone viewing the workflows and tasks in the UI, reducing the need to consult source code for explanations.
+Writing clear docstrings is encouraged, as they are automatically propagated to the {{< key product_name >}} UI. This provides useful context for anyone viewing the workflows and tasks in the UI, reducing the need to consult source code for explanations.

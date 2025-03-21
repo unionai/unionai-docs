@@ -15,22 +15,37 @@ An interruptible instance is a machine instance made available to your cluster b
 As a result, interruptible instances are cheaper than regular instances.
 In order to use an interruptible instance for a compute workload you have to be prepared for the possibility that an attempt to run the workload could fail due to lack of available resources and will need to be retried.
 
-When onboarding your organization onto Union, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
+{{< variant byoc byok >}}
+{{< markdown >}}
+
+When onboarding your organization onto {{< key product_name >}}, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
 Among the options available is the choice of whether to use interruptible instances.
 
 For each interruptible instance node group that you specify, an additional on-demand node group (though identical in every other respect to the interruptible one) will also be configured.
 This on-demand node group will be used as a fallback when attempts to complete the task on the interruptible instance have failed.
 
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+When [deploying your Flyte cluster](../../../../deployment/_index.md) among the options available is the choice of whether to use interruptible instances.
+
+For each interruptible instance node group that you specify, we recommend that you configure an additional on-demand node group (though identical in every other respect to the interruptible one) so that this on-demand node group will be used as a fallback when attempts to complete the task on the interruptible instance have failed.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Configuring tasks to use interruptible instances
 
-To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@union.task` decorator.
+To schedule tasks on interruptible instances and retry them if they fail, specify the `interruptible` and `retries` parameters in the `@{{< key kit_as >}}.task` decorator.
 For example:
 
 ```python
-@union.task(interruptible=True, retries=3)
+@{{< key kit_as >}}.task(interruptible=True, retries=3)
 ```
 
-* A task will only be scheduled on a interruptible instance if it has the parameter `interruptible=True` (or if its workflow has the parameter `interruptible=True` and the task does not have an explicit `interruptible` parameter).
+* A task will only be scheduled on an interruptible instance if it has the parameter `interruptible=True` (or if its workflow has the parameter `interruptible=True` and the task does not have an explicit `interruptible` parameter).
 * An interruptible task, like any other task, can have a `retries` parameter.
 * If an interruptible task does not have an explicitly set `retries` parameter, then the `retries` value defaults to `1`.
 * An interruptible task with `retries=n` will be attempted `n` times on an interruptible instance.
@@ -38,7 +53,7 @@ For example:
 
 ## Workflow level interruptible
 
-Interruptible is also available [at the workflow level](../../workflows/index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
+Interruptible is also available [at the workflow level](../../workflows/_index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
 
 ## Advantages and disadvantages of interruptible instances
 
@@ -53,4 +68,4 @@ Clearly, this may be a problem for time-critical tasks.
 When this happens, the task may hang indefinitely until an interruptible instance becomes available.
 Note that this is a distinct failure mode from the previous one where an interruptible node is successfully scheduled but is then interrupted.
 
-In general, Union recommends that you use interruptible instances whenever available, but only for tasks that are not time-critical.
+In general, we recommend that you use interruptible instances whenever available, but only for tasks that are not time-critical.

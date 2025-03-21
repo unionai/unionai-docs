@@ -6,12 +6,12 @@ variants: +flyte +serverless +byoc +byok
 
 # StructuredDataset
 
-As with most type systems, Python has primitives, container types like maps and tuples, and support for user-defined structures. However, while there’s a rich variety of dataframe classes (Pandas, Spark, Pandera, etc.), there’s no native Python type that represents a dataframe in the abstract. This is the gap that the {py:class}`StructuredDataset` type is meant to fill. It offers the following benefits:
+As with most type systems, Python has primitives, container types like maps and tuples, and support for user-defined structures. However, while there’s a rich variety of DataFrame classes (Pandas, Spark, Pandera, etc.), there’s no native Python type that represents a DataFrame in the abstract. This is the gap that the {py:class}`StructuredDataset` type is meant to fill. It offers the following benefits:
 
-- Eliminate boilerplate code you would otherwise need to write to serialize/deserialize from file objects into dataframe instances,
+- Eliminate boilerplate code you would otherwise need to write to serialize/deserialize from file objects into DataFrame instances,
 - Eliminate additional inputs/outputs that convey metadata around the format of the tabular data held in those files,
-- Add flexibility around how dataframe files are loaded,
-- Offer a range of dataframe specific functionality - enforce compatibility of different schemas
+- Add flexibility around how DataFrame files are loaded,
+- Offer a range of DataFrame specific functionality - enforce compatibility of different schemas
   (not only at compile time, but also runtime since type information is carried along in the literal),
    store third-party schema definitions, and potentially in the future, render sample data, provide summary statistics, etc.
 
@@ -31,6 +31,8 @@ This example demonstrates how to work with a structured dataset using {{< key pr
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: Remove mention of Flytesnacks repos below -->
+
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -48,7 +50,8 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-import union
+import {{< key kit_import >}}
+import flytekit as fl
 from flytekit.models import literals
 from flytekit.models.literals import StructuredDatasetMetadata
 from flytekit.types.structured.structured_dataset import (
@@ -64,12 +67,12 @@ from typing_extensions import Annotated
 Define a task that returns a Pandas DataFrame.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def generate_pandas_df(a: int) -> pd.DataFrame:
     return pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [a, 22], "Height": [160, 178]})
 ```
 
-Using this simplest form, however, the user is not able to set the additional dataframe information alluded to above,
+Using this simplest form, however, the user is not able to set the additional DataFrame information alluded to above,
 
 - Column type information
 - Serialized byte format
@@ -81,30 +84,30 @@ as few changes to existing code as possible. Specifying these is simple, however
 which is designed explicitly to supplement types with arbitrary metadata.
 
 ## Column type information
-If you want to extract a subset of actual columns of the dataframe and specify their types for type validation,
+If you want to extract a subset of actual columns of the DataFrame and specify their types for type validation,
 you can just specify the column names and their types in the structured dataset type annotation.
 
 First, initialize column types you want to extract from the `StructuredDataset`.
 
 ```python
-all_cols = union.kwtypes(Name=str, Age=int, Height=int)
-col = union.kwtypes(Age=int)
+all_cols = fl.kwtypes(Name=str, Age=int, Height=int)
+col = fl.kwtypes(Age=int)
 ```
 
 Define a task that opens a structured dataset by calling `all()`.
 When you invoke `all()` with ``pandas.DataFrame``, the {{< key product_name >}} engine downloads the parquet file on S3, and deserializes it to `pandas.DataFrame`.
-Keep in mind that you can invoke ``open()`` with any dataframe type that's supported or added to structured dataset.
+Keep in mind that you can invoke ``open()`` with any DataFrame type that's supported or added to structured dataset.
 For instance, you can use ``pa.Table`` to convert the Pandas DataFrame to a PyArrow table.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def get_subset_pandas_df(df: Annotated[StructuredDataset, all_cols]) -> Annotated[StructuredDataset, col]:
     df = df.open(pd.DataFrame).all()
     df = pd.concat([df, pd.DataFrame([[30]], columns=["Age"])])
     return StructuredDataset(dataframe=df)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def simple_sd_wf(a: int = 19) -> Annotated[StructuredDataset, col]:
     pandas_df = generate_pandas_df(a=a)
     return get_subset_pandas_df(df=pandas_df)
@@ -114,7 +117,7 @@ The code may result in runtime failures if the columns do not match.
 The input ``df`` has ``Name``, ``Age`` and ``Height`` columns, whereas the output structured dataset will only have the ``Age`` column.
 
 ## Serialized byte format
-You can use a custom serialization format to serialize your dataframes.
+You can use a custom serialization format to serialize your DataFrames.
 Here's how you can register the Pandas to CSV handler, which is already available,
 and enable the CSV serialization by annotating the structured dataset with the CSV format:
 
@@ -125,32 +128,35 @@ from flytekit.types.structured.structured_dataset import CSV
 register_csv_handlers()
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def pandas_to_csv(df: pd.DataFrame) -> Annotated[StructuredDataset, CSV]:
     return StructuredDataset(dataframe=df)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def pandas_to_csv_wf() -> Annotated[StructuredDataset, CSV]:
     pandas_df = generate_pandas_df(a=19)
     return pandas_to_csv(df=pandas_df)
 ```
 
+
 ## Storage driver and location
+
 By default, the data will be written to the same place that all other pointer-types (FlyteFile, FlyteDirectory, etc.) are written to.
 This is controlled by the output data prefix option in {{< key product_name >}} which is configurable on multiple levels.
 
 That is to say, in the simple default case, {{< key kit_name >}} will,
 
-- Look up the default format for say, Pandas dataframes,
+- Look up the default format for say, Pandas DataFrames,
 - Look up the default storage location based on the raw output prefix setting,
 - Use these two settings to select an encoder and invoke it.
 
 So what's an encoder? To understand that, let's look into how the structured dataset plugin works.
 
+
 ## Inner workings of a structured dataset plugin
 
-Two things need to happen with any dataframe instance when interacting with {{< key product_name >}}:
+Two things need to happen with any DataFrame instance when interacting with {{< key product_name >}}:
 
 - Serialization/deserialization from/to the Python instance to bytes (in the format specified above).
 - Transmission/retrieval of those bits to/from somewhere.
@@ -162,12 +168,12 @@ Each structured dataset plugin (called encoder or decoder) needs to perform both
 - The storage location
 - The Python type in the task or workflow signature.
 
-These three keys uniquely identify which encoder (used when converting a dataframe in Python memory to a {{< key product_name >}} value,
-e.g. when a task finishes and returns a dataframe) or decoder (used when hydrating a dataframe in memory from a {{< key product_name >}} value,
-e.g. when a task starts and has a dataframe input) to invoke.
+These three keys uniquely identify which encoder (used when converting a DataFrame in Python memory to a {{< key product_name >}} value,
+e.g. when a task finishes and returns a DataFrame) or decoder (used when hydrating a DataFrame in memory from a {{< key product_name >}} value,
+e.g. when a task starts and has a DataFrame input) to invoke.
 
 However, it is awkward to require users to use `typing.Annotated` on every signature.
-Therefore, {{< key kit_name >}} has a default byte-format for every Python dataframe type registered with {@= union_flytekit_lower =@}.
+Therefore, {{< key kit_name >}} has a default byte-format for every registered Python DataFrame type.
 
 ## The `uri` argument
 
@@ -185,13 +191,13 @@ Before writing DataFrame to a BigQuery table,
 Here's how you can define a task that converts a pandas DataFrame to a BigQuery table:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def pandas_to_bq() -> StructuredDataset:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
     return StructuredDataset(dataframe=df, uri="gs://<BUCKET_NAME>/<FILE_NAME>")
 ```
 
-Replace `BUCKET_NAME` with the name of your GCS bucket and `FILE_NAME` with the name of the file the dataframe should be copied to.
+Replace `BUCKET_NAME` with the name of your GCS bucket and `FILE_NAME` with the name of the file the DataFrame should be copied to.
 
 ### Note that no format was specified in the structured dataset constructor, or in the signature. So how did the BigQuery encoder get invoked?
 This is because the stock BigQuery encoder is loaded into {{< key kit_name >}} with an empty format.
@@ -201,7 +207,7 @@ The {{< key kit_name >}} `StructuredDatasetTransformerEngine` interprets that to
 And here's how you can define a task that converts the BigQuery table to a pandas DataFrame:
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
    return sd.open(pd.DataFrame).all()
 ```
@@ -209,23 +215,23 @@ def bq_to_pandas(sd: StructuredDataset) -> pd.DataFrame:
 > [!NOTE]
 > {{< key product_name >}} creates a table inside the dataset in the project upon BigQuery query execution.
 
-## How to return multiple dataframes from a task?
-For instance, how would a task return say two dataframes:
-- The first dataframe be written to BigQuery and serialized by one of their libraries,
+## How to return multiple DataFrames from a task?
+For instance, how would a task return say two DataFrames:
+- The first DataFrame be written to BigQuery and serialized by one of their libraries,
 - The second needs to be serialized to CSV and written at a specific location in GCS different from the generic pointer-data bucket
 
 If you want the default behavior (which is itself configurable based on which plugins are loaded),
-you can work just with your current raw dataframe classes.
+you can work just with your current raw DataFrame classes.
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def t1() -> typing.Tuple[StructuredDataset, StructuredDataset]:
    ...
    return StructuredDataset(df1, uri="bq://project:flyte.table"), \
           StructuredDataset(df2, uri="gs://auxiliary-bucket/data")
 ```
 
-If you want to customize the {{< key product_name >}} interaction behavior, you'll need to wrap your dataframe in a `StructuredDataset` wrapper object.
+If you want to customize the {{< key product_name >}} interaction behavior, you'll need to wrap your DataFrame in a `StructuredDataset` wrapper object.
 
 ## How to define a custom structured dataset plugin?
 
@@ -243,7 +249,7 @@ The `encode` function converts NumPy array to an intermediate format (parquet fi
 class NumpyEncodingHandler(StructuredDatasetEncoder):
     def encode(
         self,
-        ctx: union.FlyteContext,
+        ctx: fl.FlyteContext,
         structured_dataset: StructuredDataset,
         structured_dataset_type: union.StructuredDatasetType,
     ) -> literals.StructuredDataset:
@@ -261,16 +267,17 @@ class NumpyEncodingHandler(StructuredDatasetEncoder):
         )
 ```
 
+<!-- TODO: clean up code -->
 ### NumPy decoder
 
-Extend {py:class}`StructuredDatasetDecoder` and implement the {py:meth}`~StructuredDatasetDecoder.decode` function.
-The {py:meth}`~StructuredDatasetDecoder.decode` function converts the parquet file to a `numpy.ndarray`.
+Extend `StructuredDatasetDecoder` and implement the `StructuredDatasetDecoder.decode` function.
+The `StructuredDatasetDecoder.decode` function converts the parquet file to a `numpy.ndarray`.
 
 ```python
 class NumpyDecodingHandler(StructuredDatasetDecoder):
     def decode(
         self,
-        ctx: union.FlyteContext,
+        ctx: fl.FlyteContext,
         flyte_value: literals.StructuredDataset,
         current_task_metadata: StructuredDatasetMetadata,
     ) -> np.ndarray:
@@ -308,31 +315,31 @@ StructuredDatasetTransformerEngine.register_renderer(np.ndarray, NumpyRenderer()
 You can now use `numpy.ndarray` to deserialize the parquet file to NumPy and serialize a task's output (NumPy array) to a parquet file.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def generate_pd_df_with_str() -> pd.DataFrame:
     return pd.DataFrame({"Name": ["Tom", "Joseph"]})
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def to_numpy(sd: StructuredDataset) -> Annotated[StructuredDataset, None, PARQUET]:
     numpy_array = sd.open(np.ndarray).all()
     return StructuredDataset(dataframe=numpy_array)
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def numpy_wf() -> Annotated[StructuredDataset, None, PARQUET]:
     return to_numpy(sd=generate_pd_df_with_str())
 ```
 
 > [!NOTE]
-> `pyarrow` raises an `Expected bytes, got a 'int' object` error when the dataframe contains integers.
+> `pyarrow` raises an `Expected bytes, got a 'int' object` error when the DataFrame contains integers.
 
 You can run the code locally as follows:
 
 ```python
 if __name__ == "__main__":
     sd = simple_sd_wf()
-    print(f"A simple Pandas dataframe workflow: {sd.open(pd.DataFrame).all()}")
+    print(f"A simple Pandas DataFrame workflow: {sd.open(pd.DataFrame).all()}")
     print(f"Using CSV as the serializer: {pandas_to_csv_wf().open(pd.DataFrame).all()}")
     print(f"NumPy encoder and decoder: {numpy_wf().open(np.ndarray).all()}")
 ```
@@ -396,80 +403,80 @@ MyNestedDataClassDataset = Annotated[StructuredDataset, union.kwtypes(info=union
 image = union.ImageSpec(packages=["pandas", "pyarrow", "pandas", "tabulate"], registry="ghcr.io/flyteorg")
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def create_parquet_file() -> StructuredDataset:
     from tabulate import tabulate
 
     df = pd.json_normalize(data, max_level=0)
-    print("original dataframe: \n", tabulate(df, headers="keys", tablefmt="psql"))
+    print("original DataFrame: \n", tabulate(df, headers="keys", tablefmt="psql"))
 
     return StructuredDataset(dataframe=df)
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_arg(sd: MyArgDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MyArgDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MyArgDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_dict(sd: MyDictDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MyDictDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MyDictDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_list_dict(sd: MyDictListDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MyDictListDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MyDictListDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_top_dataclass(sd: MyTopDataClassDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MyTopDataClassDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MyTopDataClassDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_top_dict(sd: MyTopDictDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MyTopDictDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MyTopDictDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_second_dataclass(sd: MySecondDataClassDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MySecondDataClassDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MySecondDataClassDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def print_table_by_nested_dataclass(sd: MyNestedDataClassDataset) -> pd.DataFrame:
     from tabulate import tabulate
 
     t = sd.open(pd.DataFrame).all()
-    print("MyNestedDataClassDataset dataframe: \n", tabulate(t, headers="keys", tablefmt="psql"))
+    print("MyNestedDataClassDataset DataFrame: \n", tabulate(t, headers="keys", tablefmt="psql"))
     return t
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def contacts_wf():
     sd = create_parquet_file()
     print_table_by_arg(sd=sd)

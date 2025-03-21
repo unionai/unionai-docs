@@ -8,13 +8,20 @@ variants: +flyte -serverless +byoc +byok
 
 In this section we explain how to set up and use Google Artifact Registry (GAR) to build and deploy task container images using `ImageSpec`.
 
+
+{{< variant byoc byok >}}
+{{< markdown >}}
+
 ## Prerequisites
 
-If you are using GAR in the same Google Cloud Platform (GCP) project as your Union data plane, then you do not need to configure anything.
+If you are using GAR in the same Google Cloud Platform (GCP) project as your {{< key product_name >}} data plane, then you do not need to configure anything.
 Access to GAR in the same project is enabled by default.
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
 See [Enable Google Artifact Registry](../../../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md) for details.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Set up the image repository
 
@@ -36,7 +43,20 @@ This means that you have to decide on the name of your repository and create it,
 * Your repository will be called `my-image-repository`.
 * Your image will be called `simple-example-image`.
 
-In the GCP console, within your Union data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by Union. For your own work you should create a new one. Click **Create Repository**:
+{{< variant byoc byok >}}
+{{< markdown >}}
+
+In the GCP console, within your {{< key product_name >}} data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by {{< key product_name >}}. For your own work you should create a new one. Click **Create Repository**:
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+In the GCP console, within the same project as your Flyte installation, go to **Artifact Registry**. Create a new one by clicking **Create Repository**:
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-create-repository-1.png)
 
@@ -44,7 +64,22 @@ On the **Create repository** page,
 
 * Enter the name of the repository. In this example it would be `my-image-repository`.
 * Select **Docker** for the artifact type.
-* Select the region. If you want to access the GAR without further configuration, make sure this the same region as your Union data plane.
+
+{{< variant byoc byok >}}
+{{< markdown >}}
+
+* Select the region. If you want to access the GAR without further configuration, make sure this the same region as your {{< key product_name >}} data plane.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte>}}
+{{< markdown >}}
+
+* Select the region. If you want to access the GAR without further configuration, make sure this the same region as your Flyte cluster.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 * Click **Create**:
 
 ![](/_static/images/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar/gar-create-repository-2.png)
@@ -53,7 +88,7 @@ Your GAR repository is now created.
 
 ## Authenticate to the registry
 
-You will need to set up your local Docker client to authenticate with GAR. This is needed for `union` to be able to push the image built according to the `ImageSpec` to GAR.
+You will need to set up your local Docker client to authenticate with GAR. This is needed for `{{< key cli >}}` to be able to push the image built according to the `ImageSpec` to GAR.
 
 Directions can be found in the GAR console interface. Click on **Setup Instructions**:
 
@@ -79,11 +114,11 @@ The directions are also reproduced below. (We show the directions for the `us-ea
 > $ gcloud auth configure-docker us-east1-docker.pkg.dev
 > ```
 
-## Register your workflow to Union
+## Register your workflow to {{< key product_name >}}
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./index.md), to have the following `ImageSpec` declaration:
+For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(

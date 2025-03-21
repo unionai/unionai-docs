@@ -25,7 +25,7 @@ variants: +flyte -serverless +byoc +byok
 import os
 from typing import Iterator
 
-from flytekit import Secret, workflow
+import  {{< key kit_import >}}
 from flytekit.types.file import JSONLFile
 from flytekit.types.iterator import JSON
 from flytekitplugins.openai import BatchResult, create_batch
@@ -64,11 +64,11 @@ def jsons():
 iterator_batch = create_batch(
     name="gpt-3.5-turbo-iterator",
     openai_organization="your-org",
-    secret=Secret(group="openai", key="api-key"),
+    secret={{< key kit_as >}}.Secret(group="openai", key="api-key"),
 )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def json_iterator_wf(json_vals: Iterator[JSON] = jsons()) -> BatchResult:
     return iterator_batch(jsonl_in=json_vals)
 
@@ -93,7 +93,7 @@ file_batch = create_batch(
 )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def jsonl_wf(
     jsonl_file: JSONLFile = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data.jsonl")
 ) -> BatchResult:

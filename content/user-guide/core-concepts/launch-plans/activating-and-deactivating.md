@@ -23,7 +23,7 @@ Upon registration of a new launch plan, the first version is automatically inact
 If it has a schedule attached, the schedule is also inactive.
 Once activated, a launch plan version remains active even as new, later, versions are registered.
 
-A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`UnionRemote`](../../../user-guide/development-cycle/union-remote/index.md).
+A launch plan version with a schedule attached can be activated through either the UI, `uctl`, or [`{{< key kit_remote >}}`](../../../user-guide/development-cycle/union-remote/_index.md).
 
 ## Activating and deactivating a launch plan in the UI
 
@@ -44,7 +44,7 @@ The launch plan version and schedule are now activated. The launch plan will be 
 > [!WARNING]
 > Non-scheduled launch plans cannot be activated via the UI.
 > The UI does not support activating launch plans that do not have schedules attached.
-> You can activate them with `uctl` or `UnionRemote`.
+> You can activate them with `uctl` or `{{< key kit_remote >}}`.
 
 To deactivate a launch plan, navigate to a launch plan with an active schedule, click the **...** icon in the top-right corner of the screen beside **Active launch plan**, and click “Deactivate”.
 
@@ -55,7 +55,7 @@ A confirmation modal will appear, allowing you to deactivate the launch plan and
 > [!WARNING]
 > Non-scheduled launch plans cannot be deactivated via the UI.
 > The UI does not support deactivating launch plans that do not have schedules attached.
-> You can deactivate them with `uctl` or `UnionRemote`.
+> You can deactivate them with `uctl` or `{{< key kit_remote >}}`.
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
@@ -86,31 +86,32 @@ $ uctl update launchplan \
 ```
 
 
-See [Uctl CLI](../../../api-reference/uctl-cli/index.md) for more details.
+See [Uctl CLI](../../../api-reference/uctl-cli/_index.md) for more details.
 
 {{< /markdown >}}
 {{< /variant >}}
 
-## Activating and deactivating a launch plan in Python with `UnionRemote`
+<!-- TODO: Adjust Remote code or serverless vs everything else -->
+## Activating and deactivating a launch plan in Python with `{{< key kit_remote >}}`
 
-To activate a launch plan using version `UnionRemote`:
+To activate a launch plan using version `{{< key kit_remote >}}`:
 
 ```python
-from union.remote import UnionRemote
+from union.remote import {{< key kit_remote >}}
 from flytekit.configuration import Config
 
-remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
+remote = {{< key kit_remote >}}(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
 launch_plan = remote.fetch_launch_plan(ame=<launch-plan-name>, version=<launch-plan-version>).id
 remote.client.update_launch_plan(launch_plan.id, "ACTIVE")
 ```
 
-To deactivate a launch plan version using `UnionRemote`:
+To deactivate a launch plan version using `{{< key kit_remote >}}`:
 
 ```python
-from union.remote import UnionRemote
+from union.remote import {{< key kit_remote >}}
 from flytekit.remote import Config
 
-remote = UnionRemote(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
+remote = {{< key kit_remote >}}(config=Config.auto(), default_project=<project-id>, default_domain=<domain>)
 launch_plan = remote.fetch_launch_plan(ame=<launch-plan-name>, version=<launch-plan-version>)
 remote.client.update_launch_plan(launch_plan.id, "INACTIVE")
 ```

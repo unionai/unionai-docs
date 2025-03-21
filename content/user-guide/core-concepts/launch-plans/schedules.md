@@ -15,18 +15,18 @@ To add a schedule to a launch plan, add a schedule object to the launch plan, li
 ```python
 from datetime import timedelta
 
-import union
+import {{< key kit_import >}}
 from flytekit import FixedRate
 
-@union.task
+@{{< key kit_as >}}.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},
@@ -37,24 +37,27 @@ union.LaunchPlan.get_or_create(
 )
 ```
 
-Here we specify a [FixedRate](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.FixedRate.html#flytekit.FixedRate) schedule that will invoke the workflow every 10 minutes. Fixed rate schedules can also be defined using days or hours.
+Here we specify a [FixedRate]() schedule that will invoke the workflow every 10 minutes. Fixed rate schedules can also be defined using days or hours.
+<!-- TODO: Add link to API -->
 
-Alternatively, you can specify a [CronSchedule](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.CronSchedule.html#flytekit.CronSchedule) that uses the Unix standard [cron format](https://en.wikipedia.org/wiki/Cron)(See [crontab guru](https://crontab.guru/) for a handy helper for cron expressions):
+
+Alternatively, you can specify a [CronSchedule]():
+<!-- TODO: Add link to API -->
 
 ```python
-import union
+import {{< key kit_import >}}
 from flytekit import CronSchedule
 
 
-@union.task
+@{{< key kit_as >}}.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},
@@ -76,18 +79,18 @@ For example:
 ```python
 from datetime import datetime, timedelta
 
-import union
+import {{< key kit_import >}}
 from flytekit import FixedRate
 
-@union.task
+@{{< key kit_as >}}.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_workflow(a: int, b: int, c: int, kickoff_time: datetime ) -> str:
     return f"sum: {my_task(a=a, b=b, c=c)} at {kickoff_time}"
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},

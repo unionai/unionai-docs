@@ -1,4 +1,4 @@
-{{ $nowhere := .Inner }}
+{{ with .Inner }}{{/* no action */}}{{ end }}
 <div class="grid-container" style="
     display: grid;
     grid-template-columns: repeat(2, 1fr);

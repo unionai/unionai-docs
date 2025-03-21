@@ -1,18 +1,18 @@
 ---
 title: Serving a Model from a Workflow With FastAPI
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Serving a Model from a Workflow With FastAPI
 
-In this section, we create a Union app to serve a scikit-learn model created by a Union workflow
+In this section, we create a {{< key product_name >}} app to serve a scikit-learn model created by a {{< key product_name >}} workflow
 using `FastAPI`.
 
 ## Example app
 
-In this example, we first use a Union workflow to train a model and output it as a Union `Artifact`.
-We then use a Union app to serve the model using `FastAPI`.
+In this example, we first use a {{< key product_name >}} workflow to train a model and output it as a {{< key product_name >}} `Artifact`.
+We then use a {{< key product_name >}} app to serve the model using `FastAPI`.
 
 In a local directory, create the following files:
 
@@ -29,7 +29,7 @@ First, we declare the resources, runtime image, and the Scikit-learn model requi
 by the FastAPI app.
 
 ```python
-"""A Union app that uses FastAPI to serve model created by a Union workflow."""
+"""A {{< key product_name >}} app that uses FastAPI to serve model created by a {{< key product_name >}} workflow."""
 
 import os
 import union
@@ -108,11 +108,11 @@ async def predict(x: float, y: float) -> float:
 
 ## Training workflow
 
-The training workflow trains a random forest regression and saves it to an Union
+The training workflow trains a random forest regression and saves it to a {{< key product_name >}}
 `Artifact`.
 
 ```python
-"""A Union workflow that trains a model."""
+"""A {{< key product_name >}} workflow that trains a model."""
 
 import os
 from pathlib import Path
@@ -136,7 +136,7 @@ image_spec = union.ImageSpec(
 )
 
 # The `task` that trains a `RandomForestRegressor` model.
-@union.task(
+@{{< key kit_as >}}.task(
     limits=union.Resources(cpu="2", mem="2Gi"),
     container_image=image_spec,
 )
@@ -157,12 +157,12 @@ def train_model() -> Annotated[union.FlyteFile, SklearnModel]:
 To run this example you will need to register and run the workflow first:
 
 ```shell
-$ union run --remote train_wf.py train_model
+$ {{< key cli >}} run --remote train_wf.py train_model
 ```
 
 
 This task trains a `RandomForestRegressor`, saves it to a file, and uploads it to
-a Union `Artifact`. This `Union` Artifact is retrieved layer by the FastAPI app for
+a {{< key product_name >}} `Artifact`. This artifact is retrieved layer by the FastAPI app for
 serving the model.
 
 ![scikit-learn Artifact](/_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)
@@ -170,7 +170,7 @@ serving the model.
 Once the workflow has completed, you can deploy the app:
 
 ```shell
-$ union deploy apps app.py simple-fastapi-sklearn
+$ {{< key cli >}} deploy apps app.py simple-fastapi-sklearn
 ```
 
 

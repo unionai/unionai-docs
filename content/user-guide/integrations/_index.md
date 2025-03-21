@@ -1,6 +1,6 @@
 ---
 title: Integrations
-weight: 7
+weight: 8
 variants: +flyte -serverless +byoc +byok
 ---
 
@@ -36,26 +36,26 @@ more.
 
 ## Additional integrations
 
-A variety of agents and plugins enable you to integrate Union with additional external services. If you don't see the integration you need, you can [create your own](./agents/index.md#creating-a-new-agent).
+A variety of agents and plugins enable you to integrate {{< key product_name >}} with additional external services. If you don't see the integration you need, you can [create your own](./agents/_index.md#creating-a-new-agent).
 
 ### AI integrations
 
-* [OpenAI agents](./agents/openai-agents/index.md) Send prompts to ChatGPT and receive responses.
+* [OpenAI agents](./agents/openai-agents/_index.md) Send prompts to ChatGPT and receive responses.
 
 ### Database integrations
 
 * [DuckDB plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/duckdb_plugin/index.html) Run analytical queries using DuckDB.
-* [Google BigQuery agent](./agents/bigquery-agent/index.md) Query Google BigQuery tables from your workflows.
+* [Google BigQuery agent](./agents/bigquery-agent/_index.md) Query Google BigQuery tables from your workflows.
 * [SQL plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/sql_plugin/index.html) Execute SQL queries as tasks.
 
 ### Data pipeline integrations
 
-* [Apache Airflow agent](./agents/airflow-agent/index.md) Run Apache Airflow jobs in your workflows.
-* [Databricks agent](./agents/databricks-agent/index.md) Run Databricks jobs in your workflows.
-* [dbt plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/dbt_plugin/index.html) Run and test your `dbt` pipelines in Flyte.
-* [MemVerge Memory Machine Cloud agent](./agents/mmcloud-agent/index.md) Execute tasks using the MemVerge Memory Machine Cloud agent
+* [Apache Airflow agent](./agents/airflow-agent/_index.md) Run Apache Airflow jobs in your workflows.
+* [Databricks agent](./agents/databricks-agent/_index.md) Run Databricks jobs in your workflows.
+* [dbt plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/dbt_plugin/index.html) Run and test your `dbt` pipelines in {{< key product_name >}}.
+* [MemVerge Memory Machine Cloud agent](./agents/mmcloud-agent/_index.md) Execute tasks using the MemVerge Memory Machine Cloud agent
 * [NVIDIA DGX agent](./agents/dgx-agent.md) Run jobs on the NVIDIA DGX platform.
-* [Snowflake agent](./agents/snowflake-agent/index.md) Run Snowflake jobs in your workflow.
+* [Snowflake agent](./agents/snowflake-agent/_index.md) Run Snowflake jobs in your workflow.
 
 ### Data science tooling integrations
 
@@ -76,7 +76,7 @@ A variety of agents and plugins enable you to integrate Union with additional ex
 
 ### Misc
 
-* [File sensor agent](./agents/file-sensor-agent/index.md) Detect files appearing in your local or remote filesystem.
+* [File sensor agent](./agents/file-sensor-agent/_index.md) Detect files appearing in your local or remote filesystem.
 
 {{< /markdown >}}
 {{< /variant >}}

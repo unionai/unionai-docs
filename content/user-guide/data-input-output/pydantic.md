@@ -6,6 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Pydantic BaseModel
 
+
+<!-- TODO: check for variant accuracy -->
+
 {{< variant flyte >}}
 {{< markdown >}}
 
@@ -26,6 +29,8 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 >
 > For more details, you can refer the MESSAGEPACK IDL RFC: [https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md](https://github.com/flyteorg/flyte/blob/master/rfc/system/5741-binary-idl-with-message-pack.md)
 
+<!-- TODO: remove mention of flytesnacks repos here -->
+
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -40,6 +45,8 @@ to store `int` types, Protobuf's `struct` converts them to `float`, forcing user
 
 > [!NOTE]
 > You can put Dataclass and UnionTypes (FlyteFile, FlyteDirectory, FlyteSchema, and StructuredDataset) in a pydantic BaseModel.
+
+<!-- TODO: check above for variant accuracy -->
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -84,7 +91,7 @@ JSON.
 Once declared, a dataclass can be returned as an output or accepted as an input.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def stringify(s: int) -> Datum:
     """
     A Pydantic model return will be treated as a single complex JSON return.
@@ -92,7 +99,7 @@ def stringify(s: int) -> Datum:
     return Datum(x=s, y=str(s), z={s: str(s)})
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def add(x: Datum, y: Datum) -> Datum:
     x.z.update(y.z)
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
@@ -113,7 +120,7 @@ class FlyteTypes(BaseModel):
     directory: union.FlyteDirectory
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def upload_data() -> FlyteTypes:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
@@ -132,7 +139,7 @@ def upload_data() -> FlyteTypes:
     return fs
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def download_data(res: FlyteTypes):
     expected_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
     actual_df = res.dataframe.open(pd.DataFrame).all()
@@ -150,7 +157,7 @@ classes, FlyteFile, FlyteDirectory and StructuredDataset.
 We define a workflow that calls the tasks created above.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def basemodel_wf(x: int, y: int) -> (Datum, FlyteTypes):
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()
@@ -170,7 +177,7 @@ class UnionTypes(BaseModel):
     directory: union.FlyteDirectory
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def upload_data() -> UnionTypes:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
@@ -189,7 +196,7 @@ def upload_data() -> UnionTypes:
     return fs
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def download_data(res: UnionTypes):
     expected_df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
     actual_df = res.dataframe.open(pd.DataFrame).all()
@@ -207,7 +214,7 @@ FlyteFile, FlyteDirectory and StructuredDataset.
 We define a workflow that calls the tasks created above.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def basemodel_wf(x: int, y: int) -> (Datum, UnionTypes):
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()
@@ -228,8 +235,9 @@ $ {{< key cli >}} run dataclass.py basemodel_wf --x 1 --y 2
 {{< markdown >}}
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
-```
-pyflyte run \
+
+```shell
+$ pyflyte run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/b71e01d45037cea883883f33d8d93f258b9a5023/examples/data_types_and_io/data_types_and_io/pydantic_basemodel.py \
   basemodel_wf --x 1 --y 2
 ```
@@ -239,9 +247,9 @@ pyflyte run \
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 
-To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
+To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 ```
-union run \
+{{< key cli >}} run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/b71e01d45037cea883883f33d8d93f258b9a5023/examples/data_types_and_io/data_types_and_io/pydantic_basemodel.py \
   basemodel_wf --x 1 --y 2
 ```

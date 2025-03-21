@@ -13,7 +13,7 @@ Workflows are constructed by chaining together tasks, with the output of one tas
 ## Tasks are independently executable
 
 Tasks are designed to be independently executable, meaning that they can be run in isolation from other tasks.
-And since most tasks are just Python functions, they can be executed on your local machine, making it easy to unit test and debug tasks locally before deploying them to Union.
+And since most tasks are just Python functions, they can be executed on your local machine, making it easy to unit test and debug tasks locally before deploying them to {{< key product_name >}}.
 
 Because they are independently executable, tasks can also be shared and reused across multiple workflows and, as long as their logic is deterministic, their input and outputs can be [cached](../caching.md) to save compute resources and execution time.
 
@@ -22,9 +22,10 @@ Because they are independently executable, tasks can also be shared and reused a
 Tasks have strongly typed inputs and outputs, which are validated at deployment time.
 This helps catch bugs early and ensures that the data passing through tasks and workflows is compatible with the explicitly stated types.
 
-Under the hood, {{< key product_name >}} uses the [Flyte type system](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto) and translates between the Flyte types and the SDK language types, in this case Python.
+Under the hood, {{< key product_name >}} uses the [Flyte type system]() and translates between the Flyte types and the Python types.
 Python type annotations make sure that the data passing through tasks and workflows is compatible with the explicitly stated types defined through a function signature.
-The Flyte type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
+The {{< key product_name >}} type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
+<!-- TODO: Add link to API -->
 
 ## Tasks are containerized
 
@@ -33,7 +34,7 @@ While (most) tasks are locally executable, when a task is deployed to {{< key pr
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 
-This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/index.md).
+This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment/_index.md).
 For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
@@ -41,8 +42,8 @@ For example, a task that requires a GPU can be deployed to {{< key product_name 
 {{< variant serverless >}}
 {{< markdown >}}
 
-This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/index.md).
-For example, a task that requires a GPU can be deployed to Union with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
+This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components.md#imagespec) and [hardware requirements](./task-hardware-environment/_index.md).
+For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -76,8 +77,8 @@ One of the most powerful features of {{< key product_name >}} is the ability to 
 Because of the way that {{< key product_name >}} is architected, tasks within a single workflow can differ along many dimensions. While the total number of ways that tasks can be configured is quite large, the options fall into three categories:
 
 * **Task type**: These include standard Python tasks, map tasks, raw container tasks, and many specialized plugin tasks. For more information, see [Task types](./task-types.md).
-* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/index.md).
-* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/index.md).
+* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/_index.md).
+* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/_index.md).
 
 ### Mix and match task characteristics
 
@@ -100,7 +101,7 @@ The ability to build workflows from such a wide variety of heterogeneous tasks m
 
 ## Task configuration
 
-The `@union.task` decorator can take a number of parameters that allow you to configure the task's behavior.
+The `@{{< key kit_as >}}.task` decorator can take a number of parameters that allow you to configure the task's behavior.
 For example, you can specify the task's software dependencies, hardware requirements, caching behavior, retry behavior, and more.
 For more information, see [Task parameters](./task-parameters.md).
 {{< /markdown >}}

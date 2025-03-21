@@ -26,6 +26,7 @@ This example demonstrates how you can utilize custom objects without registering
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: Remove mention of FLytesnacks repo below -->
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -50,17 +51,17 @@ class Superhero:
         self.power = power
 
 
-@union.task
+@{{< key kit_as >}}.task
 def welcome_superhero(name: str, power: str) -> Superhero:
     return Superhero(name, power)
 
 
-@union.task
+@{{< key kit_as >}}.task
 def greet_superhero(superhero: Superhero) -> str:
     return f"👋 Hello {superhero.name}! Your superpower is {superhero.power}."
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def superhero_wf(name: str = "Thor", power: str = "Flight") -> str:
     superhero = welcome_superhero(name=name, power=power)
     return greet_superhero(superhero=superhero)

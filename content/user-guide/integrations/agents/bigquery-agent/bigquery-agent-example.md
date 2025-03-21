@@ -14,7 +14,8 @@ variants: +flyte -serverless +byoc +byok
 # %%
 
 import pandas as pd
-from flytekit import StructuredDataset, kwtypes, task, workflow
+import {{< key kit_import >}}
+from flytekit import kwtypes
 from flytekitplugins.bigquery import BigQueryConfig, BigQueryTask
 from typing_extensions import Annotated
 
@@ -30,7 +31,7 @@ bigquery_task_no_io = BigQueryTask(
 )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def no_io_wf():
     return bigquery_task_no_io()
 
@@ -60,12 +61,12 @@ bigquery_task_templatized_query = BigQueryTask(
 # StructuredDataset transformer can convert query result to pandas dataframe here.
 # We can also change "pandas.dataframe" to "pyarrow.Table", and convert result to Arrow table.
 # %%
-@task
+@{{< key kit_as >}}.task
 def convert_bq_table_to_pandas_dataframe(sd: DogeCoinDataset) -> pd.DataFrame:
     return sd.open(pd.DataFrame).all()
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def full_bigquery_wf(version: int) -> pd.DataFrame:
     sd = bigquery_task_templatized_query(version=version)
     return convert_bq_table_to_pandas_dataframe(sd=sd)

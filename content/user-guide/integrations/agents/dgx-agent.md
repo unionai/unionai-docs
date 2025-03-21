@@ -11,7 +11,7 @@ You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/
 
 ## Installation
 
-To install the DGX agent and have it enabled in your deployment, contact the Union team.
+To install the DGX agent and have it enabled in your deployment, contact the {{< key product_name >}} team.
 
 ## Example usage
 
@@ -41,7 +41,7 @@ DEFAULT_CHAT_TEMPLATE = """
 """.strip()
 
 
-@union.task(container_image=dgx_image_spec, cache_version="1.0", cache=True)
+@{{< key kit_as >}}.task(container_image=dgx_image_spec, cache_version="1.0", cache=True)
 def form_prompt(prompt: str, system_message: str) -> List[dict]:
     return [
         {"role": "system", "content": system_message},
@@ -49,7 +49,7 @@ def form_prompt(prompt: str, system_message: str) -> List[dict]:
     ]
 
 
-@union.task(
+@{{< key kit_as >}}.task(
     task_config=DGXConfig(instance="dgxa100.80g.8.norm"),
     container_image=dgx_image_spec,
 )
@@ -90,7 +90,7 @@ def inference(messages: List[dict], n_variations: int) -> List[str]:
     return [output["generated_text"] for output in outputs]
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def wf(
     prompt: str = "Explain what a Mixture of Experts is in less than 100 words.",
     n_variations: int = 8,

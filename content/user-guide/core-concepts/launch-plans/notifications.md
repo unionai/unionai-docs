@@ -25,7 +25,7 @@ For example:
 ```python
 from datetime import datetime
 
-import union
+import {{< key kit_import >}}
 
 from flytekit import (
     WorkflowExecutionPhase,
@@ -34,15 +34,15 @@ from flytekit import (
     Slack
 )
 
-@union.task
+@{{< key kit_as >}}.task
 def my_task(a: int, b: int, c: int) -> int:
     return a + b + c
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def my_workflow(a: int, b: int, c: int, kickoff_time: datetime ) -> str:
     return f"sum: {my_task(a=a, b=b, c=c)} at {kickoff_time}"
 
-union.LaunchPlan.get_or_create(
+{{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
     name="my_workflow_custom_lp",
     fixed_inputs={"a": 3},

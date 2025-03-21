@@ -1,7 +1,7 @@
 {{ $dev_warn := "Attention Developer! To change the variant use hugo.local.toml\n(copy from hugo.local toml~samples to get started)" }}
 <div class="variant-selector-container">
     <a href="{{ .Site.BaseURL }}">
-        <img src="/images/icon-logo.svg" class="logo" />
+        <img src="{{ "images/icon-logo.svg" | relURL }}" class="logo" />
     </a>
     <a href="{{ .Site.BaseURL }}" style="color: unset;">
         <div>Union Docs</div>

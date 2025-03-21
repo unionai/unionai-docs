@@ -1,7 +1,7 @@
 ---
 title: Materializing artifacts
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Materializing artifacts
@@ -24,15 +24,16 @@ Note that each time `t1` is executed, it emits a new version of the `BasicArtifa
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Inputs, Granularity
+import {{< key kit_import >}}
+from flytekit.core.artifact import Inputs, Granularity
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact",
     time_partitioned=True,
     time_partition_granularity=Granularity.HOUR,
@@ -40,7 +41,7 @@ BasicArtifact = Artifact(
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1(
     key1: str, date: datetime
 ) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:
@@ -51,7 +52,7 @@ def t1(
     )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf():
     run_date = datetime.now()
     values = ["value1", "value2", "value3"]
@@ -60,5 +61,5 @@ def wf():
 ```
 
 > [!NOTE]
-> You can also materialize an artifact by executing the `create_artifact` method of `UnionRemote`.
-> For more information, see the [UnionRemote documentation](../../../api-reference/union-sdk/union-remote/index.md).
+> You can also materialize an artifact by executing the `create_artifact` method of `{{< key kit_remote >}}`.
+> For more information, see the [{{< key kit_remote >}} documentation](../../../api-reference/union-sdk/union-remote/_index.md).

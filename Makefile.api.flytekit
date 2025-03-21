@@ -1,22 +1,32 @@
+OUTPUT_FOLDER=content/api-reference/flytekit
+API_DATA=/tmp/flytekit.api.yaml
+
 .PHONY: all
 all: parser generate
 
 .PHONY: parser
 parser:
-	cd tools/api_generator && \
-		python main_parser.py --package flytekit > /tmp/flytekit.api.yaml && \
-		sync
+	tools/api_generator/parser --package flytekit > ${API_DATA}
 
 .PHONY: generate
-generate:
-	cd tools/api_generator && \
-		python main_generate.py \
-			/tmp/flytekit.api.yaml \
-			../../content/api-reference/flytekit \
-			--title "FlyteKit API" \
-			--variants \
-				+flyte \
-				+byoc \
-				+byok \
-				+serverless \
-			--include ../../include/api.flytekit.md
+generate: clean_output_folder
+	tools/api_generator/generate \
+		--title "Flytekit" \
+		--api "${API_DATA}" \
+		--include include/api.unionv2.md \
+		--variants \
+			+flyte \
+			+byoc \
+			+byok \
+			+serverless \
+		--output "${OUTPUT_FOLDER}" \
+		--ignore_types \
+			flytekit.models.common.closing \
+			flytekit.remote.remote_fs.FlyteFS \
+			flytekit.remote.remote_fs.HTTPFileSystem \
+			flytekit.remote.remote_fs.HttpFileWriter \
+			flytekit.deck.renderer.MarkdownIt
+
+.PHONY: clean_output_folder
+clean_output_folder:
+	rm -rf "${OUTPUT_FOLDER}"

@@ -1,3 +1,6 @@
+PREFIX := docs
+PORT := 9000
+
 .PHONY: all dist variant dev
 
 all: usage
@@ -9,9 +12,11 @@ base:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
 	mkdir -p dist
+	mkdir -p dist/docs
 	mkdir -p dist/_static
-	cp index.html dist/
-	cp -R static/* dist/
+	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/index.html
+	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/docs/index.html
+	cp -R static/* dist/${PREFIX}/
 	cp -R content/_static/* dist/_static/
 
 dist: base
@@ -32,6 +37,5 @@ dev:
 
 serve:
 	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
-	@if [ -z ${PORT} ]; then make usage; echo "FATAL: Port missing"; exit 1; fi
 	echo "Open browser @ http://localhost:${PORT}"
 	cd dist; python3 -m http.server ${PORT}

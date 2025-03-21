@@ -1,7 +1,7 @@
 ---
 title: Viewing artifacts
 weight: 5
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Viewing artifacts
@@ -24,7 +24,7 @@ Here you can see relevant metadata about the artifact, including:
 * The task or workflow that produced it
 * Its creation time
 * Its object store URI
-* Code for accessing the artifact via [UnionRemote](../../../api-reference/union-sdk/union-remote/index.md)
+* Code for accessing the artifact via [{{< key kit_remote >}}](../../../api-reference/union-sdk/union-remote/_index.md)
 
 You can also view the artifact's object structure, model card, and lineage graph.
 

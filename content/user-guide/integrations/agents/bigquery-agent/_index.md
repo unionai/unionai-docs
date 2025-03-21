@@ -27,14 +27,14 @@ To test the BigQuery agent, copy the following code to a file called `bigquery_t
 > [!NOTE]
 > When testing the BigQuery integration locally, you will need to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 
-Add `AsyncAgentExecutorMixin` to this class to tell flytekit to use the agent to run the task:
+Add `AsyncAgentExecutorMixin` to this class to tell the system to use the agent to run the task:
 ```python
 class BigQueryTask(AsyncAgentExecutorMixin, SQLTask[BigQueryConfig]):
     def __init__(self, name: str, **kwargs):
         ...
 ```
 
-Flytekit will automatically use the agent to run the task in the local execution.
+{{< key kit_name >}} will automatically use the agent to run the task in the local execution.
 ```python
 bigquery_doge_coin = BigQueryTask(
     name=f"bigquery.doge_coin",
@@ -48,15 +48,15 @@ bigquery_doge_coin = BigQueryTask(
 You can run the above example task locally and test the agent with the following command:
 
 ```shell
-$ union run bigquery_task.py bigquery_doge_coin --version 10
+$ {{< key cli >}} run bigquery_task.py bigquery_doge_coin --version 10
 ```
 
 {{< variant byoc >}}
 {{< markdown >}}
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

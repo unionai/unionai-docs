@@ -1,34 +1,36 @@
 ---
 title: FAQ
-weight: 8
+weight: 9
 variants: +flyte -serverless +byoc +byok
 ---
 
+<!-- TODO: variant accuracy -->
+
 # FAQ
 
-## Onboarding my organization to Union BYOC
+## Onboarding my organization to {{< key product_name >}} BYOC
 
-### What information does Union need to set up my service?
+### What information does {{< key product_name >}} need to set up my service?
 
-When you initially onboard your organization to Union BYOC you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
+When you initially onboard your organization to {{< key product_name >}} BYOC you must specify which cloud provider(s) you wish to use and the configuration of the machine types you want.
 
 For details, see [Configuring your data plane](../deployment/configuring-your-data-plane.md).
 
 ### How do I change the machine types in my cluster?
 
-If you have already been onboarded and wish to change your machine types, Union will need to re-configure your node groups (in AWS) or instance groups (in GCP).
+If you have already been onboarded and wish to change your machine types, {{< key product_name >}} will need to re-configure your node groups (in AWS) or instance groups (in GCP).
 To initiate the process, submit the [Node Group Configuration Change form](https://wkf.ms/3pGNJqh).
 
 ## Data storage and handling
 
-### How does Union store my data?
+### How does {{< key product_name >}} store my data?
 
 When data is passed from task to task in a workflow (and output at the end of the workflow), the workflow engine manages the transfer of these values.
 
 The system distinguishes between metadata and raw data.
 Primitive values (`int`, `str`, etc.) are stored directly in the metadata store
 while complex data objects (`pandas.DataFrame`, `FlyteFile`, etc.) are stored by reference with the reference in metadata and the actual data in the raw data store.
-By default, both metadata and raw data are stored in Union's internal object store, located in your data plane in a pre-configured S3/GCS bucket.
+By default, both metadata and raw data are stored in {{< key product_name >}}'s internal object store, located in your data plane in a pre-configured S3/GCS bucket.
 
 For more details see [Task input and output](./data-input-output/task-input-and-output.md)
 
@@ -52,7 +54,7 @@ No.
 Your raw data resides in your data plane and is stored either in the default raw data storage or in storage that you set up yourself.
 In either case, you control access to it.
 
-The Union team does have access to your data plane for purposes of maintenance but does not have access to your raw data, secrets in secret managers, database, etc. unless you choose to permit such access.
+The {{< key product_name >}} team does have access to your data plane for purposes of maintenance but does not have access to your raw data, secrets in secret managers, database, etc. unless you choose to permit such access.
 
 Having said that, since the data plane is yours, you are ultimately responsible for preventing access by malicious third parties.
 
@@ -86,8 +88,8 @@ See also:
 
 ### Can I use BigQuery from within a task?
 
-If your Union data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
-For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/index.md).
+If your {{< key product_name >}} data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
+For details see [Enabling GCP resources](./integrations/enabling-gcp-resources/_index.md).
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery.md).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
@@ -97,14 +99,14 @@ For details see [BigQuery agent](https://docs.flyte.org/en/latest/flytesnacks/ex
 
 ### Where do `FlyteFile` and `FlyteDirectory` store their data?
 
-[`FlyteFile` and `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) are two Python classes provided by Union to make it easy to pass files from one task to the next within a workflow.
-They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to Union's internal object store to persist it
+[`FlyteFile` and `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) are two Python classes provided by {{< key product_name >}} to make it easy to pass files from one task to the next within a workflow.
+They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to {{< key product_name >}}'s internal object store to persist it
 across task containers.
 
 ### Can I accidentally overwrite `FlyteFil`e data?
 
 In general, no.
-When a task returns a [`FlyteFile` or `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory.md) whose source is local to the origin container, Union automatically uploads it to a location with a randomized path in the raw data store.
+When a task returns a [`FlyteFile` or `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory.md) whose source is local to the origin container, {{< key product_name >}} automatically uploads it to a location with a randomized path in the raw data store.
 This ensures that subsequent runs will not overwrite earlier data.
 
 ### Can I use my own blob store for `FlyteFile` and `FlyteDirectory` data storage?
@@ -113,7 +115,7 @@ Yes. If you do not want to use the default raw output store that is provided wit
 
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
-You may notice that `flytekit` defines some aliases of `FlyteFile` with specific type annotations such as `PDFFile`, `JPEGImageFile`, and so forth.
+`FlyteFile` and `FlyteDirectory` include specific type annotations such as `PDFFile`, `JPEGImageFile`, and so forth.
 These aliases can be used when handling a file or directory of the specified type.
 For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-output/flyte-file-and-flyte-directory.md#typed-aliases).
 
@@ -121,17 +123,21 @@ For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-
 
 ### What SDK should I download and use in workflow code?
 
-You should install the `union` SDK, which will install the `union` and `flytekit` SDKs and the `union` command-line tool. You will need to use the `flytekit` SDK the majority of the time in the code to import core features and use the `union` SDK for Union-specific features, such as artifacts.
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+You should install the `{{< key kit >}}` package, which will install the Union and Flytekit SDKs and the `{{< key cli >}}` command-line tool. You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for Union-specific features, such as artifacts.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+You should install the `flytekit` package, which will install the Flytekit SDK and the `pyflyte` command-line tool.
+{{< /markdown >}}
+{{< /variant >}}
 
-To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following command:
 
-```shell
-pip install union
-```
+### How do I authenticate `{{< key ctl >}}` and `{{< key cli >}}` CLIs to {{< key product_name >}}?
 
-### How do I authenticate `uctl` and `union` to Union?
-
-The command-line tools `uctl` and `union` need to authenticate in order to connect with your Union instance (for example, when registering a workflow).
+The command-line tools `{{< key ctl >}}` and `{{< key cli >}}` need to authenticate in order to connect with your {{< key product_name >}} instance (for example, when registering a workflow).
 There are three ways to set up authentication.
 
 1. **PKCE**: This is the default method.
@@ -140,19 +146,19 @@ When using this method, a browser pops up to authenticate the user.
 Navigate to it in your browser and follow the directions.
 3. **ClientSecret:** This is the headless option.
 It can be used, for example, by CI bots.
-With this method, you create a Union application and configure your tools to pass the Client ID and App Secret to Union.
+With this method, you create a {{< key product_name >}} application and configure your tools to pass the Client ID and App Secret to {{< key product_name >}}.
 
-These methods are all configured in the `config.yaml` that your `uctl` or `union` command uses. See [CLI authentication types](./administration/cli-authentication-types.md) for full details.
+These methods are all configured in the `config.yaml` that your `{{< key ctl >}}` or `{{< key cli >}}` command uses. See [CLI authentication types](./administration/cli-authentication-types.md) for full details.
 
 Note that if you wish to run or register workflows in a remote SSH session, you will need to authenticate using the DeviceFlow or ClientSecret methods as PKCE attempts to open a local browser from the CLI.
 
 ### How do I specify resource requirements for a task?
 
 You can specify either `requests` or `limits` (or both) on the resources that will be used by a specific task when it runs in its container.
-This is done by setting the `requests` or `limits` property in the `@union.task` decorator to a `Resources` configuration object.
+This is done by setting the `requests` or `limits` property in the `@{{< key kit_as >}}.task` decorator to a `Resources` configuration object.
 Within the `Resources` object you can specify the number of CPU cores, the number of GPU cores, the amount of main memory, the amount of persistent storage, and the amount of ephemeral storage.
 
-You can also override the settings in the `@union.task` in a for more fine-grained control using the `with_overrides` method when invoking the task function.
+You can also override the settings in the `@{{< key kit_as >}}.task` in a for more fine-grained control using the `with_overrides` method when invoking the task function.
 
 See also:
 
@@ -160,18 +166,25 @@ See also:
 
 ### What command-line tools should I use to register and run workflows?
 
-You should use the `union` CLI to register and run workflows and perform other operations on the command line. The `union` CLI is installed when you `pip install union`, which will also install the `union` SDK and `flytekit` SDK.
 
-To install the `union` SDK, `flytekit SDK`, and `union` CLI, run the following command:
 
-```shell
-pip install union
-```
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+You should use the `{{< key cli >}}` CLI to register and run workflows and perform other operations on the command line. The `{{< key cli >}}` CLI is installed when you install the `{{< key kit >}}` package, which will also install the Union and Flytekit SDKs.
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+You should use the `pyflyte` CLI to register and run workflows and perform other operations on the command line. The `pyflyte` CLI is installed when you install the `flytekit` package, which will also install the Flytekit SDK.
+{{< /markdown >}}
+{{< /variant >}}
+
+
 
 ### How do I fix import errors when running workflows remotely?
 
-If you run your workflows with `union run --remote ...`, you may encounter import errors when importing functions, classes, or variables from other modules in your project repository.
-For example, if you have the following repository structure and you want to import a model from `my_model.py`, some constants from `constants.py`, and a helper function from `utils.py` in a task that is defined in `my_workflow.py`, you will encounter import errors unless these Python modules were explicitly added to the image used by the task, since the container running the task does not recognize these modules by default.
+If you run your workflows with `{{< key cli >}} run --remote ...`, you may encounter import errors when importing functions, classes, or variables from other modules in your project repository.
+For example, if you have the following repository structure, and you want to import a model from `my_model.py`, some constants from `constants.py`, and a helper function from `utils.py` in a task that is defined in `my_workflow.py`, you will encounter import errors unless these Python modules were explicitly added to the image used by the task, since the container running the task does not recognize these modules by default.
 
 ```shell
 ├── requirements.txt
@@ -190,14 +203,15 @@ For example, if you have the following repository structure and you want to impo
 ```
 
 Instead of building a custom Dockerfile that copies all the files and modules in your repository structure, you can do one of the following:
-1. Use the `--copy-all` flag in `union run --remote ...`
-2. Use `union register` to register your workflow and run it later using the Union console, `UnionRemote`, a `LaunchPlan`, `Artifact` triggers, or other options.
+1. Use the `--copy-all` flag in `{{< key cli >}} run --remote ...`
+2. Use `{{< key cli >}} register` to register your workflow and run it later.
+
 Both of these methods work by adding all the files within your local project root to the container running your tasks. The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
 
 ### What happens if an automated process launches a very large number of workflows?
 
-By default, Union has a built-in limiting mechanism that prevents more than 10,000 concurrent workflow executions per data plane cluster (equivalently, per organization).
-This limit can be adjusted on a per-customer basis (talk to the Union team).
+By default, {{< key product_name >}} has a built-in limiting mechanism that prevents more than 10,000 concurrent workflow executions per data plane cluster (equivalently, per organization).
+This limit can be adjusted on a per-customer basis (talk to the {{< key product_name >}} team).
 
 Executions beyond the limit will be executed as soon as resources become available.
 While waiting, the workflow execution will be reported as in the UNKNOWN state.

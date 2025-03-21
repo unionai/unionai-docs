@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import argparse
+
+import yaml
+
+from lib.parser.parse import parse
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate API documentation from Python package"
+    )
+    parser.add_argument("--package", help="Package to parse", required=True)
+    args = parser.parse_args()
+
+    result = parse(args.package)
+
+    yaml_output = yaml.dump(
+        result,
+        sort_keys=True,
+        default_flow_style=False,
+    )
+
+    print(yaml_output)
+
+
+if __name__ == "__main__":
+    main()

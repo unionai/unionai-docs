@@ -21,7 +21,7 @@ This tab displays details about the resources used by this specific task.
 As an example, let's say that the definition of this task in your Python code has the following task decorator:
 
 ```python
-@union.task(
+@{{< key kit_as >}}.task(
    requests=Resources(cpu="44", mem="120Gi"),
    limits=Resources(cpu="44", mem="120Gi")
 )

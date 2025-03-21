@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 ## Access to Artifact Registry in the same project is enabled by default
 
-When registering tasks and workflows, the Union infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
+When registering tasks and workflows, the {{< key product_name >}} infrastructure in your data plane must have access to the container registry that holds the task container images you will be using.
 If your data plane is on GCP then you may want to use Google Artifact Registry (GAR) to store these images.
 
 **In most cases, you will be using a GAR repository in the same GCP project as your data plane.**
@@ -18,7 +18,7 @@ If your data plane is on GCP then you may want to use Google Artifact Registry (
 ## Enabling cross-project access to Artifact Registry
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
-This is the infrastructure-level access that we discussed [earlier](./index.md#infrastructure-level-access).
+This is the infrastructure-level access that we discussed [earlier](./_index.md#infrastructure-level-access).
 It is mediated by the a specific Google Service Account (GSA) which we will refer to here as `<FlyteWorkerGSA>`
 (recall that this is in contrast to the task code access, which is mediated by a different default GSA, `<UserFlyteGSA>`).
 
@@ -40,4 +40,4 @@ To enable access to the GAR repository in the other account, do the following:
 * Specify the `<FlyteWorkerGSAEmail>` as a **Principal** and assign (at least) the role **Artifact Registry Reader**.
 * Select **Save**.
 
-Your Union data plane infrastructure should now be able to pull images from the GAR repository.
+Your {{< key product_name >}} data plane infrastructure should now be able to pull images from the GAR repository.

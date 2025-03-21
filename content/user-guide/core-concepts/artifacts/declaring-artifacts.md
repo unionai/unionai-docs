@@ -6,7 +6,8 @@ variants: +flyte +serverless +byoc +byok
 
 # Declaring artifacts
 
-In order to define a task or workflow that emits an artifact, you must first declare the artifact and the keys for any [partitions](./index.md#partitions) you wish for it to have. For the `Artifact` class parameters and methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
+In order to define a task or workflow that emits an artifact, you must first declare the artifact and the keys for any [partitions](./_index.md#partitions) you wish for it to have. For the `Artifact` class parameters and methods, see the [Artifact API documentation]().
+<!-- TODO: Add link to API -->
 
 ## Basic artifact
 
@@ -26,26 +27,25 @@ In the following example, an artifact called `BasicTaskData` is declared, along 
 # basic.py
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact
+import {{< key kit_import >}}
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicTaskData = Artifact(
+BasicTaskData = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact"
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1() -> Annotated[pd.DataFrame, BasicTaskData]:
     my_df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
     return BasicTaskData.create_from(my_df)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf() -> pd.DataFrame:
     return t1()
 ```
@@ -64,29 +64,29 @@ You must also pass a value to `time_partition`, which you can do at runtime or b
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Granularity
+import {{< key kit_import >}}
+from flytekit.core.artifact import Granularity
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact",
     time_partitioned=True,
     time_partition_granularity=Granularity.HOUR
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
     df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
     dt = datetime.now()
     return BasicArtifact.create_from(df, time_partition=dt)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf() -> pd.DataFrame:
     return t1()
 ```
@@ -100,32 +100,32 @@ def wf() -> pd.DataFrame:
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Granularity
+import {{< key kit_import >}}
+from flytekit.core.artifact import Granularity
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact",
     time_partitioned=True,
     time_partition_granularity=Granularity.HOUR
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1(date: datetime) -> Annotated[pd.DataFrame, BasicArtifact]:
     df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
     return BasicArtifact.create_from(df, time_partition=date)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf(run_date: datetime):
     return t1(date=run_date)
 ```
-<!-- :emphasize-lines: 20-21,28 -->
+<!-- TODO: emphasize-lines: 20-21,28 -->
 
 ## Artifact with custom partition keys
 
@@ -139,15 +139,15 @@ You can specify up to 10 custom partition keys when declaring an artifact. Custo
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Inputs, Granularity
+import {{< key kit_import >}}
+from flytekit.core.artifact import Inputs, Granularity
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact",
     time_partitioned=True,
     time_partition_granularity=Granularity.HOUR,
@@ -155,7 +155,7 @@ BasicArtifact = Artifact(
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1(
     key1: str, date: datetime
 ) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:
@@ -166,14 +166,14 @@ def t1(
     )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf():
     run_date = datetime.now()
     values = ["value1", "value2", "value3"]
     for value in values:
         t1(key1=value, date=run_date)
 ```
-<!-- :emphasize-lines: 16,35-36 -->
+<!-- TODO: emphasize-lines: 16,35-36 -->
 
 
 ### Passing a value to a custom partition key by input
@@ -184,15 +184,15 @@ def wf():
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Inputs, Granularity
+import {{< key kit_import >}}
+from flytekit.core.artifact import Inputs, Granularity
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact",
     time_partitioned=True,
     time_partition_granularity=Granularity.HOUR,
@@ -200,7 +200,7 @@ BasicArtifact = Artifact(
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1(
     key1: str, dt: datetime
 ) -> Annotated[pd.DataFrame, BasicArtifact(key1=Inputs.key1)]:
@@ -212,11 +212,11 @@ def t1(
     )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf(dt: datetime, val: str):
     t1(key1=val, dt=dt)
 ```
-<!-- :emphasize-lines: 16,34 -->
+<!-- TODO: emphasize-lines: 16,34 -->
 
 ## Artifact with model card example
 
@@ -225,17 +225,17 @@ You can attach a model card with additional metadata to your artifact, formatted
 ```python
 # model_card.py
 
+
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact
-from union.artifacts import ModelCard
+import {{< key kit_import >}}
+from {{< key kit >}}.artifacts import ModelCard
 from typing_extensions import Annotated
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(name="my_basic_artifact")
+BasicArtifact = {{< key kit_as >}}.Artifact(name="my_basic_artifact")
 
 
 def generate_md_contents(df: pd.DataFrame) -> str:
@@ -244,7 +244,7 @@ def generate_md_contents(df: pd.DataFrame) -> str:
     return contents
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
     df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
 
@@ -254,9 +254,9 @@ def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
     )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def wf():
     t1()
 ```
-<!-- :emphasize-lines: 4,14-17,26 -->
+<!-- TODO: emphasize-lines: 4,14-17,26 -->
 

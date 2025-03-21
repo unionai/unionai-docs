@@ -19,8 +19,7 @@ variants: +flyte -serverless +byoc +byok
 
 from typing import List
 
-import flytekit
-from flytekit import ImageSpec, Secret, dynamic, task, workflow
+import {{< key kit_import >}}
 from flytekitplugins.openai import ChatGPTTask
 
 # %% [markdown]
@@ -52,19 +51,11 @@ chatgpt_big_job = ChatGPTTask(
 )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def my_chatgpt_job(message: str) -> str:
     message = chatgpt_small_job(message=message)
     message = chatgpt_big_job(message=message)
     return message
-
-
-# %% [markdown]
-# You can execute the workflow locally.
-# %%
-if __name__ == "__main__":
-    print(f"Running {__file__} main...")
-    print(f"Running my_chatgpt_job(message='hi') {my_chatgpt_job(message='hi')}")
 
 
 # %% [markdown]
@@ -75,7 +66,7 @@ if __name__ == "__main__":
 # ### Summarize Flyte's latest GitHub releases to Slack
 #
 # %%
-image = ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     apt_packages=["git"],
     packages=[
         "flytekitplugins-chatgpt",
@@ -95,14 +86,14 @@ chatgpt_job = ChatGPTTask(
 )
 
 
-@task(
+@{{< key kit_as >}}.task(
     container_image=image,
-    secret_requests=[Secret(key="token", group="github-api")],
+    secret_requests=[{{< key kit_as >}}.Secret(key="token", group="github-api")],
 )
 def get_github_latest_release(owner: str = "flyteorg", repo: str = "flyte") -> str:
     import requests
 
-    token = flytekit.current_context().secrets.get("github-api", "token")
+    token = {{< key kit_as >}}.current_context().secrets.get("github-api", "token")
     url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
     headers = {
         "Authorization": f"token {token}",
@@ -123,9 +114,9 @@ def get_github_latest_release(owner: str = "flyteorg", repo: str = "flyte") -> s
     return message
 
 
-@task(
+@{{< key kit_as >}}.task(
     container_image=image,
-    secret_requests=[Secret(key="token", group="slack-api")],
+    secret_requests=[{{< key kit_as >}}.Secret(key="token", group="slack-api")],
 )
 def post_message_on_slack(message: str):
     if message == "":
@@ -133,12 +124,12 @@ def post_message_on_slack(message: str):
 
     from slack_sdk import WebClient
 
-    token = flytekit.current_context().secrets.get("slack-api", "token")
+    token = {{< key kit_as >}}.current_context().secrets.get("slack-api", "token")
     client = WebClient(token=token)
     client.chat_postMessage(channel="youtube-summary", text=message)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def slack_wf(owner: str = "flyteorg", repo: str = "flyte", channel: str = "demo"):
     message = get_github_latest_release(owner=owner, repo=repo)
     message = chatgpt_job(message=message)
@@ -152,7 +143,7 @@ if __name__ == "__main__":
 # %% [markdown]
 # ### Summarize Flyte's latest YouTube Video to Slack
 # %%
-image = ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     apt_packages=["git"],
     packages=[
         "flytekitplugins-chatgpt",
@@ -173,7 +164,7 @@ chatgpt_job = ChatGPTTask(
 )
 
 
-@task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def get_latest_video_transcript_chunks(channel_url: str) -> List[str]:
     import scrapetube
     from youtube_transcript_api import YouTubeTranscriptApi
@@ -191,28 +182,28 @@ def get_latest_video_transcript_chunks(channel_url: str) -> List[str]:
     return [text_transcript[i : i + 10000] for i in range(0, len(text_transcript), 10000)]
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def video_wf(channel_url: str):
     chunks = get_latest_video_transcript_chunks(channel_url=channel_url)
     dynamic_subwf(channel_url=channel_url, chunks=chunks)
 
 
-@task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def check_strs_len_less_than_num(msg1: str, msg2: str, num: int) -> bool:
     return len(msg1) + len(msg2) < num
 
 
-@task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def concatenate_str(msg1: str, msg2: str) -> str:
     return msg1 + msg2 + "\n"
 
 
-@task(container_image=image)
+@{{< key kit_as >}}.task(container_image=image)
 def str_is_non_empty(msg: str) -> bool:
     return len(msg) == 0
 
 
-@dynamic(container_image=image)
+@{{< key kit_as >}}.dynamic(container_image=image)
 def dynamic_subwf(channel_url: str, chunks: List[str]):
     post_message_on_slack(
         message=f"This is the latest video summary, checkout in Flyte's Youtube Channel!\n{channel_url}"
@@ -293,7 +284,7 @@ chatgpt_job = ChatGPTTask(
 )
 
 
-@task
+@{{< key kit_as >}}.task
 def get_weekly_articles_title(url: str = "https://medium.com/tag/flyte") -> str:
     from bs4 import BeautifulSoup
     from selenium import webdriver
@@ -329,7 +320,7 @@ def get_weekly_articles_title(url: str = "https://medium.com/tag/flyte") -> str:
     return message
 
 
-@task(
+@{{< key kit_as >}}.task(
     secret_requests=[
         Secret(key="bearer_token", group="tweet-api"),
         Secret(key="consumer_key", group="tweet-api"),
@@ -342,11 +333,11 @@ def tweet(text: str):
     import tweepy
 
     TWEET_LENGTH = 280
-    BEARER_TOKEN = flytekit.current_context().secrets.get("tweet-api", "bearer_token")
-    CONSUMER_KEY = flytekit.current_context().secrets.get("tweet-api", "consumer_key")
-    CONSUMER_SECRET = flytekit.current_context().secrets.get("tweet-api", "consumer_secret")
-    ACCESS_TOKEN = flytekit.current_context().secrets.get("tweet-api", "access_token")
-    ACCESS_TOKEN_SECRET = flytekit.current_context().secrets.get("tweet-api", "access_token_secret")
+    BEARER_TOKEN = {{< key kit_as >}}..current_context().secrets.get("tweet-api", "bearer_token")
+    CONSUMER_KEY = {{< key kit_as >}}..current_context().secrets.get("tweet-api", "consumer_key")
+    CONSUMER_SECRET = {{< key kit_as >}}..current_context().secrets.get("tweet-api", "consumer_secret")
+    ACCESS_TOKEN = {{< key kit_as >}}..current_context().secrets.get("tweet-api", "access_token")
+    ACCESS_TOKEN_SECRET = {{< key kit_as >}}..current_context().secrets.get("tweet-api", "access_token_secret")
 
     client = tweepy.Client(
         bearer_token=BEARER_TOKEN,
@@ -361,7 +352,7 @@ def tweet(text: str):
     client.create_tweet(text=text)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def tweet_wf(url: str = "https://medium.com/tag/flyte"):
     message = get_weekly_articles_title(url=url)
     message = chatgpt_job(message=message)

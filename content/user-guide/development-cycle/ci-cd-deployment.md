@@ -8,13 +8,13 @@ variants: +flyte -serverless +byoc +byok
 
 So far we have covered the steps of deploying a project manually from the command line.
 In many cases, you will want to automate this process through a CI/CD system.
-In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on Union.
+In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on {{< key product_name >}}.
 We will use GitHub Actions as the example CI/CD system.
 
-## Create a Union app
+## Create a {{< key product_name >}} app
 
-An app is an agent registered in your Union data plane that enables external systems to perform actions in the system.
-To enable your CI/CD system to authenticate with Union, you need to create a Union app.
+An app is an agent registered in your {{< key product_name >}} data plane that enables external systems to perform actions in the system.
+To enable your CI/CD system to authenticate with {{< key product_name >}}, you need to create a {{< key product_name >}} app.
 See [Applications](../administration/applications.md).
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
@@ -35,7 +35,6 @@ tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
 Now, create the app using the specification file:
 
 ```shell
-[~/wine-classification]:wine-classification
 $ uctl create app --appSpecFile app.yaml
 ```
 
@@ -51,7 +50,7 @@ The response should look something like this:
 
 Copy the `<AppSecret>` to an editor for later use.
 This is the only time that the secret will be displayed.
-The secret is not stored by Union.
+The secret is not stored by {{< key product_name >}}.
 
 ## Store the secret in your CI/CD secrets store
 
@@ -64,7 +63,7 @@ In GitHub, from the repository page:
 4. Paste in the string from above as the value.
 5. Click **Add secret**.
 
-## Create a Union configuration file
+## Create a {{< key product_name >}} configuration file
 
 Until now the configuration file we have used has been local (`~/.union/config.yaml`, for example).
 For the CI/CD system you need to create one right in the same repository that holds your workflow code.
@@ -136,7 +135,7 @@ jobs:
       - name: Package
         working-directory: ./${{ env.PROJECT }}
         run: |
-          union --pkgs workflows package \
+          {{< key cli >}} --pkgs workflows package \
             --output ./flyte-package.tgz \
             --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
       - name: Register
@@ -168,4 +167,4 @@ jobs:
 > These are related to the container build process, project name and so forth.
 > For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
 
-Once this is set up, every push to the main branch in you repository will build and deploy your project to Union.
+Once this is set up, every push to the main branch in you repository will build and deploy your project to {{< key product_name >}}.

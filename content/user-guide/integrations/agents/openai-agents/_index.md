@@ -38,6 +38,6 @@ To test the batch agent locally, create a class for the agent task that inherits
 
 To test the ChatGPT agent locally, create a class for the agent task that inherits from [SyncAgentExecutorMixin](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L232-275). This mixin can handle synchronous tasks and allows flytekit to mimic FlytePropeller's behavior in calling the agent.
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the batch or ChatGPT agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the batch or ChatGPT agent locally, contact the {{< key product_name >}} team to enable it in your cluster.

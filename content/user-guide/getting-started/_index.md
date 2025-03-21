@@ -1,19 +1,19 @@
 ---
 title: Getting started
-weight: 2
+weight: 3
 variants: +flyte +serverless +byoc +byok
 ---
 
 # Getting started
 
-This section gives you a quick introduction to writing and running Union workflows.
+This section gives you a quick introduction to writing and running {{< key product_name >}} workflows.
 
 {{< variant serverless >}}
 {{< markdown >}}
 
-## Sign up for Union Serverless
+## Sign up for {{< key product_name >}} Serverless
 
-First, sign up for Union Serverless:
+First, sign up for {{< key product_name >}} Serverless:
 {{< /markdown >}}
 
 {{< button-link text="Create an account" target="https://signup.union.ai/" variant="warning" >}}
@@ -25,11 +25,11 @@ the UI at [serverless.union.ai](https://serverless.union.ai).
 To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
 This will take you to `{{< key default_project >}}` project dashboard:
 
-![Union UI](/_static/images/quick-start/serverless-dashboard.png)
+![{{< key product_name >}} UI](/_static/images/quick-start/serverless-dashboard.png)
 
 ## Run your first workflow
 
-Run your first workflow on a Union Workspace.
+Run your first workflow on a {{< key product_name >}} Workspace.
 {{< /markdown >}}
 
 {{< dropdown title="Start workspace" icon=arrow_forward >}}
@@ -86,7 +86,7 @@ stop it manually on the Workspaces page.
 
 {{< markdown class="top-margin" >}}
 
-🎉 Congratulations! You've just run your first workflow on Union.
+🎉 Congratulations! You've just run your first workflow on {{< key product_name >}}.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -96,20 +96,20 @@ stop it manually on the Workspaces page.
 
 ## Gather your credentials
 
-After your administrator has onboarded you to Union (see [Deployment](../../deployment/index.md)), you should have the following at hand:
+After your administrator has onboarded you to {{< key product_name >}} (see [Deployment](../../deployment/_index.md)), you should have the following at hand:
 
-- Your Union credentials.
-- The URL of your Union instance. We will refer to this as `<union-host-url>` below.
+- Your {{< key product_name >}} credentials.
+- The URL of your {{< key product_name >}} instance. We will refer to this as `<union-host-url>` below.
 
-## Log into Union
+## Log into {{< key product_name >}}
 
 Navigate to the UI at `<union-host-url>` and log in with your credentials.
-Once you have logged in you should see the Union UI.
+Once you have logged in you should see the {{< key product_name >}} UI.
 
 To get started, try selecting the default project, called `{{< key default_project >}}`, from the list of projects.
 This will take you to `{{< key default_project >}}` project dashboard:
 
-![Union UI](/_static/images/quick-start/byoc-dashboard.png)
+![{{< key product_name >}} UI](/_static/images/quick-start/byoc-dashboard.png)
 
 This dashboard gives you an overview of the workflows and tasks in your project.
 Since you are just starting out, it will be empty.
@@ -117,12 +117,12 @@ To build and deploy your first workflow, the first step is to [set up your local
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant flyte >}}
 {{< markdown >}}
 
 > [!NOTE] Try Flyte in your browser
-> You can try Flyte in your browser without any setup simply by [signing up for **Union Serverless**](https://signup.union.ai/).
-> [Union Serverless is a fully-hosted version of Flyte](https://docs.union.ai/serverless) with additional features.
+> You can try Flyte in your browser without any setup simply by [signing up for **{{< key product_name >}} Serverless**](https://signup.union.ai/).
+> [{{< key product_name >}} Serverless is a fully-hosted version of Flyte](https://docs.union.ai/serverless) with additional features.
 
 
 ## Try Flyte on your local machine

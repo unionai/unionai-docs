@@ -6,7 +6,7 @@ variants: +flyte -serverless +byoc +byok
 
 # Snowflake agent
 
-Union can be seamlessly integrated with the [Snowflake](https://www.snowflake.com) service,
+{{< key product_name >}} can be seamlessly integrated with the [Snowflake](https://www.snowflake.com) service,
 allowing you to easily query data in Snowflake.
 
 ## Installation
@@ -50,9 +50,9 @@ sudo vim /etc/secrets/snowflake
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-## Union cluster deployment
+## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the Union team to enable it in your cluster.
+After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -15,10 +15,11 @@ variants: +flyte -serverless +byoc +byok
 #
 # %%
 import pandas as pd
-from flytekit import ImageSpec, Secret, StructuredDataset, kwtypes, task, workflow
+import {{< key kit_import >}}
+from flytekit import kwtypes
 from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 
-image = ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     packages=["flytekitplugins-snowflake", "pandas", "pyarrow"],
     registry="ghcr.io/flyteorg",
 )
@@ -72,7 +73,7 @@ snowflake_task_templatized_query = SnowflakeTask(
 )
 
 
-@task(
+@{{< key kit_as >}}.task(
     container_image=image,
     secret_requests=[
         Secret(
@@ -81,7 +82,7 @@ snowflake_task_templatized_query = SnowflakeTask(
         )
     ],
 )
-def print_head(input_sd: StructuredDataset) -> pd.DataFrame:
+def print_head(input_sd: {{< key kit_as >}}.StructuredDataset) -> pd.DataFrame:
     # Download the DataFrame from the Snowflake table via StructuredDataset
     # We don't have to provide the uri here because the input_sd already has the uri
     df = input_sd.open(pd.DataFrame).all()
@@ -89,16 +90,16 @@ def print_head(input_sd: StructuredDataset) -> pd.DataFrame:
     return df
 
 
-@task(
+@{{< key kit_as >}}.task(
     container_image=image,
     secret_requests=[
-        Secret(
+        {{< key kit_as >}}.Secret(
             group="private-key",
             key="snowflake",
         )
     ],
 )
-def write_table() -> StructuredDataset:
+def write_table() -> {{< key kit_as >}}.StructuredDataset:
     df = pd.DataFrame({"ID": [1, 2, 3], "NAME": ["flyte", "is", "amazing"], "AGE": [30, 30, 30]})
     print(df)
 
@@ -111,11 +112,11 @@ def write_table() -> StructuredDataset:
     table = "TEST"
     uri = f"snowflake://{user}:{account}/{warehouse}/{database}/{schema}/{table}"
 
-    return StructuredDataset(dataframe=df, uri=uri)
+    return {{< key kit_as >}}.StructuredDataset(dataframe=df, uri=uri)
 
 
 @workflow
-def wf() -> StructuredDataset:
+def wf() -> {{< key kit_as >}}.StructuredDataset:
     sd = snowflake_task_templatized_query()
     t1 = print_head(input_sd=sd)
     insert_query = snowflake_task_insert_query(id=1, name="Flyte", age=30)
@@ -125,8 +126,4 @@ def wf() -> StructuredDataset:
     sd >> t1 >> insert_query >> wt >> sd2
 
     return print_head(input_sd=sd2)
-
-
-if __name__ == "__main__":
-    wf()
 ```

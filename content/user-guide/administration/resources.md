@@ -1,12 +1,12 @@
 ---
 title: Resources
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Resources
 
-Select **Resources** in the top right of the Union interface to open a view showing the overall health and utilization of your Union installation.
+Select **Resources** in the top right of the {{< key product_name >}} interface to open a view showing the overall health and utilization of your {{< key product_name >}} installation.
 
 ![Resources link](/_static/images/user-guide/administration/resources/resources-link.png)
 
@@ -88,9 +88,9 @@ This dashboard displays the resource quotas for projects and domains in the orga
 
 ### Namespaces and Quotas
 
-Under the hood, Union uses Kubernetes to run workloads. To deliver multi-tenancy, the system uses Kubernetes [namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). In AWS based installations, each project-domain pair is mapped to a namespace. In GCP-based installations each domain is mapped to a namespace.
+Under the hood, {{< key product_name >}} uses Kubernetes to run workloads. To deliver multi-tenancy, the system uses Kubernetes [namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). In AWS based installations, each project-domain pair is mapped to a namespace. In GCP-based installations each domain is mapped to a namespace.
 
-Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/policy/resource-quotas/) is set for each resource type (memory, CPU, GPU). This dashboard displays the current point-in-time quota consumption for memory, CPU, and GPU. Quotas are defined as part of the set-up of the instance types in your data plane. To change them, talk to the Union team.
+Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/policy/resource-quotas/) is set for each resource type (memory, CPU, GPU). This dashboard displays the current point-in-time quota consumption for memory, CPU, and GPU. Quotas are defined as part of the set-up of the instance types in your data plane. To change them, talk to the {{< key product_name >}} team.
 
 <!-- TODO: Add section back in when we have screenshots for specific percentage examples
 
@@ -99,7 +99,7 @@ Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/po
 In Flyte you set resource requests and limits at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources.md)):
 
 ```python
-@union.task(requests=Resources(cpu="1", mem="1Gi"),
+@{{< key kit_as >}}.task(requests=Resources(cpu="1", mem="1Gi"),
       limits=Resources(cpu="10", mem="10Gi"))
 ```
 
@@ -126,9 +126,9 @@ This dashboard displays information about configured node pools in the organizat
 
 ![Resources compute](/_static/images/user-guide/administration/resources/resources-compute.png)
 
-Union will schedule tasks on a node pool that meets the requirements of the task (as defined by the `requests` and `limits` parameters in the task definition) and can vertically scale these node pools according to the minimum and maximum configured limits. This dashboard shows all currently-configured node pools, whether they are interruptible, labels and taints, minimum and maximum sizes, and allocatable resources.
+{{< key product_name >}} will schedule tasks on a node pool that meets the requirements of the task (as defined by the `requests` and `limits` parameters in the task definition) and can vertically scale these node pools according to the minimum and maximum configured limits. This dashboard shows all currently-configured node pools, whether they are interruptible, labels and taints, minimum and maximum sizes, and allocatable resources.
 
-The allocatable resource values reflect any compute necessary for Union services to function. This is why the value may be slightly lower than the quoted value from the cloud provider. This value, however, does not account for any overhead that may be used by third-party services, like Ray, for example.
+The allocatable resource values reflect any compute necessary for {{< key product_name >}} services to function. This is why the value may be slightly lower than the quoted value from the cloud provider. This value, however, does not account for any overhead that may be used by third-party services, like Ray, for example.
 
 ### Information displayed
 
@@ -152,7 +152,7 @@ The dashboard provides the following information:
 In the screenshot above, there is a `t3a.xlarge` with `3670m` (3670 millicores) of allocatable CPU, and a larger `c5.4xlarge` with `15640m` of allocatable CPU. In order to schedule a workload on the smaller node, you could specify the following in a task definition:
 
 ```python
-@union.task(requests=Resources(cpu="3670m", mem="1Gi"),
+@{{< key kit_as >}}.task(requests=Resources(cpu="3670m", mem="1Gi"),
       limits=Resources(cpu="3670m", mem="1Gi"))
 ```
 
@@ -162,7 +162,7 @@ In the absence of confounding factors (for example, other workloads fully utiliz
 Conversely, if a user requests the following:
 
 ```python
-@union.task(requests=Resources(cpu="4000m", mem="1Gi"),
+@{{< key kit_as >}}.task(requests=Resources(cpu="4000m", mem="1Gi"),
       limits=Resources(cpu="4000m", mem="1Gi"))
 ```
 

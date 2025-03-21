@@ -3,7 +3,7 @@
 
 This site has special blocks that can be used to generate code for Union.
 
-- [How to specify a "short code"](#how-to-specify-a-short-code)
+- [How to specify a "shortcode"](#how-to-specify-a-shortcode)
 - [Variants](#variants)
 - [Component Library](#component-library)
   - [`{{< audio >}}`](#-audio-)
@@ -15,6 +15,7 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< multiline >}}`](#-multiline-)
   - [`{{< tabs >}}` and `{{< tab >}}`](#-tabs--and--tab-)
   - [`{{< key >}}`](#-key-)
+  - [`{{< download >}}`](#-download-)
 
 ## How to specify a "shortcode"
 
@@ -146,3 +147,16 @@ serverless = "Union Serverless"
 byoc = "Union BYOC"
 byok = "Union BYOK"
 ```
+
+### `{{< download >}}`
+
+Generates a download link.
+
+Parameters:
+  - `url`: The URL to download from
+  - `filename`: The filename to save the file as
+  - `text`: The text to display for the download link
+
+Example:
+
+    {{< download "/_static/public/public-key.txt" "public-key.txt" >}}

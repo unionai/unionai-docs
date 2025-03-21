@@ -4,6 +4,7 @@ weight: 6
 variants: +flyte +serverless +byoc +byok
 ---
 
+<!-- check for variant accuracy -->
 # Dataclass
 
 When you've multiple values that you want to send across {{< key product_name >}} entities, you can use a `dataclass`.
@@ -76,7 +77,7 @@ You can send a `dataclass` between different tasks written in various languages,
 Once declared, a dataclass can be returned as an output or accepted as an input.
 
 ```python
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def stringify(s: int) -> Datum:
     """
     A dataclass return will be treated as a single complex JSON return.
@@ -84,7 +85,7 @@ def stringify(s: int) -> Datum:
     return Datum(x=s, y=str(s), z={s: str(s)})
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def add(x: Datum, y: Datum) -> Datum:
     x.z.update(y.z)
     return Datum(x=x.x + y.x, y=x.y + y.y, z=x.z)
@@ -104,7 +105,7 @@ class FlyteTypes:
     directory: union.FlyteDirectory
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def upload_data() -> FlyteTypes:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
@@ -122,7 +123,7 @@ def upload_data() -> FlyteTypes:
     return fs
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def download_data(res: FlyteTypes):
     assert pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]}).equals(res.dataframe.open(pd.DataFrame).all())
     f = open(res.file, "r")
@@ -136,7 +137,7 @@ FlyteFile, FlyteDirectory and structured dataset.
 We define a workflow that calls the tasks created above.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()
@@ -157,7 +158,7 @@ class UnionTypes:
     directory: union.FlyteDirectory
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def upload_data() -> UnionTypes:
     df = pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]})
 
@@ -175,7 +176,7 @@ def upload_data() -> UnionTypes:
     return fs
 
 
-@union.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def download_data(res: UnionTypes):
     assert pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [20, 22]}).equals(res.dataframe.open(pd.DataFrame).all())
     f = open(res.file, "r")
@@ -189,7 +190,7 @@ FlyteFile, FlyteDirectory and structured dataset.
 We define a workflow that calls the tasks created above.
 
 ```python
-@union.workflow
+@{{< key kit_as >}}.workflow
 def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()
@@ -211,8 +212,8 @@ $ {{< key cli >}} run dataclass.py add --x dataclass_input.json --y dataclass_in
 
 To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
 
-```
-pyflyte run \
+```shell
+$ pyflyte run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
   add --x dataclass_input.json --y dataclass_input.json
 ```
@@ -222,10 +223,10 @@ pyflyte run \
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 
-To trigger a task that accepts a dataclass as an input with `union run`, you can provide a JSON file as an input:
+To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 
 ```
-union run \
+{{< key cli >}} run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
   add --x dataclass_input.json --y dataclass_input.json
 ```

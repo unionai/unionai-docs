@@ -11,7 +11,7 @@ variants: +flyte +serverless +byoc +byok
 There are several reasons why one may choose to decompose a task into smaller tasks.
 Doing so may result in better computational performance, improved cache performance, and taking advantage of interruptible tasks.
 However, decomposition comes at the cost of the overhead among tasks, including spinning up nodes and downloading data.
-In some cases, these costs may be remediated by using [Actors](../core-concepts/actors/index.md).
+In some cases, these costs may be remediated by using [Actors](../core-concepts/actors/_index.md).
 
 
 ### Differing runtime requirements
@@ -46,18 +46,18 @@ By utilizing “fine-grained” caching, one may reap the significant cost savin
 ## When should I parallelize tasks?
 
 In general, parallelize early and often.
-A lot of Union’s powerful ergonomics like caching and workflow recovery happen at the task level, as mentioned above.
+A lot of {{< key product_name >}}’s powerful ergonomics like caching and workflow recovery happen at the task level, as mentioned above.
 Decomposing into smaller tasks and parallelizing enables for a performant and fault-tolerant workflow.
 
 One caveat is for very short duration tasks, where the overhead of spinning up a pod and cleaning it up negates any benefits of parallelism.
-With reusable containers via [Actors](../core-concepts/actors/index.md), however, these overheads are transparently obviated, providing the best of both worlds at the cost of some up-front work in setting up that environment.
+With reusable containers via [Actors](../core-concepts/actors/_index.md), however, these overheads are transparently obviated, providing the best of both worlds at the cost of some up-front work in setting up that environment.
 In any case, it may be useful to batch the inputs and outputs to amortize any overheads.
 Please be mindful to keep the sequencing of inputs within a batch, and of the batches themselves, to ensure reliable cache hits.
 
 
 ### Parallelization constructs
 
-The two main parallelization constructs in Union are the [map task](../core-concepts/tasks/task-types.md#map-tasks) and the [dynamic workflow](../core-concepts/workflows/dynamic-workflows.md).
+The two main parallelization constructs in {{< key product_name >}} are the [map task](../core-concepts/tasks/task-types.md#map-tasks) and the [dynamic workflow](../core-concepts/workflows/dynamic-workflows.md).
 They accomplish roughly the same goal but are implemented quite differently and have different advantages.
 
 Dynamic tasks are more akin to a `for` loop, iterating over inputs sequentially.

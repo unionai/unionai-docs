@@ -25,19 +25,19 @@ The following code defines a query, `data_query`, that searches across all versi
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow
-from flytekit.core.artifact import Artifact, Inputs
+import {{< key kit_import >}}
+from flytekit.core.artifact import Inputs
 
-pandas_image = ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-BasicArtifact = Artifact(
+BasicArtifact = {{< key kit_as >}}.Artifact(
     name="my_basic_artifact"
 )
 
 
-@task(container_image=pandas_image)
+@{{< key kit_as >}}.task(container_image=pandas_image)
 def t1(key1: str, dt: datetime, data: pd.DataFrame):
     print(f"key1: {key1}")
     print(f"Date: {dt}")
@@ -50,7 +50,7 @@ data_query = BasicArtifact.query(
 )
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def query_wf(
     key1: str,
     dt: datetime,
@@ -67,7 +67,8 @@ data = BasicArtifact.get(<organization>/<domain>/BasicArtifact@<artifact-version
 ```
 
 > [!NOTE]
-> For a full list of Artifact class methods, see the [Flytekit Artifact documentation](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.Artifact.html).
+> For a full list of Artifact class methods, see the [Artifact API documentation]().
+<!-- TODO: Add link to API -->
 
 ## Launching a workflow that consumes an artifact
 

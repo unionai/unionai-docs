@@ -14,7 +14,7 @@ and is suitable when manually drafting the workflow.
 However, in cases where workflows are constructed programmatically, an imperative style is more appropriate.
 For instance, if tasks have been defined already, their sequence and dependencies might have been specified in textual form (perhaps during a transition from a legacy system).
 In such scenarios, you want to orchestrate these tasks.
-This is where Flyte's imperative workflows come into play, allowing you to programmatically construct workflows.
+This is where {{< key product_name >}}'s imperative workflows come into play, allowing you to programmatically construct workflows.
 
 ## Example
 
@@ -23,7 +23,7 @@ To begin, we define the `slope` and `intercept` tasks:
 ```python
 import union
 
-@union.task
+@{{< key kit_as >}}.task
 def slope(x: list[int], y: list[int]) -> float:
     sum_xy = sum([x[i] * y[i] for i in range(len(x))])
     sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
@@ -31,7 +31,7 @@ def slope(x: list[int], y: list[int]) -> float:
     return (n * sum_xy - sum(x) * sum(y)) / (n * sum_x_squared - sum(x) ** 2)
 
 
-@union.task
+@{{< key kit_as >}}.task
 def intercept(x: list[int], y: list[int], slope: float) -> float:
     mean_x = sum(x) / len(x)
     mean_y = sum(y) / len(y)
@@ -52,7 +52,7 @@ imperative_wf.add_workflow_input("x", list[int])
 imperative_wf.add_workflow_input("y", list[int])
 ```
 
-> If you want to assign default values to the workflow inputs, you can create a [launch plan](../launch-plans/index.md).
+> If you want to assign default values to the workflow inputs, you can create a [launch plan](../launch-plans/_index.md).
 
 Add the tasks that need to be triggered from within the workflow:
 

@@ -6,10 +6,10 @@ variants: +flyte +serverless +byoc +byok
 
 # Local dependencies
 
-During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on Union.
+During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on {{< key product_name >}}.
 To enable this, you need to ensure that the required dependencies are installed in both places.
 Here we will explain how to install your dependencies locally.
-For information on how to make your dependencies available on Union, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec.md).
+For information on how to make your dependencies available on {{< key product_name >}}, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec.md).
 
 ## Define your dependencies in your `pyproject.toml`
 
@@ -21,7 +21,7 @@ When using the best way declare your dependencies is to list them under `depende
 [project]
 name = "union-simple"
 version = "0.1.0"
-description = "A simple Union project"
+description = "A simple {{< key product_name >}} project"
 readme = "README.md"
 requires-python = ">=3.9,<3.13"
 dependencies = ["union"]
@@ -40,19 +40,19 @@ $ uv sync
 You can then activate the virtual environment with:
 
 ```shell
-source .venv/bin/activate
+$ source .venv/bin/activate
 ```
 
 > [!NOTE] `activate` vs `uv run`
-> When running the `union` CLI within your local project you must run it in the virtual environment _associated with_ that project.
+> When running the {{< key cli_name >}} CLI within your local project you must run it in the virtual environment _associated with_ that project.
 >
-> To run union within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
+> To run `{{< key cli >}}` within your project's virtual environment using `uv`, you can prefix it use the `uv run` command. For example:
 >
-> `uv run union ...`
+> `uv run {{< key cli >}} ...`
 >
-> Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `union` command directly.
+> Alternatively, you can activate the virtual environment with `source .venv/bin/activate` and then run the `{{< key cli >}}` command directly.
 > In our examples we assume that you are doing the latter.
 
-Having installed your dependencies in your local environment, you can now [run your workflows locally using `union run`](./running-your-code.md).
+Having installed your dependencies in your local environment, you can now [run your workflows locally using `{{< key cli >}} run`](./running-your-code.md).
 
-The next step is to ensure that the same dependencies are also [available in the remote environment on Union](./remote-dependencies-with-image-spec.md).
+The next step is to ensure that the same dependencies are also [available in the remote environment on {{< key product_name >}}](./remote-dependencies-with-image-spec.md).

@@ -1,7 +1,7 @@
 ---
 title: Connecting workflows with artifact event triggers
 weight: 4
-variants: +flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +byok
 ---
 
 # Connecting workflows with artifact event triggers
@@ -24,10 +24,11 @@ First we import the required packages:
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow, LaunchPlan
-from flytekit.core.artifact import Artifact, Inputs
+import {{< key kit_import >}}
+from {{< key kit >}}.artifacts import OnArtifact
+from flytekit.core.artifact import Inputs
 from typing_extensions import Annotated
-from union.artifacts import OnArtifact
+
 ```
 
 
@@ -36,23 +37,21 @@ from union.artifacts import OnArtifact
 Then we define an upstream artifact and a workflow that emits a new version of `UpstreamArtifact` when executed:
 
 ```python
-UpstreamArtifact = Artifact(
+UpstreamArtifact = {{< key kit >}}.Artifact(
     name="my_upstream_artifact",
     time_partitioned=True,
     partition_keys=["key1"],
 )
 
 
-@task(container_image=pandas_image)
-def upstream_t1(key1: str) -> Annotated[pd.DataFrame,
-                                        UpstreamArtifact(key1=Inputs.key1)]:
+@{{< key kit_as >}}.task(container_image=pandas_image)
+def upstream_t1(key1: str) -> Annotated[pd.DataFrame, UpstreamArtifact(key1=Inputs.key1)]:
     dt = datetime.now()
     my_df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
-    return UpstreamArtifact.create_from(my_df, key1=key1,
-                                        time_partition=dt)
+    return UpstreamArtifact.create_from(my_df, key1=key1, time_partition=dt)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def upstream_wf() -> pd.DataFrame:
     return upstream_t1(key1="value1")
 ```
@@ -73,12 +72,12 @@ on_upstream_artifact = OnArtifact(
 Then we define the downstream task and workflow that will be triggered when the upstream artifact is created:
 
 ```python
-@task
+@{{< key kit_as >}}.task
 def downstream_t1():
     print("Downstream task triggered")
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def downstream_wf():
     downstream_t1()
 ```
@@ -88,7 +87,7 @@ def downstream_wf():
 Finally, we create a launch plan with a trigger set to an `OnArtifact` object to link the two workflows via the `Upstream` artifact. The trigger will initiate an execution of the downstream `downstream_wf` workflow upon the creation of a new version of the `Upstream` artifact.
 
 ```python
-downstream_triggered = LaunchPlan.create(
+downstream_triggered = {{< key kit_as >}}.LaunchPlan.create(
     "downstream_with_trigger_lp",
     downstream_wf,
     trigger=on_upstream_artifact
@@ -104,36 +103,34 @@ Here is the full example code file:
 
 ```python
 # trigger_on_artifact.py
-
 from datetime import datetime
 
 import pandas as pd
-from flytekit import ImageSpec, task, workflow, LaunchPlan
-from flytekit.core.artifact import Artifact, Inputs
+import {{< key kit_import >}}
+from {{< key kit >}}.artifacts import OnArtifact
+from flytekit.core.artifact import Inputs
 from typing_extensions import Annotated
-from union.artifacts import OnArtifact
 
-pandas_image = ImageSpec(
+
+pandas_image = {{< key kit >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-UpstreamArtifact = Artifact(
+UpstreamArtifact = {{< key kit >}}.Artifact(
     name="my_upstream_artifact",
     time_partitioned=True,
     partition_keys=["key1"],
 )
 
 
-@task(container_image=pandas_image)
-def upstream_t1(key1: str) -> Annotated[pd.DataFrame,
-                                        UpstreamArtifact(key1=Inputs.key1)]:
+@{{< key kit_as >}}.task(container_image=pandas_image)
+def upstream_t1(key1: str) -> Annotated[pd.DataFrame, UpstreamArtifact(key1=Inputs.key1)]:
     dt = datetime.now()
     my_df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
-    return UpstreamArtifact.create_from(my_df, key1=key1,
-                                        time_partition=dt)
+    return UpstreamArtifact.create_from(my_df, key1=key1, time_partition=dt)
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def upstream_wf() -> pd.DataFrame:
     return upstream_t1(key1="value1")
 
@@ -143,17 +140,17 @@ on_upstream_artifact = OnArtifact(
 )
 
 
-@task
+@{{< key kit_as >}}.task
 def downstream_t1():
     print("Downstream task triggered")
 
 
-@workflow
+@{{< key kit_as >}}.workflow
 def downstream_wf():
     downstream_t1()
 
 
-downstream_triggered = LaunchPlan.create(
+downstream_triggered = {{< key kit_as >}}.LaunchPlan.create(
     "downstream_with_trigger_lp",
     downstream_wf,
     trigger=on_upstream_artifact

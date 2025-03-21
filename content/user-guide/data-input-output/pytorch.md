@@ -17,6 +17,7 @@ At times, you may find the need to pass tensors and modules (models) within your
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: Remove mention of Flytesnacks repos below -->
 > [!NOTE]
 > To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
 
@@ -24,25 +25,25 @@ At times, you may find the need to pass tensors and modules (models) within your
 {{< /variant >}}
 
 ```python
-@union.task
+@{{< key kit_as >}}.task
 def generate_tensor_2d() -> torch.Tensor:
     return torch.tensor([[1.0, -1.0, 2], [1.0, -1.0, 9], [0, 7.0, 3]])
 
 
-@union.task
+@{{< key kit_as >}}.task
 def reshape_tensor(tensor: torch.Tensor) -> torch.Tensor:
     # convert 2D to 3D
     tensor.unsqueeze_(-1)
     return tensor.expand(3, 3, 2)
 
 
-@union.task
+@{{< key kit_as >}}.task
 def generate_module() -> torch.nn.Module:
     bn = torch.nn.BatchNorm1d(3, track_running_stats=True)
     return bn
 
 
-@union.task
+@{{< key kit_as >}}.task
 def get_model_weight(model: torch.nn.Module) -> torch.Tensor:
     return model.weight
 
@@ -59,13 +60,13 @@ class MyModel(torch.nn.Module):
         return self.l1(out0_relu)
 
 
-@union.task
+@{{< key kit_as >}}.task
 def get_l1() -> torch.nn.Module:
     model = MyModel()
     return model.l1
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def pytorch_native_wf():
     reshape_tensor(tensor=generate_tensor_2d())
     get_model_weight(model=generate_module())
@@ -122,14 +123,14 @@ class Net(nn.Module):
         return x
 
 
-@union.task
+@{{< key kit_as >}}.task
 def generate_model(hyperparameters: Hyperparameters) -> PyTorchCheckpoint:
     bn = Net()
     optimizer = optim.SGD(bn.parameters(), lr=0.001, momentum=0.9)
     return PyTorchCheckpoint(module=bn, hyperparameters=hyperparameters, optimizer=optimizer)
 
 
-@union.task
+@{{< key kit_as >}}.task
 def load(checkpoint: PyTorchCheckpoint):
     new_bn = Net()
     new_bn.load_state_dict(checkpoint["module_state_dict"])
@@ -137,7 +138,7 @@ def load(checkpoint: PyTorchCheckpoint):
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
 
 
-@union.workflow
+@{{< key kit_as >}}.workflow
 def pytorch_checkpoint_wf():
     checkpoint = generate_model(hyperparameters=Hyperparameters(epochs=10, loss=0.1))
     load(checkpoint=checkpoint)
@@ -161,7 +162,7 @@ import union
 from typing import Tuple
 
 
-@union.task(requests=union.Resources(gpu="1"))
+@{{< key kit_as >}}.task(requests=union.Resources(gpu="1"))
 def train() -> Tuple[PyTorchCheckpoint, torch.Tensor, torch.Tensor, torch.Tensor]:
     ...
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -173,7 +174,7 @@ def train() -> Tuple[PyTorchCheckpoint, torch.Tensor, torch.Tensor, torch.Tensor
     ...
     return PyTorchCheckpoint(module=model), X_train, X_test, y_test
 
-@union.task
+@{{< key kit_as >}}.task
 def predict(
     checkpoint: PyTorchCheckpoint,
     X_train: torch.Tensor,
