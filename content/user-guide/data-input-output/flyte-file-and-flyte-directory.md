@@ -5,7 +5,7 @@ variants: +flyte +serverless +byoc +byok
 ---
 
 
-<!-- TODO: CHeck for variant accuracy -->
+<!-- TODO: CHeck for variant accuracy  remove mention of flytesnacks-->
 
 # FlyteFile and FlyteDirectory
 

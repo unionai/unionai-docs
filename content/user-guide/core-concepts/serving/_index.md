@@ -32,7 +32,7 @@ The file `app.py` contains the app declaration:
 ```python
 """A simple {{< key product_name >}} app using Streamlit"""
 
-import union
+import {{< key kit_import >}}
 import os
 
 # The `ImageSpec` for the container that will run the `App`.

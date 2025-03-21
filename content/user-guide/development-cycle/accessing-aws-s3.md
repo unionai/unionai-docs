@@ -38,7 +38,7 @@ $ aws s3 cp my_file.txt s3://test_bucket/my_file.txt
 Next, we give a task access to our AWS secrets by supplying them through `secret_requests`. For this guide, save the following snippet as `aws-s3-access.py` and run:
 
 ```python
-import union
+import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task(
     secret_requests=[

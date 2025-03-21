@@ -49,7 +49,7 @@ Consequently, all nodes of a subworkflow adhere to the overall constraints impos
 Here's an example illustrating the calculation of slope, intercept and the corresponding y-value.
 
 ```python
-import union
+import {{< key kit_import >}}
 
 
 @{{< key kit_as >}}.task
@@ -109,7 +109,7 @@ They are executed as separate top-level entities, allowing for better parallelis
 Here is an example of invoking a workflow multiple times through its launch plan:
 
 ```python
-import union
+import {{< key kit_import >}}
 from typing import List
 
 

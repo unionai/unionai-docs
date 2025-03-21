@@ -98,7 +98,7 @@ def launch_dynamically():
 You can use the `functools.partial` function to assign default or constant values to the parameters of your tasks:
 ```python
 import functools
-import union
+import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task
 def slope(x: list[int], y: list[int]) -> float:
@@ -129,7 +129,7 @@ The following example illustrates the process of assigning names to outputs for 
 Define a `NamedTuple` and assign it as an output to a task:
 
 ```python
-import union
+import {{< key kit_import >}}
 from typing import NamedTuple
 
 slope_value = NamedTuple("slope_value", [("slope", float)])

@@ -16,7 +16,7 @@ Here we define a workflow called `interest_workflow` that we want to parallelize
 We then write a separate workflow, `map_interest_wf`, that uses a `map_task` to parallelize `interest_workflow` over a list of inputs.
 
 ```python
-import union
+import {{< key kit_import >}}
 
 # Task to calculate monthly interest payment on a loan
 @{{< key kit_as >}}.task

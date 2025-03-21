@@ -14,6 +14,7 @@ This functionality facilitates the direct passing of output attributes within wo
 {{< variant flyte >}}
 {{< markdown >}}
 
+<!-- TODO: remove mention of flytesnacks -->
 > [!NOTE]
 > Flytekit version >= v1.14.0 supports Pydantic BaseModel V2, you can do attribute access on Pydantic BaseModel V2 as well.
 >
@@ -26,7 +27,7 @@ To begin, import the required dependencies and define a common task for subseque
 
 ```python
 from dataclasses import dataclass
-import union
+import {{< key kit_import >}}
 
 
 @{{< key kit_as >}}.task
