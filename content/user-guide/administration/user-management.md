@@ -23,7 +23,7 @@ An application is an automated process (a bot, service, or other type of program
 * **Domain**: Categories representing the standard environments used in the development process: **development**, **staging**, and **production**.
 * **Project-domain pair**: The set of projects is divided orthogonally by the three **domains**.
 The result is a set of project-domain pairs.
-For example: `{{< key default_ project >}}/development`, `{{< key default_ project >}}/staging`, and `{{< key default_ project >}}/production`.
+For example: `{{< key default_project >}}/development`, `{{< key default_project >}}/staging`, and `{{< key default_project >}}/production`.
 
 ## Actions
 
@@ -103,7 +103,7 @@ $ uctl create role --roleFile my_role.yaml
 ### Create a policy
 
 Create a policy spec file `my_policy.yaml` that binds roles to project/domain pairs.
-Here we create a policy that binds the **Contributor** role to `{{< key default_ project >}}/development` and binds the **Workflow Runner** role (defined above) to `{{< key default_ project >}}/production`:
+Here we create a policy that binds the **Contributor** role to `{{< key default_project >}}/development` and binds the **Workflow Runner** role (defined above) to `{{< key default_project >}}/production`:
 
 ```yaml
 :name: my_policy.yaml
@@ -112,11 +112,11 @@ name: Workflow Developer Policy
 bindings:
 - role: Workflow Runner
   resource:
-    project: {{< key default_ project >}}
+    project: {{< key default_project >}}
     domain: production
 - role: contributor # Boilerplate system role
   resource:
-    project: {{< key default_ project >}}
+    project: {{< key default_project >}}
     domain: development
 ```
 
@@ -128,7 +128,7 @@ $ uctl create policy --policyFile my_policy.yaml
 ```
 
 
-Any user or application to which this policy is assigned will be granted **Contributor** permissions to `{{< key default_ project >}}/development` while being granted (the more restrictive) **Workflow Runner** permission to `{{< key default_ project >}}/production`.
+Any user or application to which this policy is assigned will be granted **Contributor** permissions to `{{< key default_project >}}/development` while being granted (the more restrictive) **Workflow Runner** permission to `{{< key default_project >}}/production`.
 
 ### Assign the policy to a user
 

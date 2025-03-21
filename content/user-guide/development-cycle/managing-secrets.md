@@ -76,7 +76,7 @@ import {{< key kit_import >}}
 @{{< key kit_as >}}.task(secret_requests=[union.Secret(key="my_union_api_key", env_var="{{< key env_prefix >}}_API_KEY")])
 def t1():
     # Authenticates the remote with {{< key env_prefix >}}_API_KEY
-    remote = union.{{< key kit_remote >}}(default_project="{{< key default_ project >}}", default_domain="development")
+    remote = union.{{< key kit_remote >}}(default_project="{{< key default_project >}}", default_domain="development")
 ```
 
 ### Using a secret created from a file

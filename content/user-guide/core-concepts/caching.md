@@ -182,7 +182,7 @@ from flytekit.remote import {{< key kit_remote >}}
 
 remote = {{< key kit_remote >}}(
     config=Config.auto(),
-    default_project="{{< key default_ project >}}",
+    default_project="{{< key default_project >}}",
     default_domain="development"
 )
 
@@ -199,7 +199,7 @@ from union.remote import {{< key kit_remote >}}
 
 remote = {{< key kit_remote >}}(
     config=Config.auto(),
-    default_project="{{< key default_ project >}}",
+    default_project="{{< key default_project >}}",
     default_domain="development"
 )
 

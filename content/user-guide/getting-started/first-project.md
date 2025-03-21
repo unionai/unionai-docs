@@ -57,7 +57,7 @@ You can see the project you just created by going to `http://localhost:30080` in
 ![Welcome to Flyte](/_static/images/user-guide/getting-started/first-project/welcome-to-flyte.png)
 
 > [!NOTE] Default project
-> Flyte provides a default project (called `{{< key default_ project >}}`) where all your workflows will be
+> Flyte provides a default project (called `{{< key default_project >}}`) where all your workflows will be
 > registered unless you specify otherwise.
 > In this section, however, we will be using the project we just created, not the default.
 
