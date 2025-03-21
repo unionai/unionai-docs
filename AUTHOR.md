@@ -148,4 +148,12 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
 
 ## Mermaid Graphs
 
-TODO(David Espejo): Please add documentation here.
+To embed Mermaid diagrams in a page, insert the code inside a block like this:
+
+&#96;&#96;&#96;mermaid
+
+&#96;&#96;&#96;
+
+Also add `mermaid: true` to the top of your page to enable rendering.
+
+> You can use [Mermaid's playground](https://www.mermaidchart.com/play) to design diagrams and get the code 
