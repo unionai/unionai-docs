@@ -1,3 +1,8 @@
+<script>
+  const openButton = document.querySelector('.toggle-sidebar');
+  openButton.addEventListener('click', () => drawer.show());
+</script>
+
 <nav class="site-nav">
   <ul>
     {{ $current := . }}

@@ -72,3 +72,15 @@
 .site-nav .chevron.rotated {
   transform: rotate(-90deg);
 }
+
+.sidebar-icon {
+  font-size: 1.25rem;
+  margin-right: 1rem;
+}
+
+/* @media (max-width: 1868px) { */
+.sidebar {
+  display: none;
+  transition: display 0.3s ease;
+}
+/* } */
