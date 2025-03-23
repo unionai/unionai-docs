@@ -40,21 +40,6 @@
       }
     });
   })
-  // function controlDrawer() {
-  //   const tabsNav = document.querySelector('.sidebar .tabs-nav');
-  //   try {
-  //     if (tabsNav && getComputedStyle(tabsNav).display === 'none') {
-  //       drawer.show();
-  //     } else {
-  //       drawer.hide();
-  //     }
-  //   } catch {
-  //     // Wait for drawer to be available
-  //     setTimeout(controlDrawer, 100);
-  //   }
-  // }
-  // window.addEventListener('resize', controlDrawer);
-  // window.addEventListener('DOMContentLoaded', controlDrawer);
 </script>
 
 {{ define "site-nav"}}
@@ -110,6 +95,7 @@
 {{ define "section-tree-nav" }}
     {{ $access := partial "page-allowed.html" .page }}
     {{ if $access.allowed }}
+        {{ $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) .page.Params.sidebar_expanded }}
         <li>
             <a
                 href="{{ .page.RelPermalink }}"
@@ -123,8 +109,9 @@
                 >
                   <div class="content">
                     {{ if and .page.IsSection (gt (len .page.Pages) 0) }}
-                        {{ $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) }}
-                        <img src="{{ "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end }}" />
+                        {{ if and (not .page.Params.sidebar_expanded) (not .page.Params.top_menu) }}
+                          <img src="{{ "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end }}" />
+                        {{ end }}
                     {{ end }}
                     <div style="flex: 1">{{ partial "page-title.html" .page }}</div>
                     {{ if and $access.variant $access.excluded }}
@@ -136,7 +123,6 @@
                 </a
             >
             {{ if .page.IsSection }}
-                {{ $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) }}
                 <ul class="section-pages{{ if not $isActive }} collapsed{{ end }}">
                     {{ range .page.Pages.ByWeight }}
                         {{ template "section-tree-nav" (dict "page" . "current" $.current) }}

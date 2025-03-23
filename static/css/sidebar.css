@@ -32,7 +32,7 @@
 }
 .site-nav .page-link {
   display: block;
-  padding: 0.375rem var(--menu-indent);
+  padding: 0.375rem var(--menu-subindent);
   border-radius: 4px;
   font-size: 1rem;
 }

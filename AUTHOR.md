@@ -8,6 +8,7 @@
 - [Page Visibility](#page-visibility)
 - [Page order](#page-order)
 - [weight: 3](#weight-3)
+- [Page settings](#page-settings)
 - [Conditional Content](#conditional-content)
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
@@ -80,6 +81,13 @@ For example:
 title: My Page
 weight: 3
 ---
+
+## Page settings
+
+| Setting            | Type | Description                                                                       |
+|--------------------|------|-----------------------------------------------------------------------------------|
+| `top_menu`         | bool | If `true` the item becomes a tab at the top and its hierarchy goes to the sidebar |
+| `sidebar_expanded` | bool | If `true` the section becomes expanded in the side bar. Permanently.              |
 
 ## Conditional Content
 
