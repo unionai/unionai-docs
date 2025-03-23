@@ -75,12 +75,62 @@
 
 .sidebar-icon {
   font-size: 1.25rem;
-  margin-right: 1rem;
 }
 
-/* @media (max-width: 1868px) { */
-.sidebar {
-  display: none;
-  transition: display 0.3s ease;
+.sidebar .tabs-buttons,
+.sidebar .tabs-buttons select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
 }
-/* } */
+
+.sidebar .show-on-mobile {
+  display: none;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.sidebar .signup {
+  margin: 1rem;
+  text-align: center;
+}
+
+.sidebar .signup sl-button {
+  width: 60%;
+  margin: auto;
+}
+
+.sidebar .tabs-nav {
+  display: none;
+}
+
+sl-drawer::part(panel),
+sl-drawer::part(overlay) {
+  animation: none !important;
+  transition: none !important;
+}
+sl-drawer::part(base) {
+  animation: none !important;
+}
+
+@media (min-width: 1460px) {
+  .sidebar sl-drawer::part(overlay) {
+    display: none !important;
+    background: transparent !important;
+    pointer-events: none !important;
+  }
+
+  .sidebar sl-drawer::part(base) {
+    top: calc(var(--header-height) + var(--tabs-height) + 1px);
+  }
+
+  .sidebar sl-drawer::part(panel) {
+    box-shadow: none;
+    background-color: var(--sidebar-bg);
+  }
+
+  .sidebar sl-drawer::part(header) {
+    display: none;
+  }
+}

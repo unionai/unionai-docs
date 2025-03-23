@@ -83,10 +83,11 @@
         });
       });
     </script>
+    <link rel="stylesheet" href="{{ "css/responsive.css" | relURL }}" />
   </head>
   <body>
-    <div class="header">{{ partial "header.html" . }}</div>
-    <div class="tabs">{{ partial "tabs.html" . }}</div>
+    <header>{{ partial "header.html" . }}</header>
+    <div class="tabs">{{ partial "tabs.html" (dict "page" .) }}</div>
     <div class="container">
       <div class="sidebar">{{ partial "sidebar.html" . }}</div>
       <div class="main-content">

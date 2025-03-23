@@ -1,7 +1,28 @@
+{{ $currentPage := .page }}
 <nav class="tabs-nav">
+    {{ if eq .style "buttons" }}
+    <div class="tabs-buttons">
+        <select onchange="handleTopicChange(event)">
+        {{ range .page.Site.Sections.ByWeight }}
+            {{ $access := partial "page-allowed.html" . }}
+            {{ if and $access.allowed .Params.top_menu }}
+                <option value="{{ .RelPermalink }}" {{ if eq $currentPage.Section .Section }}selected{{ end }}>
+                    {{ .Title }}
+                </option>
+            {{ end }}
+        {{ end }}
+        </select>
+    </div>
+    <script>
+        function handleTopicChange(event) {
+            const newTarget = event.target.options[event.target.selectedIndex].value;
+            console.log('Navigating', newTarget.toString());
+            document.location = newTarget.toString();
+        }
+    </script>
+    {{ else }}
     <div class="tabs-container">
-        {{ $currentPage := . }}
-        {{ range .Site.Sections.ByWeight }}
+        {{ range .page.Site.Sections.ByWeight }}
             {{ $access := partial "page-allowed.html" . }}
             {{ if and $access.allowed .Params.top_menu }}
                 <a href="{{ .RelPermalink }}" class="
@@ -15,4 +36,5 @@
             {{ end }}
         {{ end }}
     </div>
+    {{ end }}
 </nav>

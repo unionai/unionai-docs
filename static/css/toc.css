@@ -43,13 +43,17 @@
   }
   .main-content {
     margin-left: calc(
-      var(--sidebar-width) +
-        (
-          100vw - var(--sidebar-width) - var(--content-width) -
-            var(--scrollbar-width)
-        ) / 2
+      var(--sidebar-width) + var(--main-content-padding) +
+        max(
+          0px,
+          (
+              100vw - var(--sidebar-width) - var(--content-width) -
+                var(--scrollbar-width) - var(--main-content-padding)
+            ) / 2
+        )
     );
     margin-right: 0;
+    padding-right: var(--main-content-padding);
     transition: margin-left 0.3s ease, margin-right 0.3s ease;
   }
 }

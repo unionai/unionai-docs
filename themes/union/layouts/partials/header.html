@@ -1,30 +1,32 @@
 {{ $dev_warn := "Attention Developer! To change the variant use hugo.local.toml\n(copy from hugo.local toml~samples to get started)" }}
-<div class="variant-selector-container">
-    {{ partial "header-logo.html" . }}
-    <div style="margin: 0 2rem; opacity: 0.5;">|</div>
-    <label for="variant-selector">Variant:</label>
-    <select id="variant-selector" onchange="handleVariantChange(event)"
-    {{ if not hugo.IsProduction }}
-        onmouseenter="document.getElementById('devwarn').style.display = '';"
-        onmouseout="document.getElementById('devwarn').style.display = 'none';"
-    {{ end }}
-    >
-            {{ $variants := slice }}
-            {{ range $key, $value := (index $.Site.Params.key "product_full_name") }}
-                {{ $variants = $variants | append $key }}
-            {{ end }}
-            {{ range $variants }}
-            <option value="{{ . }}" {{ if eq . $.Site.Params.variant }}selected{{ end }}>
-                {{ index $.Site.Params.key "product_full_name" . }}
-            </option>
+<div class="sidebar-icon">
+    <sl-icon-button name="list" label="Toggle sidebar" class="toggle-sidebar"></sl-icon-button>
+</div>
+{{ partial "header-logo.html" . }}
+<div class="separator">|</div>
+<label for="variant-selector">Variant:</label>
+<select id="variant-selector" onchange="handleVariantChange(event)"
+{{ if not hugo.IsProduction }}
+    onmouseenter="document.getElementById('devwarn').style.display = '';"
+    onmouseout="document.getElementById('devwarn').style.display = 'none';"
+{{ end }}
+>
+        {{ $variants := slice }}
+        {{ range $key, $value := (index $.Site.Params.key "product_full_name") }}
+            {{ $variants = $variants | append $key }}
         {{ end }}
-    </select>
-    {{ if not hugo.IsProduction }}
-    <div id="devwarn" class="developer" style="display: none;">
-        {{ $dev_warn }}
-    </div>
+        {{ range $variants }}
+        <option value="{{ . }}" {{ if eq . $.Site.Params.variant }}selected{{ end }}>
+            {{ index $.Site.Params.key "product_full_name" . }}
+        </option>
     {{ end }}
-    <div style="flex: 1"></div>
+</select>
+{{ if not hugo.IsProduction }}
+<div id="devwarn" class="developer" style="display: none;">
+    {{ $dev_warn }}
+</div>
+{{ end }}
+<div class="theme-selector">
     <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
         <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>

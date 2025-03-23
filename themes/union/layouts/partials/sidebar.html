@@ -1,8 +1,63 @@
+<sl-drawer label="Drawer" placement="start" class="drawer-sidebar" hidden>
+  <div slot="label">
+    {{ partial "header-logo.html" . }}
+  </div>
+  <slot part="body">
+    <div class="show-on-mobile">
+      {{ partial "tabs.html" (dict "page" . "style" "buttons") }}
+      <div class="signup">
+        <sl-button variant="warning">Signup</sl-button>
+      </div>
+    </div>
+    {{ block "site-nav" . }}{{ end }}
+  </slot>
+</sl-drawer>
+
 <script>
+  const drawer = document.querySelector('.drawer-sidebar');
   const openButton = document.querySelector('.toggle-sidebar');
-  openButton.addEventListener('click', () => drawer.show());
+  openButton.addEventListener('click', () => {
+    drawer.show();
+  });
+
+  customElements.whenDefined('sl-drawer').then(() => {
+    // Match media query for large screens (adjust breakpoint as needed)
+    const prefersOpen = window.matchMedia('(min-width: 1460px)');
+
+    // Only show if the screen is large
+    if (prefersOpen.matches) {
+      drawer.show();
+    } else {
+      drawer.hidden = false; // unhide, but stay closed
+    }
+
+    // Optional: listen for screen size changes
+    prefersOpen.addEventListener('change', event => {
+      if (event.matches) {
+        drawer.show();
+      } else {
+        drawer.hide();
+      }
+    });
+  })
+  // function controlDrawer() {
+  //   const tabsNav = document.querySelector('.sidebar .tabs-nav');
+  //   try {
+  //     if (tabsNav && getComputedStyle(tabsNav).display === 'none') {
+  //       drawer.show();
+  //     } else {
+  //       drawer.hide();
+  //     }
+  //   } catch {
+  //     // Wait for drawer to be available
+  //     setTimeout(controlDrawer, 100);
+  //   }
+  // }
+  // window.addEventListener('resize', controlDrawer);
+  // window.addEventListener('DOMContentLoaded', controlDrawer);
 </script>
 
+{{ define "site-nav"}}
 <nav class="site-nav">
   <ul>
     {{ $current := . }}
@@ -50,6 +105,7 @@
     });
   </script>
 </nav>
+{{ end }}
 
 {{ define "section-tree-nav" }}
     {{ $access := partial "page-allowed.html" .page }}
