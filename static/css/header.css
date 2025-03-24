@@ -113,3 +113,7 @@ header .theme-selector {
   border-style: solid;
   border-color: transparent yellow transparent transparent;
 }
+
+header .toggle-sidebar {
+  display: none;
+}

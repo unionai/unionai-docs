@@ -24,20 +24,29 @@
     // Match media query for large screens (adjust breakpoint as needed)
     const prefersOpen = window.matchMedia('(min-width: 1460px)');
 
-    // Only show if the screen is large
-    if (prefersOpen.matches) {
-      drawer.show();
-    } else {
-      drawer.hidden = false; // unhide, but stay closed
-    }
+    drawer.addEventListener('sl-request-close', event => {
+      const prefersOpen = window.matchMedia('(min-width: 1460px)');
+      if (prefersOpen.matches) {
+        event.preventDefault();
+      }
+    });
 
-    // Optional: listen for screen size changes
-    prefersOpen.addEventListener('change', event => {
-      if (event.matches) {
+    const evaluate = (matches) => {
+      // Only show if the screen is large
+      if (matches) {
         drawer.show();
       } else {
         drawer.hide();
+        drawer.hidden = false; // unhide, but stay closed
       }
+      openButton.style.display = matches ? 'none' : 'block';
+    }
+
+    evaluate(prefersOpen.matches);
+
+    // Optional: listen for screen size changes
+    prefersOpen.addEventListener('change', event => {
+      evaluate(event.matches);
     });
   })
 </script>
