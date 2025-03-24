@@ -115,6 +115,7 @@ code {
   border-radius: 4px;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: nowrap;
 }
 pre {
   background: var(--pre-bg);
@@ -235,6 +236,13 @@ pre code {
 .not-allowed.variant .content {
   background-color: var(--bg-color);
   padding: 1rem;
+}
+
+.not-allowed.how-to-fix {
+  display: inline-block;
+  background: hsl(0, 84%, 85%);
+  padding: 0 0.5rem;
+  margin: 0 0.5rem;
 }
 
 .err-no-title {

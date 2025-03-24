@@ -1,3 +1,21 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  tocbot.init({
+    tocSelector: ".toc",
+    contentSelector: ".main-content",
+    headingSelector: "h1, h2, h3",
+    collapseDepth: 6, // Show all levels
+    scrollSmooth: true,
+    scrollSmoothDuration: 420,
+    activeLinkClass: "is-active-link",
+    headingLabelCallback: (string) => string,
+    positionFixedSelector: ".toc",
+    positionFixedClass: "is-fixed",
+    fixedSidebarOffset: 0,
+  });
+});
+
+</script>
 <div class="toc-container">
     <div class="toc-header">On this page</div>
     <div class="toc"></div>
