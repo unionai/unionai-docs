@@ -191,7 +191,7 @@ By default, the `docker_build.sh` script:
 You can override the default values with the following flags:
 
 ```shell
-$ ./docker_build.sh -p <PROJECT_NAME> -r <REGISTRY> -v <VERSION>
+$ ./docker_build.sh -p PROJECT_NAME -r REGISTRY -v VERSION
 ```
 
 For example, if you want to push your Docker image to Github’s container registry you can specify the `-r ghcr.io` flag.
@@ -203,7 +203,7 @@ Once you’ve built the image, you can push it to the specified registry. For ex
 
 ```shell
 $ docker login ghcr.io
-$ docker push <tag>
+$ docker push TAG
 ```
 
 ### Pulling private images
@@ -234,7 +234,7 @@ Expected Output:
 
 ```shell
 Successfully serialized 4 flyte objects
-  Packaging workflows.example.say_hello -> 0_workflows.example.say_hello_1.pb
+  Packaging workflows.example.say_hello  -> 0_workflows.example.say_hello_1.pb
   Packaging workflows.example.greeting_length -> 1_workflows.example.greeting_length_1.pb
   Packaging workflows.example.wf -> 2_workflows.example.wf_2.pb
   Packaging workflows.example.wf -> 3_workflows.example.wf_3.pb
@@ -246,14 +246,14 @@ This will create a portable package flyte-package.tgz containing all the Flyte e
 > You can specify multiple workflow directories using the following command:
 
 ```shell
-$ pyflyte --pkgs <dir1> --pkgs <dir2> package ...
+$ pyflyte --pkgs DIR1 --pkgs DIR2 package ...
 ```
 
 This is useful in cases where you want to register two different Flyte projects that you maintain in a single place.
 
 If you encounter a ModuleNotFoundError when packaging, use the --source option to include the correct source paths. For instance:
 
-pyflyte --pkgs <dir1> package --source ./src -f
+pyflyte --pkgs DIR1 package --source ./src -f
 Register with flytectl register
 Finally, register your tasks and workflows with flytectl register files:
 
@@ -297,7 +297,7 @@ flyte-register-action: This action uses flytectl register under the hood to hand
 Some CI/CD best practices
 In case Flyte workflows are registered on each commit in your build pipelines, you can consider the following recommendations and approach:
 
-Versioning Strategy : Determining the version of the build for different types of commits makes them consistent and identifiable. For commits on feature branches, use <branch-name>-<short-commit-hash> and for the ones on main branches, use main-<short-commit-hash>. Use version numbers for the released (tagged) versions.
+Versioning Strategy : Determining the version of the build for different types of commits makes them consistent and identifiable. For commits on feature branches, use [branch-name]-[short-commit-hash] and for the ones on main branches, use main-[short-commit-hash]. Use version numbers for the released (tagged) versions.
 
 Workflow Serialization and Registration : Workflows should be serialized and registered based on the versioning of the build and the container image. Depending on whether the build is for a feature branch or main, the registration domain should be adjusted accordingly. For more context, please visit the Registering workflows page.
 
