@@ -202,7 +202,7 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
 {{< /markdown >}}
 {{< /variant >}}
 
-To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
+To trigger the above task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 
 ```shell
 $ {{< key cli >}} run dataclass.py add --x dataclass_input.json --y dataclass_input.json
@@ -211,7 +211,7 @@ $ {{< key cli >}} run dataclass.py add --x dataclass_input.json --y dataclass_in
 {{< variant flyte >}}
 {{< markdown >}}
 
-To trigger a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
+Here is another example of triggering a task that accepts a dataclass as an input with `pyflyte run`, you can provide a JSON file as an input:
 
 ```shell
 $ pyflyte run \
@@ -224,10 +224,10 @@ $ pyflyte run \
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 
-To trigger a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
+Here is another example of triggering a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:
 
-```
-{{< key cli >}} run \
+```shell
+$ union run \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/data_types_and_io/data_types_and_io/dataclass.py \
   add --x dataclass_input.json --y dataclass_input.json
 ```

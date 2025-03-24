@@ -62,6 +62,8 @@ Here's a breakdown of these mappings:
 {{< markdown >}}
 
 This section covers how to manage data input and output in {{< key product_name >}}.
+{{< key product_name >}} also supports all the [Data input/output features of Flyte](https://docs-builder.pages.dev/docs/flyte/user-guide/data-input-output/).
+
 
 | Section | Description |
 |----------------------------------------------------|----------------------------------------------------|
@@ -83,6 +85,7 @@ This section covers how to manage data input and output in {{< key product_name 
 {{< markdown >}}
 
 This section covers how to manage data input and output in {{< key product_name >}}.
+{{< key product_name >}} also supports all the [Data input/output features of Flyte](https://docs-builder.pages.dev/docs/flyte/user-guide/data-input-output/).
 
 | Section | Description |
 |---------------------------------------------------|----------------------------------------------------|
