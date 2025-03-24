@@ -306,10 +306,11 @@ async def eager_workflow_remote(x: int) -> int:
 Where `config.yaml` contains a {{< key product_name >}} config file and `my_client_secret_group` and `my_client_secret_key` are the secret group and key that you've configured for your {{< key product_name >}}
 instance.
 
-<!-- TODO: make this section Flyte-only -->
-### Sandbox Flyte cluster execution
+{{< variant flyte >}}
+{{< markdown >}}
+### Local Flyte cluster execution
 
-When using a sandbox cluster started with `uctl demo start`, however, the
+When using a local cluster started with `flytectl demo start`, however, the
 `client_secret_group` and `client_secret_key` are not required, since the
 default sandbox configuration does not require key-based authentication.
 
@@ -333,11 +334,14 @@ async def eager_workflow_sandbox(x: int) -> int:
 ```
 
 > [!NOTE]
-> When executing eager workflows on a remote {{< key product_name >}} cluster, {{< key product_name >}} will execute the
+> When executing eager workflows, {{< key product_name >}} will execute the
 > latest version of tasks, static workflows, and eager workflows that are on
 > the `default_project` and `default_domain` as specified in the `{{< key kit_remote >}}`
 > object. This means that you need to pre-register all entities that are
 > invoked inside the eager workflow.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Registering and running
 
@@ -374,7 +378,7 @@ Since eager workflows are an experimental feature, there is currently no first-c
 When you execute an eager workflow, the tasks and subworkflows invoked within it **will not appear** on the node, graph, or timeline view. As mentioned above, this is because eager workflows are actually {{< key product_name >}} tasks under the hood and {{< key product_name >}} has no way of knowing the shape of the execution graph before actually executing them.
 
 However, at the end of execution, you'll be able to use [Decks]() to see a list of all the tasks and subworkflows that were executed within the eager workflow.
-<!-- TODO: Add link to API -->
+<!-- TODO: Add link to API ^^-->
 
 ## Limitations
 

@@ -43,7 +43,7 @@ Later invocations of `{{< key ctl >}}` or `{{< key cli >}}` will need to know th
 1. Explicitly passing the location of the config file on the command line
    * `{{< key ctl >}} --config ~/.{{< key product >}}/config-sandbox.yaml <command>`
    * `{{< key cli >}} --config ~/.{{< key product >}}/config-sandbox.yaml <command>`
-2. Setting the environment variable `FLYTECTL_CONFIG`to the location of the config file:
+2. Setting the environment variable `{{< key config_env >}}`to the location of the config file:
    * `export {{< key config_env >}}=~/.{{< key product >}}/config-sandbox.yaml`
 
 > [!NOTE]

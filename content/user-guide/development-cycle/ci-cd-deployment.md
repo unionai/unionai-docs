@@ -59,7 +59,7 @@ In GitHub, from the repository page:
 
 1. Select **Settings > Secrets and variables > Actions**.
 2. Select the **Secrets** tab and click **New repository secret**.
-3. Give a meaningful name to the secret, like `UNION_APP_SECRET`.
+3. Give a meaningful name to the secret, like `{{< key env_prefix >}}_APP_SECRET`.
 4. Paste in the string from above as the value.
 5. Click **Add secret**.
 
@@ -74,7 +74,7 @@ Create `example-project/ci-config.yaml`:
 admin:
   endpoint: dns:///<union-host-url>
   clientId: example-operator
-  clientSecretEnvVar: UNION_APP_SECRET
+  clientSecretEnvVar: {{< key env_prefix >}}_APP_SECRET
   insecure: false
 logger:
   show-source: true
@@ -82,7 +82,7 @@ logger:
 ```
 
 > [!NOTE]
-> Note that the value of`clientSecretEnvVar`(in his case, `UNION_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
+> Note that the value of`clientSecretEnvVar`(in his case, `{{< key env_prefix >}}_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
 >
 > It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
 
@@ -117,8 +117,8 @@ jobs:
         uses: whoan/docker-build-with-cache-action@v5
         with:
           # https://docs.github.com/en/packages/learn-github-packages/publishing-a-package
-          username: ${{ secrets.UNIONAI_OSS_BOT_USERNAME }}
-          password: ${{ secrets.UNIONAI_OSS_BOT_PASSWORD }}
+          username: ${{ secrets.{{< key env_prefix >}}_BOT_USERNAME }}
+          password: ${{ secrets.{{< key env_prefix >}}_BOT_PASSWORD }}
           image_name: ${{ github.repository }}
           image_tag: ${{ env.PROJECT }}-${{ github.sha }},${{ env.PROJECT }}-latest
           registry: ${{ env.REGISTRY }}
@@ -140,7 +140,7 @@ jobs:
             --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
       - name: Register
         env:
-          UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
+          {{< key env_prefix >}}_APP_SECRET: ${{ secrets.{{< key env_prefix >}}_APP_SECRET }}
         run: |
           bin/uctl --config ./ci-config.yaml \
             register files \
@@ -156,12 +156,12 @@ jobs:
 > ```yaml
 > - name: Register
 >   env:
->     UNION_APP_SECRET: ${{ secrets.UNION_APP_SECRET }}
+>     {{< key env_prefix >}}_APP_SECRET: ${{ secrets.{{< key env_prefix >}}_APP_SECRET }}
 > ```
 >
-> The first instance of the name`UNION_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
+> The first instance of the name`{{< key env_prefix >}}_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
 >
-> Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.UNION_APP_SECRET.`
+> Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.{{< key env_prefix >}}_APP_SECRET.`
 >
 > You will also see other secrets and environment variables accessed in this configuration file.
 > These are related to the container build process, project name and so forth.

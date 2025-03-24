@@ -17,7 +17,7 @@ You specify the dependencies as part of the definition of the container image to
 For example::
 
 ```python
-import union
+import {{< key kit_import >}}
 
 image_spec = union.ImageSpec(
 {{< variant byoc byok >}}

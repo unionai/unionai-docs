@@ -18,7 +18,7 @@ To install the DGX agent and have it enabled in your deployment, contact the {{<
 ```python
 from typing import List
 
-import union
+import {{< key kit_import >}}
 from flytekitplugins.dgx import DGXConfig
 
 

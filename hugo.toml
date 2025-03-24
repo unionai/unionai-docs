@@ -102,3 +102,9 @@ flyte = "FLYTECTL_CONFIG"
 serverless = "UNION_CONFIG"
 byoc = "UNION_CONFIG"
 byok = "UNION_CONFIG"
+
+[params.key.env_prefix]
+flyte = "FLYTE"
+serverless = "UNION"
+byoc = "UNION"
+byok = "UNION"

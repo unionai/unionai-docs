@@ -31,7 +31,7 @@ The file `app.py` contains the app declaration:
 """A {{< key product_name >}} app with custom code"""
 
 import os
-import union
+import {{< key kit_import >}}
 
 # The `ImageSpec` for the container that will run the `App`.
 # `union-runtime` must be declared as a dependency,

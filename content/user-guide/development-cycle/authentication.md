@@ -99,14 +99,14 @@ Steps to Set Up ClientSecret Authentication:
           insecure: false
           authType: ClientSecret
           clientId: <YourClientId>
-          clientSecretEnvVar: UNION_API_KEY
+          clientSecretEnvVar: {{< key env_prefix >}}_API_KEY
         logger:
           show-source: true
           level: 0
         ```
 3. Set the Environment Variable (if using env-based authentication):
     ```
-    export UNION_API_KEY="<SECRET>"
+    export {{< key env_prefix >}}_API_KEY="<SECRET>"
     ```
 
 > [!NOTE]
@@ -115,11 +115,11 @@ Steps to Set Up ClientSecret Authentication:
 
 ## Managing Authentication Configuration
 
-By default, the {{< key cli_name >}} CLI looks for configuration files in `~/.union/config.yaml`. You can override this by:
+By default, the {{< key cli_name >}} CLI looks for configuration files in `~/.{{< key product >}}/config.yaml`. You can override this by:
 
-- Setting the `UNION_CONFIG` environment variable:
+- Setting the `{{< key config_env >}}` environment variable:
     ```
-    export UNION_CONFIG=~/.my-config-location/my-config.yaml
+    export {{< key config_env >}}=~/.my-config-location/my-config.yaml
     ```
 
 - Using the `--config` flag:
@@ -129,8 +129,12 @@ By default, the {{< key cli_name >}} CLI looks for configuration files in `~/.un
 
 ## Troubleshooting Authentication Issues
 
-- Old configuration files causing conflicts? Remove outdated files from `~/.unionai/` and `~/.union/`.
+{{< variant byoc byok serverless >}}
+{{< markdown >}}
+- Old configuration files causing conflicts? Remove the deprecated directory from `~/.unionai/`.
+{{< /markdown >}}
+{{< /variant >}}
 
-- Need to switch authentication methods? Update `~/.union/config.yaml` or use a different config file.
+- Need to switch authentication methods? Update `~/.{{< key product >}}/config.yaml` or use a different config file.
 
 - Getting prompted for login every time? If using DeviceFlow on Linux, install a `keyring` service (`pip install keyring keyrings.alt`).

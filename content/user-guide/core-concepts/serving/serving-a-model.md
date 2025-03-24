@@ -32,7 +32,7 @@ by the FastAPI app.
 """A {{< key product_name >}} app that uses FastAPI to serve model created by a {{< key product_name >}} workflow."""
 
 import os
-import union
+import {{< key kit_import >}}
 
 SklearnModel = union.Artifact(name="sklearn-model")
 
@@ -122,7 +122,7 @@ import joblib
 from sklearn.datasets import make_regression
 from sklearn.ensemble import RandomForestRegressor
 
-import union
+import {{< key kit_import >}}
 
 # Declare the `Artifact`.
 SklearnModel = union.Artifact(name="sklearn-model")
