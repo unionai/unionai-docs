@@ -422,6 +422,7 @@ def wf():
 Below is an equivalent local example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```python
+@{{< key kit_as >}}.task
 def task1() -> {{< key kit_as >}}.FlyteDirectory: # Create new local directory
     p = os.path.join(current_context().working_directory, "my_new_directory")
     os.makedirs(p)
