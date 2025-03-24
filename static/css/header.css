@@ -35,10 +35,6 @@ header label {
   color: var(--text-color);
 }
 
-header .theme-selector {
-  margin-left: auto;
-}
-
 #theme-toggle {
   background: none;
   border: none;

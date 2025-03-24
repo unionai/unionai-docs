@@ -13,23 +13,23 @@
     {{- if (not $allowed) -}}
         <div class="not-allowed variant">
             <div class="title">
-                {{ upper (delimit $variants " | ") }}: Omitted in production for variant '{{ $variant }}'.
+                {{- upper (delimit $variants " | ") -}}: Omitted in production for variant '{{- $variant -}}'.
             </div>
             <div class="content">
-                {{ .Inner | safeHTML }}
+                {{- .Inner | safeHTML -}}
             </div>
         </div>
     {{- else if $showVariantNames -}}
         <div class="allowed variant">
             <div class="title">
-                {{ upper (delimit $variants " | ") }}
+                {{- upper (delimit $variants " | ") -}}
             </div>
             <div class="content">
-                {{ .Inner | safeHTML }}
+                {{- .Inner | safeHTML -}}
             </div>
         </div>
     {{- else -}}
-        {{ .Inner | safeHTML }}
+        {{- .Inner | safeHTML -}}
     {{- end -}}
 {{- end -}}
 

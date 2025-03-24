@@ -1,12 +1,12 @@
-{{ if .Parent }}
-	{{ $name := trim (.Get 0) " " }}
-	{{ if not (.Parent.Scratch.Get "tabs") }}
-	    {{ .Parent.Scratch.Set "tabs" slice }}
-	{{ end }}
-	{{ with .Inner }}
-        {{ $.Parent.Scratch.Add "tabs" (dict "name" $name "content" (. | safeHTML) ) }}
-	{{ end }}
-{{ else }}
+{{- if .Parent -}}
+	{{- $name := trim (.Get 0) " " -}}
+	{{- if not (.Parent.Scratch.Get "tabs") -}}
+	    {{- .Parent.Scratch.Set "tabs" slice -}}
+	{{- end -}}
+	{{- with .Inner -}}
+        {{- $.Parent.Scratch.Add "tabs" (dict "name" $name "content" (. | safeHTML) ) -}}
+	{{- end -}}
+{{- else -}}
 	{{ warnf "[tab is orphan] You specified {{< tab >}} inside {{< tabs >}}. File: %s" .Page.File.Path }}
 	<div class="layout-error">
 		<div class="error">
@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="content">
-			{{ .Inner | safeHTML }}
+			{{- .Inner | safeHTML -}}
 		</div>
 	</div>
-{{ end }}
+{{- end -}}

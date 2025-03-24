@@ -19,17 +19,17 @@
 {{- $isAllowed := in $variants (printf "+%s" $variant) -}}
 {{- $isExcluded := in $variants (printf "-%s" $variant) -}}
 
-{{ if in (slice "/categories" "/tags") .Path }}
-{{ $isAllowed = true }}
-{{ end }}
+{{- if in (slice "/categories" "/tags") .Path -}}
+{{- $isAllowed = true -}}
+{{- end -}}
 
-{{ if and $isAllowed $isExcluded }}
+{{- if and $isAllowed $isExcluded -}}
 {{ warnf "[Page Visibility] Page %s is both allowed and excluded from variant %s. See AUTHOR.md for help." $path $variant}}
-{{ end }}
+{{- end -}}
 
-{{ if and (not $isAllowed) (not $isExcluded) }}
+{{- if and (not $isAllowed) (not $isExcluded) -}}
 {{ warnf "[Page Visibility] Page %s at path %s neither allowed and excluded from variant %s. See AUTHOR.md for help." $path .Path $variant}}
-{{ end }}
+{{- end -}}
 
 {{-
     return dict

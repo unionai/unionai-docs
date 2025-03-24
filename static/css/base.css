@@ -61,7 +61,6 @@ body {
   z-index: 100;
 }
 .container {
-  display: flex;
   height: calc(100vh - var(--header-height) - var(--tabs-height));
   overflow-y: auto;
 }
