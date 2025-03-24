@@ -96,7 +96,7 @@ $ make serve PORT=<nnnnn>
 Example:
 
 ```
-$ make server PORT=4444
+$ make serve PORT=4444
 ```
 
 Then you open the browser on `http://localhost:<port>` to see the content. In the example above, it would be `http://localhost:4444/`
