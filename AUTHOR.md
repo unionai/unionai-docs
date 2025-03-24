@@ -88,6 +88,7 @@ For example:
 | `top_menu`         | bool | If `true` the item becomes a tab at the top and its hierarchy goes to the sidebar |
 | `sidebar_expanded` | bool | If `true` the section becomes expanded in the side bar. Permanently.              |
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
+| `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
 
 ## Conditional Content
 
