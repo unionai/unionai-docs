@@ -39,15 +39,15 @@ flowchart TD
     n8 -- Union manages control and data planes --> n10["Bring Your Own Cloud<br>(BYOC)"]
 
     n1@{ shape: diam}
-    n4@{ shape: rect}
-    n2@{ shape: rect}
-    n3@{ shape: rect}
+    n4@{ shape: rounded}
+    n2@{ shape: rounded}
+    n3@{ shape: rounded}
     n5@{ shape: diam}
     n8@{ shape: diam}
-    n6@{ shape: rect}
-    n7@{ shape: rect}
-    n9@{ shape: rect}
-    n10@{ shape: rect}
+    n6@{ shape: rounded}
+    n7@{ shape: rounded}
+    n9@{ shape: rounded}
+    n10@{ shape: rounded}
 ```
 
 This section walks you through the process to create a Flyte cluster and cover topics related to enabling and configuring plugins, authentication, performance tuning, and maintaining Flyte as a production-grade service.
