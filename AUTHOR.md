@@ -51,12 +51,10 @@ For a given -age, its variant visibility is governed by the `variants:` field in
 For each variant you specify `+<variant>` to include or `-<variant>` to exclude it.
 For example:
 
-```
----
-title: My Page
-variants: -flyte +serverless +byoc -byok
----
-```
+    ---
+    title: My Page
+    variants: -flyte +serverless +byoc -byok
+    ---
 
 In this example the page will be:
 
@@ -77,10 +75,10 @@ Pages are ordered by the value of `weight` field (an integer >= 0) in the frontm
 
 For example:
 
----
-title: My Page
-weight: 3
----
+    ---
+    title: My Page
+    weight: 3
+    ---
 
 ## Page settings
 
