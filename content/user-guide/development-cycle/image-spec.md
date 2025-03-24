@@ -69,7 +69,7 @@ All this is done transparently and does not require any set up by the user.
 > [!NOTE] Local image build in BYOC
 > In {{< key product_name >}} Serverless images defined by `ImageSpec` are always built using the {{< key product_name >}} cloud image builder.
 > In {{< key product_name >}} BYOC, you can optionally build images from the `ImageSpec` on your local machine by specifying `builder="envd"` in the `ImageSpec`.
-> See [Local image builder](https://docs.unionai/byoc/user-guide/development-cycle/remote-dependencies-with-image-spec.md#local-image-builder) in the BYOC documentation for more details.
+> See [Local image builder](#local-image-builder) in the BYOC documentation for more details.
 
 {{< /variant >}}
 {{< variant byoc byok >}}

@@ -462,7 +462,7 @@ def workflow():
 > With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
 >
 > With {{< key product_name >}} BYOC, the upload location is configurable.
-> See [FlyteFile and FlyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+> See [FlyteFile and FlyteDirectory > Changing the data upload location](../data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
 
 {{< /markdown >}}
 {{< /variant >}}

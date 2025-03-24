@@ -39,7 +39,7 @@ pip install union
 
 First, we import the required dependencies to ensure the workflow runs smoothly. Next, we define an actor environment, as the workflow relies on actor tasks throughout the process.
 
-[Union Actors](https://docs.union.ai/serverless/user-guide/core-concepts/actors) let us reuse a container and its environment across tasks, avoiding the overhead of starting a new container for each task. In this workflow, we define a single actor and reuse it consistently since the underlying components don’t require independent scaling or separate environments.
+[Union Actors](../../user-guide/core-concepts/actors) let us reuse a container and its environment across tasks, avoiding the overhead of starting a new container for each task. In this workflow, we define a single actor and reuse it consistently since the underlying components don’t require independent scaling or separate environments.
 
 Within the actor environment, we specify the `ImageSpec`, which defines the container image that tasks in the workflow will use. With Union, every task runs in its own dedicated container, requiring a container image. Instead of manually creating a Dockerfile, we define the image specification in Python. When run on Union Serverless, the container image is built remotely, simplifying the setup.
 
@@ -188,7 +188,7 @@ def create_chunks(document: Document, chunk_size: int, overlap: int) -> Document
 
 Next, we use Together AI to generate context for each chunk of text, using the secret we initialized earlier. The system retrieves relevant context based on the entire document, ensuring accurate and meaningful outputs.
 
-Notice that we set [`cache`](https://docs.union.ai/serverless/user-guide/core-concepts/caching) to `True` for this task to avoid re-running the execution for the same inputs. This ensures that if the document and model remain unchanged, the outputs are retrieved directly from the cache, improving efficiency.
+Notice that we set [`cache`](../../user-guide/core-concepts/caching) to `True` for this task to avoid re-running the execution for the same inputs. This ensures that if the document and model remain unchanged, the outputs are retrieved directly from the cache, improving efficiency.
 
 Once the context is generated, we map the chunks back to their respective documents.
 
@@ -346,9 +346,9 @@ def create_bm25s_index(documents: list[Document]) -> tuple[FlyteDirectory, Flyte
     return FlyteDirectory(path=bm25s_index_dir), FlyteFile(contextual_chunks_json)
 ```
 
-We define a [standard workflow](https://docs.union.ai/serverless/user-guide/core-concepts/workflows/standard-workflows) to execute these tasks in sequence. By using [map tasks](https://docs.union.ai/serverless/user-guide/core-concepts/tasks/task-types#map-tasks), we run operations in parallel while respecting the resource constraints of each task. This approach **significantly improves execution speed**. We set the concurrency to 2, meaning two tasks will run in parallel. Note that the replica count for actors is set to 10, but this can be overridden at the map task level. We're doing this because having too many parallel clients could cause server availability issues.
+We define a [standard workflow](../../user-guide/core-concepts/workflows/standard-workflows) to execute these tasks in sequence. By using [map tasks](../../user-guide/core-concepts/tasks/task-types#map-tasks), we run operations in parallel while respecting the resource constraints of each task. This approach **significantly improves execution speed**. We set the concurrency to 2, meaning two tasks will run in parallel. Note that the replica count for actors is set to 10, but this can be overridden at the map task level. We're doing this because having too many parallel clients could cause server availability issues.
 
-The final output of this workflow includes the BM25S keyword index and the contextual chunks mapping file, both returned as [Union Artifacts](https://docs.union.ai/serverless/user-guide/core-concepts/artifacts). The Artifact Service automatically indexes and assigns semantic meaning to all outputs from Union tasks and workflow executions, such as models, files, or other data. This makes it easy to track, access, and orchestrate pipelines directly through their outputs. In this case, the keyword index and file artifacts are directly used during app serving.
+The final output of this workflow includes the BM25S keyword index and the contextual chunks mapping file, both returned as [Union Artifacts](../../user-guide/core-concepts/artifacts). The Artifact Service automatically indexes and assigns semantic meaning to all outputs from Union tasks and workflow executions, such as models, files, or other data. This makes it easy to track, access, and orchestrate pipelines directly through their outputs. In this case, the keyword index and file artifacts are directly used during app serving.
 
 We also set up a retrieval task to fetch embeddings for local execution. Once everything’s in place, we run the workflow and the retrieval task locally, producing a set of relevant chunks.
 
@@ -469,7 +469,7 @@ if __name__ == "__main__":
 
 ### Remote execution
 
-To provide the Together AI API key to the actor during remote execution, we send it as a [secret](https://docs.union.ai/serverless/user-guide/development-cycle/managing-secrets#creating-secrets). We can create this secret using the Union CLI before running the workflow. Simply run the following commands:
+To provide the Together AI API key to the actor during remote execution, we send it as a [secret](../../user-guide/development-cycle/managing-secrets#creating-secrets). We can create this secret using the Union CLI before running the workflow. Simply run the following commands:
 ```
 union create secret together-api-key
 ```
@@ -480,7 +480,7 @@ To run the workflow remotely on a Union cluster, we start by logging into the cl
 !union create login --serverless
 ```
 
-Then, we initialize a Union remote object to execute the workflow on the cluster. The [UnionRemote](https://docs.union.ai/serverless/user-guide/development-cycle/union-remote) Python API supports functionality similar to that of the Union CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
+Then, we initialize a Union remote object to execute the workflow on the cluster. The [UnionRemote](../../user-guide/development-cycle/union-remote) Python API supports functionality similar to that of the Union CLI, enabling you to manage Union workflows, tasks, launch plans and artifacts from within your Python code.
 
 ```python
 from union.remote import UnionRemote
@@ -493,7 +493,7 @@ indices_execution = remote.execute(build_indices_wf, inputs={"local": False})
 print(indices_execution.execution_url)
 ```
 
-We define a launch plan to run the workflow daily. A [launch plan](https://docs.union.ai/serverless/user-guide/core-concepts/launch-plans/) serves as a template for invoking the workflow.
+We define a launch plan to run the workflow daily. A [launch plan](../../user-guide/core-concepts/launch-plans/) serves as a template for invoking the workflow.
 
 The scheduled launch plan ensures that the vector database and keyword index are regularly updated, keeping the data fresh and synchronized.
 
