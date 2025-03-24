@@ -16,9 +16,19 @@ You can run the full environment locally and have live preview and other nicetie
 
 ## Requirements
 
-- Hugo (https://gohugo.io/)
+1. Hugo (https://gohugo.io/)
 
-      MacOS$ brew install hugo
+        $ brew install hugo
+
+2. A preferences / override file with your configuration
+
+   The tool is flexible and has multiple knobs. Please review `hugo.local.toml~sample`,
+   and configure to meet your preferences.
+
+        $ cp hugo.local.toml~sample hugo.local.toml
+
+3. Make sure you review `hugo.local.toml`.
+  
 
 ## Building and running locally
 
