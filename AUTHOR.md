@@ -7,12 +7,13 @@
 - [Pull Requests + Site Preview](#pull-requests--site-preview)
 - [Page Visibility](#page-visibility)
 - [Page order](#page-order)
-- [weight: 3](#weight-3)
 - [Page settings](#page-settings)
 - [Conditional Content](#conditional-content)
+- [Warnings and Notices](#warnings-and-notices)
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
   - [Run on Union Instructions](#run-on-union-instructions)
+- [Mapped Keys (`{{< key >}}`)](#mapped-keys--key-)
 
 
 ## Getting started
@@ -95,6 +96,19 @@ which content is rendered on which flavor.
 
 Refer to [**Variants**](SHORTCODES.md#variants) for detailed explanation.
 
+## Warnings and Notices
+
+You can write regular markdown and use the notation below to create information and warning boxes:
+
+    > [!NOTE] This is the note title
+    > You write the note content here. It can be
+    > anything you want.
+
+Or if you want a warning:
+
+    > [!WARNING] This is the title of the warning
+    > And here you write what you want to warn about.
+
 ## Special Content Generation
 
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
@@ -151,3 +165,12 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
     # {{run-on-union}}
     #
     # And it shall have it.
+
+## Mapped Keys (`{{< key >}}`)
+
+Key is a very special command that allows us to define mapped values to a variant.
+For example, the product name changes if it is Flyte, Union BYOC, etc. For that,
+we can define a single key `product_full_name` and map it to reflect automatically,
+without the need to `if variant` around it.
+
+Please refer to [{{< key >}} shortcode](SHORTCODES.md#-key-) for more details.
