@@ -33,13 +33,13 @@ When worker nodes are not in use, they automatically scale down to the configure
 ### Assumptions
 * You have a Union organization that has already been created and you know the URL of your control plane host.
 * You have a Kubernetes cluster, running one of the most recent three minor K8s versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
-* Object storage provided by a vendor or an S3 compatible platform (such as [Minio](https://min.io).  
+* Object storage provided by a vendor or an S3 compatible platform (such as [Minio](https://min.io).
 
 > Some sample Terraform configurations are available in the [providers](providers) directory.
 
 ## Prerequisites
 * Install [Helm 3](https://helm.sh/docs/intro/install/)
-* Install [union](https://docs.union.ai/byoc/api-reference/union-cli) and [uctl](https://docs.union.ai/byoc/api-reference/uctl-cli/).
+* Install [union](../api-reference/union-cli) and [uctl](../api-reference/uctl-cli).
 
 ## Deploy the Union operator
 
