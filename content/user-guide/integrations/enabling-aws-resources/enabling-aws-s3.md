@@ -10,7 +10,7 @@ For {{< key product_name >}} customers whose data plane is in AWS, we walk throu
 
 > [!NOTE] AWS S3 in the {{< key product_name >}} environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are a number of S3 buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../../platform-architecture.md)) to store things like workflow metadata.
+> Among these are a number of S3 buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../../platform-architecture)) to store things like workflow metadata.
 >
 > **These **_**are not**_** the S3 bucket we are talking about in this section.**
 >
@@ -19,9 +19,9 @@ For {{< key product_name >}} customers whose data plane is in AWS, we walk throu
 ## Add permissions to your custom policy
 
 In order to enable access to an AWS resource (in this case S3) you need to create a custom policy in AWS IAM with the required permissions and attach it to either the existing _User Flyte Role_ associated with your data plane Kubernetes cluster or to a custom role which you have created and attached to the cluster.
-The general procedure is covered in [Enabling AWS resources](./_index.md).
+The general procedure is covered in [Enabling AWS resources](.).
 
-_In order to enable S3 access in particular, in the step_ [#add-permissions-to-your-custom-policy](./enabling-aws-s3.md#add-permissions-to-your-custom-policy) _you must specify the needed permissions. For example:_
+_In order to enable S3 access in particular, in the step_ [#add-permissions-to-your-custom-policy](./enabling-aws-s3#add-permissions-to-your-custom-policy) _you must specify the needed permissions. For example:_
 
 - `s3:ListBucket` - This permission allows you to list the objects in the bucket.
 - `s3:GetObject` - This permission allows you to retrieve objects from the bucket.

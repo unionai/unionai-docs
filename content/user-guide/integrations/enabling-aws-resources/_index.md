@@ -6,10 +6,10 @@ variants: +flyte -serverless +byoc +byok
 
 # Enabling AWS resources
 
-Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3.md), [AWS Elastic Container Registry](./enabling-aws-ecr.md), and so forth.
+Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [AWS S3 storage](./enabling-aws-s3), [AWS Elastic Container Registry](./enabling-aws-ecr), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager.md).
+> We strongly recommend using the [{{< key product_name >}} secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than AWS Secrets Manager. If your organization must use AWS Secrets Manager, however, see [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
 For example, if you want your task code to have access to a specific S3 bucket or database, this can be pre-configured.
@@ -28,12 +28,12 @@ Broadly speaking, there are two categories of access that you are likely to have
 
 * **Infrastructure access**:
   Enabling access to a resource for your data plane infrastructure.
-  The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr.md) for your task container images, and it resides in an AWS account other than the one containing your data plane.
+  The most common case occurs when you are using [AWS Elastic Container Registry (ECR)](./enabling-aws-ecr) for your task container images, and it resides in an AWS account other than the one containing your data plane.
   In that case, some configuration is required to enable the {{< key product_name >}} operator on your data plane to pull images from the registry when registering your workflows and tasks.
   **If you are using an ECR instance within the same AWS account as your data plane, then access is enabled by default and no further configuration is needed.**
 * **Task code access**:
   Enabling access to a resource for your task code.
-  For example, your task code might need to access [AWS S3 storage](./enabling-aws-s3.md) or [AWS Secrets Manager](./enabling-aws-secrets-manager.md) at runtime.
+  For example, your task code might need to access [AWS S3 storage](./enabling-aws-s3) or [AWS Secrets Manager](./enabling-aws-secrets-manager) at runtime.
   This involves granting permission to roles that are attached to the Kubernetes cluster within which your task code runs.
 
 ## Infrastructure-level access
@@ -43,7 +43,7 @@ The only infrastructure-level access issue you are likely to encounter is around
 **If your task container images are stored in an AWS Elastic Container Registry in the same AWS account as your data plane, then access is already enabled. You do not have to do anything.**
 
 If your task container images reside in an ECR instance in **another AWS account** you will need configure that ECR instance to allow access from your data plane.
-See [Enabling AWS ECR](./enabling-aws-ecr.md) for details.
+See [Enabling AWS ECR](./enabling-aws-ecr) for details.
 
 ## Task code access
 
@@ -59,7 +59,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a project and domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../administration/user-management.md)).
+> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../administration/user-management)).
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to an S3 bucket, two things are required:
@@ -128,7 +128,7 @@ To create a new policy:
 * Go through the sections of the visual editor to define the permissions you wish to grant.
   * Alternatively, you can paste a JSON definition directly into the JSON editor.
   * The details of what permissions to grant depend on the resource in question and the access you wish to grant.
-    Specific examples are covered in [Enabling AWS S3](./enabling-aws-s3.md) and [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager.md).
+    Specific examples are covered in [Enabling AWS S3](./enabling-aws-s3) and [Enabling AWS Secrets Manager](./enabling-aws-secrets-manager).
 * Proceed through the steps of the wizard, give your policy a name (which we will call `<CustomPolicy>`), and select **Create policy**.
 * Record the name and ARN of your policy.
   Here we will refer to the ARN is `<CustomPolicyArn>`.

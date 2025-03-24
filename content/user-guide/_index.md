@@ -12,7 +12,7 @@ site_root: true
 {{< markdown >}}
 
 > [!NOTE] Flyte
-> These docs are for [**Flyte**](./about-union.md#flyte).
+> These docs are for [**Flyte**](./about-union#flyte).
 > Switch to another variant with the version selector above.
 
 {{< /markdown >}}
@@ -21,7 +21,7 @@ site_root: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} Serverless
-> These docs are for [**{{< key product_name >}} Serverless**](./about-union.md#union-serverless).
+> These docs are for [**{{< key product_name >}} Serverless**](./about-union#union-serverless).
 > Switch to another variant with the version selector above.
 
 {{< /markdown >}}
@@ -30,7 +30,7 @@ site_root: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} BYOC
-> These docs are for [**{{< key product_name >}} BYOC**](./about-union.md#union-byoc).
+> These docs are for [**{{< key product_name >}} BYOC**](./about-union#union-byoc).
 > Switch to another variant with the version selector above.
 
 {{< /markdown >}}
@@ -39,7 +39,7 @@ site_root: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} BYOK
-> These docs are for [**{{< key product_name >}} BYOK**](./about-union.md#union-byok).
+> These docs are for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
 > Switch to another variant with the version selector above.
 
 {{< /markdown >}}

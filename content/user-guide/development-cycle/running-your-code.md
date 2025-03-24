@@ -8,28 +8,24 @@ variants: +flyte +serverless +byoc +byok
 
 ## Set up your development environment
 
-If you have not already done so, follow the [Getting started](../getting-started/_index.md) section to sign in to {{< key product_name >}}, and set up your local environment.
+If you have not already done so, follow the [Getting started](../getting-started) section to sign in to {{< key product_name >}}, and set up your local environment.
 
 ## CLI commands for running your code
 
-The {{< key cli_name >}} CLI provides a set of commands that allow you to deploy and run your code at different stages of the development cycle:
+The {{< key cli_name >}} CLI and {{<key ctl_name >}} CLI provide commands that allow you to deploy and run your code at different stages of the development cycle:
 
 <!-- TODO: Link to the union commands below to the reference section -->
 
 1. `{{< key cli >}} run`: For deploying and running a single script immediately in your local Python environment.
 2. `{{< key cli >}} run --remote`: For deploying and running a single script immediately in the cloud on {{< key product_name >}}.
 3. `{{< key cli >}} register`: For deploying multiple scripts to {{< key product_name >}} and running them from the Web interface.
-{{< variant byoc byok serverless >}}
-{{< markdown >}}
-4. `{{< key cli >}} package` and `uctl register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
+
+4. `{{< key cli >}} package` and `{{<key ctl >}} register`: For deploying workflows to production and for scripting within a CI/CD pipeline.
 
 > [!NOTE]
 > In some cases, you may want to test your code in a local cluster before deploying it to {{< key product_name >}}.
 > This step corresponds to using the commands 2, 3, or 4, but targeting your local cluster instead of {{< key product_name >}}.
-> For more details, see [Running in a local cluster](./running-in-a-local-cluster.md).
-
-{{< /markdown >}}
-{{< /variant >}}
+> For more details, see [Running in a local cluster](./running-in-a-local-cluster).
 
 ## Running a script in local Python with `{{< key cli >}} run`
 
@@ -44,7 +40,7 @@ Here you are invoking `{{< key cli >}} run` and passing the name of the Python f
 In addition, you are passing the named parameter `name` and its value.
 
 This command is useful for quickly testing a workflow locally to check for basic errors.
-For more details see [{{< key cli >}} run details](./details-of-union-run.md).
+For more details see [{{< key cli >}} run details](./details-of-union-run).
 
 ## Running a script on {{< key product_name >}} with `{{< key cli >}} run --remote`
 
@@ -76,7 +72,7 @@ This command will:
 * Run the workflow on {{< key product_name >}}.
 
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
-For more details see [{{< key cli >}} run details](./details-of-union-run.md).
+For more details see [{{< key cli >}} run details](./details-of-union-run).
 
 ## Deploying your code to {{< key product_name >}} with `{{< key cli >}} register`
 
@@ -96,12 +92,10 @@ The command will not run the workflow. You can run it from the Web interface.
 
 This command is useful for deploying your full set of workflows to {{< key product_name >}} for testing.
 
-{{< variant byoc byok serverless >}}
+## Deploying your code to production with `{{< key cli >}} package` and `{{< key ctl >}} register`
 
-## Deploying your code to production with `{{< key cli >}} package` and `uctl register`
-
-The combination of `{{< key cli >}} package` and `uctl register` is the standard way of deploying your code to production.
-This method is often used in scripts to [build and deploy workflows in a CI/CD pipeline](./ci-cd-deployment.md).
+The combination of `{{< key cli >}} package` and `{{< key ctl >}} register` is the standard way of deploying your code to production.
+This method is often used in scripts to [build and deploy workflows in a CI/CD pipeline](./ci-cd-deployment).
 
 First, package your workflows:
 
@@ -112,12 +106,18 @@ $ {{< key cli >}} --pkgs workflows package
 This will create a tar file called `flyte-package.tgz` of the Python package located in the `workflows` directory.
 Note that the presence of the `__init__.py` file in this directory is necessary in order to make it a Python package.
 
-Once the code is packaged you register it using the `uctl` CLI:
+Once the code is packaged you register it using the `{{< key ctl >}}` CLI:
 
 ```shell
-$ uctl register files --project basic-example --domain development \
+$ {{< key ctl >}} register files --project basic-example --domain development \
        --archive flyte-package.tgz --version 1.0
 ```
 
-See [Uctl CLI](../../api-reference/uctl-cli/_index.md) for more details.
-{{< /variant >}}
+See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
+
+## Registration pattern summary
+
+The following diagram provides a summarized view of the different registration patterns:
+
+
+

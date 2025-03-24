@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant serverless >}}
 {{< markdown >}}
 
-{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
+{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types.
@@ -84,7 +84,7 @@ def my_task():
 > [Accelerated datasets](../../../data-input-output/accelerated-datasets), on the other hand, is a {{< key product_name >}} feature that enables quick access to large datasets from within a task.
 > These concepts are entirely different and should not be confused.
 
-{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
+{{< key product_name >}} allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs, or other specialized hardware devices such as TPUs.
@@ -129,7 +129,7 @@ Note that in order for a specific accelerator to be available in your {{< key pr
 {{< variant flyte >}}
 {{< markdown >}}
 
-Flyte allows you to specify [requests and limits](./customizing-task-resources.md) for the number of GPUs available for a given task.
+Flyte allows you to specify [requests and limits](./customizing-task-resources) for the number of GPUs available for a given task.
 However, in some cases, you may want to be more specific about the type of GPU or other specialized device to be used.
 
 You can use the `accelerator` parameter to specify specific GPU types, variations of GPU types, fractional GPUs, or other specialized hardware devices such as TPUs.
@@ -156,7 +156,7 @@ There are a number of predefined accelerator constants available in the `flyteki
 The predefined list is not exhaustive, but it includes the most common accelerators.
 If you know the name of the accelerator, but there is no predefined constant for it, you can simply pass the string name to the task decorator directly.
 
-Note that in order for a specific accelerator to be available in your Flyte installation, it must have been provisioned in your Flyte cluster as part of your [deployment](../../../../deployment/_index.md).
+Note that in order for a specific accelerator to be available in your Flyte installation, it must have been provisioned in your Flyte cluster as part of your [deployment](../../../../deployment).
 
 {{< /markdown >}}
 {{< /variant >}}

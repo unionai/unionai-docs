@@ -15,7 +15,7 @@ We will use GitHub Actions as the example CI/CD system.
 
 An app is an agent registered in your {{< key product_name >}} data plane that enables external systems to perform actions in the system.
 To enable your CI/CD system to authenticate with {{< key product_name >}}, you need to create a {{< key product_name >}} app.
-See [Applications](../administration/applications.md).
+See [Applications](../administration/applications).
 
 First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
 

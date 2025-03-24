@@ -11,10 +11,10 @@ The function is written in a domain specific language (DSL), a subset of Python 
 The syntax of a standard workflow definition can only include the following:
 
 * Calls to functions decorated with `@{{< key kit_as >}}.task` and assignment of variables to the returned values.
-* Calls to other functions decorated with `@{{< key kit_as >}}.workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans.md)).
-* Calls to [`LaunchPlan` objects](../launch-plans/_index.md) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans.md#when-to-use-sub-launch-plans))
-* Calls to functions decorated with `@{{< key kit_as >}}.dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows.md)).
-* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows.md)).
+* Calls to other functions decorated with `@{{< key kit_as >}}.workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans)).
+* Calls to [`LaunchPlan` objects](../launch-plans) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans#when-to-use-sub-launch-plans))
+* Calls to functions decorated with `@{{< key kit_as >}}.dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows)).
+* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows)).
 * The special [`conditional` construct](#conditional-construct).
 * Statements using the [chaining operator `>>`](#chaining-operator).
 
@@ -22,7 +22,7 @@ The syntax of a standard workflow definition can only include the following:
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
-When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code.md#running-a-script-in-local-python-with-union-run) it is executed as a normal Python function.
+When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code#running-a-script-in-local-python-with-union-run) it is executed as a normal Python function.
 However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
 {{< /markdown >}}
 {{< /variant >}}
@@ -65,7 +65,7 @@ The `@{{< key kit_as >}}.workflow` decorator can take the following parameters:
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
-* `interruptible`: Indicates if tasks launched from this workflow are interruptible by default. See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances.md).
+* `interruptible`: Indicates if tasks launched from this workflow are interruptible by default. See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances).
 {{< /markdown >}}
 {{< /variant >}}
 

@@ -7,14 +7,14 @@ variants: +flyte +serverless +byoc +byok
 # Subworkflows and sub-launch plans
 
 In {{< key product_name >}} it is possible to invoke one workflow from within another.
-A parent workflow can invoke a child workflow in two ways: as a **subworkflow** or via a [**sub-launch plan**](../launch-plans/running-launch-plans.md#sub-launch-plans).
+A parent workflow can invoke a child workflow in two ways: as a **subworkflow** or via a [**sub-launch plan**](../launch-plans/running-launch-plans#sub-launch-plans).
 
 In both cases the child workflow is defined and registered normally, exists in the system normally, and can be run independently.
 
 But, if the child workflow is invoked from within the parent **by directly calling the child's function**, then it becomes a **subworkflow**.
 The DAG of the subworkflow is embedded directly into the DAG of the parent and effectively become part of the parent workflow execution, sharing the same execution ID and execution context.
 
-On the other hand, if the child workflow is invoked from within the parent [**by calling the child's launch plan**](../launch-plans/_index.md), this is called a **sub-launch plan**. It results in a new top-level workflow execution being invoked with its own execution ID and execution context.
+On the other hand, if the child workflow is invoked from within the parent [**by calling the child's launch plan**](../launch-plans), this is called a **sub-launch plan**. It results in a new top-level workflow execution being invoked with its own execution ID and execution context.
 It also appears as a separate top-level entity in the system.
 The only difference is that it happens to have been kicked off from within another workflow instead of from the command line or the UI.
 
@@ -101,7 +101,7 @@ def nested_regression_line_wf() -> float:
 
 ## When to use sub-launch plans
 
-Sub-launch plans can be useful for implementing exceptionally large or complicated workflows that can’t be adequately implemented as [dynamic workflows](../workflows/dynamic-workflows.md) or [map tasks](../tasks/task-types.md#map-tasks).
+Sub-launch plans can be useful for implementing exceptionally large or complicated workflows that can’t be adequately implemented as [dynamic workflows](../workflows/dynamic-workflows) or [map tasks](../tasks/task-types#map-tasks).
 Dynamic workflows and map tasks share the same context and single underlying Kubernetes resource definitions.
 Sub-launch plan invoked workflows do not share the same context.
 They are executed as separate top-level entities, allowing for better parallelism and scale.

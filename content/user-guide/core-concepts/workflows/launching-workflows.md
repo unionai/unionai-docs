@@ -6,14 +6,14 @@ variants: +flyte +serverless +byoc +byok
 
 # Launching workflows
 
-From the [individual workflow view](./viewing-workflows.md#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](./viewing-workflows.md#workflows-list)) you can select **Launch Workflow** in the top right. This opens the **New Execution** dialog for workflows:
+From the [individual workflow view](./viewing-workflows#workflow-view) (accessed, for example, by selecting a workflow in the [**Workflows** list](./viewing-workflows#workflows-list)) you can select **Launch Workflow** in the top right. This opens the **New Execution** dialog for workflows:
 
 ![New execution dialog settings](/_static/images/user-guide/core-concepts/workflows/launching-workflows/new-execution-dialog-settings.png)
 
 At the top you can select:
 
 * The specific version of this workflow that you want to launch.
-* The launch plan to be used to launch this workflow (by default it is set to the [default launch plan of the workflow](../launch-plans/_index.md#default-launch-plan)).
+* The launch plan to be used to launch this workflow (by default it is set to the [default launch plan of the workflow](../launch-plans#default-launch-plan)).
 
 Along the left side the following sections are available:
 
@@ -49,5 +49,5 @@ Along the left side the following sections are available:
 {{< /markdown >}}
 {{< /variant >}}
 
-Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions.md).
+Select **Launch** to launch the workflow execution. This will take you to the [Execution view](./viewing-workflow-executions).
 

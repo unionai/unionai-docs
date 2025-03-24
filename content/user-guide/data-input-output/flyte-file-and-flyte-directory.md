@@ -365,7 +365,7 @@ In {{< key product_name >}}, each task runs in its own container. This means tha
 
 The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the {{< key product_name >}} object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
+Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory) classes, which automate this process.
 
 ## How the classes work
 
@@ -462,7 +462,7 @@ def workflow():
 > With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
 >
 > With {{< key product_name >}} BYOC, the upload location is configurable.
-> See [FlyteFile and FlyteDirectory > Changing the data upload location](../data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+> See [FlyteFile and FlyteDirectory > Changing the data upload location](../data-input-output/flyte-file-and-flyte-directory#changing-the-data-upload-location).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -484,9 +484,9 @@ However, you can change the upload location by setting the raw data prefix to yo
 > [!NOTE] Setting up your own object store bucket
 > For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 >
-> * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
-> * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
-> * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
+> * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
+> * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
+> * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage)
 
 ### Changing the raw data prefix
 
@@ -624,7 +624,7 @@ def task_2(ff: {{< key kit_as >}}.FlyteFile):
 > Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile`
 > object and result in an automatic download.
 >
-> See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
+> See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
 
 ### Explicit downloading
 
@@ -653,8 +653,8 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [{{< key kit_name >}} SDK](../../api-reference/union-sdk/_index.md) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/_index.md#file-type):
+The [{{< key kit_name >}} SDK](../../api-reference/union-sdk) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types#file-type):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -666,7 +666,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/_index.md#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`
