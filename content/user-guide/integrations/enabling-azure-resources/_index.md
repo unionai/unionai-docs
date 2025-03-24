@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
 
-[Data plane setup on Azure](../../data-plane-setup/data-plane-setup-on-azure.md) provides {{< key product_name >}} with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-{{< key product_name >}} Azure resources is subject to Azure limitations and will require additional configuration.
+[Data plane setup on Azure](../../data-plane-setup/data-plane-setup-on-azure) provides {{< key product_name >}} with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-{{< key product_name >}} Azure resources is subject to Azure limitations and will require additional configuration.
 
 As your projects evolve, your needs may change.
 You can always contact the {{< key product_name >}} team for help enabling additional resources as required.
@@ -20,7 +20,7 @@ There are two categories of access that you are likely to have to deal with:
 * **Infrastructure access**:
   Enabling access to a resource for your data plane infrastructure.
   The most common case occurs when using your container registry task container images.
-  In that case, refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) to configure the {{< key product_name >}} data plane to access that registry.
+  In that case, refer to [Enabling Azure Container Registry](./enabling-azure-container-registry) to configure the {{< key product_name >}} data plane to access that registry.
 * **Task code access**:
   Enabling access to a resource for your task code.
   For example, your task code might need to access Azure Blob Storage at runtime.
@@ -28,7 +28,7 @@ There are two categories of access that you are likely to have to deal with:
 
 ## Infrastructure-level access
 
-Infrastructure access with non-{{< key product_name >}}-managed Azure resources will require additional configuration. Refer to [Enabling Azure Container Registry](./enabling-azure-container-registry.md) if you need access to images within an existing or non-{{< key product_name >}}-managed container registry.
+Infrastructure access with non-{{< key product_name >}}-managed Azure resources will require additional configuration. Refer to [Enabling Azure Container Registry](./enabling-azure-container-registry) if you need access to images within an existing or non-{{< key product_name >}}-managed container registry.
 
 ## Task code access
 
@@ -47,7 +47,7 @@ Global access is recommended for most use cases since it is simpler. Still, if y
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../administration/user-management.md)).
+> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../administration/user-management)).
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to a blob storage container, two things are required:

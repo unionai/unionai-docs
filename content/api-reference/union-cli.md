@@ -47,7 +47,7 @@ where `<union-host-url>` is the URL of your Union instance.
 
 These command will create the file `~/.union/config.yaml` with the configuration information to connect to the Union instance.
 
-See [Getting started > Local setup](../user-guide/getting-started/local-setup.md) for more details.
+See [Getting started > Local setup](../user-guide/getting-started/local-setup) for more details.
 
 ## Overriding the configuration file location
 

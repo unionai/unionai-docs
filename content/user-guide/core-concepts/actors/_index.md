@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +byok
 
 Actors allow you to reuse a container and environment between tasks, avoiding the cost of starting a new container for each task. This can be useful when you have a task that requires a lot of setup or has a long startup time.
 
-To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/union-sdk/actors/actor-actorenvironment.md) class, then add the instance as a decorator to the task that requires that environment.
+To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/union-sdk/actors/actor-actorenvironment) class, then add the instance as a decorator to the task that requires that environment.
 
 ### `ActorEnvironment` parameters
 
@@ -26,7 +26,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 * **limits:** Compute resource limits.
 * **replica_count:** The number of workers to provision that are able to accept tasks.
 * **requests:** Compute resource requests per task.
-* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../../development-cycle/managing-secrets.md).
+* **secret_requests:** Keys (ideally descriptive) that can identify the secrets supplied at runtime. For more information, see [Managing secrets](../../development-cycle/managing-secrets).
 * **ttl_seconds:** How long to keep the Actor alive while no tasks are being run.
 
 The following example shows how to create a basic `ActorEnvironment` and use it for one task:
@@ -103,7 +103,7 @@ def wf():
 {{< /markdown >}}
 {{< /variant >}}
 
-You can learn more about the trade-offs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks.md).
+You can learn more about the trade-offs between actors and regular tasks, as well as the efficiency gains you can expect [here](actors-and-regular-tasks).
 
 ## Caching on Actor Replicas
 
@@ -217,4 +217,4 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 
 You can see that the first call of `evaluate` took considerable time as it involves allocating a node for the task, creating a container, and loading the model. The subsequent calls of `evaluate` execute in a fraction of the time.
 
-You can see examples of more advanced actor usage [here](actor-examples.md).
+You can see examples of more advanced actor usage [here](actor-examples).

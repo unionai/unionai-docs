@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant serverless >}}
 {{< markdown >}}
 
-In [Getting started](./_index.md) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
+In [Getting started](.) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -89,7 +89,7 @@ For example, a public registry like `ghcr.io` with the images set to public, wou
 
 ## Install `flytectl` to set up a local cluster
 
-For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment/_index.md)).
+For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment)).
 Here we are using a local cluster for experimentation and demonstration purposes.
 
 To set up a local cluster you must first install the `flytectl` CLI.
@@ -101,7 +101,7 @@ To set up a local cluster you must first install the `flytectl` CLI.
 > It is the primary command-line tool used during Flyte development.
 >
 > `flytectl` is a compiled binary (written in Go) and used for performing certain administrative tasks.
-> (see [Flytectl](../../api-reference/uctl-cli/_index.md) for details)
+> (see [Flytectl](../../api-reference/uctl-cli) for details)
 
 To install `flytectl`, follow these instructions:
 
@@ -236,7 +236,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 $ {{< key cli >}} create login --host <union-host-url>
 ```
 
-`<union-host-url>` is the URL of your {{< key product_name >}} instance, mentioned in [Getting started](./_index.md#gather-your-credentials).
+`<union-host-url>` is the URL of your {{< key product_name >}} instance, mentioned in [Getting started](.#gather-your-credentials).
 
 This will create the `~/.union/config.yaml` with the configuration information to connect to your {{< key product_name >}} instance.
 
@@ -245,7 +245,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 > To configure a connection to {{< key product_name >}} Serverless, see the
 > [Serverless version of this page](/docs/serverless/quick-start#configure-the-union-cli).
 
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
 <!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
 {{< /markdown >}}
@@ -253,7 +253,7 @@ See [Running in a local cluster](../development-cycle/running-in-a-local-cluster
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
 
-By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli.md) for more details.)
+By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli) for more details.)
 You can override this behavior to specify a different configuration file by setting the `{{< key config_env >}}` environment variable:
 
 ```shell
@@ -273,7 +273,7 @@ $ {{< key cli >}} --config ~/.my-config-location/my-config.yaml run my_script.py
 > Make sure to remove any files in `~/.unionai/` or `~/.union/` and unset the environment
 > variables `UNIONAI_CONFIG` and `UNION_CONFIG` to avoid conflicts.
 
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on
 the format of the `yaml` file.
 <!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
@@ -302,7 +302,7 @@ For example:
 $ pyflyte --config ~/.my-config-location/my-config.yaml run my_script.py my_workflow
 ```
 
-See [Running in a local cluster](../development-cycle/running-in-a-local-cluster.md) for more details on the format of the `yaml` file.
+See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
 <!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->
 
 {{< /markdown >}}
@@ -335,7 +335,7 @@ $ {{< key cli >}} info
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-For more details on connection configuration see [CLI authentication types](../administration/cli-authentication-types.md).
+For more details on connection configuration see [CLI authentication types](../administration/cli-authentication-types).
 
 {{< /markdown >}}
 {{< /variant >}}

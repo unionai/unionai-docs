@@ -26,8 +26,8 @@ $ source .venv/bin/activate
 > When running the `{{< key cli >}}` CLI within your local project you must run it in the virtual
 > environment _associated with_ that project.
 > This differs from our earlier usage of the tool when
-> [we installed `{{< key cli >}}` globally](./local-setup.md#install-the--cli--cli) in order to
-> [set up its configuration](./local-setup.md#configure-the-connection-to-your--product_full--instance).
+> [we installed `{{< key cli >}}` globally](./local-setup#install-the--cli--cli) in order to
+> [set up its configuration](./local-setup#configure-the-connection-to-your--product_full--instance).
 >
 > To run `{{< key cli >}}` within your project's virtual environment using `uv`,
 > you can prefix it use the `uv run` command. For example:
@@ -44,7 +44,7 @@ $ source .venv/bin/activate
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.
 
-You can run the workflow locally with the command [`{{< key cli >}} run <FILE> <WORKFLOW>`](../../api-reference/union-cli.md#union-cli-commands):
+You can run the workflow locally with the command [`{{< key cli >}} run <FILE> <WORKFLOW>`](../../api-reference/union-cli#union-cli-commands):
 
 ```shell
 $ {{< key cli >}} run hello_world.py hello_world_wf
@@ -81,7 +81,7 @@ When task and workflow code is registered:
 * The `@{{< key kit_as >}}.task` function is loaded into a container defined by the `ImageSpec` object specified in the `container_image` parameter of the decorator.
 * The `@{{< key kit_as >}}.workflow` function is compiled into a directed acyclic graph that controls the running of the tasks invoked within it.
 
-To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/union-cli.md#union-cli-commands) and the
+To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/union-cli#union-cli-commands) and the
 
 ```shell
 $ {{< key cli >}} run --remote --project my-project --domain development hello_world.py hello_world_wf

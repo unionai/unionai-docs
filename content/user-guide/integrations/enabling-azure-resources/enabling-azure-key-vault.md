@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 > [!NOTE]
 > This documentation exists for customers who must use Azure Key Vault for organizational reasons. For everyone else, we strongly recommend using the
-> [{{< key product_name >}} secrets manager](../../development-cycle/managing-secrets.md) to manage secrets rather than Azure Key Vault.
+> [{{< key product_name >}} secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Azure Key Vault.
 
 The {{< key product_name >}}-managed `userflyterole` identity must be granted permission to access [Azure Key Vault secrets](https://learn.microsoft.com/en-us/azure/key-vault/secrets/about-secrets).
 

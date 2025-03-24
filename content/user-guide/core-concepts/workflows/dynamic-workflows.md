@@ -147,7 +147,7 @@ Dynamic workflows help alleviate some pressure on `etcd` storage space, providin
 ## Dynamic workflows vs. map tasks
 
 Dynamic tasks come with overhead for large fan-out tasks as they store metadata for the entire workflow.
-In contrast, [map tasks](../tasks/task-types.md#map-tasks) prove efficient for such extensive fan-out scenarios since they refrain from storing metadata, resulting in less noticeable overhead.
+In contrast, [map tasks](../tasks/task-types#map-tasks) prove efficient for such extensive fan-out scenarios since they refrain from storing metadata, resulting in less noticeable overhead.
 
 ## Using dynamic workflows to achieve recursion
 

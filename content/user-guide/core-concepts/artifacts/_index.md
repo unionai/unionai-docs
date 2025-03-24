@@ -19,23 +19,23 @@ Artifacts are uniquely identified and versioned by the following information:
 * Artifact name
 * Artifact version
 
-You can set an artifact's name in code when you [declare the artifact](./declaring-artifacts.md) and the artifact version is automatically generated when the artifact is materialized as part of any task or workflow execution that emits an artifact with this name. Any execution of a task or workflow that emits an artifact creates a new version of that artifact.
+You can set an artifact's name in code when you [declare the artifact](./declaring-artifacts) and the artifact version is automatically generated when the artifact is materialized as part of any task or workflow execution that emits an artifact with this name. Any execution of a task or workflow that emits an artifact creates a new version of that artifact.
 
 ## Partitions
 
-When you declare an artifact, you can define partitions for it that enable semantic grouping of artifacts. Partitions are metadata that take the form of key-value pairs, with the keys defined at registration time and the values supplied at runtime. You can specify up to 10 partition keys for an artifact. You can set an optional partition called `time_partition` to capture information about the execution timestamp to your desired level of granularity. For more information, see [Declaring artifacts](./declaring-artifacts.md).
+When you declare an artifact, you can define partitions for it that enable semantic grouping of artifacts. Partitions are metadata that take the form of key-value pairs, with the keys defined at registration time and the values supplied at runtime. You can specify up to 10 partition keys for an artifact. You can set an optional partition called `time_partition` to capture information about the execution timestamp to your desired level of granularity. For more information, see [Declaring artifacts](./declaring-artifacts).
 
 > [!NOTE]
 > The `time_partition` partition is not enabled by default. To enable it, set `time_partitioned=True` in the artifact declaration.
-> For more information, see the [time-partitioned artifact example](./declaring-artifacts.md#time-partitioned-artifact).
+> For more information, see the [time-partitioned artifact example](./declaring-artifacts#time-partitioned-artifact).
 
 ## Queries
 
 To consume an artifact in a workflow, you can define a query containing the artifact’s name as well as any required partition values. You then supply the query as an input value to the workflow definition. At execution time, the query will return the most recent version of the artifact that meets the criteria by default. You can also query for a specific artifact version.
 
-For more information on querying for and consuming artifacts in workflows, see [Consuming artifacts in workflows](./consuming-artifacts-in-workflows.md).
+For more information on querying for and consuming artifacts in workflows, see [Consuming artifacts in workflows](./consuming-artifacts-in-workflows).
 
-To query for artifacts programmatically in a Python script using `{{< key kit_remote >}}`, see [{{< key kit_remote >}}](../../../api-reference/union-sdk/union-remote/_index.md).
+To query for artifacts programmatically in a Python script using `{{< key kit_remote >}}`, see [{{< key kit_remote >}}](../../../api-reference/union-sdk/union-remote).
 
 > [!NOTE] `UnionRemote` vs `FlyteRemote`
 > `UnionRemote` is identical to `FlyteRemote`, with additional functionality to handle artifacts.
@@ -43,4 +43,4 @@ To query for artifacts programmatically in a Python script using `{{< key kit_re
 
 ## Lineage
 
-Once an artifact is materialized, its lineage is visible in the UI. For more information, see [Artifact view](./viewing-artifacts.md).
+Once an artifact is materialized, its lineage is visible in the UI. For more information, see [Artifact view](./viewing-artifacts).

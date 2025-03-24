@@ -12,7 +12,7 @@ To streamline the communication between {{< key product_name >}} tasks, particul
 
 ## Tensors and modules
 
-At times, you may find the need to pass tensors and modules (models) within your workflow. Without native support for PyTorch tensors and modules, {{< key kit_name >}} relies on [pickle](./pickle.md) for serializing and deserializing these entities, as well as any unknown types. However, this approach isn't the most efficient. As a result, we've integrated PyTorch's serialization and deserialization support into the {{< key product_name >}} type system.
+At times, you may find the need to pass tensors and modules (models) within your workflow. Without native support for PyTorch tensors and modules, {{< key kit_name >}} relies on [pickle](./pickle) for serializing and deserializing these entities, as well as any unknown types. However, this approach isn't the most efficient. As a result, we've integrated PyTorch's serialization and deserialization support into the {{< key product_name >}} type system.
 
 {{< variant flyte >}}
 {{< markdown >}}
