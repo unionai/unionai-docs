@@ -1,3 +1,9 @@
+---
+title: Domains
+weight: 7
+variants: +flyte -serverless -byoc -byok
+---
+
 # Domains
 Domains are fixed and unique at the global level, and provide an abstraction to isolate resources and feature configuration for different deployment environments.
 

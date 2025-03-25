@@ -1,3 +1,9 @@
+---
+title: Flyte Admin
+weight: 7
+variants: +flyte -serverless -byoc -byok
+---
+
 # Flyte Admin
 This is an architectural overview of the Flyte Admin control plane service.
 

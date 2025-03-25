@@ -1,3 +1,9 @@
+---
+title: FlyteConsole
+weight: 7
+variants: +flyte -serverless -byoc -byok
+---
+
 # FlyteConsole
 
 FlyteConsole is the web UI for the Flyte platform. Here’s a video that dives into the graph UX:

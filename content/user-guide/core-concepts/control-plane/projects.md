@@ -1,3 +1,9 @@
+---
+title: Projects
+weight: 7
+variants: +flyte -serverless -byoc -byok
+---
+
 # Projects
 
 A project in Flyte is a group of [workflows](../../workflows) and [tasks](../../tasks) tied together to achieve a goal.
