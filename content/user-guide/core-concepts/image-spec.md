@@ -4,13 +4,13 @@
 
 # Image Spec
 
-In this section, you will uncover how {@= Product =@} utilizes Docker images to construct containers under the hood, and you'll learn how to craft your own images to encompass all the necessary dependencies for your tasks or workflows.
+In this section, you will uncover how {{< key product_name >}} utilizes Docker images to construct containers under the hood, and you'll learn how to craft your own images to encompass all the necessary dependencies for your tasks or workflows.
 
 You will explore how to execute a raw container with custom commands,
 indicate multiple container images within a single workflow,
 and get familiar with the ins and outs of `ImageSpec`!
 
-`ImageSpec` allows you to customize the container image for your {@= Product =@} tasks without a Dockerfile. `ImageSpec` speeds up the build process by allowing you to reuse previously downloaded packages from the PyPI and APT caches.
+`ImageSpec` allows you to customize the container image for your {{< key product_name >}} tasks without a Dockerfile. `ImageSpec` speeds up the build process by allowing you to reuse previously downloaded packages from the PyPI and APT caches.
 
 {@@ if serverless or byoc or byok @@}
 
@@ -22,10 +22,10 @@ By default, the `ImageSpec` will be built using the default Docker builder, but 
 
 {@@ endif @@}
 
-For every {py:class}`{@= kit =@}.PythonFunctionTask` task or a task decorated with the `@task` decorator, you can specify rules for binding container images. By default, {@= kit =@} binds a single container image, i.e.,
-the [default Docker image](https://ghcr.io/flyteorg/flytekit), to all tasks. To modify this behavior, use the `container_image` parameter available in the {py:func}`{@= kit =@}.task` decorator, and pass an `ImageSpec` definition.
+For every {py:class}`{{< key kit >}}.PythonFunctionTask` task or a task decorated with the `@task` decorator, you can specify rules for binding container images. By default, {{< key kit >}} binds a single container image, i.e.,
+the [default Docker image](https://ghcr.io/flyteorg/flytekit), to all tasks. To modify this behavior, use the `container_image` parameter available in the {py:func}`{{< key kit >}}.task` decorator, and pass an `ImageSpec` definition.
 
-Before building the image, {@= Kit =@} checks the container registry to see if the image already exists. If the image does not exist, {@= Kit =@} will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
+Before building the image, {{< key kit >}} checks the container registry to see if the image already exists. If the image does not exist, {{< key kit >}} will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
 
 {@@ if flyte @@}
 :::{admonition} Prerequisites
@@ -38,8 +38,8 @@ Before building the image, {@= Kit =@} checks the container registry to see if t
 
 ## Install Python or APT packages
 You can specify Python packages and APT packages in the `ImageSpec`.
-These specified packages will be added on top of the [default image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile), which can be found in the {@= Kit =@} Dockerfile.
-More specifically, {@= kit =@} invokes [DefaultImages.default_image()](https://github.com/flyteorg/flytekit/flytekit/configuration/default_images.py#L26-L27) function. This function determines and returns the default image based on the Python version and {@= kit =@} version. For example, if you are using Python 3.8 and flytekit 1.6.0, the default image assigned will be `ghcr.io/flyteorg/flytekit:py3.8-1.6.0`.
+These specified packages will be added on top of the [default image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile), which can be found in the {{< key kit >}} Dockerfile.
+More specifically, {{< key kit >}} invokes [DefaultImages.default_image()](https://github.com/flyteorg/flytekit/flytekit/configuration/default_images.py#L26-L27) function. This function determines and returns the default image based on the Python version and {{< key kit >}} version. For example, if you are using Python 3.8 and flytekit 1.6.0, the default image assigned will be `ghcr.io/flyteorg/flytekit:py3.8-1.6.0`.
 
 {@@ if flyte @@}
 :::{important}
@@ -49,7 +49,7 @@ To upload the image to the local registry in the demo cluster, indicate the regi
 {@@ endif @@}
 
 ```python
-from {@= kit =@} import ImageSpec
+from {{< key kit >}} import ImageSpec
 
 sklearn_image_spec = ImageSpec(
   packages=["scikit-learn", "tensorflow==2.5.0"],
@@ -177,7 +177,7 @@ image_spec = ImageSpec(
 You can specify files or directories to be copied into the container `/root`, allowing users to access the required files. The directory structure will match the relative path. Since Docker only supports relative paths, absolute paths and paths outside the current working directory (e.g., paths with "../") are not allowed.
 
 ```py
-from {@= kit =@} import task, workflow, ImageSpec
+from {{< key kit >}} import task, workflow, ImageSpec
 
 image_spec = ImageSpec(
     name="image_with_copy",
@@ -192,7 +192,7 @@ def my_task() -> str:
 
 ## Define ImageSpec in a YAML File
 
-You can override the container image by providing an ImageSpec YAML file to the `{@= cli =@} run` or `{@= cli =@} register` command. This allows for greater flexibility in specifying a custom container image. For example:
+You can override the container image by providing an ImageSpec YAML file to the `{{< key cli >}} run` or `{{< key cli >}} register` command. This allows for greater flexibility in specifying a custom container image. For example:
 
 ```yaml
 # imageSpec.yaml
@@ -204,24 +204,24 @@ env:
 ```
 
 ```
-# Use {@= cli =@} to register the workflow
-{@= cli =@} run --remote --image image.yaml image_spec.py wf
+# Use {{< key cli >}} to register the workflow
+{{< key cli >}} run --remote --image image.yaml image_spec.py wf
 ```
 
 ## Build the image without registering the workflow
 
-If you only want to build the image without registering the workflow, you can use the `{@= cli =@} build` command.
+If you only want to build the image without registering the workflow, you can use the `{{< key cli >}} build` command.
 
 ```
-{@= cli =@} build --remote image_spec.py wf
+{{< key cli >}} build --remote image_spec.py wf
 ```
 
 ## Force push an image
 
-In some cases, you may want to force an image to rebuild, even if the ImageSpec hasn’t changed. To overwrite an existing image, pass the `FLYTE_FORCE_PUSH_IMAGE_SPEC=True` to the `{@= cli =@}` command.
+In some cases, you may want to force an image to rebuild, even if the ImageSpec hasn’t changed. To overwrite an existing image, pass the `FLYTE_FORCE_PUSH_IMAGE_SPEC=True` to the `{{< key cli >}}` command.
 
 ```bash
-FLYTE_FORCE_PUSH_IMAGE_SPEC=True {@= cli =@} run --remote image_spec.py wf
+FLYTE_FORCE_PUSH_IMAGE_SPEC=True {{< key cli >}} run --remote image_spec.py wf
 ```
 
 You can also force push an image in the Python code by calling the `force_push()` method.
@@ -232,7 +232,7 @@ image = ImageSpec(packages=["pandas"]).force_push()
 [flytesnacks]: https://github.com/flyteorg/flytesnacks/tree/master/examples/customizing_dependencies/
 
 ## Getting source files into ImageSpec
-Typically, getting source code files into a task's image at run time on a live {@= Product =@} backend is done through the fast registration mechanism.
+Typically, getting source code files into a task's image at run time on a live {{< key product_name >}} backend is done through the fast registration mechanism.
 
 However, if your `ImageSpec` constructor specifies a `source_root` and the `copy` argument is set to something other than `CopyFileDetection.NO_COPY`, then files will be copied regardless of fast registration status.
 If the `source_root` and `copy` fields to an `ImageSpec` are left blank, then whether or not your source files are copied into the built `ImageSpec` image depends on whether or not you use fast registration. Please see [registering workflows](https://docs.union.ai/byoc/user-guide/core-concepts/#registering-tasks-and-workflows) for the full explanation.
