@@ -1,4 +1,5 @@
 import inspect
+from sys import stderr
 from typing import Optional
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo
@@ -22,7 +23,7 @@ def parse_method(name: str, member: object) -> Optional[MethodInfo]:
     }
     return_type = (
         doc_info["return_type"]
-        if doc_info != None and "return_type" in doc_info
+        if doc_info != None and "return_type" in doc_info and doc_info["return_type"] != None
         else (
             sig.return_annotation
             if str(sig.return_annotation) != "<class 'inspect._empty'>"
@@ -79,6 +80,6 @@ def parse_variable(name: str, member: object) -> Optional[VariableInfo]:
     var_info = VariableInfo(
         name=name,
         type=mtype,
-        value=str(member),
     )
+
     return var_info

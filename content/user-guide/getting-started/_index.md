@@ -96,7 +96,7 @@ stop it manually on the Workspaces page.
 
 ## Gather your credentials
 
-After your administrator has onboarded you to {{< key product_name >}} (see [Deployment](../../deployment/_index.md)), you should have the following at hand:
+After your administrator has onboarded you to {{< key product_name >}} (see [Deployment](../../deployment)), you should have the following at hand:
 
 - Your {{< key product_name >}} credentials.
 - The URL of your {{< key product_name >}} instance. We will refer to this as `<union-host-url>` below.

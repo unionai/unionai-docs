@@ -12,8 +12,13 @@ from lib.parser.methods import parse_method, parse_variable
 def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
     try:
         # Import the package
+        print(f"Importing package: {name}", file=stderr)
         package = importlib.import_module(name)
-    except:
+    except Exception as e:
+        print(
+            f"\033[93m[WARNING]:\033[0m Could not import package '{name}': {e}",
+            file=stderr,
+        )
         return None
 
     # Add the base package

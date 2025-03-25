@@ -18,7 +18,7 @@ You can customize the hardware environment in which your task code executes thro
 * Memory size
 * Ephemeral storage size
 
-See [Customizing task resources](./customizing-task-resources.md) for details.
+See [Customizing task resources](./customizing-task-resources) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -41,7 +41,7 @@ You can specify `requests` and `limits` on:
 * Memory size
 * Ephemeral storage size
 
-See [Customizing task resources](./customizing-task-resources.md) for details.
+See [Customizing task resources](./customizing-task-resources) for details.
 
 ### Using PodTemplate
 
@@ -84,9 +84,9 @@ For details see [Configuring task pods with Kubernetes PodTemplates]().
 ## Accelerators
 
 If you specify GPUs, you can also specify the type of GPU to be used by setting the `accelerator` parameter.
-See [Accelerators](./accelerators.md) for more information.
+See [Accelerators](./accelerators) for more information.
 
 ## Task-level monitoring
 
 You can also monitor the hardware resources used by a task.
-See [Task-level monitoring](./task-level-monitoring.md) for details.
+See [Task-level monitoring](./task-level-monitoring) for details.

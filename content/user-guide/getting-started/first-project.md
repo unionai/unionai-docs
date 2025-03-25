@@ -87,4 +87,4 @@ The resulting directory will look like this:
 > {{< key product_name >}} project ID, as we have done here.
 
 Next, let's look at the contents of the local project directory.
-Continue to [Understanding the code](understanding-the-code.md).
+Continue to [Understanding the code](understanding-the-code).

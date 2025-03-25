@@ -14,19 +14,19 @@ This is useful when you want to change the behavior of a task, subworkflow, or s
 
 When calling a task, you can specify the following parameters in `with_overrides`:
 
-* `accelerator`: Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators.md).
-* `cache_serialize`: Enable [cache serialization](../core-concepts/caching.md).
-* `cache_version`: Specify the [cache version](../core-concepts/caching.md).
-* `cache`: Enable [caching](../core-concepts/caching.md).
-* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec.md).
-* `interruptible`: Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances.md).
-* `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources.md).
+* `accelerator`: Specify [accelerators](../core-concepts/tasks/task-hardware-environment/accelerators).
+* `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
+* `cache_version`: Specify the [cache version](../core-concepts/caching).
+* `cache`: Enable [caching](../core-concepts/caching).
+* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec).
+* `interruptible`: Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
+* `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
 * `name`: Give a specific name to this task execution. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).
 * `node_name`: Give a specific name to the DAG node for this task. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).
-* `requests`: Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources.md).
-* `retries`: Specify the [number of times to retry this task](../core-concepts/tasks/task-parameters.md).
-* `task_config`: Specify a [task config](../core-concepts/tasks/task-parameters.md).
-* `timeout`: Specify the [task timeout](../core-concepts/tasks/task-parameters.md).
+* `requests`: Specify [resource requests](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
+* `retries`: Specify the [number of times to retry this task](../core-concepts/tasks/task-parameters).
+* `task_config`: Specify a [task config](../core-concepts/tasks/task-parameters).
+* `timeout`: Specify the [task timeout](../core-concepts/tasks/task-parameters).
 
 For example, if you have a task that does not have caching enabled, you can use `with_overrides` to enable caching at execution time as follows:
 
@@ -66,6 +66,6 @@ When calling a workflow or launch plan from within a high-level workflow
 (in other words, when invoking a subworkflow or sub-launch plan),
 you can specify the following parameters in `with_overrides`:
 
-* `cache_serialize`: Enable [cache serialization](../core-concepts/caching.md).
-* `cache_version`: Specify the [cache version](../core-concepts/caching.md).
-* `cache`: Enable [caching](../core-concepts/caching.md).
+* `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
+* `cache_version`: Specify the [cache version](../core-concepts/caching).
+* `cache`: Enable [caching](../core-concepts/caching).

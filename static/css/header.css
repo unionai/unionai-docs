@@ -18,15 +18,14 @@ header .separator {
   opacity: 0.5;
 }
 
-.sidebar .logo-container,
-header .logo-container {
+.logo-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-left: 0.5rem;
 }
-.sidebar .logo-container .title,
-header .logo-container .title {
+
+.logo-container .title {
   color: unset;
   white-space: nowrap;
 }

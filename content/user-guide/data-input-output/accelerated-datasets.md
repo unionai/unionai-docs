@@ -8,7 +8,7 @@ variants: -flyte -serverless +byoc +byok
 
 > [!NOTE] *Accelerated datasets* and *Accelerators* are entirely different things
 > Accelerated datasets is a {{< key product_name >}} feature that enables quick access to large datasets from within a task.
-> An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators.md), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
+> An [accelerator](../core-concepts/tasks/task-hardware-environment/accelerators), on the other hand, is a specialized hardware device that is used to accelerate the execution of a task.
 > These concepts are entirely different and should not be confused.
 
 Many of the workflows that you may want to run in {{< key product_name >}} will involve tasks that use large static assets such as reference genomes, training datasets, or pre-trained models.

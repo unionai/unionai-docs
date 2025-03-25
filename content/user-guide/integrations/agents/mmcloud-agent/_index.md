@@ -21,7 +21,7 @@ To get started with Memory Machine Cloud, see the [Memory Machine Cloud user gui
 
 ## Example usage
 
-For a usage example, see [Memory Machine Cloud agent example](./mmcloud-agent-example.md).
+For a usage example, see [Memory Machine Cloud agent example](./mmcloud-agent-example).
 
 ## Local testing
 

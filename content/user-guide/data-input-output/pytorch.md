@@ -93,7 +93,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from dataclasses_json import dataclass_json
-from {{< key kit_as >}}.extras.pytorch import PyTorchCheckpoint
+from flytekit.extras.pytorch import PyTorchCheckpoint
 
 
 @dataclass_json

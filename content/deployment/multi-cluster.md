@@ -6,7 +6,7 @@ variants: +flyte -serverless +byoc +byok
 
 # Multi-cluster and multi-cloud
 
-When [configuring your data plane](./configuring-your-data-plane.md), you can map each domain or project to its own GCP project or AWS subaccount. You can even mix cloud providers: Some of your domains and/or projects can be mapped to AWS subaccounts while others can be mapped to GCP projects.
+When [configuring your data plane](./configuring-your-data-plane), you can map each domain or project to its own GCP project or AWS subaccount. You can even mix cloud providers: Some of your domains and/or projects can be mapped to AWS subaccounts while others can be mapped to GCP projects.
 
 ## Domain isolation
 
@@ -53,4 +53,4 @@ In addition, metadata specific to the internals of Union can be either isolated 
 
 Specifically, the sharing of metadata is controlled by the cluster pool to which a cluster belongs. If two clusters are in the same cluster pool, then they _must_ share the same metadata bucket. If they are in different cluster pools, then they _must_ have different metadata buckets. You could, for example, have a single metadata bucket for all your development clusters, and a separate one for all your production clusters, by grouping the clusters into cluster pools accordingly. Alternatively you could have a separate metadata bucket for each cluster, by putting each cluster in its own cluster pool.
 
-You specify the cluster pool to which a cluster belongs when you [configure your data plane](./configuring-your-data-plane.md) with the help of the Union team.
+You specify the cluster pool to which a cluster belongs when you [configure your data plane](./configuring-your-data-plane) with the help of the Union team.

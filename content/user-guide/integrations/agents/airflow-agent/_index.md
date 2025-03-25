@@ -30,7 +30,7 @@ This integration has two components:
 > You don't need an Airflow cluster to run Airflow tasks, since {{< key kit_name >}} will
 > automatically compile Airflow tasks to {{< key product_name >}} tasks and execute them on the Airflow agent.
 
-For a usage example, see [Airflow agent example](./airflow-agent-example.md).
+For a usage example, see [Airflow agent example](./airflow-agent-example).
 
 ## Local testing
 

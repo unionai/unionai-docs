@@ -65,7 +65,7 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 ![Outputs](/_static/images/user-guide/development-cycle/union-remote/outputs.png)
 
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
-For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint](../../../api-reference/union-remote/entrypoint.md).
+For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint](../../../api-reference/union-remote/entrypoint).
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}

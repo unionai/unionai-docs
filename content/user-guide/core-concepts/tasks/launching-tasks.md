@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Launching tasks
 
-From the [task view](./viewing-tasks.md#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](./viewing-tasks.md#tasks-list)) you can select **Launch Task** in the top right:
+From the [task view](./viewing-tasks#task-view) (accessed, for example, by selecting a task in the [**Tasks** list](./viewing-tasks#tasks-list)) you can select **Launch Task** in the top right:
 
 This opens the **New Execution** dialog for tasks:
 
@@ -50,4 +50,4 @@ Along the left side the following sections are available:
 {{< /markdown >}}
 {{< /variant >}}
 
-Select **Launch** to launch the task execution. This will take you to the [Execution view](../workflows/viewing-workflow-executions.md).
+Select **Launch** to launch the task execution. This will take you to the [Execution view](../workflows/viewing-workflow-executions).

@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 Authentication is required to interact with {{< key product_name >}} using the command-line interface (CLI). The authentication method depends on whether you are working on a local or remote machine. This guide walks you through different authentication mechanisms and helps you choose the best one for your use case.
 
-Before diving into authentication, ensure you have installed the {{< key cli_name >}} CLI. See [Local Setup](./local-setup.md) for details.
+Before diving into authentication, ensure you have installed the {{< key cli_name >}} CLI. See [Local Setup](./local-setup) for details.
 
 ## Authentication Methods
 
