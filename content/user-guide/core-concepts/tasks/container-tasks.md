@@ -1,8 +1,8 @@
-# Container Tasks
-
-```{eval-rst}
-.. tags:: Containerization, Advanced
-```
+---
+title: Container Tasks
+weight: 5
+variants: +flyte +serverless +byoc +byok
+---
 
 This example demonstrates how to use arbitrary containers in 5 different languages, all orchestrated in {{< key kit >}} seamlessly. {{< key product_name >}} mounts an input data volume where all the data needed by the container is available, and an output data volume for the container to write all the data which will be stored away.
 

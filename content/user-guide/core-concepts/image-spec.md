@@ -1,6 +1,8 @@
-```{eval-rst}
-.. tags:: Containerization, Intermediate
-```
+---
+title: ImageSpec
+weight: 10
+variants: +flyte +serverless +byoc +byok
+---
 
 # Image Spec
 
@@ -12,41 +14,51 @@ and get familiar with the ins and outs of `ImageSpec`!
 
 `ImageSpec` allows you to customize the container image for your {{< key product_name >}} tasks without a Dockerfile. `ImageSpec` speeds up the build process by allowing you to reuse previously downloaded packages from the PyPI and APT caches.
 
-{@@ if serverless or byoc or byok @@}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
 
 By default, the `ImageSpec` will be built using the [remote builder](https://docs.union.ai/byoc/user-guide/development-cycle/image-spec#union-ai-cloud-image-builder), but you can always specify your own e.g. local Docker.
 
-{@@ elif flyte @@}
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
 
 By default, the `ImageSpec` will be built using the default Docker builder, but you can always specify your own e.g. [flytekitplugins-envd](https://github.com/flyteorg/flytekit/plugins/flytekit-envd/flytekitplugins/envd/image_builder.py#L25) which uses envd to build the ImageSpec.
 
-{@@ endif @@}
+{{< /markdown >}}
+{{< /variant >}}
 
 For every {py:class}`{{< key kit >}}.PythonFunctionTask` task or a task decorated with the `@task` decorator, you can specify rules for binding container images. By default, {{< key kit >}} binds a single container image, i.e.,
 the [default Docker image](https://ghcr.io/flyteorg/flytekit), to all tasks. To modify this behavior, use the `container_image` parameter available in the {py:func}`{{< key kit >}}.task` decorator, and pass an `ImageSpec` definition.
 
 Before building the image, {{< key kit >}} checks the container registry to see if the image already exists. If the image does not exist, {{< key kit >}} will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
 
-{@@ if flyte @@}
+{{< variant flyte >}}
+{{< markdown >}}
 :::{admonition} Prerequisites
 :class: important
 
 - Make sure `docker` is running on your local machine.
 - When using a registry in ImageSpec, `docker login` is required to push the image
 :::
-{@@ endif @@}
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Install Python or APT packages
 You can specify Python packages and APT packages in the `ImageSpec`.
 These specified packages will be added on top of the [default image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile), which can be found in the {{< key kit >}} Dockerfile.
 More specifically, {{< key kit >}} invokes [DefaultImages.default_image()](https://github.com/flyteorg/flytekit/flytekit/configuration/default_images.py#L26-L27) function. This function determines and returns the default image based on the Python version and {{< key kit >}} version. For example, if you are using Python 3.8 and flytekit 1.6.0, the default image assigned will be `ghcr.io/flyteorg/flytekit:py3.8-1.6.0`.
 
-{@@ if flyte @@}
+{{< variant flyte >}}
+{{< markdown >}}
 :::{important}
 Replace `ghcr.io/flyteorg` with a container registry you can publish to.
 To upload the image to the local registry in the demo cluster, indicate the registry as `localhost:30000` using the `registry` argument to `ImageSpec`.
 :::
-{@@ endif @@}
+{{< /markdown >}}
+{{< /variant >}}
 
 ```python
 from {{< key kit >}} import ImageSpec
@@ -145,7 +157,8 @@ image_spec = ImageSpec(
 )
 ```
 
-{@@ if flyte @@}
+{{< variant flyte >}}
+{{< markdown >}}
 ## Install flytekit from GitHub
 When you update the flytekit, you may want to test the changes with your tasks.
 You can install the flytekit from a specific commit hash in the `ImageSpec`.
@@ -160,7 +173,8 @@ image_spec = ImageSpec(
   registry="ghcr.io/flyteorg",
 )
 ```
-{@@ endif @@}
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Customize the tag of the image
 You can customize the tag of the image by specifying the `tag_format` in the `ImageSpec`. In the following example, the tag will be `<spec_hash>-dev`.
