@@ -5,14 +5,12 @@ variants: +flyte -serverless -byoc -byok
 top_menu: true
 ---
 
-The multicluster deployment described in this section, assumes you have deployed
-the `flyte-core` Helm chart, which runs the individual Flyte components separately.
+The multicluster deployment described in this section, assumes you have deployed the `flyte-core` Helm chart, which runs the individual Flyte components separately.
 This is needed because in a multicluster setup, the execution engine (`flytepropeller`) is deployed to multiple K8s clusters; hence it wouldn't work with the `flyte-binary` Helm chart, since it deploys all Flyte services as one single binary.
 
 > Union.ai offers simplified support for multi-cluster and multi-cloud. [Learn more](https://docs.union.ai/byoc/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
 
 ## Scaling Beyond Kubernetes
-
 
 As described in the [Architecture Overview](https://docs.flyte.org/en/latest/concepts/architecture.html),
 the Flyte control plane (`flyteadmin`) sends workflows off to the Data Plane (`flytepropeller`) for
@@ -22,8 +20,7 @@ Kubernetes.
 The case for multiple Kubernetes clusters may arise due to security constraints, cost effectiveness or a need to scale out computing resources.
 
 To address this, you can deploy Flyte's data plane to multiple Kubernetes clusters.
-The control plane (`flyteadmin`) can be configured to submit workflows to these individual data planes. Additionally, Flyte provides the mechanisms for 
-administrators to retain control on the workflow placement logic while enabling users to reap the benefits using simple abstractions like `projects` and `domains`.
+The control plane (`flyteadmin`) can be configured to submit workflows to these individual data planes. Additionally, Flyte provides the mechanisms for administrators to retain control on the workflow placement logic while enabling users to reap the benefits using simple abstractions like `projects` and `domains`.
 
 ### Prerequisites
 
@@ -54,11 +51,9 @@ To make sure that your multicluster deployment is able to scale and process  req
 <a id="dataplane_deployment"></a>
 ### Data Plane Deployment
 
-
 This guide assumes that you have two Kubernetes clusters and that you can access them all with `kubectl`.
 
-Let's call these clusters ``dataplane1`` and ``dataplane2``. In this section, you'll prepare
-the first cluster only. 
+Let's call these clusters `dataplane1` and `dataplane2`. In this section, you'll prepare the first cluster only. 
 
 1. Add the `flyteorg` Helm repo:
 
@@ -89,12 +84,11 @@ configmap:
        endpoint: <your-datacatalog-address>
        insecure: false 
 ```
-This step is needed so the ``flytepropeller`` instance in the data plane cluster is able to send notifications
-back to the ``flyteadmin`` service in the control plane.
+This step is needed so the `flytepropeller` instance in the data plane cluster is able to send notifications back to the `flyteadmin` service in the control plane.
    
 The `catalog` service runs in the control plane and is used when caching is enabled. Note that `catalog` is
 not exposed via the Ingress by default and does not have its own authentication mechanism. The `catalog` service
-in the control plane cluster can for instance be made available to the `flytepropeller` services in the data plane clusters with an internal load balancer service (see e.g. [GKE documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#create>) or [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/service/nlb/).if the clusters use the same VPC network.
+in the control plane cluster can for instance be made available to the `flytepropeller` services in the data plane clusters with an internal load balancer service (see e.g. [GKE documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#create>) or [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/service/nlb/) if the clusters use the same VPC network.
 
 4. Install the Flyte data plane Helm chart:
 
@@ -103,16 +97,16 @@ in the control plane cluster can for instance be made available to the `flytepro
 **AWS**
 ```bash
 
-         helm install flyte-core-data flyteorg/flyte-core -n flyte \
-         --values values-eks.yaml --values values-dataplane.yaml \
-         --create-namespace
+helm install flyte-core-data flyteorg/flyte-core -n flyte \
+--values values-eks.yaml --values values-dataplane.yaml \
+--create-namespace
 ```
 **GCP**
 ```bash
-         helm install flyte-core-data -n flyte flyteorg/flyte-core  \
-               --values values-gcp.yaml \
-               --values values-dataplane.yaml \
-               --create-namespace flyte
+helm install flyte-core-data -n flyte flyteorg/flyte-core  \
+      --values values-gcp.yaml \
+      --values values-dataplane.yaml \
+      --create-namespace flyte
 ```
 
 ## Control Plane configuration
@@ -125,7 +119,7 @@ In order to verify requests, the Kubernetes API Server expects a [signed bearer 
 attached to the Service Account. Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
 
-1. Use the following manifest to create a long-lived bearer token for the ``flyteadmin`` Service Account in your data plane cluster:
+1. Use the following manifest to create a long-lived bearer token for the `flyteadmin` Service Account in your data plane cluster:
 
 ```bash
    
@@ -141,7 +135,7 @@ type: kubernetes.io/service-account-token
 EOF
 ```   
 
-2. Create a new file named ``secrets.yaml`` that looks like:
+2. Create a new file named `secrets.yaml` that looks like:
 
 ```yaml
    apiVersion: v1
@@ -162,7 +156,7 @@ EOF
       -o jsonpath='{.data.token}' | pbcopy
 ```
 
-4. Go to ``secrets.yaml`` and add a new entry under ``stringData`` with the data plane cluster token:
+4. Go to `secrets.yaml` and add a new entry under `stringData` with the data plane cluster token:
 
 ```yaml
 
@@ -183,29 +177,28 @@ EOF
       -o jsonpath='{.data.ca\.crt}' | pbcopy
 ```
 
-6. Add another entry in your ``secrets.yaml`` file for the certificate:
+6. Add another entry in your `secrets.yaml` file for the certificate:
 
 ```yaml
 
-   apiVersion: v1
-   kind: Secret
-   metadata:
-     name: cluster-credentials
-     namespace: flyte
-   type: Opaque
-   data:
-     dataplane_1_token: <your-dataplane1-token>
-     dataplane_1_cacert: <your-dataplane1-token-certificate>
+apiVersion: v1
+kind: Secret
+metadata:
+   name: cluster-credentials
+   namespace: flyte
+type: Opaque
+data:
+   dataplane_1_token: <your-dataplane1-token>
+   dataplane_1_cacert: <your-dataplane1-token-certificate>
 ```
 
 7. Connect to your control plane cluster and create the `cluster-credentials` secret:
 
 ```bash
-
-    kubectl apply -f secrets.yaml
+kubectl apply -f secrets.yaml
 ```
 
-8. Create a file named `values-override.yam`` and add the following config to it:
+8. Create a file named `values-override.yaml` and add the following config to it:
 
 ```yaml
    flyteadmin:
@@ -274,7 +267,7 @@ helm upgrade flyte -n flyte flyteorg/flyte-core values.yaml \
 11. Verify that all Pods in the `flyte` namespace are `Running`: 
 
 ```bash
-   kubectl get pods -n flyte
+kubectl get pods -n flyte
 ```
 Example output:
 
@@ -292,7 +285,6 @@ syncresources-6d8794bbcb-754wn   1/1     Running   0          23h
 ```
 
 ## Configure Execution Cluster Labels
-
 
 The next step is to configure project-domain or workflow labels to schedule on a specific Kubernetes cluster.
 
@@ -366,9 +358,9 @@ The process can be repeated for additional clusters.
 
 1. Provision the new cluster and add it to the permissions structure (IAM, etc)
 2.  Install the data plane Helm chart following the steps in the [Data plane deployment](#data-plane-deployment) section.
-3. Follow steps 1-3 in the [control plane configuration](#control-plane-configuration) to generate and populate a new section in your ``secrets.yaml`` file
+3. Follow steps 1-3 in the [control plane configuration](#control-plane-configuration) to generate and populate a new section in your `secrets.yaml` file:
 
-         Example:
+Example:
 ```yaml
 
 apiVersion: v1
@@ -386,7 +378,6 @@ data:
 4. Connect to the control plane cluster and update the `cluster-credentials` Secret:
 
 ```bash
-
 kubect apply -f secrets.yaml
 ```
 5. Go to your `values-override.yaml` file and add the information of the new cluster. Adding a new label is not entirely needed. Nevertheless, in the following example a new label is created to illustrate Flyte's capability to schedule workloads on different clusters in response to user-defined mappings of `project`, `domain` and `label`:
@@ -428,7 +419,6 @@ helm upgrade flyte-core-control flyteorg/flyte-core  -n flyte --values values-co
 7. Create a new execution cluster labels file with the following sample content:
 
 ```yaml
-
 domain: production
 project: team1
 value: label2
@@ -436,7 +426,6 @@ value: label2
 8. Update the cluster execution labels for the project:
 
 ```bash
-
 flytectl update execution-cluster-label --attrFile ecl-production.yaml
 ```
 9. Finally, submit a workflow execution that matches the label of the new cluster:
