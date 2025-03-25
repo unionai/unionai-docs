@@ -4,7 +4,7 @@ weight: 3
 variants: +flyte -serverless -byoc -byok
 top_menu: true
 ---
-
+## Flyte multicluster setup
 The multicluster deployment described in this section, assumes you have deployed the `flyte-core` Helm chart, which runs the individual Flyte components separately.
 This is needed because in a multicluster setup, the execution engine (`flytepropeller`) is deployed to multiple K8s clusters; hence it wouldn't work with the `flyte-binary` Helm chart, since it deploys all Flyte services as one single binary.
 

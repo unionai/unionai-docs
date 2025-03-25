@@ -9,16 +9,13 @@ top_menu: true
 First, add the Flyte chart repo to Helm:
 
 ```bash
-
-    helm repo add flyteorg https://flyteorg.github.io/flyte
-
+helm repo add flyteorg https://flyteorg.github.io/flyte
 ```
 
 Then download and update a values file:
 
 ```bash
-
-    curl -sL https://raw.githubusercontent.com/flyteorg/flyte/master/charts/flyte-binary/eks-starter.yaml
+curl -sL https://raw.githubusercontent.com/flyteorg/flyte/master/charts/flyte-binary/eks-starter.yaml
 ```
 > Both the [flyte-binary](https://github.com/flyteorg/flyte/tree/master/charts/flyte-binary) and [flyte-core](https://github.com/flyteorg/flyte/tree/master/charts/flyte-core) charts include example YAML values files for different cloud environments.
 
@@ -34,9 +31,8 @@ Once adjusted your values file, install the chart:
 
 Example:
 ```bash
-
-    helm install flyte-backend flyteorg/flyte-binary \
-        --dry-run --namespace flyte --values eks-starter.yaml
+helm install flyte-backend flyteorg/flyte-binary \
+    --dry-run --namespace flyte --values eks-starter.yaml
 ```
 When ready to install, remove the `--dry-run` switch.
 
@@ -50,20 +46,17 @@ To verify the installation you can to port forward the Kubernetes service:
 
 Example:
 ```bash
+kubectl -n flyte port-forward service/flyte-binary-http 8088:8088 
 
-    kubectl -n flyte port-forward service/flyte-binary-http 8088:8088 
-
-    kubectl -n flyte port-forward service/flyte-binary-grpc 8089:8089
+kubectl -n flyte port-forward service/flyte-binary-grpc 8089:8089
  ```
 
 You should be able to navigate to `http://localhost:8088/console`.
 
-The Flyte server operates on two different ports, one for HTTP traffic and one for gRPC traffic, which is why we port forward both.
+The Flyte server operates on two different ports, one for `HTTP` traffic and the other for `gRPC`, which is why we port forward both.
 
-From here, you should be able to run through the Getting Started Guide
-examples. 
-
-Generate a new configuration file (in case you don't have one already) using `flytectl config init`.
+### Connect to your Flyte instance
+- Generate a new configuration file (in case you don't have one already) using `flytectl config init`.
 
 This will produce a file like the following:
 
@@ -77,5 +70,9 @@ This will produce a file like the following:
      show-source: true
      level: 0
 ```
+- Test your connection using:
 
-
+```bash
+flytectl get projects
+```
+From this point on you can start running workflows!
