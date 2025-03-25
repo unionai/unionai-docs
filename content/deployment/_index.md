@@ -34,7 +34,7 @@ flowchart TD
     n1 -- Compact Flyte cluster in a local container --> n3["flytectl demo start<br>"]
     n4 --> n5["Run Flyte"] & n8["Run Union"]
     n5 -- small scale --> n6["flyte-binary<br>Helm chart"]
-    n5 -- large scale --> n7["flyte-core<br>Helm chart"]
+    n5 -- large scale or multi-cluster --> n7["flyte-core<br>Helm chart"]
     n8 -- "You manage your data plane. Union manages the control plane" --> n9["Bring Your Own K8s<br>(BYOK)"]
     n8 -- Union manages control and data planes --> n10["Bring Your Own Cloud<br>(BYOC)"]
 

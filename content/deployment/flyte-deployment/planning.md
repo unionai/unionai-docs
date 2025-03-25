@@ -44,23 +44,23 @@ Flyte can be operated without the following elements, but is prepared to use the
 ### Ingress controller
 
 
-Flyte operates on two protocols: HTTP for the UI and gRPC for the client-to-control-plane communication. You can expose those ports through `port-forward` which is typically a temporary measure, or expose them in a stable manner using Ingress. For a Kubernetes Ingress resource to be properly materialized, it needs an Ingress controller already installed in the cluster.  
+Flyte operates with two protocols: `HTTP` for the UI and `gRPC` for the client-to-control-plane communication. You can expose both ports through `port-forward` which is typically a temporary measure, or expose them in a stable manner using Ingress. For a Kubernetes Ingress resource to be properly materialized, it needs an Ingress controller already installed in the cluster.  
 The Flyte Helm charts can trigger the creation of the Ingress resource but the config needs to be reconciled by an Ingress controller (doesn't ship with Flyte). 
 The Flyte community has used the following controllers succesfully:
 
-| Environment  | Controller  | Example configuration  | Comments |
-|---|---|---|---|
-| AWS  | ALB  | [flyte-binary config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-binary/eks-starter.yaml#L108-L120) / [flyte-core config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-core/values-eks.yaml#L142-L160)  | gRPC and HTTP endpoints served in two Ingress resources|
-| GCP  | NGINX  | [flyte-core example config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-core/values-gcp.yaml#L160-L173)  | Integrations with Gateway API to be explored |
-| Azure  | NGINX | [flyte-core example config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-core/values-gcp.yaml#L160-L173)   | |
-| On-prem | NGINX, Traefik | |
+| Environment  | Controller  | Example configuration  |
+|---|---|---|
+| AWS  | ALB  | [flyte-binary config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-binary/eks-starter.yaml#L108-L120) / [flyte-core config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-core/values-eks.yaml#L142-L160)  |
+| GCP  | NGINX  | [flyte-core example config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-core/values-gcp.yaml#L160-L173)  |
+| Azure  | NGINX | [flyte-core example config](https://github.com/flyteorg/flyte/blob/754ab74b29f5fee665fd1cfde38fccccd95af8bd/charts/flyte-core/values-gcp.yaml#L160-L173)   | 
+| On-prem | NGINX, Traefik |
 
 ### DNS
-To register and run workflows in Flyte, your client (being the CLI in your machine or an external system) needs to connect to the Flyte control plane through an endpoint. When you do `port-forward`, you typically access Flyte through `localhost`. For a production environment is recommended to use a valid DNS entry that points to your Ingress host name.
+To register and run workflows in Flyte, your client (the CLI in your machine or an external system) needs to connect to the Flyte control plane through an endpoint. When you do `port-forward`, you typically access Flyte through `localhost`. For a production environment is recommended to use a valid DNS entry that points to your Ingress host name.
 
 ### SSL/TLS
 
-Use a valid certificate to secure the communication between your client and the Flyte control plane. You can also use a self-signed certificate adding the `insecureSkipVerify: true` key to the local `config.yaml` file.
+Use a valid certificate to secure the communication between your client and the Flyte control plane. For Flyte, `insecure: true` means no certificate is installed. You can even use self-signed certificates (which counts as `insecure: false`) adding the `insecureSkipVerify: true` key to the local `config.yaml` file. That will inform Flyte to skip verifying the certificate chain.
 
 ## Helm chart variants
 
