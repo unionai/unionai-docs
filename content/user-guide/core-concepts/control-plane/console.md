@@ -1,6 +1,6 @@
 ---
 title: FlyteConsole
-weight: 7
+weight: 4
 variants: +flyte -serverless -byoc -byok
 ---
 

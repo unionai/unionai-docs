@@ -1,6 +1,6 @@
 ---
 title: Domains
-weight: 7
+weight: 2
 variants: +flyte -serverless -byoc -byok
 ---
 

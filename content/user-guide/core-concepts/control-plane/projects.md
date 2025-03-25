@@ -1,6 +1,6 @@
 ---
 title: Projects
-weight: 7
+weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 

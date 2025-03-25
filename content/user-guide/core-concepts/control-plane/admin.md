@@ -1,6 +1,6 @@
 ---
 title: Flyte Admin
-weight: 7
+weight: 3
 variants: +flyte -serverless -byoc -byok
 ---
 
