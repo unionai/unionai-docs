@@ -100,7 +100,157 @@ on the `Unarchive` button:
 ![Unarchive Workspace](/_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
 
 
-## Setting secrets
+## Workspace CLI Commands
+
+The `union` CLI also provides commands for managing workspaces.
+
+### Create a workspace configuration
+
+The first step is to create a yaml file that describes the workspace.
+
+```{code-block} shell
+union create workspace-config --init base_image workspace.yaml
+```
+
+This will create a `workspace.yaml` file in the current directory, with the
+default configuration values that you can edit for your needs:
+
+```{code-block} yaml
+name: my-workspace
+description: my workspace description
+project: flytesnacks
+domain: development
+container_image: public.ecr.aws/unionai/workspace-base:py3.11-latest
+resources:
+    cpu: "2"
+    mem: "4Gi"
+    gpu: null
+accelerator: null
+on_startup: null
+ttl_seconds: 1200
+```
+
+Note that the yaml file contains a `project` and `domain` field that you can set to create a
+workspace in a specific project and domain.
+
+### Create a workspace
+
+Then, create a workspace using the `union create workspace` command:
+
+```{code-block} shell 
+union create workspace workspace.yaml
+```
+
+This command will also start your workspace, and will print out the workspace
+link that you click on to open the workspace in your browser:
+
+```{code-block} text
+Created: workspace_definition {
+  id {
+    org: "demo"
+    project: "flytesnacks"
+    domain: "development"
+    name: "my-workspace"
+    version: "my-workspace-20250325165908"
+  }
+  ...
+}
+
+Starting workspace 'my-workspace'
+
+🚀 Workspace started: Open VSCode in Browser
+```
+
+### Stop a workspace
+
+When you want to stop a workspace, use the `union stop workspace` command:
+
+```{code-block} shell
+union stop workspace --name my-workspace
+```
+
+This will print out a message indicating that the workspace has been stopped:
+
+```{code-block} text
+Workspace instance stopped: org: "demo"
+project: "flytesnacks"
+domain: "development"
+name: "anplk9ckwjfc2s779pgk"
+host: "demo"
+```
+
+### Update a workspace
+
+To update a workspace, modify the `workspace.yaml` file and run the
+`union update workspace` command:
+
+```{code-block} shell
+union update workspace workspace.yaml
+```
+
+This will print out a message that looks something like:
+
+```{code-block} text
+Updated: workspace_definition {
+  id {
+    org: "demo"
+    project: "flytesnacks"
+    domain: "development"
+    name: "my-workspace"
+    version: "my-workspace-20250325170012"
+  }
+  ...
+}
+```
+
+
+### Get existing workspaces
+
+To get existing workspaces, use the `union get workspace` command:
+
+```{code-block} shell
+union get workspace
+```
+
+This will print out a table of all the workspaces you have access to in the
+specified project and domain (the command uses the default project and domain
+if you don't provide them).
+
+```{code-block} text
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━━━┳━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Workspace name       ┃ CPU ┃ Memory ┃ GPU ┃ Accelerator         ┃ TTL Seconds ┃ Active URL ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━━━╇━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ my-workspace         │ 2   │ 4Gi    │ -   │ -                   │ 1200        │ -          │
+└──────────────────────┴─────┴────────┴─────┴─────────────────────┴─────────────┴────────────┘
+```
+
+To get the details of a specific workspace, provide
+the workspace name with the `--name` flag.
+
+### Start a workspace
+
+To start a workspace, use the `union start workspace` command, specifying the
+name of the workspace you want to start in the `--name` flag.
+
+```{code-block} shell
+union start workspace --name my-workspace
+```
+
+You should see a message that looks like:
+
+```{code-block} text
+Starting workspace 'my-workspace'
+
+🚀 Workspace started: Open VSCode in Browser
+```
+
+
+## Customizing a workspace
+
+There are several settings that you can customize for a workspace in the UI or
+the CLI.
+
+### Setting secrets
 
 If you don't have any secrets yet, create them with the `union create secret`
 command:
@@ -126,7 +276,7 @@ to assign it to in the workspace.
 ![Secrets](/_static/images/user-guide/core-concepts/workspaces/setting-secrets.png)
 
 
-## Setting resources
+### Setting resources
 
 You can also set the resources for your workspace:
 
@@ -154,14 +304,14 @@ You can choose [the GPU accelerator](../tasks/task-hardware-environment/accelera
 {@@ endif @@}
 
 
-## Specifying custom `on_startup` commands
+### Specifying custom `on_startup` commands
 
 If you need to run any commands like install additional dependencies or `wget`
 a file from the web, specify custom `on_startup` commands:
 
 ![On Startup](/_static/images/user-guide/core-concepts/workspaces/customize-onstartup.png)
 
-## Specifying custom container images
+### Specifying custom container images
 
 By default, the workspace will use a Union.ai-provided container image which contains
 the following Python libraries:
@@ -175,8 +325,15 @@ the following Python libraries:
 - `scikit-learn`
 - `matplotlib`
 
+#### Specifying a custom container image in the UI
+
 You can specify a pre-built custom container image by clicking on the `Container`
 tab in the sidebar and provide the image name in the workspace creation form.
+
+```{note}
+The minimum requirement for custom images is that it contain has `union>=0.1.166`
+installed.
+```
 
 ![Custom Container](/_static/images/user-guide/core-concepts/workspaces/customize-container-image.png)
 
@@ -194,6 +351,20 @@ You can specify:
 - Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr.md), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry.md))
 
 {@@ endif @@}
+
+#### Specifying a custom container image in the CLI
+
+The `union` CLI provides a way to specify a custom container image that's built
+by Union's image builder service. To do this, run the following command:
+
+```{code-block} shell
+union create workspace-config --init custom_image workspace.yaml
+```
+
+This will create a `workspace.yaml` file with a `container_image` image key
+that supports the [ImageSpec](../development-cycle/image-spec.md) arguments.
+When you run the `union create workspace` command with this `workspace.yaml` file,
+it will first build the image before creating the workspace definition.
 
 
 ## Authenticating with GitHub
