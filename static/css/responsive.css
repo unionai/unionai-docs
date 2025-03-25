@@ -7,7 +7,6 @@
   .main-content {
     padding: 1rem;
     margin: auto;
-    max-width: unset;
     width: 100%;
   }
 
@@ -52,5 +51,9 @@
 
   #devwarn {
     position: initial;
+  }
+
+  .sidebar {
+    display: none;
   }
 }

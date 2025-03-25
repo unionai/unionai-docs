@@ -1,3 +1,15 @@
+.sidebar {
+  position: fixed;
+  width: var(--sidebar-width);
+  padding: 1rem 1.5rem;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  height: calc(100vh - var(--header-height) - var(--tabs-height));
+}
+
 .sidebar > nav > ul > li > .section-title,
 .sidebar > nav > ul > li > .section-pages {
   padding-left: 0.75rem;
@@ -77,60 +89,20 @@
   font-size: 1.25rem;
 }
 
-.sidebar .tabs-buttons,
-.sidebar .tabs-buttons select {
+.tabs-buttons,
+.tabs-buttons select {
   font-size: 1rem;
   padding: 0.5rem;
   width: 100%;
 }
 
-.sidebar .show-on-mobile {
-  display: none;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid lightgray;
-}
-
-.sidebar .signup {
+.signup {
   margin: 1rem;
   text-align: center;
 }
 
-.sidebar .signup sl-button {
+.signup sl-button {
   width: 60%;
   margin: auto;
-}
-
-.sidebar .tabs-nav {
-  display: none;
-}
-
-sl-drawer::part(panel),
-sl-drawer::part(overlay) {
-  animation: none !important;
-  transition: none !important;
-}
-sl-drawer::part(base) {
-  animation: none !important;
-}
-
-@media (min-width: 1460px) {
-  .sidebar sl-drawer::part(overlay) {
-    display: none !important;
-    background: transparent !important;
-    pointer-events: none !important;
-  }
-
-  .sidebar sl-drawer::part(base) {
-    top: calc(var(--header-height) + var(--tabs-height) + 1px);
-  }
-
-  .sidebar sl-drawer::part(panel) {
-    box-shadow: none;
-    background-color: var(--sidebar-bg);
-  }
-
-  .sidebar sl-drawer::part(header) {
-    display: none;
-  }
+  margin-bottom: 1rem;
 }

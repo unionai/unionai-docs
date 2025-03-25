@@ -14,6 +14,7 @@
   --key-color: hsl(300, 100%, 30%);
   --key-background: hsl(300, 100%, 25%);
   --key-border: purple;
+  --key-fg: lightgray;
 }
 
 .keys {

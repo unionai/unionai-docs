@@ -9,36 +9,42 @@
         <sl-button variant="warning">Signup</sl-button>
       </div>
     </div>
-    {{ block "site-nav" . }}{{ end }}
   </slot>
 </sl-drawer>
 
+<div class="sidebar-items">
+  {{ block "site-nav" . }}{{ end }}
+</div>
+
+
 <script>
   const drawer = document.querySelector('.drawer-sidebar');
+  const sidebar = document.querySelector('.sidebar-items');
+  const sidebarContainer = document.querySelector('.sidebar');
+
   const openButton = document.querySelector('.toggle-sidebar');
-  openButton.addEventListener('click', () => {
-    drawer.show();
-  });
 
   customElements.whenDefined('sl-drawer').then(() => {
+    drawer.parentElement.removeChild(drawer);
+    document.body.appendChild(drawer);
+
     // Match media query for large screens (adjust breakpoint as needed)
     const prefersOpen = window.matchMedia('(min-width: 1460px)');
 
-    drawer.addEventListener('sl-request-close', event => {
-      const prefersOpen = window.matchMedia('(min-width: 1460px)');
-      if (prefersOpen.matches) {
-        event.preventDefault();
-      }
+    openButton.addEventListener('click', () => {
+      drawer.show();
     });
 
     const evaluate = (matches) => {
+      sidebar.parentNode.removeChild(sidebar);
+
       // Only show if the screen is large
       if (matches) {
-        drawer.show();
+        sidebarContainer.appendChild(sidebar);
       } else {
-        drawer.hide();
-        drawer.hidden = false; // unhide, but stay closed
+        drawer.appendChild(sidebar);
       }
+
       openButton.style.display = matches ? 'none' : 'block';
     }
 
