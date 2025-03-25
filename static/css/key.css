@@ -2,6 +2,7 @@
   --key-color: hsl(300, 100%, 95%);
   --key-background: hsl(300, 100%, 98%);
   --key-border: hsl(300, 100%, 90%);
+  --key-fg: black;
   --key-line-width: 1px;
   --key-padding: 0 0.25rem;
   --key-padding-outer: 0.25rem;
@@ -20,6 +21,7 @@
   padding: 0;
   margin: var(--key-margin-outer);
   background-color: var(--key-background);
+  color: var(--key-fg);
   border: var(--key-line-width) solid var(--key-border);
 }
 
