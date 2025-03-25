@@ -66,8 +66,30 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
 For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint](../../../api-reference/union-remote/entrypoint).
 
-{{< variant byoc byok flyte >}}
-{{< markdown >}}
+
+## Fetching outputs
+
+By default, `{{< key kit_remote >}}.execute` is non-blocking, but you can also pass in `wait=True` to make it synchronously wait for the task or workflow to complete, as we did above.
+
+You can print out the {{< key product_name >}} console URL corresponding to your execution with:
+
+```python
+print(f"Execution url: {remote.generate_console_url(execution)}")
+```
+
+And you can synchronize the state of the execution object with the remote state with the `sync()` method:
+
+```python
+synced_execution = remote.sync(execution)
+print(synced_execution.inputs)  # print out the inputs
+```
+
+You can also wait for the execution after you’ve launched it and access the outputs:
+
+```shell
+completed_execution = remote.wait(execution)
+print(completed_execution.outputs)  # print out the outputs
+```
 
 ## Terminating all running executions for a workflow
 
@@ -204,5 +226,3 @@ latest_success = remote.recent_executions(
 )
 ```
 
-{{< /markdown >}}
-{{< /variant >}}
