@@ -332,7 +332,7 @@ You can specify a pre-built custom container image by clicking on the `Container
 tab in the sidebar and provide the image name in the workspace creation form.
 
 ```{note}
-The minimum requirement for custom images is that it contain has `union>=0.1.166`
+The minimum requirement for custom images is that it contains `union>=0.1.166`
 installed.
 ```
 
