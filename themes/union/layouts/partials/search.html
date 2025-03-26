@@ -1,20 +1,52 @@
-{{- $app := "OUAMAB8F1H" -}}
-{{- $key := "ef1775c58f0ac6fb2f98caa45e487866" -}}
-{{- $idx := "docs" -}}
-
-<link rel="preconnect" href="https://{{ $app }}-dsn.algolia.net" crossorigin />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-
-<div id="docsearch"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script
+  async
+  src="https://js.sitesearch360.com/plugin/bundle/54139.js"
+></script>
 <script>
-    docsearch({
-        container: '#docsearch',
-        appId: '{{ $app }}',
-        indexName: '{{ $idx }}',
-        apiKey: '{{ $key }}',
-        inputSelector: '#autocomplete',
-        debug: true,
-    });
+  window.sitesearch360 = window.sitesearch360 || {};
+  sitesearch360.settings = {
+    searchBox: {
+      placeholder: "Search…",
+    },
+    results: {
+      embedConfig: {
+        contentBlock: "main",
+      },
+      integrationType: "layover",
+    },
+    layout: {
+      navigation: {
+        flatTabs: true,
+      },
+    },
+    filters: {
+      enabled: true,
+    },
+    siteId: "union.ai",
+  };
+  sitesearch360.init = function () {
+    var searchBox = document.getElementById(
+      sitesearch360.settings.searchBox.id
+    );
+    var searchButton = document.getElementById(
+      sitesearch360.settings.searchBox.buttonId
+    );
+    if (searchBox && searchButton) {
+      searchBox.addEventListener("input", function () {
+        sitesearch360.search(searchBox.value);
+      });
+      searchButton.addEventListener("click", function () {
+        sitesearch360.search(searchBox.value);
+      });
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    sitesearch360.init();
+  });
 </script>
+<div class="search">
+  <section role="search" data-ss360="true">
+    <input type="search" id="searchBox" placeholder="Search…" />
+    <button id="searchButton"></button>
+  </section>
+</div>
