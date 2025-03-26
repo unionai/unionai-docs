@@ -28,10 +28,10 @@
 (==k({{- $name -}})
 {{- if eq (len $variants) 1 -}}
 {{ $variant := index $variants 0 -}}
-{{ block "item" (dict "name" $name "variant" $variant "value" (index .Site.Params.key $name $variant) "active" true) }}{{ end }}
+{{- block "item" (dict "name" $name "variant" $variant "value" (index .Site.Params.key $name $variant) "active" true) -}}{{- end -}}
 {{- else -}}
 {{- range $variants -}}
-{{ block "item" (dict "name" $name "variant" . "value" (index $.Site.Params.key $name .) "active" (eq . $.Site.Params.variant)) }}{{ end }}
+{{- block "item" (dict "name" $name "variant" . "value" (index $.Site.Params.key $name .) "active" (eq . $.Site.Params.variant)) -}}{{- end -}}
 {{- end -}}
 {{- end -}}
 ==)
@@ -51,8 +51,8 @@
 
 {{- define "item" -}}
 {{- if .active -}}
-(=V({{ .variant }})({{ .value }})=)
+(=V({{- .variant -}})({{- .value -}})=)
 {{- else -}}
-(=v({{ .variant }})({{ .value }})=)
+(=v({{- .variant -}})({{- .value -}})=)
 {{- end -}}
 {{- end -}}

@@ -2,11 +2,11 @@
 {{- $title := .Get "title" -}}
 {{- $icon := .Get "icon" -}}
 {{- $emoji := "" -}}
-{{ if $icon }}
+{{- if $icon -}}
   {{- $emoji = transform.Emojify (print ":" $icon ":") -}}
-{{ end }}
+{{- end -}}
 <div style="margin-bottom: 1rem;">
-  <sl-details summary="{{ $emoji }} {{ $title | markdownify }}">
-    {{ .Inner | safeHTML }}
+  <sl-details summary="{{- $emoji }} {{ $title | markdownify -}}">
+    {{- .Inner | safeHTML -}}
   </sl-details>
 </div>

@@ -61,7 +61,6 @@ body {
   z-index: 100;
 }
 .container {
-  display: flex;
   height: calc(100vh - var(--header-height) - var(--tabs-height));
   overflow-y: auto;
 }
@@ -115,7 +114,6 @@ code {
   border-radius: 4px;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  white-space: nowrap;
 }
 pre {
   background: var(--pre-bg);

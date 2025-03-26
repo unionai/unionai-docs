@@ -1,44 +1,52 @@
 <sl-drawer label="Drawer" placement="start" class="drawer-sidebar" hidden>
   <div slot="label">
-    {{ partial "header-logo.html" . }}
+    {{- partial "header-logo.html" . -}}
   </div>
   <slot part="body">
     <div class="show-on-mobile">
-      {{ partial "tabs.html" (dict "page" . "style" "buttons") }}
+      {{- partial "tabs.html" (dict "page" . "style" "buttons") -}}
       <div class="signup">
         <sl-button variant="warning">Signup</sl-button>
       </div>
     </div>
-    {{ block "site-nav" . }}{{ end }}
   </slot>
 </sl-drawer>
 
+<div class="sidebar-items">
+  {{- block "site-nav" . }}{{ end -}}
+</div>
+
+{{ partial "search.html" .}}
+
+
 <script>
   const drawer = document.querySelector('.drawer-sidebar');
+  const sidebar = document.querySelector('.sidebar-items');
+  const sidebarContainer = document.querySelector('.sidebar');
+
   const openButton = document.querySelector('.toggle-sidebar');
-  openButton.addEventListener('click', () => {
-    drawer.show();
-  });
 
   customElements.whenDefined('sl-drawer').then(() => {
+    drawer.parentElement.removeChild(drawer);
+    document.body.appendChild(drawer);
+
     // Match media query for large screens (adjust breakpoint as needed)
     const prefersOpen = window.matchMedia('(min-width: 1460px)');
 
-    drawer.addEventListener('sl-request-close', event => {
-      const prefersOpen = window.matchMedia('(min-width: 1460px)');
-      if (prefersOpen.matches) {
-        event.preventDefault();
-      }
+    openButton.addEventListener('click', () => {
+      drawer.show();
     });
 
     const evaluate = (matches) => {
+      sidebar.parentNode.removeChild(sidebar);
+
       // Only show if the screen is large
       if (matches) {
-        drawer.show();
+        sidebarContainer.appendChild(sidebar);
       } else {
-        drawer.hide();
-        drawer.hidden = false; // unhide, but stay closed
+        drawer.appendChild(sidebar);
       }
+
       openButton.style.display = matches ? 'none' : 'block';
     }
 
@@ -54,30 +62,30 @@
 {{ define "site-nav"}}
 <nav class="site-nav">
   <ul>
-    {{ $current := . }}
-    {{ range .Site.Sections }}
-        {{ if eq $current.Section .Section }}
-            {{ template "section-tree-nav" (dict "page" . "current" $current) }}
-        {{ end }}
-    {{ end }}
+    {{- $current := . -}}
+    {{- range .Site.Sections -}}
+        {{- if eq $current.Section .Section -}}
+            {{- template "section-tree-nav" (dict "page" . "current" $current) -}}
+        {{- end -}}
+    {{- end -}}
   </ul>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Get all section titles
       const sectionTitles = document.querySelectorAll('.section-title');
-     
+
       // Add click event listener to each section title
       sectionTitles.forEach(title => {
         const parentLi = title.closest('li');
         const sectionPages = parentLi.querySelector('.section-pages');
         const chevron = title.querySelector('.chevron');
-       
+
         // Set initial chevron state based on whether the section is collapsed
         if (sectionPages.classList.contains('collapsed') && chevron) {
           chevron.classList.add('rotated');
         }
-       
+
         // Add click event to toggle visibility
         title.addEventListener('click', function(e) {
           // Check if the click was on the chevron
@@ -99,45 +107,40 @@
     });
   </script>
 </nav>
-{{ end }}
+{{- end -}}
 
-{{ define "section-tree-nav" }}
-    {{ $access := partial "page-allowed.html" .page }}
-    {{ if $access.allowed }}
-        {{ $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) .page.Params.sidebar_expanded }}
+{{- define "section-tree-nav" -}}
+    {{- $access := partial "page-allowed.html" .page -}}
+    {{- if $access.allowed -}}
+        {{- $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) .page.Params.sidebar_expanded -}}
         <li>
-            <a
-                href="{{ .page.RelPermalink }}"
-                class="
-                  {{ if and $access.development (not $access.excluded) }}disabled{{ end }}
-                  {{ if $access.excluded }}excluded{{ end }}
-                  {{ if and $access.variant $access.excluded }}conflict{{ end }}
-                  {{ if .page.IsSection }}section-title{{ else }}page-link{{ end }}
-                  {{ if eq .page.RelPermalink .current.RelPermalink }}active{{ end }}
-                "
-                >
+            <a href="{{- .page.RelPermalink -}}"
+                class="{{- if and $access.development (not $access.excluded) }}disabled{{ end -}}
+                  {{- if $access.excluded }}excluded{{ end -}}
+                  {{- if and $access.variant $access.excluded }}conflict{{ end -}}
+                  {{- if .page.IsSection }}section-title{{ else }}page-link{{ end -}}
+                  {{- if eq .page.RelPermalink .current.RelPermalink }}active{{ end -}}">
                   <div class="content">
-                    {{ if and .page.IsSection (gt (len .page.Pages) 0) }}
-                        {{ if and (not .page.Params.sidebar_expanded) (not .page.Params.top_menu) }}
-                          <img src="{{ "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end }}" />
-                        {{ end }}
-                    {{ end }}
-                    <div style="flex: 1">{{ partial "page-title.html" .page }}</div>
-                    {{ if and $access.variant $access.excluded }}
+                    {{- if and .page.IsSection (gt (len .page.Pages) 0) -}}
+                        {{- if and (not .page.Params.sidebar_expanded) (not .page.Params.top_menu) -}}
+                          <img src="{{- "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end -}}" />
+                        {{- end -}}
+                    {{- end -}}
+                    <div style="flex: 1">{{- partial "page-title.html" .page -}}</div>
+                    {{- if and $access.variant $access.excluded -}}
                     <sl-tooltip content="This page is both included and excluded from this variant.">
                       <sl-icon name="exclamation-diamond"></sl-icon>
                     </sl-tooltip>
-                    {{ end }}
+                    {{- end -}}
                   </div>
-                </a
-            >
-            {{ if .page.IsSection }}
-                <ul class="section-pages{{ if not $isActive }} collapsed{{ end }}">
-                    {{ range .page.Pages.ByWeight }}
-                        {{ template "section-tree-nav" (dict "page" . "current" $.current) }}
-                    {{ end }}
+                </a>
+            {{- if .page.IsSection -}}
+                <ul class="section-pages{{- if not $isActive }} collapsed{{ end -}}">
+                    {{- range .page.Pages.ByWeight -}}
+                        {{- template "section-tree-nav" (dict "page" . "current" $.current) -}}
+                    {{- end -}}
                 </ul>
-            {{ end }}
+            {{- end -}}
         </li>
-    {{ end }}
-{{ end }}
+    {{- end -}}
+{{- end -}}

@@ -1,0 +1,20 @@
+{{- $app := "OUAMAB8F1H" -}}
+{{- $key := "ef1775c58f0ac6fb2f98caa45e487866" -}}
+{{- $idx := "docs" -}}
+
+<link rel="preconnect" href="https://{{ $app }}-dsn.algolia.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+
+<div id="docsearch"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script>
+    docsearch({
+        container: '#docsearch',
+        appId: '{{ $app }}',
+        indexName: '{{ $idx }}',
+        apiKey: '{{ $key }}',
+        inputSelector: '#autocomplete',
+        debug: true,
+    });
+</script>

@@ -46,31 +46,31 @@ function replaceKPatternEverywhere() {
       return;
     }
 
-    if (node.nodeType === Node.TEXT_NODE) {
-      const originalText = node.textContent;
-
-      // If no pattern, skip
-      if (!pattern.test(originalText)) return;
-
-      const newHTML = originalText.replace(pattern, (_, key, valueBlock) => {
-        const parsed = parseVSegments(valueBlock);
-        // return valueBlock;
-        return createReplacementHTML(key, parsed);
-      });
-
-      const temp = document.createElement("div");
-      temp.innerHTML = newHTML;
-
-      const parent = node.parentNode;
-      const nextSibling = node.nextSibling;
-      parent.removeChild(node);
-
-      while (temp.firstChild) {
-        parent.insertBefore(temp.firstChild, nextSibling);
-      }
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
       // Copy the childNodes array because it can change during iteration
       [...node.childNodes].forEach((child) => walkAndReplace(child));
+    }
+
+    const originalText = node.textContent;
+
+    // If no pattern, skip
+    if (!pattern.test(originalText)) return;
+
+    const newHTML = originalText.replace(pattern, (_, key, valueBlock) => {
+      const parsed = parseVSegments(valueBlock);
+      // return valueBlock;
+      return createReplacementHTML(key, parsed);
+    });
+
+    const temp = document.createElement("div");
+    temp.innerHTML = newHTML;
+
+    const parent = node.parentNode;
+    const nextSibling = node.nextSibling;
+    parent.removeChild(node);
+
+    while (temp.firstChild) {
+      parent.insertBefore(temp.firstChild, nextSibling);
     }
   }
 
