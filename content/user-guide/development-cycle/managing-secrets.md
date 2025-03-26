@@ -93,7 +93,7 @@ import {{< key kit_import >}}
 
 @{{< key kit_as >}}.task(
     secret_requests=[
-        union.Secret(key="my_file_secret", mount_requirement=Secret.MountType.FILE),
+        union.Secret(key="my_file_secret", mount_requirement=union.Secret.MountType.FILE),
     ]
 )
 def t1():
