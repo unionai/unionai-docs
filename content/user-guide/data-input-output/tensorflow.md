@@ -10,11 +10,11 @@ This document outlines the TensorFlow types available in {{< key product_name >}
 
 ### Import necessary libraries and modules
 ```python
-from union
+import {{< key kit_as >}}
 from flytekit.types.directory import TFRecordsDirectory
 from flytekit.types.file import TFRecordFile
 
-custom_image = union.ImageSpec(
+custom_image = {{< key kit_as >}}.ImageSpec(
     packages=["tensorflow", "tensorflow-datasets", "flytekitplugins-kftensorflow"],
     registry="ghcr.io/flyteorg",
 )
