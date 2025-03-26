@@ -142,3 +142,32 @@ Assuming your image is publicly accessible, you can now run the workflow on {{< 
 > ... Back-off pulling image ...
 > ... Error: ImagePullBackOff
 > ```
+
+
+## Multi-image workflows
+
+You can also specify different images per task within the same workflow.
+This is particularly useful if some tasks in your workflow have a different set of dependencies where most of the other tasks can use another image.
+
+In this example we specify two tasks: one that uses CPUs and another that uses GPUs.
+For the former task, we use the default image that ships with {{< key kit >}} while for the latter task, we specify a pre-built image that enables distributed training with the Kubeflow Pytorch integration.
+
+```python
+import numpy as np
+import torch.nn as nn
+
+@task(
+    requests=Resources(cpu="2", mem="16Gi"),
+    container_image="ghcr.io/flyteorg/flytekit:py3.9-latest",
+)
+def get_data() -> Tuple[np.ndarray, np.ndarray]:
+    ...  # get dataset as numpy ndarrays
+
+
+@task(
+    requests=Resources(cpu="4", gpu="1", mem="16Gi"),
+    container_image="ghcr.io/flyteorg/flytecookbook:kfpytorch-latest",
+)
+def train_model(features: np.ndarray, target: np.ndarray) -> nn.Module:
+    ...  # train a model using gpus
+```
