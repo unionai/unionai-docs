@@ -21,12 +21,14 @@ The only difference is that it happens to have been kicked off from within anoth
 Here is an example:
 
 ```python
+import {{< key kit_import >}}
+
 @{{< key kit_as >}}.workflow
 def sub_wf(a: int, b: int) -> int:
     return t(a=a, b=b)
 
 # Get the default launch plan of sub_wf, which we name sub_wf_lp
-sub_wf_lp = LaunchPlan.get_or_create(sub_wf)
+sub_wf_lp = {{< key kit_as >}}LaunchPlan.get_or_create(sub_wf)
 
 @{{< key kit_as >}}.workflow
 def main_wf():
@@ -94,6 +96,8 @@ Workflows can be easily constructed from other workflows, even if they also func
 For example, each workflow in the example below has the capability to exist and run independently:
 
 ```python
+import {{< key kit_import >}}
+
 @{{< key kit_as >}}.workflow
 def nested_regression_line_wf() -> float:
     return regression_line_wf()
@@ -110,7 +114,6 @@ Here is an example of invoking a workflow multiple times through its launch plan
 
 ```python
 import {{< key kit_import >}}
-from typing import List
 
 
 @{{< key kit_as >}}.task
@@ -123,10 +126,10 @@ def my_workflow(a: int, b: int, c: int) -> int:
     return my_task(a=a, b=b, c=c)
 
 
-my_workflow_lp = union.LaunchPlan.get_or_create(my_workflow)
+my_workflow_lp = {{< key kit_as >}}.LaunchPlan.get_or_create(my_workflow)
 
 
 @{{< key kit_as >}}.workflow
-def wf() -> List[int]:
+def wf() -> list[int]:
     return [my_workflow_lp(a=i, b=i, c=i) for i in [1, 2, 3]]
 ```
