@@ -170,18 +170,18 @@ You can also trigger cache invalidation when launching an execution from the UI 
 
 ### Overwrite cache programmatically
 
-When using `Union.aiRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
+When using `UnionRemote`, you can use the `overwrite_cache` parameter in the [`flytekit.remote.remote.FlyteRemote.execute`](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.remote.remote.FlyteRemote.html#flytekit.remote.remote.FlyteRemote.execute) method:
 
 ```{code-block} python
 {@@ if byoc @@}
 from flytekit.configuration import Config
 {@@ endif @@}
-from union.remote import Union.aiRemote
+from union.remote import UnionRemote
 
 {@@ if serverless @@}
-remote = Union.aiRemote()
+remote = UnionRemote()
 {@@ elif byoc @@}
-remote = Union.aiRemote(
+remote = UnionRemote(
     config=Config.auto(),
     default_project="flytesnacks",
     default_domain="development"

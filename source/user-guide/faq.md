@@ -184,7 +184,7 @@ For example, if you have the following repository structure and you want to impo
 ```
 Instead of building a custom Dockerfile that copies all the files and modules in your repository structure, you can do one of the following:
 1. Use the `--copy-all` flag in `union run --remote ...`
-2. Use `union register` to register your workflow and run it later using the Union.ai console, `Union.aiRemote`, a `LaunchPlan`, `Artifact` triggers, or other options.
+2. Use `union register` to register your workflow and run it later using the Union.ai console, `UnionRemote`, a `LaunchPlan`, `Artifact` triggers, or other options.
 Both of these methods work by adding all the files within your local project root to the container running your tasks. The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
 
 ### What happens if an automated process launches a very large number of workflows?

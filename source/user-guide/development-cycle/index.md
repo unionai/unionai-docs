@@ -44,6 +44,6 @@ This section covers developing production-ready workflows for Union.ai.
 * - {doc}`CI/CD deployment <ci-cd-deployment>`
   - Automate workflow registration and execution.
 {@@ endif @@}
-* - {doc}`Union.aiRemote <union-remote>`
+* - {doc}`UnionRemote <union-remote>`
   - Programmatically perform Union.ai operations in Python.
 ```

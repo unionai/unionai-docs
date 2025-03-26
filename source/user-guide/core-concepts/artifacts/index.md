@@ -28,10 +28,10 @@ To consume an artifact in a workflow, you can define a query containing the arti
 
 For more information on querying for and consuming artifacts in workflows, see [Consuming artifacts in workflows](./consuming-artifacts-in-workflows.md).
 
-To query for artifacts programmatically in a Python script using `Union.aiRemote`, see [Union.aiRemote](../../../api-reference/union-sdk/union-remote/index.md).
+To query for artifacts programmatically in a Python script using `UnionRemote`, see [UnionRemote](../../../api-reference/union-sdk/union-remote/index.md).
 
-:::{admonition} `Union.aiRemote` vs `FlyteRemote`
-`Union.aiRemote` is identical to `FlyteRemote`, with additional functionality to handle artifacts. You cannot interact with artifacts using `FlyteRemote`.
+:::{admonition} `UnionRemote` vs `FlyteRemote`
+`UnionRemote` is identical to `FlyteRemote`, with additional functionality to handle artifacts. You cannot interact with artifacts using `FlyteRemote`.
 :::
 
 ## Lineage
