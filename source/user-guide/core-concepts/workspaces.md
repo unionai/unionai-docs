@@ -118,8 +118,8 @@ default configuration values that you can edit for your needs:
 ```{code-block} yaml
 name: my-workspace
 description: my workspace description
-project: flytesnacks
-domain: development
+project: <project>
+domain: <domain>
 container_image: public.ecr.aws/unionai/workspace-base:py3.11-latest
 resources:
     cpu: "2"
@@ -146,13 +146,6 @@ link that you click on to open the workspace in your browser:
 
 ```{code-block} text
 Created: workspace_definition {
-  id {
-    org: "demo"
-    project: "flytesnacks"
-    domain: "development"
-    name: "my-workspace"
-    version: "my-workspace-20250325165908"
-  }
   ...
 }
 
@@ -172,11 +165,8 @@ union stop workspace --name my-workspace
 This will print out a message indicating that the workspace has been stopped:
 
 ```{code-block} text
-Workspace instance stopped: org: "demo"
-project: "flytesnacks"
-domain: "development"
-name: "anplk9ckwjfc2s779pgk"
-host: "demo"
+Workspace instance stopped: org: "org"
+...
 ```
 
 ### Update a workspace
@@ -192,13 +182,6 @@ This will print out a message that looks something like:
 
 ```{code-block} text
 Updated: workspace_definition {
-  id {
-    org: "demo"
-    project: "flytesnacks"
-    domain: "development"
-    name: "my-workspace"
-    version: "my-workspace-20250325170012"
-  }
   ...
 }
 ```
@@ -274,6 +257,24 @@ Provide the `my_secret` key and optionally, the environment variable you want
 to assign it to in the workspace.
 
 ![Secrets](/_static/images/user-guide/core-concepts/workspaces/setting-secrets.png)
+
+#### Setting secrets via the CLI
+
+Set secrets via the CLI using the `secrets` key, which is a list of objects with
+a `key` and `env_var` (optional) field:
+
+```{code-block} yaml
+name: my-workspace
+description: my workspace description
+project: flytesnacks
+domain: development
+container_image: public.ecr.aws/unionai/workspace-base:py3.11-latest
+secrets:
+    - key: my_secret  # this is the secret key you set when you create the secret
+      env_var: MY_SECRET  # this is an optional environment variable that you
+                          # can bind the secret value onto.
+...
+```
 
 
 ### Setting resources
@@ -404,3 +405,23 @@ updated by clicking on the `Recently updated` toggle on the top right of the
 workspaces list view.
 
 ![Filtering and Sorting Workspaces](/_static/images/user-guide/core-concepts/workspaces/filtering-sorting-workspaces.png)
+
+## Troubleshooting
+
+You may come across issues starting up a workspace due to various reasons,
+including:
+
+- Resource requests not being available on your Union cluster.
+- Secrets key typpos of not being defined on the project/domain.
+- Container image typos or container images not existing.
+
+Under the hood, workspaces are powered by Union tasks, so to debug these kinds
+of issues, the workspace detail page provides a link to the underlying
+task that's hosting the VSCode IDE:
+
+![Workspace Detail](/_static/images/user-guide/core-concepts/workspaces/failed-workspace-detail.png)
+
+Clicking on the link will open the task details page, where you can see the
+underlying task definition, pod events, and logs to debug further.
+
+![Task Detail](/_static/images/user-guide/core-concepts/workspaces/failed-task-detail.png)
