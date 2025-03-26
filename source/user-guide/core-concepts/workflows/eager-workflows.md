@@ -259,19 +259,19 @@ developing your workflows and tasks.
 
 ### Remote Union.ai cluster execution
 
-Under the hood, `@eager` workflows use the [`Union.aiRemote`](../../../api-reference/union-sdk/union-remote/index.md)
+Under the hood, `@eager` workflows use the [`UnionRemote`](../../../api-reference/union-sdk/union-remote/index.md)
 object to kick off task, static workflow, and eager workflow executions.
 
 In order to actually execute them on a Union.ai cluster, you'll need to configure
-eager workflows with a `Union.aiRemote` object and secrets configuration that
+eager workflows with a `UnionRemote` object and secrets configuration that
 allows you to authenticate into the cluster via a client secret key.
 
 ```{code-block} python
-from union import Union.aiRemote
+from union import UnionRemote
 from flytekit.configuration import Config
 
 @eager(
-    remote=Union.aiRemote(
+    remote=UnionRemote(
         config=Config.auto(config_file="config.yaml"),
         default_project="{@= default_project =@}",
         default_domain="development",
@@ -294,7 +294,7 @@ default sandbox configuration does not require key-based authentication.
 
 ```{code-block} python
 from flytekit.configuration import Config
-from union import Union.aiRemote
+from union import UnionRemote
 
 
 @eager(
@@ -314,7 +314,7 @@ async def eager_workflow_sandbox(x: int) -> int:
 :::{note}
 When executing eager workflows on a remote Union.ai cluster, Union.ai will execute the
 latest version of tasks, static workflows, and eager workflows that are on
-the `default_project` and `default_domain` as specified in the `Union.aiRemote`
+the `default_project` and `default_domain` as specified in the `UnionRemote`
 object. This means that you need to pre-register all entities that are
 invoked inside of the eager workflow.
 :::
