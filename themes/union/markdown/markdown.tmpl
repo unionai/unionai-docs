@@ -6,14 +6,15 @@
 
 {{range .Messages}}
 
-### {{.LongName}}
+### {{.LongName}} {#{{ .FullName | anchor}}}
 {{.Description}}
 
 {{if .HasFields}}
+{{$parent := .}}
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 {{range .Fields -}}
-  | {{.Name}} | [{{.LongType}}](#{{.FullType | anchor}}) | {{.Label}} | {{if (index .Options "deprecated"|default false)}}**Deprecated.** {{end}}{{nobr .Description}}{{if .DefaultValue}} Default: {{.DefaultValue}}{{end}} |
+  | {{.Name}} | {{ block "type" (dict "type" . "parent" $parent) }}{{ end }} | {{.Label}} | {{if (index .Options "deprecated"|default false)}}**Deprecated.** {{end}}{{nobr .Description}}{{if .DefaultValue}} Default: {{.DefaultValue}}{{end}} |
 {{end}}
 {{end}}
 
@@ -29,7 +30,7 @@
 
 {{range .Enums}}
 
-### {{.LongName}}
+### {{.LongName}} {#{{ .FullName | anchor}}}
 {{.Description}}
 
 | Name | Number | Description |
@@ -52,7 +53,7 @@
 
 {{range .Services}}
 
-### {{.Name}}
+### {{.Name}} {#{{ .FullName | anchor}}}
 {{.Description}}
 
 | Method Name | Request Type | Response Type | Description |
@@ -71,3 +72,13 @@
 {{range .Scalars -}}
   | {{.ProtoType}} | {{.Notes}} | {{.CppType}} | {{.JavaType}} | {{.PythonType}} | {{.GoType}} | {{.CSharp}} | {{.PhpType}} | {{.RubyType}} |
 {{end}}
+
+{{- define "type" -}}
+{{- $pkg := (split "." .parent.FullName)._0 -}}
+{{- $typePkg := (split "." .type.FullType)._0 -}}
+{{ if eq $pkg $typePkg -}}
+[{{.type.LongType}}](#{{.type.FullType | anchor}})
+{{- else -}}
+{{.type.LongType}}
+{{- end -}}
+{{- end -}}

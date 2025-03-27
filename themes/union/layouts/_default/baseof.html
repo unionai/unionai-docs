@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}" />
     <link rel="stylesheet" href="{{- "css/breadcrumb.css" | relURL -}}" />
     <link rel="stylesheet" href="{{- "css/card.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/codeblock.css" | relURL -}}" />
     <link rel="stylesheet" href="{{- "css/footer.css" | relURL -}}" />
     <link rel="stylesheet" href="{{- "css/header.css" | relURL -}}" />
     <link rel="stylesheet" href="{{- "css/images.css" | relURL -}}" />
@@ -43,12 +44,13 @@
       <div class="sidebar">{{- partial "sidebar.html" . -}}</div>
       <div class="main-content">
         {{- if $access.development -}}
-        <div class="
-          not-in-prod
-          {{- if not $access.excluded -}}not-allowed{{end}}
-          {{- if $access.excluded -}}excluded{{end}}
-          page-warn
-          ">
+        {{- $classes := slice "not-in-prod" "page-warn" }}
+        {{- if $access.excluded -}}
+        {{- $classes = $classes | append "not-allowed" -}}
+        {{- else -}}
+        {{- $classes = $classes | append "not-allowed" -}}
+        {{- end -}}
+        <div class='{{- delimit $classes " " -}}'>
           <div style="flex: 1">
             {{- if $access.excluded -}}
             This page was explicitly excluded from '{{- $variant -}}'.

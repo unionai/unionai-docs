@@ -66,7 +66,7 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 
 ## {{< key product_name >}} BYOC
 
-[{{< key product_name >}} BYOC]({{< docs_home byoc >}} ) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+[{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 {{< key product_name >}} BYOC provides all the features of Flyte and {{< key product_name >}} Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)

@@ -18,6 +18,11 @@ protoc -I../../flyteorg/flyte/flyteidl/protos \
     --doc_out="." --doc_opt=themes/union/markdown/markdown.tmpl,"out.md" \
     ${protos}
 
+if [[ ! -e "out.md" ]]; then
+  echo -e "\033[0;31mFATAL:\033[0m Cannot generate documentation."
+  exit 1
+fi
+
 cat <<EOF > "${output}"
 ---
 title: "${name}"

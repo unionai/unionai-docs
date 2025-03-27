@@ -1,0 +1,10 @@
+.codeblock {
+    position: relative;
+}
+
+.codeblock > .copy {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    color: white;
+}

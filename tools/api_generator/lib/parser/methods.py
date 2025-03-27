@@ -1,5 +1,4 @@
 import inspect
-from sys import stderr
 from typing import Optional
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo
