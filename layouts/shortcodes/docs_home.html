@@ -1,0 +1,12 @@
+{{- $variant := .Get 0 -}}
+{{- if not $variant -}}
+{{- warnf "'variant' missing on 'docs_home' %s" page.Path -}}
+{{- if not hugo.IsProduction -}}
+<div class="not-allowed variant">
+    <div class="title">
+        'variant' missing on 'docs_home'.
+    </div>
+</div>
+{{- end -}}
+{{- end -}}
+{{- index .Site.Params.key "docs_home" $variant -}}

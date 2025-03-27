@@ -109,3 +109,9 @@ flyte = "FLYTE"
 serverless = "UNION"
 byoc = "UNION"
 byok = "UNION"
+
+[params.key.docs_home]
+flyte = "https://www.union.ai/docs/flyte"
+serverless = "https://www.union.ai/docs/serverless"
+byoc = "https://www.union.ai/docs/byoc"
+byok = "https://www.union.ai/docs/byok"
