@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Defining launch plans
 
-You can define a launch plan with the [`LaunchPlan` class]().
+You can define a launch plan with the [`LaunchPlan` class](/api-reference/flytekit/packages/flytekit.models.launch_plan/#flytekitmodelslaunch_planlaunchplan).
 <!-- TODO: Add link to API -->
 
 This is a simple example of defining a launch plan:
