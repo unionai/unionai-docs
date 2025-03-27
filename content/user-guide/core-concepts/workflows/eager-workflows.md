@@ -288,11 +288,9 @@ allows you to authenticate into the cluster via a client secret key.
 
 ```python
 import {{< key kit_import >}}
-from flytekit.configuration import Config
 
 @eager(
-    remote={{< key kit_as >}}.{{< key kit_remote >}}(
-        config=Config.auto(config_file="config.yaml"),
+    remote={{< key kit_as >}}.{{< key kit_remote >}}.auto(
         default_project="{{< key default_project >}}",
         default_domain="development",
     ),
@@ -316,12 +314,9 @@ default sandbox configuration does not require key-based authentication.
 
 ```python
 import {{< key kit_import >}}
-from flytekit.configuration import Config
-
 
 @eager(
-    remote={{< key kit_as >}}.{{< key kit_remote >}}(
-        config=Config.for_sandbox(),
+    remote={{< key kit_as >}}.{{< key kit_remote >}}.for_sandbox(
         default_project="{{< key default_project >}}",
         default_domain="development",
     )
