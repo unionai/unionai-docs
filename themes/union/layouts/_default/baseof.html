@@ -35,27 +35,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.min.js"></script>
     <script lang="javascript" src="{{- "js/key.js" | relURL -}}"></script>
     <script lang="javascript" src="{{- "js/theme.js" | relURL -}}"></script>
-    <script lang="javascript" src="{{- "js/tags.js" | relURL -}}"></script>
     <link rel="stylesheet" href="{{- "css/responsive.css" | relURL -}}" />
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB6L88S" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <header>{{- partial "header.html" . -}}</header>
     <div class="tabs">{{- partial "tabs.html" (dict "page" .) -}}</div>
     <div class="container">
       <div class="sidebar">{{- partial "sidebar.html" . -}}</div>
       <div class="main-content">
         {{- if $access.development -}}
-        <div class="
-          not-in-prod
-          {{- if not $access.excluded -}}not-allowed{{end}}
-          {{- if $access.excluded -}}excluded{{end}}
-          page-warn
-          ">
+        {{- $classes := slice "not-in-prod" "page-warn" }}
+        {{- if $access.excluded -}}
+        {{- $classes = $classes | append "not-allowed" -}}
+        {{- else -}}
+        {{- $classes = $classes | append "not-allowed" -}}
+        {{- end -}}
+        <div class='{{- delimit $classes " " -}}'>
           <div style="flex: 1">
             {{- if $access.excluded -}}
             This page was explicitly excluded from '{{- $variant -}}'.
