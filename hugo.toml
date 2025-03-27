@@ -7,6 +7,7 @@ disableKinds = ["RSS"]
 _merge = "deep"
 show_inactive = false
 highlight_active = false
+signup_link = "https://www.union.ai/pricing"
 
 [markup]
   [markup.goldmark]
