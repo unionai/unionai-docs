@@ -5,9 +5,7 @@
   <slot part="body">
     <div class="show-on-mobile">
       {{- partial "tabs.html" (dict "page" . "style" "buttons") -}}
-      <div class="signup">
-        <sl-button variant="warning">Signup</sl-button>
-      </div>
+      {{- partial "signup.html" . -}}
     </div>
   </slot>
 </sl-drawer>

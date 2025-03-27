@@ -96,13 +96,17 @@
   width: 100%;
 }
 
-.signup {
+.drawer-sidebar .signup {
   margin: 1rem;
   text-align: center;
 }
 
-.signup sl-button {
+.drawer-sidebar .signup sl-button {
   width: 60%;
   margin: auto;
   margin-bottom: 1rem;
+}
+
+header .signup {
+  margin: 0 1rem;
 }
