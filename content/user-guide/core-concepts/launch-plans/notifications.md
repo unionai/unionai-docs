@@ -35,12 +35,19 @@ from flytekit import (
 )
 
 @{{< key kit_as >}}.task
-def my_task(a: int, b: int, c: int) -> int:
+def add_numbers(a: int, b: int, c: int) -> int:
     return a + b + c
+    
+@{{< key kit_as >}}.task
+def generate_message(s: int, kickoff_time: datetime) -> str:
+    return f"sum: {s} at {kickoff_time}"
 
 @{{< key kit_as >}}.workflow
-def my_workflow(a: int, b: int, c: int, kickoff_time: datetime ) -> str:
-    return f"sum: {my_task(a=a, b=b, c=c)} at {kickoff_time}"
+def my_workflow(a: int, b: int, c: int, kickoff_time: datetime) -> str:
+    return generate_message(
+        add_numbers(a, b, c),
+        kickoff_time,
+    )
 
 {{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=my_workflow,
