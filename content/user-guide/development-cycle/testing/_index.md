@@ -1,7 +1,7 @@
 ---
 title: Testing
 weight: 19
-variants: +flyte
+variants: +flyte -byoc -byok -serverless
 ---
 
 # Testing
