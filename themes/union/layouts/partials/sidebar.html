@@ -113,13 +113,27 @@
     {{- $access := partial "page-allowed.html" .page -}}
     {{- if $access.allowed -}}
         {{- $isActive := or (eq .page.RelPermalink .current.RelPermalink) (in .current.RelPermalink .page.RelPermalink) .page.Params.sidebar_expanded -}}
+        {{- $classes := slice -}}
+        {{- if eq .page.RelPermalink .current.RelPermalink -}}
+            {{- $classes = $classes | append "active" -}}
+        {{- end -}}
+        {{- if .page.IsSection -}}
+            {{- $classes = $classes | append "section-title" -}}
+        {{- else -}}
+            {{- $classes = $classes | append "page-link" -}}
+        {{- end -}}
+        {{- if $access.excluded -}}
+            {{- $classes = $classes | append "excluded" -}}
+        {{- end -}}
+        {{- if and $access.variant $access.excluded -}}
+            {{- $classes = $classes | append "conflict" -}}
+        {{- end -}}
+        {{- if and $access.development (not $access.excluded) -}}
+            {{- $classes = $classes | append "disabled" -}}
+        {{- end -}}
         <li>
             <a href="{{- .page.RelPermalink -}}"
-                class="{{- if and $access.development (not $access.excluded) }}disabled{{ end -}}
-                  {{- if $access.excluded }}excluded{{ end -}}
-                  {{- if and $access.variant $access.excluded }}conflict{{ end -}}
-                  {{- if .page.IsSection }}section-title{{ else }}page-link{{ end -}}
-                  {{- if eq .page.RelPermalink .current.RelPermalink }}active{{ end -}}">
+                class='{{- delimit $classes " " -}}'>
                   <div class="content">
                     {{- if and .page.IsSection (gt (len .page.Pages) 0) -}}
                         {{- if and (not .page.Params.sidebar_expanded) (not .page.Params.top_menu) -}}
