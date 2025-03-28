@@ -50,13 +50,61 @@ greeting_task = ContainerTask(
     outputs=kwtypes(greeting=str),
     command=["/bin/sh", "-c", "echo 'Hello, my name is {{.inputs.name}}.' | tee -a /var/outputs/greeting"],
 )
-
 ```
-
 
 The `ContainerTask` enables you to include a task in your workflow that executes arbitrary code in any language, not just Python.
 
-<!-- TODO: Besides support for other languages, there are other reasons to use a container task. Mention them here. -->
+In the following example, the tasks calculate an ellipse area. This name has to be unique in the entire project. Users can specify:
+
+`input_data_dir` -> where inputs will be written to.
+
+`output_data_dir` -> where {{< kit Product >}} will expect the outputs to exist.
+
+The `inputs` and `outputs` specify the interface for the task; thus it should be an ordered dictionary of typed input and output variables.
+
+The image field specifies the container image for the task, either as an image name or an ImageSpec. To access the file that is not included in the image, use ImageSpec to copy files or directories into container `/root`.
+
+Cache can be enabled in a ContainerTask by configuring the cache settings in the `TaskMetadata` in the metadata parameter.
+
+```python
+calculate_ellipse_area_haskell = ContainerTask(
+    name="ellipse-area-metadata-haskell",
+    input_data_dir="/var/inputs",
+    output_data_dir="/var/outputs",
+    inputs=kwtypes(a=float, b=float),
+    outputs=kwtypes(area=float, metadata=str),
+    image="ghcr.io/flyteorg/rawcontainers-haskell:v2",
+    command=[
+        "./calculate-ellipse-area",
+        "{{.inputs.a}}",
+        "{{.inputs.b}}",
+        "/var/outputs",
+    ],
+    metadata=TaskMetadata(cache=True, cache_version="1.0"),
+)
+
+calculate_ellipse_area_julia = ContainerTask(
+    name="ellipse-area-metadata-julia",
+    input_data_dir="/var/inputs",
+    output_data_dir="/var/outputs",
+    inputs=kwtypes(a=float, b=float),
+    outputs=kwtypes(area=float, metadata=str),
+    image="ghcr.io/flyteorg/rawcontainers-julia:v2",
+    command=[
+        "julia",
+        "calculate-ellipse-area.jl",
+        "{{.inputs.a}}",
+        "{{.inputs.b}}",
+        "/var/outputs",
+    ],
+    metadata=TaskMetadata(cache=True, cache_version="1.0"),
+)
+
+@workflow
+def wf(a: float, b: float):
+    area_haskell, metadata_haskell = calculate_ellipse_area_haskell(a=a, b=b)
+    area_julia, metadata_julia = calculate_ellipse_area_julia(a=a, b=b)
+```
 
 See the [Container Task example](https://github.com/unionai-oss/union-cloud-docs-examples/tree/main/container_task).
 
