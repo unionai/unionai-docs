@@ -4,6 +4,7 @@
   </div>
   <slot part="body">
     <div class="show-on-mobile">
+      {{- partial "search.html" . -}}
       {{- partial "tabs.html" (dict "page" . "style" "buttons") -}}
       {{- partial "signup.html" . -}}
     </div>
@@ -13,9 +14,6 @@
 <div class="sidebar-items">
   {{- block "site-nav" . }}{{ end -}}
 </div>
-
-{{ partial "search.html" .}}
-
 
 <script>
   const drawer = document.querySelector('.drawer-sidebar');
