@@ -6,9 +6,11 @@
   width: var(--toc-width);
   padding: var(--sidepanels-padding);
   font-weight: 100;
+  font-size: var(--toc-font-size);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  background-color: var(--toc-bg);
 }
 
 .container .toc-container .toc-header {
@@ -29,6 +31,7 @@
 .container .toc-container .is-active-link {
   /* color: dodgerblue; */
   color: unset;
+  font-weight: unset;
 }
 
 .toc .toc-list .toc-link::before,
@@ -36,7 +39,7 @@
   background-color: unset;
 }
 
-@media (max-width: 1868px) {
+@media (max-width: 1500px) {
   .toc-container {
     display: none;
     transition: display 0.3s ease;

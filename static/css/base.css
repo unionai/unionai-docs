@@ -11,14 +11,16 @@
   --blockquote-border: gray;
   --table-row-even: #f8fafc;
   --table-row-hover: #f1f5f9;
-  --menu-indent: 1.1rem;
-  --menu-subindent: 2.25rem;
+  --menu-indent: 0.5rem;
+  --menu-subindent: 1.5rem;
   --sidepanels-padding: 1rem 1.5rem;
-  --sidebar-width: 380px;
-  --toc-width: 380px;
+  --sidebar-width: 256px;
+  --sidebar-font-size: 0.75rem;
+  --toc-width: 256px;
+  --toc-font-size: 0.75rem;
   --header-height: 64px;
   --tabs-height: 64px;
-  --content-width: 1024px;
+  --content-width: 900px;
   --image-width: 880px;
   --union-color: #fcb51f;
   --union-color-light: #ffe6b1;
@@ -26,6 +28,7 @@
   --union-color-very-light: #fbeed1;
   --scrollbar-width: 1rem;
   --main-content-padding: 2rem;
+  --toc-bg: var(--bg-color);
 }
 
 /* Dark theme variables */

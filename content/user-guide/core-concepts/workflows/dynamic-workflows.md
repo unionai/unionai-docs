@@ -6,27 +6,25 @@ variants: +flyte +serverless +byoc +byok
 
 # Dynamic workflows
 
-A workflow whose directed acyclic graph (DAG) is computed at run-time is a [`dynamic()`]() workflow. <!-- TODO: add link to API -->
+A workflow whose directed acyclic graph (DAG) is computed at run-time is a [`dynamic`]() workflow. <!-- TODO: add link to API -->
 
-The tasks in a dynamic workflow are executed at runtime using dynamic inputs. A dynamic workflow shares similarities with the [`workflow()`]()<!-- TODO: add link to API -->, as it uses a Python-esque domain-specific language to declare dependencies between the tasks or define new workflows.
+The tasks in a dynamic workflow are executed at runtime using dynamic inputs. A dynamic workflow shares similarities with the [`workflow`]()<!-- TODO: add link to API -->, as it uses a Python-esque domain-specific language to declare dependencies between the tasks or define new workflows.
 
 A key distinction lies in the dynamic workflow being assessed at runtime. This means that the inputs are initially materialized and forwarded to the dynamic workflow, resembling the behavior of a task. However, the return value from a dynamic workflow is a [`Promise`]() <!-- TODO: add link to API --> object, which can be materialized by the subsequent tasks.
 
 Think of a dynamic workflow as a combination of a task and a workflow. It is used to dynamically decide the parameters of a workflow at runtime and is both compiled and executed at run-time.
 
 Dynamic workflows become essential when you need to do the following:
-
+- Handle conditional logic
 - Modify the logic of the code at runtime
 - Change or decide on feature extraction parameters on the fly
-- Build AutoML pipelines
-- Tune hyperparameters during execution
 
 
 ## Defining a dynamic workflow
 
 You can define a dynamic workflow using the `@{{< key kit_as >}}.dynamic` decorator.
 
-Within the `@{{< key kit_as >}}.dynamic` context, each invocation of a [`task()`]() <!-- TODO: add link to API --> or a derivative of the [`Task`]() <!-- TODO: add link to API --> class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@{{< key kit_as >}}.dynamic` and `@{{< key kit_as >}}.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
+Within the `@{{< key kit_as >}}.dynamic` context, each invocation of a [`task`]() <!-- TODO: add link to API --> or a derivative of the [`Task`]() <!-- TODO: add link to API --> class leads to deferred evaluation using a Promise, rather than the immediate materialization of the actual value. While nesting other `@{{< key kit_as >}}.dynamic` and `@{{< key kit_as >}}.workflow` constructs within this task is possible, direct interaction with the outputs of a task/workflow is limited, as they are lazily evaluated. If you need to interact with the outputs, we recommend separating the logic in a dynamic workflow and creating a new task to read and resolve the outputs.
 
 The example below uses a dynamic workflow to count the common characters between any two strings.
 
@@ -158,16 +156,15 @@ Merge sort is a perfect example to showcase how to seamlessly achieve recursion 
 from typing import Tuple
 
 import {{< key kit_import >}}
-from flytekit import conditional
-
 
 @{{< key kit_as >}}.task
-def split(numbers: list[int]) -> Tuple[list[int], list[int], int, int]:
+def split(numbers: list[int]) -> tuple[list[int], list[int]]:
+
+    length = len(numbers)
+
     return (
-        numbers[0 : int(len(numbers) / 2)],
-        numbers[int(len(numbers) / 2) :],
-        int(len(numbers) / 2),
-        int(len(numbers)) - int(len(numbers) / 2),
+        numbers[0 : int(length / 2)],
+        numbers[int(length / 2) :]
     )
 
 
@@ -196,22 +193,20 @@ def sort_locally(numbers: list[int]) -> list[int]:
 
 
 @{{< key kit_as >}}.dynamic
-def merge_sort_remotely(numbers: list[int], run_local_at_count: int) -> list[int]:
-    split1, split2, new_count1, new_count2 = split(numbers=numbers)
-    sorted1 = merge_sort(numbers=split1, numbers_count=new_count1, run_local_at_count=run_local_at_count)
-    sorted2 = merge_sort(numbers=split2, numbers_count=new_count2, run_local_at_count=run_local_at_count)
+def merge_sort_remotely(numbers: list[int], threshold: int) -> list[int]:
+    split1, split2 = split(numbers=numbers)
+    sorted1 = merge_sort(numbers=split1, threshold=threshold)
+    sorted2 = merge_sort(numbers=split2, threshold=threshold)
     return merge(sorted_list1=sorted1, sorted_list2=sorted2)
 
 
-@{{< key kit_as >}}.workflow
-def merge_sort(numbers: list[int], numbers_count: int, run_local_at_count: int = 5) -> list[int]:
-    return (
-        conditional("terminal_case")
-        .if_(numbers_count <= run_local_at_count)
-        .then(sort_locally(numbers=numbers))
-        .else_()
-        .then(merge_sort_remotely(numbers=numbers, run_local_at_count=run_local_at_count))
-    )
+@{{< key kit_as >}}.dynamic
+def merge_sort(numbers: list[int], threshold: int=5) -> list[int]:
+
+    if len(numbers) <= threshold:
+        return sort_locally(numbers=numbers)
+    else:
+        return merge_sort_remotely(numbers=numbers, threshold=threshold)
 ```
 
 By simply adding the `@{{< key kit_as >}}.dynamic` annotation, the `merge_sort_remotely` function transforms into a plan of execution,

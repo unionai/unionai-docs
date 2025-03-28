@@ -1,6 +1,6 @@
 ---
 title: Launching tasks
-weight: 3
+weight: 4
 variants: +flyte +serverless +byoc +byok
 ---
 

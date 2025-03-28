@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # StructuredDataset
 
-As with most type systems, Python has primitives, container types like maps and tuples, and support for user-defined structures. However, while there’s a rich variety of DataFrame classes (Pandas, Spark, Pandera, etc.), there’s no native Python type that represents a DataFrame in the abstract. This is the gap that the {py:class}`StructuredDataset` type is meant to fill. It offers the following benefits:
+As with most type systems, Python has primitives, container types like maps and tuples, and support for user-defined structures. However, while there’s a rich variety of DataFrame classes (Pandas, Spark, Pandera, etc.), there’s no native Python type that represents a DataFrame in the abstract. This is the gap that the `StructuredDataset` type is meant to fill. It offers the following benefits:
 
 - Eliminate boilerplate code you would otherwise need to write to serialize/deserialize from file objects into DataFrame instances,
 - Eliminate additional inputs/outputs that convey metadata around the format of the tabular data held in those files,

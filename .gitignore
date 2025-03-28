@@ -15,7 +15,8 @@ __pycache__/
 
 # Ignore test file
 content/test.md
-layouts/shortcodes/test.html
+layouts/**/test.html
+themes/**/test.html
 
 # IDEs
 .vscode

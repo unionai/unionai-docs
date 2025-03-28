@@ -1,6 +1,6 @@
 ---
 title: Viewing tasks
-weight: 4
+weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 
