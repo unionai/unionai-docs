@@ -1,0 +1,27 @@
+{{/* Get pages sorted by weight (ascending) */}}
+{{ $pages := .Parent.Pages.ByWeight }}
+{{ $currentIndex := -1 }}
+
+{{ $current := .File.Path }}
+
+{{/* Find the current page's index in the sorted slice */}}
+{{ range $i, $p := $pages }}
+  {{ if eq $p.File.Path $current }}
+    {{ $currentIndex = $i }}
+    {{ break }}
+  {{ end }}
+{{ end }}
+
+<footer>
+    {{/* Output the Previous link if available */}}
+    {{ if gt $currentIndex 0 }}
+      {{ $prev := index $pages (sub $currentIndex 1) }}
+      <a href="{{ $prev.Permalink }}" class="prev">← {{ $prev.Title }}</a>
+    {{ end }}
+    
+    {{/* Output the Next link if available */}}
+    {{ if lt (add $currentIndex 1) (len $pages) }}
+      {{ $next := index $pages (add $currentIndex 1) }}
+      <a href="{{ $next.Permalink }}" class="next">{{ $next.Title }} →</a>
+    {{ end }}
+</footer>

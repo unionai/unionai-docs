@@ -22,3 +22,19 @@ EOF
   exit 1
 fi
 
+declare mentions_docs_home
+mentions_docs_home=$(grep -r "(/docs/" content | grep -vi binary \
+                   | cut -d: -f1 | sort | uniq)
+readonly mentions_docs_home
+
+if [[ ! -z $mentions_docs_home ]]; then
+  cat <<EOF
+FATAL: These files makes hardcoded URLs for docs pages.
+       Instead, use {{< docs_home {variant} }} to mention a specific doc root.
+
+$(for file in $mentions_docs_home; do echo "  - $file"; done)
+
+EOF
+
+  exit 1
+fi

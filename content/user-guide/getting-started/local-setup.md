@@ -199,7 +199,7 @@ The local Flyte cluster will be available at `localhost:30080`.
 > With Union Serverless you do not need to install a local cluster and can start
 > experimenting immediately on a full cloud deployment.
 > You can even use the Workspaces in-browser IDE to quickly iterate on code.
-> See [Union Serverless > Getting started](/docs/serverless/user-guide/getting-started) for more details.
+> See [Union Serverless > Getting started]({{< docs_home serverless >}}/user-guide/getting-started) for more details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -223,9 +223,9 @@ This will create the `~/.union/config.yaml` with the configuration information t
 
 > [!NOTE] These directions apply to {{< key product_name >}} Serverless
 > To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOC, see the
-> [BYOC version of this page](/docs/byoc/quick-start#configure-the-union-cli).
+> [BYOC version of this page]({{< docs_home byoc >}}/quick-start#configure-the-union-cli).
 > To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOK, see the
-> [BYOK version of this page](/docs/byok/quick-start#configure-the-union-cli).
+> [BYOK version of this page]({{< docs_home byok >}}/quick-start#configure-the-union-cli).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -243,7 +243,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 > [!NOTE]
 > These directions apply to {{< key product_name >}} BYOC and BYOK, where you connect to your own dedicated {{< key product_name >}} instance.
 > To configure a connection to {{< key product_name >}} Serverless, see the
-> [Serverless version of this page](/docs/serverless/quick-start#configure-the-union-cli).
+> [Serverless version of this page]({{< docs_home serverless >}}/quick-start#configure-the-union-cli).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
 <!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->

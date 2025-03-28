@@ -17,7 +17,7 @@ and get familiar with the ins and outs of `ImageSpec`!
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
 
-By default, the `ImageSpec` will be built using the [remote builder](https://docs.union.ai/byoc/user-guide/development-cycle/image-spec#union-ai-cloud-image-builder), but you can always specify your own e.g. local Docker.
+By default, the `ImageSpec` will be built using the [remote builder](/user-guide/development-cycle/image-spec#union-ai-cloud-image-builder), but you can always specify your own e.g. local Docker.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -37,12 +37,11 @@ Before building the image, {{< key kit >}} checks the container registry to see 
 
 {{< variant flyte >}}
 {{< markdown >}}
-:::{admonition} Prerequisites
-:class: important
 
-- Make sure `docker` is running on your local machine.
-- When using a registry in ImageSpec, `docker login` is required to push the image
-:::
+> [!NOTE] Prerequisites
+> * Make sure `docker` is running on your local machine.
+> * When using a registry in ImageSpec, `docker login` is required to push the image
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -53,10 +52,12 @@ More specifically, {{< key kit >}} invokes [DefaultImages.default_image()](https
 
 {{< variant flyte >}}
 {{< markdown >}}
-:::{important}
-Replace `ghcr.io/flyteorg` with a container registry you can publish to.
-To upload the image to the local registry in the demo cluster, indicate the registry as `localhost:30000` using the `registry` argument to `ImageSpec`.
-:::
+
+> [!NOTE] Prerequisites
+> Replace `ghcr.io/flyteorg` with a container registry you can publish to.
+> To upload the image to the local registry in the demo cluster,
+> indicate the registry as `localhost:30000` using the `registry` argument to `ImageSpec`.
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -69,7 +70,9 @@ sklearn_image_spec = ImageSpec(
 )
 ```
 
+
 ## Install Conda packages
+
 Define the `ImageSpec` to install packages from a specific conda channel.
 
 ```python
@@ -79,7 +82,9 @@ image_spec = ImageSpec(
 )
 ```
 
+
 ## Use different Python versions in the image
+
 You can specify the Python version in the `ImageSpec` to build the image with a different Python version.
 
 ```python
@@ -88,6 +93,7 @@ image_spec = ImageSpec(
   python_version="3.9",
 )
 ```
+
 
 ## Import modules only in a specify imageSpec environment
 
@@ -110,7 +116,7 @@ tensorflow_image_spec = ImageSpec(
 )
 
 # Return if and only if the task is using the image built from tensorflow_image_spec.
-if tensorflow_image_spec.is_container(): 
+if tensorflow_image_spec.is_container():
   import tensorflow as tf
 
 @task(container_image=pandas_image_spec)
@@ -125,11 +131,16 @@ def task2() -> int:
   return num_gpus
 ```
 
+
 ## Install CUDA in the image
+
 There are few ways to install CUDA in the image.
 
+
 ### Use Nvidia docker image
+
 CUDA is pre-installed in the Nvidia docker image. You can specify the base image in the `ImageSpec`.
+
 ```python
 image_spec = ImageSpec(
   base_image="nvidia/cuda:12.6.1-cudnn-devel-ubuntu22.04",
@@ -138,8 +149,11 @@ image_spec = ImageSpec(
 )
 ```
 
+
 ### Install packages from extra index
+
 CUDA can be installed by specifying the `pip_extra_index_url` in the `ImageSpec`.
+
 ```python
 image_spec = ImageSpec(
   name="pytorch-mnist",
@@ -148,8 +162,11 @@ image_spec = ImageSpec(
 )
 ```
 
+
 ## Build an image in different architecture
+
 You can specify the platform in the `ImageSpec` to build the image in a different architecture, such as `linux/arm64` or `darwin/arm64`.
+
 ```python
 image_spec = ImageSpec(
   packages=["pandas"],
@@ -157,9 +174,12 @@ image_spec = ImageSpec(
 )
 ```
 
+
 {{< variant flyte >}}
 {{< markdown >}}
+
 ## Install flytekit from GitHub
+
 When you update the flytekit, you may want to test the changes with your tasks.
 You can install the flytekit from a specific commit hash in the `ImageSpec`.
 
@@ -173,10 +193,13 @@ image_spec = ImageSpec(
   registry="ghcr.io/flyteorg",
 )
 ```
+
 {{< /markdown >}}
 {{< /variant >}}
 
+
 ## Customize the tag of the image
+
 You can customize the tag of the image by specifying the `tag_format` in the `ImageSpec`. In the following example, the tag will be `<spec_hash>-dev`.
 
 ```python
@@ -187,10 +210,12 @@ image_spec = ImageSpec(
 )
 ```
 
+
 ## Copy additional files or directories
+
 You can specify files or directories to be copied into the container `/root`, allowing users to access the required files. The directory structure will match the relative path. Since Docker only supports relative paths, absolute paths and paths outside the current working directory (e.g., paths with "../") are not allowed.
 
-```py
+```python
 from {{< key kit >}} import task, workflow, ImageSpec
 
 image_spec = ImageSpec(
@@ -203,6 +228,7 @@ def my_task() -> str:
     with open("/root/files/input.txt", "r") as f:
         return f.read()
 ```
+
 
 ## Define ImageSpec in a YAML File
 
@@ -217,18 +243,21 @@ env:
   Debug: "True"
 ```
 
+Use {{< key cli >}} to register the workflow:
+
+```shell
+$ {{< key cli >}} run --remote --image image.yaml image_spec.py wf
 ```
-# Use {{< key cli >}} to register the workflow
-{{< key cli >}} run --remote --image image.yaml image_spec.py wf
-```
+
 
 ## Build the image without registering the workflow
 
 If you only want to build the image without registering the workflow, you can use the `{{< key cli >}} build` command.
 
+```shell
+$ {{< key cli >}} build --remote image_spec.py wf
 ```
-{{< key cli >}} build --remote image_spec.py wf
-```
+
 
 ## Force push an image
 
@@ -243,12 +272,17 @@ You can also force push an image in the Python code by calling the `force_push()
 ```python
 image = ImageSpec(packages=["pandas"]).force_push()
 ```
+
+<!-- TODO: what is this for?
 [flytesnacks]: https://github.com/flyteorg/flytesnacks/tree/master/examples/customizing_dependencies/
+-->
+
 
 ## Getting source files into ImageSpec
+
 Typically, getting source code files into a task's image at run time on a live {{< key product_name >}} backend is done through the fast registration mechanism.
 
 However, if your `ImageSpec` constructor specifies a `source_root` and the `copy` argument is set to something other than `CopyFileDetection.NO_COPY`, then files will be copied regardless of fast registration status.
-If the `source_root` and `copy` fields to an `ImageSpec` are left blank, then whether or not your source files are copied into the built `ImageSpec` image depends on whether or not you use fast registration. Please see [registering workflows](https://docs.union.ai/byoc/user-guide/core-concepts/#registering-tasks-and-workflows) for the full explanation.
+If the `source_root` and `copy` fields to an `ImageSpec` are left blank, then whether or not your source files are copied into the built `ImageSpec` image depends on whether or not you use fast registration. Please see [registering workflows](/user-guide/core-concepts/#registering-tasks-and-workflows) for the full explanation.
 
 Since files are sometimes copied into the built image, the tag that is published for an ImageSpec will change based on whether fast register is enabled, and the contents of any files copied.

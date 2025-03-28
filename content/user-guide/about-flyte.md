@@ -6,7 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # About Flyte
 
-[Flyte](/docs/flyte) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
+[Flyte](https://flyte.org) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
 
 
 ## Flyte
@@ -35,7 +35,7 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 
 ## Union Serverless
 
-[Union Serverless](/docs/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[Union Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
 Your Data and workflow code stored safely and securely in Union's cloud infrastructure.
 Union Serverless provide all the features of Flyte, plus:
@@ -60,7 +60,7 @@ Union Serverless provide all the features of Flyte, plus:
 
 ## Union BYOC
 
-[Union BYOC](/docs/byoc) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while Union takes care of the management.
+[Union BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while Union takes care of the management.
 Union BYOC provides all the features of Flyte and Union Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)
@@ -72,7 +72,7 @@ Union BYOC provides all the features of Flyte and Union Serverless, plus:
 
 ## Union BYOK
 
-[Union BYOK](/docs/byok) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+[Union BYOK]({{< docs_home byok >}}) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
 Union BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
 The control plane continues to be located in a Union AWS account and managed by Union.
 However, none of your data ever leaves your data plane, ensuring privacy and security.

@@ -28,15 +28,13 @@ To create a new page, simply create a new Markdown file in the appropriate folde
 While editing, you can use Hugo's local live preview capabilities.
 Simply execute
 
-```
-$ make dev
-```
+    $ make dev
 
 This will build the site and launch a local server at `http://localhost:1313`.
-Go to that URL to the live preview.
-As you edit the preview wull update
+Go to that URL to the live preview. Leave the server running.
+As you edit the preview will update automatically.
 
-See [**Local Environment**](DEVELOPER.md) for more information.
+See [**Local Environment**](DEVELOPER.md) for how to setup your machine.
 
 
 ## Pull Requests + Site Preview

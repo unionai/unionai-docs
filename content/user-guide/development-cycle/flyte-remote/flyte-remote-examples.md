@@ -67,8 +67,6 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
 For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint](../../../api-reference/union-remote/entrypoint).
 
-{{< variant byoc byok flyte >}}
-{{< markdown >}}
 
 ## Terminating all running executions for a workflow
 
@@ -203,6 +201,3 @@ latest_success = remote.recent_executions(
     ],
 )
 ```
-
-{{< /markdown >}}
-{{< /variant >}}
