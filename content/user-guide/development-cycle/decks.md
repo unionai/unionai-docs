@@ -30,7 +30,7 @@ Now, declare the required dependnecies in an `ImageSpec`:
 {{< markdown >}}
 
 ```python
-custom_image = {{< key kit >}}.ImageSpec(
+custom_image = {{< key kit_as >}}.ImageSpec(
     packages=[
         "flytekitplugins-deck-standard",
         "markdown",
@@ -50,7 +50,7 @@ custom_image = {{< key kit >}}.ImageSpec(
 {{< markdown >}}
 
 ```python
-custom_image = {{< key kit >}}.ImageSpec(
+custom_image = {{< key kit_as >}}.ImageSpec(
     packages=[
         "flytekitplugins-deck-standard",
         "markdown",
@@ -71,7 +71,7 @@ custom_image = {{< key kit >}}.ImageSpec(
 Next, we define the task that will construct the figure and create the Deck:
 
 ```python
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
 def pca_plot():
     iris_df = px.data.iris()
     X = iris_df[["sepal_length", "sepal_width", "petal_length", "petal_width"]]
@@ -87,7 +87,7 @@ def pca_plot():
         title=f"Total Explained Variance: {total_var:.2f}%",
         labels={"0": "PC 1", "1": "PC 2", "2": "PC 3"},
     )
-    main_deck = {{< key kit >}}.Deck("pca", MarkdownRenderer().to_html("### Principal Component Analysis"))
+    main_deck = {{< key kit_as >}}.Deck("pca", MarkdownRenderer().to_html("### Principal Component Analysis"))
     main_deck.append(plotly.io.to_html(fig))
 ```
 
@@ -125,10 +125,10 @@ import pandas as pd
 from flytekitplugins.deck.renderer import FrameProfilingRenderer
 
 
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
 def frame_renderer() -> None:
     df = pd.DataFrame(data={"col1": [1, 2], "col2": [3, 4]})
-    {{< key kit >}}.Deck("Frame Renderer", FrameProfilingRenderer().to_html(df=df))
+    {{< key kit_as >}}.Deck("Frame Renderer", FrameProfilingRenderer().to_html(df=df))
 ```
 
 ![Frame renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_frame_renderer.png)
@@ -144,7 +144,7 @@ from typing import Annotated
 from flytekit.deck import TopFrameRenderer
 
 
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
 def top_frame_renderer() -> Annotated[pd.DataFrame, TopFrameRenderer(1)]:
     return pd.DataFrame(data={"col1": [1, 2], "col2": [3, 4]})
 ```
@@ -160,9 +160,9 @@ import {{< key kit_import >}}
 from flytekit.deck import MarkdownRenderer
 
 
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
 def markdown_renderer() -> None:
-    {{< key kit >}}.current_context().default_deck.append(
+    {{< key kit_as >}}.current_context().default_deck.append(
         MarkdownRenderer().to_html("You can install flytekit using this command: ```import flytekit```")
     )
 ```
@@ -184,10 +184,10 @@ import {{< key kit_import >}}
 from flytekitplugins.deck.renderer import BoxRenderer
 
 
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
 def box_renderer() -> None:
     iris_df = px.data.iris()
-    {{< key kit >}}.Deck("Box Plot", BoxRenderer("sepal_length").to_html(iris_df))
+    {{< key kit_as >}}.Deck("Box Plot", BoxRenderer("sepal_length").to_html(iris_df))
 ```
 
 ![Box renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_box_renderer.png)
@@ -202,13 +202,13 @@ import {{< key kit_import >}}
 from flytekitplugins.deck.renderer import ImageRenderer
 
 
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
-def image_renderer(image: {{< key kit >}}.FlyteFile) -> None:
-    {{< key kit >}}.Deck("Image Renderer", ImageRenderer().to_html(image_src=image))
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
+def image_renderer(image: {{< key kit_as >}}.FlyteFile) -> None:
+    {{< key kit_as >}}.Deck("Image Renderer", ImageRenderer().to_html(image_src=image))
 
 
-@{{< key kit >}}.workflow
-def image_renderer_wf(image: {{< key kit >}}.FlyteFile = "https://bit.ly/3KZ95q4",) -> None:
+@{{< key kit_as >}}.workflow
+def image_renderer_wf(image: {{< key kit_as >}}.FlyteFile = "https://bit.ly/3KZ95q4",) -> None:
     image_renderer(image=image)
 ```
 
@@ -223,9 +223,9 @@ import {{< key kit_import >}}
 from flytekitplugins.deck.renderer import TableRenderer
 
 
-@{{< key kit >}}.task(enable_deck=True, container_image=custom_image)
+@{{< key kit_as >}}.task(enable_deck=True, container_image=custom_image)
 def table_renderer() -> None:
-    {{< key kit >}}.Deck(
+    {{< key kit_as >}}.Deck(
         "Table Renderer",
         TableRenderer().to_html(df=pd.DataFrame(data={"col1": [1, 2], "col2": [3, 4]}), table_width=50),
     )
@@ -297,7 +297,7 @@ import {{< key kit_import >}}
 
 @task(enable_deck=True)
 def t_deck():
-    {{< key kit >}}.Deck.publish()
+    {{< key kit_as >}}.Deck.publish()
 ```
 
 This will create a live deck that where you can click the refresh button and see the Deck update until the task succeeds.

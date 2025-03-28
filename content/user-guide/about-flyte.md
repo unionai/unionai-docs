@@ -6,7 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # About Flyte
 
-[Flyte]({{< docs_home flyte >}}) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
+[Flyte](https://flyte.org) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
 
 
 ## Flyte

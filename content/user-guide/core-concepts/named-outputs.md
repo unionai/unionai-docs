@@ -1,6 +1,6 @@
 ---
 title: Named outputs
-weight: 8
+weight: 9
 variants: +flyte +serverless +byoc +byok
 ---
 
