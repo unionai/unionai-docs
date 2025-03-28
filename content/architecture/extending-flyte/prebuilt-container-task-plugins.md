@@ -6,15 +6,11 @@ variants: +flyte -serverless -byoc -byok
 
 # Prebuilt container task plugins
 
-```{eval-rst}
-.. tags:: Extensibility, Contribute, Intermediate
-```
-
 A prebuilt container task plugin runs a prebuilt container. The following are the advantages of using a prebuilt container in comparison to a user-defined container:
 
-- Shifts the burden of writing Dockerfile from the user who uses the task in workflows to the author of the task type.
-- Allows the author to optimize the image that the task runs on.
-- Makes it possible to (largely) extend the Flyte task execution behavior without using the backend Golang plugin.
+* Shifts the burden of writing Dockerfile from the user who uses the task in workflows to the author of the task type.
+* Allows the author to optimize the image that the task runs on.
+* Makes it possible to (largely) extend the Flyte task execution behavior without using the backend Golang plugin.
   The caveat is that these tasks can't access the K8s cluster, so you'll still need a backend plugin if you want a custom task type that generates CRD.
 
 ## Usage
@@ -22,8 +18,8 @@ A prebuilt container task plugin runs a prebuilt container. The following are th
 Take a look at the [example PR](https://github.com/flyteorg/flytekit/pull/470), where we switched the built-in SQLite3 task from the old (user-container) to the new style of writing tasks.
 
 There aren't many changes from the user's standpoint:
-\- Install whichever Python library has the task type definition (in the case of SQLite3, it's bundled in Flytekit, but this isn't always the case (for example, [SQLAlchemy](https://github.com/flyteorg/flytekit/tree/master/plugins/flytekit-sqlalchemy))).
-\- Import and instantiate the task as you would for any other type of non-function-based task.
+ * Install whichever Python library has the task type definition (in the case of SQLite3, it's bundled in Flytekit, but this isn't always the case (for example, [SQLAlchemy](https://github.com/flyteorg/flytekit/tree/master/plugins/flytekit-sqlalchemy))).
+ * Import and instantiate the task as you would for any other type of non-function-based task.
 
 ## How to write a task
 
@@ -43,16 +39,16 @@ New tasks of this type must be created as a subclass of the `PythonCustomizedCon
 
 Specifically, you need to customize the following three arguments which would be sent to the parent class constructor:
 
-- `container_image`: This is the container image that will run on a Flyte platform when the user invokes the job.
-- `executor_type`: This should be the Python class that inherits the `ShimTaskExecutor`.
-- `task_type`: All types have a task type. Flyte engine uses this string to identify which plugin to use when running a task.
+* `container_image`: This is the container image that will run on a Flyte platform when the user invokes the job.
+* `executor_type`: This should be the Python class that inherits the `ShimTaskExecutor`.
+* `task_type`: All types have a task type. Flyte engine uses this string to identify which plugin to use when running a task.
 
 The container plugin will be used for everything that doesn't have an explicit match (which is correct in this case).
 So you may call it whatever you want, just not something that's already been claimed  (like "spark").
 
 Referring to the SQLite3 example,
 
-```
+```shell
 container_image="ghcr.io/flyteorg/flytekit:py38-v0.19.0b7",
 executor_type=SQLite3TaskExecutor,
 task_type="sqlite",
@@ -77,16 +73,15 @@ The signature of this execute function differs from the `execute` functions of m
 
 This is the custom image that you specified in the subclass `PythonCustomizedContainerTask`. Out of the box, when Flyte runs the container, these tasks will run a command that looks like this
 
-```
+```shell
 pyflyte-execute --inputs s3://inputs.pb --output-prefix s3://outputs --raw-output-data-prefix s3://user-data --resolver flytekit.core.python_customized_container_task.default_task_template_resolver -- {{.taskTemplatePath}} path.to.your.executor.subclass
 ```
 
 This means that your [Docker image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile) will need Python and Flytekit installed.
 The container's Python interpreter should be able to find your custom executor class at the import path `path.to.your.executor.subclass`.
 
-______________________________________________________________________
 
 The key takeaways of a pre-built container task plugin are:
 
-- The task object serialized at compile time does not exist at run time.
-- There is no user function at platform run time, and the executor is responsible for producing outputs based on the task's inputs.
+* The task object serialized at compile time does not exist at run time.
+* There is no user function at platform run time, and the executor is responsible for producing outputs based on the task's inputs.

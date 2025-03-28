@@ -1,7 +1,7 @@
 ---
 title: Data retention policy
 weight: 8
-variants: +flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +byok
 ---
 
 # Data retention policy

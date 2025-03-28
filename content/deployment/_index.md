@@ -7,6 +7,9 @@ top_menu: true
 
 # Deployment
 
+{{< variant byok byoc >}}
+{{< markdown >}}
+
 Union uses a hybrid model cloud service: Union maintains the control plane of the application on its own cloud infrastructure in Amazon Web Services (AWS).
 This is where all administration and management functionality resides.
 
@@ -14,3 +17,13 @@ Your data and the actual computation involved in executing your Flyte tasks and 
 To enable the administration and management of your data plane, you grant Union the required permissions when you set up your data plane.
 
 Union supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+
+This section covers the deployment of Flyte.
+
+{{< /markdown >}}
+{{< /variant >}}
