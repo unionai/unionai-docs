@@ -6,7 +6,7 @@ top_menu: true
 mermaid: true
 ---
 
-## Authenticating in Flyte
+# Authenticating in Flyte
 
 The Flyte platform consists of multiple components. Securing communication between each component is crucial to ensure
 the integrity of the overall system.
@@ -34,9 +34,9 @@ sequenceDiagram
 
 ```
 
-In summary, there are two main dependencies required for a complete auth flow in Flyte:
+There are two main dependencies required for a complete auth flow in Flyte:
 
-**Identity Layer**
+**OIDC (Identity Layer) configuration**
 
 The OIDC protocol allows clients (such as Flyte) to confirm the identity of a user, based on authentication done by an Authorization Server. To enable this, you first need to register Flyte as an app (client) with your chosen Identity Provider (IdP).
 
@@ -45,14 +45,139 @@ The OIDC protocol allows clients (such as Flyte) to confirm the identity of a us
 The authorization server job is to issue access tokens to clients for them to access the protected resources.
 Flyte ships with two options for the authorization server:
 
- - **Internal authorization server**: It comes pre-installed with Flyte and it is a suitable choice for quick start and testing purposes.
+ - **Internal authorization server**: It's part of `flyteadmin` and is a suitable choice for quick start or testing purposes.
  - **External (custom) authorization server**: This a service provided by one of the supported IdPs and is the recommended option if your organization needs to retain control over scope definitions, token expiration policies and other advanced security controls.
-
 
 > Regardless of the type of authorization server to use, you will still need an IdP to provide identity through OIDC.
 
+## Configuring the identity layer
 
-.. _auth-setup:
+### Prerequisites
+
+* A public domain name (e.g. example.foobar.com)
+* A DNS entry mapping the Fully Qualified Domain Name to the Ingress `host`.
+
+> Checkout this [community-maintained guide](https://github.com/davidmirror-ops/flyte-the-hard-way/blob/main/docs/06-intro-to-ingress.md) for more information about setting up Flyte in production, including Ingress.
+
+### OIDC configuration
+
+In this section, you can find canonical examples of how to set up OIDC on some of the supported IdPs; enabling users to authenticate in the
+browser.
+
+>  Using the following configurations as a reference, the community has succesfully configured auth with other IdPs as Flyte implements open standards.
+
+<details>
+<summary>Google</summary>
+<br>
+
+1. Create an OAuth2 Client Credential following the [official documentation](https://developers.google.com/identity/protocols/oauth2/openid-connect) and take note of the `client_id` and `client_secret`
+
+2. In the **Authorized redirect URIs** field, add `http://localhost:30081/callback` for **sandbox** deployments or `https://<your-Ingress-host>/callback` for other deployment methods.
+</details>
+
+<details>
+<summary>Okta</summary>
+<br>
+
+1. If you don't already have an Okta account, [sign up for one](https://developer.okta.com/signup/).
+2. Create an app integration, with `OIDC - OpenID Connect` as the sign-on method and `Web Application` as the app type.
+3. Add sign-in redirect URIs:
+
+- `http://localhost:30081/callback` for sandbox or `https://<your-Ingress-host>/callback` for other Flyte deployment types.
+4. *Optional* - Add logout redirect URIs:
+
+- `http://localhost:30081/logout` for sandbox, `https://<your-Ingress-host>/callback` for other Flyte deployment methods.
+5. Take note of the Client ID and Client Secret
+</details>
+
+<details>
+<summary>Keycloak</summary>
+<br>
+
+1. Create a realm using the [admin console](https://wjw465150.gitbooks.io/keycloak-documentation/content/server_admin/topics/realms/create.html)
+2. [Create an OIDC client with client secret](https://wjw465150.gitbooks.io/keycloak-documentation/content/server_admin/topics/clients/client-oidc.html) and note them down.
+3. Add Login redirect URIs:
+- `http://localhost:30081/callback` for sandbox or `https://<your-Ingress-host>/callback` for other Flyte deployment methods.
+</details>
+
+<details>
+<summary>Microsoft Entra ID</summary>
+<br>
+
+1. In the Azure portal, open Microsoft Entra ID from the left-hand menu.
+2. From the Overview section, navigate to **App registrations** > **+ New registration**.
+  - Under Supported account types, select the option based on your organization's needs.
+3. Configure Redirect URIs
+  - In the Redirect URI section:
+    - Choose Web from the platform dropdown.
+      - Enter the following URIs based on your environment:
+          - Sandbox: http://localhost:30081/callback
+          - Production: https://<your-Ingress-URL>/callback
+4. Obtain Tenant and Client Information
+  - After registration, go to the app's Overview page.
+  - Take note of the Application (client) ID and Directory (tenant) ID. You’ll need these in your Flyte configuration.
+
+5. Create a Client Secret
+  - From the Certificates & Secrets tab, click + New client secret.
+  - Add a Description and set an Expiration period (e.g., 6 months or 12 months).
+  - Click Add and copy the Value of the client secret; it will be used in the Helm values.
+
+6. If the Flyte deployment will be dealing with user data, set API permissions:
+    - Navigate to API Permissions > + Add a permission.
+     - Select Microsoft Graph > Delegated permissions, and add the following permissions:
+        - ``email``
+        - ``openid``
+        - ``profile``
+        - ``offline_access``
+        - ``User.Read``
+
+7. Expose an API (for Custom Scopes)
+    - In the Expose an API tab:
+        - Click + Add a scope, and set the Scope name (e.g., access_flyte).
+        - Provide a Consent description and enable Admin consent required and Save.
+        - Then, click + Add a client application and enter the Client ID of your Flyte application.
+
+8. Configure Mobile/Desktop Flow (for flytectl)
+    - Go to the Authentication tab, and click + Add a platform.
+    - Select Mobile and desktop applications.
+    - Add following URI: ``http://localhost:53593/callback``
+    - Scroll down to Advanced settings and enable Allow public client flows.
+
+For further reference, check out the official [ Entra ID Docs](https://docs.microsoft.com/en-us/power-apps/maker/portals/configure/configure-openid-settings) on how to configure the IdP for OpenIDConnect.
+
+> Make sure the app is registered without [additional claims](https://docs.microsoft.com/en-us/power-apps/maker/portals/configure/configure-openid-settings#configure-additional-claims).
+**The OpenIDConnect authentication will not work otherwise**.  
+Please refer to [this GitHub Issue](https://github.com/coreos/go-oidc/issues/215) and [Entra ID Docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#sample-response) for more information.
+</details>
+
+#### Apply the OIDC configuration to the Flyte backend
+
+
+## Configuring supported authorization flows
+
+### PKCE
+
+The Proof of Key Code Exchange protocol ([RFC 7636](https://tools.ietf.org/html/rfc7636)) is the default auth flow in Flyte and was designed to mitigate security risks in the communication between the authorization server and the resource server.
+
+```mermaid
+sequenceDiagram
+  participant Alice as flytepropeller
+  participant John as flyteadmin or<br>external IdP
+
+  Alice ->> John: Authorization request + code challenge
+  John ->> Alice: Authorization code
+  Alice ->>+ John: Access token request + code verifier
+  John ->> Alice: Access token
+```
+
+- Good for: user-to-system interaction with a web browser
+- Supported IdPs: Google, Okta, Microsoft Entra ID, Keycloak.
+- Supported authorization servers: internal or external
+
+### Backend configuration
+
+### Client configuration
+
 
 ********************
 Authentication Setup
@@ -92,106 +217,6 @@ your IdP:
 +----------------------+--------+-------------+---------------------+----------+-------+----------+--------+
 | Custom Auth Server   |   Yes  |      No     |          Yes        |    Yes   |   ?   |    Yes   |   No   |
 +----------------------+--------+-------------+---------------------+----------+-------+----------+--------+
-
-
-Identity Management layer : OIDC
-===================================
-
-In this section, you can find canonical examples of how to set up OIDC on some of the supported IdPs; enabling users to authenticate in the
-browser.
-
-.. tabs::
-
-   .. group-tab:: Google
-
-
-
-          - Create an OAuth2 Client Credential following the `official documentation  <https://developers.google.com/identity/protocols/oauth2/openid-connect>`__ and take note of the ``client_id`` and ``client_secret``
-
-          - In the **Authorized redirect URIs** field, add ``http://localhost:30081/callback`` for **sandbox** deployments, or ``https://<your-deployment-URL>/callback`` for other methods of deployment.
-
-
-   .. group-tab:: Okta
-
-
-       1. If you don't already have an Okta account, sign up for one `here <https://developer.okta.com/signup/>`__.
-       2. Create an app integration, with `OIDC - OpenID Connect` as the sign-on method and `Web Application` as the app type.
-       3. Add sign-in redirect URIs:
-
-          - ``http://localhost:30081/callback`` for sandbox or ``https://<your deployment url>/callback`` for other Flyte deployment types.
-
-       4. *Optional* - Add logout redirect URIs:
-
-          - ``http://localhost:30081/logout`` for sandbox, ``https://<your deployment url>/callback`` for other Flyte deployment types).
-
-       5. Take note of the Client ID and Client Secret
-
-   .. group-tab:: Keycloak
-
-
-       1. If you don't have a Keycloak installation, you can use `this <https://www.amazonaws.cn/en/solutions/keycloak-on-aws/>`__ which provides a quick way to deploy Keycloak cluster on AWS.
-       2. Create a realm using the `admin console <https://wjw465150.gitbooks.io/keycloak-documentation/content/server_admin/topics/realms/create.html>`__
-       3. Create an OIDC client with client secret and note them down. Use the following `instructions <https://wjw465150.gitbooks.io/keycloak-documentation/content/server_admin/topics/clients/client-oidc.html>`__
-       4. Add Login redirect URIs:
-
-          - ``http://localhost:30081/callback`` for sandbox or ``https://<your deployment url>/callback`` for other Flyte deployment types.
-
-   .. group-tab:: Microsoft Entra ID (Azure AD)
-
-       Microsoft Entra ID (Azure AD) Setup
-
-    1. In the Azure portal, open Microsoft Entra ID from the left-hand menu.
-    2. From the Overview section, navigate to App registrations > + New registration.
-        - Under Supported account types, select the option based on your organization's needs.
-    3. Configure Redirect URIs
-        - In the Redirect URI section:
-            - Choose Web from the platform dropdown.
-            - Enter the following URIs based on your environment:
-                - Sandbox: http://localhost:30081/callback
-                - Production: https://<your-deployment-URL>/callback
-    4. Obtain Tenant and Client Information
-        - After registration, go to the app's Overview page.
-        - Take note of the Application (client) ID and Directory (tenant) ID—you’ll need these in your Flyte configuration.
-
-    5. Create a Client Secret
-        - From the Certificates & Secrets tab, click + New client secret.
-        - Add a Description and set an Expiration period (e.g., 6 months or 12 months).
-        - Click Add and copy the Value of the client secret— it will be used in the helm values.
-
-    6. If the Flyte deployment will be dealing with user data, set API permissions:
-        - Navigate to API Permissions > + Add a permission.
-        - Select Microsoft Graph > Delegated permissions, and add the following permissions:
-            ``email``
-            ``openid``
-            ``profile``
-            ``offline_access``
-            ``User.Read``
-
-    7. Expose an API (for Custom Scopes)
-        - In the Expose an API tab:
-            - Click + Add a scope, and set the Scope name (e.g., access_flyte).
-            - Provide a Consent description and enable Admin consent required and Save.
-        - Then, click + Add a client application and enter the Client ID of your Flyte application.
-
-    8. Configure Mobile/Desktop Flow (for flytectl)
-        - Go to the Authentication tab, and click + Add a platform.
-        - Select Mobile and desktop applications.
-        - Add following URI: ``http://localhost:53593/callback``
-        - Scroll down to Advanced settings and enable Allow public client flows.
-
-    9. Update Flyte Configuration
-       - Use the following values in your Flyte Helm chart or configuration files:
-           - Client ID: <client-id>
-           - Client Secret: <client-secret>
-           - Tenant ID: <tenant-id>
-           - Redirect URI: https://<your-deployment-URL>/callback
-
-   For further reference, check out the official `Azure AD Docs <https://docs.microsoft.com/en-us/power-apps/maker/portals/configure/configure-openid-settings>`__ on how to configure the IdP for OpenIDConnect.
-
-       .. note::
-
-         Make sure the app is registered without `additional claims <https://docs.microsoft.com/en-us/power-apps/maker/portals/configure/configure-openid-settings#configure-additional-claims>`__.
-         **The OpenIDConnect authentication will not work otherwise**, please refer to this `GitHub Issue <https://github.com/coreos/go-oidc/issues/215>`__ and `Azure AD Docs <https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#sample-response>`__ for more information.
 
 
 Apply OIDC Configuration
