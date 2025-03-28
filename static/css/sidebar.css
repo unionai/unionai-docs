@@ -36,7 +36,7 @@
 }
 .site-nav .section-title {
   /* font-weight: 600; */
-  font-size: 1rem;
+  font-size: var(--sidebar-font-size);
   color: var(--text-color);
   display: block;
   padding: 0.375rem var(--menu-indent);
@@ -46,7 +46,7 @@
   display: block;
   padding: 0.375rem var(--menu-subindent);
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: var(--sidebar-font-size);
 }
 .site-nav .section-pages {
   padding-left: var(--menu-indent);

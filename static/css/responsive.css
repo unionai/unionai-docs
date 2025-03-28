@@ -1,4 +1,4 @@
-@media (max-width: 1460px) {
+@media (max-width: 1200px) {
   .toc-container {
     display: none;
     transition: display 0.3s ease;
@@ -53,7 +53,14 @@
     position: initial;
   }
 
-  .sidebar {
+  .sidebar,
+  header .separator,
+  header .signup,
+  header .search {
     display: none;
+  }
+
+  header #variant-selector {
+    margin-left: 1rem;
   }
 }
