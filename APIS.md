@@ -63,6 +63,14 @@ workflow to decide, in order, if the resource must be in or out:
     In this example only `AnotherLocalThingy` and `b_func` will show in the docs.
     Neither none of the imports nor `_LocalThingy` will show in the documention
 
-> Note: if you either have no resources without a `_` nor an `__all__` to export
-> blocked resources (imports or starting with `_`) the package will have no content
-> and will not be generated.
+### Tips and Tricks
+
+1. If you either have no resources without a `_` nor an `__all__` to 
+   export blocked resources (imports or starting with `_`) the package will have no content and will not be generated.
+
+2. If you want to export something you `from ___ import ____` you _must_ 
+   use `__all__` to add the private import to the public list.
+
+3. If all your methods follow the Python convention of everything private starts
+   with `_` and everything you want public does not, you do not need to have a
+   `__all__` allow list.
