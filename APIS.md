@@ -66,7 +66,7 @@ workflow to decide, in order, if the resource must be in or out:
 ### Tips and Tricks
 
 1. If you either have no resources without a `_` nor an `__all__` to 
-   export blocked resources (imports or starting with `_`) the package will have no content and will not be generated.
+   export blocked resources (imports or starting with `_`, the package will have no content and thus will not be generated.
 
 2. If you want to export something you `from ___ import ____` you _must_ 
    use `__all__` to add the private import to the public list.
