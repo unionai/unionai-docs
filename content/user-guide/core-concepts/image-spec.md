@@ -273,10 +273,6 @@ You can also force push an image in the Python code by calling the `force_push()
 image = ImageSpec(packages=["pandas"]).force_push()
 ```
 
-<!-- TODO: what is this for?
-[flytesnacks]: https://github.com/flyteorg/flytesnacks/tree/master/examples/customizing_dependencies/
--->
-
 
 ## Getting source files into ImageSpec
 
