@@ -104,7 +104,7 @@ def get_variables(info, pkg) -> List[VariableInfo]:
 
 def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> bool:
     if filter is not None and not filter(obj):
-        print(f"[should_include] Skipping {name} as it doesn't match filter", file=stderr)
+        # print(f"[should_include] Skipping {name} as it doesn't match filter", file=stderr)
         return False
 
     all_allow_list = getattr(package, '__all__', None)
@@ -112,15 +112,15 @@ def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> boo
     # If __all__ is defined, skip members not in the allow list
     if all_allow_list is not None:
         if name not in all_allow_list:
-            print(f"[should_include] Skipping {name} as it's not in __all__", file=stderr)
+            # print(f"[should_include] Skipping {name} as it's not in __all__", file=stderr)
             return False
         else:
-            print(f"[should_include] Keeping {name} as it's in __all__", file=stderr)
+            # print(f"[should_include] Keeping {name} as it's in __all__", file=stderr)
             return True
 
     # Skip private members, modules, and non-classes
     if name.startswith("_"):
-        print(f"[should_include] Skipping {name} as it's private", file=stderr)
+        # print(f"[should_include] Skipping {name} as it's private", file=stderr)
         return False
 
     # Check if the class is imported or defined in the module
@@ -128,12 +128,12 @@ def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> boo
         imported = obj.__module__ != package.__name__
         if imported:
             if all_allow_list is None or name not in all_allow_list:
-                print(f"[should_include] Resource {name} is {obj.__module__} imported @ [{all_allow_list}]", file=stderr)
+                # print(f"[should_include] Resource {name} is {obj.__module__} imported @ [{all_allow_list}]", file=stderr)
                 return False
     except AttributeError:
         pass
 
-    print(f"[should_include] Keeping {name}", file=stderr)
+    # print(f"[should_include] Keeping {name}", file=stderr)
     return True
 
 def main():

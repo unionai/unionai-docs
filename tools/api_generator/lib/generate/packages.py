@@ -43,8 +43,8 @@ def generate_package_index(
         index.write("|-|-|\n")
 
         for pkg in packages:
-            clss = classes[pkg["name"]]
-            if len(clss) == 0:
+            if len(classes[pkg["name"]]) == 0 and len(pkg["methods"]) == 0 and len(pkg["variables"]) == 0:
+                # Skip packages with no classes, methods, or variables
                 continue
             doc = pkg["doc"] if "doc" in pkg else ""
             index.write(
@@ -62,7 +62,8 @@ def generate_package_folders(
     print("Generating package folders")
 
     for pkg in packages:
-        if len(classes[pkg["name"]]) == 0:
+        if len(classes[pkg["name"]]) == 0 and len(pkg["methods"]) == 0 and len(pkg["variables"]) == 0:
+            # Skip packages with no classes, methods, or variables
             continue
 
         if flatten:
