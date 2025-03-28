@@ -66,12 +66,6 @@ def parse_property(name: str, member: object) -> Optional[PropertyInfo]:
 
 
 def parse_variable(name: str, member: object) -> Optional[VariableInfo]:
-    if not (not callable(member) and not isinstance(member, type)):
-        return None
-
-    if name.startswith("_"):
-        return None
-
     mtype = type(member).__name__
     if mtype == "module":
         return None

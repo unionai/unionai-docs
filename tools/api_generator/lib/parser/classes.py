@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 import yaml
 
 from lib.parser.docstring import parse_docstring
-from lib.parser.packages import get_package
+from lib.parser.packages import get_package, should_include
 from lib.ptypes import ClassDetails, PackageInfo
 from lib.parser.methods import parse_method, parse_property, parse_variable
 
@@ -21,10 +21,11 @@ def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDeta
 
     package_name = source["name"]
 
+    members = inspect.getmembers(package)
+
     # Get all members of the package
-    for name, obj in inspect.getmembers(package):
-        # Skip private members, modules, and non-classes
-        if name.startswith("_") or inspect.ismodule(obj) or not inspect.isclass(obj):
+    for name, obj in members:
+        if not should_include(name, obj, package, inspect.isclass):
             continue
 
         path = f"{package_name}.{name}"

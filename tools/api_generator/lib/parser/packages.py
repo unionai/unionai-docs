@@ -3,7 +3,7 @@ import pkgutil
 import importlib
 from sys import stderr
 from types import ModuleType
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from lib.ptypes import MethodInfo, PackageInfo, VariableInfo
 from lib.parser.methods import parse_method, parse_variable
@@ -25,6 +25,8 @@ def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
     pkg = PackageInfo(
         name=package.__name__,
         doc=package.__doc__,
+        methods=[],
+        variables=[],
     )
 
     return pkg, package
@@ -72,23 +74,67 @@ def get_subpackages(package_name: str) -> List[Tuple[PackageInfo, ModuleType]]:
         exit(1)
 
 
-def get_functions(info, pkg) -> List[MethodInfo]:
+def get_functions(info: PackageInfo, pkg: ModuleType) -> List[MethodInfo]:
     result = []
     for name, member in inspect.getmembers(pkg):
+        if not should_include(name, member, pkg, inspect.isfunction):
+            continue
+
         method_info = parse_method(name, member)
         if method_info:
             result.append(method_info)
     return result
 
 
+def is_variable(member: Any) -> bool:
+    return not (not (not callable(member) and not isinstance(member, type)))
+
+
 def get_variables(info, pkg) -> List[VariableInfo]:
     result = []
     for name, member in inspect.getmembers(pkg):
+        if not should_include(name, member, pkg, is_variable):
+            continue
+
         variable_info = parse_variable(name, member)
         if variable_info:
             result.append(variable_info)
     return result
 
+
+def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> bool:
+    if filter is not None and not filter(obj):
+        print(f"[should_include] Skipping {name} as it doesn't match filter", file=stderr)
+        return False
+
+    all_allow_list = getattr(package, '__all__', None)
+
+    # If __all__ is defined, skip members not in the allow list
+    if all_allow_list is not None:
+        if name not in all_allow_list:
+            print(f"[should_include] Skipping {name} as it's not in __all__", file=stderr)
+            return False
+        else:
+            print(f"[should_include] Keeping {name} as it's in __all__", file=stderr)
+            return True
+
+    # Skip private members, modules, and non-classes
+    if name.startswith("_"):
+        print(f"[should_include] Skipping {name} as it's private", file=stderr)
+        return False
+
+    # Check if the class is imported or defined in the module
+    try:
+        imported = obj.__module__ != package.__name__
+        if imported:
+            if all_allow_list is None or name not in all_allow_list:
+                print(f"[should_include] Resource {name} is {obj.__module__} imported @ [{all_allow_list}]", file=stderr)
+                return False
+    except AttributeError:
+        pass
+
+    print(f"[should_include] Keeping {name}", file=stderr)
+    return True
 
 def main():
     # Test the get_subpackages function with a sample package
