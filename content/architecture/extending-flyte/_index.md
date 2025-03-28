@@ -21,9 +21,7 @@ Flytekit allows users to extend Flyte's type system and implement types in Pytho
 The user has to implement a {{< py_class_ref flytekit.extend.TypeTransformer >}} class to enable the translation of type from user type to Flyte-understood type.
 
 As an example, instead of using [`pandas.DataFrame`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) directly, you may want to use
-[Pandera](https://pandera.readthedocs.io/en/stable) to perform validation of an input or output dataframe
-(see [`Basic Schema Example`]()).
-<!-- TODO: add link ^ -->
+[Pandera](https://pandera.readthedocs.io/en/stable) to perform validation of an input or output dataframe.
 
 To extend the type system, refer to [Custom types](/architecture/extending-flyte/custom-types).
 

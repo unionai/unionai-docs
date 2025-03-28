@@ -29,9 +29,8 @@ To recap, here are a few examples of why you would want to implement a backend p
 
 ## Basics
 
-In this section we'll go through the components of a backend plugin using the [Spark plugin]() as a reference.
+In this section we'll go through the components of a backend plugin using the Spark plugin as a reference.
 A Flyte backend extension consists of 3 parts: interface specification, `flytekit` plugin implementation, and `flytepropeller` plugin implementation.
-<!-- TODO: add link ^ -->
 
 
 ### Interface specification
@@ -76,10 +75,9 @@ The backend plugin uses the **Flyte PluginMachinery** interface to implement a p
 
 1. [Kubernetes operator Plugin](https://pkg.go.dev/github.com/lyft/flyteplugins@v0.5.26/go/tasks/pluginmachinery/k8s#Plugin):
    The demo in the video below shows two examples of K8s backend plugins: flytekit `Athena` & `Spark`, and Flyte K8s `Pod` & `Spark`.
-   
+
    {{< youtube oK2RGQuP94k >}}
 
-
-
 2. **A Web API plugin:** [Async](https://pkg.go.dev/github.com/lyft/flyteplugins@v0.5.26/go/tasks/pluginmachinery/webapi#AsyncPlugin) or [Sync](https://pkg.go.dev/github.com/lyft/flyteplugins@v0.5.26/go/tasks/pluginmachinery/webapi#SyncPlugin).
+
 3. [Core Plugin](https://pkg.go.dev/github.com/lyft/flyteplugins/go/tasks/pluginmachinery/core#Plugin): if none of the above fits
