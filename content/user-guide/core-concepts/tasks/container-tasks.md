@@ -8,50 +8,56 @@ This example demonstrates how to use arbitrary containers in 5 different languag
 
 The data is written as separate files, one per input variable. The format of the file is serialized strings. Refer to the raw protocol to understand how to leverage this.
 
-```{note}
-To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
-```
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
 
+<!-- TODO: copy in this code
 ```{literalinclude} /examples/customizing_dependencies/customizing_dependencies/raw_container.py
 :caption: customizing_dependencies/raw_container.py
 :lines: 1-6
 ```
+-->
+
 
 ## Container tasks
 
-A {py:class}`{{< key kit >}}.ContainerTask` denotes an arbitrary container. In the following example, the name of the task is `calculate_ellipse_area_shell`. This name has to be unique in the entire project. Users can specify:
+A `{{< key kit >}}.ContainerTask` denotes an arbitrary container. In the following example, the name of the task is `calculate_ellipse_area_shell`. This name has to be unique in the entire project. Users can specify:
 
-- `input_data_dir` -> where inputs will be written to.
-- `output_data_dir` -> where {{< key product_name >}} will expect the outputs to exist.
+* `input_data_dir` -> where inputs will be written to.
+* `output_data_dir` -> where {{< key product_name >}} will expect the outputs to exist.
 
 `inputs` and `outputs` specify the interface for the task; thus it should be an ordered dictionary of typed input and
 output variables.
 
 The `image` field specifies the container image for the task, either as an image name or
-an [ImageSpec](https://docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec#imagespec).
+an [ImageSpec](/user-guide/core-concepts/tasks/task-software-environment/image-spec#imagespec).
 To access the file that is not included in the image, use `ImageSpec` to copy files or
-directories into container `/root`. 
+directories into container `/root`.
 
-[Cache](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/caching.html) can be enabled in a `ContainerTask` by configuring the cache settings in the `TaskMetadata` in the `metadata` parameter.
+[Cache](/user_guide/development_lifecycle/caching.html) can be enabled in a `ContainerTask` by configuring the cache settings in the `TaskMetadata` in the `metadata` parameter.
 
+<!-- TODO: copy in this code
 ```{literalinclude} /examples/customizing_dependencies/customizing_dependencies/raw_container.py
 :caption: customizing_dependencies/raw_container.py
 :lines: 16-118
 ```
+-->
 
 As can be seen in this example, `ContainerTask`s can be interacted with like normal Python functions, whose inputs
 correspond to the declared input variables. All data returned by the tasks are consumed and logged by a {{< key product_name >}} task.
 
+<!-- TODO: copy in this code
 ```{literalinclude} /examples/customizing_dependencies/customizing_dependencies/raw_container.py
 :caption: customizing_dependencies/raw_container.py
 :pyobject: wf
 ```
+-->
 
 One of the benefits of raw container tasks is that {{< key kit >}} does not need to be installed in the target container.
 
-:::{note}
-Raw containers can be run locally when {{< key kit >}} version >= 1.11.0.
-:::
+> [!NOTE]
+> Raw containers can be run locally when {{< key kit >}} version >= 1.11.0.
+
 
 ### User Errors
 
@@ -63,32 +69,42 @@ The contents of each script specified in the `ContainerTask` is as follows:
 
 ### calculate-ellipse-area.sh
 
+<!-- TODO: copy in this code
 ```{literalinclude} raw-containers-supporting-files/per-language/shell/calculate-ellipse-area.sh
 :language: shell
 ```
+-->
 
 ### calculate-ellipse-area.py
 
+<!-- TODO: copy in this code
 ```{literalinclude} raw-containers-supporting-files/per-language/python/calculate-ellipse-area.py
 :language: python
 ```
+-->
 
 ### calculate-ellipse-area.R
 
+<!-- TODO: copy in this code
 ```{literalinclude} raw-containers-supporting-files/per-language/r/calculate-ellipse-area.R
 :language: r
 ```
+-->
 
 ### calculate-ellipse-area.hs
 
+<!-- TODO: copy in this code
 ```{literalinclude} raw-containers-supporting-files/per-language/haskell/calculate-ellipse-area.hs
 :language: haskell
 ```
+-->
 
 ### calculate-ellipse-area.jl
 
+<!-- TODO: copy in this code
 ```{literalinclude} raw-containers-supporting-files/per-language/julia/calculate-ellipse-area.jl
 :language: julia
 ```
 
 [flytesnacks]: https://github.com/flyteorg/flytesnacks/tree/master/examples/customizing_dependencies/
+-->
