@@ -1,3 +1,9 @@
+---
+title: Workspaces
+weight: 9
+variants: -flyte +serverless +byoc +byok
+---
+
 # Workspaces
 
 Workspaces provide a convenient VSCode development environment for iterating on
@@ -5,15 +11,16 @@ your Union.ai tasks, workflows, and apps.
 
 With workspaces, you can:
 
-- 🧑‍💻 Develop and debug your tasks, workflows, or code in general
-- ▶️ Run your tasks and workflows in a way that matches your production environment
-- 🚀 Deploy your workflows and apps to development, staging, or production environments
-- 🗂️ Persist files across workspace restarts to save your work
-- 🔑 Specify secrets and resources for your workspace
-- 🐳 Specify custom container images
-- 💻 Specify custom `on_startup` commands
-- ⏱️ Adjust the idle time-to-live (TTL) for your workspace to avoid unneeded expenses
-- 🔑 Authenticate with GitHub to clone private repositories
+* Develop and debug your tasks, workflows, or code in general
+* Run your tasks and workflows in a way that matches your production environment
+* Deploy your workflows and apps to development, staging, or production environments
+* Persist files across workspace restarts to save your work
+* Specify secrets and resources for your workspace
+* Specify custom container images
+* Specify custom `on_startup` commands
+* Adjust the idle time-to-live (TTL) for your workspace to avoid unneeded expenses
+* Authenticate with GitHub to clone private repositories
+
 
 ## Creating a workspace
 
@@ -27,11 +34,10 @@ click `Create`.
 
 ![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-2.png)
 
-```{note}
-The Idle TTL is the amount of time a workspace will be idle before it is
-automatically stopped. Workspaces have a global TTL of 1 day, but you can set
-the idle TTL field to a shorter duration to stop the workspace sooner.
-```
+> [!NOTE]
+> The Idle TTL is the amount of time a workspace will be idle before it is
+> automatically stopped. Workspaces have a global TTL of 1 day, but you can set
+> the idle TTL field to a shorter duration to stop the workspace sooner.
 
 You should see a new workspace created in the Workspaces view:
 
@@ -44,7 +50,7 @@ To run a workspace, click on the switch on the workspace item:
 
 ![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-1.png)
 
-Once the workspace has started, you can click on the `Open in VSCode` button:
+Once the workspace has started, you can click on the **Open in VSCode** button:
 
 ![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-2.png)
 
@@ -54,6 +60,7 @@ Once the startup commands have completed, you'll see a browser-based VSCode IDE:
 
 To stop a workspace, click on the toggle switch on the workspace item.
 
+
 ## Filesystem Persistence
 
 Any changes to the filesystem that you make in the working directory of your
@@ -62,11 +69,11 @@ are persisted across workspace restarts.
 
 This allows you to save data, code, models, and other files in your workspace.
 
-```{note}
-Storing large datasets, models, and other files in your workspace may slow down
-the start and stop times of your workspace. This is because the workspace
-instance needs time to download/upload the files from persistent storage.
-```
+> [!NOTE]
+> Storing large datasets, models, and other files in your workspace may slow down
+> the start and stop times of your workspace. This is because the workspace
+> instance needs time to download/upload the files from persistent storage.
+
 
 ## Editing a workspace
 
@@ -89,13 +96,13 @@ which provides all the information about the workspace.
 
 ## Archiving a workspace
 
-Archive a workspace by clicking on the `Archive` button:
+Archive a workspace by clicking on the **Archive** button:
 
 ![Archive Workspace](/_static/images/user-guide/core-concepts/workspaces/archive-workspace.png)
 
-Show archived workspaces by clicking on the `Show archived` toggle
+Show archived workspaces by clicking on the **Show archived** toggle
 on the top right of the workspaces list view. Unarchive a workspace by clicking
-on the `Unarchive` button:
+on the **Unarchive** button:
 
 ![Unarchive Workspace](/_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
 
@@ -104,18 +111,19 @@ on the `Unarchive` button:
 
 The `union` CLI also provides commands for managing workspaces.
 
+
 ### Create a workspace configuration
 
 The first step is to create a yaml file that describes the workspace.
 
-```{code-block} shell
-union create workspace-config --init base_image workspace.yaml
+```shell
+$ union create workspace-config --init base_image workspace.yaml
 ```
 
 This will create a `workspace.yaml` file in the current directory, with the
 default configuration values that you can edit for your needs:
 
-```{code-block} yaml
+```yaml
 name: my-workspace
 description: my workspace description
 project: <project>
@@ -133,18 +141,19 @@ ttl_seconds: 1200
 Note that the yaml file contains a `project` and `domain` field that you can set to create a
 workspace in a specific project and domain.
 
+
 ### Create a workspace
 
 Then, create a workspace using the `union create workspace` command:
 
-```{code-block} shell 
-union create workspace workspace.yaml
+```shell
+$ union create workspace workspace.yaml
 ```
 
 This command will also start your workspace, and will print out the workspace
 link that you click on to open the workspace in your browser:
 
-```{code-block} text
+```shell
 Created: workspace_definition {
   ...
 }
@@ -154,33 +163,35 @@ Starting workspace 'my-workspace'
 🚀 Workspace started: Open VSCode in Browser
 ```
 
+
 ### Stop a workspace
 
 When you want to stop a workspace, use the `union stop workspace` command:
 
-```{code-block} shell
-union stop workspace --name my-workspace
+```shell
+$ union stop workspace --name my-workspace
 ```
 
 This will print out a message indicating that the workspace has been stopped:
 
-```{code-block} text
+```shell
 Workspace instance stopped: org: "org"
 ...
 ```
+
 
 ### Update a workspace
 
 To update a workspace, modify the `workspace.yaml` file and run the
 `union update workspace` command:
 
-```{code-block} shell
-union update workspace workspace.yaml
+```shell
+$ union update workspace workspace.yaml
 ```
 
 This will print out a message that looks something like:
 
-```{code-block} text
+```shell
 Updated: workspace_definition {
   ...
 }
@@ -191,15 +202,15 @@ Updated: workspace_definition {
 
 To get existing workspaces, use the `union get workspace` command:
 
-```{code-block} shell
-union get workspace
+```shell
+$ union get workspace
 ```
 
 This will print out a table of all the workspaces you have access to in the
 specified project and domain (the command uses the default project and domain
 if you don't provide them).
 
-```{code-block} text
+```shell
 ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━━━┳━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Workspace name       ┃ CPU ┃ Memory ┃ GPU ┃ Accelerator         ┃ TTL Seconds ┃ Active URL ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━━━╇━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -210,18 +221,19 @@ if you don't provide them).
 To get the details of a specific workspace, provide
 the workspace name with the `--name` flag.
 
+
 ### Start a workspace
 
 To start a workspace, use the `union start workspace` command, specifying the
 name of the workspace you want to start in the `--name` flag.
 
-```{code-block} shell
-union start workspace --name my-workspace
+```shell
+$ union start workspace --name my-workspace
 ```
 
 You should see a message that looks like:
 
-```{code-block} text
+```shell
 Starting workspace 'my-workspace'
 
 🚀 Workspace started: Open VSCode in Browser
@@ -233,37 +245,37 @@ Starting workspace 'my-workspace'
 There are several settings that you can customize for a workspace in the UI or
 the CLI.
 
+
 ### Setting secrets
 
 If you don't have any secrets yet, create them with the `union create secret`
 command:
 
-```{code-block} shell
-union create secret --project my_project --domain my_domain --name my_secret
+```shell
+$ union create secret --project my_project --domain my_domain --name my_secret
 ```
 
 You'll be prompted to enter a secret value in the terminal:
 
-```
+```shell
 Enter secret value: ...
 ```
+> [!NOTE]
+> You can learn more about secrets management [here](/user-guide/development-cycle/managing-secrets/).
 
-```{note}
-You can learn more about secrets management [here](../../development-cycle/managing-secrets.md).
-```
-
-Set secrets for your workspace by clicking on the `Secrets` tab in the sidebar.
+Set secrets for your workspace by clicking on the **Secrets** tab in the sidebar.
 Provide the `my_secret` key and optionally, the environment variable you want
 to assign it to in the workspace.
 
 ![Secrets](/_static/images/user-guide/core-concepts/workspaces/setting-secrets.png)
+
 
 #### Setting secrets via the CLI
 
 Set secrets via the CLI using the `secrets` key, which is a list of objects with
 a `key` and `env_var` (optional) field:
 
-```{code-block} yaml
+```yaml
 name: my-workspace
 description: my workspace description
 project: flytesnacks
@@ -283,7 +295,8 @@ You can also set the resources for your workspace:
 
 ![Resources](/_static/images/user-guide/core-concepts/workspaces/setting-resources.png)
 
-{@@ if serverless @@}
+{{< variant serverless >}}
+{{< markdown >}}
 
 These resources must be compatible with the resource limits available to you
 on your Union.ai serverless account. Go the the top-level dashboard to view your
@@ -291,9 +304,12 @@ execution settings:
 
 ![Execution Settings](/_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
 
-For the `GPU` field, you can choose from the [available accelerators](../tasks/task-hardware-environment/accelerators.md).
+For the `GPU` field, you can choose from the [available accelerators](../tasks/task-hardware-environment/accelerators/).
 
-{@@ elif  byoc @@}
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
+{{< markdown >}}
 
 These resources must be compatible with the resources available to your BYOC
 cluster. Find the details of your BYOC cluster in the top-level dashboard:
@@ -302,7 +318,8 @@ cluster. Find the details of your BYOC cluster in the top-level dashboard:
 
 You can choose [the GPU accelerator](../tasks/task-hardware-environment/accelerators.md) that corresponds to your available instance types.
 
-{@@ endif @@}
+{{< /markdown >}}
+{{< /variant >}}
 
 
 ### Specifying custom `on_startup` commands
@@ -317,24 +334,22 @@ a file from the web, specify custom `on_startup` commands:
 By default, the workspace will use a Union.ai-provided container image which contains
 the following Python libraries:
 
-- `union`
-- `flytekit`
-- `uv`
-- `ipykernel`
-- `pandas`
-- `pyarrow`
-- `scikit-learn`
-- `matplotlib`
+* `union`
+* `flytekit`
+* `uv`
+* `ipykernel`
+* `pandas`
+* `pyarrow`
+* `scikit-learn`
+* `matplotlib`
 
 #### Specifying a custom container image in the UI
 
 You can specify a pre-built custom container image by clicking on the `Container`
 tab in the sidebar and provide the image name in the workspace creation form.
 
-```{note}
-The minimum requirement for custom images is that it has `union>=0.1.166`
-installed in it.
-```
+> [!NOTE]
+> The minimum requirement for custom images is that it has `union>=0.1.166` installed in it.
 
 ![Custom Container](/_static/images/user-guide/core-concepts/workspaces/customize-container-image.png)
 
@@ -344,26 +359,28 @@ task execution details page:
 
 ![Task Execution](/_static/images/user-guide/core-concepts/workspaces/customize-container-image-get-uri.png)
 
-{@@ if byoc @@}
+{{< variant byoc >}}
+{{< markdown >}}
 
 You can specify:
-- Any public container image URI
-- Images built with the Union.ai [image builder service](../development-cycle/image-spec.md)
-- Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr.md), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry.md))
+* Any public container image URI
+* Images built with the Union.ai [image builder service](/user-guide/development-cycle/image-spec/)
+* Images available in your private container registry (e.g. [AWS ECR](/user-guide//integrations/enabling-aws-resources/enabling-aws-ecr/), [GCP Artifact Registry](/user-guide//integrations/enabling-gcp-resources/enabling-google-artifact-registry/), or [Azure Container Registry](/user-guide//integrations/enabling-azure-resources/enabling-azure-container-registry/))
 
-{@@ endif @@}
+{{< /markdown >}}
+{{< /variant >}}
 
 #### Specifying a custom container image in the CLI
 
 The `union` CLI provides a way to specify a custom container image that's built
 by Union's image builder service. To do this, run the following command:
 
-```{code-block} shell
-union create workspace-config --init custom_image workspace.yaml
+```shell
+$ union create workspace-config --init custom_image workspace.yaml
 ```
 
 This will create a `workspace.yaml` file with a `container_image` image key
-that supports the [ImageSpec](../development-cycle/image-spec.md) arguments.
+that supports the [ImageSpec](/user-guide/development-cycle/image-spec/) arguments.
 When you run the `union create workspace` command with this `workspace.yaml` file,
 it will first build the image before creating the workspace definition.
 
@@ -373,24 +390,23 @@ it will first build the image before creating the workspace definition.
 If you want to clone a private GitHub repository into your workspace, you can
 using the pre-installed `gh` CLI to authenticate your workspace session:
 
-```{code-block} shell
-gh auth login
+```shell
+$ gh auth login
 ```
 
 You'll be prompted to enter either a GitHub personal access token (PAT) or
 authenticate via the browser.
 
-```{note}
-You can create and set a `GITHUB_TOKEN` secret to set the access token for your
-workspace, but you'll need to authenticate via `gh auth login` in every new
-workspace session:
-
-- Create a secret with the `union create secret` command
-- Create a workspace or update an existing one with the `GITHUB_TOKEN` secret,
-  setting the environment variable to e.g. `GITHUB_TOKEN`
-- In the workspace session, run `gh auth login` to authenticate with GitHub and
-  use the `$GITHUB_TOKEN` environment variable as the personal access token.
-```
+> [!NOTE]
+> You can create and set a `GITHUB_TOKEN` secret to set the access token for your
+> workspace, but you'll need to authenticate via `gh auth login` in every new
+> workspace session:
+>
+> * Create a secret with the `union create secret` command
+> * Create a workspace or update an existing one with the `GITHUB_TOKEN` secret,
+>   setting the environment variable to e.g. `GITHUB_TOKEN`
+> * In the workspace session, run `gh auth login` to authenticate with GitHub and
+>   use the `$GITHUB_TOKEN` environment variable as the personal access token.
 
 ## Sorting and filtering workspaces
 
@@ -399,9 +415,9 @@ toggle on the top left of the workspaces list view.
 
 ![Active Workspaces](/_static/images/user-guide/core-concepts/workspaces/active-workspaces.png)
 
-Sort by recently updated by clicking on the `Recently updated` toggle on the
+Sort by recently updated by clicking on the **Recently updated** toggle on the
 top right of the workspaces list view, and you can also sort by recently
-updated by clicking on the `Recently updated` toggle on the top right of the
+updated by clicking on the **Recently updated** toggle on the top right of the
 workspaces list view.
 
 ![Filtering and Sorting Workspaces](/_static/images/user-guide/core-concepts/workspaces/filtering-sorting-workspaces.png)
@@ -411,9 +427,9 @@ workspaces list view.
 You may come across issues starting up a workspace due to various reasons,
 including:
 
-- Resource requests not being available on your Union cluster.
-- Secrets key typpos of not being defined on the project/domain.
-- Container image typos or container images not existing.
+* Resource requests not being available on your Union cluster.
+* Secrets key typpos of not being defined on the project/domain.
+* Container image typos or container images not existing.
 
 Under the hood, workspaces are powered by Union tasks, so to debug these kinds
 of issues, the workspace detail page provides a link to the underlying

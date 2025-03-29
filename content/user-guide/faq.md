@@ -1,6 +1,6 @@
 ---
 title: FAQ
-weight: 9
+weight: 10
 variants: +flyte -serverless +byoc +byok
 ---
 
