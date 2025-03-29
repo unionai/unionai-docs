@@ -15,7 +15,7 @@ When you create a reference launch plan, be sure to verify that the workflow int
 
 ## Example
 
-<!-- Remove the mention of Flytesnacks below -->
+<!-- TODO: Remove the mention of Flytesnacks below -->
 In this example, we create a reference launch plan for the [`simple_wf`](https://github.com/flyteorg/flytesnacks/blob/master/examples/basics/basics/workflow.py#L25) workflow from the [Flytesnacks repository](https://github.com/flyteorg/flytesnacks).
 
 1. Clone the Flytesnacks repository:

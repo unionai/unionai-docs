@@ -29,14 +29,12 @@ For example: `{{< key default_project >}}/development`, `{{< key default_project
 
 The following is the full list of actions available in the {{< key product_name >}} system:
 
-* `administer_project`: Permission to [archive and update a project]() and manage [customizable resources]().
+* `administer_project`: Permission to archive and update a project and manage customizable resources.
 * `manage_permissions`: Permission to manage user and machine applications and their policy assignments.
 * `create_flyte_executions`: Permission to launch new flyte executions.
 * `register_flyte_inventory`: Permission to register workflows, tasks, and launch plans.
 * `view_flyte_executions`: Permission to view historical flyte execution data.
 * `view_flyte_inventory`: Permission to view registered workflows, tasks, and launch plans.
-
-<!-- TODO: add links^^-->
 
 ## Built-in policies
 

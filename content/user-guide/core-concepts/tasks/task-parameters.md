@@ -29,8 +29,7 @@ You pass the following parameters to the `@{{< key kit_as >}}.task` decorator:
 
 * `docs`: Documentation about this task.
 
-* `enable_deck`: If true, this task will output a Deck which can be used to visualize the task execution. See [Decks]().
-  <!-- TODO: Add link -->
+* `enable_deck`: If true, this task will output a Deck which can be used to visualize the task execution. See [Decks](/user-guide/development-cycle/decks/#decks).
 
 ```python
 @{{< key kit_as >}}.task(enable_deck=True)

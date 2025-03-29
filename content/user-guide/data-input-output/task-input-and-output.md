@@ -47,8 +47,6 @@ There are a number of ways to change the raw data location:
 * At the execution level:
   * In the UI, set the **Raw output data config** parameter in the execution dialog.
 
-<!-- TODO: add links above -->
-
 These options change the raw data location for **all large types** (`FlyteFile`, `FlyteDirectory`, `DataFrame`, any other large data object).
 
 If you are only concerned with controlling where raw data used by `FlyteFile` or `FlyteDirectory` is stored, you can [set the `remote_path` parameter](./flyte-file-and-flyte-directory#specifying-remote_path-for-a-flytefile-or-flytedirectory) in your task code when initializing objects of those types.

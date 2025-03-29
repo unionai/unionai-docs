@@ -5,7 +5,7 @@ variants: +flyte -serverless +byoc +byok
 ---
 
 
-<!-- Check for vartiant accuracy -->
+<!-- TODO: Check for vartiant accuracy -->
 # Agents
 
 Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
