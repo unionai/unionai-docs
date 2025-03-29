@@ -56,7 +56,7 @@ In the following example, the tasks calculate an ellipse area. This name has to 
 
 `input_data_dir` -> where inputs will be written to.
 
-`output_data_dir` -> where {{< kit Product >}} will expect the outputs to exist.
+`output_data_dir` -> where {{< key product_name >}} will expect the outputs to exist.
 
 The `inputs` and `outputs` specify the interface for the task; thus it should be an ordered dictionary of typed input and output variables.
 
@@ -224,7 +224,7 @@ See the [Integration section]() for examples.
 <!-- TODO: Add link to API -->
 
 
-<!-- INCORPORATE THE FOLLOWING ABOVE WHERE NECESSARY
+<!-- TODO: INCORPORATE THE FOLLOWING ABOVE WHERE NECESSARY
 
 ## @{{< key kit_as >}}.task parameters
 
