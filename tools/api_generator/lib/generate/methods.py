@@ -1,12 +1,12 @@
 import io
-from typing import List
+from typing import List, Optional
 
 from lib.ptypes import MethodInfo
 from lib.generate.docstring import docstring_summary
 from lib.generate.helper import generate_anchor_from_name
 
 
-def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper):
+def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper, is_class: bool = False):
     # Filter out 'self' parameter
     filtered_params = [param for param in method["params"] if param["name"] != "self"]
 
@@ -16,7 +16,11 @@ def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper
             output.write(f"def {name}()\n")
             return
 
-        output.write(f"def {name}(\n")
+        if is_class:
+            output.write(f"class {name}(\n")
+        else:
+            output.write(f"def {name}(\n")
+
         for param in filtered_params:
             output.write(f"    {param['name']}")
             if "type" in param and param["type"]:
@@ -24,29 +28,39 @@ def generate_method_decl(name: str, method: MethodInfo, output: io.TextIOWrapper
                     f": {format_type(param["name"], param['type'], code=True)}"
                 )
             output.write(",\n")
-        output.write("):\n")
+
+        if not is_class and method["return_type"] and method["return_type"] != "None":
+            output.write(f") -> {format_type(None, method["return_type"], markdown=False)}\n")
+        else:
+            output.write(")\n")
     finally:
         output.write("```\n")
 
 
-def format_type(name: str, type: str | None, code=False, escape_or=False) -> str:
+def format_type(name: Optional[str], type: str | None, code=False, escape_or=False, markdown=True) -> str:
     output = ""
-    if name == "kwargs":
-        output = "`**kwargs`"
-    elif name == "args":
-        output = "`*args`"
-    elif type and type.startswith("<class '") and type.endswith("'>"):
-        output = type[8:-2]
-    else:
-        output = type if type != "" else ""
+    if name is not None:
+        if name == "kwargs":
+            output = "`**kwargs`"
+        elif name == "args":
+            output = "`*args`"
 
     if output == "":
+        if type and type.startswith("<class '") and type.endswith("'>"):
+            output = type[8:-2]
+        else:
+            output = type if type != "" else ""
+
+    if output == "" or output is None:
         return ""
 
     if escape_or:
         output = output.replace("|", "\\|")
 
-    return f"`{output}`" if not code else str(output)
+    if markdown:
+        return f"`{output}`" if not code else str(output)
+    else:
+        return f"{output}" if not code else str(output)
 
 
 def generate_params(method: MethodInfo, output: io.TextIOWrapper):

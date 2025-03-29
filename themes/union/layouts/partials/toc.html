@@ -1,0 +1,31 @@
+{{ $maxTocLevel := .Params.toc_max | default 99 }}
+{{ $headingSelector := slice }}
+{{ $level := 1 }}
+{{ range seq 10 }}
+    {{ $headingSelector = $headingSelector | append (printf "h%d" $level) }}
+    {{ $level = $level | add 1 }}
+    {{ if gt $level $maxTocLevel }}
+        {{ break }}
+    {{ end }}
+{{ end }}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        tocbot.init({
+            tocSelector: ".toc",
+            contentSelector: ".main-content",
+            headingSelector: '{{ delimit $headingSelector ", " }}',
+            collapseDepth: 6, // Show all levels
+            scrollSmooth: true,
+            scrollSmoothDuration: 420,
+            // activeLinkClass: "is-active-link",
+            headingLabelCallback: (string) => string,
+            positionFixedSelector: ".toc",
+            positionFixedClass: "is-fixed",
+            fixedSidebarOffset: 0,
+        });
+    });
+</script>
+<div class="toc-container">
+    <div class="toc-header">On this page</div>
+    <div class="toc"></div>
+</div>

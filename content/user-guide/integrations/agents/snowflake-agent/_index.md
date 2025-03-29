@@ -37,7 +37,7 @@ SELECT
 
 ## Example usage
 
-For a usage example, see [Snowflake agent example](./snowflake-agent-example.md).
+For a usage example, see [Snowflake agent example](./snowflake-agent-example).
 
 ## Local testing
 

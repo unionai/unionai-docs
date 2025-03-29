@@ -1,3 +1,15 @@
+.sidebar {
+  position: fixed;
+  width: var(--sidebar-width);
+  padding: 1rem 1.5rem;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  height: calc(100vh - var(--header-height) - var(--tabs-height));
+}
+
 .sidebar > nav > ul > li > .section-title,
 .sidebar > nav > ul > li > .section-pages {
   padding-left: 0.75rem;
@@ -24,7 +36,7 @@
 }
 .site-nav .section-title {
   /* font-weight: 600; */
-  font-size: 1rem;
+  font-size: var(--sidebar-font-size);
   color: var(--text-color);
   display: block;
   padding: 0.375rem var(--menu-indent);
@@ -32,9 +44,9 @@
 }
 .site-nav .page-link {
   display: block;
-  padding: 0.375rem var(--menu-indent);
+  padding: 0.375rem var(--menu-subindent);
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: var(--sidebar-font-size);
 }
 .site-nav .section-pages {
   padding-left: var(--menu-indent);
@@ -71,4 +83,30 @@
 }
 .site-nav .chevron.rotated {
   transform: rotate(-90deg);
+}
+
+.sidebar-icon {
+  font-size: 1.25rem;
+}
+
+.tabs-buttons,
+.tabs-buttons select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.drawer-sidebar .signup {
+  margin: 1rem;
+  text-align: center;
+}
+
+.drawer-sidebar .signup sl-button {
+  width: 60%;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+header .signup {
+  margin: 0 1rem;
 }

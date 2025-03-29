@@ -51,7 +51,7 @@ There are a number of ways to change the raw data location:
 
 These options change the raw data location for **all large types** (`FlyteFile`, `FlyteDirectory`, `DataFrame`, any other large data object).
 
-If you are only concerned with controlling where raw data used by `FlyteFile` or `FlyteDirectory` is stored, you can [set the `remote_path` parameter](./flyte-file-and-flyte-directory.md#specifying-remote_path-for-a-flytefile-or-flytedirectory) in your task code when initializing objects of those types.
+If you are only concerned with controlling where raw data used by `FlyteFile` or `FlyteDirectory` is stored, you can [set the `remote_path` parameter](./flyte-file-and-flyte-directory#specifying-remote_path-for-a-flytefile-or-flytedirectory) in your task code when initializing objects of those types.
 
 ### Setting up your own object store
 
@@ -60,7 +60,7 @@ While this bucket is located in your {{< key product_name >}} BYOC data plane an
 
 When changing the default raw data location, the target should therefore be a bucket that you set up, separate from the {{< key product_name >}}-implemented bucket.
 
-For information on setting up your own bucket and enabling access to it, see [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md), [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md), or [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md), depending on your cloud provider.
+For information on setting up your own bucket and enabling access to it, see [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage), or [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage), depending on your cloud provider.
 
 
 

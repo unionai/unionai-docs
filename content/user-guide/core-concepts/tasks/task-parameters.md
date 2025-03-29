@@ -1,6 +1,6 @@
 ---
 title: Task parameters
-weight: 2
+weight: 3
 variants: +flyte +serverless +byoc +byok
 ---
 
@@ -14,15 +14,15 @@ You pass the following parameters to the `@{{< key kit_as >}}.task` decorator:
   For more information, see [Specifying accelerators]().
   <!-- TODO: Add link to API -->
 
-* `cache`: See [Caching](../caching.md).
+* `cache`: See [Caching](../caching).
 
-* `cache_serialize`: See [Caching](../caching.md).
+* `cache_serialize`: See [Caching](../caching).
 
-* `cache_version`: See [Caching](../caching.md).
+* `cache_version`: See [Caching](../caching).
 
 * `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
 
-* `container_image`: See [`ImageSpec`](./task-software-environment/imagespec.md).
+* `container_image`: See [`ImageSpec`](./task-software-environment/imagespec).
 
 * `deprecated`: A string that can be used to provide a warning message for deprecated task.
   The absence of a string, or an empty string, indicates that the task is active and not deprecated.
@@ -38,11 +38,11 @@ def my_task(my_str: str):
     print("hello {my_str}")
 ```
 
-* `environment`: See [Environment variables](./task-software-environment/environment-variables.md).
+* `environment`: See [Environment variables](./task-software-environment/environment-variables).
 
-* `interruptible`: See [Interruptible instances](./task-hardware-environment/interruptible-instances.md).
+* `interruptible`: See [Interruptible instances](./task-hardware-environment/interruptible-instances).
 
-* `limits`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md).
+* `limits`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources).
 
 * `node_dependency_hints`: A list of tasks, launch plans, or workflows that this task depends on.
   This is only for dynamic tasks/workflows, where {{< key product_name >}} cannot automatically determine the dependencies prior to runtime.
@@ -63,21 +63,21 @@ def launch_dynamically():
     return [launchplan0]*10
 ```
 
-* `pod_template`: See [Task hardware environment](./task-hardware-environment/_index.md#pod_template-and-pod_template_name-task-parameters).
+* `pod_template`: See [Task hardware environment](./task-hardware-environment#pod_template-and-pod_template_name-task-parameters).
 
-* `pod_template_name`: See [Task hardware environment](./task-hardware-environment/_index.md#pod_template-and-pod_template_name-task-parameters).
+* `pod_template_name`: See [Task hardware environment](./task-hardware-environment#pod_template-and-pod_template_name-task-parameters).
 
-* `requests`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources.md)
+* `requests`: See [Customizing task resources](./task-hardware-environment/customizing-task-resources)
 
 * `retries`: Number of times to retry this task during a workflow execution.
   Tasks can define a retry strategy to let the system know how to handle failures (For example: retry 3 times on any kind of error).
-  For more information, see [Interruptible instances](./task-hardware-environment/interruptible-instances.md)
+  For more information, see [Interruptible instances](./task-hardware-environment/interruptible-instances)
   There are two kinds of retries *system retries* and *user retries*.
 
-* `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets.md)
+* `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets)
 
 * `task_config`: Configuration for a specific task type.
-  See the [{{< key product_name >}} Agents documentation](../../integrations/agents/_index.md) and
+  See the [{{< key product_name >}} Agents documentation](../../integrations/agents) and
   [{{< key product_name >}} plugins documentation]() for the right object to use.
   <!-- TODO: Add link to API -->
 

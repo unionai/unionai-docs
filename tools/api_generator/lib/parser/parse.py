@@ -26,6 +26,7 @@ def parse(package: str) -> ParsedInfo:
         clss[info["name"]] = get_classes(info, pkg)
         info["methods"] = get_functions(info, pkg)
         info["variables"] = get_variables(info, pkg)
+        print(f"Parsed {info['name']}", file=stderr)
 
     pkgs = [info for info, _ in pkgAndMods]
 

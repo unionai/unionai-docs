@@ -1,4 +1,4 @@
-.tabs-nav {
+body > .tabs .tabs-nav {
   height: var(--tabs-height);
   background-color: var(--bg-color);
   /* border-bottom: 1px solid var(--border-color); */

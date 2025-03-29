@@ -1,23 +1,26 @@
 {{- $variant := .Site.Params.variant -}} {{- $access := partial
 "page-allowed.html" . -}} {{- if $access.allowed -}}
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
+<html lang="{{- .Site.Language.Lang -}}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ .Title }} | {{ .Site.Title }}</title>
-    <link rel="icon" href="{{ "images/favicon.ico" | relURL }}"/>
-    <link rel="stylesheet" href="{{ "css/api.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/base.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/breadcrumb.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/card.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/footer.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/header.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/images.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/mermaid.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/markdown.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/sidebar.css" | relURL }}" />
-    <link rel="stylesheet" href="{{ "css/tabs.css" | relURL }}" />
+    <title>{{- .Title -}} | {{- .Site.Title -}}</title>
+    <link rel="icon" href="{{- "images/favicon.ico" | relURL -}}"/>
+    <link rel="stylesheet" href="{{- "css/api.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/breadcrumb.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/card.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/codeblock.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/footer.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/header.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/images.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/key.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/markdown.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/search.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/sidebar.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/tabs.css" | relURL -}}" />
+    <link rel="stylesheet" href="{{- "css/toc.css" | relURL -}}" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
@@ -83,36 +86,43 @@
       });
     </script>
     {{ end }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.min.js"></script>
+    <script lang="javascript" src="{{- "js/key.js" | relURL -}}"></script>
+    <script lang="javascript" src="{{- "js/theme.js" | relURL -}}"></script>
+    <link rel="stylesheet" href="{{- "css/responsive.css" | relURL -}}" />
   </head>
   <body>
-    <div class="header">{{ partial "header.html" . }}</div>
-    <div class="tabs">{{ partial "tabs.html" . }}</div>
+    <header>{{- partial "header.html" . -}}</header>
+    <div class="tabs">{{- partial "tabs.html" (dict "page" .) -}}</div>
     <div class="container">
-      <div class="sidebar">{{ partial "sidebar.html" . }}</div>
+      <div class="sidebar">{{- partial "sidebar.html" . -}}</div>
       <div class="main-content">
-        {{ if $access.development }}
-        <div class="
-          not-in-prod
-          {{ if not $access.excluded }}not-allowed{{end}}
-          {{ if $access.excluded }}excluded{{end}}
-          page-warn
-          ">
+        {{- if $access.development -}}
+        {{- $classes := slice "not-in-prod" "page-warn" }}
+        {{- if $access.excluded -}}
+        {{- $classes = $classes | append "not-allowed" -}}
+        {{- else -}}
+        {{- $classes = $classes | append "not-allowed" -}}
+        {{- end -}}
+        <div class='{{- delimit $classes " " -}}'>
           <div style="flex: 1">
-            {{ if $access.excluded }}
-            This page was explicitly excluded from '{{ $variant }}'.
-            {{ else }}
-            This page visibility is not declared for '{{ $variant }}'.
+            {{- if $access.excluded -}}
+            This page was explicitly excluded from '{{- $variant -}}'.
+            {{- else -}}
+            This page visibility is not declared for '{{- $variant -}}'.
             <div class="not-allowed how-to-fix">
               <a href="https://github.com/unionai/docs-builder/blob/master/AUTHOR.md#page-visibility">How to fix?</a>
             </div>
-            {{ end }}
+            {{- end -}}
           </div>
-          <code>{{ strings.TrimSuffix "/" .RelPermalink }}</code>
+          <code>{{- strings.TrimSuffix "/" .RelPermalink -}}</code>
         </div>
-        {{ end }}
-        {{ partial "breadcrumb.html" . }}
-        {{ block "main" . }}{{ end }}
+        {{- end -}}
+        {{- partial "breadcrumb.html" . -}}
+        {{- block "main" . -}}{{- end -}}
       </div>
+      {{- partial "toc.html" . -}}
     </div>
   </body>
 </html>

@@ -22,7 +22,7 @@ def parse_method(name: str, member: object) -> Optional[MethodInfo]:
     }
     return_type = (
         doc_info["return_type"]
-        if doc_info != None and "return_type" in doc_info
+        if doc_info != None and "return_type" in doc_info and doc_info["return_type"] != None
         else (
             sig.return_annotation
             if str(sig.return_annotation) != "<class 'inspect._empty'>"
@@ -66,12 +66,6 @@ def parse_property(name: str, member: object) -> Optional[PropertyInfo]:
 
 
 def parse_variable(name: str, member: object) -> Optional[VariableInfo]:
-    if not (not callable(member) and not isinstance(member, type)):
-        return None
-
-    if name.startswith("_"):
-        return None
-
     mtype = type(member).__name__
     if mtype == "module":
         return None
@@ -79,6 +73,6 @@ def parse_variable(name: str, member: object) -> Optional[VariableInfo]:
     var_info = VariableInfo(
         name=name,
         type=mtype,
-        value=str(member),
     )
+
     return var_info

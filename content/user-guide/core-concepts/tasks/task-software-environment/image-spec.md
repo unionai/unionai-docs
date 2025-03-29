@@ -64,8 +64,8 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 
 ## Install and configure `{{< key cli >}}` and Docker
 
-To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling.md).
-To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Quick start](../../../../quick-start.md).
+To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling).
+To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Quick start](../../../../quick-start).
 
 ## Set up an image registry
 
@@ -79,19 +79,19 @@ Additionally, you will need to ensure that the specific image, once pushed to th
 In this example, we use GitHub's `ghcr.io` container registry.
 See [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) for more information.
 
-For an example using Amazon ECR see [ImageSpec with ECR](./imagespec-with-ecr.md).
-For an example using Google Artifact Registry see [ImageSpec with GAR](./imagespec-with-gar.md).
+For an example using Amazon ECR see [ImageSpec with ECR](./imagespec-with-ecr).
+For an example using Google Artifact Registry see [ImageSpec with GAR](./imagespec-with-gar).
 
 ## Authenticate to the registry
 
 You will need to set up your local Docker client to authenticate with GHCR. This is needed for `{{< key cli >}}` CLI to be able to push the image built according to the `ImageSpec` to GHCR.
 
-Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
+Follow the directions [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry).
 
 ## Set up your project and domain on {{< key product_name >}}
 
 You will need to set up a project on your {{< key product_name >}} instance to which you can register your workflow.
-See [Setting up the project](../../../development-cycle/setting-up-a-project.md).
+See [Setting up the project](../../../development-cycle/setting-up-a-project).
 
 ## Understand the requirements
 
@@ -106,7 +106,7 @@ Assuming you are in the local project root, run `pip install -r requirements.txt
 
 You can now run the workflow locally.
 In the project root directory, run: `{{< key cli >}} run workflows/imagespec-simple-example.py wf`.
-See [Running your code](../../../development-cycle/running-your-code.md) for more details.
+See [Running your code](../../../development-cycle/running-your-code) for more details.
 
 > [!NOTE]
 > When you run the workflow in your local Python environment, the image is not built or pushed (in fact, no container image is used at all).
@@ -127,7 +127,7 @@ To see the registered workflow, go to the UI and navigate to the project and dom
 ## Ensure that the image is publicly accessible
 
 If you are using the `ghcr.io` image registry, you must switch the visibility of your container image to Public before you can run your workflow on {{< key product_name >}}.
-See [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
+See [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#about-inheritance-of-access-permissions-and-visibility).
 
 ## Run the workflow on {{< key product_name >}}
 
@@ -142,3 +142,32 @@ Assuming your image is publicly accessible, you can now run the workflow on {{< 
 > ... Back-off pulling image ...
 > ... Error: ImagePullBackOff
 > ```
+
+
+## Multi-image workflows
+
+You can also specify different images per task within the same workflow.
+This is particularly useful if some tasks in your workflow have a different set of dependencies where most of the other tasks can use another image.
+
+In this example we specify two tasks: one that uses CPUs and another that uses GPUs.
+For the former task, we use the default image that ships with {{< key kit >}} while for the latter task, we specify a pre-built image that enables distributed training with the Kubeflow Pytorch integration.
+
+```python
+import numpy as np
+import torch.nn as nn
+
+@task(
+    requests=Resources(cpu="2", mem="16Gi"),
+    container_image="ghcr.io/flyteorg/flytekit:py3.9-latest",
+)
+def get_data() -> Tuple[np.ndarray, np.ndarray]:
+    ...  # get dataset as numpy ndarrays
+
+
+@task(
+    requests=Resources(cpu="4", gpu="1", mem="16Gi"),
+    container_image="ghcr.io/flyteorg/flytecookbook:kfpytorch-latest",
+)
+def train_model(features: np.ndarray, target: np.ndarray) -> nn.Module:
+    ...  # train a model using gpus
+```

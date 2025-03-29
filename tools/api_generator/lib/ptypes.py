@@ -1,12 +1,13 @@
 from types import ModuleType
 from typing import Dict, List, MutableSequence, NotRequired, Optional, TypedDict
 
-
-class VariableInfo(TypedDict):
+class PropertyInfo(TypedDict):
     name: str
-    type: str
-    value: str
+    type: NotRequired[Optional[str]]
+    doc: NotRequired[Optional[str]]
 
+class VariableInfo(PropertyInfo):
+    pass
 
 type ParamDict = Dict[str, ParamInfo]
 
@@ -28,10 +29,6 @@ class MethodInfo(TypedDict):
     return_type: str
 
 
-class PropertyInfo(TypedDict):
-    name: str
-    type: NotRequired[Optional[str]]
-    doc: NotRequired[Optional[str]]
 
 
 class ClassDetails(TypedDict):

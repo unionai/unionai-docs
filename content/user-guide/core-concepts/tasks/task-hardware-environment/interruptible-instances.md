@@ -1,6 +1,6 @@
 ---
 title: Interruptible instances
-weight: 3
+weight: 4
 variants: +flyte -serverless +byoc +byok
 ---
 
@@ -18,7 +18,7 @@ In order to use an interruptible instance for a compute workload you have to be 
 {{< variant byoc byok >}}
 {{< markdown >}}
 
-When onboarding your organization onto {{< key product_name >}}, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane.md).
+When onboarding your organization onto {{< key product_name >}}, you [specify the configuration of your cluster](../../../data-plane-setup/configuring-your-data-plane).
 Among the options available is the choice of whether to use interruptible instances.
 
 For each interruptible instance node group that you specify, an additional on-demand node group (though identical in every other respect to the interruptible one) will also be configured.
@@ -29,7 +29,7 @@ This on-demand node group will be used as a fallback when attempts to complete t
 {{< variant flyte >}}
 {{< markdown >}}
 
-When [deploying your Flyte cluster](../../../../deployment/_index.md) among the options available is the choice of whether to use interruptible instances.
+When [deploying your Flyte cluster](../../../../deployment) among the options available is the choice of whether to use interruptible instances.
 
 For each interruptible instance node group that you specify, we recommend that you configure an additional on-demand node group (though identical in every other respect to the interruptible one) so that this on-demand node group will be used as a fallback when attempts to complete the task on the interruptible instance have failed.
 
@@ -53,7 +53,7 @@ For example:
 
 ## Workflow level interruptible
 
-Interruptible is also available [at the workflow level](../../workflows/_index.md). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
+Interruptible is also available [at the workflow level](../../workflows). If you set it there, it will apply to all tasks in the workflow that do not themselves have an explicit value set. A task-level interruptible setting always overrides whatever the workflow-level setting is.
 
 ## Advantages and disadvantages of interruptible instances
 

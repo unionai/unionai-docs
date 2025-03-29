@@ -1,12 +1,12 @@
 ---
 title: Caching
-weight: 7
+weight: 8
 variants: +flyte +serverless +byoc +byok
 ---
 
 # Caching
 
-{{< key product_name >}} allows you to cache the output of nodes ([tasks](./tasks/_index.md), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans.md)) to make subsequent executions faster.
+{{< key product_name >}} allows you to cache the output of nodes ([tasks](./tasks), [subworkflows, and sub-launch plans](./workflows/subworkflows-and-sub-launch-plans)) to make subsequent executions faster.
 
 Caching is useful when many executions of identical code with the same input may occur.
 
@@ -281,7 +281,7 @@ During the next execution, {{< key product_name >}} executes the process again a
 ### Caching when running locally
 
 The description above applies to caching when executing a node remotely on your {{< key product_name >}} cluster.
-Caching is also available [when running on a local cluster](../development-cycle/running-in-a-local-cluster.md).
+Caching is also available [when running on a local cluster](../development-cycle/running-in-a-local-cluster).
 
 When running locally the caching mechanism is the same except that the cache key does not include **project** or **domain** (since there are none).
 The cache key is composed only of **cache version**, **signature**, and **inputs**.

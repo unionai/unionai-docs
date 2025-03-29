@@ -116,7 +116,7 @@ def generate_class_details(
     )
 
     if init_method:
-        generate_method_decl(info["name"], init_method, output)
+        generate_method_decl(info["name"], init_method, output, is_class=True)
         if init_method["doc"]:
             output.write(f"{init_method['doc']}\n\n")
         generate_params(init_method, output)

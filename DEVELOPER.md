@@ -4,18 +4,31 @@
 You can run the full environment locally and have live preview and other niceties.
 
 - [Requirements](#requirements)
-- [Running Locally](#running-locally)
-  - [Changing 'variants'](#changing-variants)
-  - [Identifying Problems: Missing Content](#identifying-problems-missing-content)
-  - [Identifying Problems: Page Visibility](#identifying-problems-page-visibility)
+- [Building and running locally](#building-and-running-locally)
 - [Building Production](#building-production)
   - [Testing Production Build](#testing-production-build)
+- [Developer Experience](#developer-experience)
+  - [Controlling Development Environment](#controlling-development-environment)
+  - [Changing 'variants'](#changing-variants)
+- [Troubleshootting](#troubleshootting)
+  - [Identifying Problems: Missing Content](#identifying-problems-missing-content)
+  - [Identifying Problems: Page Visibility](#identifying-problems-page-visibility)
 
 ## Requirements
 
-- Hugo (https://gohugo.io/)
+1. Hugo (https://gohugo.io/)
 
-      MacOS$ brew install hugo
+        $ brew install hugo
+
+2. A preferences / override file with your configuration
+
+   The tool is flexible and has multiple knobs. Please review `hugo.local.toml~sample`,
+   and configure to meet your preferences.
+
+        $ cp hugo.local.toml~sample hugo.local.toml
+
+3. Make sure you review `hugo.local.toml`.
+  
 
 ## Building and running locally
 
@@ -23,8 +36,52 @@ You can run the full environment locally and have live preview and other nicetie
 $ make dev
 ```
 
+
+
+## Building Production
+
+```
+$ make dist
+```
+
+### Testing Production Build
+
+You can run a local web server and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
+
+To start a server:
+
+```
+$ make serve PORT=<nnnnn>
+```
+
+Example:
+
+```
+$ make server PORT=4444
+```
+
+Then you open the browser on `http://localhost:<port>` to see the content. In the example above, it would be `http://localhost:4444/`
+
+
+This will create all the variants into the `dist` folder.
+
+## Developer Experience
+
 This will launch the site in development mode.
 The changes are hot reloaded: just change in your favorite editor and it will refresh immediately on the browser.
+
+### Controlling Development Environment
+
+You can change how the development environment works by settings values in `hugo.local.toml`. The following settings are available:
+
+* `variant`          - The current variant to display. Change this in 'hugo.toml', save, and the browser will refresh automatically 
+                       with the new variant.
+* `show_inactive`    - If 'true', it will show all the content that did not match the variant. 
+                       This is useful when the page contains multiple sections that vary with the selected variant,
+                       so you can see all at once.
+* `highlight_active` - If 'true', it will also highlight the *current* content for the variant.
+* `highlight_keys`   - If 'true'', it highlights replacement keys and their values
+
 
 ### Changing 'variants'
 
@@ -53,6 +110,7 @@ highlight_active = true
 
 > You can create you own copy of `hugo.local.toml` by copying from `hugo.local.toml~sample` to get started.
 
+## Troubleshootting
 
 ### Identifying Problems: Missing Content
 

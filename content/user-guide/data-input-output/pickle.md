@@ -41,7 +41,7 @@ import {{< key kit_import >}}
 and transferred between tasks as both input and output data.
 
 > [!NOTE]
-> Alternatively, you can [turn this object into a dataclass](./dataclass.md) for improved performance.
+> Alternatively, you can [turn this object into a dataclass](./dataclass) for improved performance.
 > We have used a simple object here for demonstration purposes.
 
 ```python

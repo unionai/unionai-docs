@@ -1,12 +1,12 @@
 ---
 title: Viewing logs
-weight: 5
+weight: 6
 variants: +flyte +serverless +byoc +byok
 ---
 
 # Viewing logs
 
-In the [Execution view](../workflows/viewing-workflow-executions.md), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.
+In the [Execution view](../workflows/viewing-workflow-executions), selecting a task from the list in the **Nodes** tab will open the task details in the right panel.
 
 Within that panel, in the **Execution** tab, under **Logs**, you will find a link labeled **Task Logs**.
 

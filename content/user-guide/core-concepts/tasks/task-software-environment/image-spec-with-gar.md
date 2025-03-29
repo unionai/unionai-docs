@@ -18,7 +18,7 @@ If you are using GAR in the same Google Cloud Platform (GCP) project as your {{<
 Access to GAR in the same project is enabled by default.
 
 If you want to store your task container images in a GAR repository in a GCP project _other than the one that holds your data plane_, you must enable the node pool of your data plane to access that GAR.
-See [Enable Google Artifact Registry](../../../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md) for details.
+See [Enable Google Artifact Registry](../../../integrations/enabling-gcp-resources/enabling-google-artifact-registry) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -118,7 +118,7 @@ The directions are also reproduced below. (We show the directions for the `us-ea
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
+For example, to use the example GAR repository shown here, we would alter the Python code in the [previous section](.), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(
