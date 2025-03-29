@@ -1,10 +1,10 @@
 ---
-title: ImageSpec
+title: Local image building
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# ImageSpec
+# Local image builduing
 
 With {{< key product_name >}}, every task in a workflow runs within its own dedicated container.
 Since a container requires a container image to run, every task in {{< key product_name >}} must have a container image associated with it.
