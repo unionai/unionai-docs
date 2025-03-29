@@ -39,7 +39,7 @@ Select **Workspaces** in the left navigation bar.
 
 Start the default workspace by clicking on the `default` workspace item.
 
-![Start workspace](/_static/gifs/start-workspace.gif)
+![Start workspace](/_static/images/quick-start/serverless-workspace-start.png))
 {{< /markdown >}}
 {{< /dropdown >}}
 
@@ -51,7 +51,8 @@ again to open the workspace.
 
 _It will take a few moments to load the VSCode interface._
 
-![Open workspace](/_static/gifs/open-workspace.gif)
+![Open workspace](/_static/images/quick-start/serverless-workspace-open.png)
+:::)
 
 {{< /markdown >}}
 {{< /dropdown >}}
@@ -79,7 +80,7 @@ In the walkthrough, you'll learn how to:
 The workspace will terminate after 20 minutes of idle time, but you can also
 stop it manually on the Workspaces page.
 
-![Open workspace](/_static/gifs/stop-workspace.gif)
+![Open workspace](/_static/images/quick-start/serverless-workspace-stop.png)
 
 {{< /markdown >}}
 {{< /dropdown >}}
