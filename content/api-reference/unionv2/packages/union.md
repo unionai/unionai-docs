@@ -41,10 +41,8 @@ async def my_task():
 | Method | Description |
 |-|-|
 | [`ctx()`](#ctx) | Retrieve the current task context from the context variable. |
-| [`deploy()`](#deploy) | Deploy the given environment or environments and their dependent environments. |
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Union system with the given configuration. |
-| [`run()`](#run) | Run an async `@env. |
 | [`with_runcontext()`](#with_runcontext) | Create a new `AsyncRunnable` instance with the given run context. |
 
 
@@ -57,24 +55,6 @@ def ctx()
 ```
 Retrieve the current task context from the context variable.
 
-
-#### deploy()
-
-```python
-def deploy(
-    envs: typing.Union[union._environment.Environment, typing.List[union._environment.Environment]],
-    dryrun: bool,
-) -> union._deploy.Deployment
-```
-Deploy the given environment or environments and their dependent environments.
-
-This method will recursively deploy the environment and its dependencies, if not already deployed.
-
-
-| Parameter | Type |
-|-|-|
-| `envs` | `typing.Union[union._environment.Environment, typing.List[union._environment.Environment]]` |
-| `dryrun` | `bool` |
 
 #### group()
 
@@ -125,46 +105,14 @@ remote API methods are called. Thread-safe implementation.
 | `project` | `str \| None` |
 | `domain` | `str \| None` |
 
-#### run()
-
-```python
-def run(
-    func: TaskTemplate,
-    args,
-    kwargs,
-) -> Run
-```
-Run an async `@env.task` or `TaskTemplate` instance. The existing async context will be used.
-
-Example:
-```python
-import union
-env = union.Environment("example")
-
-@env.task
-async def example_task(x: int, y: str) -> str:
-    return f"{x} {y}"
-
-if __name__ == "__main__":
-    union.run(example_task, 1, y="hello")
-```
-
-
-
-| Parameter | Type |
-|-|-|
-| `func` | `TaskTemplate` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 #### with_runcontext()
 
 ```python
 def with_runcontext(
-    run_id: Optional[str],
+    name: Optional[str],
     service_account: Optional[str],
-    local: Literal['off', 'on', 'strict'],
-) -> Runnable
+    mode: Mode,
+) -> _Runner
 ```
 Create a new `AsyncRunnable` instance with the given run context.
 
@@ -185,9 +133,9 @@ if __name__ == "__main__":
 
 | Parameter | Type |
 |-|-|
-| `run_id` | `Optional[str]` |
+| `name` | `Optional[str]` |
 | `service_account` | `Optional[str]` |
-| `local` | `Literal['off', 'on', 'strict']` |
+| `mode` | `Mode` |
 
 ## union.Environment
 
@@ -236,6 +184,7 @@ class Environment(
 | Method | Description |
 |-|-|
 | [`clone_with()`](#clone_with) | Clone the environment with new settings. |
+| [`set_built_image()`](#set_built_image) |  |
 
 
 #### clone_with()
@@ -265,6 +214,17 @@ Clone the environment with new settings.
 | `reusable` | `Union[ReusePolicy, None]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `env_dep_hints` | `Optional[List[Environment]]` |
+
+#### set_built_image()
+
+```python
+def set_built_image(
+    image: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `image` | `str` |
 
 ### Properties
 
@@ -318,6 +278,7 @@ Use this method to create a new image with the auto image
 
 ```python
 def ubuntu_python(
+    name: str,
     platform: Architecture,
 ) -> Image
 ```
@@ -327,6 +288,7 @@ Use this method to create a new image with the default ubuntu-python image
 
 | Parameter | Type |
 |-|-|
+| `name` | `str` |
 | `platform` | `Architecture` |
 
 #### with_apt_packages()
