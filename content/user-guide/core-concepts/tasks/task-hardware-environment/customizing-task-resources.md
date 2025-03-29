@@ -113,9 +113,6 @@ Go to the **Resources > Compute** dashboard to find the available node types and
 
 To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 
-See also [Customizing Task Resources]().
-<!-- TODO: Add link -->
-
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}

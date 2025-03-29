@@ -594,7 +594,7 @@ def deployment_deletion_workflow():
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
-<!-- :lines: 76-122 -->
+<!-- TODO :lines: 76-122 -->
 
 This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration and initializing an endpoint. Configurations relevant to these tasks are passed to the `awssagemaker_inference.create_sagemaker_deployment` function.
 
@@ -910,7 +910,7 @@ def deployment_deletion_workflow():
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
-<!-- :lines: 155-208 -->
+<!-- TODO: lines: 155-208 -->
 
 Create a file named `serve` to serve the model. In our case, we are using FastAPI:
 
@@ -1225,7 +1225,7 @@ def deployment_deletion_workflow():
 # [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) method.
 # If you need to interact with the Boto3 APIs, you can use this task.
 ```
-<!-- :lines: 237-246 -->
+<!-- TODO: lines: 237-246 -->
 
 The [`awssagemaker_inference.SageMakerInvokeEndpointTask`](https://docs.flyte.org/en/latest/api/flytekit/plugins/generated/flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask.html#flytekitplugins.awssagemaker_inference.SageMakerInvokeEndpointTask) invokes an endpoint asynchronously, resulting in an S3 location that will be populated with the output after it's generated. For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 

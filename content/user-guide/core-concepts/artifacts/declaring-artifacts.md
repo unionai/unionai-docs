@@ -90,7 +90,7 @@ def t1() -> Annotated[pd.DataFrame, BasicArtifact]:
 def wf() -> pd.DataFrame:
     return t1()
 ```
-<!-- :emphasize-lines: 1,5,14-15,21-23 -->
+<!-- TODO :emphasize-lines: 1,5,14-15,21-23 -->
 
 ### Passing a value to `time_partition` by input
 

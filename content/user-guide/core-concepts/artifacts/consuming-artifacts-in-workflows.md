@@ -58,7 +58,7 @@ def query_wf(
 ):
     t1(key1=key1, dt=dt, data=data)
 ```
-<!-- :emphasize-lines: 23-26,35 -->
+<!-- TODO :emphasize-lines: 23-26,35 -->
 
 You can also directly reference a particular artifact version in a query using the `get()` method:
 
