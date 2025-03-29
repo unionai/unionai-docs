@@ -2,7 +2,8 @@ import importlib
 import inspect
 import sys
 from types import ModuleType
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
+from enum import EnumType
 
 import yaml
 
@@ -11,6 +12,10 @@ from lib.parser.packages import get_package, should_include
 from lib.ptypes import ClassDetails, PackageInfo
 from lib.parser.methods import parse_method, parse_property, parse_variable
 
+
+def isclass(member: Any) -> bool:
+    memberClass = getattr(member, "__class__", None)
+    return inspect.isclass(member) and (memberClass is None or memberClass != EnumType)
 
 def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDetails]:
     # Skip if any private packages
@@ -25,7 +30,7 @@ def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDeta
 
     # Get all members of the package
     for name, obj in members:
-        if not should_include(name, obj, package, inspect.isclass):
+        if not should_include(name, obj, package, isclass):
             continue
 
         path = f"{package_name}.{name}"
