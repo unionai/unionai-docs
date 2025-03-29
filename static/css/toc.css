@@ -13,6 +13,10 @@
   background-color: var(--toc-bg);
 }
 
+.container .toc-container .toc {
+  border-left: 1px solid var(--blockquote-border-trans);
+}
+
 .container .toc-container .toc-header {
   font-weight: 600;
   margin-top: 2rem;
