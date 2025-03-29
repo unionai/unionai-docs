@@ -1,0 +1,5 @@
+OUTPUT_FILE=content/api-reference/flytectl-cli.md
+
+.PHONY: all
+all:
+	scripts/gen-cli-docs flytectl "include/cli.flytectl.md" ${OUTPUT_FILE}

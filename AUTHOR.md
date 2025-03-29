@@ -7,12 +7,14 @@
 - [Pull Requests + Site Preview](#pull-requests--site-preview)
 - [Page Visibility](#page-visibility)
 - [Page order](#page-order)
-- [weight: 3](#weight-3)
+- [Page settings](#page-settings)
 - [Conditional Content](#conditional-content)
+- [Warnings and Notices](#warnings-and-notices)
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
   - [Run on Union Instructions](#run-on-union-instructions)
 - [Mermaid Graphs](#mermaid-graphs)
+- [Mapped Keys (`{{< key >}}`)](#mapped-keys--key-)
 
 
 ## Getting started
@@ -27,15 +29,13 @@ To create a new page, simply create a new Markdown file in the appropriate folde
 While editing, you can use Hugo's local live preview capabilities.
 Simply execute
 
-```
-$ make dev
-```
+    $ make dev
 
 This will build the site and launch a local server at `http://localhost:1313`.
-Go to that URL to the live preview.
-As you edit the preview wull update
+Go to that URL to the live preview. Leave the server running.
+As you edit the preview will update automatically.
 
-See [**Local Environment**](DEVELOPER.md) for more information.
+See [**Local Environment**](DEVELOPER.md) for how to setup your machine.
 
 
 ## Pull Requests + Site Preview
@@ -51,12 +51,10 @@ For a given -age, its variant visibility is governed by the `variants:` field in
 For each variant you specify `+<variant>` to include or `-<variant>` to exclude it.
 For example:
 
-```
----
-title: My Page
-variants: -flyte +serverless +byoc -byok
----
-```
+    ---
+    title: My Page
+    variants: -flyte +serverless +byoc -byok
+    ---
 
 In this example the page will be:
 
@@ -77,10 +75,19 @@ Pages are ordered by the value of `weight` field (an integer >= 0) in the frontm
 
 For example:
 
----
-title: My Page
-weight: 3
----
+    ---
+    title: My Page
+    weight: 3
+    ---
+
+## Page settings
+
+| Setting            | Type | Description                                                                       |
+| ------------------ | ---- | --------------------------------------------------------------------------------- |
+| `top_menu`         | bool | If `true` the item becomes a tab at the top and its hierarchy goes to the sidebar |
+| `sidebar_expanded` | bool | If `true` the section becomes expanded in the side bar. Permanently.              |
+| `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
+| `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
 
 ## Conditional Content
 
@@ -88,6 +95,19 @@ The site has "flavors" of the documentation. We leverage the `{{< variant >}}` t
 which content is rendered on which flavor.
 
 Refer to [**Variants**](SHORTCODES.md#variants) for detailed explanation.
+
+## Warnings and Notices
+
+You can write regular markdown and use the notation below to create information and warning boxes:
+
+    > [!NOTE] This is the note title
+    > You write the note content here. It can be
+    > anything you want.
+
+Or if you want a warning:
+
+    > [!WARNING] This is the title of the warning
+    > And here you write what you want to warn about.
 
 ## Special Content Generation
 
@@ -146,6 +166,14 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
     #
     # And it shall have it.
 
+## Mapped Keys (`{{< key >}}`)
+
+Key is a very special command that allows us to define mapped values to a variant.
+For example, the product name changes if it is Flyte, Union BYOC, etc. For that,
+we can define a single key `product_full_name` and map it to reflect automatically,
+without the need to `if variant` around it.
+
+Please refer to [{{< key >}} shortcode](SHORTCODES.md#-key-) for more details.
 ## Mermaid Graphs
 
 To embed Mermaid diagrams in a page, insert the code inside a block like this:

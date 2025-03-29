@@ -9,9 +9,9 @@ variants: +flyte +serverless +byoc +byok
 A launch plan is a template for a workflow invocation.
 It brings together:
 
-* A [workflow](../workflows/_index.md)
+* A [workflow](../workflows)
 * A (possibly partial) set of inputs required to initiate that workflow
-* Optionally, [notifications](./notifications.md) and [schedules](./schedules.md)
+* Optionally, [notifications](./notifications) and [schedules](./schedules)
 
 When invoked, the launch plan starts the workflow, passing the inputs as parameters.
 If the launch plan does not contain the entire set of required workflow inputs, additional input arguments must be provided at execution time.
@@ -39,17 +39,17 @@ To view the launch plans for a given workflow, in the UI, navigate to the workfl
 You can choose which launch plan to use to launch the workflow from the **Launch Plan** dropdown menu.
 The default launch plan will be selected by default. If you have not defined any custom launch plans for the workflow, only the default plan will be available.
 If you have defined one or more custom launch plans, they will be available in the dropdown menu along with the default launch plan.
-For more details, see [Running launch plans](./running-launch-plans.md).
+For more details, see [Running launch plans](./running-launch-plans).
 
 ## Registering a launch plan
 
 ### Registering a launch plan on the command line
 
-In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using the CLI (see [Running your code](../../development-cycle/running-your-code.md)).
+In most cases, launch plans are defined alongside the workflows and tasks in your project code and registered as a bundle with the other entities using the CLI (see [Running your code](../../development-cycle/running-your-code)).
 
 ### Registering a launch plan in Python with `{{< key kit_remote >}}`
 
-As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key kit_remote >}}`](../../development-cycle/union-remote/_index.md), specifically, `{{< key kit_remote >}}.register_launch_plan`.
+As with all {{< key product_name >}} command line actions, you can also perform registration of launch plans programmatically with [`{{< key kit_remote >}}`](../../development-cycle/union-remote), specifically, `{{< key kit_remote >}}.register_launch_plan`.
 
 ### Results of registration
 

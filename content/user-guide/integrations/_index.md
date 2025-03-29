@@ -26,38 +26,38 @@ more.
 
 ## AWS cloud resources integrations
 
-* [Enabling AWS S3](./enabling-aws-resources/enabling-aws-s3.md)
-* [Enabling AWS ECR](./enabling-aws-resources/enabling-aws-ecr.md)
-* [Enabling AWS Secrets Manager](./enabling-aws-resources/enabling-aws-secrets-manager.md)
+* [Enabling AWS S3](./enabling-aws-resources/enabling-aws-s3)
+* [Enabling AWS ECR](./enabling-aws-resources/enabling-aws-ecr)
+* [Enabling AWS Secrets Manager](./enabling-aws-resources/enabling-aws-secrets-manager)
 
 ## GCP cloud resources integrations
 
-* [Enabling BigQuery](./enabling-gcp-resources/enabling-bigquery.md)
-* [Enabling Google Artifact Registry](./enabling-gcp-resources/enabling-google-artifact-registry.md)
-* [Enabling Google Secret Manager](./enabling-gcp-resources/enabling-google-secret-manager.md)
+* [Enabling BigQuery](./enabling-gcp-resources/enabling-bigquery)
+* [Enabling Google Artifact Registry](./enabling-gcp-resources/enabling-google-artifact-registry)
+* [Enabling Google Secret Manager](./enabling-gcp-resources/enabling-google-secret-manager)
 
 ## Additional integrations
 
-A variety of agents and plugins enable you to integrate {{< key product_name >}} with additional external services. If you don't see the integration you need, you can [create your own](./agents/_index.md#creating-a-new-agent).
+A variety of agents and plugins enable you to integrate {{< key product_name >}} with additional external services. If you don't see the integration you need, you can [create your own](./agents#creating-a-new-agent).
 
 ### AI integrations
 
-* [OpenAI agents](./agents/openai-agents/_index.md) Send prompts to ChatGPT and receive responses.
+* [OpenAI agents](./agents/openai-agents) Send prompts to ChatGPT and receive responses.
 
 ### Database integrations
 
 * [DuckDB plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/duckdb_plugin/index.html) Run analytical queries using DuckDB.
-* [Google BigQuery agent](./agents/bigquery-agent/_index.md) Query Google BigQuery tables from your workflows.
+* [Google BigQuery agent](./agents/bigquery-agent) Query Google BigQuery tables from your workflows.
 * [SQL plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/sql_plugin/index.html) Execute SQL queries as tasks.
 
 ### Data pipeline integrations
 
-* [Apache Airflow agent](./agents/airflow-agent/_index.md) Run Apache Airflow jobs in your workflows.
-* [Databricks agent](./agents/databricks-agent/_index.md) Run Databricks jobs in your workflows.
+* [Apache Airflow agent](./agents/airflow-agent) Run Apache Airflow jobs in your workflows.
+* [Databricks agent](./agents/databricks-agent) Run Databricks jobs in your workflows.
 * [dbt plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/dbt_plugin/index.html) Run and test your `dbt` pipelines in {{< key product_name >}}.
-* [MemVerge Memory Machine Cloud agent](./agents/mmcloud-agent/_index.md) Execute tasks using the MemVerge Memory Machine Cloud agent
-* [NVIDIA DGX agent](./agents/dgx-agent.md) Run jobs on the NVIDIA DGX platform.
-* [Snowflake agent](./agents/snowflake-agent/_index.md) Run Snowflake jobs in your workflow.
+* [MemVerge Memory Machine Cloud agent](./agents/mmcloud-agent) Execute tasks using the MemVerge Memory Machine Cloud agent
+* [NVIDIA DGX agent](./agents/dgx-agent) Run jobs on the NVIDIA DGX platform.
+* [Snowflake agent](./agents/snowflake-agent) Run Snowflake jobs in your workflow.
 
 ### Data science tooling integrations
 
@@ -78,7 +78,7 @@ A variety of agents and plugins enable you to integrate {{< key product_name >}}
 
 ### Misc
 
-* [File sensor agent](./agents/file-sensor-agent/_index.md) Detect files appearing in your local or remote filesystem.
+* [File sensor agent](./agents/file-sensor-agent) Detect files appearing in your local or remote filesystem.
 
 {{< /markdown >}}
 {{< /variant >}}

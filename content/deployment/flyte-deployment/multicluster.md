@@ -8,7 +8,7 @@ top_menu: true
 The multicluster deployment described in this section, assumes you have deployed the `flyte-core` Helm chart, which runs the individual Flyte components separately.
 This is needed because in a multicluster setup, the execution engine (`flytepropeller`) is deployed to multiple K8s clusters; hence it wouldn't work with the `flyte-binary` Helm chart, since it deploys all Flyte services as one single binary.
 
-> Union.ai offers simplified support for multi-cluster and multi-cloud. [Learn more](https://docs.union.ai/byoc/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
+> Union.ai offers simplified support for multi-cluster and multi-cloud. [Learn more](/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
 
 ## Scaling Beyond Kubernetes
 
@@ -48,19 +48,19 @@ To make sure that your multicluster deployment is able to scale and process  req
 > Use the recommended security strategy for the cloud provider you're running on. For example, IRSA for EKS environments or Workload Identity Federation for GCP.
 3.  Mapping between the `default` Service Account in each `project-domain` namespace and the assumed role in your cloud environment. By default, every Pod created for a Task execution, uses the `default` Service Account in their respective namespace. In your cluster, you'll have as many namespaces as `project` and `domain` combinations you may have.
 
-<a id="dataplane_deployment"></a>
+
 ### Data Plane Deployment
 
 This guide assumes that you have two Kubernetes clusters and that you can access them all with `kubectl`.
 
-Let's call these clusters `dataplane1` and `dataplane2`. In this section, you'll prepare the first cluster only. 
+Let's call these clusters `dataplane1` and `dataplane2`. In this section, you'll prepare the first cluster only.
 
 1. Add the `flyteorg` Helm repo:
 
 ```bash
 
 helm repo add flyteorg https://flyteorg.github.io/flyte
-    
+
 helm repo update
 ```
 2. Get the flyte-core Helm chart:
@@ -82,10 +82,10 @@ configmap:
    catalog:
      catalog-cache:
        endpoint: <your-datacatalog-address>
-       insecure: false 
+       insecure: false
 ```
 This step is needed so the `flytepropeller` instance in the data plane cluster is able to send notifications back to the `flyteadmin` service in the control plane.
-   
+
 The `catalog` service runs in the control plane and is used when caching is enabled. Note that `catalog` is
 not exposed via the Ingress by default and does not have its own authentication mechanism. The `catalog` service
 in the control plane cluster can for instance be made available to the `flytepropeller` services in the data plane clusters with an internal load balancer service (see e.g. [GKE documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#create>) or [AWS Load Balancer Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/service/nlb/) if the clusters use the same VPC network.
@@ -114,7 +114,7 @@ helm install flyte-core-data -n flyte flyteorg/flyte-core  \
 For `flyteadmin` to access and create Kubernetes resources in one or more Flyte data plane clusters, it needs credentials to each cluster.
 Flyte makes use of Kubernetes Service Accounts to enable every control plane cluster to perform
 authenticated requests to the Kubernetes API Server in the data plane cluster.
-The default behaviour is that the Helm chart creates a [ServiceAccount](https://github.com/flyteorg/flyte/blob/master/charts/flyte-core/templates/admin/rbac.yaml#L4)in each data plane cluster. 
+The default behaviour is that the Helm chart creates a [ServiceAccount](https://github.com/flyteorg/flyte/blob/master/charts/flyte-core/templates/admin/rbac.yaml#L4)in each data plane cluster.
 In order to verify requests, the Kubernetes API Server expects a [signed bearer token](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens)
 attached to the Service Account. Starting with Kubernetes 1.24, the bearer token has to be generated manually.
 
@@ -122,7 +122,7 @@ attached to the Service Account. Starting with Kubernetes 1.24, the bearer token
 1. Use the following manifest to create a long-lived bearer token for the `flyteadmin` Service Account in your data plane cluster:
 
 ```bash
-   
+
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Secret
@@ -133,7 +133,7 @@ metadata:
       kubernetes.io/service-account.name: flyteadmin
 type: kubernetes.io/service-account-token
 EOF
-```   
+```
 
 2. Create a new file named `secrets.yaml` that looks like:
 
@@ -146,7 +146,7 @@ EOF
    type: Opaque
    data:
 ```
-> The credentials have two parts (`CA cert` and `bearer token`). 
+> The credentials have two parts (`CA cert` and `bearer token`).
 
 3. Copy the bearer token of the first data plane cluster's secret to your clipboard using the following command:
 
@@ -229,10 +229,10 @@ kubectl apply -f secrets.yaml
 ```
 > Typically, you can obtain your Kubernetes API endpoint URL using `kubectl cluster-info`
 
-In this configuration, `label1` and `label2` are just labels that we will use later in the process to configure mappings that enable workflow executions matching those labels, to be scheduled on one or multiple clusters depending on the weight (e.g. `label1` on `dataplane_1`). The `weight` is the priority of a specific cluster, relative to the other clusters under the `labelClusterMap` entry. The total sum of weights under a particular label has to be `1`. 
+In this configuration, `label1` and `label2` are just labels that we will use later in the process to configure mappings that enable workflow executions matching those labels, to be scheduled on one or multiple clusters depending on the weight (e.g. `label1` on `dataplane_1`). The `weight` is the priority of a specific cluster, relative to the other clusters under the `labelClusterMap` entry. The total sum of weights under a particular label has to be `1`.
 
 9. Add the dataplane IAM Role as the `defaultIamRole` in your Helm values file. [See AWS example](https://github.com/flyteorg/flyte/blob/97a79c030555eaefa3e27383d9b933ba1fdc1140/charts/flyte-core/values-eks.yaml#L351-L365)
- 
+
 10. Update the control plane Helm release:
 
 This step will disable `flytepropeller` in the control plane cluster, leaving no possibility of running workflows there. If you require the control plane to run workflows, edit the `values-controlplane.yaml` file and set `flytepropeller.enabled` to `true` and add one additional cluster config for the control plane cluster itself:
@@ -264,7 +264,7 @@ helm upgrade flyte -n flyte flyteorg/flyte-core values.yaml \
 --values values-controlplane.yaml \
 --values values-override.yaml
 ```
-11. Verify that all Pods in the `flyte` namespace are `Running`: 
+11. Verify that all Pods in the `flyte` namespace are `Running`:
 
 ```bash
 kubectl get pods -n flyte
@@ -344,7 +344,7 @@ flytectl update execution-cluster-label \
 pyflyte run --remote --project team1 --domain development example.py  training_workflow \                                                          ✔ ╱ docs-development-env 
 --hyperparameters '{"C": 0.1}'
 ```
-Congratulations 🎉! 
+Congratulations 🎉!
 With this, the execution of workflows belonging to a specific
 project-domain or a single specific workflow will be scheduled on the target label
 cluster.
@@ -354,7 +354,7 @@ cluster.
 
 ### Add another Kubernetes cluster
 
-The process can be repeated for additional clusters. 
+The process can be repeated for additional clusters.
 
 1. Provision the new cluster and add it to the permissions structure (IAM, etc)
 2.  Install the data plane Helm chart following the steps in the [Data plane deployment](#data-plane-deployment) section.

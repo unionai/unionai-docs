@@ -10,7 +10,7 @@ During the development cycle you will want to be able to run your workflows both
 so you will need to ensure that the required dependencies are installed in both environments.
 
 Here we will explain how to set up the dependencies for your workflow to run remotely on {{< key product_name >}}.
-For information on how to make your dependencies available locally, see [Local dependencies](./local-dependencies.md).
+For information on how to make your dependencies available locally, see [Local dependencies](./local-dependencies).
 
 When a workflow is deployed to {{< key product_name >}}, each task is set up to run in its own container in the Kubernetes cluster.
 You specify the dependencies as part of the definition of the container image to be used for each task using the `ImageSpec` class.
@@ -69,7 +69,7 @@ All this is done transparently and does not require any set up by the user.
 > [!NOTE] Local image build in BYOC
 > In {{< key product_name >}} Serverless images defined by `ImageSpec` are always built using the {{< key product_name >}} cloud image builder.
 > In {{< key product_name >}} BYOC, you can optionally build images from the `ImageSpec` on your local machine by specifying `builder="envd"` in the `ImageSpec`.
-> See [Local image builder](https://docs.unionai/byoc/user-guide/development-cycle/remote-dependencies-with-image-spec.md#local-image-builder) in the BYOC documentation for more details.
+> See [Local image builder](#local-image-builder) in the BYOC documentation for more details.
 
 {{< /variant >}}
 {{< variant byoc byok >}}
@@ -118,12 +118,12 @@ For more information, see [Working with the Container registry](https://docs.git
 
 You may use another container registry if you prefer,
 such as [Docker Hub](https://hub.docker.com/),
-[Amazon Elastic Container Registry (ECR)](../integrations/enabling-aws-resources/enabling-aws-ecr.md),
-or [Google Artifact Registry (GAR)](../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md).
+[Amazon Elastic Container Registry (ECR)](../integrations/enabling-aws-resources/enabling-aws-ecr),
+or [Google Artifact Registry (GAR)](../integrations/enabling-gcp-resources/enabling-google-artifact-registry).
 
 You will need to set up your local Docker client to authenticate to GHCR in order for `{{< key cli >}}` to be able to push the image built according to the `ImageSpec` to GHCR.
 
-Follow the directions in [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry.md#authenticating-to-the-container-registry).
+Follow the directions in [Working with the Container registry > Authenticating to the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry).
 
 ### Make your image accessible to {{< key product_name >}}
 
@@ -135,7 +135,7 @@ In addition to making sure your registry is accessible from your local machine, 
 > If you try to run the workflow before making the image public (for example by doing a `{{< key cli >}} run` which both registers and runs immediately)
 > the workflow execution will fail with an `ImagePullBackOff `error.
 
-In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility.md#about-inheritance-of-access-permissions-and-visibility).
+In the GitHub Container Registry, switch the visibility of your container image to Public. For more information, see [Configuring a package's access control and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#about-inheritance-of-access-permissions-and-visibility).
 
 At this point, you can run the workflow from the {{< key product_name >}} interface.
 {{< /variant >}}

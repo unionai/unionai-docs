@@ -9,18 +9,27 @@
   --pre-bg: #1e293b;
   --pre-color: #e2e8f0;
   --blockquote-border: gray;
+  --blockquote-border-trans: #80808020;
   --table-row-even: #f8fafc;
   --table-row-hover: #f1f5f9;
-  --menu-indent: 1.1rem;
-  --sidebar-width: 380px;
+  --menu-indent: 0.5rem;
+  --menu-subindent: 1.5rem;
+  --sidepanels-padding: 1rem 1.5rem;
+  --sidebar-width: 256px;
+  --sidebar-font-size: 0.75rem;
+  --toc-width: 256px;
+  --toc-font-size: 0.75rem;
   --header-height: 64px;
   --tabs-height: 64px;
-  --content-width: 1280px;
+  --content-width: 900px;
   --image-width: 880px;
   --union-color: #fcb51f;
   --union-color-light: #ffe6b1;
   --union-color-dark: #c88c0c;
   --union-color-very-light: #fbeed1;
+  --scrollbar-width: 1rem;
+  --main-content-padding: 2rem;
+  --toc-bg: var(--bg-color);
 }
 
 /* Dark theme variables */
@@ -51,35 +60,28 @@ body {
   background: var(--bg-color);
   overflow: hidden;
 }
-.header {
-  height: var(--header-height);
-  background-color: var(--bg-color);
-  border-bottom: 1px solid var(--border-color);
-  padding: 0.25rem 1.5rem;
-  z-index: 100;
-}
 .tabs {
   border-bottom: 1px solid var(--border-color);
   z-index: 100;
 }
 .container {
-  display: flex;
   height: calc(100vh - var(--header-height) - var(--tabs-height));
-}
-.sidebar {
-  width: var(--sidebar-width);
-  padding: 1rem 1.5rem;
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--border-color);
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 .main-content {
   flex: 1;
-  padding: 2rem calc((100vw - var(--content-width)) / 2);
-  min-height: calc(100vh - var(--header-height) - var(--tabs-height));
-  overflow-y: auto;
+  padding: 2rem 0;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  margin-left: calc(
+    var(--sidebar-width) +
+      (
+        100vw - var(--sidebar-width) - var(--content-width) - var(--toc-width) -
+          var(--scrollbar-width)
+      ) / 2
+  );
+  margin-right: var(--toc-width);
+  transition: margin-left 0.3s ease, margin-right 0.3s ease;
 }
 
 .logo {
@@ -170,6 +172,14 @@ pre code {
   margin: 0 2rem;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+  margin: 2rem 0;
+}
+
 .variant {
   margin: 1rem 0;
 }
@@ -230,6 +240,13 @@ pre code {
   padding: 1rem;
 }
 
+.not-allowed.how-to-fix {
+  display: inline-block;
+  background: hsl(0, 84%, 85%);
+  padding: 0 0.5rem;
+  margin: 0 0.5rem;
+}
+
 .err-no-title {
   background-color: yellow;
   padding: 0.25rem 0.5rem;
@@ -275,4 +292,8 @@ sl-alert P + P {
 
 .download {
   display: inline-flex;
+}
+
+footer {
+  min-height: calc(1rem + var(--main-content-padding) / 2);
 }

@@ -12,7 +12,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant flyte >}}
 {{< markdown >}}
 
-## FlyteFile
+## FlyteFile {#FlyteFile}
 
 Files are one of the most fundamental entities that users of Python work with,
 and they are fully supported by Flyte. In the IDL, they are known as
@@ -57,7 +57,7 @@ which involves mean-centering and standard-deviation-scaling.
 ```python
 @{{< key kit_as >}}.task
 def normalize_columns(
-    csv_url: union.FlyteFile,
+    csv_url: {{< key kit_as >}}.FlyteFile,
     column_names: List[str],
     columns_to_normalize: List[str],
     output_location: str,
@@ -87,9 +87,9 @@ def normalize_columns(
             writer.writerow({k: row[i] for i, k in enumerate(columns_to_normalize)})
 
     if output_location:
-        return union.FlyteFile(path=str(out_path), remote_path=output_location)
+        return {{< key kit_as >}}.FlyteFile(path=str(out_path), remote_path=output_location)
     else:
-        return union.FlyteFile(path=str(out_path))
+        return {{< key kit_as >}}.FlyteFile(path=str(out_path))
 ```
 
 When the image URL is sent to the task, the system translates it into a `FlyteFile` object on the local drive (but doesn't download it). The act of calling the `download()` method should trigger the download, and the `path` attribute enables to `open` the file.
@@ -167,10 +167,10 @@ $ sudo apt-get install libmagic1
 {{< /tab >}}
 {{< /tabs >}}
 
+{{< markdown >}}
+
 > [!NOTE]
 > Currently, type validation is only supported on the `Mac OS` and `Linux` platforms.
-
-{{< markdown >}}
 
 ## Streaming support
 
@@ -179,7 +179,7 @@ This integration enables efficient, on-demand access to remote files, eliminatin
 
 
 > [!NOTE]
-> This feature is marked as experimental. We'd love feedback on the API!
+> This feature is marked as experimental. We'd love feedback on the API! @Peeter we should provide a link here for people to give feedback, thoughts?
 
 Here is a simple example of removing some columns from a CSV file and writing the result to a new file:
 
@@ -204,6 +204,9 @@ In addition to files, folders are another fundamental operating system primitive
 Flyte supports folders in the form of
 [multi-part blobs](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/core/types.proto#L73).
 
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/).
+
 To begin, import the libraries:
 
 ```python
@@ -216,7 +219,7 @@ from typing import List
 import {{< key kit_import >}}
 ```
 
-Building upon the previous example demonstrated in the {std:ref}`file <file>` section,
+Building upon the previous example demonstrated in the [`FlyteFile` section](#FlyteFile),
 let's continue by considering the normalization of columns in a CSV file.
 
 The following task downloads a list of URLs pointing to CSV files
@@ -365,7 +368,7 @@ In {{< key product_name >}}, each task runs in its own container. This means tha
 
 The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the {{< key product_name >}} object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile.md) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory.md) classes, which automate this process.
+Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory) classes, which automate this process.
 
 ## How the classes work
 
@@ -422,6 +425,7 @@ def wf():
 Below is an equivalent local example for `FlyteDirectory`. The process of passing the `FlyteDirectory` between tasks is essentially identical to the `FlyteFile` example above.
 
 ```python
+@{{< key kit_as >}}.task
 def task1() -> {{< key kit_as >}}.FlyteDirectory: # Create new local directory
     p = os.path.join(current_context().working_directory, "my_new_directory")
     os.makedirs(p)
@@ -462,7 +466,7 @@ def workflow():
 > With {{< key product_name >}} Serverless, the remote location to which `FlyteFile` and `FlyteDirectory` upload container-local files is always a randomly generated (universally unique) location in {{< key product_name >}}'s internal object store. It cannot be changed.
 >
 > With {{< key product_name >}} BYOC, the upload location is configurable.
-> See [FlyteFile and FlyteDirectory > Changing the data upload location](https://docs.union.ai/byoc/data-input-output/flyte-file-and-flyte-directory.md#changing-the-data-upload-location).
+> See [FlyteFile and FlyteDirectory > Changing the data upload location](../data-input-output/flyte-file-and-flyte-directory#changing-the-data-upload-location).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -484,9 +488,9 @@ However, you can change the upload location by setting the raw data prefix to yo
 > [!NOTE] Setting up your own object store bucket
 > For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 >
-> * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3.md)
-> * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage.md)
-> * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage.md)
+> * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
+> * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
+> * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage)
 
 ### Changing the raw data prefix
 
@@ -624,7 +628,7 @@ def task_2(ff: {{< key kit_as >}}.FlyteFile):
 > Many other Python file operations (essentially, any that accept an `os.PathLike` object) can also be performed on a `FlyteFile`
 > object and result in an automatic download.
 >
-> See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd.md) for more information.
+> See [Downloading with FlyteFile and FlyteDirectory](./downloading-with-ff-and-fd) for more information.
 
 ### Explicit downloading
 
@@ -653,8 +657,8 @@ FlyteDirectory.new_file()
 
 ## Typed aliases
 
-The [{{< key kit_name >}} SDK](../../api-reference/union-sdk/_index.md) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types/_index.md#file-type):
+The [{{< key kit_name >}} SDK](../../api-reference/union-sdk) defines some aliases of `FlyteFile` with specific type annotations.
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types#file-type):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -666,7 +670,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types/_index.md#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types#directory-type):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

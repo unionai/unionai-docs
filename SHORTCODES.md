@@ -16,6 +16,8 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< tabs >}}` and `{{< tab >}}`](#-tabs--and--tab-)
   - [`{{< key >}}`](#-key-)
   - [`{{< download >}}`](#-download-)
+  - [`{{< docs_home >}}`](#-docs_home-)
+  - [`{{< py_class_docsum >}}`, `{{< py_class_ref >}}`, and `{{< py_func_ref >}}`](#-py_class_docsum---py_class_ref--and--py_func_ref-)
 
 ## How to specify a "shortcode"
 
@@ -160,3 +162,24 @@ Parameters:
 Example:
 
     {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
+
+### `{{< docs_home >}}`
+
+Produces a link to the home page of the documentation for a specific variant.
+
+Example:
+
+    [See this in Flyte]({{< docs_home flyte>}}/wherever/you/want/to/go/in/flyte/docs)
+
+### `{{< py_class_docsum >}}`, `{{< py_class_ref >}}`, and `{{< py_func_ref >}}`
+
+Helper functions to track Python classes in Flyte documentation, so we can link them to
+the appropriate documentation.
+
+Parameters:
+  - name of the class
+  - text to add to the link
+
+Example:
+
+    Please see {{< py_class_ref flyte.core.Image >}} for more details.

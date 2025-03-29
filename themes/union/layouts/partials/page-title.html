@@ -1,14 +1,14 @@
-{{ if .Title }}
-    {{ .Title }}
-{{ else }}
-    {{ $firstLine := index (split .RawContent "\n") 0 }}
-    {{ if hasPrefix $firstLine "# " }}
-        {{ trim (strings.TrimPrefix "# " $firstLine) " " }}
-    {{ else }}
+{{- if .Title -}}
+    {{- .Title -}}
+{{- else -}}
+    {{- $firstLine := index (split .RawContent "\n") 0 -}}
+    {{- if hasPrefix $firstLine "# " -}}
+        {{- trim (strings.TrimPrefix "# " $firstLine) " " -}}
+    {{- else -}}
         <div class="err-no-title">
-            {{ with .File }}
-            {{ .Path }}
-            {{ end }}
+            {{- with .File -}}
+            {{- .Path -}}
+            {{- end -}}
         </div>
-    {{ end }}
-{{ end }}
+    {{- end -}}
+{{- end -}}

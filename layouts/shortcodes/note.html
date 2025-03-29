@@ -2,9 +2,9 @@
 <div>
 <sl-alert open>
     <sl-icon slot="icon" name="info-circle"></sl-icon>
-    {{ if $title }}
-    <strong>{{ $title | markdownify }}</strong><br />
-    {{ end }}
-    {{ .Inner | markdownify }}
+    {{- if $title -}}
+    <strong>{{- $title | markdownify -}}</strong><br />
+    {{- end -}}
+    {{- .Inner | markdownify -}}
 </sl-alert>
 </div>

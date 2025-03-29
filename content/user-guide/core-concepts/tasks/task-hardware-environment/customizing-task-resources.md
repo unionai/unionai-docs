@@ -78,7 +78,7 @@ This may be a GPU, a specific variation of a GPU, a fractional GPU, or a differe
 {{< /markdown >}}
 {{< /variant >}}
 
-See [Accelerators](./accelerators.md) for more information.
+See [Accelerators](./accelerators) for more information.
 
 ## Execution defaults and resource quotas
 
@@ -105,7 +105,7 @@ If you attempt to execute a workflow with unsatisfiable resource requests, the e
 
 To remedy such a failure, you should make sure that the appropriate node types are:
 
-* Physically available in your cluster, meaning you have arranged with the {{< key product_name >}} team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane.md).
+* Physically available in your cluster, meaning you have arranged with the {{< key product_name >}} team to include them when [configuring your data plane](../../../data-plane-setup/configuring-your-data-plane).
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
@@ -127,7 +127,7 @@ If you attempt to execute a workflow with unsatisfiable resource requests, the e
 
 To remedy such a failure, you should make sure that the appropriate node types are:
 
-* Physically available in your cluster, meaning you have configured them correctly when [deploying your Flyte cluster](../../../../deployment/_index.md).
+* Physically available in your cluster, meaning you have configured them correctly when [deploying your Flyte cluster](../../../../deployment).
 
 * Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 

@@ -8,7 +8,7 @@ variants: +flyte -serverless +byoc +byok
 
 In this section we explain how to use [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/products/container-registry) to build and deploy task container images using `ImageSpec`.
 
-Before proceeding, make sure that you have [enabled Azure Container Registry](../../../integrations/enabling-azure-resources/enabling-azure-container-registry.md) for you {{< key product_name >}} installation.
+Before proceeding, make sure that you have [enabled Azure Container Registry](../../../integrations/enabling-azure-resources/enabling-azure-container-registry) for you {{< key product_name >}} installation.
 
 ## Authenticate to the registry
 
@@ -25,7 +25,7 @@ Refer to [Individual login with Microsoft Entra ID](https://learn.microsoft.com/
 
 You can now register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use an existing ACR repository, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
+For example, to use an existing ACR repository, we would alter the Python code in the [previous section](.), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(

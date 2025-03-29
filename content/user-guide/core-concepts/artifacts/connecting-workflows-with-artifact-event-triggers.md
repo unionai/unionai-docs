@@ -37,7 +37,7 @@ from typing_extensions import Annotated
 Then we define an upstream artifact and a workflow that emits a new version of `UpstreamArtifact` when executed:
 
 ```python
-UpstreamArtifact = {{< key kit >}}.Artifact(
+UpstreamArtifact = {{< key kit_as >}}.Artifact(
     name="my_upstream_artifact",
     time_partitioned=True,
     partition_keys=["key1"],
@@ -112,11 +112,11 @@ from flytekit.core.artifact import Inputs
 from typing_extensions import Annotated
 
 
-pandas_image = {{< key kit >}}.ImageSpec(
+pandas_image = {{< key kit_as >}}.ImageSpec(
     packages=["pandas==2.2.2"]
 )
 
-UpstreamArtifact = {{< key kit >}}.Artifact(
+UpstreamArtifact = {{< key kit_as >}}.Artifact(
     name="my_upstream_artifact",
     time_partitioned=True,
     partition_keys=["key1"],

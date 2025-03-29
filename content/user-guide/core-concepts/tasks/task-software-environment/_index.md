@@ -8,5 +8,5 @@ variants: +flyte -serverless +byoc +byok
 
 The @{{< key kit_as >}}.task decorator provides the following parameters to specify the software environment in which a task runs:
 
-* `container_image`: See [ImageSpec](./imagespec.md) for details.
-* `environment`: See [Environment](./environment-variables.md) for details.
+* `container_image`: See [ImageSpec](./imagespec) for details.
+* `environment`: See [Environment](./environment-variables) for details.

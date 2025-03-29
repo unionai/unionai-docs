@@ -27,7 +27,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-You can switch to the Flyte docs [here](/docs/flyte).
+You can switch to the Flyte docs [here]({{< docs_home flyte >}}).
 
 You can try out Flyte's technology:
 
@@ -36,12 +36,12 @@ You can try out Flyte's technology:
 
 <!-- TODO: add link ^ -->
 
-For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index.md).
+For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment).
 
 
 ## {{< key product_name >}} Serverless
 
-[{{< key product_name >}} Serverless](https://docs.union.ai/serverless) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
 Your Data and workflow code stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
 {{< key product_name >}} Serverless provide all the features of Flyte, plus:
@@ -66,7 +66,7 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 
 ## {{< key product_name >}} BYOC
 
-[{{< key product_name >}} BYOC](https://docs.union.ai/byoc) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+[{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 {{< key product_name >}} BYOC provides all the features of Flyte and {{< key product_name >}} Serverless, plus:
 
 * Accelerators and GPUs (including fractional GPUs)
@@ -78,7 +78,7 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 
 ## {{< key product_name >}} BYOK
 
-[{{< key product_name >}} BYOK](https://docs.union.ai/byok) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+[{{< key product_name >}} BYOK]({{< docs_home byok >}}) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
 {{< key product_name >}} BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
 The control plane continues to be located in a {{< key product_name >}} AWS account and managed by {{< key product_name >}}.
 However, none of your data ever leaves your data plane, ensuring privacy and security.

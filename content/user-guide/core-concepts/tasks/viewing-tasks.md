@@ -1,6 +1,6 @@
 ---
 title: Viewing tasks
-weight: 4
+weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 
@@ -32,7 +32,7 @@ Here you can see:
 
 * **Inputs & Outputs**: The input and output types for the task.
 * Recent task versions. Selecting one of these takes you to the [task version view](#task-versions-list)
-* Recent executions of this task. Selecting one of these takes you to the [execution view](../workflows/viewing-workflow-executions.md).
+* Recent executions of this task. Selecting one of these takes you to the [execution view](../workflows/viewing-workflow-executions).
 
 ### Task versions list
 

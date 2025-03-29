@@ -1,12 +1,12 @@
 ---
 title: Task-level monitoring
-weight: 4
+weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 
 # Task-level monitoring
 
-In the [Execution view](../../workflows/viewing-workflow-executions.md), selecting a task within the list will open the right panel.
+In the [Execution view](../../workflows/viewing-workflow-executions), selecting a task within the list will open the right panel.
 In that panel, you will find the **View Utilization** button:
 
 ![View Utilization](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/task-level-monitoring/execution-view-right-panel-executions-view-util.png)

@@ -103,7 +103,7 @@ defining a task or workflow that you want to invoke within an eager workflow.
 >    being that you lose the benefits of statically compiled workflows, such as
 >    compile-time analysis and first-class data lineage tracking.
 
-Similar to [dynamic workflows](./dynamic-workflows.md), eager workflows are
+Similar to [dynamic workflows](./dynamic-workflows), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
 a static workflow at runtime using materialized inputs, eager workflows do
 not compile any workflow at all. Instead, they use the [`{{< key kit_remote >}}`]() <!-- TODO: add link to API -->
@@ -276,7 +276,7 @@ developing your workflows and tasks.
 
 ### Remote {{< key product_name >}} execution
 
-Under the hood, `@eager` workflows use the [`{{< key kit_remote >}}`](../../../api-reference/union-sdk/union-remote/_index.md)
+Under the hood, `@eager` workflows use the [`{{< key kit_remote >}}`](../../../api-reference/union-sdk/union-remote)
 object to kick off task, static workflow, and eager workflow executions.
 
 In order to actually execute them on a {{< key product_name >}} cluster, you'll need to configure
@@ -288,11 +288,9 @@ allows you to authenticate into the cluster via a client secret key.
 
 ```python
 import {{< key kit_import >}}
-from flytekit.configuration import Config
 
 @eager(
-    remote={{< key kit_as >}}.{{< key kit_remote >}}(
-        config=Config.auto(config_file="config.yaml"),
+    remote={{< key kit_as >}}.{{< key kit_remote >}}.auto(
         default_project="{{< key default_project >}}",
         default_domain="development",
     ),
@@ -316,12 +314,9 @@ default sandbox configuration does not require key-based authentication.
 
 ```python
 import {{< key kit_import >}}
-from flytekit.configuration import Config
-
 
 @eager(
-    remote={{< key kit_as >}}.{{< key kit_remote >}}(
-        config=Config.for_sandbox(),
+    remote={{< key kit_as >}}.{{< key kit_remote >}}.for_sandbox(
         default_project="{{< key default_project >}}",
         default_domain="development",
     )
@@ -384,9 +379,9 @@ However, at the end of execution, you'll be able to use [Decks]() to see a list 
 
 As eager workflows are still experimental, there are a few limitations to keep in mind:
 
-- You cannot invoke [dynamic workflows](./dynamic-workflows.md), [map tasks](../tasks/task-types.md#map-tasks), or [launch plans](../launch-plans/_index.md) inside an eager workflow.
+- You cannot invoke [dynamic workflows](./dynamic-workflows), [map tasks](../tasks/task-types#map-tasks), or [launch plans](../launch-plans) inside an eager workflow.
 - [Context managers](https://docs.python.org/3/library/contextlib.html) will only work on locally executed functions within the eager workflow, i.e. using a context manager to modify the behavior of a task or subworkflow will not work because they are executed on a completely different pod.
-- All exceptions raised by {{< key product_name >}} tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/union-sdk/experimental-features.md) at runtime.
+- All exceptions raised by {{< key product_name >}} tasks or workflows will be caught and raised as an [`EagerException`](../../../api-reference/union-sdk/experimental-features) at runtime.
 - All task/subworkflow outputs are materialized as Python values, which includes offloaded types like `FlyteFile`, `FlyteDirectory`, `StructuredDataset`, and `pandas.DataFrame` will be fully downloaded into the pod running the eager workflow. This prevents you from incrementally downloading or streaming very large datasets in eager workflows.
 - {{< key product_name >}} entities that are invoked inside an eager workflow must be registered under the same project and domain as the eager workflow itself. The eager workflow will execute the latest version of these entities.
 - The UI currently does not have a first-class way of viewing eager workflows, but it can be accessed via the task list view and the execution graph is viewable via Flyte Decks.

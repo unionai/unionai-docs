@@ -96,7 +96,7 @@ stop it manually on the Workspaces page.
 
 ## Gather your credentials
 
-After your administrator has onboarded you to {{< key product_name >}} (see [Deployment](../../deployment/_index.md)), you should have the following at hand:
+After your administrator has onboarded you to {{< key product_name >}} (see [Deployment](../../deployment)), you should have the following at hand:
 
 - Your {{< key product_name >}} credentials.
 - The URL of your {{< key product_name >}} instance. We will refer to this as `<union-host-url>` below.
@@ -113,7 +113,7 @@ This will take you to `{{< key default_project >}}` project dashboard:
 
 This dashboard gives you an overview of the workflows and tasks in your project.
 Since you are just starting out, it will be empty.
-To build and deploy your first workflow, the first step is to [set up your local environment](./local-setup.md).
+To build and deploy your first workflow, the first step is to [set up your local environment](./local-setup).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -122,14 +122,14 @@ To build and deploy your first workflow, the first step is to [set up your local
 
 > [!NOTE] Try Flyte in your browser
 > You can try Flyte in your browser without any setup simply by [signing up for **{{< key product_name >}} Serverless**](https://signup.union.ai/).
-> [{{< key product_name >}} Serverless is a fully-hosted version of Flyte](https://docs.union.ai/serverless) with additional features.
+> [{{< key product_name >}} Serverless is a fully-hosted version of Flyte]({{< docs_home serverless >}}) with additional features.
 
 
 ## Try Flyte on your local machine
 
 You can also install Flyte's SDK (called `flytekit`) and a local Flyte cluster to run workflows on your local machine.
 
-To get started, follow the instructions on the next page, [Local setup](./local-setup.md).
+To get started, follow the instructions on the next page, [Local setup](./local-setup).
 
 {{< /markdown >}}
 {{< /variant >}}

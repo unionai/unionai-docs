@@ -16,7 +16,7 @@ pip install flytekitplugins-bigquery
 
 ## Example usage
 
-For an example query, see [BigQuery agent example](./bigquery-agent-example.md).
+For an example query, see [BigQuery agent example](./bigquery-agent-example).
 
 ## Local testing
 

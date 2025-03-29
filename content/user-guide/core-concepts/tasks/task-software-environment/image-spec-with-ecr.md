@@ -15,7 +15,7 @@ In this section we explain how to set up and use AWS Elastic Container Registry 
 
 If you are using ECR in the same AWS account as your {{< key product_name >}} data plane, then you do not need to configure anything. Access to ECR in the same account is enabled by default.
 
-If you want to store your task container images in an ECR instance in an AWS account _other than the one that holds your data plane_, then you will have to configure that ECR instance to permit access from your data plane. See [Enable AWS ECR](../../../integrations/enabling-aws-resources/enabling-aws-ecr.md) for details.
+If you want to store your task container images in an ECR instance in an AWS account _other than the one that holds your data plane_, then you will have to configure that ECR instance to permit access from your data plane. See [Enable AWS ECR](../../../integrations/enabling-aws-resources/enabling-aws-ecr) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -77,7 +77,7 @@ See [Private registry authentication](https://docs.aws.amazon.com/AmazonECR/late
 
 You can register tasks with `ImageSpec` declarations that reference this repository.
 
-For example, to use the example repository shown here, we would alter the Python code in the [previous section](./_index.md), to have the following `ImageSpec` declaration:
+For example, to use the example repository shown here, we would alter the Python code in the [previous section](.), to have the following `ImageSpec` declaration:
 
 ```python
 image_spec = union.ImageSpec(

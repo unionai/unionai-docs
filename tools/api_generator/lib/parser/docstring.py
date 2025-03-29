@@ -1,6 +1,7 @@
 import inspect
 import json
 from typing import TypedDict, Optional
+from sys import stderr
 
 from lib.ptypes import ParamDict, ParamInfo
 
@@ -47,9 +48,10 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 continue
 
             leading_spaces = len(line) - len(line.lstrip())
+            # print(leading_spaces, file=stderr)
 
         line = line[leading_spaces:]
-        # print(leading_spaces, ">", line)
+        # print(leading_spaces, ">", line, file=stderr)
 
         if not in_args and line.strip() == "Args:":
             in_args = True
@@ -93,31 +95,31 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 else:
                     param["doc"] = param["doc"] + "\n" + line
         else:
-            line = line.strip()
+            line_params = line.strip()
 
-            if line.startswith(":rtype:"):
-                result["return_type"] = line[7:].strip()
+            if line_params.startswith(":rtype:"):
+                result["return_type"] = line_params[7:].strip()
                 continue
 
-            if line.startswith(":result:"):
-                result["return_type"] = line[8:].strip()
+            if line_params.startswith(":result:"):
+                result["return_type"] = line_params[8:].strip()
                 continue
 
-            if not current_param and not line.startswith(":param"):
+            if not current_param and not line_params.startswith(":param"):
                 result["docstring"] += line + "\n"
 
             if current_param:
-                if not line.startswith(":param"):
+                if not line_params.startswith(":param"):
                     param = result["params"][current_param]
                     # Ensure param["doc"] is initialized properly before concatenating
                     if "doc" not in param or param["doc"] is None:
-                        param["doc"] = line
+                        param["doc"] = line_params
                     else:
-                        param["doc"] = param["doc"] + "\n" + line
+                        param["doc"] = param["doc"] + "\n" + line_params
                     continue
 
-            if line.startswith(":param"):
-                param_parts = line.split(":")
+            if line_params.startswith(":param"):
+                param_parts = line_params.split(":")
                 param_name = param_parts[1].strip().replace("param ", "")
                 param_doc = param_parts[2].strip() if len(param_parts) > 2 else ""
                 current_param = param_name

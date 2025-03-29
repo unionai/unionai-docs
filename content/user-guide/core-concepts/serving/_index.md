@@ -67,7 +67,7 @@ Here the `App` constructor is initialized with the following parameters:
 * `port`: The port of the app container from which the app will be served.
 * `limits`: A `union.Resources` object defining the resource limits for the app container.
   The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in {{< key product_name >}} workflows.
-  See [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details.
+  See [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources#the-requests-and-limits-settings) for details.
 
 The parameters above are the minimum needed to initialize the app.
 
@@ -75,7 +75,7 @@ There are a few additional available parameters that we do not use in this examp
 
 * `include`: A list of files to be added to the container at deployment time, containing the custom code that defines the specific functionality of your app.
 * `inputs`: A `List` of `{{< key kit >}}.app.Input` objects. Used to provide default inputs to the app on startup.
-* `requests`: A `{{< key kit >}}.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in {{< key product_name >}} workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources.md#the-requests-and-limits-settings) for details).
+* `requests`: A `{{< key kit >}}.Resources` object defining the resource requests for the app container. The same object is used for the same purpose in the `@{{< key kit_as >}}.task` decorator in {{< key product_name >}} workflows (see [The requests and limits settings](../tasks/task-hardware-environment/customizing-task-resources#the-requests-and-limits-settings) for details).
 * `min_replicas`: The minimum number of replica containers permitted for this app.
   This defines the lower bound for auto-scaling the app. The default is 0 <!-- TODO: (see [App autoscaling]() for details) -->.
 * `max_replicas`: The maximum number of replica containers permitted for this app.
