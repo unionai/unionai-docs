@@ -13,7 +13,7 @@ generate: clean_output_folder
 	tools/api_generator/generate \
 		--title "Flytekit" \
 		--api "${API_DATA}" \
-		--include include/api.unionv2.md \
+		--include include/api.flytekit.md \
 		--variants \
 			+flyte \
 			+byoc \
