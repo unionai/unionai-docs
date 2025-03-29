@@ -13,6 +13,7 @@
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
   - [Run on Union Instructions](#run-on-union-instructions)
+- [Mermaid Graphs](#mermaid-graphs)
 - [Mapped Keys (`{{< key >}}`)](#mapped-keys--key-)
 
 
@@ -173,3 +174,14 @@ we can define a single key `product_full_name` and map it to reflect automatical
 without the need to `if variant` around it.
 
 Please refer to [{{< key >}} shortcode](SHORTCODES.md#-key-) for more details.
+## Mermaid Graphs
+
+To embed Mermaid diagrams in a page, insert the code inside a block like this:
+
+&#96;&#96;&#96;mermaid
+
+&#96;&#96;&#96;
+
+Also add `mermaid: true` to the top of your page to enable rendering.
+
+> You can use [Mermaid's playground](https://www.mermaidchart.com/play) to design diagrams and get the code 

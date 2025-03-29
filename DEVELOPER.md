@@ -134,3 +134,30 @@ For a page to exist in the variant (or be excluded, you have to pick one), it mu
 Clicking on the red page will give you the path you must add to the appropriate variant in the YAML file and a link with guidance.
 
 Please refer to [Authoring Content](AUTHOR.md) for more details.
+
+## Building Production
+
+```
+$ make dist
+```
+
+### Testing Production Build
+
+You can run a local web server and serve the `dist/` folder. The site must behave correctly, as it would be in its official URL.
+
+To start a server:
+
+```
+$ make serve PORT=<nnnnn>
+```
+
+Example:
+
+```
+$ make serve PORT=4444
+```
+
+Then you open the browser on `http://localhost:<port>` to see the content. In the example above, it would be `http://localhost:4444/`
+
+
+This will create all the variants into the `dist` folder.
