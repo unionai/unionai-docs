@@ -37,7 +37,7 @@ The following sections explain the various observable (and some hidden) states f
 
 ## Workflow States
 
-```mermaid:
+```mermaid
 flowchart TD
     Queued -->|On system errors more than threshold| Aborted
     Queued --> Ready
