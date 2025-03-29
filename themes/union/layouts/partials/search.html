@@ -1,6 +1,20 @@
-{{- $app := "MGZP2VBVIB" -}}
-{{- $key := "d9c2d1ff4e8f165b184934900ffada1b" -}}
-{{- $idx := site.Params.variant -}}
+{{ $search := index site.Params.search site.Params.variant }}
+
+{{- $app := index $search "app_id" -}}
+{{- $key := index $search "search_key" -}}
+{{- $idx := index $search "index_name" -}}
+
+{{- if not $app -}}
+{{- errorf "Search app_id not found in params" -}}
+{{- end -}}
+
+{{- if not $key -}}
+{{- errorf "Search search_key not found in params" -}}
+{{- end -}}
+
+{{- if not $idx -}}
+{{- errorf "Search index_name not found in params" -}}
+{{- end -}}
 
 <link rel="preconnect" href="https://{{ $app }}-dsn.algolia.net" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />

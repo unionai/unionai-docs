@@ -115,3 +115,26 @@ flyte = "https://www.union.ai/docs/flyte"
 serverless = "https://www.union.ai/docs/serverless"
 byoc = "https://www.union.ai/docs/byoc"
 byok = "https://www.union.ai/docs/byok"
+
+#----------------------------------------------------------
+# Search
+
+[params.search.flyte]
+app_id = "2GHFU8TPNP"
+search_key = "8cd3a91e81b0144a79682e1d3ecacad4"
+index_name = "flyte"
+
+[params.search.byoc]
+app_id = "2K3A78HTBR"
+search_key = "bfaa8204d151b099b681edb41052a152"
+index_name = "byoc"
+
+[params.search.byok]
+app_id = "TIVM6MJAB2"
+search_key = "f32eb3c993ec93ee561914edafadc25a"
+index_name = "byok"
+
+[params.search.serverless]
+app_id = "FEI16F3Z8H"
+search_key = "e4d47384fcfed00c31afe99c06b69288"
+index_name = "serverless"
