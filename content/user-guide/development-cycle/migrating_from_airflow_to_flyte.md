@@ -1,7 +1,7 @@
 ---
 title: Migrating from Airflow to Flyte
 weight: 19
-variants: +flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # Migrating from Airflow to Flyte
@@ -10,7 +10,7 @@ variants: +flyte +serverless +byoc +byok
 > Many Airflow operators and sensors have been tested on Flyte, but some may not work as expected.
 If you encounter any issues, please file an [issue](https://github.com/flyteorg/flyte/issues) or reach out to the Flyte community on [Slack](https://slack.flyte.org/).
 
-Flyte can compile Airflow tasks into Flyte tasks without changing code, which allows you 
+Flyte can compile Airflow tasks into Flyte tasks without changing code, which allows you
 to migrate your Airflow DAGs to Flyte with minimal effort.
 
 In addition to migration capabilities, Flyte users can seamlessly integrate Airflow tasks into their workflows, leveraging the ecosystem of Airflow operators and sensors.
@@ -71,7 +71,7 @@ AIRFLOW_CONN_FS_DEFAULT="/" pyflyte run workflows.py airflow_wf
 ```
 
 > [!WARNING]
-> Some Airflow operators may require certain permissions to execute. For instance, `DataprocCreateClusterOperator` requires the `dataproc.clusters.create` permission. 
+> Some Airflow operators may require certain permissions to execute. For instance, `DataprocCreateClusterOperator` requires the `dataproc.clusters.create` permission.
 > When running Airflow tasks locally, you may need to set the necessary permissions locally for the task to execute successfully.
 
 
