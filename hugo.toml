@@ -30,7 +30,7 @@ byok = "flytesnacks"
 flyte = "Flyte"
 serverless = "Union Serverless"
 byoc = "Union BYOC"
-byok = "Union BYOK"
+# byok = "Union BYOK"
 
 [params.key.product_name]
 flyte = "Flyte"
