@@ -8,7 +8,7 @@ top_menu: true
 The multicluster deployment described in this section, assumes you have deployed the `flyte-core` Helm chart, which runs the individual Flyte components separately.
 This is needed because in a multicluster setup, the execution engine (`flytepropeller`) is deployed to multiple K8s clusters; hence it wouldn't work with the `flyte-binary` Helm chart, since it deploys all Flyte services as one single binary.
 
-> Union.ai offers simplified support for multi-cluster and multi-cloud. [Learn more](/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
+> {{< key product_name >}} offers simplified support for multi-cluster and multi-cloud. [Learn more](/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
 
 ## Scaling Beyond Kubernetes
 

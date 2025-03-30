@@ -28,15 +28,15 @@ byok = "flytesnacks"
 
 [params.key.product_full_name]
 flyte = "Flyte"
-serverless = "Union Serverless"
-byoc = "Union BYOC"
-# byok = "Union BYOK"
+serverless = "Union.ai Serverless"
+byoc = "Union.ai BYOC"
+# byok = "Union.ai BYOK"
 
 [params.key.product_name]
 flyte = "Flyte"
-serverless = "Union"
-byoc = "Union"
-byok = "Union"
+serverless = "Union.ai"
+byoc = "Union.ai"
+byok = "Union.ai"
 
 [params.key.product]
 flyte = "flyte"

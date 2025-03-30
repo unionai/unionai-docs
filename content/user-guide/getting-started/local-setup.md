@@ -193,12 +193,12 @@ that contains the connection information to connect `pyflyte` (and `flytectl`) t
 
 The local Flyte cluster will be available at `localhost:30080`.
 
-> [!NOTE] Try Flyte technology through Union Serverless
-> Alternatively, you can try using Flyte technology through Union Serverless.
-> With Union Serverless you do not need to install a local cluster and can start
+> [!NOTE] Try Flyte technology through {{< key product_name >}} Serverless
+> Alternatively, you can try using Flyte technology through {{< key product_name >}} Serverless.
+> With {{< key product_name >}} Serverless you do not need to install a local cluster and can start
 > experimenting immediately on a full cloud deployment.
 > You can even use the Workspaces in-browser IDE to quickly iterate on code.
-> See [Union Serverless > Getting started]({{< docs_home serverless >}}/user-guide/getting-started) for more details.
+> See [{{< key product_name >}} Serverless > Getting started]({{< docs_home serverless >}}/user-guide/getting-started) for more details.
 
 {{< /markdown >}}
 {{< /variant >}}

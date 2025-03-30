@@ -6,26 +6,26 @@ variants: -flyte -serverless +byoc +byok
 
 # Platform architecture
 
-The Union architecture consists of two virtual private clouds, referred to as planes—the control plane and the data plane.
+The {{< key product_name >}} architecture consists of two virtual private clouds, referred to as planes—the control plane and the data plane.
 
 ![](/_static/images/user-guide/platform-architecture/union-architecture.png)
 
 ## Control plane
 
 The control plane:
-  * Runs within the Union AWS account.
+  * Runs within the {{< key product_name >}} AWS account.
   * Provides the user interface through which users can access authentication, authorization, observation, and management functions.
   * Is responsible for placing executions onto data plane clusters and performing other cluster control and management functions.
 
 ## Data plane
 
-All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
+All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident {{< key product_name >}} operator with minimal required permissions.
 
-Union operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, Union supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
+{{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
 
-Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In Union, we distinguish between default nodes and worker nodes.
+Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
 
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
 
@@ -33,19 +33,19 @@ Worker nodes are responsible for executing your workloads. You have full control
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
 
-## Union operator
+## {{< key product_name >}} operator
 
-The Union hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling Union to handle the details of managing that infrastructure.
+The {{< key product_name >}} hybrid architecture lets you maintain ultimate ownership and control of your data and compute infrastructure while enabling {{< key product_name >}} to handle the details of managing that infrastructure.
 
-Management of the data plane is mediated by a dedicated operator (the Union operator) resident on that plane.
+Management of the data plane is mediated by a dedicated operator (the {{< key product_name >}} operator) resident on that plane.
 This operator is designed to perform its functions with only the very minimum set of required permissions.
-It allows the control plane to spin up and down clusters and provides Union's support engineers with access to system-level logs and the ability to apply changes as per customer requests.
+It allows the control plane to spin up and down clusters and provides {{< key product_name >}}'s support engineers with access to system-level logs and the ability to apply changes as per customer requests.
 It _does not_ provide direct access to secrets or data.
 
-In addition, communication is always initiated by the Union operator in the data plane toward the Union control plane, not the other way around.
+In addition, communication is always initiated by the {{< key product_name >}} operator in the data plane toward the {{< key product_name >}} control plane, not the other way around.
 This further enhances the security of your data plane.
 
-Union is SOC-2 Type 2 certified. A copy of the audit report is available upon request.
+{{< key product_name >}} is SOC-2 Type 2 certified. A copy of the audit report is available upon request.
 
 ## Registry data
 
@@ -88,7 +88,7 @@ This type of data is read by (and may be temporarily cached) by the control plan
 * Primitive execution inputs (int, string... etc.)
 * JSON-serializable dataclasses
 
-These are passed by value, not by reference, and may be stored in the Union control plane.
+These are passed by value, not by reference, and may be stored in the {{< key product_name >}} control plane.
 
 ## Data privacy
 

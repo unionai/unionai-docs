@@ -1,5 +1,5 @@
 ---
-title: About Union
+title: About Union.ai
 weight: 2
 variants: -flyte +serverless +byoc +byok
 ---
