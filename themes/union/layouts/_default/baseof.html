@@ -1,4 +1,4 @@
-{{- $cacheBust := now.Format "20060102150405" }}
+{{- $v := now.Format "20060102150405" }}
 {{- $variant := .Site.Params.variant -}}
 {{- $access := partial "page-allowed.html" . -}}
 {{- if $access.allowed -}}
@@ -8,22 +8,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{- .Title -}} | {{- .Site.Title -}}</title>
-    <link rel="icon" href="{{- "images/favicon.ico" | relURL -}}?v={{- $cacheBust -}}"/>
-    <link rel="stylesheet" href="{{- "css/api.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/breadcrumb.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/card.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/codeblock.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/footer.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/header.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/images.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/key.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/markdown.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/mermaid.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/search.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/sidebar.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/tabs.css" | relURL -}}?v={{- $cacheBust -}}" />
-    <link rel="stylesheet" href="{{- "css/toc.css" | relURL -}}?v={{- $cacheBust -}}" />
+    <link rel="icon" href="{{- "images/favicon.ico" | relURL -}}?v={{- $v -}}"/>
+    <link rel="stylesheet" href="{{- "css/api.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/breadcrumb.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/card.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/codeblock.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/footer.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/header.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/images.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/key.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/markdown.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/mermaid.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/search.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/sidebar.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/tabs.css" | relURL -}}?v={{- $v -}}" />
+    <link rel="stylesheet" href="{{- "css/toc.css" | relURL -}}?v={{- $v -}}" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
@@ -55,9 +55,9 @@
     {{ end }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.min.js"></script>
-    <script lang="javascript" src="{{- "js/key.js" | relURL -}}?v={{- $cacheBust -}}"></script>
-    <script lang="javascript" src="{{- "js/theme.js" | relURL -}}?v={{- $cacheBust -}}"></script>
-    <link rel="stylesheet" href="{{- "css/responsive.css" | relURL -}}?v={{- $cacheBust -}}" />
+    <script lang="javascript" src="{{- "js/key.js" | relURL -}}?v={{- $v -}}"></script>
+    <script lang="javascript" src="{{- "js/theme.js" | relURL -}}?v={{- $v -}}"></script>
+    <link rel="stylesheet" href="{{- "css/responsive.css" | relURL -}}?v={{- $v -}}" />
   </head>
   <body>
     <header>{{- partial "header.html" . -}}</header>

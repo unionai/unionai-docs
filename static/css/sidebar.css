@@ -106,6 +106,10 @@
   margin-bottom: 1rem;
 }
 
+.drawer-sidebar .variant-selector-container {
+  padding: 0.5rem;
+}
+
 header .signup {
   margin: 0 1rem;
 }
