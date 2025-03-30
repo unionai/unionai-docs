@@ -19,6 +19,15 @@ To enable the administration and management of your data plane, you grant {{< ke
 
 {{< key product_name >}} supports data planes on Amazon WebServices (AWS), Google Cloud Platform (GCP), and Microsoft Azure.
 {{< /markdown >}}
+
+{{< grid >}}
+
+{{< link-card target="installation" icon="box" title="Installation" >}}
+Installing {{< key product_name >}}
+{{< /link-card >}}
+
+{{< /grid >}}
+
 {{< /variant >}}
 
 {{< variant flyte >}}
