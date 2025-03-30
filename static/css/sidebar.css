@@ -32,16 +32,15 @@
   font-weight: 500;
 }
 .site-nav .section-title {
-  /* font-weight: 600; */
   font-size: var(--sidebar-font-size);
   color: var(--text-color);
   display: block;
-  /* padding: var(--menu-v-space) var(--menu-indent); */
+  margin: var(--menu-v-space) 0;
   cursor: pointer;
 }
 .site-nav .page-link {
   display: block;
-  /* padding: var(--menu-v-space) var(--menu-indent); */
+  margin: var(--menu-v-space) 0;
   border-radius: 4px;
   font-size: var(--sidebar-font-size);
 }
