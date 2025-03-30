@@ -7,7 +7,7 @@ top_menu: true
 
 # Tutorials
 
-This section provides tutorials that walk you through the process of building AI/ML applications on Union.
+This section provides tutorials that walk you through the process of building AI/ML applications on {{< key product_name >}}.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
 {{< grid >}}
@@ -33,7 +33,7 @@ Securely store Reddit and Slack authentication data while pushing relevant Reddi
 {{< /link-card >}}
 
 {{< link-card target="parallel-processing-and-job-scheduling/wikipedia-embeddings" icon="book" title=" Wikipedia Embeddings Generation" >}}
-Create embeddings for the Wikipedia dataset, powered by Union actors.
+Create embeddings for the Wikipedia dataset, powered by {{< key product_name >}} actors.
 {{< /link-card >}}
 
 {{< link-card target="time-series/time-series-forecaster-comparison" icon="graph" title="Time Series Forecaster Comparison" >}}
@@ -62,11 +62,11 @@ Serve a vLLM model on a warm container and trigger inference automatically with 
 {{< /link-card >}}
 
 {{< link-card target="diffusion-models/mochi-video-generation" icon="video" title="Video Generation with Mochi" >}}
-Run the Mochi 1 text-to-video generation model by Genmo on Union.
+Run the Mochi 1 text-to-video generation model by Genmo on {{< key product_name >}}.
 {{< /link-card >}}
 
 {{< link-card target="language-models/pdf-to-podcast-blueprint" icon="play" title="Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use" >}}
-Leverage Union to productionize NVIDIA blueprint workflows.
+Leverage {{< key product_name >}} to productionize NVIDIA blueprint workflows.
 {{< /link-card >}}
 
 {{< link-card target="language-models/contextual-rag" icon="book" title=" Contextual RAG with Together AI" >}}
@@ -75,7 +75,7 @@ Build a contextual RAG workflow for enterprise use.
 
 {{< variant byoc >}}
 {{< link-card target="language-models/nim-on-actor" icon="server" title="Near-Real-Time Inference with NVIDIA NIM" >}}
-Serve NVIDIA NIM-supported language models, powered by Union actors.
+Serve NVIDIA NIM-supported language models, powered by {{< key product_name >}} actors.
 {{< /link-card >}}
 {{< /variant >}}
 

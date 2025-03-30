@@ -9,7 +9,7 @@ layout: py_api
 
 These are the Flytekit SDK API docs.
 
-Flytekit is the core Python SDK for the Union.ai and Flyte platforms.
+Flytekit is the core Python SDK for the Union and Flyte platforms.
 
 
 ## Developing on Flyte
@@ -25,9 +25,9 @@ This will install the Flytekit SDK and the `pyflyte` command-line tool.
 When working with the FLytekit SDK you will be using the `pyflyte` CLI and the Flytekit SDK docs (not the Union SDK docs).
 
 
-## Developing on Union.ai
+## Developing on Union
 
-For developing on the Union.ai platform you need to add the `union` package to your project:
+For developing on the Union platform you need to add the `union` package to your project:
 
 ```shell
 $ uv add union

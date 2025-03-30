@@ -7,7 +7,7 @@ variants: -flyte +serverless +byoc +byok
 # Workspaces
 
 Workspaces provide a convenient VSCode development environment for iterating on
-your Union.ai tasks, workflows, and apps.
+your {{< key product_name >}} tasks, workflows, and apps.
 
 With workspaces, you can:
 
@@ -299,7 +299,7 @@ You can also set the resources for your workspace:
 {{< markdown >}}
 
 These resources must be compatible with the resource limits available to you
-on your Union.ai serverless account. Go the the top-level dashboard to view your
+on your {{< key product_name >}} Serverless account. Go the the top-level dashboard to view your
 execution settings:
 
 ![Execution Settings](/_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
@@ -331,7 +331,7 @@ a file from the web, specify custom `on_startup` commands:
 
 ### Specifying custom container images
 
-By default, the workspace will use a Union.ai-provided container image which contains
+By default, the workspace will use a {{< key product_name >}}-provided container image which contains
 the following Python libraries:
 
 * `union`
@@ -364,7 +364,7 @@ task execution details page:
 
 You can specify:
 * Any public container image URI
-* Images built with the Union.ai [image builder service](/user-guide/development-cycle/image-spec/)
+* Images built with the {{< key product_name >}} [image builder service](/user-guide/development-cycle/image-spec/)
 * Images available in your private container registry (e.g. [AWS ECR](/user-guide//integrations/enabling-aws-resources/enabling-aws-ecr/), [GCP Artifact Registry](/user-guide//integrations/enabling-gcp-resources/enabling-google-artifact-registry/), or [Azure Container Registry](/user-guide//integrations/enabling-azure-resources/enabling-azure-container-registry/))
 
 {{< /markdown >}}
@@ -373,7 +373,7 @@ You can specify:
 #### Specifying a custom container image in the CLI
 
 The `union` CLI provides a way to specify a custom container image that's built
-by Union's image builder service. To do this, run the following command:
+by {{< key product_name >}}'s image builder service. To do this, run the following command:
 
 ```shell
 $ union create workspace-config --init custom_image workspace.yaml
@@ -427,11 +427,11 @@ workspaces list view.
 You may come across issues starting up a workspace due to various reasons,
 including:
 
-* Resource requests not being available on your Union cluster.
+* Resource requests not being available on your {{< key product_name >}} cluster.
 * Secrets key typpos of not being defined on the project/domain.
 * Container image typos or container images not existing.
 
-Under the hood, workspaces are powered by Union tasks, so to debug these kinds
+Under the hood, workspaces are powered by {{< key product_name >}} tasks, so to debug these kinds
 of issues, the workspace detail page provides a link to the underlying
 task that's hosting the VSCode IDE:
 
