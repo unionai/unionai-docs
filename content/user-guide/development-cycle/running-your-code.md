@@ -90,6 +90,86 @@ This command will:
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
 For more details see [{{< key cli >}} run details](./details-of-union-run).
 
+## Running tasks through uctl
+
+This is a multi-step process where we create an execution spec file, update the spec file, and then create the execution.
+
+### Generate execution spec file
+
+```bash
+uctl launch task --project flytesnacks --domain development --name workflows.example.generate_normal_df --version v1
+```
+
+### Update the input spec file for arguments to the workflow
+
+```yaml
+iamRoleARN: 'arn:aws:iam::12345678:role/defaultrole'
+inputs:
+  n: 200
+  mean: 0.0
+  sigma: 1.0
+kubeServiceAcct: ""
+targetDomain: ""
+targetProject: ""
+task: workflows.example.generate_normal_df
+version: "v1"
+```
+
+### Create execution using the exec spec file
+
+```bash
+uctl create execution -p flytesnacks -d development --execFile exec_spec.yaml
+```
+
+### Monitor the execution by providing the execution id from create command
+
+```bash
+uctl get execution -p flytesnacks -d development <execid>
+```
+
+## Running workflows through uctl
+
+Workflows on their own are not runnable directly. However, a launchplan is always bound to a workflow and you can use
+launchplans to `launch` a workflow. For cases in which you want the launchplan to have the same arguments as a workflow,
+if you are using one of the SDK's to author your workflows - like flytekit, flytekit-java etc, then they should
+automatically create a `default launchplan` for the workflow.
+
+A `default launchplan` has the same name as the workflow and all argument defaults are similar.
+
+Tasks also can be executed using the launch command.
+One difference between running a task and a workflow via launchplans is that launchplans cannot be associated with a
+task. This is to avoid triggers and scheduling.
+
+## Running launchplans through uctl
+
+This is multi-steps process where we create an execution spec file, update the spec file and then create the execution.
+More details can be found [here](https://docs.flyte.org/projects/flytectl/en/stable/gen/flytectl_create_execution.html).
+
+
+### Generate an execution spec file
+
+```bash
+uctl get launchplan -p flytesnacks -d development myapp.workflows.example.my_wf  --execFile exec_spec.yaml
+```
+
+### Update the input spec file for arguments to the workflow
+
+```yaml
+inputs:
+    name: "adam"
+```
+
+### Create execution using the exec spec file
+
+```bash
+uctl create execution -p flytesnacks -d development --execFile exec_spec.yaml
+```
+
+### Monitor the execution by providing the execution id from create command
+
+```bash
+uctl get execution -p flytesnacks -d development <execid>
+```
 
 ## Deploying your code to {{< key product_name >}} with `{{< key cli >}} register`
 

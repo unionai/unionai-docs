@@ -228,3 +228,99 @@ latest_success = remote.recent_executions(
 )
 ```
 
+## Launch task via UnionRemote with a new version
+
+```python
+from union.remote import UnionRemote
+from union.configuration import Config, SerializationSettings
+
+# {{< key kit_remote >}} object is the main entrypoint to API
+remote = {{< key kit_remote >}}(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+# Get Task
+flyte_task = remote.fetch_task(name="workflows.example.generate_normal_df", version="v1")
+
+flyte_task = remote.register_task(
+    entity=flyte_task,
+    serialization_settings=SerializationSettings(image_config=None),
+    version="v2",
+)
+
+# Run Task
+execution = remote.execute(
+     flyte_task, inputs={"n": 200, "mean": 0.0, "sigma": 1.0}, execution_name="task-execution", wait=True
+)
+
+# Or use execution_name_prefix to avoid repeated execution names
+execution = remote.execute(
+     flyte_task, inputs={"n": 200, "mean": 0.0, "sigma": 1.0}, execution_name_prefix="flyte", wait=True
+)
+
+# Inspecting execution
+# The 'inputs' and 'outputs' correspond to the task execution.
+input_keys = execution.inputs.keys()
+output_keys = execution.outputs.keys()
+```
+
+## Launch workflow via UnionRemote
+Workflows can be executed with UnionRemote because under the hood it fetches and triggers a default launch plan.
+
+```python
+from union.remote import UnionRemote
+from union.configuration import Config
+
+# UnionRemote object is the main entrypoint to API
+remote = UnionRemote(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+# Fetch workflow
+flyte_workflow = remote.fetch_workflow(name="workflows.example.wf", version="v1")
+
+# Execute
+execution = remote.execute(
+    flyte_workflow, inputs={"mean": 1}, execution_name="workflow-execution", wait=True
+)
+
+# Or use execution_name_prefix to avoid repeated execution names
+execution = remote.execute(
+    flyte_workflow, inputs={"mean": 1}, execution_name_prefix="flyte", wait=True
+)
+```
+
+## Launch launchplan via UnionRemote
+A launch plan can be launched via UnionRemote programmatically.
+
+```python
+from union.remote import UnionRemote
+from union.configuration import Config
+from union import LaunchPlan
+
+# UnionRemote object is the main entrypoint to API
+remote = UnionRemote(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+# Fetch launch plan
+flyte_lp = remote.fetch_launch_plan(
+    name="workflows.example.wf", version="v1", project="flytesnacks", domain="development"
+)
+
+# Execute
+execution = remote.execute(
+    flyte_lp, inputs={"mean": 1}, execution_name="lp-execution", wait=True
+)
+
+# Or use execution_name_prefix to avoid repeated execution names
+execution = remote.execute(
+    flyte_lp, inputs={"mean": 1}, execution_name_prefix="flyte", wait=True
+)
+```
