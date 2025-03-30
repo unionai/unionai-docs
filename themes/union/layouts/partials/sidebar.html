@@ -137,10 +137,10 @@
                         {{- if and (not .page.Params.sidebar_expanded) (not .page.Params.top_menu) -}}
                           <img src="{{- "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end -}}" />
                         {{- else -}}
-                          <img src="{{- "images/chevron-down.svg" | relURL }}" class="chevron hidden" />
+                          <img src="{{- "images/pixel.svg" | relURL }}" class="chevron hidden" />
                         {{- end -}}
                     {{- else -}}
-                      <img src="{{- "images/chevron-down.svg" | relURL }}" class="chevron hidden" />
+                      <img src="{{- "images/pixel.svg" | relURL }}" class="chevron hidden" />
                     {{- end -}}
                     <div style="flex: 1">{{- partial "page-title.html" .page -}}</div>
                     {{- if and $access.variant $access.excluded -}}
