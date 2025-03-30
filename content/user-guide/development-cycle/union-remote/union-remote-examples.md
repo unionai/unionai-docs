@@ -38,7 +38,7 @@ def my_workflow(message: str) -> {{< key kit_as >}}.FlyteFile:
 The file `remote.py` contains the `{{< key kit_remote >}}` logic. It is not part of the workflow code, and is meant to be run on your local machine.
 
 ```python
-import {{< key kit_remote >}}
+import {{< key kit_import >}}
 from workflow.example import my_workflow
 
 
@@ -56,6 +56,7 @@ def run_workflow():
     print(read_lines)
 ```
 
+
 The `my_workflow` workflow and the `create_file` task is registered and run.
 Once the workflow completes, the output is passed back to the `run_workflow` function and printed out.
 
@@ -66,8 +67,6 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
 For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint]().
 <!-- TODO: Add link to API -->
-
-
 
 ## Fetching outputs
 
@@ -93,12 +92,13 @@ completed_execution = remote.wait(execution)
 print(completed_execution.outputs)  # print out the outputs
 ```
 
+
 ## Terminating all running executions for a workflow
 
 This example shows how to terminate all running executions in a given workflow name.
 
 ```python
-from union.remote import {{< key kit_remote >}}
+import {{< key kit_import >}}
 from dataclasses import dataclass
 import json
 from flytekit.configuration import Config
@@ -149,8 +149,7 @@ This example shows how to identify all failed executions from a given workflow s
 ```python
 import datetime
 import pytz
-import {{< key kit_remote >}}
-from flytekit.configuration import Config
+import {{< key kit_import >}}
 from flytekit.models.core.execution import NodeExecutionPhase
 
 SOME_LARGE_LIMIT = 5000
@@ -193,7 +192,7 @@ inputs = [remote.sync(execution).inputs for execution in windowed]
 workflow = remote.fetch_workflow(name=WF_NAME, version=VERSION)
 
 # execute new workflow for each failed previous execution
-remote.execute(workflow, inputs=X) for X in inputs
+[remote.execute(workflow, inputs=X) for X in inputs]
 ```
 
 ## Filtering for executions using a `Filter`
@@ -202,7 +201,7 @@ This example shows how to use a `Filter` to only query for the executions you wa
 
 ```python
 from flytekit.models import filters
-import {{< key kit_remote >}}
+import {{< key kit_import >}}
 
 WF_NAME = "your_workflow_name"
 LP_NAME = "your_launchplan_name"
@@ -228,3 +227,139 @@ latest_success = remote.recent_executions(
 )
 ```
 
+## Launch task via FlyteRemote with a new version
+
+```python
+import {{< key kit_import >}}
+from flytekit.remote import FlyteRemote
+from flytekit.configuration import Config, SerializationSettings
+
+# {{< key kit_remote >}} object is the main entrypoint to API
+remote = {{<key kit_as>}}.{{< key kit_remote >}}(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+# Get Task
+task = remote.fetch_task(name="workflows.example.generate_normal_df", version="v1")
+
+task = remote.register_task(
+    entity=flyte_task,
+    serialization_settings=SerializationSettings(image_config=None),
+    version="v2",
+)
+
+# Run Task
+execution = remote.execute(
+     task, inputs={"n": 200, "mean": 0.0, "sigma": 1.0}, execution_name="task-execution", wait=True
+)
+
+# Or use execution_name_prefix to avoid repeated execution names
+execution = remote.execute(
+     task, inputs={"n": 200, "mean": 0.0, "sigma": 1.0}, execution_name_prefix="flyte", wait=True
+)
+
+# Inspecting execution
+# The 'inputs' and 'outputs' correspond to the task execution.
+input_keys = execution.inputs.keys()
+output_keys = execution.outputs.keys()
+```
+
+
+## Launch workflow via {{< key kit_remote >}}
+
+Workflows can be executed with UnionRemote because under the hood it fetches and triggers a default launch plan.
+
+```python
+import {{< key kit_import >}}
+from flytekit.configuration import Config
+
+# UnionRemote object is the main entrypoint to API
+remote = {{<key kit_as>}}.{{< key kit_remote >}}(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+# Fetch workflow
+workflow = remote.fetch_workflow(name="workflows.example.wf", version="v1")
+
+# Execute
+execution = remote.execute(
+    workflow, inputs={"mean": 1}, execution_name="workflow-execution", wait=True
+)
+
+# Or use execution_name_prefix to avoid repeated execution names
+execution = remote.execute(
+    workflow, inputs={"mean": 1}, execution_name_prefix="flyte", wait=True
+)
+```
+
+
+## Launch launchplan via {{< key kit_remote >}}
+
+A launch plan can be launched via {{< key kit_remote >}} programmatically.
+
+```python
+import {{< key kit_import >}}
+from flytekit.configuration import Config
+
+# UnionRemote object is the main entrypoint to API
+remote = {{<key kit_as>}}.{{< key kit_remote >}}(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+# Fetch launch plan
+lp = remote.fetch_launch_plan(
+    name="workflows.example.wf", version="v1", project="flytesnacks", domain="development"
+)
+
+# Execute
+execution = remote.execute(
+    lp, inputs={"mean": 1}, execution_name="lp-execution", wait=True
+)
+
+# Or use execution_name_prefix to avoid repeated execution names
+execution = remote.execute(
+    lp, inputs={"mean": 1}, execution_name_prefix="flyte", wait=True
+)
+```
+
+## Inspecting executions
+
+With {{< key kit_remote >}}, you can fetch the inputs and outputs of executions and inspect them.
+
+```python
+import {{< key kit_import >}}
+from flytekit.configuration import Config
+
+# UnionRemote object is the main entrypoint to API
+remote = {{<key kit_as>}}.{{< key kit_remote >}}(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+execution = remote.fetch_execution(
+    name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development"
+)
+
+input_keys = execution.inputs.keys()
+output_keys = execution.outputs.keys()
+
+# The inputs and outputs correspond to the top-level execution or the workflow itself.
+# To fetch a specific output, say, a model file:
+model_file = execution.outputs["model_file"]
+with open(model_file) as f:
+    ...
+
+# You can use UnionRemote.sync() to sync the entity object's state with the remote state during the execution run.
+synced_execution = remote.sync(execution, sync_nodes=True)
+node_keys = synced_execution.node_executions.keys()
+
+# node_executions will fetch all the underlying node executions recursively.
+# To fetch output of a specific node execution:
+node_execution_output = synced_execution.node_executions["n1"].outputs["model_file"]
