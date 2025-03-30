@@ -90,14 +90,14 @@ This command will:
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
 For more details see [{{< key cli >}} run details](./details-of-union-run).
 
-## Running tasks through uctl
+## Running tasks through flytectl
 
 This is a multi-step process where we create an execution spec file, update the spec file, and then create the execution.
 
 ### Generate execution spec file
 
 ```bash
-uctl launch task --project flytesnacks --domain development --name workflows.example.generate_normal_df --version v1
+flytectl launch task --project flytesnacks --domain development --name workflows.example.generate_normal_df --version v1
 ```
 
 ### Update the input spec file for arguments to the workflow
@@ -118,16 +118,16 @@ version: "v1"
 ### Create execution using the exec spec file
 
 ```bash
-uctl create execution -p flytesnacks -d development --execFile exec_spec.yaml
+flytectl create execution -p flytesnacks -d development --execFile exec_spec.yaml
 ```
 
 ### Monitor the execution by providing the execution id from create command
 
 ```bash
-uctl get execution -p flytesnacks -d development <execid>
+flytectl get execution -p flytesnacks -d development <execid>
 ```
 
-## Running workflows through uctl
+## Running workflows through flytectl
 
 Workflows on their own are not runnable directly. However, a launchplan is always bound to a workflow and you can use
 launchplans to `launch` a workflow. For cases in which you want the launchplan to have the same arguments as a workflow,
@@ -140,7 +140,7 @@ Tasks also can be executed using the launch command.
 One difference between running a task and a workflow via launchplans is that launchplans cannot be associated with a
 task. This is to avoid triggers and scheduling.
 
-## Running launchplans through uctl
+## Running launchplans through flytectl
 
 This is multi-steps process where we create an execution spec file, update the spec file and then create the execution.
 More details can be found [here](https://docs.flyte.org/projects/flytectl/en/stable/gen/flytectl_create_execution.html).
@@ -149,7 +149,7 @@ More details can be found [here](https://docs.flyte.org/projects/flytectl/en/sta
 ### Generate an execution spec file
 
 ```bash
-uctl get launchplan -p flytesnacks -d development myapp.workflows.example.my_wf  --execFile exec_spec.yaml
+flytectl get launchplan -p flytesnacks -d development myapp.workflows.example.my_wf  --execFile exec_spec.yaml
 ```
 
 ### Update the input spec file for arguments to the workflow
@@ -162,13 +162,13 @@ inputs:
 ### Create execution using the exec spec file
 
 ```bash
-uctl create execution -p flytesnacks -d development --execFile exec_spec.yaml
+flytectl create execution -p flytesnacks -d development --execFile exec_spec.yaml
 ```
 
 ### Monitor the execution by providing the execution id from create command
 
 ```bash
-uctl get execution -p flytesnacks -d development <execid>
+flytectl get execution -p flytesnacks -d development <execid>
 ```
 
 ## Deploying your code to {{< key product_name >}} with `{{< key cli >}} register`
@@ -218,6 +218,34 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 > and making all your imports absolute.
 > This avoids having to “install” your Python project in the image at any point e.g. via `pip install -e`.
 
+## Inspecting executions
+### Flytectl
+Flytectl supports inspecting execution by retrieving its details. For a deeper dive, refer to the
+[API reference](https://docs.flyte.org/projects/flytectl/en/stable/gen/flytectl_get_execution.html) guide.
+
+Monitor the execution by providing the execution id from create command which can be task or workflow execution.
+
+```
+flytectl get execution -p flytesnacks -d development <execid>
+```
+
+For more details use `--details` flag which shows node executions along with task executions on them.
+
+```
+flytectl get execution -p flytesnacks -d development <execid> --details
+```
+
+If you prefer to see yaml/json view for the details then change the output format using the -o flag.
+
+```
+flytectl get execution -p flytesnacks -d development <execid> --details -o yaml
+```
+
+To see the results of the execution you can inspect the node closure outputUri in detailed yaml output.
+
+```
+"outputUri": "s3://my-s3-bucket/metadata/propeller/flytesnacks-development-<execid>/n0/data/0/outputs.pb"
+```
 
 ## Deploying your code to production
 
@@ -269,7 +297,7 @@ Let’s break down what each flag is doing here:
 
 * `--version`: This is a version string that can be any string, but we recommend using the Git SHA in general, especially in production use cases.
 
-See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
+See [{{< key ctl_name >}} CLI](../../api-reference/flytectl-cli) for more details.
 
 
 ## Using pyflyte register versus pyflyte package + flytectl register

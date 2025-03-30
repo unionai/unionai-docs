@@ -324,3 +324,38 @@ execution = remote.execute(
     flyte_lp, inputs={"mean": 1}, execution_name_prefix="flyte", wait=True
 )
 ```
+
+## Inspecting executions
+With UnionRemote, you can fetch the inputs and outputs of executions and inspect them.
+
+```python
+from union.remote import UnionRemote
+
+# UnionRemote object is the main entrypoint to API
+remote = UnionRemote(
+    config=Config.for_endpoint(endpoint="flyte.example.net"),
+    default_project="flytesnacks",
+    default_domain="development",
+)
+
+execution = remote.fetch_execution(
+    name="fb22e306a0d91e1c6000", project="flytesnacks", domain="development"
+)
+
+input_keys = execution.inputs.keys()
+output_keys = execution.outputs.keys()
+
+# The inputs and outputs correspond to the top-level execution or the workflow itself.
+# To fetch a specific output, say, a model file:
+model_file = execution.outputs["model_file"]
+with open(model_file) as f:
+    ...
+
+# You can use UnionRemote.sync() to sync the entity object's state with the remote state during the execution run.
+synced_execution = remote.sync(execution, sync_nodes=True)
+node_keys = synced_execution.node_executions.keys()
+
+# node_executions will fetch all the underlying node executions recursively.
+# To fetch output of a specific node execution:
+node_execution_output = synced_execution.node_executions["n1"].outputs["model_file"]
+```
