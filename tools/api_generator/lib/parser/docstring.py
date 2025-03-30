@@ -6,6 +6,13 @@ from sys import stderr
 from lib.ptypes import ParamDict, ParamInfo
 
 
+_returns = [
+    "return",
+    "rcode",
+    "result",
+    "rtype",
+]
+
 class DocstringInfo(TypedDict):
     docstring: str
     params: ParamDict
@@ -97,13 +104,10 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
         else:
             line_params = line.strip()
 
-            if line_params.startswith(":rtype:"):
-                result["return_type"] = line_params[7:].strip()
-                continue
-
-            if line_params.startswith(":result:"):
-                result["return_type"] = line_params[8:].strip()
-                continue
+            for r in _returns:
+                if line_params.startswith(f":{r}:"):
+                    result["return_type"] = line_params[len(r):].strip()
+                    continue
 
             if not current_param and not line_params.startswith(":param"):
                 result["docstring"] += line + "\n"
