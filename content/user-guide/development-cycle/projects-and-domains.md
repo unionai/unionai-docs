@@ -108,13 +108,3 @@ Projects in {{< key product_name >}} are designed to group independent workflows
 * **CLI Commands**: In most commands within the `{{< key cli >}}` and `uctl` CLIs, you can specify the project and domain by using the `--project` and `--domain` flags, enabling precise control over which project-domain pair a command applies to. More details [here](../../api-reference/union-cli) and [here](../../api-reference/uctl-cli).
 
 * **Python SDK**: When working with the `{{< key kit >}}` SDK, you can leverage `{{< key kit_remote >}}` to define the project and domain for workflow interactions programmatically, ensuring that all actions occur in the intended environment. More details [here](union-remote).
-
-# Creating a new project
-
-Creates project to be used as a home for the flyte resources of tasks and workflows.
-Refer to the [flytectl API reference](https://docs.flyte.org/projects/flytectl/en/stable/gen/flytectl_create_project.html)
-for more details.
-
-```bash
-flytectl create project --id "my-flyte-project-name" --labels "my-label=my-project-label"  --description "my-flyte-project-name" --name "my-flyte-project-name"
-```
