@@ -137,26 +137,26 @@ def contextmanager(
 Typical usage:
 
 @contextmanager
-def some_generator(<arguments>):
-<setup>
+def some_generator({arguments}):
+{setup}
 try:
-yield <value>
+yield {value}
 finally:
-<cleanup>
+{cleanup}
 
 This makes this:
 
-with some_generator(<arguments>) as <variable>:
-<body>
+with some_generator({arguments}) as {variable}:
+{body}
 
 equivalent to this:
 
-<setup>
+{setup}
 try:
-<variable> = <value>
-<body>
+{variable} = {value}
+{body}
 finally:
-<cleanup>
+{cleanup}
 
 
 | Parameter | Type |
