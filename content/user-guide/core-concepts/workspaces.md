@@ -7,29 +7,29 @@ variants: -flyte +serverless +byoc -byok
 # Workspaces
 
 Workspaces provide a convenient VSCode development environment for iterating on
-your Union.ai tasks, workflows, and apps.
+your {{< key product_name >}} tasks, workflows, and apps.
 
 With workspaces, you can:
 
-- 🧑‍💻 Develop and debug your tasks, workflows, or code in general
-- ▶️ Run your tasks and workflows in a way that matches your production environment
-- 🚀 Deploy your workflows and apps to development, staging, or production environments
-- 🗂️ Persist files across workspace restarts to save your work
-- 🔑 Specify secrets and resources for your workspace
-- 🐳 Specify custom container images
-- 💻 Specify custom `on_startup` commands
-- ⏱️ Adjust the idle time-to-live (TTL) for your workspace to avoid unneeded expenses
-- 🔑 Authenticate with GitHub to clone private repositories
+* Develop and debug your tasks, workflows, or code in general
+* Run your tasks and workflows in a way that matches your production environment
+* Deploy your workflows and apps to development, staging, or production environments
+* Persist files across workspace restarts to save your work
+* Specify secrets and resources for your workspace
+* Specify custom container images
+* Specify custom `on_startup` commands
+* Adjust the idle time-to-live (TTL) for your workspace to avoid unneeded expenses
+* Authenticate with GitHub to clone private repositories
 
 ## Creating a workspace
 
-To create a workspace, click on the `Workspace` tab on left navbar and click
-on the `New Workspace` button on the top right.
+To create a workspace, click on the **Workspace** tab on left navbar and click
+on the **New Workspace** button on the top right.
 
 ![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-1.png)
 
 Provide a name for your workspace, set an **Idle TTL** (time to live), and
-click `Create`.
+click **Create**.
 
 ![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-2.png)
 
@@ -49,7 +49,7 @@ To run a workspace, click on the switch on the workspace item:
 
 ![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-1.png)
 
-Once the workspace has started, you can click on the `Open in VSCode` button:
+Once the workspace has started, you can click on the **Open in VSCode** button:
 
 ![Run Workspace](/_static/images/user-guide/core-concepts/workspaces/run-workspace-2.png)
 
@@ -74,7 +74,7 @@ This allows you to save data, code, models, and other files in your workspace.
 
 ## Editing a workspace
 
-Change the workspace configuration by clicking on the `Edit` button:
+Change the workspace configuration by clicking on the **Edit** button:
 
 ![Edit Workspace](/_static/images/user-guide/core-concepts/workspaces/edit-workspace-1.png)
 
@@ -93,13 +93,13 @@ which provides all the information about the workspace.
 
 ## Archiving a workspace
 
-Archive a workspace by clicking on the `Archive` button:
+Archive a workspace by clicking on the **Archive** button:
 
 ![Archive Workspace](/_static/images/user-guide/core-concepts/workspaces/archive-workspace.png)
 
-Show archived workspaces by clicking on the `Show archived` toggle
+Show archived workspaces by clicking on the **Show archived** toggle
 on the top right of the workspaces list view. Unarchive a workspace by clicking
-on the `Unarchive` button:
+on the **Unarchive** button:
 
 ![Unarchive Workspace](/_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
 
@@ -113,7 +113,7 @@ The `union` CLI also provides commands for managing workspaces.
 The first step is to create a yaml file that describes the workspace.
 
 ```shell
-union create workspace-config --init base_image workspace.yaml
+$ union create workspace-config --init base_image workspace.yaml
 ```
 
 This will create a `workspace.yaml` file in the current directory, with the
@@ -142,13 +142,13 @@ workspace in a specific project and domain.
 Then, create a workspace using the `union create workspace` command:
 
 ```shell
-union create workspace workspace.yaml
+$ union create workspace workspace.yaml
 ```
 
 This command will also start your workspace, and will print out the workspace
 link that you click on to open the workspace in your browser:
 
-```text
+```shell
 Created: workspace_definition {
   ...
 }
@@ -163,12 +163,12 @@ Starting workspace 'my-workspace'
 When you want to stop a workspace, use the `union stop workspace` command:
 
 ```shell
-union stop workspace --name my-workspace
+$ union stop workspace --name my-workspace
 ```
 
 This will print out a message indicating that the workspace has been stopped:
 
-```text
+```shell
 Workspace instance stopped: org: "org"
 ...
 ```
@@ -179,12 +179,12 @@ To update a workspace, modify the `workspace.yaml` file and run the
 `union update workspace` command:
 
 ```shell
-union update workspace workspace.yaml
+$ union update workspace workspace.yaml
 ```
 
 This will print out a message that looks something like:
 
-```text
+```shell
 Updated: workspace_definition {
   ...
 }
@@ -196,14 +196,14 @@ Updated: workspace_definition {
 To get existing workspaces, use the `union get workspace` command:
 
 ```shell
-union get workspace
+$ union get workspace
 ```
 
 This will print out a table of all the workspaces you have access to in the
 specified project and domain (the command uses the default project and domain
 if you don't provide them).
 
-```text
+```shell
 ┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━━━┳━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Workspace name       ┃ CPU ┃ Memory ┃ GPU ┃ Accelerator         ┃ TTL Seconds ┃ Active URL ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━━━╇━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -220,12 +220,12 @@ To start a workspace, use the `union start workspace` command, specifying the
 name of the workspace you want to start in the `--name` flag.
 
 ```shell
-union start workspace --name my-workspace
+$ union start workspace --name my-workspace
 ```
 
 You should see a message that looks like:
 
-```text
+```shell
 Starting workspace 'my-workspace'
 
 🚀 Workspace started: Open VSCode in Browser
@@ -243,19 +243,19 @@ If you don't have any secrets yet, create them with the `union create secret`
 command:
 
 ```shell
-union create secret --project my_project --domain my_domain --name my_secret
+$ union create secret --project my_project --domain my_domain --name my_secret
 ```
 
 You'll be prompted to enter a secret value in the terminal:
 
-```
+```shell
 Enter secret value: ...
 ```
 
 > [!NOTE]
 > You can learn more about secrets management [here](../../development-cycle/managing-secrets.md).
 
-Set secrets for your workspace by clicking on the `Secrets` tab in the sidebar.
+Set secrets for your workspace by clicking on the **Secrets** tab in the sidebar.
 Provide the `my_secret` key and optionally, the environment variable you want
 to assign it to in the workspace.
 
@@ -296,11 +296,12 @@ execution settings:
 ![Execution Settings](/_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
 
 For the `GPU` field, you can choose one of the following values:
-- `nvidia-tesla-t4`
-- `nvidia-tesla-l4`
-- `nvidia-tesla-a100`
 
-Learn more about the available accelerators [here](../tasks/task-hardware-environment/accelerators.md).
+* `nvidia-tesla-t4`
+* `nvidia-tesla-l4`
+* `nvidia-tesla-a100`
+
+Learn more about the available accelerators [here](./tasks/task-hardware-environment/accelerators.md).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -313,7 +314,7 @@ cluster. Find the details of your BYOC cluster in the top-level dashboard:
 
 ![BYOC Compute Resources](/_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
 
-You can choose [the GPU accelerator](../tasks/task-hardware-environment/accelerators.md) that corresponds to your available instance types. In the screen shot above, the accelerator
+You can choose [the GPU accelerator](./tasks/task-hardware-environment/accelerators.md) that corresponds to your available instance types. In the screen shot above, the accelerator
 value is `nvidia-tesla-v100`.
 
 {{< /markdown >}}
@@ -343,7 +344,7 @@ the following Python libraries:
 
 #### Specifying a custom container image in the UI
 
-You can specify a pre-built custom container image by clicking on the `Container`
+You can specify a pre-built custom container image by clicking on the **Container**
 tab in the sidebar and provide the image name in the workspace creation form.
 
 > [!NOTE]
@@ -447,22 +448,22 @@ authenticate via the browser.
 > workspace, but you'll need to authenticate via `gh auth login` in every new
 > workspace session:
 
-- Create a secret with the `union create secret` command
-- Create a workspace or update an existing one with the `GITHUB_TOKEN` secret,
+* Create a secret with the `union create secret` command
+* Create a workspace or update an existing one with the `GITHUB_TOKEN` secret,
   setting the environment variable to e.g. `GITHUB_TOKEN`
-- In the workspace session, run `gh auth login` to authenticate with GitHub and
+* In the workspace session, run `gh auth login` to authenticate with GitHub and
   use the `$GITHUB_TOKEN` environment variable as the personal access token.
 
 ## Sorting and filtering workspaces
 
-You can filter workspaces to only the active ones by clicking on the `Active`
+You can filter workspaces to only the active ones by clicking on the **Active**
 toggle on the top left of the workspaces list view.
 
 ![Active Workspaces](/_static/images/user-guide/core-concepts/workspaces/active-workspaces.png)
 
-Sort by recently updated by clicking on the `Recently updated` toggle on the
+Sort by recently updated by clicking on the **Recently updated** toggle on the
 top right of the workspaces list view, and you can also sort by recently
-updated by clicking on the `Recently updated` toggle on the top right of the
+updated by clicking on the **Recently updated** toggle on the top right of the
 workspaces list view.
 
 ![Filtering and Sorting Workspaces](/_static/images/user-guide/core-concepts/workspaces/filtering-sorting-workspaces.png)
@@ -472,11 +473,11 @@ workspaces list view.
 You may come across issues starting up a workspace due to various reasons,
 including:
 
-- Resource requests not being available on your Union cluster.
-- Secrets key typpos of not being defined on the project/domain.
-- Container image typos or container images not existing.
+* Resource requests not being available on your Union cluster.
+* Secrets key typpos of not being defined on the project/domain.
+* Container image typos or container images not existing.
 
-Under the hood, workspaces are powered by Union tasks, so to debug these kinds
+Under the hood, workspaces are powered by {{< key product_name >}} tasks, so to debug these kinds
 of issues, the workspace detail page provides a link to the underlying
 task that's hosting the VSCode IDE:
 
