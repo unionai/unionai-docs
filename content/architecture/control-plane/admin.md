@@ -5,6 +5,7 @@ variants: +flyte -serverless -byoc -byok
 ---
 
 # Flyte Admin
+
 This is an architectural overview of the Flyte Admin control plane service.
 
 ## Admin Structure
@@ -37,6 +38,7 @@ The Admin API is broken up into entities:
 - Each API entity has an entity manager in FlyteAdmin responsible for implementing business logic for the entity. Entity managers handle full validation of creating, updating and getting requests and data persistence in the backing store (see the [repository](#repository) section).
 
 ### Additional Components
+
 The managers utilize additional components to process requests. These additional components include:
 
 - [workflow engine](#workflow-engine): compiles workflows and launches workflow executions from launch plans.
@@ -52,6 +54,7 @@ We use the excellent [gorm](https://gorm.io/docs/index.html) library to interfac
 You can find the actual code for issuing queries with gorm in the [gormimpl](https://github.com/flyteorg/flyte/tree/master/flyteadmin/pkg/repositories/gormimpl) directory.
 
 ### Models
+
 Database models are defined in the models directory and correspond 1:1 with the database tables [0].
 
 The full set of database tables includes:
@@ -62,7 +65,7 @@ The full set of database tables includes:
 - launch_plans
 - named entities
 - node_executions
-- node_execution_events 
+- node_execution_events
 - tasks
 - task_executions
 - workflows
@@ -121,7 +124,7 @@ These include:
 Permitted operations include:
 
 - Create
-- Get 
+- Get
 - List
 
 The above entities are designated by an [identifier](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#ref-flyteidl-core-identifier) that consists of a project, domain, name, and version specification.
@@ -144,7 +147,7 @@ This metadata includes:
 Permitted operations include:
 
 - Create
-- Update 
+- Update
 - Get
 - List
 
@@ -152,7 +155,7 @@ Permitted operations include:
 These include:
 
 - (Workflow) executions
-- Node executions 
+- Node executions
 - Task executions
 
 Permitted operations include:
@@ -182,7 +185,7 @@ Projects: Like named entities, projects have mutable metadata such as human-read
 
 Permitted project operations include:
 
-- Register 
+- Register
 - List
 
 ## Using the Admin Service
@@ -220,7 +223,7 @@ contains
 value_in(phase, RUNNING;SUCCEEDED;FAILED)
 ```
 
-> [!NOTE] 
+> [!NOTE]
 > If you’re issuing your requests over http(s), be sure to URL encode the “;” semicolon using %3B like so: `value_in(phase, RUNNING%3BSUCCEEDED%3BFAILED)`
 
 Filterable fields vary based on entity types:

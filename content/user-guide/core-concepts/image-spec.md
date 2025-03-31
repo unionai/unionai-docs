@@ -4,7 +4,7 @@ weight: 10
 variants: +flyte +serverless +byoc +byok
 ---
 
-# Image Spec
+# ImageSpec
 
 In this section, you will uncover how {{< key product_name >}} utilizes Docker images to construct containers under the hood, and you'll learn how to craft your own images to encompass all the necessary dependencies for your tasks or workflows.
 
