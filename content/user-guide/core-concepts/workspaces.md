@@ -1,7 +1,7 @@
 ---
 title: Workspaces
-weight: 9
-variants: -flyte +serverless +byoc +byok
+weight: 8
+variants: -flyte +serverless +byoc -byok
 ---
 
 # Workspaces
@@ -21,16 +21,15 @@ With workspaces, you can:
 * Adjust the idle time-to-live (TTL) for your workspace to avoid unneeded expenses
 * Authenticate with GitHub to clone private repositories
 
-
 ## Creating a workspace
 
-To create a workspace, click on the `Workspace` tab on left navbar and click
-on the `New Workspace` button on the top right.
+To create a workspace, click on the **Workspace** tab on left navbar and click
+on the **New Workspace** button on the top right.
 
 ![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-1.png)
 
 Provide a name for your workspace, set an **Idle TTL** (time to live), and
-click `Create`.
+click **Create**.
 
 ![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-2.png)
 
@@ -60,7 +59,6 @@ Once the startup commands have completed, you'll see a browser-based VSCode IDE:
 
 To stop a workspace, click on the toggle switch on the workspace item.
 
-
 ## Filesystem Persistence
 
 Any changes to the filesystem that you make in the working directory of your
@@ -74,10 +72,9 @@ This allows you to save data, code, models, and other files in your workspace.
 > the start and stop times of your workspace. This is because the workspace
 > instance needs time to download/upload the files from persistent storage.
 
-
 ## Editing a workspace
 
-Change the workspace configuration by clicking on the `Edit` button:
+Change the workspace configuration by clicking on the **Edit** button:
 
 ![Edit Workspace](/_static/images/user-guide/core-concepts/workspaces/edit-workspace-1.png)
 
@@ -111,7 +108,6 @@ on the **Unarchive** button:
 
 The `union` CLI also provides commands for managing workspaces.
 
-
 ### Create a workspace configuration
 
 The first step is to create a yaml file that describes the workspace.
@@ -141,7 +137,6 @@ ttl_seconds: 1200
 Note that the yaml file contains a `project` and `domain` field that you can set to create a
 workspace in a specific project and domain.
 
-
 ### Create a workspace
 
 Then, create a workspace using the `union create workspace` command:
@@ -163,7 +158,6 @@ Starting workspace 'my-workspace'
 🚀 Workspace started: Open VSCode in Browser
 ```
 
-
 ### Stop a workspace
 
 When you want to stop a workspace, use the `union stop workspace` command:
@@ -178,7 +172,6 @@ This will print out a message indicating that the workspace has been stopped:
 Workspace instance stopped: org: "org"
 ...
 ```
-
 
 ### Update a workspace
 
@@ -221,7 +214,6 @@ if you don't provide them).
 To get the details of a specific workspace, provide
 the workspace name with the `--name` flag.
 
-
 ### Start a workspace
 
 To start a workspace, use the `union start workspace` command, specifying the
@@ -245,7 +237,6 @@ Starting workspace 'my-workspace'
 There are several settings that you can customize for a workspace in the UI or
 the CLI.
 
-
 ### Setting secrets
 
 If you don't have any secrets yet, create them with the `union create secret`
@@ -260,15 +251,15 @@ You'll be prompted to enter a secret value in the terminal:
 ```shell
 Enter secret value: ...
 ```
+
 > [!NOTE]
-> You can learn more about secrets management [here](/user-guide/development-cycle/managing-secrets/).
+> You can learn more about secrets management [here](../../development-cycle/managing-secrets.md).
 
 Set secrets for your workspace by clicking on the **Secrets** tab in the sidebar.
 Provide the `my_secret` key and optionally, the environment variable you want
 to assign it to in the workspace.
 
 ![Secrets](/_static/images/user-guide/core-concepts/workspaces/setting-secrets.png)
-
 
 #### Setting secrets via the CLI
 
@@ -289,7 +280,7 @@ secrets:
 ```
 
 
-### Setting resources
+### Setting CPU, memory, and GPU resources
 
 You can also set the resources for your workspace:
 
@@ -299,16 +290,23 @@ You can also set the resources for your workspace:
 {{< markdown >}}
 
 These resources must be compatible with the resource limits available to you
-on your {{< key product_name >}} Serverless account. Go the the top-level dashboard to view your
+on your Union.ai serverless account. Go the the top-level dashboard to view your
 execution settings:
 
 ![Execution Settings](/_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)
 
-For the `GPU` field, you can choose from the [available accelerators](../tasks/task-hardware-environment/accelerators/).
+For the `GPU` field, you can choose one of the following values:
+
+* `nvidia-tesla-t4`
+* `nvidia-tesla-l4`
+* `nvidia-tesla-a100`
+
+Learn more about the available accelerators [here](./tasks/task-hardware-environment/accelerators.md).
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+
+{{< variant byoc >}}
 {{< markdown >}}
 
 These resources must be compatible with the resources available to your BYOC
@@ -316,7 +314,8 @@ cluster. Find the details of your BYOC cluster in the top-level dashboard:
 
 ![BYOC Compute Resources](/_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
 
-You can choose [the GPU accelerator](../tasks/task-hardware-environment/accelerators.md) that corresponds to your available instance types.
+You can choose [the GPU accelerator](./tasks/task-hardware-environment/accelerators.md) that corresponds to your available instance types. In the screen shot above, the accelerator
+value is `nvidia-tesla-v100`.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -331,25 +330,26 @@ a file from the web, specify custom `on_startup` commands:
 
 ### Specifying custom container images
 
-By default, the workspace will use a {{< key product_name >}}-provided container image which contains
+By default, the workspace will use a Union.ai-provided container image which contains
 the following Python libraries:
 
-* `union`
-* `flytekit`
-* `uv`
-* `ipykernel`
-* `pandas`
-* `pyarrow`
-* `scikit-learn`
-* `matplotlib`
+- `union`
+- `flytekit`
+- `uv`
+- `ipykernel`
+- `pandas`
+- `pyarrow`
+- `scikit-learn`
+- `matplotlib`
 
 #### Specifying a custom container image in the UI
 
-You can specify a pre-built custom container image by clicking on the `Container`
+You can specify a pre-built custom container image by clicking on the **Container**
 tab in the sidebar and provide the image name in the workspace creation form.
 
 > [!NOTE]
-> The minimum requirement for custom images is that it has `union>=0.1.166` installed in it.
+> The minimum requirement for custom images is that it has `union>=0.1.166`
+> installed in it.
 
 ![Custom Container](/_static/images/user-guide/core-concepts/workspaces/customize-container-image.png)
 
@@ -363,9 +363,9 @@ task execution details page:
 {{< markdown >}}
 
 You can specify:
-* Any public container image URI
-* Images built with the {{< key product_name >}} [image builder service](/user-guide/development-cycle/image-spec/)
-* Images available in your private container registry (e.g. [AWS ECR](/user-guide//integrations/enabling-aws-resources/enabling-aws-ecr/), [GCP Artifact Registry](/user-guide//integrations/enabling-gcp-resources/enabling-google-artifact-registry/), or [Azure Container Registry](/user-guide//integrations/enabling-azure-resources/enabling-azure-container-registry/))
+- Any public container image URI as long as it has `union>=0.1.166` installed
+- Images built with the Union.ai [image builder service](../development-cycle/image-spec.md)
+- Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr.md), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry.md))
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -373,16 +373,62 @@ You can specify:
 #### Specifying a custom container image in the CLI
 
 The `union` CLI provides a way to specify a custom container image that's built
-by {{< key product_name >}}'s image builder service. To do this, run the following command:
+by Union's image builder service. To do this, run the following command:
 
 ```shell
-$ union create workspace-config --init custom_image workspace.yaml
+union create workspace-config --init custom_image workspace.yaml
 ```
 
 This will create a `workspace.yaml` file with a `container_image` image key
-that supports the [ImageSpec](/user-guide/development-cycle/image-spec/) arguments.
+that supports the [ImageSpec](../development-cycle/image-spec.md) arguments.
 When you run the `union create workspace` command with this `workspace.yaml` file,
 it will first build the image before creating the workspace definition.
+
+#### Example: Specifying a workspace with GPUs
+
+The following example shows a `workspace.yaml` file that specifies a workspace
+with a GPU accelerator.
+
+```yaml
+# workspace.yaml
+name: workspace-with-gpu
+description: Workspace that uses GPUs
+# Make sure that the project and domain exists
+project: <project>
+domain: <domain>
+container_image:
+    name: custom-image
+    builder: union
+    packages:
+    - torch
+resources:
+    cpu: "2"
+    mem: "4Gi"
+    gpu: "1"
+accelerator: nvidia-l4
+on_startup: null
+ttl_seconds: 1200
+```
+
+Then run the following command to create the workspace:
+
+```shell
+union create workspace workspace.yaml
+```
+
+The configuration above will first build a custom container with `torch` installed.
+Then, it will create a workspace definition with a single `nvidia-l4` GPU accelerator.
+Finally, it will start a workspace session. In the VSCode browser IDE, you can quickly
+verify that `torch` has access to GPUs by running the following in a Python REPL:
+
+```python
+import torch
+print(torch.cuda.is_available())
+```
+
+> [!NOTE]
+> See the [Setting CPU, Memory, and GPU Resources](#setting-cpu-memory-and-gpu-resources)
+> section for more details on how to configure specific GPU accelerators.
 
 
 ## Authenticating with GitHub
@@ -391,7 +437,7 @@ If you want to clone a private GitHub repository into your workspace, you can
 using the pre-installed `gh` CLI to authenticate your workspace session:
 
 ```shell
-$ gh auth login
+gh auth login
 ```
 
 You'll be prompted to enter either a GitHub personal access token (PAT) or
@@ -401,16 +447,16 @@ authenticate via the browser.
 > You can create and set a `GITHUB_TOKEN` secret to set the access token for your
 > workspace, but you'll need to authenticate via `gh auth login` in every new
 > workspace session:
->
-> * Create a secret with the `union create secret` command
-> * Create a workspace or update an existing one with the `GITHUB_TOKEN` secret,
->   setting the environment variable to e.g. `GITHUB_TOKEN`
-> * In the workspace session, run `gh auth login` to authenticate with GitHub and
->   use the `$GITHUB_TOKEN` environment variable as the personal access token.
+
+* Create a secret with the `union create secret` command
+* Create a workspace or update an existing one with the `GITHUB_TOKEN` secret,
+  setting the environment variable to e.g. `GITHUB_TOKEN`
+* In the workspace session, run `gh auth login` to authenticate with GitHub and
+  use the `$GITHUB_TOKEN` environment variable as the personal access token.
 
 ## Sorting and filtering workspaces
 
-You can filter workspaces to only the active ones by clicking on the `Active`
+You can filter workspaces to only the active ones by clicking on the **Active**
 toggle on the top left of the workspaces list view.
 
 ![Active Workspaces](/_static/images/user-guide/core-concepts/workspaces/active-workspaces.png)
@@ -427,7 +473,7 @@ workspaces list view.
 You may come across issues starting up a workspace due to various reasons,
 including:
 
-* Resource requests not being available on your {{< key product_name >}} cluster.
+* Resource requests not being available on your Union cluster.
 * Secrets key typpos of not being defined on the project/domain.
 * Container image typos or container images not existing.
 
