@@ -6,8 +6,6 @@ variants: +flyte -serverless -byoc -byok
 
 # Flyte Native Scheduler Architecture
 
-**Tags**: Advanced, Design
-
 ## Introduction
 
 Any workflow engine needs functionality to support scheduled executions. Flyte fulfills this using an in-built native scheduler, which schedules fixed rate and cron-based schedules. The workflow author specifies the schedule during the [launchplan creation](../cookbook/cron-schedules.md) and [activates or deactivates](../cookbook/activating-schedules.md) the schedule using the [admin APIs](../flyteidl/ref_flyteidl.admin.LaunchPlanUpdateRequest.md) exposed for the launch plan.

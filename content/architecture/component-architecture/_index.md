@@ -2,6 +2,7 @@
 title: Component Architecture
 weight: 9
 variants: +flyte -serverless -byoc -byok
+top_menu: true
 ---
 
 # Component Architecture

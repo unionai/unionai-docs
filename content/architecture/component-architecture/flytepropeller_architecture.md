@@ -6,9 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # FlytePropeller Architecture
 
-**Tags**: Advanced, Design
-
-> **Note**: In the frame of this document, we use the term “workflow” to describe the single execution of a workflow definition.
+> **_NOTE:_** In the frame of this document, we use the term “workflow” to describe the single execution of a workflow definition.
 
 ## Introduction
 
@@ -124,7 +122,7 @@ The `status` subsection tracks workflow metadata including overall workflow stat
 
 K8s exposes a powerful controller/operator API that enables entities to track creation/updates over a specific resource type. FlytePropeller uses this API to track FlyteWorkflows, meaning every time an instance of the `flyteworkflow` CR is created/updated, the FlytePropeller instance is notified.
 
-> **Note**: Manual creation of `flyteworkflow` CRs, without the intervention of `flyteadmin`, is possible but not supported as the resulting resource will have limited visibility and usability.
+> **_NOTE:_** Manual creation of `flyteworkflow` CRs, without the intervention of `flyteadmin`, is possible but not supported as the resulting resource will have limited visibility and usability.
 
 ### WorkQueue/WorkerPool
 
