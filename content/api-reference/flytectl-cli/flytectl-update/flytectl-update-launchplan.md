@@ -1,24 +1,57 @@
 ---
-title: uctl get
-variants: -flyte +serverless +byoc +byok
+title: flytectl update launchplan
+variants: +flyte -serverless -byoc -byok
 ---
 
-# uctl get
+# flytectl update launchplan
 
-Used for fetching various union/flyte resources including
-tasks/workflows/launchplans/executions/project.
+Updates launch plan status
 
 ## Synopsis
 
-To fetch a project, use the following command: :
+Activates a [launch
+plan](https://docs.flyte.org/en/latest/user_guide/productionizing/schedules.html#activating-a-schedule)
+which activates the scheduled job associated with it:
 
-    flytectl get project
+```shell
+$ flytectl update launchplan -p flytesnacks -d development core.control_flow.merge_sort.merge_sort --version v1 --activate
+```
+
+Deactivates a [launch
+plan](https://docs.flyte.org/en/latest/user_guide/productionizing/schedules.html#deactivating-a-schedule)
+which deschedules any scheduled job associated with it:
+
+```shell
+$ flytectl update launchplan -p flytesnacks -d development core.control_flow.merge_sort.merge_sort --version v1 --deactivate
+```
+
+Usage:
+
+```shell
+$ flytectl update launchplan [flags]
+```
 
 ## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `-h`, `--help` | help for get |
+| `--activate` | | activate launchplan. |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--archive` | | (Deprecated) disable the launch plan schedule (if it has an active schedule associated with it). |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--deactivate` | | disable the launch plan schedule (if it has an active schedule associated with it). |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--dryRun` | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--force` | | do not ask for an acknowledgement during updates. |
+| Option | Type | Description |
+|--------|------|-------------|
+| `-h`, `--help` | help for launchplan |
+| `--version` | string | version of the launchplan to be fetched. |
 
 ### Options inherited from parent commands
 
@@ -41,7 +74,7 @@ To fetch a project, use the following command: :
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -152,7 +185,7 @@ To fetch a project, use the following command: :
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
 | `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
@@ -275,7 +308,7 @@ To fetch a project, use the following command: :
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -284,7 +317,7 @@ To fetch a project, use the following command: :
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |
