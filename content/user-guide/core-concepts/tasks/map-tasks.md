@@ -25,7 +25,7 @@ def detect_anomalies(data_point: int) -> bool:
 @{{< key kit_as >}}.workflow
 def map_workflow(data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]) -> list[bool]:
     # Use the map task to apply the anomaly detection function to each data point
-    return map_task(detect_anomalies)(data_point=data)
+    return {{< key kit_as >}}.map(detect_anomalies)(data_point=data)
 
 ```
 
@@ -59,7 +59,7 @@ def map_workflow_with_additional_params(
     data: list[int] = [10, 12, 11, 10, 13, 12, 100, 11, 12, 10]
 ) -> list[typing.Optional[bool]]:
 
-    return {{< key kit_as >}}.map_task(
+    return {{< key kit_as >}}.map(
         detect_anomalies, 
         concurrency=1,
         min_success_ratio=0.75
