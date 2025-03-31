@@ -1,4 +1,5 @@
 
+docs.union.ai,https://union.ai/docs,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt,https://union.ai/docs/byoc/_downloads/c74194e5d55278497e27584eb0b3259d/public-key.txt,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/administration,https://union.ai/docs/byoc/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows,https://union.ai/docs/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
@@ -6,9 +7,9 @@ docs.union.ai/building-workflows/launch-plans,https://union.ai/docs/byoc/user-gu
 docs.union.ai/building-workflows/launch-plans/triggers,https://union.ai/docs/byoc/user-guide/core-concepts/launch-plans/reactive-workflows,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows/tasks,https://union.ai/docs/byoc/user-guide/core-concepts/tasks,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows/tasks/task-software-environment/environment-variables,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/environment-variables,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/building-workflows/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/building-workflows/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/building-workflows/workflows,https://union.ai/docs/byoc/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/administration,https://union.ai/docs/byoc/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api,https://union.ai/docs/byoc/api-reference,302,TRUE,FALSE,TRUE,TRUE
@@ -31,9 +32,9 @@ docs.union.ai/byoc/api/union-sdk/artifacts/modelcard,https://union.ai/docs/byoc/
 docs.union.ai/byoc/api/union-sdk/artifacts/onartifact,https://union.ai/docs/byoc/api-reference/union-sdk/artifacts/artifacts-on-artifact,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/api/unionai-cli,https://union.ai/docs/byoc/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/core-concepts,https://union.ai/docs/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/core-concepts/tasks/task-software-environment/secrets,https://union.ai/docs/byoc/user-guide/development-cycle/managing-secrets,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/data-input-output,https://union.ai/docs/byoc/user-guide/data-input-output,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/data-input-output/flytedirectory,https://union.ai/docs/byoc/user-guide/data-input-output/flyte-file-and-flyte-directory,302,TRUE,FALSE,TRUE,TRUE
@@ -72,10 +73,10 @@ docs.union.ai/byoc/getting-started/setting-up-the-project-on-union,https://union
 docs.union.ai/byoc/guide,https://union.ai/docs/byoc/user-guide,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/administration,https://union.ai/docs/byoc/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts,https://union.ai/docs/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-acr,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-acr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/data-input-output,https://union.ai/docs/byoc/user-guide/data-input-output,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/data-plane-setup,https://union.ai/docs/byoc/deployment,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/guide/development-cycle,https://union.ai/docs/byoc/user-guide/development-cycle,302,TRUE,FALSE,TRUE,TRUE
@@ -97,9 +98,9 @@ docs.union.ai/byoc/union-overview,https://union.ai/docs/byoc/user-guide/about-un
 docs.union.ai/byoc/user-guide/administration/cli-authetication-types,https://union.ai/docs/byoc/user-guide/development-cycle/authentication,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/administration/usage,https://union.ai/docs/byoc/user-guide/administration/resources,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/core-concepts/tasks/task-caching,https://union.ai/docs/byoc/user-guide/core-concepts/caching,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/byoc/user-guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/data-input-output/flytefile,https://union.ai/docs/byoc/user-guide/data-input-output/flyte-file-and-flyte-directory,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/development-cycle/managing-apps,https://union.ai/docs/byoc/user-guide/development-cycle/managing-api-keys,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/byoc/user-guide/development-cycle/remote-dependencies-with-image-spec,https://union.ai/docs/byoc/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
@@ -113,9 +114,9 @@ docs.union.ai/byoc/user-guide/platform-architecture,https://union.ai/docs/byoc/d
 docs.union.ai/byoc/user-guide/union-overview,https://union.ai/docs/byoc/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/concepts,https://union.ai/docs/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts,https://union.ai/docs/byoc/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts/tasks/task-software-environment/secrets,https://union.ai/docs/byoc/user-guide/development-cycle/managing-secrets,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts/tasks/viewing-cloudwatch-logs-for-a-task,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/viewing-logs,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/core-concepts/workflows/subworkflows,https://union.ai/docs/byoc/user-guide/core-concepts/workflows/subworkflows-and-sub-launch-plans,302,TRUE,FALSE,TRUE,TRUE
@@ -159,8 +160,8 @@ docs.union.ai/flyte-fundamentals/flytefile,https://union.ai/docs/byoc/user-guide
 docs.union.ai/flyte-fundamentals/task-execution-context,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started,https://union.ai/docs/byoc/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/creating-the-project,https://union.ai/docs/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/getting-started/deploying-the-project-on-union,https://union.ai/docs/byoc/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/deploying-the-project-on-union-cloud,https://union.ai/docs/byoc/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/getting-started/deploying-the-project-on-union,https://union.ai/docs/byoc/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/installing-development-tools,https://union.ai/docs/byoc/user-guide/getting-started/local-setup,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/looking-at-the-dependencies,https://union.ai/docs/byoc/user-guide/development-cycle/local-dependencies,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/looking-at-the-workflow-code,https://union.ai/docs/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
@@ -169,8 +170,8 @@ docs.union.ai/getting-started/registering-workflows,https://union.ai/docs/byoc/u
 docs.union.ai/getting-started/running-in-a-local-cluster,https://union.ai/docs/byoc/user-guide/development-cycle/running-in-a-local-cluster,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/running-in-a-local-python-environment,https://union.ai/docs/byoc/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/setting-up-ci-cd-deployment,https://union.ai/docs/byoc/user-guide/development-cycle/ci-cd-deployment,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/getting-started/setting-up-the-project-on-union,https://union.ai/docs/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/getting-started/setting-up-the-project-on-union-cloud,https://union.ai/docs/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/getting-started/setting-up-the-project-on-union,https://union.ai/docs/byoc/user-guide/development-cycle/project-structure,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/integrations,https://union.ai/docs/byoc/user-guide/integrations,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/integrations/additional-integrations,https://union.ai/docs/byoc/user-guide/integrations/agents,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/onboarding/onboard-with-amazon-web-services,https://union.ai/docs/byoc/deployment/data-plane-setup-on-aws,302,TRUE,FALSE,TRUE,TRUE
@@ -208,9 +209,9 @@ docs.union.ai/serverless/api/union-sdk/artifacts/modelcard,https://union.ai/docs
 docs.union.ai/serverless/api/union-sdk/artifacts/onartifact,https://union.ai/docs/serverless/api-reference/union-sdk/artifacts/artifacts-on-artifact,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/api/unionai-cli,https://union.ai/docs/serverless/api-reference/union-cli,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/core-concepts,https://union.ai/docs/serverless/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/serverless/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/core-concepts/tasks/task-software-environment/secrets,https://union.ai/docs/serverless/user-guide/development-cycle/managing-secrets,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/data-input-output,https://union.ai/docs/serverless/user-guide/data-input-output,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/data-input-output/flytedirectory,https://union.ai/docs/serverless/user-guide/data-input-output/flyte-file-and-flyte-directory,302,TRUE,FALSE,TRUE,TRUE
@@ -249,10 +250,10 @@ docs.union.ai/serverless/getting-started/setting-up-the-project-on-union,https:/
 docs.union.ai/serverless/guide,https://union.ai/docs/serverless/user-guide,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/administration,https://union.ai/docs/serverless/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts,https://union.ai/docs/serverless/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec-with-acr,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-acr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/serverless/guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/data-input-output,https://union.ai/docs/serverless/user-guide/data-input-output,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/data-plane-setup,https://union.ai/docs/serverless/deployment,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/guide/development-cycle,https://union.ai/docs/serverless/user-guide/development-cycle,302,TRUE,FALSE,TRUE,TRUE
@@ -273,9 +274,9 @@ docs.union.ai/serverless/tutorials/machine-learning/credit-default-xgboost,https
 docs.union.ai/serverless/union-overview,https://union.ai/docs/serverless/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/administration/usage,https://union.ai/docs/serverless/user-guide/administration/resources,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/core-concepts/tasks/task-caching,https://union.ai/docs/serverless/user-guide/core-concepts/caching,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless/user-guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-ecr,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-ecr,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/core-concepts/tasks/task-software-environment/imagespec-with-gar,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec-with-gar,302,TRUE,FALSE,TRUE,TRUE
+docs.union.ai/serverless/user-guide/core-concepts/tasks/task-software-environment/imagespec,https://union.ai/docs/serverless/user-guide/core-concepts/tasks/task-software-environment/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/data-input-output/flytefile,https://union.ai/docs/serverless/user-guide/data-input-output/flyte-file-and-flyte-directory,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/development-cycle/managing-apps,https://union.ai/docs/serverless/user-guide/development-cycle/managing-api-keys,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/serverless/user-guide/development-cycle/remote-dependencies-with-image-spec,https://union.ai/docs/serverless/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
@@ -304,6 +305,3 @@ docs.union.ai/web-console/task-level-monitoring,https://union.ai/docs/byoc/user-
 docs.union.ai/web-console/task-list,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/viewing-tasks,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/web-console/task-view,https://union.ai/docs/byoc/user-guide/core-concepts/tasks/viewing-tasks,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/web-console/usage-view,https://union.ai/docs/byoc/user-guide/administration/resources,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/byoc,https://union.ai/docs/byoc,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai/serverless,https://union.ai/docs/serverless,302,TRUE,FALSE,TRUE,TRUE
-docs.union.ai,https://union.ai/docs,302,TRUE,FALSE,TRUE,TRUE
