@@ -13,7 +13,7 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] Flyte
-> These docs are for [**Flyte**](./about-union#flyte).
+> These docs are for [**Flyte**](./about-flyte).
 > Switch to another variant with the version selector above.
 
 {{< /markdown >}}
@@ -49,14 +49,14 @@ sidebar_expanded: true
 The {{< key product_name >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times with reusable containers.
+* Achieve millisecond-level execution times.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
 {{< grid >}}
 
 {{< variant flyte >}}
 
-{{< link-card target="about-union" icon="lightbulb" title="About Flyte" >}}
+{{< link-card target="about-flyte" icon="lightbulb" title="About Flyte" >}}
 Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
 {{< /link-card >}}
 
@@ -83,6 +83,10 @@ Explore the {{< key product_name >}} development cycle from experimentation to p
 
 {{< link-card target="data-input-output" icon="arrow-left-right" title="Data input/output" >}}
 Manage the input and output of data in your {{< key product_name >}} workflow.
+{{< /link-card >}}
+
+{{< link-card target="programming" icon="code-slash" title="Data input/output" >}}
+Learn about {{< key product_name >}}-specific programming contructs.
 {{< /link-card >}}
 
 {{< variant byoc byok flyte >}}
