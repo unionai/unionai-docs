@@ -1,0 +1,16 @@
+<select id="variant-selector" onchange="handleVariantChange(event)"
+{{- if not hugo.IsProduction -}}
+    onmouseenter="document.getElementById('devwarn').style.display = '';"
+    onmouseout="document.getElementById('devwarn').style.display = 'none';"
+{{- end -}}
+>
+        {{- $variants := slice -}}
+        {{- range $key, $value := (index $.Site.Params.key "product_full_name") -}}
+            {{- $variants = $variants | append $key -}}
+        {{- end -}}
+        {{- range $variants -}}
+        <option value="{{- . }}" {{- if eq . $.Site.Params.variant -}}selected{{ end -}}>
+            {{- index $.Site.Params.key "product_full_name" . -}}
+        </option>
+    {{- end -}}
+</select>

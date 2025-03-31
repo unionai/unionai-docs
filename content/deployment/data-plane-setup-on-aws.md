@@ -6,8 +6,8 @@ variants: -flyte -serverless +byoc +byok
 
 # Data plane setup on AWS
 
-To set up your data plane on Amazon Web Services (AWS) you must allow Union to provision and maintain compute resources under your AWS account.
-You will need to set up an IAM role for Union to use that has sufficient permissions to do this provisioning.
+To set up your data plane on Amazon Web Services (AWS) you must allow {{< key product_name >}} to provision and maintain compute resources under your AWS account.
+You will need to set up an IAM role for {{< key product_name >}} to use that has sufficient permissions to do this provisioning.
 Setting the permissions can be done either through CloudFormation or the AWS console.
 
 Additionally, if you wish to manage your own Virtual Private Cloud (VPC) then you will need to set up the VPC according to the guidelines described below.
@@ -52,23 +52,23 @@ Once you have selected **Launch Stack**, you will be taken to the CloudFormation
 
 ### Share the role ARN
 
-Once the above steps are completed, you will need to get the ARN of the newly created role (`union-ai-admin`) and send it to the Union team:
+Once the above steps are completed, you will need to get the ARN of the newly created role (`union-ai-admin`) and send it to the {{< key product_name >}} team:
 
 1. In the navigation pane of the IAM console, choose **Roles**.
 1. In the list of roles, choose the `union-ai-admin` role.
 1. In the **Summary** section of the details pane, copy the **role ARN** value.
-1. Share the ARN with the Union team.
-1. The Union team will get back to you to verify that they are able to assume the role.
+1. Share the ARN with the {{< key product_name >}} team.
+1. The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
 
 ### Updating permissions through CloudFormation
 
-From time to time Union may need to update the `union-ai-admin` role to support new or improved functionality.
+From time to time {{< key product_name >}} may need to update the `union-ai-admin` role to support new or improved functionality.
 
 If you used CloudFormation to set up your stack in the first place, you will have to perform the update by replacing your CloudFormation template with a new one.
 
 When an update is required:
 
-- The Union team will inform you that you need to perform the update.
+- The {{< key product_name >}} team will inform you that you need to perform the update.
 - The URL of the template will be published above, in the **CloudFormation template** info box. This is always kept up to date with the latest template.
 
 To perform the update on your system, copy the template URL and follow the directions here:
@@ -79,7 +79,7 @@ To perform the update on your system, copy the template URL and follow the direc
 2. Select the `UnionCloudAccess` stack.
 3. Select **Stack Actions > Create change set for current stack**.
 4. Select **Replace current template**.
-5. Input the new CloudFormation template URL provided to you by the Union team (and published above in the **Current template** info box).
+5. Input the new CloudFormation template URL provided to you by the {{< key product_name >}} team (and published above in the **Current template** info box).
 6. Select **Next**.
 7. On the **Specify stack details** page, accept the defaults and select **Next**.
 8. On the **Configure stack options** page, accept the defaults and select **Next**.
@@ -640,7 +640,7 @@ Next, you must create the role. Follow the directions here:
 2. Choose **Roles** and then select **Create role**.
 3. Under **Select trusted entity**, choose **AWS account**.
 4. Under **An AWS account**, select **Another AWS account**.
-5. In the **Account ID** field, enter the Union account ID: `479331373192`.
+5. In the **Account ID** field, enter the {{< key product_name >}} account ID: `479331373192`.
 6. Under **Options,** you will see two items: **Require external ID** and **Require MFA**. At this point in the process, you can leave these unchecked.
 7. Select **Next**. This will take you to the **Add permissions** page.
 8. Select **Next**. We will setup permissions in a later step.
@@ -663,12 +663,12 @@ Now you must obtain the Amazon Resource Name (ARN) of the role, a unique identif
 2. In the list of roles, choose the `union-ai-admin` role.
 3. In the **Summary** section of the details pane, copy the **role ARN** value.
 
-Share the ARN with the Union team.
-The Union team will get back to you to verify that they are able to assume the role.
+Share the ARN with the {{< key product_name >}} team.
+The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
 
 ### Updating permissions manually
 
-From time to time Union may need to update the `union-ai-admin` role to support new or improved functionality.
+From time to time {{< key product_name >}} may need to update the `union-ai-admin` role to support new or improved functionality.
 If you set up your role manually in the first place (as opposed to using CloudFormation), you will have to perform the update manually as well.
 follow the directions here:
 
@@ -682,7 +682,7 @@ follow the directions here:
 
 ## Setting up and managing your own VPC (optional)
 
-If you decide to manage your own VPC, instead of leaving it to Union, then you will need to set it up yourself.
+If you decide to manage your own VPC, instead of leaving it to {{< key product_name >}}, then you will need to set it up yourself.
 The VPC should be configured with the following characteristics.
 
 - **Multiple availability zones**:
@@ -702,7 +702,7 @@ The VPC should be configured with the following characteristics.
     - Ensure the security groups allow all traffic from within the VPC.
     - Enable [Private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html#private-dns-s3) to support out of the box compatibility with data plane services.
 
-Once your VPC is set up, you will need to provide the Union team with the following information:
+Once your VPC is set up, you will need to provide the {{< key product_name >}} team with the following information:
 
 - **VPC ID**
   - Example: `vpc-8580ec61d96caf837`

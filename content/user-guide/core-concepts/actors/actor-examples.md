@@ -17,7 +17,7 @@ import {{< key kit_import >}}
 +    name = "myenv",
 +    replica_count = 10,
 +    ttl_seconds = 120,
-+    requests = fl.Resources(mem="1Gi"),
++    requests = {{< key kit_as >}}.Resources(mem="1Gi"),
 +    container_image = "myrepo/myimage-with-scipy:latest",
 +)
 +
@@ -44,7 +44,7 @@ def distance_add_wf(point_a: list[int], point_b: list[int]) -> float:
 
 @{{< key kit_as >}}.workflow
 def is_even_wf(point_a: list[int]) -> list[bool]:
-    return fl.map_task(is_even)(number=point_a)
+    return {{< key kit_as >}}.map(is_even)(number=point_a)
 ```
 <!-- TODO: emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24 -->
 
@@ -296,7 +296,7 @@ def wf() -> tuple[str,str]:
     return get_and_set(), check_set()
 ```
 
-## Example: `@actor_cache` with `map_task`
+## Example: `@actor_cache` with `map`
 
 With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
@@ -358,7 +358,7 @@ def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int
 def run_inference(values: list[int] = list(range(20))) -> list[int]:
     model_state = create_model_state()
     inference_ = partial(inference, model_state_path=model_state)
-    return {{< key kit_as >}}.map_task(inference_)(value=values)
+    return {{< key kit_as >}}.map(inference_)(value=values)
 ```
 
 {{< /markdown >}}
@@ -428,7 +428,7 @@ def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int
 def run_inference(values: list[int] = list(range(20))) -> list[int]:
     model_state = create_model_state()
     inference_ = partial(inference, model_state_path=model_state)
-    return {{< key kit_as >}}.map_task(inference_)(value=values)
+    return {{< key kit_as >}}.map(inference_)(value=values)
 ```
 
 {{< /markdown >}}

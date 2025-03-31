@@ -7,7 +7,7 @@ variants: -flyte -serverless +byoc +byok
 # Configuring your data plane
 
 After you set up your data plane account(s), the next step is to specify the infrastructure you want to deploy.
-You will need to send the following details to the Union team:
+You will need to send the following details to the {{< key product_name >}} team:
 
 * Which [cloud provider](#cloud-provider) will you use?
 * Will this be a [multi-cluster](#multi-cluster) setup?
@@ -16,7 +16,7 @@ You will need to send the following details to the Union team:
 * For each cluster:
     * [Account ID](#account-id) for this cluster (each cluster must be in its own account on your cloud provider)
     * [Region](#region) in which the cluster will be deployed.
-    * [VPC](#vpc) setup (will you use your own VPC or have Union provision one for you?)
+    * [VPC](#vpc) setup (will you use your own VPC or have {{< key product_name >}} provision one for you?)
     * [Data retention policy](#data-retention-policy) for workflow execution data stored in this cloud provider account.
     * For each [node group](#node-group-name):
         * [Node type](#node-type)
@@ -58,7 +58,7 @@ For each cluster, specify the region. Available regions are `us-west`, `us-east`
 
 ## VPC
 
-Specify whether you want to set up your own VPC or use one provided by Union.
+Specify whether you want to set up your own VPC or use one provided by {{< key product_name >}}.
 If you are provisioning your own VPC, provide the VPC ID.
 
 ## Data retention policy
@@ -202,9 +202,9 @@ Values provided by you are in single quotes (').
 
 ## After deployment
 
-Once Union has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../administration/usage#compute).
+Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../administration/usage#compute).
 
 ## Adjusting your configuration
 
-To make changes to your cluster configuration, go to the [Union Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
+To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 This portal also accessible from **Usage > Compute** through the **Adjust Configuration** button.

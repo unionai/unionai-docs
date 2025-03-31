@@ -26,7 +26,7 @@ dist: base
 	make variant VARIANT=flyte
 	make variant VARIANT=serverless
 	make variant VARIANT=byoc
-	make variant VARIANT=byok
+#	make variant VARIANT=byok
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi

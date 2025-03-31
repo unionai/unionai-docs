@@ -98,3 +98,7 @@ The `{{< key cli >}} init` command just provides a good starting point.
 
 However, the separate `workflows` subdirectory and the contained `__init__.py` file are significant.
 We will discuss them when we cover the [registration process](./running-your-code).
+
+<!-- TODO:
+Add create of project on Union/FLyte instance using UI and flytectl/uctl
+-->

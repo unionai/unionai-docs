@@ -2,7 +2,6 @@
 title: Configuring authentication
 weight: 4
 variants: +flyte -serverless -byoc -byok
-top_menu: true
 mermaid: true
 ---
 

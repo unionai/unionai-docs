@@ -38,11 +38,11 @@ You might want this interaction to be available as a template for the open-sourc
 can be done by creating a task plugin, which makes it possible to reuse the task's underlying functionality within Flyte
 workflows.
 
-If you want users to write code simply using the `@fl.task` decorator, but want to provide the
+If you want users to write code simply using the `@{{< key kit_as >}}.task` decorator, but want to provide the
 capability of running the function as a spark job or a sagemaker training job, then you can extend Flyte's task system.
 
 ```python
-@fl.task(task_config=MyContainerExecutionTask(
+@{{< key kit_as >}}.task(task_config=MyContainerExecutionTask(
     plugin_specific_config_a=...,
     plugin_specific_config_b=...,
     ...

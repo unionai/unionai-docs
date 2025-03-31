@@ -7,11 +7,11 @@
   .main-content {
     padding: 1rem;
     margin: auto;
-    width: 100%;
+    width: 100dvw;
   }
 
   .container {
-    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100dvh - var(--header-height));
   }
 
   .grid-container {
@@ -62,5 +62,9 @@
 
   header #variant-selector {
     margin-left: 1rem;
+  }
+
+  header .logo-container .title {
+    display: none;
   }
 }

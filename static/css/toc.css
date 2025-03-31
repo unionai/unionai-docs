@@ -54,7 +54,7 @@
         max(
           0px,
           (
-              100vw - var(--sidebar-width) - var(--content-width) -
+              100dvw - var(--sidebar-width) - var(--content-width) -
                 var(--scrollbar-width) - var(--main-content-padding)
             ) / 2
         )

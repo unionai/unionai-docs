@@ -125,7 +125,7 @@ For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-
 
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
-You should install the `{{< key kit >}}` package, which will install the Union and Flytekit SDKs and the `{{< key cli >}}` command-line tool. You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for Union-specific features, such as artifacts.
+You should install the `{{< key kit >}}` package, which will install the Union and Flytekit SDKs and the `{{< key cli >}}` command-line tool. You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for {{< key product_name >}}-specific features, such as artifacts.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}
@@ -170,7 +170,7 @@ See also:
 
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
-You should use the `{{< key cli >}}` CLI to register and run workflows and perform other operations on the command line. The `{{< key cli >}}` CLI is installed when you install the `{{< key kit >}}` package, which will also install the Union and Flytekit SDKs.
+You should use the `{{< key cli >}}` CLI to register and run workflows and perform other operations on the command line. The `{{< key cli >}}` CLI is installed when you install the `{{< key kit >}}` package, which will also install the {{< key product_name >}} and Flytekit SDKs.
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant flyte >}}

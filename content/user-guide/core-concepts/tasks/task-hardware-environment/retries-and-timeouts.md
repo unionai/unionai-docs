@@ -52,7 +52,7 @@ For more details, refer to the Flyte Propeller Configuration.
 {{< variant flyte >}}
 {{< markdown >}}
 
-`SYSTEM` errors are managed at the platform level through settings internal tothe Union implementation.
+`SYSTEM` errors are managed at the platform level through settings internal tothe {{< key product_name >}} implementation.
 
 {{< /markdown >}}
 {{< /variant >}}
