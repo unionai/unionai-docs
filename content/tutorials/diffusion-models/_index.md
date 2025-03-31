@@ -2,6 +2,7 @@
 title: Diffusion models
 weight: 1
 variants: +flyte +serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Diffusion models
