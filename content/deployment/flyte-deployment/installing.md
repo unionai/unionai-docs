@@ -2,7 +2,6 @@
 title: Installing Flyte
 weight: 2
 variants: +flyte -serverless -byoc -byok
-top_menu: true
 ---
 
 
@@ -38,7 +37,7 @@ When ready to install, remove the `--dry-run` switch.
 
 ## Verify the Installation
 
-The base values files provide only the simplest installation of Flyte. The core functionality and scalability of Flyte will be there but not Ingress, authentication or DNS/SSL is configured. 
+The base values files provide only the simplest installation of Flyte. The core functionality and scalability of Flyte will be there but not Ingress, authentication or DNS/SSL is configured.
 
 ### Port Forward Flyte Service
 
@@ -46,7 +45,7 @@ To verify the installation you can to port forward the Kubernetes service:
 
 Example:
 ```bash
-kubectl -n flyte port-forward service/flyte-binary-http 8088:8088 
+kubectl -n flyte port-forward service/flyte-binary-http 8088:8088
 
 kubectl -n flyte port-forward service/flyte-binary-grpc 8089:8089
  ```
