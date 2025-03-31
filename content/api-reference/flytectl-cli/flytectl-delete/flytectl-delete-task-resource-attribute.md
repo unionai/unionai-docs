@@ -1,6 +1,6 @@
 ---
 title: flytectl delete task-resource-attribute
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl delete task-resource-attribute

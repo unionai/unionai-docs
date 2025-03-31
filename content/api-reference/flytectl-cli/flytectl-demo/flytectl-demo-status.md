@@ -1,6 +1,6 @@
 ---
 title: flytectl demo status
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl demo status

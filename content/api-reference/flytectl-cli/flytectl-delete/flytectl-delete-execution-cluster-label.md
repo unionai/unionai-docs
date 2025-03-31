@@ -1,6 +1,6 @@
 ---
 title: flytectl delete execution-cluster-label
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl delete execution-cluster-label

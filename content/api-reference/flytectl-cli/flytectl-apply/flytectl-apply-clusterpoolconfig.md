@@ -1,6 +1,6 @@
 ---
 title: flytectl apply clusterpoolconfig
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl apply clusterpoolconfig

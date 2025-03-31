@@ -1,6 +1,6 @@
 ---
 title: flytectl get project
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl get project

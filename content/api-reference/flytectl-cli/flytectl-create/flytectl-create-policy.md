@@ -1,6 +1,6 @@
 ---
 title: flytectl create policy
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl create policy

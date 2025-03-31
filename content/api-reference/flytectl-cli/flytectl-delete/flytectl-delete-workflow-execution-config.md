@@ -1,6 +1,6 @@
 ---
 title: flytectl delete workflow-execution-config
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl delete workflow-execution-config

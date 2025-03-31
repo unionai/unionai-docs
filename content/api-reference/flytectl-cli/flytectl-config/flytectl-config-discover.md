@@ -1,6 +1,6 @@
 ---
 title: flytectl config discover
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl config discover

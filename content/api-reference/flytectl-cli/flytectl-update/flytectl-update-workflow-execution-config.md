@@ -1,6 +1,6 @@
 ---
 title: flytectl update workflow-execution-config
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl update workflow-execution-config

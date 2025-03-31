@@ -1,6 +1,6 @@
 ---
 title: flytectl get role
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # flytectl get role
