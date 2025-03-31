@@ -89,7 +89,7 @@ Manage the input and output of data in your {{< key product_name >}} workflow.
 Learn about {{< key product_name >}}-specific programming contructs.
 {{< /link-card >}}
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc byok >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< key product_full_name >}} administrators can manage users, projects, and resources.
