@@ -13,7 +13,7 @@ This document aims to demystify how Flyte's major components ``Flyteidl``, ``Fly
 
 In Flyte, entities like "Workflows", "Tasks", "Launch Plans", and "Schedules" are recognized by multiple system components. For components to communicate effectively, they need a shared understanding about the structure of these entities.
 
-Flyteidl (Interface Definition Language) is where shared Flyte entities are defined. It also defines the RPC service definition for the [core Flyte API](ref_flyteidl/service/admin.proto).
+Flyteidl (Interface Definition Language) is where shared Flyte entities are defined. It also defines the RPC service definition for the [core Flyte API](/api-reference/flyteidl/#flyteidlserviceadminproto).
 
 Flyteidl uses the [protobuf](https://developers.google.com/protocol-buffers/) schema to describe entities. Clients are generated for Python, Golang, and JavaScript and imported by Flyte components.
 
@@ -78,13 +78,13 @@ The Flyte team has pre-built plugins for Hive, Spark, AWS Batch, and [more](inte
 
 ## Component Code Architecture
 
-- [FlytePropeller](flytepropeller-architecture)
-- [Flyte Native Scheduler](native-scheduler-architecture)
+- [FlytePropeller](/architecture/component-architecture/flytepropeller_architecture/)
+- [Flyte Native Scheduler](/architecture/component-architecture/native_scheduler_architecture/)
 
 ## Component Code References
 
-- [FlyteAdmin](https://pkg.go.dev/mod/github.com/flyteorg/flyteadmin)
-- [FlytePropeller](https://pkg.go.dev/mod/github.com/flyteorg/flytepropeller)
-- [DataCatalog](https://pkg.go.dev/mod/github.com/flyteorg/datacatalog)
-- [FlytePlugins](https://pkg.go.dev/mod/github.com/flyteorg/flyteplugins)
-- [Flyte Native Scheduler](https://pkg.go.dev/github.com/flyteorg/flyteadmin/scheduler)
+- [FlyteAdmin](https://pkg.go.dev/mod/github.com/flyteorg/flyte/flyteadmin)
+- [FlytePropeller](https://pkg.go.dev/mod/github.com/flyteorg/flyte/flytepropeller)
+- [DataCatalog](https://pkg.go.dev/mod/github.com/flyteorg/flyte/datacatalog)
+- [FlytePlugins](https://pkg.go.dev/mod/github.com/flyteorg/flyte/flyteplugins)
+- [Flyte Native Scheduler](https://pkg.go.dev/github.com/flyteorg/flyte/flyteadmin/scheduler)

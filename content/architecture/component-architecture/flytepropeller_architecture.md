@@ -10,7 +10,7 @@ variants: +flyte -serverless -byoc -byok
 
 ## Introduction
 
-A Flyte [workflow](../../divedeep-workflows) is represented as a Directed Acyclic Graph (DAG) of interconnected Nodes. Flyte supports a robust collection of Node types to ensure diverse functionality.
+A Flyte [workflow](/user-guide/core-concepts/workflows/standard-workflows/#standard-workflows) is represented as a Directed Acyclic Graph (DAG) of interconnected Nodes. Flyte supports a robust collection of Node types to ensure diverse functionality.
 
 - **TaskNodes** support a plugin system to externally add system integrations.
 - **BranchNodes** allow altering the control flow during runtime; pruning downstream evaluation paths based on input.
@@ -23,7 +23,7 @@ FlytePropeller is responsible for scheduling and tracking execution of Flyte wor
 
 In this scheme, resources are periodically evaluated and the goal is to transition from the observed state to a requested state.
 
-In our case, workflows are the resources, whose desired state (*workflow definition*) is expressed using Flyte's SDK. Workflows are iteratively evaluated to transition from the current state to success. During each evaluation loop, the current workflow state is established as the [phase of workflow nodes](https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#workflowexecution-phase) and subsequent tasks, and FlytePropeller performs operations to transition this state to success. The operations may include scheduling (or rescheduling) node executions, evaluating dynamic or branch nodes, etc.
+In our case, workflows are the resources, whose desired state (*workflow definition*) is expressed using Flyte's SDK. Workflows are iteratively evaluated to transition from the current state to success. During each evaluation loop, the current workflow state is established as the [phase of workflow nodes](/api-reference/flyteidl/#flyteidl-core-WorkflowExecution-Phase) and subsequent tasks, and FlytePropeller performs operations to transition this state to success. The operations may include scheduling (or rescheduling) node executions, evaluating dynamic or branch nodes, etc.
 
 By using a simple yet robust mechanism, FlytePropeller can scale to manage a large number of concurrent workflows without significant performance degradation.
 
@@ -43,7 +43,8 @@ Workflows in Flyte are maintained as [Custom Resource Definitions (CRDs)](https:
 
 **Example**
 
-1. Execute an [example workflow](https://docs.flyte.org/en/latest/core_use_cases/machine_learning.html#machine-learning) on a remote Flyte cluster:
+<!-- TODO: Fix link when target availalable -->
+1. Execute an [example workflow](https://union.ai/docs/flyte/tutorials/) on a remote Flyte cluster:
 
    ```bash
    pyflyte run --remote example.py training_workflow --hyperparameters '{"C": 0.4}'
@@ -152,7 +153,8 @@ The NodeExecutor is executed on a single node, beginning with the workflow's sta
 
 There are many configurable parameters to tune evaluation criteria including max parallelism which restricts the number of nodes which may be scheduled concurrently. Additionally, nodes may be retried to ensure recoverability on failure.
 
-Go to the [Optimizing Performance](https://docs.flyte.org/en/latest/deployment/configuration/performance.html#optimizing-performance) section for more information on how to tune Propeller parameters.
+<!-- TODO: Fix link when target availalable -->
+Go to the [Optimizing Performance](https://union.ai/docs/flyte/deployment/) section for more information on how to tune Propeller parameters.
 
 The NodeExecutor is also responsible for linking data readers/writers to facilitate data transfer between node executions. The data transfer process occurs automatically within Flyte, using efficient K8s events rather than a polling listener pattern which incurs more overhead. Relatively small amounts of data may be passed between nodes inline, but it is more common to pass data URLs to backing storage. A component of this is writing to and checking the data cache, which facilitates the reuse of previously completed evaluations.
 
