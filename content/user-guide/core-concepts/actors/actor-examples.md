@@ -17,7 +17,7 @@ import {{< key kit_import >}}
 +    name = "myenv",
 +    replica_count = 10,
 +    ttl_seconds = 120,
-+    requests = fl.Resources(mem="1Gi"),
++    requests = {{< key kit_as >}}.Resources(mem="1Gi"),
 +    container_image = "myrepo/myimage-with-scipy:latest",
 +)
 +
@@ -44,7 +44,7 @@ def distance_add_wf(point_a: list[int], point_b: list[int]) -> float:
 
 @{{< key kit_as >}}.workflow
 def is_even_wf(point_a: list[int]) -> list[bool]:
-    return fl.map_task(is_even)(number=point_a)
+    return {{< key kit_as >}}.map_task(is_even)(number=point_a)
 ```
 <!-- TODO: emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24 -->
 
