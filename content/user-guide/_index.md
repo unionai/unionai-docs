@@ -46,11 +46,32 @@ sidebar_expanded: true
 {{< /markdown >}}
 {{< /variant >}}
 
-The {{< key product_name >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+{{< variant flyte >}}
+{{< markdown>}}
+
+Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
+
+The Flyte platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown>}}
+
+Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
+
+The {{< key product_name >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+
+* Run complex AI workloads with performance, scale, and efficiency.
+* Achieve millisecond-level execution times with reusable containers.
+* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< grid >}}
 
