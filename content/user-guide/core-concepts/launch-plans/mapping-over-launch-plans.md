@@ -13,7 +13,7 @@ You can either map over a `LaunchPlan` object defined in one of your Python modu
 ## Launch plan defined in your code
 
 Here we define a workflow called `interest_workflow` that we want to parallelize, along with a launch plan called `interest_workflow_lp`, in a file we'll call `map_interest_wf.py`.
-We then write a separate workflow, `map_interest_wf`, that uses a `map_task` to parallelize `interest_workflow` over a list of inputs.
+We then write a separate workflow, `map_interest_wf`, that uses a `map` to parallelize `interest_workflow` over a list of inputs.
 
 ```python
 import {{< key kit_import >}}
@@ -40,7 +40,7 @@ def map_interest_wf() -> list[float]:
     principal = [1000, 5000, 10000]
     rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
     time = [12, 24, 36]        # Loan periods in months
-    return union.map_task(lp)(principal=principal, rate=rate, time=time)
+    return union.map(lp)(principal=principal, rate=rate, time=time)
 ```
 
 
@@ -116,7 +116,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
     def map_simple_wf() -> list[float]:
         x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
         y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
-        return union.map_task(simple_wf_lp)(x=x, y=y)
+        return union.map(simple_wf_lp)(x=x, y=y)
 
     ```
 
