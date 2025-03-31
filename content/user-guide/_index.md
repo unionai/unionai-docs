@@ -106,8 +106,8 @@ Explore the {{< key product_name >}} development cycle from experimentation to p
 Manage the input and output of data in your {{< key product_name >}} workflow.
 {{< /link-card >}}
 
-{{< link-card target="programming" icon="code-slash" title="Data input/output" >}}
-Learn about {{< key product_name >}}-specific programming contructs.
+{{< link-card target="programming" icon="code-slash" title="Programming" >}}
+Learn about {{< key product_name >}}-specific programming constructs.
 {{< /link-card >}}
 
 {{< variant byoc byok >}}
