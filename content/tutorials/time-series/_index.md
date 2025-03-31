@@ -2,6 +2,7 @@
 title: Time Series
 weight: 1
 variants: +flyte +serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Time Series

@@ -4,6 +4,7 @@ weight: 4
 variants: +flyte -serverless +byoc +byok
 top_menu: true
 mermaid: true
+sidebar_expanded: true
 ---
 
 # Deployment
