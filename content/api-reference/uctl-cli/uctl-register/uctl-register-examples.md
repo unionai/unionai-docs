@@ -21,14 +21,8 @@ Register specific release of Flytesnacks examples:
 $ uctl register examples  -d development  -p flytesnacks --version v0.2.176
 ```
 
-:::: note
-::: title
-Note
-:::
-
-The register command automatically override the version with release
-version.
-::::
+> [!NOTE]
+> The register command automatically override the version with release version.
 
 Usage:
 
