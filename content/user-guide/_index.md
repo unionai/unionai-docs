@@ -4,6 +4,7 @@ weight: 1
 variants: +flyte +serverless +byoc +byok
 top_menu: true
 site_root: true
+sidebar_expanded: true
 ---
 
 # User guide

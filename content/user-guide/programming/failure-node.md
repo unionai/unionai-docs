@@ -1,5 +1,5 @@
 ---
-title: Failure Node
+title: Failure node
 weight: 3
 variants: +flyte +serverless +byoc +byok
 ---

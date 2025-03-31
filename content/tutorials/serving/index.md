@@ -1,6 +1,7 @@
 ---
 title: Serving
 variants: +flyte +serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Serving
