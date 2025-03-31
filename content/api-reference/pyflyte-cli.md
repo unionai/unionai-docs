@@ -1,10 +1,4 @@
 ---
-title: Union CLI
-weight: 3
-variants: -flyte +serverless +byoc +byok
----
-
----
 title: Pyflyte CLI
 weight: 3
 variants: +flyte -serverless -byoc -byok

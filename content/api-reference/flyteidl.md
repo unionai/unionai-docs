@@ -1,9 +1,10 @@
 ---
-title: "flyteidl"
+title: "FlyteIDL"
 variants: +byoc +byok +serverless +flyte
+weight: 4
 ---
 
-# flyteidl
+# FlyteIDL
 
 
 
@@ -3468,7 +3469,7 @@ Custom proto for plugin that enables distributed training using https://github.c
 
 
 ### ElasticConfig {#flyteidl-plugins-ElasticConfig}
-Custom proto for torch elastic config for distributed training using 
+Custom proto for torch elastic config for distributed training using
 https://github.com/kubeflow/training-operator/blob/master/pkg/apis/kubeflow.org/v1/pytorch_types.go
 
 
@@ -3591,7 +3592,7 @@ Proto for plugin that enables distributed training using https://github.com/kube
 
 
 ### ElasticConfig {#flyteidl-plugins-kubeflow-ElasticConfig}
-Custom proto for torch elastic config for distributed training using 
+Custom proto for torch elastic config for distributed training using
 https://github.com/kubeflow/training-operator/blob/master/pkg/apis/kubeflow.org/v1/pytorch_types.go
 
 
@@ -3967,7 +3968,7 @@ Top-level namespace used to classify different entities like workflows and execu
 
 
 ### ProjectListRequest {#flyteidl-admin-ProjectListRequest}
-Request to retrieve a list of projects matching specified filters. 
+Request to retrieve a list of projects matching specified filters.
 See :ref:`ref_flyteidl.admin.Project` for more details
 
 
@@ -5624,7 +5625,7 @@ for further state transitions).
 
 
 ### EventErrorIncompatibleCluster {#flyteidl-admin-EventErrorIncompatibleCluster}
-Indicates an event was rejected because it came from a different cluster than 
+Indicates an event was rejected because it came from a different cluster than
 is on record as running the execution.
 
 
