@@ -14,11 +14,12 @@ domain.
 
 There are three steps to generate an execution, as outlined below:
 
-1\. Generate the execution spec file using the
-`get task {flytectl_get_task}`{.interpreted-text role="ref"} command. :
+1. Generate the execution spec file using the
+`get task` command:
 
-    flytectl get tasks -d development -p flytesnacks core.control_flow.merge_sort.merge --version v2 --execFile execution_spec.yaml
-
+```shell
+$ uctl get tasks -d development -p flytesnacks core.control_flow.merge_sort.merge --version v2 --execFile execution_spec.yaml
+````
 The generated file would look similar to the following:
 
 ``` yaml
@@ -35,7 +36,7 @@ task: core.control_flow.merge_sort.merge
 version: "v2"
 ```
 
-2\. \[Optional\] Update the inputs for the execution, if needed. The
+2. [Optional] Update the inputs for the execution, if needed. The
 generated spec file can be modified to change the input values, as shown
 below:
 
@@ -57,7 +58,7 @@ task: core.control_flow.merge_sort.merge
 version: "v2"
 ```
 
-3\. \[Optional\] Update the envs for the execution, if needed. The
+3. [Optional] Update the envs for the execution, if needed. The
 generated spec file can be modified to change the envs values, as shown
 below:
 
@@ -77,89 +78,92 @@ task: core.control_flow.merge_sort.merge
 version: "v2"
 ```
 
-4. Run the execution by passing the generated YAML file. The file can
+1. Run the execution by passing the generated YAML file. The file can
 then be passed through the command line. It is worth noting that the
-source's and target\'s project and domain can be different. :
+source's and target's project and domain can be different:
 
-    flytectl create execution --execFile execution_spec.yaml -p flytesnacks -d staging --targetProject flytesnacks
+```shell
+$ uctl create execution --execFile execution_spec.yaml -p flytesnacks -d staging --targetProject flytesnacks
+```
 
-5.  To relaunch an execution, pass the current execution ID as follows:
+1.  To relaunch an execution, pass the current execution ID as follows:
 
-```{code-block} shell
-    flytectl create execution --relaunch ffb31066a0f8b4d52b77 -p flytesnacks -d development
+```shell
+$ uctl create execution --relaunch ffb31066a0f8b4d52b77 -p flytesnacks -d development
 ```
 
 6.  To recover an execution, i.e., recreate it from the last known
     failure point for previously-run workflow execution, run:
 
-```{code-block} shell
-    flytectl create execution --recover ffb31066a0f8b4d52b77 -p flytesnacks -d development
+```shell
+$ uctl create execution --recover ffb31066a0f8b4d52b77 -p flytesnacks -d development
 ```
 
-See `ref_flyteidl.admin.ExecutionRecoverRequest`{.interpreted-text
-role="ref"} for more details.
-
-7. You can create executions idempotently by naming them. This is also
+1. You can create executions idempotently by naming them. This is also
 a way to *name* an execution for discovery. Note, an execution id has to
 be unique within a project domain. So if the *name* matches an existing
 execution an already exists exceptioj will be raised.
 
-    flytectl create execution --recover ffb31066a0f8b4d52b77 -p flytesnacks -d development custom_name
+```shell
+$ uctl create execution --recover ffb31066a0f8b4d52b77 -p flytesnacks -d development custom_name
+```
 
-8. Generic/Struct/Dataclass/JSON types are supported for execution in a
+1. Generic/Struct/Dataclass/JSON types are supported for execution in a
 similar manner. The following is an example of how generic data can be
 specified while creating the execution.
 
-    flytectl get task -d development -p flytesnacks  core.type_system.custom_objects.add --execFile adddatanum.yaml
+```shell
+$ uctl get task -d development -p flytesnacks  core.type_system.custom_objects.add --execFile adddatanum.yaml
+```
 
 The generated file would look similar to this. Here, empty values have
-been dumped for generic data types \'x\' and \'y\'. :
+been dumped for generic data types `x` and `y`:
 
-    iamRoleARN: ""
-    inputs:
-      "x": {}
-      "y": {}
-    kubeServiceAcct: ""
-    targetDomain: ""
-    targetProject: ""
-    task: core.type_system.custom_objects.add
-    version: v3
+```yaml
+iamRoleARN: ""
+inputs:
+  "x": {}
+  "y": {}
+kubeServiceAcct: ""
+targetDomain: ""
+targetProject: ""
+task: core.type_system.custom_objects.add
+version: v3
+```
 
 9.  Modified file with struct data populated for 'x' and 'y'
     parameters for the task "core.type_system.custom_objects.add":
 
-```{code-block} yaml
-    iamRoleARN: "arn:aws:iam::123456789:role/dummy"
-    inputs:
-      "x":
-        "x": 2
-        "y": ydatafory
-        "z":
-          1 : "foo"
-          2 : "bar"
-      "y":
-        "x": 3
-        "y": ydataforx
-        "z":
-          3 : "buzz"
-          4 : "lightyear"
-    kubeServiceAcct: ""
-    targetDomain: ""
-    targetProject: ""
-    task: core.type_system.custom_objects.add
-    version: v3
+```yaml
+iamRoleARN: "arn:aws:iam::123456789:role/dummy"
+inputs:
+  "x":
+    "x": 2
+    "y": ydatafory
+    "z":
+      1: "foo"
+      2: "bar"
+  "y":
+    "x": 3
+    "y": ydataforx
+    "z":
+      3: "buzz"
+      4: "lightyear"
+kubeServiceAcct: ""
+targetDomain: ""
+targetProject: ""
+task: core.type_system.custom_objects.add
+version: v3
 ```
 
-10. If you have configured a plugin that implements github.com/flyteorg/flyteadmin/pkg/workflowengine/interfaces/WorkflowExecutor
+1.  If you have configured a plugin that implements `WorkflowExecutor`
+that supports cluster pools, then when creating a new execution, you
+can assign it to a specific cluster pool:
 
-:   that supports cluster pools, then when creating a new execution, you
-    can assign it to a specific cluster pool:
-
-```{code-block} shell
-    flytectl create execution --execFile execution_spec.yaml -p flytesnacks -d development --clusterPool my-gpu-cluster
-
-    uctl create execution [flags]
+```shell
+$ uctl create execution --execFile execution_spec.yaml -p flytesnacks -d development --clusterPool my-gpu-cluster
 ```
+
 
 ## Options
 
@@ -201,7 +205,7 @@ been dumped for generic data types \'x\' and \'y\'. :
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -228,7 +232,7 @@ been dumped for generic data types \'x\' and \'y\'. :
 | `--auth.appAuth.selfAuthServer.refreshTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "1h0m0s") |
 | `--auth.appAuth.selfAuthServer.tokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve RSA Signing Key. (default "token_rsa_key.pem") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.audience` | string | Audience to use when initiating OAuth2 authorization requests. |
-| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "flytectl") |
+| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "uctl") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.redirectUri` | string | This is the callback uri registered with the app which handles authorization for a Flyte deployment (default "http://localhost:53593/callback") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.scopes` | strings | Recommended scopes for the client to request. (default [all,offline]) |
 | `--auth.disableForGrpc` | | Disables auth enforcement on Grpc Endpoints. |
@@ -312,10 +316,10 @@ been dumped for generic data types \'x\' and \'y\'. :
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
-| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
+| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from uctl. |
 | `--files.version` | string | Version of the entity to be registered with flyte which are un-versioned after serialization. |
 | `--logger.formatter.type` | string | Sets logging format type. (default "json") |
 | `--logger.level` | int | Sets the minimum logging level. (default 3) |
@@ -435,7 +439,7 @@ been dumped for generic data types \'x\' and \'y\'. :
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -444,7 +448,7 @@ been dumped for generic data types \'x\' and \'y\'. :
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

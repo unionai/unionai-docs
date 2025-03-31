@@ -12,16 +12,20 @@ Deletes matchable resources of cluster attributes.
 Delete cluster resource attributes for the given project and domain, in
 combination with the workflow name.
 
-For project flytesnacks and development domain, run: :
+For project flytesnacks and development domain, run:
 
-    flytectl delete cluster-resource-attribute -p flytesnacks -d development
+```shell
+$ uctl delete cluster-resource-attribute -p flytesnacks -d development
+```
 
 To delete cluster resource attribute using the config file that was used
 to create it, run:
 
-    flytectl delete cluster-resource-attribute --attrFile cra.yaml
+```shell
+$ uctl delete cluster-resource-attribute --attrFile cra.yaml
+```
 
-For example, here\'s the config file cra.yaml:
+For example, here's the config file cra.yaml:
 
 ``` yaml
 domain: development
@@ -32,17 +36,21 @@ attributes:
 ```
 
 Attributes are optional in the file, which are unread during the
-\'delete\' command but can be retained since the same file can be used
-for \'get\', \'update\' and \'delete\' commands.
+`delete` command but can be retained since the same file can be used
+for `get`, `update` and `delete` commands.
 
 To delete cluster resource attribute for the workflow
-\'core.control_flow.merge_sort.merge_sort\', run:
+`core.control_flow.merge_sort.merge_sort`, run:
 
-    flytectl delete cluster-resource-attribute -p flytesnacks -d development core.control_flow.merge_sort.merge_sort
+```shell
+$ uctl delete cluster-resource-attribute -p flytesnacks -d development core.control_flow.merge_sort.merge_sort
+```
 
-Usage
+Usage:
 
-    uctl delete cluster-resource-attribute [flags]
+```shell
+$ uctl delete cluster-resource-attribute [flags]
+```
 
 ## Options
 
@@ -73,7 +81,7 @@ Usage
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -100,7 +108,7 @@ Usage
 | `--auth.appAuth.selfAuthServer.refreshTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "1h0m0s") |
 | `--auth.appAuth.selfAuthServer.tokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve RSA Signing Key. (default "token_rsa_key.pem") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.audience` | string | Audience to use when initiating OAuth2 authorization requests. |
-| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "flytectl") |
+| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "uctl") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.redirectUri` | string | This is the callback uri registered with the app which handles authorization for a Flyte deployment (default "http://localhost:53593/callback") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.scopes` | strings | Recommended scopes for the client to request. (default [all,offline]) |
 | `--auth.disableForGrpc` | | Disables auth enforcement on Grpc Endpoints. |
@@ -184,10 +192,10 @@ Usage
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
-| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
+| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from uctl. |
 | `--files.version` | string | Version of the entity to be registered with flyte which are un-versioned after serialization. |
 | `--logger.formatter.type` | string | Sets logging format type. (default "json") |
 | `--logger.level` | int | Sets the minimum logging level. (default 3) |
@@ -307,7 +315,7 @@ Usage
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -316,7 +324,7 @@ Usage
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

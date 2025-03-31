@@ -160,7 +160,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--admin.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |

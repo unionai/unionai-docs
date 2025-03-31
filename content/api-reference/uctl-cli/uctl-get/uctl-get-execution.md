@@ -9,68 +9,87 @@ Gets execution resources.
 
 ## Synopsis
 
-Retrieve all executions within the project and domain. :
+Retrieve all executions within the project and domain:
 
-    flytectl get execution -p flytesnacks -d development
+```shell
+$ uctl get execution -p flytesnacks -d development
+```
 
-:::: note
-::: title
-Note
-:::
+> [!NOTE]
+> The terms execution/executions are interchangeable in these commands.
 
-The terms execution/executions are interchangeable in these commands.
-::::
+Retrieve executions by name within the project and domain:
 
-Retrieve executions by name within the project and domain. :
+```shell
+$ uctl get execution -p flytesnacks -d development oeh94k9r2r
+```
 
-    flytectl get execution -p flytesnacks -d development oeh94k9r2r
+Retrieve all the executions with filters:
 
-Retrieve all the executions with filters. :
+```shell
+$ uctl get execution -p flytesnacks -d development --filter.fieldSelector="execution.phase in (FAILED;SUCCEEDED),execution.duration<200"
+```
 
-    flytectl get execution -p flytesnacks -d development --filter.fieldSelector="execution.phase in (FAILED;SUCCEEDED),execution.duration<200"
+Retrieve executions as per the specified limit and sorting parameters:
 
-Retrieve executions as per the specified limit and sorting parameters. :
-
-    flytectl get execution -p flytesnacks -d development --filter.sortBy=created_at --filter.limit=1 --filter.asc
+```shell
+$ uctl get execution -p flytesnacks -d development --filter.sortBy=created_at --filter.limit=1 --filter.asc
+```
 
 Retrieve executions present in other pages by specifying the limit and
 page number.
 
-    flytectl get -p flytesnacks -d development execution --filter.limit=10 --filter.page=2
+```shell
+$ uctl get -p flytesnacks -d development execution --filter.limit=10 --filter.page=2
+```
 
 Retrieve executions within the project and domain in YAML format.
 
-    flytectl get execution -p flytesnacks -d development -o yaml
+```shell
+$ uctl get execution -p flytesnacks -d development -o yaml
+```
 
 Retrieve executions within the project and domain in JSON format.
 
-    flytectl get execution -p flytesnacks -d development -o json
+```shell
+$ uctl get execution -p flytesnacks -d development -o json
+```
 
-Get more details of the execution using the \--details flag, which shows
+Get more details of the execution using the --details flag, which shows
 node and task executions. The default view is a tree view, and the TABLE
 view format is not supported on this view.
 
-    flytectl get execution -p flytesnacks -d development oeh94k9r2r --details
+```shell
+$ uctl get execution -p flytesnacks -d development oeh94k9r2r --details
+```
 
 Fetch execution details in YAML format. In this view, only node details
-are available. For task, pass the \--nodeID flag. :
+are available. For task, pass the --nodeID flag:
 
-    flytectl get execution -p flytesnacks -d development oeh94k9r2r --details -o yaml
+```shell
+$ uctl get execution -p flytesnacks -d development oeh94k9r2r --details -o yaml
+```
 
-Fetch task executions on a specific node using the \--nodeID flag. Use
+Fetch task executions on a specific node using the --nodeID flag. Use
 the nodeID attribute given by the node details view.
 
-    flytectl get execution -p flytesnacks -d development oeh94k9r2r --nodeID n0
+```shell
+$ uctl get execution -p flytesnacks -d development oeh94k9r2r --nodeID n0
+```
 
 Task execution view is available in YAML/JSON format too. The following
 example showcases YAML, where the output contains input and output data
 of each node.
 
-    flytectl get execution -p flytesnacks -d development oeh94k9r2r --nodeID n0 -o yaml
+```shell
+$ uctl get execution -p flytesnacks -d development oeh94k9r2r --nodeID n0 -o yaml
+```
 
-Usage
+Usage:
 
-    uctl get execution [flags]
+```shell
+$ uctl get execution [flags]
+```
 
 ## Options
 
@@ -79,7 +98,7 @@ Usage
 | `--details` | | gets node execution details. Only applicable for single execution name i.e get execution name `--details` |
 | Option | Type | Description |
 |--------|------|-------------|
-| `--filter.asc` | | Specifies the sorting order. By default flytectl sort result in descending order |
+| `--filter.asc` | | Specifies the sorting order. By default uctl sort result in descending order |
 | Option | Type | Description |
 |--------|------|-------------|
 | `--filter.fieldSelector` | string | Specifies the Field selector |
@@ -110,7 +129,7 @@ Usage
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -137,7 +156,7 @@ Usage
 | `--auth.appAuth.selfAuthServer.refreshTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "1h0m0s") |
 | `--auth.appAuth.selfAuthServer.tokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve RSA Signing Key. (default "token_rsa_key.pem") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.audience` | string | Audience to use when initiating OAuth2 authorization requests. |
-| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "flytectl") |
+| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "uctl") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.redirectUri` | string | This is the callback uri registered with the app which handles authorization for a Flyte deployment (default "http://localhost:53593/callback") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.scopes` | strings | Recommended scopes for the client to request. (default [all,offline]) |
 | `--auth.disableForGrpc` | | Disables auth enforcement on Grpc Endpoints. |
@@ -221,10 +240,10 @@ Usage
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
-| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
+| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from uctl. |
 | `--files.version` | string | Version of the entity to be registered with flyte which are un-versioned after serialization. |
 | `--logger.formatter.type` | string | Sets logging format type. (default "json") |
 | `--logger.level` | int | Sets the minimum logging level. (default 3) |
@@ -344,7 +363,7 @@ Usage
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -353,7 +372,7 @@ Usage
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

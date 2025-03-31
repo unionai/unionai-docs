@@ -9,60 +9,77 @@ Gets task resources
 
 ## Synopsis
 
-Retrieve all the tasks within project and domain: :
+Retrieve all the tasks within project and domain:
 
-    flytectl get task -p flytesnacks -d development
+```shell
+$ uctl get task -p flytesnacks -d development
+```
 
-:::: note
-::: title
-Note
-:::
-
-The terms task/tasks are interchangeable in these commands.
-::::
+> [!NOTE]
+> The terms task/tasks are interchangeable in these commands.
 
 Retrieve task by name within project and domain:
 
-    flytectl task -p flytesnacks -d development core.basic.lp.greet
+```shell
+$ uctl task -p flytesnacks -d development core.basic.lp.greet
+```
 
 Retrieve latest version of task by name within project and domain:
 
-    flytectl get task -p flytesnacks -d development  core.basic.lp.greet --latest
+```shell
+$ uctl get task -p flytesnacks -d development  core.basic.lp.greet --latest
+```
 
 Retrieve particular version of task by name within project and domain:
 
-    flytectl get task -p flytesnacks -d development  core.basic.lp.greet --version v2
+```shell
+$ uctl get task -p flytesnacks -d development  core.basic.lp.greet --version v2
+```
 
-Retrieve all the tasks with filters: :
+Retrieve all the tasks with filters:
 
-    flytectl get task -p flytesnacks -d development --filter.fieldSelector="task.name=k8s_spark.pyspark_pi.print_every_time,task.version=v1"
+```shell
+$ uctl get task -p flytesnacks -d development --filter.fieldSelector="task.name=k8s_spark.pyspark_pi.print_every_time,task.version=v1"
+```
 
-Retrieve a specific task with filters: :
+Retrieve a specific task with filters:
 
-    flytectl get task -p flytesnacks -d development k8s_spark.pyspark_pi.print_every_time --filter.fieldSelector="task.version=v1,created_at>=2021-05-24T21:43:12.325335Z"
+```shell
+$ uctl get task -p flytesnacks -d development k8s_spark.pyspark_pi.print_every_time --filter.fieldSelector="task.version=v1,created_at>=2021-05-24T21:43:12.325335Z"
+```
 
-Retrieve all the tasks with limit and sorting: :
+Retrieve all the tasks with limit and sorting:
 
-    flytectl get -p flytesnacks -d development task  --filter.sortBy=created_at --filter.limit=1 --filter.asc
+```shell
+$ uctl get -p flytesnacks -d development task  --filter.sortBy=created_at --filter.limit=1 --filter.asc
+```
 
 Retrieve tasks present in other pages by specifying the limit and page
-number: :
+number:
 
-    flytectl get -p flytesnacks -d development task --filter.limit=10 --filter.page=2
+```shell
+$ uctl get -p flytesnacks -d development task --filter.limit=10 --filter.page=2
+```
 
-Retrieve all the tasks within project and domain in yaml format: :
+Retrieve all the tasks within project and domain in yaml format:
 
-    flytectl get task -p flytesnacks -d development -o yaml
+```shell
+$ uctl get task -p flytesnacks -d development -o yaml
+```
 
 Retrieve all the tasks within project and domain in json format:
 
-    flytectl get task -p flytesnacks -d development -o json
+```shell
+$ uctl get task -p flytesnacks -d development -o json
+```
 
 Retrieve tasks within project and domain for a version and generate the
 execution spec file for it to be used for launching the execution using
 create execution:
 
-    flytectl get tasks -d development -p flytesnacks core.control_flow.merge_sort.merge --execFile execution_spec.yaml --version v2
+```shell
+$ uctl get tasks -d development -p flytesnacks core.control_flow.merge_sort.merge --execFile execution_spec.yaml --version v2
+```
 
 The generated file would look similar to this:
 
@@ -83,16 +100,18 @@ version: v2
 Check the create execution section on how to launch one using the
 generated file.
 
-Usage
+Usage:
 
-    uctl get task [flags]
+```shell
+$ uctl get task [flags]
+```
 
 ## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
 | `--execFile` | string | execution file name to be used for generating execution spec of a single task. |
-| `--filter.asc` | | Specifies the sorting order. By default flytectl sort result in descending order |
+| `--filter.asc` | | Specifies the sorting order. By default uctl sort result in descending order |
 | `--filter.fieldSelector` | string | Specifies the Field selector |
 | `--filter.limit` | int32 | Specifies the limit (default 100) |
 | `--filter.page` | int32 | Specifies the page number,  in case there are multiple pages of results (default 1) |
@@ -122,7 +141,7 @@ Usage
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -149,7 +168,7 @@ Usage
 | `--auth.appAuth.selfAuthServer.refreshTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "1h0m0s") |
 | `--auth.appAuth.selfAuthServer.tokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve RSA Signing Key. (default "token_rsa_key.pem") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.audience` | string | Audience to use when initiating OAuth2 authorization requests. |
-| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "flytectl") |
+| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "uctl") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.redirectUri` | string | This is the callback uri registered with the app which handles authorization for a Flyte deployment (default "http://localhost:53593/callback") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.scopes` | strings | Recommended scopes for the client to request. (default [all,offline]) |
 | `--auth.disableForGrpc` | | Disables auth enforcement on Grpc Endpoints. |
@@ -233,10 +252,10 @@ Usage
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
-| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
+| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from uctl. |
 | `--files.version` | string | Version of the entity to be registered with flyte which are un-versioned after serialization. |
 | `--logger.formatter.type` | string | Sets logging format type. (default "json") |
 | `--logger.level` | int | Sets the minimum logging level. (default 3) |
@@ -356,7 +375,7 @@ Usage
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -365,7 +384,7 @@ Usage
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

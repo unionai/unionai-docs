@@ -13,73 +13,89 @@ Flyte demo is a fully standalone minimal environment for running Flyte.
 It provides a simplified way of running Flyte demo as a single Docker
 container locally.
 
-Starts the demo cluster without any source code: :
+Starts the demo cluster without any source code:
 
-    flytectl demo start
+```shell
+$ uctl demo start
+```
 
-Runs a dev cluster, which only has minio and postgres pod. :
+Runs a dev cluster, which only has minio and postgres pod:
 
-    flytectl demo start --dev
+```shell
+$ uctl demo start --dev
+```
 
-Mounts your source code repository inside the demo cluster: :
+Mounts your source code repository inside the demo cluster:
 
-    flytectl demo start --source=$HOME/flyteorg/flytesnacks
+```shell
+$ uctl demo start --source=$HOME/flyteorg/flytesnacks
+```
 
 Specify a Flyte demo compliant image with the registry. This is useful
-in case you want to use an image from your registry. :
+in case you want to use an image from your registry:
 
-    flytectl demo start --image docker.io/my-override:latest
+```shell
+$ uctl demo start --image docker.io/my-override:latest
+```
 
 Note: If image flag is passed then Flytectl will ignore version and pre
 flags.
 
 Specify a Flyte demo image pull policy. Possible pull policy values are
-Always, IfNotPresent, or Never: :
+Always, IfNotPresent, or Never:
 
-    flytectl demo start --image docker.io/my-override:latest --imagePullPolicy Always
+```shell
+$ uctl demo start --image docker.io/my-override:latest --imagePullPolicy Always
+```
 
 Runs a specific version of Flyte. Flytectl demo only supports Flyte
 version available in the Github release,
-{https://github.com/flyteorg/flyte/tags}. :
+{https://github.com/flyteorg/flyte/tags}:
 
-    flytectl demo start --version=v0.14.0
+```shell
+$ uctl demo start --version=v0.14.0
+```
 
-:::: note
-::: title
-Note
-:::
+> [!NOTE]
+> Flytectl demo is only supported for Flyte versions >= v1.0.0
 
-Flytectl demo is only supported for Flyte versions \>= v1.0.0
-::::
+Runs the latest pre release of Flyte:
 
-Runs the latest pre release of Flyte. :
-
-    flytectl demo start --pre
+```shell
+$ uctl demo start --pre
+```
 
 Start demo cluster passing environment variables. This can be used to
-pass docker specific env variables or flyte specific env variables. eg :
+pass docker specific env variables or flyte specific env variables. eg:
 for passing timeout value in secs for the demo container use the
-following. :
+following:
 
-    flytectl demo start --env FLYTE_TIMEOUT=700
+```shell
+$ uctl demo start --env FLYTE_TIMEOUT=700
+```
 
 The DURATION can be a positive integer or a floating-point number,
 followed by an optional unit suffix:: s - seconds (default) m - minutes
 h - hours d - days When no unit is used, it defaults to seconds. If the
 duration is set to zero, the associated timeout is disabled.
 
-eg : for passing multiple environment variables :
+For passing multiple environment variables:
 
-    flytectl demo start --env USER=foo --env PASSWORD=bar
+```shell
+$ uctl demo start --env USER=foo --env PASSWORD=bar
+```
 
-For just printing the docker commands for bringing up the demo container
-:
+For just printing the docker commands for bringing up the demo container:
 
-    flytectl demo start --dryRun
+```shell
+$ uctl demo start --dryRun
+```
 
-Usage
+Usage:
 
-    uctl demo start [flags]
+```shell
+$ uctl demo start [flags]
+```
 
 ## Options
 
@@ -126,7 +142,7 @@ Usage
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -153,7 +169,7 @@ Usage
 | `--auth.appAuth.selfAuthServer.refreshTokenLifespan` | string | Defines the lifespan of issued access tokens. (default "1h0m0s") |
 | `--auth.appAuth.selfAuthServer.tokenSigningRSAKeySecretName` | string | OPTIONAL: Secret name to use to retrieve RSA Signing Key. (default "token_rsa_key.pem") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.audience` | string | Audience to use when initiating OAuth2 authorization requests. |
-| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "flytectl") |
+| `--auth.appAuth.thirdPartyConfig.flyteClient.clientId` | string | public identifier for the app which handles authorization for a Flyte deployment (default "uctl") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.redirectUri` | string | This is the callback uri registered with the app which handles authorization for a Flyte deployment (default "http://localhost:53593/callback") |
 | `--auth.appAuth.thirdPartyConfig.flyteClient.scopes` | strings | Recommended scopes for the client to request. (default [all,offline]) |
 | `--auth.disableForGrpc` | | Disables auth enforcement on Grpc Endpoints. |
@@ -237,10 +253,10 @@ Usage
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
-| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
+| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from uctl. |
 | `--files.version` | string | Version of the entity to be registered with flyte which are un-versioned after serialization. |
 | `--logger.formatter.type` | string | Sets logging format type. (default "json") |
 | `--logger.level` | int | Sets the minimum logging level. (default 3) |
@@ -360,7 +376,7 @@ Usage
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -369,7 +385,7 @@ Usage
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |
