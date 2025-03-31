@@ -1,26 +1,62 @@
 ---
-title: uctl config
+title: flytectl delete execution-cluster-label
 variants: -flyte +serverless +byoc +byok
 ---
 
-# uctl config
+# flytectl delete execution-cluster-label
 
-Runs various config commands, look at the help of this command to get a
-list of available commands..
+Deletes matchable resources of execution cluster label.
 
 ## Synopsis
 
-Runs various config commands, look at the help of this command to get a
-list of available commands..
+Delete execution cluster label for a given project and domain, in
+combination with the workflow name.
+
+For project flytesnacks and development domain, run:
+
+```shell
+$ flytectl delete execution-cluster-label -p flytesnacks -d development
+```
+
+To delete execution cluster label using the config file that was used to
+create it, run:
+
+```shell
+$ flytectl delete execution-cluster-label --attrFile ecl.yaml
+```
+
+For example, here's the config file ecl.yaml:
+
+``` yaml
+domain: development
+project: flytesnacks
+value: foo
+```
+
+Value is optional in the file as it is unread during the delete command,
+but it can be retained since the same file can be used for `get`,
+`update` and `delete` commands.
+
+To delete the execution cluster label of the workflow
+`core.control_flow.merge_sort.merge_sort`, run the following:
+
+```shell
+$ flytectl delete execution-cluster-label -p flytesnacks -d development core.control_flow.merge_sort.merge_sort
+```
+
+Usage:
+
+```shell
+$ flytectl delete execution-cluster-label [flags]
+```
 
 ## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `--file` | stringArray | Passes the config file to load. |
-                         If empty, it'll first search for the config file path then, if found, will load config from there.
-| `--force` | | Force to overwrite the default config file without confirmation |
-| `-h`, `--help` | help for config |
+| `--attrFile` | string | attribute file name to be used for delete attribute for the resource type. |
+| `--dryRun` | | execute command without making any modifications. |
+| `-h`, `--help` | help for execution-cluster-label |
 
 ### Options inherited from parent commands
 
@@ -43,7 +79,7 @@ list of available commands..
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -154,7 +190,7 @@ list of available commands..
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
 | `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
@@ -277,7 +313,7 @@ list of available commands..
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -286,7 +322,7 @@ list of available commands..
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

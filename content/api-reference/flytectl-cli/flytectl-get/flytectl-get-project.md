@@ -1,28 +1,78 @@
 ---
-title: uctl demo
+title: flytectl get project
 variants: -flyte +serverless +byoc +byok
 ---
 
-# uctl demo
+# flytectl get project
 
-Helps with demo interactions like start, teardown, status, and exec.
+Gets project resources
 
 ## Synopsis
 
-Uctl Flyte Demo is a fully standalone minimal environment for running
-Flyte. It provides a simplified way of running Flyte demo as a single
-Docker container locally.
+Retrieve all the projects:
 
-To create a demo cluster, run: :: ./bin/uctl demo start To remove a demo
-cluster, run: :: ./bin/uctl demo teardown To check the status of the
-demo container, run: :: ./bin/uctl demo status To execute commands
-inside the demo container, use exec: :: ./bin/uctl demo exec \-- pwd
+```shell
+$ flytectl get project
+```
+
+> [!NOTE]
+> The terms project/projects are interchangeable in these commands.
+
+Retrieve project by name:
+
+```shell
+$ flytectl get project flytesnacks
+```
+
+Retrieve all the projects with filters:
+
+```shell
+$ flytectl get project --filter.fieldSelector="project.name=flytesnacks"
+```
+
+Retrieve all the projects with limit and sorting:
+
+```shell
+$ flytectl get project --filter.sortBy=created_at --filter.limit=1 --filter.asc
+```
+
+Retrieve projects present in other pages by specifying the limit and
+page number:
+
+```shell
+$ flytectl get project --filter.limit=10 --filter.page=2
+```
+
+Retrieve all the projects in yaml format:
+
+```shell
+$ flytectl get project -o yaml
+```
+
+Retrieve all the projects in json format:
+
+```shell
+$ flytectl get project -o json
+```
+
+Usage:
+
+```shell
+$ flytectl get project [flags]
+```
 
 ## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `-h`, `--help` | help for demo |
+| `--filter.asc` | | Specifies the sorting order. By default flytectl sort result in descending order |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--filter.fieldSelector` | string | Specifies the Field selector |
+| `--filter.limit` | int32 | Specifies the limit (default 100) |
+| `--filter.page` | int32 | Specifies the page number,  in case there are multiple pages of results (default 1) |
+| `--filter.sortBy` | string | Specifies which field to sort results  (default "created_at") |
+| `-h`, `--help` | help for project |
 
 ### Options inherited from parent commands
 
@@ -45,7 +95,7 @@ inside the demo container, use exec: :: ./bin/uctl demo exec \-- pwd
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -156,7 +206,7 @@ inside the demo container, use exec: :: ./bin/uctl demo exec \-- pwd
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
 | `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
@@ -279,7 +329,7 @@ inside the demo container, use exec: :: ./bin/uctl demo exec \-- pwd
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -288,7 +338,7 @@ inside the demo container, use exec: :: ./bin/uctl demo exec \-- pwd
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

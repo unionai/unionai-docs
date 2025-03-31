@@ -1,24 +1,52 @@
 ---
-title: uctl apply
+title: flytectl demo reload
 variants: -flyte +serverless +byoc +byok
 ---
 
-# uctl apply
+# flytectl demo reload
 
-Used for updating various union/flyte resources including
-tasks/workflows/launchplans/executions/project.
+Power cycle the Flyte executable pod, effectively picking up an updated
+config.
 
 ## Synopsis
 
-Eg: Update Union.ai resources of app for a tenant: :
+If you've changed the `~/.flyte/state/flyte.yaml` file, run this command
+to restart the Flyte binary pod, effectively picking up the new
+settings:
 
-    uctl apply app --appSpecFile Tenant-AppSpec.yaml
+Usage:
+
+```shell
+$ flytectl demo reload
+```
+
+```shell
+$ flytectl demo reload [flags]
+```
 
 ## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `-h`, `--help` | help for apply |
+| `--dev` | | Optional. Only start minio and postgres in the sandbox. |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--disable-agent` | | Optional. Disable the agent service. |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--dryRun` | | Optional. Only print the docker commands to bring up flyte sandbox/demo container.This will still call github api's to get the latest flyte release to use' |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--env` | strings | Optional. Provide Env variable in key=value format which can be passed to sandbox container. |
+| `--force` | | Optional. Forcefully delete existing sandbox cluster if it exists. |
+| `-h`, `--help` | help for reload |
+| `--image` | string | Optional. Provide a fully qualified path to a Flyte compliant docker image. |
+| `--imagePullOptions.platform` | string | Forces a specific platform's image to be pulled.' |
+| `--imagePullOptions.registryAuth` | string | The base64 encoded credentials for the registry. |
+| `--imagePullPolicy` | ImagePullPolicy | Optional. Defines the image pull behavior [Always/IfNotPresent/Never] (default Always) |
+| `--pre` | | Optional. Pre release Version of flyte will be used for sandbox. |
+| `--source` | string | deprecated,  path of your source code,  please build images with local daemon |
+| `--version` | string | Version of flyte. Only supports flyte releases greater than v0.10.0 |
 
 ### Options inherited from parent commands
 
@@ -41,7 +69,7 @@ Eg: Update Union.ai resources of app for a tenant: :
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -152,7 +180,7 @@ Eg: Update Union.ai resources of app for a tenant: :
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
 | `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
@@ -275,7 +303,7 @@ Eg: Update Union.ai resources of app for a tenant: :
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -284,7 +312,7 @@ Eg: Update Union.ai resources of app for a tenant: :
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |

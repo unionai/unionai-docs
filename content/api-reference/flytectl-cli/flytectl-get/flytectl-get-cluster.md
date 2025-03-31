@@ -1,24 +1,35 @@
 ---
-title: uctl delete
+title: flytectl get cluster
 variants: -flyte +serverless +byoc +byok
 ---
 
-# uctl delete
+# flytectl get cluster
 
-Used for terminating/deleting various union/flyte resources including
-tasks/workflows/launchplans/executions/project
+Retrieves clusters
 
 ## Synopsis
 
-Delete a resource; if an execution: :
+Retrieves clusters
 
-    flytectl delete execution kxd1i72850  -d development  -p flytesnacks
+```shell
+$ flytectl get cluster [flags]
+```
 
 ## Options
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `-h`, `--help` | help for delete |
+| `--dryRun` | | execute command without making any modifications. |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--filter.asc` | | Specifies the sorting order. By default sorts result in descending order |
+| Option | Type | Description |
+|--------|------|-------------|
+| `--filter.fieldSelector` | string | Allows for filtering resources based on a specific value for a field name using operations =, !=, >, {, }=, <=, in, contains.Multiple selectors can be added separated by commas |
+| `--filter.limit` | int32 | Specifies the number of results to return (default 100) |
+| `--filter.sortBy` | string | Specifies which field to sort results  (default "created_at") |
+| `--filter.token` | string | Specifies the server provided token to use for fetching next page in case of multi page result |
+| `-h`, `--help` | help for cluster |
 
 ### Options inherited from parent commands
 
@@ -41,7 +52,7 @@ Delete a resource; if an execution: :
 | `--admin.endpoint` | string | For admin types,  specify where the uri of the service is located. |
 | `--admin.httpProxyURL` | string | OPTIONAL: HTTP Proxy to be used for OAuth requests. |
 | `--admin.insecure` | | Use insecure connection. |
-| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--admin.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--admin.maxBackoffDelay` | string | Max delay for grpc backoff (default "8s") |
 | `--admin.maxMessageSizeBytes` | int | The max size in bytes for incoming gRPC messages |
 | `--admin.maxRetries` | int | Max number of gRPC retries (default 4) |
@@ -152,7 +163,7 @@ Delete a resource; if an execution: :
 | `--files.dryRun` | | Execute command without making any modifications. |
 | `--files.enableSchedule` | | Enable the schedule if the files contain schedulable launchplan. |
 | `--files.force` | | Force use of version number on entities registered with flyte. |
-| `--files.k8ServiceAccount` | string | Deprecated. Please use --K8sServiceAccount |
+| `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount`|
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
 | `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from flytectl. |
@@ -275,7 +286,7 @@ Delete a resource; if an execution: :
 | `--union.cache.maxItemsCount` | int | Maximum number of items to keep in the cache before evicting. (default 1000) |
 | `--union.connection.host` | string | Host to connect to (default "dns:///utt-mgdp-stg-us-east-2.cloud-staging.union.ai") |
 | `--union.connection.insecure` | | Whether to connect over insecure channel |
-| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name. Caution : shouldn't be use for production usecases' |
+| `--union.connection.insecureSkipVerify` | | InsecureSkipVerify controls whether a client verifies the server's certificate chain and host name.Caution: shouldn't be use for production usecases' |
 | `--union.connection.keepAliveConfig.permitWithoutStream` | | If true,  client sends keepalive pings even with no active RPCs. |
 | `--union.connection.keepAliveConfig.time` | string | After a duration of this time if the client doesn't see any activity it pings the server to see if the transport is still alive. (default "20s") |
 | `--union.connection.keepAliveConfig.timeout` | string | After having pinged for keepalive check,  the client waits for a duration of Timeout and if no activity is seen even after that the connection is closed. (default "2m0s") |
@@ -284,7 +295,7 @@ Delete a resource; if an execution: :
 | `--union.connection.maxRetries` | int | Max number of gRPC retries (default 4) |
 | `--union.connection.minConnectTimeout` | string | Minimum timeout for establishing a connection (default "20s") |
 | `--union.connection.perRetryTimeout` | string | gRPC per retry timeout (default "15s") |
-| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{\"loadBalancingConfig\": [{\"round_robin\":{}}]}") |
+| `--union.connection.serviceConfig` | string | Defines gRPC experimental JSON Service Config (default "{"loadBalancingConfig": [{"round_robin":{}}]}") |
 | `--union.connection.trustedIdentityClaims.enabled` | | Enables passing of trusted claims while making inter service calls |
 | `--union.connection.trustedIdentityClaims.externalIdentityClaim` | string | External identity claim of the service which is authorized to make internal service call. These are verified against userclouds actions |
 | `--union.connection.trustedIdentityClaims.externalIdentityTypeClaim` | string | External identity type claim of app or user to use for the current service identity. It should be an 'app' for inter service communication |
