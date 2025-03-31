@@ -7,7 +7,7 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-  height: calc(100vh - var(--header-height) - var(--tabs-height));
+  height: calc(100dvh - var(--header-height) - var(--tabs-height));
 }
 
 .sidebar > nav > ul > li > .section-title,
