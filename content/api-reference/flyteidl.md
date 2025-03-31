@@ -1,6 +1,6 @@
 ---
 title: Flyteidl
-variants: +byoc +byok +serverless +flyte
+variants: -byoc -byok -serverless +flyte
 weight: 5
 ---
 

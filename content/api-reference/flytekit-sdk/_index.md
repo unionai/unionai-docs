@@ -3,7 +3,7 @@ title: Flytekit SDK
 version: 1.15.4.dev2+g3e3ce2426
 variants: +flyte +byoc +byok +serverless
 layout: py_api
-weight: 2
+weight: 1
 ---
 
 # Flytekit SDK

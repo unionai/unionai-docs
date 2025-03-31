@@ -38,10 +38,6 @@ The Union CLI is the command-line interface for interacting with your Union inst
 The Uctl CLI is an alternative CLI for performing administrative tasks and for use in CI/CD environments.
 {{< /link-card >}}
 
-{{< link-card target="flyteidl" icon="terminal" title="Flyteidl" >}}
-Flyteidl is the specification for the Flyte language in protobuf.
-{{< /link-card >}}
-
 {{< /grid >}}
 {{< /variant >}}
 
