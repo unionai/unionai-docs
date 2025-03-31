@@ -296,7 +296,7 @@ def wf() -> tuple[str,str]:
     return get_and_set(), check_set()
 ```
 
-## Example: `@actor_cache` with `map`/`map_task`
+## Example: `@actor_cache` with `map`
 
 With map tasks, each task is executed within the same environment, making actors a natural fit for this pattern. If a task has an expensive operation, like model loading, caching it with `@actor_cache` can improve performance. This example shows how to cache model loading in a mapped task to avoid redundant work and save resources.
 
