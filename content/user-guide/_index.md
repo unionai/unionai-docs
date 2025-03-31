@@ -13,8 +13,10 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] Flyte
-> These docs are for [**Flyte**](./about-flyte).
-> Switch to another variant with the version selector above.
+> Welome to the offical documentation for the [**Flyte**](./about-flyte) open-source project.
+> This documentation is maintained by Union.ai.
+>
+> You can switch to the documentation for the closed-source versions with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -22,8 +24,9 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} Serverless
-> These docs are for [**{{< key product_name >}} Serverless**](./about-union#union-serverless).
-> Switch to another variant with the version selector above.
+> Welcome to the offical documentation for [**{{< key product_name >}} Serverless**](./about-union#union-serverless).
+>
+> You can Switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -31,8 +34,9 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} BYOC
-> These docs are for [**{{< key product_name >}} BYOC**](./about-union#union-byoc).
-> Switch to another variant with the version selector above.
+> Welcome to the offical documentation for [**{{< key product_name >}} BYOC**](./about-union#union-byoc).
+>
+> You can Switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -40,8 +44,9 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} BYOK
-> These docs are for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
-> Switch to another variant with the version selector above.
+> Welcome to the offical documentation for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
+>
+> You can Switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
