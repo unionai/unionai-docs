@@ -4,19 +4,18 @@ weight: 4
 variants: -flyte +serverless +byoc +byok
 ---
 
-# {{< key ctl_name >}} CLI
+# Uctl CLI
 
-The `{{< key ctl >}}` CLI provides functionality for Union administrators to manage Union-specific entities like users, roles, and Union configuration.
+The `uctl` CLI provides functionality for Union administrators to manage Union-specific entities like users, roles, and Union configuration.
 
-It also includes much of the functionality of the [`{{< key cli >}}` CLI](../union-cli), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `{{< key cli >}}` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
+It also includes much of the functionality of the [`union` CLI](../union-cli), but since it is a compiled binary (written in Go), it is faster and more efficient than the Python-based `union` CLI and more suitable for situations like running in a CI/CD environment where you might want to avoid the overhead of large Python dependencies.
 
 > [!NOTE]
 > If you are not a Union administrator, or if you will be interacting with Union in an environment where
-> Python is installed, you should use the [`{{< key cli >}}` CLI](../union-cli) instead.
+> Python is installed, you should use the [`union` CLI](../union-cli) instead.
 
 ## Installation
 
-{{< variant serverless byoc byok >}}
 {{< tabs >}}
 {{< tab "macOS" >}}
 {{< markdown >}}
@@ -83,75 +82,6 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
-{{< /variant >}}
-{{< variant flyte >}}
-{{< tabs >}}
-{{< tab "macOS" >}}
-{{< markdown >}}
-
-To install `flytectl` on a Mac, use [Homebrew](https://brew.sh/), `curl`, or manually download the binary.
-
-**Homebrew**
-
-```shell
-$ brew tap flyteorg/homebrew-tap
-$ brew install flytectl
-```
-
-**curl**
-
-To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
-
-```shell
-$ curl -sL https://ctl.flyte.org/install | bash
-```
-
-**Manual download**
-
-To download the binary manually, see the [`flytectl` releases page](https://github.com/flyteorg/flytectl/releases).
-
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Linux" >}}
-{{< markdown >}}
-
-To install `flytectl` on Linux, use `curl` or manually download the binary.
-
-**curl**
-
-To use `curl`, set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
-
-```shell
-$ curl -sL https://ctl.flyte.org/install | bash
-```
-
-**Manual download**
-
-To download the binary manually, see the [`flytectl` releases page](https://github.com/flyteorg/flytectl/releases).
-
-{{< /markdown >}}
-{{< /tab >}}
-{{< tab "Windows" >}}
-{{< markdown >}}
-
-To install `flytectl` on Windows, use `curl` or manually download the binary.
-
-**curl**
-
-To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
-
-```shell
-$ curl -sL https://ctl.flyte.org/install | bash
-```
-
-**Manual download**
-
-To download the binary manually, see the [`flytectl` releases page](https://github.com/flyteorg/flytectl/releases).
-
-{{< /markdown >}}
-{{< /tab >}}
-{{< /tabs >}}
-{{< /variant >}}
 
 
 ## Configuration
@@ -168,20 +98,20 @@ To download the binary manually, see the [`flytectl` releases page](https://gith
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc byok >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
 
 ```shell
-$ {{< key ctl >}} config init --host <{{< key product>}}-host-url>
+$ uctl config init --host <union-host-url>
 ```
 
-This will create a new configuration file at `~/.{{< key product>}}/config.yaml`:
+This will create a new configuration file at `~/.union/config.yaml`:
 
 ```yaml
 admin:
-  endpoint: dns:///<{{< key product>}}-host-url>
+  endpoint: dns:///<union-host-url>
   insecure: false
   authType: Pkce
 ```
@@ -192,7 +122,7 @@ admin:
 
 ### Configuration file location hierarchy
 
-By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{< key product >}}/config.yaml` to connect to your Union instance unless you override it. `{{< key ctl >}}` searches for configuration files in the following order:
+By default, the `uctl` CLI will use the configuration file at `~/.union/config.yaml` to connect to your Union instance unless you override it. `uctl` searches for configuration files in the following order:
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -208,15 +138,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
-{{< markdown >}}
 
-* `--config <path-to-config>` flag
-* `FLYTECTL_CONFIG` environment variable
-* `~/.flyte/config.yaml` file
-
-{{< /markdown >}}
-{{< /variant >}}
 
 ## Options
 
@@ -262,9 +184,9 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 | `--files.k8ServiceAccount` | string | Deprecated. Please use `--K8sServiceAccount` |
 | `--files.k8sServiceAccount` | string | Custom kubernetes service account auth role to register launch plans with. |
 | `--files.outputLocationPrefix` | string | Custom output location prefix for offloaded types (files/schemas). |
-| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from {{< key ctl >}}. |
+| `--files.sourceUploadPath` | string | Deprecated: Update flyte admin to avoid having to configure storage access from uctl. |
 | `--files.version` | string | Version of the entity to be registered with flyte which are un-versioned after serialization.
-| `-h`, `--help` | | help for {{< key ctl >}} |
+| `-h`, `--help` | | help for uctl |
 | `--logger.formatter.type` | string | Sets logging format type. (default "json") |
 | `--logger.level` | int | Sets the minimum logging level. (default 3) |
 | `--logger.mute` | | Mutes all logs regardless of severity. Intended for benchmarks/tests only. |
@@ -292,18 +214,18 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 {{< variant byoc >}}
 {{< markdown >}}
-* `{{< key ctl >}} apply {{{< key ctl >}}-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
-* `{{< key ctl >}} config {{{< key ctl >}}-config/index}` runs various config commands.
+* `uctl apply {uctl-apply/index}` is used for updating various Union/Flyte resources, including cluster configs.
+* `uctl config {uctl-config/index}` runs various config commands.
 {{< /markdown >}}
 {{< /variant >}}
-* `{{< key ctl >}} create {{{< key ctl >}}-create/index}` creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* `{{< key ctl >}} delete {{{< key ctl >}}-delete/index}` terminates/deletes various Flyte resources, such as executions and resource attributes.
-* `{{< key ctl >}} demo {{{< key ctl >}}-demo/index}` provides commands for starting and interacting with a standalone minimal
+* `uctl create {uctl-create/index}` creates various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
+* `uctl delete {uctl-delete/index}` terminates/deletes various Flyte resources, such as executions and resource attributes.
+* `uctl demo {uctl-demo/index}` provides commands for starting and interacting with a standalone minimal
                                 local environment for running Flyte.
-* `{{< key ctl >}} get {{{< key ctl >}}-get/index}` fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
-* `{{< key ctl >}} register {{{< key ctl >}}-register/index}` registers tasks, workflows, and launch plans from a list of generated serialized files.
-* `{{< key ctl >}} update {{{< key ctl >}}-update/index}` update Flyte resources e.g., projects.
-* `{{< key ctl >}} version {{{< key ctl >}}-version>` fetches `{{< key ctl >}}` version.
+* `uctl get {uctl-get/index}` fetches various Flyte resources such as tasks, workflows, launch plans, executions, and projects.
+* `uctl register {uctl-register/index}` registers tasks, workflows, and launch plans from a list of generated serialized files.
+* `uctl update {uctl-update/index}` update Flyte resources e.g., projects.
+* `uctl version {uctl-version>` fetches `uctl` version.
 
 
 ## Entities
@@ -311,70 +233,70 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 | Entity | Commands |
 |--------|----------|
 | Cluster resource attribute | {{< multiline >}}
-[`{{< key ctl >}} get cluster-resource-attribute`](./{{< key ctl >}}-get/{{< key ctl >}}-get-cluster-resource-attribute)
-[`{{< key ctl >}} update cluster resource attribute`](./{{< key ctl >}}-update/{{< key ctl >}}-update-cluster-resource-attribute)
-[`{{< key ctl >}} delete cluster resource attribute`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-cluster-resource-attribute)
+[`uctl get cluster-resource-attribute`](./uctl-get/uctl-get-cluster-resource-attribute)
+[`uctl update cluster resource attribute`](./uctl-update/uctl-update-cluster-resource-attribute)
+[`uctl delete cluster resource attribute`](./uctl-delete/uctl-delete-cluster-resource-attribute)
 {{< /multiline >}} |
 | Config | {{< multiline>}}
-[`{{< key ctl >}} config init`](./{{< key ctl >}}-config/{{< key ctl >}}-config-init)
-[`{{< key ctl >}} config discover`](./{{< key ctl >}}-config/{{< key ctl >}}-config-discover)
-[`{{< key ctl >}} config docs`](./{{< key ctl >}}-config/{{< key ctl >}}-config-docs)
-[`{{< key ctl >}} config validate`](./{{< key ctl >}}-config/{{< key ctl >}}-config-validate)
+[`uctl config init`](./uctl-config/uctl-config-init)
+[`uctl config discover`](./uctl-config/uctl-config-discover)
+[`uctl config docs`](./uctl-config/uctl-config-docs)
+[`uctl config validate`](./uctl-config/uctl-config-validate)
 {{< /multiline >}} |
 | Demo | {{< multiline>}}
-[`{{< key ctl >}} demo start`](./{{< key ctl >}}-demo/{{< key ctl >}}-demo-start)
-[`{{< key ctl >}} demo status`](./{{< key ctl >}}-demo/{{< key ctl >}}-demo-status)
-[`{{< key ctl >}} demo exec`](./{{< key ctl >}}-demo/{{< key ctl >}}-demo-exec)
-[`{{< key ctl >}} demo reload`](./{{< key ctl >}}-demo/{{< key ctl >}}-demo-reload)
-[`{{< key ctl >}} demo teardown`](./{{< key ctl >}}-demo/{{< key ctl >}}-demo-teardown)
+[`uctl demo start`](./uctl-demo/uctl-demo-start)
+[`uctl demo status`](./uctl-demo/uctl-demo-status)
+[`uctl demo exec`](./uctl-demo/uctl-demo-exec)
+[`uctl demo reload`](./uctl-demo/uctl-demo-reload)
+[`uctl demo teardown`](./uctl-demo/uctl-demo-teardown)
 {{< /multiline >}} |
 | Execution | {{< multiline>}}
-[`{{< key ctl >}} create execution`](./{{< key ctl >}}-create/{{< key ctl >}}-create-execution)
-[`{{< key ctl >}} get execution`](./{{< key ctl >}}-get/{{< key ctl >}}-get-execution)
-[`{{< key ctl >}} update execution`](./{{< key ctl >}}-update/{{< key ctl >}}-update-execution)
-[`{{< key ctl >}} delete execution`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-execution)
+[`uctl create execution`](./uctl-create/uctl-create-execution)
+[`uctl get execution`](./uctl-get/uctl-get-execution)
+[`uctl update execution`](./uctl-update/uctl-update-execution)
+[`uctl delete execution`](./uctl-delete/uctl-delete-execution)
 {{< /multiline >}} |
 | Execution cluster label | {{< multiline>}}
-[`{{< key ctl >}} get execution-cluster-label`](./{{< key ctl >}}-get/{{< key ctl >}}-get-execution-cluster-label)
-[`{{< key ctl >}} update execution-cluster-label`](./{{< key ctl >}}-update/{{< key ctl >}}-update-execution-cluster-label)
-[`{{< key ctl >}} delete execution-cluster-label`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-execution-cluster-label)
+[`uctl get execution-cluster-label`](./uctl-get/uctl-get-execution-cluster-label)
+[`uctl update execution-cluster-label`](./uctl-update/uctl-update-execution-cluster-label)
+[`uctl delete execution-cluster-label`](./uctl-delete/uctl-delete-execution-cluster-label)
 {{< /multiline >}} |
 | Execution queue attribute | {{< multiline>}}
-[`{{< key ctl >}} get execution-queue-attribute`](./{{< key ctl >}}-get/{{< key ctl >}}-get-execution-queue-attribute)
-[`{{< key ctl >}} update execution-queue-attribute`](./{{< key ctl >}}-update/{{< key ctl >}}-update-execution-queue-attribute)
-[`{{< key ctl >}} delete execution-queue-attribute`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-execution-queue-attribute)
+[`uctl get execution-queue-attribute`](./uctl-get/uctl-get-execution-queue-attribute)
+[`uctl update execution-queue-attribute`](./uctl-update/uctl-update-execution-queue-attribute)
+[`uctl delete execution-queue-attribute`](./uctl-delete/uctl-delete-execution-queue-attribute)
 {{< /multiline >}} |
-| Files |  [`{{< key ctl >}} regiser files`](./{{< key ctl >}}-register/{{< key ctl >}}-register-files) |
+| Files |  [`uctl regiser files`](./uctl-register/uctl-register-files) |
 | Launch plan | {{< multiline>}}
-[`{{< key ctl >}} get launchplan`](./{{< key ctl >}}-get/{{< key ctl >}}-get-launchplan)
-[`{{< key ctl >}} update launchplan`](./{{< key ctl >}}-update/{{< key ctl >}}-update-launchplan)
-[`{{< key ctl >}} update launchplan-meta`](./{{< key ctl >}}-update/{{< key ctl >}}-update-launchplan-meta)
+[`uctl get launchplan`](./uctl-get/uctl-get-launchplan)
+[`uctl update launchplan`](./uctl-update/uctl-update-launchplan)
+[`uctl update launchplan-meta`](./uctl-update/uctl-update-launchplan-meta)
 {{< /multiline >}} |
 | Plugin override | {{< multiline>}}
-[`{{< key ctl >}} get plugin-override`](./{{< key ctl >}}-get/{{< key ctl >}}-get-plugin-override)
-[`{{< key ctl >}} update plugin-override`](./{{< key ctl >}}-update/{{< key ctl >}}-update-plugin-override)
-[`{{< key ctl >}} delete plugin-override`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-plugin-override)
+[`uctl get plugin-override`](./uctl-get/uctl-get-plugin-override)
+[`uctl update plugin-override`](./uctl-update/uctl-update-plugin-override)
+[`uctl delete plugin-override`](./uctl-delete/uctl-delete-plugin-override)
 {{< /multiline >}} |
 | Project | {{< multiline>}}
-[`{{< key ctl >}} create project`](./{{< key ctl >}}-create/{{< key ctl >}}-create-project)
-[`{{< key ctl >}} get project`](./{{< key ctl >}}-get/{{< key ctl >}}-get-project)
-[`{{< key ctl >}} update project`](./{{< key ctl >}}-update/{{< key ctl >}}-update-project)
+[`uctl create project`](./uctl-create/uctl-create-project)
+[`uctl get project`](./uctl-get/uctl-get-project)
+[`uctl update project`](./uctl-update/uctl-update-project)
 {{< /multiline >}} |
 | Task | {{< multiline>}}
-[`{{< key ctl >}} get task`](./{{< key ctl >}}-get/{{< key ctl >}}-get-task)
-[`{{< key ctl >}} update task-meta`](./{{< key ctl >}}-update/{{< key ctl >}}-update-task-meta)
+[`uctl get task`](./uctl-get/uctl-get-task)
+[`uctl update task-meta`](./uctl-update/uctl-update-task-meta)
 {{< /multiline >}} |
 | Task resource attribute | {{< multiline>}}
-[`{{< key ctl >}} get task-resource-attribute`](./{{< key ctl >}}-get/{{< key ctl >}}-get-task-resource-attribute)
-[`{{< key ctl >}} update task-resource-attribute`](./{{< key ctl >}}-update/{{< key ctl >}}-update-task-resource-attribute)
-[`{{< key ctl >}} delete task-resource-attribute`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-task-resource-attribute)
+[`uctl get task-resource-attribute`](./uctl-get/uctl-get-task-resource-attribute)
+[`uctl update task-resource-attribute`](./uctl-update/uctl-update-task-resource-attribute)
+[`uctl delete task-resource-attribute`](./uctl-delete/uctl-delete-task-resource-attribute)
 {{< /multiline >}} |
 | Workflow | {{< multiline>}}
-[`{{< key ctl >}} get workflow`](./{{< key ctl >}}-get/{{< key ctl >}}-get-workflow)
-[`{{< key ctl >}} update workflow-meta`](./{{< key ctl >}}-update/{{< key ctl >}}-update-workflow-meta)
+[`uctl get workflow`](./uctl-get/uctl-get-workflow)
+[`uctl update workflow-meta`](./uctl-update/uctl-update-workflow-meta)
 {{< /multiline >}} |
 | Workflow execution config | {{< multiline>}}
-[`{{< key ctl >}} get workflow-execution-config`](./{{< key ctl >}}-get/{{< key ctl >}}-get-workflow-execution-config)
-[`{{< key ctl >}} update workflow-execution-config`](./{{< key ctl >}}-update/{{< key ctl >}}-update-workflow-execution-config)
-[`{{< key ctl >}} delete workflow-execution-config`](./{{< key ctl >}}-delete/{{< key ctl >}}-delete-workflow-execution-config)
+[`uctl get workflow-execution-config`](./uctl-get/uctl-get-workflow-execution-config)
+[`uctl update workflow-execution-config`](./uctl-update/uctl-update-workflow-execution-config)
+[`uctl delete workflow-execution-config`](./uctl-delete/uctl-delete-workflow-execution-config)
 {{< /multiline >}} |
