@@ -19,7 +19,7 @@ $ uv add union
 ```
 
 This will install the Union and Flytekit SDKs and the `union` CLI.
-
+{{< /markdown >}}
 {{< grid >}}
 
 {{< link-card target="flytekit-sdk" icon="workflow" title="Flytekit SDK" >}}
@@ -43,10 +43,9 @@ Flyteidl is the specification for the Flyte language in protobuf.
 {{< /link-card >}}
 
 {{< /grid >}}
-
-{{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+
+{{< variant flyte>}}
 {{< markdown >}}
 
 To get started, add `flytekit` to your project
@@ -56,7 +55,7 @@ $ uv add flytekit
 ```
 
 This will install the Flytekit SDKs and the `pyflyte` CLI.
-
+{{< /markdown >}}
 {{< grid >}}
 
 {{< link-card target="flytekit-sdk" icon="workflow" title="Flytekit SDK" >}}
@@ -76,6 +75,4 @@ Flyteidl is the specification for the Flyte language in protobuf.
 {{< /link-card >}}
 
 {{< /grid >}}
-
-{{< /markdown >}}
 {{< /variant >}}
