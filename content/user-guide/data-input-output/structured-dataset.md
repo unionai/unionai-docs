@@ -51,7 +51,6 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import {{< key kit_import >}}
-import flytekit as fl
 from flytekit.models import literals
 from flytekit.models.literals import StructuredDatasetMetadata
 from flytekit.types.structured.structured_dataset import (
@@ -90,8 +89,8 @@ you can just specify the column names and their types in the structured dataset 
 First, initialize column types you want to extract from the `StructuredDataset`.
 
 ```python
-all_cols = fl.kwtypes(Name=str, Age=int, Height=int)
-col = fl.kwtypes(Age=int)
+all_cols = {{< key kit_as >}}.kwtypes(Name=str, Age=int, Height=int)
+col = {{< key kit_as >}}.kwtypes(Age=int)
 ```
 
 Define a task that opens a structured dataset by calling `all()`.
@@ -249,7 +248,7 @@ The `encode` function converts NumPy array to an intermediate format (parquet fi
 class NumpyEncodingHandler(StructuredDatasetEncoder):
     def encode(
         self,
-        ctx: fl.FlyteContext,
+        ctx: {{< key kit_as >}}.FlyteContext,
         structured_dataset: StructuredDataset,
         structured_dataset_type: union.StructuredDatasetType,
     ) -> literals.StructuredDataset:
@@ -277,7 +276,7 @@ The `StructuredDatasetDecoder.decode` function converts the parquet file to a `n
 class NumpyDecodingHandler(StructuredDatasetDecoder):
     def decode(
         self,
-        ctx: fl.FlyteContext,
+        ctx: {{< key kit_as >}}.FlyteContext,
         flyte_value: literals.StructuredDataset,
         current_task_metadata: StructuredDatasetMetadata,
     ) -> np.ndarray:
