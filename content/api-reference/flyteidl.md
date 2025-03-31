@@ -1,10 +1,10 @@
 ---
-title: "FlyteIDL"
+title: Flyteidl
 variants: +byoc +byok +serverless +flyte
-weight: 4
+weight: 5
 ---
 
-# FlyteIDL
+# Flyteidl
 
 
 
