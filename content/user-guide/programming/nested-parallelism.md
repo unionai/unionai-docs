@@ -1,10 +1,10 @@
 ---
-title: Nested Parallelism
+title: Nested parallelism
 weight: 2
 variants: +flyte +serverless +byoc +byok
 ---
 
-# Nested parallelization
+# Nested parallelism
 
 For exceptionally large or complicated workflows that can’t be adequately implemented as dynamic workflows or map tasks, it can be beneficial to have multiple levels of workflow parallelization.
 
@@ -95,7 +95,7 @@ def child(num: int) -> int:
 child_lp = {{< key kit_as >}}.LaunchPlan.get_or_create(child)
 
 @{{< key kit_as >}}.dynamic
-def spawn(n: int) -> list[int]: 
+def spawn(n: int) -> list[int]:
     l = []
     for i in [1,2,3,4,5]:
         l.append(child_lp(num=i).with_overrides(cache=True, cache_version="1.0.0"))

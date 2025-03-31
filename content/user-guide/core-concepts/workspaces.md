@@ -59,7 +59,7 @@ Once the startup commands have completed, you'll see a browser-based VSCode IDE:
 
 To stop a workspace, click on the toggle switch on the workspace item.
 
-## Filesystem Persistence
+## Filesystem persistence
 
 Any changes to the filesystem that you make in the working directory of your
 workspace (the directory you find yourself in when you first open the workspace)
@@ -104,7 +104,7 @@ on the **Unarchive** button:
 ![Unarchive Workspace](/_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
 
 
-## Workspace CLI Commands
+## Workspace CLI commands
 
 The `union` CLI also provides commands for managing workspaces.
 
