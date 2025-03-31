@@ -634,11 +634,12 @@ import os
 import tarfile
 from pathlib import Path
 
-import flytekit
 from flytekit import ImageSpec, task, workflow
 from flytekit.types.file import FlyteFile
 from numpy import loadtxt
 from sklearn.model_selection import train_test_split
+
+import {{< key kit_import >}}
 
 train_model_image = ImageSpec(
     name="xgboost-train",
@@ -660,7 +661,7 @@ def train_model(dataset: FlyteFile) -> FlyteFile:
     model = XGBClassifier()
     model.fit(X_train, y_train)
 
-    serialized_model = str(Path(flytekit.current_context().working_directory) / "xgboost_model.json")
+    serialized_model = str(Path({{< key kit_as >}}.current_context().working_directory) / "xgboost_model.json")
     booster = model.get_booster()
     booster.save_model(serialized_model)
 
@@ -1270,7 +1271,7 @@ def train_model(dataset: {{< key kit_as >}}.FlyteFile) -> {{< key kit_as >}}.Fly
     model = XGBClassifier()
     model.fit(X_train, y_train)
 
-    serialized_model = str(Path(flytekit.current_context().working_directory) / "xgboost_model.json")
+    serialized_model = str(Path({{< key kit_as >}}.current_context().working_directory) / "xgboost_model.json")
     booster = model.get_booster()
     booster.save_model(serialized_model)
 

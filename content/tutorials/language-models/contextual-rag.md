@@ -55,7 +55,6 @@ from pathlib import Path
 from typing import Annotated, Optional
 from urllib.parse import urljoin
 
-import flytekit as fl
 import numpy as np
 import requests
 import union
@@ -65,6 +64,8 @@ from flytekit.types.directory import FlyteDirectory
 from flytekit.types.file import FlyteFile
 from pydantic import BaseModel
 from union.actor import ActorEnvironment
+
+import {{< key kit_import >}}
 
 actor = ActorEnvironment(
     name="contextual-rag",
@@ -83,17 +84,17 @@ actor = ActorEnvironment(
         ],
     ),
     secret_requests=[
-        fl.Secret(
+        {{< key kit_as >}}.Secret(
             key="together-api-key",
             env_var="TOGETHER_API_KEY",
             mount_requirement=union.Secret.MountType.ENV_VAR,
         ),
-        fl.Secret(
+        {{< key kit_as >}}.Secret(
             key="milvus-uri",
             env_var="MILVUS_URI",
             mount_requirement=union.Secret.MountType.ENV_VAR,
         ),
-        fl.Secret(
+        {{< key kit_as >}}.Secret(
             key="milvus-token",
             env_var="MILVUS_TOKEN",
             mount_requirement=union.Secret.MountType.ENV_VAR,
@@ -500,10 +501,10 @@ The scheduled launch plan ensures that the vector database and keyword index are
 Be sure to note the `version` field when registering the launch plan. Each Union entity (task, workflow, launch plan) is automatically versioned, as every entity is associated with a version by default.
 
 ```python
-lp = fl.LaunchPlan.get_or_create(
+lp = {{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=build_indices_wf,
     name="vector_db_ingestion_activate",
-    schedule=fl.CronSchedule(
+    schedule={{< key kit_as >}}.CronSchedule(
         schedule="0 1 * * *"
     ),  # Run every day to update the databases
     auto_activate=True,
@@ -563,17 +564,17 @@ fastapi_app = App(
     min_replicas=1,
     max_replicas=1,
     secrets=[
-        fl.Secret(
+        {{< key kit_as >}}.Secret(
             key="together-api-key",
             env_var="TOGETHER_API_KEY",
             mount_requirement=union.Secret.MountType.ENV_VAR
         ),
-        fl.Secret(
+        {{< key kit_as >}}.Secret(
             key="milvus-uri",
             env_var="MILVUS_URI",
             mount_requirement=union.Secret.MountType.ENV_VAR,
         ),
-        fl.Secret(
+        {{< key kit_as >}}.Secret(
             key="milvus-token",
             env_var="MILVUS_TOKEN",
             mount_requirement=union.Secret.MountType.ENV_VAR,

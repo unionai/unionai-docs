@@ -33,7 +33,7 @@ Moreover, a unique property of this separation is that all meta values are read 
 Consider a basic Flyte task:
 
 ```python
-@fl.task
+@{{< key kit_as >}}.task
 def my_task(m: int, n: str, o: FlyteFile) -> pd.DataFrame:
    ...
 ```
@@ -75,7 +75,7 @@ For each variable, a corresponding `LiteralType` is created.
 For example, consider the following Python function interface:
 
 ```python
-@fl.task
+@{{< key kit_as >}}.task
 def my_task(a: int, b: str) -> FlyteFile:
     """
     Description of my function
@@ -165,7 +165,7 @@ Let’s consider a simple example where we have some tasks that needs to operate
 The first task reads a file from the object store, shuffles the data, saves to local disk, and passes the path to the next task:
 
 ```python
-@fl.task()
+@{{< key kit_as >}}.task()
 def task_read_and_shuffle_file(input_file: FlyteFile) -> FlyteFile:
     """
     Reads the input file as a DataFrame, shuffles the rows, and writes the shuffled DataFrame to a new file.
@@ -185,7 +185,7 @@ def task_read_and_shuffle_file(input_file: FlyteFile) -> FlyteFile:
 The second task reads the file from the previous task, removes a column, saves to local disk, and returns the path:
 
 ```python
-@fl.task()
+@{{< key kit_as >}}.task()
 def task_remove_column(input_file: FlyteFile, column_name: str) -> FlyteFile:
     """
     Reads the input file as a DataFrame, removes a specified column, and outputs it as a new file.
@@ -206,7 +206,7 @@ def task_remove_column(input_file: FlyteFile, column_name: str) -> FlyteFile:
 And here is the workflow:
 
 ```python
-@fl.workflow
+@{{< key kit_as >}}.workflow
 def wf() -> FlyteFile:
     existed_file = FlyteFile("s3://custom-bucket/data.csv")
     shuffled_file = task_read_and_shuffle_file(input_file=existed_file)

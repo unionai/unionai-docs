@@ -60,9 +60,9 @@ def hello_world_wf(name: str = "world") -> str:
 ```python
 """Hello World"""
 
-import flytekit as fl
+import {{< key kit_import >}}
 
-image_spec = fl.ImageSpec(
+image_spec = {{< key kit_as >}}.ImageSpec(
 
     # The name of the image. This image will be used byt he say_hello task
     name="say-hello-image",
@@ -71,11 +71,11 @@ image_spec = fl.ImageSpec(
     requirements="uv.lock",
 )
 
-@fl.task(container_image=image_spec)
+@{{< key kit_as >}}.task(container_image=image_spec)
 def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 
-@fl.workflow
+@{{< key kit_as >}}.workflow
 def hello_world_wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting

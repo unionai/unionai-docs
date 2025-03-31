@@ -33,7 +33,7 @@ In the background Flyte will provide all the needed infrastructure such that by 
 1. User codes in python a task that uses Spark (See code below)
 
 ```python
-@fl.task(
+@{{< key kit_as >}}.task(
     task_config=Spark(
         spark_conf={
             "spark.driver.memory": "1000M",
