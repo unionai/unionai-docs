@@ -2,7 +2,6 @@
 title: Configure multiple K8s clusters
 weight: 3
 variants: +flyte -serverless -byoc -byok
-top_menu: true
 ---
 ## Flyte multicluster setup
 The multicluster deployment described in this section, assumes you have deployed the `flyte-core` Helm chart, which runs the individual Flyte components separately.

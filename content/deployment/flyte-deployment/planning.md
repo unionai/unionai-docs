@@ -2,7 +2,6 @@
 title: Planning your deployment
 weight: 1
 variants: +flyte -serverless -byoc -byok
-top_menu: true
 ---
 
 # Components of a Flyte deployment
