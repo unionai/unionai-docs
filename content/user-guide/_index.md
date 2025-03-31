@@ -26,7 +26,7 @@ sidebar_expanded: true
 > [!NOTE] {{< key product_name >}} Serverless
 > Welcome to the offical documentation for [**{{< key product_name >}} Serverless**](./about-union#union-serverless).
 >
-> You can Switch to another product version with the selector above.
+> You can switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -36,7 +36,7 @@ sidebar_expanded: true
 > [!NOTE] {{< key product_name >}} BYOC
 > Welcome to the offical documentation for [**{{< key product_name >}} BYOC**](./about-union#union-byoc).
 >
-> You can Switch to another product version with the selector above.
+> You can switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -46,7 +46,7 @@ sidebar_expanded: true
 > [!NOTE] {{< key product_name >}} BYOK
 > Welcome to the offical documentation for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
 >
-> You can Switch to another product version with the selector above.
+> You can switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
