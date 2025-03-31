@@ -88,12 +88,12 @@ docs.flyte.org/en/latest/user_guide/flyte_fundamentals/registering_workflows,htt
 docs.flyte.org/en/latest/user_guide/flyte_fundamentals/running_and_scheduling_workflows,https://union.ai/docs/flyte/user-guide/development-cycle/union-remote,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/flyte_fundamentals/tasks_workflows_and_launch_plans,https://union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/flyte_fundamentals/visualizing_task_input_and_output,https://www.union.ai/docs/flyte/user-guide/development-cycle/decks/,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development,https://union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE,302,TRUE,FALSE,TRUE,TRUE
+docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development,https://union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development/creating_a_flyte_project,https://union.ai/docs/flyte/user-guide/getting-started/first-project,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development/flyte_project_components,https://union.ai/docs/flyte/user-guide/getting-started/understanding-the-code,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development/installing_development_tools,https://union.ai/docs/flyte/user-guide/getting-started/local-setup,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development/running_a_workflow_locally,https://union.ai/docs/serverless/user-guide/getting-started/running-your-workflow,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/introduction,https://union.ai/docs/flyte/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE,302,TRUE,FALSE,TRUE,TRUE
+docs.flyte.org/en/latest/user_guide/introduction,https://union.ai/docs/flyte/user-guide/about-union,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/configuring_access_to_gpus,https://www.union.ai/docs/flyte/deployment/configuring-access-to-gpus/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/configuring_logging_links_in_the_ui,https://www.union.ai/docs/flyte/deployment/configuring-logging-links-in-the-ui/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/customizing_task_resources,https://union.ai/docs/flyte/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources,302,TRUE,FALSE,TRUE,TRUE
@@ -104,6 +104,6 @@ docs.flyte.org/en/latest/user_guide/productionizing/schedules,https://union.ai/d
 docs.flyte.org/en/latest/user_guide/productionizing/secrets,https://union.ai/docs/flyte/user-guide/development-cycle/managing-secrets,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/spot_instances,https://union.ai/docs/flyte/user-guide/core-concepts/tasks/task-hardware-environment/interruptible-instances,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/workflow_labels_and_annotations,https://union.ai/docs/flyte/user-guide/core-concepts/launch-plans/defining-launch-plans,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/quickstart_guide,https://union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE,302,TRUE,FALSE,TRUE,TRUE
+docs.flyte.org/en/latest/user_guide/quickstart_guide,https://union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/testing,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/testing/mocking_tasks,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing/mocking-tasks/,302,TRUE,FALSE,TRUE,TRUE
