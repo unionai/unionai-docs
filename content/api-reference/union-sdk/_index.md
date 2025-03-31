@@ -1,12 +1,11 @@
 ---
-title: Union SDK
+title: Union
 version: 0.1.170
 variants: +byoc +byok +serverless -flyte
 layout: py_api
-weight: 2
 ---
 
-# Union SDK
+# Union
 
 The Union SDK provides the Python API for writing Union workflows. It consists
 of the open-source `flytekit` package in addition to the `union` package which
