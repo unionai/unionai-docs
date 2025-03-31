@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.presto
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -46,9 +46,9 @@ Initializes a new PrestoQuery.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _presto. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -56,7 +56,7 @@ Initializes a new PrestoQuery.
 ```python
 def from_flyte_idl(
     pb2_object,
-)
+) -> n: PrestoQuery
 ```
 | Parameter | Type |
 |-|-|
@@ -72,24 +72,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _presto.PrestoQuery
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `catalog` |  |  |
+| `catalog` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 | `is_empty` |  |  |
 | `routing_group` |  | {{< multiline >}}The query string.
+:rtype: str
 {{< /multiline >}} |
-| `schema` |  |  |
-| `statement` |  |  |
+| `schema` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
+| `statement` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 

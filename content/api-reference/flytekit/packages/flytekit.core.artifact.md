@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.artifact
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -18,30 +18,20 @@ layout: py_api
 | [`ArtifactQuery`](.././flytekit.core.artifact#flytekitcoreartifactartifactquery) |  |
 | [`ArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
 | [`DefaultArtifactSerializationHandler`](.././flytekit.core.artifact#flytekitcoreartifactdefaultartifactserializationhandler) | This protocol defines the interface for serializing artifact-related entities down to Flyte IDL. |
-| [`FlyteContextManager`](.././flytekit.core.artifact#flytekitcoreartifactflytecontextmanager) | FlyteContextManager manages the execution context within Flytekit. |
 | [`InputsBase`](.././flytekit.core.artifact#flytekitcoreartifactinputsbase) | A class to provide better partition semantics. |
-| [`OutputMetadata`](.././flytekit.core.artifact#flytekitcoreartifactoutputmetadata) |  |
 | [`Partition`](.././flytekit.core.artifact#flytekitcoreartifactpartition) |  |
 | [`Partitions`](.././flytekit.core.artifact#flytekitcoreartifactpartitions) |  |
-| [`SerializableToString`](.././flytekit.core.artifact#flytekitcoreartifactserializabletostring) | This protocol is used by the Artifact create_from function. |
 | [`Serializer`](.././flytekit.core.artifact#flytekitcoreartifactserializer) |  |
 | [`TimePartition`](.././flytekit.core.artifact#flytekitcoreartifacttimepartition) |  |
-| [`Timestamp`](.././flytekit.core.artifact#flytekitcoreartifacttimestamp) | A ProtocolMessage. |
-| [`timedelta`](.././flytekit.core.artifact#flytekitcoreartifacttimedelta) | Difference between two datetime values. |
 
 ### Variables
 
 | Property | Type | Description |
 |-|-|-|
-| `DYNAMIC_INPUT_BINDING` | `LabelValue` |  |
-| `Granularity` | `EnumTypeWrapper` |  |
 | `Inputs` | `InputsBase` |  |
 | `MAX_PARTITIONS` | `int` |  |
 | `O` | `TypeVar` |  |
-| `Op` | `EnumTypeWrapper` |  |
 | `TIME_PARTITION_KWARG` | `str` |  |
-| `annotations` | `_Feature` |  |
-| `logger` | `Logger` |  |
 
 ## flytekit.core.artifact.Artifact
 
@@ -53,9 +43,9 @@ and the manner (i.e. name, partitions) in which they are created.
 
 Control creation parameters at task/workflow execution time ::
 
-@task
-def t1() -> Annotated[nn.Module, Artifact(name="my.artifact.name")]:
-...
+    @task
+    def t1() -> Annotated[nn.Module, Artifact(name="my.artifact.name")]:
+        ...
 
 
 ```python
@@ -109,21 +99,21 @@ values is bound to an input, and the other is set at runtime. Note that since ta
 time, flytekit cannot check that you've bound all the partition values. It's up to you to ensure that you've
 done so.
 
-Pricing = Artifact(name="pricing", partition_keys=["region"])
-EstError = Artifact(name="estimation_error", partition_keys=["dataset"], time_partitioned=True)
+    Pricing = Artifact(name="pricing", partition_keys=["region"])
+    EstError = Artifact(name="estimation_error", partition_keys=["dataset"], time_partitioned=True)
 
-@task
-def t1() -> Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
-df = get_pricing_results()
-dt = get_time()
-return Pricing.create_from(df, region="dubai"),             EstError.create_from(msq_error, dataset="train", time_partition=dt)
+    @task
+    def t1() -> Annotated[pd.DataFrame, Pricing], Annotated[float, EstError]:
+        df = get_pricing_results()
+        dt = get_time()
+        return Pricing.create_from(df, region="dubai"),             EstError.create_from(msq_error, dataset="train", time_partition=dt)
 
 You can mix and match with the input syntax as well.
 
-@task
-def my_task() -> Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
-...
-return RideCountData.create_from(df, time_partition=datetime.datetime.now())
+    @task
+    def my_task() -> Annotated[pd.DataFrame, RideCountData(region=Inputs.region)]:
+        ...
+        return RideCountData.create_from(df, time_partition=datetime.datetime.now())
 
 
 | Parameter | Type |
@@ -435,133 +425,12 @@ def time_partition_to_idl(
 | `tp` | `Optional[TimePartition]` |
 | `kwargs` | ``**kwargs`` |
 
-## flytekit.core.artifact.FlyteContextManager
-
-FlyteContextManager manages the execution context within Flytekit. It holds global state of either compilation
-or Execution. It is not thread-safe and can only be run as a single threaded application currently.
-Context's within Flytekit is useful to manage compilation state and execution state. Refer to ``CompilationState``
-and ``ExecutionState`` for more information. FlyteContextManager provides a singleton stack to manage these contexts.
-
-Typical usage is
-
-.. code-block:: python
-
-FlyteContextManager.initialize()
-with FlyteContextManager.with_context(o) as ctx:
-pass
-
-# If required - not recommended you can use
-FlyteContextManager.push_context()
-# but correspondingly a pop_context should be called
-FlyteContextManager.pop_context()
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`add_signal_handler()`](#add_signal_handler) |  |
-| [`current_context()`](#current_context) |  |
-| [`get_origin_stackframe()`](#get_origin_stackframe) |  |
-| [`initialize()`](#initialize) | Re-initializes the context and erases the entire context. |
-| [`pop_context()`](#pop_context) |  |
-| [`push_context()`](#push_context) |  |
-| [`size()`](#size) |  |
-| [`with_context()`](#with_context) |  |
-
-
-#### add_signal_handler()
-
-```python
-def add_signal_handler(
-    handler: typing.Callable[[int, FrameType], typing.Any],
-)
-```
-| Parameter | Type |
-|-|-|
-| `handler` | `typing.Callable[[int, FrameType], typing.Any]` |
-
-#### current_context()
-
-```python
-def current_context()
-```
-#### get_origin_stackframe()
-
-```python
-def get_origin_stackframe(
-    limit,
-) -> traceback.FrameSummary
-```
-| Parameter | Type |
-|-|-|
-| `limit` |  |
-
-#### initialize()
-
-```python
-def initialize()
-```
-Re-initializes the context and erases the entire context
-
-
-#### pop_context()
-
-```python
-def pop_context()
-```
-#### push_context()
-
-```python
-def push_context(
-    ctx: FlyteContext,
-    f: Optional[traceback.FrameSummary],
-) -> FlyteContext
-```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `f` | `Optional[traceback.FrameSummary]` |
-
-#### size()
-
-```python
-def size()
-```
-#### with_context()
-
-```python
-def with_context(
-    b: FlyteContext.Builder,
-) -> Generator[FlyteContext, None, None]
-```
-| Parameter | Type |
-|-|-|
-| `b` | `FlyteContext.Builder` |
-
 ## flytekit.core.artifact.InputsBase
 
 A class to provide better partition semantics
 Used for invoking an Artifact to bind partition keys to input values.
 If there's a good reason to use a metaclass in the future we can, but a simple instance suffices for now
 
-
-## flytekit.core.artifact.OutputMetadata
-
-```python
-class OutputMetadata(
-    artifact: 'Artifact',
-    dynamic_partitions: Optional[typing.Dict[str, str]],
-    time_partition: Optional[datetime],
-    additional_items: Optional[typing.List[SerializableToString]],
-)
-```
-| Parameter | Type |
-|-|-|
-| `artifact` | `'Artifact'` |
-| `dynamic_partitions` | `Optional[typing.Dict[str, str]]` |
-| `time_partition` | `Optional[datetime]` |
-| `additional_items` | `Optional[typing.List[SerializableToString]]` |
 
 ## flytekit.core.artifact.Partition
 
@@ -622,43 +491,6 @@ def to_flyte_idl(
 | Property | Type | Description |
 |-|-|-|
 | `partitions` |  |  |
-
-## flytekit.core.artifact.SerializableToString
-
-This protocol is used by the Artifact create_from function. Basically these objects are serialized when running,
-and then added to a literal's metadata.
-
-
-```python
-class SerializableToString(
-    args,
-    kwargs,
-)
-```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`serialize_to_string()`](#serialize_to_string) |  |
-
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string(
-    ctx: FlyteContext,
-    variable_name: str,
-) -> typing.Tuple[str, str]
-```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `variable_name` | `str` |
 
 ## flytekit.core.artifact.Serializer
 
@@ -756,192 +588,4 @@ def to_flyte_idl(
 | Parameter | Type |
 |-|-|
 | `kwargs` | ``**kwargs`` |
-
-## flytekit.core.artifact.Timestamp
-
-A ProtocolMessage
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`FromDatetime()`](#fromdatetime) | Converts datetime to Timestamp. |
-| [`FromJsonString()`](#fromjsonstring) | Parse a RFC 3339 date string format to Timestamp. |
-| [`FromMicroseconds()`](#frommicroseconds) | Converts microseconds since epoch to Timestamp. |
-| [`FromMilliseconds()`](#frommilliseconds) | Converts milliseconds since epoch to Timestamp. |
-| [`FromNanoseconds()`](#fromnanoseconds) | Converts nanoseconds since epoch to Timestamp. |
-| [`FromSeconds()`](#fromseconds) | Converts seconds since epoch to Timestamp. |
-| [`GetCurrentTime()`](#getcurrenttime) | Get the current UTC into Timestamp. |
-| [`ToDatetime()`](#todatetime) | Converts Timestamp to a datetime. |
-| [`ToJsonString()`](#tojsonstring) | Converts Timestamp to RFC 3339 date string format. |
-| [`ToMicroseconds()`](#tomicroseconds) | Converts Timestamp to microseconds since epoch. |
-| [`ToMilliseconds()`](#tomilliseconds) | Converts Timestamp to milliseconds since epoch. |
-| [`ToNanoseconds()`](#tonanoseconds) | Converts Timestamp to nanoseconds since epoch. |
-| [`ToSeconds()`](#toseconds) | Converts Timestamp to seconds since epoch. |
-
-
-#### FromDatetime()
-
-```python
-def FromDatetime(
-    dt,
-)
-```
-Converts datetime to Timestamp.
-
-
-
-| Parameter | Type |
-|-|-|
-| `dt` |  |
-
-#### FromJsonString()
-
-```python
-def FromJsonString(
-    value,
-)
-```
-Parse a RFC 3339 date string format to Timestamp.
-
-
-
-| Parameter | Type |
-|-|-|
-| `value` |  |
-
-#### FromMicroseconds()
-
-```python
-def FromMicroseconds(
-    micros,
-)
-```
-Converts microseconds since epoch to Timestamp.
-
-
-| Parameter | Type |
-|-|-|
-| `micros` |  |
-
-#### FromMilliseconds()
-
-```python
-def FromMilliseconds(
-    millis,
-)
-```
-Converts milliseconds since epoch to Timestamp.
-
-
-| Parameter | Type |
-|-|-|
-| `millis` |  |
-
-#### FromNanoseconds()
-
-```python
-def FromNanoseconds(
-    nanos,
-)
-```
-Converts nanoseconds since epoch to Timestamp.
-
-
-| Parameter | Type |
-|-|-|
-| `nanos` |  |
-
-#### FromSeconds()
-
-```python
-def FromSeconds(
-    seconds,
-)
-```
-Converts seconds since epoch to Timestamp.
-
-
-| Parameter | Type |
-|-|-|
-| `seconds` |  |
-
-#### GetCurrentTime()
-
-```python
-def GetCurrentTime()
-```
-Get the current UTC into Timestamp.
-
-
-#### ToDatetime()
-
-```python
-def ToDatetime(
-    tzinfo,
-)
-```
-Converts Timestamp to a datetime.
-
-
-
-| Parameter | Type |
-|-|-|
-| `tzinfo` |  |
-
-#### ToJsonString()
-
-```python
-def ToJsonString()
-```
-Converts Timestamp to RFC 3339 date string format.
-
-Returns:
-A string converted from timestamp. The string is always Z-normalized
-and uses 3, 6 or 9 fractional digits as required to represent the
-exact time. Example of the return format: '1972-01-01T10:00:20.021Z'
-
-
-#### ToMicroseconds()
-
-```python
-def ToMicroseconds()
-```
-Converts Timestamp to microseconds since epoch.
-
-
-#### ToMilliseconds()
-
-```python
-def ToMilliseconds()
-```
-Converts Timestamp to milliseconds since epoch.
-
-
-#### ToNanoseconds()
-
-```python
-def ToNanoseconds()
-```
-Converts Timestamp to nanoseconds since epoch.
-
-
-#### ToSeconds()
-
-```python
-def ToSeconds()
-```
-Converts Timestamp to seconds since epoch.
-
-
-## flytekit.core.artifact.timedelta
-
-Difference between two datetime values.
-
-timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)
-
-All arguments are optional and default to 0.
-Arguments may be integers or floats, and may be positive or negative.
-
 

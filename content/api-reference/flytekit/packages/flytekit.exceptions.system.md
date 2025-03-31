@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.system
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -17,7 +17,6 @@ layout: py_api
 | [`FlyteConnectorNotFound`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteconnectornotfound) | Assertion failed. |
 | [`FlyteDownloadDataException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytedownloaddataexception) | Common base class for all non-exit exceptions. |
 | [`FlyteEntrypointNotLoadable`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteentrypointnotloadable) | Common base class for all non-exit exceptions. |
-| [`FlyteException`](.././flytekit.exceptions.system#flytekitexceptionssystemflyteexception) | Common base class for all non-exit exceptions. |
 | [`FlyteNonRecoverableSystemException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenonrecoverablesystemexception) | Common base class for all non-exit exceptions. |
 | [`FlyteNotImplementedException`](.././flytekit.exceptions.system#flytekitexceptionssystemflytenotimplementedexception) | Method or function hasn't been implemented yet. |
 | [`FlyteSystemAssertion`](.././flytekit.exceptions.system#flytekitexceptionssystemflytesystemassertion) | Assertion failed. |
@@ -111,29 +110,6 @@ class FlyteEntrypointNotLoadable(
 | `task_module` |  |
 | `task_name` |  |
 | `additional_msg` |  |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
-{{< /multiline >}} |
-
-## flytekit.exceptions.system.FlyteException
-
-Common base class for all non-exit exceptions.
-
-
-```python
-class FlyteException(
-    args,
-    timestamp: typing.Optional[float],
-)
-```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
 
 ### Properties
 

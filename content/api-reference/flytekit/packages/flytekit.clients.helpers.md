@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.helpers
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -29,7 +29,7 @@ def iterate_node_executions(
     limit,
     filters,
     unique_parent_id,
-) -> Iterator[flytekit.models.node_execution.NodeExecution]
+) -> e: Iterator[flytekit.models.node_execution.NodeExecution]
 ```
 This returns a generator for node executions.
 
@@ -51,7 +51,7 @@ def iterate_task_executions(
     node_execution_identifier,
     limit,
     filters,
-) -> Iterator[flytekit.models.admin.task_execution.TaskExecution]
+) -> e: Iterator[flytekit.models.admin.task_execution.TaskExecution]
 ```
 This returns a generator for task executions, given a node execution identifier
 

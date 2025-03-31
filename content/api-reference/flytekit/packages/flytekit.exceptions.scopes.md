@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.scopes
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -21,81 +21,12 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`_decorator()`](#_decorator) | Decorate a function with signature func(wrapped, args, kwargs). |
-| [`_format_tb()`](#_format_tb) | A shorthand for 'format_list(extract_tb(tb, limit))'. |
-| [`_is_base_context()`](#_is_base_context) |  |
-| [`_wraps()`](#_wraps) | Decorator factory to apply update_wrapper() to a wrapper function. |
-| [`is_rich_logging_enabled()`](#is_rich_logging_enabled) |  |
 | [`system_entry_point()`](#system_entry_point) | The reason these two (see the user one below) decorators exist is to categorize non-Flyte exceptions at arbitrary. |
 | [`user_entry_point()`](#user_entry_point) | See the comment for the system_entry_point above as well. |
 
 
 ## Methods
 
-#### _decorator()
-
-```python
-def _decorator(
-    outer_f,
-)
-```
-Decorate a function with signature func(wrapped, args, kwargs).
-
-
-| Parameter | Type |
-|-|-|
-| `outer_f` |  |
-
-#### _format_tb()
-
-```python
-def _format_tb(
-    tb,
-    limit,
-)
-```
-A shorthand for 'format_list(extract_tb(tb, limit))'.
-
-
-| Parameter | Type |
-|-|-|
-| `tb` |  |
-| `limit` |  |
-
-#### _is_base_context()
-
-```python
-def _is_base_context()
-```
-#### _wraps()
-
-```python
-def _wraps(
-    wrapped,
-    assigned,
-    updated,
-)
-```
-Decorator factory to apply update_wrapper() to a wrapper function
-
-Returns a decorator that invokes update_wrapper() with the decorated
-function as the wrapper argument and the arguments to wraps() as the
-remaining arguments. Default arguments are as for update_wrapper().
-This is a convenience function to simplify applying partial() to
-update_wrapper().
-
-
-| Parameter | Type |
-|-|-|
-| `wrapped` |  |
-| `assigned` |  |
-| `updated` |  |
-
-#### is_rich_logging_enabled()
-
-```python
-def is_rich_logging_enabled()
-```
 #### system_entry_point()
 
 ```python
@@ -181,8 +112,10 @@ class FlyteScopedException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  |  |
-| `kind` |  |  |
+| `error_code` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `kind` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 | `traceback` |  |  |
 | `type` |  |  |
 | `value` |  |  |
@@ -212,12 +145,15 @@ class FlyteScopedSystemException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  |  |
-| `kind` |  |  |
+| `error_code` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `kind` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 | `traceback` |  |  |
 | `type` |  |  |
 | `value` |  |  |
-| `verbose_message` |  |  |
+| `verbose_message` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.exceptions.scopes.FlyteScopedUserException
 
@@ -243,10 +179,13 @@ class FlyteScopedUserException(
 
 | Property | Type | Description |
 |-|-|-|
-| `error_code` |  |  |
-| `kind` |  |  |
+| `error_code` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `kind` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 | `traceback` |  |  |
 | `type` |  |  |
 | `value` |  |  |
-| `verbose_message` |  |  |
+| `verbose_message` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 

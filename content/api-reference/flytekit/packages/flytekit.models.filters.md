@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.filters
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -46,9 +46,9 @@ class Contains(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -61,7 +61,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -77,12 +77,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -90,6 +94,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -116,9 +123,9 @@ class Equal(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -131,7 +138,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -147,12 +154,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -160,6 +171,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -186,9 +200,9 @@ class Filter(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -201,7 +215,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -217,12 +231,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -230,6 +248,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -253,9 +274,9 @@ class FilterList(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -273,12 +294,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -286,6 +311,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -312,9 +340,9 @@ class GreaterThan(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -327,7 +355,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -343,12 +371,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -356,6 +388,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -382,9 +417,9 @@ class GreaterThanOrEqual(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -397,7 +432,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -413,12 +448,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -426,6 +465,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -452,9 +494,9 @@ class LessThan(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -467,7 +509,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -483,12 +525,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -496,6 +542,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -522,9 +571,9 @@ class LessThanOrEqual(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -537,7 +586,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -553,12 +602,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -566,6 +619,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -592,9 +648,9 @@ class NotEqual(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -607,7 +663,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -623,12 +679,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -636,6 +696,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -662,9 +725,9 @@ class SetFilter(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -677,7 +740,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -693,12 +756,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -706,6 +773,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -732,9 +802,9 @@ class ValueIn(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -747,7 +817,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -763,12 +833,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -776,6 +850,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -802,9 +879,9 @@ class ValueNotIn(
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`from_python_std()`](#from_python_std) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -817,7 +894,7 @@ def from_flyte_idl()
 ```python
 def from_python_std(
     string,
-) -> Filter
+) -> e: Filter
 ```
 | Parameter | Type |
 |-|-|
@@ -833,12 +910,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params.
+:rtype: Text
 
 
 #### verbose_string()
@@ -846,6 +927,9 @@ For supporting the auto-generated REST API, filters must be dumped to a string f
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |

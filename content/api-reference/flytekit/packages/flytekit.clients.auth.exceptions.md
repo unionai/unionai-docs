@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.exceptions
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---

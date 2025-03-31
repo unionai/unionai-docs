@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.auth_interceptor
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -14,57 +14,6 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`AuthUnaryInterceptor`](.././flytekit.clients.grpc_utils.auth_interceptor#flytekitclientsgrpc_utilsauth_interceptorauthunaryinterceptor) | This Interceptor can be used to automatically add Auth Metadata for every call - lazily in case authentication. |
-| [`Authenticator`](.././flytekit.clients.grpc_utils.auth_interceptor#flytekitclientsgrpc_utilsauth_interceptorauthenticator) | Base authenticator for all authentication flows. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`namedtuple()`](#namedtuple) | Returns a new subclass of tuple with named fields. |
-
-
-## Methods
-
-#### namedtuple()
-
-```python
-def namedtuple(
-    typename,
-    field_names,
-    rename,
-    defaults,
-    module,
-)
-```
-Returns a new subclass of tuple with named fields.
-
->>> Point = namedtuple('Point', ['x', 'y'])
->>> Point.__doc__                   # docstring for the new class
-'Point(x, y)'
->>> p = Point(11, y=22)             # instantiate with positional args or keywords
->>> p[0] + p[1]                     # indexable like a plain tuple
-33
->>> x, y = p                        # unpack like a regular tuple
->>> x, y
-(11, 22)
->>> p.x + p.y                       # fields also accessible by name
-33
->>> d = p._asdict()                 # convert to a dictionary
->>> d['x']
-11
->>> Point(**d)                      # convert from a dictionary
-Point(x=11, y=22)
->>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
-Point(x=100, y=22)
-
-
-| Parameter | Type |
-|-|-|
-| `typename` |  |
-| `field_names` |  |
-| `rename` |  |
-| `defaults` |  |
-| `module` |  |
 
 ## flytekit.clients.grpc_utils.auth_interceptor.AuthUnaryInterceptor
 
@@ -132,49 +81,3 @@ and then retries with the new token
 |-|-|-|
 | `authenticator` |  |  |
 
-## flytekit.clients.grpc_utils.auth_interceptor.Authenticator
-
-Base authenticator for all authentication flows
-
-
-```python
-class Authenticator(
-    endpoint: str,
-    header_key: str,
-    credentials: flytekit.clients.auth.keyring.Credentials,
-    http_proxy_url: typing.Optional[str],
-    verify: typing.Union[bool, str, NoneType],
-)
-```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `header_key` | `str` |
-| `credentials` | `flytekit.clients.auth.keyring.Credentials` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`fetch_grpc_call_auth_metadata()`](#fetch_grpc_call_auth_metadata) |  |
-| [`get_credentials()`](#get_credentials) |  |
-| [`refresh_credentials()`](#refresh_credentials) |  |
-
-
-#### fetch_grpc_call_auth_metadata()
-
-```python
-def fetch_grpc_call_auth_metadata()
-```
-#### get_credentials()
-
-```python
-def get_credentials()
-```
-#### refresh_credentials()
-
-```python
-def refresh_credentials()
-```

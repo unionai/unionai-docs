@@ -1,6 +1,6 @@
 ---
 title: flytekit.deck.renderer
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,23 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Any`](.././flytekit.deck.renderer#flytekitdeckrendererany) | Special type indicating an unconstrained type. |
 | [`ArrowRenderer`](.././flytekit.deck.renderer#flytekitdeckrendererarrowrenderer) | Render an Arrow dataframe as an HTML table. |
-| [`MarkdownIt`](.././flytekit.deck.renderer#flytekitdeckrenderermarkdownit) |  |
 | [`MarkdownRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderermarkdownrenderer) | Convert a markdown string to HTML and return HTML as a unicode string. |
-| [`Protocol`](.././flytekit.deck.renderer#flytekitdeckrendererprotocol) | Base class for protocol classes. |
 | [`PythonDependencyRenderer`](.././flytekit.deck.renderer#flytekitdeckrendererpythondependencyrenderer) | PythonDependencyDeck is a deck that contains information about packages installed via pip. |
 | [`Renderable`](.././flytekit.deck.renderer#flytekitdeckrendererrenderable) | Base class for protocol classes. |
 | [`SourceCodeRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderersourcecoderenderer) | Convert Python source code to HTML, and return HTML as a unicode string. |
 | [`TopFrameRenderer`](.././flytekit.deck.renderer#flytekitdeckrenderertopframerenderer) | Render a DataFrame as an HTML table. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`lazy_module()`](#lazy_module) | This function is used to lazily import modules. |
-| [`runtime_checkable()`](#runtime_checkable) | Mark a protocol class as a runtime protocol. |
-
 
 ### Variables
 
@@ -38,69 +27,6 @@ layout: py_api
 | `DEFAULT_MAX_COLS` | `int` |  |
 | `DEFAULT_MAX_ROWS` | `int` |  |
 | `TYPE_CHECKING` | `bool` |  |
-
-## Methods
-
-#### lazy_module()
-
-```python
-def lazy_module(
-    fullname,
-)
-```
-This function is used to lazily import modules.  It is used in the following way:
-.. code-block:: python
-from flytekit.lazy_import import lazy_module
-sklearn = lazy_module("sklearn")
-sklearn.svm.SVC()
-
-
-| Parameter | Type |
-|-|-|
-| `fullname` |  |
-
-#### runtime_checkable()
-
-```python
-def runtime_checkable(
-    cls,
-)
-```
-Mark a protocol class as a runtime protocol.
-
-Such protocol can be used with isinstance() and issubclass().
-Raise TypeError if applied to a non-protocol class.
-This allows a simple-minded structural check very similar to
-one trick ponies in collections.abc such as Iterable.
-
-For example::
-
-@runtime_checkable
-class Closable(Protocol):
-def close(self): ...
-
-assert isinstance(open('/some/file'), Closable)
-
-Warning: this will check only the presence of the required methods,
-not their type signatures!
-
-
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-
-## flytekit.deck.renderer.Any
-
-Special type indicating an unconstrained type.
-
-- Any is compatible with every type.
-- Any assumed to have all methods.
-- All values assumed to be instances of Any.
-
-Note that all the above statements are true from the point of view of
-static type checkers. At runtime, Any should not be used with instance
-checks.
-
 
 ## flytekit.deck.renderer.ArrowRenderer
 
@@ -148,40 +74,6 @@ def to_html(
 |-|-|
 | `text` | `str` |
 
-## flytekit.deck.renderer.Protocol
-
-Base class for protocol classes.
-
-Protocol classes are defined as::
-
-class Proto(Protocol):
-def meth(self) -> int:
-...
-
-Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
-
-class C:
-def meth(self) -> int:
-return 0
-
-def func(x: Proto) -> int:
-return x.meth()
-
-func(C())  # Passes static type check
-
-See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::
-
-class GenProto[T](Protocol):
-def meth(self) -> T:
-...
-
-
 ## flytekit.deck.renderer.PythonDependencyRenderer
 
 PythonDependencyDeck is a deck that contains information about packages installed via pip.
@@ -214,32 +106,32 @@ Base class for protocol classes.
 
 Protocol classes are defined as::
 
-class Proto(Protocol):
-def meth(self) -> int:
-...
+    class Proto(Protocol):
+        def meth(self) -> int:
+            ...
 
 Such classes are primarily used with static type checkers that recognize
 structural subtyping (static duck-typing).
 
 For example::
 
-class C:
-def meth(self) -> int:
-return 0
+    class C:
+        def meth(self) -> int:
+            return 0
 
-def func(x: Proto) -> int:
-return x.meth()
+    def func(x: Proto) -> int:
+        return x.meth()
 
-func(C())  # Passes static type check
+    func(C())  # Passes static type check
 
 See PEP 544 for details. Protocol classes decorated with
 @typing.runtime_checkable act as simple-minded runtime protocols that check
 only the presence of given attributes, ignoring their type signatures.
 Protocol classes can be generic, they are defined as::
 
-class GenProto[T](Protocol):
-def meth(self) -> T:
-...
+    class GenProto[T](Protocol):
+        def meth(self) -> T:
+            ...
 
 
 ```python

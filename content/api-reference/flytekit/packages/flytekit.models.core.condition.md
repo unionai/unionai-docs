@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.condition
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -42,9 +42,9 @@ Multiple expressions can be combined using a conjunction or a disjunction to res
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -68,23 +68,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.BooleanExpression
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `comparison` |  | {{< multiline >}}Comparison expression or None if not set.
+:rtype: ComparisonExpression
 {{< /multiline >}} |
 | `conjunction` |  | {{< multiline >}}Conjunction expression or None if not set.
+:rtype: ConjunctionExpression
 {{< /multiline >}} |
 | `is_empty` |  |  |
 
@@ -114,9 +125,9 @@ Each expression results in a boolean result.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -140,26 +151,38 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.ComparisonExpression
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
 | `left_value` |  | {{< multiline >}}Gets the left value for the comparison expression.
+:rtype: Operand
 {{< /multiline >}} |
 | `operator` |  | {{< multiline >}}Gets the operator representing this comparison expression.
+:rtype: ComparisonExpression.Operator
 {{< /multiline >}} |
 | `right_value` |  | {{< multiline >}}Gets the right value for the comparison expression.
+:rtype: Operand
 {{< /multiline >}} |
 
 ## flytekit.models.core.condition.ConjunctionExpression
@@ -186,9 +209,9 @@ Defines a conjunction expression of two boolean expressions.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -212,26 +235,38 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.ConjunctionExpression
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
 | `left_expression` |  | {{< multiline >}}Gets the left value for the conjunction expression.
+:rtype: Operand
 {{< /multiline >}} |
 | `operator` |  | {{< multiline >}}Gets the operator representing this conjunction expression.
+:rtype: ConjunctionExpression.LogicalOperator
 {{< /multiline >}} |
 | `right_expression` |  | {{< multiline >}}Gets the right value for the conjunction expression.
+:rtype: Operand
 {{< /multiline >}} |
 
 ## flytekit.models.core.condition.Operand
@@ -258,9 +293,9 @@ Defines an operand to a comparison expression.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -284,22 +319,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.Operand
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `primitive` |  |  |
-| `scalar` |  |  |
-| `var` |  |  |
+| `primitive` |  | {{< multiline >}}:rtype: flytekit.models.literals.Primitive
+{{< /multiline >}} |
+| `scalar` |  | {{< multiline >}}:rtype: flytekit.models.literals.Scalar
+{{< /multiline >}} |
+| `var` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 

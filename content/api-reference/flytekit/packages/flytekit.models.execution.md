@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.execution
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -14,12 +14,9 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`AbortMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionabortmetadata) |  |
-| [`BoolValue`](.././flytekit.models.execution#flytekitmodelsexecutionboolvalue) | A ProtocolMessage. |
 | [`ClusterAssignment`](.././flytekit.models.execution#flytekitmodelsexecutionclusterassignment) |  |
-| [`DynamicWorkflowNodeMetadata`](.././flytekit.models.execution#flytekitmodelsexecutiondynamicworkflownodemetadata) |  |
 | [`Execution`](.././flytekit.models.execution#flytekitmodelsexecutionexecution) |  |
 | [`ExecutionClosure`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionclosure) |  |
-| [`ExecutionClusterLabel`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionclusterlabel) |  |
 | [`ExecutionMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionmetadata) |  |
 | [`ExecutionSpec`](.././flytekit.models.execution#flytekitmodelsexecutionexecutionspec) |  |
 | [`LiteralMapBlob`](.././flytekit.models.execution#flytekitmodelsexecutionliteralmapblob) |  |
@@ -28,12 +25,6 @@ layout: py_api
 | [`SystemMetadata`](.././flytekit.models.execution#flytekitmodelsexecutionsystemmetadata) |  |
 | [`TaskExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutiontaskexecutiongetdataresponse) | Currently, node, task, and workflow execution all have the same get data response. |
 | [`WorkflowExecutionGetDataResponse`](.././flytekit.models.execution#flytekitmodelsexecutionworkflowexecutiongetdataresponse) | Currently, node, task, and workflow execution all have the same get data response. |
-
-### Variables
-
-| Property | Type | Description |
-|-|-|-|
-| `annotations` | `_Feature` |  |
 
 ## flytekit.models.execution.AbortMetadata
 
@@ -54,9 +45,9 @@ class AbortMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -80,6 +71,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -90,6 +84,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -97,11 +94,6 @@ def verbose_string()
 | `cause` |  |  |
 | `is_empty` |  |  |
 | `principal` |  |  |
-
-## flytekit.models.execution.BoolValue
-
-A ProtocolMessage
-
 
 ## flytekit.models.execution.ClusterAssignment
 
@@ -120,9 +112,9 @@ class ClusterAssignment(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -130,7 +122,7 @@ class ClusterAssignment(
 ```python
 def from_flyte_idl(
     p,
-) -> flyteidl.admin.ClusterAssignment
+) -> e: flyteidl.admin.ClusterAssignment
 ```
 | Parameter | Type |
 |-|-|
@@ -146,84 +138,31 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin._cluster_assignment_pb2.ClusterAssignment
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `cluster_pool` |  |  |
-| `is_empty` |  |  |
-
-## flytekit.models.execution.DynamicWorkflowNodeMetadata
-
-```python
-class DynamicWorkflowNodeMetadata(
-    id: flytekit.models.core.identifier.Identifier,
-    compiled_workflow: flytekit.models.core.compiler.CompiledWorkflowClosure,
-)
-```
-| Parameter | Type |
-|-|-|
-| `id` | `flytekit.models.core.identifier.Identifier` |
-| `compiled_workflow` | `flytekit.models.core.compiler.CompiledWorkflowClosure` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    p: flyteidl.admin.node_execution_pb2.DynamicWorkflowNodeMetadata,
-) -> DynamicWorkflowNodeMetadata
-```
-| Parameter | Type |
-|-|-|
-| `p` | `flyteidl.admin.node_execution_pb2.DynamicWorkflowNodeMetadata` |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `compiled_workflow` |  |  |
-| `id` |  |  |
+| `cluster_pool` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 | `is_empty` |  |  |
 
 ## flytekit.models.execution.Execution
@@ -247,9 +186,9 @@ class Execution(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -257,7 +196,7 @@ class Execution(
 ```python
 def from_flyte_idl(
     pb,
-) -> Execution
+) -> e: Execution
 ```
 | Parameter | Type |
 |-|-|
@@ -273,24 +212,36 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.execution_pb2.Execution
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `closure` |  |  |
-| `id` |  |  |
+| `closure` |  | {{< multiline >}}:rtype: ExecutionClosure
+{{< /multiline >}} |
+| `id` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.WorkflowExecutionIdentifier
+{{< /multiline >}} |
 | `is_empty` |  |  |
-| `spec` |  |  |
+| `spec` |  | {{< multiline >}}:rtype: ExecutionSpec
+{{< /multiline >}} |
 
 ## flytekit.models.execution.ExecutionClosure
 
@@ -323,9 +274,9 @@ class ExecutionClosure(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -333,7 +284,7 @@ class ExecutionClosure(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> ExecutionClosure
+) -> e: ExecutionClosure
 ```
 | Parameter | Type |
 |-|-|
@@ -349,16 +300,25 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.execution_pb2.ExecutionClosure
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -373,70 +333,6 @@ def verbose_string()
 {{< /multiline >}} |
 | `started_at` |  |  |
 | `updated_at` |  |  |
-
-## flytekit.models.execution.ExecutionClusterLabel
-
-```python
-class ExecutionClusterLabel(
-    value,
-)
-```
-Label value to determine where the execution will be run
-
-
-
-| Parameter | Type |
-|-|-|
-| `value` |  |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
-| [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    pb2_object,
-) -> ExecutionClusterLabel
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `is_empty` |  |  |
-| `value` |  |  |
 
 ## flytekit.models.execution.ExecutionMetadata
 
@@ -467,9 +363,9 @@ class ExecutionMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -477,7 +373,7 @@ class ExecutionMetadata(
 ```python
 def from_flyte_idl(
     pb2_object,
-)
+) -> n: ExecutionMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -493,16 +389,25 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.execution_pb2.ExecutionMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -570,9 +475,9 @@ class ExecutionSpec(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -580,7 +485,7 @@ class ExecutionSpec(
 ```python
 def from_flyte_idl(
     p,
-)
+) -> n: ExecutionSpec
 ```
 | Parameter | Type |
 |-|-|
@@ -596,36 +501,53 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.execution_pb2.ExecutionSpec
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `annotations` |  |  |
-| `auth_role` |  |  |
+| `annotations` |  | {{< multiline >}}:rtype: flytekit.models.common.Annotations
+{{< /multiline >}} |
+| `auth_role` |  | {{< multiline >}}:rtype: flytekit.models.common.AuthRole
+{{< /multiline >}} |
 | `cluster_assignment` |  |  |
-| `disable_all` |  |  |
+| `disable_all` |  | {{< multiline >}}:rtype: Optional[bool]
+{{< /multiline >}} |
 | `envs` |  |  |
 | `execution_cluster_label` |  |  |
 | `interruptible` |  |  |
 | `is_empty` |  |  |
-| `labels` |  |  |
+| `labels` |  | {{< multiline >}}:rtype: flytekit.models.common.Labels
+{{< /multiline >}} |
 | `launch_plan` |  | {{< multiline >}}If the values were too large, this is the URI where the values were offloaded.
+:rtype: flytekit.models.core.identifier.Identifier
 {{< /multiline >}} |
 | `max_parallelism` |  |  |
-| `metadata` |  |  |
-| `notifications` |  |  |
+| `metadata` |  | {{< multiline >}}:rtype: ExecutionMetadata
+{{< /multiline >}} |
+| `notifications` |  | {{< multiline >}}:rtype: Optional[NotificationList]
+{{< /multiline >}} |
 | `overwrite_cache` |  |  |
-| `raw_output_data_config` |  |  |
+| `raw_output_data_config` |  | {{< multiline >}}:rtype: flytekit.models.common.RawOutputDataConfig
+{{< /multiline >}} |
 | `security_context` |  |  |
 | `tags` |  |  |
 
@@ -648,9 +570,9 @@ class LiteralMapBlob(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -658,7 +580,7 @@ class LiteralMapBlob(
 ```python
 def from_flyte_idl(
     pb,
-) -> LiteralMapBlob
+) -> e: LiteralMapBlob
 ```
 | Parameter | Type |
 |-|-|
@@ -674,23 +596,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.execution_pb2.LiteralMapBlob
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `uri` |  |  |
-| `values` |  |  |
+| `uri` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `values` |  | {{< multiline >}}:rtype: flytekit.models.literals.LiteralMap
+{{< /multiline >}} |
 
 ## flytekit.models.execution.NodeExecutionGetDataResponse
 
@@ -717,9 +650,9 @@ class NodeExecutionGetDataResponse(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _node_execution_pb2. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -727,7 +660,7 @@ class NodeExecutionGetDataResponse(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> NodeExecutionGetDataResponse
+) -> e: NodeExecutionGetDataResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -743,26 +676,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _node_execution_pb2.NodeExecutionGetDataResponse
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `dynamic_workflow` |  |  |
-| `full_inputs` |  |  |
-| `full_outputs` |  |  |
-| `inputs` |  |  |
+| `full_inputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
+{{< /multiline >}} |
+| `full_outputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
+{{< /multiline >}} |
+| `inputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
+{{< /multiline >}} |
 | `is_empty` |  |  |
-| `outputs` |  |  |
+| `outputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
+{{< /multiline >}} |
 
 ## flytekit.models.execution.NotificationList
 
@@ -781,9 +727,9 @@ class NotificationList(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype:  flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -791,7 +737,7 @@ class NotificationList(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> NotificationList
+) -> e: NotificationList
 ```
 | Parameter | Type |
 |-|-|
@@ -807,22 +753,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype:  flyteidl.admin.execution_pb2.NotificationList
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `notifications` |  |  |
+| `notifications` |  | {{< multiline >}}:rtype: list[flytekit.models.common.Notification]
+{{< /multiline >}} |
 
 ## flytekit.models.execution.SystemMetadata
 
@@ -841,9 +797,9 @@ class SystemMetadata(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -867,6 +823,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -877,6 +836,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -911,9 +873,9 @@ class TaskExecutionGetDataResponse(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _task_execution_pb2. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -921,7 +883,7 @@ class TaskExecutionGetDataResponse(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> TaskExecutionGetDataResponse
+) -> e: TaskExecutionGetDataResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -937,25 +899,38 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _task_execution_pb2.TaskExecutionGetDataResponse
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `full_inputs` |  |  |
-| `full_outputs` |  |  |
-| `inputs` |  |  |
+| `full_inputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
+{{< /multiline >}} |
+| `full_outputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
+{{< /multiline >}} |
+| `inputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
+{{< /multiline >}} |
 | `is_empty` |  |  |
-| `outputs` |  |  |
+| `outputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
+{{< /multiline >}} |
 
 ## flytekit.models.execution.WorkflowExecutionGetDataResponse
 
@@ -984,9 +959,9 @@ class WorkflowExecutionGetDataResponse(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _execution_pb2. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -994,7 +969,7 @@ class WorkflowExecutionGetDataResponse(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> WorkflowExecutionGetDataResponse
+) -> e: WorkflowExecutionGetDataResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -1010,23 +985,36 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _execution_pb2.WorkflowExecutionGetDataResponse
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `full_inputs` |  |  |
-| `full_outputs` |  |  |
-| `inputs` |  |  |
+| `full_inputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
+{{< /multiline >}} |
+| `full_outputs` |  | {{< multiline >}}:rtype: _literals_models.LiteralMap
+{{< /multiline >}} |
+| `inputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
+{{< /multiline >}} |
 | `is_empty` |  |  |
-| `outputs` |  |  |
+| `outputs` |  | {{< multiline >}}:rtype: _common_models.UrlBlob
+{{< /multiline >}} |
 

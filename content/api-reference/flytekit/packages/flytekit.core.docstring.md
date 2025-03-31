@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.docstring
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -14,32 +14,6 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Docstring`](.././flytekit.core.docstring#flytekitcoredocstringdocstring) |  |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`parse()`](#parse) | Parse the docstring into its components. |
-
-
-## Methods
-
-#### parse()
-
-```python
-def parse(
-    text: str,
-    style: <enum 'DocstringStyle'>,
-) -> docstring_parser.common.Docstring
-```
-Parse the docstring into its components.
-
-
-
-| Parameter | Type |
-|-|-|
-| `text` | `str` |
-| `style` | `<enum 'DocstringStyle'>` |
 
 ## flytekit.core.docstring.Docstring
 

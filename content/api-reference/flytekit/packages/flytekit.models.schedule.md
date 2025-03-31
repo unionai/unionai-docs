@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.schedule
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -42,9 +42,9 @@ One of cron_expression or fixed rate must be specified.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -52,7 +52,7 @@ One of cron_expression or fixed rate must be specified.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> Schedule
+) -> e: Schedule
 ```
 | Parameter | Type |
 |-|-|
@@ -68,24 +68,36 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.schedule_pb2.Schedule
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `cron_expression` |  |  |
-| `cron_schedule` |  |  |
+| `cron_expression` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `cron_schedule` |  | {{< multiline >}}:rtype: Schedule.CronSchedule
+{{< /multiline >}} |
 | `is_empty` |  |  |
 | `kickoff_time_input_arg` |  |  |
-| `rate` |  |  |
+| `rate` |  | {{< multiline >}}:rtype: Schedule.FixedRate
+{{< /multiline >}} |
 | `schedule_expression` |  |  |
 

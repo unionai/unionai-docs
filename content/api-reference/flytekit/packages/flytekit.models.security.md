@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.security
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,106 +13,11 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Enum`](.././flytekit.models.security#flytekitmodelssecurityenum) | Create a collection of name/value pairs. |
 | [`Identity`](.././flytekit.models.security#flytekitmodelssecurityidentity) |  |
 | [`OAuth2Client`](.././flytekit.models.security#flytekitmodelssecurityoauth2client) |  |
 | [`OAuth2TokenRequest`](.././flytekit.models.security#flytekitmodelssecurityoauth2tokenrequest) |  |
 | [`Secret`](.././flytekit.models.security#flytekitmodelssecuritysecret) | See :std:ref:`cookbook:secrets` for usage examples. |
 | [`SecurityContext`](.././flytekit.models.security#flytekitmodelssecuritysecuritycontext) | This is a higher level wrapper object that for the most part users shouldn't have to worry about. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`dataclass()`](#dataclass) | Add dunder methods based on the fields defined in the class. |
-
-
-## Methods
-
-#### dataclass()
-
-```python
-def dataclass(
-    cls,
-    init,
-    repr,
-    eq,
-    order,
-    unsafe_hash,
-    frozen,
-    match_args,
-    kw_only,
-    slots,
-    weakref_slot,
-)
-```
-Add dunder methods based on the fields defined in the class.
-
-Examines PEP 526 __annotations__ to determine fields.
-
-If init is true, an __init__() method is added to the class. If repr
-is true, a __repr__() method is added. If order is true, rich
-comparison dunder methods are added. If unsafe_hash is true, a
-__hash__() method is added. If frozen is true, fields may not be
-assigned to after instance creation. If match_args is true, the
-__match_args__ tuple is added. If kw_only is true, then by default
-all fields are keyword-only. If slots is true, a new class with a
-__slots__ attribute is returned.
-
-
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `init` |  |
-| `repr` |  |
-| `eq` |  |
-| `order` |  |
-| `unsafe_hash` |  |
-| `frozen` |  |
-| `match_args` |  |
-| `kw_only` |  |
-| `slots` |  |
-| `weakref_slot` |  |
-
-## flytekit.models.security.Enum
-
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
->>> Color.RED
-<Color.RED: 1>
-
-- value lookup:
-
->>> Color(1)
-<Color.RED: 1>
-
-- name lookup:
-
->>> Color['RED']
-<Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
 
 ## flytekit.models.security.Identity
 
@@ -137,9 +42,9 @@ class Identity(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -163,6 +68,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -173,6 +81,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -198,9 +109,9 @@ class OAuth2Client(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -224,6 +135,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -234,6 +148,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -265,9 +182,9 @@ class OAuth2TokenRequest(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -291,6 +208,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -301,6 +221,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -336,9 +259,9 @@ class Secret(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -362,6 +285,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -372,6 +298,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -403,9 +332,9 @@ class SecurityContext(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -429,6 +358,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -439,6 +371,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |

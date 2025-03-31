@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.qubole
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -46,9 +46,9 @@ Initializes a new HiveQuery.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -56,7 +56,7 @@ Initializes a new HiveQuery.
 ```python
 def from_flyte_idl(
     pb2_object,
-)
+) -> n: HiveQuery
 ```
 | Parameter | Type |
 |-|-|
@@ -72,25 +72,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _qubole.HiveQuery
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
 | `query` |  | {{< multiline >}}The query string.
+:rtype: str
 {{< /multiline >}} |
-| `retry_count` |  |  |
-| `timeout_sec` |  |  |
+| `retry_count` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
+| `timeout_sec` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 
 ## flytekit.models.qubole.HiveQueryCollection
 
@@ -113,9 +125,9 @@ Initializes a new HiveQueryCollection.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -123,7 +135,7 @@ Initializes a new HiveQueryCollection.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> HiveQueryCollection
+) -> e: HiveQueryCollection
 ```
 | Parameter | Type |
 |-|-|
@@ -139,22 +151,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _qubole.HiveQueryCollection
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `queries` |  |  |
+| `queries` |  | {{< multiline >}}:rtype: list[HiveQuery]
+{{< /multiline >}} |
 
 ## flytekit.models.qubole.QuboleHiveJob
 
@@ -183,9 +205,9 @@ Initializes a HiveJob.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _qubole. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -193,7 +215,7 @@ Initializes a HiveJob.
 ```python
 def from_flyte_idl(
     p,
-) -> QuboleHiveJob
+) -> e: QuboleHiveJob
 ```
 | Parameter | Type |
 |-|-|
@@ -209,27 +231,40 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _qubole.QuboleHiveJob
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `cluster_label` |  | {{< multiline >}}The cluster label where the query should be executed
+:rtype: Text
 {{< /multiline >}} |
 | `is_empty` |  |  |
 | `query` |  | {{< multiline >}}The query to be executed
+:rtype: HiveQuery
 {{< /multiline >}} |
 | `query_collection` |  | {{< multiline >}}The queries to be executed
+:rtype: HiveQueryCollection
 {{< /multiline >}} |
 | `tags` |  | {{< multiline >}}User tags for the queries
+:rtype: list[Text]
 {{< /multiline >}} |
 

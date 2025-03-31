@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.interface
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -40,10 +40,10 @@ outputs are represented directly as Python dicts, rather than going through the 
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`promote_from_model()`](#promote_from_model) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -62,7 +62,7 @@ def from_flyte_idl(
 ```python
 def promote_from_model(
     model,
-) -> TypedInterface
+) -> e: TypedInterface
 ```
 | Parameter | Type |
 |-|-|
@@ -78,6 +78,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -105,6 +108,9 @@ python map like functions
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |

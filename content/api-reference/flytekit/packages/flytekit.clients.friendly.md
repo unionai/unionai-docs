@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.friendly
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,15 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Duration`](.././flytekit.clients.friendly#flytekitclientsfriendlyduration) | A ProtocolMessage. |
 | [`SynchronousFlyteClient`](.././flytekit.clients.friendly#flytekitclientsfriendlysynchronousflyteclient) | This is a low-level client that users can use to make direct gRPC service calls to the control plane. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`lru_cache()`](#lru_cache) | Least-recently-used cache decorator. |
-
 
 ### Variables
 
@@ -29,211 +21,17 @@ layout: py_api
 |-|-|-|
 | `ARTIFACT_TYPE_DECK` | `int` |  |
 
-## Methods
-
-#### lru_cache()
-
-```python
-def lru_cache(
-    maxsize,
-    typed,
-)
-```
-Least-recently-used cache decorator.
-
-If *maxsize* is set to None, the LRU features are disabled and the cache
-can grow without bound.
-
-If *typed* is True, arguments of different types will be cached separately.
-For example, f(decimal.Decimal("3.0")) and f(3.0) will be treated as
-distinct calls with distinct results. Some types such as str and int may
-be cached separately even when typed is false.
-
-Arguments to the cached function must be hashable.
-
-View the cache statistics named tuple (hits, misses, maxsize, currsize)
-with f.cache_info().  Clear the cache and statistics with f.cache_clear().
-Access the underlying function with f.__wrapped__.
-
-See:  https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
-
-
-| Parameter | Type |
-|-|-|
-| `maxsize` |  |
-| `typed` |  |
-
-## flytekit.clients.friendly.Duration
-
-A ProtocolMessage
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`FromJsonString()`](#fromjsonstring) | Converts a string to Duration. |
-| [`FromMicroseconds()`](#frommicroseconds) | Converts microseconds to Duration. |
-| [`FromMilliseconds()`](#frommilliseconds) | Converts milliseconds to Duration. |
-| [`FromNanoseconds()`](#fromnanoseconds) | Converts nanoseconds to Duration. |
-| [`FromSeconds()`](#fromseconds) | Converts seconds to Duration. |
-| [`FromTimedelta()`](#fromtimedelta) | Converts timedelta to Duration. |
-| [`ToJsonString()`](#tojsonstring) | Converts Duration to string format. |
-| [`ToMicroseconds()`](#tomicroseconds) | Converts a Duration to microseconds. |
-| [`ToMilliseconds()`](#tomilliseconds) | Converts a Duration to milliseconds. |
-| [`ToNanoseconds()`](#tonanoseconds) | Converts a Duration to nanoseconds. |
-| [`ToSeconds()`](#toseconds) | Converts a Duration to seconds. |
-| [`ToTimedelta()`](#totimedelta) | Converts Duration to timedelta. |
-
-
-#### FromJsonString()
-
-```python
-def FromJsonString(
-    value,
-)
-```
-Converts a string to Duration.
-
-
-
-| Parameter | Type |
-|-|-|
-| `value` |  |
-
-#### FromMicroseconds()
-
-```python
-def FromMicroseconds(
-    micros,
-)
-```
-Converts microseconds to Duration.
-
-
-| Parameter | Type |
-|-|-|
-| `micros` |  |
-
-#### FromMilliseconds()
-
-```python
-def FromMilliseconds(
-    millis,
-)
-```
-Converts milliseconds to Duration.
-
-
-| Parameter | Type |
-|-|-|
-| `millis` |  |
-
-#### FromNanoseconds()
-
-```python
-def FromNanoseconds(
-    nanos,
-)
-```
-Converts nanoseconds to Duration.
-
-
-| Parameter | Type |
-|-|-|
-| `nanos` |  |
-
-#### FromSeconds()
-
-```python
-def FromSeconds(
-    seconds,
-)
-```
-Converts seconds to Duration.
-
-
-| Parameter | Type |
-|-|-|
-| `seconds` |  |
-
-#### FromTimedelta()
-
-```python
-def FromTimedelta(
-    td,
-)
-```
-Converts timedelta to Duration.
-
-
-| Parameter | Type |
-|-|-|
-| `td` |  |
-
-#### ToJsonString()
-
-```python
-def ToJsonString()
-```
-Converts Duration to string format.
-
-Returns:
-A string converted from self. The string format will contains
-3, 6, or 9 fractional digits depending on the precision required to
-represent the exact Duration value. For example: "1s", "1.010s",
-"1.000000100s", "-3.100s"
-
-
-#### ToMicroseconds()
-
-```python
-def ToMicroseconds()
-```
-Converts a Duration to microseconds.
-
-
-#### ToMilliseconds()
-
-```python
-def ToMilliseconds()
-```
-Converts a Duration to milliseconds.
-
-
-#### ToNanoseconds()
-
-```python
-def ToNanoseconds()
-```
-Converts a Duration to nanoseconds.
-
-
-#### ToSeconds()
-
-```python
-def ToSeconds()
-```
-Converts a Duration to seconds.
-
-
-#### ToTimedelta()
-
-```python
-def ToTimedelta()
-```
-Converts Duration to timedelta.
-
-
 ## flytekit.clients.friendly.SynchronousFlyteClient
 
 This is a low-level client that users can use to make direct gRPC service calls to the control plane. See the
 :std:doc:`service spec <idl:protos/docs/service/index>`. This is more user-friendly interface than the
 :py:class:`raw client <flytekit.clients.raw.RawSynchronousFlyteClient>` so users should try to use this class
-first. Create a client by ::
+first. Create a client by 
 
-SynchronousFlyteClient("your.domain:port", insecure=True)
-# insecure should be True if your flyteadmin deployment doesn't have SSL enabled
+```python
+   SynchronousFlyteClient("your.domain:port", insecure=True)
+   # insecure should be True if your flyteadmin deployment doesn't have SSL enabled
+```
 
 
 ```python
@@ -338,7 +136,7 @@ def create_execution(
     name,
     execution_spec,
     inputs,
-) -> flytekit.models.core.identifier.WorkflowExecutionIdentifier
+) -> e: flytekit.models.core.identifier.WorkflowExecutionIdentifier
 ```
 This will create an execution for the given execution spec.
 
@@ -362,11 +160,10 @@ def create_launch_plan(
 This will create a launch plan definition in the Admin database.  Once successful, the launch plan object can be
 retrieved via the client or viewed via the UI or command-line interfaces.
 
-.. note ::
-
-Overwrites are not supported so any request for a given project, domain, name, and version that exists in
-the database must match the existing definition exactly.  This also means that as long as the request
-remains identical, calling this method multiple times will result in success.
+> [!NOTE]
+> Overwrites are not supported so any request for a given project, domain, name, and version that exists in
+    the database must match the existing definition exactly.  This also means that as long as the request
+    remains identical, calling this method multiple times will result in success.
 
 
 
@@ -388,8 +185,8 @@ retrieved via the client or viewed via the UI or command-line interfaces.
 
 > [!NOTE]
 > Overwrites are not supported so any request for a given project, domain, name, and version that exists in
-the database must match the existing definition exactly. Furthermore, as long as the request
-remains identical, calling this method multiple times will result in success.
+  the database must match the existing definition exactly. Furthermore, as long as the request
+  remains identical, calling this method multiple times will result in success.
 
 
 
@@ -403,7 +200,7 @@ remains identical, calling this method multiple times will result in success.
 ```python
 def create_upload_location(
     create_upload_location_request: _dataproxy_pb2.CreateUploadLocationRequest,
-) -> flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
+) -> e: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 ```
 Get a signed url to be used during fast registration
 
@@ -423,11 +220,10 @@ def create_workflow(
 This will create a workflow definition in the Admin database. Once successful, the workflow object can be
 retrieved via the client or viewed via the UI or command-line interfaces.
 
-.. note ::
-
-Overwrites are not supported so any request for a given project, domain, name, and version that exists in
-the database must match the existing definition exactly. Furthermore, as long as the request
-remains identical, calling this method multiple times will result in success.
+> [!NOTE]
+> Overwrites are not supported so any request for a given project, domain, name, and version that exists in
+    the database must match the existing definition exactly. Furthermore, as long as the request
+    remains identical, calling this method multiple times will result in success.
 
 
 
@@ -441,7 +237,7 @@ remains identical, calling this method multiple times will result in success.
 ```python
 def get_active_launch_plan(
     identifier,
-) -> flytekit.models.launch_plan.LaunchPlan
+) -> e: flytekit.models.launch_plan.LaunchPlan
 ```
 Retrieves the active launch plan entity given a named entity identifier (project, domain, name).  Raises an
 error if no active launch plan exists.
@@ -463,7 +259,7 @@ This method calls Flyteadmin's GetVersion API to obtain the current version info
 The retrieved version can be used to enable or disable specific features based on the Flyteadmin version.
 
 Returns:
-str: The version string of the control plane.
+    str: The version string of the control plane.
 
 
 #### get_data()
@@ -484,6 +280,7 @@ def get_domains()
 ```
 This returns a list of domains.
 
+:rtype: list[flytekit.models.Domain]
 
 
 #### get_download_artifact_signed_url()
@@ -494,9 +291,9 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x102e95ed0>,
+    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1065bcbd0>,
     expires_in: datetime.timedelta,
-) -> flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
+) -> e: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
 Get a signed url for an artifact.
 
@@ -508,7 +305,7 @@ Get a signed url for an artifact.
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
-| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x102e95ed0>` |
+| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1065bcbd0>` |
 | `expires_in` | `datetime.timedelta` |
 
 #### get_download_signed_url()
@@ -529,7 +326,7 @@ def get_download_signed_url(
 ```python
 def get_execution(
     id,
-) -> flytekit.models.execution.Execution
+) -> e: flytekit.models.execution.Execution
 ```
 | Parameter | Type |
 |-|-|
@@ -540,7 +337,7 @@ def get_execution(
 ```python
 def get_execution_data(
     id,
-) -> flytekit.models.execution.WorkflowExecutionGetDataResponse
+) -> e: flytekit.models.execution.WorkflowExecutionGetDataResponse
 ```
 Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available).
 
@@ -556,7 +353,7 @@ Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (w
 def get_execution_metrics(
     id,
     depth,
-) -> flyteidl.admin.execution_pb2.WorkflowExecutionGetMetricsResponse
+) -> e: flyteidl.admin.execution_pb2.WorkflowExecutionGetMetricsResponse
 ```
 Returns metrics partitioning and categorizing the workflow execution time-series.
 
@@ -572,7 +369,7 @@ Returns metrics partitioning and categorizing the workflow execution time-series
 ```python
 def get_node_execution(
     node_execution_identifier,
-) -> flytekit.models.node_execution.NodeExecution
+) -> e: flytekit.models.node_execution.NodeExecution
 ```
 | Parameter | Type |
 |-|-|
@@ -600,7 +397,7 @@ def get_project_domain_attributes(
     project,
     domain,
     resource_type,
-)
+) -> n:
 ```
 Fetches the custom attributes set for a project and domain combination.
 
@@ -616,7 +413,7 @@ Fetches the custom attributes set for a project and domain combination.
 ```python
 def get_task_execution(
     id,
-) -> flytekit.models.admin.task_execution.TaskExecution
+) -> e: flytekit.models.admin.task_execution.TaskExecution
 ```
 | Parameter | Type |
 |-|-|
@@ -627,7 +424,7 @@ def get_task_execution(
 ```python
 def get_task_execution_data(
     task_execution_identifier,
-) -> flytekit.models.execution.NodeExecutionGetDataResponse
+) -> e: flytekit.models.execution.NodeExecutionGetDataResponse
 ```
 Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available).
 
@@ -648,7 +445,7 @@ def get_upload_signed_url(
     expires_in: typing.Optional[datetime.timedelta],
     filename_root: typing.Optional[str],
     add_content_md5_metadata: bool,
-) -> flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
+) -> e: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 ```
 Get a signed url to be used during fast registration
 
@@ -672,7 +469,7 @@ def get_workflow_attributes(
     domain,
     workflow,
     resource_type,
-)
+) -> n:
 ```
 Fetches the custom attributes set for a project, domain, and workflow combination.
 
@@ -693,20 +490,18 @@ def list_active_launch_plans_paginated(
     limit,
     token,
     sort_by,
-) -> list[flytekit.models.launch_plan.LaunchPlan], str
+) -> e: list[flytekit.models.launch_plan.LaunchPlan], str
 ```
 This returns a page of currently active launch plan meta-information for launch plans in a given project and
 domain.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -728,19 +523,17 @@ def list_executions_paginated(
     token,
     filters,
     sort_by,
-) -> (list[flytekit.models.execution.Execution], Text)
+) -> e: (list[flytekit.models.execution.Execution], Text)
 ```
 This returns a page of executions in a given project and domain.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -762,20 +555,18 @@ def list_launch_plan_ids_paginated(
     limit,
     token,
     sort_by,
-) -> list[flytekit.models.common.NamedEntityIdentifier], Text
+) -> e: list[flytekit.models.common.NamedEntityIdentifier], Text
 ```
 This returns a page of identifiers for the launch plans for a given project and domain. Filters can also be
 specified.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -796,20 +587,18 @@ def list_launch_plans_paginated(
     token,
     filters,
     sort_by,
-) -> list[flytekit.models.launch_plan.LaunchPlan], str
+) -> e: list[flytekit.models.launch_plan.LaunchPlan], str
 ```
 This returns a page of launch plan meta-information for launch plans in a given project and domain.  Optionally,
 specifying a name will limit the results to only workflows with that name in the given project and domain.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -826,7 +615,7 @@ entries on the second page that also appeared on the first.
 ```python
 def list_matchable_attributes(
     resource_type,
-)
+) -> n:
 ```
 Fetches all custom attributes for a resource type.
 
@@ -845,7 +634,7 @@ def list_node_executions(
     filters: typing.List[flytekit.models.filters.Filter],
     sort_by: flytekit.models.admin.common.Sort,
     unique_parent_id: str,
-) -> list[flytekit.models.node_execution.NodeExecution], Text
+) -> e: list[flytekit.models.node_execution.NodeExecution], Text
 ```
 Get node executions associated with a given workflow execution.
 
@@ -869,7 +658,7 @@ def list_node_executions_for_task_paginated(
     token,
     filters,
     sort_by,
-) -> list[flytekit.models.node_execution.NodeExecution], Text
+) -> e: list[flytekit.models.node_execution.NodeExecution], Text
 ```
 This returns nodes spawned by a specific task execution.  This is generally from things like dynamic tasks.
 
@@ -887,7 +676,7 @@ This returns nodes spawned by a specific task execution.  This is generally from
 ```python
 def list_node_executions_paginated(
     node_execution_list_request,
-) -> flyteidl.admin.node_execution_pb2.NodeExecutionList
+) -> e: flyteidl.admin.node_execution_pb2.NodeExecutionList
 ```
 | Parameter | Type |
 |-|-|
@@ -898,7 +687,7 @@ def list_node_executions_paginated(
 ```python
 def list_projects(
     project_list_request: typing.Optional[ProjectListRequest],
-) -> flyteidl.admin.project_pb2.Projects
+) -> e: flyteidl.admin.project_pb2.Projects
 ```
 This will return a list of the projects registered with the Flyte Admin Service
 
@@ -915,19 +704,17 @@ def list_projects_paginated(
     token,
     filters,
     sort_by,
-) -> (list[flytekit.models.Project], Text)
+) -> e: (list[flytekit.models.Project], Text)
 ```
 This returns a page of projects.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -961,7 +748,7 @@ def list_task_executions_paginated(
     token,
     filters,
     sort_by,
-) -> (list[flytekit.models.admin.task_execution.TaskExecution], Text)
+) -> e: (list[flytekit.models.admin.task_execution.TaskExecution], Text)
 ```
 | Parameter | Type |
 |-|-|
@@ -980,20 +767,18 @@ def list_task_ids_paginated(
     limit,
     token,
     sort_by,
-) -> list[flytekit.models.common.NamedEntityIdentifier], Text
+) -> e: list[flytekit.models.common.NamedEntityIdentifier], Text
 ```
 This returns a page of identifiers for the tasks for a given project and domain. Filters can also be
 specified.
 
 > [!NOTE]
-
->    This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
 > [!NOTE]
-
->    If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -1014,19 +799,18 @@ def list_tasks_paginated(
     token,
     filters,
     sort_by,
-) -> list[flytekit.models.task.Task], Text
+) -> e: list[flytekit.models.task.Task], Text
 ```
 This returns a page of task metadata for tasks in a given project and domain.  Optionally,
 specifying a name will limit the results to only tasks with that name in the given project and domain.
 
 > [!NOTE]
 > This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
+    The user of the API is responsible for providing this token.
 
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -1047,20 +831,18 @@ def list_workflow_ids_paginated(
     limit,
     token,
     sort_by,
-) -> list[flytekit.models.common.NamedEntityIdentifier], Text
+) -> e: list[flytekit.models.common.NamedEntityIdentifier], Text
 ```
 This returns a page of identifiers for the workflows for a given project and domain. Filters can also be
 specified.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -1081,20 +863,18 @@ def list_workflows_paginated(
     token,
     filters,
     sort_by,
-) -> list[flytekit.models.admin.workflow.Workflow], Text
+) -> e: list[flytekit.models.admin.workflow.Workflow], Text
 ```
 This returns a page of workflow meta-information for workflows in a given project and domain.  Optionally,
 specifying a name will limit the results to only workflows with that name in the given project and domain.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -1112,7 +892,7 @@ entries on the second page that also appeared on the first.
 def recover_execution(
     id,
     name: str,
-) -> flytekit.models.core.identifier.WorkflowExecutionIdentifier
+) -> e: flytekit.models.core.identifier.WorkflowExecutionIdentifier
 ```
 Recreates a previously-run workflow execution that will only start executing from the last known failure point.
 
@@ -1127,7 +907,7 @@ Recreates a previously-run workflow execution that will only start executing fro
 ```python
 def register_project(
     project,
-) -> flyteidl.admin.project_pb2.ProjectRegisterResponse
+) -> e: flyteidl.admin.project_pb2.ProjectRegisterResponse
 ```
 Registers a project.
 
@@ -1142,7 +922,7 @@ Registers a project.
 def relaunch_execution(
     id,
     name,
-) -> flytekit.models.core.identifier.WorkflowExecutionIdentifier
+) -> e: flytekit.models.core.identifier.WorkflowExecutionIdentifier
 ```
 | Parameter | Type |
 |-|-|
@@ -1221,7 +1001,7 @@ task or launch plan specified by {project, domain, name} across all versions of 
 ```python
 def update_project(
     project,
-) -> flyteidl.admin.project_pb2.ProjectUpdateResponse
+) -> e: flyteidl.admin.project_pb2.ProjectUpdateResponse
 ```
 Update an existing project specified by id.
 
@@ -1237,7 +1017,7 @@ def update_project_domain_attributes(
     project,
     domain,
     matching_attributes,
-)
+) -> n:
 ```
 Sets custom attributes for a project and domain combination.
 
@@ -1256,7 +1036,7 @@ def update_workflow_attributes(
     domain,
     workflow,
     matching_attributes,
-)
+) -> n:
 ```
 Sets custom attributes for a project, domain, and workflow combination.
 
@@ -1286,6 +1066,7 @@ def with_root_certificate(
 | Property | Type | Description |
 |-|-|-|
 | `raw` |  | {{< multiline >}}Gives access to the raw client
+:rtype: flytekit.clients.raw.RawSynchronousFlyteClient
 {{< /multiline >}} |
 | `url` |  |  |
 

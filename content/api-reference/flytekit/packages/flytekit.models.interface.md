@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.interface
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -31,7 +31,7 @@ class Parameter(
 )
 ```
 Declares an input parameter.  A parameter is used as input to a launch plan and has
-the special ability to have a default value or mark itself as required.
+    the special ability to have a default value or mark itself as required.
 
 
 | Parameter | Type |
@@ -48,9 +48,9 @@ the special ability to have a default value or mark itself as required.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -58,7 +58,7 @@ the special ability to have a default value or mark itself as required.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> Parameter
+) -> e: Parameter
 ```
 | Parameter | Type |
 |-|-|
@@ -74,29 +74,42 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.interface_pb2.Parameter
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `artifact_id` |  |  |
 | `artifact_query` |  |  |
-| `behavior` |  |  |
+| `behavior` |  | {{< multiline >}}:rtype: T
+{{< /multiline >}} |
 | `default` |  | {{< multiline >}}This is the default literal value that will be applied for this parameter if not user specified.
+:rtype: flytekit.models.literals.Literal
 {{< /multiline >}} |
 | `is_empty` |  |  |
 | `required` |  | {{< multiline >}}If True, this parameter must be specified.  There cannot be a default value.
+:rtype: bool
 {{< /multiline >}} |
 | `var` |  | {{< multiline >}}The variable definition for this input parameter.
+:rtype: Variable
 {{< /multiline >}} |
 
 ## flytekit.models.interface.ParameterMap
@@ -119,9 +132,9 @@ A map of Parameters
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -129,7 +142,7 @@ A map of Parameters
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> ParameterMap
+) -> e: ParameterMap
 ```
 | Parameter | Type |
 |-|-|
@@ -145,22 +158,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.interface_pb2.ParameterMap
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `parameters` |  |  |
+| `parameters` |  | {{< multiline >}}:rtype: dict[Text, Parameter]
+{{< /multiline >}} |
 
 ## flytekit.models.interface.TypedInterface
 
@@ -186,10 +209,10 @@ outputs are represented directly as Python dicts, rather than going through the 
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
 | [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -213,6 +236,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -240,6 +266,9 @@ python map like functions
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -271,10 +300,10 @@ class Variable(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`to_flyte_idl_list()`](#to_flyte_idl_list) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`to_flyte_idl_list()`](#to_flyte_idl_list) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -298,21 +327,33 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.interface_pb2.Variable
+
+
 #### to_flyte_idl_list()
 
 ```python
 def to_flyte_idl_list()
 ```
+:rtype: flyteidl.core.interface_pb2.Variable
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -320,9 +361,11 @@ def verbose_string()
 | `artifact_partial_id` |  |  |
 | `artifact_tag` |  |  |
 | `description` |  | {{< multiline >}}This is a help string that can provide context for what this variable means in relation to a task or workflow.
+:rtype: Text
 {{< /multiline >}} |
 | `is_empty` |  |  |
 | `type` |  | {{< multiline >}}This describes the type of value that must be provided to satisfy this variable.
+:rtype: flytekit.models.types.LiteralType
 {{< /multiline >}} |
 
 ## flytekit.models.interface.VariableMap
@@ -346,9 +389,9 @@ A map of Variables
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: dict[Text, Variable]. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -356,7 +399,7 @@ A map of Variables
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> VariableMap
+) -> e: VariableMap
 ```
 | Parameter | Type |
 |-|-|
@@ -372,20 +415,30 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: dict[Text, Variable]
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `variables` |  |  |
+| `variables` |  | {{< multiline >}}:rtype: dict[Text, Variable]
+{{< /multiline >}} |
 

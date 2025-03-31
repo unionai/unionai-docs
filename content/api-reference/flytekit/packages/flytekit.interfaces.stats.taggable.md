@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,14 +13,13 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`StatsConfig`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggablestatsconfig) | Configuration for sending statsd. |
 | [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) | A Proxy object for an underlying statsd client. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`get_stats()`](#get_stats) | . |
+| [`get_stats()`](#get_stats) | :rtype: TaggableStats. |
 
 
 ## Methods
@@ -32,55 +31,16 @@ def get_stats(
     cfg: flytekit.configuration.StatsConfig,
     prefix: str,
     tags: typing.Dict[str, str],
-) -> TaggableStats
+) -> e: TaggableStats
 ```
+:rtype: TaggableStats
+
+
 | Parameter | Type |
 |-|-|
 | `cfg` | `flytekit.configuration.StatsConfig` |
 | `prefix` | `str` |
 | `tags` | `typing.Dict[str, str]` |
-
-## flytekit.interfaces.stats.taggable.StatsConfig
-
-Configuration for sending statsd.
-
-
-
-```python
-class StatsConfig(
-    host: str,
-    port: int,
-    disabled: bool,
-    disabled_tags: bool,
-)
-```
-| Parameter | Type |
-|-|-|
-| `host` | `str` |
-| `port` | `int` |
-| `disabled` | `bool` |
-| `disabled_tags` | `bool` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`auto()`](#auto) | Reads from environment variable, followed by ConfigFile provided. |
-
-
-#### auto()
-
-```python
-def auto(
-    config_file: typing.Union[str, ConfigFile],
-) -> StatsConfig
-```
-Reads from environment variable, followed by ConfigFile provided
-
-
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
 
 ## flytekit.interfaces.stats.taggable.TaggableStats
 

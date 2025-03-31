@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.common
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -27,62 +27,7 @@ layout: py_api
 | [`PagerDutyNotification`](.././flytekit.models.common#flytekitmodelscommonpagerdutynotification) |  |
 | [`RawOutputDataConfig`](.././flytekit.models.common#flytekitmodelscommonrawoutputdataconfig) |  |
 | [`SlackNotification`](.././flytekit.models.common#flytekitmodelscommonslacknotification) |  |
-| [`StringIO`](.././flytekit.models.common#flytekitmodelscommonstringio) | Text I/O implementation using an in-memory buffer. |
 | [`UrlBlob`](.././flytekit.models.common#flytekitmodelscommonurlblob) |  |
-| [`closing`](.././flytekit.models.common#flytekitmodelscommonclosing) | Context to automatically close something at the end of a block. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`_repr_idl_yaml_like()`](#_repr_idl_yaml_like) | Formats an IDL into a YAML-like representation. |
-| [`shorten()`](#shorten) | Collapse and truncate the given text to fit in the given width. |
-
-
-## Methods
-
-#### _repr_idl_yaml_like()
-
-```python
-def _repr_idl_yaml_like(
-    idl,
-    indent,
-) -> str
-```
-Formats an IDL into a YAML-like representation.
-
-
-| Parameter | Type |
-|-|-|
-| `idl` |  |
-| `indent` |  |
-
-#### shorten()
-
-```python
-def shorten(
-    text,
-    width,
-    kwargs,
-)
-```
-Collapse and truncate the given text to fit in the given width.
-
-The text first has its whitespace collapsed.  If it then fits in
-the *width*, it is returned as is.  Otherwise, as many words
-as possible are joined and then the placeholder is appended::
-
->>> textwrap.shorten("Hello  world!", width=12)
-'Hello world!'
->>> textwrap.shorten("Hello  world!", width=11)
-'Hello [...]'
-
-
-| Parameter | Type |
-|-|-|
-| `text` |  |
-| `width` |  |
-| `kwargs` | ``**kwargs`` |
 
 ## flytekit.models.common.Annotations
 
@@ -105,9 +50,9 @@ Annotation values to be applied to a workflow execution resource.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _common_pb2. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -115,7 +60,7 @@ Annotation values to be applied to a workflow execution resource.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> Annotations
+) -> e: Annotations
 ```
 | Parameter | Type |
 |-|-|
@@ -131,16 +76,25 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _common_pb2.Annotations
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -173,9 +127,9 @@ Either one or both of the assumable IAM role and/or the K8s service account can 
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -183,7 +137,7 @@ Either one or both of the assumable IAM role and/or the K8s service account can 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> Auth
+) -> e: Auth
 ```
 | Parameter | Type |
 |-|-|
@@ -199,24 +153,35 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.launch_plan_pb2.Auth
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `assumable_iam_role` |  | {{< multiline >}}The IAM role to execute the workflow with
+:rtype: Text
 {{< /multiline >}} |
 | `is_empty` |  |  |
 | `kubernetes_service_account` |  | {{< multiline >}}The kubernetes service account to execute the workflow with
+:rtype: Text
 {{< /multiline >}} |
 
 ## flytekit.models.common.EmailNotification
@@ -236,9 +201,9 @@ class EmailNotification(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -246,7 +211,7 @@ class EmailNotification(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> EmailNotification
+) -> e: EmailNotification
 ```
 | Parameter | Type |
 |-|-|
@@ -262,22 +227,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.EmailNotification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `recipients_email` |  |  |
+| `recipients_email` |  | {{< multiline >}}:rtype: list[Text]
+{{< /multiline >}} |
 
 ## flytekit.models.common.Envs
 
@@ -296,9 +271,9 @@ class Envs(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -322,6 +297,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -332,6 +310,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -388,10 +369,10 @@ Returns the subclass, to allow usage as a class decorator.
 | [`from_dict()`](#from_dict) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_dict()`](#to_dict) | Converts self to a dictionary. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_dict()
@@ -410,7 +391,7 @@ def from_dict(
 ```python
 def from_flyte_idl(
     idl_object,
-)
+) -> n: FlyteCustomIdlEntity
 ```
 | Parameter | Type |
 |-|-|
@@ -426,12 +407,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_dict()
 
 ```python
 def to_dict()
 ```
 Converts self to a dictionary.
+:rtype: dict[Text, T]
 
 
 #### to_flyte_idl()
@@ -444,6 +429,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -457,9 +445,9 @@ def verbose_string()
 | Method | Description |
 |-|-|
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### serialize_to_string()
@@ -472,6 +460,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -482,6 +473,9 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -509,8 +503,8 @@ even via super()).
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`register()`](#register) | Register a virtual subclass of an ABC. |
-| [`short_class_string()`](#short_class_string) | . |
-| [`verbose_class_string()`](#verbose_class_string) | . |
+| [`short_class_string()`](#short_class_string) | :rtype: Text. |
+| [`verbose_class_string()`](#verbose_class_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -549,8 +543,11 @@ Returns the subclass, to allow usage as a class decorator.
 ```python
 def short_class_string(
     cls,
-) -> Text
+) -> e: Text
 ```
+:rtype: Text
+
+
 | Parameter | Type |
 |-|-|
 | `cls` |  |
@@ -560,8 +557,11 @@ def short_class_string(
 ```python
 def verbose_class_string(
     cls,
-) -> Text
+) -> e: Text
 ```
+:rtype: Text
+
+
 | Parameter | Type |
 |-|-|
 | `cls` |  |
@@ -587,9 +587,9 @@ Label values to be applied to a workflow execution resource.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: dict[Text, Text]. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -597,7 +597,7 @@ Label values to be applied to a workflow execution resource.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> Labels
+) -> e: Labels
 ```
 | Parameter | Type |
 |-|-|
@@ -613,16 +613,25 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: dict[Text, Text]
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -651,9 +660,9 @@ class NamedEntityIdentifier(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | Stores object to a Flyte-IDL defined protobuf. |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -661,7 +670,7 @@ class NamedEntityIdentifier(
 ```python
 def from_flyte_idl(
     idl_object,
-) -> NamedEntityIdentifier
+) -> e: NamedEntityIdentifier
 ```
 | Parameter | Type |
 |-|-|
@@ -677,12 +686,16 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
 Stores object to a Flyte-IDL defined protobuf.
+:rtype: flyteidl.admin.common_pb2.NamedEntityIdentifier
 
 
 #### verbose_string()
@@ -690,16 +703,22 @@ Stores object to a Flyte-IDL defined protobuf.
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `domain` |  | {{< multiline >}}The name of the domain within the project.
+:rtype: Text
 {{< /multiline >}} |
 | `is_empty` |  |  |
 | `name` |  | {{< multiline >}}The name of the entity within the namespace of the project and domain.
+:rtype: Text
 {{< /multiline >}} |
 | `project` |  | {{< multiline >}}The name of the project in which this entity lives.
+:rtype: Text
 {{< /multiline >}} |
 
 ## flytekit.models.common.Notification
@@ -729,9 +748,9 @@ Represents a structure for notifications based on execution status.
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -739,7 +758,7 @@ Represents a structure for notifications based on execution status.
 ```python
 def from_flyte_idl(
     p,
-) -> Notification
+) -> e: Notification
 ```
 | Parameter | Type |
 |-|-|
@@ -755,26 +774,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.Notification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `email` |  |  |
-| `is_empty` |  |  |
-| `pager_duty` |  |  |
-| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
+| `email` |  | {{< multiline >}}:rtype: EmailNotification
 {{< /multiline >}} |
-| `slack` |  |  |
+| `is_empty` |  |  |
+| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
+{{< /multiline >}} |
+| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
+:rtype: list[int]
+{{< /multiline >}} |
+| `slack` |  | {{< multiline >}}:rtype: SlackNotification
+{{< /multiline >}} |
 
 ## flytekit.models.common.PagerDutyNotification
 
@@ -793,9 +825,9 @@ class PagerDutyNotification(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -803,7 +835,7 @@ class PagerDutyNotification(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> EmailNotification
+) -> e: EmailNotification
 ```
 | Parameter | Type |
 |-|-|
@@ -819,22 +851,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.PagerDutyNotification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `recipients_email` |  |  |
+| `recipients_email` |  | {{< multiline >}}:rtype: list[Text]
+{{< /multiline >}} |
 
 ## flytekit.models.common.RawOutputDataConfig
 
@@ -853,9 +895,9 @@ class RawOutputDataConfig(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -879,16 +921,25 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.Auth
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -913,9 +964,9 @@ class SlackNotification(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -923,7 +974,7 @@ class SlackNotification(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> EmailNotification
+) -> e: EmailNotification
 ```
 | Parameter | Type |
 |-|-|
@@ -939,30 +990,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.SlackNotification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-| `recipients_email` |  |  |
-
-## flytekit.models.common.StringIO
-
-Text I/O implementation using an in-memory buffer.
-
-The initial_value argument sets the value of object.  The newline
-argument is like the one of TextIOWrapper's constructor.
-
+| `recipients_email` |  | {{< multiline >}}:rtype: list[Text]
+{{< /multiline >}} |
 
 ## flytekit.models.common.UrlBlob
 
@@ -983,9 +1036,9 @@ class UrlBlob(
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) | . |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
-| [`to_flyte_idl()`](#to_flyte_idl) | . |
-| [`verbose_string()`](#verbose_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -993,7 +1046,7 @@ class UrlBlob(
 ```python
 def from_flyte_idl(
     pb,
-) -> UrlBlob
+) -> e: UrlBlob
 ```
 | Parameter | Type |
 |-|-|
@@ -1009,21 +1062,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.UrlBlob
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `bytes` |  |  |
+| `bytes` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 | `is_empty` |  |  |
-| `url` |  |  |
+| `url` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 

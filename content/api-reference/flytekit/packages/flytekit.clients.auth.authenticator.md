@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.authenticator
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -14,122 +14,13 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Authenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorauthenticator) | Base authenticator for all authentication flows. |
-| [`AuthorizationClient`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorauthorizationclient) | Authorization client that stores the credentials in keyring and uses oauth2 standard flow to retrieve the. |
 | [`ClientConfig`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientconfig) | Client Configuration that is needed by the authenticator. |
 | [`ClientConfigStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientconfigstore) | Client Config store retrieve client config. |
 | [`ClientCredentialsAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorclientcredentialsauthenticator) | This Authenticator uses ClientId and ClientSecret to authenticate. |
 | [`CommandAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorcommandauthenticator) | This Authenticator retrieves access_token using the provided command. |
-| [`Credentials`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorcredentials) | Stores the credentials together. |
 | [`DeviceCodeAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatordevicecodeauthenticator) | This Authenticator implements the Device Code authorization flow useful for headless user authentication. |
-| [`KeyringStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorkeyringstore) | Methods to access Keyring Store. |
 | [`PKCEAuthenticator`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorpkceauthenticator) | This Authenticator encapsulates the entire PKCE flow and automatically opens a browser window for login. |
 | [`StaticClientConfigStore`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorstaticclientconfigstore) | Client Config store retrieve client config. |
-
-### Errors
-
-| Exception | Description |
-|-|-|
-| [`AccessTokenNotFoundError`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatoraccesstokennotfounderror) | This error is raised with Access token is not found or if Refreshing the token fails. |
-| [`AuthenticationError`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorauthenticationerror) | This is raised for any AuthenticationError. |
-| [`AuthenticationPending`](.././flytekit.clients.auth.authenticator#flytekitclientsauthauthenticatorauthenticationpending) | This is raised if the token endpoint returns authentication pending. |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`abstractmethod()`](#abstractmethod) | A decorator indicating abstract methods. |
-| [`dataclass()`](#dataclass) | Add dunder methods based on the fields defined in the class. |
-
-
-## Methods
-
-#### abstractmethod()
-
-```python
-def abstractmethod(
-    funcobj,
-)
-```
-A decorator indicating abstract methods.
-
-Requires that the metaclass is ABCMeta or derived from it.  A
-class that has a metaclass derived from ABCMeta cannot be
-instantiated unless all of its abstract methods are overridden.
-The abstract methods can be called using any of the normal
-'super' call mechanisms.  abstractmethod() may be used to declare
-abstract methods for properties and descriptors.
-
-Usage:
-
-class C(metaclass=ABCMeta):
-@abstractmethod
-def my_abstract_method(self, arg1, arg2, argN):
-...
-
-
-| Parameter | Type |
-|-|-|
-| `funcobj` |  |
-
-#### dataclass()
-
-```python
-def dataclass(
-    cls,
-    init,
-    repr,
-    eq,
-    order,
-    unsafe_hash,
-    frozen,
-    match_args,
-    kw_only,
-    slots,
-    weakref_slot,
-)
-```
-Add dunder methods based on the fields defined in the class.
-
-Examines PEP 526 __annotations__ to determine fields.
-
-If init is true, an __init__() method is added to the class. If repr
-is true, a __repr__() method is added. If order is true, rich
-comparison dunder methods are added. If unsafe_hash is true, a
-__hash__() method is added. If frozen is true, fields may not be
-assigned to after instance creation. If match_args is true, the
-__match_args__ tuple is added. If kw_only is true, then by default
-all fields are keyword-only. If slots is true, a new class with a
-__slots__ attribute is returned.
-
-
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `init` |  |
-| `repr` |  |
-| `eq` |  |
-| `order` |  |
-| `unsafe_hash` |  |
-| `frozen` |  |
-| `match_args` |  |
-| `kw_only` |  |
-| `slots` |  |
-| `weakref_slot` |  |
-
-## flytekit.clients.auth.authenticator.AccessTokenNotFoundError
-
-This error is raised with Access token is not found or if Refreshing the token fails
-
-
-## flytekit.clients.auth.authenticator.AuthenticationError
-
-This is raised for any AuthenticationError
-
-
-## flytekit.clients.auth.authenticator.AuthenticationPending
-
-This is raised if the token endpoint returns authentication pending
-
 
 ## flytekit.clients.auth.authenticator.Authenticator
 
@@ -177,82 +68,6 @@ def get_credentials()
 ```python
 def refresh_credentials()
 ```
-## flytekit.clients.auth.authenticator.AuthorizationClient
-
-Authorization client that stores the credentials in keyring and uses oauth2 standard flow to retrieve the
-credentials. NOTE: This will open an web browser to retrieve the credentials.
-
-
-```python
-class AuthorizationClient(
-    endpoint: str,
-    auth_endpoint: str,
-    token_endpoint: str,
-    audience: typing.Optional[str],
-    scopes: typing.Optional[typing.List[str]],
-    client_id: typing.Optional[str],
-    redirect_uri: typing.Optional[str],
-    endpoint_metadata: typing.Optional[EndpointMetadata],
-    verify: typing.Optional[typing.Union[bool, str]],
-    session: typing.Optional[requests.Session],
-    request_auth_code_params: typing.Optional[typing.Dict[str, str]],
-    request_access_token_params: typing.Optional[typing.Dict[str, str]],
-    refresh_access_token_params: typing.Optional[typing.Dict[str, str]],
-    add_request_auth_code_params_to_request_access_token_params: typing.Optional[bool],
-)
-```
-Create new AuthorizationClient
-
-
-
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `auth_endpoint` | `str` |
-| `token_endpoint` | `str` |
-| `audience` | `typing.Optional[str]` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `client_id` | `typing.Optional[str]` |
-| `redirect_uri` | `typing.Optional[str]` |
-| `endpoint_metadata` | `typing.Optional[EndpointMetadata]` |
-| `verify` | `typing.Optional[typing.Union[bool, str]]` |
-| `session` | `typing.Optional[requests.Session]` |
-| `request_auth_code_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `request_access_token_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `refresh_access_token_params` | `typing.Optional[typing.Dict[str, str]]` |
-| `add_request_auth_code_params_to_request_access_token_params` | `typing.Optional[bool]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`get_creds_from_remote()`](#get_creds_from_remote) | This is the entrypoint method. |
-| [`refresh_access_token()`](#refresh_access_token) |  |
-
-
-#### get_creds_from_remote()
-
-```python
-def get_creds_from_remote()
-```
-This is the entrypoint method. It will kickoff the full authentication
-flow and trigger a web-browser to retrieve credentials. Because this
-needs to open a port on localhost and may be called from a
-multithreaded context (e.g. pyflyte register), this call may block
-multiple threads and return a cached result for up to 60 seconds.
-
-
-#### refresh_access_token()
-
-```python
-def refresh_access_token(
-    credentials: Credentials,
-) -> Credentials
-```
-| Parameter | Type |
-|-|-|
-| `credentials` | `Credentials` |
-
 ## flytekit.clients.auth.authenticator.ClientConfig
 
 Client Configuration that is needed by the authenticator
@@ -404,28 +219,6 @@ This function is used when the configuration value for AUTH_MODE is set to 'exte
 It reads an id token generated by an external process started by running the 'command'.
 
 
-## flytekit.clients.auth.authenticator.Credentials
-
-Stores the credentials together
-
-
-```python
-class Credentials(
-    access_token: str,
-    refresh_token: typing.Optional[str],
-    for_endpoint: str,
-    expires_in: typing.Optional[int],
-    id_token: typing.Optional[str],
-)
-```
-| Parameter | Type |
-|-|-|
-| `access_token` | `str` |
-| `refresh_token` | `typing.Optional[str]` |
-| `for_endpoint` | `str` |
-| `expires_in` | `typing.Optional[int]` |
-| `id_token` | `typing.Optional[str]` |
-
 ## flytekit.clients.auth.authenticator.DeviceCodeAuthenticator
 
 This Authenticator implements the Device Code authorization flow useful for headless user authentication.
@@ -482,53 +275,6 @@ def get_credentials()
 ```python
 def refresh_credentials()
 ```
-## flytekit.clients.auth.authenticator.KeyringStore
-
-Methods to access Keyring Store.
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`delete()`](#delete) |  |
-| [`retrieve()`](#retrieve) |  |
-| [`store()`](#store) |  |
-
-
-#### delete()
-
-```python
-def delete(
-    for_endpoint: str,
-)
-```
-| Parameter | Type |
-|-|-|
-| `for_endpoint` | `str` |
-
-#### retrieve()
-
-```python
-def retrieve(
-    for_endpoint: str,
-) -> typing.Optional[flytekit.clients.auth.keyring.Credentials]
-```
-| Parameter | Type |
-|-|-|
-| `for_endpoint` | `str` |
-
-#### store()
-
-```python
-def store(
-    credentials: flytekit.clients.auth.keyring.Credentials,
-) -> flytekit.clients.auth.keyring.Credentials
-```
-| Parameter | Type |
-|-|-|
-| `credentials` | `flytekit.clients.auth.keyring.Credentials` |
-
 ## flytekit.clients.auth.authenticator.PKCEAuthenticator
 
 This Authenticator encapsulates the entire PKCE flow and automatically opens a browser window for login

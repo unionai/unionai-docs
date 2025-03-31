@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.module_loader
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,19 +9,13 @@ layout: py_api
 
 ## Directory
 
-### Classes
-
-| Class | Description |
-|-|-|
-| [`Any`](.././flytekit.tools.module_loader#flytekittoolsmodule_loaderany) | Special type indicating an unconstrained type. |
-
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`add_sys_path()`](#add_sys_path) | Temporarily add given path to `sys. |
 | [`just_load_modules()`](#just_load_modules) | This one differs from the above in that we don't yield anything, just load all the modules. |
-| [`load_object_from_module()`](#load_object_from_module) | # TODO: Handle corner cases, like where the first part is [] maybe. |
+| [`load_object_from_module()`](#load_object_from_module) | TODO: Handle corner cases, like where the first part is [] maybe. |
 | [`module_load_error_handler()`](#module_load_error_handler) |  |
 
 
@@ -62,7 +56,7 @@ def load_object_from_module(
     object_location: str,
 ) -> typing.Any
 ```
-# TODO: Handle corner cases, like where the first part is [] maybe
+TODO: Handle corner cases, like where the first part is [] maybe
 
 
 | Parameter | Type |
@@ -81,17 +75,4 @@ def module_load_error_handler(
 |-|-|
 | `args` | ``*args`` |
 | `kwargs` | ``**kwargs`` |
-
-## flytekit.tools.module_loader.Any
-
-Special type indicating an unconstrained type.
-
-- Any is compatible with every type.
-- Any assumed to have all methods.
-- All values assumed to be instances of Any.
-
-Note that all the above statements are true from the point of view of
-static type checkers. At runtime, Any should not be used with instance
-checks.
-
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.random
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -15,12 +15,6 @@ layout: py_api
 |-|-|
 | [`seed_flyte_random()`](#seed_flyte_random) | If one wants to influence the pseudo-random behavior of flytekit, this function can be used to seed the flytekit. |
 
-
-### Variables
-
-| Property | Type | Description |
-|-|-|-|
-| `random` | `Random` |  |
 
 ## Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.metrics
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -14,7 +14,6 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`FlyteExecutionSpan`](.././flytekit.remote.metrics#flytekitremotemetricsflyteexecutionspan) |  |
-| [`datetime`](.././flytekit.remote.metrics#flytekitremotemetricsdatetime) | datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]]). |
 
 ### Methods
 
@@ -83,9 +82,9 @@ class FlyteExecutionSpan(
 | [`explain()`](#explain) |  |
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
-| [`short_string()`](#short_string) | . |
+| [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | . |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### dump()
@@ -119,6 +118,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -129,17 +131,12 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `is_empty` |  |  |
-
-## flytekit.remote.metrics.datetime
-
-datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])
-
-The year, month and day arguments are required. tzinfo may be None, or an
-instance of a tzinfo subclass. The remaining arguments may be ints.
-
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.client
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -16,13 +16,11 @@ layout: py_api
 | [`DummyStatsClient`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientdummystatsclient) | A dummy client for statsd. |
 | [`ScopeableStatsProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientscopeablestatsproxy) | A Proxy object for an underlying statsd client. |
 | [`StatsClientProxy`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsclientproxy) | A Proxy object for an underlying statsd client. |
-| [`StatsConfig`](.././flytekit.interfaces.stats.client#flytekitinterfacesstatsclientstatsconfig) | Configuration for sending statsd. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`_get_stats_client()`](#_get_stats_client) |  |
 | [`get_base_stats()`](#get_base_stats) |  |
 | [`get_stats()`](#get_stats) |  |
 
@@ -31,21 +29,9 @@ layout: py_api
 
 | Property | Type | Description |
 |-|-|-|
-| `FORBIDDEN_TAG_VALUE_CHARACTERS` | `Pattern` |  |
 | `RESERVED_TAG_WORDS` | `frozenset` |  |
 
 ## Methods
-
-#### _get_stats_client()
-
-```python
-def _get_stats_client(
-    cfg: flytekit.configuration.StatsConfig,
-)
-```
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.StatsConfig` |
 
 #### get_base_stats()
 
@@ -326,45 +312,3 @@ def get_stats(
 ```python
 def pipeline()
 ```
-## flytekit.interfaces.stats.client.StatsConfig
-
-Configuration for sending statsd.
-
-
-
-```python
-class StatsConfig(
-    host: str,
-    port: int,
-    disabled: bool,
-    disabled_tags: bool,
-)
-```
-| Parameter | Type |
-|-|-|
-| `host` | `str` |
-| `port` | `int` |
-| `disabled` | `bool` |
-| `disabled_tags` | `bool` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`auto()`](#auto) | Reads from environment variable, followed by ConfigFile provided. |
-
-
-#### auto()
-
-```python
-def auto(
-    config_file: typing.Union[str, ConfigFile],
-) -> StatsConfig
-```
-Reads from environment variable, followed by ConfigFile provided
-
-
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
-

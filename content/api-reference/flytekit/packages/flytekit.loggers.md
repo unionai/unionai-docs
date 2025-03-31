@@ -1,6 +1,6 @@
 ---
 title: flytekit.loggers
-version: 0.1.dev2175+gcd6bd01.d20250325
+version: 0.1.dev2184+g1e0cbe7
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,8 +13,6 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`_get_dev_env_logging_level()`](#_get_dev_env_logging_level) | Returns the logging level set in the environment variable, or logging. |
-| [`_get_env_logging_level()`](#_get_env_logging_level) | Returns the logging level set in the environment variable, or logging. |
 | [`get_level_from_cli_verbosity()`](#get_level_from_cli_verbosity) | Converts a verbosity level from the CLI to a logging level. |
 | [`initialize_global_loggers()`](#initialize_global_loggers) | Initializes the global loggers to the default configuration. |
 | [`is_display_progress_enabled()`](#is_display_progress_enabled) |  |
@@ -33,48 +31,15 @@ layout: py_api
 | `LOGGING_ENV_VAR` | `str` |  |
 | `LOGGING_FMT_ENV_VAR` | `str` |  |
 | `LOGGING_RICH_FMT_ENV_VAR` | `str` |  |
-| `developer_logger` | `Logger` |  |
-| `logger` | `Logger` |  |
-| `user_space_logger` | `Logger` |  |
 
 ## Methods
-
-#### _get_dev_env_logging_level()
-
-```python
-def _get_dev_env_logging_level(
-    default_level: int,
-) -> int
-```
-Returns the logging level set in the environment variable, or logging.INFO if the environment variable is not
-set.
-
-
-| Parameter | Type |
-|-|-|
-| `default_level` | `int` |
-
-#### _get_env_logging_level()
-
-```python
-def _get_env_logging_level(
-    default_level: int,
-) -> int
-```
-Returns the logging level set in the environment variable, or logging.WARNING if the environment variable is not
-set.
-
-
-| Parameter | Type |
-|-|-|
-| `default_level` | `int` |
 
 #### get_level_from_cli_verbosity()
 
 ```python
 def get_level_from_cli_verbosity(
     verbosity: int,
-) -> int
+) -> n: logging level
 ```
 Converts a verbosity level from the CLI to a logging level.
 
