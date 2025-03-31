@@ -12,7 +12,7 @@ docs.flyte.org/en/latest/user_guide/getting_started_with_workflow_development/ru
 docs.flyte.org/en/latest/user_guide/basics,https://union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/basics/hello_world,https://union.ai/docs/flyte/user-guide/getting-started/understanding-the-code,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/basics/tasks,https://union.ai/docs/flyte/user-guide/core-concepts/tasks,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/basics/workflows,"https://union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
+docs.flyte.org/en/latest/user_guide/basics/workflows,https://union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/basics/launch_plans,https://union.ai/docs/flyte/user-guide/core-concepts/launch-plans,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/basics/imperative_workflows,https://union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/basics/documenting_workflows,https://union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
@@ -36,11 +36,9 @@ docs.flyte.org/en/latest/user_guide/advanced_composition/dynamic_workflows,https
 docs.flyte.org/en/latest/user_guide/advanced_composition/map_tasks,https://www.union.ai/docs/byoc/user-guide/core-concepts/tasks/map-tasks/#map-tasks,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/advanced_composition/nested_parallelization,https://www.union.ai/docs/byoc/user-guide/programming/nested-parallelism,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/advanced_composition/eager_workflows,https://union.ai/docs/flyte/user-guide/core-concepts/workflows/eager-workflows,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/advanced_composition/decorating_tasks,[new page],302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/customizing_dependencies,,https://www.union.ai/docs/byoc/user-guide/core-concepts/image-spec/,302,TRUE,FALSE,TRUE,TRUE
+docs.flyte.org/en/latest/user_guide/customizing_dependencies,https://www.union.ai/docs/byoc/user-guide/core-concepts/image-spec/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/customizing_dependencies/imagespec,https://www.union.ai/docs/byoc/user-guide/core-concepts/image-spec/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/customizing_dependencies/raw_containers,https://www.union.ai/docs/flyte/user-guide/core-concepts/tasks/task-types/#containertask,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/customizing_dependencies/multiple_images_in_a_workflow,"No one uses this pattern and is not best practice, opting to delete",302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/development_lifecycle,https://www.union.ai/docs/flyte/user-guide/development-cycle/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/development_lifecycle/private_images,https://union.ai/docs/flyte/user-guide/development-cycle/image-spec,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/development_lifecycle/caching,https://union.ai/docs/flyte/user-guide/core-concepts/caching,302,TRUE,FALSE,TRUE,TRUE
@@ -56,7 +54,6 @@ docs.flyte.org/en/latest/user_guide/development_lifecycle/debugging_executions,h
 docs.flyte.org/en/latest/user_guide/development_lifecycle/migrating_from_airflow_to_flyte,https://www.union.ai/docs/flyte/user-guide/development-cycle/migrating_from_airflow_to_flyte/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/testing,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/testing/mocking_tasks,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing/mocking-tasks/,302,TRUE,FALSE,TRUE,TRUE
-docs.flyte.org/en/latest/user_guide/productionizing,N/A,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/customizing_task_resources,https://union.ai/docs/flyte/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/reference_tasks,https://www.union.ai/docs/byoc/user-guide/core-concepts/tasks/reference-tasks/,302,TRUE,FALSE,TRUE,TRUE
 docs.flyte.org/en/latest/user_guide/productionizing/reference_launch_plans,https://union.ai/docs/flyte/user-guide/core-concepts/launch-plans/reference-launch-plans,302,TRUE,FALSE,TRUE,TRUE
