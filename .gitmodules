@@ -1,9 +1,3 @@
-[submodule "external/flytesnacks"]
-	path = external/flytesnacks
-	url = https://github.com/flyteorg/flytesnacks
 [submodule "external/unionai-examples"]
 	path = external/unionai-examples
 	url = git@github.com:unionai/unionai-examples
-[submodule "external/flytekit"]
-	path = external/flytekit
-	url = git@github.com:flyteorg/flytekit
