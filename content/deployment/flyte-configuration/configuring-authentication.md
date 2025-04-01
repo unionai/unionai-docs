@@ -570,13 +570,49 @@ sequenceDiagram
 - **Supported IdPs**: Google, Okta, Microsoft Entra ID, Keycloak.
 - **Supported authorization servers**: internal(`flyteadmin`) or external
 
-### Client configuration
+#### Client configuration
 
 As this is the default flow, just verify that your `$HOME/.flyte/config.yaml` contains the following configuration:
 
 ```yaml
 admin:
-   authType: Pkce
+  authType: Pkce
+```
+
+### Client Credentials
+
+- **Good for**: system-to-system communication where the client can securely store credentials (e.g. CI/CD).
+- **Supported IdPs**: Google, Okta, Microsoft Entra ID, Keycloak.
+- **Supported authorization servers**: internal(`flyteadmin`) or external
+
+#### Client configuration
+
+Verify that your `$HOME/.flyte/config.yaml` includes the following configuration:
+
+```yaml
+admin:
+  endpoint: <your_flyteadmin_endpoint>
+  authType: ClientSecret
+  clientId: <your_clientID> #provided by your IdP
+  clientSecretLocation: /etc/secrets/client_secret
+```
+`client_secret` is a file in the local filesystem that just contains the client secret provided by your IdP in plain text.
+
+### Device Code
+
+- **Good for**: “headless” devices or apps where the user cannot directly interact with a browser
+- **Supported IdPs**: Google, Okta, Microsoft Entra ID, Keycloak.
+- **Supported authorization servers**: external auth server **ONLY**
+
+#### Client configuration
+
+Verify that your `$HOME/.flyte/config.yaml` includes the following configuration:
+
+```yaml
+admin:
+  endpoint: <your_flyteadmin_endpoint>
+  authType: DeviceFlow
+  clientId: <your_clientID> #provided by your IdP
 ```
 
 ## Disable Helm secret management
