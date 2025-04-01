@@ -85,7 +85,7 @@ www.union.ai/_r_/flyte/en/latest/user_guide/flyte_agents/testing_agents_in_a_loc
 www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals/jupyter_notebook_interaction,https://www.union.ai/docs/flyte/user-guide/development-cycle/jupyter-notebooks,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals/registering_workflows,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals/running_and_scheduling_workflows,,https://www.union.ai/docs/byoc/user-guide/core-concepts/launch-plans,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals/running_and_scheduling_workflows,https://www.union.ai/docs/byoc/user-guide/core-concepts/launch-plans,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals/tasks_workflows_and_launch_plans,https://www.union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/flyte_fundamentals/visualizing_task_input_and_output,https://www.union.ai/docs/flyte/user-guide/development-cycle/decks,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/getting_started_with_workflow_development,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
