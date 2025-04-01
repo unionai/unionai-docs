@@ -21,7 +21,6 @@ base: predist
 	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/docs/index.html
 	cp -R static/* dist/${PREFIX}/
 	cp -R content/_static/* dist/_static/
-	cp _redirects dist/
 
 dist: base
 	make variant VARIANT=flyte
@@ -32,6 +31,7 @@ dist: base
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	echo "404 ${VARIANT} you're so no found" > dist/docs/${VARIANT}/404.html
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
