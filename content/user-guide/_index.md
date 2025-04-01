@@ -13,8 +13,10 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] Flyte
-> These docs are for [**Flyte**](./about-union#flyte).
-> Switch to another variant with the version selector above.
+> Welome to the offical documentation for the [**Flyte**](./about-flyte) open-source project.
+> This documentation is maintained by Union.ai.
+>
+> You can switch to the documentation for the closed-source versions with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -22,8 +24,9 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} Serverless
-> These docs are for [**{{< key product_name >}} Serverless**](./about-union#union-serverless).
-> Switch to another variant with the version selector above.
+> Welcome to the offical documentation for [**{{< key product_name >}} Serverless**](./about-union#union-serverless).
+>
+> You can switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -31,8 +34,9 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} BYOC
-> These docs are for [**{{< key product_name >}} BYOC**](./about-union#union-byoc).
-> Switch to another variant with the version selector above.
+> Welcome to the offical documentation for [**{{< key product_name >}} BYOC**](./about-union#union-byoc).
+>
+> You can switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -40,11 +44,30 @@ sidebar_expanded: true
 {{< markdown >}}
 
 > [!NOTE] {{< key product_name >}} BYOK
-> These docs are for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
-> Switch to another variant with the version selector above.
+> Welcome to the offical documentation for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
+>
+> You can switch to another product version with the selector above.
 
 {{< /markdown >}}
 {{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown>}}
+
+Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
+
+The Flyte platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+
+* Run complex AI workloads with performance, scale, and efficiency.
+* Achieve millisecond-level execution times.
+* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown>}}
+
+Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
 
 The {{< key product_name >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
@@ -52,11 +75,14 @@ The {{< key product_name >}} platform empowers AI development teams to rapidly s
 * Achieve millisecond-level execution times with reusable containers.
 * Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
+{{< /markdown >}}
+{{< /variant >}}
+
 {{< grid >}}
 
 {{< variant flyte >}}
 
-{{< link-card target="about-union" icon="lightbulb" title="About Flyte" >}}
+{{< link-card target="about-flyte" icon="lightbulb" title="About Flyte" >}}
 Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
 {{< /link-card >}}
 
@@ -85,7 +111,11 @@ Explore the {{< key product_name >}} development cycle from experimentation to p
 Manage the input and output of data in your {{< key product_name >}} workflow.
 {{< /link-card >}}
 
-{{< variant byoc byok flyte >}}
+{{< link-card target="programming" icon="code-slash" title="Programming" >}}
+Learn about {{< key product_name >}}-specific programming constructs.
+{{< /link-card >}}
+
+{{< variant byoc byok >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< key product_full_name >}} administrators can manage users, projects, and resources.
