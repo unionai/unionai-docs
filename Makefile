@@ -1,5 +1,6 @@
 PREFIX := docs
 PORT := 9000
+BUILD := $(shell date +%s)
 
 .PHONY: all dist variant dev
 
@@ -31,7 +32,7 @@ dist: base
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
-	@cat 404.html.tmpl | sed -e 's#@@BASE@@#/${PREFIX}#g' -e 's#@@VARIANT@@#${VARIANT}#g' > dist/docs/${VARIANT}/404.html
+	@cat 404.html.tmpl | sed -e 's#@@BASE@@#/${PREFIX}#g' -e 's#@@VARIANT@@#${VARIANT}#g' -e 's#@@BUILD@@#${BUILD}#g' > dist/docs/${VARIANT}/404.html
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
