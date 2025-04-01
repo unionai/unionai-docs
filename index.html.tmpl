@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css" />
+        <script>
+            // Set up error handler immediately
+            document.addEventListener('DOMContentLoaded', function() {
+                const logo = document.getElementById('logo');
+                logo.onerror = function() {
+                    // If main logo fails, try fallback path
+                    console.log('Primary logo failed to load, trying fallback');
+                    this.src = 'static/images/icon-logo.svg';
+
+                    // Add second error handler for fallback
+                    this.onerror = function() {
+                        console.error('Failed to load logo image from both paths');
+                        logo.style.display = 'none';
+                    };
+                };
+            });
+
+            const css = document.getElementById('home_css');
+            css.onerror = function() {
+                console.log('Primary CSS failed to load, trying fallback');
+                this.href = 'static/css/home.css';
+
+                // Add second error handler for fallback
+                this.onerror = function() {
+                    console.error('Failed to load CSS from both paths');
+                    css.disabled = true; // Disable the stylesheet if it fails
+                };
+            };
+
+            setTimeout(() => {
+                if ("@@BASE@@".indexOf("BASE") === -1) {
+                    // Redirect on production builds.
+                    document.location = "@@BASE@@/byoc/";
+                }
+            }, 0);
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
+                Union.ai
+            </h1>
+
+            <p>You are being automatically redirected to the documentation.</p>
+
+            <p>
+                If this page does not automatically refresh, please <a href="@@BASE@@/byoc/">click here</a>.
+            </p>
+        </div>
+    </body>
+</html>
+

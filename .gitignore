@@ -17,6 +17,7 @@ __pycache__/
 content/test.md
 layouts/**/test.html
 themes/**/test.html
+test*.html
 
 # IDEs
 .vscode
