@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.task
-version: 0.1.dev2184+g1e0cbe7
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -227,7 +227,7 @@ class DataLoadingConfig(
     input_path: str,
     output_path: str,
     enabled: bool,
-    format: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10596add0>,
+    format: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104face50>,
     io_strategy: flytekit.models.task.IOStrategy,
 )
 ```
@@ -236,7 +236,7 @@ class DataLoadingConfig(
 | `input_path` | `str` |
 | `output_path` | `str` |
 | `enabled` | `bool` |
-| `format` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10596add0>` |
+| `format` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104face50>` |
 | `io_strategy` | `flytekit.models.task.IOStrategy` |
 
 ### Methods
@@ -300,14 +300,14 @@ Provides methods to manage data in and out of the Raw container using Download M
 
 ```python
 class IOStrategy(
-    download_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105961130>,
-    upload_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105961220>,
+    download_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fa3110>,
+    upload_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fb57c0>,
 )
 ```
 | Parameter | Type |
 |-|-|
-| `download_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105961130>` |
-| `upload_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105961220>` |
+| `download_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fa3110>` |
+| `upload_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fb57c0>` |
 
 ### Methods
 

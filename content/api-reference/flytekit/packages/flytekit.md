@@ -1,6 +1,6 @@
 ---
 title: flytekit
-version: 0.1.dev2184+g1e0cbe7
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -53,30 +53,25 @@ in the flyte engine and hence should be used for control flow. "dynamic workflow
 
 See the Dynamic module for more information.
 
-- dynamic
 
 Signaling
---------
 
 - approve
 - sleep
 - wait_for_input
 
-Scheduling
-----------
+##### Scheduling
 
 - CronSchedule
 - FixedRate
 
-Notifications
------------
+##### Notifications
 
 - Email
 - PagerDuty
 - Slack
 
-Reference Entities
------------------
+##### Reference Entities
 
 - get_reference_entity
 - LaunchPlanReference
@@ -86,8 +81,7 @@ Reference Entities
 - reference_workflow
 - reference_launch_plan
 
-Core Task Types
--------------
+##### Core Task Types
 
 - SQLTask
 - ContainerTask
@@ -95,15 +89,13 @@ Core Task Types
 - PythonInstanceTask
 - LaunchPlan
 
-Secrets and SecurityContext
---------------------------
+##### Secrets and SecurityContext
 
 - Secret
 - SecurityContext
 
 
-Common Flyte IDL Objects
------------------------
+##### Common Flyte IDL Objects
 
 - AuthRole
 - Labels

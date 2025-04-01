@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.base_connector
-version: 0.1.dev2184+g1e0cbe7
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -314,7 +314,7 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107d6cde0>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10758c3d0>,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]],
     outputs: typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType],
@@ -323,7 +323,7 @@ class Resource(
 ```
 | Parameter | Type |
 |-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107d6cde0>` |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10758c3d0>` |
 | `message` | `typing.Optional[str]` |
 | `log_links` | `typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]]` |
 | `outputs` | `typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType]` |
