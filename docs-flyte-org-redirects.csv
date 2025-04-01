@@ -103,9 +103,7 @@ www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/reference_tasks,http
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/schedules,https://www.union.ai/docs/flyte/user-guide/core-concepts/launch-plans/schedules,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/secrets,https://www.union.ai/docs/flyte/user-guide/development-cycle/managing-secrets,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/spot_instances,https://www.union.ai/docs/flyte/user-guide/core-concepts/tasks/task-hardware-environment/interruptible-instances,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/workflow_labels_and_annotations,https://www.union.ai/docs/byoc/user-guide/core-concepts/launch-plans/defining-launch-plans,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/workflow_labels_and_annotations,https://www.union.ai/docs/flyte/user-guide/core-concepts/launch-plans/defining-launch-plans,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/user_guide/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/testing,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/testing/mocking_tasks,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing/mocking-tasks,302,TRUE,FALSE,TRUE,TRUE
