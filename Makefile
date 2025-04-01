@@ -30,8 +30,8 @@ dist: base
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
-	cat 404.html.tmpl | sed -e 's#@@BASE@@#/${PREFIX}#' -e 's#@@VARIANT@@#${VARIANT}#' > dist/docs/${VARIANT}/404.html
 	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	@cat 404.html.tmpl | sed -e 's#@@BASE@@#/${PREFIX}#' -e 's#@@VARIANT@@#${VARIANT}#' > dist/docs/${VARIANT}/404.html
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
