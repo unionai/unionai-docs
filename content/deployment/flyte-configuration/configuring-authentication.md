@@ -64,7 +64,7 @@ browser.
 > [!NOTE]
 > Using the following configurations as a reference, the community has succesfully configured auth with other IdPs as Flyte implements open standards.
 
-## Google
+#### Google
 
 1. Create an OAuth2 Client Credential following the [official documentation](https://developers.google.com/identity/protocols/oauth2/openid-connect) and take note of the `client_id` and `client_secret`
 
