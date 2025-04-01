@@ -17,8 +17,8 @@ base: predist
 	mkdir -p dist
 	mkdir -p dist/docs
 	mkdir -p dist/_static
-	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#' > dist/index.html
-	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#' > dist/docs/index.html
+	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
+	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
 	cp -R static/* dist/${PREFIX}/
 	cp -R content/_static/* dist/_static/
 
@@ -31,7 +31,7 @@ dist: base
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
-	@cat 404.html.tmpl | sed -e 's#@@BASE@@#/${PREFIX}#' -e 's#@@VARIANT@@#${VARIANT}#' > dist/docs/${VARIANT}/404.html
+	@cat 404.html.tmpl | sed -e 's#@@BASE@@#/${PREFIX}#g' -e 's#@@VARIANT@@#${VARIANT}#g' > dist/docs/${VARIANT}/404.html
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
