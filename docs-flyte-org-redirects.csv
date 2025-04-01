@@ -112,3 +112,5 @@ www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.ht
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/workflow_labels_and_annotations,https://www.union.ai/docs/byoc/user-guide/core-concepts/launch-plans/defining-launch-plans/,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/basics/hello_world,https://www.union.ai/docs/flyte/user-guide/getting-started/understanding-the-code/,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/getting_started_with_workflow_development/running_a_workflow_locally,https://www.union.ai/docs/flyte/user-guide/getting-started/running-your-workflow/,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/basics/workflows,https://www.union.ai/docs/flyte/user-guide/core-concepts/workflows/standard-workflows/,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started/,TRUE,FALSE,TRUE,TRUE
