@@ -4,6 +4,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
         <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css" />
+        <link id="home_css" rel="stylesheet" href="static/css/home.css" />
         <script>
             // Set up error handler immediately
             document.addEventListener('DOMContentLoaded', function() {
@@ -19,19 +20,12 @@
                         logo.style.display = 'none';
                     };
                 };
+
+                const missingPageRef = document.querySelector('.missing-page-ref');
+                if (missingPageRef) {
+                    missingPageRef.innerHTML = "<code>" + window.location.toString() + "</code>";
+                }
             });
-
-            const css = document.getElementById('home_css');
-            css.onerror = function() {
-                console.log('Primary CSS failed to load, trying fallback');
-                this.href = 'static/css/home.css';
-
-                // Add second error handler for fallback
-                this.onerror = function() {
-                    console.error('Failed to load CSS from both paths');
-                    css.disabled = true; // Disable the stylesheet if it fails
-                };
-            };
         </script>
     </head>
     <body>
@@ -43,13 +37,20 @@
 
             <p>We are sorry, but the page you are looking for does not exist.</p>
 
+            <div class="nav">
+                <p>
+                    Please click for the closest documentation entry point:
+                </p>
+                <p class="target-link-text">
+                    <a href="@@BASE@@/@@VARIANT@@/">@@VARIANT@@</a>
+                </p>
+            </div>
+
             <p>
-                Please click here for the closest 
-                documentation entry point:
+                If you believe you have reached this page in error, please
+                report it to us:
             </p>
-            <p>
-                <a href="@@BASE@@/@@VARIANT@@/">@@BASE@@/@@VARIANT@@</a>
-            </p>
+            <p class="missing-page-ref" />
         </div>
     </body>
 </html>

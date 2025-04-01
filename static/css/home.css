@@ -22,3 +22,31 @@ H1 {
   align-items: center;
   gap: 1rem;
 }
+.target-link-text {
+  display: inline-block;
+  border: none;
+  background-color: #d97706;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+}
+
+.target-link-text A {
+  color: unset;
+  text-decoration: none;
+}
+
+.target-link-text:hover {
+  background-color: hsl(32, 99%, 60%);
+}
+
+.nav {
+  margin: 4rem 0;
+  margin-top: 6rem;
+}
