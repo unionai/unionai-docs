@@ -1,6 +1,6 @@
 ---
 title: Configuring Access to GPUs
-weight: 10
+weight: 2 
 variants: +flyte -serverless -byoc -byok
 ---
 
