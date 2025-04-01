@@ -37,4 +37,4 @@ For production use, you will need to [deploy and manage Flyte on your own cloud 
 If you prefer a managed solution, have a look at:
 
 * [Union.ai Serverless]({{< docs_home serverless>}}).
-* [Union.ai BYOC ( Bring Your Own Cloud)]({{< docs_home byoc>}}).
+* [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc>}}).
