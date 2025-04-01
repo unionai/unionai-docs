@@ -109,3 +109,4 @@ www.union.ai/_r_/flyte/en/latest/user_guide/testing,https://www.union.ai/docs/fl
 www.union.ai/_r_/flyte/en/latest/user_guide/testing/mocking_tasks,https://www.union.ai/docs/flyte/user-guide/development-cycle/testing/mocking-tasks/,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/concepts/component_architecture/flytepropeller_architecture.html,https://www.union.ai/docs/flyte/architecture/component-architecture/flytepropeller_architecture/,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html,https://www.union.ai/docs/flyte/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/
+www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/workflow_labels_and_annotations,https://www.union.ai/docs/byoc/user-guide/core-concepts/launch-plans/defining-launch-plans/,302,TRUE,FALSE,TRUE,TRUE
