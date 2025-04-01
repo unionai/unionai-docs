@@ -21,6 +21,7 @@ base: predist
 	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/docs/index.html
 	cp -R static/* dist/${PREFIX}/
 	cp -R content/_static/* dist/_static/
+	cp _redirects dist/
 
 dist: base
 	make variant VARIANT=flyte
