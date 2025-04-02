@@ -6,9 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Dolt
 
-```{eval-rst}
-.. tags:: Integration, Data, SQL, Intermediate
-```
+
 
 ```{image} https://img.shields.io/badge/Blog-Dolt-blue?style=for-the-badge
 :target: https://blog.flyte.org/upleveling-flyte-data-lineage-using-dolt

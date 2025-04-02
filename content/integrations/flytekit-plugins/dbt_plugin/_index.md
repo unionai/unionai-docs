@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # DBT
 
-```{eval-rst}
-.. tags:: Integration, Data, SQL, Intermediate
-```
+
 
 [dbt](https://www.getdbt.com/) is one of the widely-used data transformation
 tools for working with data directly in a data warehouse. It's optimized for
@@ -43,11 +41,7 @@ the correct adapter for the database that you are accessing.
 
 For example, if you are using a Postgres database you would do:
 
-```{eval-rst}
-.. prompt:: bash $
 
-   pip install dbt-postgres
-```
 
 This will install `dbt-core` and `dbt-postgres`, but not any of the other
 adapters, `dbt-redshift`, `dbt-snowflake`, or `dbt-bigquery`. See

@@ -6,9 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Pandera
 
-```{eval-rst}
-.. tags:: Integration, DataFrame, Data, Intermediate
-```
+
 
 Flytekit python natively supports {ref}`many data types <python_to_flyte_type_mapping>`,
 including a `FlyteSchema` type for

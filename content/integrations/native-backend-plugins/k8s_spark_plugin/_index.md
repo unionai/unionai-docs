@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Spark
 
-```{eval-rst}
-.. tags:: Spark, Integration, DistributedComputing, Data, Advanced
-```
+
 
 Flyte has the capability to directly execute Spark jobs on a Kubernetes Cluster.
 The cluster handles the lifecycle, initiation and termination of virtual clusters.

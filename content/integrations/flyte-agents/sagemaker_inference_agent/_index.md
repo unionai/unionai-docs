@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # AWS SageMaker Inference Agent
 
-```{eval-rst}
-.. tags:: AWS, Integration, Advanced
-```
+
 
 The AWS SageMaker inference agent allows you to deploy models, and create and trigger inference endpoints.
 You can also fully remove the SageMaker deployment.
@@ -43,10 +41,3 @@ For more information, see "[Testing agents locally](https://docs.flyte.org/en/la
 
 To enable the AWS SageMaker inference agent in your Flyte deployment, refer to the
 {ref}`AWS SageMaker inference agent setup guide <deployment-agent-setup-sagemaker-inference>`.
-
-```{toctree}
-:maxdepth: -1
-:hidden:
-
-sagemaker_inference_agent_example_usage
-```

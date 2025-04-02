@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Great Expectations
 
-```{eval-rst}
-.. tags:: Integration, Data, DataFrame, Intermediate
-```
+
 
 ```{image} https://img.shields.io/badge/Blog-Great%20Expectations-blue?style=for-the-badge
 :target: https://blog.flyte.org/data-quality-enforcement-using-great-expectations-and-flyte

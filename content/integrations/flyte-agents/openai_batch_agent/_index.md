@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # OpenAI Batch Agent
 
-```{eval-rst}
-.. tags:: Integration, Intermediate, OpenAI
-```
+
 
 The Batch API agent allows you to submit requests for asynchronous batch processing on OpenAI.
 You can provide either a JSONL file or a JSON iterator, and the agent handles the upload to OpenAI,
@@ -44,10 +42,3 @@ For more information, see "[Testing agents locally](https://docs.flyte.org/en/la
 
 To enable the OpenAI Batch agent in your Flyte deployment, refer to the
 {ref}`OpenAI Batch agent setup guide <deployment-agent-setup-openai-batch>`.
-
-```{toctree}
-:maxdepth: -1
-:hidden:
-
-openai_batch_agent_example_usage
-```

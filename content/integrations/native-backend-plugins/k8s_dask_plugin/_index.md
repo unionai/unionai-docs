@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Dask
 
-```{eval-rst}
-.. tags:: Dask, Integration, DistributedComputing, Data, Advanced
-```
+
 
 Flyte can natively execute [Dask](https://www.dask.org/) jobs on a Kubernetes Cluster,
 effortlessly managing the lifecycle of a virtual Dask cluster.

@@ -8,9 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Slurm agent
 
-```{eval-rst}
-.. tags:: Integration, HighPerformanceComputing, Advanced
-```
+
 
 ## Installation
 
@@ -39,11 +37,3 @@ To test the Slurm agent locally, create a class for the agent task that inherits
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
 To enable the Slurm agent in your Flyte deployment, see the {ref}`Slurm agent deployment guide<deployment-agent-setup-slurm>`.
-
-
-```{toctree}
-:maxdepth: -1
-:hidden:
-
-slurm_agent_example_usage
-```

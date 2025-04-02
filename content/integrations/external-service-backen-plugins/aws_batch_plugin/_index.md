@@ -6,9 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # AWS Batch
 
-```{eval-rst}
-.. tags:: Data, Integration, AWS, Advanced
-```
+
 
 ## Executing Batch Job
 
@@ -20,11 +18,7 @@ This section provides a guide on how to use the AWS Batch Plugin using flytekit 
 
 To use the flytekit batch plugin simply run the following:
 
-```{eval-rst}
-.. prompt:: bash
 
-    pip install flytekitplugins-awsbatch
-```
 
 ### Configuring the backend to get AWS Batch working
 

@@ -27,10 +27,10 @@ This plugin has two components:
 ## Example usage
 
 > [!NOTE]
-> 
+>
 > You don't need an Airflow cluster to run Airflow tasks, since flytekit will
 > automatically compile Airflow tasks to Flyte tasks and execute them on the Airflow agent.
-> 
+>
 
 For a usage example, see {doc}`Airflow agent example usage<airflow_agent_example_usage>`.
 
@@ -41,9 +41,9 @@ which enables you to test Airflow tasks locally in flytekit's local execution mo
 
 
 > [!NOTE]
-> 
+>
 > In some cases, you will need to store credentials in your local environment when testing locally.
-> 
+>
 
 ## Flyte deployment configuration
 
@@ -52,8 +52,3 @@ which enables you to test Airflow tasks locally in flytekit's local execution mo
 
 To enable the Airflow agent in your Flyte deployment, see the {ref}`Airflow agent deployment guide<deployment-agent-setup-airflow>`.
 
-```{toctree}
-:maxdepth: -1
-:hidden:
-airflow_agent_example_usage
-```
