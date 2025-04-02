@@ -1,5 +1,5 @@
 ---
-title:
+title: Slurm agent
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
