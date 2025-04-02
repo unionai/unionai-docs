@@ -11,14 +11,6 @@ sidebar_expanded: true
 This section provides tutorials that walk you through the process of building AI/ML applications on {{< key product_name >}}.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
-{{< variant flyte >}}
-{{< grid >}}
-
-{{< link-card target="" icon="" title="" >}}
-{{< /link-card >}}
-
-{{< /grid >}}
-{{< /variant>}}
 {{< variant serverless byoc byok >}}
 {{< grid >}}
 
