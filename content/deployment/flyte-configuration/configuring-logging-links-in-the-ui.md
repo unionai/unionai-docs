@@ -1,5 +1,5 @@
 ---
-title: Configuring logging links in the UI
+title: Logging links in the UI
 weight: 3 
 variants: +flyte -serverless -byoc -byok
 ---
