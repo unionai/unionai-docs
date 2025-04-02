@@ -1,5 +1,5 @@
 ---
-title: Configure cloud events
+title: Cloud events
 weight: 6
 variants: +flyte -serverless -byoc -byok
 mermaid: true

@@ -1,5 +1,5 @@
 ---
-title: Configuring authentication
+title: Authentication
 weight: 1
 variants: +flyte -serverless -byoc -byok
 mermaid: true

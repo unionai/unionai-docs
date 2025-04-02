@@ -1,5 +1,5 @@
 ---
-title: Configure platform events
+title: Platform events
 weight: 8
 variants: +flyte -serverless -byoc -byok
 ---
@@ -50,7 +50,7 @@ cloud_events.yaml: |
       topicName: my-topic
     type: gcp
 ```  
- 
+
 ### Helm configuration
 
 There should already be a section for this in the ``values.yaml`` file.

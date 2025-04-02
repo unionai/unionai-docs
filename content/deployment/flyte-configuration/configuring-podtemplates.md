@@ -1,5 +1,5 @@
 ---
-title: Configuring Pod Templates
+title: Using Pod Templates
 weight: 5
 variants: +flyte -serverless -byoc -byok
 mermaid: true

@@ -1,5 +1,5 @@
 ---
-title: Performance optimization
+title: Optimizing performance
 weight: 10
 variants: +flyte -serverless -byoc -byok
 ---

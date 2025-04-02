@@ -1,5 +1,5 @@
 ---
-title: Configuring monitoring
+title: Monitoring
 weight: 2 
 variants: +flyte -serverless -byoc -byok
 ---
