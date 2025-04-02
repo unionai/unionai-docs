@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css?v=@@BUILD@@" />
+        <script>
+            // Set up error handler immediately
+            document.addEventListener('DOMContentLoaded', function() {
+                const logo = document.getElementById('logo');
+                logo.onerror = function() {
+                    // If main logo fails, try fallback path
+                    console.log('Primary logo failed to load, trying fallback');
+                    this.src = 'static/images/icon-logo.svg';
+
+                    // Add second error handler for fallback
+                    this.onerror = function() {
+                        console.error('Failed to load logo image from both paths');
+                        logo.style.display = 'none';
+                    };
+                };
+
+                const missingPageRef = document.querySelector('.missing-page-ref');
+                if (missingPageRef) {
+                    missingPageRef.innerHTML = "<code>" + window.location.toString() + "</code>";
+                }
+
+                const legacyLink = new URL(window.location);
+                legacyLink.hostname = 'docs-legacy.flyte.org';
+                legacyLink.pathname = legacyLink.pathname.replace('/docs/flyte/', '/en/latest/');
+                if (legacyLink.pathname.endsWith('/')) {
+                    legacyLink.pathname = legacyLink.pathname.slice(0, -1) + '.html';
+                }
+
+                const legacyLinkElement = document.getElementById('legacy_link');
+                if (legacyLinkElement) {
+                    legacyLinkElement.href = legacyLink.toString();
+                    legacyLinkElement.innerHTML = legacyLink.toString();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
+                404 - Page Not Found
+            </h1>
+
+            <p>We are sorry, but the page you are looking for does not exist.</p>
+
+            <div class="nav">
+                <p>
+                    Please click for the closest documentation entry point:
+                </p>
+                <p class="target-link-text">
+                    <a href="@@BASE@@/@@VARIANT@@/">@@VARIANT@@</a>
+                </p>
+            </div>
+
+            <div class="warn">
+                <div class="title">
+                    Migration To New Documentation Site
+                </div>
+                <div class="content">
+                    <p>
+                        The documentation site has been migrated to a new
+                        platform. In the meantime, you can find the old
+                        documentation at the following link:
+                    </p>
+                    <p>
+                        <a id="legacy_link" href="https://docs-legacy.flyte.org/en/latest/">
+                            https://docs-legacy.flyte.org/en/latest/
+                        </a>
+                    </p>
+                    <p>
+                        We are working hard to bring all the content to the new
+                        site. If you are looking for something specific, please
+                        reach out to us on Slack or GitHub.
+                    </p>
+                </div>
+            </div>
+
+            <p>
+                If you believe you have reached this page in error, please
+                report it to us:
+            </p>
+            <p class="missing-page-ref" />
+        </div>
+    </body>
+</html>
+

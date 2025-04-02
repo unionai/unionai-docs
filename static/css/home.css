@@ -47,6 +47,21 @@ H1 {
 }
 
 .nav {
-  margin: 4rem 0;
-  margin-top: 6rem;
+  margin: 2rem 0;
+}
+
+.warn {
+  border: 1px solid #d97706;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.warn .title {
+  background-color: #d97706;
+  color: white;
+  padding: 0.5rem;
+}
+
+.warn .content {
+  padding: 1rem;
 }
