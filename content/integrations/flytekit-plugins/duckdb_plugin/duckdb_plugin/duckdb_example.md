@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flytekit-plugins/duckdb_plugin/duckdb_plugin/duckdb_example.py

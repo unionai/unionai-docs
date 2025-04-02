@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flytekit-plugins/pandera_plugin/pandera_plugin/basic_schema_example.py

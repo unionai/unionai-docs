@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/deprecated-integrations/snowflake_plugin/snowflake_plugin/snowflake_plugin_example.py

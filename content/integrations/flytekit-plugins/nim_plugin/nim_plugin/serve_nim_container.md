@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flytekit-plugins/nim_plugin/nim_plugin/serve_nim_container.py

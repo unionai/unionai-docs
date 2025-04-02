@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/deprecated-integrations/databricks_plugin/databricks_plugin/databricks_plugin_example.py

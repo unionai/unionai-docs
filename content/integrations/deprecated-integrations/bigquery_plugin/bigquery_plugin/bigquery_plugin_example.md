@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/deprecated-integrations/bigquery_plugin/bigquery_plugin/bigquery_plugin_example.py

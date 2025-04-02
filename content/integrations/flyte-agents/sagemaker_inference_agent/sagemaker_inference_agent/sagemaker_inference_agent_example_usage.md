@@ -1,0 +1,1 @@
+Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flyte-agents/sagemaker_inference_agent/sagemaker_inference_agent/sagemaker_inference_agent_example_usage.py
