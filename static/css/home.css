@@ -43,7 +43,7 @@ H1 {
 }
 
 .target-link-text:hover {
-  background-color: hsl(32, 99%, 60%);
+  background-color: #fea034;
 }
 
 .nav {
@@ -53,15 +53,29 @@ H1 {
 .warn {
   border: 1px solid #d97706;
   margin-bottom: 2rem;
-  opacity: 0.8;
+  margin: 0 4rem;
 }
 
 .warn .title {
-  background-color: #d97706;
   color: white;
-  padding: 0.5rem;
+  padding: 0.75rem;
+  background-image: linear-gradient(45deg, #fea034 25%, #d97706 25%, #d97706 50%, #fea034 50%, #fea034 75%, #d97706 75%, #d97706 100%);
+  background-size: 56.57px 56.57px;
+}
+
+.warn .title span {
+  background-color: white;
+  padding: 0.25rem 1rem;
+  color: black;
+  border-radius: 20px;
 }
 
 .warn .content {
   padding: 1rem;
+}
+
+footer {
+  margin-top: 3rem;
+  font-size: 0.875rem;
+  color: gray;
 }
