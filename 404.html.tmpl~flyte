@@ -32,10 +32,23 @@
                     legacyLink.pathname = legacyLink.pathname.slice(0, -1) + '.html';
                 }
 
+                const legacyLink2 = new URL(window.location);
+                legacyLink2.hostname = 'docs-legacy.flyte.org';
+                legacyLink2.pathname = legacyLink2.pathname.replace('/docs/flyte/', '/en/latest/');
+                if (legacyLink2.pathname.endsWith('/')) {
+                    legacyLink2.pathname = legacyLink2.pathname + 'index.html';
+                }
+
                 const legacyLinkElement = document.getElementById('legacy_link');
                 if (legacyLinkElement) {
                     legacyLinkElement.href = legacyLink.toString();
                     legacyLinkElement.innerHTML = legacyLink.toString();
+                }
+
+                const legacyLinkElement2 = document.getElementById('legacy_link_2');
+                if (legacyLinkElement2) {
+                    legacyLinkElement2.href = legacyLink2.toString();
+                    legacyLinkElement2.innerHTML = legacyLink2.toString();
                 }
             });
         </script>
@@ -70,6 +83,15 @@
                     </p>
                     <p>
                         <a id="legacy_link" href="https://docs-legacy.flyte.org/en/latest/">
+                            https://docs-legacy.flyte.org/en/latest/
+                        </a>
+                    </p>
+                    <p>
+                        In case the link above does not work, it could be a subsite or section,
+                        then try:
+                    </p>
+                    <p>
+                        <a id="legacy_link_2" href="https://docs-legacy.flyte.org/en/latest/">
                             https://docs-legacy.flyte.org/en/latest/
                         </a>
                     </p>
