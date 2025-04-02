@@ -1,5 +1,5 @@
 ---
-title: Configuring backend (K8s) plugins
+title: Backend (K8s) plugins
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
