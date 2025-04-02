@@ -1,6 +1,7 @@
 ---
-title: Configuration guide
+title: Platform configuration
 variants: +flyte -serverless -byoc -byok
+weight: 2
 sidebar_expanded: true
 ---
 
