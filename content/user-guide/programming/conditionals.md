@@ -279,49 +279,49 @@ def noop_in_conditional(radius: float, seed: int = 5) -> float:
 To run the provided workflows on the Flyte cluster, use the following commands:
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     shape_properties --radius 3.0
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     shape_properties_with_multiple_branches --radius 11.0
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     shape_properties_accept_conditional_output --radius 0.5
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     boolean_wf
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     boolean_input_wf --boolean_input
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     nested_conditions --radius 0.7
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     consume_task_output --radius 0.4 --seed 7
 ```
 
 ```shell
-$ pyflyte run --remote \
+$ {{<key cli>}} run --remote \
     https://raw.githubusercontent.com/flyteorg/flytesnacks/656e63d1c8dded3e9e7161c7af6425e9fcd43f56/examples/advanced_composition/advanced_composition/conditional.py \
     noop_in_conditional --radius 0.4 --seed 5
 ```
