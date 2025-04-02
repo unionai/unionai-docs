@@ -2,7 +2,7 @@ PREFIX := docs
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev
+.PHONY: all dist variant dev update-examples sync-examples
 
 all: usage
 
@@ -44,3 +44,9 @@ serve:
 	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
 	echo "Open browser @ http://localhost:${PORT}"
 	cd dist; python3 -m http.server ${PORT}
+
+update-examples:
+	git submodule update --remote
+
+init-examples:
+	git submodule update --init
