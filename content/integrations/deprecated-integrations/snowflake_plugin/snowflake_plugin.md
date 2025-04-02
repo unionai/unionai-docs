@@ -8,11 +8,10 @@ variants: +flyte -serverless -byoc -byok
 
 # Snowflake plugin
 
-```{note}
-
-This is a legacy implementation of the Snowflake integration. We recommend using the {ref}`Snowflake agent <snowflake_agent>` instead.
-
-```
+> [!NOTE]
+> 
+> This is a legacy implementation of the Snowflake integration. We recommend using the {ref}`Snowflake agent <snowflake_agent>` instead.
+> 
 
 ## Installation
 

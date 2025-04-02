@@ -34,9 +34,8 @@ pip install flytekitplugins-inference
 
 For a usage example, see {doc}`NIM example usage <serve_nim_container>`.
 
-```{note}
-NIM can only be run in a Flyte cluster as it must be deployed as a sidecar service in a Kubernetes pod.
-```
+> [!NOTE]
+> NIM can only be run in a Flyte cluster as it must be deployed as a sidecar service in a Kubernetes pod.
 
 ```{toctree}
 :maxdepth: -1

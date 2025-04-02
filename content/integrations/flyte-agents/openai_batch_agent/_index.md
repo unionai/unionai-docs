@@ -39,9 +39,8 @@ For more information, see "[Testing agents locally](https://docs.flyte.org/en/la
 
 ## Flyte deployment configuration
 
-```{note}
-If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
-```
+> [!NOTE]
+> If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
 To enable the OpenAI Batch agent in your Flyte deployment, refer to the
 {ref}`OpenAI Batch agent setup guide <deployment-agent-setup-openai-batch>`.

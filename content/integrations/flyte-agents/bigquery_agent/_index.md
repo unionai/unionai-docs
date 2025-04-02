@@ -28,17 +28,15 @@ For an example query, see {doc}`BigQuery agent example usage<bigquery_agent_exam
 
 To test the BigQuery agent locally, create a class for the agent task that inherits from [AsyncAgentExecutorMixin](https://github.com/flyteorg/flytekit/blob/master/flytekit/extend/backend/base_agent.py#L262). This mixin can handle asynchronous tasks and allows flytekit to mimic FlytePropeller's behavior in calling the agent. For more information, see "[Testing agents locally](https://docs.flyte.org/en/latest/flyte_agents/testing_agents_in_a_local_python_environment.html)".
 
-```{note}
-
-In some cases, you will need to store credentials in your local environment when testing locally.
-
-```
+> [!NOTE]
+> 
+> In some cases, you will need to store credentials in your local environment when testing locally.
+> 
 
 ## Flyte deployment configuration
 
-```{note}
-If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
-```
+> [!NOTE]
+> If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
 To enable the BigQuery agent in your Flyte deployment, see the {ref}`BigQuery agent deployment guide<deployment-agent-setup-bigquery>`.
 

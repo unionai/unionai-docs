@@ -27,9 +27,8 @@ pyflyte run --remote \
 
 ## Deployment configuration
 
-```{note}
-If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
-```
+> [!NOTE]
+> If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
 To enable the sensor agent in your Flyte deployment, see the {ref}`sensor agent deployment guide<deployment-agent-setup-sensor>`.
 
