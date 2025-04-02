@@ -117,7 +117,7 @@ browser.
 8. Configure Mobile/Desktop Flow (for flytectl):
    * Go to the Authentication tab, and click + Add a platform.
    * Select Mobile and desktop applications.
-   * Add following URI: ``http://localhost:53593/callback``
+   * Add following URI: `http://localhost:53593/callback`
    * Scroll down to Advanced settings and enable Allow public client flows.
 
 For further reference, check out the official [Entra ID Docs](https://docs.microsoft.com/en-us/power-apps/maker/portals/configure/configure-openid-settings) on how to configure the IdP for OpenIDConnect.
@@ -320,29 +320,28 @@ Okta's custom authorization servers are available through an add-on license. The
 
 1. From the left-hand menu, go to **Security** > **API**
 2. Click on **Add Authorization Server**.
-3. Assign an informative name and set the audience to the public URL of FlyteAdmin (e.g. https://example.foobar.com).
-> The audience must exactly match one of the URIs in the `authorizedUris` section above.
-4. Note down the **Issuer URI**; this will be used for all the ``baseUrl`` settings in the Flyte config.
+3. Assign an informative name and set the audience to the public URL of FlyteAdmin (e.g. https://example.foobar.com). The audience must exactly match one of the URIs in the `authorizedUris` section above.
+4. Note down the **Issuer URI**; this will be used for all the `baseUrl` settings in the Flyte config.
 5. Go to **Scopes** and click **Add Scope**.
-6. Set the name to ``all`` (required) and check ``Required`` under the **User consent** option.
+6. Set the name to `all` (required) and check `Required` under the **User consent** option.
 7. Uncheck the **Block services from requesting this scope** option and save your changes.
-8. Add another scope, named ``offline``. Check both the **Required** and **Include in public metadata** options.
+8. Add another scope, named `offline`. Check both the **Required** and **Include in public metadata** options.
 9. Uncheck the **Block services from requesting this scope** option.
 10. Click **Save**.
-11. Go to  **Access Policies**, click **Add New Access Policy**. Enter a name and description and enable **Assign to** -  ``All clients``.
+11. Go to  **Access Policies**, click **Add New Access Policy**. Enter a name and description and enable **Assign to** -  `All clients`.
 12. Add a rule to the policy with the default settings (you can fine-tune these later).
 13. Navigate back to the **Applications** section.
-14. Create an integration for ``flytectl``; it should be created with the **OIDC - OpenID Connect** sign-on method, and the **Native Application** type.
-15. Add ``http://localhost:53593/callback`` to the sign-in redirect URIs. The other options can remain as default.
-16. Assign this integration to any Okta users or groups who should be able to use the ``flytectl`` tool.
+14. Create an integration for `flytectl`; it should be created with the **OIDC - OpenID Connect** sign-on method, and the **Native Application** type.
+15. Add `http://localhost:53593/callback` to the sign-in redirect URIs. The other options can remain as default.
+16. Assign this integration to any Okta users or groups who should be able to use the `flytectl` tool.
 17. Note down the **Client ID**; there will not be a secret.
-18. Create an integration for ``flytepropeller``; it should be created with the **OIDC - OpenID Connect** sign-on method and **Web Application** type.
-19. Check the ``Client Credentials`` option under **Client acting on behalf of itself**.
+18. Create an integration for `flytepropeller`; it should be created with the **OIDC - OpenID Connect** sign-on method and **Web Application** type.
+19. Check the `Client Credentials` option under **Client acting on behalf of itself**.
 20. This app does not need a specific redirect URI; nor does it need to be assigned to any users.
 21. Note down the **Client ID** and **Client secret**; you will need these later.
 22. Take note of the **Issuer URI** for your Authorization Server. It will be used as the baseURL parameter in the Helm chart
 
-You should have three integrations total - one for the web interface (``flyteconsole``), one for ``flytectl``, and one for ``flytepropeller``.
+You should have three integrations total - one for the web interface (`flyteconsole`), one for `flytectl`, and one for `flytepropeller`.
 
 ### Keycloak
 
@@ -364,7 +363,7 @@ You should have three integrations total - one for the web interface (``flytecon
 7. Navigate to tab **Certificates & secrets**, click `+New client secret` to create `<client secret>`
 8. Navigate to tab **Token configuration**, click `+Add optional claim` and create email claims for both ID and Access Token
 9.  Navigate to tab **API permissions**, add `email`, `offline_access`, `openid`, `profile`, `User.Read`
-10. Navigate to tab **Expose an API**, Click `+Add a scope`` and `+Add a client application` to create `<custom scope>`.
+10. Navigate to tab **Expose an API**, Click `+Add a scope` and `+Add a client application` to create `<custom scope>`.
 
 ### Apply the external auth server configuration to Flyte
 
@@ -373,7 +372,7 @@ Follow the steps in this section to configure `flyteadmin` to use an external au
 #### flyte-binary
 
 1. Go to the values YAML file you used to install Flyte
-2. Find the ``auth`` section and follow the inline comments to insert your configuration:
+2. Find the `auth` section and follow the inline comments to insert your configuration:
 
 ```yaml
 
@@ -399,7 +398,7 @@ auth:
   - https://<your-flyte-deployment-URL>
 ```
 
-3. Find the ``inline`` section of the values file and add the following content, replacing where needed:
+3. Find the `inline` section of the values file and add the following content, replacing where needed:
 
 ```yaml
 
@@ -445,9 +444,9 @@ inline:
 
 #### flyte-core
 
-1. Find the ``auth`` section in your Helm values file, and replace the necessary data:
+1. Find the `auth` section in your Helm values file, and replace the necessary data:
 
-> If you were previously using the internal auth server, make sure to delete all the ``selfAuthServer`` section from your values file
+> If you were previously using the internal auth server, make sure to delete all the `selfAuthServer` section from your values file
 
 ```yaml
 
@@ -604,7 +603,7 @@ A succesful response here it's a link with an authorization code you can use in 
 
 ## Disable Helm secret management
 
-You can instruct Helm not to create and manage the secret for ``flytepropeller``. In that case, you'll have to create it following these steps:
+You can instruct Helm not to create and manage the secret for `flytepropeller`. In that case, you'll have to create it following these steps:
 
 
 1. Disable Helm secrets management in your values file
@@ -632,7 +631,7 @@ You can instruct Helm not to create and manage the secret for ``flytepropeller``
   # Replace with the client_secret provided by your IdP for flytepropeller.
      client_secret: <client_secret>
 ```
-`flytepropeller` then will mount this secret. 
+`flytepropeller` then will mount this secret.
 
 ## Continuous Integration - CI
 
@@ -648,9 +647,9 @@ Flytekit configuration variables are automatically designed to look up values fr
 However, to aid with continuous integration use-cases, Flytekit configuration can also reference other environment variables.
 
 For instance, if your CI system is not capable of setting custom environment variables like
-``FLYTE_CREDENTIALS_CLIENT_SECRET`` but does set the necessary settings under a different variable, you may use
-``export FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_ENV_VAR=OTHER_ENV_VARIABLE`` to redirect the lookup. 
-Also, ``FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_FILE`` redirect is available as well, where the value should be the full path to the file containing the value for the configuration setting, in this case, the client secret. 
+`FLYTE_CREDENTIALS_CLIENT_SECRET` but does set the necessary settings under a different variable, you may use
+`export FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_ENV_VAR=OTHER_ENV_VARIABLE` to redirect the lookup.
+Also, `FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_FILE` redirect is available as well, where the value should be the full path to the file containing the value for the configuration setting, in this case, the client secret.
 
 The following is a list of flytekit configuration values the community has used in CI, along with a brief explanation:
 
@@ -668,7 +667,7 @@ export FLYTE_CREDENTIALS_AUTH_MODE=basic
 # on the Admin side.
 export FLYTE_CREDENTIALS_AUTHORIZATION_METADATA_KEY=<header name>
 
-# When using basic authentication, you'll need to specify a scope to the IDP (instead of ``openid``, which is
+# When using basic authentication, you'll need to specify a scope to the IDP (instead of `openid`, which is
 # only for OAuth). Set that here.
 export FLYTE_CREDENTIALS_OAUTH_SCOPES=<idp defined scopes>
 
