@@ -21,19 +21,19 @@ With Flytekit, you can compose PySpark code natively as a task.
 The Spark cluster will be automatically configured using the specified Spark configuration.
 The examples provided in this section offer a hands-on tutorial for writing PySpark tasks.
 
-> [!NOTE]
-> This plugin has been rigorously tested at scale, successfully managing more than 100,000 Spark Jobs through Flyte at Lyft.
-> However, please bear in mind that this functionality requires a significant Kubernetes capacity and meticulous configuration.
->
-> For optimal results, we highly recommend adopting the
-> [multi-cluster mode](https://docs.flyte.org/en/latest/deployment/configuration/performance.html#multi-cluster-mode).
-> Additionally, consider enabling {ref}`resource quotas <deployment-configuration-general>`
-> for Spark Jobs that are both large in scale and executed frequently.
->
-> Nonetheless, it is important to note that extremely short-duration jobs might not be the best fit for this setup.
-> In such cases, utilizing a pre-spawned cluster could be more advantageous.
-> A job can be considered "short" if its runtime is less than 2 to 3 minutes.
-> In these situations, the cost of initializing pods might outweigh the actual execution cost.
+[!NOTE]
+This plugin has been rigorously tested at scale, successfully managing more than 100,000 Spark Jobs through Flyte at Lyft.
+However, please bear in mind that this functionality requires a significant Kubernetes capacity and meticulous configuration.
+
+For optimal results, we highly recommend adopting the
+[multi-cluster mode](https://docs.flyte.org/en/latest/deployment/configuration/performance.html#multi-cluster-mode).
+Additionally, consider enabling {ref}`resource quotas <deployment-configuration-general>`
+for Spark Jobs that are both large in scale and executed frequently.
+
+Nonetheless, it is important to note that extremely short-duration jobs might not be the best fit for this setup.
+In such cases, utilizing a pre-spawned cluster could be more advantageous.
+A job can be considered "short" if its runtime is less than 2 to 3 minutes.
+In these situations, the cost of initializing pods might outweigh the actual execution cost.
 
 
 ## Why use Kubernetes Spark?

@@ -1,5 +1,5 @@
 ---
-title:
+title: Weights and Biases Example
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

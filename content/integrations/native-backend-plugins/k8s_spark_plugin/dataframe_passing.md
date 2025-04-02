@@ -1,5 +1,5 @@
 ---
-title:
+title: Converting a Spark DataFrame to a Pandas DataFrame
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

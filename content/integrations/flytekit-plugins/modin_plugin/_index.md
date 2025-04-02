@@ -1,14 +1,10 @@
 ---
-title:
+title: Modin
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(modin-integration)=
-
 # Modin
-
-
 
 Modin is a pandas-accelerator that helps handle large datasets.
 Pandas works gracefully with small datasets since it is inherently single-threaded, and designed to work on a single CPU core.
@@ -19,8 +15,8 @@ Instead of optimizing pandas workflows for a specific setup, we can speed up pan
 
 ## Installation
 
-```bash
-pip install flytekitplugins-modin
+```shell
+$ pip install flytekitplugins-modin
 ```
 
 ## How is Modin different?

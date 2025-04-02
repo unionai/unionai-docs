@@ -1,19 +1,10 @@
 ---
-title:
+title: Great Expectations
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(great-expectations)=
-
 # Great Expectations
-
-
-
-```{image} https://img.shields.io/badge/Blog-Great%20Expectations-blue?style=for-the-badge
-:target: https://blog.flyte.org/data-quality-enforcement-using-great-expectations-and-flyte
-:alt: Great Expectations Blog Post
-```
 
 **Great Expectations** is a Python-based open-source library for validating, documenting, and profiling your data.
 It helps maintain data quality and improve communication about data between teams.
@@ -52,7 +43,7 @@ If the data validation fails, the plugin will raise a `GreatExpectationsValidati
 
 For example, this is how the error message looks on the Flyte UI:
 
-```bash
+```shell
 Traceback (most recent call last):
 ...
 great_expectations.marshmallow__shade.exceptions.ValidationError: Validation failed!
@@ -110,5 +101,5 @@ $  pip install flytekitplugins-great_expectations
 ```
 
 > [!NOTE]
-> Make sure to run workflows from the "flytekit_plugins" directory.
+> Make sure to run workflows from the `flytekit_plugins` directory.
 

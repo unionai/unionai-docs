@@ -1,5 +1,5 @@
 ---
-title:
+title: Use PyTorch Lightning to Train an MNIST Autoencoder
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

@@ -1,5 +1,5 @@
 ---
-title:
+title: FlyteOperator Example
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

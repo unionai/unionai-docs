@@ -1,5 +1,5 @@
 ---
-title:
+title: Running a Spark Task
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

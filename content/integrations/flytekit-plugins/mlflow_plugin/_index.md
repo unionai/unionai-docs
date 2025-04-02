@@ -1,14 +1,10 @@
 ---
-title:
+title: MLFlow
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(mlflow)=
-
 # MLFlow
-
-
 
 The MLflow Tracking component is an API and UI for logging parameters,
 code versions, metrics, and output files when running your machine learning code and for later visualizing the results
@@ -42,9 +38,5 @@ plugins:
     - MLFLOW_TRACKING_URI: postgresql+psycopg2://postgres:@postgres.flyte.svc.cluster.local:5432/flyteadmin
 ```
 
-:::{figure} https://raw.githubusercontent.com/flyteorg/static-resources/f4b53a550bed70d9d7722d523e0b7568b781fc7d/flytesnacks/integrations/mlflow/server.png
-:alt: MLflow UI
-:class: with-shadow
-:::
-
+![MLflow UI](https://raw.githubusercontent.com/flyteorg/static-resources/f4b53a550bed70d9d7722d523e0b7568b781fc7d/flytesnacks/integrations/mlflow/server.png)
 

@@ -1,21 +1,17 @@
 ---
-title:
+title: Comet ML
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(comet_ml)=
-
 # Comet ML
-
-
 
 Comet’s machine learning platform integrates with your existing infrastructure and tools so you can manage, visualize, and optimize models from training runs to production monitoring. This plugin integrates Flyte with Comet by configuring links between the two platforms.
 
 To install the plugin, run:
 
-```bash
-pip install flytekitplugins-comet-ml
+```shell
+$ pip install flytekitplugins-comet-ml
 ```
 
 Comet requires an API key to authenticate with their platform. In the above example, a secret is created using
@@ -34,5 +30,3 @@ plugins:
           displayName: Comet
           templateUris: "{{ .taskConfig.host }}/{{ .taskConfig.workspace }}/{{ .taskConfig.project_name }}/{{ .taskConfig.experiment_key }}"
 ```
-
-

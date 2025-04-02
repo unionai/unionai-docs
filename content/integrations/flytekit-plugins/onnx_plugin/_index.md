@@ -1,5 +1,5 @@
 ---
-title:
+title: ONNX
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
@@ -26,8 +26,6 @@ This plugin enables the conversion from scikitlearn models to ONNX models.
 {{< /tab >}}
 {{< tab TensorFlow >}}
 {{< markdown >}}
-
-
 
 ```shell
 $ pip install flytekitplugins-onnxtensorflow

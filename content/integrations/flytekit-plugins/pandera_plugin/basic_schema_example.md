@@ -1,5 +1,5 @@
 ---
-title:
+title: Basic Schema Example
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

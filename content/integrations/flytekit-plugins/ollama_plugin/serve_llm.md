@@ -1,5 +1,5 @@
 ---
-title:
+title: Serve LLMs with Ollama
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

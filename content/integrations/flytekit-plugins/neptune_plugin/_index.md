@@ -1,14 +1,10 @@
 ---
-title:
+title: Neptune plugin
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(neptune_plugin)=
-
 # Neptune plugin
-
-
 
 [Neptune](https://neptune.ai/) is an experiment tracker for large-scale model training. It allows AI researchers to monitor their model training in real time, visualize and compare experiments, and collaborate on them with a team. This plugin enables seamless use of Neptune within Flyte by configuring links between the two platforms. You can find more information about how to use Neptune in their [documentation](https://docs.neptune.ai/).
 
@@ -16,13 +12,13 @@ variants: +flyte -serverless -byoc -byok
 
 To install the Flyte Neptune plugin, run the following command:
 
-```bash
-pip install flytekitplugins-neptune
+```shell
+$ pip install flytekitplugins-neptune
 ```
 
 ## Example usage
 
-For a usage example, see the {doc}`Neptune example <neptune_example>`.
+For a usage example, see the [Neptune example](./neptune_example).
 
 ## Local testing
 

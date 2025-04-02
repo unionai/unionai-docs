@@ -1,12 +1,10 @@
 ---
-title:
+title: WhyLogs
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
 # WhyLogs
-
-
 
 whylogs is an open source software that allows you to log and inspect differents aspects of your data and ML models.
 It creates efficient and mergeable statistical summaries of your datasets, called profiles, that have similar properties
@@ -91,14 +89,8 @@ constraints.report()
 
 In order to have the whylogs plugin installed, simply run:
 
-```bash
-pip install flytekitplugins-whylogs
+```shell
+$ pip install flytekitplugins-whylogs
 ```
 
 And you should then have it available to use on your environment!
-
-With any questions or demands, feel free to join our community [Slack].
-
-[slack]: http://join.slack.whylabs.ai/
-
-

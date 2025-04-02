@@ -1,14 +1,10 @@
 ---
-title:
+title: Dask
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(plugins-dask-k8s)=
-
 # Dask
-
-
 
 Flyte can natively execute [Dask](https://www.dask.org/) jobs on a Kubernetes Cluster,
 effortlessly managing the lifecycle of a virtual Dask cluster.

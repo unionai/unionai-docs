@@ -1,14 +1,10 @@
 ---
-title:
+title: TensorFlow Distributed
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(kftensorflow-plugin)=
-
 # TensorFlow Distributed
-
-
 
 TensorFlow operator is useful to natively run distributed TensorFlow training jobs on Flyte.
 It leverages the [Kubeflow training operator](https://github.com/kubeflow/training-operator).
@@ -17,8 +13,8 @@ It leverages the [Kubeflow training operator](https://github.com/kubeflow/traini
 
 To install the Kubeflow TensorFlow plugin, run the following command:
 
-```
-pip install flytekitplugins-kftensorflow
+```shell
+$ pip install flytekitplugins-kftensorflow
 ```
 
 To enable the plugin in the backend, follow instructions outlined in the {ref}`deployment-plugin-setup-k8s` guide.
@@ -27,9 +23,9 @@ To enable the plugin in the backend, follow instructions outlined in the {ref}`d
 
 To run the provided example on the Flyte cluster, use the following command:
 
-```
-pyflyte run --remote tf_mnist.py \
-  mnist_tensorflow_workflow
+```shell
+$ pyflyte run --remote tf_mnist.py \
+          mnist_tensorflow_workflow
 ```
 
 

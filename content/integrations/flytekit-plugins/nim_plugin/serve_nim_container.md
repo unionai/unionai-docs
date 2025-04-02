@@ -1,5 +1,5 @@
 ---
-title:
+title: Serve Generative AI Models with NIM
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

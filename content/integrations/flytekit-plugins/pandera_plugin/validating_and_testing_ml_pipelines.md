@@ -1,5 +1,5 @@
 ---
-title:
+title: Validating and Testing Machine Learning Pipelines
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

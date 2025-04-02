@@ -1,5 +1,5 @@
 ---
-title:
+title: Sqlite3
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

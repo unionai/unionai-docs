@@ -1,14 +1,10 @@
 ---
-title:
+title: NIM
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(nim_plugin)=
-
 # NIM
-
-
 
 Serve optimized model containers with NIM in a Flyte task.
 
@@ -24,13 +20,13 @@ With NIM, you can invoke the model's endpoint as if it is hosted locally, minimi
 
 To use the NIM plugin, run the following command:
 
-```
-pip install flytekitplugins-inference
+```shell
+$ pip install flytekitplugins-inference
 ```
 
 ## Example usage
 
-For a usage example, see {doc}`NIM example usage <serve_nim_container>`.
+For a usage example, see [NIM example usage](./serve_nim_container).
 
 > [!NOTE]
 > NIM can only be run in a Flyte cluster as it must be deployed as a sidecar service in a Kubernetes pod.
