@@ -1,5 +1,5 @@
 ---
-title: Troubeshootin guide
+title: Troubeshooting guide
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
