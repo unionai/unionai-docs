@@ -1,6 +1,6 @@
 ---
 title: Workflow notifications
-weight: 8
+weight: 9 
 variants: +flyte -serverless -byoc -byok
 ---
 
