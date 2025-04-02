@@ -8,6 +8,7 @@ _merge = "deep"
 show_inactive = false
 highlight_active = false
 signup_link = "https://www.union.ai/pricing"
+variant_selector_order = ["flyte", "byoc", "serverless"]
 
 [markup]
   [markup.goldmark]
@@ -27,7 +28,7 @@ byoc = "flytesnacks"
 byok = "flytesnacks"
 
 [params.key.product_full_name]
-flyte = "Flyte"
+flyte = "Flyte OSS"
 serverless = "Union.ai Serverless"
 byoc = "Union.ai BYOC"
 # byok = "Union.ai BYOK"
