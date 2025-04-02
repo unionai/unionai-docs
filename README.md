@@ -19,3 +19,6 @@ What do you want to do today?
 
 - [**Building API content**](APIS.md).
   How to automatically generate content for APIs, e.g., Python packages.
+
+- [**Redirecting URLS**](REDIRECTS.md).
+  How to send users to a new page when the content changed its location.
