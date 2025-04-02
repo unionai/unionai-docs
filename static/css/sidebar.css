@@ -77,6 +77,12 @@
   margin-right: 5px;
   transition: transform 0.3s ease;
 }
+
+[data-theme="dark"] .site-nav .chevron {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
 .site-nav .chevron.rotated {
   transform: rotate(-90deg);
 }
