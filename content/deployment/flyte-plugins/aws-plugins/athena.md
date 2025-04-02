@@ -1,6 +1,6 @@
 ---
 title: AWS Athena plugin
-weight: 1 
+weight: 2 
 variants: +flyte -serverless -byoc -byok
 ---
 
@@ -66,4 +66,4 @@ Ensure that the propeller has the correct service account for Athena.
 ```bash
       helm upgrade <RELEASE_NAME> flyteorg/<HELM_CHART> -n <YOUR_NAMESPACE> --values <YOUR_YAML_FILE>
 ```
-Replace ``<RELEASE_NAME>`` with the name of your release (e.g., ``flyte-backend``), ``<YOUR_NAMESPACE>`` with the name of your namespace (e.g., ``flyte``), <HELM_CHART> with either `flyte-binary` or `flyte-core` and ``<YOUR_YAML_FILE>`` with the name of your YAML file.
+Replace ``<RELEASE_NAME>`` with the name of your release (e.g., ``flyte-backend``), ``<YOUR_NAMESPACE>`` with the name of your namespace (e.g., ``flyte``), `<HELM_CHART>` with either `flyte-binary` or `flyte-core` and ``<YOUR_YAML_FILE>`` with the name of your YAML file.
