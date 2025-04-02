@@ -7,7 +7,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{- .Title -}} | {{- .Site.Title -}}</title>
+    <title>{{- .Title -}}&nbsp;|&nbsp;{{- .Site.Title -}}</title>
     <link rel="icon" href="{{- "images/favicon.ico" | relURL -}}?v={{- $v -}}"/>
     <link rel="stylesheet" href="{{- "css/api.css" | relURL -}}?v={{- $v -}}" />
     <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}?v={{- $v -}}" />
@@ -60,7 +60,7 @@
     <script lang="javascript" src="{{- "js/tags.js" | relURL -}}?v={{- $v -}}"></script>
     <link rel="stylesheet" href="{{- "css/responsive.css" | relURL -}}?v={{- $v -}}" />
   </head>
-  <body>
+  <body class="variant-{{ .Site.Params.variant }}">
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB6L88S" height="0" width="0" style="display:none;visibility:hidden"></iframe>

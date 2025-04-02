@@ -10,7 +10,7 @@ body > .tabs .tabs-nav {
   display: flex;
   align-items: center;
   gap: 2rem;
-  max-width: var(--content-width);
+  max-width: calc(var(--content-width) * 1.5);
 }
 
 .tab {
@@ -42,6 +42,10 @@ body > .tabs .tabs-nav {
 
 .tab.active {
   color: var(--union-color-dark);
+}
+
+.variant-flyte .tab.active {
+  color: var(--flyte-color-dark);
 }
 
 .tab.active::after {

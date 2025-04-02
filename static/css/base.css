@@ -35,13 +35,20 @@
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
 }
 
+:root .variant-flyte {
+  --union-color: #7652A2;
+  --union-color-light: #b89dd2;
+  --union-color-dark: #523a82;
+  --union-color-very-light: #c7b1dc;
+}
+
 /* Dark theme variables */
 [data-theme="dark"] {
   --primary-color: #3b82f6;
   --text-color: #cbd1d9;
-  --bg-color: #1a202c;
-  --sidebar-bg: #0f172a;
-  --border-color: #2d3748;
+  --bg-color: #121212;
+  --sidebar-bg: #191919;
+  --border-color: #282828;
   --code-bg: #2d3748;
   --pre-bg: #0f172a;
   --pre-color: #e2e8f0;
@@ -53,6 +60,14 @@
   --docsearch-primary-color: #edab1c !important;
   --docsearch-searchbox-shadow: 0 0 0 1px var(--docsearch-primary-color) !important;
 }
+
+[data-theme="dark"] .variant-flyte {
+  --union-color: #674591;
+  --union-color-light: #8566a1;
+  --union-color-dark: #432d6e;
+  --union-color-very-light: #88749a;
+}
+
 * {
   margin: 0;
   padding: 0;
