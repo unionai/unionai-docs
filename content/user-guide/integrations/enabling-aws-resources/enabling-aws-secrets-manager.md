@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS Secrets Manager
 weight: 3
-variants: +flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +byok
 ---
 
 # Enabling AWS Secrets Manager
