@@ -1,6 +1,6 @@
 ---
-title: Tutorials
-weight: 2
+title: Integrations
+weight: 6
 variants: +flyte -serverless -byoc -byok
 top_menu: true
 sidebar_expanded: true
