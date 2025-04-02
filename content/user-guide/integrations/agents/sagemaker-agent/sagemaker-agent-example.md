@@ -377,7 +377,7 @@ def sagemaker_xgboost_wf(
 # The above workflow generates a compressed model artifact that can be stored in an S3 bucket.
 # Take note of the S3 URI.
 #
-# To deploy the model on SageMaker, use the {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# To deploy the model on SageMaker, use the `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 # %%
 from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
@@ -556,7 +556,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
-# To delete the deployment, you can instantiate a {py:func}`~flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
+# To delete the deployment, you can instantiate a `flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
 # %%
 from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 
@@ -694,7 +694,7 @@ def sagemaker_xgboost_wf(
 # The above workflow generates a compressed model artifact that can be stored in an S3 bucket.
 # Take note of the S3 URI.
 #
-# To deploy the model on SageMaker, use the {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# To deploy the model on SageMaker, use the `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 # %%
 from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
@@ -748,7 +748,7 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # %% [markdown]
 # This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration
 # and initializing an endpoint. Configurations relevant to these tasks are passed to the
-# {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
 # By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
@@ -873,7 +873,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
-# To delete the deployment, you can instantiate a {py:func}`~flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
+# To delete the deployment, you can instantiate a `flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
 # %%
 from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 
@@ -1009,7 +1009,7 @@ def sagemaker_xgboost_wf(
 # The above workflow generates a compressed model artifact that can be stored in an S3 bucket.
 # Take note of the S3 URI.
 #
-# To deploy the model on SageMaker, use the {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# To deploy the model on SageMaker, use the `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 # %%
 from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
@@ -1063,7 +1063,7 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # %% [markdown]
 # This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration
 # and initializing an endpoint. Configurations relevant to these tasks are passed to the
-# {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
 # By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
@@ -1188,7 +1188,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
-# To delete the deployment, you can instantiate a {py:func}`~flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
+# To delete the deployment, you can instantiate a `flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
 # %%
 from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 
@@ -1304,7 +1304,7 @@ def sagemaker_xgboost_wf(
 # The above workflow generates a compressed model artifact that can be stored in an S3 bucket.
 # Take note of the S3 URI.
 #
-# To deploy the model on SageMaker, use the {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# To deploy the model on SageMaker, use the `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 # %%
 from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
@@ -1358,7 +1358,7 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # %% [markdown]
 # This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration
 # and initializing an endpoint. Configurations relevant to these tasks are passed to the
-# {py:func}`~flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
+# `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
 # By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
@@ -1483,7 +1483,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
 # S3 location that will be populated with the output after it's generated.
 # For instance, the inference_input file may include input like this: `[6, 148, 72, 35, 0, 33.6, 0.627, 50]`
 #
-# To delete the deployment, you can instantiate a {py:func}`~flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
+# To delete the deployment, you can instantiate a `flytekitplugins.awssagemaker_inference.delete_sagemaker_deployment` function.
 # %%
 from flytekitplugins.awssagemaker_inference import delete_sagemaker_deployment
 
