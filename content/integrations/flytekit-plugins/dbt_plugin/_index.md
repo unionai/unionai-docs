@@ -41,7 +41,6 @@ adapters, `dbt-redshift`, `dbt-snowflake`, or `dbt-bigquery`. See
 [the official installation page](https://docs.getdbt.com/docs/get-started/pip-install)
 for details.
 
-(dbt-integration-run)=
 
 ## Running the Example
 

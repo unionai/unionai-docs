@@ -30,8 +30,8 @@ By default, the `ImageSpec` will be built using the default Docker builder, but 
 {{< /markdown >}}
 {{< /variant >}}
 
-For every {py:class}`{{< key kit >}}.PythonFunctionTask` task or a task decorated with the `@task` decorator, you can specify rules for binding container images. By default, {{< key kit >}} binds a single container image, i.e.,
-the [default Docker image](https://ghcr.io/flyteorg/flytekit), to all tasks. To modify this behavior, use the `container_image` parameter available in the {py:func}`{{< key kit >}}.task` decorator, and pass an `ImageSpec` definition.
+For every `{{< key kit >}}.PythonFunctionTask` task or a task decorated with the `@task` decorator, you can specify rules for binding container images. By default, {{< key kit >}} binds a single container image, i.e.,
+the [default Docker image](https://ghcr.io/flyteorg/flytekit), to all tasks. To modify this behavior, use the `container_image` parameter available in the `{{< key kit >}}.task` decorator, and pass an `ImageSpec` definition.
 
 Before building the image, {{< key kit >}} checks the container registry to see if the image already exists. If the image does not exist, {{< key kit >}} will build the image before registering the workflow and replace the image name in the task template with the newly built image name.
 

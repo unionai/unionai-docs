@@ -39,15 +39,13 @@ Flytekit functionality. For comparison, these plugins can be thought of like
 | [Weights and Biases](</auto_examples/wandb_plugin/index>) | `wandb`: Machine learning platform to build better models faster. |
 | [WhyLogs](</auto_examples/whylogs_plugin/index>) | `whylogs`: the open standard for data logging. |
 
-:::{dropdown} {fa}`info-circle` Using Flytekit plugins
-:animate: fade-in-slide-down
+## Using Flytekit plugins
 
-Data is automatically marshalled and unmarshalled in and out of the plugin. Users should mostly implement the {py:class}`~flytekit.core.base_task.PythonTask` API defined in Flytekit.
+Data is automatically marshalled and unmarshalled in and out of the plugin. Users should mostly implement the `flytekit.core.base_task.PythonTask` API defined in Flytekit.
 
 Flytekit plugins are lazily loaded and can be released independently like libraries. The naming convention is `flytekitplugins-*`, where `*` indicates the package to be integrated into Flytekit. For example, `flytekitplugins-papermill` enables users to author Flytekit tasks using [Papermill](https://papermill.readthedocs.io/en/latest/).
 
 You can find the plugins maintained by the core Flyte team [here](https://github.com/flyteorg/flytekit/tree/master/plugins).
-:::
 
 ## Native backend plugins
 
@@ -63,7 +61,6 @@ Native backend plugins can be executed without any external service dependencies
 | [MPI Operator](</auto_examples/kfmpi_plugin/index>) | Run distributed deep learning training jobs using Horovod and MPI. |
 | [Ray](</auto_examples/ray_plugin/index>) | Run Ray jobs on a K8s Cluster. |
 
-(flyte_agents)=
 
 ## Flyte agents
 
@@ -83,7 +80,6 @@ Native backend plugins can be executed without any external service dependencies
 | [Slurm agent](</auto_examples/slurm_agent/index>) | Run Slurm jobs in your workflows with the Slurm agent. |
 | [Snowflake agent](</auto_examples/snowflake_agent/index>) | Run Snowflake jobs in your workflows with the Snowflake agent. |
 
-(external_service_backend_plugins)=
 
 ## External service backend plugins
 
@@ -96,10 +92,8 @@ As the term suggests, these plugins rely on external services to handle the work
 | [Flyte Interactive](</auto_examples/flyteinteractive_plugin/index>) | Execute tasks using Flyte Interactive to debug. |
 | [Hive](</auto_examples/hive_plugin/index>) | Run Hive jobs in your workflows. |
 
-(enable-backend-plugins)=
 
-::::{dropdown} {fa}`info-circle` Enabling backend plugins
-:animate: fade-in-slide-down
+## Enabling backend plugins
 
 To enable a backend plugin, you must add the `ID` of the plugin to the enabled plugins list. The `enabled-plugins` is available under the `tasks > task-plugins` section of FlytePropeller's configuration.
 The plugin configuration structure is defined [here](https://pkg.go.dev/github.com/flyteorg/flytepropeller@v0.6.1/pkg/controller/nodes/task/config#TaskPluginConfig). An example of the config follows:
@@ -121,11 +115,10 @@ tasks:
 
 To find the `ID` of the backend plugin, look at the source code of the plugin. For examples, in the case of Spark, the value of `ID` is used [here](https://github.com/flyteorg/flyteplugins/blob/v0.5.25/go/tasks/plugins/k8s/spark/spark.go#L424), defined as [spark](https://github.com/flyteorg/flyteplugins/blob/v0.5.25/go/tasks/plugins/k8s/spark/spark.go#L41).
 
-::::
 
 ## SDKs for writing tasks and workflows
 
-The {ref}`community <community>` would love to help you build new SDKs. Currently, the available SDKs are:
+The [Flyte community](/community) would love to help you build new SDKs. Currently, the available SDKs are:
 
 | SDK | Description |
 |-----|-------------|

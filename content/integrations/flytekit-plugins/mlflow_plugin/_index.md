@@ -15,7 +15,7 @@ First, install the Flyte MLflow plugin:
 $  pip install flytekitplugins-mlflow
 ```
 
-To log the metrics and parameters to Flyte deck, add {py:func}`@mlflow_autolog <flytekitplugins.mlflow.mlflow_autolog>` to the task. For example
+To log the metrics and parameters to Flyte deck, add `@mlflow_autolog` to the task. For example
 
 ```python
 @task(enable_deck=True)

@@ -20,9 +20,9 @@ such as Pandas dataframes, Spark dataframes, and SQL databases via SQLAlchemy.
 
 We're supporting two Flyte types that should suit Great Expectations' `Datasources`:
 
-- {py:class}`flytekit.types.file.FlyteFile`: `FlyteFile` represents an automatic persistence object in Flyte.
+- `flytekit.types.file.FlyteFile`: `FlyteFile` represents an automatic persistence object in Flyte.
   It can represent files in remote storage and Flyte transparently materializes them in every task execution.
-- {py:class}`flytekit.types.structured.StructuredDataset`: `StructuredDataset` supports pandas dataframes, which the plugin will convert into a parquet file and validate the data using Great Expectations.
+- `flytekit.types.structured.StructuredDataset`: `StructuredDataset` supports pandas dataframes, which the plugin will convert into a parquet file and validate the data using Great Expectations.
 
 > [!NOTE]
 > Flyte types are added because, in Great Expectations, we have the privilege to give a non-string (Pandas/Spark DataFrame) when using a`RuntimeDataConnector`
@@ -35,7 +35,6 @@ The datasources can be well-integrated with the plugin using the following two m
 - **Flyte Type**: A Flyte type helps attach the `GreatExpectationsType` to any dataset.
   Under the hood, `GreatExpectationsType` can be assumed as a combination of Great Expectations and Flyte types where every data is validated against the expectations, much like the OpenAPI Spec or the gRPC validator.
 
-(validation-failure)=
 
 ### Data Validation Failure
 
