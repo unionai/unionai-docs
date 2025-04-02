@@ -1,5 +1,6 @@
 PREFIX := docs
 PORT := 9000
+BUILD := $(shell date +%s)
 
 .PHONY: all dist variant dev
 
@@ -17,8 +18,8 @@ base: predist
 	mkdir -p dist
 	mkdir -p dist/docs
 	mkdir -p dist/_static
-	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/index.html
-	cat index.html | sed 's#@@BASE@@#/${PREFIX}#' > dist/docs/index.html
+	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
+	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
 	cp -R static/* dist/${PREFIX}/
 	cp -R content/_static/* dist/_static/
 
@@ -31,6 +32,7 @@ dist: base
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	@VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi

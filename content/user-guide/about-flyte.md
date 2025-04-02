@@ -21,57 +21,20 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 * Task parallelism with *map tasks*
 * Dynamic workflows created at runtime for process flexibility
 
-Flyte is open source and free to use.
 
-You can try out Flyte's technology:
+## Trying out Flyte
 
-* In the cloud with [{{< key product_name >}} Serverless](https://signup.union.ai).
-* On your machine with a [local Flyte cluster](/user-guide/development-cycle/running-in-a-local-cluster).
+You can try out Flyte in a couple ways:
 
-
-For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index).
+* To set up a local cluster on your own machine, go to [Flyte Getting started](/user-guide/getting-started).
+* To try a turn-key cloud service that includes all of Flyte plus additional features, go to [Union.ai Serverless Getting started]({{< docs_home serverless>}}/user-guide/getting-started).
 
 
-## {{< key product_name >}} Serverless
+## Flyte in production
 
-[{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
-There is zero infrastructure to manage, and you pay only for the resources you use.
-Your Data and workflow code stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
-{{< key product_name >}} Serverless provide all the features of Flyte, plus:
+For production use, you will need to [deploy and manage Flyte on your own cloud infrastructure](../deployment/_index).
 
-* Granular, task-level resource monitoring
-* Fine-grained role-based access control (RBAC)
-* Faster performance:
-    * Launch plan caching: Cache launch plans, 10-100x speed-up
-    * Optimized Propeller: more than 10 core optimizations
-    * Faster cache: Revamped caching subsystem for 10x faster performance
-    * Accelerated datasets: Retrieve repeated datasets and models more quickly
-    * Faster launch plan resolution
-    * Reusable containers (do not pay the pod spin-up penalty)
-* Interactive tasks:
-    * Edit, debug and run tasks right in the pod through VS Code in the browser
-* Artifacts discovery and lineage
-* Reactive workflows:
-    * Launch plans trigger (and kick off workflows) on artifact creation
-* Smart defaults and automatic linking
-* UI based workflow builder
+If you prefer a managed solution, have a look at:
 
-
-## {{< key product_name >}} BYOC
-
-[{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
-{{< key product_name >}} BYOC provides all the features of Flyte and {{< key product_name >}} Serverless, plus:
-
-* Accelerators and GPUs (including fractional GPUs)
-* Managed Ray and Spark
-* Multi-cluster and multi-cloud
-* Single sign-on (SSO)
-* SOC-2 Type 2 compliance
-
-
-## {{< key product_name >}} BYOK
-
-[{{< key product_name >}} BYOK]({{< docs_home byok >}}) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
-{{< key product_name >}} BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
-The control plane continues to be located in a {{< key product_name >}} AWS account and managed by {{< key product_name >}}.
-However, none of your data ever leaves your data plane, ensuring privacy and security.
+* [Union.ai Serverless]({{< docs_home serverless>}}).
+* [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc>}}).
