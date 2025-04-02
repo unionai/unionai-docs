@@ -1,1 +1,7 @@
-Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/native-backend-plugins/kftensorflow_plugin/kftensorflow_plugin/tf_mnist.py
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+layout: py_example
+example_file: /external/unionai-examples/flyte-integrations/native-backend-plugins/kftensorflow_plugin/kftensorflow_plugin/tf_mnist.py
+---

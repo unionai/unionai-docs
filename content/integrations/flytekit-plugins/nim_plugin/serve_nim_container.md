@@ -1,1 +1,7 @@
-Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flytekit-plugins/nim_plugin/nim_plugin/serve_nim_container.py
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+layout: py_example
+example_file: /external/unionai-examples/flyte-integrations/flytekit-plugins/nim_plugin/nim_plugin/serve_nim_container.py
+---

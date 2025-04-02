@@ -1,1 +1,7 @@
-Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flytekit-plugins/comet_ml_plugin/comet_ml_plugin/comet_ml_example.py
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+layout: py_example
+example_file: /external/unionai-examples/flyte-integrations/flytekit-plugins/comet_ml_plugin/comet_ml_plugin/comet_ml_example.py
+---

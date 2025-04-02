@@ -1,1 +1,7 @@
-Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/native-backend-plugins/k8s_spark_plugin/k8s_spark_plugin/pyspark_pi.py
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+layout: py_example
+example_file: /external/unionai-examples/flyte-integrations/native-backend-plugins/k8s_spark_plugin/k8s_spark_plugin/pyspark_pi.py
+---

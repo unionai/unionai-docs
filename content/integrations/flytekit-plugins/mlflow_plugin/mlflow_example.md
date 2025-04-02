@@ -1,1 +1,7 @@
-Path: /Users/ppiegaze/repos/unionai/docs-builder/content/integrations/flytekit-plugins/mlflow_plugin/mlflow_plugin/mlflow_example.py
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+layout: py_example
+example_file: /external/unionai-examples/flyte-integrations/flytekit-plugins/mlflow_plugin/mlflow_plugin/mlflow_example.py
+---

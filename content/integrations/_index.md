@@ -1,4 +1,10 @@
-(integrations)=
+---
+title: Tutorials
+weight: 2
+variants: +flyte -serverless -byoc -byok
+top_menu: true
+sidebar_expanded: true
+---
 
 # Integrations
 
