@@ -31,6 +31,8 @@
   --scrollbar-width: 1rem;
   --main-content-padding: 2rem;
   --toc-bg: var(--bg-color);
+  --docsearch-primary-color: #edab1c !important;
+  --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
 }
 
 /* Dark theme variables */
@@ -48,6 +50,8 @@
   --table-row-hover: #2d3748;
   --union-color-light: #817457;
   --union-color-very-light: #766e5e;
+  --docsearch-primary-color: #edab1c !important;
+  --docsearch-searchbox-shadow: 0 0 0 1px var(--docsearch-primary-color) !important;
 }
 * {
   margin: 0;
