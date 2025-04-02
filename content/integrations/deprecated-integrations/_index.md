@@ -1,6 +1,7 @@
 ---
-title:
+title: Deprecated integrations
 weight: 1
 variants: +flyte -serverless -byoc -byok
-top_menu: true
 ---
+
+This section covers deprecated integrations.

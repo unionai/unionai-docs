@@ -32,6 +32,4 @@ pyflyte run --remote tf_mnist.py \
   mnist_tensorflow_workflow
 ```
 
-```{auto-examples-toc}
-tf_mnist
-```
+

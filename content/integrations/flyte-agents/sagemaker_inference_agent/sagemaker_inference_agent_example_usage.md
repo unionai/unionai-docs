@@ -1,5 +1,5 @@
 ---
-title:
+title: Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

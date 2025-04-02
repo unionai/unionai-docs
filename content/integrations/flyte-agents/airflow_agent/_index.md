@@ -1,10 +1,8 @@
 ---
-title:
+title: Airflow agent
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
-
-(airflow_agent)=
 
 # Airflow agent
 
@@ -12,7 +10,9 @@ variants: +flyte -serverless -byoc -byok
 This allows you to use the Airflow plugin ecosystem in conjunction with Flyte's powerful task execution and orchestration capabilities.
 
 > [!NOTE]
-> The Airflow agent does not support all [Airflow operators](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html). We have tested many, but if you run into issues, please [file a bug report](https://github.com/flyteorg/flyte/issues/new?assignees=&labels=bug%2Cuntriaged&projects=&template=bug_report.yaml&title=%5BBUG%5D+).
+> The Airflow agent does not support all [Airflow operators](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html).
+> We have tested many, but if you run into issues,
+> please [file a bug report](https://github.com/flyteorg/flyte/issues/new?assignees=&labels=bug%2Cuntriaged&projects=&template=bug_report.yaml&title=%5BBUG%5D+).
 
 ## Installation
 
@@ -27,12 +27,8 @@ This plugin has two components:
 ## Example usage
 
 > [!NOTE]
->
 > You don't need an Airflow cluster to run Airflow tasks, since flytekit will
 > automatically compile Airflow tasks to Flyte tasks and execute them on the Airflow agent.
->
-
-For a usage example, see {doc}`Airflow agent example usage<airflow_agent_example_usage>`.
 
 ## Local testing
 
@@ -41,14 +37,12 @@ which enables you to test Airflow tasks locally in flytekit's local execution mo
 
 
 > [!NOTE]
->
 > In some cases, you will need to store credentials in your local environment when testing locally.
->
 
 ## Flyte deployment configuration
 
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the Airflow agent in your Flyte deployment, see the {ref}`Airflow agent deployment guide<deployment-agent-setup-airflow>`.
+To enable the Airflow agent in your Flyte deployment, see the [Airflow agent deployment guide](/deployment/agents/airflow).
 

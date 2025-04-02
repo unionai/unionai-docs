@@ -1,5 +1,5 @@
 ---
-title:
+title: Memory Machine Cloud agent example usage
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

@@ -29,6 +29,4 @@ Modin **scales** the Pandas workflows by changing only a **single line of code**
 
 The plugin supports the usage of Modin DataFrame as an input to and output of a task/workflow, similar to how a pandas DataFrame can be used.
 
-```{auto-examples-toc}
-knn_classifier
-```
+

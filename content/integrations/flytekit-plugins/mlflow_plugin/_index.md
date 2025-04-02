@@ -15,10 +15,8 @@ code versions, metrics, and output files when running your machine learning code
 
 First, install the Flyte MLflow plugin:
 
-```{eval-rst}
-.. prompt:: bash $
-
-    pip install flytekitplugins-mlflow
+```shell
+$  pip install flytekitplugins-mlflow
 ```
 
 To log the metrics and parameters to Flyte deck, add {py:func}`@mlflow_autolog <flytekitplugins.mlflow.mlflow_autolog>` to the task. For example
@@ -32,10 +30,8 @@ def train_model(epochs: int):
 
 To log the metric and parameters to a remote mlflow server, add default environment variable [MLFLOW_TRACKING_URI](https://mlflow.org/docs/latest/tracking.html#logging-to-a-tracking-server) to the flytepropeller config map.
 
-```{eval-rst}
-.. prompt:: bash $
-
-    kubectl edit cm flyte-propeller-config
+```shell
+$  kubectl edit cm flyte-propeller-config
 ```
 
 ```yaml
@@ -51,6 +47,4 @@ plugins:
 :class: with-shadow
 :::
 
-```{auto-examples-toc}
-mlflow_example
-```
+

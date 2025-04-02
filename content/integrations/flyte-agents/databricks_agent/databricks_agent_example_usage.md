@@ -1,5 +1,5 @@
 ---
-title:
+title: Running Spark on Databricks
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

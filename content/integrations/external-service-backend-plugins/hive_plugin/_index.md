@@ -1,12 +1,10 @@
 ---
-title:
+title: Hive
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
 # Hive
-
-
 
 Flyte backend can be connected with various hive services. Once enabled it can allow you to query a hive service (e.g. Qubole) and retrieve typed schema (optionally).
 This section will provide how to use the Hive Query Plugin using flytekit python
@@ -15,18 +13,11 @@ This section will provide how to use the Hive Query Plugin using flytekit python
 
 To use the flytekit hive plugin simply run the following:
 
-```{eval-rst}
-.. prompt:: bash
-
-    pip install flytekitplugins-hive
+```shell
+$ pip install flytekitplugins-hive
 ```
 
 ## No Need of a dockerfile
 
 This plugin is purely a spec. Since SQL is completely portable there is no need to build a Docker container.
 
-% TODO: write a subsection for "Configuring the backend to get hive working"
-
-```{auto-examples-toc}
-hive
-```

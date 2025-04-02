@@ -19,6 +19,4 @@ First, install the Memray plugin:
 pip install flytekitplugins-memray
 ```
 
-```{auto-examples-toc}
-memray_example
-```
+

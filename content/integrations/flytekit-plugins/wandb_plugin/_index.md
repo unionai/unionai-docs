@@ -19,6 +19,4 @@ First, install the Flyte Weights & Biases plugin:
 pip install flytekitplugins-wandb
 ```
 
-```{auto-examples-toc}
-wandb_example
-```
+

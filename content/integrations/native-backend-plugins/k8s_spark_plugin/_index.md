@@ -1,14 +1,10 @@
 ---
-title:
+title: Spark
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-(plugins-spark-k8s)=
-
 # Spark
-
-
 
 Flyte has the capability to directly execute Spark jobs on a Kubernetes Cluster.
 The cluster handles the lifecycle, initiation and termination of virtual clusters.
@@ -25,20 +21,20 @@ With Flytekit, you can compose PySpark code natively as a task.
 The Spark cluster will be automatically configured using the specified Spark configuration.
 The examples provided in this section offer a hands-on tutorial for writing PySpark tasks.
 
-:::{note}
-This plugin has been rigorously tested at scale, successfully managing more than 100,000 Spark Jobs through Flyte at Lyft.
-However, please bear in mind that this functionality requires a significant Kubernetes capacity and meticulous configuration.
+> [!NOTE]
+> This plugin has been rigorously tested at scale, successfully managing more than 100,000 Spark Jobs through Flyte at Lyft.
+> However, please bear in mind that this functionality requires a significant Kubernetes capacity and meticulous configuration.
+>
+> For optimal results, we highly recommend adopting the
+> [multi-cluster mode](https://docs.flyte.org/en/latest/deployment/configuration/performance.html#multi-cluster-mode).
+> Additionally, consider enabling {ref}`resource quotas <deployment-configuration-general>`
+> for Spark Jobs that are both large in scale and executed frequently.
+>
+> Nonetheless, it is important to note that extremely short-duration jobs might not be the best fit for this setup.
+> In such cases, utilizing a pre-spawned cluster could be more advantageous.
+> A job can be considered "short" if its runtime is less than 2 to 3 minutes.
+> In these situations, the cost of initializing pods might outweigh the actual execution cost.
 
-For optimal results, we highly recommend adopting the
-[multi-cluster mode](https://docs.flyte.org/en/latest/deployment/configuration/performance.html#multi-cluster-mode).
-Additionally, consider enabling {ref}`resource quotas <deployment-configuration-general>`
-for Spark Jobs that are both large in scale and executed frequently.
-
-Nonetheless, it is important to note that extremely short-duration jobs might not be the best fit for this setup.
-In such cases, utilizing a pre-spawned cluster could be more advantageous.
-A job can be considered "short" if its runtime is less than 2 to 3 minutes.
-In these situations, the cost of initializing pods might outweigh the actual execution cost.
-:::
 
 ## Why use Kubernetes Spark?
 
@@ -69,21 +65,19 @@ Flyte Spark employs the Spark on K8s operator in conjunction with a bespoke
 This plugin serves as a backend component and necessitates activation within your deployment.
 To enable it, follow the instructions outlined in the {ref}`deployment-plugin-setup-k8s` section.
 
-:::{note}
-Refer to [this guide](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/gcp.md) to use GCP instead of AWS.
-:::
+> [!NOTE]
+> Refer to [this guide](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/gcp.md) to use GCP instead of AWS.
 
 ### Step 2: Environment Setup
 
 Install `flytekitplugins-spark` using `pip` in your environment.
 
-```bash
-pip install flytekitplugins-spark
+```shell
+$ pip install flytekitplugins-spark
 ```
 
-:::{note}
-To enable Flyte to build the Docker image for you using `ImageSpec`, install `flytekitplugins-envd`.
-:::
+> [!NOTE]
+> To enable Flyte to build the Docker image for you using `ImageSpec`, install `flytekitplugins-envd`.
 
 Ensure that your Kubernetes cluster has sufficient resources available.
 Depending on the resource requirements of your Spark job across the driver and executors,
@@ -106,7 +100,7 @@ To access the Spark history UI link within the Flyte Console,
 it's necessary to configure a variable in the Spark section of the Flyteplugins configuration.
 Here's an example of how to set it up:
 
-```
+```yaml
 plugins:
   spark:
     spark-history-server-url: <root-url-forspark-history server>
@@ -176,18 +170,10 @@ For more comprehensive information, please consult the [configuration structure]
 
 To run the provided examples on the Flyte cluster, use any of the following commands:
 
-```
-pyflyte run --remote pyspark_pi.py my_spark
-```
-
-```
-pyflyte run --remote dataframe_passing.py \
-  my_smart_structured_dataset
+```shell
+$ pyflyte run --remote pyspark_pi.py my_spark
 ```
 
-(spark-examples)=
-
-```{auto-examples-toc}
-pyspark_pi
-dataframe_passing
+```shell
+$ pyflyte run --remote dataframe_passing.py my_smart_structured_dataset
 ```

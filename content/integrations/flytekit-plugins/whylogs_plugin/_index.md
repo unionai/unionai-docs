@@ -101,6 +101,4 @@ With any questions or demands, feel free to join our community [Slack].
 
 [slack]: http://join.slack.whylabs.ai/
 
-```{auto-examples-toc}
-whylogs_example
-```
+

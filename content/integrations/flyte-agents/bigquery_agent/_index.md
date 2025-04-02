@@ -1,10 +1,8 @@
 ---
-title:
+title: BigQuery agent
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
-
-(bigquery_agent)=
 
 # BigQuery agent
 
@@ -12,13 +10,11 @@ variants: +flyte -serverless -byoc -byok
 
 To install the BigQuery agent, run the following command:
 
-
-
 This agent is purely a spec. Since SQL is completely portable, there is no need to build a Docker container.
 
 ## Example usage
 
-For an example query, see {doc}`BigQuery agent example usage<bigquery_agent_example_usage>`.
+For an example query, see [BigQuery agent example usage](./bigquery_agent_example_usage)
 
 ## Local testing
 
@@ -34,5 +30,5 @@ To test the BigQuery agent locally, create a class for the agent task that inher
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the BigQuery agent in your Flyte deployment, see the {ref}`BigQuery agent deployment guide<deployment-agent-setup-bigquery>`.
+To enable the BigQuery agent in your Flyte deployment, see the [BigQuery agent deployment guide](/deployment/agents/bigquery.html#deployment-agent-setup-bigquery)
 

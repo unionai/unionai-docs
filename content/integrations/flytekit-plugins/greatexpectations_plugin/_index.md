@@ -33,15 +33,10 @@ We're supporting two Flyte types that should suit Great Expectations' `Datasourc
   It can represent files in remote storage and Flyte transparently materializes them in every task execution.
 - {py:class}`flytekit.types.structured.StructuredDataset`: `StructuredDataset` supports pandas dataframes, which the plugin will convert into a parquet file and validate the data using Great Expectations.
 
-:::{note}
-Flyte types are added because, in Great Expectations, we have the privilege to give a non-string (Pandas/Spark DataFrame) when using a
-`RuntimeDataConnector`
-but not when using an
-`InferredAssetFilesystemDataConnector`
-or a
-`ConfiguredAssetFilesystemDataConnector`.
-For the latter case, with the integration of Flyte types, we can give a Pandas/Spark DataFrame or a remote URI as the dataset.
-:::
+> [!NOTE]
+> Flyte types are added because, in Great Expectations, we have the privilege to give a non-string (Pandas/Spark DataFrame) when using a`RuntimeDataConnector`
+> but not when using an `InferredAssetFilesystemDataConnector` or a `ConfiguredAssetFilesystemDataConnector`.
+> For the latter case, with the integration of Flyte types, we can give a Pandas/Spark DataFrame or a remote URI as the dataset.
 
 The datasources can be well-integrated with the plugin using the following two modes:
 
@@ -102,26 +97,18 @@ rate_code_id -> expect_column_proportion_of_unique_values_to_be_between
 
 - **local_file_path**: Helpful to download the given dataset to the user-given path
 
-:::{note}
-You may always want to mention the **context_root_dir** parameter, as providing a path means no harm!
-Moreover, **local_file_path** is essential when using `FlyteFile` and `FlyteSchema`.
-:::
+> [!NOTE]
+> You may always want to mention the **context_root_dir** parameter, as providing a path means no harm!
+> Moreover, **local_file_path** is essential when using `FlyteFile` and `FlyteSchema`.
 
 ## Plugin Installation
 
 To use the Great Expectations Flyte plugin, run the following command:
 
-```{eval-rst}
-.. prompt:: bash $
-
-    pip install flytekitplugins-great_expectations
+```shell
+$  pip install flytekitplugins-great_expectations
 ```
 
-:::{note}
-Make sure to run workflows from the "flytekit_plugins" directory.
-:::
+> [!NOTE]
+> Make sure to run workflows from the "flytekit_plugins" directory.
 
-```{auto-examples-toc}
-task_example
-type_example
-```

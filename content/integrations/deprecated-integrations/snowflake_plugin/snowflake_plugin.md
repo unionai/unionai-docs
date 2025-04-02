@@ -1,17 +1,15 @@
 ---
-title:
+title: Snowflake plugin legacy
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: -flyte -serverless -byoc -byok
 ---
-
-(snowflake_plugin)=
 
 # Snowflake plugin
 
 > [!NOTE]
-> 
+>
 > This is a legacy implementation of the Snowflake integration. We recommend using the {ref}`Snowflake agent <snowflake_agent>` instead.
-> 
+>
 
 ## Installation
 

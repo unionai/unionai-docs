@@ -56,9 +56,7 @@ pyflyte run --remote \
   horovod_training_wf
 ```
 
-```{auto-examples-toc}
-mpi_mnist
-```
+
 
 ## MPI Plugin Troubleshooting Guide
 

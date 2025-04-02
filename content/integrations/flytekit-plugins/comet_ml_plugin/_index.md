@@ -35,6 +35,4 @@ plugins:
           templateUris: "{{ .taskConfig.host }}/{{ .taskConfig.workspace }}/{{ .taskConfig.project_name }}/{{ .taskConfig.experiment_key }}"
 ```
 
-```{auto-examples-toc}
-comet_ml_example
-```
+

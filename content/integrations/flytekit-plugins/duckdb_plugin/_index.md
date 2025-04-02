@@ -25,6 +25,4 @@ The Flytekit DuckDB plugin includes the {py:class}`~flytekitplugins:flytekitplug
 - `query`: The DuckDB query to execute.
 - `inputs`: The query parameters to be used during query execution. This can be a StructuredDataset, a string or a list.
 
-```{auto-examples-toc}
-duckdb_example
-```
+

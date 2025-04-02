@@ -1,5 +1,5 @@
 ---
-title:
+title: Databricks plugin
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---

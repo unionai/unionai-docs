@@ -39,7 +39,4 @@ Pytorch lightning training:
 pyflyte run --remote pytorch_lightning_mnist_autoencoder.py train_workflow
 ```
 
-```{auto-examples-toc}
-pytorch_mnist
-pytorch_lightning_mnist_autoencoder
-```
+

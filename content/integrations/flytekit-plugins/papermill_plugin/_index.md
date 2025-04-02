@@ -31,7 +31,4 @@ To use the flytekit papermill plugin simply run the following:
    pip install flytekitplugins-papermill
 ```
 
-```{auto-examples-toc}
-simple
-nb_simple
-```
+

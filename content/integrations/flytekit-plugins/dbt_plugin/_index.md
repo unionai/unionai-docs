@@ -26,14 +26,11 @@ the commands [dbt run](https://docs.getdbt.com/reference/commands/run),
 To use the `dbt` plugin you'll need to install the `flytekitplugins-dbt`
 plugin.
 
-:::{note}
-See [the PyPi page here](https://pypi.org/project/flytekitplugins-dbt/).
-:::
+> [!NOTE]
+> See [the PyPi page here](https://pypi.org/project/flytekitplugins-dbt/).
 
-```{eval-rst}
-.. prompt:: bash $
-
-   pip install flytekitplugins-dbt
+```shell
+$ pip install flytekitplugins-dbt
 ```
 
 Then install dbt itself. You will have to install `dbt-core` as well as
@@ -64,18 +61,14 @@ your machine using the `flytectl demo start` command or on a cloud cluster.
 
 Start up the demo cluster on your local machine:
 
-```{eval-rst}
-.. prompt:: bash $
-
-   flytectl demo start
+```shell
+$ flytectl demo start
 ```
 
 Pull the pre-built image for this example:
 
-```{eval-rst}
-.. prompt:: bash $
-
-   docker pull ghcr.io/flyteorg/flytecookbook:dbt_example-latest
+```shell
+$ docker pull ghcr.io/flyteorg/flytecookbook:dbt_example-latest
 ```
 
 This image is built using the following `Dockerfile` and contains:
@@ -100,26 +93,18 @@ To run this example, copy the code in the **dbt example** below into a file
 called `dbt_example.py`, then run it on your local container using the
 provided image:
 
-```{eval-rst}
-.. prompt:: bash $
-
-   pyflyte run --remote \
+```shell
+$ pyflyte run --remote \
        --image ghcr.io/flyteorg/flytecookbook:dbt_example-latest \
        dbt_plugin/dbt_example.py wf
 ```
 
 Alternatively, you can clone the `flytesnacks` repo and run the example directly:
 
-```{eval-rst}
-.. prompt:: bash $
-
-   git clone https://github.com/flyteorg/flytesnacks
-   cd flytesnacks/examples/dbt_example
-   pyflyte run --remote \
-       --image ghcr.io/flyteorg/flytecookbook:dbt_example-latest \
-       dbt_plugin/dbt_example.py wf
-```
-
-```{auto-examples-toc}
-dbt_example
+```shell
+$ git clone https://github.com/flyteorg/flytesnacks
+$ cd flytesnacks/examples/dbt_example
+$ pyflyte run --remote \
+          --image ghcr.io/flyteorg/flytecookbook:dbt_example-latest \
+          dbt_plugin/dbt_example.py wf
 ```

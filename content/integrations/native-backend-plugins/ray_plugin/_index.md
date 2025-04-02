@@ -80,6 +80,4 @@ pyflyte run --remote ray_example.py \
     ray_workflow --n 10
 ```
 
-```{auto-examples-toc}
-ray_example
-```
+

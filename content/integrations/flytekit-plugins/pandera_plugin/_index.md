@@ -99,7 +99,4 @@ indicating the failure case and the index where they were found in the dataframe
 
 ## Using Pandera with Flytekit Python
 
-```{auto-examples-toc}
-basic_schema_example
-validating_and_testing_ml_pipelines
-```
+

@@ -1,5 +1,5 @@
 ---
-title:
+title: Batching Requests for Asynchronous Processing
 weight: 1
 variants: +flyte -serverless -byoc -byok
 layout: py_example

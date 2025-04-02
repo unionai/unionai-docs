@@ -40,7 +40,4 @@ cd foo
 dolt init
 ```
 
-```{auto-examples-toc}
-dolt_quickstart_example
-dolt_branch_example
-```
+
