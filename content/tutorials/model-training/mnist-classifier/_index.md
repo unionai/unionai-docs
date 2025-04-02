@@ -5,13 +5,7 @@ variants: +flyte -serverless -byoc -byok
 sidebar_expanded: true
 ---
 
-(mnist-classifier-training)=
-
 # MNIST Classification With PyTorch and W&B
-
-```{eval-rst}
-.. tags:: MachineLearning, GPU, Advanced
-```
 
 ## PyTorch
 
@@ -38,15 +32,14 @@ Some basics of model development are outlined in the following video, in additio
 - Model parallelism, and
 - PyTorch parallelism
 
-```{youtube} FuMtJOMh5uQ
-```
+{{< youtube FuMtJOMh5uQ >}}
 
 ## Specify GPU Requirement
 
 One of the necessary directives applicable when working on deep learning models is explicitly requesting one or more GPUs.
 This can be done by giving a simple directive to the task declaration as follows:
 
-```{code-block} python
+```python
 from flytekit import Resources, task
 
 @task(requests=Resources(gpu="1"), limits=Resources(gpu="1"))
@@ -54,9 +47,7 @@ def my_deep_learning_task():
     ...
 ```
 
-```{tip}
 It is recommended to use the same `requests` and `limits` for a GPU as automatic GPU scaling is not supported.
-```
 
 Moreover, to utilize the power of a GPU, ensure that your Flyte backend has GPU nodes provisioned.
 
@@ -70,30 +61,52 @@ Flyte also supports distributed training for PyTorch models, but this is not nat
 
 We'll use `wandb` alongside PyTorch to track our ML experiment and its concerned model parameters.
 
-```{note}
-Before running the example, create a `wandb` account and log in to access the API.
-If you're running the code locally, run the command `wandb login`.
-If it's a remote cluster, you have to include the API key in the Dockerfile.
-```
-
-(pytorch-dockerfile)=
+[!NOTE]
+> Before running the example, create a `wandb` account and log in to access the API.
+> If you're running the code locally, run the command `wandb login`.
+> If it's a remote cluster, you have to include the API key in the Dockerfile.
 
 ## PyTorch Dockerfile for Deployment
 
 It is essential to build the Dockerfile with GPU support to use a GPU within PyTorch.
 The example in this section uses a simple `nvidia-supplied GPU Docker image` as the base, and the rest of the construction is similar to the other Dockerfiles.
 
-```{literalinclude} ../../../examples/mnist_classifier/Dockerfile
-:language: docker
+```dockerfile
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime
+LABEL org.opencontainers.image.source https://github.com/flyteorg/flytesnacks
+
+WORKDIR /root
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV PYTHONPATH /root
+
+# Set your wandb API key and user name. Get the API key from https://wandb.ai/authorize.
+# ENV WANDB_API_KEY <api_key>
+# ENV WANDB_USERNAME <user_name>
+
+# Install the AWS cli for AWS support
+RUN pip install awscli
+
+# Install gcloud for GCP
+RUN apt-get update && apt-get install -y make build-essential libssl-dev curl
+
+# Virtual environment
+ENV VENV /opt/venv
+RUN python3 -m venv ${VENV}
+ENV PATH="${VENV}/bin:$PATH"
+
+# Install Python dependencies
+COPY requirements.in /root
+RUN pip install -r /root/requirements.in
+
+# Copy the actual code
+COPY . /root/
+
+# This tag is supplied by the build script and will be used to determine the version
+# when registering tasks, workflows, and launch plans
+ARG tag
+ENV FLYTE_INTERNAL_IMAGE $tag
 ```
 
-```{note}
-Run your code in the `ml_training` directory, both locally and within the sandbox.
-```
-
-## Examples
-
-```{auto-examples-toc}
-pytorch_single_node_and_gpu
-pytorch_single_node_multi_gpu
-```
+> [!NOTE]
+> Run your code in the `ml_training` directory, both locally and within the sandbox.
