@@ -1,3 +1,9 @@
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+---
+
 (memray_plugin)=
 
 # Memray Profiling

@@ -1,3 +1,9 @@
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+---
+
 (databricks_agent)=
 
 # Databricks agent

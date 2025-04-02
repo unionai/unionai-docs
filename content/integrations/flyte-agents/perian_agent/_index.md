@@ -1,3 +1,9 @@
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+---
+
 ```{eval-rst}
 .. tags:: Cloud, GPU, Integration, Advanced
 ```

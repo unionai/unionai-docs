@@ -1,3 +1,9 @@
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+---
+
 (aws_sagemaker_inference_agent)=
 
 # AWS SageMaker Inference Agent

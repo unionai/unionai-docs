@@ -1,3 +1,9 @@
+---
+title:
+weight: 1
+variants: +flyte -serverless -byoc -byok
+---
+
 (openai_batch_agent)=
 
 # OpenAI Batch Agent
