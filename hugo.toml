@@ -117,6 +117,12 @@ serverless = "https://www.union.ai/docs/serverless"
 byoc = "https://www.union.ai/docs/byoc"
 byok = "https://www.union.ai/docs/byok"
 
+[params.key.logo]
+flyte = "icon-logo-flyte.png"
+serverless = "icon-logo.svg"
+byoc = "icon-logo.svg"
+byok = "icon-logo.svg"
+
 #----------------------------------------------------------
 # Search
 
