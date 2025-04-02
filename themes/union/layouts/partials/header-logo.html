@@ -1,8 +1,12 @@
 <div class="logo-container">
     <a href="{{ .Site.BaseURL }}">
-        <img src="{{ "images/icon-logo.svg" | relURL }}" class="logo" />
+        {{ if eq .Site.Params.variant "flyte" }}
+            <img src="{{ "images/icon-logo-flyte.png" | relURL }}" class="logo" />
+        {{ else }}
+            <img src="{{ "images/icon-logo.svg" | relURL }}" class="logo" />
+        {{ end }}
     </a>
     <a href="{{ .Site.BaseURL }}" class="title">
-        <div>Union Docs</div>
+        <div>{{ index .Site.Params.Key.product_name .Site.Params.variant }} Docs</div>
     </a>
 </div>

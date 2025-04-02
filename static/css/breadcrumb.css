@@ -15,12 +15,12 @@
   color: #9ca3af;
 }
 .breadcrumb-item a {
-  color: var(--primary-color);
+  color: var(--union-color);
   text-decoration: none;
   transition: color 0.2s;
 }
 .breadcrumb-item a:hover {
-  color: #1d4ed8;
+  color: var(--union-color-dark);
 }
 .breadcrumb-item.active {
   color: var(--text-color);

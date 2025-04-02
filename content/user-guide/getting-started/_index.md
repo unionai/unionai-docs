@@ -1,6 +1,7 @@
 ---
 title: Getting started
 weight: 3
+sidebar_expanded: true
 variants: +flyte +serverless +byoc +byok
 ---
 
