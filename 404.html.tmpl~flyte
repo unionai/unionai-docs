@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css?v=@@BUILD@@" />
+        <script>
+            // Set up error handler immediately
+            document.addEventListener('DOMContentLoaded', function() {
+                const logo = document.getElementById('logo');
+                logo.onerror = function() {
+                    // If main logo fails, try fallback path
+                    console.log('Primary logo failed to load, trying fallback');
+                    this.src = 'static/images/icon-logo.svg';
+
+                    // Add second error handler for fallback
+                    this.onerror = function() {
+                        console.error('Failed to load logo image from both paths');
+                        logo.style.display = 'none';
+                    };
+                };
+
+                const missingPageRef = document.querySelector('.missing-page-ref');
+                if (missingPageRef) {
+                    missingPageRef.innerHTML = "<code>" + window.location.toString() + "</code>";
+                }
+
+                const legacyLink = new URL(window.location);
+                legacyLink.hostname = 'docs-legacy.flyte.org';
+                legacyLink.pathname = legacyLink.pathname.replace('/docs/flyte/', '/en/latest/');
+                if (legacyLink.pathname.endsWith('/')) {
+                    legacyLink.pathname = legacyLink.pathname.slice(0, -1) + '.html';
+                }
+
+                const legacyLink2 = new URL(window.location);
+                legacyLink2.hostname = 'docs-legacy.flyte.org';
+                legacyLink2.pathname = legacyLink2.pathname.replace('/docs/flyte/', '/en/latest/');
+                if (legacyLink2.pathname.endsWith('/')) {
+                    legacyLink2.pathname = legacyLink2.pathname + 'index.html';
+                }
+
+                const legacyLinkElement = document.getElementById('legacy_link');
+                if (legacyLinkElement) {
+                    legacyLinkElement.href = legacyLink.toString();
+                    // legacyLinkElement.innerHTML = legacyLink.toString();
+                }
+
+                const legacyLinkElement2 = document.getElementById('legacy_link_2');
+                if (legacyLinkElement2) {
+                    legacyLinkElement2.href = legacyLink2.toString();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>
+                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
+                404 - Page Not Found
+            </h1>
+
+            <p>We are sorry, but the page you are looking for does not exist.</p>
+
+            <div class="nav">
+                <p>
+                    Please click for the closest documentation entry point:
+                </p>
+                <p class="target-link-text">
+                    <a href="@@BASE@@/@@VARIANT@@/">@@VARIANT@@</a>
+                </p>
+            </div>
+
+            <div class="warn">
+                <div class="title">
+                    <span>Migration To New Documentation Site Undergoing</span>
+                </div>
+                <div class="content">
+                    <p>
+                        This document is in the process of being migrated to a new
+                        platform. In the meantime, you can find the old
+                        documentation at the following link:
+                    </p>
+                    <p>
+                        <a id="legacy_link" href="https://docs-legacy.flyte.org/en/latest/">
+                            Old Documentation Site
+                        </a>
+                    </p>
+                    <p>
+                        In case the link above does not work, you can try
+                        <a id="legacy_link_2" href="https://docs-legacy.flyte.org/en/latest/">this</a>
+                        other location.
+                    </p>
+                </div>
+            </div>
+
+            <footer>
+                <p>
+                    If you believe you have reached this page in error, please
+                    report it to us:
+                </p>
+                <p class="missing-page-ref" />
+            </footer>
+        </div>
+    </body>
+</html>
+
