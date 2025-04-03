@@ -56,18 +56,13 @@ sidebar_expanded: true
 
 Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
 
-The Flyte platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
+Flyte empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
-* Run complex AI workloads with performance, scale, and efficiency.
-* Achieve millisecond-level execution times.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
 
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant serverless byoc byok >}}
 {{< markdown>}}
-
-Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
 
 The {{< key product_name >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
 
@@ -83,14 +78,14 @@ The {{< key product_name >}} platform empowers AI development teams to rapidly s
 {{< variant flyte >}}
 
 {{< link-card target="about-flyte" icon="lightbulb" title="About Flyte" >}}
-Flyte is the leading OSS AI platform. It provides a powerful, scalable, and flexible platform for AI workflows.
+Flyte is the leading open-source Kubernetes-native workflow orchestrator.
 {{< /link-card >}}
 
 {{< /variant >}}
 {{< variant serverless byoc byok >}}
 
 {{< link-card target="about-union" icon="lightbulb" title="About Union.ai" >}}
-{{< key product_name >}} builds on the leading OSS AI platform, Flyte, to provide a powerful, scalable, and flexible platform for AI workflows.
+{{< key product_name >}} builds on the leading open-source workflow orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI applications.
 {{< /link-card >}}
 
 {{< /variant >}}

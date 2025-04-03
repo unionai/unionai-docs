@@ -23,13 +23,16 @@ To enable the administration and management of your data plane, you grant {{< ke
 
 {{< grid >}}
 
-{{< link-card target="installation" icon="box" title="Installation" >}}
-Installing {{< key product_name >}}
-{{< /link-card >}}
-
 {{< /grid >}}
 
 {{< /variant >}}
+
+{{< variant byok >}}
+{{< link-card target="installation" icon="box" title="Installation" >}}
+Installing {{< key product_name >}}
+{{< /link-card >}}
+{{< /variant >}}
+
 
 {{< variant flyte >}}
 {{< markdown >}}

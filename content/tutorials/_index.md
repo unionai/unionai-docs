@@ -11,6 +11,7 @@ sidebar_expanded: true
 This section provides tutorials that walk you through the process of building AI/ML applications on {{< key product_name >}}.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
+{{< variant serverless byoc byok >}}
 {{< grid >}}
 
 {{< link-card target="language-models/sentiment-classifier" icon="heart-fill" title="Sentiment Classification with DistilBERT" >}}
@@ -81,3 +82,4 @@ Serve NVIDIA NIM-supported language models, powered by {{< key product_name >}} 
 {{< /variant >}}
 
 {{< /grid >}}
+{{< /variant>}}

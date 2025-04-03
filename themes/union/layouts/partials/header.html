@@ -23,11 +23,18 @@
 
 <script>
 function handleVariantChange(event) {
-    const newVariant = event.target.options[event.target.selectedIndex].value;
+    const opt = event.target.options[event.target.selectedIndex];
+    const inVariant = opt.getAttribute('data-allowed') === 'true';
+    const newVariant = opt.value;
     const newTarget = new URL(document.location.toString());
     const oldPrefix = "{{- .Site.BaseURL -}}";
     const newPrefix = "{{- .Site.BaseURL -}}".replace("{{- .Site.Params.variant -}}", newVariant);
-    newTarget.pathname = newTarget.pathname.replace(oldPrefix, newPrefix);
+    if (inVariant) {
+        newTarget.pathname = newTarget.pathname.replace(oldPrefix, newPrefix);
+    } else {
+        // if not inVariant, we need to redirect to the homepage
+        newTarget.pathname = newPrefix;
+    }
     console.log('Reloading', newTarget.toString());
     redirect(newTarget);
 }
