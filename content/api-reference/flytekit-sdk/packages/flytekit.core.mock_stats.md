@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.mock_stats
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,15 +13,15 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`MockStats`](.././flytekit.core.mock_stats#flytekitcoremock_statsmockstats) | None. |
+| [`MockStats`](.././flytekit.core.mock_stats#flytekitcoremock_statsmockstats) |  |
 
 ## flytekit.core.mock_stats.MockStats
 
 ```python
-def MockStats(
+class MockStats(
     scope,
     tags,
-):
+)
 ```
 Initializes a new mock stats object
 
@@ -35,13 +35,13 @@ Initializes a new mock stats object
 
 | Method | Description |
 |-|-|
-| [`current_tags()`](#current_tags) | None |
-| [`current_value()`](#current_value) | None |
-| [`decr()`](#decr) | None |
-| [`gauge()`](#gauge) | None |
-| [`incr()`](#incr) | None |
-| [`timer()`](#timer) | None |
-| [`timing()`](#timing) | None |
+| [`current_tags()`](#current_tags) |  |
+| [`current_value()`](#current_value) |  |
+| [`decr()`](#decr) |  |
+| [`gauge()`](#gauge) |  |
+| [`incr()`](#incr) |  |
+| [`timer()`](#timer) |  |
+| [`timing()`](#timing) |  |
 
 
 #### current_tags()
@@ -49,7 +49,7 @@ Initializes a new mock stats object
 ```python
 def current_tags(
     metric,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -60,7 +60,7 @@ def current_tags(
 ```python
 def current_value(
     metric,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -74,7 +74,7 @@ def decr(
     count,
     tags,
     kwargs,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -91,7 +91,7 @@ def gauge(
     value,
     tags,
     kwargs,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -108,7 +108,7 @@ def incr(
     count,
     tags,
     kwargs,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -124,7 +124,7 @@ def timer(
     metric,
     tags,
     kwargs,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -137,7 +137,7 @@ def timer(
 ```python
 def timing(
     metric,
-):
+)
 ```
 | Parameter | Type |
 |-|-|

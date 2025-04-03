@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.default_metadata_interceptor
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -24,8 +24,8 @@ Affords intercepting unary-unary invocations.
 
 | Method | Description |
 |-|-|
-| [`intercept_unary_stream()`](#intercept_unary_stream) | Handles a stream call and inject default metadata |
-| [`intercept_unary_unary()`](#intercept_unary_unary) | Intercepts unary calls and inject default metadata |
+| [`intercept_unary_stream()`](#intercept_unary_stream) | Handles a stream call and inject default metadata. |
+| [`intercept_unary_unary()`](#intercept_unary_unary) | Intercepts unary calls and inject default metadata. |
 
 
 #### intercept_unary_stream()
@@ -35,7 +35,7 @@ def intercept_unary_stream(
     continuation: typing.Callable,
     client_call_details: grpc.ClientCallDetails,
     request: typing.Any,
-):
+)
 ```
 Handles a stream call and inject default metadata
 
@@ -53,7 +53,7 @@ def intercept_unary_unary(
     continuation: typing.Callable,
     client_call_details: grpc.ClientCallDetails,
     request: typing.Any,
-):
+)
 ```
 Intercepts unary calls and inject default metadata
 

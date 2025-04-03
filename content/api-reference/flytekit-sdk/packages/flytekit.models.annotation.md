@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.annotation
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,21 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Any`](.././flytekit.models.annotation#flytekitmodelsannotationany) | Special type indicating an unconstrained type. |
 | [`TypeAnnotation`](.././flytekit.models.annotation#flytekitmodelsannotationtypeannotation) | Python class representation of the flyteidl TypeAnnotation message. |
-
-## flytekit.models.annotation.Any
-
-Special type indicating an unconstrained type.
-
-- Any is compatible with every type.
-- Any assumed to have all methods.
-- All values assumed to be instances of Any.
-
-Note that all the above statements are true from the point of view of
-static type checkers. At runtime, Any should not be used with instance
-checks.
-
 
 ## flytekit.models.annotation.TypeAnnotation
 
@@ -35,9 +21,9 @@ Python class representation of the flyteidl TypeAnnotation message.
 
 
 ```python
-def TypeAnnotation(
+class TypeAnnotation(
     annotations: typing.Dict[str, typing.Any],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -47,9 +33,9 @@ def TypeAnnotation(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`merge_annotations()`](#merge_annotations) | Merges two annotations together |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`merge_annotations()`](#merge_annotations) | Merges two annotations together. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
 
 
 #### from_flyte_idl()
@@ -57,7 +43,7 @@ def TypeAnnotation(
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: TypeAnnotation
 ```
 | Parameter | Type |
 |-|-|
@@ -69,7 +55,7 @@ def from_flyte_idl(
 def merge_annotations(
     annotation: TypeAnnotation,
     other_annotation: TypeAnnotation,
-):
+) -> e: TypeAnnotation
 ```
 Merges two annotations together. If the same key exists in both annotations, the value in the other annotation
 will be used.
@@ -85,9 +71,13 @@ will be used.
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.types_pb2.TypeAnnotation
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| annotations |  |  |
+| `annotations` |  | {{< multiline >}}:rtype: dict[str, Any]
+{{< /multiline >}} |
 

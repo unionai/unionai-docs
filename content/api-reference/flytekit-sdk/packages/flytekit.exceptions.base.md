@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.base
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,14 +9,12 @@ layout: py_api
 
 ## Directory
 
-### Classes
-
-No classes in this package.
-
 ### Errors
 
-* [`FlyteException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyteexception)
-* [`FlyteRecoverableException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception)
+| Exception | Description |
+|-|-|
+| [`FlyteException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyteexception) | Common base class for all non-exit exceptions. |
+| [`FlyteRecoverableException`](.././flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception) | Common base class for all non-exit exceptions. |
 
 ## flytekit.exceptions.base.FlyteException
 
@@ -24,10 +22,10 @@ Common base class for all non-exit exceptions.
 
 
 ```python
-def FlyteException(
+class FlyteException(
     args,
     timestamp: typing.Optional[float],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -38,7 +36,8 @@ def FlyteException(
 
 | Property | Type | Description |
 |-|-|-|
-| timestamp |  |  |
+| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
+{{< /multiline >}} |
 
 ## flytekit.exceptions.base.FlyteRecoverableException
 
@@ -46,10 +45,10 @@ Common base class for all non-exit exceptions.
 
 
 ```python
-def FlyteRecoverableException(
+class FlyteRecoverableException(
     args,
     timestamp: typing.Optional[float],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -60,5 +59,6 @@ def FlyteRecoverableException(
 
 | Property | Type | Description |
 |-|-|-|
-| timestamp |  |  |
+| `timestamp` |  | {{< multiline >}}The timestamp as fractional seconds since epoch
+{{< /multiline >}} |
 

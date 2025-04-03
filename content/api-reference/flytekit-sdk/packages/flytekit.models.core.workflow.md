@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.workflow
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,35 +13,31 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Alias`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowalias) | None. |
-| [`ApproveCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowapprovecondition) | None. |
-| [`ArrayNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowarraynode) | None. |
-| [`BoolValue`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowboolvalue) | A ProtocolMessage. |
-| [`BranchNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowbranchnode) | None. |
-| [`GateNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowgatenode) | None. |
-| [`IfBlock`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowifblock) | None. |
-| [`IfElseBlock`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowifelseblock) | None. |
-| [`K8sObjectMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowk8sobjectmetadata) | None. |
-| [`Node`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflownode) | None. |
-| [`NodeMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflownodemetadata) | None. |
-| [`PodTemplate`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowpodtemplate) | Custom PodTemplate specification for a Task. |
-| [`Resources`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowresources) | None. |
-| [`SignalCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowsignalcondition) | None. |
-| [`SleepCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowsleepcondition) | None. |
-| [`TaskNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknode) | None. |
-| [`TaskNodeOverrides`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknodeoverrides) | None. |
-| [`WorkflowMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadata) | None. |
-| [`WorkflowMetadataDefaults`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadatadefaults) | None. |
-| [`WorkflowNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflownode) | None. |
-| [`WorkflowTemplate`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowtemplate) | None. |
+| [`Alias`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowalias) |  |
+| [`ApproveCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowapprovecondition) |  |
+| [`ArrayNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowarraynode) |  |
+| [`BranchNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowbranchnode) |  |
+| [`GateNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowgatenode) |  |
+| [`IfBlock`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowifblock) |  |
+| [`IfElseBlock`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowifelseblock) |  |
+| [`Node`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflownode) |  |
+| [`NodeMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflownodemetadata) |  |
+| [`SignalCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowsignalcondition) |  |
+| [`SleepCondition`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowsleepcondition) |  |
+| [`TaskNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknode) |  |
+| [`TaskNodeOverrides`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowtasknodeoverrides) |  |
+| [`WorkflowMetadata`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadata) |  |
+| [`WorkflowMetadataDefaults`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowmetadatadefaults) |  |
+| [`WorkflowNode`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflownode) |  |
+| [`WorkflowTemplate`](.././flytekit.models.core.workflow#flytekitmodelscoreworkflowworkflowtemplate) |  |
 
 ## flytekit.models.core.workflow.Alias
 
 ```python
-def Alias(
+class Alias(
     var,
     alias,
-):
+)
 ```
 Links a variable to an alias.
 
@@ -56,11 +52,11 @@ Links a variable to an alias.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -68,7 +64,7 @@ Links a variable to an alias.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> n: Alias
 ```
 | Parameter | Type |
 |-|-|
@@ -84,30 +80,45 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.Alias
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| alias |  |  |
-| is_empty |  |  |
-| var |  |  |
+| `alias` |  | {{< multiline >}}A workflow-level unique alias that downstream nodes can refer to in their input.
+
+:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `var` |  | {{< multiline >}}Must match one of the output variable names on a node.
+
+:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.ApproveCondition
 
 ```python
-def ApproveCondition(
+class ApproveCondition(
     signal_id: str,
-):
+)
 ```
 Represents a dependency on an signal from a user.
 
@@ -121,11 +132,11 @@ Represents a dependency on an signal from a user.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -133,7 +144,7 @@ Represents a dependency on an signal from a user.
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.workflow_pb2.ApproveCondition,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -149,6 +160,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -159,17 +173,20 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| signal_id |  |  |
+| `is_empty` |  |  |
+| `signal_id` |  |  |
 
 ## flytekit.models.core.workflow.ArrayNode
 
 ```python
-def ArrayNode(
+class ArrayNode(
     node: Node,
     parallelism,
     min_successes,
@@ -178,7 +195,7 @@ def ArrayNode(
     is_original_sub_node_interface,
     data_mode,
     bound_inputs,
-):
+)
 ```
 TODO: docstring
 
@@ -198,11 +215,11 @@ TODO: docstring
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -210,7 +227,7 @@ TODO: docstring
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> ArrayNode
 ```
 | Parameter | Type |
 |-|-|
@@ -226,6 +243,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -236,24 +256,22 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| node |  |  |
-
-## flytekit.models.core.workflow.BoolValue
-
-A ProtocolMessage
-
+| `is_empty` |  |  |
+| `node` |  |  |
 
 ## flytekit.models.core.workflow.BranchNode
 
 ```python
-def BranchNode(
+class BranchNode(
     if_else: flytekit.models.core.workflow.IfElseBlock,
-):
+)
 ```
 BranchNode is a special node that alter the flow of the workflow graph. It allows the control flow to branch at
 runtime based on a series of conditions that get evaluated on various parameters (e.g. inputs, primitives).
@@ -268,11 +286,11 @@ runtime based on a series of conditions that get evaluated on various parameters
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -280,7 +298,7 @@ runtime based on a series of conditions that get evaluated on various parameters
 ```python
 def from_flyte_idl(
     pb2_objct,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -296,31 +314,41 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.BranchNode
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| if_else |  |  |
-| is_empty |  |  |
+| `if_else` |  | {{< multiline >}}:rtype: IfElseBlock
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.core.workflow.GateNode
 
 ```python
-def GateNode(
+class GateNode(
     signal: typing.Optional[flytekit.models.core.workflow.SignalCondition],
     sleep: typing.Optional[flytekit.models.core.workflow.SleepCondition],
     approve: typing.Optional[flytekit.models.core.workflow.ApproveCondition],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -332,11 +360,11 @@ def GateNode(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -344,7 +372,7 @@ def GateNode(
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.workflow_pb2.GateNode,
-):
+) -> GateNode
 ```
 | Parameter | Type |
 |-|-|
@@ -360,6 +388,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -370,23 +401,26 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| approve |  |  |
-| condition |  |  |
-| is_empty |  |  |
-| signal |  |  |
-| sleep |  |  |
+| `approve` |  |  |
+| `condition` |  |  |
+| `is_empty` |  |  |
+| `signal` |  |  |
+| `sleep` |  |  |
 
 ## flytekit.models.core.workflow.IfBlock
 
 ```python
-def IfBlock(
+class IfBlock(
     condition,
     then_node,
-):
+)
 ```
 Defines a condition and the execution unit that should be executed if the condition is satisfied.
 
@@ -401,11 +435,11 @@ Defines a condition and the execution unit that should be executed if the condit
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -413,7 +447,7 @@ Defines a condition and the execution unit that should be executed if the condit
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -429,33 +463,44 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.IfBlock
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| condition |  |  |
-| is_empty |  |  |
-| then_node |  |  |
+| `condition` |  | {{< multiline >}}:rtype: flytekit.models.core.condition.BooleanExpression
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `then_node` |  | {{< multiline >}}:rtype: Node
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.IfElseBlock
 
 ```python
-def IfElseBlock(
+class IfElseBlock(
     case,
     other,
     else_node,
     error,
-):
+)
 ```
 Defines a series of if/else blocks. The first branch whose condition evaluates to true is the one to execute.
 If no conditions were satisfied, the else_node or the error will execute.
@@ -473,11 +518,11 @@ If no conditions were satisfied, the else_node or the error will execute.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -485,7 +530,7 @@ If no conditions were satisfied, the else_node or the error will execute.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -501,96 +546,51 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.IfElseBlock
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| case |  |  |
-| else_node |  |  |
-| error |  |  |
-| is_empty |  |  |
-| other |  |  |
+| `case` |  | {{< multiline >}}First condition to evaluate.
 
-## flytekit.models.core.workflow.K8sObjectMetadata
+:rtype: IfBlock
+{{< /multiline >}} |
+| `else_node` |  | {{< multiline >}}The node to execute in case none of the branches were taken.
 
-```python
-def K8sObjectMetadata(
-    labels: typing.Dict[str, str],
-    annotations: typing.Dict[str, str],
-):
-```
-This defines additional metadata for building a kubernetes pod.
+:rtype: Node
+{{< /multiline >}} |
+| `error` |  | {{< multiline >}}An error to throw in case none of the branches were taken.
 
+:rtype: flytekit.models.types.Error
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `other` |  | {{< multiline >}}Additional branches to evaluate.
 
-| Parameter | Type |
-|-|-|
-| `labels` | `typing.Dict[str, str]` |
-| `annotations` | `typing.Dict[str, str]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    pb2_object: flyteidl.core.tasks_pb2.K8sObjectMetadata,
-):
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.tasks_pb2.K8sObjectMetadata` |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| annotations |  |  |
-| is_empty |  |  |
-| labels |  |  |
+:rtype: list[IfBlock]
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.Node
 
 ```python
-def Node(
+class Node(
     id,
     metadata,
     inputs,
@@ -601,7 +601,7 @@ def Node(
     branch_node,
     gate_node: typing.Optional[flytekit.models.core.workflow.GateNode],
     array_node: typing.Optional[flytekit.models.core.workflow.ArrayNode],
-):
+)
 ```
 A Workflow graph Node. One unit of execution in the graph. Each node can be linked to a Task,
 a Workflow or a branch node.  One of the nodes must be specified.
@@ -625,11 +625,11 @@ a Workflow or a branch node.  One of the nodes must be specified.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -637,7 +637,7 @@ a Workflow or a branch node.  One of the nodes must be specified.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Node
 ```
 | Parameter | Type |
 |-|-|
@@ -653,37 +653,77 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.Node
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| array_node |  |  |
-| branch_node |  |  |
-| gate_node |  |  |
-| id |  |  |
-| inputs |  |  |
-| is_empty |  |  |
-| metadata |  |  |
-| output_aliases |  |  |
-| target |  |  |
-| task_node |  |  |
-| upstream_node_ids |  |  |
-| workflow_node |  |  |
+| `array_node` |  |  |
+| `branch_node` |  | {{< multiline >}}[Optional] Information about the branch node to evaluate in this node.
+
+:rtype: BranchNode
+{{< /multiline >}} |
+| `gate_node` |  |  |
+| `id` |  | {{< multiline >}}A workflow-level unique identifier that identifies this node in the workflow. "inputs" and
+"outputs" are reserved node ids that cannot be used by other nodes.
+
+:rtype: Text
+{{< /multiline >}} |
+| `inputs` |  | {{< multiline >}}Specifies how to bind the underlying interface's inputs.  All required inputs specified
+in the underlying interface must be fulfilled.
+
+:rtype: list[flytekit.models.literals.Binding]
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `metadata` |  | {{< multiline >}}Extra metadata about the node.
+
+:rtype: NodeMetadata
+{{< /multiline >}} |
+| `output_aliases` |  | {{< multiline >}}[Optional] A node can define aliases for a subset of its outputs. This
+is particularly useful if different nodes need to conform to the same interface (e.g. all branches in
+a branch node). Downstream nodes must refer to this node's outputs using the alias if one is specified.
+
+:rtype: list[Alias]
+{{< /multiline >}} |
+| `target` |  | {{< multiline >}}:rtype: T
+{{< /multiline >}} |
+| `task_node` |  | {{< multiline >}}[Optional] Information about the Task to execute in this node.
+
+:rtype: TaskNode
+{{< /multiline >}} |
+| `upstream_node_ids` |  | {{< multiline >}}[Optional] Specifies execution dependency for this node ensuring it will
+only get scheduled to run after all its upstream nodes have completed. This node will have
+an implicit dependency on any node that appears in inputs field.
+
+:rtype: list[Text]
+{{< /multiline >}} |
+| `workflow_node` |  | {{< multiline >}}[Optional] Information about the Workflow to execute in this mode.
+
+:rtype: WorkflowNode
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.NodeMetadata
 
 ```python
-def NodeMetadata(
+class NodeMetadata(
     name,
     timeout,
     retries,
@@ -691,7 +731,7 @@ def NodeMetadata(
     cacheable: typing.Optional[bool],
     cache_version: typing.Optional[str],
     cache_serializable: typing.Optional[bool],
-):
+)
 ```
 Defines extra information about the Node.
 
@@ -711,99 +751,11 @@ Defines extra information about the Node.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    pb2_object,
-):
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| cache_serializable |  |  |
-| cache_version |  |  |
-| cacheable |  |  |
-| interruptible |  |  |
-| is_empty |  |  |
-| name |  |  |
-| retries |  |  |
-| timeout |  |  |
-
-## flytekit.models.core.workflow.PodTemplate
-
-Custom PodTemplate specification for a Task.
-
-
-```python
-def PodTemplate(
-    pod_spec: typing.Optional[ForwardRef('V1PodSpec')],
-    primary_container_name: str,
-    labels: typing.Optional[typing.Dict[str, str]],
-    annotations: typing.Optional[typing.Dict[str, str]],
-):
-```
-| Parameter | Type |
-|-|-|
-| `pod_spec` | `typing.Optional[ForwardRef('V1PodSpec')]` |
-| `primary_container_name` | `str` |
-| `labels` | `typing.Optional[typing.Dict[str, str]]` |
-| `annotations` | `typing.Optional[typing.Dict[str, str]]` |
-
-## flytekit.models.core.workflow.Resources
-
-```python
-def Resources(
-    requests,
-    limits,
-):
-```
-| Parameter | Type |
-|-|-|
-| `requests` |  |
-| `limits` |  |
-
-### Methods
-
-| Method | Description |
-|-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -811,7 +763,7 @@ def Resources(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -827,32 +779,49 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.NodeMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| limits |  |  |
-| requests |  |  |
+| `cache_serializable` |  |  |
+| `cache_version` |  |  |
+| `cacheable` |  |  |
+| `interruptible` |  |  |
+| `is_empty` |  |  |
+| `name` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `retries` |  | {{< multiline >}}:rtype: flytekit.models.literals.RetryStrategy
+{{< /multiline >}} |
+| `timeout` |  | {{< multiline >}}:rtype: datetime.timedelta
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.SignalCondition
 
 ```python
-def SignalCondition(
+class SignalCondition(
     signal_id: str,
     type: flytekit.models.types.LiteralType,
     output_variable_name: str,
-):
+)
 ```
 Represents a dependency on an signal from a user.
 
@@ -868,11 +837,11 @@ Represents a dependency on an signal from a user.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -880,7 +849,7 @@ Represents a dependency on an signal from a user.
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.workflow_pb2.SignalCondition,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -896,6 +865,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -906,21 +878,24 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| output_variable_name |  |  |
-| signal_id |  |  |
-| type |  |  |
+| `is_empty` |  |  |
+| `output_variable_name` |  |  |
+| `signal_id` |  |  |
+| `type` |  |  |
 
 ## flytekit.models.core.workflow.SleepCondition
 
 ```python
-def SleepCondition(
+class SleepCondition(
     duration: datetime.timedelta,
-):
+)
 ```
 A sleep condition.
 
@@ -933,11 +908,11 @@ A sleep condition.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -945,7 +920,7 @@ A sleep condition.
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.workflow_pb2.SignalCondition,
-):
+) -> SleepCondition
 ```
 | Parameter | Type |
 |-|-|
@@ -961,6 +936,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -971,20 +949,23 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| duration |  |  |
-| is_empty |  |  |
+| `duration` |  |  |
+| `is_empty` |  |  |
 
 ## flytekit.models.core.workflow.TaskNode
 
 ```python
-def TaskNode(
+class TaskNode(
     reference_id,
     overrides: typing.Optional[flytekit.models.core.workflow.TaskNodeOverrides],
-):
+)
 ```
 Refers to the task that the Node is to execute.
 This is currently a oneof in protobuf, but there's only one option currently.
@@ -1001,11 +982,11 @@ This code should be updated when more options are available.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1013,7 +994,7 @@ This code should be updated when more options are available.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: TaskNode
 ```
 | Parameter | Type |
 |-|-|
@@ -1029,33 +1010,45 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.TaskNode
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| overrides |  |  |
-| reference_id |  |  |
+| `is_empty` |  |  |
+| `overrides` |  |  |
+| `reference_id` |  | {{< multiline >}}A globally unique identifier for the task. This should map to the identifier in Flyte Admin.
+
+:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.TaskNodeOverrides
 
 ```python
-def TaskNodeOverrides(
+class TaskNodeOverrides(
     resources: typing.Optional[flytekit.models.task.Resources],
     extended_resources: typing.Optional[flyteidl.core.tasks_pb2.ExtendedResources],
     container_image: typing.Optional[str],
     pod_template: typing.Optional[flytekit.core.pod_template.PodTemplate],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1068,11 +1061,11 @@ def TaskNodeOverrides(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1080,7 +1073,7 @@ def TaskNodeOverrides(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1096,6 +1089,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -1106,22 +1102,25 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| container_image |  |  |
-| extended_resources |  |  |
-| is_empty |  |  |
-| pod_template |  |  |
-| resources |  |  |
+| `container_image` |  |  |
+| `extended_resources` |  |  |
+| `is_empty` |  |  |
+| `pod_template` |  |  |
+| `resources` |  |  |
 
 ## flytekit.models.core.workflow.WorkflowMetadata
 
 ```python
-def WorkflowMetadata(
+class WorkflowMetadata(
     on_failure,
-):
+)
 ```
 Metadata for the workflow.
 
@@ -1135,11 +1134,11 @@ Metadata for the workflow.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1147,7 +1146,7 @@ Metadata for the workflow.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: WorkflowMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -1163,29 +1162,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.WorkflowMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| on_failure |  |  |
+| `is_empty` |  |  |
+| `on_failure` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowMetadata.OnFailurePolicy
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.WorkflowMetadataDefaults
 
 ```python
-def WorkflowMetadataDefaults(
+class WorkflowMetadataDefaults(
     interruptible,
-):
+)
 ```
 Metadata Defaults for the workflow.
 
@@ -1198,11 +1207,11 @@ Metadata Defaults for the workflow.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1210,7 +1219,7 @@ Metadata Defaults for the workflow.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: WorkflowMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -1226,30 +1235,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.WorkflowMetadataDefaults
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| interruptible |  |  |
-| is_empty |  |  |
+| `interruptible` |  |  |
+| `is_empty` |  |  |
 
 ## flytekit.models.core.workflow.WorkflowNode
 
 ```python
-def WorkflowNode(
+class WorkflowNode(
     launchplan_ref,
     sub_workflow_ref,
-):
+)
 ```
 Refers to a the workflow the node is to execute. One of the references must be supplied.
 
@@ -1264,11 +1282,11 @@ Refers to a the workflow the node is to execute. One of the references must be s
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1276,7 +1294,7 @@ Refers to a the workflow the node is to execute. One of the references must be s
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: WorkflowNode
 ```
 | Parameter | Type |
 |-|-|
@@ -1292,29 +1310,45 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.WorkflowNode
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| launchplan_ref |  |  |
-| reference |  |  |
-| sub_workflow_ref |  |  |
+| `is_empty` |  |  |
+| `launchplan_ref` |  | {{< multiline >}}[Optional] A globally unique identifier for the launch plan.  Should map to Admin.
+
+:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
+| `reference` |  | {{< multiline >}}:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
+| `sub_workflow_ref` |  | {{< multiline >}}[Optional] Reference to a subworkflow, that should be defined with the compiler context.
+
+:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
 
 ## flytekit.models.core.workflow.WorkflowTemplate
 
 ```python
-def WorkflowTemplate(
+class WorkflowTemplate(
     id,
     metadata,
     metadata_defaults,
@@ -1322,7 +1356,7 @@ def WorkflowTemplate(
     nodes,
     outputs,
     failure_node,
-):
+)
 ```
 A workflow template encapsulates all the task, branch, and subworkflow nodes to run a statically analyzable,
 directed acyclic graph. It contains also metadata that tells the system how to execute the workflow (i.e.
@@ -1344,11 +1378,11 @@ the AWS IAM role to run with).
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1356,7 +1390,7 @@ the AWS IAM role to run with).
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: WorkflowTemplate
 ```
 | Parameter | Type |
 |-|-|
@@ -1372,26 +1406,63 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_pb2.WorkflowTemplate
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| failure_node |  |  |
-| id |  |  |
-| interface |  |  |
-| is_empty |  |  |
-| metadata |  |  |
-| metadata_defaults |  |  |
-| nodes |  |  |
-| outputs |  |  |
+| `failure_node` |  | {{< multiline >}}Node failure_node: A catch-all node. This node is executed whenever the execution engine determines the
+workflow has failed. The interface of this node must match the Workflow interface with an additional input
+named "error" of type pb.lyft.flyte.core.Error.
+
+:rtype: Node
+{{< /multiline >}} |
+| `id` |  | {{< multiline >}}This is an autogenerated id by the system. The id is globally unique across Flyte.
+
+:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
+| `interface` |  | {{< multiline >}}Defines a strongly typed interface for the Workflow (inputs, outputs). This can include some optional
+parameters.
+
+:rtype: flytekit.models.interface.TypedInterface
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `metadata` |  | {{< multiline >}}This contains information on how to run the workflow.
+
+:rtype: WorkflowMetadata
+{{< /multiline >}} |
+| `metadata_defaults` |  | {{< multiline >}}This contains information on how to run the workflow.
+
+:rtype: WorkflowMetadataDefaults
+{{< /multiline >}} |
+| `nodes` |  | {{< multiline >}}A list of nodes. In addition, "globals" is a special reserved node id that can be used to consume
+workflow inputs.
+
+:rtype: list[Node]
+{{< /multiline >}} |
+| `outputs` |  | {{< multiline >}}A list of output bindings that specify how to construct workflow outputs. Bindings can
+pull node outputs or specify literals. All workflow outputs specified in the interface field must be bound
+in order for the workflow to be validated. A workflow has an implicit dependency on all of its nodes
+to execute successfully in order to bind final outputs.
+
+:rtype: list[flytekit.models.literals.Binding]
+{{< /multiline >}} |
 

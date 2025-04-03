@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.string_literals
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,335 +9,72 @@ layout: py_api
 
 ## Directory
 
-### Classes
-
-| Class | Description |
-|-|-|
-| [`Literal`](.././flytekit.interaction.string_literals#flytekitinteractionstring_literalsliteral) | None. |
-| [`LiteralMap`](.././flytekit.interaction.string_literals#flytekitinteractionstring_literalsliteralmap) | None. |
-| [`Primitive`](.././flytekit.interaction.string_literals#flytekitinteractionstring_literalsprimitive) | None. |
-| [`Scalar`](.././flytekit.interaction.string_literals#flytekitinteractionstring_literalsscalar) | None. |
-
-## flytekit.interaction.string_literals.Literal
-
-```python
-def Literal(
-    scalar: typing.Optional[flytekit.models.literals.Scalar],
-    collection: typing.Optional[flytekit.models.literals.LiteralCollection],
-    map: typing.Optional[flytekit.models.literals.LiteralMap],
-    hash: typing.Optional[str],
-    metadata: typing.Optional[typing.Dict[str, str]],
-    offloaded_metadata: typing.Optional[flytekit.models.literals.LiteralOffloadedMetadata],
-):
-```
-This IDL message represents a literal value in the Flyte ecosystem.
-
-
-
-| Parameter | Type |
-|-|-|
-| `scalar` | `typing.Optional[flytekit.models.literals.Scalar]` |
-| `collection` | `typing.Optional[flytekit.models.literals.LiteralCollection]` |
-| `map` | `typing.Optional[flytekit.models.literals.LiteralMap]` |
-| `hash` | `typing.Optional[str]` |
-| `metadata` | `typing.Optional[typing.Dict[str, str]]` |
-| `offloaded_metadata` | `typing.Optional[flytekit.models.literals.LiteralOffloadedMetadata]` |
-
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`set_metadata()`](#set_metadata) | Note: This is a mutation on the literal |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`literal_map_string_repr()`](#literal_map_string_repr) | This method is used to convert a literal map to a string representation. |
+| [`literal_string_repr()`](#literal_string_repr) | This method is used to convert a literal to a string representation. |
+| [`primitive_to_string()`](#primitive_to_string) | This method is used to convert a primitive to a string representation. |
+| [`scalar_to_string()`](#scalar_to_string) | This method is used to convert a scalar to a string representation. |
 
 
-#### from_flyte_idl()
+## Methods
 
-```python
-def from_flyte_idl(
-    pb2_object: flyteidl.core.literals_pb2.Literal,
-):
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.literals_pb2.Literal` |
-
-#### serialize_to_string()
+#### literal_map_string_repr()
 
 ```python
-def serialize_to_string()
+def literal_map_string_repr(
+    lm: typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, flytekit.models.literals.Literal]],
+) -> typing.Dict[str, typing.Any]
 ```
-#### set_metadata()
-
-```python
-def set_metadata(
-    metadata: typing.Dict[str, str],
-):
-```
-Note: This is a mutation on the literal
+This method is used to convert a literal map to a string representation.
 
 
 | Parameter | Type |
 |-|-|
-| `metadata` | `typing.Dict[str, str]` |
+| `lm` | `typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, flytekit.models.literals.Literal]]` |
 
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
+#### literal_string_repr()
 
 ```python
-def to_flyte_idl()
+def literal_string_repr(
+    lit: flytekit.models.literals.Literal,
+) -> typing.Any
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| collection |  |  |
-| hash |  |  |
-| is_empty |  |  |
-| map |  |  |
-| metadata |  |  |
-| offloaded_metadata |  |  |
-| scalar |  |  |
-| value |  |  |
-
-## flytekit.interaction.string_literals.LiteralMap
-
-```python
-def LiteralMap(
-    literals,
-):
-```
-| Parameter | Type |
-|-|-|
-| `literals` |  |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    pb2_object,
-):
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| is_empty |  |  |
-| literals |  |  |
-
-## flytekit.interaction.string_literals.Primitive
-
-```python
-def Primitive(
-    integer: typing.Optional[int],
-    float_value: typing.Optional[float],
-    string_value: typing.Optional[str],
-    boolean: typing.Optional[bool],
-    datetime: typing.Optional[datetime.datetime],
-    duration: typing.Optional[datetime.timedelta],
-):
-```
-This object proxies the primitives supported by the Flyte IDL system.  Only one value can be set.
+This method is used to convert a literal to a string representation. This is useful in places, where we need to
+use a shortened string representation of a literal, especially a FlyteFile, FlyteDirectory, or StructuredDataset.
 
 
 | Parameter | Type |
 |-|-|
-| `integer` | `typing.Optional[int]` |
-| `float_value` | `typing.Optional[float]` |
-| `string_value` | `typing.Optional[str]` |
-| `boolean` | `typing.Optional[bool]` |
-| `datetime` | `typing.Optional[datetime.datetime]` |
-| `duration` | `typing.Optional[datetime.timedelta]` |
+| `lit` | `flytekit.models.literals.Literal` |
 
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
+#### primitive_to_string()
 
 ```python
-def from_flyte_idl(
-    proto,
-):
+def primitive_to_string(
+    primitive: flytekit.models.literals.Primitive,
+) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| boolean |  |  |
-| datetime |  |  |
-| duration |  |  |
-| float_value |  |  |
-| integer |  |  |
-| is_empty |  |  |
-| string_value |  |  |
-| value |  |  |
-
-## flytekit.interaction.string_literals.Scalar
-
-```python
-def Scalar(
-    primitive: typing.Optional[flytekit.models.literals.Primitive],
-    blob: typing.Optional[flytekit.models.literals.Blob],
-    binary: typing.Optional[flytekit.models.literals.Binary],
-    schema: typing.Optional[flytekit.models.literals.Schema],
-    union: typing.Optional[flytekit.models.literals.Union],
-    none_type: typing.Optional[flytekit.models.literals.Void],
-    error: typing.Optional[flytekit.models.types.Error],
-    generic: typing.Optional[google.protobuf.struct_pb2.Struct],
-    structured_dataset: typing.Optional[flytekit.models.literals.StructuredDataset],
-):
-```
-Scalar wrapper around Flyte types.  Only one can be specified.
-
+This method is used to convert a primitive to a string representation.
 
 
 | Parameter | Type |
 |-|-|
-| `primitive` | `typing.Optional[flytekit.models.literals.Primitive]` |
-| `blob` | `typing.Optional[flytekit.models.literals.Blob]` |
-| `binary` | `typing.Optional[flytekit.models.literals.Binary]` |
-| `schema` | `typing.Optional[flytekit.models.literals.Schema]` |
-| `union` | `typing.Optional[flytekit.models.literals.Union]` |
-| `none_type` | `typing.Optional[flytekit.models.literals.Void]` |
-| `error` | `typing.Optional[flytekit.models.types.Error]` |
-| `generic` | `typing.Optional[google.protobuf.struct_pb2.Struct]` |
-| `structured_dataset` | `typing.Optional[flytekit.models.literals.StructuredDataset]` |
+| `primitive` | `flytekit.models.literals.Primitive` |
 
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
+#### scalar_to_string()
 
 ```python
-def from_flyte_idl(
-    pb2_object,
-):
+def scalar_to_string(
+    scalar: flytekit.models.literals.Scalar,
+) -> typing.Any
 ```
+This method is used to convert a scalar to a string representation.
+
+
 | Parameter | Type |
 |-|-|
-| `pb2_object` |  |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| binary |  |  |
-| blob |  |  |
-| error |  |  |
-| generic |  |  |
-| is_empty |  |  |
-| none_type |  |  |
-| primitive |  |  |
-| schema |  |  |
-| structured_dataset |  |  |
-| union |  |  |
-| value |  |  |
+| `scalar` | `flytekit.models.literals.Scalar` |
 

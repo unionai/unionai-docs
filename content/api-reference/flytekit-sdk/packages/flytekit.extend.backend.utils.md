@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.utils
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,114 +9,93 @@ layout: py_api
 
 ## Directory
 
-### Classes
-
-| Class | Description |
-|-|-|
-| [`TaskExecution`](.././flytekit.extend.backend.utils#flytekitextendbackendutilstaskexecution) | A ProtocolMessage. |
-| [`TaskTemplate`](.././flytekit.extend.backend.utils#flytekitextendbackendutilstasktemplate) | None. |
-
-## flytekit.extend.backend.utils.TaskExecution
-
-A ProtocolMessage
-
-
-## flytekit.extend.backend.utils.TaskTemplate
-
-```python
-def TaskTemplate(
-    id,
-    type,
-    metadata,
-    interface,
-    custom,
-    container,
-    task_type_version,
-    security_context,
-    config,
-    k8s_pod,
-    sql,
-    extended_resources,
-):
-```
-A task template represents the full set of information necessary to perform a unit of work in the Flyte system.
-It contains the metadata about what inputs and outputs are consumed or produced.  It also contains the metadata
-necessary for Flyte Propeller to do the appropriate work.
-
-
-
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `type` |  |
-| `metadata` |  |
-| `interface` |  |
-| `custom` |  |
-| `container` |  |
-| `task_type_version` |  |
-| `security_context` |  |
-| `config` |  |
-| `k8s_pod` |  |
-| `sql` |  |
-| `extended_resources` |  |
-
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`convert_to_flyte_phase()`](#convert_to_flyte_phase) | Convert the state from the connector to the phase in flyte. |
+| [`get_agent_secret()`](#get_agent_secret) |  |
+| [`get_connector_secret()`](#get_connector_secret) |  |
+| [`is_terminal_phase()`](#is_terminal_phase) | Return true if the phase is terminal. |
+| [`mirror_async_methods()`](#mirror_async_methods) |  |
+| [`render_task_template()`](#render_task_template) |  |
 
 
-#### from_flyte_idl()
+## Methods
+
+#### convert_to_flyte_phase()
 
 ```python
-def from_flyte_idl(
-    pb2_object,
-):
+def convert_to_flyte_phase(
+    state: str,
+) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10758c3d0>
+```
+Convert the state from the connector to the phase in flyte.
+
+
+| Parameter | Type |
+|-|-|
+| `state` | `str` |
+
+#### get_agent_secret()
+
+```python
+def get_agent_secret(
+    secret_key: str,
+) -> str
 ```
 | Parameter | Type |
 |-|-|
-| `pb2_object` |  |
+| `secret_key` | `str` |
 
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
+#### get_connector_secret()
 
 ```python
-def short_string()
+def get_connector_secret(
+    secret_key: str,
+) -> str
 ```
-#### to_flyte_idl()
+| Parameter | Type |
+|-|-|
+| `secret_key` | `str` |
+
+#### is_terminal_phase()
 
 ```python
-def to_flyte_idl()
+def is_terminal_phase(
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10758c3d0>,
+) -> bool
 ```
-#### verbose_string()
+Return true if the phase is terminal.
+
+
+| Parameter | Type |
+|-|-|
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10758c3d0>` |
+
+#### mirror_async_methods()
 
 ```python
-def verbose_string()
+def mirror_async_methods(
+    func: typing.Callable,
+    kwargs,
+) -> typing.Coroutine
 ```
-### Properties
+| Parameter | Type |
+|-|-|
+| `func` | `typing.Callable` |
+| `kwargs` | ``**kwargs`` |
 
-| Property | Type | Description |
-|-|-|-|
-| config |  |  |
-| container |  |  |
-| custom |  |  |
-| extended_resources |  |  |
-| id |  |  |
-| interface |  |  |
-| is_empty |  |  |
-| k8s_pod |  |  |
-| metadata |  |  |
-| security_context |  |  |
-| sql |  |  |
-| task_type_version |  |  |
-| type |  |  |
+#### render_task_template()
+
+```python
+def render_task_template(
+    tt: flytekit.models.task.TaskTemplate,
+    file_prefix: str,
+) -> flytekit.models.task.TaskTemplate
+```
+| Parameter | Type |
+|-|-|
+| `tt` | `flytekit.models.task.TaskTemplate` |
+| `file_prefix` | `str` |
 

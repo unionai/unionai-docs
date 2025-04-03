@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.presto
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -17,17 +17,17 @@ See ``plugins/flytekit-kf-pytorch/flytekitplugins/kfpytorch/models.py`` as an ex
 
 | Class | Description |
 |-|-|
-| [`PrestoQuery`](.././flytekit.models.presto#flytekitmodelsprestoprestoquery) | None. |
+| [`PrestoQuery`](.././flytekit.models.presto#flytekitmodelsprestoprestoquery) |  |
 
 ## flytekit.models.presto.PrestoQuery
 
 ```python
-def PrestoQuery(
+class PrestoQuery(
     routing_group,
     catalog,
     schema,
     statement,
-):
+)
 ```
 Initializes a new PrestoQuery.
 
@@ -44,11 +44,11 @@ Initializes a new PrestoQuery.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _presto. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -56,7 +56,7 @@ Initializes a new PrestoQuery.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> n: PrestoQuery
 ```
 | Parameter | Type |
 |-|-|
@@ -72,23 +72,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: _presto.PrestoQuery
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| catalog |  |  |
-| is_empty |  |  |
-| routing_group |  |  |
-| schema |  |  |
-| statement |  |  |
+| `catalog` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `routing_group` |  | {{< multiline >}}The query string.
+:rtype: str
+{{< /multiline >}} |
+| `schema` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
+| `statement` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
 

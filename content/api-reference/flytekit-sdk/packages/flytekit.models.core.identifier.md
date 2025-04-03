@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.identifier
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,23 +13,23 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Identifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifieridentifier) | None. |
-| [`NodeExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiernodeexecutionidentifier) | None. |
-| [`ResourceType`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifierresourcetype) | None. |
-| [`SignalIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiersignalidentifier) | None. |
-| [`TaskExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiertaskexecutionidentifier) | None. |
-| [`WorkflowExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifierworkflowexecutionidentifier) | None. |
+| [`Identifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifieridentifier) |  |
+| [`NodeExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiernodeexecutionidentifier) |  |
+| [`ResourceType`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifierresourcetype) |  |
+| [`SignalIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiersignalidentifier) |  |
+| [`TaskExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifiertaskexecutionidentifier) |  |
+| [`WorkflowExecutionIdentifier`](.././flytekit.models.core.identifier#flytekitmodelscoreidentifierworkflowexecutionidentifier) |  |
 
 ## flytekit.models.core.identifier.Identifier
 
 ```python
-def Identifier(
+class Identifier(
     resource_type,
     project,
     domain,
     name,
     version,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -43,12 +43,12 @@ def Identifier(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`resource_type_name()`](#resource_type_name) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`resource_type_name()`](#resource_type_name) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -56,7 +56,7 @@ def Identifier(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: Identifier
 ```
 | Parameter | Type |
 |-|-|
@@ -77,34 +77,49 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.identifier_pb2.Identifier
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| domain |  |  |
-| is_empty |  |  |
-| name |  |  |
-| project |  |  |
-| resource_type |  |  |
-| version |  |  |
+| `domain` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `name` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `project` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `resource_type` |  | {{< multiline >}}enum value from ResourceType
+:rtype: int
+{{< /multiline >}} |
+| `version` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.core.identifier.NodeExecutionIdentifier
 
 ```python
-def NodeExecutionIdentifier(
+class NodeExecutionIdentifier(
     node_id,
     execution_id,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -115,11 +130,11 @@ def NodeExecutionIdentifier(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -127,7 +142,7 @@ def NodeExecutionIdentifier(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: NodeExecutionIdentifier
 ```
 | Parameter | Type |
 |-|-|
@@ -143,33 +158,44 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.identifier_pb2.NodeExecutionIdentifier
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| execution_id |  |  |
-| is_empty |  |  |
-| node_id |  |  |
+| `execution_id` |  | {{< multiline >}}:rtype: WorkflowExecutionIdentifier
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `node_id` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.core.identifier.ResourceType
 
 ## flytekit.models.core.identifier.SignalIdentifier
 
 ```python
-def SignalIdentifier(
+class SignalIdentifier(
     signal_id: str,
     execution_id: flytekit.models.core.identifier.WorkflowExecutionIdentifier,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -180,11 +206,11 @@ def SignalIdentifier(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -192,7 +218,7 @@ def SignalIdentifier(
 ```python
 def from_flyte_idl(
     proto: flyteidl.core.identifier_pb2.SignalIdentifier,
-):
+) -> SignalIdentifier
 ```
 | Parameter | Type |
 |-|-|
@@ -208,6 +234,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -218,22 +247,25 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| execution_id |  |  |
-| is_empty |  |  |
-| signal_id |  |  |
+| `execution_id` |  |  |
+| `is_empty` |  |  |
+| `signal_id` |  |  |
 
 ## flytekit.models.core.identifier.TaskExecutionIdentifier
 
 ```python
-def TaskExecutionIdentifier(
+class TaskExecutionIdentifier(
     task_id,
     node_execution_id,
     retry_attempt,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -245,11 +277,11 @@ def TaskExecutionIdentifier(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -257,7 +289,7 @@ def TaskExecutionIdentifier(
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: TaskExecutionIdentifier
 ```
 | Parameter | Type |
 |-|-|
@@ -273,33 +305,45 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.identifier_pb2.TaskExecutionIdentifier
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| node_execution_id |  |  |
-| retry_attempt |  |  |
-| task_id |  |  |
+| `is_empty` |  |  |
+| `node_execution_id` |  | {{< multiline >}}:rtype: NodeExecutionIdentifier
+{{< /multiline >}} |
+| `retry_attempt` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
+| `task_id` |  | {{< multiline >}}:rtype: Identifier
+{{< /multiline >}} |
 
 ## flytekit.models.core.identifier.WorkflowExecutionIdentifier
 
 ```python
-def WorkflowExecutionIdentifier(
+class WorkflowExecutionIdentifier(
     project,
     domain,
     name,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -311,11 +355,11 @@ def WorkflowExecutionIdentifier(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -323,7 +367,7 @@ def WorkflowExecutionIdentifier(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: WorkflowExecutionIdentifier
 ```
 | Parameter | Type |
 |-|-|
@@ -339,22 +383,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.identifier_pb2.WorkflowExecutionIdentifier
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| domain |  |  |
-| is_empty |  |  |
-| name |  |  |
-| project |  |  |
+| `domain` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `name` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `project` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 

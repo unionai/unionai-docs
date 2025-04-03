@@ -3,7 +3,6 @@ title: Union SDK
 version: 0.1.170
 variants: +byoc +byok +serverless -flyte
 layout: py_api
-weight: 2
 ---
 
 # Union SDK

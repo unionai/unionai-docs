@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.keyring
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -16,24 +16,19 @@ layout: py_api
 | [`Credentials`](.././flytekit.clients.auth.keyring#flytekitclientsauthkeyringcredentials) | Stores the credentials together. |
 | [`KeyringStore`](.././flytekit.clients.auth.keyring#flytekitclientsauthkeyringkeyringstore) | Methods to access Keyring Store. |
 
-### Errors
-
-* [`NoKeyringError`](.././flytekit.clients.auth.keyring#flytekitclientsauthkeyringnokeyringerror)
-* [`PasswordDeleteError`](.././flytekit.clients.auth.keyring#flytekitclientsauthkeyringpassworddeleteerror)
-
 ## flytekit.clients.auth.keyring.Credentials
 
 Stores the credentials together
 
 
 ```python
-def Credentials(
+class Credentials(
     access_token: str,
     refresh_token: typing.Optional[str],
     for_endpoint: str,
     expires_in: typing.Optional[int],
     id_token: typing.Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -52,9 +47,9 @@ Methods to access Keyring Store.
 
 | Method | Description |
 |-|-|
-| [`delete()`](#delete) | None |
-| [`retrieve()`](#retrieve) | None |
-| [`store()`](#store) | None |
+| [`delete()`](#delete) |  |
+| [`retrieve()`](#retrieve) |  |
+| [`store()`](#store) |  |
 
 
 #### delete()
@@ -62,7 +57,7 @@ Methods to access Keyring Store.
 ```python
 def delete(
     for_endpoint: str,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -73,7 +68,7 @@ def delete(
 ```python
 def retrieve(
     for_endpoint: str,
-):
+) -> typing.Optional[flytekit.clients.auth.keyring.Credentials]
 ```
 | Parameter | Type |
 |-|-|
@@ -84,19 +79,9 @@ def retrieve(
 ```python
 def store(
     credentials: flytekit.clients.auth.keyring.Credentials,
-):
+) -> flytekit.clients.auth.keyring.Credentials
 ```
 | Parameter | Type |
 |-|-|
 | `credentials` | `flytekit.clients.auth.keyring.Credentials` |
-
-## flytekit.clients.auth.keyring.NoKeyringError
-
-Raised when there is no keyring backend
-
-
-## flytekit.clients.auth.keyring.PasswordDeleteError
-
-Raised when the password can't be deleted.
-
 

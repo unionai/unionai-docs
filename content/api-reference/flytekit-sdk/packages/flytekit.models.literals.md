@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.literals
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,37 +13,33 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`Binary`](.././flytekit.models.literals#flytekitmodelsliteralsbinary) | None. |
-| [`Binding`](.././flytekit.models.literals#flytekitmodelsliteralsbinding) | None. |
-| [`BindingData`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdata) | None. |
-| [`BindingDataCollection`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdatacollection) | None. |
-| [`BindingDataMap`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdatamap) | None. |
-| [`Blob`](.././flytekit.models.literals#flytekitmodelsliteralsblob) | None. |
+| [`Binary`](.././flytekit.models.literals#flytekitmodelsliteralsbinary) |  |
+| [`Binding`](.././flytekit.models.literals#flytekitmodelsliteralsbinding) |  |
+| [`BindingData`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdata) |  |
+| [`BindingDataCollection`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdatacollection) |  |
+| [`BindingDataMap`](.././flytekit.models.literals#flytekitmodelsliteralsbindingdatamap) |  |
+| [`Blob`](.././flytekit.models.literals#flytekitmodelsliteralsblob) |  |
 | [`BlobMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsblobmetadata) | This is metadata for the Blob literal. |
-| [`Error`](.././flytekit.models.literals#flytekitmodelsliteralserror) | None. |
-| [`Literal`](.././flytekit.models.literals#flytekitmodelsliteralsliteral) | None. |
-| [`LiteralCollection`](.././flytekit.models.literals#flytekitmodelsliteralsliteralcollection) | None. |
-| [`LiteralMap`](.././flytekit.models.literals#flytekitmodelsliteralsliteralmap) | None. |
-| [`LiteralOffloadedMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsliteraloffloadedmetadata) | None. |
-| [`LiteralType`](.././flytekit.models.literals#flytekitmodelsliteralsliteraltype) | None. |
-| [`Primitive`](.././flytekit.models.literals#flytekitmodelsliteralsprimitive) | None. |
-| [`RetryStrategy`](.././flytekit.models.literals#flytekitmodelsliteralsretrystrategy) | None. |
-| [`Scalar`](.././flytekit.models.literals#flytekitmodelsliteralsscalar) | None. |
-| [`Schema`](.././flytekit.models.literals#flytekitmodelsliteralsschema) | None. |
-| [`Struct`](.././flytekit.models.literals#flytekitmodelsliteralsstruct) | A ProtocolMessage. |
-| [`StructuredDataset`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddataset) | None. |
-| [`StructuredDatasetMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddatasetmetadata) | None. |
-| [`StructuredDatasetType`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddatasettype) | None. |
-| [`Union`](.././flytekit.models.literals#flytekitmodelsliteralsunion) | None. |
-| [`Void`](.././flytekit.models.literals#flytekitmodelsliteralsvoid) | None. |
+| [`Literal`](.././flytekit.models.literals#flytekitmodelsliteralsliteral) |  |
+| [`LiteralCollection`](.././flytekit.models.literals#flytekitmodelsliteralsliteralcollection) |  |
+| [`LiteralMap`](.././flytekit.models.literals#flytekitmodelsliteralsliteralmap) |  |
+| [`LiteralOffloadedMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsliteraloffloadedmetadata) |  |
+| [`Primitive`](.././flytekit.models.literals#flytekitmodelsliteralsprimitive) |  |
+| [`RetryStrategy`](.././flytekit.models.literals#flytekitmodelsliteralsretrystrategy) |  |
+| [`Scalar`](.././flytekit.models.literals#flytekitmodelsliteralsscalar) |  |
+| [`Schema`](.././flytekit.models.literals#flytekitmodelsliteralsschema) |  |
+| [`StructuredDataset`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddataset) |  |
+| [`StructuredDatasetMetadata`](.././flytekit.models.literals#flytekitmodelsliteralsstructureddatasetmetadata) |  |
+| [`Union`](.././flytekit.models.literals#flytekitmodelsliteralsunion) |  |
+| [`Void`](.././flytekit.models.literals#flytekitmodelsliteralsvoid) |  |
 
 ## flytekit.models.literals.Binary
 
 ```python
-def Binary(
+class Binary(
     value,
     tag,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -54,11 +50,11 @@ def Binary(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -66,7 +62,7 @@ def Binary(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Binary
 ```
 | Parameter | Type |
 |-|-|
@@ -82,31 +78,42 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Binary
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| tag |  |  |
-| value |  |  |
+| `is_empty` |  |  |
+| `tag` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `value` |  | {{< multiline >}}:rtype: bytes
+{{< /multiline >}} |
 
 ## flytekit.models.literals.Binding
 
 ```python
-def Binding(
+class Binding(
     var,
     binding,
-):
+)
 ```
 An input/output binding of a variable to either static value or a node output.
 
@@ -121,11 +128,11 @@ An input/output binding of a variable to either static value or a node output.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -133,7 +140,7 @@ An input/output binding of a variable to either static value or a node output.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: flytekit.core.models.literals.Binding
 ```
 | Parameter | Type |
 |-|-|
@@ -149,33 +156,46 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Binding
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| binding |  |  |
-| is_empty |  |  |
-| var |  |  |
+| `binding` |  | {{< multiline >}}Data to use to bind this variable.
+:rtype: BindingData
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `var` |  | {{< multiline >}}A variable name, must match an input or output variable of the node.
+:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.literals.BindingData
 
 ```python
-def BindingData(
+class BindingData(
     scalar,
     collection,
     promise,
     map,
-):
+)
 ```
 Specifies either a simple value or a reference to another output. Only one of the input arguments may be
 specified.
@@ -193,12 +213,12 @@ specified.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`to_literal_model()`](#to_literal_model) | Converts current binding data into a Literal asserting that there are no promises in the bindings |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`to_literal_model()`](#to_literal_model) | Converts current binding data into a Literal asserting that there are no promises in the bindings. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -206,7 +226,7 @@ specified.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> n: BindingData
 ```
 | Parameter | Type |
 |-|-|
@@ -222,17 +242,24 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.BindingData
+
+
 #### to_literal_model()
 
 ```python
 def to_literal_model()
 ```
 Converts current binding data into a Literal asserting that there are no promises in the bindings.
+:rtype: Literal
 
 
 #### verbose_string()
@@ -240,23 +267,36 @@ Converts current binding data into a Literal asserting that there are no promise
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| collection |  |  |
-| is_empty |  |  |
-| map |  |  |
-| promise |  |  |
-| scalar |  |  |
-| value |  |  |
+| `collection` |  | {{< multiline >}}[Optional] A collection of binding data. This allows nesting of binding data to any number of levels.
+:rtype: BindingDataCollection
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `map` |  | {{< multiline >}}[Optional] A map of bindings. The key is always a string.
+:rtype: BindingDataMap
+{{< /multiline >}} |
+| `promise` |  | {{< multiline >}}[Optional] References an output promised by another node.
+:rtype: flytekit.models.types.OutputReference
+{{< /multiline >}} |
+| `scalar` |  | {{< multiline >}}A simple scalar value.
+:rtype: Scalar
+{{< /multiline >}} |
+| `value` |  | {{< multiline >}}Returns whichever value is set
+:rtype: T
+{{< /multiline >}} |
 
 ## flytekit.models.literals.BindingDataCollection
 
 ```python
-def BindingDataCollection(
+class BindingDataCollection(
     bindings,
-):
+)
 ```
 A list of BindingData items.
 
@@ -270,11 +310,11 @@ A list of BindingData items.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -282,7 +322,7 @@ A list of BindingData items.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: flytekit.models.literals.BindingDataCollection
 ```
 | Parameter | Type |
 |-|-|
@@ -298,29 +338,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.BindingDataCollection
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| bindings |  |  |
-| is_empty |  |  |
+| `bindings` |  | {{< multiline >}}:rtype: list[BindingData]
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.literals.BindingDataMap
 
 ```python
-def BindingDataMap(
+class BindingDataMap(
     bindings,
-):
+)
 ```
 A map of BindingData items.  Can be a recursive structure
 
@@ -334,11 +384,11 @@ A map of BindingData items.  Can be a recursive structure
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -346,7 +396,7 @@ A map of BindingData items.  Can be a recursive structure
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: flytekit.models.literals.BindingDataMap
 ```
 | Parameter | Type |
 |-|-|
@@ -362,30 +412,41 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.BindingDataMap
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| bindings |  |  |
-| is_empty |  |  |
+| `bindings` |  | {{< multiline >}}Map of strings to Bindings
+:rtype: dict[string, BindingData]
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.literals.Blob
 
 ```python
-def Blob(
+class Blob(
     metadata,
     uri,
-):
+)
 ```
 This literal model is used to represent binary data offloaded to some storage location which is
 identifiable with a unique string. See :py:class:`flytekit.FlyteFile` as an example.
@@ -401,11 +462,11 @@ identifiable with a unique string. See :py:class:`flytekit.FlyteFile` as an exam
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -413,7 +474,7 @@ identifiable with a unique string. See :py:class:`flytekit.FlyteFile` as an exam
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: Blob
 ```
 | Parameter | Type |
 |-|-|
@@ -429,23 +490,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Blob
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| metadata |  |  |
-| uri |  |  |
+| `is_empty` |  |  |
+| `metadata` |  | {{< multiline >}}:rtype: BlobMetadata
+{{< /multiline >}} |
+| `uri` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.literals.BlobMetadata
 
@@ -453,9 +525,9 @@ This is metadata for the Blob literal.
 
 
 ```python
-def BlobMetadata(
+class BlobMetadata(
     type,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -465,11 +537,11 @@ def BlobMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -477,7 +549,7 @@ def BlobMetadata(
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: BlobMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -493,97 +565,44 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.BlobMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| type |  |  |
-
-## flytekit.models.literals.Error
-
-```python
-def Error(
-    failed_node_id: str,
-    message: str,
-):
-```
-| Parameter | Type |
-|-|-|
-| `failed_node_id` | `str` |
-| `message` | `str` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    pb2_object: flyteidl.core.types_pb2.Error,
-):
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.core.types_pb2.Error` |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| failed_node_id |  |  |
-| is_empty |  |  |
-| message |  |  |
+| `is_empty` |  |  |
+| `type` |  | {{< multiline >}}:rtype: flytekit.models.core.types.BlobType
+{{< /multiline >}} |
 
 ## flytekit.models.literals.Literal
 
 ```python
-def Literal(
+class Literal(
     scalar: typing.Optional[flytekit.models.literals.Scalar],
     collection: typing.Optional[flytekit.models.literals.LiteralCollection],
     map: typing.Optional[flytekit.models.literals.LiteralMap],
     hash: typing.Optional[str],
     metadata: typing.Optional[typing.Dict[str, str]],
     offloaded_metadata: typing.Optional[flytekit.models.literals.LiteralOffloadedMetadata],
-):
+)
 ```
 This IDL message represents a literal value in the Flyte ecosystem.
 
@@ -602,12 +621,12 @@ This IDL message represents a literal value in the Flyte ecosystem.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`set_metadata()`](#set_metadata) | Note: This is a mutation on the literal |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`set_metadata()`](#set_metadata) | Note: This is a mutation on the literal. |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -615,7 +634,7 @@ This IDL message represents a literal value in the Flyte ecosystem.
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.literals_pb2.Literal,
-):
+) -> e: Literal
 ```
 | Parameter | Type |
 |-|-|
@@ -631,7 +650,7 @@ def serialize_to_string()
 ```python
 def set_metadata(
     metadata: typing.Dict[str, str],
-):
+)
 ```
 Note: This is a mutation on the literal
 
@@ -645,35 +664,56 @@ Note: This is a mutation on the literal
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Literal
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| collection |  |  |
-| hash |  |  |
-| is_empty |  |  |
-| map |  |  |
-| metadata |  |  |
-| offloaded_metadata |  |  |
-| scalar |  |  |
-| value |  |  |
+| `collection` |  | {{< multiline >}}If not None, this value holds a collection of Literal values which can be further unpacked.
+:rtype: LiteralCollection
+{{< /multiline >}} |
+| `hash` |  | {{< multiline >}}If not None, this value holds a hash that represents the literal for caching purposes.
+:rtype: str
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `map` |  | {{< multiline >}}If not None, this value holds a map of Literal values which can be further unpacked.
+:rtype: LiteralMap
+{{< /multiline >}} |
+| `metadata` |  | {{< multiline >}}This value holds metadata about the literal.
+{{< /multiline >}} |
+| `offloaded_metadata` |  | {{< multiline >}}This value holds metadata about the offloaded literal.
+{{< /multiline >}} |
+| `scalar` |  | {{< multiline >}}If not None, this value holds a scalar value which can be further unpacked.
+:rtype: Scalar
+{{< /multiline >}} |
+| `value` |  | {{< multiline >}}Returns one of the scalar, collection, or map properties based on which one is set.
+:rtype: T
+{{< /multiline >}} |
 
 ## flytekit.models.literals.LiteralCollection
 
 ```python
-def LiteralCollection(
+class LiteralCollection(
     literals,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -683,11 +723,11 @@ def LiteralCollection(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -695,7 +735,7 @@ def LiteralCollection(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: LiteralCollection
 ```
 | Parameter | Type |
 |-|-|
@@ -711,29 +751,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.LiteralCollection
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| literals |  |  |
+| `is_empty` |  |  |
+| `literals` |  | {{< multiline >}}:rtype: list[Literal]
+{{< /multiline >}} |
 
 ## flytekit.models.literals.LiteralMap
 
 ```python
-def LiteralMap(
+class LiteralMap(
     literals,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -743,11 +793,11 @@ def LiteralMap(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -755,7 +805,7 @@ def LiteralMap(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: LiteralMap
 ```
 | Parameter | Type |
 |-|-|
@@ -771,31 +821,42 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.LiteralMap
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| literals |  |  |
+| `is_empty` |  |  |
+| `literals` |  | {{< multiline >}}A dictionary mapping Text key names to Literal objects.
+:rtype: dict[Text, Literal]
+{{< /multiline >}} |
 
 ## flytekit.models.literals.LiteralOffloadedMetadata
 
 ```python
-def LiteralOffloadedMetadata(
+class LiteralOffloadedMetadata(
     uri: typing.Optional[str],
     size_bytes: typing.Optional[int],
     inferred_type: typing.Optional[flytekit.models.types.LiteralType],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -807,11 +868,11 @@ def LiteralOffloadedMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -819,7 +880,7 @@ def LiteralOffloadedMetadata(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -835,6 +896,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -845,120 +909,29 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| inferred_type |  |  |
-| is_empty |  |  |
-| size_bytes |  |  |
-| uri |  |  |
-
-## flytekit.models.literals.LiteralType
-
-```python
-def LiteralType(
-    simple,
-    schema,
-    collection_type,
-    map_value_type,
-    blob,
-    enum_type,
-    union_type,
-    structured_dataset_type,
-    metadata,
-    structure,
-    annotation,
-):
-```
-This is a oneof message, only one of the kwargs may be set, representing one of the Flyte types.
-
-
-
-| Parameter | Type |
-|-|-|
-| `simple` |  |
-| `schema` |  |
-| `collection_type` |  |
-| `map_value_type` |  |
-| `blob` |  |
-| `enum_type` |  |
-| `union_type` |  |
-| `structured_dataset_type` |  |
-| `metadata` |  |
-| `structure` |  |
-| `annotation` |  |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    proto,
-):
-```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| annotation |  |  |
-| blob |  |  |
-| collection_type |  |  |
-| enum_type |  |  |
-| is_empty |  |  |
-| map_value_type |  |  |
-| metadata |  |  |
-| schema |  |  |
-| simple |  |  |
-| structure |  |  |
-| structured_dataset_type |  |  |
-| union_type |  |  |
+| `inferred_type` |  |  |
+| `is_empty` |  |  |
+| `size_bytes` |  |  |
+| `uri` |  |  |
 
 ## flytekit.models.literals.Primitive
 
 ```python
-def Primitive(
+class Primitive(
     integer: typing.Optional[int],
     float_value: typing.Optional[float],
     string_value: typing.Optional[str],
     boolean: typing.Optional[bool],
     datetime: typing.Optional[datetime.datetime],
     duration: typing.Optional[datetime.timedelta],
-):
+)
 ```
 This object proxies the primitives supported by the Flyte IDL system.  Only one value can be set.
 
@@ -976,11 +949,11 @@ This object proxies the primitives supported by the Flyte IDL system.  Only one 
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -988,7 +961,7 @@ This object proxies the primitives supported by the Flyte IDL system.  Only one 
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: Primitive
 ```
 | Parameter | Type |
 |-|-|
@@ -1004,35 +977,52 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Primitive
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| boolean |  |  |
-| datetime |  |  |
-| duration |  |  |
-| float_value |  |  |
-| integer |  |  |
-| is_empty |  |  |
-| string_value |  |  |
-| value |  |  |
+| `boolean` |  | {{< multiline >}}:rtype: bool
+{{< /multiline >}} |
+| `datetime` |  | {{< multiline >}}:rtype: datetime.datetime
+{{< /multiline >}} |
+| `duration` |  | {{< multiline >}}:rtype: datetime.timedelta
+{{< /multiline >}} |
+| `float_value` |  | {{< multiline >}}:rtype: float
+{{< /multiline >}} |
+| `integer` |  | {{< multiline >}}:rtype: int
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `string_value` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `value` |  | {{< multiline >}}This returns whichever field is set.
+:rtype: T
+{{< /multiline >}} |
 
 ## flytekit.models.literals.RetryStrategy
 
 ```python
-def RetryStrategy(
+class RetryStrategy(
     retries: int,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1042,11 +1032,11 @@ def RetryStrategy(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1054,7 +1044,7 @@ def RetryStrategy(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: RetryStrategy
 ```
 | Parameter | Type |
 |-|-|
@@ -1070,27 +1060,38 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.RetryStrategy
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| retries |  |  |
+| `is_empty` |  |  |
+| `retries` |  | {{< multiline >}}Number of retries to attempt on recoverable failures.  If retries is 0, then only one attempt will be made.
+:rtype: int
+{{< /multiline >}} |
 
 ## flytekit.models.literals.Scalar
 
 ```python
-def Scalar(
+class Scalar(
     primitive: typing.Optional[flytekit.models.literals.Primitive],
     blob: typing.Optional[flytekit.models.literals.Blob],
     binary: typing.Optional[flytekit.models.literals.Binary],
@@ -1100,7 +1101,7 @@ def Scalar(
     error: typing.Optional[flytekit.models.types.Error],
     generic: typing.Optional[google.protobuf.struct_pb2.Struct],
     structured_dataset: typing.Optional[flytekit.models.literals.StructuredDataset],
-):
+)
 ```
 Scalar wrapper around Flyte types.  Only one can be specified.
 
@@ -1122,11 +1123,11 @@ Scalar wrapper around Flyte types.  Only one can be specified.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1134,7 +1135,7 @@ Scalar wrapper around Flyte types.  Only one can be specified.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: flytekit.models.literals.Scalar
 ```
 | Parameter | Type |
 |-|-|
@@ -1150,39 +1151,58 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Scalar
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| binary |  |  |
-| blob |  |  |
-| error |  |  |
-| generic |  |  |
-| is_empty |  |  |
-| none_type |  |  |
-| primitive |  |  |
-| schema |  |  |
-| structured_dataset |  |  |
-| union |  |  |
-| value |  |  |
+| `binary` |  | {{< multiline >}}:rtype: Binary
+{{< /multiline >}} |
+| `blob` |  | {{< multiline >}}:rtype: Blob
+{{< /multiline >}} |
+| `error` |  | {{< multiline >}}:rtype: Error
+{{< /multiline >}} |
+| `generic` |  | {{< multiline >}}:rtype: google.protobuf.struct_pb2.Struct
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `none_type` |  | {{< multiline >}}:rtype: Void
+{{< /multiline >}} |
+| `primitive` |  | {{< multiline >}}:rtype: Primitive
+{{< /multiline >}} |
+| `schema` |  | {{< multiline >}}:rtype: Schema
+{{< /multiline >}} |
+| `structured_dataset` |  |  |
+| `union` |  | {{< multiline >}}:rtype: Union
+{{< /multiline >}} |
+| `value` |  | {{< multiline >}}Returns whichever value is set
+:rtype: T
+{{< /multiline >}} |
 
 ## flytekit.models.literals.Schema
 
 ```python
-def Schema(
+class Schema(
     uri,
     type,
-):
+)
 ```
 A strongly typed schema that defines the interface of data retrieved from the underlying storage medium.
 
@@ -1197,11 +1217,11 @@ A strongly typed schema that defines the interface of data retrieved from the un
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1209,7 +1229,7 @@ A strongly typed schema that defines the interface of data retrieved from the un
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Schema
 ```
 | Parameter | Type |
 |-|-|
@@ -1225,102 +1245,42 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Schema
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| type |  |  |
-| uri |  |  |
+| `is_empty` |  |  |
+| `type` |  | {{< multiline >}}:rtype: flytekit.models.types.SchemaType
+{{< /multiline >}} |
+| `uri` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
-## flytekit.models.literals.Struct
-
-A ProtocolMessage
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`get_or_create_list()`](#get_or_create_list) | Returns a list for this key, creating if it didn't exist already |
-| [`get_or_create_struct()`](#get_or_create_struct) | Returns a struct for this key, creating if it didn't exist already |
-| [`items()`](#items) | None |
-| [`keys()`](#keys) | None |
-| [`update()`](#update) | None |
-| [`values()`](#values) | None |
-
-
-#### get_or_create_list()
-
-```python
-def get_or_create_list(
-    key,
-):
-```
-Returns a list for this key, creating if it didn't exist already.
-
-
-| Parameter | Type |
-|-|-|
-| `key` |  |
-
-#### get_or_create_struct()
-
-```python
-def get_or_create_struct(
-    key,
-):
-```
-Returns a struct for this key, creating if it didn't exist already.
-
-
-| Parameter | Type |
-|-|-|
-| `key` |  |
-
-#### items()
-
-```python
-def items()
-```
-#### keys()
-
-```python
-def keys()
-```
-#### update()
-
-```python
-def update(
-    dictionary,
-):
-```
-| Parameter | Type |
-|-|-|
-| `dictionary` |  |
-
-#### values()
-
-```python
-def values()
-```
 ## flytekit.models.literals.StructuredDataset
 
 ```python
-def StructuredDataset(
+class StructuredDataset(
     uri: str,
     metadata: typing.Optional[flytekit.models.literals.StructuredDatasetMetadata],
-):
+)
 ```
 A strongly typed schema that defines the interface of data retrieved from the underlying storage medium.
 
@@ -1334,11 +1294,11 @@ A strongly typed schema that defines the interface of data retrieved from the un
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1346,7 +1306,7 @@ A strongly typed schema that defines the interface of data retrieved from the un
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.literals_pb2.StructuredDataset,
-):
+) -> StructuredDataset
 ```
 | Parameter | Type |
 |-|-|
@@ -1362,6 +1322,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -1372,20 +1335,23 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| metadata |  |  |
-| uri |  |  |
+| `is_empty` |  |  |
+| `metadata` |  |  |
+| `uri` |  |  |
 
 ## flytekit.models.literals.StructuredDatasetMetadata
 
 ```python
-def StructuredDatasetMetadata(
+class StructuredDatasetMetadata(
     structured_dataset_type: typing.Optional[flytekit.models.types.StructuredDatasetType],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1395,11 +1361,11 @@ def StructuredDatasetMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1407,7 +1373,7 @@ def StructuredDatasetMetadata(
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.literals_pb2.StructuredDatasetMetadata,
-):
+) -> StructuredDatasetMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -1423,6 +1389,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -1433,89 +1402,23 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| structured_dataset_type |  |  |
-
-## flytekit.models.literals.StructuredDatasetType
-
-```python
-def StructuredDatasetType(
-    columns: typing.List[flytekit.models.types.StructuredDatasetType.DatasetColumn],
-    format: str,
-    external_schema_type: str,
-    external_schema_bytes: bytes,
-):
-```
-| Parameter | Type |
-|-|-|
-| `columns` | `typing.List[flytekit.models.types.StructuredDatasetType.DatasetColumn]` |
-| `format` | `str` |
-| `external_schema_type` | `str` |
-| `external_schema_bytes` | `bytes` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    proto: flyteidl.core.types_pb2.StructuredDatasetType,
-):
-```
-| Parameter | Type |
-|-|-|
-| `proto` | `flyteidl.core.types_pb2.StructuredDatasetType` |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| columns |  |  |
-| external_schema_bytes |  |  |
-| external_schema_type |  |  |
-| format |  |  |
-| is_empty |  |  |
+| `is_empty` |  |  |
+| `structured_dataset_type` |  |  |
 
 ## flytekit.models.literals.Union
 
 ```python
-def Union(
+class Union(
     value,
     stored_type,
-):
+)
 ```
 The runtime representation of a tagged union value. See `UnionType` for more details.
 
@@ -1530,11 +1433,11 @@ The runtime representation of a tagged union value. See `UnionType` for more det
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1542,7 +1445,7 @@ The runtime representation of a tagged union value. See `UnionType` for more det
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Schema
 ```
 | Parameter | Type |
 |-|-|
@@ -1558,23 +1461,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Union
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| stored_type |  |  |
-| value |  |  |
+| `is_empty` |  |  |
+| `stored_type` |  | {{< multiline >}}:rtype: flytekit.models.types.LiteralType
+{{< /multiline >}} |
+| `value` |  | {{< multiline >}}:rtype: flytekit.models.literals.Literal
+{{< /multiline >}} |
 
 ## flytekit.models.literals.Void
 
@@ -1582,11 +1496,11 @@ def verbose_string()
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1594,7 +1508,7 @@ def verbose_string()
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: Void
 ```
 | Parameter | Type |
 |-|-|
@@ -1610,19 +1524,28 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.literals_pb2.Void
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
+| `is_empty` |  |  |
 

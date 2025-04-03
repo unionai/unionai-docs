@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.types
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -22,10 +22,10 @@ This type represents offloaded data and is typically used for things like files.
 
 
 ```python
-def BlobType(
+class BlobType(
     format,
     dimensionality,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -36,11 +36,11 @@ def BlobType(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -48,7 +48,7 @@ def BlobType(
 ```python
 def from_flyte_idl(
     proto,
-):
+) -> e: BlobType
 ```
 | Parameter | Type |
 |-|-|
@@ -64,23 +64,36 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.types_pb2.BlobType
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| dimensionality |  |  |
-| format |  |  |
-| is_empty |  |  |
+| `dimensionality` |  | {{< multiline >}}An integer from BlobType.BlobDimensionality enum
+:rtype: int
+{{< /multiline >}} |
+| `format` |  | {{< multiline >}}A string describing the format of the underlying blob data.
+:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.core.types.EnumType
 
@@ -88,9 +101,9 @@ Models _types_pb2.EnumType
 
 
 ```python
-def EnumType(
+class EnumType(
     values: typing.List[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -100,11 +113,11 @@ def EnumType(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -112,7 +125,7 @@ def EnumType(
 ```python
 def from_flyte_idl(
     proto: _types_pb2.EnumType,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -128,6 +141,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -138,10 +154,13 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| values |  |  |
+| `is_empty` |  |  |
+| `values` |  |  |
 

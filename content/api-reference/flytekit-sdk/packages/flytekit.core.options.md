@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.options
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -25,7 +25,7 @@ in a Flyte backend, and also when registering launch plans.
 
 
 ```python
-def Options(
+class Options(
     labels: typing.Optional[flytekit.models.common.Labels],
     annotations: typing.Optional[flytekit.models.common.Annotations],
     raw_output_data_config: typing.Optional[flytekit.models.common.RawOutputDataConfig],
@@ -34,7 +34,7 @@ def Options(
     notifications: typing.Optional[typing.List[flytekit.models.common.Notification]],
     disable_notifications: typing.Optional[bool],
     overwrite_cache: typing.Optional[bool],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -51,7 +51,7 @@ def Options(
 
 | Method | Description |
 |-|-|
-| [`default_from()`](#default_from) | None |
+| [`default_from()`](#default_from) |  |
 
 
 #### default_from()
@@ -60,7 +60,7 @@ def Options(
 def default_from(
     k8s_service_account: typing.Optional[str],
     raw_data_prefix: typing.Optional[str],
-):
+) -> Options
 ```
 | Parameter | Type |
 |-|-|

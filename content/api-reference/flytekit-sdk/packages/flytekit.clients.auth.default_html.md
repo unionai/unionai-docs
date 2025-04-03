@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.default_html
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,30 +9,23 @@ layout: py_api
 
 ## Directory
 
-### Classes
+### Methods
 
-| Class | Description |
+| Method | Description |
 |-|-|
-| [`suppress`](.././flytekit.clients.auth.default_html#flytekitclientsauthdefault_htmlsuppress) | Context manager to suppress specified exceptions. |
+| [`get_default_success_html()`](#get_default_success_html) |  |
 
-## flytekit.clients.auth.default_html.suppress
 
-Context manager to suppress specified exceptions
+## Methods
 
-After the exception is suppressed, execution proceeds with the next
-statement following the with statement.
-
-with suppress(FileNotFoundError):
-os.remove(somefile)
-# Execution still resumes here if the file was already removed
-
+#### get_default_success_html()
 
 ```python
-def suppress(
-    exceptions,
-):
+def get_default_success_html(
+    endpoint: str,
+) -> str
 ```
 | Parameter | Type |
 |-|-|
-| `exceptions` |  |
+| `endpoint` | `str` |
 
