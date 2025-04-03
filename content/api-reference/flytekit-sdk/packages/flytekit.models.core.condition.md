@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.condition
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,18 +13,18 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BooleanExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditionbooleanexpression) | None. |
-| [`ComparisonExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditioncomparisonexpression) | None. |
-| [`ConjunctionExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditionconjunctionexpression) | None. |
-| [`Operand`](.././flytekit.models.core.condition#flytekitmodelscoreconditionoperand) | None. |
+| [`BooleanExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditionbooleanexpression) |  |
+| [`ComparisonExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditioncomparisonexpression) |  |
+| [`ConjunctionExpression`](.././flytekit.models.core.condition#flytekitmodelscoreconditionconjunctionexpression) |  |
+| [`Operand`](.././flytekit.models.core.condition#flytekitmodelscoreconditionoperand) |  |
 
 ## flytekit.models.core.condition.BooleanExpression
 
 ```python
-def BooleanExpression(
+class BooleanExpression(
     conjunction,
     comparison,
-):
+)
 ```
 Defines a boolean expression tree. It can be a simple or a conjunction expression.
 Multiple expressions can be combined using a conjunction or a disjunction to result in a final boolean result.
@@ -40,11 +40,11 @@ Multiple expressions can be combined using a conjunction or a disjunction to res
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -52,7 +52,7 @@ Multiple expressions can be combined using a conjunction or a disjunction to res
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -68,32 +68,45 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.BooleanExpression
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| comparison |  |  |
-| conjunction |  |  |
-| is_empty |  |  |
+| `comparison` |  | {{< multiline >}}Comparison expression or None if not set.
+:rtype: ComparisonExpression
+{{< /multiline >}} |
+| `conjunction` |  | {{< multiline >}}Conjunction expression or None if not set.
+:rtype: ConjunctionExpression
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.core.condition.ComparisonExpression
 
 ```python
-def ComparisonExpression(
+class ComparisonExpression(
     operator,
     left_value,
     right_value,
-):
+)
 ```
 Defines a 2-level tree where the root is a comparison operator and Operands are primitives or known variables.
 Each expression results in a boolean result.
@@ -110,11 +123,11 @@ Each expression results in a boolean result.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -122,7 +135,7 @@ Each expression results in a boolean result.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -138,33 +151,48 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.ComparisonExpression
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| left_value |  |  |
-| operator |  |  |
-| right_value |  |  |
+| `is_empty` |  |  |
+| `left_value` |  | {{< multiline >}}Gets the left value for the comparison expression.
+:rtype: Operand
+{{< /multiline >}} |
+| `operator` |  | {{< multiline >}}Gets the operator representing this comparison expression.
+:rtype: ComparisonExpression.Operator
+{{< /multiline >}} |
+| `right_value` |  | {{< multiline >}}Gets the right value for the comparison expression.
+:rtype: Operand
+{{< /multiline >}} |
 
 ## flytekit.models.core.condition.ConjunctionExpression
 
 ```python
-def ConjunctionExpression(
+class ConjunctionExpression(
     operator,
     left_expression,
     right_expression,
-):
+)
 ```
 Defines a conjunction expression of two boolean expressions.
 
@@ -179,11 +207,11 @@ Defines a conjunction expression of two boolean expressions.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -191,7 +219,7 @@ Defines a conjunction expression of two boolean expressions.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -207,33 +235,48 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.ConjunctionExpression
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| left_expression |  |  |
-| operator |  |  |
-| right_expression |  |  |
+| `is_empty` |  |  |
+| `left_expression` |  | {{< multiline >}}Gets the left value for the conjunction expression.
+:rtype: Operand
+{{< /multiline >}} |
+| `operator` |  | {{< multiline >}}Gets the operator representing this conjunction expression.
+:rtype: ConjunctionExpression.LogicalOperator
+{{< /multiline >}} |
+| `right_expression` |  | {{< multiline >}}Gets the right value for the conjunction expression.
+:rtype: Operand
+{{< /multiline >}} |
 
 ## flytekit.models.core.condition.Operand
 
 ```python
-def Operand(
+class Operand(
     primitive,
     var,
     scalar,
-):
+)
 ```
 Defines an operand to a comparison expression.
 
@@ -248,11 +291,11 @@ Defines an operand to a comparison expression.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -260,7 +303,7 @@ Defines an operand to a comparison expression.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -276,22 +319,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.condition_pb2.Operand
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| primitive |  |  |
-| scalar |  |  |
-| var |  |  |
+| `is_empty` |  |  |
+| `primitive` |  | {{< multiline >}}:rtype: flytekit.models.literals.Primitive
+{{< /multiline >}} |
+| `scalar` |  | {{< multiline >}}:rtype: flytekit.models.literals.Scalar
+{{< /multiline >}} |
+| `var` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 

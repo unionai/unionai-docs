@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.notification
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -11,9 +11,8 @@ layout: py_api
 Notifications are primarily used when defining Launch Plans (also can be used when launching executions) and will trigger
 the Flyte platform to send emails when a workflow run reaches certain stages (fails or succeeds, etc.).
 
-.. note::
-
-    Notifications require some setup and configuration on the Flyte platform side. Please contact your Flyte platform
+> [!NOTE]
+> Notifications require some setup and configuration on the Flyte platform side. Please contact your Flyte platform
     admins to get this feature enabled. See :std:ref:`cookbook:setting up workflow notifications`
 
 Each notification type takes a list of :py:class:`flytekit.models.core.execution.WorkflowExecutionPhase` and a list of
@@ -31,7 +30,7 @@ and Pagerduty is incumbent on those email API being set-up correctly.
 | Class | Description |
 |-|-|
 | [`Email`](.././flytekit.core.notification#flytekitcorenotificationemail) | This notification should be used when sending regular emails to people. |
-| [`Notification`](.././flytekit.core.notification#flytekitcorenotificationnotification) | None. |
+| [`Notification`](.././flytekit.core.notification#flytekitcorenotificationnotification) |  |
 | [`PagerDuty`](.././flytekit.core.notification#flytekitcorenotificationpagerduty) | This notification should be used when sending emails to the PagerDuty service. |
 | [`Slack`](.././flytekit.core.notification#flytekitcorenotificationslack) | This notification should be used when sending emails to the Slack. |
 
@@ -39,18 +38,19 @@ and Pagerduty is incumbent on those email API being set-up correctly.
 
 This notification should be used when sending regular emails to people.
 
-.. code-block:: python
+```python
 
-from flytekit.models.core.execution import WorkflowExecutionPhase
+    from flytekit.models.core.execution import WorkflowExecutionPhase
 
-Email(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+    Email(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+```
 
 
 ```python
-def Email(
+class Email(
     phases: typing.List[int],
     recipients_email: typing.List[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -61,11 +61,11 @@ def Email(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -73,7 +73,7 @@ def Email(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: Notification
 ```
 | Parameter | Type |
 |-|-|
@@ -89,35 +89,49 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.Notification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| email |  |  |
-| is_empty |  |  |
-| pager_duty |  |  |
-| phases |  |  |
-| slack |  |  |
+| `email` |  | {{< multiline >}}:rtype: EmailNotification
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
+{{< /multiline >}} |
+| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
+:rtype: list[int]
+{{< /multiline >}} |
+| `slack` |  | {{< multiline >}}:rtype: SlackNotification
+{{< /multiline >}} |
 
 ## flytekit.core.notification.Notification
 
 ```python
-def Notification(
+class Notification(
     phases: typing.List[int],
     email: flytekit.models.common.EmailNotification,
     pager_duty: flytekit.models.common.PagerDutyNotification,
     slack: flytekit.models.common.SlackNotification,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -130,11 +144,11 @@ def Notification(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -142,7 +156,7 @@ def Notification(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: Notification
 ```
 | Parameter | Type |
 |-|-|
@@ -158,42 +172,57 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.Notification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| email |  |  |
-| is_empty |  |  |
-| pager_duty |  |  |
-| phases |  |  |
-| slack |  |  |
+| `email` |  | {{< multiline >}}:rtype: EmailNotification
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
+{{< /multiline >}} |
+| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
+:rtype: list[int]
+{{< /multiline >}} |
+| `slack` |  | {{< multiline >}}:rtype: SlackNotification
+{{< /multiline >}} |
 
 ## flytekit.core.notification.PagerDuty
 
 This notification should be used when sending emails to the PagerDuty service.
 
-.. code-block:: python
+```python
 
-from flytekit.models.core.execution import WorkflowExecutionPhase
+    from flytekit.models.core.execution import WorkflowExecutionPhase
 
-PagerDuty(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+    PagerDuty(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+```
 
 
 ```python
-def PagerDuty(
+class PagerDuty(
     phases: typing.List[int],
     recipients_email: typing.List[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -204,11 +233,11 @@ def PagerDuty(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -216,7 +245,7 @@ def PagerDuty(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: Notification
 ```
 | Parameter | Type |
 |-|-|
@@ -232,42 +261,57 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.Notification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| email |  |  |
-| is_empty |  |  |
-| pager_duty |  |  |
-| phases |  |  |
-| slack |  |  |
+| `email` |  | {{< multiline >}}:rtype: EmailNotification
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
+{{< /multiline >}} |
+| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
+:rtype: list[int]
+{{< /multiline >}} |
+| `slack` |  | {{< multiline >}}:rtype: SlackNotification
+{{< /multiline >}} |
 
 ## flytekit.core.notification.Slack
 
 This notification should be used when sending emails to the Slack.
 
-.. code-block:: python
+```python
 
-from flytekit.models.core.execution import WorkflowExecutionPhase
+    from flytekit.models.core.execution import WorkflowExecutionPhase
 
-Slack(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+    Slack(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+```
 
 
 ```python
-def Slack(
+class Slack(
     phases: typing.List[int],
     recipients_email: typing.List[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -278,11 +322,11 @@ def Slack(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -290,7 +334,7 @@ def Slack(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: Notification
 ```
 | Parameter | Type |
 |-|-|
@@ -306,23 +350,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.common_pb2.Notification
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| email |  |  |
-| is_empty |  |  |
-| pager_duty |  |  |
-| phases |  |  |
-| slack |  |  |
+| `email` |  | {{< multiline >}}:rtype: EmailNotification
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `pager_duty` |  | {{< multiline >}}:rtype: PagerDutyNotification
+{{< /multiline >}} |
+| `phases` |  | {{< multiline >}}A list of phases to which users can associate the notifications.
+:rtype: list[int]
+{{< /multiline >}} |
+| `slack` |  | {{< multiline >}}:rtype: SlackNotification
+{{< /multiline >}} |
 

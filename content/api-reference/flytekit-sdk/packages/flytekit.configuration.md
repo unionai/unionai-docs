@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -8,70 +8,78 @@ layout: py_api
 # flytekit.configuration
 
 
-=====================
-Configuration
-=====================
+# Configuration
 
-.. currentmodule:: flytekit.configuration
-
-Flytekit Configuration Sources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+## Flytekit Configuration Sources
 
 There are multiple ways to configure flytekit settings:
 
-**Command Line Arguments**: This is the recommended way of setting configuration values for many cases.
-For example, see `pyflyte package <pyflyte.html#pyflyte-package>`_ command.
+### Command Line Arguments
+This is the recommended way of setting configuration values for many cases. For example, see `pyflyte package` command.
 
-**Python Config Object**: A :py:class:`~flytekit.configuration.Config` object can by used directly, e.g. when
-initializing a :py:class:`~flytefit.remote.remote.FlyteRemote` object. See :doc:`here <design/control_plane>` for examples on
-how to specify a ``Config`` object.
+### Python Config Object
+A `Config` object can be used directly, e.g. when initializing a `FlyteRemote` object. See the Control Plane design docs for examples on how to specify a `Config` object.
 
-**Environment Variables**: Users can specify these at compile time, but when your task is run, Flyte Propeller will
-also set configuration to ensure correct interaction with the platform. The environment variables must be specified
-with the format ``FLYTE_{SECTION}_{OPTION}``, all in upper case. For example, to specify the
-:py:class:`PlatformConfig.endpoint <flytekit.configuration.PlatformConfig>` setting, the environment variable would
-be ``FLYTE_PLATFORM_URL``.
+### Environment Variables
+Users can specify these at compile time, but when your task is run, Flyte Propeller will also set configuration to ensure correct interaction with the platform. The environment variables must be specified with the format `FLYTE_{SECTION}_{OPTION}`, all in upper case. For example, to specify the `PlatformConfig.endpoint` setting, the environment variable would be `FLYTE_PLATFORM_URL`.
 
-.. note::
+> [!NOTE]
+> Environment variables won't work for image configuration, which need to be specified with the `pyflyte package --image ...` option or in a configuration file.
 
-   Environment variables won't work for image configuration, which need to be specified with the
-   `pyflyte package --image ... <pyflyte.html#cmdoption-pyflyte-package-i>`_ option or in a configuration
-   file.
+### YAML Format Configuration File
+A configuration file that contains settings for both `flytectl` and `flytekit`. This is the recommended configuration file format. Invoke the `flytectl config init` command to create a boilerplate `~/.flyte/config.yaml` file, and `flytectl --help` to learn about all of the configuration yaml options.
 
-**YAML Format Configuration File**: A configuration file that contains settings for both
-`flytectl <https://docs.flyte.org/en/latest/flytectl/api/overview.html>`__ and ``flytekit``. This is the recommended configuration
-file format. Invoke the :ref:`flytectl config init <flytectl_config_init>` command to create a boilerplate
-``~/.flyte/config.yaml`` file, and  ``flytectl --help`` to learn about all of the configuration yaml options.
+Example `config.yaml` file:
+```yaml
+# Sample config file
 
-.. dropdown:: See example ``config.yaml`` file
-   :animate: fade-in-slide-down
+admin:
+  # For GRPC endpoints you might want to use dns:///flyte.myexample.com
+  endpoint: dns:///localhost:8089
+  authType: Pkce
+  insecure: true
 
-   .. literalinclude:: ../../tests/flytekit/unit/configuration/configs/sample.yaml
-      :language: yaml
-      :caption: config.yaml
+logger:
+  show-source: true
+  level: 0
 
-**INI Format Configuration File**: A configuration file for ``flytekit``. By default, ``flytekit`` will look for a
-file in two places:
+console:
+  endpoint: http://localhost:8080
+  insecure: true
 
-1. First, a file named ``flytekit.config`` in the Python interpreter's working directory.
-2. A file in ``~/.flyte/config`` in the home directory as detected by Python.
+# This section is used only in the control plane to trigger a remote execution
+storage:
+  type: minio
+  stow:
+    kind: s3
+    config:
+      auth_type: accesskey
+      access_key_id: minio
+      secret_key: miniostorage
+      endpoint: http://localhost:9000
+      region: us-east-1
+      disable_ssl: true
+      addressing_style: "path"
 
-.. dropdown:: See example ``flytekit.config`` file
-   :animate: fade-in-slide-down
 
-   .. literalinclude:: ../../tests/flytekit/unit/configuration/configs/images.config
-      :language: ini
-      :caption: flytekit.config
+### INI Format Configuration File
+A configuration file for `flytekit`. By default, `flytekit` will look for a file in two places:
 
-.. warning::
+1. First, a file named `flytekit.config` in the Python interpreter's working directory.
+2. A file in `~/.flyte/config` in the home directory as detected by Python.
 
-   The INI format configuration is considered a legacy configuration format. We recommend using the yaml format
-   instead if you're using a configuration file.
+Example `flytekit.config` file:
+```ini
+[sdk]
+workflow_packages=my_cool_workflows, other_workflows
+```
 
-How is configuration used?
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+> [!WARNING]
+> The INI format configuration is considered a legacy configuration format. We recommend using the yaml format instead if you're using a configuration file.
 
-Configuration usage can roughly be bucketed into the following areas,
+## How is configuration used?
+
+Configuration usage can roughly be bucketed into the following areas:
 
 - **Compile-time settings**: these are settings like the default image and named images, where to look for Flyte code, etc.
 - **Platform settings**: Where to find the Flyte backend (Admin DNS, whether to use SSL)
@@ -79,60 +87,31 @@ Configuration usage can roughly be bucketed into the following areas,
 - **Data access settings**: Is there a custom S3 endpoint in use? Backoff/retry behavior for accessing S3/GCS, key and password, etc.
 - **Other settings** - Statsd configuration, which is a run-time applicable setting but is not necessarily relevant to the Flyte platform.
 
-Configuration Objects
----------------------
+## Configuration Objects
 
-The following objects are encapsulated in a parent object called ``Config``.
+The following objects are encapsulated in a parent object called `Config`:
 
-.. autosummary::
-   :template: custom.rst
-   :toctree: generated/
-   :nosignatures:
+### Serialization Time Settings
 
-   ~Config
+These are serialization/compile-time settings that are used when using commands like `pyflyte package` or `pyflyte register`. These configuration settings are typically passed in as flags to the above CLI commands.
 
-.. _configuration-compile-time-settings:
+The image configurations are typically either passed in via an `--image` flag, or can be specified in the `yaml` or `ini` configuration files (see examples above).
 
-Serialization Time Settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- **Image**: Represents a container image with optional configuration overrides.
+- **ImageConfig**: Represents an image configuration for a given project/domain combination.
+- **SerializationSettings**: Controls how to serialize Flyte entities when registering with Admin.
+- **FastSerializationSettings**: Configuration for faster serialization settings.
 
-These are serialization/compile-time settings that are used when using commands like
-`pyflyte package <pyflyte.html#pyflyte-package>`_ or `pyflyte register <pyflyte.html#pyflyte-register>`_. These
-configuration settings are typically passed in as flags to the above CLI commands.
+### Execution Time Settings
 
-The image configurations are typically either passed in via an `--image <pyflyte.html#cmdoption-pyflyte-package-i>`_ flag,
-or can be specified in the ``yaml`` or ``ini`` configuration files (see examples above).
+Users typically shouldn't be concerned with these configurations, as they are typically set by FlytePropeller or FlyteAdmin. The configurations below are useful for authenticating to a Flyte backend, configuring data access credentials, secrets, and statsd metrics.
 
-.. autosummary::
-   :template: custom.rst
-   :toctree: generated/
-   :nosignatures:
-
-   ~Image
-   ~ImageConfig
-   ~SerializationSettings
-   ~FastSerializationSettings
-
-.. _configuration-execution-time-settings:
-
-Execution Time Settings
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Users typically shouldn't be concerned with these configurations, as they are typically set by FlytePropeller or
-FlyteAdmin. The configurations below are useful for authenticating to a Flyte backend, configuring data access
-credentials, secrets, and statsd metrics.
-
-.. autosummary::
-   :template: custom.rst
-   :toctree: generated/
-   :nosignatures:
-
-   ~PlatformConfig
-   ~StatsConfig
-   ~SecretsConfig
-   ~S3Config
-   ~GCSConfig
-   ~DataConfig
+- **PlatformConfig**: Configuration for how to connect to the Flyte platform.
+- **StatsConfig**: Configuration for how to emit statsd metrics.
+- **SecretsConfig**: Configuration for how to access secrets.
+- **S3Config**: Amazon S3 specific configuration.
+- **GCSConfig**: Google Cloud Storage specific configuration.
+- **DataConfig**: Configuration for data access.
 
 
 ## Directory
@@ -141,23 +120,15 @@ credentials, secrets, and statsd metrics.
 
 | Class | Description |
 |-|-|
-| [`AuthType`](.././flytekit.configuration#flytekitconfigurationauthtype) | Create a collection of name/value pairs. |
 | [`AzureBlobStorageConfig`](.././flytekit.configuration#flytekitconfigurationazureblobstorageconfig) | Any Azure Blob Storage specific configuration. |
-| [`BytesIO`](.././flytekit.configuration#flytekitconfigurationbytesio) | Buffered I/O implementation using an in-memory bytes buffer. |
 | [`Config`](.././flytekit.configuration#flytekitconfigurationconfig) | This the parent configuration object and holds all the underlying configuration object types. |
-| [`ConfigEntry`](.././flytekit.configuration#flytekitconfigurationconfigentry) | A top level Config entry holder, that holds multiple different representations of the config. |
-| [`ConfigFile`](.././flytekit.configuration#flytekitconfigurationconfigfile) | None. |
-| [`DataClassJsonMixin`](.././flytekit.configuration#flytekitconfigurationdataclassjsonmixin) | DataClassJsonMixin is an ABC that functions as a Mixin. |
 | [`DataConfig`](.././flytekit.configuration#flytekitconfigurationdataconfig) | Any data storage specific configuration. |
-| [`DefaultImages`](.././flytekit.configuration#flytekitconfigurationdefaultimages) | We may want to load the default images from remote - maybe s3 location etc?. |
 | [`EntrypointSettings`](.././flytekit.configuration#flytekitconfigurationentrypointsettings) | This object carries information about the path of the entrypoint command that will be invoked at runtime. |
 | [`FastSerializationSettings`](.././flytekit.configuration#flytekitconfigurationfastserializationsettings) | This object hold information about settings necessary to serialize an object so that it can be fast-registered. |
 | [`GCSConfig`](.././flytekit.configuration#flytekitconfigurationgcsconfig) | Any GCS specific configuration. |
 | [`GenericPersistenceConfig`](.././flytekit.configuration#flytekitconfigurationgenericpersistenceconfig) | Data storage configuration that applies across any provider. |
 | [`Image`](.././flytekit.configuration#flytekitconfigurationimage) | Image is a structured wrapper for task container images used in object serialization. |
-| [`ImageBuildEngine`](.././flytekit.configuration#flytekitconfigurationimagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`ImageConfig`](.././flytekit.configuration#flytekitconfigurationimageconfig) | We recommend you to use ImageConfig. |
-| [`ImageSpec`](.././flytekit.configuration#flytekitconfigurationimagespec) | This class is used to specify the docker image that will be used to run the task. |
 | [`LocalConfig`](.././flytekit.configuration#flytekitconfigurationlocalconfig) | Any configuration specific to local runs. |
 | [`PlatformConfig`](.././flytekit.configuration#flytekitconfigurationplatformconfig) | This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically). |
 | [`S3Config`](.././flytekit.configuration#flytekitconfigurations3config) | S3 specific configuration. |
@@ -165,45 +136,18 @@ credentials, secrets, and statsd metrics.
 | [`SerializationSettings`](.././flytekit.configuration#flytekitconfigurationserializationsettings) | These settings are provided while serializing a workflow and task, before registration. |
 | [`StatsConfig`](.././flytekit.configuration#flytekitconfigurationstatsconfig) | Configuration for sending statsd. |
 
-## flytekit.configuration.AuthType
+### Variables
 
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
->>> Color.RED
-<Color.RED: 1>
-
-- value lookup:
-
->>> Color(1)
-<Color.RED: 1>
-
-- name lookup:
-
->>> Color['RED']
-<Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
+| Property | Type | Description |
+|-|-|-|
+| `DEFAULT_FLYTEKIT_ENTRYPOINT_FILELOC` | `str` |  |
+| `DEFAULT_IMAGE_NAME` | `str` |  |
+| `DEFAULT_IN_CONTAINER_SRC_PATH` | `str` |  |
+| `DEFAULT_RUNTIME_PYTHON_INTERPRETER` | `str` |  |
+| `DOMAIN_PLACEHOLDER` | `str` |  |
+| `PROJECT_PLACEHOLDER` | `str` |  |
+| `SERIALIZED_CONTEXT_ENV_VAR` | `str` |  |
+| `VERSION_PLACEHOLDER` | `str` |  |
 
 ## flytekit.configuration.AzureBlobStorageConfig
 
@@ -211,13 +155,13 @@ Any Azure Blob Storage specific configuration.
 
 
 ```python
-def AzureBlobStorageConfig(
+class AzureBlobStorageConfig(
     account_name: typing.Optional[str],
     account_key: typing.Optional[str],
     tenant_id: typing.Optional[str],
     client_id: typing.Optional[str],
     client_secret: typing.Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -231,7 +175,7 @@ def AzureBlobStorageConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | None |
+| [`auto()`](#auto) |  |
 
 
 #### auto()
@@ -239,16 +183,11 @@ def AzureBlobStorageConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> GCSConfig
 ```
 | Parameter | Type |
 |-|-|
 | `config_file` | `typing.Union[str, ConfigFile]` |
-
-## flytekit.configuration.BytesIO
-
-Buffered I/O implementation using an in-memory bytes buffer.
-
 
 ## flytekit.configuration.Config
 
@@ -262,13 +201,13 @@ this object holds all the config necessary to
 
 
 ```python
-def Config(
+class Config(
     platform: PlatformConfig,
     secrets: SecretsConfig,
     stats: StatsConfig,
     data_config: DataConfig,
     local_sandbox_path: str,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -282,10 +221,10 @@ def Config(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Automatically constructs the Config Object |
-| [`for_endpoint()`](#for_endpoint) | Creates an automatic config for the given endpoint and uses the config_file or environment variable for default |
-| [`for_sandbox()`](#for_sandbox) | Constructs a new Config object specifically to connect to :std:ref:`deployment-deployment-sandbox` |
-| [`with_params()`](#with_params) | None |
+| [`auto()`](#auto) | Automatically constructs the Config Object. |
+| [`for_endpoint()`](#for_endpoint) | Creates an automatic config for the given endpoint and uses the config_file or environment variable for default. |
+| [`for_sandbox()`](#for_sandbox) | Constructs a new Config object specifically to connect to :std:ref:`deployment-deployment-sandbox`. |
+| [`with_params()`](#with_params) |  |
 
 
 #### auto()
@@ -293,12 +232,12 @@ def Config(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile, None],
-):
+) -> n: Config
 ```
 Automatically constructs the Config Object. The order of precedence is as follows
-1. first try to find any env vars that match the config vars specified in the FLYTE_CONFIG format.
-2. If not found in environment then values ar read from the config file
-3. If not found in the file, then the default values are used.
+  1. first try to find any env vars that match the config vars specified in the FLYTE_CONFIG format.
+  2. If not found in environment then values ar read from the config file
+  3. If not found in the file, then the default values are used.
 
 
 
@@ -314,7 +253,7 @@ def for_endpoint(
     insecure: bool,
     data_config: typing.Optional[DataConfig],
     config_file: typing.Union[str, ConfigFile],
-):
+) -> n: Config
 ```
 Creates an automatic config for the given endpoint and uses the config_file or environment variable for default.
 Refer to `Config.auto()` to understand the default bootstrap behavior.
@@ -350,7 +289,7 @@ def with_params(
     stats: StatsConfig,
     data_config: DataConfig,
     local_sandbox_path: str,
-):
+) -> Config
 ```
 | Parameter | Type |
 |-|-|
@@ -360,209 +299,6 @@ def with_params(
 | `data_config` | `DataConfig` |
 | `local_sandbox_path` | `str` |
 
-## flytekit.configuration.ConfigEntry
-
-A top level Config entry holder, that holds multiple different representations of the config.
-Legacy means the INI style config files. YAML support is for the flytectl config file, which is there by default
-when flytectl starts a sandbox
-
-
-```python
-def ConfigEntry(
-    legacy: LegacyConfigEntry,
-    yaml_entry: typing.Optional[YamlConfigEntry],
-    transform: typing.Optional[typing.Callable[[str], typing.Any]],
-):
-```
-| Parameter | Type |
-|-|-|
-| `legacy` | `LegacyConfigEntry` |
-| `yaml_entry` | `typing.Optional[YamlConfigEntry]` |
-| `transform` | `typing.Optional[typing.Callable[[str], typing.Any]]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`read()`](#read) | Reads the config Entry from the various sources in the following order, |
-
-
-#### read()
-
-```python
-def read(
-    cfg: typing.Optional[ConfigFile],
-):
-```
-Reads the config Entry from the various sources in the following order,
-#. First try to read from the relevant environment variable,
-#. If missing, then try to read from the legacy config file, if one was parsed.
-#. If missing, then try to read from the yaml file.
-
-The constructor for ConfigFile currently does not allow specification of both the ini and yaml style formats.
-
-
-
-| Parameter | Type |
-|-|-|
-| `cfg` | `typing.Optional[ConfigFile]` |
-
-## flytekit.configuration.ConfigFile
-
-```python
-def ConfigFile(
-    location: str,
-):
-```
-Load the config from this location
-
-
-| Parameter | Type |
-|-|-|
-| `location` | `str` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`get()`](#get) | None |
-
-
-#### get()
-
-```python
-def get(
-    c: typing.Union[LegacyConfigEntry, YamlConfigEntry],
-):
-```
-| Parameter | Type |
-|-|-|
-| `c` | `typing.Union[LegacyConfigEntry, YamlConfigEntry]` |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| legacy_config |  |  |
-| yaml_config |  |  |
-
-## flytekit.configuration.DataClassJsonMixin
-
-DataClassJsonMixin is an ABC that functions as a Mixin.
-
-As with other ABCs, it should not be instantiated directly.
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_dict()`](#from_dict) | None |
-| [`from_json()`](#from_json) | None |
-| [`schema()`](#schema) | None |
-| [`to_dict()`](#to_dict) | None |
-| [`to_json()`](#to_json) | None |
-
-
-#### from_dict()
-
-```python
-def from_dict(
-    kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
-    infer_missing,
-):
-```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
-
-#### from_json()
-
-```python
-def from_json(
-    s: typing.Union[str, bytes, bytearray],
-    parse_float,
-    parse_int,
-    parse_constant,
-    infer_missing,
-    kw,
-):
-```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
-
-#### schema()
-
-```python
-def schema(
-    infer_missing: bool,
-    only,
-    exclude,
-    many: bool,
-    context,
-    load_only,
-    dump_only,
-    partial: bool,
-    unknown,
-):
-```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
-
-#### to_dict()
-
-```python
-def to_dict(
-    encode_json,
-):
-```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
-
-#### to_json()
-
-```python
-def to_json(
-    skipkeys: bool,
-    ensure_ascii: bool,
-    check_circular: bool,
-    allow_nan: bool,
-    indent: typing.Union[int, str, NoneType],
-    separators: typing.Tuple[str, str],
-    default: typing.Callable,
-    sort_keys: bool,
-    kw,
-):
-```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
-
 ## flytekit.configuration.DataConfig
 
 Any data storage specific configuration. Please do not use this to store secrets, in S3 case, as it is used in
@@ -571,12 +307,12 @@ All DataPersistence plugins are passed all DataConfig and the plugin should corr
 
 
 ```python
-def DataConfig(
+class DataConfig(
     s3: S3Config,
     gcs: GCSConfig,
     azure: AzureBlobStorageConfig,
     generic: GenericPersistenceConfig,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -589,7 +325,7 @@ def DataConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | None |
+| [`auto()`](#auto) |  |
 
 
 #### auto()
@@ -597,49 +333,12 @@ def DataConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> DataConfig
 ```
 | Parameter | Type |
 |-|-|
 | `config_file` | `typing.Union[str, ConfigFile]` |
 
-## flytekit.configuration.DefaultImages
-
-We may want to load the default images from remote - maybe s3 location etc?
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`default_image()`](#default_image) | None |
-| [`find_image_for()`](#find_image_for) | None |
-| [`get_version_suffix()`](#get_version_suffix) | None |
-
-
-#### default_image()
-
-```python
-def default_image()
-```
-#### find_image_for()
-
-```python
-def find_image_for(
-    python_version: typing.Optional[flytekit.configuration.default_images.PythonVersion],
-    flytekit_version: typing.Optional[str],
-):
-```
-| Parameter | Type |
-|-|-|
-| `python_version` | `typing.Optional[flytekit.configuration.default_images.PythonVersion]` |
-| `flytekit_version` | `typing.Optional[str]` |
-
-#### get_version_suffix()
-
-```python
-def get_version_suffix()
-```
 ## flytekit.configuration.EntrypointSettings
 
 This object carries information about the path of the entrypoint command that will be invoked at runtime.
@@ -647,9 +346,9 @@ This is where `pyflyte-execute` code can be found. This is useful for cases like
 
 
 ```python
-def EntrypointSettings(
+class EntrypointSettings(
     path: Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -659,11 +358,11 @@ def EntrypointSettings(
 
 | Method | Description |
 |-|-|
-| [`from_dict()`](#from_dict) | None |
-| [`from_json()`](#from_json) | None |
-| [`schema()`](#schema) | None |
-| [`to_dict()`](#to_dict) | None |
-| [`to_json()`](#to_json) | None |
+| [`from_dict()`](#from_dict) |  |
+| [`from_json()`](#from_json) |  |
+| [`schema()`](#schema) |  |
+| [`to_dict()`](#to_dict) |  |
+| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -672,7 +371,7 @@ def EntrypointSettings(
 def from_dict(
     kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
     infer_missing,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -689,7 +388,7 @@ def from_json(
     parse_constant,
     infer_missing,
     kw,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -713,7 +412,7 @@ def schema(
     dump_only,
     partial: bool,
     unknown,
-):
+) -> SchemaType[A]
 ```
 | Parameter | Type |
 |-|-|
@@ -732,7 +431,7 @@ def schema(
 ```python
 def to_dict(
     encode_json,
-):
+) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
 | Parameter | Type |
 |-|-|
@@ -751,7 +450,7 @@ def to_json(
     default: typing.Callable,
     sort_keys: bool,
     kw,
-):
+) -> str
 ```
 | Parameter | Type |
 |-|-|
@@ -771,11 +470,11 @@ This object hold information about settings necessary to serialize an object so 
 
 
 ```python
-def FastSerializationSettings(
+class FastSerializationSettings(
     enabled: bool,
     destination_dir: Optional[str],
     distribution_location: Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -787,11 +486,11 @@ def FastSerializationSettings(
 
 | Method | Description |
 |-|-|
-| [`from_dict()`](#from_dict) | None |
-| [`from_json()`](#from_json) | None |
-| [`schema()`](#schema) | None |
-| [`to_dict()`](#to_dict) | None |
-| [`to_json()`](#to_json) | None |
+| [`from_dict()`](#from_dict) |  |
+| [`from_json()`](#from_json) |  |
+| [`schema()`](#schema) |  |
+| [`to_dict()`](#to_dict) |  |
+| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -800,7 +499,7 @@ def FastSerializationSettings(
 def from_dict(
     kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
     infer_missing,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -817,7 +516,7 @@ def from_json(
     parse_constant,
     infer_missing,
     kw,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -841,7 +540,7 @@ def schema(
     dump_only,
     partial: bool,
     unknown,
-):
+) -> SchemaType[A]
 ```
 | Parameter | Type |
 |-|-|
@@ -860,7 +559,7 @@ def schema(
 ```python
 def to_dict(
     encode_json,
-):
+) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
 | Parameter | Type |
 |-|-|
@@ -879,7 +578,7 @@ def to_json(
     default: typing.Callable,
     sort_keys: bool,
     kw,
-):
+) -> str
 ```
 | Parameter | Type |
 |-|-|
@@ -899,9 +598,9 @@ Any GCS specific configuration.
 
 
 ```python
-def GCSConfig(
+class GCSConfig(
     gsutil_parallelism: bool,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -911,7 +610,7 @@ def GCSConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | None |
+| [`auto()`](#auto) |  |
 
 
 #### auto()
@@ -919,7 +618,7 @@ def GCSConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> GCSConfig
 ```
 | Parameter | Type |
 |-|-|
@@ -931,9 +630,9 @@ Data storage configuration that applies across any provider.
 
 
 ```python
-def GenericPersistenceConfig(
+class GenericPersistenceConfig(
     attach_execution_metadata: bool,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -943,7 +642,7 @@ def GenericPersistenceConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | None |
+| [`auto()`](#auto) |  |
 
 
 #### auto()
@@ -951,7 +650,7 @@ def GenericPersistenceConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> GCSConfig
 ```
 | Parameter | Type |
 |-|-|
@@ -962,23 +661,23 @@ def auto(
 Image is a structured wrapper for task container images used in object serialization.
 
 Attributes:
-name (str): A user-provided name to identify this image.
-fqn (str): Fully qualified image name. This consists of
-#. a registry location
-#. a username
-#. a repository name
-For example: `hostname/username/reponame`
-tag (str): Optional tag used to specify which version of an image to pull
-digest (str): Optional digest used to specify which version of an image to pull
+    name (str): A user-provided name to identify this image.
+    fqn (str): Fully qualified image name. This consists of
+        #. a registry location
+        #. a username
+        #. a repository name
+        For example: `hostname/username/reponame`
+    tag (str): Optional tag used to specify which version of an image to pull
+    digest (str): Optional digest used to specify which version of an image to pull
 
 
 ```python
-def Image(
+class Image(
     name: str,
     fqn: str,
     tag: Optional[str],
     digest: Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -991,12 +690,12 @@ def Image(
 
 | Method | Description |
 |-|-|
-| [`from_dict()`](#from_dict) | None |
-| [`from_json()`](#from_json) | None |
-| [`look_up_image_info()`](#look_up_image_info) | Creates an `Image` object from an image identifier string or a path to an ImageSpec yaml file |
-| [`schema()`](#schema) | None |
-| [`to_dict()`](#to_dict) | None |
-| [`to_json()`](#to_json) | None |
+| [`from_dict()`](#from_dict) |  |
+| [`from_json()`](#from_json) |  |
+| [`look_up_image_info()`](#look_up_image_info) | Creates an `Image` object from an image identifier string or a path to an ImageSpec yaml file. |
+| [`schema()`](#schema) |  |
+| [`to_dict()`](#to_dict) |  |
+| [`to_json()`](#to_json) |  |
 
 
 #### from_dict()
@@ -1005,7 +704,7 @@ def Image(
 def from_dict(
     kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
     infer_missing,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -1022,7 +721,7 @@ def from_json(
     parse_constant,
     infer_missing,
     kw,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -1040,7 +739,7 @@ def look_up_image_info(
     name: str,
     image_identifier: str,
     allow_no_tag_or_digest: bool,
-):
+) -> e: Image
 ```
 Creates an `Image` object from an image identifier string or a path to an ImageSpec yaml file.
 
@@ -1071,7 +770,7 @@ def schema(
     dump_only,
     partial: bool,
     unknown,
-):
+) -> SchemaType[A]
 ```
 | Parameter | Type |
 |-|-|
@@ -1090,7 +789,7 @@ def schema(
 ```python
 def to_dict(
     encode_json,
-):
+) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
 | Parameter | Type |
 |-|-|
@@ -1109,7 +808,7 @@ def to_json(
     default: typing.Callable,
     sort_keys: bool,
     kw,
-):
+) -> str
 ```
 | Parameter | Type |
 |-|-|
@@ -1127,53 +826,13 @@ def to_json(
 
 | Property | Type | Description |
 |-|-|-|
-| full |  |  |
-| version |  |  |
+| `full` |  | {{< multiline >}}"
+Return the full image name with tag or digest, whichever is available.
 
-## flytekit.configuration.ImageBuildEngine
-
-ImageBuildEngine contains a list of builders that can be used to build an ImageSpec.
-
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`build()`](#build) | None |
-| [`get_registry()`](#get_registry) | None |
-| [`register()`](#register) | None |
-
-
-#### build()
-
-```python
-def build(
-    image_spec: flytekit.image_spec.image_spec.ImageSpec,
-):
-```
-| Parameter | Type |
-|-|-|
-| `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
-
-#### get_registry()
-
-```python
-def get_registry()
-```
-#### register()
-
-```python
-def register(
-    builder_type: str,
-    image_spec_builder: flytekit.image_spec.image_spec.ImageSpecBuilder,
-    priority: int,
-):
-```
-| Parameter | Type |
-|-|-|
-| `builder_type` | `str` |
-| `image_spec_builder` | `flytekit.image_spec.image_spec.ImageSpecBuilder` |
-| `priority` | `int` |
+When using a tag the separator is `:` and when using a digest the separator is `@`.
+{{< /multiline >}} |
+| `version` |  | {{< multiline >}}Return the version of the image. This could be the tag or digest, whichever is available.
+{{< /multiline >}} |
 
 ## flytekit.configuration.ImageConfig
 
@@ -1184,15 +843,15 @@ ImageConfig holds available images which can be used at registration time. A def
 along with optional additional images. Each image in the config must have a unique name.
 
 Attributes:
-default_image (Optional[Image]): The default image to be used as a container for task serialization.
-images (List[Image]): Optional, additional images which can be used in task container definitions.
+    default_image (Optional[Image]): The default image to be used as a container for task serialization.
+    images (List[Image]): Optional, additional images which can be used in task container definitions.
 
 
 ```python
-def ImageConfig(
+class ImageConfig(
     default_image: Optional[Image],
     images: Optional[List[Image]],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1203,17 +862,17 @@ def ImageConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Reads from config file or from img_name |
-| [`auto_default_image()`](#auto_default_image) | None |
-| [`create_from()`](#create_from) | None |
-| [`find_image()`](#find_image) | Return an image, by name, if it exists |
-| [`from_dict()`](#from_dict) | None |
-| [`from_images()`](#from_images) | Allows you to programmatically create an ImageConfig |
-| [`from_json()`](#from_json) | None |
-| [`schema()`](#schema) | None |
-| [`to_dict()`](#to_dict) | None |
-| [`to_json()`](#to_json) | None |
-| [`validate_image()`](#validate_image) | Validates the image to match the standard format |
+| [`auto()`](#auto) | Reads from config file or from img_name. |
+| [`auto_default_image()`](#auto_default_image) |  |
+| [`create_from()`](#create_from) |  |
+| [`find_image()`](#find_image) | Return an image, by name, if it exists. |
+| [`from_dict()`](#from_dict) |  |
+| [`from_images()`](#from_images) | Allows you to programmatically create an ImageConfig. |
+| [`from_json()`](#from_json) |  |
+| [`schema()`](#schema) |  |
+| [`to_dict()`](#to_dict) |  |
+| [`to_json()`](#to_json) |  |
+| [`validate_image()`](#validate_image) | Validates the image to match the standard format. |
 
 
 #### auto()
@@ -1222,7 +881,7 @@ def ImageConfig(
 def auto(
     config_file: typing.Union[str, ConfigFile, None],
     img_name: Optional[str],
-):
+) -> n:
 ```
 Reads from config file or from img_name
 Note that this function does not take into account the flytekit default images (see the Dockerfiles at the
@@ -1246,7 +905,7 @@ def auto_default_image()
 def create_from(
     default_image: Optional[Image],
     other_images: typing.Optional[typing.List[Image]],
-):
+) -> ImageConfig
 ```
 | Parameter | Type |
 |-|-|
@@ -1258,7 +917,7 @@ def create_from(
 ```python
 def find_image(
     name,
-):
+) -> Optional[Image]
 ```
 Return an image, by name, if it exists.
 
@@ -1273,7 +932,7 @@ Return an image, by name, if it exists.
 def from_dict(
     kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
     infer_missing,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -1286,20 +945,21 @@ def from_dict(
 def from_images(
     default_image: str,
     m: typing.Optional[typing.Dict[str, str]],
-):
+)
 ```
 Allows you to programmatically create an ImageConfig. Usually only the default_image is required, unless
 your workflow uses multiple images
 
-.. code:: python
+```python
 
-ImageConfig.from_dict(
-"ghcr.io/flyteorg/flytecookbook:v1.0.0",
-{
-"spark": "ghcr.io/flyteorg/myspark:...",
-"other": "...",
-}
-)
+  ImageConfig.from_dict(
+      "ghcr.io/flyteorg/flytecookbook:v1.0.0",
+       {
+            "spark": "ghcr.io/flyteorg/myspark:...",
+            "other": "...",
+       }
+  )
+```
 
 urn:
 
@@ -1319,7 +979,7 @@ def from_json(
     parse_constant,
     infer_missing,
     kw,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -1343,7 +1003,7 @@ def schema(
     dump_only,
     partial: bool,
     unknown,
-):
+) -> SchemaType[A]
 ```
 | Parameter | Type |
 |-|-|
@@ -1362,7 +1022,7 @@ def schema(
 ```python
 def to_dict(
     encode_json,
-):
+) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
 | Parameter | Type |
 |-|-|
@@ -1381,7 +1041,7 @@ def to_json(
     default: typing.Callable,
     sort_keys: bool,
     kw,
-):
+) -> str
 ```
 | Parameter | Type |
 |-|-|
@@ -1402,7 +1062,7 @@ def validate_image(
     _: typing.Any,
     param: str,
     values: tuple,
-):
+) -> n:
 ```
 Validates the image to match the standard format. Also validates that only one default image
 is provided. a default image, is one that is specified as ``default=<image_uri>`` or just ``<image_uri>``. All
@@ -1417,209 +1077,16 @@ CLI
 | `param` | `str` |
 | `values` | `tuple` |
 
-## flytekit.configuration.ImageSpec
-
-This class is used to specify the docker image that will be used to run the task.
-
-
-
-```python
-def ImageSpec(
-    name: str,
-    python_version: str,
-    builder: typing.Optional[str],
-    source_root: typing.Optional[str],
-    env: typing.Optional[typing.Dict[str, str]],
-    registry: typing.Optional[str],
-    packages: typing.Optional[typing.List[str]],
-    conda_packages: typing.Optional[typing.List[str]],
-    conda_channels: typing.Optional[typing.List[str]],
-    requirements: typing.Optional[str],
-    apt_packages: typing.Optional[typing.List[str]],
-    cuda: typing.Optional[str],
-    cudnn: typing.Optional[str],
-    base_image: typing.Union[str, ForwardRef('ImageSpec'), NoneType],
-    platform: str,
-    pip_index: typing.Optional[str],
-    pip_extra_index_url: typing.Optional[typing.List[str]],
-    pip_secret_mounts: typing.Optional[typing.List[typing.Tuple[str, str]]],
-    pip_extra_args: typing.Optional[str],
-    registry_config: typing.Optional[str],
-    entrypoint: typing.Optional[typing.List[str]],
-    commands: typing.Optional[typing.List[str]],
-    tag_format: typing.Optional[str],
-    source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection],
-    copy: typing.Optional[typing.List[str]],
-    python_exec: typing.Optional[str],
-):
-```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `python_version` | `str` |
-| `builder` | `typing.Optional[str]` |
-| `source_root` | `typing.Optional[str]` |
-| `env` | `typing.Optional[typing.Dict[str, str]]` |
-| `registry` | `typing.Optional[str]` |
-| `packages` | `typing.Optional[typing.List[str]]` |
-| `conda_packages` | `typing.Optional[typing.List[str]]` |
-| `conda_channels` | `typing.Optional[typing.List[str]]` |
-| `requirements` | `typing.Optional[str]` |
-| `apt_packages` | `typing.Optional[typing.List[str]]` |
-| `cuda` | `typing.Optional[str]` |
-| `cudnn` | `typing.Optional[str]` |
-| `base_image` | `typing.Union[str, ForwardRef('ImageSpec'), NoneType]` |
-| `platform` | `str` |
-| `pip_index` | `typing.Optional[str]` |
-| `pip_extra_index_url` | `typing.Optional[typing.List[str]]` |
-| `pip_secret_mounts` | `typing.Optional[typing.List[typing.Tuple[str, str]]]` |
-| `pip_extra_args` | `typing.Optional[str]` |
-| `registry_config` | `typing.Optional[str]` |
-| `entrypoint` | `typing.Optional[typing.List[str]]` |
-| `commands` | `typing.Optional[typing.List[str]]` |
-| `tag_format` | `typing.Optional[str]` |
-| `source_copy_mode` | `typing.Optional[flytekit.constants.CopyFileDetection]` |
-| `copy` | `typing.Optional[typing.List[str]]` |
-| `python_exec` | `typing.Optional[str]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`exist()`](#exist) | Check if the image exists in the registry |
-| [`force_push()`](#force_push) | Builder that returns a new image spec with force push enabled |
-| [`from_env()`](#from_env) | Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment |
-| [`image_name()`](#image_name) | Full image name with tag |
-| [`is_container()`](#is_container) | Check if the current container image in the pod is built from current image spec |
-| [`with_apt_packages()`](#with_apt_packages) | Builder that returns a new image spec with an additional list of apt packages that will be executed during the building process |
-| [`with_commands()`](#with_commands) | Builder that returns a new image spec with an additional list of commands that will be executed during the building process |
-| [`with_copy()`](#with_copy) | Builder that returns a new image spec with the source files copied to the destination directory |
-| [`with_packages()`](#with_packages) | Builder that returns a new image speck with additional python packages that will be installed during the building process |
-
-
-#### exist()
-
-```python
-def exist()
-```
-Check if the image exists in the registry.
-Return True if the image exists in the registry, False otherwise.
-Return None if failed to check if the image exists due to the permission issue or other reasons.
-
-
-#### force_push()
-
-```python
-def force_push()
-```
-Builder that returns a new image spec with force push enabled.
-
-
-#### from_env()
-
-```python
-def from_env(
-    pinned_packages: typing.Optional[typing.List[str]],
-    kwargs,
-):
-```
-Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment.
-
-
-| Parameter | Type |
-|-|-|
-| `pinned_packages` | `typing.Optional[typing.List[str]]` |
-| `kwargs` | ``**kwargs`` |
-
-#### image_name()
-
-```python
-def image_name()
-```
-Full image name with tag.
-
-
-#### is_container()
-
-```python
-def is_container()
-```
-Check if the current container image in the pod is built from current image spec.
-:return: True if the current container image in the pod is built from current image spec, False otherwise.
-
-
-#### with_apt_packages()
-
-```python
-def with_apt_packages(
-    apt_packages: typing.Union[str, typing.List[str]],
-):
-```
-Builder that returns a new image spec with an additional list of apt packages that will be executed during the building process.
-
-
-| Parameter | Type |
-|-|-|
-| `apt_packages` | `typing.Union[str, typing.List[str]]` |
-
-#### with_commands()
-
-```python
-def with_commands(
-    commands: typing.Union[str, typing.List[str]],
-):
-```
-Builder that returns a new image spec with an additional list of commands that will be executed during the building process.
-
-
-| Parameter | Type |
-|-|-|
-| `commands` | `typing.Union[str, typing.List[str]]` |
-
-#### with_copy()
-
-```python
-def with_copy(
-    src: typing.Union[str, typing.List[str]],
-):
-```
-Builder that returns a new image spec with the source files copied to the destination directory.
-
-
-| Parameter | Type |
-|-|-|
-| `src` | `typing.Union[str, typing.List[str]]` |
-
-#### with_packages()
-
-```python
-def with_packages(
-    packages: typing.Union[str, typing.List[str]],
-):
-```
-Builder that returns a new image speck with additional python packages that will be installed during the building process.
-
-
-| Parameter | Type |
-|-|-|
-| `packages` | `typing.Union[str, typing.List[str]]` |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| tag |  |  |
-
 ## flytekit.configuration.LocalConfig
 
 Any configuration specific to local runs.
 
 
 ```python
-def LocalConfig(
+class LocalConfig(
     cache_enabled: bool,
     cache_overwrite: bool,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1630,7 +1097,7 @@ def LocalConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | None |
+| [`auto()`](#auto) |  |
 
 
 #### auto()
@@ -1638,7 +1105,7 @@ def LocalConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> LocalConfig
 ```
 | Parameter | Type |
 |-|-|
@@ -1651,7 +1118,7 @@ This object contains the settings to talk to a Flyte backend (the DNS location o
 
 
 ```python
-def PlatformConfig(
+class PlatformConfig(
     endpoint: str,
     insecure: bool,
     insecure_skip_verify: bool,
@@ -1666,7 +1133,7 @@ def PlatformConfig(
     audience: typing.Optional[str],
     rpc_retries: int,
     http_proxy_url: typing.Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1689,8 +1156,8 @@ def PlatformConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Reads from Config file, and overrides from Environment variables |
-| [`for_endpoint()`](#for_endpoint) | None |
+| [`auto()`](#auto) | Reads from Config file, and overrides from Environment variables. |
+| [`for_endpoint()`](#for_endpoint) |  |
 
 
 #### auto()
@@ -1698,7 +1165,7 @@ def PlatformConfig(
 ```python
 def auto(
     config_file: typing.Optional[typing.Union[str, ConfigFile]],
-):
+) -> n:
 ```
 Reads from Config file, and overrides from Environment variables. Refer to ConfigEntry for details
 
@@ -1713,7 +1180,7 @@ Reads from Config file, and overrides from Environment variables. Refer to Confi
 def for_endpoint(
     endpoint: str,
     insecure: bool,
-):
+) -> PlatformConfig
 ```
 | Parameter | Type |
 |-|-|
@@ -1726,14 +1193,14 @@ S3 specific configuration
 
 
 ```python
-def S3Config(
+class S3Config(
     enable_debug: bool,
     endpoint: typing.Optional[str],
     retries: int,
     backoff: datetime.timedelta,
     access_key_id: typing.Optional[str],
     secret_access_key: typing.Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1748,7 +1215,7 @@ def S3Config(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Automatically configure |
+| [`auto()`](#auto) | Automatically configure. |
 
 
 #### auto()
@@ -1756,7 +1223,7 @@ def S3Config(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> n: Config
 ```
 Automatically configure
 
@@ -1772,11 +1239,11 @@ Configuration for secrets.
 
 
 ```python
-def SecretsConfig(
+class SecretsConfig(
     env_prefix: str,
     default_dir: str,
     file_prefix: str,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1788,7 +1255,7 @@ def SecretsConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Reads from environment variable or from config file |
+| [`auto()`](#auto) | Reads from environment variable or from config file. |
 
 
 #### auto()
@@ -1796,7 +1263,7 @@ def SecretsConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> n:
 ```
 Reads from environment variable or from config file
 
@@ -1811,26 +1278,26 @@ These settings are provided while serializing a workflow and task, before regist
 runtime information at serialization time, as well as some defaults.
 
 Attributes:
-project (str): The project (if any) with which to register entities under.
-domain (str): The domain (if any) with which to register entities under.
-version (str): The version (if any) with which to register entities under.
-image_config (ImageConfig): The image config used to define task container images.
-env (Optional[Dict[str, str]]): Environment variables injected into task container definitions.
-flytekit_virtualenv_root (Optional[str]):  During out of container serialize the absolute path of the flytekit
-virtualenv at serialization time won't match the in-container value at execution time. This optional value
-is used to provide the in-container virtualenv path
-python_interpreter (Optional[str]): The python executable to use. This is used for spark tasks in out of
-container execution.
-entrypoint_settings (Optional[EntrypointSettings]): Information about the command, path and version of the
-entrypoint program.
-fast_serialization_settings (Optional[FastSerializationSettings]): If the code is being serialized so that it
-can be fast registered (and thus omit building a Docker image) this object contains additional parameters
-for serialization.
-source_root (Optional[str]): The root directory of the source code.
+    project (str): The project (if any) with which to register entities under.
+    domain (str): The domain (if any) with which to register entities under.
+    version (str): The version (if any) with which to register entities under.
+    image_config (ImageConfig): The image config used to define task container images.
+    env (Optional[Dict[str, str]]): Environment variables injected into task container definitions.
+    flytekit_virtualenv_root (Optional[str]):  During out of container serialize the absolute path of the flytekit
+        virtualenv at serialization time won't match the in-container value at execution time. This optional value
+        is used to provide the in-container virtualenv path
+    python_interpreter (Optional[str]): The python executable to use. This is used for spark tasks in out of
+        container execution.
+    entrypoint_settings (Optional[EntrypointSettings]): Information about the command, path and version of the
+        entrypoint program.
+    fast_serialization_settings (Optional[FastSerializationSettings]): If the code is being serialized so that it
+        can be fast registered (and thus omit building a Docker image) this object contains additional parameters
+        for serialization.
+    source_root (Optional[str]): The root directory of the source code.
 
 
 ```python
-def SerializationSettings(
+class SerializationSettings(
     image_config: ImageConfig,
     project: typing.Optional[str],
     domain: typing.Optional[str],
@@ -1841,7 +1308,7 @@ def SerializationSettings(
     flytekit_virtualenv_root: Optional[str],
     fast_serialization_settings: Optional[FastSerializationSettings],
     source_root: Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1860,18 +1327,18 @@ def SerializationSettings(
 
 | Method | Description |
 |-|-|
-| [`default_entrypoint_settings()`](#default_entrypoint_settings) | Assumes the entrypoint is installed in a virtual-environment where the interpreter is |
-| [`for_image()`](#for_image) | None |
-| [`from_dict()`](#from_dict) | None |
-| [`from_json()`](#from_json) | None |
-| [`from_transport()`](#from_transport) | None |
-| [`new_builder()`](#new_builder) | Creates a ``SerializationSettings |
-| [`schema()`](#schema) | None |
-| [`should_fast_serialize()`](#should_fast_serialize) | Whether or not the serialization settings specify that entities should be serialized for fast registration |
-| [`to_dict()`](#to_dict) | None |
-| [`to_json()`](#to_json) | None |
-| [`venv_root_from_interpreter()`](#venv_root_from_interpreter) | Computes the path of the virtual environment root, based on the passed in python interpreter path |
-| [`with_serialized_context()`](#with_serialized_context) | Use this method to create a new SerializationSettings that has an environment variable set with the SerializedContext |
+| [`default_entrypoint_settings()`](#default_entrypoint_settings) | Assumes the entrypoint is installed in a virtual-environment where the interpreter is. |
+| [`for_image()`](#for_image) |  |
+| [`from_dict()`](#from_dict) |  |
+| [`from_json()`](#from_json) |  |
+| [`from_transport()`](#from_transport) |  |
+| [`new_builder()`](#new_builder) | Creates a ``SerializationSettings. |
+| [`schema()`](#schema) |  |
+| [`should_fast_serialize()`](#should_fast_serialize) | Whether or not the serialization settings specify that entities should be serialized for fast registration. |
+| [`to_dict()`](#to_dict) |  |
+| [`to_json()`](#to_json) |  |
+| [`venv_root_from_interpreter()`](#venv_root_from_interpreter) | Computes the path of the virtual environment root, based on the passed in python interpreter path. |
+| [`with_serialized_context()`](#with_serialized_context) | Use this method to create a new SerializationSettings that has an environment variable set with the SerializedContext. |
 
 
 #### default_entrypoint_settings()
@@ -1879,7 +1346,7 @@ def SerializationSettings(
 ```python
 def default_entrypoint_settings(
     interpreter_path: str,
-):
+) -> EntrypointSettings
 ```
 Assumes the entrypoint is installed in a virtual-environment where the interpreter is
 
@@ -1897,7 +1364,7 @@ def for_image(
     project: str,
     domain: str,
     python_interpreter_path: str,
-):
+) -> SerializationSettings
 ```
 | Parameter | Type |
 |-|-|
@@ -1913,7 +1380,7 @@ def for_image(
 def from_dict(
     kvs: typing.Union[dict, list, str, int, float, bool, NoneType],
     infer_missing,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -1930,7 +1397,7 @@ def from_json(
     parse_constant,
     infer_missing,
     kw,
-):
+) -> ~A
 ```
 | Parameter | Type |
 |-|-|
@@ -1946,7 +1413,7 @@ def from_json(
 ```python
 def from_transport(
     s: str,
-):
+) -> SerializationSettings
 ```
 | Parameter | Type |
 |-|-|
@@ -1974,7 +1441,7 @@ def schema(
     dump_only,
     partial: bool,
     unknown,
-):
+) -> SchemaType[A]
 ```
 | Parameter | Type |
 |-|-|
@@ -2001,7 +1468,7 @@ Whether or not the serialization settings specify that entities should be serial
 ```python
 def to_dict(
     encode_json,
-):
+) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
 | Parameter | Type |
 |-|-|
@@ -2020,7 +1487,7 @@ def to_json(
     default: typing.Callable,
     sort_keys: bool,
     kw,
-):
+) -> str
 ```
 | Parameter | Type |
 |-|-|
@@ -2039,7 +1506,7 @@ def to_json(
 ```python
 def venv_root_from_interpreter(
     interpreter_path: str,
-):
+) -> str
 ```
 Computes the path of the virtual environment root, based on the passed in python interpreter path
 for example /opt/venv/bin/python3 -> /opt/venv
@@ -2064,8 +1531,9 @@ The setting will be available in the `env` field with the key `SERIALIZED_CONTEX
 
 | Property | Type | Description |
 |-|-|-|
-| entrypoint_settings |  |  |
-| serialized_context |  |  |
+| `entrypoint_settings` |  |  |
+| `serialized_context` |  | {{< multiline >}}:return: returns the serialization context as a base64encoded, gzip compressed, json strinnn
+{{< /multiline >}} |
 
 ## flytekit.configuration.StatsConfig
 
@@ -2074,12 +1542,12 @@ Configuration for sending statsd.
 
 
 ```python
-def StatsConfig(
+class StatsConfig(
     host: str,
     port: int,
     disabled: bool,
     disabled_tags: bool,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -2092,7 +1560,7 @@ def StatsConfig(
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Reads from environment variable, followed by ConfigFile provided |
+| [`auto()`](#auto) | Reads from environment variable, followed by ConfigFile provided. |
 
 
 #### auto()
@@ -2100,7 +1568,7 @@ def StatsConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-):
+) -> n:
 ```
 Reads from environment variable, followed by ConfigFile provided
 

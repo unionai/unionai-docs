@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.execution
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,21 +13,21 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ExecutionError`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionexecutionerror) | None. |
-| [`NodeExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionnodeexecutionphase) | None. |
-| [`TaskExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutiontaskexecutionphase) | None. |
-| [`TaskLog`](.././flytekit.models.core.execution#flytekitmodelscoreexecutiontasklog) | None. |
+| [`ExecutionError`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionexecutionerror) |  |
+| [`NodeExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionnodeexecutionphase) |  |
+| [`TaskExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutiontaskexecutionphase) |  |
+| [`TaskLog`](.././flytekit.models.core.execution#flytekitmodelscoreexecutiontasklog) |  |
 | [`WorkflowExecutionPhase`](.././flytekit.models.core.execution#flytekitmodelscoreexecutionworkflowexecutionphase) | This class holds enum values used for setting notifications. |
 
 ## flytekit.models.core.execution.ExecutionError
 
 ```python
-def ExecutionError(
+class ExecutionError(
     code: str,
     message: str,
     error_uri: str,
     kind: int,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -40,11 +40,11 @@ def ExecutionError(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -52,7 +52,7 @@ def ExecutionError(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: ExecutionError
 ```
 | Parameter | Type |
 |-|-|
@@ -68,25 +68,38 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.execution_pb2.ExecutionError
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| code |  |  |
-| error_uri |  |  |
-| is_empty |  |  |
-| kind |  |  |
-| message |  |  |
+| `code` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `error_uri` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `kind` |  | {{< multiline >}}Enum value from ErrorKind
+{{< /multiline >}} |
+| `message` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.core.execution.NodeExecutionPhase
 
@@ -94,7 +107,7 @@ def verbose_string()
 
 | Method | Description |
 |-|-|
-| [`enum_to_string()`](#enum_to_string) |  |
+| [`enum_to_string()`](#enum_to_string) | . |
 
 
 #### enum_to_string()
@@ -102,7 +115,7 @@ def verbose_string()
 ```python
 def enum_to_string(
     int_value,
-):
+) -> e: Text
 ```
 | Parameter | Type |
 |-|-|
@@ -114,7 +127,7 @@ def enum_to_string(
 
 | Method | Description |
 |-|-|
-| [`enum_to_string()`](#enum_to_string) |  |
+| [`enum_to_string()`](#enum_to_string) | . |
 
 
 #### enum_to_string()
@@ -122,7 +135,7 @@ def enum_to_string(
 ```python
 def enum_to_string(
     int_value,
-):
+) -> e: Text
 ```
 | Parameter | Type |
 |-|-|
@@ -131,12 +144,12 @@ def enum_to_string(
 ## flytekit.models.core.execution.TaskLog
 
 ```python
-def TaskLog(
+class TaskLog(
     uri: str,
     name: str,
     message_format: typing.Optional[flytekit.models.core.execution.TaskLog.MessageFormat],
     ttl: typing.Optional[datetime.timedelta],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -149,11 +162,11 @@ def TaskLog(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -161,7 +174,7 @@ def TaskLog(
 ```python
 def from_flyte_idl(
     p,
-):
+) -> e: TaskLog
 ```
 | Parameter | Type |
 |-|-|
@@ -177,25 +190,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.execution_pb2.TaskLog
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| message_format |  |  |
-| name |  |  |
-| ttl |  |  |
-| uri |  |  |
+| `is_empty` |  |  |
+| `message_format` |  | {{< multiline >}}Enum value from TaskLog.MessageFormat
+:rtype: MessageFormat
+{{< /multiline >}} |
+| `name` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
+| `ttl` |  | {{< multiline >}}:rtype: datetime.timedelta
+{{< /multiline >}} |
+| `uri` |  | {{< multiline >}}:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.core.execution.WorkflowExecutionPhase
 
@@ -207,7 +234,7 @@ for sample usage.
 
 | Method | Description |
 |-|-|
-| [`enum_to_string()`](#enum_to_string) |  |
+| [`enum_to_string()`](#enum_to_string) | . |
 
 
 #### enum_to_string()
@@ -215,7 +242,7 @@ for sample usage.
 ```python
 def enum_to_string(
     int_value,
-):
+) -> e: Text
 ```
 | Parameter | Type |
 |-|-|

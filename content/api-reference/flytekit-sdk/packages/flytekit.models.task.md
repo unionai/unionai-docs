@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.task
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,35 +13,28 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`BoolValue`](.././flytekit.models.task#flytekitmodelstaskboolvalue) | A ProtocolMessage. |
-| [`CompiledTask`](.././flytekit.models.task#flytekitmodelstaskcompiledtask) | None. |
-| [`Container`](.././flytekit.models.task#flytekitmodelstaskcontainer) | None. |
-| [`DataLoadingConfig`](.././flytekit.models.task#flytekitmodelstaskdataloadingconfig) | None. |
-| [`Documentation`](.././flytekit.models.task#flytekitmodelstaskdocumentation) | DescriptionEntity contains detailed description for the task/workflow/launch plan. |
+| [`CompiledTask`](.././flytekit.models.task#flytekitmodelstaskcompiledtask) |  |
+| [`Container`](.././flytekit.models.task#flytekitmodelstaskcontainer) |  |
+| [`DataLoadingConfig`](.././flytekit.models.task#flytekitmodelstaskdataloadingconfig) |  |
 | [`IOStrategy`](.././flytekit.models.task#flytekitmodelstaskiostrategy) | Provides methods to manage data in and out of the Raw container using Download Modes. |
-| [`K8sObjectMetadata`](.././flytekit.models.task#flytekitmodelstaskk8sobjectmetadata) | None. |
-| [`K8sPod`](.././flytekit.models.task#flytekitmodelstaskk8spod) | None. |
-| [`Resources`](.././flytekit.models.task#flytekitmodelstaskresources) | None. |
-| [`RuntimeMetadata`](.././flytekit.models.task#flytekitmodelstaskruntimemetadata) | None. |
-| [`Sql`](.././flytekit.models.task#flytekitmodelstasksql) | None. |
-| [`Task`](.././flytekit.models.task#flytekitmodelstasktask) | None. |
-| [`TaskClosure`](.././flytekit.models.task#flytekitmodelstasktaskclosure) | None. |
-| [`TaskExecutionMetadata`](.././flytekit.models.task#flytekitmodelstasktaskexecutionmetadata) | None. |
-| [`TaskMetadata`](.././flytekit.models.task#flytekitmodelstasktaskmetadata) | None. |
-| [`TaskSpec`](.././flytekit.models.task#flytekitmodelstasktaskspec) | None. |
-| [`TaskTemplate`](.././flytekit.models.task#flytekitmodelstasktasktemplate) | None. |
-
-## flytekit.models.task.BoolValue
-
-A ProtocolMessage
-
+| [`K8sObjectMetadata`](.././flytekit.models.task#flytekitmodelstaskk8sobjectmetadata) |  |
+| [`K8sPod`](.././flytekit.models.task#flytekitmodelstaskk8spod) |  |
+| [`Resources`](.././flytekit.models.task#flytekitmodelstaskresources) |  |
+| [`RuntimeMetadata`](.././flytekit.models.task#flytekitmodelstaskruntimemetadata) |  |
+| [`Sql`](.././flytekit.models.task#flytekitmodelstasksql) |  |
+| [`Task`](.././flytekit.models.task#flytekitmodelstasktask) |  |
+| [`TaskClosure`](.././flytekit.models.task#flytekitmodelstasktaskclosure) |  |
+| [`TaskExecutionMetadata`](.././flytekit.models.task#flytekitmodelstasktaskexecutionmetadata) |  |
+| [`TaskMetadata`](.././flytekit.models.task#flytekitmodelstasktaskmetadata) |  |
+| [`TaskSpec`](.././flytekit.models.task#flytekitmodelstasktaskspec) |  |
+| [`TaskTemplate`](.././flytekit.models.task#flytekitmodelstasktasktemplate) |  |
 
 ## flytekit.models.task.CompiledTask
 
 ```python
-def CompiledTask(
+class CompiledTask(
     template,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -51,11 +44,11 @@ def CompiledTask(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -63,7 +56,7 @@ def CompiledTask(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: CompiledTask
 ```
 | Parameter | Type |
 |-|-|
@@ -79,27 +72,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.compiler_pb2.CompiledTask
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| template |  |  |
+| `is_empty` |  |  |
+| `template` |  | {{< multiline >}}:rtype: TaskTemplate
+{{< /multiline >}} |
 
 ## flytekit.models.task.Container
 
 ```python
-def Container(
+class Container(
     image,
     command,
     args,
@@ -107,7 +110,7 @@ def Container(
     env,
     config,
     data_loading_config,
-):
+)
 ```
 This defines a container target.  It will execute the appropriate command line on the appropriate image with
 the given configurations.
@@ -128,12 +131,12 @@ the given configurations.
 
 | Method | Description |
 |-|-|
-| [`add_env()`](#add_env) | None |
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`add_env()`](#add_env) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### add_env()
@@ -142,7 +145,7 @@ the given configurations.
 def add_env(
     key: str,
     val: str,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -154,7 +157,7 @@ def add_env(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Container
 ```
 | Parameter | Type |
 |-|-|
@@ -170,57 +173,81 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.tasks_pb2.Container
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| args |  |  |
-| command |  |  |
-| config |  |  |
-| data_loading_config |  |  |
-| env |  |  |
-| image |  |  |
-| is_empty |  |  |
-| resources |  |  |
+| `args` |  | {{< multiline >}}A list of arguments for the command.  i.e. ['s3://some/path', '/tmp/local/path']
+rtype: list[Text]
+{{< /multiline >}} |
+| `command` |  | {{< multiline >}}A list of 'words' for the command.  i.e. ['aws', 's3', 'ls']
+:rtype: list[Text]
+{{< /multiline >}} |
+| `config` |  | {{< multiline >}}A definition of key-value pairs for configuration.  Currently, only str->str is
+    supported.
+:rtype: dict[Text, Text]
+{{< /multiline >}} |
+| `data_loading_config` |  | {{< multiline >}}:rtype: DataLoadingConfig
+{{< /multiline >}} |
+| `env` |  | {{< multiline >}}A definition of key-value pairs for environment variables.  Currently, only str->str is
+    supported.
+:rtype: dict[Text, Text]
+{{< /multiline >}} |
+| `image` |  | {{< multiline >}}The fully-qualified identifier for the image.
+:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `resources` |  | {{< multiline >}}A definition of requisite compute resources.
+:rtype: Resources
+{{< /multiline >}} |
 
 ## flytekit.models.task.DataLoadingConfig
 
 ```python
-def DataLoadingConfig(
+class DataLoadingConfig(
     input_path: str,
     output_path: str,
     enabled: bool,
-    format: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10526acf0>,
+    format: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104face50>,
     io_strategy: flytekit.models.task.IOStrategy,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
 | `input_path` | `str` |
 | `output_path` | `str` |
 | `enabled` | `bool` |
-| `format` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10526acf0>` |
+| `format` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104face50>` |
 | `io_strategy` | `flytekit.models.task.IOStrategy` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -228,7 +255,7 @@ def DataLoadingConfig(
 ```python
 def from_flyte_idl(
     pb2: flyteidl.core.tasks_pb2.DataLoadingConfig,
-):
+) -> DataLoadingConfig
 ```
 | Parameter | Type |
 |-|-|
@@ -244,6 +271,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -254,78 +284,14 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-
-## flytekit.models.task.Documentation
-
-DescriptionEntity contains detailed description for the task/workflow/launch plan.
-Documentation could provide insight into the algorithms, business use case, etc.
-
-
-```python
-def Documentation(
-    short_description: typing.Optional[str],
-    long_description: typing.Optional[flytekit.models.documentation.Description],
-    source_code: typing.Optional[flytekit.models.documentation.SourceCode],
-):
-```
-| Parameter | Type |
-|-|-|
-| `short_description` | `typing.Optional[str]` |
-| `long_description` | `typing.Optional[flytekit.models.documentation.Description]` |
-| `source_code` | `typing.Optional[flytekit.models.documentation.SourceCode]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
-
-
-#### from_flyte_idl()
-
-```python
-def from_flyte_idl(
-    pb2_object: flyteidl.admin.description_entity_pb2.DescriptionEntity,
-):
-```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.admin.description_entity_pb2.DescriptionEntity` |
-
-#### serialize_to_string()
-
-```python
-def serialize_to_string()
-```
-#### short_string()
-
-```python
-def short_string()
-```
-#### to_flyte_idl()
-
-```python
-def to_flyte_idl()
-```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| is_empty |  |  |
+| `is_empty` |  |  |
 
 ## flytekit.models.task.IOStrategy
 
@@ -333,25 +299,25 @@ Provides methods to manage data in and out of the Raw container using Download M
 
 
 ```python
-def IOStrategy(
-    download_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10526b4a0>,
-    upload_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10526b080>,
-):
+class IOStrategy(
+    download_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fa3110>,
+    upload_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fb57c0>,
+)
 ```
 | Parameter | Type |
 |-|-|
-| `download_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10526b4a0>` |
-| `upload_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10526b080>` |
+| `download_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fa3110>` |
+| `upload_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x104fb57c0>` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -359,7 +325,7 @@ def IOStrategy(
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.tasks_pb2.IOStrategy,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -375,6 +341,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -385,19 +354,22 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
+| `is_empty` |  |  |
 
 ## flytekit.models.task.K8sObjectMetadata
 
 ```python
-def K8sObjectMetadata(
+class K8sObjectMetadata(
     labels: typing.Dict[str, str],
     annotations: typing.Dict[str, str],
-):
+)
 ```
 This defines additional metadata for building a kubernetes pod.
 
@@ -411,11 +383,11 @@ This defines additional metadata for building a kubernetes pod.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -423,7 +395,7 @@ This defines additional metadata for building a kubernetes pod.
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.tasks_pb2.K8sObjectMetadata,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -439,6 +411,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -449,23 +424,26 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| annotations |  |  |
-| is_empty |  |  |
-| labels |  |  |
+| `annotations` |  |  |
+| `is_empty` |  |  |
+| `labels` |  |  |
 
 ## flytekit.models.task.K8sPod
 
 ```python
-def K8sPod(
+class K8sPod(
     metadata: flytekit.models.task.K8sObjectMetadata,
     pod_spec: typing.Dict[str, typing.Any],
     data_config: typing.Optional[flytekit.models.task.DataLoadingConfig],
     primary_container_name: typing.Optional[str],
-):
+)
 ```
 This defines a kubernetes pod target.  It will build the pod target during task execution
 
@@ -481,13 +459,13 @@ This defines a kubernetes pod target.  It will build the pod target during task 
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`from_pod_template()`](#from_pod_template) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`to_pod_template()`](#to_pod_template) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`from_pod_template()`](#from_pod_template) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`to_pod_template()`](#to_pod_template) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -495,7 +473,7 @@ This defines a kubernetes pod target.  It will build the pod target during task 
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.tasks_pb2.K8sPod,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -506,7 +484,7 @@ def from_flyte_idl(
 ```python
 def from_pod_template(
     pod_template: PodTemplate,
-):
+) -> K8sPod
 ```
 | Parameter | Type |
 |-|-|
@@ -522,6 +500,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -537,23 +518,26 @@ def to_pod_template()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| data_config |  |  |
-| is_empty |  |  |
-| metadata |  |  |
-| pod_spec |  |  |
-| primary_container_name |  |  |
+| `data_config` |  |  |
+| `is_empty` |  |  |
+| `metadata` |  |  |
+| `pod_spec` |  |  |
+| `primary_container_name` |  |  |
 
 ## flytekit.models.task.Resources
 
 ```python
-def Resources(
+class Resources(
     requests,
     limits,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -564,11 +548,11 @@ def Resources(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -576,7 +560,7 @@ def Resources(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Resources
 ```
 | Parameter | Type |
 |-|-|
@@ -592,32 +576,45 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.tasks_pb2.Resources
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| limits |  |  |
-| requests |  |  |
+| `is_empty` |  |  |
+| `limits` |  | {{< multiline >}}These are the limits required.  These are guaranteed to be satisfied.
+:rtype: list[Resources.ResourceEntry]
+{{< /multiline >}} |
+| `requests` |  | {{< multiline >}}The desired resources for execution.  This is given on a best effort basis.
+:rtype: list[Resources.ResourceEntry]
+{{< /multiline >}} |
 
 ## flytekit.models.task.RuntimeMetadata
 
 ```python
-def RuntimeMetadata(
+class RuntimeMetadata(
     type,
     version,
     flavor,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -629,11 +626,11 @@ def RuntimeMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -641,7 +638,7 @@ def RuntimeMetadata(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: RuntimeMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -657,32 +654,47 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.tasks_pb2.RuntimeMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| flavor |  |  |
-| is_empty |  |  |
-| type |  |  |
-| version |  |  |
+| `flavor` |  | {{< multiline >}}Optional extra information about runtime environment (e.g. Python, GoLang, etc.)
+:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `type` |  | {{< multiline >}}Enum type from RuntimeMetadata.RuntimeType
+:rtype: int
+{{< /multiline >}} |
+| `version` |  | {{< multiline >}}Version string for SDK version.  Can be used for metrics or managing breaking changes in Admin or Propeller
+:rtype: Text
+{{< /multiline >}} |
 
 ## flytekit.models.task.Sql
 
 ```python
-def Sql(
+class Sql(
     statement: str,
     dialect: int,
-):
+)
 ```
 This defines a kubernetes pod target. It will build the pod target during task execution
 
@@ -696,11 +708,11 @@ This defines a kubernetes pod target. It will build the pod target during task e
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -708,7 +720,7 @@ This defines a kubernetes pod target. It will build the pod target during task e
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.tasks_pb2.Sql,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -724,6 +736,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -734,21 +749,24 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| dialect |  |  |
-| is_empty |  |  |
-| statement |  |  |
+| `dialect` |  |  |
+| `is_empty` |  |  |
+| `statement` |  |  |
 
 ## flytekit.models.task.Task
 
 ```python
-def Task(
+class Task(
     id,
     closure,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -759,11 +777,11 @@ def Task(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -771,7 +789,7 @@ def Task(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: TaskDefinition
 ```
 | Parameter | Type |
 |-|-|
@@ -787,30 +805,43 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.task_pb2.Task
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| closure |  |  |
-| id |  |  |
-| is_empty |  |  |
+| `closure` |  | {{< multiline >}}The closure for the underlying workload.
+:rtype: TaskClosure
+{{< /multiline >}} |
+| `id` |  | {{< multiline >}}The (project, domain, name, version) identifier for this task.
+:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.task.TaskClosure
 
 ```python
-def TaskClosure(
+class TaskClosure(
     compiled_task,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -820,11 +851,11 @@ def TaskClosure(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -832,7 +863,7 @@ def TaskClosure(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: TaskClosure
 ```
 | Parameter | Type |
 |-|-|
@@ -848,27 +879,37 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.task_pb2.TaskClosure
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| compiled_task |  |  |
-| is_empty |  |  |
+| `compiled_task` |  | {{< multiline >}}:rtype: CompiledTask
+{{< /multiline >}} |
+| `is_empty` |  |  |
 
 ## flytekit.models.task.TaskExecutionMetadata
 
 ```python
-def TaskExecutionMetadata(
+class TaskExecutionMetadata(
     task_execution_id,
     namespace,
     labels,
@@ -876,7 +917,7 @@ def TaskExecutionMetadata(
     k8s_service_account,
     environment_variables,
     identity,
-):
+)
 ```
 Runtime task execution metadata.
 
@@ -896,11 +937,11 @@ Runtime task execution metadata.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -908,7 +949,7 @@ Runtime task execution metadata.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: TaskExecutionMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -924,33 +965,42 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.agent_pb2.TaskExecutionMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| annotations |  |  |
-| environment_variables |  |  |
-| identity |  |  |
-| is_empty |  |  |
-| k8s_service_account |  |  |
-| labels |  |  |
-| namespace |  |  |
-| task_execution_id |  |  |
+| `annotations` |  |  |
+| `environment_variables` |  |  |
+| `identity` |  |  |
+| `is_empty` |  |  |
+| `k8s_service_account` |  |  |
+| `labels` |  |  |
+| `namespace` |  |  |
+| `task_execution_id` |  |  |
 
 ## flytekit.models.task.TaskMetadata
 
 ```python
-def TaskMetadata(
+class TaskMetadata(
     discoverable,
     runtime,
     timeout,
@@ -963,7 +1013,7 @@ def TaskMetadata(
     cache_ignore_input_vars,
     is_eager: bool,
     generates_deck: bool,
-):
+)
 ```
 Information needed at runtime to determine behavior such as whether or not outputs are discoverable, timeouts,
 and retries.
@@ -989,11 +1039,11 @@ and retries.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1001,7 +1051,7 @@ and retries.
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.core.tasks_pb2.TaskMetadata,
-):
+) -> e: TaskMetadata
 ```
 | Parameter | Type |
 |-|-|
@@ -1017,41 +1067,76 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.task_pb2.TaskMetadata
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| cache_ignore_input_vars |  |  |
-| cache_serializable |  |  |
-| deprecated_error_message |  |  |
-| discoverable |  |  |
-| discovery_version |  |  |
-| generates_deck |  |  |
-| interruptible |  |  |
-| is_eager |  |  |
-| is_empty |  |  |
-| pod_template_name |  |  |
-| retries |  |  |
-| runtime |  |  |
-| timeout |  |  |
+| `cache_ignore_input_vars` |  | {{< multiline >}}Input variables that should not be included when calculating hash for cache.
+:rtype: tuple[Text]
+{{< /multiline >}} |
+| `cache_serializable` |  | {{< multiline >}}Whether or not caching operations are executed in serial. This means only a single instance over identical
+inputs is executed, other concurrent executions wait for the cached results.
+:rtype: bool
+{{< /multiline >}} |
+| `deprecated_error_message` |  | {{< multiline >}}This string can be used to mark the task as deprecated.  Consumers of the task will receive deprecation
+warnings.
+:rtype: Text
+{{< /multiline >}} |
+| `discoverable` |  | {{< multiline >}}Whether or not the outputs of this task should be cached for discovery.
+:rtype: bool
+{{< /multiline >}} |
+| `discovery_version` |  | {{< multiline >}}This is the version used to create a logical version for data in the cache.
+This is only used when `discoverable` is true.  Data is considered discoverable if: the inputs to a given
+task are the same and the discovery_version is also the same.
+:rtype: Text
+{{< /multiline >}} |
+| `generates_deck` |  | {{< multiline >}}Whether the task will generate a Deck.
+:rtype: bool
+{{< /multiline >}} |
+| `interruptible` |  | {{< multiline >}}Whether or not the task is interruptible.
+:rtype: bool
+{{< /multiline >}} |
+| `is_eager` |  |  |
+| `is_empty` |  |  |
+| `pod_template_name` |  | {{< multiline >}}The name of the existing PodTemplate resource which will be used in this task.
+:rtype: Text
+{{< /multiline >}} |
+| `retries` |  | {{< multiline >}}Retry strategy for this task.  0 retries means only try once.
+:rtype: flytekit.models.literals.RetryStrategy
+{{< /multiline >}} |
+| `runtime` |  | {{< multiline >}}Metadata describing the runtime environment for this task.
+:rtype: RuntimeMetadata
+{{< /multiline >}} |
+| `timeout` |  | {{< multiline >}}The amount of time to wait before timing out.  This includes queuing and scheduler latency.
+:rtype: datetime.timedelta
+{{< /multiline >}} |
 
 ## flytekit.models.task.TaskSpec
 
 ```python
-def TaskSpec(
+class TaskSpec(
     template: flytekit.models.task.TaskTemplate,
     docs: typing.Optional[flytekit.models.documentation.Documentation],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -1062,11 +1147,11 @@ def TaskSpec(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1074,7 +1159,7 @@ def TaskSpec(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: TaskSpec
 ```
 | Parameter | Type |
 |-|-|
@@ -1090,28 +1175,39 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.tasks_pb2.TaskSpec
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| docs |  |  |
-| is_empty |  |  |
-| template |  |  |
+| `docs` |  | {{< multiline >}}:rtype: Description entity for the task
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `template` |  | {{< multiline >}}:rtype: TaskTemplate
+{{< /multiline >}} |
 
 ## flytekit.models.task.TaskTemplate
 
 ```python
-def TaskTemplate(
+class TaskTemplate(
     id,
     type,
     metadata,
@@ -1124,7 +1220,7 @@ def TaskTemplate(
     k8s_pod,
     sql,
     extended_resources,
-):
+)
 ```
 A task template represents the full set of information necessary to perform a unit of work in the Flyte system.
 It contains the metadata about what inputs and outputs are consumed or produced.  It also contains the metadata
@@ -1151,11 +1247,11 @@ necessary for Flyte Propeller to do the appropriate work.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -1163,7 +1259,7 @@ necessary for Flyte Propeller to do the appropriate work.
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: TaskTemplate
 ```
 | Parameter | Type |
 |-|-|
@@ -1179,31 +1275,57 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.tasks_pb2.TaskTemplate
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| config |  |  |
-| container |  |  |
-| custom |  |  |
-| extended_resources |  |  |
-| id |  |  |
-| interface |  |  |
-| is_empty |  |  |
-| k8s_pod |  |  |
-| metadata |  |  |
-| security_context |  |  |
-| sql |  |  |
-| task_type_version |  |  |
-| type |  |  |
+| `config` |  | {{< multiline >}}Arbitrary dictionary containing metadata for parsing and handling custom plugins.
+:rtype: dict[Text, T]
+{{< /multiline >}} |
+| `container` |  | {{< multiline >}}If not None, the target of execution should be a container.
+:rtype: Container
+{{< /multiline >}} |
+| `custom` |  | {{< multiline >}}Arbitrary dictionary containing metadata for custom plugins.
+:rtype: dict[Text, T]
+{{< /multiline >}} |
+| `extended_resources` |  | {{< multiline >}}If not None, the extended resources to allocate to the task.
+:rtype: flyteidl.core.tasks_pb2.ExtendedResources
+{{< /multiline >}} |
+| `id` |  | {{< multiline >}}This is generated by the system and uniquely identifies the task.
+:rtype: flytekit.models.core.identifier.Identifier
+{{< /multiline >}} |
+| `interface` |  | {{< multiline >}}The interface definition for this task.
+:rtype: flytekit.models.interface.TypedInterface
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `k8s_pod` |  |  |
+| `metadata` |  | {{< multiline >}}This contains information needed at runtime to determine behavior such as whether or not outputs are
+discoverable, timeouts, and retries.
+:rtype: TaskMetadata
+{{< /multiline >}} |
+| `security_context` |  |  |
+| `sql` |  |  |
+| `task_type_version` |  |  |
+| `type` |  | {{< multiline >}}This is used to identify additional extensions for use by Propeller or SDK.
+:rtype: Text
+{{< /multiline >}} |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.pydantic_transformer.decorator
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,64 +9,53 @@ layout: py_api
 
 ## Directory
 
-### Classes
+### Methods
 
-| Class | Description |
+| Method | Description |
 |-|-|
-| [`Any`](.././flytekit.extras.pydantic_transformer.decorator#flytekitextraspydantic_transformerdecoratorany) | Special type indicating an unconstrained type. |
-| [`TypeVar`](.././flytekit.extras.pydantic_transformer.decorator#flytekitextraspydantic_transformerdecoratortypevar) | Type variable. |
-
-## flytekit.extras.pydantic_transformer.decorator.Any
-
-Special type indicating an unconstrained type.
-
-- Any is compatible with every type.
-- Any assumed to have all methods.
-- All values assumed to be instances of Any.
-
-Note that all the above statements are true from the point of view of
-static type checkers. At runtime, Any should not be used with instance
-checks.
+| [`model_serializer()`](#model_serializer) | Placeholder decorator for Pydantic model_serializer. |
+| [`model_validator()`](#model_validator) | Placeholder decorator for Pydantic model_validator. |
 
 
-## flytekit.extras.pydantic_transformer.decorator.TypeVar
+### Variables
 
-Type variable.
+| Property | Type | Description |
+|-|-|-|
+| `FuncType` | `TypeVar` |  |
 
-The preferred way to construct a type variable is via the dedicated
-syntax for generic functions, classes, and type aliases::
+## Methods
 
-class Sequence[T]:  # T is a TypeVar
-...
+#### model_serializer()
 
-This syntax can also be used to create bound and constrained type
-variables::
+```python
+def model_serializer(
+    __f: typing.Optional[typing.Callable[..., typing.Any]],
+    mode: typing.Literal['plain', 'wrap'],
+    when_used: typing.Literal['always', 'unless-none', 'json', 'json-unless-none'],
+    return_type: typing.Any,
+) -> typing.Callable[[typing.Any], typing.Any]
+```
+Placeholder decorator for Pydantic model_serializer.
 
-# S is a TypeVar bound to str
-class StrSequence[S: str]:
-...
 
-# A is a TypeVar constrained to str or bytes
-class StrOrBytesSequence[A: (str, bytes)]:
-...
+| Parameter | Type |
+|-|-|
+| `__f` | `typing.Optional[typing.Callable[..., typing.Any]]` |
+| `mode` | `typing.Literal['plain', 'wrap']` |
+| `when_used` | `typing.Literal['always', 'unless-none', 'json', 'json-unless-none']` |
+| `return_type` | `typing.Any` |
 
-However, if desired, reusable type variables can also be constructed
-manually, like so::
+#### model_validator()
 
-T = TypeVar('T')  # Can be anything
-S = TypeVar('S', bound=str)  # Can be any subtype of str
-A = TypeVar('A', str, bytes)  # Must be exactly str or bytes
+```python
+def model_validator(
+    mode: typing.Literal['wrap', 'before', 'after'],
+) -> typing.Callable[[typing.Callable[..., typing.Any]], typing.Callable[..., typing.Any]]
+```
+Placeholder decorator for Pydantic model_validator.
 
-Type variables exist primarily for the benefit of static type
-checkers.  They serve as the parameters for generic types as well
-as for generic function and type alias definitions.
 
-The variance of type variables is inferred by type checkers when they
-are created through the type parameter syntax and when
-``infer_variance=True`` is passed. Manually created type variables may
-be explicitly marked covariant or contravariant by passing
-``covariant=True`` or ``contravariant=True``. By default, manually
-created type variables are invariant. See PEP 484 and PEP 695 for more
-details.
-
+| Parameter | Type |
+|-|-|
+| `mode` | `typing.Literal['wrap', 'before', 'after']` |
 

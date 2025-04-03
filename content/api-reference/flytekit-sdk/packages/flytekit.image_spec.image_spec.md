@@ -1,6 +1,6 @@
 ---
 title: flytekit.image_spec.image_spec
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,78 +13,39 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`CopyFileDetection`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_speccopyfiledetection) | Create a collection of name/value pairs. |
 | [`ImageBuildEngine`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`ImageSpec`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespec) | This class is used to specify the docker image that will be used to run the task. |
-| [`ImageSpecBuilder`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespecbuilder) | None. |
-| [`Version`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specversion) | This class abstracts handling of a project's versions. |
-| [`cached_property`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_speccached_property) | None. |
+| [`ImageSpecBuilder`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specimagespecbuilder) |  |
 
-### Errors
+### Methods
 
-* [`FlyteAssertion`](.././flytekit.image_spec.image_spec#flytekitimage_specimage_specflyteassertion)
-
-## flytekit.image_spec.image_spec.CopyFileDetection
-
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
->>> Color.RED
-<Color.RED: 1>
-
-- value lookup:
-
->>> Color(1)
-<Color.RED: 1>
-
-- name lookup:
-
->>> Color['RED']
-<Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
-
-## flytekit.image_spec.image_spec.FlyteAssertion
-
-Assertion failed.
-
-
-```python
-def FlyteAssertion(
-    args,
-    timestamp: typing.Optional[float],
-):
-```
-| Parameter | Type |
+| Method | Description |
 |-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| [`validate_container_registry_name()`](#validate_container_registry_name) | Validate Docker container registry name. |
 
-### Properties
+
+### Variables
 
 | Property | Type | Description |
 |-|-|-|
-| timestamp |  |  |
+| `DOCKER_HUB` | `str` |  |
+| `FLYTE_FORCE_PUSH_IMAGE_SPEC` | `str` |  |
+
+## Methods
+
+#### validate_container_registry_name()
+
+```python
+def validate_container_registry_name(
+    name: str,
+) -> bool
+```
+Validate Docker container registry name.
+
+
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
 
 ## flytekit.image_spec.image_spec.ImageBuildEngine
 
@@ -95,9 +56,9 @@ ImageBuildEngine contains a list of builders that can be used to build an ImageS
 
 | Method | Description |
 |-|-|
-| [`build()`](#build) | None |
-| [`get_registry()`](#get_registry) | None |
-| [`register()`](#register) | None |
+| [`build()`](#build) |  |
+| [`get_registry()`](#get_registry) |  |
+| [`register()`](#register) |  |
 
 
 #### build()
@@ -105,7 +66,7 @@ ImageBuildEngine contains a list of builders that can be used to build an ImageS
 ```python
 def build(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -123,7 +84,7 @@ def register(
     builder_type: str,
     image_spec_builder: flytekit.image_spec.image_spec.ImageSpecBuilder,
     priority: int,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -138,7 +99,7 @@ This class is used to specify the docker image that will be used to run the task
 
 
 ```python
-def ImageSpec(
+class ImageSpec(
     name: str,
     python_version: str,
     builder: typing.Optional[str],
@@ -165,7 +126,7 @@ def ImageSpec(
     source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection],
     copy: typing.Optional[typing.List[str]],
     python_exec: typing.Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -200,15 +161,15 @@ def ImageSpec(
 
 | Method | Description |
 |-|-|
-| [`exist()`](#exist) | Check if the image exists in the registry |
-| [`force_push()`](#force_push) | Builder that returns a new image spec with force push enabled |
-| [`from_env()`](#from_env) | Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment |
-| [`image_name()`](#image_name) | Full image name with tag |
-| [`is_container()`](#is_container) | Check if the current container image in the pod is built from current image spec |
-| [`with_apt_packages()`](#with_apt_packages) | Builder that returns a new image spec with an additional list of apt packages that will be executed during the building process |
-| [`with_commands()`](#with_commands) | Builder that returns a new image spec with an additional list of commands that will be executed during the building process |
-| [`with_copy()`](#with_copy) | Builder that returns a new image spec with the source files copied to the destination directory |
-| [`with_packages()`](#with_packages) | Builder that returns a new image speck with additional python packages that will be installed during the building process |
+| [`exist()`](#exist) | Check if the image exists in the registry. |
+| [`force_push()`](#force_push) | Builder that returns a new image spec with force push enabled. |
+| [`from_env()`](#from_env) | Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment. |
+| [`image_name()`](#image_name) | Full image name with tag. |
+| [`is_container()`](#is_container) | Check if the current container image in the pod is built from current image spec. |
+| [`with_apt_packages()`](#with_apt_packages) | Builder that returns a new image spec with an additional list of apt packages that will be executed during the building process. |
+| [`with_commands()`](#with_commands) | Builder that returns a new image spec with an additional list of commands that will be executed during the building process. |
+| [`with_copy()`](#with_copy) | Builder that returns a new image spec with the source files copied to the destination directory. |
+| [`with_packages()`](#with_packages) | Builder that returns a new image speck with additional python packages that will be installed during the building process. |
 
 
 #### exist()
@@ -235,7 +196,7 @@ Builder that returns a new image spec with force push enabled.
 def from_env(
     pinned_packages: typing.Optional[typing.List[str]],
     kwargs,
-):
+) -> ImageSpec
 ```
 Create ImageSpec with the environment's Python version and packages pinned to the ones in the environment.
 
@@ -267,7 +228,7 @@ Check if the current container image in the pod is built from current image spec
 ```python
 def with_apt_packages(
     apt_packages: typing.Union[str, typing.List[str]],
-):
+) -> ImageSpec
 ```
 Builder that returns a new image spec with an additional list of apt packages that will be executed during the building process.
 
@@ -281,7 +242,7 @@ Builder that returns a new image spec with an additional list of apt packages th
 ```python
 def with_commands(
     commands: typing.Union[str, typing.List[str]],
-):
+) -> ImageSpec
 ```
 Builder that returns a new image spec with an additional list of commands that will be executed during the building process.
 
@@ -295,7 +256,7 @@ Builder that returns a new image spec with an additional list of commands that w
 ```python
 def with_copy(
     src: typing.Union[str, typing.List[str]],
-):
+) -> ImageSpec
 ```
 Builder that returns a new image spec with the source files copied to the destination directory.
 
@@ -309,7 +270,7 @@ Builder that returns a new image spec with the source files copied to the destin
 ```python
 def with_packages(
     packages: typing.Union[str, typing.List[str]],
-):
+) -> ImageSpec
 ```
 Builder that returns a new image speck with additional python packages that will be installed during the building process.
 
@@ -322,7 +283,13 @@ Builder that returns a new image speck with additional python packages that will
 
 | Property | Type | Description |
 |-|-|-|
-| tag |  |  |
+| `tag` |  | {{< multiline >}}Calculate a hash from the image spec. The hash will be the tag of the image.
+We will also read the content of the requirement file and the source root to calculate the hash.
+Therefore, it will generate different hash if new dependencies are added or the source code is changed.
+
+Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when
+you call this property in relation to that function matter will change the output.
+{{< /multiline >}} |
 
 ## flytekit.image_spec.image_spec.ImageSpecBuilder
 
@@ -330,8 +297,8 @@ Builder that returns a new image speck with additional python packages that will
 
 | Method | Description |
 |-|-|
-| [`build_image()`](#build_image) | Build the docker image and push it to the registry |
-| [`should_build()`](#should_build) | Whether or not the builder should build the ImageSpec |
+| [`build_image()`](#build_image) | Build the docker image and push it to the registry. |
+| [`should_build()`](#should_build) | Whether or not the builder should build the ImageSpec. |
 
 
 #### build_image()
@@ -339,7 +306,7 @@ Builder that returns a new image speck with additional python packages that will
 ```python
 def build_image(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-):
+) -> typing.Optional[str]
 ```
 Build the docker image and push it to the registry.
 
@@ -354,7 +321,7 @@ Build the docker image and push it to the registry.
 ```python
 def should_build(
     image_spec: flytekit.image_spec.image_spec.ImageSpec,
-):
+) -> bool
 ```
 Whether or not the builder should build the ImageSpec.
 
@@ -363,72 +330,4 @@ Whether or not the builder should build the ImageSpec.
 | Parameter | Type |
 |-|-|
 | `image_spec` | `flytekit.image_spec.image_spec.ImageSpec` |
-
-## flytekit.image_spec.image_spec.Version
-
-This class abstracts handling of a project's versions.
-
-A :class:`Version` instance is comparison aware and can be compared and
-sorted using the standard Python interfaces.
-
->>> v1 = Version("1.0a5")
->>> v2 = Version("1.0")
->>> v1
-<Version('1.0a5')>
->>> v2
-<Version('1.0')>
->>> v1 < v2
-True
->>> v1 == v2
-False
->>> v1 > v2
-False
->>> v1 >= v2
-False
->>> v1 <= v2
-True
-
-
-```python
-def Version(
-    version: str,
-):
-```
-Initialize a Version object.
-
-
-
-| Parameter | Type |
-|-|-|
-| `version` | `str` |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| base_version |  |  |
-| dev |  |  |
-| epoch |  |  |
-| is_devrelease |  |  |
-| is_postrelease |  |  |
-| is_prerelease |  |  |
-| local |  |  |
-| major |  |  |
-| micro |  |  |
-| minor |  |  |
-| post |  |  |
-| pre |  |  |
-| public |  |  |
-| release |  |  |
-
-## flytekit.image_spec.image_spec.cached_property
-
-```python
-def cached_property(
-    func,
-):
-```
-| Parameter | Type |
-|-|-|
-| `func` |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.raw
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,120 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`DataProxyServiceStub`](.././flytekit.clients.raw#flytekitclientsrawdataproxyservicestub) | DataProxyService defines an RPC Service that allows access to user-data in a controlled manner. |
-| [`GetDomainRequest`](.././flytekit.clients.raw#flytekitclientsrawgetdomainrequest) | A ProtocolMessage. |
-| [`PlatformConfig`](.././flytekit.clients.raw#flytekitclientsrawplatformconfig) | This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically). |
-| [`ProjectListRequest`](.././flytekit.clients.raw#flytekitclientsrawprojectlistrequest) | A ProtocolMessage. |
 | [`RawSynchronousFlyteClient`](.././flytekit.clients.raw#flytekitclientsrawrawsynchronousflyteclient) | This is a thin synchronous wrapper around the auto-generated GRPC stubs for communicating with the admin service. |
-| [`SignalList`](.././flytekit.clients.raw#flytekitclientsrawsignallist) | A ProtocolMessage. |
-| [`SignalListRequest`](.././flytekit.clients.raw#flytekitclientsrawsignallistrequest) | A ProtocolMessage. |
-| [`SignalSetRequest`](.././flytekit.clients.raw#flytekitclientsrawsignalsetrequest) | A ProtocolMessage. |
-| [`SignalSetResponse`](.././flytekit.clients.raw#flytekitclientsrawsignalsetresponse) | A ProtocolMessage. |
-
-## flytekit.clients.raw.DataProxyServiceStub
-
-DataProxyService defines an RPC Service that allows access to user-data in a controlled manner.
-
-
-
-```python
-def DataProxyServiceStub(
-    channel,
-):
-```
-Constructor.
-
-
-
-| Parameter | Type |
-|-|-|
-| `channel` |  |
-
-## flytekit.clients.raw.GetDomainRequest
-
-A ProtocolMessage
-
-
-## flytekit.clients.raw.PlatformConfig
-
-This object contains the settings to talk to a Flyte backend (the DNS location of your Admin server basically).
-
-
-
-```python
-def PlatformConfig(
-    endpoint: str,
-    insecure: bool,
-    insecure_skip_verify: bool,
-    ca_cert_file_path: typing.Optional[str],
-    console_endpoint: typing.Optional[str],
-    command: typing.Optional[typing.List[str]],
-    proxy_command: typing.Optional[typing.List[str]],
-    client_id: typing.Optional[str],
-    client_credentials_secret: typing.Optional[str],
-    scopes: List[str],
-    auth_mode: AuthType,
-    audience: typing.Optional[str],
-    rpc_retries: int,
-    http_proxy_url: typing.Optional[str],
-):
-```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `insecure` | `bool` |
-| `insecure_skip_verify` | `bool` |
-| `ca_cert_file_path` | `typing.Optional[str]` |
-| `console_endpoint` | `typing.Optional[str]` |
-| `command` | `typing.Optional[typing.List[str]]` |
-| `proxy_command` | `typing.Optional[typing.List[str]]` |
-| `client_id` | `typing.Optional[str]` |
-| `client_credentials_secret` | `typing.Optional[str]` |
-| `scopes` | `List[str]` |
-| `auth_mode` | `AuthType` |
-| `audience` | `typing.Optional[str]` |
-| `rpc_retries` | `int` |
-| `http_proxy_url` | `typing.Optional[str]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`auto()`](#auto) | Reads from Config file, and overrides from Environment variables |
-| [`for_endpoint()`](#for_endpoint) | None |
-
-
-#### auto()
-
-```python
-def auto(
-    config_file: typing.Optional[typing.Union[str, ConfigFile]],
-):
-```
-Reads from Config file, and overrides from Environment variables. Refer to ConfigEntry for details
-
-
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Optional[typing.Union[str, ConfigFile]]` |
-
-#### for_endpoint()
-
-```python
-def for_endpoint(
-    endpoint: str,
-    insecure: bool,
-):
-```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `insecure` | `bool` |
-
-## flytekit.clients.raw.ProjectListRequest
-
-A ProtocolMessage
-
 
 ## flytekit.clients.raw.RawSynchronousFlyteClient
 
@@ -135,18 +22,19 @@ This is a thin synchronous wrapper around the auto-generated GRPC stubs for comm
 This client should be usable regardless of environment in which this is used. In other words, configurations should
 be explicit as opposed to inferred from the environment or a configuration file. To create a client,
 
-.. code-block:: python
+```python
 
-from flytekit.configuration import PlatformConfig
-RawSynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))  # or
-SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
+    from flytekit.configuration import PlatformConfig
+    RawSynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))  # or
+    SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
+```
 
 
 ```python
-def RawSynchronousFlyteClient(
+class RawSynchronousFlyteClient(
     cfg: PlatformConfig,
     kwargs,
-):
+)
 ```
 Initializes a gRPC channel to the given Flyte Admin service.
 
@@ -161,52 +49,52 @@ Initializes a gRPC channel to the given Flyte Admin service.
 
 | Method | Description |
 |-|-|
-| [`create_download_link()`](#create_download_link) | None |
-| [`create_download_location()`](#create_download_location) | None |
-| [`create_execution()`](#create_execution) | This will create an execution for the given execution spec |
-| [`create_launch_plan()`](#create_launch_plan) | This will create a launch plan definition in the Admin database |
-| [`create_task()`](#create_task) | This will create a task definition in the Admin database |
-| [`create_upload_location()`](#create_upload_location) | Get a signed url to be used during fast registration |
-| [`create_workflow()`](#create_workflow) | This will create a workflow definition in the Admin database |
-| [`get_active_launch_plan()`](#get_active_launch_plan) | Retrieves a launch plan entity |
-| [`get_domains()`](#get_domains) | This will return a list of domains registered with the Flyte Admin Service |
-| [`get_execution()`](#get_execution) | Returns an execution of a workflow entity |
-| [`get_execution_data()`](#get_execution_data) | Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available) |
-| [`get_execution_metrics()`](#get_execution_metrics) | Returns metrics partitioning and categorizing the workflow execution time-series |
-| [`get_launch_plan()`](#get_launch_plan) | Retrieves a launch plan entity |
-| [`get_node_execution()`](#get_node_execution) |  |
-| [`get_node_execution_data()`](#get_node_execution_data) | Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available) |
-| [`get_project_domain_attributes()`](#get_project_domain_attributes) | This fetches the attributes for a project and domain registered with the Flyte Admin Service |
-| [`get_task()`](#get_task) | This returns a single task for a given identifier |
-| [`get_task_execution()`](#get_task_execution) |  |
-| [`get_task_execution_data()`](#get_task_execution_data) | Returns signed URLs to LiteralMap blobs for a task execution's inputs and outputs (when available) |
-| [`get_workflow()`](#get_workflow) | This returns a single workflow for a given identifier |
-| [`get_workflow_attributes()`](#get_workflow_attributes) | This fetches the attributes for a project, domain, and workflow registered with the Flyte Admin Service |
-| [`list_active_launch_plans_paginated()`](#list_active_launch_plans_paginated) | Lists Active Launch Plans for a given (project, domain) |
-| [`list_executions_paginated()`](#list_executions_paginated) | Lists the executions for a given identifier |
-| [`list_launch_plan_ids_paginated()`](#list_launch_plan_ids_paginated) | Lists launch plan named identifiers for a given project and domain |
-| [`list_launch_plans_paginated()`](#list_launch_plans_paginated) | Lists Launch Plans for a given Identifier (project, domain, name) |
-| [`list_matchable_attributes()`](#list_matchable_attributes) | This fetches the attributes for a specific resource type registered with the Flyte Admin Service |
-| [`list_node_executions_for_task_paginated()`](#list_node_executions_for_task_paginated) |  |
-| [`list_node_executions_paginated()`](#list_node_executions_paginated) |  |
-| [`list_projects()`](#list_projects) | This will return a list of the projects registered with the Flyte Admin Service |
-| [`list_signals()`](#list_signals) | This lists signals |
-| [`list_task_executions_paginated()`](#list_task_executions_paginated) |  |
-| [`list_task_ids_paginated()`](#list_task_ids_paginated) | This returns a page of identifiers for the tasks for a given project and domain |
-| [`list_tasks_paginated()`](#list_tasks_paginated) | This returns a page of task metadata for tasks in a given project and domain |
-| [`list_workflow_ids_paginated()`](#list_workflow_ids_paginated) | This returns a page of identifiers for the workflows for a given project and domain |
-| [`list_workflows_paginated()`](#list_workflows_paginated) | This returns a page of workflow meta-information for workflows in a given project and domain |
-| [`recover_execution()`](#recover_execution) | This will recreate an execution with the same spec as the one belonging to the given execution identifier |
-| [`register_project()`](#register_project) | Registers a project along with a set of domains |
-| [`relaunch_execution()`](#relaunch_execution) |  |
-| [`set_signal()`](#set_signal) | This sets a signal |
-| [`terminate_execution()`](#terminate_execution) |  |
-| [`update_launch_plan()`](#update_launch_plan) | Allows updates to a launch plan at a given identifier |
-| [`update_named_entity()`](#update_named_entity) |  |
-| [`update_project()`](#update_project) | Update an existing project specified by id |
-| [`update_project_domain_attributes()`](#update_project_domain_attributes) | This updates the attributes for a project and domain registered with the Flyte Admin Service |
-| [`update_workflow_attributes()`](#update_workflow_attributes) | This updates the attributes for a project, domain, and workflow registered with the Flyte Admin Service |
-| [`with_root_certificate()`](#with_root_certificate) | None |
+| [`create_download_link()`](#create_download_link) |  |
+| [`create_download_location()`](#create_download_location) |  |
+| [`create_execution()`](#create_execution) | This will create an execution for the given execution spec. |
+| [`create_launch_plan()`](#create_launch_plan) | This will create a launch plan definition in the Admin database. |
+| [`create_task()`](#create_task) | This will create a task definition in the Admin database. |
+| [`create_upload_location()`](#create_upload_location) | Get a signed url to be used during fast registration. |
+| [`create_workflow()`](#create_workflow) | This will create a workflow definition in the Admin database. |
+| [`get_active_launch_plan()`](#get_active_launch_plan) | Retrieves a launch plan entity. |
+| [`get_domains()`](#get_domains) | This will return a list of domains registered with the Flyte Admin Service. |
+| [`get_execution()`](#get_execution) | Returns an execution of a workflow entity. |
+| [`get_execution_data()`](#get_execution_data) | Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available). |
+| [`get_execution_metrics()`](#get_execution_metrics) | Returns metrics partitioning and categorizing the workflow execution time-series. |
+| [`get_launch_plan()`](#get_launch_plan) | Retrieves a launch plan entity. |
+| [`get_node_execution()`](#get_node_execution) | . |
+| [`get_node_execution_data()`](#get_node_execution_data) | Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available). |
+| [`get_project_domain_attributes()`](#get_project_domain_attributes) | This fetches the attributes for a project and domain registered with the Flyte Admin Service. |
+| [`get_task()`](#get_task) | This returns a single task for a given identifier. |
+| [`get_task_execution()`](#get_task_execution) | . |
+| [`get_task_execution_data()`](#get_task_execution_data) | Returns signed URLs to LiteralMap blobs for a task execution's inputs and outputs (when available). |
+| [`get_workflow()`](#get_workflow) | This returns a single workflow for a given identifier. |
+| [`get_workflow_attributes()`](#get_workflow_attributes) | This fetches the attributes for a project, domain, and workflow registered with the Flyte Admin Service. |
+| [`list_active_launch_plans_paginated()`](#list_active_launch_plans_paginated) | Lists Active Launch Plans for a given (project, domain). |
+| [`list_executions_paginated()`](#list_executions_paginated) | Lists the executions for a given identifier. |
+| [`list_launch_plan_ids_paginated()`](#list_launch_plan_ids_paginated) | Lists launch plan named identifiers for a given project and domain. |
+| [`list_launch_plans_paginated()`](#list_launch_plans_paginated) | Lists Launch Plans for a given Identifier (project, domain, name). |
+| [`list_matchable_attributes()`](#list_matchable_attributes) | This fetches the attributes for a specific resource type registered with the Flyte Admin Service. |
+| [`list_node_executions_for_task_paginated()`](#list_node_executions_for_task_paginated) | . |
+| [`list_node_executions_paginated()`](#list_node_executions_paginated) | . |
+| [`list_projects()`](#list_projects) | This will return a list of the projects registered with the Flyte Admin Service. |
+| [`list_signals()`](#list_signals) | This lists signals. |
+| [`list_task_executions_paginated()`](#list_task_executions_paginated) | . |
+| [`list_task_ids_paginated()`](#list_task_ids_paginated) | This returns a page of identifiers for the tasks for a given project and domain. |
+| [`list_tasks_paginated()`](#list_tasks_paginated) | This returns a page of task metadata for tasks in a given project and domain. |
+| [`list_workflow_ids_paginated()`](#list_workflow_ids_paginated) | This returns a page of identifiers for the workflows for a given project and domain. |
+| [`list_workflows_paginated()`](#list_workflows_paginated) | This returns a page of workflow meta-information for workflows in a given project and domain. |
+| [`recover_execution()`](#recover_execution) | This will recreate an execution with the same spec as the one belonging to the given execution identifier. |
+| [`register_project()`](#register_project) | Registers a project along with a set of domains. |
+| [`relaunch_execution()`](#relaunch_execution) | . |
+| [`set_signal()`](#set_signal) | This sets a signal. |
+| [`terminate_execution()`](#terminate_execution) | . |
+| [`update_launch_plan()`](#update_launch_plan) | Allows updates to a launch plan at a given identifier. |
+| [`update_named_entity()`](#update_named_entity) | . |
+| [`update_project()`](#update_project) | Update an existing project specified by id. |
+| [`update_project_domain_attributes()`](#update_project_domain_attributes) | This updates the attributes for a project and domain registered with the Flyte Admin Service. |
+| [`update_workflow_attributes()`](#update_workflow_attributes) | This updates the attributes for a project, domain, and workflow registered with the Flyte Admin Service. |
+| [`with_root_certificate()`](#with_root_certificate) |  |
 
 
 #### create_download_link()
@@ -214,7 +102,7 @@ Initializes a gRPC channel to the given Flyte Admin service.
 ```python
 def create_download_link(
     create_download_link_request: _dataproxy_pb2.CreateDownloadLinkRequest,
-):
+) -> _dataproxy_pb2.CreateDownloadLinkResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -225,7 +113,7 @@ def create_download_link(
 ```python
 def create_download_location(
     create_download_location_request: _dataproxy_pb2.CreateDownloadLocationRequest,
-):
+) -> _dataproxy_pb2.CreateDownloadLocationResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -236,7 +124,7 @@ def create_download_location(
 ```python
 def create_execution(
     create_execution_request,
-):
+) -> e: flyteidl.admin.execution_pb2.ExecutionCreateResponse
 ```
 This will create an execution for the given execution spec.
 
@@ -250,16 +138,15 @@ This will create an execution for the given execution spec.
 ```python
 def create_launch_plan(
     launch_plan_create_request,
-):
+) -> e: flyteidl.admin.launch_plan_pb2.LaunchPlanCreateResponse
 ```
 This will create a launch plan definition in the Admin database.  Once successful, the launch plan object can be
 retrieved via the client or viewed via the UI or command-line interfaces.
 
-.. note ::
-
-Overwrites are not supported so any request for a given project, domain, name, and version that exists in
-the database must match the existing definition exactly.  This also means that as long as the request
-remains identical, calling this method multiple times will result in success.
+> [!NOTE]
+> Overwrites are not supported so any request for a given project, domain, name, and version that exists in
+    the database must match the existing definition exactly.  This also means that as long as the request
+    remains identical, calling this method multiple times will result in success.
 
 
 
@@ -272,16 +159,15 @@ remains identical, calling this method multiple times will result in success.
 ```python
 def create_task(
     task_create_request,
-):
+) -> e: flyteidl.admin.task_pb2.TaskCreateResponse
 ```
 This will create a task definition in the Admin database. Once successful, the task object can be
 retrieved via the client or viewed via the UI or command-line interfaces.
 
-.. note ::
-
-Overwrites are not supported so any request for a given project, domain, name, and version that exists in
-the database must match the existing definition exactly. This also means that as long as the request
-remains identical, calling this method multiple times will result in success.
+> [!NOTE]
+> Overwrites are not supported so any request for a given project, domain, name, and version that exists in
+    the database must match the existing definition exactly. This also means that as long as the request
+    remains identical, calling this method multiple times will result in success.
 
 
 
@@ -294,7 +180,7 @@ remains identical, calling this method multiple times will result in success.
 ```python
 def create_upload_location(
     create_upload_location_request: _dataproxy_pb2.CreateUploadLocationRequest,
-):
+) -> e: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 ```
 Get a signed url to be used during fast registration
 
@@ -308,16 +194,15 @@ Get a signed url to be used during fast registration
 ```python
 def create_workflow(
     workflow_create_request,
-):
+) -> e: flyteidl.admin.workflow_pb2.WorkflowCreateResponse
 ```
 This will create a workflow definition in the Admin database.  Once successful, the workflow object can be
 retrieved via the client or viewed via the UI or command-line interfaces.
 
-.. note ::
-
-Overwrites are not supported so any request for a given project, domain, name, and version that exists in
-the database must match the existing definition exactly.  This also means that as long as the request
-remains identical, calling this method multiple times will result in success.
+> [!NOTE]
+> Overwrites are not supported so any request for a given project, domain, name, and version that exists in
+    the database must match the existing definition exactly.  This also means that as long as the request
+    remains identical, calling this method multiple times will result in success.
 
 
 
@@ -330,7 +215,7 @@ remains identical, calling this method multiple times will result in success.
 ```python
 def get_active_launch_plan(
     active_launch_plan_request,
-):
+) -> e: flyteidl.admin.launch_plan_pb2.LaunchPlan
 ```
 Retrieves a launch plan entity.
 
@@ -353,7 +238,7 @@ This will return a list of domains registered with the Flyte Admin Service
 ```python
 def get_execution(
     get_object_request,
-):
+) -> e: flyteidl.admin.execution_pb2.Execution
 ```
 Returns an execution of a workflow entity.
 
@@ -368,7 +253,7 @@ Returns an execution of a workflow entity.
 ```python
 def get_execution_data(
     get_execution_data_request,
-):
+) -> e: flyteidl.admin.execution_pb2.WorkflowExecutionGetDataResponse
 ```
 Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available).
 
@@ -383,7 +268,7 @@ Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (w
 ```python
 def get_execution_metrics(
     get_execution_metrics_request,
-):
+) -> e: flyteidl.admin.execution_pb2.WorkflowExecutionGetMetricsResponse
 ```
 Returns metrics partitioning and categorizing the workflow execution time-series.
 
@@ -398,7 +283,7 @@ Returns metrics partitioning and categorizing the workflow execution time-series
 ```python
 def get_launch_plan(
     object_get_request,
-):
+) -> e: flyteidl.admin.launch_plan_pb2.LaunchPlan
 ```
 Retrieves a launch plan entity.
 
@@ -413,7 +298,7 @@ Retrieves a launch plan entity.
 ```python
 def get_node_execution(
     node_execution_request,
-):
+) -> e: flyteidl.admin.node_execution_pb2.NodeExecution
 ```
 | Parameter | Type |
 |-|-|
@@ -424,7 +309,7 @@ def get_node_execution(
 ```python
 def get_node_execution_data(
     get_node_execution_data_request,
-):
+) -> e: flyteidl.admin.node_execution_pb2.NodeExecutionGetDataResponse
 ```
 Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available).
 
@@ -439,7 +324,7 @@ Returns signed URLs to LiteralMap blobs for a node execution's inputs and output
 ```python
 def get_project_domain_attributes(
     project_domain_attributes_get_request,
-):
+) -> e: flyteidl.admin.ProjectDomainAttributesGetResponse
 ```
 This fetches the attributes for a project and domain registered with the Flyte Admin Service
 
@@ -453,7 +338,7 @@ This fetches the attributes for a project and domain registered with the Flyte A
 ```python
 def get_task(
     get_object_request,
-):
+) -> e: flyteidl.admin.task_pb2.Task
 ```
 This returns a single task for a given identifier.
 
@@ -468,7 +353,7 @@ This returns a single task for a given identifier.
 ```python
 def get_task_execution(
     task_execution_request,
-):
+) -> e: flyteidl.admin.task_execution_pb2.TaskExecution
 ```
 | Parameter | Type |
 |-|-|
@@ -479,7 +364,7 @@ def get_task_execution(
 ```python
 def get_task_execution_data(
     get_task_execution_data_request,
-):
+) -> e: flyteidl.admin.task_execution_pb2.TaskExecutionGetDataResponse
 ```
 Returns signed URLs to LiteralMap blobs for a task execution's inputs and outputs (when available).
 
@@ -494,7 +379,7 @@ Returns signed URLs to LiteralMap blobs for a task execution's inputs and output
 ```python
 def get_workflow(
     get_object_request,
-):
+) -> e: flyteidl.admin.workflow_pb2.Workflow
 ```
 This returns a single workflow for a given identifier.
 
@@ -509,7 +394,7 @@ This returns a single workflow for a given identifier.
 ```python
 def get_workflow_attributes(
     workflow_attributes_get_request,
-):
+) -> e: flyteidl.admin.WorkflowAttributesGetResponse
 ```
 This fetches the attributes for a project, domain, and workflow registered with the Flyte Admin Service
 
@@ -523,7 +408,7 @@ This fetches the attributes for a project, domain, and workflow registered with 
 ```python
 def list_active_launch_plans_paginated(
     active_launch_plan_list_request,
-):
+) -> e: flyteidl.admin.launch_plan_pb2.LaunchPlanList
 ```
 Lists Active Launch Plans for a given (project, domain)
 
@@ -538,7 +423,7 @@ Lists Active Launch Plans for a given (project, domain)
 ```python
 def list_executions_paginated(
     resource_list_request,
-):
+) -> e: flyteidl.admin.execution_pb2.ExecutionList
 ```
 Lists the executions for a given identifier.
 
@@ -553,7 +438,7 @@ Lists the executions for a given identifier.
 ```python
 def list_launch_plan_ids_paginated(
     identifier_list_request,
-):
+) -> e: flyteidl.admin.common_pb2.NamedEntityIdentifierList
 ```
 Lists launch plan named identifiers for a given project and domain.
 
@@ -568,7 +453,7 @@ Lists launch plan named identifiers for a given project and domain.
 ```python
 def list_launch_plans_paginated(
     resource_list_request,
-):
+) -> e: flyteidl.admin.launch_plan_pb2.LaunchPlanList
 ```
 Lists Launch Plans for a given Identifier (project, domain, name)
 
@@ -583,7 +468,7 @@ Lists Launch Plans for a given Identifier (project, domain, name)
 ```python
 def list_matchable_attributes(
     matchable_attributes_list_request,
-):
+) -> e: flyteidl.admin.ListMatchableAttributesResponse
 ```
 This fetches the attributes for a specific resource type registered with the Flyte Admin Service
 
@@ -597,7 +482,7 @@ This fetches the attributes for a specific resource type registered with the Fly
 ```python
 def list_node_executions_for_task_paginated(
     node_execution_for_task_list_request,
-):
+) -> e: flyteidl.admin.node_execution_pb2.NodeExecutionList
 ```
 | Parameter | Type |
 |-|-|
@@ -608,7 +493,7 @@ def list_node_executions_for_task_paginated(
 ```python
 def list_node_executions_paginated(
     node_execution_list_request,
-):
+) -> e: flyteidl.admin.node_execution_pb2.NodeExecutionList
 ```
 | Parameter | Type |
 |-|-|
@@ -619,7 +504,7 @@ def list_node_executions_paginated(
 ```python
 def list_projects(
     project_list_request: typing.Optional[ProjectListRequest],
-):
+) -> e: flyteidl.admin.project_pb2.Projects
 ```
 This will return a list of the projects registered with the Flyte Admin Service
 
@@ -633,7 +518,7 @@ This will return a list of the projects registered with the Flyte Admin Service
 ```python
 def list_signals(
     signal_list_request: SignalListRequest,
-):
+) -> SignalList
 ```
 This lists signals
 
@@ -647,7 +532,7 @@ This lists signals
 ```python
 def list_task_executions_paginated(
     task_execution_list_request,
-):
+) -> e: flyteidl.admin.task_execution_pb2.TaskExecutionList
 ```
 | Parameter | Type |
 |-|-|
@@ -658,24 +543,21 @@ def list_task_executions_paginated(
 ```python
 def list_task_ids_paginated(
     identifier_list_request,
-):
+) -> e: flyteidl.admin.common_pb2.NamedEntityIdentifierList
 ```
 This returns a page of identifiers for the tasks for a given project and domain. Filters can also be
 specified.
 
-.. note ::
+> [!NOTE]
+> The name field in the TaskListRequest is ignored.
 
-The name field in the TaskListRequest is ignored.
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-.. note ::
-
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -688,20 +570,18 @@ entries on the second page that also appeared on the first.
 ```python
 def list_tasks_paginated(
     resource_list_request,
-):
+) -> e: flyteidl.admin.task_pb2.TaskList
 ```
 This returns a page of task metadata for tasks in a given project and domain.  Optionally,
 specifying a name will limit the results to only tasks with that name in the given project and domain.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -714,24 +594,21 @@ entries on the second page that also appeared on the first.
 ```python
 def list_workflow_ids_paginated(
     identifier_list_request,
-):
+) -> e: flyteidl.admin.common_pb2.NamedEntityIdentifierList
 ```
 This returns a page of identifiers for the workflows for a given project and domain. Filters can also be
 specified.
 
-.. note ::
+> [!NOTE]
+> The name field in the WorkflowListRequest is ignored.
 
-The name field in the WorkflowListRequest is ignored.
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-.. note ::
-
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -744,20 +621,18 @@ entries on the second page that also appeared on the first.
 ```python
 def list_workflows_paginated(
     resource_list_request,
-):
+) -> e: flyteidl.admin.workflow_pb2.WorkflowList
 ```
 This returns a page of workflow meta-information for workflows in a given project and domain.  Optionally,
 specifying a name will limit the results to only workflows with that name in the given project and domain.
 
-.. note ::
+> [!NOTE]
+> This is a paginated API.  Use the token field in the request to specify a page offset token.
+    The user of the API is responsible for providing this token.
 
-This is a paginated API.  Use the token field in the request to specify a page offset token.
-The user of the API is responsible for providing this token.
-
-.. note ::
-
-If entries are added to the database between requests for different pages, it is possible to receive
-entries on the second page that also appeared on the first.
+> [!NOTE]
+> If entries are added to the database between requests for different pages, it is possible to receive
+    entries on the second page that also appeared on the first.
 
 
 
@@ -770,7 +645,7 @@ entries on the second page that also appeared on the first.
 ```python
 def recover_execution(
     recover_execution_request,
-):
+) -> e: flyteidl.admin.execution_pb2.ExecutionRecoverResponse
 ```
 This will recreate an execution with the same spec as the one belonging to the given execution identifier.
 
@@ -784,7 +659,7 @@ This will recreate an execution with the same spec as the one belonging to the g
 ```python
 def register_project(
     project_register_request,
-):
+) -> e: flyteidl.admin.project_pb2.ProjectRegisterResponse
 ```
 Registers a project along with a set of domains.
 
@@ -798,7 +673,7 @@ Registers a project along with a set of domains.
 ```python
 def relaunch_execution(
     relaunch_execution_request,
-):
+) -> e: flyteidl.admin.execution_pb2.ExecutionCreateResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -809,7 +684,7 @@ def relaunch_execution(
 ```python
 def set_signal(
     signal_set_request: SignalSetRequest,
-):
+) -> SignalSetResponse
 ```
 This sets a signal
 
@@ -823,7 +698,7 @@ This sets a signal
 ```python
 def terminate_execution(
     terminate_execution_request,
-):
+) -> e: flyteidl.admin.execution_pb2.TerminateExecutionResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -834,7 +709,7 @@ def terminate_execution(
 ```python
 def update_launch_plan(
     update_request,
-):
+) -> e: flyteidl.admin.launch_plan_pb2.LaunchPlanUpdateResponse
 ```
 Allows updates to a launch plan at a given identifier.  Currently, a launch plan may only have it's state
 switched between ACTIVE and INACTIVE.
@@ -850,7 +725,7 @@ switched between ACTIVE and INACTIVE.
 ```python
 def update_named_entity(
     update_named_entity_request,
-):
+) -> e: flyteidl.admin.common_pb2.NamedEntityUpdateResponse
 ```
 | Parameter | Type |
 |-|-|
@@ -861,7 +736,7 @@ def update_named_entity(
 ```python
 def update_project(
     project,
-):
+) -> e: flyteidl.admin.project_pb2.ProjectUpdateResponse
 ```
 Update an existing project specified by id.
 
@@ -875,7 +750,7 @@ Update an existing project specified by id.
 ```python
 def update_project_domain_attributes(
     project_domain_attributes_update_request,
-):
+) -> e: flyteidl.admin.ProjectDomainAttributesUpdateResponse
 ```
 This updates the attributes for a project and domain registered with the Flyte Admin Service
 
@@ -889,7 +764,7 @@ This updates the attributes for a project and domain registered with the Flyte A
 ```python
 def update_workflow_attributes(
     workflow_attributes_update_request,
-):
+) -> e: flyteidl.admin.WorkflowAttributesUpdateResponse
 ```
 This updates the attributes for a project, domain, and workflow registered with the Flyte Admin Service
 
@@ -904,7 +779,7 @@ This updates the attributes for a project, domain, and workflow registered with 
 def with_root_certificate(
     cfg: PlatformConfig,
     root_cert_file: str,
-):
+) -> RawSynchronousFlyteClient
 ```
 | Parameter | Type |
 |-|-|
@@ -915,25 +790,5 @@ def with_root_certificate(
 
 | Property | Type | Description |
 |-|-|-|
-| url |  |  |
-
-## flytekit.clients.raw.SignalList
-
-A ProtocolMessage
-
-
-## flytekit.clients.raw.SignalListRequest
-
-A ProtocolMessage
-
-
-## flytekit.clients.raw.SignalSetRequest
-
-A ProtocolMessage
-
-
-## flytekit.clients.raw.SignalSetResponse
-
-A ProtocolMessage
-
+| `url` |  |  |
 

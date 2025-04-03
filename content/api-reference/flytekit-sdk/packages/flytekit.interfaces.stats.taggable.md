@@ -1,6 +1,6 @@
 ---
 title: flytekit.interfaces.stats.taggable
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,50 +13,34 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`StatsConfig`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggablestatsconfig) | Configuration for sending statsd. |
 | [`TaggableStats`](.././flytekit.interfaces.stats.taggable#flytekitinterfacesstatstaggabletaggablestats) | A Proxy object for an underlying statsd client. |
-
-## flytekit.interfaces.stats.taggable.StatsConfig
-
-Configuration for sending statsd.
-
-
-
-```python
-def StatsConfig(
-    host: str,
-    port: int,
-    disabled: bool,
-    disabled_tags: bool,
-):
-```
-| Parameter | Type |
-|-|-|
-| `host` | `str` |
-| `port` | `int` |
-| `disabled` | `bool` |
-| `disabled_tags` | `bool` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Reads from environment variable, followed by ConfigFile provided |
+| [`get_stats()`](#get_stats) | :rtype: TaggableStats. |
 
 
-#### auto()
+## Methods
+
+#### get_stats()
 
 ```python
-def auto(
-    config_file: typing.Union[str, ConfigFile],
-):
+def get_stats(
+    cfg: flytekit.configuration.StatsConfig,
+    prefix: str,
+    tags: typing.Dict[str, str],
+) -> e: TaggableStats
 ```
-Reads from environment variable, followed by ConfigFile provided
+:rtype: TaggableStats
 
 
 | Parameter | Type |
 |-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| `cfg` | `flytekit.configuration.StatsConfig` |
+| `prefix` | `str` |
+| `tags` | `typing.Dict[str, str]` |
 
 ## flytekit.interfaces.stats.taggable.TaggableStats
 
@@ -71,13 +55,13 @@ newer_client.incr('bad') # Metric name = a.subsystem.bad
 
 
 ```python
-def TaggableStats(
+class TaggableStats(
     client,
     full_prefix,
     cfg: flytekit.configuration.StatsConfig,
     prefix,
     tags,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -91,10 +75,10 @@ def TaggableStats(
 
 | Method | Description |
 |-|-|
-| [`clear_tags()`](#clear_tags) | None |
-| [`extend_tags()`](#extend_tags) | None |
-| [`get_stats()`](#get_stats) | None |
-| [`pipeline()`](#pipeline) | None |
+| [`clear_tags()`](#clear_tags) |  |
+| [`extend_tags()`](#extend_tags) |  |
+| [`get_stats()`](#get_stats) |  |
+| [`pipeline()`](#pipeline) |  |
 
 
 #### clear_tags()
@@ -107,7 +91,7 @@ def clear_tags()
 ```python
 def extend_tags(
     tags,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -119,7 +103,7 @@ def extend_tags(
 def get_stats(
     name,
     copy_tags,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -135,5 +119,5 @@ def pipeline()
 
 | Property | Type | Description |
 |-|-|-|
-| full_prefix |  |  |
+| `full_prefix` |  |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.domain
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -22,10 +22,10 @@ Domains are fixed and unique at the global level, and provide an abstraction to 
 
 
 ```python
-def Domain(
+class Domain(
     id,
     name,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -36,11 +36,11 @@ def Domain(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -48,7 +48,7 @@ def Domain(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: Domain
 ```
 | Parameter | Type |
 |-|-|
@@ -64,21 +64,34 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.admin.project_pb2.Domain
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| id |  |  |
-| is_empty |  |  |
-| name |  |  |
+| `id` |  | {{< multiline >}}A globally unique identifier associated with this domain.
+:rtype: Text
+{{< /multiline >}} |
+| `is_empty` |  |  |
+| `name` |  | {{< multiline >}}A human-readable name for this domain.
+:rtype: Text
+{{< /multiline >}} |
 

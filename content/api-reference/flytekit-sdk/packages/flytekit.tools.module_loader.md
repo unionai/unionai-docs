@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.module_loader
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,22 +9,70 @@ layout: py_api
 
 ## Directory
 
-### Classes
+### Methods
 
-| Class | Description |
+| Method | Description |
 |-|-|
-| [`Any`](.././flytekit.tools.module_loader#flytekittoolsmodule_loaderany) | Special type indicating an unconstrained type. |
+| [`add_sys_path()`](#add_sys_path) | Temporarily add given path to `sys. |
+| [`just_load_modules()`](#just_load_modules) | This one differs from the above in that we don't yield anything, just load all the modules. |
+| [`load_object_from_module()`](#load_object_from_module) | TODO: Handle corner cases, like where the first part is [] maybe. |
+| [`module_load_error_handler()`](#module_load_error_handler) |  |
 
-## flytekit.tools.module_loader.Any
 
-Special type indicating an unconstrained type.
+## Methods
 
-- Any is compatible with every type.
-- Any assumed to have all methods.
-- All values assumed to be instances of Any.
+#### add_sys_path()
 
-Note that all the above statements are true from the point of view of
-static type checkers. At runtime, Any should not be used with instance
-checks.
+```python
+def add_sys_path(
+    path: typing.Union[str, os.PathLike],
+) -> typing.Iterator[NoneType]
+```
+Temporarily add given path to `sys.path`.
 
+
+| Parameter | Type |
+|-|-|
+| `path` | `typing.Union[str, os.PathLike]` |
+
+#### just_load_modules()
+
+```python
+def just_load_modules(
+    pkgs: typing.List[str],
+)
+```
+This one differs from the above in that we don't yield anything, just load all the modules.
+
+
+| Parameter | Type |
+|-|-|
+| `pkgs` | `typing.List[str]` |
+
+#### load_object_from_module()
+
+```python
+def load_object_from_module(
+    object_location: str,
+) -> typing.Any
+```
+TODO: Handle corner cases, like where the first part is [] maybe
+
+
+| Parameter | Type |
+|-|-|
+| `object_location` | `str` |
+
+#### module_load_error_handler()
+
+```python
+def module_load_error_handler(
+    args,
+    kwargs,
+)
+```
+| Parameter | Type |
+|-|-|
+| `args` | ``*args`` |
+| `kwargs` | ``**kwargs`` |
 

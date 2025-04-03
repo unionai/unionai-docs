@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.interface
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,15 +13,15 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TypedInterface`](.././flytekit.remote.interface#flytekitremoteinterfacetypedinterface) | None. |
+| [`TypedInterface`](.././flytekit.remote.interface#flytekitremoteinterfacetypedinterface) |  |
 
 ## flytekit.remote.interface.TypedInterface
 
 ```python
-def TypedInterface(
+class TypedInterface(
     inputs,
     outputs,
-):
+)
 ```
 Please note that this model is slightly incorrect, but is more user-friendly. The underlying inputs and
 outputs are represented directly as Python dicts, rather than going through the additional VariableMap layer.
@@ -37,13 +37,13 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`promote_from_model()`](#promote_from_model) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`promote_from_model()`](#promote_from_model) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`transform_interface_to_list()`](#transform_interface_to_list) | Takes a single task interface and interpolates it to an array interface - to allow performing distributed. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -51,7 +51,7 @@ outputs are represented directly as Python dicts, rather than going through the 
 ```python
 def from_flyte_idl(
     proto: flyteidl.core.interface_pb2.TypedInterface,
-):
+) -> TypedInterface
 ```
 | Parameter | Type |
 |-|-|
@@ -62,7 +62,7 @@ def from_flyte_idl(
 ```python
 def promote_from_model(
     model,
-):
+) -> e: TypedInterface
 ```
 | Parameter | Type |
 |-|-|
@@ -78,6 +78,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -89,7 +92,7 @@ def to_flyte_idl()
 def transform_interface_to_list(
     bound_inputs: typing.Set[str],
     excluded_inputs: typing.Set[str],
-):
+) -> TypedInterface
 ```
 Takes a single task interface and interpolates it to an array interface - to allow performing distributed
 python map like functions
@@ -105,11 +108,14 @@ python map like functions
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| inputs |  |  |
-| is_empty |  |  |
-| outputs |  |  |
+| `inputs` |  |  |
+| `is_empty` |  |  |
+| `outputs` |  |  |
 

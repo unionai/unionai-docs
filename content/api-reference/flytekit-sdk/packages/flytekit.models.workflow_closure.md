@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.workflow_closure
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -13,15 +13,15 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`WorkflowClosure`](.././flytekit.models.workflow_closure#flytekitmodelsworkflow_closureworkflowclosure) | None. |
+| [`WorkflowClosure`](.././flytekit.models.workflow_closure#flytekitmodelsworkflow_closureworkflowclosure) |  |
 
 ## flytekit.models.workflow_closure.WorkflowClosure
 
 ```python
-def WorkflowClosure(
+class WorkflowClosure(
     workflow,
     tasks,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -32,11 +32,11 @@ def WorkflowClosure(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -44,7 +44,7 @@ def WorkflowClosure(
 ```python
 def from_flyte_idl(
     pb2_object,
-):
+) -> e: WorkflowClosure
 ```
 | Parameter | Type |
 |-|-|
@@ -60,21 +60,32 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
 def to_flyte_idl()
 ```
+:rtype: flyteidl.core.workflow_closure_pb2.WorkflowClosure
+
+
 #### verbose_string()
 
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-| tasks |  |  |
-| workflow |  |  |
+| `is_empty` |  |  |
+| `tasks` |  | {{< multiline >}}:rtype: list[flytekit.models.task.TaskTemplate]
+{{< /multiline >}} |
+| `workflow` |  | {{< multiline >}}:rtype: flytekit.models.core.workflow.WorkflowTemplate
+{{< /multiline >}} |
 

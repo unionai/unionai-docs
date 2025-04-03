@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.documentation
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -15,7 +15,6 @@ layout: py_api
 |-|-|
 | [`Description`](.././flytekit.models.documentation#flytekitmodelsdocumentationdescription) | Full user description with formatting preserved. |
 | [`Documentation`](.././flytekit.models.documentation#flytekitmodelsdocumentationdocumentation) | DescriptionEntity contains detailed description for the task/workflow/launch plan. |
-| [`Enum`](.././flytekit.models.documentation#flytekitmodelsdocumentationenum) | Create a collection of name/value pairs. |
 | [`SourceCode`](.././flytekit.models.documentation#flytekitmodelsdocumentationsourcecode) | Link to source code used to define this task or workflow. |
 
 ## flytekit.models.documentation.Description
@@ -26,12 +25,12 @@ formatting.
 
 
 ```python
-def Description(
+class Description(
     value: typing.Optional[str],
     uri: typing.Optional[str],
     icon_link: typing.Optional[str],
     format: <enum 'DescriptionFormat'>,
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -44,11 +43,11 @@ def Description(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -56,7 +55,7 @@ def Description(
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.admin.description_entity_pb2.Description,
-):
+) -> Description
 ```
 | Parameter | Type |
 |-|-|
@@ -72,6 +71,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -82,11 +84,14 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
+| `is_empty` |  |  |
 
 ## flytekit.models.documentation.Documentation
 
@@ -95,11 +100,11 @@ Documentation could provide insight into the algorithms, business use case, etc.
 
 
 ```python
-def Documentation(
+class Documentation(
     short_description: typing.Optional[str],
     long_description: typing.Optional[flytekit.models.documentation.Description],
     source_code: typing.Optional[flytekit.models.documentation.SourceCode],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -111,11 +116,11 @@ def Documentation(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -123,7 +128,7 @@ def Documentation(
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.admin.description_entity_pb2.DescriptionEntity,
-):
+) -> Documentation
 ```
 | Parameter | Type |
 |-|-|
@@ -139,6 +144,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -149,51 +157,14 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
-
-## flytekit.models.documentation.Enum
-
-Create a collection of name/value pairs.
-
-Example enumeration:
-
->>> class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-
-Access them by:
-
-- attribute access:
-
->>> Color.RED
-<Color.RED: 1>
-
-- value lookup:
-
->>> Color(1)
-<Color.RED: 1>
-
-- name lookup:
-
->>> Color['RED']
-<Color.RED: 1>
-
-Enumerations can be iterated over, and know how many members they have:
-
->>> len(Color)
-3
-
->>> list(Color)
-[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
-
-Methods can be added to enumerations, and members can have their own
-attributes -- see the documentation for details.
-
+| `is_empty` |  |  |
 
 ## flytekit.models.documentation.SourceCode
 
@@ -201,9 +172,9 @@ Link to source code used to define this task or workflow.
 
 
 ```python
-def SourceCode(
+class SourceCode(
     link: typing.Optional[str],
-):
+)
 ```
 | Parameter | Type |
 |-|-|
@@ -213,11 +184,11 @@ def SourceCode(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | None |
-| [`serialize_to_string()`](#serialize_to_string) | None |
-| [`short_string()`](#short_string) |  |
-| [`to_flyte_idl()`](#to_flyte_idl) | None |
-| [`verbose_string()`](#verbose_string) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`serialize_to_string()`](#serialize_to_string) |  |
+| [`short_string()`](#short_string) | :rtype: Text. |
+| [`to_flyte_idl()`](#to_flyte_idl) |  |
+| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -225,7 +196,7 @@ def SourceCode(
 ```python
 def from_flyte_idl(
     pb2_object: flyteidl.admin.description_entity_pb2.SourceCode,
-):
+) -> SourceCode
 ```
 | Parameter | Type |
 |-|-|
@@ -241,6 +212,9 @@ def serialize_to_string()
 ```python
 def short_string()
 ```
+:rtype: Text
+
+
 #### to_flyte_idl()
 
 ```python
@@ -251,9 +225,12 @@ def to_flyte_idl()
 ```python
 def verbose_string()
 ```
+:rtype: Text
+
+
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| is_empty |  |  |
+| `is_empty` |  |  |
 

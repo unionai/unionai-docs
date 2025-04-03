@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.exceptions
-version: 1.15.4.dev2+g3e3ce2426
+version: 0.1.dev2184+g1e0cbe7.d20250401
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -9,15 +9,13 @@ layout: py_api
 
 ## Directory
 
-### Classes
-
-No classes in this package.
-
 ### Errors
 
-* [`AccessTokenNotFoundError`](.././flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsaccesstokennotfounderror)
-* [`AuthenticationError`](.././flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsauthenticationerror)
-* [`AuthenticationPending`](.././flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsauthenticationpending)
+| Exception | Description |
+|-|-|
+| [`AccessTokenNotFoundError`](.././flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsaccesstokennotfounderror) | This error is raised with Access token is not found or if Refreshing the token fails. |
+| [`AuthenticationError`](.././flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsauthenticationerror) | This is raised for any AuthenticationError. |
+| [`AuthenticationPending`](.././flytekit.clients.auth.exceptions#flytekitclientsauthexceptionsauthenticationpending) | This is raised if the token endpoint returns authentication pending. |
 
 ## flytekit.clients.auth.exceptions.AccessTokenNotFoundError
 
