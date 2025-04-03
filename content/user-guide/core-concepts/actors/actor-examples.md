@@ -44,7 +44,7 @@ def distance_add_wf(point_a: list[int], point_b: list[int]) -> float:
 
 @{{< key kit_as >}}.workflow
 def is_even_wf(point_a: list[int]) -> list[bool]:
-    return {{< key kit_as >}}.map(is_even)(number=point_a)
+    return {{< key kit_as >}}.{{<key map_func>}}(is_even)(number=point_a)
 ```
 <!-- TODO: emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24 -->
 
@@ -358,7 +358,7 @@ def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int
 def run_inference(values: list[int] = list(range(20))) -> list[int]:
     model_state = create_model_state()
     inference_ = partial(inference, model_state_path=model_state)
-    return {{< key kit_as >}}.map(inference_)(value=values)
+    return {{< key kit_as >}}.{{<key map_func>}}(inference_)(value=values)
 ```
 
 {{< /markdown >}}
@@ -428,7 +428,7 @@ def inference(value: int, model_state_path: {{< key kit_as >}}.FlyteFile) -> int
 def run_inference(values: list[int] = list(range(20))) -> list[int]:
     model_state = create_model_state()
     inference_ = partial(inference, model_state_path=model_state)
-    return {{< key kit_as >}}.map(inference_)(value=values)
+    return {{< key kit_as >}}.{{<key map_func>}}(inference_)(value=values)
 ```
 
 {{< /markdown >}}
