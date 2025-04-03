@@ -4,6 +4,12 @@ weight: 8
 variants: +flyte +serverless +byoc +byok
 ---
 
+{{< variant flyte >}}
+    {{< markdown >}}
+    **Mapping over entities other than Python tasks is a Union specific feature that is not available in Flyte OSS**
+    {{< /markdown >}}
+{{< /variant >}}
+
 # Mapping over launch plans
 
 You can map over launch plans the same way you can [map over tasks](../tasks/task-types#map-tasks) to execute workflows in parallel across a series of inputs.
@@ -29,7 +35,7 @@ def interest_workflow(principal: int, rate: float, time: int) -> float:
     return calculate_interest(principal=principal, rate=rate, time=time)
 
 # Create LaunchPlan for interest_workflow
-lp = union.LaunchPlan.get_or_create(
+lp = {{< key kit_as >}}.LaunchPlan.get_or_create(
     workflow=interest_workflow,
     name="interest_workflow_lp",
 )
@@ -40,7 +46,7 @@ def map_interest_wf() -> list[float]:
     principal = [1000, 5000, 10000]
     rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
     time = [12, 24, 36]        # Loan periods in months
-    return {{< key kit_as >}}.map(lp)(principal=principal, rate=rate, time=time)
+    return {{< key kit_as >}}.{{<key map_func>}}(lp)(principal=principal, rate=rate, time=time)
 
 
 # Mapping over the launch plan to calculate interest for multiple loans while fixing an input
@@ -49,7 +55,7 @@ def map_interest_fixed_principal_wf() -> list[float]:
     rate = [0.05, 0.04, 0.03]  # Different interest rates for each loan
     time = [12, 24, 36]        # Loan periods in months
     # Note: principal is set to 1000 for all the calculations
-    return {{< key kit_as >}}.map(lp, bound_inputs={'principal':1000})(rate=rate, time=time)
+    return {{< key kit_as >}}.{{<key map_func>}}(lp, bound_inputs={'principal':1000})(rate=rate, time=time)
 ```
 
 
@@ -125,7 +131,7 @@ Recall that when a workflow is registered, an associated launch plan is created 
     def map_simple_wf() -> list[float]:
         x = [[-3, 0, 3], [-8, 2, 4], [7, 3, 1]]
         y = [[7, 4, -2], [-2, 4, 7], [3, 6, 4]]
-        return {{< key kit_as >}}.map(simple_wf_lp)(x=x, y=y)
+        return {{< key kit_as >}}.{{<key map_func>}}(simple_wf_lp)(x=x, y=y)
 
     ```
 

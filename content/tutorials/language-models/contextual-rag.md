@@ -380,14 +380,14 @@ def build_indices_wf(
     Annotated[FlyteDirectory, BM25Index], Annotated[FlyteFile, ContextualChunksJSON]
 ]:
     tocs = parse_main_page(base_url=base_url, articles_url=articles_url, local=local)
-    scraped_content = {{< key kit_as >}}.map(scrape_pg_essays, concurrency=2)(document=tocs)
-    chunks = {{< key kit_as >}}.map(
+    scraped_content = {{< key kit_as >}}.{{<key map_func>}}(scrape_pg_essays, concurrency=2)(document=tocs)
+    chunks = {{< key kit_as >}}.{{<key map_func>}}(
         functools.partial(create_chunks, chunk_size=chunk_size, overlap=overlap)
     )(document=scraped_content)
-    contextual_chunks = {{< key kit_as >}}.map(functools.partial(generate_context, model=model))(
+    contextual_chunks = {{< key kit_as >}}.{{<key map_func>}}(functools.partial(generate_context, model=model))(
         document=chunks
     )
-    {{< key kit_as >}}.map(
+    {{< key kit_as >}}.{{<key map_func>}}(
         functools.partial(
             create_vector_index, embedding_model=embedding_model, local=local
         ),
