@@ -256,7 +256,7 @@ By default, the {{< key cli_name >}} CLI will look for a configuration file at `
 You can override this behavior to specify a different configuration file by setting the `{{< key config_env >}}` environment variable:
 
 ```shell
-$ export{{< key config_env >}}=~/.my-config-location/my-config.yaml
+$ export {{< key config_env >}}=~/.my-config-location/my-config.yaml
 ```
 
 Alternatively, you can always specify the configuration file on the command line when invoking `{{< key cli >}}` by using the `--config` flag.
