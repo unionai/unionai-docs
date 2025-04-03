@@ -1,4 +1,5 @@
 {{ define "main" }}
+  {{- $enforceRunOnUnion := .Params.enforce_run_on_union | default true -}}
   <div class="markdown-content">
     {{ $content := readFile .Params.example_file }}
     {{ if not $content }}
@@ -67,7 +68,10 @@
       {{ index $parts 0 | safeHTML }}
       {{ partial "run-on-union.html" . }}
       {{ index $parts 1 | safeHTML }}
+    {{ else if not $enforceRunOnUnion }}
+      {{ $markdown }}
     {{ else }}
+      {{ warnf "[Run on Union] This example is missing the {{run-on-union}} marker. Please add it to the example file. %s" .Path }}
       <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
         You forgot the <code>{{ "{{ run-on-union }}" }}</code> marker.
       </div>

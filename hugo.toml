@@ -123,6 +123,12 @@ serverless = "map"
 byoc = "map"
 byok = "map"
 
+[params.key.logo]
+flyte = "icon-logo-flyte.png"
+serverless = "icon-logo.svg"
+byoc = "icon-logo.svg"
+byok = "icon-logo.svg"
+
 #----------------------------------------------------------
 # Search
 
