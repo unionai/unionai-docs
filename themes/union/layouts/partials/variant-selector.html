@@ -9,7 +9,7 @@
         {{- range $key, $value := (index $.Site.Params.key "product_full_name") -}}
             {{- $variants = $variants | append $key -}}
         {{- end -}}
-        {{- range $variants -}}
+        {{- range $.Site.Params.variant_selector_order -}}
             {{- $isAllowed := in $variantAcl (printf "+%s" .) -}}
             <option value="{{- . -}}" data-allowed="{{- $isAllowed -}}" {{- if eq . $.Site.Params.variant -}}selected{{ end -}}>
                 {{- index $.Site.Params.key "product_full_name" . -}}
