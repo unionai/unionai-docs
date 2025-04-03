@@ -4,6 +4,12 @@ weight: 4
 variants: -flyte +serverless +byoc +byok
 ---
 
+{{< variant flyte >}}
+    {{< markdown >}}
+    **Actors are a Union specific feature that is not available in Flyte OSS**
+    {{< /markdown >}}
+{{< /variant >}}
+
 # Actors
 
 Actors allow you to reuse a container and environment between tasks, avoiding the cost of starting a new container for each task. This can be useful when you have a task that requires a lot of setup or has a long startup time.

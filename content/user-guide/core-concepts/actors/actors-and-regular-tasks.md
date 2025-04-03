@@ -4,6 +4,13 @@ weight: 1
 variants: -flyte +serverless +byoc +byok
 ---
 
+{{< variant flyte >}}
+    {{< markdown >}}
+    **Actors are a Union specific feature that is not available in Flyte OSS**
+    {{< /markdown >}}
+{{< /variant >}}
+
+
 # Actors and regular tasks
 
 When deciding whether to use actors or traditional tasks in your workflows, it's important to consider the benefits
