@@ -33,7 +33,7 @@ def hello_spark(partitions: int) -> float:
     n = 100000 * partitions
     sess = {{< key kit_as >}}.current_context().spark_session
     count = (
-        sess.sparkContext.parallelize(range(1, n + 1), partitions).{{<key map_func>}}(f).reduce(add)
+        sess.sparkContext.parallelize(range(1, n + 1), partitions).map(f).reduce(add)
     )
     pi_val = 4.0 * count / n
     print("Pi val is :{}".format(pi_val))
