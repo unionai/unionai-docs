@@ -3,7 +3,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-        <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css?v=@@BUILD@@" />
+        <link id="home_css" rel="stylesheet" href="/docs/flyte/css/home.css?v=@@BUILD@@" />
         <script>
             // Set up error handler immediately
             document.addEventListener('DOMContentLoaded', function() {
@@ -52,10 +52,10 @@
             });
         </script>
     </head>
-    <body>
+    <body class="variant-flyte">
         <div class="container">
             <h1>
-                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
+                <img id="logo" src="/docs/flyte/images/icon-logo-flyte.png" class="logo" />
                 404 - Page Not Found
             </h1>
 
