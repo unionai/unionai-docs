@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -8,10 +8,26 @@ layout: py_api
 # flytekit.types.file
 
 
-## Flytekit File Type
+Flytekit File Type
+==========================================================
+.. currentmodule:: flytekit.types.file
 
 This list also contains a bunch of pre-formatted :py:class:`flytekit.types.file.FlyteFile` types.
 
+.. autosummary::
+   :toctree: generated/
+   :template: file_types.rst
+
+   FlyteFile
+   HDF5EncodedFile
+   HTMLPage
+   JoblibSerializedFile
+   JPEGImageFile
+   PDFFile
+   PNGImageFile
+   PythonPickledFile
+   PythonNotebook
+   SVGImageFile
 
 ## Directory
 
