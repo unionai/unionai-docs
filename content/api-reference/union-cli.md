@@ -4,12 +4,6 @@ weight: 3
 variants: -flyte +serverless +byoc +byok
 ---
 
----
-title: Pyflyte CLI
-weight: 3
-variants: +flyte -serverless -byoc -byok
----
-
 # {{< key cli_name >}} CLI
 
 The `{{< key cli >}}` CLI is the main tool developers use to interact with {{< key product_name >}} on the command line.
