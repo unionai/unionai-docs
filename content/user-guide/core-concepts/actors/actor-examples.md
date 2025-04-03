@@ -4,12 +4,6 @@ weight: 2
 variants: -flyte +serverless +byoc +byok
 ---
 
-{{< variant flyte >}}
-    {{< markdown >}}
-    **Actors are a Union specific feature that is not available in Flyte OSS**
-    {{< /markdown >}}
-{{< /variant >}}
-
 # Actor examples
 
 ### Refactoring from Regular Tasks to Actors
