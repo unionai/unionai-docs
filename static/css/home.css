@@ -22,3 +22,60 @@ H1 {
   align-items: center;
   gap: 1rem;
 }
+.target-link-text {
+  display: inline-block;
+  border: none;
+  background-color: #d97706;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+}
+
+.target-link-text A {
+  color: unset;
+  text-decoration: none;
+}
+
+.target-link-text:hover {
+  background-color: #fea034;
+}
+
+.nav {
+  margin: 2rem 0;
+}
+
+.warn {
+  border: 1px solid #d97706;
+  margin-bottom: 2rem;
+  margin: 0 4rem;
+}
+
+.warn .title {
+  color: white;
+  padding: 0.75rem;
+  background-image: linear-gradient(45deg, #fea034 25%, #d97706 25%, #d97706 50%, #fea034 50%, #fea034 75%, #d97706 75%, #d97706 100%);
+  background-size: 56.57px 56.57px;
+}
+
+.warn .title span {
+  background-color: white;
+  padding: 0.25rem 1rem;
+  color: black;
+  border-radius: 20px;
+}
+
+.warn .content {
+  padding: 1rem;
+}
+
+footer {
+  margin-top: 3rem;
+  font-size: 0.875rem;
+  color: gray;
+}

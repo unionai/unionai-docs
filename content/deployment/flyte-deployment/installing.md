@@ -3,7 +3,7 @@ title: Installing Flyte
 weight: 2
 variants: +flyte -serverless -byoc -byok
 ---
-
+# Installing Flyte
 
 First, add the Flyte chart repo to Helm:
 

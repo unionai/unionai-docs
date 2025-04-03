@@ -1,0 +1,83 @@
+/* ==========================================================================
+   DocSearch Styles
+   ========================================================================== */
+
+
+/* docsearch button */
+button.DocSearch {
+    width: 100%;
+    margin: 0;
+}
+
+kbd.DocSearch-Commands-Key:not(.compound) {
+    padding: 0;
+}
+
+div.DocSearch-Hit-content-wrapper {
+    /* prevent scrollbar from showing up */
+    overflow-y: hidden;
+}
+
+div.DocSearch-Logo .cls-1,
+div.DocSearch-Logo .cls-2 {
+    fill: var(--docsearch-primary-color) !important;
+}
+
+.DocSearch-Hits mark {
+    padding: 0;
+}
+
+/* make sure content header doesn't pop out when docsearch model is active */
+body.DocSearch--active div.bd-header-article {
+    z-index: 1;
+}
+
+/* Ensure DocSearch is properly styled on tablets */
+@media (min-width: 769px) and (max-width: 960px) {
+
+    /* DocSearch button adjustments */
+    button.DocSearch {
+        font-size: 13px;
+        padding: 0 8px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .DocSearch-Button {
+        width: auto;
+        min-width: 160px;
+    }
+
+    .DocSearch-Button-Keys {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .mobile-search {
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--color-outline-variant);
+    }
+
+    #docsearch-mobile .DocSearch-Button {
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Hide keyboard shortcut on mobile */
+    .DocSearch-Button-Keys {
+        display: none !important;
+    }
+
+    /* Center the text and icon */
+    .DocSearch-Button-Container {
+        margin: 0 auto;
+    }
+
+    /* Adjust search button styling for mobile */
+    .DocSearch-Button {
+        background: var(--color-surface-container-low) !important;
+        border-radius: 8px;
+    }
+
+}

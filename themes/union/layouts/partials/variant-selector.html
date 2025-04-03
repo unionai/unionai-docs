@@ -4,13 +4,15 @@
     onmouseout="document.getElementById('devwarn').style.display = 'none';"
 {{- end -}}
 >
+        {{- $variantAcl := split .Params.variants " " -}}
         {{- $variants := slice -}}
         {{- range $key, $value := (index $.Site.Params.key "product_full_name") -}}
             {{- $variants = $variants | append $key -}}
         {{- end -}}
-        {{- range $variants -}}
-        <option value="{{- . }}" {{- if eq . $.Site.Params.variant -}}selected{{ end -}}>
-            {{- index $.Site.Params.key "product_full_name" . -}}
-        </option>
-    {{- end -}}
+        {{- range $.Site.Params.variant_selector_order -}}
+            {{- $isAllowed := in $variantAcl (printf "+%s" .) -}}
+            <option value="{{- . -}}" data-allowed="{{- $isAllowed -}}" {{- if eq . $.Site.Params.variant -}}selected{{ end -}}>
+                {{- index $.Site.Params.key "product_full_name" . -}}
+            </option>
+        {{- end -}}
 </select>

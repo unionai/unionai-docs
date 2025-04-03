@@ -112,3 +112,19 @@ header label {
 header .toggle-sidebar {
   display: none;
 }
+
+sl-button.signup-button::part(base) {
+  background-color: var(--union-color) !important;
+  color: var(--sl-color-neutral-0) !important;
+  border-color: var(--union-color-dark) !important;
+}
+
+sl-button.signup-button::part(base):hover {
+  border-color: var(--union-color-dark) !important;
+  background-color: var(--union-color-dark) !important;
+}
+
+.variant-flyte sl-button.signup-button::part(base):hover {
+  border-color: var(--union-color-light) !important;
+  background-color: var(--union-color-light) !important;
+}

@@ -3,8 +3,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-        <meta http-equiv="refresh" content="0; url=@@BASE@@/byoc/" />
-        <link rel="stylesheet" href="@@BASE@@/css/home.css" />
+        <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css?v=@@BUILD@@" />
         <script>
             // Set up error handler immediately
             document.addEventListener('DOMContentLoaded', function() {
@@ -12,7 +11,7 @@
                 logo.onerror = function() {
                     // If main logo fails, try fallback path
                     console.log('Primary logo failed to load, trying fallback');
-                    this.src = 'static/images/icon-logo.svg';
+                    this.src = 'static/images/icon-logo.svg?v=@@BUILD@@';
 
                     // Add second error handler for fallback
                     this.onerror = function() {
@@ -21,8 +20,12 @@
                     };
                 };
             });
+
             setTimeout(() => {
-                document.location = "@@BASE@@/byoc/";
+                if ("@@BASE@@".indexOf("BASE") === -1) {
+                    // Redirect on production builds.
+                    document.location = "@@BASE@@/byoc/";
+                }
             }, 0);
         </script>
     </head>
