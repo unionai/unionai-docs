@@ -131,7 +131,7 @@ def mappable(a: int) -> int:
 
 @{{< key kit_as >}}.workflow
 def level2(l: list[int]) -> list[int]:
-    return {{< key kit_as >}}.map(mappable)(a=l)
+    return {{< key kit_as >}}.{{<key map_func>}}(mappable)(a=l)
 
 
 @{{< key kit_as >}}.task

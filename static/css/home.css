@@ -74,6 +74,25 @@ H1 {
   padding: 1rem;
 }
 
+
+
+.variant-flyte .target-link-text {
+  background-color: #7652A2;
+}
+
+.variant-flyte .target-link-text:hover {
+  background-color: #c7b1dc;
+}
+
+.variant-flyte .warn {
+  border: 1px solid #7652A2;
+}
+
+.variant-flyte .warn .title {
+  background-image: linear-gradient(45deg, #7652a2 25%, #c7b1dc 25%, #c7b1dc 50%, #7652a2 50%, #7652a2 75%, #c7b1dc 75%, #c7b1dc 100%);
+  background-size: 56.57px 56.57px;
+}
+
 footer {
   margin-top: 3rem;
   font-size: 0.875rem;
