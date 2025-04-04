@@ -5,7 +5,7 @@ variants: +flyte -serverless -byoc -byok
 ---
 # Sensor agent
 
-The [sensor agent](https://docs.flyte.org/en/latest/flytesnacks/examples/sensor/index.html) enables users to continuously check for a file or a condition to be met periodically.  
+The [sensor agent](https://docs.flyte.org/en/latest/flytesnacks/examples/sensor/index.html) enables users to continuously check for a file or a condition to be met periodically.
 When the condition is met, the sensor will complete.
 
 This guide provides an overview of how to set up the sensor agent in your Flyte deployment.
@@ -29,7 +29,7 @@ This guide provides an overview of how to set up the sensor agent in your Flyte 
     - You have the correct kubeconfig and have selected the correct Kubernetes context.
     - Confirm that you have the correct Flytectl configuration at `~/.flyte/config.yaml`.
 
-> **Note**  
+> [!NOTE]
 > Add the Flyte chart repo to Helm if you're installing via the Helm charts:
 >
 > ```bash
@@ -96,8 +96,8 @@ Create a file named `values-override.yaml` and add the following configuration t
         helm upgrade <RELEASE_NAME> flyteorg/flyte-binary -n <YOUR_NAMESPACE> --values <YOUR_YAML_FILE>
         ```
 
-        Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte-backend`),  
-        `<YOUR_NAMESPACE>` with the name of your namespace (e.g., `flyte`),  
+        Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte-backend`),
+        `<YOUR_NAMESPACE>` with the name of your namespace (e.g., `flyte`),
         and `<YOUR_YAML_FILE>` with the name of your YAML file.
 
 ### flyte-core
@@ -106,7 +106,7 @@ Create a file named `values-override.yaml` and add the following configuration t
     helm upgrade <RELEASE_NAME> flyte/flyte-core -n <YOUR_NAMESPACE> --values values-override.yaml
     ```
 
-    Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte`)  
+    Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte`)
     and `<YOUR_NAMESPACE>` with the name of your namespace (e.g., `flyte`).
 
 Wait for the upgrade to complete.

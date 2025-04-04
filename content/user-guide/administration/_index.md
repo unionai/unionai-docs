@@ -2,6 +2,7 @@
 title: Administration
 weight: 7
 variants: -flyte +serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Administration

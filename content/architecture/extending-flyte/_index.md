@@ -3,6 +3,7 @@ title: Extending Flyte
 weight: 10
 variants: +flyte -serverless -byoc -byok
 mermaid: true
+sidebar_expanded: true
 ---
 
 # Extending Flyte

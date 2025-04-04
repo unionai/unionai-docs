@@ -2,6 +2,7 @@
 title: PERIAN Job Platform Agent
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # PERIAN Job Platform Agent

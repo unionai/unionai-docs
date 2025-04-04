@@ -2,6 +2,7 @@
 title: Comet ML
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # Comet ML

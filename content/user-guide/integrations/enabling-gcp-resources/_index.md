@@ -2,6 +2,7 @@
 title: Enabling GCP resources
 weight: 2
 variants: -flyte -serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Enabling GCP resources

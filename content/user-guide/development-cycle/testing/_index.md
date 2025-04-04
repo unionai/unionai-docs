@@ -2,6 +2,7 @@
 title: Testing
 weight: 19
 variants: +flyte -byoc -byok -serverless
+sidebar_expanded: true
 ---
 
 # Testing

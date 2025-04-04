@@ -2,6 +2,7 @@
 title: BigQuery agent
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # BigQuery agent
