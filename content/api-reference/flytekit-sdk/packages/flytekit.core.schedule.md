@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.schedule
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -124,10 +124,9 @@ def verbose_string()
 Use this class to schedule a fixed-rate interval for a launch plan.
 
 ```python
+from datetime import timedelta
 
-    from datetime import timedelta
-
-    FixedRate(duration=timedelta(minutes=10))
+FixedRate(duration=timedelta(minutes=10))
 ```
 
 See the :std:ref:`fixed rate intervals` chapter in the cookbook for additional usage examples.

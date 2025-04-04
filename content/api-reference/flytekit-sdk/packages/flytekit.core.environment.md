@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.environment
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -101,19 +101,17 @@ Tasks are the building blocks of Flyte. They represent users code. Tasks have th
 For a simple python task,
 
 ```python
-
-    @task
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 
 For specific task types
 
 ```python
-
-    @task(task_config=Spark(), retries=3)
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task(task_config=Spark(), retries=3)
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
 
@@ -203,24 +201,22 @@ The resulting workflow is passed back to the Flyte engine and is
 run as a :std:ref:`subworkflow <cookbook:subworkflows>`.  Simple usage
 
 ```python
-
-    @dynamic
-    def my_dynamic_subwf(a: int) -> (typing.List[str], int):
-        s = []
-        for i in range(a):
-            s.append(t1(a=i))
-        return s, 5
+@dynamic
+def my_dynamic_subwf(a: int) -> (typing.List[str], int):
+    s = []
+    for i in range(a):
+        s.append(t1(a=i))
+    return s, 5
 ```
 
 Note in the code block that we call the Python ``range`` operator on the input. This is typically not allowed in a
 workflow but it is here. You can even express dependencies between tasks.
 
 ```python
-
-    @dynamic
-    def my_dynamic_subwf(a: int, b: int) -> int:
-        x = t1(a=a)
-        return t2(b=b, x=x)
+@dynamic
+def my_dynamic_subwf(a: int, b: int) -> int:
+    x = t1(a=a)
+    return t2(b=b, x=x)
 ```
 
 See the :std:ref:`cookbook <cookbook:subworkflows>` for a longer discussion.
@@ -300,19 +296,17 @@ Tasks are the building blocks of Flyte. They represent users code. Tasks have th
 For a simple python task,
 
 ```python
-
-    @task
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 
 For specific task types
 
 ```python
-
-    @task(task_config=Spark(), retries=3)
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task(task_config=Spark(), retries=3)
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
 
@@ -397,19 +391,17 @@ Tasks are the building blocks of Flyte. They represent users code. Tasks have th
 For a simple python task,
 
 ```python
-
-    @task
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 
 For specific task types
 
 ```python
-
-    @task(task_config=Spark(), retries=3)
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task(task_config=Spark(), retries=3)
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
 
@@ -489,19 +481,17 @@ Tasks are the building blocks of Flyte. They represent users code. Tasks have th
 For a simple python task,
 
 ```python
-
-    @task
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 
 For specific task types
 
 ```python
-
-    @task(task_config=Spark(), retries=3)
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task(task_config=Spark(), retries=3)
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
 

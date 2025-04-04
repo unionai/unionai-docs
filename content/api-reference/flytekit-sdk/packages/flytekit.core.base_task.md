@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.base_task
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -76,8 +76,7 @@ def kwtypes(
 This is a small helper function to convert the keyword arguments to an OrderedDict of types.
 
 ```python
-
-    kwtypes(a=int, b=str)
+kwtypes(a=int, b=str)
 ```
 
 

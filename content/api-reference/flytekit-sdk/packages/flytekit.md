@@ -1,6 +1,6 @@
 ---
 title: flytekit
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -41,7 +41,6 @@ Branches and conditionals can be expressed explicitly in Flyte. These conditions
 in the flyte engine and hence should be used for control flow. "dynamic workflows" can be used to perform custom conditional logic not supported by flytekit.
 
 
-
 ### Customizing Tasks & Workflows
 
 - TaskMetadata - Wrapper object that allows users to specify Task
@@ -54,13 +53,13 @@ in the flyte engine and hence should be used for control flow. "dynamic workflow
 See the Dynamic module for more information.
 
 
-Signaling
+##### Signaling
 
 - approve
 - sleep
 - wait_for_input
 
-##### Scheduling
+Scheduling
 
 - CronSchedule
 - FixedRate
@@ -138,8 +137,7 @@ Use this method to get a handle of specific parameters available in a flyte task
 Usage
 
 ```python
-
-    flytekit.current_context().logging.info(...)
+flytekit.current_context().logging.info(...)
 ```
 
 Available params are documented in :py:class:`flytekit.core.context_manager.ExecutionParams`.
@@ -152,30 +150,37 @@ There are some special params, that should be available
 def load_implicit_plugins()
 ```
 This method allows loading all plugins that have the entrypoint specification. This uses the plugin loading
-behavior as explained `here <>`_.
+behavior.
 
 This is an opt in system and plugins that have an implicit loading requirement should add the implicit loading
 entrypoint specification to their setup.py. The following example shows how we can autoload a module called fsspec
 (whose init files contains the necessary plugin registration step)
 
-```
 
-    # note the group is always ``flytekit.plugins``
-    setup(
+> [!NOTE] 
+> The group is always ``flytekit.plugins``
+
+
+```python
+setup(
     ...
     entry_points={'flytekit.plugins': 'fsspec=flytekitplugins.fsspec'},
     ...
-    )
+)
 ```
 This works as long as the fsspec module has
 
-```
+> [!NOTE] 
+> For data persistence plugins:
 
-   # For data persistence plugins
-   DataPersistencePlugins.register_plugin(f"{k}://", FSSpecPersistence, force=True)
-   # OR for type plugins
-   TypeEngine.register(PanderaTransformer())
-   # etc
+```python
+DataPersistencePlugins.register_plugin(f"{k}://", FSSpecPersistence, force=True)
+```
+OR for type plugins:
+
+```python
+TypeEngine.register(PanderaTransformer())
+# etc
 ```
 
 

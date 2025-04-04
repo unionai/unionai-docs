@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.notification
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -39,10 +39,9 @@ and Pagerduty is incumbent on those email API being set-up correctly.
 This notification should be used when sending regular emails to people.
 
 ```python
+from flytekit.models.core.execution import WorkflowExecutionPhase
 
-    from flytekit.models.core.execution import WorkflowExecutionPhase
-
-    Email(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+Email(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
 ```
 
 
@@ -211,10 +210,9 @@ def verbose_string()
 This notification should be used when sending emails to the PagerDuty service.
 
 ```python
+from flytekit.models.core.execution import WorkflowExecutionPhase
 
-    from flytekit.models.core.execution import WorkflowExecutionPhase
-
-    PagerDuty(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+PagerDuty(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
 ```
 
 
@@ -300,10 +298,9 @@ def verbose_string()
 This notification should be used when sending emails to the Slack.
 
 ```python
+from flytekit.models.core.execution import WorkflowExecutionPhase
 
-    from flytekit.models.core.execution import WorkflowExecutionPhase
-
-    Slack(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
+Slack(phases=[WorkflowExecutionPhase.SUCCEEDED], recipients_email=["my-team@email.com"])
 ```
 
 

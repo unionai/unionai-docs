@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.testing
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -49,15 +49,14 @@ on the PythonTask
 Usage:
 
     ```python
+    @task
+    def t1(i: int) -> int:
+        pass
 
-        @task
-        def t1(i: int) -> int:
-           pass
-
-        with task_mock(t1) as m:
-           m.side_effect = lambda x: x
-           t1(10)
-           # The mock is valid only within this context
+    with task_mock(t1) as m:
+        m.side_effect = lambda x: x
+        t1(10)
+        # The mock is valid only within this context
     ```
 
 

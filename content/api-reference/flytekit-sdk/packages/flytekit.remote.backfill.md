@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.backfill
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -36,21 +36,22 @@ This can only be used to generate  backfilling workflow only for schedulable lau
 
 the Backfill plan is generated as (start_date - exclusive, end_date inclusive)
 
-```python
-   :caption: Correct usage for dates example
+> [!NOTE]
+> Correct usage for dates example
 
-    lp = Launchplan.get_or_create(...)
-    start_date = datetime.datetime(2023, 1, 1)
-    end_date =  start_date + datetime.timedelta(days=10)
-    wf = create_backfill_workflow(start_date, end_date, for_lp=lp)
+```python
+lp = Launchplan.get_or_create(...)
+start_date = datetime.datetime(2023, 1, 1)
+end_date =  start_date + datetime.timedelta(days=10)
+wf = create_backfill_workflow(start_date, end_date, for_lp=lp)
 ```
+> [!WARNING]
+> Incorrect date example
 
 ```python
-   :caption: Incorrect date example
-
-    wf = create_backfill_workflow(end_date, start_date, for_lp=lp) # end_date is before start_date
-    # OR
-    wf = create_backfill_workflow(start_date, start_date, for_lp=lp) # start and end date are same
+wf = create_backfill_workflow(end_date, start_date, for_lp=lp) # end_date is before start_date
+# OR
+wf = create_backfill_workflow(start_date, start_date, for_lp=lp) # start and end date are same
 ```
 
 

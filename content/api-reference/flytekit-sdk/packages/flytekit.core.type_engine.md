@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.type_engine
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -716,33 +716,33 @@ For Json Schema, we use https://github.com/fuhrysteve/marshmallow-jsonschema lib
 Example
 
 ```python
+@dataclass
+class Test(DataClassJsonMixin):
+    a: int
+    b: str
 
-    @dataclass
-    class Test(DataClassJsonMixin):
-       a: int
-       b: str
-
-    from marshmallow_jsonschema import JSONSchema
-    t = Test(a=10,b="e")
-    JSONSchema().dump(t.schema())
+from marshmallow_jsonschema import JSONSchema
+t = Test(a=10,b="e")
+JSONSchema().dump(t.schema())
 ```
 
 Output will look like
 
 ```python
+{'$schema': 'http://json-schema.org/draft-07/schema#',
+    'definitions': {'TestSchema': {'properties': {'a': {'title': 'a',
+        'type': 'number',
+        'format': 'integer'},
+    'b': {'title': 'b', 'type': 'string'}},
+    'type': 'object',
+    'additionalProperties': False}},
+    '$ref': '#/definitions/TestSchema'}
 
-    {'$schema': 'http://json-schema.org/draft-07/schema#',
-     'definitions': {'TestSchema': {'properties': {'a': {'title': 'a',
-         'type': 'number',
-         'format': 'integer'},
-        'b': {'title': 'b', 'type': 'string'}},
-       'type': 'object',
-       'additionalProperties': False}},
-     '$ref': '#/definitions/TestSchema'}
-```
 
 > [!NOTE]
 > The schema support is experimental and is useful for auto-completing in the UI/CLI
+
+
 
 
 ```python

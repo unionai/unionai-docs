@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -951,14 +951,13 @@ Allows you to programmatically create an ImageConfig. Usually only the default_i
 your workflow uses multiple images
 
 ```python
-
-  ImageConfig.from_dict(
-      "ghcr.io/flyteorg/flytecookbook:v1.0.0",
-       {
-            "spark": "ghcr.io/flyteorg/myspark:...",
-            "other": "...",
-       }
-  )
+ImageConfig.from_dict(
+    "ghcr.io/flyteorg/flytecookbook:v1.0.0",
+    {
+        "spark": "ghcr.io/flyteorg/myspark:...",
+        "other": "...",
+    }
+)
 ```
 
 urn:
