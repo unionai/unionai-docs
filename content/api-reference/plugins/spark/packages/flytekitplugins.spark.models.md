@@ -126,7 +126,7 @@ def with_overrides(
 Config structure can be found here. https://docs.databricks.com/dev-tools/api/2.0/jobs.html#request-structure
 :rtype: dict[Text, dict[Text, Text]]
 {{< /multiline >}} |
-| `databricks_instance` |  | {{< multiline >}}Domain name of your deployment. Use the form <account>.cloud.databricks.com.
+| `databricks_instance` |  | {{< multiline >}}Domain name of your deployment. Use the form &lt;account&gt;.cloud.databricks.com.
 :rtype: str
 {{< /multiline >}} |
 | `driver_pod` |  | {{< multiline >}}Additional pod specs for driver pod.
