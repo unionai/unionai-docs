@@ -81,10 +81,6 @@ Furthermore, the pushed images will need to be accessible to the Flyte installat
 (The registry must be accessible and the images themselves must also have the appropriate permissions.
 For example, a public registry like `ghcr.io` with the images set to public, would work).
 
-> [!NOTE] {{< key product_name >}} simplifies image building and registry
-> With {{< key product_name >}} you do not need to install Docker, build images, or deal with container registries.
-> {{< key product_name >}} offers an in-cloud image builder and registry service that greatly simplifies this part of the development process.
-
 
 ## Install `flytectl` to set up a local cluster
 

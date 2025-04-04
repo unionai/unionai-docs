@@ -1,7 +1,7 @@
 ---
-title: Details of union run
+title: Details of pyflyte run
 weight: 10
-variants: -flyte +serverless +byoc +byok
+variants: +flyte -serverless -byoc -byok
 ---
 
 # Details of {{< key cli >}} run
