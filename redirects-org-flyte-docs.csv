@@ -322,3 +322,12 @@ www.union.ai/_r_/flyte/projects/flytekit,https://www.union.ai/docs/flyte/api-ref
 www.union.ai/_r_/flyte/projects/flytekit/en,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en/latest,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic,https://www.union.ai/docs/flyte/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task,302,TRUE,FALSE,TRUE,TRUE
+
+
+https://docs-legacy.flyte.org/en/latest/user_guide/advanced_composition/intratask_checkpoints.html
+
+https://docs-legacy.flyte.org/en/latest/user_guide/advanced_composition/waiting_for_external_inputs.html
+
+https://docs-legacy.flyte.org/en/latest/user_guide/advanced_composition/decorating_tasks.html
+
+https://docs-legacy.flyte.org/en/latest/user_guide/advanced_composition/decorating_workflows.html
