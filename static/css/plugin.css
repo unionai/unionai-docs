@@ -1,0 +1,23 @@
+article.plugin h1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+article.plugin sl-details {
+    /* display: none; */
+    margin-bottom: 2rem;
+}
+
+article.plugin table td:nth-child(1) {
+    white-space: nowrap;
+}
+
+article.plugin table td:nth-child(2) {
+    white-space: nowrap;
+    font-family: monospace;
+}
+
+article.plugin table td:nth-child(2).source {
+    font-family: unset;
+}
