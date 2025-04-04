@@ -23,10 +23,9 @@ This client should be usable regardless of environment in which this is used. In
 be explicit as opposed to inferred from the environment or a configuration file. To create a client,
 
 ```python
-
-    from flytekit.configuration import PlatformConfig
-    RawSynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))  # or
-    SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
+from flytekit.configuration import PlatformConfig
+RawSynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))  # or
+SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
 ```
 
 

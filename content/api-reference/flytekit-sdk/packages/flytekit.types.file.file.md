@@ -184,14 +184,13 @@ def open(
 Returns a streaming File handle
 
 ```python
-
-    @task
-    def copy_file(ff: FlyteFile) -> FlyteFile:
-        new_file = FlyteFile.new_remote_file()
-        with ff.open("rb", cache_type="readahead") as r:
-            with new_file.open("wb") as w:
-                w.write(r.read())
-        return new_file
+@task
+def copy_file(ff: FlyteFile) -> FlyteFile:
+    new_file = FlyteFile.new_remote_file()
+    with ff.open("rb", cache_type="readahead") as r:
+        with new_file.open("wb") as w:
+            w.write(r.read())
+    return new_file
 ```
 
 

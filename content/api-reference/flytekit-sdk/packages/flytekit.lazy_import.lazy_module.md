@@ -43,9 +43,9 @@ def lazy_module(
 ```
 This function is used to lazily import modules.  It is used in the following way:
 ```python
-    from flytekit.lazy_import import lazy_module
-    sklearn = lazy_module("sklearn")
-    sklearn.svm.SVC()
+from flytekit.lazy_import import lazy_module
+sklearn = lazy_module("sklearn")
+sklearn.svm.SVC()
 ```
 
 

@@ -29,8 +29,8 @@ This is a low-level client that users can use to make direct gRPC service calls 
 first. Create a client by 
 
 ```python
-   SynchronousFlyteClient("your.domain:port", insecure=True)
-   # insecure should be True if your flyteadmin deployment doesn't have SSL enabled
+SynchronousFlyteClient("your.domain:port", insecure=True)
+# insecure should be True if your flyteadmin deployment doesn't have SSL enabled
 ```
 
 
@@ -291,7 +291,7 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105b70cd0>,
+    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107c92350>,
     expires_in: datetime.timedelta,
 ) -> e: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
@@ -305,7 +305,7 @@ Get a signed url for an artifact.
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
-| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105b70cd0>` |
+| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107c92350>` |
 | `expires_in` | `datetime.timedelta` |
 
 #### get_download_signed_url()

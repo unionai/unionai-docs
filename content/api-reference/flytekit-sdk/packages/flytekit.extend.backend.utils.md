@@ -28,7 +28,7 @@ layout: py_api
 ```python
 def convert_to_flyte_phase(
     state: str,
-) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1060ecfa0>
+) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1081db310>
 ```
 Convert the state from the connector to the phase in flyte.
 
@@ -63,7 +63,7 @@ def get_connector_secret(
 
 ```python
 def is_terminal_phase(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1060ecfa0>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1081db310>,
 ) -> bool
 ```
 Return true if the phase is terminal.
@@ -71,7 +71,7 @@ Return true if the phase is terminal.
 
 | Parameter | Type |
 |-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1060ecfa0>` |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1081db310>` |
 
 #### mirror_async_methods()
 
