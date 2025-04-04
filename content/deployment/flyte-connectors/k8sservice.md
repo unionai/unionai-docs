@@ -29,7 +29,7 @@ If you've installed Flyte using the [flyte-core helm chart](https://github.com/f
 - You have the correct kubeconfig and have selected the correct Kubernetes context.
 - You have configured the correct flytectl settings in `~/.flyte/config.yaml`.
 
-> **Note**: Add the Flyte chart repo to Helm if you're installing via the Helm charts.
+> [!NOTE]: Add the Flyte chart repo to Helm if you're installing via the Helm charts.
 >
 > ```bash
 > helm repo add flyteorg https://flyteorg.github.io/flyte

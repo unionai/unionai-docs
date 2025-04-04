@@ -2,6 +2,7 @@
 title: Single sign on setup
 weight: 1
 variants: -flyte -serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Single sign on setup

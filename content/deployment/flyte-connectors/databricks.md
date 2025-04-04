@@ -22,13 +22,13 @@ Or install Flyte using the [flyte-binary helm chart](#deployment-deployment-clou
 
 ### Flyte core
 
-If you've installed Flyte using the 
+If you've installed Flyte using the
 [flyte-core helm chart](https://github.com/flyteorg/flyte/tree/master/charts/flyte-core), please ensure:
 
 - You have the correct kubeconfig and have selected the correct Kubernetes context.
 - You have configured the correct flytectl settings in `~/.flyte/config.yaml`.
 
-> **Note**
+> [!NOTE]
 > Add the Flyte chart repo to Helm if you're installing via the Helm charts.
 
 ```bash

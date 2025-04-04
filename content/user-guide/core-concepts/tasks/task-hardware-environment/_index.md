@@ -2,6 +2,7 @@
 title: Task hardware environment
 weight: 7
 variants: +flyte +serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Task hardware environment
