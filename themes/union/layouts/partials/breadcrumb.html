@@ -39,7 +39,11 @@
         {{- else -}}
             {{- $title = humanize $section -}}
         {{- end -}}
-        <div class="breadcrumb-item{{- if eq $sectionURL $url }} active{{ end -}}">
+        {{- $classes := slice "breadcrumb-item" -}}
+        {{- if eq $sectionURL $url }}
+            {{ $classes = $classes | append "active"}}
+        {{- end -}}
+        <div class='{{- delimit $classes " " -}}'>
             {{- if eq $sectionURL $url -}}
                 {{- $title -}}
             {{- else if eq $index (sub (len $sections) 1) -}}
