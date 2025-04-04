@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.condition
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -55,24 +55,23 @@ So in-effect it is a functional style condition.
 Example of a condition usage. Note the nesting and the assignment to a LHS variable
 
 ```python
-
-     v = (
-        conditional("fractions")
-        .if_((my_input > 0.1) & (my_input < 1.0))
-        .then(
-            conditional("inner_fractions")
-            .if_(my_input < 0.5)
-            .then(double(n=my_input))
-            .elif_((my_input > 0.5) & (my_input < 0.7))
-            .then(square(n=my_input))
-            .else_()
-            .fail("Only <0.7 allowed")
-        )
-        .elif_((my_input > 1.0) & (my_input < 10.0))
-        .then(square(n=my_input))
-        .else_()
-        .then(double(n=my_input))
-    )
+v = (
+conditional("fractions")
+.if_((my_input > 0.1) & (my_input < 1.0))
+.then(
+    conditional("inner_fractions")
+    .if_(my_input < 0.5)
+    .then(double(n=my_input))
+    .elif_((my_input > 0.5) & (my_input < 0.7))
+    .then(square(n=my_input))
+    .else_()
+    .fail("Only <0.7 allowed")
+)
+.elif_((my_input > 1.0) & (my_input < 10.0))
+.then(square(n=my_input))
+.else_()
+.then(double(n=my_input))
+)
 ```
 
 
@@ -317,8 +316,7 @@ to override the compilation behavior
 Usage:
 
 ```python
-
-    v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
+v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
 ```
 
 
@@ -406,8 +404,7 @@ to override the compilation behavior
 Usage:
 
 ```python
-
-    v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
+v =  conditional("fractions").if_((my_input > 0.1) & (my_input < 1.0)).then(...)...
 ```
 
 

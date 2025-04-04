@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.annotation
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -30,10 +30,9 @@ within each typehint.
 For a task definition:
 
 ```python
-
-    @task
-    def x(a: typing.Annotated[int, FlyteAnnotation({"foo": {"bar": 1}})]):
-        return
+@task
+def x(a: typing.Annotated[int, FlyteAnnotation({"foo": {"bar": 1}})]):
+    return
 ```
 
 

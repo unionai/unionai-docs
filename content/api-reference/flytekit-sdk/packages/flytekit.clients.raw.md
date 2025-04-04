@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.raw
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -23,10 +23,9 @@ This client should be usable regardless of environment in which this is used. In
 be explicit as opposed to inferred from the environment or a configuration file. To create a client,
 
 ```python
-
-    from flytekit.configuration import PlatformConfig
-    RawSynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))  # or
-    SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
+from flytekit.configuration import PlatformConfig
+RawSynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))  # or
+SynchronousFlyteClient(PlatformConfig(endpoint="a.b.com", insecure=True))
 ```
 
 

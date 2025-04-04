@@ -1,6 +1,6 @@
 ---
 title: flytekit.lazy_import.lazy_module
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -43,9 +43,9 @@ def lazy_module(
 ```
 This function is used to lazily import modules.  It is used in the following way:
 ```python
-    from flytekit.lazy_import import lazy_module
-    sklearn = lazy_module("sklearn")
-    sklearn.svm.SVC()
+from flytekit.lazy_import import lazy_module
+sklearn = lazy_module("sklearn")
+sklearn.svm.SVC()
 ```
 
 

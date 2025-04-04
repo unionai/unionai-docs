@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.file.file
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -184,14 +184,13 @@ def open(
 Returns a streaming File handle
 
 ```python
-
-    @task
-    def copy_file(ff: FlyteFile) -> FlyteFile:
-        new_file = FlyteFile.new_remote_file()
-        with ff.open("rb", cache_type="readahead") as r:
-            with new_file.open("wb") as w:
-                w.write(r.read())
-        return new_file
+@task
+def copy_file(ff: FlyteFile) -> FlyteFile:
+    new_file = FlyteFile.new_remote_file()
+    with ff.open("rb", cache_type="readahead") as r:
+        with new_file.open("wb") as w:
+            w.write(r.read())
+    return new_file
 ```
 
 

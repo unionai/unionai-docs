@@ -4,6 +4,7 @@
      ...
      {{< /multiline >}} */ -}}
 
+{{- $brs := .Get "brs" | default "true"}}
 {{- $content := .Inner -}}
 {{- $lines := split $content "\n" -}}
 
@@ -11,7 +12,9 @@
   {{- range $index, $line := $lines -}}
     {{- if and (ne $line "") (ne $line " ") -}}
       {{- $line | markdownify -}}
+      {{- if $brs -}}
       {{- if ne $index (sub (len $lines) 1) -}}<br/>{{- end -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 </div>

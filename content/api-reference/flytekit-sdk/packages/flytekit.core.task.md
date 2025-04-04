@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.task
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -73,28 +73,27 @@ own Flyte URL. Results (or the error) are fetched when the execution is finished
 For example:
 
 ```python
+from flytekit import task, eager
 
-    from flytekit import task, eager
+@task
+def add_one(x: int) -> int:
+    return x + 1
 
-    @task
-    def add_one(x: int) -> int:
-        return x + 1
+@task
+def double(x: int) -> int:
+    return x * 2
 
-    @task
-    def double(x: int) -> int:
-        return x * 2
+@eager
+async def eager_workflow(x: int) -> int:
+    out = add_one(x=x)
+    return double(x=out)
 
-    @eager
-    async def eager_workflow(x: int) -> int:
-        out = add_one(x=x)
-        return double(x=out)
+# run locally with asyncio
+if __name__ == "__main__":
+    import asyncio
 
-    # run locally with asyncio
-    if __name__ == "__main__":
-        import asyncio
-
-        result = asyncio.run(eager_workflow(x=1))
-        print(f"Result: {result}")  # "Result: 4"
+    result = asyncio.run(eager_workflow(x=1))
+    print(f"Result: {result}")  # "Result: 4"
 ```
 Unlike :py:func:`dynamic workflows <flytekit.dynamic>`, eager workflows are not compiled into a workflow spec, but
 uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabilities to execute flyte entities.
@@ -109,18 +108,17 @@ uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabili
    configured via :py:class:`~flytekit.configuration.PlatformConfig`.
 
    ```python
+    from flytekit.remote import FlyteRemote
+    from flytekit.configuration import Config
 
-        from flytekit.remote import FlyteRemote
-        from flytekit.configuration import Config
-
-        @eager(
-            remote=FlyteRemote(config=Config.auto(config_file="config.yaml")),
-            client_secret_group="my_client_secret_group",
-            client_secret_key="my_client_secret_key",
-        )
-        async def eager_workflow(x: int) -> int:
-            out = await add_one(x)
-            return await double(one)
+    @eager(
+        remote=FlyteRemote(config=Config.auto(config_file="config.yaml")),
+        client_secret_group="my_client_secret_group",
+        client_secret_key="my_client_secret_key",
+    )
+    async def eager_workflow(x: int) -> int:
+        out = await add_one(x)
+        return await double(one)
     ```
    Where ``config.yaml`` contains is a flytectl-compatible config file.
    For more details, see [`here`](https://docs.flyte.org/en/latest/flytectl/overview.html#configuration).
@@ -129,10 +127,9 @@ uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabili
    and ``client_secret_key`` are not needed, :
 
    ```python
-
-        @eager
-        async def eager_workflow(x: int) -> int:
-            ...
+    @eager
+    async def eager_workflow(x: int) -> int:
+        ...
  ```
 
 
@@ -214,19 +211,17 @@ Tasks are the building blocks of Flyte. They represent users code. Tasks have th
 For a simple python task,
 
 ```python
-
-    @task
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 
 For specific task types
 
 ```python
-
-    @task(task_config=Spark(), retries=3)
-    def my_task(x: int, y: typing.Dict[str, str]) -> str:
-        ...
+@task(task_config=Spark(), retries=3)
+def my_task(x: int, y: typing.Dict[str, str]) -> str:
+    ...
 ```
 Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additional information.
 
@@ -976,10 +971,9 @@ Every task that the user wishes to use should be available in this factory.
 Usage
 
 ```python
-
-    TaskPlugins.register_pythontask_plugin(config_object_type, plugin_object_type)
-    # config_object_type is any class that will be passed to the plugin_object as task_config
-    # Plugin_object_type is a derivative of ``PythonFunctionTask``
+TaskPlugins.register_pythontask_plugin(config_object_type, plugin_object_type)
+# config_object_type is any class that will be passed to the plugin_object as task_config
+# Plugin_object_type is a derivative of ``PythonFunctionTask``
 ```
 Examples of available task plugins include different query-based plugins such as
 :py:class:`flytekitplugins.athena.task.AthenaTask` and :py:class:`flytekitplugins.hive.task.HiveTask`, kubeflow
@@ -1028,10 +1022,9 @@ def register_pythontask_plugin(
 Use this method to register a new plugin into Flytekit. Usage ::
 
 ```python
-
-    TaskPlugins.register_pythontask_plugin(config_object_type, plugin_object_type)
-    # config_object_type is any class that will be passed to the plugin_object as task_config
-    # Plugin_object_type is a derivative of ``PythonFunctionTask``
+TaskPlugins.register_pythontask_plugin(config_object_type, plugin_object_type)
+# config_object_type is any class that will be passed to the plugin_object as task_config
+# Plugin_object_type is a derivative of ``PythonFunctionTask``
 ```
 
 

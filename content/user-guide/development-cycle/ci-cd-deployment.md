@@ -35,7 +35,7 @@ tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
 Now, create the app using the specification file:
 
 ```shell
-$ uctl create app --appSpecFile app.yaml
+$ {{< key ctl >}} create app --appSpecFile app.yaml
 ```
 
 The response should look something like this:
@@ -65,14 +65,14 @@ In GitHub, from the repository page:
 
 ## Create a {{< key product_name >}} configuration file
 
-Until now the configuration file we have used has been local (`~/.union/config.yaml`, for example).
+Until now the configuration file we have used has been local (`~/.{{< key product >}}/config.yaml`, for example).
 For the CI/CD system you need to create one right in the same repository that holds your workflow code.
 
 Create `example-project/ci-config.yaml`:
 
 ```yaml
 admin:
-  endpoint: dns:///<union-host-url>
+  endpoint: dns:///<{{< key product >}}-host-url>
   clientId: example-operator
   clientSecretEnvVar: {{< key env_prefix >}}_APP_SECRET
   insecure: false
@@ -82,7 +82,7 @@ logger:
 ```
 
 > [!NOTE]
-> Note that the value of`clientSecretEnvVar`(in his case, `{{< key env_prefix >}}_APP_SECRET`) is the name of the variable that will be used by `uctl` within the CI/CD run environment.
+> Note that the value of`clientSecretEnvVar`(in his case, `{{< key env_prefix >}}_APP_SECRET`) is the name of the variable that will be used by `{{< key ctl >}}` within the CI/CD run environment.
 >
 > It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
 
@@ -90,6 +90,8 @@ logger:
 
 Finally, you need to set up the CI/CD configuration file. For GitHub Actions you might create the file `example-project/.github/workflows/deploy.yaml` that looks like this:
 
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
 ```yaml
 name: Deploy
 
@@ -149,7 +151,71 @@ jobs:
             --archive ./${{ env.PROJECT }}/flyte-package.tgz \
             --version ${{ github.sha }}
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant  flyte >}}
+{{< markdown >}}
+```yaml
+name: Deploy
 
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  PROJECT: onboarding
+
+jobs:
+  build_and_register:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Docker Image to Github Registry
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          # https://docs.github.com/en/packages/learn-github-packages/publishing-a-package
+          username: ${{ secrets.{{< key env_prefix >}}_BOT_USERNAME }}
+          password: ${{ secrets.{{< key env_prefix >}}_BOT_PASSWORD }}
+          image_name: ${{ github.repository }}
+          image_tag: ${{ env.PROJECT }}-${{ github.sha }},${{ env.PROJECT }}-latest
+          registry: ${{ env.REGISTRY }}
+          context: ./${{ env.PROJECT }}
+          dockerfile: Dockerfile
+
+      - name: Setup flyte
+        run: |
+          sudo apt-get install python3
+          pip install -r ${{ env.PROJECT }}/requirements.txt
+      - name: Setup flytectl
+        run: |
+          curl -sL https://ctl.flyte.org/install | bash
+      - name: Package
+        working-directory: ./${{ env.PROJECT }}
+        run: |
+          {{< key cli >}} --pkgs workflows package \
+            --output ./flyte-package.tgz \
+            --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
+      - name: Register
+        env:
+          {{< key env_prefix >}}_APP_SECRET: ${{ secrets.{{< key env_prefix >}}_APP_SECRET }}
+        run: |
+          bin/flytectl --config ./ci-config.yaml \
+            register files \
+            --project onboarding \
+            --domain production \
+            --archive ./${{ env.PROJECT }}/flyte-package.tgz \
+            --version ${{ github.sha }}
+```
+{{< /markdown >}}
+{{< /variant >}}
 > [!NOTE]
 > Note this section:
 >

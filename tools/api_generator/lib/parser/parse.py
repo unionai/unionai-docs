@@ -7,13 +7,11 @@ from lib.ptypes import ParsedInfo
 
 
 def parse(package: str) -> ParsedInfo:
-    root_package = package.split(".")[0]
-
     try:
-        version = metadata.version(root_package)
+        version = metadata.version(package)
     except metadata.PackageNotFoundError:
         print(
-            f"FATAL: Package {root_package} not found. Did you have it installed?",
+            f"FATAL: Package {package} not found. Did you have it installed?",
             file=stderr,
         )
         exit(1)

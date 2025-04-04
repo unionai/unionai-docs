@@ -1,0 +1,48 @@
+API_DATA=/tmp/flytekit-plugins-${PLUGIN}.api.yaml
+LANDING_PAGE=include/api.plugin.md
+
+.PHONY: all
+all:
+	rm -rf content/api-reference/plugins
+	mkdir content/api-reference/plugins
+	echo "WIP" > content/api-reference/plugins/_index.md
+	python tools/plugin_generator/main.py \
+		--flytekit_root ~/src/flyteorg/flytekit \
+		--output content/api-reference/plugins \
+		--variants "+flyte -byoc -byok -serverless"
+
+.PHONY: base
+base:
+	@if [ -z ${OUTPUT} ]; then echo "OUTPUT is not set"; exit 1; fi
+	@if [ -z ${PLUGIN} ]; then echo "PLUGIN is not set"; exit 1; fi
+	@if [ -z ${PLUGIN_NAME} ]; then echo "PLUGIN_NAME is not set"; exit 1; fi
+
+.PHONY: parser
+parser: base
+	tools/api_generator/parser \
+		--package ${PLUGIN} \
+		--output ${API_DATA}
+
+.PHONY: generate
+generate: clean_output_folder
+	tools/api_generator/generate \
+		--title "${TITLE}" \
+		--api "${API_DATA}" \
+		--include "${LANDING_PAGE}" \
+		--variants \
+			+flyte \
+			+byoc \
+			+byok \
+			+serverless \
+		--output "${OUTPUT}" \
+		--ignore_types \
+			flytekit.models.common.closing \
+			flytekit.remote.remote_fs.FlyteFS \
+			flytekit.remote.remote_fs.HTTPFileSystem \
+			flytekit.remote.remote_fs.HttpFileWriter \
+			flytekit.deck.renderer.MarkdownIt \
+			flytekitplugins.async_fsspec.s3fs.s3fs.AsyncS3FileSystem
+
+.PHONY: clean_output_folder
+clean_output_folder:
+	rm -rf "${OUTPUT}"

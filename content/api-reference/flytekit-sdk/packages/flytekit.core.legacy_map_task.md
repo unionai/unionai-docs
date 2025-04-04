@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.legacy_map_task
-version: 0.1.dev2184+g1e0cbe7.d20250401
+version: 0.1.dev2192+g7c539c3.d20250403
 variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
@@ -491,15 +491,14 @@ For example:
 But in cases in which `j` is bound to a fixed value by using `functools.partial` we need a way to ensure that
 the interface is not simply interpolated, but only the unbound inputs are interpolated.
 
-    ```python
+```python
+def foo((i: int, j: str) -> str:
+    ...
 
-        def foo((i: int, j: str) -> str:
-            ...
+mt = map_task(functools.partial(foo, j=10))
 
-        mt = map_task(functools.partial(foo, j=10))
-
-        print(mt.interface)
-   ```
+print(mt.interface)
+```
 
 output:
 
