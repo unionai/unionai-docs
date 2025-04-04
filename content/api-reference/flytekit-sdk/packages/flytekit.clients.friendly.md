@@ -291,7 +291,7 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1054d8cd0>,
+    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105b70cd0>,
     expires_in: datetime.timedelta,
 ) -> e: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
@@ -305,7 +305,7 @@ Get a signed url for an artifact.
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
-| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1054d8cd0>` |
+| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105b70cd0>` |
 | `expires_in` | `datetime.timedelta` |
 
 #### get_download_signed_url()
