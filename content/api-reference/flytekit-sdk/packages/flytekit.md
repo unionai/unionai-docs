@@ -137,8 +137,7 @@ Use this method to get a handle of specific parameters available in a flyte task
 Usage
 
 ```python
-
-   flytekit.current_context().logging.info(...)
+flytekit.current_context().logging.info(...)
 ```
 
 Available params are documented in :py:class:`flytekit.core.context_manager.ExecutionParams`.
