@@ -12,6 +12,7 @@ def main():
         description="Generate API documentation from Python package"
     )
     parser.add_argument("--package", help="Package to parse", required=True)
+    parser.add_argument("--output", help="Output file", required=True)
     args = parser.parse_args()
 
     result = parse(args.package)
@@ -22,7 +23,8 @@ def main():
         default_flow_style=False,
     )
 
-    print(yaml_output)
+    with open(args.output, "w") as f:
+        f.write(yaml_output)
 
 
 if __name__ == "__main__":
