@@ -66,4 +66,20 @@ Ensure that flytepropeller has the correct service account for BigQuery.
 
 ## Upgrade the Flyte Helm release
 
-Replace ``<RELEASE_NAME>`` with the name of your release (e.g., ``flyte-backend``), ``<YOUR_NAMESPACE>`` with the name of your namespace (e.g., ``flyte``), `<HELM_CHART>` with either `flyte-binary` or `flyte-core` and ``<YOUR_YAML_FILE>`` with the name of your YAML file.
+
+```bash
+helm upgrade <RELEASE_NAME> flyteorg/<HELM_CHART> -n <YOUR_NAMESPACE> --values values-override.yaml
+
+```
+
+Replace ``<RELEASE_NAME>`` with the name of your release (e.g., ``flyte-backend``),
+``<YOUR_NAMESPACE>`` with the name of your namespace (e.g., ``flyte``) and `<HELM_CHART>` with `flyte-binary`, `flyte-core ` or `flyte-sandbox`.
+
+
+Wait for the upgrade to complete. You can check the status of the deployment pods by running the following command:
+
+```bash
+kubectl get pods -n flyte
+```
+
+Once all the components are up and running, go to the examples section to learn more about how to use Flyte plugins.
