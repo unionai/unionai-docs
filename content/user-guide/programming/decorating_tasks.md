@@ -1,3 +1,9 @@
+---
+title: Decorating tasks
+weight: 1
+variants: +flyte +serverless +byoc +byok
+---
+
 # Decorating tasks
 
 You can easily change how tasks behave by using decorators to wrap your task functions.
@@ -5,18 +11,20 @@ You can easily change how tasks behave by using decorators to wrap your task fun
 In order to make sure that your decorated function contains all the type annotation and docstring
 information that Flyte needs, you will need to use the built-in `functools.wraps` decorator.
 
-To begin, import the required dependencies.
+To begin, create a file called `decorating_tasks.py`.
+
+Add the the imports:
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Lines: 1-4
+import logging
+import {{< key kit_import >}}
+from functools import partial, wraps
 ```
 
 Create a logger to monitor the execution's progress.
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Line: 7
+logger = logging.getLogger(__file__)
 ```
 
 ## Using a single decorator
@@ -24,8 +32,15 @@ Create a logger to monitor the execution's progress.
 We define a decorator that logs the input and output details for a decorated task.
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Object: log_io
+def log_io(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        logger.info(f"task {fn.__name__} called with args: {args}, kwargs: {kwargs}")
+        out = fn(*args, **kwargs)
+        logger.info(f"task {fn.__name__} output: {out}")
+        return out
+
+    return wrapper
 ```
 
 We create a task named `t1` that is decorated with `log_io`.
@@ -34,8 +49,10 @@ We create a task named `t1` that is decorated with `log_io`.
 > The order of invoking the decorators is important. `@task` should always be the outer-most decorator.
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Object: t1
+@{{< key kit_as >}}.task
+@log_io
+def t1(x: int) -> int:
+    return x + 1
 ```
 
 ## Stacking multiple decorators
@@ -46,8 +63,18 @@ We define a decorator that verifies if the output from the decorated function is
 If this assumption is violated, it raises a `ValueError` exception.
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Object: validate_output
+def validate_output(fn=None, *, floor=0):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        out = fn(*args, **kwargs)
+        if out <= floor:
+            raise ValueError(f"output of task {fn.__name__} must be a positive number, found {out}")
+        return out
+
+    if fn is None:
+        return partial(validate_output, floor=floor)
+
+    return wrapper
 ```
 
 > [!NOTE]
@@ -56,28 +83,39 @@ If this assumption is violated, it raises a `ValueError` exception.
 We define a function that uses both the logging and validator decorators.
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Object: t2
+@{{< key kit_as >}}.task
+@log_io
+@validate_output(floor=10)
+def t2(x: int) -> int:
+    return x + 10
 ```
 
 Finally, we compose a workflow that calls `t1` and `t2`.
 
 ```python
-# File: advanced_composition/decorating_tasks.py
-# Lines: 53-59
+@{{< key kit_as >}}.workflow
+def decorating_task_wf(x: int) -> int:
+    return t2(x=t1(x=x))
 ```
 
-## Run the example on the Flyte cluster
+## Run the example on {{< key product_name >}}
 
-To run the provided workflow on the Flyte cluster, use the following command:
+To run the workflow, execute the following command:
 
+{{< variant flyte >}}
+{{< markdown >}}
 ```bash
 pyflyte run --remote \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/advanced_composition/advanced_composition/decorating_tasks.py \
   decorating_task_wf --x 10
 ```
+{{< /markdown >}}
+{{< /variant >}}
 
-In this example, you learned how to modify the behavior of tasks via function decorators using the built-in
-`functools.wraps` decorator pattern. To learn more about how to extend Flyte at a deeper level, for
-example creating custom types, custom tasks or backend plugins,
-see [Extending Flyte](https://www.union.ai/docs/flyte/plugins_extend).
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+```bash
+union run --remote decorating_tasks.py decorating_task_wf --x 10
+```
+{{< /markdown >}}
+{{< /variant >}}

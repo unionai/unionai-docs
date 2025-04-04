@@ -1,3 +1,9 @@
+---
+title: Intratask checkpoints
+weight: 1
+variants: +flyte +serverless +byoc +byok
+---
+
 # Intratask checkpoints
 
 A checkpoint in Flyte serves to recover a task from a previous failure by preserving the task's state before the failure
@@ -41,44 +47,50 @@ It's important to note that Flyte currently offers the low-level API for checkpo
 Future integrations aim to incorporate higher-level checkpointing APIs from popular training frameworks
 like Keras, PyTorch, Scikit-learn, and big-data frameworks such as Spark and Flink, enhancing their fault-tolerance capabilities.
 
+Create a file called `checkpoint.py`:
+
+Import the required libraries:
+
 ```python
-# examples/advanced_composition/advanced_composition/checkpoint.py
-# Lines 1-4
-import flytekit
-from flytekit import task, workflow
-from flytekit.core.checkpointer import Checkpointer
+import {{< key kit_import >}}
+from flytekit.exceptions.user import FlyteRecoverableException
+
+RETRIES = 3
 ```
 
 We define a task to iterate precisely `n_iterations`, checkpoint its state, and recover from simulated failures:
 
 ```python
-# examples/advanced_composition/advanced_composition/checkpoint.py
-# Function: use_checkpoint
-@task(retries=3)
+# Define a task to iterate precisely `n_iterations`, checkpoint its state, and recover from simulated failures.
+@{{< key kit_as >}}.task(retries=RETRIES)
 def use_checkpoint(n_iterations: int) -> int:
-    checkpointer = Checkpointer()
-    for i in range(n_iterations):
-        if checkpointer.exists():
-            state = checkpointer.read()
-        else:
-            state = 0
-        state += 1
-        checkpointer.write(state)
-        if state == 5:
-            raise flytekit.FlyteRecoverableException("Simulated failure")
-    return state
+    cp = {{< key kit_as >}}.current_context().checkpoint
+    prev = cp.read()
+
+    start = 0
+    if prev:
+        start = int(prev.decode())
+
+    # Create a failure interval to simulate failures across 'n' iterations and then succeed after configured retries
+    failure_interval = n_iterations // RETRIES
+    index = 0
+    for index in range(start, n_iterations):
+        # Simulate a deterministic failure for demonstration. Showcasing how it eventually completes within the given retries
+        if index > start and index % failure_interval == 0:
+            raise FlyteRecoverableException(f"Failed at iteration {index}, failure_interval {failure_interval}.")
+        # Save progress state. It is also entirely possible to save state every few intervals
+        cp.write(f"{index + 1}".encode())
+    return index
 ```
 
-The checkpoint system offers additional APIs, documented in the code accessible at
+The checkpoint system offers additional APIs. The code can be found at
 [checkpointer code](https://github.com/flyteorg/flytekit/blob/master/flytekit/core/checkpointer.py).
 
 Create a workflow that invokes the task:
 The task will automatically undergo retries in the event of a [FlyteRecoverableException](/api-reference/flytekit-sdk/packages/flytekit.exceptions.base/#flytekitexceptionsbaseflyterecoverableexception)
 
 ```python
-# examples/advanced_composition/advanced_composition/checkpoint.py
-# Function: checkpointing_example
-@workflow
+@{{< key kit_as >}}.workflow
 def checkpointing_example(n_iterations: int) -> int:
     return use_checkpoint(n_iterations=n_iterations)
 ```
@@ -86,13 +98,12 @@ def checkpointing_example(n_iterations: int) -> int:
 The local checkpoint is not utilized here because retries are not supported:
 
 ```python
-# examples/advanced_composition/advanced_composition/checkpoint.py
-# Lines 37-42
-@task
-def local_checkpoint_example():
-    checkpointer = Checkpointer()
-    checkpointer.write("local checkpoint")
-    print(checkpointer.read())
+if __name__ == "__main__":
+    try:
+        checkpointing_example(n_iterations=10)
+    except RuntimeError as e:  # noqa : F841
+        # Since no retries are performed, an exception is expected when run locally
+        pass
 ```
 
 ## Run the example on the Flyte cluster
@@ -104,3 +115,21 @@ pyflyte run --remote \
   https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/advanced_composition/advanced_composition/checkpoint.py \
   checkpointing_example --n_iterations 10
 ```
+
+{{< variant flyte >}}
+{{< markdown >}}
+```bash
+pyflyte run --remote \
+  https://raw.githubusercontent.com/flyteorg/flytesnacks/69dbe4840031a85d79d9ded25f80397c6834752d/examples/advanced_composition/advanced_composition/checkpoint.py \
+  checkpointing_example --n_iterations 10
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+```bash
+union run --remote checkpoint.py checkpointing_example --n_iterations 10
+```
+{{< /markdown >}}
+{{< /variant >}}

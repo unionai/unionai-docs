@@ -1,3 +1,9 @@
+---
+title: Waiting for external inputs
+weight: 1
+variants: +flyte +serverless +byoc +byok
+---
+
 # Waiting for external inputs
 
 There are use cases where you may want a workflow execution to pause, only to continue
@@ -20,12 +26,12 @@ These use cases can be achieved in Flyte with the `flytekit.sleep`,
 `flytekit.wait_for_input`, and `flytekit.approve` workflow nodes.
 Although all of the examples above are human-in-the-loop processes, these
 constructs allow you to pass inputs into a workflow from some arbitrary external
-process (👩 human or 🤖 machine) in order to continue.
+process (human or machine) in order to continue.
 
-> **Important**
-> These functions can only be used inside `@workflow`-decorated
-> functions, `@dynamic`-decorated functions, or
-> [imperative workflows](#imperative_workflow).
+> [!NOTE]
+> These functions can only be used inside `@{{< key kit_as >}}.workflow`-decorated
+> functions, `@{{< key kit_as >}}.dynamic`-decorated functions, or
+> imperative workflows.
 
 ## Pause executions with the `sleep` node
 
@@ -37,8 +43,27 @@ you might want to use it, for example, if you want to simulate a delay in
 your workflow to mock out the behavior of some long-running computation.
 
 ```python
-# examples/advanced_composition/advanced_composition/waiting_for_external_inputs.py
-# Lines 1-20
+from datetime import timedelta
+
+import {{< key kit_import >}}
+from flytekit import sleep
+
+
+@{{< key kit_as >}}.task
+def long_running_computation(num: int) -> int:
+    """A mock task pretending to be a long-running computation."""
+    return num
+
+
+@{{< key kit_as >}}.workflow
+def sleep_wf(num: int) -> int:
+    """Simulate a "long-running" computation with sleep."""
+
+    # increase the sleep duration to actually make it long-running
+    sleeping = sleep(timedelta(seconds=10))
+    result = long_running_computation(num=num)
+    sleeping >> result
+    return result
 ```
 
 As you can see above, we define a simple `add_one` task and a `sleep_wf`
@@ -48,13 +73,10 @@ for 10 seconds before kicking off the `result` computation. Finally, we
 return the `result`.
 
 > [!NOTE]
-> You can learn more about the `>>` chaining operator [here](#chain_flyte_entities).
+> You can learn more about the `>>` chaining operator [here](./chaining-entities).
 
 Now that you have a general sense of how this works, let's move onto the
 `flytekit.wait_for_input` workflow node.
-
-> [!NOTE]
-> To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
 
 ## Supply external inputs with `wait_for_input`
 
@@ -66,8 +88,33 @@ this by defining a `wait_for_input` node that takes a `str` input and
 finalizes the report:
 
 ```python
-# examples/advanced_composition/advanced_composition/waiting_for_external_inputs.py
-# Lines 24-49
+import typing
+
+from flytekit import wait_for_input
+
+
+
+@{{< key kit_as >}}.task
+def create_report(data: typing.List[float]) -> dict:  # o0
+    """A toy report task."""
+    return {
+        "mean": sum(data) / len(data),
+        "length": len(data),
+        "max": max(data),
+        "min": min(data),
+    }
+
+
+@{{< key kit_as >}}.task
+def finalize_report(report: dict, title: str) -> dict:
+    return {"title": title, **report}
+
+
+@{{< key kit_as >}}.workflow
+def reporting_wf(data: typing.List[float]) -> dict:
+    report = create_report(data=data)
+    title_input = wait_for_input("title", timeout=timedelta(hours=1), expected_type=str)
+    return finalize_report(report=report, title=title_input)
 ```
 
 Let's break down what's happening in the code above:
@@ -82,7 +129,7 @@ Let's break down what's happening in the code above:
 > [!NOTE]
 > The `create_report` task is just a toy example. In a realistic example, this
 > report might be an HTML file or set of visualizations. This can be rendered
-> in the Flyte UI with [Flyte Decks](#decks).
+> in the Flyte UI with [Flyte Decks](../development-cycle/decks).
 
 As mentioned in the beginning of this page, this construct can be used for
 selecting the best-performing model in cases where there isn't a clear single
@@ -97,8 +144,18 @@ report-publishing use case, suppose that we want to block the publishing of
 a report for some reason (e.g. if they don't appear to be valid):
 
 ```python
-# examples/advanced_composition/advanced_composition/waiting_for_external_inputs.py
-# Lines 53-64
+from flytekit import approve
+
+
+@{{< key kit_as >}}.workflow
+def reporting_with_approval_wf(data: typing.List[float]) -> dict:
+    report = create_report(data=data)
+    title_input = wait_for_input("title", timeout=timedelta(hours=1), expected_type=str)
+    final_report = finalize_report(report=report, title=title_input)
+
+    # approve the final report, where the output of approve is the final_report
+    # dictionary.
+    return approve(final_report, "approve-final-report", timeout=timedelta(hours=2))
 ```
 
 The `approve` node will pass the `final_report` promise through as the
@@ -110,21 +167,58 @@ it to a subsequent task. Let's create a version of our report-publishing
 workflow where the approval happens after `create_report`:
 
 ```python
-# examples/advanced_composition/advanced_composition/waiting_for_external_inputs.py
-# approval_as_promise_wf
+@{{< key kit_as >}}.workflow
+def approval_as_promise_wf(data: typing.List[float]) -> dict:
+    report = create_report(data=data)
+    title_input = wait_for_input("title", timeout=timedelta(hours=1), expected_type=str)
+
+    # wait for report to run so that the user can view it before adding a custom
+    # title to the report
+    report >> title_input
+
+    final_report = finalize_report(
+        report=approve(report, "raw-report-approval", timeout=timedelta(hours=2)),
+        title=title_input,
+    )
+    return final_report
 ```
 
 ## Working with conditionals
 
 The node constructs by themselves are useful, but they become even more
-useful when we combine them with other Flyte constructs, like [conditionals](#conditional).
+useful when we combine them with other Flyte constructs, like [conditionals](./conditionals).
 
 To illustrate this, let's extend the report-publishing use case so that we
 produce an "invalid report" output in case we don't approve the final report:
 
 ```python
-# examples/advanced_composition/advanced_composition/waiting_for_external_inputs.py
-# Lines 88-114
+from flytekit import conditional
+
+
+@{{< key kit_as >}}.task
+def invalid_report() -> dict:
+    return {"invalid_report": True}
+
+
+@{{< key kit_as >}}.workflow
+def conditional_wf(data: typing.List[float]) -> dict:
+    report = create_report(data=data)
+    title_input = wait_for_input("title-input", timeout=timedelta(hours=1), expected_type=str)
+
+    # Define a "review-passes" wait_for_input node so that a human can review
+    # the report before finalizing it.
+    review_passed = wait_for_input("review-passes", timeout=timedelta(hours=2), expected_type=bool)
+    report >> review_passed
+
+    # This conditional returns the finalized report if the review passes,
+    # otherwise it returns an invalid report output.
+    return (
+        conditional("final-report-condition")
+        .if_(review_passed.is_true())
+        .then(finalize_report(report=report, title=title_input))
+        .else_()
+        .then(invalid_report())
+    )
 ```
 
 On top of the `approved` node, which we use in the `conditional` to
