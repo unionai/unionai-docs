@@ -4,12 +4,12 @@ weight: 4
 variants: +flyte -serverless +byoc +byok
 ---
 
-
 <!-- TODO: Check for vartiant accuracy -->
 # Agents
 
 Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
-Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task (e.g. the DGX agent handles DGX tasks).
+Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task.
+
 The agent service then initiates a job with the appropriate external service. Agents can be run locally as long as the appropriate connection secrets are locally available, since they are spawned in process.
 
 Agents are designed to be scalable and can handle large workloads efficiently, and decrease load on FlytePropeller, since they run outside it.
