@@ -31,7 +31,7 @@ byok = "flytesnacks"
 flyte = "Flyte OSS"
 serverless = "Union.ai Serverless"
 byoc = "Union.ai BYOC"
-# byok = "Union.ai BYOK"
+byok = "Union.ai BYOK"
 
 [params.key.product_name]
 flyte = "Flyte"
