@@ -27,7 +27,7 @@ metadata:
   - flytekitplugins.perian_job
   install_requires:
   - flytekit>=1.12.0,<2.0.0
-  - perian>=0.2.7
+  - perian==0.2.7
   license: apache2
   python_requires: '>=3.9'
   classifiers:
