@@ -9,17 +9,17 @@ show_inactive = false
 highlight_active = false
 signup_link = "https://www.union.ai/pricing"
 
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.parser]
-      [markup.goldmark.parser.attribute]
-        block = true
-
 [params.variant_weights]
 flyte = 1
 serverless = 4
 byoc = 2
 byok = 3
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+        block = true
 
 #----------------------------------------------------------
 # Keywords
