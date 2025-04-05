@@ -13,7 +13,7 @@ signup_link = "https://www.union.ai/pricing"
 flyte = 1
 serverless = 4
 byoc = 2
-byok = 3
+# byok = 3
 
 [markup]
   [markup.goldmark]

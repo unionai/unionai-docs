@@ -6,6 +6,10 @@
 
 {{- $variant_weights := .Site.Params.variant_weights -}}
 
+{{- if not (eq (len $initialVariants) (len $variant_weights))}}
+    {{- warnf "Variant weights not configured correctly. Please ensure that the number of variants matches the number of weights. %d != %d" (len $initialVariants) (len $variant_weights) -}}
+{{- end -}}
+
 {{- /* Sort variants based on weights */ -}}
 {{- $sortedVariants := slice -}}
 {{- $positiveWeightVariants := slice -}}
@@ -13,8 +17,10 @@
 {{- /* First pass: separate variants into two groups */ -}}
 {{- range $initialVariants -}}
     {{- $weight := 0 -}}
-    {{- if isset $variant_weights . -}}
+    {{- if and $variant_weights (isset $variant_weights .) -}}
         {{- $weight = index $variant_weights . -}}
+    {{- else -}}
+        {{- warnf "Variant '%s' not listed in variant_weights." . -}}
     {{- end -}}
 
     {{- if gt $weight 0 -}}
