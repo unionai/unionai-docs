@@ -1,6 +1,6 @@
 ---
 title: union.actor
-version: 0.1.170
+version: 0.1.171.dev4+g052020f1.d20250404
 variants: +byoc +byok +serverless -flyte
 layout: py_api
 ---
@@ -89,12 +89,11 @@ writing execution command to execute the function
 
 It is advised this task is used using the @task decorator as follows
 
-.. code-block: python
-
-    @task
-    def my_func(a: int) -> str:
-       ...
-
+```python
+@task
+def my_func(a: int) -> str:
+    ...
+```
 In the above code, the name of the function, the module, and the interface (inputs = int and outputs = str) will be
 auto detected.
 
