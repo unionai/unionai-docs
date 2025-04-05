@@ -13,7 +13,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`serialize_all()`](#serialize_all) | This function will write to the folder specified the following protobuf types ::. |
+| [`serialize_all()`](#serialize_all) | This function will write to the folder specified the following protobuf types. |
 
 
 ### Variables
@@ -44,15 +44,19 @@ def serialize_all(
     env: typing.Optional[typing.Dict[str, str]],
 )
 ```
-This function will write to the folder specified the following protobuf types ::
-    flyteidl.admin.launch_plan_pb2.LaunchPlan
-    flyteidl.admin.workflow_pb2.WorkflowSpec
-    flyteidl.admin.task_pb2.TaskSpec
+This function will write to the folder specified the following protobuf types
+```
+flyteidl.admin.launch_plan_pb2.LaunchPlan
+flyteidl.admin.workflow_pb2.WorkflowSpec
+flyteidl.admin.task_pb2.TaskSpec
+```
 
-These can be inspected by calling (in the launch plan case) ::
-    flyte-cli parse-proto -f filename.pb -p flyteidl.admin.launch_plan_pb2.LaunchPlan
+These can be inspected by calling (in the launch plan case)
+```bash
+flyte-cli parse-proto -f filename.pb -p flyteidl.admin.launch_plan_pb2.LaunchPlan
+```
 
-See :py:class:`flytekit.models.core.identifier.ResourceType` to match the trailing index in the file name with the
+See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}}   to match the trailing index in the file name with the
 entity type.
 
 
