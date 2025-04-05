@@ -314,7 +314,7 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1081db310>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105892d60>,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]],
     outputs: typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType],
@@ -323,7 +323,7 @@ class Resource(
 ```
 | Parameter | Type |
 |-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1081db310>` |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x105892d60>` |
 | `message` | `typing.Optional[str]` |
 | `log_links` | `typing.Optional[typing.List[flyteidl.core.execution_pb2.TaskLog]]` |
 | `outputs` | `typing.Union[flytekit.models.literals.LiteralMap, typing.Dict[str, typing.Any], NoneType]` |
