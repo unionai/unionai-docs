@@ -36,7 +36,7 @@ See the documentation for :py:class:`flytekit.reference_task` and :py:class:`fly
 This function is the general form of the two aforementioned functions. It's better for programmatic usage, as
 the interface is passed in as arguments instead of analyzed from type annotations.
 
- <!--
+<!--
 .. literalinclude:: ../../../tests/flytekit/unit/core/test_references.py
    :start-after: # docs_ref_start
    :end-before: # docs_ref_end
