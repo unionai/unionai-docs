@@ -178,9 +178,9 @@ Please refer to [{{< key >}} shortcode](SHORTCODES.md#-key-) for more details.
 
 To embed Mermaid diagrams in a page, insert the code inside a block like this:
 
-&#96;&#96;&#96;mermaid
-
-&#96;&#96;&#96;
+    ```mermaid
+    your mermaid graph goes here
+    ```
 
 Also add `mermaid: true` to the top of your page to enable rendering.
 

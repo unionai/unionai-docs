@@ -177,11 +177,15 @@ www.union.ai/_r_/flyte/en/latest/user_guide,https://www.union.ai/docs/flyte/user
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition,https://www.union.ai/docs/flyte/user-guide/programming,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/chaining_flyte_entities,https://www.union.ai/docs/flyte/user-guide/programming/chaining-entities,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/conditionals,https://www.union.ai/docs/flyte/user-guide/programming/conditionals,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/decorating_tasks,https://www.union.ai/docs/flyte/user-guide/programming/decorating_tasks,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/decorating_workflows,https://www.union.ai/docs/flyte/user-guide/programming/decorating_workflows,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/dynamic_workflows,https://www.union.ai/docs/flyte/user-guide/core-concepts/workflows/dynamic-workflows,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/eager_workflows,https://www.union.ai/docs/flyte/user-guide/core-concepts/workflows/eager-workflows,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/intratask_checkpoints,https://www.union.ai/docs/flyte/user-guide/programming/intratask_checkpoints,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/map_tasks,https://www.union.ai/docs/flyte/user-guide/core-concepts/tasks/map-tasks,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/nested_parallelization,https://www.union.ai/docs/flyte/user-guide/programming/nested-parallelism,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/subworkflows,https://www.union.ai/docs/flyte/user-guide/core-concepts/workflows/subworkflows-and-sub-launch-plans,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/advanced_composition/waiting_for_external_inputs,https://www.union.ai/docs/flyte/user-guide/programming/waiting_for_external_inputs,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/basics/documenting_workflows,https://www.union.ai/docs/flyte/user-guide/core-concepts/workflows,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/basics/hello_world,https://www.union.ai/docs/flyte/user-guide/getting-started/understanding-the-code,302,TRUE,FALSE,TRUE,TRUE
@@ -317,8 +321,6 @@ www.union.ai/_r_/flyte/en/v1.13.3/getting_started,https://www.union.ai/docs/flyt
 www.union.ai/_r_/flyte/en/v1.13.3/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/user_guide/introduction,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/projects,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en/latest,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic,https://www.union.ai/docs/flyte/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task,302,TRUE,FALSE,TRUE,TRUE

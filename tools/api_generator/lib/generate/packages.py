@@ -33,6 +33,11 @@ def convert_package_list_to_tree(pkgs: List[PackageInfo]) -> PackageTree:
 def generate_package_index(
     pkg_root: str, packages: List[PackageInfo], classes: ClassPackageMap
 ):
+    # Check if any package has classes defined
+    has_classes = any(bool(pkg_classes) for pkg_classes in classes.values())
+    if not has_classes:
+        return
+
     pkg_index = os.path.join(pkg_root, "_index.md")
     with open(pkg_index, "w") as index:
         write_front_matter("Packages", index)
@@ -96,6 +101,7 @@ def generate_package_folders(
                 doc_level=3,
                 relative_to_file=pkg_index,
                 flatten=flatten,
+                ignore_types=ignore_types,
             )
 
             if len(pkg["methods"]) > 0:

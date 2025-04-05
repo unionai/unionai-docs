@@ -8,7 +8,12 @@ _merge = "deep"
 show_inactive = false
 highlight_active = false
 signup_link = "https://www.union.ai/pricing"
-variant_selector_order = ["flyte", "byoc", "serverless"]
+
+[params.variant_weights]
+flyte = 1
+serverless = 4
+byoc = 2
+# byok = 3
 
 [markup]
   [markup.goldmark]

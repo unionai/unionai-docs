@@ -57,6 +57,14 @@ def generate_class_index(
     flatten: bool,
     ignore_types: List[str],
 ):
+    # Check if any package has classes defined
+    has_classes = any(
+        any(cls not in ignore_types for cls in pkg_classes) 
+        for pkg_classes in classes.values()
+    )
+    if not has_classes:
+        return
+    
     if flatten:
         pkg_index = os.path.join(output_folder, "classes.md")
     else:
@@ -69,10 +77,6 @@ def generate_class_index(
         write_front_matter("Classes", index)
 
         index.write("# Classes\n\n")
-
-        if len(classes) == 0:
-            index.write(f"No classes in this package.\n")
-            return
 
         index.write(f"| Class | Description |\n")
         index.write("|-|-|\n")
@@ -150,16 +154,20 @@ def generate_classes_and_error_list(
     doc_level: int,
     relative_to_file: str,
     flatten: bool,
+    ignore_types: List[str],
 ):
     classes, exceptions = sift_class_and_errors(clss)
-
-    if len(classes) > 0:
+    
+    # Filter out ignored types from classes
+    filtered_classes = [cls for cls in classes if cls not in ignore_types]
+    
+    if len(filtered_classes) > 0:
         output.write(f"{'#' * (doc_level)} Classes\n\n")
 
         output.write(f"| Class | Description |\n")
         output.write("|-|-|\n")
 
-        for classNameFull in classes:
+        for classNameFull in filtered_classes:
             clsInfo = clss[classNameFull]
             classLink = generate_class_link(
                 fullname=classNameFull,

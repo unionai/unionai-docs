@@ -68,4 +68,4 @@ def chain_workflows_wf():
 ```
 
 > [!NOTE]
-> Chaining tasks and subworkflows is not supported in local environments. Follow the progress of this issue [here](https://github.com/flyteorg/flyte/issues/4080)
+> Chaining tasks and subworkflows is not supported in local Python environments.

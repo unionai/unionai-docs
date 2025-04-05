@@ -2,6 +2,7 @@
 title: Weights and Biases
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # Weights and Biases

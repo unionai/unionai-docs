@@ -2,6 +2,7 @@
 title: Control Plane
 weight: 9
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # Control Plane

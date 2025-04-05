@@ -2,6 +2,7 @@
 title: Memory Machine Cloud agent
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # Memory Machine Cloud agent

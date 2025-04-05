@@ -1,10 +1,10 @@
 ---
-title: Setting up a project
+title: Setting up a production project
 weight: 5
 variants: +flyte +serverless +byoc +byok
 ---
 
-# Setting up a project
+# Setting up a production project
 
 In {{< key product_name >}}, your work is organized in a hierarchy with the following structure:
 
@@ -16,8 +16,11 @@ In {{< key product_name >}}, your work is organized in a hierarchy with the foll
 * **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
 
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
+
 When you start working on `my_workflow` you would typically register it in the project-domain `my_project/development`.
+
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually  `my_project/production`.
+
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code).
 
 {{< /markdown >}}
@@ -25,14 +28,17 @@ Promotion is done simply by [re-registering the workflow to the new project-doma
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 
-* **Organization**: Your company's {{< key product_name >}} instance, accessible at a specific URL like `union.my-company.com`.
+* **Organization**: Your {{< key product_name >}} instance, accessible at a specific URL like `{{< key product >}}.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
 You can configure a custom set of domains to suit your needs during [onboarding](../data-plane-setup/configuring-your-data-plane).
 * **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
 
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
+
 When you start work on `my_workflow` you would typically register it in the project-domain `my_project/development`.
+
 As you work on successive iterations of the workflow you might promote `my_workflow` to `my_project/staging` and eventually `my_project/production`.
+
 Promotion is done simply by [re-registering the workflow to the new project-domain](./running-your-code).
 
 {{< /markdown >}}
@@ -46,13 +52,29 @@ but also to the local directory in which you are developing those workflows, and
 To avoid confusion, in this guide we will stick to the following naming conventions:
 
 * **{{< key product_name >}} project**: The entity in your {{< key product_name >}} instance that holds a set of workflows, as described above. Often referred to simply as a **project**.
-* **Local project**: The local directory in which you are developing workflows.
-  This directory does not necessarily correspond one-to-one with a {{< key product_name >}} project.
-  Often you will have multiple workflow directories that are all registered to a single {{< key product_name >}} project.
-* **Project repository**: The GitHub (or other SCM) repository that you are using to store and manage your workflow code.
-  This repository does not necessarily correspond one-to-one with either workflow directory or a {{< key product_name >}} project.
+* **Local project**: The local directory (usually the working directory of a GitHub repository) in which you are developing workflows.
 
 ## Create a {{< key product_name >}} project
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+Ensure that you have the connection to your Flyte cluster [properly configured](/user-guide/getting-started/local-setup/#configure-the-connection-to-your-flyte-instance) and [`flytectl` CLI installed](/api-reference/flytectl-cli/).
+
+Now, create a new project on your Flyte cluster:
+
+```shell
+$ flytectl create project \
+      --id "my-project" \
+      --labels "my-label=my-project" \
+      --description "My Flyte project" \
+      --name "My project"
+```
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
 
 You can create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
 
@@ -67,17 +89,18 @@ Click on the **New Project** button and fill in the details for your new project
 You now have a project on {{< key product_name >}} into which you can register your workflows.
 The next step is to set up a local workflow directory.
 
-## Creating a local workflow directory using `{{< key cli >}} init`
+{{< /markdown >}}
+{{< /variant >}}
 
-Earlier, in the [First workflow](../first-workflow) section of the guide, we started with a pre-existing example project, cloned from git.
-In this section we'll start from scratch and create a new project using the {{< key cli_name >}} CLI tool.
+## Creating a local production project directory using `{{< key cli >}} init`
 
-We will use the `{{< key cli >}} init` command to create a new workflow directory on your local machine pre-populated with a basic project structure defined by the [`basic-union-template`](https://github.com/flyteorg/flytekit-python-template/tree/main/basic-union-template) found in the repository [`flyteorg/flytekit-python-template`](https://github.com/flyteorg/flytekit-python-template).
+Earlier, in the [First workflow](../first-workflow) section we used `{{< key cli >}} init`
+to create a new local project based on the `{{< key product>}}-simple`.
 
-To create the workflow directory, run the following command:
+Here, we will do the same, but use the `{{< key product>}}-production` template. Perform the following command:
 
 ```shell
-$ {{< key cli >}} init --template basic-union-template basic-example
+$ {{< key cli >}} init --template union-production my-project
 ```
 
 ## Directory structure
@@ -87,18 +110,26 @@ In the `basic-example` directory you’ll see the following file structure:
 ```shell
 ├── LICENSE
 ├── README.md
-├── requirements.txt
-└── workflows
-    ├── __init__.py
-    └── example.py
+├── docs
+│   └── docs.md
+├── pyproject.toml
+├── src
+│   ├── core
+│   │   ├── __init__.py
+│   │   └── core.py
+│   ├── orchestration
+│   │   ├── __init__.py
+│   │   └── orchestration.py
+│   ├── tasks
+│   │   ├── __init__.py
+│   │   └── say_hello.py
+│   └── workflows
+│       ├── __init__.py
+│       └── hello_world.py
+└── uv.lock
 ```
 
-You can create your own conventions and file structure for your {{< key product_name >}} projects.
-The `{{< key cli >}} init` command just provides a good starting point.
+You can create your own conventions and file structure for your production projects, but this tempkate provides a good starting point.
 
 However, the separate `workflows` subdirectory and the contained `__init__.py` file are significant.
 We will discuss them when we cover the [registration process](./running-your-code).
-
-<!-- TODO:
-Add create of project on Union/FLyte instance using UI and flytectl/uctl
--->

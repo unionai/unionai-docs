@@ -18,6 +18,7 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< download >}}`](#-download-)
   - [`{{< docs_home >}}`](#-docs_home-)
   - [`{{< py_class_docsum >}}`, `{{< py_class_ref >}}`, and `{{< py_func_ref >}}`](#-py_class_docsum---py_class_ref--and--py_func_ref-)
+  - [`{{< icon name >}}`](#-icon-name-)
 
 ## How to specify a "shortcode"
 
@@ -29,22 +30,22 @@ You can specify parameters, when applicable, or have content inside it, if appli
 
 Examples:
 
-    # A shortcode that just outputs something
+* A shortcode that just outputs something
 
-    {{< key product_name >}}
+      {{< key product_name >}}
 
-    # A shortcode that has content inside
+* A shortcode that has content inside
 
-    {{< markdown >}}
-    * You markdown
-    * goes here
-    {{< /markdown >}}
+      {{< markdown >}}
+      * You markdown
+      * goes here
+      {{< /markdown >}}
 
-    # A shortcode with parameters
+* A shortcode with parameters
 
-    {{< link-card target="union-sdk" icon="workflow" title="Union SDK" >}}
-    The Union SDK provides the Python API for building Union workflows and apps.
-    {{< /link-card >}}
+      {{< link-card target="union-sdk" icon="workflow" title="Union SDK" >}}
+      The Union SDK provides the Python API for building Union workflows and apps.
+      {{< /link-card >}}
 
 > If you're wondering why we have a `{{< markdown >}}` when we can generate markdown natively...
 > it is because inside a container we need to specify what content we're rendering.
@@ -183,3 +184,11 @@ Parameters:
 Example:
 
     Please see {{< py_class_ref flyte.core.Image >}} for more details.
+
+### `{{< icon name >}}`
+
+Uses a named icon in the content.
+
+Example
+
+    [Download {{< icon download >}}](/download)

@@ -148,8 +148,10 @@ You can run a local web server and serve the `dist/` folder. The site must behav
 To start a server:
 
 ```
-$ make serve PORT=<nnnnn>
+$ make serve [PORT=<nnnnn>]
 ```
+
+If specified without parameters, defaults to PORT=9000.
 
 Example:
 

@@ -2,6 +2,7 @@
 title: Databricks plugin
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # Databricks plugin

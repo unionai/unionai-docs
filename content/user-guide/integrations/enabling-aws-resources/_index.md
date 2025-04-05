@@ -2,6 +2,7 @@
 title: Enabling AWS resources
 weight: 1
 variants: -flyte -serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # Enabling AWS resources

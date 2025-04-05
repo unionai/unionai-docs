@@ -2,6 +2,7 @@
 title: Hive
 weight: 1
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # Hive

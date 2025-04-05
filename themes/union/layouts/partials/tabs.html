@@ -25,10 +25,14 @@
         {{- range .page.Site.Sections.ByWeight -}}
             {{- $access := partial "page-allowed.html" . -}}
             {{- if and $access.allowed .Params.top_menu -}}
-                <a href="{{- .RelPermalink -}}" class="
-                    tab{{- if eq $currentPage.Section .Section }} active{{ end -}}
-                    {{- if $access.development }}disabled{{ end -}}
-                    ">
+                {{- $classes := slice "tab" -}}
+                {{- if eq $currentPage.Section .Section -}}
+                    {{- $classes = $classes | append "active" -}}
+                {{- end -}}
+                {{- if $access.development -}}
+                    {{- $classes = $classes | append "disabled" -}}
+                {{- end -}}
+                <a href="{{- .RelPermalink -}}" class='{{- delimit $classes " " -}}'>
                     <div class="text">
                     {{- .Title -}}
                     </div>

@@ -3,6 +3,7 @@ title: Community
 weight: 7
 variants: +flyte -serverless -byoc -byok
 top_menu: true
+sidebar_expanded: true
 ---
 
 # Community

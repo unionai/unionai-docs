@@ -1,18 +1,55 @@
+{{- $variantAcl := split .Params.variants " " -}}
+{{- $initialVariants := slice -}}
+{{- range $key, $value := (index $.Site.Params.key "product_full_name") -}}
+    {{- $initialVariants = $initialVariants | append $key -}}
+{{- end -}}
+
+{{- $variant_weights := .Site.Params.variant_weights -}}
+
+{{- if not (eq (len $initialVariants) (len $variant_weights))}}
+    {{- warnf "Variant weights not configured correctly. Please ensure that the number of variants matches the number of weights. %d != %d" (len $initialVariants) (len $variant_weights) -}}
+{{- end -}}
+
+{{- /* Sort variants based on weights */ -}}
+{{- $sortedVariants := slice -}}
+{{- $positiveWeightVariants := slice -}}
+
+{{- /* First pass: separate variants into two groups */ -}}
+{{- range $initialVariants -}}
+    {{- $weight := 0 -}}
+    {{- if and $variant_weights (isset $variant_weights .) -}}
+        {{- $weight = index $variant_weights . -}}
+    {{- else -}}
+        {{- warnf "Variant '%s' not listed in variant_weights." . -}}
+    {{- end -}}
+
+    {{- if gt $weight 0 -}}
+        {{- $positiveWeightVariants = $positiveWeightVariants | append (dict "name" . "weight" $weight) -}}
+    {{- else -}}
+        {{- $sortedVariants = $sortedVariants | append (dict "name" . "weight" $weight) -}}
+    {{- end -}}
+{{- end -}}
+
+{{- /* Sort each group by weight (ascending) */ -}}
+{{- $sortedVariants = sort $sortedVariants "weight" -}}
+{{- $positiveWeightVariants = sort $positiveWeightVariants "weight" -}}
+
+{{- /* Combine the groups: non-positive weights first, then positive weights */ -}}
+{{- $variants := slice}}
+{{- $variants = $variants | append $positiveWeightVariants -}}
+{{- $variants = $variants | append $sortedVariants -}}
+
 <select id="variant-selector" onchange="handleVariantChange(event)"
 {{- if not hugo.IsProduction -}}
     onmouseenter="document.getElementById('devwarn').style.display = '';"
     onmouseout="document.getElementById('devwarn').style.display = 'none';"
 {{- end -}}
 >
-        {{- $variantAcl := split .Params.variants " " -}}
-        {{- $variants := slice -}}
-        {{- range $key, $value := (index $.Site.Params.key "product_full_name") -}}
-            {{- $variants = $variants | append $key -}}
-        {{- end -}}
-        {{- range $.Site.Params.variant_selector_order -}}
-            {{- $isAllowed := in $variantAcl (printf "+%s" .) -}}
-            <option value="{{- . -}}" data-allowed="{{- $isAllowed -}}" {{- if eq . $.Site.Params.variant -}}selected{{ end -}}>
-                {{- index $.Site.Params.key "product_full_name" . -}}
+        {{- range $variants -}}
+            {{- $variantName := .name -}}
+            {{- $isAllowed := in $variantAcl (printf "+%s" $variantName) -}}
+            <option value="{{- $variantName -}}" data-allowed="{{- $isAllowed -}}" {{- if eq $variantName $.Site.Params.variant -}}selected{{ end -}}>
+                {{- index $.Site.Params.key "product_full_name" $variantName -}}
             </option>
         {{- end -}}
 </select>

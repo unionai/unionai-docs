@@ -2,6 +2,7 @@
 title: OpenAI agents
 weight: 8
 variants: +flyte -serverless +byoc +byok
+sidebar_expanded: true
 ---
 
 # OpenAI agents

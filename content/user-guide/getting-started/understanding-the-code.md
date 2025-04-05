@@ -20,62 +20,36 @@ This is a simple "Hello, world!" example consisting of flat directory:
 
 The `hello_world.py` file illustrates the essential components of a {{< key product_name >}} workflow:
 
-{{< variant serverless byoc byok >}}
-{{< markdown >}}
-
-```python
-"""Hello World"""
-
-import {{< key kit_import >}}
-
-image_spec = union.ImageSpec(
-
-    # Build the image using {{< key product_name >}}'s built-in cloud builder (not locally on your machine)
-    builder="union",
-
-    # The name of the image. This image will be used byt he say_hello task
-    name="say-hello-image",
-
-    # Lock file with dependencies to install in image
-    requirements="uv.lock",
-
-)
-
-@{{< key kit_as >}}.task(container_image=image_spec)
-def say_hello(name: str) -> str:
-    return f"Hello, {name}!"
-
-@{{< key kit_as >}}.workflow
-def hello_world_wf(name: str = "world") -> str:
-    greeting = say_hello(name=name)
-    return greeting
-```
-
-{{< /markdown >}}
-{{< /variant >}}
-
 {{< variant flyte >}}
 {{< markdown >}}
 
 ```python
-"""Hello World"""
+# Hello World
 
-import {{< key kit_import >}}
+import flytekit as fl
+import os
 
-image_spec = {{< key kit_as >}}.ImageSpec(
-
-    # The name of the image. This image will be used byt he say_hello task
+image_spec = fl.ImageSpec(
+    # The name of the image. This image will be used by the `say_hello`` task.
     name="say-hello-image",
 
-    # Lock file with dependencies to install in image
+    # Lock file with dependencies to be installed in the image.
     requirements="uv.lock",
+
+    # Image registry to to which this image will be pushed.
+    # Set the Environment variable FLYTE_IMAGE_REGISTRY to the URL of your registry.
+    # The image will be built on your local machine, so enure that your Docker is running.
+    # Ensure that pushed image is accessible to your Flyte cluster, so that it can pull the image
+    # when it spins up the task container.
+    registry=os.environ['FLYTE_IMAGE_REGISTRY']
 )
 
-@{{< key kit_as >}}.task(container_image=image_spec)
+
+@fl.task(container_image=image_spec)
 def say_hello(name: str) -> str:
     return f"Hello, {name}!"
 
-@{{< key kit_as >}}.workflow
+@fl.workflow
 def hello_world_wf(name: str = "world") -> str:
     greeting = say_hello(name=name)
     return greeting
@@ -84,6 +58,38 @@ def hello_world_wf(name: str = "world") -> str:
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
+```python
+# Hello World
+
+import union
+
+image_spec = union.ImageSpec(
+    # The name of the image. This image will be used byt he say_hello task
+    name="say-hello-image",
+
+    # Lock file with dependencies to install in image
+    requirements="uv.lock",
+
+    # Build the image using Union's built-in cloud builder (not locally on your machine)
+    builder="union",
+)
+
+
+@union.task(container_image=image_spec)
+def say_hello(name: str) -> str:
+    return f"Hello, {name}!"
+
+@union.workflow
+def hello_world_wf(name: str = "world") -> str:
+    greeting = say_hello(name=name)
+    return greeting
+```
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ### ImageSpec
 
@@ -91,17 +97,30 @@ The `ImageSpec` object is used to define the container image that will run the t
 
 Here we have the simplest possible `ImageSpec` object, which specifies:
 
-{{< variant serverless byoc byok >}}
+* The `name` of the image.
+  * This name will be used to identify the image in the container registry.
+
+* The `requirements` parameter.
+  * We specify that the requirements should be read from the `uv.lock` file.
+
+{{< variant flyte >}}
 {{< markdown >}}
 
-* The `builder` to use to build the image. We specify `union` to indicate that the image is built using {{< key product_name >}}'s cloud image builder.
+* The `registry` to which the image will be pushed.
+  * Here we use the environment variable `FLYTE_IMAGE_REGISTRY` to hold the URL of the registry.
+  * You must ensure that this environment variable is correctly set before you register the workflow.
+  * You must also ensure that when the image is pushed to the registry, it will be accesible to your Flyte cluster, so that it can pull the image when it spins up the task container.
 
 {{< /markdown >}}
 {{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
 
-* The `name` of the image. This name will be used to identify the image in the container registry.
+* The `builder` to use to build the image.
+  * We specify `union` to indicate that the image is built using {{< key product_name >}}'s cloud image builder.
 
-* The `requirements` parameter. We specify that the requirements should be read from the `uv.lock` file.
+{{< /markdown >}}
+{{< /variant >}}
 
 See [ImageSpec](../development-cycle/image-spec) for more information.
 
@@ -135,7 +154,7 @@ When deployed to {{< key product_name >}}, the workflow function is compiled to 
 ## pyproject.toml
 
 The `pyproject.toml` is the standard project configuration used by `uv`.
-In particular, it specifies the project dependencies and the Python version to use.
+It specifies the project dependencies and the Python version to use.
 The default `pyproject.toml` file created by `{{< key cli >}} init` from the `{{< key product >}}-simple` template looks like this
 
 ```toml
@@ -157,4 +176,7 @@ See [uv > Configuration > Configuration files](https://docs.astral.sh/uv/configu
 
 The `uv.lock` file is generated from `pyproject.toml` by `uv sync` command.
 It contains the exact versions of the dependencies required by the project.
+
+The `uv.lock` included in the `init` template may not reflect the latest version of the dependencies, so you should update it by doing a fresh `uv sync`.
+
 See [uv > Concepts > Projects > Locking and syncing](https://docs.astral.sh/uv/concepts/projects/sync/) for details.
