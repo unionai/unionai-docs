@@ -18,7 +18,7 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< download >}}`](#-download-)
   - [`{{< docs_home >}}`](#-docs_home-)
   - [`{{< py_class_docsum >}}`, `{{< py_class_ref >}}`, and `{{< py_func_ref >}}`](#-py_class_docsum---py_class_ref--and--py_func_ref-)
-  - [`{{< icon name }}`](#-icon-name-)
+  - [`{{< icon name >}}`](#-icon-name-)
 
 ## How to specify a "shortcode"
 
