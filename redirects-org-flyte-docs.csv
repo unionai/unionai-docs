@@ -1,4 +1,5 @@
 www.union.ai/_r_/flyte,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/_/downloads/en/v0.1.0/pdf,https://www.union.ai/docs/flyte/_static/downloads/flyte-v0.1.0.pdf,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
@@ -7,9 +8,9 @@ www.union.ai/_r_/flyte/en/latest/api/flytekit,https://www.union.ai/docs/flyte/ap
 www.union.ai/_r_/flyte/en/latest/api/flytekit/docs_index,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/community,https://www.union.ai/docs/flyte/community,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/community/contribute,https://www.union.ai/docs/flyte/community/contribute,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_code,https://www.union.ai/docs/flyte/community/contribute/contribute_code,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_docs,https://www.union.ai/docs/flyte/community/contribute/contribute_docs,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_examples,https://www.union.ai/docs/flyte/community/contribute/contribute_examples,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_code,https://www.union.ai/docs/flyte/community/contribute/contribute-code,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_docs,https://www.union.ai/docs/flyte/community/contribute/contribute-docs,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_examples,https://www.union.ai/docs/flyte/community/contribute/contribute-examples,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/community/roadmap,https://www.union.ai/docs/flyte/community/roadmap,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/community/troubleshoot,https://www.union.ai/docs/flyte/community/troubleshoot,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
@@ -21,11 +22,12 @@ www.union.ai/_r_/flyte/en/latest/deployment/configuration/auth_setup,https://www
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/cloud_event,https://www.union.ai/docs/flyte/deployment/flyte-configuration/cloud_events,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/customizable_resources,https://www.union.ai/docs/flyte/deployment/flyte-configuration/customizable_resources,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/general,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-podtemplates,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated, https://www.union.ai/docs/flyte/deployment/configuration-reference,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/datacatalog-config, https://www.union.ai/docs/flyte/deployment/configuration-reference/datacatalog_config,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flyteadmin-config, https://www.union.ai/docs/flyte/configuration-reference/flyteadmin_config,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flytepropeller-config, https://www.union.ai/docs/flyte/configuration-reference/flytepropeller_config,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/scheduler-config, https://www.union.ai/docs/flyte/configuration-reference/scheduler_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated,https://www.union.ai/docs/flyte/deployment/configuration-reference,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/datacatalog-config,https://www.union.ai/docs/flyte/deployment/configuration-reference/datacatalog_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flyteadmin-config,https://www.union.ai/docs/flyte/configuration-reference/flyteadmin_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flytepropeller_config,https://www.union.ai/docs/flyte/deployment/configuration-reference/flytepropeller-config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flytepropeller-config,https://www.union.ai/docs/flyte/configuration-reference/flytepropeller_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/scheduler-config,https://www.union.ai/docs/flyte/configuration-reference/scheduler_config,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/monitoring,https://www.union.ai/docs/flyte/deployment/flyte-configuration/monitoring,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/notifications,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-notifications,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/performance,https://www.union.ai/docs/flyte/deployment/flyte-configuration/performance,302,TRUE,FALSE,TRUE,TRUE
@@ -48,6 +50,7 @@ www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi/databricks,https://ww
 www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi/snowflake,https://www.union.ai/docs/flyte/deployment/flyte-plugins/snowflake,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/security,https://www.union.ai/docs/flyte/deployment/flyte-configuration/security-overview,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/swagger,https://www.union.ai/docs/flyte/deployment/flyte-configuration/swagger,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/flytesnacks/contribute,https://www.union.ai/docs/flyte/community/contribute,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/flytesnacks/examples/airflow_agent,https://www.union.ai/docs/flyte/integrations/flyte-agents/airflow_agent,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/flytesnacks/examples/airflow_agent/airflow_agent_example_usage,https://www.union.ai/docs/flyte/integrations/flyte-agents/airflow_agent/airflow_agent_example_usage,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/flytesnacks/examples/airflow_plugin,https://www.union.ai/docs/flyte/integrations/flyte-operators/airflow_plugin,302,TRUE,FALSE,TRUE,TRUE
@@ -285,7 +288,7 @@ www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/notifications,https:
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/reference_launch_plans,https://www.union.ai/docs/flyte/user-guide/core-concepts/launch-plans/reference-launch-plans,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/reference_tasks,https://www.union.ai/docs/flyte/user-guide/core-concepts/tasks/reference-tasks,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/schedules,https://www.union.ai/docs/flyte/user-guide/core-concepts/launch-plans/schedules,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/secrets,https://www.union.ai/docs/flyte/user-guide/development-cycle/managing-secrets,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/secrets,https://www.union.ai/docs/flyte/deployment/flyte-configuration/secrets,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/spot_instances,https://www.union.ai/docs/flyte/user-guide/core-concepts/tasks/task-hardware-environment/interruptible-instances,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/productionizing/workflow_labels_and_annotations,https://www.union.ai/docs/flyte/user-guide/core-concepts/launch-plans/defining-launch-plans,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
@@ -326,6 +329,9 @@ www.union.ai/_r_/flyte/en/v1.13.3/getting_started,https://www.union.ai/docs/flyt
 www.union.ai/_r_/flyte/en/v1.13.3/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/user_guide/introduction,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/latest/user_guide/productionizing/configuring_access_to_gpus,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-access-to-gpus,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/latest/user_guide/productionizing/configuring_logging_links_in_the_ui,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-logging-links-in-the-ui,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en/latest,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/user_guide/productionizing/secrets,https://www.union.ai/docs/flyte/deployment/flyte-configuration/secrets,302,TRUE,FALSE,TRUE,TRUE
