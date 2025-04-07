@@ -2,7 +2,6 @@
 title: Plugins setup
 weight: 5
 variants: +flyte -serverless -byoc -byok
-top_menu: true
 sidebar_expanded: true
 ---
 
