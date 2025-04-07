@@ -21,6 +21,11 @@ www.union.ai/_r_/flyte/en/latest/deployment/configuration/auth_setup,https://www
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/cloud_event,https://www.union.ai/docs/flyte/deployment/flyte-configuration/cloud_events,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/customizable_resources,https://www.union.ai/docs/flyte/deployment/flyte-configuration/customizable_resources,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/general,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-podtemplates,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated, https://www.union.ai/docs/flyte/deployment/configuration-reference,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/datacatalog-config, https://www.union.ai/docs/flyte/deployment/configuration-reference/datacatalog_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flyteadmin-config, https://www.union.ai/docs/flyte/configuration-reference/flyteadmin_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/flytepropeller-config, https://www.union.ai/docs/flyte/configuration-reference/flytepropeller_config,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/configuration/generated/scheduler-config, https://www.union.ai/docs/flyte/configuration-reference/scheduler_config,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/monitoring,https://www.union.ai/docs/flyte/deployment/flyte-configuration/monitoring,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/notifications,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-notifications,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/performance,https://www.union.ai/docs/flyte/deployment/flyte-configuration/performance,302,TRUE,FALSE,TRUE,TRUE
@@ -32,15 +37,15 @@ www.union.ai/_r_/flyte/en/latest/deployment/deployment/multicluster,https://www.
 www.union.ai/_r_/flyte/en/latest/deployment/deployment/sandbox,https://www.union.ai/docs/flyte/deployment/flyte-deployment/planning,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/plugins,https://www.union.ai/docs/flyte/deployment/flyte-plugins,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws,https://www.union.ai/docs/flyte/deployment/flyte-plugins,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws/athena,https://www.union.ai/docs/flyte/deployment/flyte-plugins/aws-plugins/athena,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws/batch,https://www.union.ai/docs/flyte/deployment/flyte-plugins/aws-plugins/batch,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws/sagemaker,https://www.union.ai/docs/flyte/deployment/flyte-plugins/aws-plugins/sagemaker,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws/athena,https://www.union.ai/docs/flyte/deployment/flyte-plugins/athena,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws/batch,https://www.union.ai/docs/flyte/deployment/flyte-plugins/batch,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/aws/sagemaker,https://www.union.ai/docs/flyte/deployment/flyte-plugins/sagemaker,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/plugins/gcp,https://www.union.ai/docs/flyte/deployment/flyte-plugins,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/gcp/bigquery,https://www.union.ai/docs/flyte/deployment/flyte-plugins/gcp-plugins/bigquery,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/k8s,https://www.union.ai/docs/flyte/deployment/flyte-plugins/k8s-plugins/configure-backend-plugins,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/gcp/bigquery,https://www.union.ai/docs/flyte/deployment/flyte-plugins/bigquery,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/k8s,https://www.union.ai/docs/flyte/deployment/flyte-plugins/kubernetes-plugins,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi,https://www.union.ai/docs/flyte/deployment/flyte-plugins,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi/databricks,https://www.union.ai/docs/flyte/deployment/flyte-plugins/webapi/databricks,302,TRUE,FALSE,TRUE,TRUE
-www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi/snowflake,https://www.union.ai/docs/flyte/deployment/flyte-plugins/webapi/snowflake,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi/databricks,https://www.union.ai/docs/flyte/deployment/flyte-plugins/databricks,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/deployment/plugins/webapi/snowflake,https://www.union.ai/docs/flyte/deployment/flyte-plugins/snowflake,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/security,https://www.union.ai/docs/flyte/deployment/flyte-configuration/security-overview,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/swagger,https://www.union.ai/docs/flyte/deployment/flyte-configuration/swagger,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/flytesnacks/examples/airflow_agent,https://www.union.ai/docs/flyte/integrations/flyte-agents/airflow_agent,302,TRUE,FALSE,TRUE,TRUE

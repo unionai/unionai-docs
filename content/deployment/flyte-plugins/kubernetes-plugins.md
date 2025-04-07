@@ -1,10 +1,10 @@
 ---
-title: Backend (K8s) plugins
+title: Kubernetes plugins
 weight: 1
 variants: +flyte -serverless -byoc -byok
 ---
 
-# Configure Kubernetes Plugins
+# Kubernetes Plugins
 
 This guide will help you configure the Flyte plugins that provision resources on Kubernetes.
 The steps are defined in terms of the Helm chart you used to install Flyte.
@@ -58,7 +58,7 @@ gang scheduler as well.
 
 {{< /markdown >}}
 {{< /dropdown >}}
-   
+
 {{< dropdown title="Ray" icon=arrow_forward >}}
 {{< markdown >}}
 
@@ -312,7 +312,7 @@ configmap:
 ```
 {{< /markdown >}}
 {{< /dropdown >}}
-  
+
 {{< dropdown title="Spark" icon=arrow_forward >}}
 {{< markdown >}}
 
@@ -957,8 +957,8 @@ flyte-binary:
 ```
 {{< /markdown >}}
 {{< /dropdown >}}
-  
-  
+
+
 {{< dropdown title="Dask" icon=arrow_forward >}}
 {{< markdown >}}
 
@@ -1001,7 +1001,7 @@ configmap:
 ```
 {{< /markdown >}}
 {{< /dropdown >}}
-  
+
 ## Upgrade the deployment
 
 ```bash
