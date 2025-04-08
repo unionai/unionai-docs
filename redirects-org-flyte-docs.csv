@@ -1,5 +1,6 @@
 www.union.ai/_r_/flyte,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/_/downloads/en/v0.1.0/pdf,https://www.union.ai/_static/downloads/flyte-v0.1.0.pdf,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/_/downloads/en/v0.1.0/pdf/,https://www.union.ai/_static/downloads/flyte-v0.1.0.pdf,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
@@ -13,7 +14,10 @@ www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_docs,https://ww
 www.union.ai/_r_/flyte/en/latest/community/contribute/contribute_examples,https://www.union.ai/docs/flyte/community/contribute/contribute-examples,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/community/roadmap,https://www.union.ai/docs/flyte/community/roadmap,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/community/troubleshoot,https://www.union.ai/docs/flyte/community/troubleshoot,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/concepts,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/concepts/data_management,https://www.union.ai/docs/flyte/user-guide/data-input-output/task-input-and-output#metadata-and-raw-data,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/concepts/registration,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment,https://www.union.ai/docs/flyte/deployment/flyte-deployment,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration,https://www.union.ai/docs/flyte/deployment/flyte-configuration,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration/auth_appendix,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-authentication,302,TRUE,FALSE,TRUE,TRUE
@@ -297,6 +301,8 @@ www.union.ai/_r_/flyte/en/latest/user_guide/testing/mocking_tasks,https://www.un
 www.union.ai/_r_/flyte/en/v1.12.0,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.12.0/concepts,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.12.0/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.12.0/concepts/data_management,https://www.union.ai/docs/flyte/user-guide/data-input-output/task-input-and-output#metadata-and-raw-data,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.12.0/concepts/registration,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.12.0/getting_started,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.12.0/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.12.0/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
@@ -304,6 +310,8 @@ www.union.ai/_r_/flyte/en/v1.12.0/user_guide/introduction,https://www.union.ai/d
 www.union.ai/_r_/flyte/en/v1.13.0,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.0/concepts,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.0/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.13.0/concepts/data_management,https://www.union.ai/docs/flyte/user-guide/data-input-output/task-input-and-output#metadata-and-raw-data,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.13.0/concepts/registration,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.0/getting_started,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.0/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.0/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
@@ -311,6 +319,8 @@ www.union.ai/_r_/flyte/en/v1.13.0/user_guide/introduction,https://www.union.ai/d
 www.union.ai/_r_/flyte/en/v1.13.1,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.1/concepts,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.1/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.13.1/concepts/data_management,https://www.union.ai/docs/flyte/user-guide/data-input-output/task-input-and-output#metadata-and-raw-data,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.13.1/concepts/registration,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.1/getting_started,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.1/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.1/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
@@ -325,12 +335,15 @@ www.union.ai/_r_/flyte/en/v1.13.2/user_guide/introduction,https://www.union.ai/d
 www.union.ai/_r_/flyte/en/v1.13.3,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/concepts,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.13.3/concepts/data_management,https://www.union.ai/docs/flyte/user-guide/data-input-output/task-input-and-output#metadata-and-raw-data,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/v1.13.3/concepts/registration,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/getting_started,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/v1.13.3/user_guide/introduction,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/latest/user_guide/productionizing/configuring_access_to_gpus,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-access-to-gpus,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/latest/user_guide/productionizing/configuring_logging_links_in_the_ui,https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-logging-links-in-the-ui,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/projects/cookbook/en/v0.3.66/auto/core/flyte_basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/projects/flytekit/en/latest,https://www.union.ai/docs/flyte/api-reference,302,TRUE,FALSE,TRUE,TRUE
