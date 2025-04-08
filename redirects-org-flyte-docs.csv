@@ -17,6 +17,7 @@ www.union.ai/_r_/flyte/en/latest/community/troubleshoot,https://www.union.ai/doc
 www.union.ai/_r_/flyte/en/latest/concepts,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/concepts/basics,https://www.union.ai/docs/flyte/user-guide/core-concepts,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/concepts/data_management,https://www.union.ai/docs/flyte/user-guide/data-input-output/task-input-and-output#metadata-and-raw-data,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/concepts/dynamic_spec,https://www.union.ai/docs/flyte/architecture/control-plane/dynamic-job-spec,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/concepts/registration,https://www.union.ai/docs/flyte/user-guide/development-cycle/running-your-code,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment,https://www.union.ai/docs/flyte/deployment/flyte-deployment,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/deployment/configuration,https://www.union.ai/docs/flyte/deployment/flyte-configuration,302,TRUE,FALSE,TRUE,TRUE
@@ -183,6 +184,8 @@ www.union.ai/_r_/flyte/en/latest/flytesnacks/tutorials/feature_engineering,https
 www.union.ai/_r_/flyte/en/latest/flytesnacks/tutorials/flytelab,https://www.union.ai/docs/flyte/tutorials/flytelab,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/flytesnacks/tutorials/flytelab/weather_forecasting,https://www.union.ai/docs/flyte/tutorials/flytelab/weather-forecasting,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/flytesnacks/tutorials/model_training,https://www.union.ai/docs/flyte/tutorials/model-training,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/getting_started_with_workflow_development,https://www.union.ai/docs/flyte/user-guide/getting-started/local-setup,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/_r_/flyte/en/latest/getting_started_with_workflow_development/installing_development_tools,https://www.union.ai/docs/flyte/user-guide/getting-started/local-setup,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/getting_started,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/quickstart_guide,https://www.union.ai/docs/flyte/user-guide/getting-started,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/en/latest/user_guide,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
