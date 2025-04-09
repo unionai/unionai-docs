@@ -40,6 +40,8 @@
   --union-color-light: #b89dd2;
   --union-color-dark: #523a82;
   --union-color-very-light: #c7b1dc;
+  --docsearch-primary-color: #7652A2 !important;
+  --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
 }
 
 /* Dark theme variables */

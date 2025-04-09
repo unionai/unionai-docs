@@ -23,6 +23,10 @@ div.DocSearch-Logo .cls-2 {
     fill: var(--docsearch-primary-color) !important;
 }
 
+.DocSearch-MagnifierLabel, .DocSearch-Reset {
+    color: var(--docsearch-primary-color) !important;
+}
+
 .DocSearch-Hits mark {
     padding: 0;
 }
