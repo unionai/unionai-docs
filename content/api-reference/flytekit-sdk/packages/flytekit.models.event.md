@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TaskExecutionMetadata`](.././flytekit.models.event#flytekitmodelseventtaskexecutionmetadata) | . |
+| [`TaskExecutionMetadata`](.././flytekit.models.event#flytekitmodelseventtaskexecutionmetadata) |  |
 
 ## flytekit.models.event.TaskExecutionMetadata
 
@@ -30,7 +30,7 @@ class TaskExecutionMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |

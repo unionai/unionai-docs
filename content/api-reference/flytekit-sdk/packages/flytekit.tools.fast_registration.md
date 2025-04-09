@@ -23,7 +23,7 @@ layout: py_api
 | [`compute_digest()`](#compute_digest) | Walks the entirety of the source dir to compute a deterministic md5 hex digest of the dir contents. |
 | [`download_distribution()`](#download_distribution) | Downloads a remote code distribution and overwrites any local files. |
 | [`fast_package()`](#fast_package) | Takes a source directory and packages everything not covered by common ignores into a tarball. |
-| [`get_additional_distribution_loc()`](#get_additional_distribution_loc) | . |
+| [`get_additional_distribution_loc()`](#get_additional_distribution_loc) |  |
 | [`print_ls_tree()`](#print_ls_tree) |  |
 
 

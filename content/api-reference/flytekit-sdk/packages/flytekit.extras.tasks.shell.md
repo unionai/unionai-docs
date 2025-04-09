@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`AttrDict`](.././flytekit.extras.tasks.shell#flytekitextrastasksshellattrdict) | Convert a dictionary to an attribute style lookup. |
-| [`OutputLocation`](.././flytekit.extras.tasks.shell#flytekitextrastasksshelloutputlocation) | . |
+| [`OutputLocation`](.././flytekit.extras.tasks.shell#flytekitextrastasksshelloutputlocation) |  |
 | [`ProcessResult`](.././flytekit.extras.tasks.shell#flytekitextrastasksshellprocessresult) | Stores a process return code, standard output and standard error. |
 | [`RawShellTask`](.././flytekit.extras.tasks.shell#flytekitextrastasksshellrawshelltask) |  |
 | [`ShellTask`](.././flytekit.extras.tasks.shell#flytekitextrastasksshellshelltask) |  |

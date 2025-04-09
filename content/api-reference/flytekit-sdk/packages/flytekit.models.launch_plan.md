@@ -41,7 +41,7 @@ At most one of assumable_iam_role or kubernetes_service_account can be set.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -121,7 +121,7 @@ class LaunchPlan(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -200,7 +200,7 @@ class LaunchPlanClosure(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -278,7 +278,7 @@ class LaunchPlanMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | List of notifications based on Execution status transitions. |
@@ -378,7 +378,7 @@ The spec for a Launch Plan.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -463,7 +463,7 @@ def verbose_string()
 
 | Method | Description |
 |-|-|
-| [`enum_to_string()`](#enum_to_string) | . |
+| [`enum_to_string()`](#enum_to_string) |  |
 
 
 #### enum_to_string()

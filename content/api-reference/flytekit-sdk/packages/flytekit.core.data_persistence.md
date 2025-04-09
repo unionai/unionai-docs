@@ -125,8 +125,8 @@ class FileAccessProvider(
 
 | Method | Description |
 |-|-|
-| [`async_get_data()`](#async_get_data) | . |
-| [`async_put_data()`](#async_put_data) | The implication here is that we're always going to put data to the remote location, so we . |
+| [`async_get_data()`](#async_get_data) |  |
+| [`async_put_data()`](#async_put_data) | The implication here is that we're always going to put data to the remote location, so we. |
 | [`async_put_raw_data()`](#async_put_raw_data) | This is a more flexible version of put that accepts a file-like object or a string path. |
 | [`download()`](#download) | Downloads from remote to local. |
 | [`download_directory()`](#download_directory) | Downloads directory from given remote to local path. |
@@ -134,7 +134,7 @@ class FileAccessProvider(
 | [`generate_new_custom_path()`](#generate_new_custom_path) | Generates a new path with the raw output prefix and a random string appended to it. |
 | [`get()`](#get) |  |
 | [`get_async_filesystem_for_path()`](#get_async_filesystem_for_path) |  |
-| [`get_data()`](#get_data) | . |
+| [`get_data()`](#get_data) |  |
 | [`get_file_tail()`](#get_file_tail) |  |
 | [`get_filesystem()`](#get_filesystem) |  |
 | [`get_filesystem_for_path()`](#get_filesystem_for_path) |  |
@@ -145,13 +145,13 @@ class FileAccessProvider(
 | [`get_random_string()`](#get_random_string) |  |
 | [`is_remote()`](#is_remote) | Deprecated. |
 | [`join()`](#join) |  |
-| [`put_data()`](#put_data) | The implication here is that we're always going to put data to the remote location, so we . |
+| [`put_data()`](#put_data) | The implication here is that we're always going to put data to the remote location, so we. |
 | [`put_raw_data()`](#put_raw_data) | This is a more flexible version of put that accepts a file-like object or a string path. |
 | [`recursive_paths()`](#recursive_paths) |  |
 | [`sep()`](#sep) |  |
 | [`strip_file_header()`](#strip_file_header) | Drops file:// if it exists from the file. |
-| [`upload()`](#upload) | . |
-| [`upload_directory()`](#upload_directory) | . |
+| [`upload()`](#upload) |  |
+| [`upload_directory()`](#upload_directory) |  |
 
 
 #### async_get_data()

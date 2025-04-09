@@ -322,7 +322,7 @@ class FlyteLaunchPlan(
 | [`compile()`](#compile) |  |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
 | [`execute()`](#execute) |  |
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`local_execute()`](#local_execute) |  |
 | [`local_execution_mode()`](#local_execution_mode) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
@@ -514,7 +514,7 @@ class FlyteNode(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
@@ -676,7 +676,7 @@ class FlyteTask(
 | [`compile()`](#compile) |  |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
 | [`execute()`](#execute) |  |
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`local_execute()`](#local_execute) |  |
 | [`local_execution_mode()`](#local_execution_mode) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
@@ -862,7 +862,7 @@ This code should be updated when more options are available.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) | Takes the idl wrapper for a TaskNode,. |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
@@ -976,7 +976,7 @@ class FlyteWorkflow(
 | [`compile()`](#compile) |  |
 | [`construct_node_metadata()`](#construct_node_metadata) | Used when constructing the node that encapsulates this task as part of a broader workflow definition. |
 | [`execute()`](#execute) |  |
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`get_non_system_nodes()`](#get_non_system_nodes) |  |
 | [`local_execute()`](#local_execute) |  |
 | [`local_execution_mode()`](#local_execution_mode) |  |
@@ -1191,7 +1191,7 @@ Refers to a the workflow the node is to execute. One of the references must be s
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |

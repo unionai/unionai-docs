@@ -42,7 +42,7 @@ Dict values should be the custom values which get substituted during resource cr
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -117,7 +117,7 @@ Label value to determine where the execution will be run
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -191,7 +191,7 @@ Tags used for assigning execution queues for tasks matching a project, domain an
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -252,8 +252,8 @@ def verbose_string()
 
 | Method | Description |
 |-|-|
-| [`enum_to_string()`](#enum_to_string) | . |
-| [`string_to_enum()`](#string_to_enum) | . |
+| [`enum_to_string()`](#enum_to_string) |  |
+| [`string_to_enum()`](#string_to_enum) |  |
 
 
 #### enum_to_string()
@@ -303,7 +303,7 @@ At most one target from cluster_resource_attributes, execution_queue_attributes 
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -391,10 +391,10 @@ Alternate plugin implementations requested for a specific task type.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
-| [`string_to_enum()`](#string_to_enum) | . |
+| [`string_to_enum()`](#string_to_enum) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
 | [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
@@ -481,7 +481,7 @@ Alternate plugin implementations for designated task types.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |

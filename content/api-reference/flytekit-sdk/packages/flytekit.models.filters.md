@@ -44,7 +44,7 @@ class Contains(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -121,7 +121,7 @@ class Equal(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -198,7 +198,7 @@ class Filter(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -338,7 +338,7 @@ class GreaterThan(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -415,7 +415,7 @@ class GreaterThanOrEqual(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -492,7 +492,7 @@ class LessThan(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -569,7 +569,7 @@ class LessThanOrEqual(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -646,7 +646,7 @@ class NotEqual(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -723,7 +723,7 @@ class SetFilter(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -800,7 +800,7 @@ class ValueIn(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |
@@ -877,7 +877,7 @@ class ValueNotIn(
 | Method | Description |
 |-|-|
 | [`from_flyte_idl()`](#from_flyte_idl) |  |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | For supporting the auto-generated REST API, filters must be dumped to a string for representation as GET params. |

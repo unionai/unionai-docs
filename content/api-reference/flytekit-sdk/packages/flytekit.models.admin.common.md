@@ -32,8 +32,8 @@ class Sort(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
-| [`from_python_std()`](#from_python_std) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`from_python_std()`](#from_python_std) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |

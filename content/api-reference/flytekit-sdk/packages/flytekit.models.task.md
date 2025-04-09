@@ -44,7 +44,7 @@ class CompiledTask(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -132,7 +132,7 @@ the given configurations.
 | Method | Description |
 |-|-|
 | [`add_env()`](#add_env) |  |
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -227,7 +227,7 @@ class DataLoadingConfig(
     input_path: str,
     output_path: str,
     enabled: bool,
-    format: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10272baf0>,
+    format: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1069a3930>,
     io_strategy: flytekit.models.task.IOStrategy,
 )
 ```
@@ -236,7 +236,7 @@ class DataLoadingConfig(
 | `input_path` | `str` |
 | `output_path` | `str` |
 | `enabled` | `bool` |
-| `format` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10272baf0>` |
+| `format` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1069a3930>` |
 | `io_strategy` | `flytekit.models.task.IOStrategy` |
 
 ### Methods
@@ -300,14 +300,14 @@ Provides methods to manage data in and out of the Raw container using Download M
 
 ```python
 class IOStrategy(
-    download_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x102731400>,
-    upload_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1027314f0>,
+    download_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1069a9310>,
+    upload_mode: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1069a9400>,
 )
 ```
 | Parameter | Type |
 |-|-|
-| `download_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x102731400>` |
-| `upload_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1027314f0>` |
+| `download_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1069a9310>` |
+| `upload_mode` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1069a9400>` |
 
 ### Methods
 
@@ -548,7 +548,7 @@ class Resources(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -626,7 +626,7 @@ class RuntimeMetadata(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -777,7 +777,7 @@ class Task(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -851,7 +851,7 @@ class TaskClosure(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -937,7 +937,7 @@ Runtime task execution metadata.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -1039,7 +1039,7 @@ and retries.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -1147,7 +1147,7 @@ class TaskSpec(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
@@ -1247,7 +1247,7 @@ necessary for Flyte Propeller to do the appropriate work.
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |

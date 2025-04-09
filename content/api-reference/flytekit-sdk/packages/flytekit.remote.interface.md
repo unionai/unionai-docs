@@ -37,8 +37,8 @@ outputs are represented directly as Python dicts, rather than going through the 
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
-| [`promote_from_model()`](#promote_from_model) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
+| [`promote_from_model()`](#promote_from_model) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |

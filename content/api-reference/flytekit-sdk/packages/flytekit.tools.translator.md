@@ -22,7 +22,7 @@ layout: py_api
 | [`get_serializable_branch_node()`](#get_serializable_branch_node) |  |
 | [`get_serializable_flyte_task()`](#get_serializable_flyte_task) | TODO replace with deep copy. |
 | [`get_serializable_flyte_workflow()`](#get_serializable_flyte_workflow) | TODO replace with deep copy. |
-| [`get_serializable_launch_plan()`](#get_serializable_launch_plan) | . |
+| [`get_serializable_launch_plan()`](#get_serializable_launch_plan) |  |
 | [`get_serializable_node()`](#get_serializable_node) |  |
 | [`get_serializable_task()`](#get_serializable_task) |  |
 | [`get_serializable_workflow()`](#get_serializable_workflow) |  |

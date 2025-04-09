@@ -15,7 +15,7 @@ layout: py_api
 |-|-|
 | [`DefaultNotebookTaskResolver`](.././flytekit.core.python_auto_container#flytekitcorepython_auto_containerdefaultnotebooktaskresolver) | This resolved is used when the task is defined in a notebook. |
 | [`DefaultTaskResolver`](.././flytekit.core.python_auto_container#flytekitcorepython_auto_containerdefaulttaskresolver) | Please see the notes in the TaskResolverMixin as it describes this default behavior. |
-| [`PickledEntity`](.././flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentity) | Represents the structure of the pickled object stored in the . |
+| [`PickledEntity`](.././flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentity) | Represents the structure of the pickled object stored in the. |
 | [`PickledEntityMetadata`](.././flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentitymetadata) | Metadata for a pickled entity containing version information. |
 | [`PythonAutoContainerTask`](.././flytekit.core.python_auto_container#flytekitcorepython_auto_containerpythonautocontainertask) | A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the. |
 

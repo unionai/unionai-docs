@@ -430,7 +430,7 @@ def StructuredDatasetTransformerEngine()
 | [`guess_python_type()`](#guess_python_type) | Converts the Flyte LiteralType to a python object type. |
 | [`isinstance_generic()`](#isinstance_generic) |  |
 | [`iter_as()`](#iter_as) |  |
-| [`open_as()`](#open_as) | . |
+| [`open_as()`](#open_as) |  |
 | [`register()`](#register) | Call this with any Encoder or Decoder to register it with the flytekit type system. |
 | [`register_for_protocol()`](#register_for_protocol) | See the main register function instead. |
 | [`register_renderer()`](#register_renderer) |  |

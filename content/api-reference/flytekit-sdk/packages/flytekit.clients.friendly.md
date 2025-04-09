@@ -66,13 +66,13 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | [`get_domains()`](#get_domains) | This returns a list of domains. |
 | [`get_download_artifact_signed_url()`](#get_download_artifact_signed_url) | Get a signed url for an artifact. |
 | [`get_download_signed_url()`](#get_download_signed_url) |  |
-| [`get_execution()`](#get_execution) | . |
+| [`get_execution()`](#get_execution) |  |
 | [`get_execution_data()`](#get_execution_data) | Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available). |
 | [`get_execution_metrics()`](#get_execution_metrics) | Returns metrics partitioning and categorizing the workflow execution time-series. |
-| [`get_node_execution()`](#get_node_execution) | . |
+| [`get_node_execution()`](#get_node_execution) |  |
 | [`get_node_execution_data()`](#get_node_execution_data) | Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available). |
 | [`get_project_domain_attributes()`](#get_project_domain_attributes) | Fetches the custom attributes set for a project and domain combination. |
-| [`get_task_execution()`](#get_task_execution) | . |
+| [`get_task_execution()`](#get_task_execution) |  |
 | [`get_task_execution_data()`](#get_task_execution_data) | Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available). |
 | [`get_upload_signed_url()`](#get_upload_signed_url) | Get a signed url to be used during fast registration. |
 | [`get_workflow_attributes()`](#get_workflow_attributes) | Fetches the custom attributes set for a project, domain, and workflow combination. |
@@ -83,20 +83,20 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | [`list_matchable_attributes()`](#list_matchable_attributes) | Fetches all custom attributes for a resource type. |
 | [`list_node_executions()`](#list_node_executions) | Get node executions associated with a given workflow execution. |
 | [`list_node_executions_for_task_paginated()`](#list_node_executions_for_task_paginated) | This returns nodes spawned by a specific task execution. |
-| [`list_node_executions_paginated()`](#list_node_executions_paginated) | . |
+| [`list_node_executions_paginated()`](#list_node_executions_paginated) |  |
 | [`list_projects()`](#list_projects) | This will return a list of the projects registered with the Flyte Admin Service. |
 | [`list_projects_paginated()`](#list_projects_paginated) | This returns a page of projects. |
 | [`list_signals()`](#list_signals) | This lists signals. |
-| [`list_task_executions_paginated()`](#list_task_executions_paginated) | . |
+| [`list_task_executions_paginated()`](#list_task_executions_paginated) |  |
 | [`list_task_ids_paginated()`](#list_task_ids_paginated) | This returns a page of identifiers for the tasks for a given project and domain. |
 | [`list_tasks_paginated()`](#list_tasks_paginated) | This returns a page of task metadata for tasks in a given project and domain. |
 | [`list_workflow_ids_paginated()`](#list_workflow_ids_paginated) | This returns a page of identifiers for the workflows for a given project and domain. |
 | [`list_workflows_paginated()`](#list_workflows_paginated) | This returns a page of workflow meta-information for workflows in a given project and domain. |
 | [`recover_execution()`](#recover_execution) | Recreates a previously-run workflow execution that will only start executing from the last known failure point. |
 | [`register_project()`](#register_project) | Registers a project. |
-| [`relaunch_execution()`](#relaunch_execution) | . |
+| [`relaunch_execution()`](#relaunch_execution) |  |
 | [`set_signal()`](#set_signal) | This sets a signal. |
-| [`terminate_execution()`](#terminate_execution) | . |
+| [`terminate_execution()`](#terminate_execution) |  |
 | [`update_launch_plan()`](#update_launch_plan) | Updates a launch plan. |
 | [`update_named_entity()`](#update_named_entity) | Updates the metadata associated with a named entity. |
 | [`update_project()`](#update_project) | Update an existing project specified by id. |
@@ -291,7 +291,7 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x102fe60d0>,
+    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10775e250>,
     expires_in: datetime.timedelta,
 ) -> e: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
@@ -305,7 +305,7 @@ Get a signed url for an artifact.
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
-| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x102fe60d0>` |
+| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10775e250>` |
 | `expires_in` | `datetime.timedelta` |
 
 #### get_download_signed_url()

@@ -29,7 +29,7 @@ scripts
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) | . |
+| [`save()`](#save) |  |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 
@@ -118,7 +118,7 @@ class SyncCheckpoint(
 | [`prev_exists()`](#prev_exists) |  |
 | [`read()`](#read) | This should only be used if there is a singular checkpoint file written. |
 | [`restore()`](#restore) | Given a path, if a previous checkpoint exists, will be downloaded to this path. |
-| [`save()`](#save) | . |
+| [`save()`](#save) |  |
 | [`write()`](#write) | This will overwrite the checkpoint. |
 
 

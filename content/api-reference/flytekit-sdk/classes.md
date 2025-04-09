@@ -145,7 +145,7 @@ layout: py_api
 | [`flytekit.core.promise.VoidPromise`](../packages/flytekit.core.promise#flytekitcorepromisevoidpromise) |This object is returned for tasks that do not return any outputs (declared interface is empty). |
 | [`flytekit.core.python_auto_container.DefaultNotebookTaskResolver`](../packages/flytekit.core.python_auto_container#flytekitcorepython_auto_containerdefaultnotebooktaskresolver) |This resolved is used when the task is defined in a notebook. |
 | [`flytekit.core.python_auto_container.DefaultTaskResolver`](../packages/flytekit.core.python_auto_container#flytekitcorepython_auto_containerdefaulttaskresolver) |Please see the notes in the TaskResolverMixin as it describes this default behavior. |
-| [`flytekit.core.python_auto_container.PickledEntity`](../packages/flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentity) |Represents the structure of the pickled object stored in the . |
+| [`flytekit.core.python_auto_container.PickledEntity`](../packages/flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentity) |Represents the structure of the pickled object stored in the. |
 | [`flytekit.core.python_auto_container.PickledEntityMetadata`](../packages/flytekit.core.python_auto_container#flytekitcorepython_auto_containerpickledentitymetadata) |Metadata for a pickled entity containing version information. |
 | [`flytekit.core.python_auto_container.PythonAutoContainerTask`](../packages/flytekit.core.python_auto_container#flytekitcorepython_auto_containerpythonautocontainertask) |A Python AutoContainer task should be used as the base for all extensions that want the user's code to be in the. |
 | [`flytekit.core.python_customized_container_task.PythonCustomizedContainerTask`](../packages/flytekit.core.python_customized_container_task#flytekitcorepython_customized_container_taskpythoncustomizedcontainertask) |Please take a look at the comments for {{< py_class_ref flytekit.extend.ExecutableTemplateShimTask >}} as well. |
@@ -268,7 +268,7 @@ layout: py_api
 | [`flytekit.extras.sqlite3.task.SQLite3Task`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3task) |Run client side SQLite3 queries that optionally return a FlyteSchema object. |
 | [`flytekit.extras.sqlite3.task.SQLite3TaskExecutor`](../packages/flytekit.extras.sqlite3.task#flytekitextrassqlite3tasksqlite3taskexecutor) |Please see the notes for the metaclass above first. |
 | [`flytekit.extras.tasks.shell.AttrDict`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellattrdict) |Convert a dictionary to an attribute style lookup. |
-| [`flytekit.extras.tasks.shell.OutputLocation`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshelloutputlocation) |. |
+| [`flytekit.extras.tasks.shell.OutputLocation`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshelloutputlocation) | |
 | [`flytekit.extras.tasks.shell.ProcessResult`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellprocessresult) |Stores a process return code, standard output and standard error. |
 | [`flytekit.extras.tasks.shell.RawShellTask`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellrawshelltask) | |
 | [`flytekit.extras.tasks.shell.ShellTask`](../packages/flytekit.extras.tasks.shell#flytekitextrastasksshellshelltask) | |
@@ -367,7 +367,7 @@ layout: py_api
 | [`flytekit.models.documentation.SourceCode`](../packages/flytekit.models.documentation#flytekitmodelsdocumentationsourcecode) |Link to source code used to define this task or workflow. |
 | [`flytekit.models.domain.Domain`](../packages/flytekit.models.domain#flytekitmodelsdomaindomain) |Domains are fixed and unique at the global level, and provide an abstraction to isolate resources and feature configuration for different deployment environments. |
 | [`flytekit.models.dynamic_job.DynamicJobSpec`](../packages/flytekit.models.dynamic_job#flytekitmodelsdynamic_jobdynamicjobspec) | |
-| [`flytekit.models.event.TaskExecutionMetadata`](../packages/flytekit.models.event#flytekitmodelseventtaskexecutionmetadata) |. |
+| [`flytekit.models.event.TaskExecutionMetadata`](../packages/flytekit.models.event#flytekitmodelseventtaskexecutionmetadata) | |
 | [`flytekit.models.execution.AbortMetadata`](../packages/flytekit.models.execution#flytekitmodelsexecutionabortmetadata) | |
 | [`flytekit.models.execution.ClusterAssignment`](../packages/flytekit.models.execution#flytekitmodelsexecutionclusterassignment) | |
 | [`flytekit.models.execution.Execution`](../packages/flytekit.models.execution#flytekitmodelsexecutionexecution) | |
@@ -500,7 +500,7 @@ layout: py_api
 | [`flytekit.sensor.sensor_engine.SensorEngine`](../packages/flytekit.sensor.sensor_engine#flytekitsensorsensor_enginesensorengine) |This is the base class for all async connectors. |
 | [`flytekit.tools.fast_registration.FastPackageOptions`](../packages/flytekit.tools.fast_registration#flytekittoolsfast_registrationfastpackageoptions) |FastPackageOptions is used to set configuration options when packaging files. |
 | [`flytekit.tools.ignore.DockerIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignoredockerignore) |Uses docker-py's PatternMatcher to check whether a path is ignored. |
-| [`flytekit.tools.ignore.FlyteIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignoreflyteignore) |Uses a . |
+| [`flytekit.tools.ignore.FlyteIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignoreflyteignore) |Uses a. |
 | [`flytekit.tools.ignore.GitIgnore`](../packages/flytekit.tools.ignore#flytekittoolsignoregitignore) |Uses git cli (if available) to list all ignored files and compare with those. |
 | [`flytekit.tools.ignore.Ignore`](../packages/flytekit.tools.ignore#flytekittoolsignoreignore) |Base for Ignores, implements core logic. |
 | [`flytekit.tools.ignore.IgnoreGroup`](../packages/flytekit.tools.ignore#flytekittoolsignoreignoregroup) |Groups multiple Ignores and checks a path against them. |

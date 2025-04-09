@@ -39,8 +39,8 @@ Initializes a new ArrayJob.
 
 | Method | Description |
 |-|-|
-| [`from_dict()`](#from_dict) | . |
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_dict()`](#from_dict) |  |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_dict()`](#to_dict) | :rtype: dict[T, Text]. |

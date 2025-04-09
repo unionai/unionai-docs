@@ -33,7 +33,7 @@ class TypeAnnotation(
 
 | Method | Description |
 |-|-|
-| [`from_flyte_idl()`](#from_flyte_idl) | . |
+| [`from_flyte_idl()`](#from_flyte_idl) |  |
 | [`merge_annotations()`](#merge_annotations) | Merges two annotations together. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
 

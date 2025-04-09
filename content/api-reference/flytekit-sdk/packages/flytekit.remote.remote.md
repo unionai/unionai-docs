@@ -72,7 +72,7 @@ Initialize a FlyteRemote object.
 | Method | Description |
 |-|-|
 | [`activate_launchplan()`](#activate_launchplan) | Given a launchplan, activate it, all previous versions are deactivated. |
-| [`approve()`](#approve) | . |
+| [`approve()`](#approve) |  |
 | [`auto()`](#auto) |  |
 | [`download()`](#download) | Download the data to the specified location. |
 | [`execute()`](#execute) | Execute a task, workflow, or launchplan, either something that's been declared locally, or a fetched entity. |
@@ -105,7 +105,7 @@ Initialize a FlyteRemote object.
 | [`get_extra_headers_for_protocol()`](#get_extra_headers_for_protocol) |  |
 | [`launch_backfill()`](#launch_backfill) | Creates and launches a backfill workflow for the given launchplan. |
 | [`list_projects()`](#list_projects) | Lists registered projects from flyte admin. |
-| [`list_signals()`](#list_signals) | . |
+| [`list_signals()`](#list_signals) |  |
 | [`list_tasks_by_version()`](#list_tasks_by_version) |  |
 | [`raw_register()`](#raw_register) | Raw register method, can be used to register control plane entities. |
 | [`recent_executions()`](#recent_executions) |  |
@@ -113,10 +113,10 @@ Initialize a FlyteRemote object.
 | [`register_script()`](#register_script) | Use this method to register a workflow via script mode. |
 | [`register_task()`](#register_task) | Register a qualified task (PythonTask) with Remote. |
 | [`register_workflow()`](#register_workflow) | Use this method to register a workflow. |
-| [`reject()`](#reject) | . |
+| [`reject()`](#reject) |  |
 | [`remote_context()`](#remote_context) | Context manager with remote-specific configuration. |
-| [`set_input()`](#set_input) | . |
-| [`set_signal()`](#set_signal) | . |
+| [`set_input()`](#set_input) |  |
+| [`set_signal()`](#set_signal) |  |
 | [`sync()`](#sync) | This function was previously a singledispatchmethod. |
 | [`sync_execution()`](#sync_execution) | Sync a FlyteWorkflowExecution object with its corresponding remote state. |
 | [`sync_node_execution()`](#sync_node_execution) | Get data backing a node execution. |

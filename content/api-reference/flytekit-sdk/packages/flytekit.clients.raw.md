@@ -61,11 +61,11 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | [`get_execution_data()`](#get_execution_data) | Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available). |
 | [`get_execution_metrics()`](#get_execution_metrics) | Returns metrics partitioning and categorizing the workflow execution time-series. |
 | [`get_launch_plan()`](#get_launch_plan) | Retrieves a launch plan entity. |
-| [`get_node_execution()`](#get_node_execution) | . |
+| [`get_node_execution()`](#get_node_execution) |  |
 | [`get_node_execution_data()`](#get_node_execution_data) | Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available). |
 | [`get_project_domain_attributes()`](#get_project_domain_attributes) | This fetches the attributes for a project and domain registered with the Flyte Admin Service. |
 | [`get_task()`](#get_task) | This returns a single task for a given identifier. |
-| [`get_task_execution()`](#get_task_execution) | . |
+| [`get_task_execution()`](#get_task_execution) |  |
 | [`get_task_execution_data()`](#get_task_execution_data) | Returns signed URLs to LiteralMap blobs for a task execution's inputs and outputs (when available). |
 | [`get_workflow()`](#get_workflow) | This returns a single workflow for a given identifier. |
 | [`get_workflow_attributes()`](#get_workflow_attributes) | This fetches the attributes for a project, domain, and workflow registered with the Flyte Admin Service. |
@@ -74,22 +74,22 @@ Initializes a gRPC channel to the given Flyte Admin service.
 | [`list_launch_plan_ids_paginated()`](#list_launch_plan_ids_paginated) | Lists launch plan named identifiers for a given project and domain. |
 | [`list_launch_plans_paginated()`](#list_launch_plans_paginated) | Lists Launch Plans for a given Identifier (project, domain, name). |
 | [`list_matchable_attributes()`](#list_matchable_attributes) | This fetches the attributes for a specific resource type registered with the Flyte Admin Service. |
-| [`list_node_executions_for_task_paginated()`](#list_node_executions_for_task_paginated) | . |
-| [`list_node_executions_paginated()`](#list_node_executions_paginated) | . |
+| [`list_node_executions_for_task_paginated()`](#list_node_executions_for_task_paginated) |  |
+| [`list_node_executions_paginated()`](#list_node_executions_paginated) |  |
 | [`list_projects()`](#list_projects) | This will return a list of the projects registered with the Flyte Admin Service. |
 | [`list_signals()`](#list_signals) | This lists signals. |
-| [`list_task_executions_paginated()`](#list_task_executions_paginated) | . |
+| [`list_task_executions_paginated()`](#list_task_executions_paginated) |  |
 | [`list_task_ids_paginated()`](#list_task_ids_paginated) | This returns a page of identifiers for the tasks for a given project and domain. |
 | [`list_tasks_paginated()`](#list_tasks_paginated) | This returns a page of task metadata for tasks in a given project and domain. |
 | [`list_workflow_ids_paginated()`](#list_workflow_ids_paginated) | This returns a page of identifiers for the workflows for a given project and domain. |
 | [`list_workflows_paginated()`](#list_workflows_paginated) | This returns a page of workflow meta-information for workflows in a given project and domain. |
 | [`recover_execution()`](#recover_execution) | This will recreate an execution with the same spec as the one belonging to the given execution identifier. |
 | [`register_project()`](#register_project) | Registers a project along with a set of domains. |
-| [`relaunch_execution()`](#relaunch_execution) | . |
+| [`relaunch_execution()`](#relaunch_execution) |  |
 | [`set_signal()`](#set_signal) | This sets a signal. |
-| [`terminate_execution()`](#terminate_execution) | . |
+| [`terminate_execution()`](#terminate_execution) |  |
 | [`update_launch_plan()`](#update_launch_plan) | Allows updates to a launch plan at a given identifier. |
-| [`update_named_entity()`](#update_named_entity) | . |
+| [`update_named_entity()`](#update_named_entity) |  |
 | [`update_project()`](#update_project) | Update an existing project specified by id. |
 | [`update_project_domain_attributes()`](#update_project_domain_attributes) | This updates the attributes for a project and domain registered with the Flyte Admin Service. |
 | [`update_workflow_attributes()`](#update_workflow_attributes) | This updates the attributes for a project, domain, and workflow registered with the Flyte Admin Service. |

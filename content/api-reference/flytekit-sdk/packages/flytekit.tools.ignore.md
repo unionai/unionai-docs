@@ -14,7 +14,7 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`DockerIgnore`](.././flytekit.tools.ignore#flytekittoolsignoredockerignore) | Uses docker-py's PatternMatcher to check whether a path is ignored. |
-| [`FlyteIgnore`](.././flytekit.tools.ignore#flytekittoolsignoreflyteignore) | Uses a . |
+| [`FlyteIgnore`](.././flytekit.tools.ignore#flytekittoolsignoreflyteignore) | Uses a. |
 | [`GitIgnore`](.././flytekit.tools.ignore#flytekittoolsignoregitignore) | Uses git cli (if available) to list all ignored files and compare with those. |
 | [`Ignore`](.././flytekit.tools.ignore#flytekittoolsignoreignore) | Base for Ignores, implements core logic. |
 | [`IgnoreGroup`](.././flytekit.tools.ignore#flytekittoolsignoreignoregroup) | Groups multiple Ignores and checks a path against them. |

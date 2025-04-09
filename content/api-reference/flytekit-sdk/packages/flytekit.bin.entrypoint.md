@@ -18,7 +18,7 @@ layout: py_api
 | [`get_traceback_str()`](#get_traceback_str) |  |
 | [`get_version_message()`](#get_version_message) |  |
 | [`normalize_inputs()`](#normalize_inputs) |  |
-| [`setup_execution()`](#setup_execution) | . |
+| [`setup_execution()`](#setup_execution) |  |
 
 
 ### Variables
