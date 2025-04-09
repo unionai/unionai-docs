@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{- .Title -}}&nbsp;|&nbsp;{{- .Site.Title -}}</title>
-    <link rel="icon" href="{{- "images/favicon.ico" | relURL -}}?v={{- $v -}}"/>
+    <link rel="icon" href="{{- printf "images/%s" (index .Site.Params.Key.favicon .Site.Params.variant) | relURL -}}?v={{- $v -}}"/>
     <link rel="stylesheet" href="{{- "css/api.css" | relURL -}}?v={{- $v -}}" />
     <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}?v={{- $v -}}" />
     <link rel="stylesheet" href="{{- "css/breadcrumb.css" | relURL -}}?v={{- $v -}}" />
