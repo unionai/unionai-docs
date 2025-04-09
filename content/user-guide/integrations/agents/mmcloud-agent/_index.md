@@ -2,7 +2,7 @@
 title: MemVerge Memory Machine Cloud (MMC) agent
 weight: 6
 variants: +flyte -serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # MemVerge Memory Machine Cloud (MMC) agent

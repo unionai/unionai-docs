@@ -2,7 +2,7 @@
 title: Great Expectations
 weight: 1
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Great Expectations

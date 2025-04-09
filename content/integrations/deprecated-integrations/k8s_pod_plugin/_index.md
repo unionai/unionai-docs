@@ -2,7 +2,7 @@
 title: Kubernetes Pods
 weight: 1
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Kubernetes Pods

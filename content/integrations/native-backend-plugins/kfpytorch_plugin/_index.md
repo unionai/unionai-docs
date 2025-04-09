@@ -2,7 +2,7 @@
 title: PyTorch Distributed
 weight: 1
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # PyTorch Distributed

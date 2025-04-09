@@ -134,10 +134,8 @@
                 class='{{- delimit $classes " " -}}'>
                   <div class="content">
                     {{- if and .page.IsSection (gt (len .page.Pages) 0) -}}
-                        {{- if and (not .page.Params.sidebar_expanded) (not .page.Params.top_menu) -}}
+                        {{- if not .page.Params.top_menu -}}
                           <img src="{{- "images/chevron-down.svg" | relURL }}" class="chevron{{ if not $isActive }} rotated{{ end -}}" />
-                        {{- else -}}
-                          <img src="{{- "images/pixel.svg" | relURL }}" class="chevron hidden" />
                         {{- end -}}
                     {{- else -}}
                       <img src="{{- "images/pixel.svg" | relURL }}" class="chevron hidden" />

@@ -2,7 +2,7 @@
 title: Apache Airflow agent
 weight: 1
 variants: +flyte -serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Apache Airflow agent

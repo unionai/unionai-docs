@@ -2,7 +2,7 @@
 title: EDA, Feature Engineering, and Modeling with Papermill
 weight: 1
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # EDA, Feature Engineering, and Modeling With Papermill

@@ -2,7 +2,7 @@
 title: FlyteRemote
 weight: 19
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # {{< key kit_remote >}}

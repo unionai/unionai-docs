@@ -2,7 +2,7 @@
 title: MNIST classification with PyTorch and W & B
 weight: 1
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # MNIST Classification With PyTorch and W&B

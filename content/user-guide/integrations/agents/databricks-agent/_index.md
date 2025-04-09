@@ -2,7 +2,7 @@
 title: Databricks agent
 weight: 3
 variants: +flyte -serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Databricks agent

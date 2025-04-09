@@ -2,7 +2,7 @@
 title: File sensor agent
 weight: 4
 variants: +flyte -serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # File sensor agent

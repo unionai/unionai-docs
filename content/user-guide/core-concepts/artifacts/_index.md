@@ -2,7 +2,7 @@
 title: Artifacts
 weight: 5
 variants: -flyte +serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Artifacts

@@ -2,7 +2,7 @@
 title: Tasks
 weight: 2
 variants: +flyte +serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Tasks

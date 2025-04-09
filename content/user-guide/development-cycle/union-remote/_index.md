@@ -2,7 +2,7 @@
 title: UnionRemote
 weight: 18
 variants: -flyte +serverless +byoc +byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # {{< key kit_remote >}}

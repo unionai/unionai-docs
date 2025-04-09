@@ -2,7 +2,7 @@
 title: Forecasting Rossman store sales with Horovod and Spark
 weight: 1
 variants: +flyte -serverless -byoc -byok
-sidebar_expanded: true
+sidebar_expanded: false
 ---
 
 # Forecasting Rossman Store Sales with Horovod and Spark

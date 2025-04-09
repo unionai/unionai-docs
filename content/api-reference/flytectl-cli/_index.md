@@ -2,6 +2,7 @@
 title: Flytectl CLI
 weight: 4
 variants: +flyte -serverless -byoc -byok
+sidebar_expanded: true
 ---
 
 # {{< key ctl_name >}} CLI
