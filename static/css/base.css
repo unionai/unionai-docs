@@ -1,6 +1,6 @@
 :root {
   /* Light theme variables (default) */
-  --primary-color: #2563eb;
+  --primary-color: var(--union-color);
   --text-color: #1f2937;
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
@@ -24,7 +24,7 @@
   --tabs-height: 64px;
   --content-width: 900px;
   --image-width: 880px;
-  --union-color: #fcb51f;
+  --union-color: #e6a720;
   --union-color-light: #ffe6b1;
   --union-color-dark: #c88c0c;
   --union-color-very-light: #fbeed1;
@@ -36,6 +36,7 @@
 }
 
 :root .variant-flyte {
+  --primary-color: var(--union-color);
   --union-color: #7652A2;
   --union-color-light: #b89dd2;
   --union-color-dark: #523a82;
@@ -46,7 +47,7 @@
 
 /* Dark theme variables */
 [data-theme="dark"] {
-  --primary-color: #3b82f6;
+  --primary-color: var(--union-color);
   --text-color: #cbd1d9;
   --bg-color: #121212;
   --sidebar-bg: #191919;
@@ -55,8 +56,8 @@
   --pre-bg: #0f172a;
   --pre-color: #e2e8f0;
   --blockquote-border: #4a5568;
-  --table-row-even: #1e293b;
-  --table-row-hover: #2d3748;
+  --table-row-even: #1b1812;
+  --table-row-hover: #554d3b;
   --union-color-light: #817457;
   --union-color-very-light: #766e5e;
   --docsearch-primary-color: #edab1c !important;
@@ -64,10 +65,13 @@
 }
 
 [data-theme="dark"] .variant-flyte {
+  --primary-color: var(--union-color-light);
   --union-color: #674591;
   --union-color-light: #8566a1;
   --union-color-dark: #432d6e;
   --union-color-very-light: #88749a;
+  --table-row-even: #1a1720;
+  --table-row-hover: #292532;
 }
 
 * {
@@ -127,12 +131,18 @@ p {
   color: var(--text-color);
 }
 a {
-  color: var(--primary-color);
+  color: var(--union-color-dark);
   text-decoration: none;
   transition: color 0.2s;
 }
+[data-theme="dark"] a {
+  color: var(--primary-color);
+}
 a:hover {
-  color: #1d4ed8;
+  color: var(--union-color-dark);
+}
+[data-theme="dark"] a:hover {
+  color: var(--union-color);
 }
 code {
   background: var(--code-bg);
@@ -163,6 +173,8 @@ pre code {
 }
 .main-content table {
   width: 100%;
+  display: block;
+  overflow-x: auto;
   border-collapse: collapse;
   margin: 1.5rem 0;
   font-size: 0.95rem;

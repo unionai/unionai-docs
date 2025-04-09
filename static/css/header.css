@@ -116,7 +116,7 @@ header .toggle-sidebar {
 sl-button.signup-button::part(base) {
   background-color: var(--union-color) !important;
   color: var(--sl-color-neutral-0) !important;
-  border-color: var(--union-color-dark) !important;
+  border-color: var(--union-color) !important;
 }
 
 sl-button.signup-button::part(base):hover {
