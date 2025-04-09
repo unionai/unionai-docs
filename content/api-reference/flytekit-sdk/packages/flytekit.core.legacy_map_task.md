@@ -17,7 +17,7 @@ a reference task as well as run-time parameters that limit execution concurrency
 
 | Class | Description |
 |-|-|
-| [`MapPythonTask`](.././flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmappythontask) | A MapPythonTask defines a :py:class:`flytekit. |
+| [`MapPythonTask`](.././flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmappythontask) | A MapPythonTask defines a {{< py_class_ref flytekit.PythonTask >}} which specifies how to run. |
 | [`MapTaskResolver`](.././flytekit.core.legacy_map_task#flytekitcorelegacy_map_taskmaptaskresolver) | Special resolver that is used for MapTasks. |
 
 ### Methods
@@ -46,7 +46,7 @@ def map_task(
 )
 ```
 Use a map task for parallelizable tasks that run across a list of an input type. A map task can be composed of
-any individual {{< py_class_ref flytekit.PythonFunctionTask >}}.
+any individual {{<py_class_ref "flytekit.PythonFunctionTask">}}.
 
 Invoke a map task with arguments using {{<py_class_ref list>}} version of the expected input.
 
@@ -75,7 +75,7 @@ def my_wf(x: typing.List[int]) -> typing.List[typing.Optional[str]]:
     )(a=x).with_overrides(requests=Resources(cpu="10M"))
 ```
 At run time, the underlying map task will be run for every value in the input collection. Attributes
-such as {{< py_class_ref flytekit.TaskMetadata >}} and ``with_overrides`` are applied to individual instances
+such as {{<py_class_ref "flytekit.TaskMetadata">}} and ``with_overrides`` are applied to individual instances
 of the mapped task.
 
 **Map Task Plugins**
@@ -108,8 +108,8 @@ A custom plugin can also be implemented to handle the task type.
 
 ## flytekit.core.legacy_map_task.MapPythonTask
 
-A MapPythonTask defines a :py:class:`flytekit.PythonTask` which specifies how to run
-an inner :py:class:`flytekit.PythonFunctionTask` across a range of inputs in parallel.
+A MapPythonTask defines a {{< py_class_ref flytekit.PythonTask >}} which specifies how to run
+an inner {{< py_class_ref flytekit.PythonFunctionTask >}} across a range of inputs in parallel.
 
 
 ```python

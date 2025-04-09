@@ -95,7 +95,7 @@ sql_task = SQLite3Task(
 
 
 See the :ref:`integrations guide <cookbook:integrations_sql_sqlite3>` for additional usage examples and
-the base class :py:class:`flytekit.extend.PythonCustomizedContainerTask` as well.
+the base class {{< py_class_ref flytekit.extend.PythonCustomizedContainerTask >}} as well.
 
 
 ```python
@@ -510,8 +510,8 @@ Please see the notes for the metaclass above first.
 
 This functionality has two use-cases currently,
 * Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  :py:class:`flytekit.extras.sqlite3.task.SQLite3Task` task.
-* Task resolvers, because task resolvers are instances of :py:class:`flytekit.core.python_auto_container.TaskResolverMixin`
+  {{< py_class_ref flytekit.extras.sqlite3.task.SQLite3Task >}} task.
+* Task resolvers, because task resolvers are instances of {{< py_class_ref flytekit.core.python_auto_container.TaskResolverMixin >}}
   classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
   find them at task execution time.
 

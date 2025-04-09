@@ -310,7 +310,7 @@ def verbose_string()
 ## flytekit.models.security.SecurityContext
 
 This is a higher level wrapper object that for the most part users shouldn't have to worry about. You should
-be able to just use :py:class:`flytekit.Secret` instead.
+be able to just use {{< py_class_ref flytekit.Secret >}} instead.
 
 
 ```python

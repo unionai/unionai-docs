@@ -13,7 +13,7 @@ layout: py_api
 
 | Method | Description |
 |-|-|
-| [`get_reference_entity()`](#get_reference_entity) | See the documentation for :py:class:`flytekit. |
+| [`get_reference_entity()`](#get_reference_entity) | See the documentation for {{< py_class_ref flytekit.reference_task >}} and {{< py_class_ref flytekit.reference_workflow >}} as well. |
 
 
 ## Methods
@@ -31,7 +31,7 @@ def get_reference_entity(
     outputs: Dict[str, Type],
 ) -> n:
 ```
-See the documentation for :py:class:`flytekit.reference_task` and :py:class:`flytekit.reference_workflow` as well.
+See the documentation for {{< py_class_ref flytekit.reference_task >}} and {{< py_class_ref flytekit.reference_workflow >}} as well.
 
 This function is the general form of the two aforementioned functions. It's better for programmatic usage, as
 the interface is passed in as arguments instead of analyzed from type annotations.

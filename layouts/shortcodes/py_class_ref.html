@@ -1,6 +1,6 @@
 {{/* TODO(nelson): Make these links to the code (one day) */}}
-{{- $class_name := .Get 0 -}}
-{{- $text := .Get 1 }}
+{{- $class_name := printf "%s" (.Get 0) -}}
+{{- $text := .Get 1 -}}
 {{- if $text -}}
 <code>{{- $text -}}&nbsp;({{- $class_name -}})</code>
 {{- else -}}

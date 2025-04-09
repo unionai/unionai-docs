@@ -226,7 +226,7 @@ def verbose_string()
 
 ## flytekit.models.core.execution.WorkflowExecutionPhase
 
-This class holds enum values used for setting notifications. See :py:class:`flytekit.Email`
+This class holds enum values used for setting notifications. See {{< py_class_ref flytekit.Email >}}
 for sample usage.
 
 

@@ -13,7 +13,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`InstanceTrackingMeta`](.././flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) | Please see the original class :py:class`flytekit. |
+| [`InstanceTrackingMeta`](.././flytekit.core.tracker#flytekitcoretrackerinstancetrackingmeta) | Please see the original class :flytekit. |
 | [`TrackedInstance`](.././flytekit.core.tracker#flytekitcoretrackertrackedinstance) | Please see the notes for the metaclass above first. |
 
 ### Methods
@@ -182,7 +182,7 @@ False in all other cases.
 
 ## flytekit.core.tracker.InstanceTrackingMeta
 
-Please see the original class :py:class`flytekit.common.mixins.registerable._InstanceTracker` also and also look
+Please see the original class :flytekit.common.mixins.registerable._InstanceTracker` also and also look
 at the tests in the ``tests/flytekit/unit/core/tracker/test_tracking/`` folder to see how it's used.
 
 Basically, this will make instances of classes that use this metaclass aware of the module (the .py file) that
@@ -196,8 +196,8 @@ Please see the notes for the metaclass above first.
 
 This functionality has two use-cases currently,
 * Keep track of naming for non-function ``PythonAutoContainerTasks``.  That is, things like the
-  :py:class:`flytekit.extras.sqlite3.task.SQLite3Task` task.
-* Task resolvers, because task resolvers are instances of :py:class:`flytekit.core.python_auto_container.TaskResolverMixin`
+  {{< py_class_ref flytekit.extras.sqlite3.task.SQLite3Task >}} task.
+* Task resolvers, because task resolvers are instances of {{< py_class_ref flytekit.core.python_auto_container.TaskResolverMixin >}}
   classes, not the classes themselves, which means we need to look on the left hand side of them to see how to
   find them at task execution time.
 

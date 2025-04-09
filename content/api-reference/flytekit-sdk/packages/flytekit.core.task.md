@@ -66,7 +66,7 @@ Eager workflow decorator.
 
 This type of task will execute all Flyte entities within it eagerly, meaning that all python constructs can be
 used inside of an ``@eager``-decorated function. This is because eager workflows use a
-:py:class:`~flytekit.remote.remote.FlyteRemote` object to kick off executions when a flyte entity needs to produce a
+{{< py_class_ref flytekit.remote.remote.FlyteRemote >}} object to kick off executions when a flyte entity needs to produce a
 value. Basically think about it as: every Flyte entity that is called(), the stack frame is an execution with its
 own Flyte URL. Results (or the error) are fetched when the execution is finished.
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     result = asyncio.run(eager_workflow(x=1))
     print(f"Result: {result}")  # "Result: 4"
 ```
-Unlike :py:func:`dynamic workflows <flytekit.dynamic>`, eager workflows are not compiled into a workflow spec, but
+Unlike {{< py_func_ref dynamic workflows flytekit.dynamic >}}, eager workflows are not compiled into a workflow spec, but
 uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabilities to execute flyte entities.
 
 > [!NOTE]
@@ -104,8 +104,8 @@ uses python's [`async`](https://docs.python.org/3/library/asyncio.html) capabili
 
 > [!IMPORTANT]
 > A ``client_secret_group`` and ``client_secret_key`` is needed for authenticating via
-   :py:class:`~flytekit.remote.remote.FlyteRemote` using the ``client_credentials`` authentication, which is
-   configured via :py:class:`~flytekit.configuration.PlatformConfig`.
+   {{< py_class_ref flytekit.remote.remote.FlyteRemote >}} using the ``client_credentials`` authentication, which is
+   configured via {{< py_class_ref flytekit.configuration.PlatformConfig >}}.
 
    ```python
     from flytekit.remote import FlyteRemote
@@ -275,7 +275,7 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 ## flytekit.core.task.Echo
 
 Base Class for all Tasks with a Python native ``Interface``. This should be directly used for task types, that do
-not have a python function to be executed. Otherwise refer to :py:class:`flytekit.PythonFunctionTask`.
+not have a python function to be executed. Otherwise refer to {{< py_class_ref flytekit.PythonFunctionTask >}}.
 
 
 ```python
@@ -992,10 +992,10 @@ TaskPlugins.register_pythontask_plugin(config_object_type, plugin_object_type)
 # Plugin_object_type is a derivative of ``PythonFunctionTask``
 ```
 Examples of available task plugins include different query-based plugins such as
-:py:class:`flytekitplugins.athena.task.AthenaTask` and :py:class:`flytekitplugins.hive.task.HiveTask`, kubeflow
-operators like :py:class:`plugins.kfpytorch.flytekitplugins.kfpytorch.task.PyTorchFunctionTask` and
-:py:class:`plugins.kftensorflow.flytekitplugins.kftensorflow.task.TensorflowFunctionTask`, and generic plugins like
-:py:class:`flytekitplugins.pod.task.PodFunctionTask` which doesn't integrate with third party tools or services.
+{{< py_class_ref flytekitplugins.athena.task.AthenaTask >}} and {{< py_class_ref flytekitplugins.hive.task.HiveTask >}}, kubeflow
+operators like {{< py_class_ref plugins.kfpytorch.flytekitplugins.kfpytorch.task.PyTorchFunctionTask >}} and
+{{< py_class_ref plugins.kftensorflow.flytekitplugins.kftensorflow.task.TensorflowFunctionTask >}}, and generic plugins like
+{{< py_class_ref flytekitplugins.pod.task.PodFunctionTask >}} which doesn't integrate with third party tools or services.
 
 The `task_config` is different for every task plugin type. This is filled out by users when they define a task to
 specify plugin-specific behavior and features.  For example, with a query type task plugin, the config might store

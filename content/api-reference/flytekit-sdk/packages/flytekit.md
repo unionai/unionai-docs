@@ -140,7 +140,7 @@ Usage
 flytekit.current_context().logging.info(...)
 ```
 
-Available params are documented in :py:class:`flytekit.core.context_manager.ExecutionParams`.
+Available params are documented in {{< py_class_ref flytekit.core.context_manager.ExecutionParams >}}.
 There are some special params, that should be available
 
 

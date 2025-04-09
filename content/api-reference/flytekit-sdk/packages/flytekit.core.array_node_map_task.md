@@ -46,7 +46,7 @@ Map task that uses the ``ArrayNode`` construct..
 
 > [!IMPORTANT]
 
-> This is an experimental drop-in replacement for `~flytekit.map_task`.
+> This is an experimental drop-in replacement for `flytekit.map_task`.
 
 
 
@@ -84,7 +84,7 @@ or the drop in replacement ArrayNode implementation
 ## flytekit.core.array_node_map_task.ArrayNodeMapTask
 
 Base Class for all Tasks with a Python native ``Interface``. This should be directly used for task types, that do
-not have a python function to be executed. Otherwise refer to :py:class:`flytekit.PythonFunctionTask`.
+not have a python function to be executed. Otherwise refer to {{< py_class_ref flytekit.PythonFunctionTask >}}.
 
 
 ```python

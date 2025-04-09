@@ -150,7 +150,7 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 
 | Method | Description |
 |-|-|
-| [`dynamic()`](#dynamic) | Please first see the comments for :py:func:`flytekit. |
+| [`dynamic()`](#dynamic) | Please first see the comments for {{< py_func_ref flytekit.task >}} and {{< py_func_ref flytekit.workflow >}}. |
 | [`extend()`](#extend) | This is the core decorator to use for any task type in flytekit. |
 | [`show()`](#show) |  |
 | [`task()`](#task) | This is the core decorator to use for any task type in flytekit. |
@@ -189,7 +189,7 @@ def dynamic(
     kwargs,
 ) -> Union[Callable[P, FuncOut], Callable[[Callable[P, FuncOut]], PythonFunctionTask[T]], PythonFunctionTask[T]]
 ```
-Please first see the comments for :py:func:`flytekit.task` and :py:func:`flytekit.workflow`. This ``dynamic``
+Please first see the comments for {{< py_func_ref flytekit.task >}} and {{< py_func_ref flytekit.workflow >}}. This ``dynamic``
 concept is an amalgamation of both and enables the user to pursue some :std:ref:`pretty incredible <cookbook:advanced_merge_sort>`
 constructs.
 

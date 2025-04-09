@@ -432,7 +432,7 @@ This method exists only to maintain backwards compatibility. Please use
 ``FlyteContextManager.current_context()`` instead.
 
 Users of flytekit should be wary not to confuse the object returned from this function
-with :py:func:`flytekit.current_context`
+with {{< py_func_ref flytekit.current_context >}}
 
 
 #### enter_conditional_section()

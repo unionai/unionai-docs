@@ -93,7 +93,7 @@ This is useful in case of distributed training or peer-to-peer parallel algorith
 ## flytekit.core.base_task.PythonTask
 
 Base Class for all Tasks with a Python native ``Interface``. This should be directly used for task types, that do
-not have a python function to be executed. Otherwise refer to :py:class:`flytekit.PythonFunctionTask`.
+not have a python function to be executed. Otherwise refer to {{< py_class_ref flytekit.PythonFunctionTask >}}.
 
 
 ```python

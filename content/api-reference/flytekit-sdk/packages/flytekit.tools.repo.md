@@ -25,8 +25,8 @@ layout: py_api
 | [`print_registration_status()`](#print_registration_status) |  |
 | [`register()`](#register) | Temporarily, for fast register, specify both the fast arg as well as copy_style. |
 | [`serialize_and_package()`](#serialize_and_package) | Fist serialize and then package all entities. |
-| [`serialize_get_control_plane_entities()`](#serialize_get_control_plane_entities) | See :py:class:`flytekit. |
-| [`serialize_load_only()`](#serialize_load_only) | See :py:class:`flytekit. |
+| [`serialize_get_control_plane_entities()`](#serialize_get_control_plane_entities) | See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the. |
+| [`serialize_load_only()`](#serialize_load_only) | See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the. |
 | [`serialize_to_folder()`](#serialize_to_folder) | Serialize the given set of python packages to a folder. |
 
 
@@ -197,7 +197,7 @@ def serialize_get_control_plane_entities(
     is_registration: bool,
 ) -> typing.List[typing.Union[flytekit.models.task.TaskSpec, flytekit.models.launch_plan.LaunchPlan, flytekit.models.admin.workflow.WorkflowSpec, flytekit.models.core.workflow.Node, flytekit.models.core.workflow.BranchNode, flytekit.models.core.workflow.ArrayNode]]
 ```
-See :py:class:`flytekit.models.core.identifier.ResourceType` to match the trailing index in the file name with the
+See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the
 entity type.
 
 
@@ -217,7 +217,7 @@ def serialize_load_only(
     local_source_root: typing.Optional[str],
 )
 ```
-See :py:class:`flytekit.models.core.identifier.ResourceType` to match the trailing index in the file name with the
+See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}} to match the trailing index in the file name with the
 entity type.
 
 
