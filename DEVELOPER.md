@@ -28,14 +28,31 @@ You can run the full environment locally and have live preview and other nicetie
         $ cp hugo.local.toml~sample hugo.local.toml
 
 3. Make sure you review `hugo.local.toml`.
-  
+
+
+## Managing the Tutorial Pages
+
+The tutorials are maintained in the [unionai-examples](https://github.com/unionai/unionai-examples) repository and is imported as a git submodule in the `external`
+directory.
+
+To initialize the submodule on a fresh clone of this (`docs-builder`) repo, run:
+
+```
+$ make init-examples
+```
+
+To update the submodule to the latest `main` branch, run:
+
+```
+$ make update-examples
+```
+
 
 ## Building and running locally
 
 ```
 $ make dev
 ```
-
 
 
 ## Building Production
