@@ -15,8 +15,8 @@ The syntax of a standard workflow definition can only include the following:
 * Calls to [`LaunchPlan` objects](../launch-plans) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans#when-to-use-sub-launch-plans))
 * Calls to functions decorated with `@{{< key kit_as >}}.dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows)).
 * Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows)).
-* The special [`conditional` construct](#conditional-construct).
-* Statements using the [chaining operator `>>`](#chaining-operator).
+* The special [`conditional` construct](../../programming/conditionals).
+* Statements using the [chaining operator `>>`](../../programming/chaining-entities).
 
 ## Evaluation of a standard workflow
 
