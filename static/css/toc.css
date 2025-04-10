@@ -11,9 +11,16 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
   background-color: var(--toc-bg);
+  overflow-y: hidden;
 }
 
 .container .toc-container .toc {
+  overflow-y: auto;
+  height: calc(100dvh - var(--header-height) - var(--tabs-height) - var(--toc-header-height));
+  padding: 1rem;
+}
+
+.container .toc-container .toc > .toc-list {
   border-left: 1px solid var(--blockquote-border-trans);
 }
 
