@@ -10,7 +10,7 @@ For {{< key product_name >}} customers whose data plane is in GCP, we walk throu
 
 > [!NOTE] Google Cloud Storage in the {{< key product_name >}} environment
 > Your data plane is set up with a Kubernetes cluster and other resources.
-> Among these are a number of Google Cloud Storage (GCS) buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../../platform-architecture)) to store things like workflow metadata.
+> Among these are a number of Google Cloud Storage (GCS) buckets used internally by the {{< key product_name >}} operator running in the cluster (see [Platform architecture](../../../deployment/platform-architecture)) to store things like workflow metadata.
 >
 > **These are not the GCS buckets we are talking about in this section.**
 >

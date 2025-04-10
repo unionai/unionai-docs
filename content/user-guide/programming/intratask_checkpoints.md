@@ -87,7 +87,7 @@ The checkpoint system offers additional APIs. The code can be found at
 [checkpointer code](https://github.com/flyteorg/flytekit/blob/master/flytekit/core/checkpointer.py).
 
 Create a workflow that invokes the task:
-The task will automatically undergo retries in the event of a [FlyteRecoverableException](/api-reference/flytekit-sdk/packages/flytekit.exceptions.base/#flytekitexceptionsbaseflyterecoverableexception)
+The task will automatically undergo retries in the event of a [FlyteRecoverableException](../../api-reference/flytekit-sdk/packages/flytekit.exceptions.base#flytekitexceptionsbaseflyterecoverableexception)
 
 ```python
 @{{< key kit_as >}}.workflow
