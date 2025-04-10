@@ -42,7 +42,7 @@ The following diagram provides a summarized view of the different registration p
 {{< /variant >}}
 
 
-## Running a script in local Python with `{{< key cli >}} run`
+## Running a script in local Python with `{{< key cli >}} run` {#running-a-script-in-local-python}
 
 During the development cycle you will want to run a specific workflow or task in your local Python environment to test it.
 To quickly try out the code locally use `{{< key cli >}} run`:

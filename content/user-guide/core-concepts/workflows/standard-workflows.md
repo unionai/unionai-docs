@@ -22,7 +22,7 @@ The syntax of a standard workflow definition can only include the following:
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
-When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code#running-a-script-in-local-python-with-union-run) it is executed as a normal Python function.
+When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code#running-a-script-in-local-python) it is executed as a normal Python function.
 However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
 {{< /markdown >}}
 {{< /variant >}}
@@ -42,7 +42,7 @@ The actual evaluation of these promises occurs when the tasks (or dynamic or eag
 ## Conditional construct
 
 Because standard workflows cannot directly include Python `if` statements, a special `conditional` construct is provided that allows you to define conditional logic in a workflow.
-For details, see [Conditionals]().
+For details, see [Conditionals](../../programming/conditionals).
 <!-- TODO: Add link to API -->
 
 ## Chaining operator
@@ -53,14 +53,13 @@ There may be cases where you want to define a dependency between two tasks that 
 
 In that case, you can use the chaining operator `>>` to define the dependencies between tasks.
 
-For details, see [Chaining {{< key product_name >}} entities]().
-<!-- TODO: Add link to API -->
+For details, see [Chaining {{< key product_name >}} entities](../../programming/chaining-entities).
 
 ## Workflow decorator parameters
 
 The `@{{< key kit_as >}}.workflow` decorator can take the following parameters:
 
-* `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`]().
+* `failure_policy`: Use the options in [`flytekit.WorkflowFailurePolicy`](../../../api-reference/flytekit-sdk).
 <!-- TODO: Add link to API -->
 
 {{< variant byoc byok flyte >}}
