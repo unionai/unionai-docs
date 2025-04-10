@@ -37,10 +37,10 @@ $ {{< key cli >}} create login --serverless
 To configure the `{{< key cli >}}` CLI to connect to you {{< key product_name >}}  BYOC or BYOK instance, run the following command:
 
 ```shell
-$ {{< key cli >}} create login --host &lt;{{< key product >}}-host-url&gt;
+$ {{< key cli >}} create login --host <{{< key product >}}-host-url>
 ```
 
-where `&lt;{{< key cli >}}-host-url&gt;` is the URL of your {{< key product_name >}}  instance.
+where `<{{< key cli >}}-host-url>` is the URL of your {{< key product_name >}}  instance.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -124,11 +124,11 @@ Entrypoint for all the user commands.
 
    Show verbose messages and exception traces
 
-**`-k, -pkgs &lt;pkgs&gt;`**
+**`-k, -pkgs <pkgs>`**
 
    Dot-delineated python packages to operate on. Multiple may be specified (can use commas, or specify the switch multiple times. Please note that this option will override the option specified in the configuration file, or environment variable
 
-**`-c, -config &lt;config&gt;`**
+**`-c, -config <config>`**
 
    Path to config file for use within container
 
@@ -143,19 +143,19 @@ The backfill command generates and registers a new workflow based on the input l
 
 **Options**
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project for workflow/launchplan. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain for workflow/launchplan, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
-**`-v, -version &lt;version&gt;`**
+**`-v, -version <version>`**
 
    Version for the registered workflow. If not specified it is auto-derived using the start and end date
 
-**`-n, -execution-name &lt;execution_name&gt;`**
+**`-n, -execution-name <execution_name>`**
 
    Create a named execution for the backfill. This can prevent launching multiple executions.
 
@@ -171,15 +171,15 @@ The backfill command generates and registers a new workflow based on the input l
 
    Generate the workflow and register, do not execute **Default:** `True`
 
-**`--from-date &lt;from_date&gt;`**
+**`--from-date <from_date>`**
 
    Date from which the backfill should begin. Start date is inclusive.
 
-**`--to-date &lt;to_date&gt;`**
+**`--to-date <to_date>`**
 
    Date to which the backfill should run_until. End date is inclusive
 
-**`--backfill-window &lt;backfill_window&gt;`**
+**`--backfill-window <backfill_window>`**
 
    Timedelta for number of days, minutes hours after the from-date or before the to-date to compute the backfills between. This is needed with from-date / to-date. Optional if both from-date and to-date are provided
 
@@ -194,9 +194,9 @@ The backfill command generates and registers a new workflow based on the input l
 
 **Arguments**
 
-**LAUNCHPLAN**Required argument
+**LAUNCHPLAN** Required argument
 
-**LAUNCHPLAN_VERSION**Optional argument
+**LAUNCHPLAN_VERSION** Optional argument
 
 ### build
 
@@ -206,15 +206,15 @@ This command can build an image for a workflow or a task from the command line, 
 
 **Options**
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project to register and run this workflow in. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain to register and run this workflow in, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
-**`--destination-dir &lt;destination_dir&gt;`**
+**`--destination-dir <destination_dir>`**
 
    Directory inside the image where the tar file containing the code will be copied to **Default:** `'.'`
 
@@ -222,15 +222,15 @@ This command can build an image for a workflow or a task from the command line, 
 
    [Deprecated, see –copy] Copy all files in the source root directory to the destination directory. You can specify –copy all instead **Default:** `False`
 
-**`--copy &lt;copy&gt;`**
+**`--copy <copy>`**
 
    Specifies how to detect which files to copy into image. ‘all’ will behave as the deprecated copy-all flag, ‘auto’ copies only loaded Python modules **Default:** `'auto'`**Options:**all | auto
 
-**`-i, -image &lt;image_config&gt;`**
+**`-i, -image <image_config>`**
 
    Multiple values allowed.Image used to register and run. **Default:** `'cr.flyte.org/flyteorg/flytekit:py3.9-latest'`
 
-**`--service-account &lt;service_account&gt;`**
+**`--service-account <service_account>`**
 
    Service account used when executing this workflow
 
@@ -238,7 +238,7 @@ This command can build an image for a workflow or a task from the command line, 
 
    Whether to wait for the execution to finish **Default:** `False`
 
-**`-i, -poll-interval &lt;poll_interval&gt;`**
+**`-i, -poll-interval <poll_interval>`**
 
    Poll interval in seconds to check the status of the execution
 
@@ -250,31 +250,31 @@ This command can build an image for a workflow or a task from the command line, 
 
    Whether to overwrite the cache if it already exists **Default:** `False`
 
-**`--envvars, -env &lt;envvars&gt;`**
+**`--envvars, -env <envvars>`**
 
    Multiple values allowed.Environment variables to set in the container, of the format ENV_NAME=ENV_VALUE
 
-**`--tags, -tag &lt;tags&gt;`**
+**`--tags, -tag <tags>`**
 
    Multiple values allowed.Tags to set for the execution
 
-**`--name &lt;name&gt;`**
+**`--name <name>`**
 
    Name to assign to this execution
 
-**`--labels, -label &lt;labels&gt;`**
+**`--labels, -label <labels>`**
 
    Multiple values allowed.Labels to be attached to the execution of the format label_key=label_value.
 
-**`--annotations, -annotation &lt;annotations&gt;`**
+**`--annotations, -annotation <annotations>`**
 
    Multiple values allowed.Annotations to be attached to the execution of the format key=value.
 
-**`--raw-output-data-prefix, -raw-data-prefix &lt;raw_output_data_prefix&gt;`**
+**`--raw-output-data-prefix, -raw-data-prefix <raw_output_data_prefix>`**
 
    File Path prefix to store raw output data. Examples are file://, s3://, gs:// etc as supported by fsspec. If not specified, raw data will be stored in default configured location in remote of locally to temp file system.Note, this is not metadata, but only the raw data location used to store Flytefile, Flytedirectory, Structuredataset, dataframes
 
-**`--max-parallelism &lt;max_parallelism&gt;`**
+**`--max-parallelism <max_parallelism>`**
 
    Number of nodes of a workflow that can be executed in parallel. If not specified, project/domain defaults are used. If 0 then it is unlimited.
 
@@ -286,15 +286,15 @@ This command can build an image for a workflow or a task from the command line, 
 
    Whether to register and run the workflow on a Flyte deployment **Default:** `False`
 
-**`--limit &lt;limit&gt;`**
+**`--limit <limit>`**
 
    Use this to limit number of entities to fetch **Default:** `50`
 
-**`--cluster-pool &lt;cluster_pool&gt;`**
+**`--cluster-pool <cluster_pool>`**
 
    Assign newly created execution to a given cluster pool
 
-**`--execution-cluster-label, -ecl &lt;execution_cluster_label&gt;`**
+**`--execution-cluster-label, -ecl <execution_cluster_label>`**
 
    Assign newly created execution to a given execution cluster label
 
@@ -317,15 +317,15 @@ The execution command allows you to interact with Flyte’s execution system, su
 
 **Options**
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project for workflow/launchplan. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain for workflow/launchplan, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
-**`--execution-id &lt;execution_id&gt;`**
+**`--execution-id <execution_id>`**
 
    **Required** The execution id
 
@@ -360,9 +360,9 @@ The URI can be retrieved from the Flyte Console, or by invoking the get_data API
 
 **Arguments**
 
-**FLYTE-DATA-URI (format flyte://...)**Required argument
+**FLYTE-DATA-URI (format flyte://...)** Required argument
 
-**DOWNLOAD-TO Local path (optional)**Optional argument
+**DOWNLOAD-TO Local path (optional)** Optional argument
 
 ### get
 
@@ -382,24 +382,24 @@ Interact with launchplans.
 
    Only return active launchplans.
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project for workflow/launchplan. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain for workflow/launchplan, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
-**`-l, -limit &lt;limit&gt;`**
+**`-l, -limit <limit>`**
 
    Limit the number of launchplans returned.
 
 
 **Arguments**
 
-**LAUNCHPLAN-NAME**Optional argument
+**LAUNCHPLAN-NAME** Optional argument
 
-**LAUNCHPLAN-VERSION**Optional argument
+**LAUNCHPLAN-VERSION** Optional argument
 
 ### info
 
@@ -415,14 +415,14 @@ Create flyte-ready projects.
 
 **Options**
 
-**`--template &lt;template&gt;`**
+**`--template <template>`**
 
    template folder name to be used in the repo - [flyteorg/flytekit-python-template.git](https://github.com/flyteorg/flytekit-python-template.git)
 
 
 **Arguments**
 
-**PROJECT_NAME**Required argument
+**PROJECT_NAME** Required argument
 
 ### launchplan
 
@@ -435,11 +435,11 @@ The launchplan command activates or deactivates a specified or the latest versio
 
 **Options**
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project for workflow/launchplan. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain for workflow/launchplan, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
@@ -450,9 +450,9 @@ The launchplan command activates or deactivates a specified or the latest versio
 
 **Arguments**
 
-**LAUNCHPLAN**Required argument
+**LAUNCHPLAN** Required argument
 
-**LAUNCHPLAN_VERSION**Optional argument
+**LAUNCHPLAN_VERSION** Optional argument
 
 ### local-cache
 
@@ -472,15 +472,15 @@ This command will remove all stored objects from local cache.
 
 **Options**
 
-**`-d, -depth &lt;depth&gt;`**
+**`-d, -depth <depth>`**
 
    The depth of Flyte entity hierarchy to traverse when computing metrics for this execution
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    The project of the workflow execution
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    The domain of the workflow execution
 
@@ -495,7 +495,7 @@ The dump command aggregates workflow execution metrics and displays them. This a
 
 **Arguments**
 
-**EXECUTION_ID**Required argument
+**EXECUTION_ID** Required argument
 
 ### explain
 
@@ -507,7 +507,7 @@ The explain command prints each individual execution span and the associated tim
 
 **Arguments**
 
-**EXECUTION_ID**Required argument
+**EXECUTION_ID** Required argument
 
 ### package
 
@@ -517,15 +517,15 @@ This command produces a Flyte backend registrable package of all entities in Fly
 
 **Options**
 
-**`-i, -image &lt;image_config&gt;`**
+**`-i, -image <image_config>`**
 
    A fully qualified tag for an docker image, for example `somedocker.com/myimage:someversion123`. This is a multi-option and can be of the form `--image xyz.io/docker:latest --image my_image=xyz.io/docker2:latest`. Note, the `name=image_uri`. The name is optional, if not provided the image will be used as the default image. All the names have to be unique, and thus there can only be one `--image` option with no name.
 
-**`-s, -source &lt;source&gt;`**
+**`-s, -source <source>`**
 
    Local filesystem path to the root of the package.
 
-**`-o, -output &lt;output&gt;`**
+**`-o, -output <output>`**
 
    Filesystem path to the source of the Python package (from where the pkgs will start).
 
@@ -533,7 +533,7 @@ This command produces a Flyte backend registrable package of all entities in Fly
 
    [Deprecated, see –copy] This flag enables fast packaging, that allows no container build deploys of flyte workflows and tasks. You should specify –copy all/auto instead Note this needs additional configuration, refer to the docs.
 
-**`--copy &lt;copy&gt;`**
+**`--copy <copy>`**
 
    Specify whether local files should be copied and uploaded so task containers have up-to-date code ‘all’ will behave as the current ‘fast’ flag, copying all files, ‘auto’ copies only loaded Python modules **Default:** `'none'`**Options:**all | auto | none
 
@@ -541,11 +541,11 @@ This command produces a Flyte backend registrable package of all entities in Fly
 
    This flag enables overriding existing output files. If not specified, package will exit with an error, when an output file already exists.
 
-**`-p, -python-interpreter &lt;python_interpreter&gt;`**
+**`-p, -python-interpreter <python_interpreter>`**
 
    Use this to override the default location of the in-container python interpreter that will be used by Flyte to load your program. This is usually where you install flytekit within the container.
 
-**`-d, -in-container-source-path &lt;in_container_source_path&gt;`**
+**`-d, -in-container-source-path <in_container_source_path>`**
 
    Filesystem path to where the code is copied into within the Dockerfile. look for `COPY . /root` like command.
 
@@ -553,7 +553,7 @@ This command produces a Flyte backend registrable package of all entities in Fly
 
    Enables symlink dereferencing when packaging files in fast registration
 
-**`--env, -envvars &lt;env&gt;`**
+**`--env, -envvars <env>`**
 
    Environment variables to set in the container, of the format ENV_NAME=ENV_VALUE
 
@@ -570,35 +570,35 @@ Note: This command only works on regular Python packages, not namespace packages
 
 **Options**
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project for workflow/launchplan. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain for workflow/launchplan, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
-**`-i, -image &lt;image_config&gt;`**
+**`-i, -image <image_config>`**
 
    A fully qualified tag for an docker image, for example `somedocker.com/myimage:someversion123`. This is a multi-option and can be of the form `--image xyz.io/docker:latest --image my_image=xyz.io/docker2:latest`. Note, the `name=image_uri`. The name is optional, if not provided the image will be used as the default image. All the names have to be unique, and thus there can only be one `--image` option with no name.
 
-**`-o, -output &lt;output&gt;`**
+**`-o, -output <output>`**
 
    Directory to write the output tar file containing the protobuf definitions
 
-**`-D, -destination-dir &lt;destination_dir&gt;`**
+**`-D, -destination-dir <destination_dir>`**
 
    Directory inside the image where the tar file containing the code will be copied to
 
-**`--service-account &lt;service_account&gt;`**
+**`--service-account <service_account>`**
 
    Service account used when creating launch plans
 
-**`--raw-data-prefix &lt;raw_data_prefix&gt;`**
+**`--raw-data-prefix <raw_data_prefix>`**
 
    Raw output data prefix when creating launch plans, where offloaded data will be stored
 
-**`-v, -version &lt;version&gt;`**
+**`-v, -version <version>`**
 
    Version the package or module is registered with
 
@@ -610,7 +610,7 @@ Note: This command only works on regular Python packages, not namespace packages
 
    [Deprecated, see –copy] Skip zipping and uploading the package. You should specify –copy none instead
 
-**`--copy &lt;copy&gt;`**
+**`--copy <copy>`**
 
    Specify how and whether to use fast register ‘all’ is the current behavior copying all files from root, ‘auto’ copies only loaded Python modules ‘none’ means no files are copied, i.e. don’t use fast register **Default:** `'all'`**Options:**all | auto | none
 
@@ -622,7 +622,7 @@ Note: This command only works on regular Python packages, not namespace packages
 
    Activate newly registered Launchplans. This operation deactivates previous versions of Launchplans.
 
-**`--env, -envvars &lt;env&gt;`**
+**`--env, -envvars <env>`**
 
    Environment variables to set in the container, of the format ENV_NAME=ENV_VALUE
 
@@ -633,7 +633,7 @@ Note: This command only works on regular Python packages, not namespace packages
 
 **Arguments**
 
-**PACKAGE_OR_MODULE**Optional argument(s)
+**PACKAGE_OR_MODULE** Optional argument(s)
 
 ### run
 
@@ -645,15 +645,15 @@ Note: This command is compatible with regular Python packages, but not with name
 
 **Options**
 
-**`-p, -project &lt;project&gt;`**
+**`-p, -project <project>`**
 
    Project to register and run this workflow in. Can also be set through envvar `FLYTE_DEFAULT_PROJECT` **Default:** `'flytesnacks'`
 
-**`-d, -domain &lt;domain&gt;`**
+**`-d, -domain <domain>`**
 
    Domain to register and run this workflow in, can also be set through envvar `FLYTE_DEFAULT_DOMAIN` **Default:** `'development'`
 
-**`--destination-dir &lt;destination_dir&gt;`**
+**`--destination-dir <destination_dir>`**
 
    Directory inside the image where the tar file containing the code will be copied to **Default:** `'.'`
 
@@ -661,15 +661,15 @@ Note: This command is compatible with regular Python packages, but not with name
 
    [Deprecated, see –copy] Copy all files in the source root directory to the destination directory. You can specify –copy all instead **Default:** `False`
 
-**`--copy &lt;copy&gt;`**
+**`--copy <copy>`**
 
    Specifies how to detect which files to copy into image. ‘all’ will behave as the deprecated copy-all flag, ‘auto’ copies only loaded Python modules **Default:** `'auto'`**Options:**all | auto
 
-**`-i, -image &lt;image_config&gt;`**
+**`-i, -image <image_config>`**
 
    Multiple values allowed.Image used to register and run. **Default:** `'cr.flyte.org/flyteorg/flytekit:py3.9-latest'`
 
-**`--service-account &lt;service_account&gt;`**
+**`--service-account <service_account>`**
 
    Service account used when executing this workflow
 
@@ -677,7 +677,7 @@ Note: This command is compatible with regular Python packages, but not with name
 
    Whether to wait for the execution to finish **Default:** `False`
 
-**`-i, -poll-interval &lt;poll_interval&gt;`**
+**`-i, -poll-interval <poll_interval>`**
 
    Poll interval in seconds to check the status of the execution
 
@@ -689,31 +689,31 @@ Note: This command is compatible with regular Python packages, but not with name
 
    Whether to overwrite the cache if it already exists **Default:** `False`
 
-**`--envvars, -env &lt;envvars&gt;`**
+**`--envvars, -env <envvars>`**
 
    Multiple values allowed.Environment variables to set in the container, of the format ENV_NAME=ENV_VALUE
 
-**`--tags, -tag &lt;tags&gt;`**
+**`--tags, -tag <tags>`**
 
    Multiple values allowed.Tags to set for the execution
 
-**`--name &lt;name&gt;`**
+**`--name <name>`**
 
    Name to assign to this execution
 
-**`--labels, -label &lt;labels&gt;`**
+**`--labels, -label <labels>`**
 
    Multiple values allowed.Labels to be attached to the execution of the format label_key=label_value.
 
-**`--annotations, -annotation &lt;annotations&gt;`**
+**`--annotations, -annotation <annotations>`**
 
    Multiple values allowed.Annotations to be attached to the execution of the format key=value.
 
-**`--raw-output-data-prefix, -raw-data-prefix &lt;raw_output_data_prefix&gt;`**
+**`--raw-output-data-prefix, -raw-data-prefix <raw_output_data_prefix>`**
 
    File Path prefix to store raw output data. Examples are file://, s3://, gs:// etc as supported by fsspec. If not specified, raw data will be stored in default configured location in remote of locally to temp file system.Note, this is not metadata, but only the raw data location used to store Flytefile, Flytedirectory, Structuredataset, dataframes
 
-**`--max-parallelism &lt;max_parallelism&gt;`**
+**`--max-parallelism <max_parallelism>`**
 
    Number of nodes of a workflow that can be executed in parallel. If not specified, project/domain defaults are used. If 0 then it is unlimited.
 
@@ -725,15 +725,15 @@ Note: This command is compatible with regular Python packages, but not with name
 
    Whether to register and run the workflow on a Flyte deployment **Default:** `False`
 
-**`--limit &lt;limit&gt;`**
+**`--limit <limit>`**
 
    Use this to limit number of entities to fetch **Default:** `50`
 
-**`--cluster-pool &lt;cluster_pool&gt;`**
+**`--cluster-pool <cluster_pool>`**
 
    Assign newly created execution to a given cluster pool
 
-**`--execution-cluster-label, -ecl &lt;execution_cluster_label&gt;`**
+**`--execution-cluster-label, -ecl <execution_cluster_label>`**
 
    Assign newly created execution to a given execution cluster label
 
@@ -770,23 +770,23 @@ This command produces protobufs for tasks and templates. For tasks, one pb file 
 
 **Options**
 
-**`-i, -image &lt;image_config&gt;`**
+**`-i, -image <image_config>`**
 
    A fully qualified tag for an docker image, for example `somedocker.com/myimage:someversion123`. This is a multi-option and can be of the form `--image xyz.io/docker:latest --image my_image=xyz.io/docker2:latest`. Note, the `name=image_uri`. The name is optional, if not provided the image will be used as the default image. All the names have to be unique, and thus there can only be one `--image` option with no name.
 
-**`--local-source-root &lt;local_source_root&gt;`**
+**`--local-source-root <local_source_root>`**
 
    Root dir for Python code containing workflow definitions to operate on when not the current working directory. Optional when running `{{< key cli >}} serialize` in out-of-container-mode and your code lies outside of your working directory.
 
-**`--in-container-config-path &lt;in_container_config_path&gt;`**
+**`--in-container-config-path <in_container_config_path>`**
 
    This is where the configuration for your task lives inside the container. The reason it needs to be a separate option is because this {{< key cli >}} utility cannot know where the Dockerfile writes the config file to. Required for running `{{< key cli >}} serialize` in out-of-container-mode
 
-**`--in-container-virtualenv-root &lt;in_container_virtualenv_root&gt;`**
+**`--in-container-virtualenv-root <in_container_virtualenv_root>`**
 
    DEPRECATED: This flag is ignored! This is the root of the flytekit virtual env in your container. The reason it needs to be a separate option is because this {{< key cli >}} utility cannot know where flytekit is installed inside your container. Required for running {{< key cli >}} serialize in out of container mode when your container installs the flytekit virtualenv outside of the default /opt/venv
 
-**`--env, -envvars &lt;env&gt;`**
+**`--env, -envvars <env>`**
 
    Environment variables to set in the container, of the format ENV_NAME=ENV_VALUE
 
@@ -805,7 +805,7 @@ This command produces protobufs for tasks and templates. For tasks, one pb file 
 
    Enables symlink dereferencing when packaging files in fast registration
 
-**`-f, -folder &lt;folder&gt;`**
+**`-f, -folder <folder>`**
 
 ### workflows
 
@@ -813,7 +813,7 @@ This command produces protobufs for tasks and templates. For tasks, one pb file 
 
 **Options**
 
-**`-f, -folder &lt;folder&gt;`**
+**`-f, -folder <folder>`**
 
 ### serve
 
@@ -829,23 +829,23 @@ Start a grpc server for the agent service.
 
 **Options**
 
-**`--port &lt;port&gt;`**
+**`--port <port>`**
 
    Grpc port for the agent service
 
-**`--prometheus_port &lt;prometheus_port&gt;`**
+**`--prometheus_port <prometheus_port>`**
 
    Prometheus port for the agent service
 
-**`--worker &lt;worker&gt;`**
+**`--worker <worker>`**
 
    Number of workers for the grpc server
 
-**`--timeout &lt;timeout&gt;`**
+**`--timeout <timeout>`**
 
    It will wait for the specified number of seconds before shutting down grpc server. It should only be used for testing.
 
-**`--modules &lt;modules&gt;`**
+**`--modules <modules>`**
 
    List of additional files or module that defines the agent
 
@@ -858,22 +858,22 @@ Start a grpc server for the connector service.
 
 **Options**
 
-**`--port &lt;port&gt;`**
+**`--port <port>`**
 
    Grpc port for the connector service
 
-**`--prometheus_port &lt;prometheus_port&gt;`**
+**`--prometheus_port <prometheus_port>`**
 
    Prometheus port for the connector service
 
-**`--worker &lt;worker&gt;`**
+**`--worker <worker>`**
 
    Number of workers for the grpc server
 
-**`--timeout &lt;timeout&gt;`**
+**`--timeout <timeout>`**
 
    It will wait for the specified number of seconds before shutting down grpc server. It should only be used for testing.
 
-**`--modules &lt;modules&gt;`**
+**`--modules <modules>`**
 
    List of additional files or module that defines the connector
