@@ -327,3 +327,7 @@ sl-alert P + P {
 footer {
   min-height: calc(1rem + var(--main-content-padding) / 2);
 }
+
+hr {
+  margin-top: 2rem;
+}
