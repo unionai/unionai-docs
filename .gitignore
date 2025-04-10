@@ -19,6 +19,9 @@ layouts/**/test.html
 themes/**/test.html
 test*.html
 
+# Tools
+tools/link_checker/config.yml
+
 # IDEs
 .vscode
 .idea
