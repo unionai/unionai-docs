@@ -139,7 +139,9 @@ The backfill command generates and registers a new workflow based on the input l
 
 > launchplan refers to the name of the Launchplanlaunchplan_version is optional and should be a valid version for a Launchplan version.
 
-`{{< key cli >}} backfill [OPTIONS] LAUNCHPLAN [LAUNCHPLAN_VERSION]`
+```
+{{< key cli >}} backfill [OPTIONS] LAUNCHPLAN [LAUNCHPLAN_VERSION]
+```
 
 **Options**
 
@@ -202,7 +204,9 @@ The backfill command generates and registers a new workflow based on the input l
 
 This command can build an image for a workflow or a task from the command line, for fully self-contained scripts.
 
-`{{< key cli >}} build [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} build [OPTIONS] COMMAND [ARGS]...
+```
 
 **Options**
 
@@ -303,17 +307,21 @@ This command can build an image for a workflow or a task from the command line, 
    Use fast serialization. The image won’t contain the source code. The value is false by default. **Default:** `False`
 
 
-### conf.py
+#### conf.py
 
 Build an image for [workflow|task] from conf.py
 
-`{{< key cli >}} build conf.py [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} build conf.py [OPTIONS] COMMAND [ARGS]...
+```
 
 ### execution
 
 The execution command allows you to interact with Flyte’s execution system, such as recovering/relaunching a failed execution.
 
-`{{< key cli >}} execution [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} execution [OPTIONS] COMMAND [ARGS]...
+```
 
 **Options**
 
@@ -330,17 +338,21 @@ The execution command allows you to interact with Flyte’s execution system, su
    **Required** The execution id
 
 
-### recover
+#### recover
 
 Recover a failed execution
 
-`{{< key cli >}} execution recover [OPTIONS]`
+```
+{{< key cli >}} execution recover [OPTIONS]
+```
 
-### relaunch
+#### relaunch
 
 Relaunch a failed execution
 
-`{{< key cli >}} execution relaunch [OPTIONS]`
+```
+{{< key cli >}} execution relaunch [OPTIONS]
+```
 
 ### fetch
 
@@ -348,8 +360,10 @@ Retrieve Inputs/Outputs for a Flyte Execution or any of the inner node execution
 
 The URI can be retrieved from the Flyte Console, or by invoking the get_data API.
 
-`{{< key cli >}} fetch [OPTIONS] FLYTE-DATA-URI (format flyte://...) DOWNLOAD-TO Local
-             path (optional)`
+```
+{{< key cli >}} fetch [OPTIONS] FLYTE-DATA-URI (format flyte://...) DOWNLOAD-TO Local
+             path (optional)
+```
 
 **Options**
 
@@ -368,13 +382,17 @@ The URI can be retrieved from the Flyte Console, or by invoking the get_data API
 
 Get a single or multiple remote objects.
 
-`{{< key cli >}} get [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} get [OPTIONS] COMMAND [ARGS]...
+```
 
-### launchplan
+#### launchplan
 
 Interact with launchplans.
 
-`{{< key cli >}} get launchplan [OPTIONS] LAUNCHPLAN-NAME LAUNCHPLAN-VERSION`
+```
+{{< key cli >}} get launchplan [OPTIONS] LAUNCHPLAN-NAME LAUNCHPLAN-VERSION
+```
 
 **Options**
 
@@ -405,13 +423,17 @@ Interact with launchplans.
 
 Print out information about the current Flyte Python CLI environment - like the version of Flytekit, the version of Flyte Backend Version, backend endpoint currently configured, etc.
 
-`{{< key cli >}} info [OPTIONS]`
+```
+{{< key cli >}} info [OPTIONS]
+```
 
 ### init
 
 Create flyte-ready projects.
 
-`{{< key cli >}} init [OPTIONS] PROJECT_NAME`
+```
+{{< key cli >}} init [OPTIONS] PROJECT_NAME
+```
 
 **Options**
 
@@ -431,7 +453,9 @@ The launchplan command activates or deactivates a specified or the latest versio
 - `launchplan` refers to the name of the Launchplan
 - `launchplan_version` is optional and should be a valid version for a Launchplan version. If not specified the latest will be used.
 
-`{{< key cli >}} launchplan [OPTIONS] LAUNCHPLAN [LAUNCHPLAN_VERSION]`
+```
+{{< key cli >}} launchplan [OPTIONS] LAUNCHPLAN [LAUNCHPLAN_VERSION]
+```
 
 **Options**
 
@@ -458,17 +482,23 @@ The launchplan command activates or deactivates a specified or the latest versio
 
 Interact with the local cache.
 
-`{{< key cli >}} local-cache [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} local-cache [OPTIONS] COMMAND [ARGS]...
+```
 
-### clear
+#### clear
 
 This command will remove all stored objects from local cache.
 
-`{{< key cli >}} local-cache clear [OPTIONS]`
+```
+{{< key cli >}} local-cache clear [OPTIONS]
+```
 
 ### metrics
 
-`{{< key cli >}} metrics [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} metrics [OPTIONS] COMMAND [ARGS]...
+```
 
 **Options**
 
@@ -485,25 +515,29 @@ This command will remove all stored objects from local cache.
    The domain of the workflow execution
 
 
-### dump
+#### dump
 
 The dump command aggregates workflow execution metrics and displays them. This aggregation is meant to provide an easy to understand breakdown of where time is spent in a hierarchical manner.
 
 - execution_id refers to the id of the workflow execution
 
-`{{< key cli >}} metrics dump [OPTIONS] EXECUTION_ID`
+```
+{{< key cli >}} metrics dump [OPTIONS] EXECUTION_ID
+```
 
 **Arguments**
 
 **EXECUTION_ID** Required argument
 
-### explain
+#### explain
 
 The explain command prints each individual execution span and the associated timestamps and Flyte entity reference. This breakdown provides precise information into exactly how and when Flyte processes a workflow execution.
 
 - execution_id refers to the id of the workflow execution
 
-`{{< key cli >}} metrics explain [OPTIONS] EXECUTION_ID`
+```
+{{< key cli >}} metrics explain [OPTIONS] EXECUTION_ID
+```
 
 **Arguments**
 
@@ -513,7 +547,9 @@ The explain command prints each individual execution span and the associated tim
 
 This command produces a Flyte backend registrable package of all entities in Flyte. For tasks, one pb file is produced for each task, representing one TaskTemplate object. For workflows, one pb file is produced for each workflow, representing a WorkflowClosure object. The closure object contains the WorkflowTemplate, along with the relevant tasks for that workflow. This serialization step will set the name of the tasks to the fully qualified name of the task function.
 
-`{{< key cli >}} package [OPTIONS]`
+```
+{{< key cli >}} package [OPTIONS]
+```
 
 **Options**
 
@@ -566,7 +602,9 @@ Note: This command runs “fast” register by default. This means that a zip is
 
 Note: This command only works on regular Python packages, not namespace packages. When determining the root of your project, it finds the first folder that does not have a `__init__.py` file.
 
-`{{< key cli >}} register [OPTIONS] [PACKAGE_OR_MODULE]...`
+```
+{{< key cli >}} register [OPTIONS] [PACKAGE_OR_MODULE]...
+```
 
 **Options**
 
@@ -641,7 +679,9 @@ This command can execute either a workflow or a task from the command line, allo
 
 Note: This command is compatible with regular Python packages, but not with namespace packages. When determining the root of your project, it identifies the first folder without an `__init__.py` file.
 
-`{{< key cli >}} run [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} run [OPTIONS] COMMAND [ARGS]...
+```
 
 **Options**
 
@@ -738,35 +778,45 @@ Note: This command is compatible with regular Python packages, but not with name
    Assign newly created execution to a given execution cluster label
 
 
-### conf.py
+#### conf.py
 
 Run a [workflow|task|launch plan] from conf.py
 
-`{{< key cli >}} run conf.py [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} run conf.py [OPTIONS] COMMAND [ARGS]...
+```
 
-### remote-launchplan
+#### remote-launchplan
 
 Retrieve remote-launchplan from a remote flyte instance and execute them. The command only lists the names of the entities, but it is possible to pass in a specific version of the entity if known in the format &lt;name&gt;:&lt;version&gt;. If version is not provided, the latest version is used for tasks and active or latest version is used for launchplans.
 
-`{{< key cli >}} run remote-launchplan [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} run remote-launchplan [OPTIONS] COMMAND [ARGS]...
+```
 
-### remote-task
+#### remote-task
 
 Retrieve remote-task from a remote flyte instance and execute them. The command only lists the names of the entities, but it is possible to pass in a specific version of the entity if known in the format &lt;name&gt;:&lt;version&gt;. If version is not provided, the latest version is used for tasks and active or latest version is used for launchplans.
 
-`{{< key cli >}} run remote-task [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} run remote-task [OPTIONS] COMMAND [ARGS]...
+```
 
-### remote-workflow
+#### remote-workflow
 
 Retrieve remote-workflow from a remote flyte instance and execute them. The command only lists the names of the entities, but it is possible to pass in a specific version of the entity if known in the format &lt;name&gt;:&lt;version&gt;. If version is not provided, the latest version is used for tasks and active or latest version is used for launchplans.
 
-`{{< key cli >}} run remote-workflow [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} run remote-workflow [OPTIONS] COMMAND [ARGS]...
+```
 
-### serialize
+#### serialize
 
 This command produces protobufs for tasks and templates. For tasks, one pb file is produced for each task, representing one TaskTemplate object. For workflows, one pb file is produced for each workflow, representing a WorkflowClosure object. The closure object contains the WorkflowTemplate, along with the relevant tasks for that workflow. In lieu of Admin, this serialization step will set the URN of the tasks to the fully qualified name of the task function.
 
-`{{< key cli >}} serialize [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} serialize [OPTIONS] COMMAND [ARGS]...
+```
 
 **Options**
 
@@ -791,13 +841,17 @@ This command produces protobufs for tasks and templates. For tasks, one pb file 
    Environment variables to set in the container, of the format ENV_NAME=ENV_VALUE
 
 
-### fast
+##### fast
 
-`{{< key cli >}} serialize fast [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} serialize fast [OPTIONS] COMMAND [ARGS]...
+```
 
-### workflows
+##### workflows
 
-`{{< key cli >}} serialize fast workflows [OPTIONS]`
+```
+{{< key cli >}} serialize fast workflows [OPTIONS]
+```
 
 **Options**
 
@@ -807,9 +861,11 @@ This command produces protobufs for tasks and templates. For tasks, one pb file 
 
 **`-f, -folder <folder>`**
 
-### workflows
+#### workflows
 
-`{{< key cli >}} serialize workflows [OPTIONS]`
+```
+{{< key cli >}} serialize workflows [OPTIONS]
+```
 
 **Options**
 
@@ -819,13 +875,17 @@ This command produces protobufs for tasks and templates. For tasks, one pb file 
 
 Start the specific service.
 
-`{{< key cli >}} serve [OPTIONS] COMMAND [ARGS]...`
+```
+{{< key cli >}} serve [OPTIONS] COMMAND [ARGS]...
+```
 
-### agent
+#### agent
 
 Start a grpc server for the agent service.
 
-`{{< key cli >}} serve agent [OPTIONS]`
+```
+{{< key cli >}} serve agent [OPTIONS]
+```
 
 **Options**
 
@@ -850,11 +910,13 @@ Start a grpc server for the agent service.
    List of additional files or module that defines the agent
 
 
-### connector
+#### connector
 
 Start a grpc server for the connector service.
 
-`{{< key cli >}} serve connector [OPTIONS]`
+```
+{{< key cli >}} serve connector [OPTIONS]
+```
 
 **Options**
 
