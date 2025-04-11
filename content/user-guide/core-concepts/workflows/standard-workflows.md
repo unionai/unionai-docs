@@ -28,7 +28,7 @@ However, when it is registered to {{< key product_name >}}, the top level `@{{< 
 {{< /variant >}}
 {{< variant serverless >}}
 {{< markdown >}}
-When a standard workflow is run locally in a Python environment it is executed as a normal Python function.
+When a standard workflow is [run locally in a Python environment](../../development-cycle/running-your-code#running-a-script-in-local-python) it is executed as a normal Python function.
 However, when it is registered to {{< key product_name >}}, the top level `@{{< key kit_as >}}.workflow`-decorated function is evaluated as follows:
 {{< /markdown >}}
 {{< /variant >}}
@@ -50,9 +50,7 @@ For details, see [Conditionals](../../programming/conditionals).
 When {{< key product_name >}} builds the DAG for a standard workflow, it uses the passing of values from one task to another to determine the dependency relationships between tasks.
 
 There may be cases where you want to define a dependency between two tasks that is not based on the output of one task being passed as an input to another.
-
 In that case, you can use the chaining operator `>>` to define the dependencies between tasks.
-
 For details, see [Chaining {{< key product_name >}} entities](../../programming/chaining-entities).
 
 ## Workflow decorator parameters
