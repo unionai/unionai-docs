@@ -19,6 +19,44 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`Run`](.././union.remote#unionremoterun) | A class representing a run of a task. |
 | [`Task`](.././union.remote#unionremotetask) |  |
 
+### Methods
+
+| Method | Description |
+|-|-|
+| [`upload_dir()`](#upload_dir) | Uploads a directory to a remote location and returns the remote URI. |
+| [`upload_file()`](#upload_file) | Uploads a file to a remote location and returns the remote URI. |
+
+
+## Methods
+
+#### upload_dir()
+
+```python
+def upload_dir(
+    dir_path: pathlib._local.Path,
+) -> typing.Tuple[str, str]
+```
+Uploads a directory to a remote location and returns the remote URI.
+
+
+| Parameter | Type |
+|-|-|
+| `dir_path` | `pathlib._local.Path` |
+
+#### upload_file()
+
+```python
+def upload_file(
+    fp: pathlib._local.Path,
+) -> typing.Tuple[str, str]
+```
+Uploads a file to a remote location and returns the remote URI.
+
+
+| Parameter | Type |
+|-|-|
+| `fp` | `pathlib._local.Path` |
+
 ## union.remote.Run
 
 A class representing a run of a task. It is used to manage the execution of a task and its state on the remote
@@ -195,7 +233,7 @@ def get(
     name: str | None,
     project: str | None,
     domain: str | None,
-) -> Task
+) -> LazyEntity[Task]
 ```
 | Parameter | Type |
 |-|-|

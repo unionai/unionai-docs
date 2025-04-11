@@ -85,11 +85,17 @@ async def my_task():
 
 ```python
 def init(
+    root_dir: Path | None,
     api_key: str | None,
     endpoint: str | None,
     headless: bool,
     project: str | None,
     domain: str | None,
+    mode: Mode,
+    controller_sync_period_seconds: float,
+    controller_max_concurrent_launches: int,
+    interactive: Literal['auto', 'on', 'off'],
+    log_level: int,
 )
 ```
 Initialize the Union system with the given configuration. This method should be called before any other Union
@@ -99,11 +105,17 @@ remote API methods are called. Thread-safe implementation.
 
 | Parameter | Type |
 |-|-|
+| `root_dir` | `Path \| None` |
 | `api_key` | `str \| None` |
 | `endpoint` | `str \| None` |
 | `headless` | `bool` |
 | `project` | `str \| None` |
 | `domain` | `str \| None` |
+| `mode` | `Mode` |
+| `controller_sync_period_seconds` | `float` |
+| `controller_max_concurrent_launches` | `int` |
+| `interactive` | `Literal['auto', 'on', 'off']` |
+| `log_level` | `int` |
 
 #### with_runcontext()
 
@@ -111,7 +123,7 @@ remote API methods are called. Thread-safe implementation.
 def with_runcontext(
     name: Optional[str],
     service_account: Optional[str],
-    mode: Mode,
+    version: Optional[str],
 ) -> _Runner
 ```
 Create a new `AsyncRunnable` instance with the given run context.
@@ -135,7 +147,7 @@ if __name__ == "__main__":
 |-|-|
 | `name` | `Optional[str]` |
 | `service_account` | `Optional[str]` |
-| `mode` | `Mode` |
+| `version` | `Optional[str]` |
 
 ## union.Environment
 
@@ -161,9 +173,9 @@ class Environment(
     env: Optional[Dict[str, str]],
     reusable: Union[ReusePolicy, Literal['auto'], None],
     secrets: Optional[SecretRequest],
-    env_dep_hints: Optional[List[Environment]],
     description: Optional[str],
     pod_template: Optional[Union[str, 'V1PodTemplate']],
+    env_dep_hints: List[Environment],
 )
 ```
 | Parameter | Type |
@@ -175,17 +187,47 @@ class Environment(
 | `env` | `Optional[Dict[str, str]]` |
 | `reusable` | `Union[ReusePolicy, Literal['auto'], None]` |
 | `secrets` | `Optional[SecretRequest]` |
-| `env_dep_hints` | `Optional[List[Environment]]` |
 | `description` | `Optional[str]` |
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `env_dep_hints` | `List[Environment]` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
+| [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
+| [`add_task()`](#add_task) | Add a task to the environment. |
 | [`clone_with()`](#clone_with) | Clone the environment with new settings. |
 | [`set_built_image()`](#set_built_image) |  |
 
+
+#### add_dependency()
+
+```python
+def add_dependency(
+    env: Environment,
+)
+```
+Add a dependency to the environment.
+
+
+| Parameter | Type |
+|-|-|
+| `env` | `Environment` |
+
+#### add_task()
+
+```python
+def add_task(
+    task: TaskTemplate,
+) -> TaskAPI
+```
+Add a task to the environment.
+
+
+| Parameter | Type |
+|-|-|
+| `task` | `TaskTemplate` |
 
 #### clone_with()
 
@@ -438,6 +480,13 @@ Use this method to create a new image with the specified uvlock file layered on 
 |-|-|
 | `file` | `Path` |
 
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `uri` |  | {{< multiline >}}Returns the URI of the image in the format <registry>/<name>:<tag>
+{{< /multiline >}} |
+
 ## union.Resources
 
 Resources such as CPU, Memory, and GPU that can be allocated to a task.
@@ -474,6 +523,34 @@ class Resources(
 | `gpu` | `typing.Union[typing.Literal['T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8'], int, NoneType]` |
 | `disk` | `typing.Optional[str]` |
 | `shared_memory` | `typing.Union[str, typing.Literal['auto'], NoneType]` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`get_accelerator()`](#get_accelerator) | Get the accelerator string for the task. |
+| [`get_shared_memory()`](#get_shared_memory) | Get the shared memory string for the task. |
+
+
+#### get_accelerator()
+
+```python
+def get_accelerator()
+```
+Get the accelerator string for the task.
+
+:return: The accelerator string.
+
+
+#### get_shared_memory()
+
+```python
+def get_shared_memory()
+```
+Get the shared memory string for the task.
+
+:return: The shared memory string.
+
 
 ## union.ReusePolicy
 

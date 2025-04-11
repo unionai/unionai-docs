@@ -10,6 +10,7 @@ layout: py_api
 | Package | Description |
 |-|-|
 | [`union`](union) | Union SDK for authoring Compound AI applications, services and workflows. |
+| [`union.bin.runtime`](union.bin.runtime) | Union runtime module, this is the entrypoint script for the Union runtime. |
 | [`union.errors`](union.errors) | Exceptions raised by Union. |
 | [`union.extend`](union.extend) | Extends union with custom functionality. |
 | [`union.io`](union.io) | ## IO data types. |
