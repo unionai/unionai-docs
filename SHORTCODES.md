@@ -3,7 +3,12 @@
 
 This site has special blocks that can be used to generate code for Union.
 
-> You can see examples by running the dev server and visiting `/__docs_builder__/shortcodes/`. This page neither shows in the menus nor in the production build.
+> You can see examples by running the dev server and visiting
+> [`http://localhost:1313/__docs_builder__/shortcodes/`][demo-shortcodes]. This
+> page neither shows in the menus nor in the production build.
+>
+> If you need instructions on how to create the local environment and get the
+> `localhost:1313` server running, please refer to the [local development guide](DEVELOPER.md).
 
 - [How to specify a "shortcode"](#how-to-specify-a-shortcode)
 - [Variants](#variants)
@@ -194,3 +199,5 @@ Uses a named icon in the content.
 Example
 
     [Download {{< icon download >}}](/download)
+
+[demo-shortcodes]: http://localhost:1313/__docs_builder__/shortcodes/
