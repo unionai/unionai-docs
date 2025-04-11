@@ -11,7 +11,7 @@
 <div class="multiline">
   {{- range $index, $line := $lines -}}
     {{- if and (ne $line "") (ne $line " ") -}}
-      {{- $line | markdownify -}}
+      {{- page.RenderString $line -}}
       {{- if $brs -}}
       {{- if ne $index (sub (len $lines) 1) -}}<br/>{{- end -}}
       {{- end -}}

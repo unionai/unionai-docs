@@ -63,4 +63,4 @@
   {{- $highlightAttr = printf " data-line=\"%s\"" $highlight -}}
 {{- end -}}
 
-{{- (printf "```%s%s\n%s```" $lang $highlightAttr $content) | markdownify -}}
+{{- page.RenderString (printf "```%s%s\n%s```" $lang $highlightAttr $content) -}}

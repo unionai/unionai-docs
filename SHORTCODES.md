@@ -3,6 +3,8 @@
 
 This site has special blocks that can be used to generate code for Union.
 
+> You can see examples by running the dev server and visiting `/__docs_builder__/shortcodes/`. This page neither shows in the menus nor in the production build.
+
 - [How to specify a "shortcode"](#how-to-specify-a-shortcode)
 - [Variants](#variants)
 - [Component Library](#component-library)

@@ -8,6 +8,6 @@
             {{- $title -}}
             <sl-icon-button name="{{- $icon -}}" label="{{- $title -}}"></sl-icon-button>
         </div>
-        {{- .Inner | markdownify -}}
+        {{- .Page.RenderString .Inner -}}
     </div>
 </sl-card>

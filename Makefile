@@ -42,8 +42,7 @@ dev:
 
 serve:
 	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi
-	echo "Open browser @ http://localhost:${PORT}"
-	cd dist; python3 -m http.server ${PORT}
+	@PORT=${PORT} LAUNCH=${LAUNCH} ./scripts/serve.sh
 
 update-examples:
 	git submodule update --remote

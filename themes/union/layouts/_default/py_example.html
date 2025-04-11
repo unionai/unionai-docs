@@ -62,7 +62,7 @@
     {{ end }}
 
     <!-- Render the final markdown -->
-    {{ $markdown := $result | markdownify }}
+    {{ $markdown := page.RenderString $result }}
     {{ if strings.Contains $markdown "{{run-on-union}}" }}
       {{ $parts := split $markdown "{{run-on-union}}" }}
       {{ index $parts 0 | safeHTML }}

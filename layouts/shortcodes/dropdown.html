@@ -6,7 +6,7 @@
   {{- $emoji = transform.Emojify (print ":" $icon ":") -}}
 {{- end -}}
 <div style="margin-bottom: 1rem;">
-  <sl-details summary="{{- $emoji }} {{ $title | markdownify -}}">
+  <sl-details summary="{{- $emoji }} {{ page.RenderString $title -}}">
     {{- .Inner | safeHTML -}}
   </sl-details>
 </div>

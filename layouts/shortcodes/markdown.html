@@ -4,7 +4,7 @@
 {{- if .Parent -}}
     {{- if in (slice "variant" "dropdown" "tab" "grid") .Parent.Name -}}
         {{/* This is where container-specific behavior would go */}}
-        {{- .Inner | markdownify -}}
+        {{- .Page.RenderString .Inner -}}
     {{- else -}}
         {{ warnf "[Markdown without container] You specified {{< markdown >}} inside {{< %s >}} but it does not belong to a container. File: %s" .Parent.Name .Page.File.Path }}
         <div class="layout-error">
@@ -14,7 +14,7 @@
             </div>
 
             <div class="content">
-                {{- .Inner | markdownify -}}
+                {{- .Page.RenderString .Inner -}}
             </div>
         </div>
     {{- end -}}
@@ -28,7 +28,7 @@
         </div>
 
         <div class="content">
-            {{- .Inner | markdownify -}}
+            {{- .Page.RenderString .Inner -}}
         </div>
     </div>
 {{- end -}}

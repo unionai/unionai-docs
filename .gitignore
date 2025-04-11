@@ -21,6 +21,7 @@ test*.html
 
 # Tools
 tools/link_checker/config.yml
+link_checker_output.json
 
 # IDEs
 .vscode

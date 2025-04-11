@@ -294,6 +294,7 @@ pre code {
 BLOCKQUOTE {
   border-left: 3px solid var(--blockquote-border);
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 BLOCKQUOTE P {
