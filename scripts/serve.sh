@@ -1,7 +1,7 @@
 #!/bin/bash
 
 declare port=${PORT:-9000}
-decalre launch=${LAUNCH:-1}
+declare launch=${LAUNCH:-1}
 
 
 if [[ $launch -eq 1 ]]; then
