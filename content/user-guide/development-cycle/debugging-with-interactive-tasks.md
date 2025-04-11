@@ -42,10 +42,10 @@ flytekit
 flytekitplugins-flyteinteractive
 ```
 
-### example.py
-
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
+
+### example.py
 
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode)"""
@@ -53,23 +53,23 @@ flytekitplugins-flyteinteractive
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
-registry="<my-image-registry>",
-name="interactive-tasks-example",
-base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
-requirements="requirements.txt"
+image = {{< key kit_as >}}.ImageSpec(
+    registry="<my-image-registry>",
+    name="interactive-tasks-example",
+    base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
+    requirements="requirements.txt"
 )
 
 @{{< key kit_as >}}.task(container_image=image)
 @vscode
 def say_hello(name: str) -> str:
-s = f"Hello, {name}!"
-return s
+    s = f"Hello, {name}!"
+    return s
 
 @{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
-greeting = say_hello(name=name)
-return greeting
+    greeting = say_hello(name=name)
+    return greeting
 ```
 
 {{< /markdown >}}
@@ -77,37 +77,39 @@ return greeting
 {{< variant serverless >}}
 {{< markdown >}}
 
+### example.py
+
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode)"""
 
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
-builder="union",
-name="interactive-tasks-example",
-requirements="requirements.txt"
+image = {{< key kit_as >}}.ImageSpec(
+    builder="union",
+    name="interactive-tasks-example",
+    requirements="requirements.txt"
 )
 
 @{{< key kit_as >}}.task(container_image=image)
 @vscode
 def say_hello(name: str) -> str:
-s = f"Hello, {name}!"
-return s
+    s = f"Hello, {name}!"
+    return s
 
 @{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
-greeting = say_hello(name=name)
-return greeting
+    greeting = say_hello(name=name)
+    return greeting
 ```
 
 {{< /markdown >}}
 {{< /variant >}}
 
-## Register and run the workflow
-
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
+
+## Register and run the workflow
 
 To register the code to a project on {{< key product_name >}} and run the workflow, follow the
 directions in [Running your code](../development-cycle/running-your-code)
@@ -116,7 +118,11 @@ directions in [Running your code](../development-cycle/running-your-code)
 {{< /variant >}}
 {{< variant serverless >}}
 {{< markdown >}}
+
+## Register and run the workflow
+
 To register the code to a project on {{< key product_name >}} as usual and run the workflow.
+
 {{< /markdown >}}
 {{< /variant >}}
 
@@ -199,10 +205,10 @@ Available extensions differ from official VSCode for legal reasons and are hoste
 Python and Jupyter extensions are installed by default.
 Additional extensions can be added by defining a configuration object and passing it to the `@vscode` decorator, as shown below:
 
-### example-extensions.py
-
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
+
+### example-extensions.py
 
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with extensions"""
@@ -210,7 +216,7 @@ Additional extensions can be added by defining a configuration object and passin
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry="<my-image-registry>",
     name="interactive-tasks-example",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
@@ -240,13 +246,15 @@ def wf(name: str = "world") -> str:
 {{< variant serverless >}}
 {{< markdown >}}
 
+### example-extensions.py
+
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with extensions"""
 
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import COPILOT_EXTENSION, VscodeConfig, vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     builder="union",
     name="interactive-tasks-example",
     requirements="requirements.txt"
@@ -280,10 +288,10 @@ Idleness is monitored via a heartbeat file.
 
 The `max_idle_seconds` parameter can be used to set the maximum number of seconds the VSCode server can be idle before it is terminated.
 
-### example-manage-resources.py
-
-{{< variant byoc >}}
+{{< variant byoc byok flyte >}}
 {{< markdown >}}
+
+### example-manage-resources.py
 
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with max_idle_seconds"""
@@ -291,7 +299,7 @@ The `max_idle_seconds` parameter can be used to set the maximum number of second
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry="<my-image-registry>",
     name="interactive-tasks-example",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
@@ -315,13 +323,15 @@ def wf(name: str = "world") -> str:
 {{< variant serverless >}}
 {{< markdown >}}
 
+### example-manage-resources.py
+
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with max_idle_seconds"""
 
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     builder="union",
     name="interactive-tasks-example",
     requirements="requirements.txt"
@@ -331,12 +341,12 @@ image = union.ImageSpec(
 @vscode(max_idle_seconds=60000)
 def say_hello(name: str) -> str:
     s = f"Hello, {name}!"
-return s
+    return s
 
 @{{< key kit_as >}}.workflow
 def wf(name: str = "world") -> str:
-greeting = say_hello(name=name)
-return greeting
+    greeting = say_hello(name=name)
+    return greeting
 ```
 
 {{< /markdown >}}
@@ -347,10 +357,11 @@ return greeting
 Interactive tasks also allow the registration of functions to be executed both before and after VSCode starts.
 This can be used for tasks requiring setup or cleanup.
 
-### example-pre-post-hooks.py
 
-{{< variant byoc >}}
+{{< variant flyte byoc byok >}}
 {{< markdown >}}
+
+### example-pre-post-hooks.py
 
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with pre and post hooks"""
@@ -358,7 +369,7 @@ This can be used for tasks requiring setup or cleanup.
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry="<my-image-registry>",
     name="interactive-tasks-example",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
@@ -388,13 +399,15 @@ def wf(name: str = "world") -> str:
 {{< variant serverless >}}
 {{< markdown >}}
 
+### example-pre-post-hooks.py
+
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with pre and post hooks"""
 
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     builder="union",
     name="interactive-tasks-example",
     requirements="requirements.txt"
@@ -426,10 +439,12 @@ def wf(name: str = "world") -> str:
 The system can also be set to only initiate VSCode _after a task failure_, preventing task termination and thus enabling inspection.
 This is done by setting the `run_task_first` parameter to `True`.
 
-### example-run-task-first.py
+
 
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
+
+### example-run-task-first.py
 
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with run_task_first"""
@@ -437,7 +452,7 @@ This is done by setting the `run_task_first` parameter to `True`.
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     registry="<my-image-registry>",
     name="interactive-tasks-example",
     base_image="ghcr.io/flyteorg/flytekit:py3.11-latest",
@@ -461,16 +476,18 @@ def wf(name: str = "world") -> str:
 {{< variant serverless >}}
 {{< markdown >}}
 
+### example-run-task-first.py
+
 ```python
 """{{< key product_name >}} workflow example of interactive tasks (@vscode) with run_task_first"""
 
 import {{< key kit_import >}}
 from flytekitplugins.flyteinteractive import vscode
 
-image = union.ImageSpec(
+image = {{< key kit_as >}}.ImageSpec(
     builder="union",
     name="interactive-tasks-example",
-   requirements="requirements.txt"
+    requirements="requirements.txt"
 )
 
 @{{< key kit_as >}}.task(container_image=image)
@@ -497,11 +514,11 @@ Using `--details` flag you can view node executions with log links.
 
 ```shell
 └── n1 - FAILED - 2021-06-30 08:51:07.3111846 +0000 UTC - 2021-06-30 08:51:17.192852 +0000 UTC
-│   ├── Attempt :0
-│       └── Task - FAILED - 2021-06-30 08:51:07.3111846 +0000 UTC - 2021-06-30 08:51:17.192852 +0000 UTC
-│       └── Logs :
-│           └── Name :Kubernetes Logs (User)
-│           └── URI :http://localhost:30082/#/log/flytectldemo-development/f3a5a4034960f4aa1a09-n1-0/pod?namespace=flytectldemo-development
+    └── Attempt :0
+        └── Task - FAILED - 2021-06-30 08:51:07.3111846 +0000 UTC - 2021-06-30 08:51:17.192852 +0000 UTC
+        └── Logs :
+            └── Name :Kubernetes Logs (User)
+            └── URI :http://localhost:30082/#/log/flytectldemo-development/f3a5a4034960f4aa1a09-n1-0/pod?namespace=flytectldemo-development
 ```
 
 Additionally, you can check the pods launched in `\<project>-\<domain>` namespace
