@@ -64,8 +64,8 @@ def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
 
 ## Install and configure `{{< key cli >}}` and Docker
 
-To install Docker, see [Setting up container image handling](../../../first-workflow/setting-up-container-image-handling).
-To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Quick start](../../../../quick-start).
+To install Docker, see [Setting up container image handling](../../../getting-started/local-setup#install-docker-and-get-access-to-a-container-registry).
+To configure `{{< key cli >}}` to connect to your {{< key product_name >}} instance, see [Getting started](../../../getting-started/_index).
 
 ## Set up an image registry
 
@@ -79,8 +79,15 @@ Additionally, you will need to ensure that the specific image, once pushed to th
 In this example, we use GitHub's `ghcr.io` container registry.
 See [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry) for more information.
 
-For an example using Amazon ECR see [ImageSpec with ECR](./imagespec-with-ecr).
-For an example using Google Artifact Registry see [ImageSpec with GAR](./imagespec-with-gar).
+{{< variant byoc byok serverless >}}
+{{< markdown >}}
+
+* For an example using Amazon ECR see [ImageSpec with ECR](./image-spec-with-ecr).
+* For an example using Google Artifact Registry see [ImageSpec with GAR](./image-spec-with-gar).
+* For an example using Azure Container Registry see [ImageSpec with ACR](./image-spec-with-acr).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Authenticate to the registry
 

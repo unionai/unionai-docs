@@ -48,7 +48,7 @@ To create a new async agent, extend the `AsyncAgentBase` and implement `create`,
 - `get`: This method retrieves the job resource (job ID or output literal) associated with the task, such as a BigQuery job ID or Databricks task ID.
 - `delete`: Invoking this method will send a request to delete the corresponding job.
 
-For an example implementation, see the [BigQuery agent code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-bigquery/flytekitplugins/bigquery/agent.py).
+For an example implementation, see the [BigQuery connector code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-bigquery/flytekitplugins/bigquery/connector.py).
 
 ### Sync agent interface specification
 
@@ -56,7 +56,7 @@ To create a new sync agent, extend the `SyncAgentBase` class and implement a `do
 
 - `do`: This method is used to execute the synchronous task, and the worker in Flyte will be blocked until the method returns.
 
-For an example implementation, see the [ChatGPT agent code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-openai/flytekitplugins/openai/chatgpt/agent.py).
+For an example implementation, see the [ChatGPT connector code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-openai/flytekitplugins/openai/chatgpt/connector.py).
 
 ### Testing your agent locally
 

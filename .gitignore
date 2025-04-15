@@ -2,8 +2,8 @@
 config/_default
 
 # Generated content
-public/
-dist/
+/public/
+/dist/
 
 # Developer overrides
 hugo.local.toml

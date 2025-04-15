@@ -93,7 +93,7 @@ For details see [Enabling GCP resources](./integrations/enabling-gcp-resources).
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
-For details see [BigQuery agent](/user-guide/integrations/agents/bigquery-agent).
+For details see [BigQuery agent](./integrations/agents/bigquery-agent).
 
 ## `FlyteFile` and `FlyteDirectory`
 
@@ -148,7 +148,7 @@ Navigate to it in your browser and follow the directions.
 It can be used, for example, by CI bots.
 With this method, you create a {{< key product_name >}} application and configure your tools to pass the Client ID and App Secret to {{< key product_name >}}.
 
-These methods are all configured in the `config.yaml` that your `{{< key ctl >}}` or `{{< key cli >}}` command uses. See [CLI authentication types](./administration/cli-authentication-types) for full details.
+These methods are all configured in the `config.yaml` that your `{{< key ctl >}}` or `{{< key cli >}}` command uses. See [Authentication](./development-cycle/authentication) for full details.
 
 Note that if you wish to run or register workflows in a remote SSH session, you will need to authenticate using the DeviceFlow or ClientSecret methods as PKCE attempts to open a local browser from the CLI.
 

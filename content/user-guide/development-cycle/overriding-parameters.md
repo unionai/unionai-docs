@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +byok
 
 # Overriding parameters
 
-The `with_overrides` method allows you to specify parameter overrides on [tasks](../core-concepts/tasks/index),
+The `with_overrides` method allows you to specify parameter overrides on [tasks](../core-concepts/tasks/_index),
 [subworkflows, and sub-launch plans](../core-concepts/workflows/subworkflows-and-sub-launch-plans) at execution time.
 This is useful when you want to change the behavior of a task, subworkflow, or sub-launch plan without modifying the original definition.
 
@@ -18,7 +18,7 @@ When calling a task, you can specify the following parameters in `with_overrides
 * `cache_serialize`: Enable [cache serialization](../core-concepts/caching).
 * `cache_version`: Specify the [cache version](../core-concepts/caching).
 * `cache`: Enable [caching](../core-concepts/caching).
-* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/imagespec).
+* `container_image`: Specify a [container image](../core-concepts/tasks/task-software-environment/image-spec).
 * `interruptible`: Specify whether the task is [interruptible](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
 * `limits`: Specify [resource limits](../core-concepts/tasks/task-hardware-environment/customizing-task-resources).
 * `name`: Give a specific name to this task execution. This will appear in the workflow flowchart in the UI (see [below](#using-with_overrides-with-name-and-node_name)).

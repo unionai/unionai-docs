@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant serverless >}}
 {{< markdown >}}
 
-In [Getting started](.) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
+In [Getting started](./_index) we showed you how to run your first workflow right in the {{< key product_name >}} interface, in the browser.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -201,7 +201,7 @@ The local Flyte cluster will be available at `localhost:30080`.
 {{< variant byoc byok serverless >}}
 {{< markdown >}}
 
-## Configure the connection to your {{< key product_name >}} instance
+## Configure the connection to your cluster
 
 Next, you need to create a configuration file that contains your {{< key product_name >}} connection information:
 
@@ -218,9 +218,9 @@ This will create the `~/.union/config.yaml` with the configuration information t
 
 > [!NOTE] These directions apply to {{< key product_name >}} Serverless
 > To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOC, see the
-> [BYOC version of this page]({{< docs_home byoc >}}/user-guide/quick-start#configure-the-union-cli).
+> [BYOC version of this page]({{< docs_home byoc >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
 > To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOK, see the
-> [BYOK version of this page]({{< docs_home byok >}}/user-guide/quick-start#configure-the-union-cli).
+> [BYOK version of this page]({{< docs_home byok >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -277,7 +277,7 @@ the format of the `yaml` file.
 {{< variant flyte >}}
 {{< markdown >}}
 
-## Configure the connection to your Flyte instance
+## Configure the connection to your cluster
 
 To configure the connection from `pyflyte` and `flytectl` to your Flyte instance, set the `FLYTECTL_CONFIG` environment variable to point to the configuration file that `flytectl` created:
 
@@ -330,7 +330,7 @@ $ {{< key cli >}} info
 ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
-For more details on connection configuration see [CLI authentication types](../administration/cli-authentication-types).
+For more details on connection configuration see [Authentication](../development-cycle/authentication).
 
 {{< /markdown >}}
 {{< /variant >}}

@@ -33,7 +33,7 @@ Along the left side the following sections are available:
     If not set, the workflow's interruptible setting is used.
     If set and **enabled** then `interruptible=True` is used for this execution.
     If set and **disabled** then `interruptible=False` is used for this execution.
-    See [Interruptible instances](/user-guide/core-concepts/tasks/task-hardware-environment/interruptible-instances/)
+    See [Interruptible instances](../tasks/task-hardware-environment/interruptible-instances)
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
   * **Service account**: The service account to use for this execution. If not specified, the default is used.
@@ -41,7 +41,7 @@ Along the left side the following sections are available:
 {{< /variant >}}
 * **Environment variables**: Environment variables that will be available to tasks in this workflow execution.
 * **Labels**: Labels to apply to the execution resource.
-* **Notifications**: [Notifications](/user-guide/core-concepts/launch-plans/notifications/) configured for this workflow execution.
+* **Notifications**: [Notifications](../launch-plans/notifications) configured for this workflow execution.
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 * **Debug**: The workflow execution details for debugging purposes.

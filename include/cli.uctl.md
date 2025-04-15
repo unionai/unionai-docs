@@ -118,7 +118,7 @@ admin:
 
 > [!NOTE]
 > PKCE is the default authentication type. To specify a different authentication type in the configuration file,
-> see [CLI authentication types](../../user-guide/administration/cli-authentication-types.md).
+> see [Authentication](../../development-cycle/authenticaiton).
 
 ### Configuration file location hierarchy
 

@@ -8,7 +8,7 @@ variants: -flyte +serverless +byoc +byok
 
 ## Artifacts list
 
-[Artifacts](./index) can be viewed in the UI by navigating to the artifacts app in the left sidebar:
+Artifacts can be viewed in the UI by navigating to the artifacts app in the left sidebar:
 
 ![Artifacts overview](/_static/images/user-guide/core-concepts/artifacts/viewing-artifacts/artifacts-list.png)
 

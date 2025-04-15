@@ -27,21 +27,22 @@ Now, referencing those directions, follow the steps below:
 
 ## Share the client secret securely with the {{< key product_name >}} team
 
-1. Copy the public key provided by {{< key product_name >}} here: [**public-key.txt**](/_static/public/public-key.txt)
+1. Copy the public key provided by {{< key product_name >}} here:
+    {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
 
-1. Go to [https://pgptool.org](https://pgptool.org/).
+2. Go to [https://pgptool.org](https://pgptool.org/).
 
-1. Click the **Encrypt** tab.
+3. Click the **Encrypt** tab.
 
-1. Upload the public key provided by {{< key product_name >}} under **Receiver's public key**.
+4. Upload the public key provided by {{< key product_name >}} under **Receiver's public key**.
 
-1. Skip the **Signer’s Private Key** section.
+5. Skip the **Signer’s Private Key** section.
 
-1. Enter the **client secret** in plain text and encrypt it.
+6. Enter the **client secret** in plain text and encrypt it.
 
-1. Download the encrypted text and share it with the {{< key product_name >}} team over Slack.
+7. Download the encrypted text and share it with the {{< key product_name >}} team over Slack.
 
-1. Delete the client secret from the text file on your computer.
+8. Delete the client secret from the text file on your computer.
 
 ## Share the application (client) ID with {{< key product_name >}}
 

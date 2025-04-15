@@ -59,7 +59,7 @@ When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command
 
 {{< variant serverless >}}
 
-## {{< key product_name >}} cloud image builder
+## {{< key product_name >}} cloud image builder {#cloud-image-builder}
 
 {{< key product_name >}} Serverless will build the image using its `ImageBuilder` service in the cloud
 and registered the image in {{< key product_name >}}'s own container registry.

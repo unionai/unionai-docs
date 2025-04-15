@@ -54,8 +54,18 @@ $ {{< key cli >}} run workflows/example.py wf --name 'Albert'
 Here you are invoking `{{< key cli >}} run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
 In addition, you are passing the named parameter `name` and its value.
 
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
 This command is useful for quickly testing a workflow locally to check for basic errors.
 For more details see [{{< key cli >}} run details](./details-of-union-run).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+This command is useful for quickly testing a workflow locally to check for basic errors.
+For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
+{{< /markdown >}}
+{{< /variant >}}
 
 
 ## Running a script on {{< key product_name >}} with `{{< key cli >}} run --remote`
@@ -89,6 +99,21 @@ This command will:
 
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
 For more details see [{{< key cli >}} run details](./details-of-union-run).
+
+
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
+For more details see [{{< key cli >}} run details](./details-of-union-run).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
+For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
+{{< /markdown >}}
+{{< /variant >}}
+
 
 ## Running tasks through {{< key ctl >}}
 
@@ -216,6 +241,7 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 > and making all your imports absolute.
 > This avoids having to “install” your Python project in the image at any point e.g. via `pip install -e`.
 
+
 ## Inspecting executions
 
 {{< key ctl_name >}} supports inspecting execution by retrieving its details. For a deeper dive, refer to the
@@ -295,7 +321,7 @@ Let’s break down what each flag is doing here:
 
 * `--version`: This is a version string that can be any string, but we recommend using the Git SHA in general, especially in production use cases.
 
-See [{{< key ctl_name >}} CLI](../../api-reference/flytectl-cli) for more details.
+See [{{< key ctl_name >}} CLI](../../api-reference/flytectl-cli/_index) for more details.
 
 
 ## Using {{< key cli >}} register versus {{< key cli >}} package + {{< key ctl >}} register
@@ -311,7 +337,7 @@ On the other hand, `{{< key cli >}} package` and `{{< key ctl >}} register` is a
 * Testing your workflows in your CI/CD infrastructure.
 
 > [!NOTE] Programmatic Python API
-> You can also perform the equivalent of the three methods of registration using a [{{< key kit_remote >}} object](../development-cycle/union-remote).
+> You can also perform the equivalent of the three methods of registration using a [{{< key kit_remote >}} object](../development-cycle/union-remote/_index).
 
 
 ## Image management and registration method

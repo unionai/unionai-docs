@@ -71,7 +71,7 @@ See [Data retention policy](./data-retention-policy) for more details.
 
 ## Worker node groups
 
-Specify the worker node groups (in AWS) or worker node pools (in GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Platform architecture](../platform-architecture#worker-nodes).
+Specify the worker node groups (in AWS) or worker node pools (in GCP) that you wish to have, with the following details for each. For more information about worker nodes, see [Platform architecture](./platform-architecture).
 
 ### Node group name
 
@@ -109,7 +109,7 @@ Note that for each interruptible node group, an identical on-demand group will b
 This fallback group will be identical in all respects to the interruptible group (instance type, taints, disk size, etc.), apart from being on-demand instead of interruptible.
 The fallback group will be used when the retries on the interruptible group have been exhausted.
 
-For more information on interruptible instances, see [Interruptible instances](../core-concepts/tasks/task-hardware-environment/interruptible-instances).
+For more information on interruptible instances, see [Interruptible instances](../user-guide/core-concepts/tasks/task-hardware-environment/interruptible-instances).
 
 ### Taints
 
@@ -202,7 +202,7 @@ Values provided by you are in single quotes (').
 
 ## After deployment
 
-Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../administration/usage#compute).
+Once {{< key product_name >}} has configured and deployed your cluster(s), you will be able to see your data plane setup in [Usage > Compute](../user-guide/administration/resources).
 
 ## Adjusting your configuration
 

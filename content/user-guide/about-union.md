@@ -32,7 +32,7 @@ You can switch to the Flyte docs [here]({{< docs_home flyte >}}).
 You can try out Flyte's technology:
 
 * In the cloud with [{{< key product_name >}} Serverless](https://signup.union.ai).
-* On your machine with a [local Flyte cluster](/user-guide/development-cycle/running-in-a-local-cluster).
+* On your machine with a [local Flyte cluster](./development-cycle/running-in-a-local-cluster).
 
 For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment).
 

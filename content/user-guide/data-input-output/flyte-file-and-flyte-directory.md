@@ -12,7 +12,7 @@ variants: +flyte +serverless +byoc +byok
 {{< variant flyte >}}
 {{< markdown >}}
 
-## FlyteFile {#FlyteFile}
+## FlyteFile
 
 Files are one of the most fundamental entities that users of Python work with,
 and they are fully supported by Flyte. In the IDL, they are known as
@@ -219,7 +219,7 @@ from typing import List
 import {{< key kit_import >}}
 ```
 
-Building upon the previous example demonstrated in the [`FlyteFile` section](#FlyteFile),
+Building upon the previous example demonstrated in the [`FlyteFile` section](#flytefile),
 let's continue by considering the normalization of columns in a CSV file.
 
 The following task downloads a list of URLs pointing to CSV files
@@ -368,7 +368,7 @@ In {{< key product_name >}}, each task runs in its own container. This means tha
 
 The natural way to solve this problem is for the source task to upload the file or directory to a common location (like the {{< key product_name >}} object store) and then pass a reference to that location to the destination task, which then downloads or streams the data.
 
-Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/union-sdk/custom-types/flytefile) and [`FlyteDirectory`](../../api-reference/union-sdk/custom-types/flytedirectory) classes, which automate this process.
+Since this is such a common use case, the {{< key kit_name >}} SDK provides the [`FlyteFile`](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file) and [`FlyteDirectory`](../../api-reference/flytekit-sdk/packages/flytekit.types.directory.types#flytekittypesdirectorytypesflytedirectory) classes, which automate this process.
 
 ## How the classes work
 
@@ -658,7 +658,7 @@ FlyteDirectory.new_file()
 ## Typed aliases
 
 The [{{< key kit_name >}} SDK](../../api-reference/union-sdk) defines some aliases of `FlyteFile` with specific type annotations.
-Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/union-sdk/custom-types#file-type):
+Specifically, `FlyteFile` has the following [aliases for specific file types](../../api-reference/flytekit-sdk/packages/flytekit.types.file.file):
 
 * `HDF5EncodedFile`
 * `HTMLPage`
@@ -670,7 +670,7 @@ Specifically, `FlyteFile` has the following [aliases for specific file types](..
 * `PythonNotebook`
 * `SVGImageFile`
 
-Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/union-sdk/custom-types#directory-type):
+Similarly, `FlyteDirectory` has the following [aliases](../../api-reference/flytekit-sdk/packages/flytekit.types.directory.types):
 
 * `TensorboardLogs`
 * `TFRecordsDirectory`

@@ -1,0 +1,80 @@
+{
+  "http://192.168.86.71:9000/docs/byoc/tutorials/language-models/liger-kernel-finetuning/": [
+    {
+      "LinkValue": "static/analysis_results.png",
+      "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/tutorials/language-models/liger-kernel-finetuning/static/analysis_results.png",
+      "Tag": "img",
+      "IsTagTextTypeAttribute": true,
+      "IsTagTextTypeContent": false,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "alt",
+      "TagTextValue": "analysis results",
+      "Attribute": "src",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    },
+    {
+      "LinkValue": "static/workflow_graph.png",
+      "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/tutorials/language-models/liger-kernel-finetuning/static/workflow_graph.png",
+      "Tag": "img",
+      "IsTagTextTypeAttribute": true,
+      "IsTagTextTypeContent": false,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "alt",
+      "TagTextValue": "execution graph",
+      "Attribute": "src",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ],
+  "http://192.168.86.71:9000/docs/byoc/tutorials/retrieval-augmented-generation/contextual-rag/": [
+    {
+      "LinkValue": "/_static/_tutorials/contextual-rag/contextual_rag.png",
+      "AbsoluteURL": "http://192.168.86.71:9000/_static/_tutorials/contextual-rag/contextual_rag.png",
+      "Tag": "img",
+      "IsTagTextTypeAttribute": true,
+      "IsTagTextTypeContent": false,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "alt",
+      "TagTextValue": "Contextual RAG App",
+      "Attribute": "src",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ],
+  "http://192.168.86.71:9000/docs/byoc/tutorials/serving/nim-on-actor/": [
+    {
+      "LinkValue": "https://org.ngc.nvidia.com/setup/personal-keys",
+      "AbsoluteURL": "https://org.ngc.nvidia.com/setup/personal-keys",
+      "Tag": "a",
+      "IsTagTextTypeAttribute": false,
+      "IsTagTextTypeContent": true,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "",
+      "TagTextValue": "NGC website",
+      "Attribute": "href",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ],
+  "http://192.168.86.71:9000/docs/byoc/tutorials/serving/vllm-serving-on-actor/": [
+    {
+      "LinkValue": "static/diagram.png",
+      "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/tutorials/serving/vllm-serving-on-actor/static/diagram.png",
+      "Tag": "img",
+      "IsTagTextTypeAttribute": true,
+      "IsTagTextTypeContent": false,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "alt",
+      "TagTextValue": "Flyte Deck Example",
+      "Attribute": "src",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ]
+}

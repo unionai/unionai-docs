@@ -26,7 +26,6 @@ This helps catch bugs early and ensures that the data passing through tasks and 
 Under the hood, {{< key product_name >}} uses the [Flyte type system]() and translates between the Flyte types and the Python types.
 Python type annotations make sure that the data passing through tasks and workflows is compatible with the explicitly stated types defined through a function signature.
 The {{< key product_name >}} type system is also used for caching, data lineage tracking, and automatic serialization and deserialization of data as it’s passed from one task to another.
-<!-- TODO: Add link to API -->
 
 ## Tasks are containerized
 
@@ -35,7 +34,7 @@ While (most) tasks are locally executable, when a task is deployed to {{< key pr
 {{< variant byoc byok flyte >}}
 {{< markdown >}}
 
-This allows tasks to have their own independent set of [software dependencies](./task-software-environment/index) and [hardware requirements](./task-hardware-environment).
+This allows tasks to have their own independent set of [software dependencies](./task-software-environment/_index) and [hardware requirements](./task-hardware-environment/_index).
 For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
@@ -43,7 +42,7 @@ For example, a task that requires a GPU can be deployed to {{< key product_name 
 {{< variant serverless >}}
 {{< markdown >}}
 
-This allows tasks to have their own independent set of [software dependencies](../../first-workflow/example-code-components#imagespec) and [hardware requirements](./task-hardware-environment).
+This allows tasks to have their own independent set of [software dependencies](../../core-concepts/image-spec) and [hardware requirements](./task-hardware-environment/_index).
 For example, a task that requires a GPU can be deployed to {{< key product_name >}} with a GPU-enabled container image, while a task that requires a specific version of a software library can be deployed with that version of the library installed.
 
 {{< /markdown >}}
@@ -78,8 +77,8 @@ One of the most powerful features of {{< key product_name >}} is the ability to 
 Because of the way that {{< key product_name >}} is architected, tasks within a single workflow can differ along many dimensions. While the total number of ways that tasks can be configured is quite large, the options fall into three categories:
 
 * **Task type**: These include standard Python tasks, map tasks, raw container tasks, and many specialized plugin tasks. For more information, see [Task types](./task-types).
-* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment).
-* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment).
+* **Software environment**: Define the task container image, dependencies, and even programming language. For more information, see [Task software environment](./task-software-environment/_index).
+* **Hardware environment**: Define the resource requirements (processor numbers, storage amounts) and machine node characteristics (CPU and GPU type). For more information, see [Task hardware environment](./task-hardware-environment/_index).
 
 ### Mix and match task characteristics
 

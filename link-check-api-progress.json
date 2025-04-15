@@ -1,0 +1,50 @@
+{
+  "http://192.168.86.71:9000/docs/byoc/api-reference/flytekit-sdk/packages/flytekit.core.legacy_map_task/": [
+    {
+      "LinkValue": "https://docs.flyte.org/en/latest/deployment/plugin_setup/aws/batch.html",
+      "AbsoluteURL": "https://docs.flyte.org/en/latest/deployment/plugin_setup/aws/batch.html",
+      "Tag": "a",
+      "IsTagTextTypeAttribute": false,
+      "IsTagTextTypeContent": true,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "",
+      "TagTextValue": "AWS batch",
+      "Attribute": "href",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ],
+  "http://192.168.86.71:9000/docs/byoc/api-reference/flytekit-sdk/packages/flytekit.core.schedule/": [
+    {
+      "LinkValue": "https://docs.flyte.org/en/latest/concepts/schedules.html#cron-expression-table",
+      "AbsoluteURL": "https://docs.flyte.org/en/latest/concepts/schedules.html#cron-expression-table",
+      "Tag": "a",
+      "IsTagTextTypeAttribute": false,
+      "IsTagTextTypeContent": true,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "",
+      "TagTextValue": "cron format",
+      "Attribute": "href",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ],
+  "http://192.168.86.71:9000/docs/byoc/api-reference/union-cli/": [
+    {
+      "LinkValue": "../user-guide/getting-started/local-setup",
+      "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/api-reference/user-guide/getting-started/local-setup",
+      "Tag": "a",
+      "IsTagTextTypeAttribute": false,
+      "IsTagTextTypeContent": true,
+      "IsTagTextTypeNone": false,
+      "TagTextKey": "",
+      "TagTextValue": "Getting started \u003e Local setup",
+      "Attribute": "href",
+      "StatusCode": 404,
+      "StatusDescription": "Not Found",
+      "CountOnPage": 1
+    }
+  ]
+}

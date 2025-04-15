@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +byok
 During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on {{< key product_name >}}.
 To enable this, you need to ensure that the required dependencies are installed in both places.
 Here we will explain how to install your dependencies locally.
-For information on how to make your dependencies available on {{< key product_name >}}, see [Remote dependencies with ImageSpec](./remote-dependencies-with-image-spec).
+For information on how to make your dependencies available on {{< key product_name >}}, see [ImageSpec](./image-spec).
 
 ## Define your dependencies in your `pyproject.toml`
 
@@ -55,4 +55,4 @@ $ source .venv/bin/activate
 
 Having installed your dependencies in your local environment, you can now [run your workflows locally using `{{< key cli >}} run`](./running-your-code).
 
-The next step is to ensure that the same dependencies are also [available in the remote environment on {{< key product_name >}}](./remote-dependencies-with-image-spec).
+The next step is to ensure that the same dependencies are also [available in the remote environment on {{< key product_name >}}](./image-spec).

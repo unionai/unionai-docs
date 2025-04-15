@@ -22,14 +22,14 @@ You pass the following parameters to the `@{{< key kit_as >}}.task` decorator:
 
 * `cache_ignore_input_vars`: Input variables that should not be included when calculating the hash for the cache.
 
-* `container_image`: See [`ImageSpec`](./task-software-environment/imagespec).
+* `container_image`: See [`ImageSpec`](../image-spec).
 
 * `deprecated`: A string that can be used to provide a warning message for deprecated task.
   The absence of a string, or an empty string, indicates that the task is active and not deprecated.
 
 * `docs`: Documentation about this task.
 
-* `enable_deck`: If true, this task will output a Deck which can be used to visualize the task execution. See [Decks](/user-guide/development-cycle/decks/#decks).
+* `enable_deck`: If true, this task will output a Deck which can be used to visualize the task execution. See [Decks](../../development-cycle/decks).
 
 ```python
 @{{< key kit_as >}}.task(enable_deck=True)

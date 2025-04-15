@@ -253,7 +253,7 @@ Enter secret value: ...
 ```
 
 > [!NOTE]
-> You can learn more about secrets management [here](../../development-cycle/managing-secrets.md).
+> You can learn more about secrets management [here](../development-cycle/managing-secrets).
 
 Set secrets for your workspace by clicking on the **Secrets** tab in the sidebar.
 Provide the `my_secret` key and optionally, the environment variable you want
@@ -301,7 +301,7 @@ For the `GPU` field, you can choose one of the following values:
 * `nvidia-tesla-l4`
 * `nvidia-tesla-a100`
 
-Learn more about the available accelerators [here](./tasks/task-hardware-environment/accelerators.md).
+Learn more about the available accelerators [here](./tasks/task-hardware-environment/accelerators).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -314,7 +314,7 @@ cluster. Find the details of your BYOC cluster in the top-level dashboard:
 
 ![BYOC Compute Resources](/_static/images/user-guide/core-concepts/workspaces/byoc-compute-resources.png)
 
-You can choose [the GPU accelerator](./tasks/task-hardware-environment/accelerators.md) that corresponds to your available instance types. In the screen shot above, the accelerator
+You can choose [the GPU accelerator](./tasks/task-hardware-environment/accelerators) that corresponds to your available instance types. In the screen shot above, the accelerator
 value is `nvidia-tesla-v100`.
 
 {{< /markdown >}}
@@ -364,8 +364,8 @@ task execution details page:
 
 You can specify:
 - Any public container image URI as long as it has `union>=0.1.166` installed
-- Images built with the Union.ai [image builder service](../development-cycle/image-spec.md)
-- Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr.md), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry.md), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry.md))
+- Images built with the Union.ai [image builder service](../development-cycle/image-spec)
+- Images available in your private container registry (e.g. [AWS ECR](../integrations/enabling-aws-resources/enabling-aws-ecr), [GCP Artifact Registry](../integrations/enabling-gcp-resources/enabling-google-artifact-registry), or [Azure Container Registry](../integrations/enabling-azure-resources/enabling-azure-container-registry))
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -380,7 +380,7 @@ union create workspace-config --init custom_image workspace.yaml
 ```
 
 This will create a `workspace.yaml` file with a `container_image` image key
-that supports the [ImageSpec](../development-cycle/image-spec.md) arguments.
+that supports the [ImageSpec](../development-cycle/image-spec) arguments.
 When you run the `union create workspace` command with this `workspace.yaml` file,
 it will first build the image before creating the workspace definition.
 

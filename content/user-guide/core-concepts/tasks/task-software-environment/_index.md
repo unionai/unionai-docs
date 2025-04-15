@@ -9,5 +9,5 @@ sidebar_expanded: false
 
 The @{{< key kit_as >}}.task decorator provides the following parameters to specify the software environment in which a task runs:
 
-* `container_image`: See [ImageSpec](./imagespec) for details.
+* `container_image`: See [ImageSpec](./image-spec) for details.
 * `environment`: See [Environment](./environment-variables) for details.

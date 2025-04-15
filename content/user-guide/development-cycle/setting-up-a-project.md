@@ -30,7 +30,7 @@ Promotion is done simply by [re-registering the workflow to the new project-doma
 
 * **Organization**: Your {{< key product_name >}} instance, accessible at a specific URL like `{{< key product >}}.my-company.com`.
 * **Domains** Within an organization there are (typically) three domains, `development`, `staging`, and `production`, used to organize your code during the development process.
-You can configure a custom set of domains to suit your needs during [onboarding](../data-plane-setup/configuring-your-data-plane).
+You can configure a custom set of domains to suit your needs during [onboarding](../../deployment/configuring-your-data-plane).
 * **Projects**: Orthogonal to domains, projects are used to organize your code into logical groups. You can create as many projects as you need.
 
 A given workflow will reside in a specific project. For example, let's say `my_workflow` is a workflow in `my_project`.
@@ -59,8 +59,7 @@ To avoid confusion, in this guide we will stick to the following naming conventi
 {{< variant flyte >}}
 {{< markdown >}}
 
-Ensure that you have the connection to your Flyte cluster [properly configured](/user-guide/getting-started/local-setup/#configure-the-connection-to-your-flyte-instance) and [`flytectl` CLI installed](/api-reference/flytectl-cli/).
-
+Ensure that you have [`flytectl` CLI installed](../getting-started/local-setup#install-flytectl-to-set-up-a-local-cluster) and the connection to your Flyte cluster [properly configured](../getting-started/local-setup#configure-the-connection-to-your-flyte-instance).
 Now, create a new project on your Flyte cluster:
 
 ```shell
@@ -94,7 +93,7 @@ The next step is to set up a local workflow directory.
 
 ## Creating a local production project directory using `{{< key cli >}} init`
 
-Earlier, in the [First workflow](../first-workflow) section we used `{{< key cli >}} init`
+Earlier, in the [Getting started](../getting-started/_index) section we used `{{< key cli >}} init`
 to create a new local project based on the `{{< key product>}}-simple`.
 
 Here, we will do the same, but use the `{{< key product>}}-production` template. Perform the following command:

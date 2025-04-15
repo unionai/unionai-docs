@@ -40,7 +40,9 @@ For all workflows in the selected project and domain which reached their final s
 * The number of aborted workflows.
 * The number of failed workflows.
 
-See [Workflow States](https://docs.flyte.org/en/latest/concepts/state_machine.html#workflow-states) for the precise definitions of these states.
+<!-- TODO: Add back when docs_home shortcode is working
+See [Workflow States]({< docs_home flyte/architecture/content/workflow-state-transitions#workflow-states >}}) for the precise definitions of these states.
+-->
 
 ### Task Executions in Final State
 
@@ -54,8 +56,9 @@ For all tasks in the selected project and domain which reached their final state
 * The number of aborted tasks.
 * The number of failed tasks.
 
-See [Task States](https://docs.flyte.org/en/latest/concepts/state_machine.html#task-states) for the precise definitions of these states.
-
+<!-- TODO: Add back when docs_home shortcode is working
+See [Task States]({< docs_home flyte/architecture/content/workflow-state-transitions#task-states >}}) for the precise definitions of these states.
+-->
 ### Running Pods
 
 This chart shows the absolute resource consumption for

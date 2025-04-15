@@ -17,7 +17,7 @@ and get familiar with the ins and outs of `ImageSpec`!
 {{< variant serverless byoc byok >}}
 {{< markdown >}}
 
-By default, the `ImageSpec` will be built using the [remote builder](/user-guide/development-cycle/image-spec#union-ai-cloud-image-builder), but you can always specify your own e.g. local Docker.
+By default, the `ImageSpec` will be built using the [remote builder](../development-cycle/image-spec#cloud-image-builder), but you can always specify your own e.g. local Docker.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -48,7 +48,7 @@ Before building the image, {{< key kit >}} checks the container registry to see 
 ## Install Python or APT packages
 You can specify Python packages and APT packages in the `ImageSpec`.
 These specified packages will be added on top of the [default image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile), which can be found in the {{< key kit >}} Dockerfile.
-More specifically, {{< key kit >}} invokes [DefaultImages.default_image()](https://github.com/flyteorg/flytekit/flytekit/configuration/default_images.py#L26-L27) function. This function determines and returns the default image based on the Python version and {{< key kit >}} version. For example, if you are using Python 3.8 and flytekit 1.6.0, the default image assigned will be `ghcr.io/flyteorg/flytekit:py3.8-1.6.0`.
+More specifically, {{< key kit >}} invokes [DefaultImages.default_image()](https://github.com/flyteorg/flytekit/blob/master/flytekit/configuration/default_images.py#L26-L27) function. This function determines and returns the default image based on the Python version and {{< key kit >}} version. For example, if you are using Python 3.8 and flytekit 1.6.0, the default image assigned will be `ghcr.io/flyteorg/flytekit:py3.8-1.6.0`.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -279,6 +279,6 @@ image = ImageSpec(packages=["pandas"]).force_push()
 Typically, getting source code files into a task's image at run time on a live {{< key product_name >}} backend is done through the fast registration mechanism.
 
 However, if your `ImageSpec` constructor specifies a `source_root` and the `copy` argument is set to something other than `CopyFileDetection.NO_COPY`, then files will be copied regardless of fast registration status.
-If the `source_root` and `copy` fields to an `ImageSpec` are left blank, then whether or not your source files are copied into the built `ImageSpec` image depends on whether or not you use fast registration. Please see [registering workflows](/user-guide/core-concepts/#registering-tasks-and-workflows) for the full explanation.
+If the `source_root` and `copy` fields to an `ImageSpec` are left blank, then whether or not your source files are copied into the built `ImageSpec` image depends on whether or not you use fast registration. Please see [Running your code](../development-cycle/running-your-code) for the full explanation.
 
 Since files are sometimes copied into the built image, the tag that is published for an ImageSpec will change based on whether fast register is enabled, and the contents of any files copied.
