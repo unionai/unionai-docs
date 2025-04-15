@@ -14,6 +14,20 @@ Here's a video with a brief explanation and demo, focused on task caching:
 
 {{< youtube WNkThCp-gqo >}}
 
+{{< variant flyte >}}
+
+{{< markdown >}}
+## Inputs caching
+
+In Flyte, input caching allows tasks to automatically cache the input data required for execution. This feature is particularly useful in scenarios where tasks may need to be re-executed, such as during retries due to failures or when manually triggered by users. By caching input data, Flyte optimizes workflow performance and resource usage, preventing unnecessary recomputation of task inputs.
+
+## Outputs caching
+
+Output caching in Flyte allows users to cache the results of tasks to avoid redundant computations. This feature is especially valuable for tasks that perform expensive or time-consuming operations where the results are unlikely to change frequently.
+{{< /markdown >}}
+
+{{< /variant >}}
+
 > [!NOTE]
 > * Caching is available and individiually enablable for all nodes *within* a workflow directed acyclic graph (DAG).
 > * Nodes in this sense include tasks, subworkflows (workflows called directly within another workflow), and sub-launch plans (launch plans called within a workflow).
@@ -79,19 +93,33 @@ Additionally, if the same node is invoked again with the same inputs (excluding 
 the cached result is returned immediately instead of re-executing the process.
 This applies even if the cached node is invoked externally through the UI or CLI.
 
+
 ## The `Cache` object
 
 The [Cache]() object takes the following parameters:
 <!-- TODO: Add link to API -->
 
+{{< variant byoc serverless >}}
+
+{{< markdown >}}
 * `version` (`Optional[str]`): Part of the cache key.
   A change to this parameter from one invocation to the next will invalidate the cache.
   This allows you to explicitly indicate when a change has been made to the node that should invalidate any existing cached results.
   Note that this is not the only change that will invalidate the cache (see below).
   Also, note that you can manually trigger cache invalidation per execution using the [`overwrite-cache` flag](#the-overwrite-cache-flag).
+
   If not set, the version will be generated based on the specified cache policies.
   When using `cache=True`, [as shown below](#enabling-caching-with-the-default-configuration), the [default cache policy](#default-cache-policy) generates the version.
+{{< /markdown >}}
+{{< /variant >}}
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+* `version` (`Optional[str]`): Part of the cache key. Changing this version number tells Flyte to ignore previous cached results and run the task again if the task’s function has changed. This allows you to explicitly indicate when a change has been made to the task that should invalidate any existing cached results. Note that this is not the only change that will invalidate the cache (see below). Also, note that you can manually trigger cache invalidation per execution using the `overwrite-cache` flag.
+
+{{< /markdown >}}
+{{< /variant >}}
 * `serialize` (`bool`): Enables or disables [cache serialization](#cache-serialization).
   When enabled, {{< key product_name >}} ensures that a single instance of the node is run before any other instances that would otherwise run concurrently.
   This allows the initial instance to cache its result and lets the later instances reuse the resulting cached outputs.
@@ -100,14 +128,33 @@ The [Cache]() object takes the following parameters:
 * `ignored_inputs` (`Union[Tuple[str, ...], str]`): Input variables that should not be included when calculating the hash for the cache.
   If not set, no inputs are ignored.
 
+{{< variant byoc serverless >}}
+
+{{< markdown >}}
 * `policies` (`Optional[Union[List[CachePolicy], CachePolicy]]`): A list of [CachePolicy]() objects used for automatic version generation.
   If no `version` is specified and one or more polices are specified then these policies automatically generate the version.
   Policies are applied in the order they are specified to produce the final `version`.
   If no `version` is specified and no policies are specified then the [default cache policy](#default-cache-policy) generates the version.
   When using `cache=True`, [as shown below](#enabling-caching-with-the-default-configuration), the [default cache policy](#default-cache-policy) generates the version.
+{{< /markdown >}}
 
+{{< /variant >}}
+
+{{< variant flyte >}}
+
+{{< markdown >}}
+
+* `policies` (`Optional[Union[List[CachePolicy], CachePolicy]]`): A list of cache policies to generate the version hash.
+
+
+{{< /markdown >}}
+
+{{< /variant >}}
 * `salt` (`str`): A [salt](<https://en.wikipedia.org/wiki/salt_(cryptography)>) used in the hash generation. A salt is a random value that is combined with the input values before hashing.
 
+{{< variant byoc serverless >}}
+
+{{< markdown >}}
 ## Enabling caching with the default configuration
 
 Instead of specifying a `Cache` object, a simpler way to enable caching is to set `cache=True` in the `@{{< key kit_as >}}.task` decorator (for tasks) or the `with_overrides` method (for subworkflows and sub-launch plans).
@@ -150,6 +197,10 @@ Automatic version generation using the default cache policy is used
 The default cache policy is `{{< key kit_as >}}.cache.CacheFunctionBody`.
 This policy generates a version by hashing the text of the function body of the task.
 This means that if the code in the function body changes, the version changes, and the cache is invalidated. Note that `CacheFunctionBody` does not recursively check for changes in functions or classes referenced in the function body.
+
+{{< /markdown >}}
+
+{{< /variant >}}
 
 ## The `overwrite-cache` flag
 
@@ -229,8 +280,22 @@ The **key** is composed of:
 
 * **Project:** A task run under one project cannot use the cached task execution from another project which would cause inadvertent results between project teams that could result in data corruption.
 * **Domain:** To separate test, staging, and production data, task executions are not shared across these environments.
+{{< variant byoc serverless >}}
+{{< markdown >}}
 * **Cache Version:** The cache version is either explicitly set using the `version` parameter in the `Cache` object or automatically set by a cache policy (see [Automatic version generation](#automatic-version-generation)).
   If the version changes (either explicitly or automatically), the cache entry is invalidated.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+* **Cache version**: When task functionality changes, you can change the cache_version of the task. Flyte will know not to use older cached task executions and create a new cache entry on the subsequent execution.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 * **Node signature:** The cache is specific to the signature associated with the execution.
   The signature comprises the name, input parameter names/types, and the output parameter name/type of the node.
   If the signature changes, the cache entry is invalidated.
@@ -258,7 +323,14 @@ The next time the task is called it will be executed and the result re-cached un
 However, if you change the version back to `1.0`, you will get a "cache hit" again and skip the execution of the task code.
 
 If used, the `version` parameter must be explicitly changed in order to invalidate the cache.
-(if not used, then a cache policy may be specified to generate the version, or you can rely on the default cache policy).
+
+{{< variant byoc serverless >}}
+{{< markdown >}}
+
+If not used, then a cache policy may be specified to generate the version, or you can rely on the default cache policy.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 Not every Git revision of a node will necessarily invalidate the cache.
 A change in Git SHA does not necessarily correlate to a change in functionality.

@@ -28,7 +28,7 @@ def sub_wf(a: int, b: int) -> int:
     return t(a=a, b=b)
 
 # Get the default launch plan of sub_wf, which we name sub_wf_lp
-sub_wf_lp = {{< key kit_as >}}LaunchPlan.get_or_create(sub_wf)
+sub_wf_lp = {{< key kit_as >}}.LaunchPlan.get_or_create(sub_wf)
 
 @{{< key kit_as >}}.workflow
 def main_wf():
