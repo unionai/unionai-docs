@@ -238,7 +238,7 @@ This will create the `~/.union/config.yaml` with the configuration information t
 > [!NOTE]
 > These directions apply to {{< key product_name >}} BYOC and BYOK, where you connect to your own dedicated {{< key product_name >}} instance.
 > To configure a connection to {{< key product_name >}} Serverless, see the
-> [Serverless version of this page]({{< docs_home serverless >}}/user-guide/quick-start#configure-the-union-cli).
+> [Serverless version of this page]({{< docs_home serverless >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
 
 See [Running in a local cluster](../development-cycle/running-in-a-local-cluster) for more details on the format of the `yaml` file.
 <!-- TODO: Fix this target page to have a more generic title (it applies to all clusters) and fix its content -->

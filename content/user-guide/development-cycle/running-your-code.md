@@ -161,13 +161,24 @@ Tasks also can be executed using the launch command.
 One difference between running a task and a workflow via launchplans is that launchplans cannot be associated with a
 task. This is to avoid triggers and scheduling.
 
-<!-- TODO: Add back when refernce is availabel
-## Running launchplans through flytectl
+## Running launchplans through {{< key ctl >}}
 
-This is multi-steps process where we create an execution spec file, update the spec file and then create the execution.
-More details can be found [here](https://docs.flyte.org/projects/flytectl/en/stable/gen/flytectl_create_execution.html).
+{{< variant flyte >}}
+{{< markdown >}}
 
--->
+This is multi-step process where we create an execution spec file, update the spec file and then create the execution.
+More details can be found [here](../../api-reference/flytectl-cli/flytectl-create/flytectl-create-execution).
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
+This is multi-step process where we create an execution spec file, update the spec file and then create the execution.
+More details can be found [here](../../api-reference/uctl-cli/uctl-create/uctl-create-execution).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ### Generate an execution spec file
 
@@ -244,8 +255,22 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 
 ## Inspecting executions
 
+{{< variant flyte >}}
+{{< markdown >}}
+
 {{< key ctl_name >}} supports inspecting execution by retrieving its details. For a deeper dive, refer to the
-[API reference](https://docs.flyte.org/projects/flytectl/en/stable/gen/flytectl_get_execution.html) guide.
+[API reference](../../api-reference/flytectl-cli/_index) guide.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
+{{< key ctl_name >}} supports inspecting execution by retrieving its details. For a deeper dive, refer to the
+[API reference](../../api-reference/uctl-cli/_index) guide.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 Monitor the execution by providing the execution id from create command which can be task or workflow execution.
 
@@ -321,7 +346,20 @@ Let’s break down what each flag is doing here:
 
 * `--version`: This is a version string that can be any string, but we recommend using the Git SHA in general, especially in production use cases.
 
+{{< variant flyte >}}
+{{< markdown >}}
+
 See [{{< key ctl_name >}} CLI](../../api-reference/flytectl-cli/_index) for more details.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc byok >}}
+{{< markdown >}}
+
+See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index) for more details.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 
 ## Using {{< key cli >}} register versus {{< key cli >}} package + {{< key ctl >}} register
