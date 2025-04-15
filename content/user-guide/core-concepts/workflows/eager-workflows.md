@@ -276,7 +276,7 @@ developing your workflows and tasks.
 
 ### Remote {{< key product_name >}} execution
 
-Under the hood, `@eager` workflows use the [`{{< key kit_remote >}}`](../../../api-reference/union-sdk/union-remote)
+Under the hood, `@eager` workflows use the [`{{< key kit_remote >}}`](../../development-cycle/union-remote)
 object to kick off task, static workflow, and eager workflow executions.
 
 In order to actually execute them on a {{< key product_name >}} cluster, you'll need to configure

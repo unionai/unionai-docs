@@ -24,7 +24,7 @@ Here you can see relevant metadata about the artifact, including:
 * The task or workflow that produced it
 * Its creation time
 * Its object store URI
-* Code for accessing the artifact via [{{< key kit_remote >}}](../../../api-reference/union-sdk/union-remote)
+* Code for accessing the artifact via [{{< key kit_remote >}}](../../development-cycle/union-remote)
 
 You can also view the artifact's object structure, model card, and lineage graph.
 

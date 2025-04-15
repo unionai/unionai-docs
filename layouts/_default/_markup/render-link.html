@@ -1,17 +1,19 @@
 {{- $hasShortcode := hasPrefix .Destination "HAHAHUGOSHORTCODE" -}}
+{{- $link := .Destination }}
 {{/* If a shortcode starts the link, use it AS IS */}}
 {{- if or $hasShortcode (hasPrefix .Destination "http://") (hasPrefix .Destination "https://") (hasPrefix .Destination "mailto:") -}}
-    <a href="{{.Destination | safeURL}}">{{.Text | safeHTML }}</a>
+    {{/* do nothing */}}
 {{- else if or (in page.RelPermalink "/api-reference/") -}}
-    <a href="{{.Destination | safeURL}}">{{.Text | safeHTML }}</a>
+    {{/* do nothing */}}
 {{- else -}}
     {{ $dest := strings.TrimSuffix ".md" .Destination }}
     {{ $dest = strings.TrimSuffix "_index" $dest }}
     {{- if or (hasPrefix $dest "/") (hasPrefix $dest "http") -}}
-        <a href="{{$dest | safeURL}}">{{.Text | safeHTML }}</a>
+        {{- $link = $dest -}}
     {{- else if (hasSuffix .Page "_index.md") -}}
-        <a href="{{ printf "%s%s" page.RelPermalink $dest | safeURL }}">{{.Text | safeHTML }}</a>
+        {{- $link = printf "%s%s" page.RelPermalink $dest -}}
     {{- else -}}
-        <a href="{{ printf "%s../%s" page.RelPermalink $dest | safeURL }}">{{.Text | safeHTML }}</a>
+        {{- $link = printf "%s../%s" page.RelPermalink $dest -}}
     {{- end -}}
 {{- end -}}
+<a href="{{ $link | safeURL }}">{{.Text | safeHTML }}</a>

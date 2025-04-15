@@ -8,7 +8,7 @@ variants: -flyte +serverless +byoc +byok
 
 {{< key product_name >}} unifies your AI development on a single end-to-end platform, bringing together data, models and compute with workflows of execution on a single pane of glass.
 
-{{< key product_name >}} builds on [Flyte](http://flyte.org), the open-source standard for orchestrating AI workflows.
+{{< key product_name >}} builds on [Flyte](https://flyte.org), the open-source standard for orchestrating AI workflows.
 It offers all the features of Flyte while adding more capability to scale, control costs and serve models.
 
 There are three deployment options for {{< key product_name >}}: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).

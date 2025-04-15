@@ -65,6 +65,7 @@ result=$(cat <<EOF
 ---------------------------------
 Results in ${output} @ $(realpath "${output}")
 Failures: $(grep -c AbsoluteURL < "${output}")
+404: $(grep -c 404 < "${output}")
 ---------------------------------
 
 EOF

@@ -43,7 +43,7 @@ Visually compare the output of various time series forecasters while
 maintaining lineage of the training and forecasted data.
 {{< /link-card >}}
 
-{{< link-card target="time-series/gluontst-time-series" icon="graph" title="GluonTS Time Series On GPUs" >}}
+{{< link-card target="time-series/gluonts-time-series" icon="graph" title="GluonTS Time Series On GPUs" >}}
 Train and evaluate a time series forecasting model with GluonTS.
 {{< /link-card >}}
 
@@ -67,16 +67,16 @@ Serve a vLLM model on a warm container and trigger inference automatically with 
 Run the Mochi 1 text-to-video generation model by Genmo on {{< key product_name >}}.
 {{< /link-card >}}
 
-{{< link-card target="language-models/pdf-to-podcast-blueprint" icon="play" title="Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use" >}}
+{{< link-card target="compound-ai-systems/pdf-to-podcast-blueprint" icon="play" title="Optimizing the PDF-to-Podcast NVIDIA Blueprint for Production Use" >}}
 Leverage {{< key product_name >}} to productionize NVIDIA blueprint workflows.
 {{< /link-card >}}
 
-{{< link-card target="language-models/contextual-rag" icon="book" title=" Contextual RAG with Together AI" >}}
+{{< link-card target="retrieval-augmented-generation/contextual-rag" icon="book" title=" Contextual RAG with Together AI" >}}
 Build a contextual RAG workflow for enterprise use.
 {{< /link-card >}}
 
 {{< variant byoc >}}
-{{< link-card target="language-models/nim-on-actor" icon="server" title="Near-Real-Time Inference with NVIDIA NIM" >}}
+{{< link-card target="serving/nim-on-actor" icon="server" title="Near-Real-Time Inference with NVIDIA NIM" >}}
 Serve NVIDIA NIM-supported language models, powered by {{< key product_name >}} actors.
 {{< /link-card >}}
 {{< /variant >}}

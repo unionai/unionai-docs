@@ -49,7 +49,11 @@
             {{- else if eq $index (sub (len $sections) 1) -}}
                 {{- $title -}}
             {{- else if $hasIndex -}}
-                <a href="{{- $.Site.BaseURL }}{{ $publicSectionURL -}}">
+                {{- $finalURL := $.Site.BaseURL -}}
+                {{- if and (strings.HasSuffix $finalURL "/") (strings.HasPrefix $publicSectionURL "/") -}}
+                    {{- $publicSectionURL = strings.TrimPrefix "/" $publicSectionURL -}}
+                {{- end -}}
+                <a href="{{- $finalURL }}{{ $publicSectionURL -}}">
                     {{- $title -}}
                 </a>
             {{- else -}}

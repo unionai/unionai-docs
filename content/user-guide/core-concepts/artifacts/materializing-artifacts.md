@@ -62,4 +62,4 @@ def wf():
 
 > [!NOTE]
 > You can also materialize an artifact by executing the `create_artifact` method of `{{< key kit_remote >}}`.
-> For more information, see the [{{< key kit_remote >}} documentation](../../../api-reference/union-sdk/union-remote).
+> For more information, see the [{{< key kit_remote >}} documentation](../../development-cycle/union-remote).
