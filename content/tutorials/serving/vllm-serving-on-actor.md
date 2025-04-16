@@ -4,4 +4,7 @@ weight: 7
 variants: -flyte +serverless +byoc +byok
 layout: py_example
 example_file: /external/unionai-examples/tutorials/vllm_serving_on_actor/ner.py
+resources:
+  static/diagram.png:
+    /external/unionai-examples/tutorials/vllm_serving_on_actor/static/diagram.png
 ---

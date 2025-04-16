@@ -1,0 +1,17 @@
+{{ $map := page.Scratch.Get "resource_permalinks" }}
+{{ $destination := .Destination }}
+
+{{/* Check if we need to remap the destination path */}}
+{{ if $map }}
+  {{ range $key, $value := $map }}
+    {{ if eq $destination $key }}
+      {{ $destination = $value }}
+      {{ break }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<img src="{{ $destination | safeURL }}"
+    {{- with .PlainText }} alt="{{ . }}"{{ end -}}
+    {{- with .Title }} title="{{ . }}"{{ end -}}
+/>
