@@ -13,8 +13,8 @@
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
   - [Run on Union Instructions](#run-on-union-instructions)
-- [Mermaid Graphs](#mermaid-graphs)
 - [Mapped Keys (`{{< key >}}`)](#mapped-keys--key-)
+- [Mermaid Graphs](#mermaid-graphs)
 
 
 ## Getting started
@@ -124,9 +124,11 @@ Declaring the file: At the top of your .md file, add:
     ---
     layout: py_example
     example_file: /path/to/your/file.py
+    run_command: union run --remote tutorials//path/to/your/file.py main
+    source_location: https://www.github.com/unionai/unionai-examples/tree/main/tutorials/path/to/your/file.py
     ---
 
-A file like this:
+Where the refeenced file looks like this:
 
     # # Credit Default Prediction with XGBoost & NVIDIA RAPIDS
     #
@@ -166,6 +168,10 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
     #
     # And it shall have it.
 
+
+The resulting **Run on Union** section in the rendered docs will include the run command and source location,
+specified as `run_command` and `source_locaiton` in the front matter of the corrsponding `.md` page.
+
 ## Mapped Keys (`{{< key >}}`)
 
 Key is a very special command that allows us to define mapped values to a variant.
@@ -184,4 +190,4 @@ To embed Mermaid diagrams in a page, insert the code inside a block like this:
 
 Also add `mermaid: true` to the top of your page to enable rendering.
 
-> You can use [Mermaid's playground](https://www.mermaidchart.com/play) to design diagrams and get the code 
+> You can use [Mermaid's playground](https://www.mermaidchart.com/play) to design diagrams and get the code

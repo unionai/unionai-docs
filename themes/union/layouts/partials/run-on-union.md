@@ -15,9 +15,10 @@ export IMAGE_SPEC_REGISTRY="<your-container-registry>"
 Then run the following commands to run the workflow:
 
 ```shell
-git clone https://github.com/unionai/unionai-examples
-cd unionai-examples
-union run --remote tutorials/sentiment_classifier/sentiment_classifier.py main --model distilbert-base-uncased
+$ git clone https://github.com/unionai/unionai-examples
+$ cd unionai-examples
+$ @@run_command@@
 ```
 
-The source code for this tutorial can be found [here {octicon}`mark-github`](https://www.github.com/unionai/unionai-examples/tree/main/tutorials/sentiment_classifier/sentiment_classifier.py).
+The source code for this tutorial can be found [here](@@source_location@@).
+
