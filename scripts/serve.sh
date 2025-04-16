@@ -19,14 +19,13 @@ Open browser @ http://localhost:${port}
 EOF
 fi
 
-cd dist
 
 if command -v caddy 1>/dev/null; then
   echo "Using Caddy HTTP server"
-  caddy file-server --listen=:${port}
+  caddy run --config scripts/Caddyfile --watch
 else
   echo "Using Python HTTP server"
+  cd dist
   python3 -m http.server ${PORT}
+  cd ..
 fi
-
-cd ..

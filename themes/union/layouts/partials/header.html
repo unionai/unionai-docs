@@ -22,19 +22,19 @@
 </div>
 
 <script>
-function handleVariantChange(event) {
+function handleVariantChange(event, queryString) {
     const opt = event.target.options[event.target.selectedIndex];
     const inVariant = opt.getAttribute('data-allowed') === 'true';
     const newVariant = opt.value;
     const newTarget = new URL(document.location.toString());
     const oldPrefix = "{{- .Site.BaseURL -}}";
     const newPrefix = "{{- .Site.BaseURL -}}".replace("{{- .Site.Params.variant -}}", newVariant);
-    if (inVariant) {
-        newTarget.pathname = newTarget.pathname.replace(oldPrefix, newPrefix);
-    } else {
-        // if not inVariant, we need to redirect to the homepage
-        newTarget.pathname = newPrefix;
+    newTarget.pathname = newTarget.pathname.replace(oldPrefix, newPrefix);
+    if (!inVariant) {
+        // if not inVariant, we need to add information for variant notice
+        newTarget.search = queryString;
     }
+
     console.log('Reloading', newTarget.toString());
     redirect(newTarget);
 }

@@ -20,15 +20,56 @@
                     };
                 };
 
-                const missingPageRef = document.querySelector('.missing-page-ref');
-                if (missingPageRef) {
+                const missingPageRefs = document.querySelectorAll('.missing-page-ref');
+                for (missingPageRef of missingPageRefs) {
                     missingPageRef.innerHTML = "<code>" + window.location.toString() + "</code>";
+                }
+            });
+        </script>
+        <script>
+            var upperVariant = "@@VARIANT@@".toUpperCase();
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const notFoundPanel = document.querySelector('.container.not-found');
+                const variantMismatchPanel = document.querySelector('.container.variant-mismatch');
+
+                const url = new URL(window.location);
+                
+                // Extract query string parameters
+                const source = url.searchParams.get('source');
+                const variant = url.searchParams.get('variant');
+                const origin = url.searchParams.get('origin');
+
+                if (variant !== null) {
+                    notFoundPanel.style.display = 'none';
+                    variantMismatchPanel.style.display = 'block';
+
+                    const title = document.getElementById('title');
+                    title.innerHTML = source;
+
+                    const variantTitle = document.getElementById('variant-title');
+                    variantTitle.innerHTML = "in " + upperVariant;
+
+                    const fromToPlaceholder = document.getElementById('from-to-placeholder');
+                    fromToPlaceholder.innerHTML = "to " + upperVariant.toUpperCase() + ", ";
+
+                    const goBackText = document.getElementById('go-back-text');
+                    goBackText.innerHTML = "to " + source;
+
+                    const goBackVariant = document.getElementById('go-back-variant');
+                    goBackVariant.innerHTML = "in " + variant.toUpperCase();
+
+                    const returnVariant = document.getElementById('return-variant');
+                    returnVariant.innerHTML = "in " + variant.toUpperCase();
+
+                    const goBackLink = document.getElementById('go-back-link');
+                    goBackLink.href = origin;
                 }
             });
         </script>
     </head>
     <body>
-        <div class="container">
+        <div class="container not-found">
             <h1>
                 <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
                 404 - Page Not Found
@@ -43,6 +84,61 @@
                 <p class="target-link-text">
                     <a href="@@BASE@@/@@VARIANT@@/">@@VARIANT@@</a>
                 </p>
+            </div>
+
+            <p>
+                If you believe you have reached this page in error, please
+                report it to us:
+            </p>
+            <p class="missing-page-ref" />
+        </div>
+        <div class="container variant-mismatch">
+            <h1>
+                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
+                <span id="title"></span>
+            </h1>
+            <h2>
+                Content Not Available <span id="variant-title"></span>
+            </h2>
+
+            <p>
+                You changed the product <span id="from-to-placeholder"></span> but the similar content is not available in the newly selected product.
+            </p>
+
+            <div class="nav">
+                <p>
+                    Please select from the following options the best way to proceed:
+                </p>
+
+                <div class="option">
+                    <p>Return to the original page <span id="return-variant"></span>...</p>
+                    <p class="target-link-text">
+                        <a id="go-back-link" href="@@BASE@@/@@VARIANT@@/">
+                            Go back <span id="go-back-text"></span>
+                            <span id="go-back-variant"></span>
+                        </a>
+                    </p>
+                </div>
+
+                <div class="or">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><hr/></td>
+                                <td>OR</td>
+                                <td><hr/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="option">
+                    <p>Go to the new product content...</p>
+                    <p class="target-link-text">
+                        <a id="user-guide" href="@@BASE@@/@@VARIANT@@/">Go to @@VARIANT@@ User Guide</a>
+                    </p>
+                </div>
+
             </div>
 
             <p>

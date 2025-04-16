@@ -39,7 +39,12 @@
 {{- $variants = $variants | append $positiveWeightVariants -}}
 {{- $variants = $variants | append $sortedVariants -}}
 
-<select id="variant-selector" onchange="handleVariantChange(event)"
+{{ $escapedTitle := .Params.title | urlquery }}
+{{ $escapedVariant := $.Site.Params.variant | urlquery }}
+{{ $escapedURL := .Permalink | urlquery }}
+{{ $params := printf "source=%s&variant=%s&origin=%s" $escapedTitle $escapedVariant $escapedURL }}
+
+<select id="variant-selector" onchange="handleVariantChange(event, '{{ $params }}')"
 {{- if not hugo.IsProduction -}}
     onmouseenter="document.getElementById('devwarn').style.display = '';"
     onmouseout="document.getElementById('devwarn').style.display = 'none';"

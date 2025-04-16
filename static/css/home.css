@@ -50,6 +50,34 @@ H1 {
   margin: 2rem 0;
 }
 
+.nav .option {
+  padding: 0.5rem 1rem;
+}
+
+.nav .option:nth-of-type(1) {
+  border-top: 1px solid lightgray;
+}
+.nav .option:nth-last-of-type(1) {
+  border-bottom: 1px solid lightgray;
+}
+
+.nav .option P {
+  margin: 0.5rem;
+}
+
+.nav .or {
+  margin: auto;
+  width: fit-content;
+}
+
+.nav .or TD HR {
+  width: 200px;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid lightgray;
+  margin: 1rem;
+}
+
 .warn {
   border: 1px solid #d97706;
   margin-bottom: 2rem;
@@ -74,7 +102,18 @@ H1 {
   padding: 1rem;
 }
 
+.missing-page-ref { 
+  max-width: 800px;
+  margin: auto;
+}
 
+.container.variant-mismatch {
+  display: none;
+}
+
+.container.not-found {
+  display: block;
+}
 
 .variant-flyte .target-link-text {
   background-color: #7652A2;
