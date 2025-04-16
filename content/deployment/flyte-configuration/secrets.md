@@ -21,11 +21,11 @@ running container.
 
 - Install [kubectl](https://kubernetes.io/docs/tasks/tools/).
 - Have access to a Flyte cluster, for e.g. with `flytectl demo start` as
-  described [here](/user-guide/development-cycle/running-in-a-local-cluster).
+  described [here](../../user-guide/development-cycle/running-in-a-local-cluster).
 
 The first step to using secrets in Flyte is to create one on the backend.
 By default, Flyte uses the K8s-native secrets manager, which we'll use in this
-example, but you can also [configure different secret managers](#configuring-a-secret-management-system-plugin).
+example, but you can also [configure different secret managers](./secrets#configuring-a-secret-management-system-plugin).
 
 First, we use `kubectl` to create a secret called `user-info` with a
 `user_secret` key:
