@@ -35,4 +35,4 @@ To test the MMCloud agent locally, create a class for the agent task that inheri
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the Memory Machine Cloud agent in your Flyte deployment, see the [MMCloud agent setup guide](/deployment/agents/mmcloud).
+To enable the Memory Machine Cloud agent in your Flyte deployment, see the [MMCloud agent setup guide](../../../deployment/flyte-connectors/mmcloud).

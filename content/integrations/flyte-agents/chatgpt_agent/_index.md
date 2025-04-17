@@ -32,4 +32,4 @@ To test the ChatGPT agent locally, create a class for the agent task that inheri
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the ChatGPT agent in your Flyte deployment, see the [ChatGPT agent deployment guide](/deployment/agents/chatgpt.html#deployment-agent-setup-chatgpt).
+To enable the ChatGPT agent in your Flyte deployment, see the [ChatGPT agent deployment guide](../../../deployment/flyte-connectors/chatgpt).

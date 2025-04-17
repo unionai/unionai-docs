@@ -118,7 +118,7 @@ To find the `ID` of the backend plugin, look at the source code of the plugin. F
 
 ## SDKs for writing tasks and workflows
 
-The [Flyte community](/community) would love to help you build new SDKs. Currently, the available SDKs are:
+The [Flyte community](../community/_index) would love to help you build new SDKs. Currently, the available SDKs are:
 
 | SDK | Description |
 |-----|-------------|

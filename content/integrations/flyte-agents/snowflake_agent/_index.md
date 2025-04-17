@@ -34,4 +34,4 @@ To test the Snowflake agent locally, create a class for the agent task that inhe
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the Snowflake agent in your Flyte deployment, see the [Snowflake agent setup guide](/deployment/agents/snowflake.html#deployment-agent-setup-snowflake).
+To enable the Snowflake agent in your Flyte deployment, see the [Snowflake agent setup guide](../../../deployment/flyte-connectors/snowflake).

@@ -8,7 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 ## Introduction
 
-Any workflow engine needs functionality to support scheduled executions. Flyte fulfills this using an in-built native scheduler, which schedules fixed rate and cron-based schedules. The workflow author specifies the schedule during the [launchplan creation](/user-guide/core-concepts/launch-plans/schedules/#schedules) and [activates or deactivates](/user-guide/core-concepts/launch-plans/activating-and-deactivating/) the schedule using the [admin APIs](/api-reference/flyteidl/#flyteidl-admin-LaunchPlanUpdateRequest) exposed for the launch plan.
+Any workflow engine needs functionality to support scheduled executions. Flyte fulfills this using an in-built native scheduler, which schedules fixed rate and cron-based schedules. The workflow author specifies the schedule during the [launchplan creation](../../user-guide/core-concepts/launch-plans/schedules) and [activates or deactivates](../../user-guide/core-concepts/launch-plans/activating-and-deactivating) the schedule using the [admin APIs](../../api-reference/flyteidl#flyteidladminlaunch_planproto) exposed for the launch plan.
 
 
 ## Characteristics
@@ -26,7 +26,7 @@ Any workflow engine needs functionality to support scheduled executions. Flyte f
 
 ### Schedule management
 
-This component supports creation/activation and deactivation of schedules. Each schedule is tied to a launch plan and is versioned in a similar manner. The schedule is created or its state is changed to activated/deactivated whenever the [admin API](/api-reference/flyteidl/#flyteidl-admin-LaunchPlanUpdateRequest) is invoked for it with [ACTIVE/INACTIVE state](/api-reference/flyteidl/#flyteidl-admin-LaunchPlanState). This is done either through [flytectl](/api-reference/flytectl-cli/flytectl-update/flytectl-update-launchplan/) or through any other client that calls the GRPC API. The API is similar to a launchplan, ensuring that only one schedule is active for a given launchplan.
+This component supports creation/activation and deactivation of schedules. Each schedule is tied to a launch plan and is versioned in a similar manner. The schedule is created or its state is changed to activated/deactivated whenever the [admin API](../../api-reference/flyteidl#flyteidladminlaunch_planproto) is invoked for it with [ACTIVE/INACTIVE state](../../api-reference/flyteidl#flyteidladminlaunch_planproto). This is done either through [flytectl](../../api-reference/flytectl-cli/flytectl-update/flytectl-update-launchplan) or through any other client that calls the GRPC API. The API is similar to a launchplan, ensuring that only one schedule is active for a given launchplan.
 
 
 ### Scheduler

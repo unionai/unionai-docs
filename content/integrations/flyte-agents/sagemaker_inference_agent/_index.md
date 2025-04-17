@@ -37,4 +37,4 @@ For more information, see "[Testing agents locally](https://docs.flyte.org/en/la
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
 To enable the AWS SageMaker inference agent in your Flyte deployment, refer to the
-[AWS SageMaker inference agent setup guide](/deployment/agents/sagemaker_inference.html#deployment-agent-setup-sagemaker-inference).
+[AWS SageMaker inference agent setup guide](../../../deployment/flyte-connectors/sagemaker-inference).

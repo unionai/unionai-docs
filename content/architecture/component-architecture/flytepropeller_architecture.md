@@ -12,7 +12,7 @@ variants: +flyte -serverless -byoc -byok
 
 ## Introduction
 
-A Flyte [workflow](/user-guide/core-concepts/workflows/standard-workflows/#standard-workflows) is represented as a Directed Acyclic Graph (DAG) of interconnected Nodes. Flyte supports a robust collection of Node types to ensure diverse functionality.
+A Flyte [workflow](../../user-guide/core-concepts/workflows/standard-workflows) is represented as a Directed Acyclic Graph (DAG) of interconnected Nodes. Flyte supports a robust collection of Node types to ensure diverse functionality.
 
 * **TaskNodes** support a plugin system to externally add system integrations.
 * **BranchNodes** allow altering the control flow during runtime; pruning downstream evaluation paths based on input.
@@ -25,7 +25,7 @@ FlytePropeller is responsible for scheduling and tracking execution of Flyte wor
 
 In this scheme, resources are periodically evaluated and the goal is to transition from the observed state to a requested state.
 
-In our case, workflows are the resources, whose desired state (*workflow definition*) is expressed using Flyte's SDK. Workflows are iteratively evaluated to transition from the current state to success. During each evaluation loop, the current workflow state is established as the [phase of workflow nodes](/api-reference/flyteidl/#flyteidl-core-WorkflowExecution-Phase) and subsequent tasks, and FlytePropeller performs operations to transition this state to success. The operations may include scheduling (or rescheduling) node executions, evaluating dynamic or branch nodes, etc.
+In our case, workflows are the resources, whose desired state (*workflow definition*) is expressed using Flyte's SDK. Workflows are iteratively evaluated to transition from the current state to success. During each evaluation loop, the current workflow state is established as the [phase of workflow nodes](../../api-reference/flyteidl#flyteidlcoreworkflowproto) and subsequent tasks, and FlytePropeller performs operations to transition this state to success. The operations may include scheduling (or rescheduling) node executions, evaluating dynamic or branch nodes, etc.
 
 By using a simple yet robust mechanism, FlytePropeller can scale to manage a large number of concurrent workflows without significant performance degradation.
 

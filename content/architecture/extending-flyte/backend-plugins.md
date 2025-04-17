@@ -35,7 +35,7 @@ A Flyte backend extension consists of 3 parts: interface specification, `flyteki
 
 ### Interface specification
 
-Usually Flyte extensions need information that is not covered by a [`TaskTemplate`](/api-reference/flyteidl#flyteidl-core-TaskTemplate).
+Usually Flyte extensions need information that is not covered by a [`TaskTemplate`](../../api-reference/flyteidl#tasktemplate-flyteidl-core-tasktemplate).
 The TaskTemplate consists of a the interface, task_type identifier, some metadata and other fields.
 
 > [!NOTE]

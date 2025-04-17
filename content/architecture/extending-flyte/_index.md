@@ -17,7 +17,7 @@ Flyte, just like a programming language, has a core type-system, which can be ex
 For example, Flyte supports adding support for a dataframe type from a new library, a custom user data structure, or a grouping of images in a specific encoding.
 
 Flytekit natively supports structured data like [`dataclasses.dataclass`](https://docs.python.org/3/library/dataclasses.html) using JSON as the representation format.
-See [Using Custom Python Objects](/user-guide/data-input-output/dataclass).
+See [Using Custom Python Objects](../../user-guide/data-input-output/dataclass).
 
 Flytekit allows users to extend Flyte's type system and implement types in Python that are not representable as JSON documents.
 The user has to implement a {{< py_class_ref flytekit.extend.TypeTransformer >}} class to enable the translation of type from user type to Flyte-understood type.
@@ -25,7 +25,7 @@ The user has to implement a {{< py_class_ref flytekit.extend.TypeTransformer >}}
 As an example, instead of using [`pandas.DataFrame`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) directly, you may want to use
 [Pandera](https://pandera.readthedocs.io/en/stable) to perform validation of an input or output dataframe.
 
-To extend the type system, refer to [Custom types](/architecture/extending-flyte/custom-types).
+To extend the type system, refer to [Custom types](./custom-types).
 
 ## Add a New Task Plugin
 
@@ -90,7 +90,7 @@ Writing your own Flytekit plugin is simple and is typically where you want to st
 
 ## User Container vs. Pre-built Container Task Plugin
 
-A Flytekit-only task plugin can be a [User container](/architecture/extending-flyte/user-container-task-plugins) or [Pre-built container](/architecture/extending-flyte/prebuilt-container-task-plugins) task plugin.
+A Flytekit-only task plugin can be a [User container](./user-container-task-plugins) or [Pre-built container](./prebuilt-container-task-plugins) task plugin.
 
 |               | User Container | Pre-built Container |
 |---------------|----------------|---------------------|
@@ -103,7 +103,7 @@ A Flytekit-only task plugin can be a [User container](/architecture/extending-fl
 
 ## Backend Plugin
 
-[Writing a Backend plugin](/architecture/extending-flyte/backend-plugins) makes it possible for users to write extensions for FlytePropeller - Flyte's scheduling engine.
+[Writing a Backend plugin](./backend-plugins) makes it possible for users to write extensions for FlytePropeller - Flyte's scheduling engine.
 This enables complete control of the visualization and availability of the plugin.
 
 
@@ -120,7 +120,7 @@ This enables complete control of the visualization and availability of the plugi
 ## Flyte Agent Service
 
 
-The [Flyte Agent service](/architecture/building-flyte-agents) allows you to write backend plugins in Python.
+The Flyte Agent service allows you to write backend plugins in Python.
 
 ### Summary
 

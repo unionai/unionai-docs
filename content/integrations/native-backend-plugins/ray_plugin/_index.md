@@ -26,7 +26,7 @@ To install the Ray plugin, run the following command:
 $ pip install flytekitplugins-ray
 ```
 
-To enable the plugin in the backend, refer to the instructions provided in the [Configuyre Kubernetes Plugins](/deployment/plugins/k8s/index.html#deployment-plugin-setup-k8s) guide.
+To enable the plugin in the backend, refer to the instructions provided in the [Configuyre Kubernetes Pluginsep](../../../deployment/flyte-plugins/kubernetes-plugins) guide.
 
 ## Implementation details
 

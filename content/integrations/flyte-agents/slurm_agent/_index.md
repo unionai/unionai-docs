@@ -31,4 +31,4 @@ To test the Slurm agent locally, create a class for the agent task that inherits
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the Slurm agent in your Flyte deployment, see the [Slurm agent deployment guide](/deployment/agents/slurm.html#deployment-agent-setup-slurm).
+To enable the Slurm agent in your Flyte deployment, see the [Slurm agent deployment guide](../../../deployment/flyte-connectors/slurm).

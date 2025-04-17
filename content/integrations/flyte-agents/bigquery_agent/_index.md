@@ -31,5 +31,5 @@ To test the BigQuery agent locally, create a class for the agent task that inher
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the BigQuery agent in your Flyte deployment, see the [BigQuery agent deployment guide](/deployment/agents/bigquery.html#deployment-agent-setup-bigquery)
+To enable the BigQuery agent in your Flyte deployment, see the [BigQuery agent deployment guide](../../../deployment/flyte-connectors/bigquery)
 

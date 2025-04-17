@@ -8,7 +8,7 @@ variants: +flyte -serverless -byoc -byok
 The multicluster deployment described in this section, assumes you have deployed the `flyte-core` helm chart, which runs the individual flyte components separately.
 this is needed because in a multicluster setup, the execution engine (`flytepropeller`) is deployed to multiple k8s clusters; hence it wouldn't work with the `flyte-binary` helm chart, since it deploys all flyte services as one single binary.
 
-> {{< key product_name >}} offers simplified support for multi-cluster and multi-cloud. [Learn more](/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
+> {{< key product_name >}} offers simplified support for multi-cluster and multi-cloud. [Learn more](../../deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
 
 ## Scaling Beyond Kubernetes
 

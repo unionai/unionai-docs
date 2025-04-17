@@ -35,5 +35,5 @@ To test the Databricks agent locally, create a class for the agent task that inh
 > [!NOTE]
 > If you are using a managed deployment of Flyte, you will need to contact your deployment administrator to configure agents in your deployment.
 
-To enable the Databricks agent in your Flyte deployment, see the [Databricks agent setup guide](/deployment/agents/databricks.html#deployment-agent-setup-databricks).
+To enable the Databricks agent in your Flyte deployment, see the [Databricks agent setup guide](../../../deployment/flyte-connectors/databricks).
 
