@@ -1,152 +1,34 @@
 <html>
     <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-        <link id="home_css" rel="stylesheet" href="@@BASE@@/css/home.css?v=@@BUILD@@" />
         <script>
-            // Set up error handler immediately
-            document.addEventListener('DOMContentLoaded', function() {
-                const logo = document.getElementById('logo');
-                logo.onerror = function() {
-                    // If main logo fails, try fallback path
-                    console.log('Primary logo failed to load, trying fallback');
-                    this.src = 'static/images/icon-logo.svg';
-
-                    // Add second error handler for fallback
-                    this.onerror = function() {
-                        console.error('Failed to load logo image from both paths');
-                        logo.style.display = 'none';
-                    };
-                };
-
-                const missingPageRefs = document.querySelectorAll('.missing-page-ref');
-                for (missingPageRef of missingPageRefs) {
-                    missingPageRef.innerHTML = "<code>" + window.location.toString() + "</code>";
-                }
-            });
-        </script>
-        <script>
-            var upperVariant = "@@VARIANT@@".toUpperCase();
+            const targetVariant = '@@VARIANT@@';
 
             document.addEventListener('DOMContentLoaded', function() {
-                const notFoundPanel = document.querySelector('.container.not-found');
-                const variantMismatchPanel = document.querySelector('.container.variant-mismatch');
-
                 const url = new URL(window.location);
                 
-                // Extract query string parameters
-                const source = url.searchParams.get('source');
-                const variant = url.searchParams.get('variant');
-                const origin = url.searchParams.get('origin');
+                // Get the current path
+                const path = url.pathname;
 
-                if (variant !== null) {
-                    notFoundPanel.style.display = 'none';
-                    variantMismatchPanel.style.display = 'block';
+                // Find the first occurrence of targetVariant in the path
+                // Look for the variant without assuming a /docs prefix
+                const variantIndex = path.indexOf(`/${targetVariant}/`);
 
-                    const title = document.getElementById('title');
-                    title.innerHTML = source;
+                if (variantIndex !== -1) {
+                    // Create new path with everything up to and including the variant, then add 404/
+                    const newPath = path.substring(0, variantIndex) + `/${targetVariant}/404/`;
 
-                    const variantTitle = document.getElementById('variant-title');
-                    variantTitle.innerHTML = "in " + upperVariant;
+                    // Create the redirect URL with the same query parameters
+                    const redirectUrl = new URL(newPath, window.location.origin);
+                    redirectUrl.search = url.search; // Keep all query parameters
+                    redirectUrl.searchParams.set('url', document.location.toString());
 
-                    const fromToPlaceholder = document.getElementById('from-to-placeholder');
-                    fromToPlaceholder.innerHTML = "to " + upperVariant.toUpperCase() + ", ";
-
-                    const goBackText = document.getElementById('go-back-text');
-                    goBackText.innerHTML = "to " + source;
-
-                    const goBackVariant = document.getElementById('go-back-variant');
-                    goBackVariant.innerHTML = "in " + variant.toUpperCase();
-
-                    const returnVariant = document.getElementById('return-variant');
-                    returnVariant.innerHTML = "in " + variant.toUpperCase();
-
-                    const goBackLink = document.getElementById('go-back-link');
-                    goBackLink.href = origin;
+                    // Redirect
+                    window.location.href = redirectUrl.toString();
                 }
             });
         </script>
     </head>
     <body>
-        <div class="container not-found">
-            <h1>
-                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
-                404 - Page Not Found
-            </h1>
-
-            <p>We are sorry, but the page you are looking for does not exist.</p>
-
-            <div class="nav">
-                <p>
-                    Please click for the closest documentation entry point:
-                </p>
-                <p class="target-link-text">
-                    <a href="@@BASE@@/@@VARIANT@@/">@@VARIANT@@</a>
-                </p>
-            </div>
-
-            <p>
-                If you believe you have reached this page in error, please
-                report it to us:
-            </p>
-            <p class="missing-page-ref" />
-        </div>
-        <div class="container variant-mismatch">
-            <h1>
-                <img id="logo" src="@@BASE@@/images/icon-logo.svg" class="logo" />
-                <span id="title"></span>
-            </h1>
-            <h2>
-                Content Not Available <span id="variant-title"></span>
-            </h2>
-
-            <p>
-                You changed the product <span id="from-to-placeholder"></span> but the similar content is not available in the newly selected product.
-            </p>
-
-            <div class="nav">
-                <p>
-                    Please select from the following options the best way to proceed:
-                </p>
-
-                <div class="option">
-                    <p>Return to the original page <span id="return-variant"></span>...</p>
-                    <p class="target-link-text">
-                        <a id="go-back-link" href="@@BASE@@/@@VARIANT@@/">
-                            Go back <span id="go-back-text"></span>
-                            <span id="go-back-variant"></span>
-                        </a>
-                    </p>
-                </div>
-
-                <div class="or">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td><hr/></td>
-                                <td>OR</td>
-                                <td><hr/></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="option">
-                    <p>Go to the new product content...</p>
-                    <p class="target-link-text">
-                        <a id="user-guide" href="@@BASE@@/@@VARIANT@@/">Go to @@VARIANT@@ User Guide</a>
-                    </p>
-                </div>
-
-            </div>
-
-            <p>
-                If you believe you have reached this page in error, please
-                report it to us:
-            </p>
-            <p class="missing-page-ref" />
-        </div>
+        404 - Page Not Found
     </body>
 </html>
-

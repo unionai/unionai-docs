@@ -1,3 +1,4 @@
+{{ $tocEnabled := .Params.toc_enabled | default true }}
 {{ $maxTocLevel := .Params.toc_max | default 99 }}
 {{ $headingSelector := slice }}
 {{ $level := 1 }}
@@ -8,6 +9,7 @@
         {{ break }}
     {{ end }}
 {{ end }}
+{{ if $tocEnabled }}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         tocbot.init({
@@ -29,3 +31,4 @@
     <div class="toc-header">On this page</div>
     <div class="toc"></div>
 </div>
+{{ end }}

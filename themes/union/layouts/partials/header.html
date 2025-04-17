@@ -32,7 +32,7 @@ function handleVariantChange(event, queryString) {
     newTarget.pathname = newTarget.pathname.replace(oldPrefix, newPrefix);
     if (!inVariant) {
         // if not inVariant, we need to add information for variant notice
-        newTarget.search = queryString;
+        newTarget.search = queryString + "&targetVariant=" + newVariant;
     }
 
     console.log('Reloading', newTarget.toString());

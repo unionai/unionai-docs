@@ -1,3 +1,5 @@
+{{- $sidebarEnabled := .Params.sidebar_enabled | default true -}}
+{{- if $sidebarEnabled -}}
 <sl-drawer label="Drawer" placement="start" class="drawer-sidebar" hidden>
   <div slot="label">
     {{- partial "header-logo.html" . -}}
@@ -54,6 +56,9 @@
     });
   })
 </script>
+{{- else -}}
+<nav enabled="false" />
+{{- end -}}
 
 {{ define "site-nav" }}
 <nav class="site-nav">

@@ -8,30 +8,32 @@ log {
 }
 
 handle_errors {
-    # Default 404 page for any other paths
-    # Match specific product sections with 404 status
-    @byoc_404 {
+    @404 {
         expression {http.error.status_code} == 404
+    }
+
+    # Match specific product sections and serve appropriate 404 pages
+    @byoc_path {
         path_regexp byoc ^/docs/byoc(/.*)?$
     }
-    @byok_404 {
-        expression {http.error.status_code} == 404
+    @byok_path {
         path_regexp byok ^/docs/byok(/.*)?$
     }
-    @serverless_404 {
-        expression {http.error.status_code} == 404
+    @serverless_path {
         path_regexp serverless ^/docs/serverless(/.*)?$
     }
-    @flyte_404 {
-        expression {http.error.status_code} == 404
+    @flyte_path {
         path_regexp flyte ^/docs/flyte(/.*)?$
     }
 
-    # Rewrite to appropriate 404 pages based on path and 404 status
-    rewrite @byoc_404 /docs/byoc/404.html
-    rewrite @byok_404 /docs/byok/404.html
-    rewrite @serverless_404 /docs/serverless/404.html
-    rewrite @flyte_404 /docs/flyte/404.html
+    # Rewrite to appropriate 404 pages based on path
+    rewrite @byoc_path /docs/byoc/404.html
+    rewrite @byok_path /docs/byok/404.html
+    rewrite @serverless_path /docs/serverless/404.html
+    rewrite @flyte_path /docs/flyte/404.html
+
+    # Default 404 page for any other paths
+    rewrite @404 /404.html
 
     file_server
 }

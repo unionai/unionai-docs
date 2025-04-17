@@ -10,6 +10,10 @@
   height: calc(100dvh - var(--header-height) - var(--tabs-height));
 }
 
+.sidebar:has(> nav[enabled="false"]) {
+  display: none;
+}
+
 .sidebar > nav > ul > li > .section-title,
 .sidebar > nav > ul > li > .section-pages {
   padding-left: 0.75rem;

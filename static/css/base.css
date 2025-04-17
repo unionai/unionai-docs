@@ -34,6 +34,7 @@
   --toc-bg: var(--bg-color);
   --docsearch-primary-color: #edab1c !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
+  --breadcrumbs-height: 128px;
 }
 
 :root .variant-flyte {
