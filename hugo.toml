@@ -144,21 +144,21 @@ byok = "favicon.ico"
 # Search
 
 [params.search.flyte]
-app_id = "2GHFU8TPNP"
-search_key = "8cd3a91e81b0144a79682e1d3ecacad4"
-index_name = "flyte"
+app_id = "854NZC4U4K"
+search_key = "a013df09b48c1317f0bad3605c1840e4"
+index_name = "union"
 
 [params.search.byoc]
-app_id = "2K3A78HTBR"
-search_key = "bfaa8204d151b099b681edb41052a152"
-index_name = "byoc"
+app_id = "JXAX1VOSS0"
+search_key = "f90406df1c8707c844facf29564446dc"
+index_name = "union"
 
 [params.search.byok]
-app_id = "TIVM6MJAB2"
-search_key = "f32eb3c993ec93ee561914edafadc25a"
-index_name = "byok"
+app_id = "ZK72K15QRI"
+search_key = "59e5451a3db8540ee70dc8dd04fe6287"
+index_name = "union"
 
 [params.search.serverless]
-app_id = "FEI16F3Z8H"
-search_key = "e4d47384fcfed00c31afe99c06b69288"
-index_name = "serverless"
+app_id = "L21F4ROAJM"
+search_key = "f34fa663e9e327dd7e79526567e5027f"
+index_name = "union"
