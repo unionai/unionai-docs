@@ -17,7 +17,7 @@ Flyte, just like a programming language, has a core type-system, which can be ex
 For example, Flyte supports adding support for a dataframe type from a new library, a custom user data structure, or a grouping of images in a specific encoding.
 
 Flytekit natively supports structured data like [`dataclasses.dataclass`](https://docs.python.org/3/library/dataclasses.html) using JSON as the representation format.
-See [Using Custom Python Objects](../../user-guide/data-input-output/dataclass).
+See [Dataclass](../../user-guide/data-input-output/dataclass).
 
 Flytekit allows users to extend Flyte's type system and implement types in Python that are not representable as JSON documents.
 The user has to implement a {{< py_class_ref flytekit.extend.TypeTransformer >}} class to enable the translation of type from user type to Flyte-understood type.

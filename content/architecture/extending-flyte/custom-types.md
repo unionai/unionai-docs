@@ -17,8 +17,6 @@ The example is demonstrated in the video below:
 
 {{< youtube 1xExpRzz8Tw >}}
 
-> [!NOTE]
-> To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
 
 First, we import the dependencies:
 
