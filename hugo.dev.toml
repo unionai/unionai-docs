@@ -1,1 +1,3 @@
+# hugo.dev.toml - Settings for developer mode, a.k.a., 'make dev'
+
 baseURL = 'http://localhost/'

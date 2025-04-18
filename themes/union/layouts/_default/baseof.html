@@ -9,23 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{- .Title -}}&nbsp;|&nbsp;{{- .Site.Title -}}</title>
     <link rel="icon" href="{{- printf "images/%s" (index .Site.Params.Key.favicon .Site.Params.variant) | relURL -}}?v={{- $v -}}"/>
-    <link rel="stylesheet" href="{{- "css/404.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/api.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/base.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/breadcrumb.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/card.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/codeblock.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/footer.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/header.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/images.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/key.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/markdown.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/mermaid.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/plugin.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/search.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/sidebar.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/tabs.css" | relURL -}}?v={{- $v -}}" />
-    <link rel="stylesheet" href="{{- "css/toc.css" | relURL -}}?v={{- $v -}}" />
+    {{- range .Site.Params.custom_css }}
+    <link rel="stylesheet" href='{{- (printf "css/%s" .) | relURL -}}?v={{- $v -}}' />
+    {{- end }}
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
@@ -57,10 +43,9 @@
     {{ end }}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.min.js"></script>
-    <script lang="javascript" src="{{- "js/key.js" | relURL -}}?v={{- $v -}}"></script>
-    <script lang="javascript" src="{{- "js/sidebar.js" | relURL -}}?v={{- $v -}}"></script>
-    <script lang="javascript" src="{{- "js/theme.js" | relURL -}}?v={{- $v -}}"></script>
-    <script lang="javascript" src="{{- "js/tags.js" | relURL -}}?v={{- $v -}}"></script>
+    {{- range .Site.Params.custom_js }}
+    <script lang="javascript" src="{{- (printf "js/%s" .) | relURL -}}?v={{- $v -}}"></script>
+    {{- end }}
     <link rel="stylesheet" href="{{- "css/responsive.css" | relURL -}}?v={{- $v -}}" />
     {{ if not hugo.IsProduction }}
     <link rel="stylesheet" href="{{- "css/dev_mode.css" | relURL -}}?v={{- $v -}}" />

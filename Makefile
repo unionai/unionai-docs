@@ -31,14 +31,14 @@ dist: base
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
-	@./scripts/run_hugo.sh --config hugo.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	@./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	@if ! ./scripts/dev-pre-flight.sh; then exit 1; fi
 	rm -rf public
-	hugo server --config hugo.toml,hugo.dev.toml,hugo.local.toml
+	hugo server --config hugo.toml,hugo.site.toml,hugo.dev.toml,hugo.local.toml
 
 serve:
 	@if [ ! -d dist ]; then "echo Run `make dist` first"; exit 1; fi

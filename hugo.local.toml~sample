@@ -1,3 +1,5 @@
+# hugo.local.toml - Overrides for use in development mode, a.k.a., 'make dev'
+
 [params]
 
 # The current variant to display. Change this in 'hugo.toml', save,
