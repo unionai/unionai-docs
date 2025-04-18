@@ -1,0 +1,162 @@
+{
+  "BrokenLinksByPageURL": {
+    "http://192.168.86.71:9000/docs/byoc/api-reference/flytekit-sdk/packages/flytekit.configuration/": [
+      {
+        "LinkValue": "flytekit.configuration#flytekitconfigurationconfig",
+        "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/api-reference/flytekit-sdk/packages/flytekit.configuration/flytekit.configuration#flytekitconfigurationconfig",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "Config",
+        "Attribute": "href",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/api-reference/flytekit-sdk/packages/flytekit.core.legacy_map_task/": [
+      {
+        "LinkValue": "https://docs.flyte.org/en/latest/deployment/plugin_setup/aws/batch.html",
+        "AbsoluteURL": "https://docs.flyte.org/en/latest/deployment/plugin_setup/aws/batch.html",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "AWS batch",
+        "Attribute": "href",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/api-reference/flytekit-sdk/packages/flytekit.core.schedule/": [
+      {
+        "LinkValue": "https://docs.flyte.org/en/latest/concepts/schedules.html#cron-expression-table",
+        "AbsoluteURL": "https://docs.flyte.org/en/latest/concepts/schedules.html#cron-expression-table",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "cron format",
+        "Attribute": "href",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/api-reference/union-cli/": [
+      {
+        "LinkValue": "../user-guide/getting-started/local-setup",
+        "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/api-reference/user-guide/getting-started/local-setup",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "Getting started \u003e Local setup",
+        "Attribute": "href",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/tutorials/language-models/liger-kernel-finetuning/": [
+      {
+        "LinkValue": "static/analysis_results.png",
+        "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/tutorials/language-models/liger-kernel-finetuning/static/analysis_results.png",
+        "Tag": "img",
+        "IsTagTextTypeAttribute": true,
+        "IsTagTextTypeContent": false,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "alt",
+        "TagTextValue": "analysis results",
+        "Attribute": "src",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      },
+      {
+        "LinkValue": "static/workflow_graph.png",
+        "AbsoluteURL": "http://192.168.86.71:9000/docs/byoc/tutorials/language-models/liger-kernel-finetuning/static/workflow_graph.png",
+        "Tag": "img",
+        "IsTagTextTypeAttribute": true,
+        "IsTagTextTypeContent": false,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "alt",
+        "TagTextValue": "execution graph",
+        "Attribute": "src",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/tutorials/retrieval-augmented-generation/agentic-rag/": [
+      {
+        "LinkValue": "https://openai.com/",
+        "AbsoluteURL": "https://openai.com/",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "GPT4",
+        "Attribute": "href",
+        "StatusCode": 403,
+        "StatusDescription": "Forbidden",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/tutorials/retrieval-augmented-generation/contextual-rag/": [
+      {
+        "LinkValue": "/_static/_tutorials/contextual-rag/contextual_rag.png",
+        "AbsoluteURL": "http://192.168.86.71:9000/_static/_tutorials/contextual-rag/contextual_rag.png",
+        "Tag": "img",
+        "IsTagTextTypeAttribute": true,
+        "IsTagTextTypeContent": false,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "alt",
+        "TagTextValue": "Contextual RAG App",
+        "Attribute": "src",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/tutorials/serving/nim-on-actor/": [
+      {
+        "LinkValue": "https://org.ngc.nvidia.com/setup/personal-keys",
+        "AbsoluteURL": "https://org.ngc.nvidia.com/setup/personal-keys",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "NGC website",
+        "Attribute": "href",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ],
+    "http://192.168.86.71:9000/docs/byoc/user-guide/data-input-output/flyte-file-and-flyte-directory/": [
+      {
+        "LinkValue": "https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto",
+        "AbsoluteURL": "https://docs.flyte.org/en/latest/api/flyteidl/docs/core/core.html#flyteidl-core-types-proto",
+        "Tag": "a",
+        "IsTagTextTypeAttribute": false,
+        "IsTagTextTypeContent": true,
+        "IsTagTextTypeNone": false,
+        "TagTextKey": "",
+        "TagTextValue": "Flyte Core Language Specification \u003e Literals",
+        "Attribute": "href",
+        "StatusCode": 404,
+        "StatusDescription": "Not Found",
+        "CountOnPage": 1
+      }
+    ]
+  }
+}
