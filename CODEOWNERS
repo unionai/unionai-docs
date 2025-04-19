@@ -4,14 +4,14 @@
 
 #-----------------------------------
 # Site maintainers
-/content/           @unionai/site-managers
-/external/          @unionai/site-managers
-/include/           @unionai/site-managers
-/static/            @unionai/site-managers
-404.html.tmpl*      @unionai/site-managers
-config.*.toml       @unionai/site-managers
-hugo.site.toml      @unionai/site-managers
-redirects-*.csv     @unionai/site-managers
+/content/                   @unionai/site-managers
+/external/                  @unionai/site-managers
+/include/                   @unionai/site-managers
+/static/                    @unionai/site-managers
+404.html.tmpl*              @unionai/site-managers
+config.*.toml               @unionai/site-managers
+hugo.site.toml              @unionai/site-managers
+redirects-*.csv             @unionai/site-managers
 
 #-----------------------------------
 # Infrastructure
