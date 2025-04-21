@@ -89,5 +89,11 @@ Power your RAG app with {{< key product_name >}} Serving.
 Serve models and run background jobs like data ingestion — all within {{< key product_name >}} using {{< key product_name >}} Serving and {{< key product_name >}} Workflows.
 {{< /link-card >}}
 
+{{< variant byoc >}}
+{{< link-card target="language-models/data-streaming" icon="" title="Streaming Data for BERT Training" >}}
+Train a BERT model on a large Arabic text dataset using PyTorch Lightning and the streaming library from MosaicML.
+{{< /link-card >}}
+{{< /variant >}}
+
 {{< /grid >}}
 {{< /variant>}}
