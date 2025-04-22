@@ -302,9 +302,8 @@ def t_deck():
 
 This will create a live deck that where you can click the refresh button and see the Deck update until the task succeeds.
 
-[Union Deck Succeed Video](https://raw.githubusercontent.com/flyteorg/static-resources/2f3c3c26e9c0168c350bb8cb1bef1ece36ee60ee/flyte/user_guide/development_lifecycle/decks/deck_succeed.mp4)
+### Union Deck Succeed Video
+{{< youtube LJaBP0mdFeE >}}
 
-When the task fails, you can also see the deck in the UI.
-
-[Union Deck Fail Video](https://raw.githubusercontent.com/flyteorg/static-resources/2f3c3c26e9c0168c350bb8cb1bef1ece36ee60ee/flyte/user_guide/development_lifecycle/decks/deck_fail.mp4)
-
+### Union Deck Fail Video
+{{< youtube xaBF6Jlzjq0 >}}
