@@ -12,6 +12,7 @@ hugo.local.toml
 .DS_Store
 *.swp
 __pycache__/
+.hugo_build.lock
 
 # Ignore test file
 content/test.md
