@@ -160,3 +160,9 @@ flyte = "icon-logo-flyte.png"
 serverless = "icon-logo.svg"
 byoc = "icon-logo.svg"
 byok = "icon-logo.svg"
+
+[params.key.favicon]
+flyte = "icon-logo-flyte.png"
+serverless = "favicon.ico"
+byoc = "favicon.ico"
+byok = "favicon.ico"
