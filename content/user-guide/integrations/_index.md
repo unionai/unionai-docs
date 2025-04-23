@@ -7,35 +7,9 @@ variants: +flyte -serverless +byoc +byok
 
 # Integrations
 
-<!-- TODO: clean up refernces when examples are moved to new repo -->
-
-{{< variant serverless >}}
-{{< markdown >}}
-
-This section describes how to enable agent integrations that connect to other
-services, such as Apache Airflow, ChatGPT, Databricks, Snowflake, and more.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc byok flyte >}}
-{{< markdown >}}
-
-This section describes how to enable integrations with AWS and GCP cloud
-resources as well as how to use integrations that connect to other services,
+This section describes how to enable integrations that connect to other services,
 such as Apache Airflow, ChatGPT, dbt, Databricks, NVidia DGX, Snowflake, and
 more.
-
-## AWS cloud resources integrations
-
-* [Enabling AWS S3](./enabling-aws-resources/enabling-aws-s3)
-* [Enabling AWS ECR](./enabling-aws-resources/enabling-aws-ecr)
-* [Enabling AWS Secrets Manager](./enabling-aws-resources/enabling-aws-secrets-manager)
-
-## GCP cloud resources integrations
-
-* [Enabling BigQuery](./enabling-gcp-resources/enabling-bigquery)
-* [Enabling Google Artifact Registry](./enabling-gcp-resources/enabling-google-artifact-registry)
-* [Enabling Google Secret Manager](./enabling-gcp-resources/enabling-google-secret-manager)
 
 ## Additional integrations
 
@@ -80,6 +54,3 @@ A variety of agents and plugins enable you to integrate {{< key product_name >}}
 ### Misc
 
 * [File sensor agent](./agents/file-sensor-agent) Detect files appearing in your local or remote filesystem.
-
-{{< /markdown >}}
-{{< /variant >}}

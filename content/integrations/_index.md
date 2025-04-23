@@ -11,7 +11,27 @@ sidebar_expanded: true
 Flyte is designed to be highly extensible and can be customized in multiple ways.
 
 > [!NOTE]
-> Want to contribute an integration example? Check out the {ref}`Tutorials and integration examples contribution guide <contribute_examples>`.
+> Want to contribute an integration example? Check out the [contribution guide](../community/contribute/contribute-examples).
+
+
+## Connectors
+
+[Connectors](https://docs.flyte.org/en/latest/flyte_agents/index.html) are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services. Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task. (For example, the BigQuery agent handles BigQuery tasks.) The agent service then initiates a job with the appropriate service. If you don't see the agent you need below, see "[Developing agents](https://docs.flyte.org/en/latest/flyte_agents/developing_agents.html)" to learn how to develop a new agent.
+
+| Agent | Description |
+|-------|-------------|
+| [AWS SageMaker Inference agent](</auto_examples/sagemaker_inference_agent/index>) | Deploy models and create, as well as trigger inference endpoints on AWS SageMaker. |
+| [Airflow agent](</auto_examples/airflow_agent/index>) | Run Airflow jobs in your workflows with the Airflow agent. |
+| [BigQuery agent](</auto_examples/bigquery_agent/index>) | Run BigQuery jobs in your workflows with the BigQuery agent. |
+| [ChatGPT agent](</auto_examples/chatgpt_agent/index>) | Run ChatGPT jobs in your workflows with the ChatGPT agent. |
+| [Databricks agent](</auto_examples/databricks_agent/index>) | Run Databricks jobs in your workflows with the Databricks agent. |
+| [Memory Machine Cloud agent](</auto_examples/mmcloud_agent/index>) | Execute tasks using the MemVerge Memory Machine Cloud agent. |
+| [OpenAI Batch](</auto_examples/openai_batch_agent/index>) | Submit requests for asynchronous batch processing on OpenAI. |
+| [PERIAN Job Platform agent](</auto_examples/perian_agent/index>) | Execute tasks on PERIAN Job Platform. |
+| [Sensor agent](</auto_examples/sensor/index>) | Run sensor jobs in your workflows with the sensor agent. |
+| [Slurm agent](</auto_examples/slurm_agent/index>) | Run Slurm jobs in your workflows with the Slurm agent. |
+| [Snowflake agent](</auto_examples/snowflake_agent/index>) | Run Snowflake jobs in your workflows with the Snowflake agent. |
+
 
 ## Flytekit plugins
 
@@ -39,13 +59,15 @@ Flytekit functionality. For comparison, these plugins can be thought of like
 | [Weights and Biases](</auto_examples/wandb_plugin/index>) | `wandb`: Machine learning platform to build better models faster. |
 | [WhyLogs](</auto_examples/whylogs_plugin/index>) | `whylogs`: the open standard for data logging. |
 
-## Using Flytekit plugins
+
+### Using Flytekit plugins
 
 Data is automatically marshalled and unmarshalled in and out of the plugin. Users should mostly implement the `flytekit.core.base_task.PythonTask` API defined in Flytekit.
 
 Flytekit plugins are lazily loaded and can be released independently like libraries. The naming convention is `flytekitplugins-*`, where `*` indicates the package to be integrated into Flytekit. For example, `flytekitplugins-papermill` enables users to author Flytekit tasks using [Papermill](https://papermill.readthedocs.io/en/latest/).
 
 You can find the plugins maintained by the core Flyte team [here](https://github.com/flyteorg/flytekit/tree/master/plugins).
+
 
 ## Native backend plugins
 
@@ -60,25 +82,6 @@ Native backend plugins can be executed without any external service dependencies
 | [Kubernetes cluster Spark jobs](</auto_examples/k8s_spark_plugin/index>) | Run Spark jobs on a Kubernetes Cluster. |
 | [MPI Operator](</auto_examples/kfmpi_plugin/index>) | Run distributed deep learning training jobs using Horovod and MPI. |
 | [Ray](</auto_examples/ray_plugin/index>) | Run Ray jobs on a K8s Cluster. |
-
-
-## Flyte agents
-
-[Flyte agents](https://docs.flyte.org/en/latest/flyte_agents/index.html) are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services. Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task. (For example, the BigQuery agent handles BigQuery tasks.) The agent service then initiates a job with the appropriate service. If you don't see the agent you need below, see "[Developing agents](https://docs.flyte.org/en/latest/flyte_agents/developing_agents.html)" to learn how to develop a new agent.
-
-| Agent | Description |
-|-------|-------------|
-| [AWS SageMaker Inference agent](</auto_examples/sagemaker_inference_agent/index>) | Deploy models and create, as well as trigger inference endpoints on AWS SageMaker. |
-| [Airflow agent](</auto_examples/airflow_agent/index>) | Run Airflow jobs in your workflows with the Airflow agent. |
-| [BigQuery agent](</auto_examples/bigquery_agent/index>) | Run BigQuery jobs in your workflows with the BigQuery agent. |
-| [ChatGPT agent](</auto_examples/chatgpt_agent/index>) | Run ChatGPT jobs in your workflows with the ChatGPT agent. |
-| [Databricks agent](</auto_examples/databricks_agent/index>) | Run Databricks jobs in your workflows with the Databricks agent. |
-| [Memory Machine Cloud agent](</auto_examples/mmcloud_agent/index>) | Execute tasks using the MemVerge Memory Machine Cloud agent. |
-| [OpenAI Batch](</auto_examples/openai_batch_agent/index>) | Submit requests for asynchronous batch processing on OpenAI. |
-| [PERIAN Job Platform agent](</auto_examples/perian_agent/index>) | Execute tasks on PERIAN Job Platform. |
-| [Sensor agent](</auto_examples/sensor/index>) | Run sensor jobs in your workflows with the sensor agent. |
-| [Slurm agent](</auto_examples/slurm_agent/index>) | Run Slurm jobs in your workflows with the Slurm agent. |
-| [Snowflake agent](</auto_examples/snowflake_agent/index>) | Run Snowflake jobs in your workflows with the Snowflake agent. |
 
 
 ## External service backend plugins

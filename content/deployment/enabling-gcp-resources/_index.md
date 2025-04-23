@@ -1,6 +1,6 @@
 ---
 title: Enabling GCP resources
-weight: 2
+weight: 10
 variants: -flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
@@ -10,7 +10,7 @@ sidebar_expanded: false
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your cloud environment such as [Cloud Storage](./enabling-google-cloud-storage), [Artifact Registry](./enabling-google-artifact-registry), [BigQuery](./enabling-bigquery), and so forth.
 
 > [!NOTE] Secret management
-> We strongly recommend using the [{{< key product_name >}} secrets manager](../../development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
+> We strongly recommend using the [{{< key product_name >}} secrets manager](../../user-guide/development-cycle/managing-secrets) to manage secrets rather than Google Secret Manager. If your organization must use Google Secret Manager, however, see [Enabling Google Secret Manager](./enabling-google-secret-manager).
 
 As much as possible, access to the resources you need will be pre-configured by the {{< key product_name >}} team when they set up your data plane.
 For example, if you want your task code to have access to a specific Cloud Storage bucket or BigQuery, this can be pre-configured.
@@ -64,7 +64,7 @@ Global access is recommended for most use cases since it is simpler, but if you 
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../administration/user-management)).
+> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../user-guide/administration/user-management)).
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to a Cloud Storage bucket, two things are required:

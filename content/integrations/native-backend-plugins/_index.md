@@ -1,6 +1,6 @@
 ---
 title: Native backend plugins
-weight: 1
+weight: 3
 variants: +flyte -serverless -byoc -byok
 sidebar_expanded: true
 ---

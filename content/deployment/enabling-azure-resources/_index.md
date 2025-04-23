@@ -1,6 +1,6 @@
 ---
 title: Enabling Azure resources
-weight: 3
+weight: 11
 variants: -flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
@@ -9,7 +9,7 @@ sidebar_expanded: false
 
 Components of your {{< key product_name >}} data plane will need to connect to and communicate with other resources in your Azure cloud environment, such as Azure [Blob Storage](https://azure.microsoft.com/en-ca/products/storage/blobs/) and [Container Registry](https://azure.microsoft.com/en-us/products/container-registry).
 
-[Data plane setup on Azure](../../../deployment/data-plane-setup-on-azure) provides {{< key product_name >}} with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-{{< key product_name >}} Azure resources is subject to Azure limitations and will require additional configuration.
+[Data plane setup on Azure](../data-plane-setup-on-azure) provides {{< key product_name >}} with the necessary permissions to manage underlying Azure resources within your data plane. Access to non-{{< key product_name >}} Azure resources is subject to Azure limitations and will require additional configuration.
 
 As your projects evolve, your needs may change.
 You can always contact the {{< key product_name >}} team for help enabling additional resources as required.
@@ -48,7 +48,7 @@ Global access is recommended for most use cases since it is simpler. Still, if y
 
 > [!NOTE] Relationship with RBAC
 > The permissions being discussed here are attached to a domain.
-> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../administration/user-management)).
+> This is independent of the permissions granted to users and machine applications through {{< key product_name >}}'s role-based access control (see [User management](../../user-guide/administration/user-management)).
 > But, the two types of permissions are related.
 >
 > For example, for a user (or machine application) to have read access to a blob storage container, two things are required:

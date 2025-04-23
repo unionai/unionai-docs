@@ -1,6 +1,6 @@
 ---
 title: Flytekit plugins
-weight: 1
+weight: 2
 variants: +flyte -serverless -byoc -byok
 sidebar_expanded: true
 ---
