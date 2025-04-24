@@ -19,6 +19,8 @@ To begin, import the dependencies:
 import {{< key kit_import >}}
 from flytekit.deck.renderer import MarkdownRenderer
 from sklearn.decomposition import PCA
+import plotly.express as px
+import plotly
 ```
 
 We create a new deck named `pca` and render Markdown content along with a
