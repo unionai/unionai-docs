@@ -1,7 +1,8 @@
 {{- $result := transform.HighlightCodeBlock . -}}
+{{- $uniqueID := printf "code-%s-%d" (sha1 .Inner) .Ordinal -}}
 <div class="codeblock">
     <div class="copy">
-        <sl-copy-button from="code-{{- .Ordinal -}}"></sl-copy-button>
+        <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
     </div>
-    <div id="code-{{- .Ordinal -}}" class="code">{{ $result.Wrapped }}</div>
+    <div id="{{- $uniqueID -}}" class="code">{{ $result.Wrapped }}</div>
 </div>
