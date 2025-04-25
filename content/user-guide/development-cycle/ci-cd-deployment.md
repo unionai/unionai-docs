@@ -1,7 +1,7 @@
 ---
 title: CI/CD deployment
 weight: 17
-variants: +flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +byok
 ---
 
 # CI/CD deployment
