@@ -947,7 +947,7 @@ flyte-binary:
           - container
           - sidecar
           - k8s-array
-          - agent-service
+          - connector-service
           - spark
         default-for-task-types:
           container: container

@@ -6,7 +6,7 @@ variants: +flyte -serverless -byoc -byok
 
 # Databricks connector
 
-This guide provides an overview of how to set up Databricks agent in your Flyte deployment.
+This guide provides an overview of how to set up Databricks connector in your Flyte deployment.
 
 ## Spin up a cluster
 
@@ -107,13 +107,13 @@ For example, in the Role ARN `arn:aws:iam::123456789123:role/finance-prod`, the 
 }
 ```
 
-## Specify agent configuration
+## Specify connector configuration
 
 ### Flyte binary
 
 #### Demo cluster
 
-Enable the Databricks agent on the demo cluster by updating the ConfigMap:
+Enable the Databricks connector on the demo cluster by updating the ConfigMap:
 
 ```bash
 kubectl edit configmap flyte-sandbox-config -n flyte
@@ -126,12 +126,12 @@ tasks:
       container: container
       container_array: k8s-array
       sidecar: sidecar
-      databricks: agent-service
+      databricks: connector-service
     enabled-plugins:
       - container
       - sidecar
       - k8s-array
-      - agent-service
+      - connector-service
 ```
 
 #### Helm chart
@@ -145,35 +145,35 @@ tasks:
       - container
       - sidecar
       - k8s-array
-      - agent-service
+      - connector-service
     default-for-task-types:
       - container: container
       - container_array: k8s-array
-      - databricks: agent-service
+      - databricks: connector-service
 ```
 
 ## Add the Databricks access token
 
 Set the Databricks token to the Flyte configuration.
 
-1. Install the flyteagent pod using helm
+1. Install the flyteconnector pod using helm
 
 ```bash
 helm repo add flyteorg https://flyteorg.github.io/flyte
-helm install flyteagent flyteorg/flyteagent --namespace flyte
+helm install flyteconnector flyteorg/flyteconnector --namespace flyte
 ```
 
 2. Set Your Databricks Token as a Secret (Base64 Encoded):
 
 ```bash
 SECRET_VALUE=$(echo -n "<DATABRICKS_TOKEN>" | base64) && \
-kubectl patch secret flyteagent -n flyte --patch "{\"data\":{\"flyte_databricks_access_token\":\"$SECRET_VALUE\"}}"
+kubectl patch secret flyteconnector -n flyte --patch "{\"data\":{\"flyte_databricks_access_token\":\"$SECRET_VALUE\"}}"
 ```
 
 3. Restart deployment:
 
 ```bash
-kubectl rollout restart deployment flyteagent -n flyte
+kubectl rollout restart deployment flyteconnector -n flyte
 ```
 
 ## Upgrade the deployment
@@ -194,4 +194,4 @@ helm upgrade <RELEASE_NAME> flyteorg/flyte-binary -n <YOUR_NAMESPACE> --values <
 
 Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte-backend`), `<YOUR_NAMESPACE>` with the name of your namespace (e.g., `flyte`), and `<YOUR_YAML_FILE>` with the name of your YAML file.
 
-For Databricks agent on the Flyte cluster, see [Databricks agent](https://docs.flyte.org/en/latest/flytesnacks/examples/databricks_agent/index.html).
+For Databricks connector on the Flyte cluster, see [Databricks connector](https://docs.flyte.org/en/latest/flytesnacks/examples/databricks_connector/index.html).

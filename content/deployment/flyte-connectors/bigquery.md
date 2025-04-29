@@ -6,7 +6,7 @@ variants: +flyte -serverless -byoc -byok
 # Google BigQuery connector
 
 This guide provides an overview of setting up BigQuery connector in your Flyte deployment.  
-Please note that the BigQuery agent requires Flyte deployment in the GCP cloud; it is not compatible with demo/AWS/Azure.
+Please note that the BigQuery connector requires Flyte deployment in the GCP cloud; it is not compatible with demo/AWS/Azure.
 
 ## Set up the GCP Flyte cluster
 
@@ -15,7 +15,7 @@ Please note that the BigQuery agent requires Flyte deployment in the GCP cloud; 
 - Verify that you have the correct kubeconfig and have selected the appropriate Kubernetes context
 - Confirm that you have the correct Flytectl configuration at `~/.flyte/config.yaml`
 
-## Specify agent configuration
+## Specify connector configuration
 
 ### flyte-binary
 
@@ -27,11 +27,11 @@ tasks:
       - container
       - sidecar
       - k8s-array
-      - agent-service
+      - connector-service
     default-for-task-types:
       - container: container
       - container_array: k8s-array
-      - bigquery_query_job_task: agent-service
+      - bigquery_query_job_task: connector-service
 ```
 ### flyte-core
 
@@ -48,11 +48,11 @@ configmap:
         enabled-plugins:
           - container
           - sidecar
-          - agent-service
+          - connector-service
         default-for-task-types:
           container: container
           sidecar: sidecar
-          bigquery_query_job_task: agent-service
+          bigquery_query_job_task: connector-service
 ```
 Ensure that flytepropeller has the correct service account for BigQuery.
 

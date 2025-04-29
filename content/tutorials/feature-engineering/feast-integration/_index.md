@@ -25,13 +25,31 @@ We'll use the horse colic dataset to determine if the lesion of the horse is sur
 
 The dataset will have the following columns:
 
-| Horse Colic Features | | | | |
-|----------------------|----------------------|-----------------------|-----------------------|-----------------------|
-| surgery              | Age                  | Hospital Number       | rectal temperature    | pulse                 |
-| respiratory rate     | temperature of extremities | peripheral pulse | mucous membranes      | capillary refill time |
-| pain                 | peristalsis          | abdominal distension  | nasogastric tube      | nasogastric reflux    |
-| nasogastric reflux PH| rectal examination   | abdomen               | packed cell volume    | total protein         |
-| abdominocentesis appearance | abdomcentesis total protein | outcome | surgical lesion | timestamp |
+* surgery
+* age
+* hospital number
+* rectal temperature
+* pulse
+* respiratory rate
+* temperature of extremities
+* peripheral pulse
+* mucous membranes
+* capillary refill time
+* pain
+* peristalsis
+* abdominal distension
+* nasogastric tube
+* nasogastric reflux
+* nasogastric reflux PH
+* rectal examination
+* abdomen
+* packed cell volume
+* total protein
+* abdominocentesis appearance
+* abdomcentesis total protein
+* outcome
+* surgical lesion
+* timestamp
 
 The horse colic dataset will be a compressed zip file consisting of the SQLite DB.
 For this example, we wanted a dataset available online, but this could be easily plugged into another dataset/data management system

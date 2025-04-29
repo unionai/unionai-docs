@@ -8,7 +8,7 @@ variants: +flyte -serverless -byoc -byok
 
 The Kubernetes (K8s) Data Service Connector enables machine learning (ML) users to efficiently handle non-training tasks—such as data loading, caching, and processing—concurrently with training jobs in Kubernetes clusters. This capability is particularly valuable in deep learning applications, such as those in Graph Neural Networks (GNNs).
 
-This guide offers a comprehensive overview of setting up the K8s Data Service Agent within your Flyte deployment.
+This guide offers a comprehensive overview of setting up the K8s Data Service Connector within your Flyte deployment.
 
 ### Spin up a cluster
 
@@ -37,45 +37,47 @@ If you've installed Flyte using the [flyte-core helm chart](https://github.com/f
 
 ### Specify connector configuration
 
-Enable the K8s service agent by adding the following config to the relevant YAML file(s):
+Enable the K8s service connector by adding the following config to the relevant YAML file(s):
 
 ```yaml
 tasks:
   task-plugins:
     enabled-plugins:
-      - agent-service
+      - connector-service
     default-for-task-types:
-      - dataservicetask: agent-service
+      - dataservicetask: connector-service
 ```
 
 ```yaml
 plugins:
-  agent-service:
-    agents:
-      k8sservice-agent:
-        endpoint: <AGENT_ENDPOINT>
+  connector-service:
+    connectors:
+      k8sservice-connector:
+        endpoint: <CONNECTOR_ENDPOINT>
         insecure: true
-    agentForTaskTypes:
-    - dataservicetask: k8sservice-agent
-    - sensor: k8sservice-agent
+    connectorForTaskTypes:
+    - dataservicetask: k8sservice-connector
+    - sensor: k8sservice-connector
 ```
 
-Substitute `<AGENT_ENDPOINT>` with the endpoint of your MMCloud agent.
+Substitute `<CONNECTOR_ENDPOINT>` with the endpoint of your MMCloud connector.
 
 ### Setup the RBAC
 
-The K8s Data Service Agent will create a StatefulSet and expose the Service endpoint for the StatefulSet pods. RBAC needs to be set up to allow the K8s Data Service Agent to perform CRUD operations on the StatefulSet and Service.
+The K8s Data Service Connector will create a StatefulSet and expose the Service endpoint for the StatefulSet pods.
+RBAC needs
+to be set up to allow the K8s Data Service Connector to perform CRUD operations on the StatefulSet and Service.
 
-#### Role: `flyte-flyteagent-role`
+#### Role: `flyte-flyteconnectorrole`
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: flyte-flyteagent-role
+  name: flyte-flyteconnector-role
   namespace: flyte
   labels:
-    app.kubernetes.io/name: flyteagent
+    app.kubernetes.io/name: flyteconnector
     app.kubernetes.io/instance: flyte
 rules:
 - apiGroups:
@@ -108,24 +110,24 @@ rules:
   - '*'
 ```
 
-#### RoleBinding: `flyte-flyteagent-rolebinding`
+#### RoleBinding: `flyte-flyteconnector-rolebinding`
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: flyte-flyteagent-rolebinding
+  name: flyte-flyteconnector-rolebinding
   namespace: flyte
   labels:
-    app.kubernetes.io/name: flyteagent
+    app.kubernetes.io/name: flyteconnector
     app.kubernetes.io/instance: flyte
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: flyte-flyteagent-role
+  name: flyte-flyteconnector-role
 subjects:
 - kind: ServiceAccount
-  name: flyteagent
+  name: flyteconnector
   namespace: flyte
 ```
 

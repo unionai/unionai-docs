@@ -3,9 +3,9 @@ title: Snowflake connector
 weight: 18
 variants: +flyte -serverless -byoc -byok
 ---
-# Snowflake agent
+# Snowflake connector
 
-This guide provides an overview of how to set up the Snowflake agent in your Flyte deployment.
+This guide provides an overview of how to set up the Snowflake connector in your Flyte deployment.
 
 1. Set up the key pair authentication in Snowflake. For more details, see the [Snowflake key-pair authentication and key-pair rotation guide](https://docs.snowflake.com/en/user-guide/key-pair-auth).
 2. Create a secret with the group `"private-key"` and the key `"snowflake"`.  
@@ -16,12 +16,12 @@ This guide provides an overview of how to set up the Snowflake agent in your Fly
    kubectl create secret generic private-key --from-file=snowflake=<YOUR PRIVATE KEY FILE> --namespace=flytesnacks-development
  ```
 
-3. Create a secret in the flyteagent's pod, this is for executing Snowflake queries in the agent pod.
+3. Create a secret in the flyteconnector's pod, this is for executing Snowflake queries in the connector pod.
 
 ```bash
-ENCODED_VALUE=$(cat <YOUR PRIVATE KEY FILE> | base64) && kubectl patch secret flyteagent -n flyte --patch "{\"data\":{\"snowflake_private_key\":\"$ENCODED_VALUE\"}}"
+ENCODED_VALUE=$(cat <YOUR PRIVATE KEY FILE> | base64) && kubectl patch secret flyteconnector -n flyte --patch "{\"data\":{\"snowflake_private_key\":\"$ENCODED_VALUE\"}}"
 ```
-## Specify agent configuration
+## Specify connector configuration
 
 ### Flyte binary
 Add the following to your values file:
@@ -33,11 +33,11 @@ tasks:
       - container
       - sidecar
       - k8s-array
-      - agent-service
+      - connector-service
     default-for-task-types:
       - container: container
       - container_array: k8s-array
-      - snowflake: agent-service
+      - snowflake: connector-service
 ```
 
 ### flyte-core
@@ -56,12 +56,12 @@ configmap:
           - container
           - sidecar
           - k8s-array
-          - agent-service
+          - connector-service
         default-for-task-types:
           container: container
           sidecar: sidecar
           container_array: k8s-array
-          snowflake: agent-service
+          snowflake: connector-service
 
 ```
 ## Upgrade the Helm release

@@ -76,7 +76,7 @@ def launch_dynamically():
 * `secret_requests`: See [Managing secrets](../../development-cycle/managing-secrets)
 
 * `task_config`: Configuration for a specific task type.
-  See the [{{< key product_name >}} Agents documentation](../../integrations/agents) and
+  See the [{{< key product_name >}} Connectors documentation](../../integrations/connectors) and
   [{{< key product_name >}} plugins documentation]() for the right object to use.
   <!-- TODO: Add link to API -->
 

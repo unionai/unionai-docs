@@ -1,18 +1,18 @@
 ---
-title: Databricks agent
+title: Databricks connector
 weight: 3
 variants: +flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
 
-# Databricks agent
+# Databricks connector
 
 {{< key product_name >}} can be integrated with the [Databricks](https://www.databricks.com/) service,
 enabling you to submit Spark jobs to the Databricks platform.
 
 ## Installation
 
-The Databricks agent comes bundled with the Spark plugin. To install the Spark plugin, run the following command:
+The Databricks connector comes bundled with the Spark plugin. To install the Spark plugin, run the following command:
 
 ```
 pip install flytekitplugins-spark
@@ -20,11 +20,11 @@ pip install flytekitplugins-spark
 
 ## Example usage
 
-For a usage example, see [Databricks agent example](./databricks-agent-example).
+For a usage example, see [Databricks connector example](./databricks-connector-example).
 
 ## Local testing
 
-To test the Databricks agent copy the following code to a file called `databricks_task.py`, modifying as needed.
+To test the Databricks connector copy the following code to a file called `databricks_task.py`, modifying as needed.
 
 ```python
 @{{< key kit_as >}}.task(task_config=Databricks(...))
@@ -41,7 +41,7 @@ def hello_spark(partitions: int) -> float:
     return pi_val
 ```
 
-To execute the Spark task on the agent, you must configure the `raw-output-data-prefix` with a remote path.
+To execute the Spark task on the connector, you must configure the `raw-output-data-prefix` with a remote path.
 This configuration ensures that {{< key product_name >}} transfers the input data to the blob storage and allows the Spark job running on Databricks to access the input data directly from the designated bucket.
 
 > [!NOTE]
@@ -56,7 +56,7 @@ $ {{< key cli >}} run --raw-output-data-prefix s3://my-s3-bucket/databricks data
 
 ## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
+After you have finished testing the connector locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

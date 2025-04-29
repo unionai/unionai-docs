@@ -1,48 +1,52 @@
 ---
-title: Agents
+title: Connectors
 weight: 4
 variants: +flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
 
 <!-- TODO: Check for vartiant accuracy -->
-# Agents
+# Connectors
 
-Agents are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
-Each agent service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task.
+Connectors are long-running, stateless services that receive execution requests via gRPC and initiate jobs with appropriate external or internal services.
+Each connector service is a Kubernetes deployment that receives gRPC requests from FlytePropeller when users trigger a particular type of task.
 
-The agent service then initiates a job with the appropriate external service. Agents can be run locally as long as the appropriate connection secrets are locally available, since they are spawned in process.
+The connector service then initiates a job with the appropriate external service.
+Connectors can be run locally as long as the appropriate connection secrets are locally available,
+since they are spawned in process.
 
-Agents are designed to be scalable and can handle large workloads efficiently, and decrease load on FlytePropeller, since they run outside it.
-You can also test agents locally without having to change the Flyte backend configuration, streamlining workflow development.
+Connectors are designed to be scalable and can handle large workloads efficiently, and decrease load on FlytePropeller, since they run outside it.
+You can also test connectors locally without having to change the Flyte backend configuration, streamlining workflow development.
 
-Agents enable two key workflows:
+Connectors enable two key workflows:
 
 * **Asynchronously** launching jobs on hosted platforms (e.g. Databricks or Snowflake).
 * Calling external **synchronous** services, such as access control, data retrieval, and model inferencing.
 
-## Using existing agents
+## Using existing connectors
 
-In this section you will find documentation on how to use existing agents in your workflows.
-Alternatively, you can also create your own agent.
+In this section you will find documentation on how to use existing connectors in your workflows.
+Alternatively, you can also create your own connector.
 
-## Creating a new agent
+## Creating a new connector
 
-You can implement an agent as a Python class, test it locally, and have the {{< key product_name >}} team enable it in your {{< key product_name >}} deployment.
+You can implement an connector as a Python class, test it locally, and have the {{< key product_name >}} team enable it in your {{< key product_name >}} deployment.
 Your teammates will then be able to create tasks of the corresponding task type to connect to the external service.
 
-There are two types of agents: **async** and **sync**.
-* **Async agents** enable long-running jobs that execute on an external platform over time.
+There are two types of connectors: **async** and **sync**.
+* **Async connectors** enable long-running jobs that execute on an external platform over time.
   They communicate with external services that have asynchronous APIs that support `create`, `get`, and `delete` operations.
-  The vast majority of agents are async agents.
-* **Sync agents** enable request/response services that return immediate outputs (e.g. calling an internal API to fetch data or communicating with the OpenAI API).
+  The vast majority of connectors are async connectors.
+* **Sync connectors** enable request/response services that return immediate outputs (e.g. calling an internal API to fetch data or communicating with the OpenAI API).
 
 > [!NOTE]
-> While agents can be written in any programming language since they use a protobuf interface, we currently only support Python agents. We may support other languages in the future.
+> While connectors can be written in any programming language since they use a protobuf interface,
+> we currently only support Python connectors.
+> We may support other languages in the future.
 
-### Async agent interface specification
+### Async connector interface specification
 
-To create a new async agent, extend the `AsyncAgentBase` and implement `create`, `get`, and `delete` methods. These methods must be idempotent.
+To create a new async connector, extend the `AsyncConnectorBase` and implement `create`, `get`, and `delete` methods. These methods must be idempotent.
 
 - `create`: This method is used to initiate a new job. Users have the flexibility to use gRPC, REST, or an SDK to create a job.
 - `get`: This method retrieves the job resource (job ID or output literal) associated with the task, such as a BigQuery job ID or Databricks task ID.
@@ -50,26 +54,26 @@ To create a new async agent, extend the `AsyncAgentBase` and implement `create`,
 
 For an example implementation, see the [BigQuery connector code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-bigquery/flytekitplugins/bigquery/connector.py).
 
-### Sync agent interface specification
+### Sync connector interface specification
 
-To create a new sync agent, extend the `SyncAgentBase` class and implement a `do` method. This method must be idempotent.
+To create a new sync connector, extend the `SyncConnectorBase` class and implement a `do` method. This method must be idempotent.
 
 - `do`: This method is used to execute the synchronous task, and the worker in Flyte will be blocked until the method returns.
 
 For an example implementation, see the [ChatGPT connector code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-openai/flytekitplugins/openai/chatgpt/connector.py).
 
-### Testing your agent locally
+### Testing your connector locally
 
-To test your agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/f99d50e4c71a77b8f1c9f8e0fe7aa402e1d1b910/flytekit/extend/backend/base_agent.py#L316). This mixin can handle both asynchronous tasks and synchronous tasks and allows {{< key kit_name >}} to mimic FlytePropeller's behavior in calling the agent.
+To test your connector locally, create a class for the connector task that inherits from [`AsyncConnectorExecutorMixin`](https://github.com/flyteorg/flytekit/blob/1bc8302bb7a6cf4c7048a7f93627ee25fc6b88c4/flytekit/extend/backend/base_connector.py#L354). This mixin can handle both asynchronous tasks and synchronous tasks and allows {{< key kit_name >}} to mimic FlytePropeller's behavior in calling the connector.
 
-For testing examples, see the [BigQuery agent](./bigquery-agent#local-testing) and [Databricks agent](./databricks-agent#local-testing) documentation.
+For testing examples, see the [BigQuery connector](./bigquery-connector#local-testing) and [Databricks connector](./databricks-connector#local-testing) documentation.
 
 {{< variant byoc >}}
 {{< markdown >}}
 
-### Enabling your agent in your {{< key product_name >}} deployment
+### Enabling your connector in your {{< key product_name >}} deployment
 
-After you have finished testing your agent locally, you can contact the {{< key product_name >}} team to enable the agent in your {{< key product_name >}} deployment to use it in production.
+After you have finished testing your connector locally, you can contact the {{< key product_name >}} team to enable the connector in your {{< key product_name >}} deployment to use it in production.
 
 {{< /markdown >}}
 {{< /variant >}}

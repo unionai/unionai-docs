@@ -2618,14 +2618,14 @@ always
 
 ## Section: plugins
 
-### agent-service ([agent.Config](#agent.config))
+### connector-service ([connector.Config](#connector.config))
 
 **Default Value**:
 
 ``` yaml
-agentForTaskTypes: null
-agents: null
-defaultAgent:
+connectorForTaskTypes: null
+connectors: null
+defaultConnector:
   defaultServiceConfig: '{"loadBalancingConfig": [{"round_robin":{}}]}'
   defaultTimeout: 3s
   endpoint: ""
@@ -2838,7 +2838,7 @@ stackdriver-template-uri: ""
 templates: null
 ```
 
-#### agent.Config
+#### connector.Config
 
 ##### webApi ([webapi.PluginConfig](#webapi.pluginconfig))
 
@@ -2874,9 +2874,9 @@ ProjectScopeResourceConstraint:
   Value: 100
 ```
 
-##### defaultAgent ([agent.Deployment](#agent.deployment))
+##### defaultConnector ([connector.Deployment](#connector.deployment))
 
-The default agent.
+The default connector.
 
 **Default Value**:
 
@@ -2888,9 +2888,9 @@ insecure: true
 timeouts: null
 ```
 
-##### agents (map\[string\]\*agent.Deployment)
+##### connectors (map\[string\]\*connector.Deployment)
 
-The agents.
+The connectors.
 
 **Default Value**:
 
@@ -2898,7 +2898,7 @@ The agents.
 null
 ```
 
-##### agentForTaskTypes (map\[string\]string)
+##### connectorForTaskTypes (map\[string\]string)
 
 **Default Value**:
 
@@ -2917,7 +2917,7 @@ null
 
 ##### pollInterval ([config.Duration](#config.duration))
 
-The interval at which the plugin should poll the agent for metadata
+The interval at which the plugin should poll the connector for metadata
 updates.
 
 **Default Value**:
@@ -2926,7 +2926,7 @@ updates.
 10s
 ```
 
-#### agent.Deployment
+#### connector.Deployment
 
 ##### endpoint (string)
 

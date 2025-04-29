@@ -1,15 +1,15 @@
 ---
-title: Google BigQuery agent
+title: Google BigQuery connector
 weight: 5
 variants: +flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
 
-# Google BigQuery agent
+# Google BigQuery connector
 
 ## Installation
 
-To install the BigQuery agent, run the following command:
+To install the BigQuery connector, run the following command:
 
 ```
 pip install flytekitplugins-bigquery
@@ -17,25 +17,28 @@ pip install flytekitplugins-bigquery
 
 ## Example usage
 
-For an example query, see [BigQuery agent example](./bigquery-agent-example).
+For an example query, see [BigQuery connector example](./bigquery-connector-example).
 
 ## Local testing
 
-To test the BigQuery agent locally, create a class for the agent task that inherits from [`AsyncAgentExecutorMixin`](https://github.com/flyteorg/flytekit/blob/03d23011fcf955838669bd5058c8ced17c6de3ee/flytekit/extend/backend/base_agent.py#L278-382). This mixin allows flytekit to mimic FlytePropeller's behavior in calling the agent.
+To test the BigQuery connector locally,
+create a class for the connector task
+that inherits from [`AsyncConnectorExecutorMixin`](https://github.com/flyteorg/flytekit/blob/1bc8302bb7a6cf4c7048a7f93627ee25fc6b88c4/flytekit/extend/backend/base_connector.py#L354).
+This mixin allows flytekit to mimic FlytePropeller's behavior in calling the connector.
 
-To test the BigQuery agent, copy the following code to a file called `bigquery_task.py`, modifying as needed.
+To test the BigQuery connector, copy the following code to a file called `bigquery_task.py`, modifying as needed.
 
 > [!NOTE]
 > When testing the BigQuery integration locally, you will need to set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 
-Add `AsyncAgentExecutorMixin` to this class to tell the system to use the agent to run the task:
+Add `AsyncConnectorExecutorMixin` to this class to tell the system to use the connector to run the task:
 ```python
-class BigQueryTask(AsyncAgentExecutorMixin, SQLTask[BigQueryConfig]):
+class BigQueryTask(AsyncConnectorExecutorMixin, SQLTask[BigQueryConfig]):
     def __init__(self, name: str, **kwargs):
         ...
 ```
 
-{{< key kit_name >}} will automatically use the agent to run the task in the local execution.
+{{< key kit_name >}} will automatically use the connector to run the task in the local execution.
 ```python
 bigquery_doge_coin = BigQueryTask(
     name=f"bigquery.doge_coin",
@@ -46,7 +49,7 @@ bigquery_doge_coin = BigQueryTask(
 )
 ```
 
-You can run the above example task locally and test the agent with the following command:
+You can run the above example task locally and test the connector with the following command:
 
 ```shell
 $ {{< key cli >}} run bigquery_task.py bigquery_doge_coin --version 10
@@ -57,7 +60,7 @@ $ {{< key cli >}} run bigquery_task.py bigquery_doge_coin --version 10
 
 ## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
+After you have finished testing the connector locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

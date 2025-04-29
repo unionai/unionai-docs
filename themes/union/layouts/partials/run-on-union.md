@@ -20,5 +20,5 @@ $ cd unionai-examples
 $ @@run_command@@
 ```
 
-The source code for this tutorial can be found [here](@@source_location@@).
+The source code for this example can be found [here](@@source_location@@).
 

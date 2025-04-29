@@ -13,7 +13,7 @@ We will use GitHub Actions as the example CI/CD system.
 
 ## Create a {{< key product_name >}} app
 
-An app is an agent registered in your {{< key product_name >}} data plane that enables external systems to perform actions in the system.
+An app is an connector registered in your {{< key product_name >}} data plane that enables external systems to perform actions in the system.
 To enable your CI/CD system to authenticate with {{< key product_name >}}, you need to create a {{< key product_name >}} app.
 See [Applications](../administration/applications).
 

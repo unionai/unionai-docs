@@ -194,7 +194,7 @@ If you're using environment variables, use the following config:
 DD_LOGS_ENABLED: "false"
 DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "true"
 DD_LOGS_CONFIG_K8S_CONTAINER_USE_FILE: "true"
-DD_CONTAINER_EXCLUDE_LOGS: "name:datadog-agent" # This is to avoid tracking logs produced by the datadog agent itself
+DD_CONTAINER_EXCLUDE_LOGS: "name:datadog-connector" # This is to avoid tracking logs produced by the datadog connector itself
 ```
 
 2. The Datadog [guide](https://docs.datadoghq.com/containers/kubernetes/log/?tab=daemonset) includes a section on mounting volumes. It is essential (and a prerequisite for proper functioning) to map the volumes "logpodpath" and "logcontainerpath" as illustrated in the linked example. While the "pointerdir" volume is optional, it is recommended that you map it to prevent the loss of container logs during restarts or network issues (as stated in the guide).

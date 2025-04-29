@@ -3,12 +3,12 @@ title: Sensor connector
 weight: 16
 variants: +flyte -serverless -byoc -byok
 ---
-# Sensor agent
+# Sensor connector
 
-The [sensor agent](https://docs.flyte.org/en/latest/flytesnacks/examples/sensor/index.html) enables users to continuously check for a file or a condition to be met periodically.
+The [sensor connector](https://docs.flyte.org/en/latest/flytesnacks/examples/sensor/index.html) enables users to continuously check for a file or a condition to be met periodically.
 When the condition is met, the sensor will complete.
 
-This guide provides an overview of how to set up the sensor agent in your Flyte deployment.
+This guide provides an overview of how to set up the sensor connector in your Flyte deployment.
 
 ## Spin up a cluster
 
@@ -36,9 +36,9 @@ This guide provides an overview of how to set up the sensor agent in your Flyte 
 > helm repo add flyteorg https://flyteorg.github.io/flyte
 > ```
 
-## Specify agent configuration
+## Specify connector configuration
 
-Enable the sensor agent by adding the following config to the relevant YAML file(s):
+Enable the sensor connector by adding the following config to the relevant YAML file(s):
 
 ### flyte-binary
 
@@ -51,11 +51,11 @@ Add the following to your values file:
           - container
           - sidecar
           - k8s-array
-          - agent-service
+          - connector-service
         default-for-task-types:
           - container: container
           - container_array: k8s-array
-          - sensor: agent-service
+          - sensor: connector-service
     ```
 
 ### flyte-core
@@ -74,12 +74,12 @@ Create a file named `values-override.yaml` and add the following configuration t
               - container
               - sidecar
               - k8s-array
-              - agent-service
+              - connector-service
             default-for-task-types:
               container: container
               sidecar: sidecar
               container_array: k8s-array
-              sensor: agent-service
+              sensor: connector-service
     ```
 
 ## Upgrade the deployment

@@ -1,10 +1,10 @@
 ---
-title: Databricks agent example
+title: Databricks connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# Databricks agent example
+# Databricks connector example
 
 ```python
 # Running Spark on Databricks

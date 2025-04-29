@@ -21,10 +21,10 @@ tasks:
     enabled-plugins:
       - container
       - sidecar
-      - agent-service
+      - connector-service
     default-for-task-types:
       - container: container
-      - airflow: agent-service
+      - airflow: connector-service
 ```
 
 ### flyte-core
@@ -43,12 +43,12 @@ configmap:
           - container
           - sidecar
           - k8s-array
-          - agent-service
+          - connector-service
         default-for-task-types:
           container: container
           sidecar: sidecar
           container_array: k8s-array
-          airflow: agent-service
+          airflow: connector-service
 ```
 
 ## Upgrade the Helm release

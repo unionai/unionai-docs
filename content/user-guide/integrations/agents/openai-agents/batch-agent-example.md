@@ -1,26 +1,26 @@
 ---
-title: Batch agent example
+title: Batch connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# Batch agent example
+# Batch connector example
 
 ```python
 # %% [markdown]
-# (openai_batch_agent_example_usage)=
+# (openai_batch_connector_example_usage)=
 #
 # # Batching Requests for Asynchronous Processing
 #
 # This example demonstrates how to send a batch of API requests to GPT models for asynchronous processing.
 #
 # Every batch input should include `custom_id`, `method`, `url`, and `body`.
-# You can provide either a `JSONLFile` or `Iterator[JSON]`, and the agent handles the file upload to OpenAI,
+# You can provide either a `JSONLFile` or `Iterator[JSON]`, and the connector handles the file upload to OpenAI,
 # creation of the batch, and downloading of the output and error files.
 #
 # ## Using `Iterator`
 #
-# Here's how you can provide an `Iterator` as an input to the agent:
+# Here's how you can provide an `Iterator` as an input to the connector:
 # %%
 import os
 from typing import Iterator

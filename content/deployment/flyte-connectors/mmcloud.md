@@ -46,15 +46,15 @@ Note:
     helm repo add flyteorg https://flyteorg.github.io/flyte
     ```
 
-## Specify agent configuration
+## Specify connector configuration
 
-Enable the MMCloud agent by adding the following config to the relevant YAML file(s):  
+Enable the MMCloud connector by adding the following config to the relevant YAML file(s):  
 
 ```yaml
 tasks:
   task-plugins:
     enabled-plugins:
-      - agent-service
+      - connector-service
     default-for-task-types:
-      - mmcloud_task: agent-service
+      - mmcloud_task: connector-service
 ```

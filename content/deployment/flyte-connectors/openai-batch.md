@@ -8,11 +8,11 @@ variants: +flyte -serverless -byoc -byok
 
 This guide provides an overview of how to set up the OpenAI Batch connector in your Flyte deployment.
 
-## Specify agent configuration
+## Specify connector configuration
 
 ### flyte-binary
 
-    Edit the relevant YAML file to specify the agent.
+    Edit the relevant YAML file to specify the connector.
 
     ```bash
     kubectl edit configmap flyte-sandbox-config -n flyte
@@ -25,11 +25,11 @@ This guide provides an overview of how to set up the OpenAI Batch connector in y
           - container
           - sidecar
           - k8s-array
-          - agent-service
+          - connector-service
         default-for-task-types:
           - container: container
           - container_array: k8s-array
-          - openai-batch: agent-service
+          - openai-batch: connector-service
     ```
 
 ### flyte-core
@@ -44,34 +44,34 @@ This guide provides an overview of how to set up the OpenAI Batch connector in y
               - container
               - sidecar
               - k8s-array
-              - agent-service
+              - connector-service
             default-for-task-types:
               container: container
               sidecar: sidecar
               container_array: k8s-array
-              openai-batch: agent-service
+              openai-batch: connector-service
     ```
 
 ## Add the OpenAI API token
 
-1. Install `flyteagent` pod using Helm:
+1. Install `flyteconnector` pod using Helm:
 
     ```bash
     helm repo add flyteorg https://flyteorg.github.io/flyte
-    helm install flyteagent flyteorg/flyteagent --namespace flyte
+    helm install flyteconnector flyteorg/flyteconnector --namespace flyte
     ```
 
 2. Set Your OpenAI API Token as a Secret (Base64 Encoded):
 
     ```bash
     SECRET_VALUE=$(echo -n "<OPENAI_API_TOKEN>" | base64) && \
-    kubectl patch secret flyteagent -n flyte --patch "{\"data\":{\"flyte_openai_api_key\":\"$SECRET_VALUE\"}}"
+    kubectl patch secret flyteconnector -n flyte --patch "{\"data\":{\"flyte_openai_api_key\":\"$SECRET_VALUE\"}}"
     ```
 
 3. Restart the deployment:
 
     ```bash
-    kubectl rollout restart deployment flyteagent -n flyte
+    kubectl rollout restart deployment flyteconnector -n flyte
     ```
 
 ## Upgrade the Flyte Helm release
@@ -95,5 +95,5 @@ This guide provides an overview of how to set up the OpenAI Batch connector in y
     Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte`)  
     and `<YOUR_NAMESPACE>` with the name of your namespace (e.g., `flyte`).
 
-You can refer to the [documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/openai_batch_agent/index.html)  
-to run the agent on your Flyte cluster.
+You can refer to the [documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/openai_batch_connector/index.html)  
+to run the connector on your Flyte cluster.

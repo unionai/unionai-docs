@@ -1,14 +1,14 @@
 ---
-title: AWS SageMaker agent example
+title: AWS SageMaker connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# AWS SageMaker agent example
+# AWS SageMaker connector example
 
 ```python
 # %% [markdown]
-# (sagemaker_inference_agent_example_usage)=
+# (sagemaker_inference_connector_example_usage)=
 #
 # # Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
 #
@@ -84,7 +84,7 @@ from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
 
 REGION = "us-east-2"
-S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
+S3_OUTPUT_PATH = "s3://sagemaker-connector-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
 sagemaker_image ={{< key kit_as >}}. ImageSpec(
@@ -135,10 +135,10 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
-# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
+# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the connector to append an idempotence token to the
 # model name, endpoint config name, and endpoint.
 #
-# - If a field value isn't provided (e.g., `ModelName`), the agent appends the idempotence token to the workflow name and uses that as the `ModelName`.
+# - If a field value isn't provided (e.g., `ModelName`), the connector appends the idempotence token to the workflow name and uses that as the `ModelName`.
 # - You can also manually set the idempotence token by adding `{idempotence_token}` to the relevant fields in the configuration, e.g., `xgboost-{idempotence_token}`.
 #
 # `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
@@ -229,7 +229,7 @@ async def invocations(request: Request):
 # trap _term SIGTERM
 #
 # echo "Starting the API server"
-# uvicorn sagemaker_inference_agent_example_usage:app --host 0.0.0.0 --port 8080&
+# uvicorn sagemaker_inference_connector_example_usage:app --host 0.0.0.0 --port 8080&
 #
 # child=$!
 # wait "$child"
@@ -239,7 +239,7 @@ async def invocations(request: Request):
 # execution role ARN, and instance type.
 #
 # Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
-# You can then invoke the endpoint using the SageMaker agent as follows:
+# You can then invoke the endpoint using the SageMaker connector as follows:
 # %%
 from flytekitplugins.awssagemaker_inference import SageMakerInvokeEndpointTask
 
@@ -247,7 +247,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
     name="sagemaker_invoke_endpoint",
     config={
         "EndpointName": "YOUR_ENDPOINT_NAME_HERE",
-        "InputLocation": "s3://sagemaker-agent-xgboost/inference_input",
+        "InputLocation": "s3://sagemaker-connector-xgboost/inference_input",
     },
     region=REGION,
 )
@@ -307,7 +307,7 @@ To deploy the model on SageMaker, use the [`awssagemaker_inference.create_sagema
 
 ```python
 # %% [markdown]
-# (sagemaker_inference_agent_example_usage)=
+# (sagemaker_inference_connector_example_usage)=
 #
 # # Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
 #
@@ -383,7 +383,7 @@ from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
 
 REGION = "us-east-2"
-S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
+S3_OUTPUT_PATH = "s3://sagemaker-connector-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
 sagemaker_image = {{< key kit_as >}}.ImageSpec(
@@ -434,10 +434,10 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
-# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
+# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the connector to append an idempotence token to the
 # model name, endpoint config name, and endpoint.
 #
-# - If a field value isn't provided (e.g., `ModelName`), the agent appends the idempotence token to the workflow name and uses that as the `ModelName`.
+# - If a field value isn't provided (e.g., `ModelName`), the connector appends the idempotence token to the workflow name and uses that as the `ModelName`.
 # - You can also manually set the idempotence token by adding `{idempotence_token}` to the relevant fields in the configuration, e.g., `xgboost-{idempotence_token}`.
 #
 # `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
@@ -528,7 +528,7 @@ async def invocations(request: Request):
 # trap _term SIGTERM
 #
 # echo "Starting the API server"
-# uvicorn sagemaker_inference_agent_example_usage:app --host 0.0.0.0 --port 8080&
+# uvicorn sagemaker_inference_connector_example_usage:app --host 0.0.0.0 --port 8080&
 #
 # child=$!
 # wait "$child"
@@ -538,7 +538,7 @@ async def invocations(request: Request):
 # execution role ARN, and instance type.
 #
 # Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
-# You can then invoke the endpoint using the SageMaker agent as follows:
+# You can then invoke the endpoint using the SageMaker connector as follows:
 # %%
 from flytekitplugins.awssagemaker_inference import SageMakerInvokeEndpointTask
 
@@ -546,7 +546,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
     name="sagemaker_invoke_endpoint",
     config={
         "EndpointName": "YOUR_ENDPOINT_NAME_HERE",
-        "InputLocation": "s3://sagemaker-agent-xgboost/inference_input",
+        "InputLocation": "s3://sagemaker-connector-xgboost/inference_input",
     },
     region=REGION,
 )
@@ -599,9 +599,9 @@ def deployment_deletion_workflow():
 This function returns an imperative workflow responsible for deploying the XGBoost model, creating an endpoint configuration and initializing an endpoint. Configurations relevant to these tasks are passed to the `awssagemaker_inference.create_sagemaker_deployment` function.
 
 An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
-By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the model name, endpoint config name, and endpoint.
+By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the connector to append an idempotence token to the model name, endpoint config name, and endpoint.
 
-- If a field value isn't provided (e.g., `ModelName`), the agent appends the idempotence token to the workflow name and uses that as the `ModelName`.
+- If a field value isn't provided (e.g., `ModelName`), the connector appends the idempotence token to the workflow name and uses that as the `ModelName`.
 - You can also manually set the idempotence token by adding `{idempotence_token}` to the relevant fields in the configuration, e.g., `xgboost-{idempotence_token}`.
 
 `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
@@ -621,7 +621,7 @@ We define the FastAPI inference code as follows:
 
 ```python
 # %% [markdown]
-# (sagemaker_inference_agent_example_usage)=
+# (sagemaker_inference_connector_example_usage)=
 #
 # # Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
 #
@@ -700,7 +700,7 @@ from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
 
 REGION = "us-east-2"
-S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
+S3_OUTPUT_PATH = "s3://sagemaker-connector-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
 sagemaker_image = ImageSpec(
@@ -751,10 +751,10 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
-# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
+# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the connector to append an idempotence token to the
 # model name, endpoint config name, and endpoint.
 #
-# - If a field value isn't provided (e.g., `ModelName`), the agent appends the idempotence token to the workflow name and uses that as the `ModelName`.
+# - If a field value isn't provided (e.g., `ModelName`), the connector appends the idempotence token to the workflow name and uses that as the `ModelName`.
 # - You can also manually set the idempotence token by adding `{idempotence_token}` to the relevant fields in the configuration, e.g., `xgboost-{idempotence_token}`.
 #
 # `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
@@ -845,7 +845,7 @@ async def invocations(request: Request):
 # trap _term SIGTERM
 #
 # echo "Starting the API server"
-# uvicorn sagemaker_inference_agent_example_usage:app --host 0.0.0.0 --port 8080&
+# uvicorn sagemaker_inference_connector_example_usage:app --host 0.0.0.0 --port 8080&
 #
 # child=$!
 # wait "$child"
@@ -855,7 +855,7 @@ async def invocations(request: Request):
 # execution role ARN, and instance type.
 #
 # Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
-# You can then invoke the endpoint using the SageMaker agent as follows:
+# You can then invoke the endpoint using the SageMaker connector as follows:
 # %%
 from flytekitplugins.awssagemaker_inference import SageMakerInvokeEndpointTask
 
@@ -863,7 +863,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
     name="sagemaker_invoke_endpoint",
     config={
         "EndpointName": "YOUR_ENDPOINT_NAME_HERE",
-        "InputLocation": "s3://sagemaker-agent-xgboost/inference_input",
+        "InputLocation": "s3://sagemaker-connector-xgboost/inference_input",
     },
     region=REGION,
 )
@@ -926,7 +926,7 @@ _term() {
 trap _term SIGTERM
 
 echo "Starting the API server"
-uvicorn sagemaker_inference_agent_example_usage:app --host 0.0.0.0 --port 8080&
+uvicorn sagemaker_inference_connector_example_usage:app --host 0.0.0.0 --port 8080&
 
 child=$!
 wait "$child"
@@ -935,11 +935,11 @@ wait "$child"
 You can trigger the `sagemaker_deployment_wf` by providing the model artifact path, execution role ARN, and instance type.
 
 Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
-You can then invoke the endpoint using the SageMaker agent as follows:
+You can then invoke the endpoint using the SageMaker connector as follows:
 
 ```python
 # %% [markdown]
-# (sagemaker_inference_agent_example_usage)=
+# (sagemaker_inference_connector_example_usage)=
 #
 # # Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
 #
@@ -1015,7 +1015,7 @@ from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
 
 REGION = "us-east-2"
-S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
+S3_OUTPUT_PATH = "s3://sagemaker-connector-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
 sagemaker_image = {{< key kit_as >}}.ImageSpec(
@@ -1066,10 +1066,10 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
-# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
+# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the connector to append an idempotence token to the
 # model name, endpoint config name, and endpoint.
 #
-# - If a field value isn't provided (e.g., `ModelName`), the agent appends the idempotence token to the workflow name and uses that as the `ModelName`.
+# - If a field value isn't provided (e.g., `ModelName`), the connector appends the idempotence token to the workflow name and uses that as the `ModelName`.
 # - You can also manually set the idempotence token by adding `{idempotence_token}` to the relevant fields in the configuration, e.g., `xgboost-{idempotence_token}`.
 #
 # `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
@@ -1160,7 +1160,7 @@ async def invocations(request: Request):
 # trap _term SIGTERM
 #
 # echo "Starting the API server"
-# uvicorn sagemaker_inference_agent_example_usage:app --host 0.0.0.0 --port 8080&
+# uvicorn sagemaker_inference_connector_example_usage:app --host 0.0.0.0 --port 8080&
 #
 # child=$!
 # wait "$child"
@@ -1170,7 +1170,7 @@ async def invocations(request: Request):
 # execution role ARN, and instance type.
 #
 # Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
-# You can then invoke the endpoint using the SageMaker agent as follows:
+# You can then invoke the endpoint using the SageMaker connector as follows:
 # %%
 from flytekitplugins.awssagemaker_inference import SageMakerInvokeEndpointTask
 
@@ -1178,7 +1178,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
     name="sagemaker_invoke_endpoint",
     config={
         "EndpointName": "YOUR_ENDPOINT_NAME_HERE",
-        "InputLocation": "s3://sagemaker-agent-xgboost/inference_input",
+        "InputLocation": "s3://sagemaker-connector-xgboost/inference_input",
     },
     region=REGION,
 )
@@ -1234,7 +1234,7 @@ To delete the deployment, you can instantiate a [`awssagemaker_inference.delete_
 
 ```python
 # %% [markdown]
-# (sagemaker_inference_agent_example_usage)=
+# (sagemaker_inference_connector_example_usage)=
 #
 # # Deploy and serve an XGBoost model on AWS SageMaker using FastAPI
 #
@@ -1310,7 +1310,7 @@ from flytekit import kwtypes
 from flytekitplugins.awssagemaker_inference import create_sagemaker_deployment
 
 REGION = "us-east-2"
-S3_OUTPUT_PATH = "s3://sagemaker-agent-xgboost/inference-output/output"
+S3_OUTPUT_PATH = "s3://sagemaker-connector-xgboost/inference-output/output"
 DEPLOYMENT_NAME = "xgboost-fastapi"
 
 sagemaker_image = {{< key kit_as >}}.ImageSpec(
@@ -1361,10 +1361,10 @@ sagemaker_deployment_wf = create_sagemaker_deployment(
 # `flytekitplugins.awssagemaker_inference.create_sagemaker_deployment` function.
 #
 # An idempotence token ensures the generation of unique tokens for each configuration, preventing name collisions during updates.
-# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the agent to append an idempotence token to the
+# By default, `idempotence_token` in `create_sagemaker_deployment` is set to `True`, causing the connector to append an idempotence token to the
 # model name, endpoint config name, and endpoint.
 #
-# - If a field value isn't provided (e.g., `ModelName`), the agent appends the idempotence token to the workflow name and uses that as the `ModelName`.
+# - If a field value isn't provided (e.g., `ModelName`), the connector appends the idempotence token to the workflow name and uses that as the `ModelName`.
 # - You can also manually set the idempotence token by adding `{idempotence_token}` to the relevant fields in the configuration, e.g., `xgboost-{idempotence_token}`.
 #
 # `sagemaker_image` should include the inference code, necessary libraries, and an entrypoint for model serving.
@@ -1455,7 +1455,7 @@ async def invocations(request: Request):
 # trap _term SIGTERM
 #
 # echo "Starting the API server"
-# uvicorn sagemaker_inference_agent_example_usage:app --host 0.0.0.0 --port 8080&
+# uvicorn sagemaker_inference_connector_example_usage:app --host 0.0.0.0 --port 8080&
 #
 # child=$!
 # wait "$child"
@@ -1465,7 +1465,7 @@ async def invocations(request: Request):
 # execution role ARN, and instance type.
 #
 # Once the endpoint creation status changes to `InService`, the SageMaker deployment workflow succeeds.
-# You can then invoke the endpoint using the SageMaker agent as follows:
+# You can then invoke the endpoint using the SageMaker connector as follows:
 # %%
 from flytekitplugins.awssagemaker_inference import SageMakerInvokeEndpointTask
 
@@ -1473,7 +1473,7 @@ invoke_endpoint = SageMakerInvokeEndpointTask(
     name="sagemaker_invoke_endpoint",
     config={
         "EndpointName": "YOUR_ENDPOINT_NAME_HERE",
-        "InputLocation": "s3://sagemaker-agent-xgboost/inference_input",
+        "InputLocation": "s3://sagemaker-connector-xgboost/inference_input",
     },
     region=REGION,
 )

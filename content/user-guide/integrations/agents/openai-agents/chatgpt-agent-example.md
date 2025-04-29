@@ -1,14 +1,14 @@
 ---
-title: ChatGPT agent example
+title: ChatGPT connector example
 weight: 2
 variants: +flyte -serverless +byoc +byok
 ---
 
-# ChatGPT agent example
+# ChatGPT connector example
 
 ```python
 # %% [markdown]
-# # ChatGPT agent example usage
+# # ChatGPT connector example usage
 #
 # ## Basic Example
 # ChatGPT can be used in lots of cases, for example, sentiment analysis, language translation, SQL query generation, and text summarization.

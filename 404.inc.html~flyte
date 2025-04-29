@@ -30,13 +30,13 @@
             // Set the alert content with the migration notice
             alert.innerHTML = `
                 <sl-icon slot="icon" name="info-circle"></sl-icon>
-                <strong>Migration to new site undergoing</strong>
+                <strong>Migration to the new site underway</strong>
                 <p>This document is in the process of being migrated to a new platform.
                 In the meantime, you can find the old documentation at the following link:</p>
 
                 <p><a href="${legacyLink.toString()}">Old Documentation Site</a></p>
 
-                <p>In case the link above does not work, you can try this
+                <p>If the link above does not work, you can try this
                 <a href="${legacyLink2.toString()}">other</a> location.</p>
             `;
 

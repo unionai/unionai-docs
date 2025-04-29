@@ -93,7 +93,7 @@ For details see [Enabling GCP resources](./integrations/enabling-gcp-resources).
 If you want to bind it to a different GSA, follow the instructions in [Enabling BigQuery](./integrations/enabling-gcp-resources/enabling-bigquery).
 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
-For details see [BigQuery agent](./integrations/agents/bigquery-agent).
+For details see [BigQuery connector](./integrations/connectors/bigquery-connector).
 
 ## `FlyteFile` and `FlyteDirectory`
 

@@ -1,15 +1,15 @@
 ---
-title: MemVerge Memory Machine Cloud (MMC) agent example
+title: MemVerge Memory Machine Cloud (MMC) connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# MemVerge Memory Machine Cloud (MMC) agent example
+# MemVerge Memory Machine Cloud (MMC) connector example
 
 ```python
-# Memory Machine Cloud agent example usage
+# Memory Machine Cloud connector example usage
 #
-# This example shows how to use the MMCloud agent to execute tasks on MemVerge Memory Machine Cloud.
+# This example shows how to use the MMCloud connector to execute tasks on MemVerge Memory Machine Cloud.
 import {{< key kit_import >}}
 from flytekitplugins.mmcloud import MMCloudConfig
 

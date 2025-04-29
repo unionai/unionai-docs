@@ -4,12 +4,12 @@ weight: 10
 variants: +flyte -serverless -byoc -byok
 ---
 
-# ChatGPT agent
+# ChatGPT connector
 
-This guide provides an overview of how to set up the ChatGPT agent in your Flyte deployment.  
-Please note that you have to set up the OpenAI API key in the agent server to run ChatGPT tasks.
+This guide provides an overview of how to set up the ChatGPT connector in your Flyte deployment.  
+Please note that you have to set up the OpenAI API key in the connector server to run ChatGPT tasks.
 
-## Specify agent configuration
+## Specify connector configuration
 
 ### flyte-binary
 
@@ -21,17 +21,17 @@ tasks:
     enabled-plugins:
       - container
       - sidecar
-      - agent-service
+      - connector-service
     default-for-task-types:
       - container: container
-      - chatgpt: agent-service
+      - chatgpt: connector-service
 
 plugins:
-  agent-service:
+  connector-service:
     # Configuring the timeout is optional.
     # Tasks like using ChatGPT with a large model might require a longer time, 
     # so we have the option to adjust the timeout setting here.
-    defaultAgent:
+    defaultConnector:
       timeouts:
         ExecuteTaskSync: 10s
 ```
@@ -51,36 +51,36 @@ configmap:
         enabled-plugins:
           - container
           - sidecar
-          - agent-service
+          - connector-service
         default-for-task-types:
           container: container
           sidecar: sidecar
-          chatgpt: agent-service
+          chatgpt: connector-service
     plugins:
-      agent-service:
+      connector-service:
         # Configuring the timeout is optional.
         # Tasks like using ChatGPT with a large model might require a longer time, 
         # so we have the option to adjust the timeout setting here.
-        defaultAgent:
+        defaultConnector:
           timeouts:
             ExecuteTaskSync: 10s
 ```
 ## Add the OpenAI API token
-1. Install the flyteagent pod using helm:
+1. Install the flyteconnector pod using helm:
 ```bash
 helm repo add flyteorg https://flyteorg.github.io/flyte
-helm install flyteagent flyteorg/flyteagent --namespace flyte
+helm install flyteconnector flyteorg/flyteconnector --namespace flyte
 ```
 
 2. Set Your OpenAI API Token as a Secret (Base64 Encoded):
 ```bash
 SECRET_VALUE=$(echo -n "<OPENAI_API_TOKEN>" | base64) && \
-kubectl patch secret flyteagent -n flyte --patch "{\"data\":{\"flyte_openai_api_key\":\"$SECRET_VALUE\"}}"
+kubectl patch secret flyteconnector -n flyte --patch "{\"data\":{\"flyte_openai_api_key\":\"$SECRET_VALUE\"}}"
 ```
 3. Restart deployment:
 
 ```bash
-kubectl rollout restart deployment flyteagent -n flyte
+kubectl rollout restart deployment flyteconnector -n flyte
 ```
 ## Upgrade the Helm release
 

@@ -3,15 +3,15 @@ title: Sagemaker inference connector
 weight: 15
 variants: +flyte -serverless -byoc -byok
 ---
-# SageMaker Inference Agent
+# SageMaker Inference Connector
 
-This guide provides an overview of how to set up the SageMaker inference agent in your Flyte deployment.
+This guide provides an overview of how to set up the SageMaker inference connector in your Flyte deployment.
 
-## Specify agent configuration
+## Specify connector configuration
 
 ### flyte-binary
 
-    Edit the relevant YAML file to specify the agent.
+    Edit the relevant YAML file to specify the connector.
 
     ```bash
     kubectl edit configmap flyte-sandbox-config -n flyte
@@ -24,12 +24,12 @@ This guide provides an overview of how to set up the SageMaker inference agent i
           - container
           - sidecar
           - k8s-array
-          - agent-service
+          - connector-service
         default-for-task-types:
           - container: container
           - container_array: k8s-array
-          - boto: agent-service
-          - sagemaker-endpoint: agent-service
+          - boto: connector-service
+          - sagemaker-endpoint: connector-service
     ```
 
 ### flyte-core
@@ -45,13 +45,13 @@ This guide provides an overview of how to set up the SageMaker inference agent i
               - container
               - sidecar
               - k8s-array
-              - agent-service
+              - connector-service
             default-for-task-types:
               container: container
               sidecar: sidecar
               container_array: k8s-array
-              boto: agent-service
-              sagemaker-endpoint: agent-service
+              boto: connector-service
+              sagemaker-endpoint: connector-service
     ```
 
 ## AWS credentials
@@ -80,4 +80,4 @@ When running on a production AWS cluster, the IAM role is used by default. Ensur
     Replace `<RELEASE_NAME>` with the name of your release (e.g., `flyte`)  
     and `<YOUR_NAMESPACE>` with the name of your namespace (e.g., `flyte`).
 
-You can refer to the documentation [here](https://docs.flyte.org/en/latest/flytesnacks/examples/sagemaker_inference_agent/index.html).
+You can refer to the documentation [here](https://docs.flyte.org/en/latest/flytesnacks/examples/sagemaker_inference_connector/index.html).

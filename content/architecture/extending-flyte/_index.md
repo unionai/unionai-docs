@@ -117,10 +117,10 @@ This enables complete control of the visualization and availability of the plugi
 | Implement once, use in any SDK or language!| |
 
 
-## Flyte Agent Service
+## Flyte Connector Service
 
 
-The Flyte Agent service allows you to write backend plugins in Python.
+The Flyte Connector service allows you to write backend plugins in Python.
 
 ### Summary
 

@@ -15,7 +15,7 @@ to migrate your Airflow DAGs to Flyte with minimal effort.
 
 In addition to migration capabilities, Flyte users can seamlessly integrate Airflow tasks into their workflows, leveraging the ecosystem of Airflow operators and sensors.
 By combining the robust Airflow ecosystem with Flyte's capabilities such as scalability, versioning, and reproducibility, users can run more complex data and machine learning workflows with ease.
-For more information, see the [Airflow agent documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/airflow_agent/index.html).
+For more information, see the [Airflow connector documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/airflow_connector/index.html).
 
 # For current Flyte users
 
@@ -26,7 +26,7 @@ for Google Cloud [Dataproc Operators](https://airflow.apache.org/docs/apache-air
 ## Prerequisites
 
 - Install `flytekitplugins-airflow` in your Python environment.
-- Enable an {ref}`Airflow agent<deployment-agent-setup-airflow>` in your Flyte cluster.
+- Enable an {ref}`Airflow connector<deployment-connector-setup-airflow>` in your Flyte cluster.
 
 ## Steps
 
@@ -79,11 +79,11 @@ AIRFLOW_CONN_FS_DEFAULT="/" pyflyte run workflows.py airflow_wf
 
 > [!NOTE]
 > In production, we recommend storing connections in a [secrets backend](https://airflow.apache.org/docs/apache-airflow/stable/security/secrets/secrets-backend/index.html).
-> Make sure the agent pod has the right permission (IAM role) to access the secret from the external secrets backend.
+> Make sure the connector pod has the right permission (IAM role) to access the secret from the external secrets backend.
 
 After you have tested your workflow locally, you can execute it on a Flyte cluster using the `--remote` flag.
 In this case, Flyte creates a pod in the Kubernetes cluster to run the `say_hello` task, and then runs
-your Airflow `BashOperator` task on the Airflow agent.
+your Airflow `BashOperator` task on the Airflow connector.
 
 ```bash
 pyflyte run --remote workflows.py airflow_wf

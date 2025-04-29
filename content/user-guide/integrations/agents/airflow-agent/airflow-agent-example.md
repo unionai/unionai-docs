@@ -1,15 +1,15 @@
 ---
-title: Apache Airflow agent example
+title: Apache Airflow connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# Apache Airflow agent example
+# Apache Airflow connector example
 
 ```python
 # %% [markdown]
-# (airflow_agent_example_usage)=
-# # Airflow agent example usage
+# (airflow_connector_example_usage)=
+# # Airflow connector example usage
 # [Apache Airflow](https://airflow.apache.org) is a widely used open source
 # platform for managing workflows with a robust ecosystem. Flyte provides an
 # Airflow plugin that allows you to run Airflow tasks as Flyte tasks.

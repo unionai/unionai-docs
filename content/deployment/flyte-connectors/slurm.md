@@ -3,9 +3,9 @@ title: SLURM connector
 weight: 17
 variants: +flyte -serverless -byoc -byok
 ---
-# Slurm agent
+# Slurm connector
 
-This guide provides a comprehensive overview of setting up an environment to test the Slurm agent locally and enabling the agent in your Flyte deployment. Before proceeding, the first and foremost step is to spin up your own Slurm cluster, as it serves as the foundation for the setup.
+This guide provides a comprehensive overview of setting up an environment to test the Slurm connector locally and enabling the connector in your Flyte deployment. Before proceeding, the first and foremost step is to spin up your own Slurm cluster, as it serves as the foundation for the setup.
 
 ## Spin up a Slurm cluster
 
@@ -159,13 +159,13 @@ srun -N 1 hostname
 scontrol update nodename=<your-nodename> state=idle
 ```
 
-## Test your Slurm agent locally
+## Test your Slurm connector locally
 
-This section describes how to test the Slurm agent locally without running the backend gRPC server.
+This section describes how to test the Slurm connector locally without running the backend gRPC server.
 
 ### Overview
 
-The Slurm agent has 3 core methods:
+The Slurm connector has 3 core methods:
 
 1. `create`: Run `srun` or `sbatch`
 2. `get`: Query job status using `scontrol`
@@ -181,13 +181,13 @@ For Python function tasks:
 
 > You need: a client (localhost), a Slurm cluster, and S3-compatible object storage.
 
-#### 1. Install the Slurm agent on your local machine
+#### 1. Install the Slurm connector on your local machine
 
 ```shell
 pip install flytekitplugins-slurm
 ```
 
-#### 2. Install the Slurm agent on the cluster
+#### 2. Install the Slurm connector on the cluster
 
 ```shell
 pip install flytekitplugins-slurm
@@ -243,7 +243,7 @@ Check access:
 aws s3 ls
 ```
 
-## Specify agent configuration
+## Specify connector configuration
 
 ### Flyte binary
 
@@ -260,13 +260,13 @@ tasks:
       container: container
       container_array: k8s-array
       sidecar: sidecar
-      slurm_fn: agent-service
-      slurm: agent-service
+      slurm_fn: connector-service
+      slurm: connector-service
     enabled-plugins:
       - container
       - sidecar
       - k8s-array
-      - agent-service
+      - connector-service
 ```
 
 #### Helm chart
@@ -278,12 +278,12 @@ tasks:
       - container
       - sidecar
       - k8s-array
-      - agent-service
+      - connector-service
     default-for-task-types:
       - container: container
       - container_array: k8s-array
-      - slurm_fn: agent-service
-      - slurm: agent-service
+      - slurm_fn: connector-service
+      - slurm: connector-service
 ```
 
 ### Flyte core
@@ -298,33 +298,33 @@ enabled_plugins:
         - container
         - sidecar
         - k8s-array
-        - agent-service
+        - connector-service
       default-for-task-types:
         container: container
         sidecar: sidecar
         container_array: k8s-array
-        slurm_fn: agent-service
-        slurm: agent-service
+        slurm_fn: connector-service
+        slurm: connector-service
 ```
 
 ## Add the Slurm Private Key
 
-### 1. Install flyteagent pod
+### 1. Install flyteconnector pod
 
 ```bash
 helm repo add flyteorg https://flyteorg.github.io/flyte
-helm install flyteagent flyteorg/flyteagent --namespace flyte
+helm install flyteconnector flyteorg/flyteconnector --namespace flyte
 ```
 
 ### 2. Set Private Key as a Secret
 
 ```bash
 SECRET_VALUE=$(base64 < your_slurm_private_key_path) && \
-kubectl patch secret flyteagent -n flyte --patch "{\"data\":{\"flyte_slurm_private_key\":\"$SECRET_VALUE\"}}"
+kubectl patch secret flyteconnector -n flyte --patch "{\"data\":{\"flyte_slurm_private_key\":\"$SECRET_VALUE\"}}"
 ```
 
 ### 3. Restart development
 
 ```bash
-kubectl rollout restart deployment flyteagent -n flyte
+kubectl rollout restart deployment flyteconnector -n flyte
 ```

@@ -1,17 +1,17 @@
 ---
-title: NVIDIA DGX agent
+title: NVIDIA DGX connector
 weight: 7
 variants: -flyte -serverless +byoc +byok
 ---
 
-# NVIDIA DGX agent
+# NVIDIA DGX connector
 
-You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/data-center/dgx-platform/) with the DGX agent.
+You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/data-center/dgx-platform/) with the DGX connector.
 
 
 ## Installation
 
-To install the DGX agent and have it enabled in your deployment, contact the {{< key product_name >}} team.
+To install the DGX connector and have it enabled in your deployment, contact the {{< key product_name >}} team.
 
 ## Example usage
 

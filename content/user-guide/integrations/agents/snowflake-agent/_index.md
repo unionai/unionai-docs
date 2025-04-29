@@ -1,18 +1,18 @@
 ---
-title: Snowflake agent
+title: Snowflake connector
 weight: 9
 variants: +flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
 
-# Snowflake agent
+# Snowflake connector
 
 {{< key product_name >}} can be seamlessly integrated with the [Snowflake](https://www.snowflake.com) service,
 allowing you to easily query data in Snowflake.
 
 ## Installation
 
-To use the Snowflake agent, run the following command:
+To use the Snowflake connector, run the following command:
 
 ```
 pip install flytekitplugins-snowflake
@@ -38,7 +38,7 @@ SELECT
 
 ## Example usage
 
-For a usage example, see [Snowflake agent example](./snowflake-agent-example).
+For a usage example, see [Snowflake connector example](./snowflake-connector-example).
 
 ## Local testing
 
@@ -53,7 +53,7 @@ sudo vim /etc/secrets/snowflake
 
 ## {{< key product_name >}} cluster deployment
 
-After you have finished testing the agent locally, contact the {{< key product_name >}} team to enable it in your cluster.
+After you have finished testing the connector locally, contact the {{< key product_name >}} team to enable it in your cluster.
 
 {{< /markdown >}}
 {{< /variant >}}

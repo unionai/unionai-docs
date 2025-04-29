@@ -1,10 +1,10 @@
 ---
-title: File sensor agent example
+title: File sensor connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# File sensor agent example
+# File sensor connector example
 
 ```python
 # %% [markdown]

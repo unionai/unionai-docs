@@ -1,14 +1,14 @@
 ---
-title: Google BigQuery agent example
+title: Google BigQuery connector example
 weight: 1
 variants: +flyte -serverless +byoc +byok
 ---
 
-# Google BigQuery agent example
+# Google BigQuery connector example
 
 ```python
 # %% [markdown]
-# # BigQuery agent example usage
+# # BigQuery connector example usage
 #
 # This example shows how to use a Flyte BigQueryTask to execute a query.
 # %%
