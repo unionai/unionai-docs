@@ -22,7 +22,7 @@ To enable the plugin in the backend, follow instructions outlined in the {ref}`d
 
 ## Run the example on the Flyte cluster
 
-To run the provided examples on the Flyte cluster, use the following commands:
+To run the provided examples, use the following commands:
 
 Distributed pytorch training:
 
