@@ -332,7 +332,6 @@ union.ai/docs/serverless/tutorials/language-models/nim-on-actor,https://union.ai
 union.ai/docs/serverless/tutorials/language-models/pdf-to-podcast-blueprint,https://union.ai/docs/serverless/tutorials/compound-ai-systems/pdf-to-podcast-blueprint,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/serverless/tutorials/language-models/vllm-serving-on-actor,https://union.ai/docs/serverless/tutorials/serving/vllm-serving-on-actor,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/serverless/tutorials/multimodal-ai/video-dubbing,https://union.ai/docs/serverless/tutorials/compound-ai-systems/video-dubbing,302,TRUE,FALSE,TRUE,TRUE
-union.ai/docs/flyte/integrations/deprecated-integrations,https://union.ai/docs/flyte/integrations/deprecated-integrations,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/deprecated-integrations/bigquery_plugin,https://union.ai/docs/flyte/integrations/deprecated-integrations/bigquery-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/deprecated-integrations/bigquery_plugin/bigquery_plugin_example,https://union.ai/docs/flyte/integrations/deprecated-integrations/bigquery-plugin/bigquery-plugin-example,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/deprecated-integrations/databricks_plugin,https://union.ai/docs/flyte/integrations/deprecated-integrations/databricks-plugin,302,TRUE,FALSE,TRUE,TRUE
@@ -341,7 +340,6 @@ union.ai/docs/flyte/integrations/deprecated-integrations/k8s_pod_plugin,https://
 union.ai/docs/flyte/integrations/deprecated-integrations/k8s_pod_plugin/pod,https://union.ai/docs/flyte/integrations/deprecated-integrations/k8s-pod-plugin/pod,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/deprecated-integrations/snowflake_plugin,https://union.ai/docs/flyte/integrations/deprecated-integrations/snowflake-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/deprecated-integrations/snowflake_plugin/snowflake_plugin_example,https://union.ai/docs/flyte/integrations/deprecated-integrations/snowflake-plugin/snowflake-plugin-example,302,TRUE,FALSE,TRUE,TRUE
-union.ai/docs/flyte/integrations/external-service-backend-plugins,https://union.ai/docs/flyte/integrations/external-service-backend-plugins,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/external-service-backend-plugins/athena_plugin,https://union.ai/docs/flyte/integrations/external-service-backend-plugins/athena-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/external-service-backend-plugins/athena_plugin/athena,https://union.ai/docs/flyte/integrations/external-service-backend-plugins/athena-plugin/athena,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/external-service-backend-plugins/aws_batch_plugin,https://union.ai/docs/flyte/integrations/external-service-backend-plugins/aws-batch-plugin,302,TRUE,FALSE,TRUE,TRUE
@@ -374,10 +372,8 @@ union.ai/docs/flyte/integrations/flyte-agents/slurm_agent,https://union.ai/docs/
 union.ai/docs/flyte/integrations/flyte-agents/slurm_agent/slurm_agent_example_usage,https://union.ai/docs/flyte/integrations/connectors/slurm-agent/slurm-agent-example-usage,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flyte-agents/snowflake_agent,https://union.ai/docs/flyte/integrations/connectors/snowflake-agent,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flyte-agents/snowflake_agent/snowflake_agent_example_usage,https://union.ai/docs/flyte/integrations/connectors/snowflake-agent/snowflake-agent-example-usage,302,TRUE,FALSE,TRUE,TRUE
-union.ai/docs/flyte/integrations/flyte-operators,https://union.ai/docs/flyte/integrations/flyte-operators,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flyte-operators/airflow_plugin,https://union.ai/docs/flyte/integrations/flyte-operators/airflow-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flyte-operators/airflow_plugin/airflow,https://union.ai/docs/flyte/integrations/flyte-operators/airflow-plugin/airflow,302,TRUE,FALSE,TRUE,TRUE
-union.ai/docs/flyte/integrations/flytekit-plugins,https://union.ai/docs/flyte/integrations/flytekit-plugins,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flytekit-plugins/comet_ml_plugin,https://union.ai/docs/flyte/integrations/flytekit-plugins/comet-ml-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flytekit-plugins/comet_ml_plugin/comet_ml_example,https://union.ai/docs/flyte/integrations/flytekit-plugins/comet-ml-plugin/comet-ml-example,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flytekit-plugins/dbt_plugin,https://union.ai/docs/flyte/integrations/flytekit-plugins/dbt-plugin,302,TRUE,FALSE,TRUE,TRUE
@@ -419,7 +415,6 @@ union.ai/docs/flyte/integrations/flytekit-plugins/wandb_plugin,https://union.ai/
 union.ai/docs/flyte/integrations/flytekit-plugins/wandb_plugin/wandb_example,https://union.ai/docs/flyte/integrations/flytekit-plugins/wandb-plugin/wandb-example,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flytekit-plugins/whylogs_plugin,https://union.ai/docs/flyte/integrations/flytekit-plugins/whylogs-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/flytekit-plugins/whylogs_plugin/whylogs_example,https://union.ai/docs/flyte/integrations/flytekit-plugins/whylogs-plugin/whylogs-example,302,TRUE,FALSE,TRUE,TRUE
-union.ai/docs/flyte/integrations/native-backend-plugins,https://union.ai/docs/flyte/integrations/native-backend-plugins,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/native-backend-plugins/k8s_dask_plugin,https://union.ai/docs/flyte/integrations/native-backend-plugins/k8s-dask-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/native-backend-plugins/k8s_dask_plugin/dask_example,https://union.ai/docs/flyte/integrations/native-backend-plugins/k8s-dask-plugin/dask-example,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/native-backend-plugins/k8s_spark_plugin,https://union.ai/docs/flyte/integrations/native-backend-plugins/k8s-spark-plugin,302,TRUE,FALSE,TRUE,TRUE
@@ -434,4 +429,3 @@ union.ai/docs/flyte/integrations/native-backend-plugins/kftensorflow_plugin,http
 union.ai/docs/flyte/integrations/native-backend-plugins/kftensorflow_plugin/tf_mnist,https://union.ai/docs/flyte/integrations/native-backend-plugins/kftensorflow-plugin/tf-mnist,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/native-backend-plugins/ray_plugin,https://union.ai/docs/flyte/integrations/native-backend-plugins/ray-plugin,302,TRUE,FALSE,TRUE,TRUE
 union.ai/docs/flyte/integrations/native-backend-plugins/ray_plugin/ray_example,https://union.ai/docs/flyte/integrations/native-backend-plugins/ray-plugin/ray-example,302,TRUE,FALSE,TRUE,TRUE
-
