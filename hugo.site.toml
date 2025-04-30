@@ -51,6 +51,15 @@ byoc = 2
 #----------------------------------------------------------
 # Keywords
 
+#
+# Used by {{< key >}} short code. Please refer to SHORTCODES.md (key section)
+# for documentation.
+#
+# ===== IMPORTANT =====
+#
+# DO NOT add new keys here without, in the same PR, adding them to the
+# documentation above as well.
+#
 [params.key]
 
 [params.key.default_project]
@@ -166,3 +175,6 @@ flyte = "icon-logo-flyte.png"
 serverless = "favicon.ico"
 byoc = "favicon.ico"
 byok = "favicon.ico"
+
+# Plase DO NOT add new keys without documenting them in SHORTCODES.md in the
+# same PR.

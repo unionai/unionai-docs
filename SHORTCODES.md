@@ -22,6 +22,7 @@ This site has special blocks that can be used to generate code for Union.
   - [`{{< multiline >}}`](#-multiline-)
   - [`{{< tabs >}}` and `{{< tab >}}`](#-tabs--and--tab-)
   - [`{{< key >}}`](#-key-)
+    - [List of available keys](#list-of-available-keys)
   - [`{{< download >}}`](#-download-)
   - [`{{< docs_home >}}`](#-docs_home-)
   - [`{{< py_class_docsum >}}`, `{{< py_class_ref >}}`, and `{{< py_func_ref >}}`](#-py_class_docsum---py_class_ref--and--py_func_ref-)
@@ -157,6 +158,30 @@ serverless = "Union Serverless"
 byoc = "Union BYOC"
 byok = "Union BYOK"
 ```
+
+#### List of available keys
+
+| Key               | Description                           | Example Usage (Flyte → Union)                                          |
+| ----------------- | ------------------------------------- | ---------------------------------------------------------------------- |
+| default_project   | Default project name used in examples | `{{< key default_project >}}` → "flytesnacks" or "default"             |
+| product_full_name | Full product name                     | `{{< key product_full_name >}}` → "Flyte OSS" or "Union.ai Serverless" |
+| product_name      | Short product name                    | `{{< key product_name >}}` → "Flyte" or "Union.ai"                     |
+| product           | Lowercase product identifier          | `{{< key product >}}` → "flyte" or "union"                             |
+| kit_name          | SDK name                              | `{{< key kit_name >}}` → "Flytekit" or "Union"                         |
+| kit               | Lowercase SDK identifier              | `{{< key kit >}}` → "flytekit" or "union"                              |
+| kit_as            | SDK import alias                      | `{{< key kit_as >}}` → "fl" or "union"                                 |
+| kit_import        | SDK import statement                  | `{{< key kit_import >}}` → "flytekit as fl" or "union"                 |
+| kit_remote        | Remote client class name              | `{{< key kit_remote >}}` → "FlyteRemote" or "UnionRemote"              |
+| cli_name          | CLI tool name                         | `{{< key cli_name >}}` → "Pyflyte" or "Union"                          |
+| cli               | Lowercase CLI tool identifier         | `{{< key cli >}}` → "pyflyte" or "union"                               |
+| ctl_name          | Control tool name                     | `{{< key ctl_name >}}` → "Flytectl" or "Uctl"                          |
+| ctl               | Lowercase control tool identifier     | `{{< key ctl >}}` → "flytectl" or "uctl"                               |
+| config_env        | Configuration environment variable    | `{{< key config_env >}}` → "FLYTECTL_CONFIG" or "UNION_CONFIG"         |
+| env_prefix        | Environment variable prefix           | `{{< key env_prefix >}}` → "FLYTE" or "UNION"                          |
+| docs_home         | Documentation home URL                | `{{< key docs_home >}}` → "/docs/flyte" or "/docs/serverless"          |
+| map_func          | Map function name                     | `{{< key map_func >}}` → "map_task" or "map"                           |
+| logo              | Logo image filename                   | `{{< key logo >}}` → "flyte-logo.svg" or "union-logo.svg"              |
+| favicon           | Favicon image filename                | `{{< key favicon >}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
 
 ### `{{< download >}}`
 
