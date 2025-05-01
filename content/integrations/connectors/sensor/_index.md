@@ -1,29 +1,35 @@
 ---
-title: Sensor
+title: Sensor connectror
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless +byoc +byok
 sidebar_expanded: false
 ---
 
-# Sensor
+# Sensor connector
 
-## Usage
+## Example usage
 
-For an example of detecting a file with the `FileSensor`, see the [File sensor example](./file-sensor-example).
+{{< variant flyte >}}
+{{< markdown >}}
 
-### Run the file senseor example on a Flyte cluster
+For an example query, see [Sensor connector example usage](./file-sensor-example)
 
-To run the provided example on a Flyte cluster, use the following command:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc byok >}}
+{{< markdown >}}
 
-```shell
-$ pyflyte run --remote \
-  https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/sensor/sensor/file_sensor_example.py wf
-```
+For an example query, see [Sensor connector example usage](./file-sensor-example-union)
 
-## Deployment configuration
+{{< /markdown >}}
+{{< /variant >}}
 
-> [!NOTE]
-> If you are using a managed deployment of Flyte,
-> you will need to contact your deployment administrator to configure connectors in your deployment.
+{{< variant flyte >}}
+{{< markdown >}}
 
-To enable the sensor connector in your Flyte deployment, see the [Sensor connector deployment guide](https://docs-legacy.flyte.org/en/latest/deployment/connectors/sensor.html#deployment-connector-setup-sensor).
+## Flyte deployment configuration
+
+To enable the Sensor connector in your Flyte deployment, see the [Airflow connector deployment guide](../../../deployment/flyte-connectors/sensor).
+
+{{< /markdown >}}
+{{< /variant >}}

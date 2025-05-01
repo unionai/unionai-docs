@@ -1,10 +1,10 @@
 ---
-title: NVIDIA DGX connector
+title: DGX connector
 weight: 7
 variants: -flyte -serverless +byoc +byok
 ---
 
-# NVIDIA DGX connector
+# DGX connector
 
 You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/data-center/dgx-platform/) with the DGX connector.
 

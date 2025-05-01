@@ -1,12 +1,12 @@
 ---
 title: Airflow connector
-weight: 8 
+weight: 8
 variants: +flyte -serverless -byoc -byok
 ---
 
 # Airflow connector
 
-This guide provides an overview of how to set up the Airflow connectir in your Flyte deployment.  
+This guide provides an overview of how to set up the Airflow connector in your Flyte deployment.
 Please note that you don't need an Airflow cluster to run the Airflow tasks, since Flytekit will automatically compile Airflow tasks to Flyte tasks and execute them on the Flyte cluster.
 
 ## Specify connector configuration
