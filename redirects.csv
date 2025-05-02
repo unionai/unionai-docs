@@ -304,7 +304,7 @@ docs.union.ai/web-console/task-level-monitoring,https://www.union.ai/docs/byoc/u
 docs.union.ai/web-console/task-list,https://www.union.ai/docs/byoc/user-guide/core-concepts/tasks/viewing-tasks,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/web-console/task-view,https://www.union.ai/docs/byoc/user-guide/core-concepts/tasks/viewing-tasks,302,TRUE,FALSE,TRUE,TRUE
 docs.union.ai/web-console/usage-view,https://www.union.ai/docs/byoc/user-guide/administration/resources,302,TRUE,FALSE,TRUE,TRUE
-serverless-docs.union.ai,https://union.ai/docs/serverless,302,TRUE,FALSE,TRUE,TRUE
+serverless-docs.union.ai,https://www.union.ai/docs/serverless,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte,https://www.union.ai/docs/flyte/user-guide,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/_/downloads/en/v0.1.0/pdf,https://www.union.ai/_static/downloads/flyte-v0.1.0.pdf,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/_r_/flyte/_/downloads/en/v0.1.0/pdf/,https://www.union.ai/_static/downloads/flyte-v0.1.0.pdf,302,TRUE,FALSE,TRUE,TRUE
