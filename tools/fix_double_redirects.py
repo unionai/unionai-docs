@@ -28,7 +28,7 @@ def fix_double_redirects(in_path, out_path):
         writer.writerows(updated_redirects)
 
 if __name__ == "__main__":
-    in_path = "/Users/ppiegaze/repos/unionai/docs-builder/rd.csv"
-    out_path = "/Users/ppiegaze/repos/unionai/docs-builder/new-redirects-ai-union-docs.csv"
+    in_path = "redirects.csv"
+    out_path = "fixed-redirects.csv"
     fix_double_redirects(in_path, out_path)
-    print("Double redirects fixed and file updated.")
+
