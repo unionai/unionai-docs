@@ -23,6 +23,12 @@ import plotly.express as px
 import plotly
 ```
 
+> [!NOTE]
+> The renderers are packaged separately from `flytekit` itself.
+> To enable the `MarkdownRenderer` imported above
+> you first have to install the package `flytekitplugins-deck-standard`
+> in your local Python environment and include it in your `ImageSpec` (as shown below).
+
 We create a new deck named `pca` and render Markdown content along with a
 [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) plot.
 
@@ -116,6 +122,11 @@ while the default deck can be used to creta cusom renderings such as line plots,
 Additionally, you can create other tabs as well.
 
 ## Deck renderers
+
+> [!NOTE]
+> The renderers are packaged separately from `flytekit` itself.
+> To enable them you first have to install the package `flytekitplugins-deck-standard`
+> in your local Python environment and include it in your `ImageSpec`.
 
 ### Frame profiling renderer
 
