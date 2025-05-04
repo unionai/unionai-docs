@@ -1,13 +1,17 @@
 import inspect
-from typing import Optional
+from typing import Optional, Any
 from lib.parser.docstring import parse_docstring
-from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo
+from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
 
 
 def parse_method(name: str, member: object) -> Optional[MethodInfo]:
     if not (inspect.isfunction(member) or inspect.ismethod(member)):
         return None
 
+    return do_parse_method(name, member, "python")
+
+
+def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optional[MethodInfo]:
     doc_info = parse_docstring(inspect.getdoc(member), source=member)
     docstr = doc_info["docstring"] if doc_info else None
     params_docs = doc_info["params"] if doc_info else None
@@ -21,33 +25,35 @@ def parse_method(name: str, member: object) -> Optional[MethodInfo]:
         for name, param in sig.parameters.items()
     }
     return_type = (
-        doc_info["return_type"]
-        if doc_info != None and "return_type" in doc_info and doc_info["return_type"] != None
-        else (
-            sig.return_annotation
-            if str(sig.return_annotation) != "<class 'inspect._empty'>"
-            else "None"
-        )
+        sig.return_annotation
+        if str(sig.return_annotation) != "<class 'inspect._empty'>"
+        else "None"
     )
+    return_doc = doc_info["return_doc"] \
+        if doc_info is not None and "return_doc" in doc_info and doc_info["return_doc"] is not None \
+        else None
+
     method_info = MethodInfo(
         name=name,
         doc=docstr,
         signature=str(sig),
         params=[
-            {
-                "name": param.name,
-                "default": (
+            ParamInfo(
+                name=param.name,
+                default=(
                     str(param.default)
                     if param.default != inspect.Parameter.empty
                     else None
                 ),
-                "kind": str(param.kind),
-                "type": str(param_types[param.name]),
-            }
+                kind=str(param.kind),
+                type=str(param_types[param.name]),
+            )
             for param in inspect.signature(member).parameters.values()
         ],
         params_doc=params_docs,
         return_type=str(return_type),
+        return_doc=return_doc,
+        framework=framework,
     )
     return method_info
 

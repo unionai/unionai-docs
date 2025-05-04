@@ -67,6 +67,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
             path=class_path,
             doc=doc_info["docstring"] if doc_info else None,
             module=cls.__module__,
+            parent=cls.__base__.__name__ if cls.__base__ else None,
             bases=[
                 base.__name__ for base in cls.__bases__ if base.__name__ != "object"
             ],

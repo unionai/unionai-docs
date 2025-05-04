@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from lib.ptypes import MethodInfo, PackageInfo, VariableInfo
 from lib.parser.methods import parse_method, parse_variable
+from lib.parser.synchronicity import is_synchronicity_method, parse_synchronicity_method
 
 
 def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
@@ -77,10 +78,11 @@ def get_subpackages(package_name: str) -> List[Tuple[PackageInfo, ModuleType]]:
 def get_functions(info: PackageInfo, pkg: ModuleType) -> List[MethodInfo]:
     result = []
     for name, member in inspect.getmembers(pkg):
-        if not should_include(name, member, pkg, inspect.isfunction):
-            continue
-
-        method_info = parse_method(name, member)
+        method_info = None
+        if is_synchronicity_method(name, member):
+            method_info = parse_synchronicity_method(name, member)
+        if should_include(name, member, pkg, inspect.isfunction):
+            method_info = parse_method(name, member)
         if method_info:
             result.append(method_info)
     return result
@@ -107,7 +109,7 @@ def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> boo
         # print(f"[should_include] Skipping {name} as it doesn't match filter", file=stderr)
         return False
 
-    all_allow_list = getattr(package, '__all__', None)
+    all_allow_list = getattr(package, "__all__", None)
 
     # If __all__ is defined, skip members not in the allow list
     if all_allow_list is not None:
@@ -135,6 +137,7 @@ def should_include(name: str, obj: Any, package: ModuleType, filter=None) -> boo
 
     # print(f"[should_include] Keeping {name}", file=stderr)
     return True
+
 
 def main():
     # Test the get_subpackages function with a sample package

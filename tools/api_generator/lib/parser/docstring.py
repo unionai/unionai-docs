@@ -16,7 +16,7 @@ _returns = [
 class DocstringInfo(TypedDict):
     docstring: str
     params: ParamDict
-    return_type: Optional[str]
+    return_doc: Optional[str]
 
 
 def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
@@ -39,7 +39,7 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
     lines = docstring.split("\n")
     # print(lines)
 
-    result = DocstringInfo(docstring="", params={}, return_type=None)
+    result = DocstringInfo(docstring="", params={}, return_doc=None)
 
     current_param = None
     in_args = False
@@ -106,7 +106,7 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
 
             for r in _returns:
                 if line_params.startswith(f":{r}:"):
-                    result["return_type"] = line_params[len(r):].strip()
+                    result["return_doc"] = line_params[len(r):].strip()
                     continue
 
             if not current_param and not line_params.startswith(":param"):

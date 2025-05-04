@@ -17,6 +17,8 @@ from lib.generate.helper import generate_anchor_from_name
 
 type PackageTree = Dict[str, List[str]]
 
+ProtocolBaseClass = "Protocol"
+
 
 def generate_class_filename(fullname: str, pkg_root: str) -> str:
     nameParts = fullname.split(".")
@@ -59,12 +61,12 @@ def generate_class_index(
 ):
     # Check if any package has classes defined
     has_classes = any(
-        any(cls not in ignore_types for cls in pkg_classes) 
+        any(cls not in ignore_types for cls in pkg_classes)
         for pkg_classes in classes.values()
     )
     if not has_classes:
         return
-    
+
     if flatten:
         pkg_index = os.path.join(output_folder, "classes.md")
     else:
@@ -74,15 +76,51 @@ def generate_class_index(
         pkg_index = os.path.join(cls_root, "_index.md")
 
     with open(pkg_index, "w") as index:
-        write_front_matter("Classes", index)
-
-        index.write("# Classes\n\n")
-
-        index.write(f"| Class | Description |\n")
-        index.write("|-|-|\n")
+        classList = {}
+        protocolList = {}
 
         for _, pkgInfo in classes.items():
             for cls, clsInfo in pkgInfo.items():
+                if cls in ignore_types:
+                    continue
+                if clsInfo["parent"] == ProtocolBaseClass:
+                    protocolList[cls] = clsInfo
+                else:
+                    classList[cls] = clsInfo
+
+        if len(protocolList) > 0 and len(classList) > 0:
+            write_front_matter("Classes & Protocols", index)
+        elif len(classList) > 0:
+            write_front_matter("Classes", index)
+        else:
+            write_front_matter("Protocols", index)
+
+        if len(classList) > 0:
+            index.write("# Classes\n\n")
+
+            index.write(f"| Class | Description |\n")
+            index.write("|-|-|\n")
+
+            for cls, clsInfo in classList.items():
+                if cls in ignore_types:
+                    continue
+                class_link = generate_class_link(
+                    fullname=cls,
+                    relative_to_file=pkg_index,
+                    pkg_root=pkg_root,
+                    flatten=flatten,
+                )
+                index.write(
+                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n"
+                )
+
+        if len(protocolList) > 0:
+            index.write("# Protocols\n\n")
+
+            index.write(f"| Protocol | Description |\n")
+            index.write("|-|-|\n")
+
+            for cls, clsInfo in protocolList.items():
                 if cls in ignore_types:
                     continue
                 class_link = generate_class_link(
@@ -120,10 +158,17 @@ def generate_class_details(
     )
 
     if init_method:
-        generate_method_decl(info["name"], init_method, output, is_class=True)
+        generate_method_decl(
+            info["name"],
+            init_method,
+            output,
+            is_class=True,
+            is_protocol=info["parent"] == ProtocolBaseClass,
+        )
         if init_method["doc"]:
             output.write(f"{init_method['doc']}\n\n")
-        generate_params(init_method, output)
+        if info["parent"] != ProtocolBaseClass:
+            generate_params(init_method, output)
 
     methods = [method for method in info["methods"] if method["name"] != "__init__"]
 
@@ -157,17 +202,45 @@ def generate_classes_and_error_list(
     ignore_types: List[str],
 ):
     classes, exceptions = sift_class_and_errors(clss)
-    
+
     # Filter out ignored types from classes
     filtered_classes = [cls for cls in classes if cls not in ignore_types]
-    
-    if len(filtered_classes) > 0:
+
+    class_list = [
+        cls for cls in filtered_classes if clss[cls]["parent"] != ProtocolBaseClass
+    ]
+    protocol_list = [
+        cls for cls in filtered_classes if clss[cls]["parent"] == ProtocolBaseClass
+    ]
+
+    if len(class_list) > 0:
         output.write(f"{'#' * (doc_level)} Classes\n\n")
 
         output.write(f"| Class | Description |\n")
         output.write("|-|-|\n")
 
-        for classNameFull in filtered_classes:
+        for classNameFull in class_list:
+            clsInfo = clss[classNameFull]
+            classLink = generate_class_link(
+                fullname=classNameFull,
+                relative_to_file=relative_to_file,
+                pkg_root=pkg_root,
+                flatten=flatten,
+            )
+
+            output.write(
+                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+            )
+
+        output.write("\n")
+
+    if len(protocol_list) > 0:
+        output.write(f"{'#' * (doc_level)} Protocols\n\n")
+
+        output.write(f"| Protocol | Description |\n")
+        output.write("|-|-|\n")
+
+        for classNameFull in protocol_list:
             clsInfo = clss[classNameFull]
             classLink = generate_class_link(
                 fullname=classNameFull,
