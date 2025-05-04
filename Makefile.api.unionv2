@@ -6,7 +6,7 @@ all: parser generate
 
 .PHONY: parser
 parser:
-	tools/api_generator/parser --package union > ${API_DATA}
+	tools/api_generator/parser --package union --output ${API_DATA}
 
 .PHONY: generate
 generate: clean_output_folder

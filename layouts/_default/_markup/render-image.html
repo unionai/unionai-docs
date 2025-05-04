@@ -1,5 +1,6 @@
 {{ $map := page.Scratch.Get "resource_permalinks" }}
 {{ $destination := .Destination }}
+{{- $uniqueID := printf "image-%s-%d" (sha1 .Destination) .Ordinal -}}
 
 {{/* Check if we need to remap the destination path */}}
 {{ if $map }}
@@ -11,7 +12,11 @@
   {{ end }}
 {{ end }}
 
-<img src="{{ $destination | safeURL }}"
-    {{- with .PlainText }} alt="{{ . }}"{{ end -}}
-    {{- with .Title }} title="{{ . }}"{{ end -}}
-/>
+<div class="imageblock">
+    <div id="{{- $uniqueID -}}" class="image">
+        <img src="{{ $destination | safeURL }}"
+            {{- with .PlainText }} alt="{{ . }}"{{ end -}}
+            {{- with .Title }} title="{{ . }}"{{ end -}}
+        />
+    </div>
+</div>
