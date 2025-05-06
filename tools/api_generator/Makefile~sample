@@ -1,0 +1,19 @@
+.PHONY: all
+all: parser generate
+
+.PHONY: parser
+parser:
+	python main_parser.py --package YOUR_PACKAGE_NAME > /tmp/YOUR_API.api.yaml
+
+.PHONY: generate
+generate:
+	python main_generate.py \
+		/tmp/YOUR_API.api.yaml \
+		../../content/api-reference/YOUR_API \
+		--title "YOU_API_TITLE API" \
+		--variants \
+			+flyte \
+			+byoc \
+			+byok \
+			+serverless \
+		--include ../../include/api.YOUR_API.md

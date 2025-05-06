@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import argparse
+
+import yaml
+
+from lib.generate.site import generate_site
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate API documentation site from YAML"
+    )
+    parser.add_argument("--api", help="Path to the API reference YAML file")
+    parser.add_argument("--output_dir", help="Path to the output directory")
+    parser.add_argument("--title", help="Name of the API")
+    parser.add_argument("--variants", nargs="+", help="List of variants to use")
+    parser.add_argument("--include", nargs="+", help="List of files to include")
+    parser.add_argument("--no-flatten", type=bool, help="Flatten the package structure", default=False)
+    parser.add_argument("--ignore_types", nargs="+", help="Types to skip generation", default=[])
+    args = parser.parse_args()
+
+    # Read out.yaml file, parse and convert to ptypes.ParsedInfo
+    with open(args.api, "r") as f:
+        parsed_info = yaml.safe_load(f)
+
+        generate_site(
+            title=args.title,
+            source=parsed_info,
+            include=args.include,
+            doc_level=2,
+            output_folder=args.output_dir,
+            variants=args.variants,
+            flatten=(not args.no_flatten),
+            ignore_types=args.ignore_types,
+        )
+
+
+if __name__ == "__main__":
+    main()

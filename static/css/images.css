@@ -1,0 +1,22 @@
+img[title="small"] {
+  max-width: 450px;
+  height: auto;
+}
+
+img[title="medium"] {
+  max-width: 600px;
+  height: auto;
+}
+
+img[title="small:center"] {
+  max-width: 450px;
+  height: auto;
+  margin: auto;
+}
+
+img[title="medium:center"] {
+  max-width: 600px;
+  height: auto;
+  margin: auto;
+}
+  

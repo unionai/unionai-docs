@@ -1,0 +1,17 @@
+.layout-error {
+    border: 3px dashed red;
+}
+
+.layout-error .error {
+    background-color: hsl(0, 82%, 85%);
+    color: red;
+    padding: 0.5rem;
+}
+
+.layout-error .content {
+    margin: 1rem;
+}
+
+.markdown.top-margin {
+    margin-top: 2rem;
+}

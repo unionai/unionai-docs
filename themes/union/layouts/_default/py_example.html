@@ -1,0 +1,86 @@
+{{ define "main" }}
+  {{- $enforceRunOnUnion := .Params.enforce_run_on_union | default true -}}
+
+  {{- partial "resource-map.html" (dict "page" . "bom" .Params.resources) -}}
+
+  <div class="markdown-content">
+    {{ $content := readFile .Params.example_file }}
+    {{ if not $content }}
+    {{ warnf "Could not find example file %s" .Params.example_file }}
+    {{ end }}
+    {{ $lines := split $content "\n" }}
+    {{ $inCodeBlock := false }}
+    {{ $buffer := slice }}
+    {{ $result := "" }}
+    {{ $sawEmptyLine := false }}
+
+    {{ range $lines }}
+      {{ $line := . }}
+      {{ if and (eq (len $line) 0) (not $inCodeBlock) }}
+        <!-- Skip empty lines -->
+        {{ $sawEmptyLine = true}}
+        {{ continue }}
+      {{ end }}
+      {{ if eq (strings.Replace $line " " "") "#{{run-on-union}}"}}
+        {{ $result = printf "%s%s\n" $result "{{run-on-union}}" }}
+        {{ continue }}
+      {{ end }}
+      {{ if hasPrefix $line "# " }}
+        {{ if $sawEmptyLine }}
+          {{ $result = printf "%s\n" $result }}
+          {{ $sawEmptyLine = false }}
+        {{ end }}
+        <!-- Handle markdown comment lines -->
+        {{ if $inCodeBlock }}
+          <!-- Close code block if we were in one -->
+          {{ $inCodeBlock = false }}
+          {{ $result = printf "%s\n```\n\n" $result }}
+        {{ end }}
+        {{ $result = printf "%s%s\n" $result (strings.TrimPrefix "# " $line) }}
+      {{ else if hasPrefix $line "#" }}
+        <!-- Handle empty comment lines -->
+        {{ if $inCodeBlock }}
+          <!-- Close code block if we were in one -->
+          {{ $inCodeBlock = false }}
+          {{ $result = printf "%s\n```\n\n" $result }}
+        {{ end }}
+        <!-- Only add a newline if it's not just a blank comment -->
+        {{ if ne $line "#" }}
+          {{ $result = printf "%s\n" $result }}
+        {{ end }}
+      {{ else }}
+        <!-- Handle code lines -->
+        {{ if not $inCodeBlock }}
+          <!-- Start a new code block -->
+          {{ $inCodeBlock = true }}
+          {{ $result = printf "%s\n```python\n" $result }}
+        {{ end }}
+        {{ $result = printf "%s%s\n" $result $line }}
+      {{ end }}
+    {{ end }}
+
+    <!-- Close final code block if needed -->
+    {{ if $inCodeBlock }}
+      {{ $result = printf "%s\n```\n" $result }}
+    {{ end }}
+
+    <!-- Render the final markdown -->
+    {{ $markdown := page.RenderString $result }}
+    {{ if strings.Contains $markdown "{{run-on-union}}" }}
+      {{ $parts := split $markdown "{{run-on-union}}" }}
+      {{ index $parts 0 | safeHTML }}
+      {{ partial "run-on-union.html" . }}
+      {{ index $parts 1 | safeHTML }}
+    {{ else if not $enforceRunOnUnion }}
+      {{ $markdown }}
+    {{ else }}
+      {{ warnf "[Run on Union] This example is missing the {{run-on-union}} marker. Please add it to the example file. %s" .Path }}
+      <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        You forgot the <code>{{ "{{ run-on-union }}" }}</code> marker.
+      </div>
+      {{ $markdown }}
+    {{ end }}
+  </div>
+
+  {{ partial "footer-nav.html" . }}
+{{ end }}

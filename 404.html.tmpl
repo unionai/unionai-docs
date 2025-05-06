@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <script>
+            const targetVariant = '@@VARIANT@@';
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const url = new URL(window.location);
+                
+                // Get the current path
+                const path = url.pathname;
+
+                // Find the first occurrence of targetVariant in the path
+                // Look for the variant without assuming a /docs prefix
+                const variantIndex = path.indexOf(`/${targetVariant}/`);
+
+                if (variantIndex !== -1) {
+                    // Create new path with everything up to and including the variant, then add 404/
+                    const newPath = path.substring(0, variantIndex) + `/${targetVariant}/404/`;
+
+                    // Create the redirect URL with the same query parameters
+                    const redirectUrl = new URL(newPath, window.location.origin);
+                    redirectUrl.search = url.search; // Keep all query parameters
+                    redirectUrl.searchParams.set('url', document.location.toString());
+
+                    // Redirect
+                    window.location.href = redirectUrl.toString();
+                }
+            });
+        </script>
+    </head>
+    <body>
+        404 - Page Not Found
+    </body>
+</html>

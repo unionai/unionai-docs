@@ -1,0 +1,51 @@
+{{/* Get pages sorted by weight (ascending) */}}
+{{ $pages := .Parent.Pages.ByWeight }}
+{{ $currentIndex := -1 }}
+
+{{ $current := .File.Path }}
+
+{{/* Find the current page's index in the sorted slice */}}
+{{ range $i, $p := $pages }}
+  {{ if eq $p.File.Path $current }}
+    {{ $currentIndex = $i }}
+    {{ break }}
+  {{ end }}
+{{ end }}
+
+<footer>
+    {{/* Output the Previous link if available */}}
+    {{ if gt $currentIndex 0 }}
+      {{ $prevIndex := sub $currentIndex 1 }}
+      {{ range $i := seq 0 $currentIndex }}
+        {{ $prev := index $pages $prevIndex }}
+        {{ $prevAccess := partial "page-allowed.html" $prev }}
+        {{ if $prevAccess.variant }}
+          <a href="{{ $prev.Permalink }}" class="prev">← {{ $prev.Title }}</a>
+          {{ break }}
+        {{ else }}
+          {{ $prevIndex = sub $prevIndex 1 }}
+          {{ if lt $prevIndex 0 }}
+            {{ break }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    
+    {{/* Output the Next link if available */}}
+    {{ if lt (add $currentIndex 1) (len $pages) }}
+      {{ $nextIndex := add $currentIndex 1 }}
+      {{ range $i := seq (add $currentIndex 1) (sub (len $pages) 1) }}
+        {{ $next := index $pages $nextIndex }}
+        {{ $nextAccess := partial "page-allowed.html" $next }}
+        {{ if $nextAccess.variant }}
+          <a href="{{ $next.Permalink }}" class="next">{{ $next.Title }} →</a>
+          {{ break }}
+        {{ else }}
+          {{ $nextIndex = add $nextIndex 1 }}
+          {{ if ge $nextIndex (len $pages) }}
+            {{ break }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+</footer>

@@ -1,0 +1,13 @@
+{{- $title := .Get "title" -}}
+{{- $target := .Get "target" -}}
+{{- $icon := .Get "icon" -}}
+
+<sl-card class="card-basic" onclick="document.location = '{{- $target | safeURL -}}';">
+    <div class="card-content">
+        <div class="card-header">
+            {{- $title -}}
+            <sl-icon-button name="{{- $icon -}}" label="{{- $title -}}"></sl-icon-button>
+        </div>
+        {{- .Page.RenderString .Inner -}}
+    </div>
+</sl-card>

@@ -1,0 +1,52 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const flyteUrl = new URL(window.location);
+        const flyteSource = flyteUrl.searchParams.get('url');
+
+        if (flyteSource !== null) {
+            const legacyLink = new URL(flyteSource);
+            legacyLink.protocol = 'https:';
+            legacyLink.hostname = 'docs-legacy.flyte.org';
+            legacyLink.port = '443';
+            legacyLink.pathname = legacyLink.pathname.replace('/docs/flyte/', '/en/latest/');
+            if (legacyLink.pathname.endsWith('/')) {
+                legacyLink.pathname = legacyLink.pathname.slice(0, -1) + '.html';
+            }
+            legacyLink.searchParams.delete('variant');
+            legacyLink.searchParams.delete('origin');
+            legacyLink.searchParams.delete('source');
+
+            const legacyLink2 = new URL(window.location);
+            legacyLink2.pathname = legacyLink2.pathname.replace('/docs/flyte/', '/en/latest/');
+            if (legacyLink2.pathname.endsWith('/')) {
+                legacyLink2.pathname = legacyLink2.pathname + 'index.html';
+            }
+
+            // Create and configure the alert component
+            const alert = document.createElement("sl-alert");
+            alert.variant = "primary";
+            alert.open = true;
+
+            // Set the alert content with the migration notice
+            alert.innerHTML = `
+                <sl-icon slot="icon" name="info-circle"></sl-icon>
+                <strong>Migration to the new site underway</strong>
+                <p>This document is in the process of being migrated to a new platform.
+                In the meantime, you can find the old documentation at the following link:</p>
+
+                <p><a href="${legacyLink.toString()}">Old Documentation Site</a></p>
+
+                <p>If the link above does not work, you can try this
+                <a href="${legacyLink2.toString()}">other</a> location.</p>
+            `;
+
+            const legacyRedirectsDiv = document.getElementById('legacy-redirects');
+            if (legacyRedirectsDiv) {
+                legacyRedirectsDiv.innerHTML = '';
+                legacyRedirectsDiv.appendChild(alert);
+            }
+        }
+    });
+</script>
+
+<div id="legacy-redirects" class="direct"></div>

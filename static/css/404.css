@@ -1,0 +1,44 @@
+.four-o-four.container {
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100dvh - var(--header-height) - var(--tabs-height) - 2 * var(--breadcrumbs-height));
+    min-height: 360px;
+}
+
+.four-o-four.container h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.four-o-four.container .sorry {
+    font-size: 1.125rem;
+    font-weight: 100;
+    margin: 1rem;
+}
+
+.four-o-four.container .sorry .title {
+    font-weight: 700;
+}
+
+.four-o-four.container .report {
+    margin-top: 2rem;
+    color: gray;
+}
+
+.four-o-four.container .content {
+    margin: 2rem;
+}
+
+.four-o-four.container .variant-change {
+    display: none;
+}
+
+.four-o-four.container .direct {
+    display: block;
+}

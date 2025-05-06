@@ -1,0 +1,35 @@
+{{- $variant := $.Site.Params.variant -}}
+{{- $showVariantNames := $.Site.Params.highlight_active -}}
+{{- $hideMismatch := not .Site.Params.show_inactive -}}
+{{- $variants := slice -}}
+{{- range .Params -}}
+    {{- if strings.Contains . " " -}}
+        {{- warnf "Variant names cannot contain spaces: '%q'. You need to specify a list (without spaces)" . -}}
+    {{- end -}}
+    {{- $variants = $variants | append . -}}
+{{- end -}}
+{{- $allowed := in $variants $variant -}}
+{{- if or $allowed (and (not hugo.IsProduction) (not $hideMismatch)) -}}
+    {{- if (not $allowed) -}}
+        <div class="not-allowed variant">
+            <div class="title">
+                {{- upper (delimit $variants " | ") -}}: Omitted in production for variant '{{- $variant -}}'.
+            </div>
+            <div class="content">
+                {{- .Inner | safeHTML -}}
+            </div>
+        </div>
+    {{- else if $showVariantNames -}}
+        <div class="allowed variant">
+            <div class="title">
+                {{- upper (delimit $variants " | ") -}}
+            </div>
+            <div class="content">
+                {{- .Inner | safeHTML -}}
+            </div>
+        </div>
+    {{- else -}}
+        {{- .Inner | safeHTML -}}
+    {{- end -}}
+{{- end -}}
+

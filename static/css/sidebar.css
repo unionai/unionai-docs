@@ -1,0 +1,125 @@
+.sidebar {
+  position: fixed;
+  width: var(--sidebar-width);
+  padding: 1rem 1.5rem;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  height: calc(100dvh - var(--header-height) - var(--tabs-height));
+}
+
+.sidebar:has(> nav[enabled="false"]) {
+  display: none;
+}
+
+.sidebar > nav > ul > li > .section-title,
+.sidebar > nav > ul > li > .section-pages {
+  padding-left: 0.75rem;
+}
+.site-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.site-nav a {
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.2s;
+}
+.site-nav a:hover {
+  background-color: var(--union-color-very-light);
+}
+.site-nav .active {
+  background-color: var(--union-color-light);
+  font-weight: 500;
+}
+.site-nav .section-title {
+  font-size: var(--sidebar-font-size);
+  color: var(--text-color);
+  display: block;
+  padding: var(--menu-v-space) 0;
+  cursor: pointer;
+}
+.site-nav .page-link {
+  display: block;
+  padding: var(--menu-v-space) 0;
+  border-radius: 4px;
+  font-size: var(--sidebar-font-size);
+}
+.site-nav .section-pages {
+  padding-left: var(--menu-submenu-indent);
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+.site-nav .section-pages.collapsed {
+  max-height: 0;
+}
+.site-nav .disabled {
+  color: red;
+}
+.site-nav .disabled * {
+  color: red;
+}
+.site-nav .excluded {
+  opacity: 0.25;
+}
+.site-nav .conflict {
+  opacity: 1;
+}
+.site-nav .conflict sl-icon {
+  color: red;
+}
+.site-nav .content {
+  display: flex;
+  align-items: center;
+}
+.site-nav .chevron {
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] .site-nav .chevron {
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.site-nav .chevron.rotated {
+  transform: rotate(-90deg);
+}
+.site-nav .chevron.hidden {
+  visibility: hidden;
+}
+
+.sidebar-icon {
+  font-size: 1.25rem;
+}
+
+.tabs-buttons,
+.tabs-buttons select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.drawer-sidebar .signup {
+  margin: 1rem;
+  text-align: center;
+}
+
+.drawer-sidebar .signup sl-button {
+  width: 60%;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.drawer-sidebar .variant-selector-container {
+  padding: 0.5rem;
+}
+
+header .signup {
+  margin: 0 1rem;
+}

@@ -1,0 +1,39 @@
+{{- /* Check if the current page is in the allowed list */ -}}
+{{- $variant := .Site.Params.variant -}}
+
+{{- $isAllowed := false -}}
+{{- $isExcluded := false -}}
+
+{{- $path := "" }}
+{{- with.File -}}
+    {{- $path = replaceRE "\\.md$" "" .Path -}}
+    {{- $path = replaceRE "/_index" "" $path -}}
+    {{- $path = replaceRE "_index" "" $path -}}
+    {{- $path = printf "%s%s" "/" $path -}}
+{{- else -}}
+    {{- $path = "/" -}}
+{{- end -}}
+
+{{- $variants := split .Params.variants " " -}}
+{{- $isAllowed := in $variants (printf "+%s" $variant) -}}
+{{- $isExcluded := in $variants (printf "-%s" $variant) -}}
+
+{{- if in (slice "/categories" "/tags") .Path -}}
+    {{- $isAllowed = true -}}
+{{- end -}}
+
+{{- if and $isAllowed $isExcluded -}}
+    {{ warnf "[Page Visibility] Page %s is both allowed and excluded from variant %s. See AUTHOR.md for help." $path $variant}}
+{{- end -}}
+
+{{- if and (not $isAllowed) (not $isExcluded) -}}
+    {{ warnf "[Page Visibility] Page %s at path %s neither allowed and excluded from variant %s. See AUTHOR.md for help." $path .Path $variant}}
+{{- end -}}
+
+{{-
+    return dict
+        "allowed" (or $isAllowed (and (not hugo.IsProduction) (.Site.Params.show_inactive)))
+        "excluded" (and $isExcluded (not hugo.IsProduction))
+        "development" (and (not $isAllowed) (not hugo.IsProduction))
+        "variant" $isAllowed
+-}}

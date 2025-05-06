@@ -1,0 +1,73 @@
+.container .toc-container {
+  position: fixed;
+  top: calc(var(--header-height) + var(--tabs-height) + 1px);
+  bottom: 0;
+  right: var(--scrollbar-width);
+  width: var(--toc-width);
+  padding: var(--sidepanels-padding);
+  font-weight: 100;
+  font-size: var(--toc-font-size);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+  background-color: var(--toc-bg);
+  overflow-y: hidden;
+}
+
+.container .toc-container .toc {
+  overflow-y: auto;
+  height: calc(100dvh - var(--header-height) - var(--tabs-height) - var(--toc-header-height));
+  padding: 1rem;
+}
+
+.container .toc-container .toc > .toc-list {
+  border-left: 1px solid var(--blockquote-border-trans);
+}
+
+.container .toc-container .toc-header {
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.container .toc-container .toc-list,
+.container .toc-container .toc-list-item {
+  margin-top: 0.5rem;
+}
+
+.container .toc-container .node-name--H1 {
+  padding: 0.5rem 0;
+}
+
+.container .toc-container .is-active-link {
+  /* color: dodgerblue; */
+  color: unset;
+  font-weight: unset;
+}
+
+.toc .toc-list .toc-link::before,
+.toc .toc-list .is-active-link::before {
+  background-color: unset;
+}
+
+@media (max-width: 1500px) {
+  .toc-container {
+    display: none;
+    transition: display 0.3s ease;
+  }
+  .main-content {
+    margin-left: calc(
+      var(--sidebar-width) + var(--main-content-padding) +
+        max(
+          0px,
+          (
+              100dvw - var(--sidebar-width) - var(--content-width) -
+                var(--scrollbar-width) - var(--main-content-padding)
+            ) / 2
+        )
+    );
+    margin-right: 0;
+    padding-right: var(--main-content-padding);
+    transition: margin-left 0.3s ease, margin-right 0.3s ease;
+  }
+}

@@ -1,0 +1,13 @@
+{{ define "main" }}
+<article>
+    <div class="content">
+        {{ if .Content }}
+        {{ .Content }}
+        {{ else }}
+        {{ partial "no-content" . }}
+        {{ end }}
+    </div>
+
+    {{ partial "footer-nav.html" .}}
+</article>
+{{ end }}

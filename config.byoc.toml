@@ -1,0 +1,5 @@
+baseURL = '/docs/byoc/'
+
+[params]
+_merge = "deep"
+variant = "byoc"

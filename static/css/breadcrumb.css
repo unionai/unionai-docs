@@ -1,0 +1,27 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+.breadcrumb-item:not(:last-child):after {
+  content: "/";
+  margin: 0 0.5rem;
+  color: #9ca3af;
+}
+.breadcrumb-item a {
+  color: var(--union-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumb-item a:hover {
+  color: var(--union-color-dark);
+}
+.breadcrumb-item.active {
+  color: var(--text-color);
+}

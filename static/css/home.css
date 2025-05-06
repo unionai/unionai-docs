@@ -1,0 +1,139 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-color: white;
+}
+.logo {
+  height: 96px;
+}
+H1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.target-link-text {
+  display: inline-block;
+  border: none;
+  background-color: #d97706;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+}
+
+.target-link-text A {
+  color: unset;
+  text-decoration: none;
+}
+
+.target-link-text:hover {
+  background-color: #fea034;
+}
+
+.nav {
+  margin: 2rem 0;
+}
+
+.nav .option {
+  padding: 0.5rem 1rem;
+}
+
+.nav .option:nth-of-type(1) {
+  border-top: 1px solid lightgray;
+}
+.nav .option:nth-last-of-type(1) {
+  border-bottom: 1px solid lightgray;
+}
+
+.nav .option P {
+  margin: 0.5rem;
+}
+
+.nav .or {
+  margin: auto;
+  width: fit-content;
+}
+
+.nav .or TD HR {
+  width: 200px;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid lightgray;
+  margin: 1rem;
+}
+
+.warn {
+  border: 1px solid #d97706;
+  margin-bottom: 2rem;
+  margin: 0 4rem;
+}
+
+.warn .title {
+  color: white;
+  padding: 0.75rem;
+  background-image: linear-gradient(45deg, #fea034 25%, #d97706 25%, #d97706 50%, #fea034 50%, #fea034 75%, #d97706 75%, #d97706 100%);
+  background-size: 56.57px 56.57px;
+}
+
+.warn .title span {
+  background-color: white;
+  padding: 0.25rem 1rem;
+  color: black;
+  border-radius: 20px;
+}
+
+.warn .content {
+  padding: 1rem;
+}
+
+.missing-page-ref { 
+  max-width: 800px;
+  margin: auto;
+}
+
+.container.variant-mismatch {
+  display: none;
+}
+
+.container.not-found {
+  display: block;
+}
+
+.variant-flyte .target-link-text {
+  background-color: #7652A2;
+}
+
+.variant-flyte .target-link-text:hover {
+  background-color: #c7b1dc;
+}
+
+.variant-flyte .warn {
+  border: 1px solid #7652A2;
+}
+
+.variant-flyte .warn .title {
+  background-image: linear-gradient(45deg, #7652a2 25%, #c7b1dc 25%, #c7b1dc 50%, #7652a2 50%, #7652a2 75%, #c7b1dc 75%, #c7b1dc 100%);
+  background-size: 56.57px 56.57px;
+}
+
+footer {
+  margin-top: 3rem;
+  font-size: 0.875rem;
+  color: gray;
+}

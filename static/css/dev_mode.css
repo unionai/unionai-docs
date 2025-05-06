@@ -1,0 +1,22 @@
+.docs-builder.shortcodes ~ H2 {
+    border-top: 1px solid #ccc;
+    padding-top: 2rem;
+}
+
+.docs-builder.shortcodes ~ H3 {
+    font-weight: 400;
+}
+
+.docs-builder.shortcodes ~ blockquote {
+    border: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    margin-left: 3rem;
+    white-space: pre-wrap;
+    display: block;
+}
+
+.docs-builder.shortcodes ~ H3 + * {
+    margin: 2rem;
+    margin-left: 3rem;
+}

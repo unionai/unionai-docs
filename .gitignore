@@ -1,0 +1,29 @@
+# This is only for development mode
+config/_default
+
+# Generated content
+/public/
+/dist/
+
+# Developer overrides
+hugo.local.toml
+
+# Trash files
+.DS_Store
+*.swp
+__pycache__/
+.hugo_build.lock
+
+# Ignore test file
+content/test.md
+layouts/**/test.html
+themes/**/test.html
+test*.html
+
+# Tools
+tools/link_checker/config.yml
+link_checker_output.json
+
+# IDEs
+.vscode
+.idea

@@ -1,0 +1,10 @@
+{{- $title := .Get 0 -}}
+<div>
+<sl-alert open>
+    <sl-icon slot="icon" name="info-circle"></sl-icon>
+    {{- if $title -}}
+    <strong>{{- page.RenderString $title -}}</strong><br />sss
+    {{- end -}}
+    {{- page.RenderString .Inner -}}
+</sl-alert>
+</div>

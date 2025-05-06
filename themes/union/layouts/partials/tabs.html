@@ -1,0 +1,44 @@
+{{- $currentPage := .page -}}
+<nav class="tabs-nav">
+    {{- if eq .style "buttons" -}}
+    <div class="tabs-buttons">
+        <select onchange="handleTopicChange(event)">
+        {{- range .page.Site.Sections.ByWeight -}}
+            {{- $access := partial "page-allowed.html" . -}}
+            {{- if and $access.allowed .Params.top_menu -}}
+                <option value="{{- .RelPermalink }}" {{ if eq $currentPage.Section .Section }}selected{{ end -}}>
+                    {{- .Title -}}
+                </option>
+            {{- end -}}
+        {{- end -}}
+        </select>
+    </div>
+    <script>
+        function handleTopicChange(event) {
+            const newTarget = event.target.options[event.target.selectedIndex].value;
+            console.log('Navigating', newTarget.toString());
+            document.location = newTarget.toString();
+        }
+    </script>
+    {{- else -}}
+    <div class="tabs-container">
+        {{- range .page.Site.Sections.ByWeight -}}
+            {{- $access := partial "page-allowed.html" . -}}
+            {{- if and $access.allowed .Params.top_menu -}}
+                {{- $classes := slice "tab" -}}
+                {{- if eq $currentPage.Section .Section -}}
+                    {{- $classes = $classes | append "active" -}}
+                {{- end -}}
+                {{- if $access.development -}}
+                    {{- $classes = $classes | append "disabled" -}}
+                {{- end -}}
+                <a href="{{- .RelPermalink -}}" class='{{- delimit $classes " " -}}'>
+                    <div class="text">
+                    {{- .Title -}}
+                    </div>
+                </a>
+            {{- end -}}
+        {{- end -}}
+    </div>
+    {{- end -}}
+</nav>
