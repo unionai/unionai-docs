@@ -95,5 +95,11 @@ Train a BERT model on a large Arabic text dataset using PyTorch Lightning and th
 {{< /link-card >}}
 {{< /variant >}}
 
+{{< variant byoc >}}
+{{< link-card target="serving/arize" icon="" title="Trace and Evaluate Models and RAG Apps with Arize" >}}
+Integrate Arize with your LLMs or RAG applications to trace model activity and evaluate performance in near-real-time.
+{{< /link-card >}}
+{{< /variant >}}
+
 {{< /grid >}}
 {{< /variant>}}
