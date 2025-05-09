@@ -6,7 +6,7 @@
 {{- $description := .Get 2 -}}
 <span class="download">
     <a href="{{- $url }}" download="{{ $name -}}">
-        <sl-icon name="cloud-download"></sl-icon>
+        <sl-icon name="cloud-download"></sl-icon>&nbsp;
         {{- $name -}}
     </a>
     {{- if .Get 2 -}}

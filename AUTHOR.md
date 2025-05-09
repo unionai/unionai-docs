@@ -13,6 +13,7 @@
 - [Special Content Generation](#special-content-generation)
 - [Python Generated Content](#python-generated-content)
   - [Run on Union Instructions](#run-on-union-instructions)
+- [Jupyter Notebooks](#jupyter-notebooks)
 - [Mapped Keys (`{{< key >}}`)](#mapped-keys--key-)
 - [Mermaid Graphs](#mermaid-graphs)
 
@@ -172,6 +173,25 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
 The resulting **Run on Union** section in the rendered docs will include the run command and source location,
 specified as `run_command` and `source_locaiton` in the front matter of the corrsponding `.md` page.
 
+## Jupyter Notebooks
+
+You can also generate pages from Jupyter notebooks.
+
+At the top of your.md file, add:
+
+    ---
+    jupyter_notebook: /path/to/your/notebook.ipynb
+    ---
+
+Then run the `Makefile.jupyter` target to generate the page.
+
+    make -f Makefile.jupyter
+
+> You must `uv sync` and activate the environment in `tools/jupyter_generator` before running the 
+> `Makefile.jupyter` target, or make sure all the necessary dependencies are installed for yourself.
+
+**Commiting the change:** When the PR is pushed, a check for consistency between the notebook and its source will run. Please ensure that if you change the notebook, you re-run the `Makefile.jupyter` target to update the page.
+
 ## Mapped Keys (`{{< key >}}`)
 
 Key is a very special command that allows us to define mapped values to a variant.
@@ -180,6 +200,7 @@ we can define a single key `product_full_name` and map it to reflect automatical
 without the need to `if variant` around it.
 
 Please refer to [{{< key >}} shortcode](SHORTCODES.md#-key-) for more details.
+
 ## Mermaid Graphs
 
 To embed Mermaid diagrams in a page, insert the code inside a block like this:
