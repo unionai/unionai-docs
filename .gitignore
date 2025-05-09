@@ -27,3 +27,10 @@ link_checker_output.json
 # IDEs
 .vscode
 .idea
+
+# Do not save temporary uv settings
+pyproject.toml
+.venv/
+main.py
+.python-version
+uv.lock
