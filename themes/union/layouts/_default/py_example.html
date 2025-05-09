@@ -1,5 +1,12 @@
 {{ define "main" }}
   {{- $enforceRunOnUnion := .Params.enforce_run_on_union | default true -}}
+  
+  {{- if not (strings.HasSuffix .Params.example_file ".py") -}}
+    {{ warnf "Example file %s does not have a .py extension" .Params.example_file }}
+    <div style="border: 2px dashed orange; color: orange; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+      Warning: The example file <code>{{ .Params.example_file }}</code> does not have a Python (.py) extension.
+    </div>
+  {{- end -}}
 
   {{- partial "resource-map.html" (dict "page" . "bom" .Params.resources) -}}
 
