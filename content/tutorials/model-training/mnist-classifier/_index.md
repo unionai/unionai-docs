@@ -53,7 +53,7 @@ Moreover, to utilize the power of a GPU, ensure that your Flyte backend has GPU 
 
 ## Distributed Data-Parallel Training
 
-Flyte also supports distributed training for PyTorch models, but this is not native. It is achieved using {ref}`kf-pytorch-op`, for example.
+Flyte also supports distributed training for PyTorch models using the [PyTorch plugin](../../../integrations/native-backend-plugins/kfpytorch-plugin).
 
 ## Weights & Biases Integration
 
@@ -61,7 +61,7 @@ Flyte also supports distributed training for PyTorch models, but this is not nat
 
 We'll use `wandb` alongside PyTorch to track our ML experiment and its concerned model parameters.
 
-[!NOTE]
+> [!NOTE]
 > Before running the example, create a `wandb` account and log in to access the API.
 > If you're running the code locally, run the command `wandb login`.
 > If it's a remote cluster, you have to include the API key in the Dockerfile.

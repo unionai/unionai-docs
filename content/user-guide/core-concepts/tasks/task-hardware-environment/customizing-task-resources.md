@@ -148,5 +148,5 @@ def my_task(ff: FlyteFile):
 @{{< key kit_as >}}.workflow
 def my_workflow():
     my_task(ff=smallFile)
-    my_task(ff=bigFile).withoverrides(requests=Resources(mem="120Gi", cpu="10"))
+    my_task(ff=bigFile).with_overrides(requests=Resources(mem="120Gi", cpu="10"))
 ```
