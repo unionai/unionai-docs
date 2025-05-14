@@ -3,7 +3,7 @@ name: Check Images Health
 on: [push]
 
 jobs:
-  check-jupyter:
+  check-images:
     runs-on: ubuntu-latest
 
     steps:
