@@ -10,7 +10,7 @@ variants: -flyte -serverless -byoc +byok
 
 ## Architecture
 
-![Installation](/_static/images/deployment/architecture.png)
+![Installation](../_static/images/deployment/architecture.png)
 
 ### Control plane
 

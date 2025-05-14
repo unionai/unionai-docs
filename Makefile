@@ -9,19 +9,15 @@ all: usage
 usage:
 	@./scripts/make_usage.sh
 
-predist:
-	@if ! scripts/pre-build-checks.sh; then exit 1; fi
-
-base: predist
+base:
+	@if ! ./scripts/pre-build-checks.sh; then exit 1; fi
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
 	mkdir -p dist
 	mkdir -p dist/docs
-	mkdir -p dist/_static
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/index.html
 	cat index.html.tmpl | sed 's#@@BASE@@#/${PREFIX}#g' > dist/docs/index.html
-	cp -R static/* dist/${PREFIX}/
-	cp -R content/_static/* dist/_static/
+	#cp -R static/* dist/${PREFIX}/
 
 dist: base
 	make variant VARIANT=flyte
@@ -50,3 +46,8 @@ update-examples:
 init-examples:
 	git submodule update --init
 
+check-jupyter:
+	./tools/jupyter_generator/check_jupyter.sh
+
+check-images:
+	./scripts/check_images.sh
