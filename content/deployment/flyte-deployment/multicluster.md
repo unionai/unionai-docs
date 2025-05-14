@@ -437,4 +437,4 @@ pyflyte run --remote --project team1 --domain production example.py \
 ```
 10. A successful execution should be visible on the UI, confirming it ran in the new cluster:
 
-![](/_static/images/deployment/multicluster-execution.png)
+![](../../_static/images/deployment/multicluster-execution.png)
