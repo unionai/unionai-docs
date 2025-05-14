@@ -166,4 +166,4 @@ def train():
 4. You can access the server by opening a web browser and navigating to `localhost:8888`.
 
 Jupyter example screenshot:
-![Jupyter example](/_static/images/plugins/flyteinteractive/jupyter_example.png)
+![Jupyter example](../../../_static/images/plugins/flyteinteractive/jupyter_example.png)

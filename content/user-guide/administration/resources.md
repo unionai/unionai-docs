@@ -106,11 +106,11 @@ This task requests 1 CPU and 1 gibibyte of memory. It sets a limit of 10 CPUs an
 
 If a task requesting the above resources (1 CPU and 1Gi) is executed in a project (for example **cluster-observability**) and domain (for example, **development**) with 10 CPU and 10Gi of quota for CPU and memory respectively, the dashboard will show that 10% of both memory and CPU quotas have been consumed.
 
-![Resource Quotas 10%](../../_static/images/user-guide/administration/resources/resources-resource-quotas-10.png)
+(Resource Quotas 10%)(../../_static/images/user-guide/administration/resources/resources-resource-quotas-10.png)
 
 Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
 
-![Resource Quotas 100%](../../_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
+(Resource Quotas 100%)(../../_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
 
 -->
 
