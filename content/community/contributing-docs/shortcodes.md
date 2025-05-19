@@ -54,7 +54,7 @@ The Union SDK provides the Python API for building Union workflows and apps.
 > [!NOTE]
 > If you're wondering why we have a `{{</* markdown */>}}` when we can generate markdown at the top level, it is due to a quirk in Hugo:
 > * At the top level of the page, Hugo can render markdown directly, interspersed with shortcodes.
-> * However, *inside* a conainer shortcode, Hugo can only render *either* other shortcodes *or* Markdown.
+> * However, *inside* a container shortcode, Hugo can only render *either* other shortcodes *or* Markdown.
 > * The `{{</* markdown */>}}` shortcode is designed to contain only Markdown (not other shortcodes).
 > * All other container shortcodes are designed to contain only other shortcodes.
 
