@@ -6,6 +6,9 @@ variants: +flyte +serverless +byoc +byok
 
 # Versions
 
+> [!NOTE]
+> The versions feature is **coming soon**!
+
 In addition to the product variants, the docs site also supports multiple versions of the documentation.
 The version selector is located at the top of the page, next to the variant selector.
 Versions and variants are independent of each other, with the version being "above" the variant in the URL hierarchy.
