@@ -20,3 +20,6 @@ cat <<EOF > dist/build_info.json
     "version": "${version}"
 }
 EOF
+
+# Save a copy in /docs/ so we can see in the original site
+cp dist/build_info.json dist/docs/build_info.json
