@@ -10,8 +10,8 @@ This site has special blocks that can be used to generate code for Union.
 
 > [!NOTE]
 > You can see examples by running the dev server and visiting
-> [`http://localhost:1313/__docs_builder__/shortcodes/`][demo-shortcodes]. This
-> page neither shows in the menus nor in the production build.
+> [`http://localhost:1313/__docs_builder__/shortcodes/`](`http://localhost:1313/__docs_builder__/shortcodes/`).
+> Note that this page is only visible locally. It does not appear in the menus or in the production build.
 >
 > If you need instructions on how to create the local environment and get the
 > `localhost:1313` server running, please refer to the [local development guide](DEVELOPER.md).
