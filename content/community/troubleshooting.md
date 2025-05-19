@@ -1,12 +1,10 @@
 ---
-title: Troubeshooting guide
-weight: 1
+title: Troubeshooting
+weight: 5
 variants: +flyte -serverless -byoc -byok
 ---
 
 # Troubleshooting guide
-
-**Tags**: Troubleshoot, Basic
 
 The content in this section will help Flyte users isolate the most probable causes for some of the common issues that could arise while getting started with the project.
 

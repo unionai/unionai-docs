@@ -68,12 +68,12 @@ header label {
   display: none;
 }
 
-#variant-selector {
-  padding: 0.5rem 2rem 0.5rem 0.75rem;
+#variant-selector, #version-selector {
+  padding: 0.5rem 2rem 0.5rem 0.5rem;
   cursor: pointer;
 }
 
-#devwarn {
+#devwarn, #verwarn {
   color: gray;
   position: absolute;
   left: 500px;
@@ -85,8 +85,12 @@ header label {
   margin-left: 10px;
 }
 
+#verwarn {
+  left: 680px;
+}
+
 /* Create tooltip arrow */
-#devwarn:before {
+#devwarn:before, #verwarn:before {
   content: "";
   position: absolute;
   left: -8px;
@@ -98,7 +102,7 @@ header label {
 }
 
 /* Arrow overlay to match background */
-#devwarn:after {
+#devwarn:after, #verwarn:after {
   content: "";
   position: absolute;
   left: -7px;
@@ -127,4 +131,20 @@ sl-button.signup-button::part(base):hover {
 .variant-flyte sl-button.signup-button::part(base):hover {
   border-color: var(--union-color-light) !important;
   background-color: var(--union-color-light) !important;
+}
+
+.old-version {
+  border: var(--old-version-border);
+  background-color: var(--old-version-background);
+  padding: 1rem 1.25rem;
+  margin: 0 1.25rem 2rem 1.25rem;
+}
+
+.old-version .title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.old-version .message {
+  font-size: 0.9rem;
 }

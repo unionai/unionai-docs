@@ -1,19 +1,24 @@
-# Importing APIs
+---
+title: API docs
+weight: 8
+variants: +flyte +serverless +byoc +byok
+---
+
+# API docs
 
 You can import Python APIs and host them on the site. To do that you will use
-the `tools/api_generator` to parse and create the appropriate markdowns.
+the `tools/api_generator` to parse and create the appropriate markdown.
 
-Please refer to [`api_generator/README`](tools/api_generator/README.md) for more
-details.
+Please refer to [`api_generator/README`](../../../tools/api_generator/README.md) for more details.
 
 ## API naming convention
 
 All the buildable APIs are at the root in the form:
 
-    Makefile.api.<api_name>
+`Makefile.api.<api_name>`
 
 To build it, run `make -f Makefile.api.<your_api>` and observe the setup
-requirements in the readme above.
+requirements in the `README.md` file above.
 
 ## Package Resource Resolution
 
@@ -26,15 +31,17 @@ workflow to decide, in order, if the resource must be in or out:
 
    Example:
 
-       from http import HTTPStatus, HTTPMethod
+   ```python
+   from http import HTTPStatus, HTTPMethod
 
-       __all__ = ["HTTPStatus", "LocalThingy"]
+   __all__ = ["HTTPStatus", "LocalThingy"]
 
-       class LocalThingy:
-          ...
+   class LocalThingy:
+      ...
 
-       class AnotherLocalThingy:
-          ...
+   class AnotherLocalThingy:
+      ...
+   ```
 
    In this example only `HTTPStatus` and `LocalThingy` will show in the docs.
    Both `HTTPMethod` and `AnotherLocalThingy` are ignored.
@@ -46,29 +53,31 @@ workflow to decide, in order, if the resource must be in or out:
 
    Example:
 
-       from http import HTTPStatus, HTTPMethod
+   ```python
+   from http import HTTPStatus, HTTPMethod
 
-       class _LocalThingy:
-          ...
+   class _LocalThingy:
+      ...
 
-       class AnotherLocalThingy:
-          ...
+   class AnotherLocalThingy:
+      ...
 
-       def _a_func():
-          ...
+   def _a_func():
+      ...
 
-       def b_func():
-          ...
+   def b_func():
+      ...
+   ```
 
-    In this example only `AnotherLocalThingy` and `b_func` will show in the docs.
-    Neither none of the imports nor `_LocalThingy` will show in the documention
+   In this example only `AnotherLocalThingy` and `b_func` will show in the docs.
+   Neither none of the imports nor `_LocalThingy` will show in the documentation.
 
-### Tips and Tricks
+## Tips and Tricks
 
-1. If you either have no resources without a `_` nor an `__all__` to 
+1. If you either have no resources without a `_` nor an `__all__` to
    export blocked resources (imports or starting with `_`, the package will have no content and thus will not be generated.
 
-2. If you want to export something you `from ___ import ____` you _must_ 
+2. If you want to export something you `from ___ import ____` you _must_
    use `__all__` to add the private import to the public list.
 
 3. If all your methods follow the Python convention of everything private starts

@@ -52,7 +52,7 @@ byoc = 2
 # Keywords
 
 #
-# Used by {{< key >}} short code. Please refer to SHORTCODES.md (key section)
+# Used by {{< key >}} shortcode. Please refer to SHORTCODES.md (key section)
 # for documentation.
 #
 # ===== IMPORTANT =====

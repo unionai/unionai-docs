@@ -16,10 +16,9 @@ example_env:
 example_setup:
   - "# pre-cache the model you'll use in the RAG app with union artifacts."
   - "# replace the model ID if you're using a different LLM."
-  - union cache model-from-hf deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B \
+  - union cache model-from-hf --project <YOUR_PROJECT> deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B \
     --hf-token-key <YOUR_HF_TOKEN> \
     --union-api-key <YOUR_UNION_API_KEY> \
-    --project <YOUR_PROJECT>
   - "# add the model artifact URI returned from the union cache step to the `vllm-deepseek` app definition."
   - "# to ingest documents into the vector database for the arize app:"
   - union run --remote --project <YOUR_PROJECT> ingestion.py ingest_docs_workflow --file_path <YOUR_FILE>

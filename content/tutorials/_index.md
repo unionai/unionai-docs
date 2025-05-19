@@ -101,5 +101,11 @@ Integrate Arize with your LLMs or RAG applications to trace model activity and e
 {{< /link-card >}}
 {{< /variant >}}
 
+{{< variant byoc >}}
+{{< link-card target="serving/weave" icon="" title="Add Tracing and Guardrails to an Airbnb RAG App with Weave" >}}
+Deploy a self-hosted LLM and RAG app with observability and guardrails powered by Weave.
+{{< /link-card >}}
+{{< /variant >}}
+
 {{< /grid >}}
 {{< /variant>}}

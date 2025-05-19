@@ -27,11 +27,23 @@ fi
 
 readonly source
 
+declare target="dist/docs/${VARIANT}"
+
+if [[ -z $VERSION ]]; then
+    echo "Version LATEST"
+    target="dist/docs/${VARIANT}"
+else
+    echo "Version $VERSION"
+    target="dist/docs/${VERSION}/${VARIANT}"
+fi
+
+readonly target
+
 sed \
     -e "s#@@BASE@@#/${PREFIX}#g" \
     -e "s#@@VARIANT@@#${VARIANT}#g" \
     -e "s#@@BUILD@@#${BUILD}#g" \
-    > "dist/docs/${VARIANT}/404.html" \
+    > "${target}/404.html" \
     < "${source}"
 
 if [[ $? -ne 0 ]]; then

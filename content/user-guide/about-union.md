@@ -42,8 +42,9 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 [{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
 Your Data and workflow code stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
-{{< key product_name >}} Serverless provide all the features of Flyte, plus:
+{{< key product_name >}} Serverless provides:
 
+* All the features of Flyte
 * Granular, task-level resource monitoring
 * Fine-grained role-based access control (RBAC)
 * Faster performance:
@@ -65,8 +66,10 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 ## {{< key product_name >}} BYOC
 
 [{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
-{{< key product_name >}} BYOC provides all the features of Flyte and {{< key product_name >}} Serverless, plus:
+{{< key product_name >}} BYOC provides
 
+* All the features of Flyte
+* All the features of {{< key product_name >}} Serverless
 * Accelerators and GPUs (including fractional GPUs)
 * Managed Ray and Spark
 * Multi-cluster and multi-cloud
@@ -77,6 +80,8 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 ## {{< key product_name >}} BYOK
 
 [{{< key product_name >}} BYOK]({{< docs_home byok >}}) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+
 {{< key product_name >}} BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
-The control plane continues to be located in a {{< key product_name >}} AWS account and managed by {{< key product_name >}}.
+
+The control plane continues to be located in a {{< key product_name >}} AWS account and managed by Union AI.
 However, none of your data ever leaves your data plane, ensuring privacy and security.

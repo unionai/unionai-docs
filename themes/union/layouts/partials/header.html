@@ -1,4 +1,5 @@
 {{- $dev_warn := "Attention Developer! To change the variant use hugo.local.toml\n(copy from hugo.local toml~samples to get started)" -}}
+{{- $ver_warn := "Attention Developer! You cannot change versions in developer mode" -}}
 <div class="sidebar-icon">
     <sl-icon-button name="list" label="Toggle sidebar" class="toggle-sidebar"></sl-icon-button>
 </div>
@@ -9,6 +10,12 @@
 {{- if not hugo.IsProduction -}}
 <div id="devwarn" class="developer" style="display: none;">
     {{- $dev_warn -}}
+</div>
+{{- end -}}
+{{- partial "versions.html" . -}}
+{{- if not hugo.IsProduction -}}
+<div id="verwarn" class="developer" style="display: none;">
+    {{- $ver_warn -}}
 </div>
 {{- end -}}
 <div style="flex: 1;"></div>
@@ -37,6 +44,46 @@ function handleVariantChange(event, queryString) {
 
     console.log('Reloading', newTarget.toString());
     redirect(newTarget);
+}
+
+function handleVersionChange(event, queryString) {
+    // URL is one of the following:
+    // /...
+    // /docs/<variant>/...
+    // /docs/<version>/<variant>/...
+    //
+    // Redirect is always in the format /docs/<version>/<variant>/...
+
+    const opt = event.target.options[event.target.selectedIndex];
+    const newVersion = opt.value;
+    const newTarget = new URL(document.location.toString());
+    const currentVariant = "{{- .Site.Params.variant -}}";
+    const oldBaseURL = "{{- .Site.BaseURL -}}";
+    const isLatest = opt.getAttribute('data-latest') === 'true';
+    let newPrefix;
+    
+    if (isLatest) {
+        // For latest version, use /docs/<variant>/
+        newPrefix = `/docs/${currentVariant}/`;
+    } else {
+        // For specific version, use /docs/<version>/<variant>/
+        newPrefix = `/docs/${newVersion}/${currentVariant}/`;
+    }
+    
+    // Replace the old base URL with the new one
+    if (newTarget.pathname.includes(currentVariant)) {
+        newTarget.pathname = newTarget.pathname.replace(oldBaseURL, newPrefix);
+    } else {
+        // Developer mode
+        newTarget.pathname = `/${newVersion}/${currentVariant}/${newTarget.pathname}`;
+    }
+
+    console.log('Reloading', newTarget.toString());
+    redirect(newTarget);
+
+    // Prevent option from changing the version
+    event.preventDefault();
+    event.target.value = "{{- index .Site.Params.current_version | default (index .Site.Params.versions 0) -}}";
 }
 
 document.addEventListener('DOMContentLoaded', () => {

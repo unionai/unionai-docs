@@ -4,15 +4,41 @@ declare run_log
 run_log=$(mktemp)
 readonly run_log
 
-trap 'rm -f "$run_log"' EXIT
+declare -r hugo_build_toml=".hugo.build.toml"
+
+trap 'rm -f "$run_log" "$hugo_build_toml"' EXIT
 
 if [[ -z $VARIANT ]]; then
     echo "VARIANT is not set"
     exit 1
 fi
 
-hugo --config hugo.toml,hugo.site.toml,config.${VARIANT}.toml \
-    --destination dist/docs/${VARIANT} \
+declare target
+declare baseURL
+
+rm -f ".hugo.build.toml"
+
+if [[ -z $VERSION ]]; then
+    echo "Version LATEST"
+    target="dist/docs/${VARIANT}"
+    baseURL="/docs/${VARIANT}/"
+    touch "hugo.build.toml"
+else
+    echo "Version $VERSION"
+    target="dist/docs/${VERSION}/${VARIANT}"
+    baseURL="/docs/${VERSION}/${VARIANT}/"
+    cat << EOF > ".hugo.build.toml"
+[params]
+current_version = "${VERSION}"
+EOF
+fi
+
+readonly target
+
+echo "Target: $target"
+
+hugo --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml,.hugo.build.toml \
+    --destination "${target}" --baseURL "${baseURL}" \
     --panicOnWarning 1> "$run_log" 2>&1
 
 err=$?

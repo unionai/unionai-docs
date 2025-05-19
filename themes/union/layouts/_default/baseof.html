@@ -83,6 +83,16 @@
           <code>{{- strings.TrimSuffix "/" .RelPermalink -}}</code>
         </div>
         {{- end -}}
+        {{- if .Site.Params.current_version -}}
+        <div class="old-version">
+          <div class="title">You are viewing documentation for version: {{ .Site.Params.current_version }}</div>
+          <div class="message">
+            Version {{ .Site.Params.current_version }} of the documentation is no longer actively maintained.
+            The version you are currently viewing is a static snapshot.
+            For up-to-date information, see the <a href='{{- index .Site.Params.key.docs_home .Site.Params.variant -}}'>latest version</a>.
+          </div>
+        </div>
+        {{- end -}}
         {{- partial "breadcrumb.html" . -}}
         {{- block "main" . -}}{{- end -}}
       </div>

@@ -4,6 +4,7 @@ config/_default
 # Generated content
 /public/
 /dist/
+.hugo.build.toml
 
 # Developer overrides
 hugo.local.toml

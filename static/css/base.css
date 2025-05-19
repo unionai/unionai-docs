@@ -35,6 +35,8 @@
   --docsearch-primary-color: #edab1c !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
   --breadcrumbs-height: 128px;
+  --old-version-border: 3px solid var(--union-color);
+  --old-version-background: hsl(0, 0%, 97%);
 }
 
 :root .variant-flyte {
@@ -45,6 +47,7 @@
   --union-color-very-light: #c7b1dc;
   --docsearch-primary-color: #7652A2 !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
+  --old-version-border: 3px solid var(--union-color);
 }
 
 /* Dark theme variables */

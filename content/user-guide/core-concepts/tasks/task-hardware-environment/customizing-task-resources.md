@@ -110,33 +110,28 @@ To remedy such a failure, you should make sure that the appropriate node types a
 
 Go to the **Resources > Compute** dashboard to find the available node types and their resource profiles.
 
-
 To make changes to your cluster configuration, go to the [{{< key product_name >}} Support Portal](https://get.support.union.ai/servicedesk/customer/portal/1/group/6/create/30).
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant flyte >}}
+{{< variant serverless >}}
 {{< markdown >}}
 
 ## Task resource validation
 
 If you attempt to execute a workflow with unsatisfiable resource requests, the execution will fail immediately rather than being allowed to queue forever.
 
-To remedy such a failure, you should make sure that the appropriate node types are:
-
-* Physically available in your cluster, meaning you have configured them correctly when [deploying your Flyte cluster](../../../../deployment).
-
-* Specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
+To remedy such a failure, you should make sure that the appropriate node types are specified in the task decorator (via the `requests`, `limits`, `accelerator`, or other parameters).
 
 {{< /markdown >}}
 {{< /variant >}}
+
 
 ## The `with_overrides` method
 
 When `requests`, `limits`, or `accelerator` are specified in the `@{{< key kit_as >}}.task` decorator, they apply every time that a task is invoked from a workflow.
 In some cases, you may wish to change the resources specified from one invocation to another.
-To do that, use the [`with_overrides` method]() of the task function.
-<!-- TODO: Add link to API -->
+To do that, use the [`with_overrides` method](../../../../api-reference/flytekit-sdk/packages/flytekit.core.node#with_overrides) of the task function.
 
 For example:
 
@@ -148,5 +143,5 @@ def my_task(ff: FlyteFile):
 @{{< key kit_as >}}.workflow
 def my_workflow():
     my_task(ff=smallFile)
-    my_task(ff=bigFile).withoverrides(requests=Resources(mem="120Gi", cpu="10"))
+    my_task(ff=bigFile).with_overrides(requests=Resources(mem="120Gi", cpu="10"))
 ```
