@@ -17,8 +17,6 @@ In addition to migration capabilities, Flyte users can seamlessly integrate Airf
 By combining the robust Airflow ecosystem with Flyte's capabilities such as scalability, versioning, and reproducibility, users can run more complex data and machine learning workflows with ease.
 For more information, see the [Airflow connector documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/airflow_connector/index.html).
 
-# For current Flyte users
-
 Even if you're already using Flyte and have no intentions of migrating from Airflow,
 you can still incorporate Airflow tasks into your Flyte workflows. For instance, Airflow offers support
 for Google Cloud [Dataproc Operators](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/dataproc.html), facilitating the execution of Spark jobs on Google Cloud Dataproc clusters. Rather than developing a custom plugin in Flyte, you can seamlessly integrate Airflow's Dataproc Operators into your Flyte workflows to execute Spark jobs.
