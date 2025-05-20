@@ -24,7 +24,6 @@ Each variant is referenced in the page logic using its respective code name: `fl
 
 The available set of variants are defined in the `config.<code_name>.toml` files in the root of the repository.
 
-
 ## Variants at the whole-page level
 
 The docs site supports the ability to show or hide entire pages based of the selected variant.
@@ -62,12 +61,10 @@ As you can see, the `variants` field expects a space-separated list of keywords:
 * All supported variants must be included explicitly in every `variants` field with a leading `+` or `-`. There is no default behavior.
 * The supported variants are configured in the root of the repository in the files named `config.<variant>.toml`.
 
-
 ## Conditional rendering within a page
 
 Content can also differ *within a page* based on the selected variant.
 This is done with conditional rendering using the `{{</* variant */>}}` and `{{</* key */>}}` [Hugo shortcodes](https://gohugo.io/content-management/shortcodes/).
-
 
 ### {{</* variant */>}}
 
@@ -94,7 +91,6 @@ This content is only visible in the `serverless` and `byoc` variants.
 ```
 
 For more details on the `{{</* variant */>}}` shortcode, see the [Shortcodes > `variant`](./shortcodes#variant).
-
 
 ### {{</* key */>}}
 
@@ -126,7 +122,6 @@ Meaning that in any content that appears in the `flyte` variant of the site `{{<
 
 
 For more details on the `{{</* key */>}}` shortcode, see the [Shortcodes > `key`](./shortcodes#key)
-
 
 ## Full example
 
@@ -182,7 +177,6 @@ This Markdown source is rendered as:
 
 If you switch between variants with the variant selector at the top of the page, you will see the content change accordingly.
 
-
 ## Adding a new variant
 
 A variant is a term we use to identify a product or major section of the site.
@@ -196,7 +190,6 @@ tagged to be either included or excluded when the variant is built.
 > to go, please double-check with the infra admin to confirm before doing all
 > the work below and waste your time.
 
-
 ### Location
 
 When deploying, the variant takes a folder in the root
@@ -206,7 +199,6 @@ When deploying, the variant takes a folder in the root
 For example, if we have a variant `acme`, then when built the content goes to:
 
 `https://<your-site-domain>/acme/<content>`
-
 
 ### Creating a new variant
 
@@ -228,7 +220,6 @@ to collaborate by creating PRs against it (`base=pre-release/<variant>` instead 
 without trampling on each other and allowing for parallel reviews.
 
 Once the variant branch is correct, you merge that branch into main.
-
 
 ### Building (just) the variant
 

@@ -36,7 +36,6 @@ For an example query, see [Memory Machine Cloud connector connector example usag
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Local testing
 
 To test the MMCloud connector locally, create a class for the connector task that inherits from

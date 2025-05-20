@@ -29,7 +29,6 @@ For an example, see [Perian connector example usage](./example-union)
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Connector setup
 
 Consult the [PERIAN connector setup guide](https://perian.io/docs/flyte-setup-guide).

@@ -1,6 +1,6 @@
 ---
 title: Workflow notifications
-weight: 9 
+weight: 9
 variants: +flyte -serverless -byoc -byok
 ---
 
@@ -109,23 +109,22 @@ into [code](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a
 
 You can find the full configuration file [here](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/flyteadmin/flyteadmin_config.yaml#L93-L107).
 
-
 ### GCP Config
 
 
-You'll need to set up a [Pub/Sub topic](https://cloud.google.com/pubsub/docs/create-topic) to publish notifications to, 
-and a [Pub/Sub subscriber](https://cloud.google.com/pubsub/docs/subscription-overview) to consume from that topic 
+You'll need to set up a [Pub/Sub topic](https://cloud.google.com/pubsub/docs/create-topic) to publish notifications to,
+and a [Pub/Sub subscriber](https://cloud.google.com/pubsub/docs/subscription-overview) to consume from that topic
 and process notifications. The GCP service account used by FlyteAdmin must also have Pub/Sub publish and subscribe permissions.
 
 ### Email service
 
 
-In order to actually publish notifications, you'll need an account with an external email service which will be 
-used to send notification emails and alerts using email APIs. 
+In order to actually publish notifications, you'll need an account with an external email service which will be
+used to send notification emails and alerts using email APIs.
 
-Currently, [SendGrid](https://sendgrid.com/en-us) is the only supported external email service, 
-and you will need to have a verified SendGrid sender. Create a SendGrid API key with ``Mail Send`` permissions 
-and save it to a file ``key``. 
+Currently, [SendGrid](https://sendgrid.com/en-us) is the only supported external email service,
+and you will need to have a verified SendGrid sender. Create a SendGrid API key with ``Mail Send`` permissions
+and save it to a file ``key``.
 
 Create a K8s secret in FlyteAdmin's cluster with that file:
 
@@ -173,7 +172,7 @@ placed under ``workflow_notifications``.
             sender: "{{ YOUR SENDGRID SENDER EMAIL }}"
             body: View details at <a href=https://{{ YOUR FLYTE HOST }}/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}>https://{{ YOUR FLYTE HOST }}/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}</a>
 ```
- 
+
  ### Webhook connector
 
  In recent flytekit versions (`>=1.15.0`) it's possible to setup a [WebhookTask](https://github.com/flyteorg/flytekit/pull/3058) object to send notifications to any system through webhooks. The following example uses Slack without email or queue configurations:
@@ -203,5 +202,5 @@ def ml_workflow_with_failure_handling() -> float:
     except Exception as e:
         # Trigger the notification task on failure
         notification_task(error_message=str(e))
-        raise  
+        raise
  ```

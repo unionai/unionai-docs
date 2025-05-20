@@ -1,6 +1,6 @@
 ---
 title: Logging links in the UI
-weight: 3 
+weight: 3
 variants: +flyte -serverless -byoc -byok
 ---
 
@@ -171,7 +171,6 @@ def my_task():
 ```
 
 For inspiration, consider how the flytekit [wandb](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-wandb/flytekitplugins/wandb/tracking.py), [neptune](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-neptune/flytekitplugins/neptune/tracking.py) or [vscode](https://github.com/flyteorg/flytekit/blob/master/flytekit/interactive/vscode_lib/decorator.py) plugins make use of dynamic log links.
-
 
 ## Datadog integration
 

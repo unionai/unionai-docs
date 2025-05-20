@@ -35,7 +35,6 @@ For an example query, see [SageMaker connector example usage](./sagemaker-infere
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Local testing
 
 To test an connector locally, create a class for the connector task that inherits from

@@ -34,7 +34,6 @@ One common question when you read through the example would be whether it is rea
 3. Run a set of predictions on the validation set. The function is designed to be more generic, it can be used to simply predict given a set of observations (dataset)
 4. Calculate the accuracy score for the predictions
 
-
 ## Takeaways
 
 - Usage of FlyteSchema Type. Schema type allows passing a type safe vector from one task to task. The vector is directly loaded into a pandas dataframe. We could use an unstructured Schema (By simply omitting the column types). This will allow any data to be accepted by the training algorithm.

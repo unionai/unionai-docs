@@ -48,7 +48,6 @@ def map_interest_wf() -> list[float]:
     time = [12, 24, 36]        # Loan periods in months
     return {{< key kit_as >}}.{{<key map_func>}}(lp)(principal=principal, rate=rate, time=time)
 
-
 # Mapping over the launch plan to calculate interest for multiple loans while fixing an input
 @{{< key kit_as >}}.workflow
 def map_interest_fixed_principal_wf() -> list[float]:

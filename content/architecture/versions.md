@@ -18,7 +18,6 @@ while the users can use it independently. This improves the cost of operation si
 
 Versioned workflows help users quickly reproduce prior results or identify the source of previous successful experiments.
 
-
 ## Why do you need versioning?
 
 Versioning is required to:
@@ -33,7 +32,6 @@ Versioning is required to:
 > [!Note]
 > Please note that Flyte currently does not support the use of colons in specifying versions.
 > For instance, using "0:1" as a version number is not permitted.
-
 
 ## Operational benefits of completely versioned workflows/pipelines
 
@@ -72,12 +70,10 @@ graph TD;
 
 The same `cache=True` will handle this complicated situation as well.
 
-
 ## Why is versioning hard?
 
 Git has become the de facto standard in version control for code, making it easy to work on branches, merge them, and revert unwanted changes.
 But achieving this for a live (running) algorithm usually requires the entire infrastructure to be associated and potentially re-created for every execution.
-
 
 ## How is versioning tied to reproducibility?
 
@@ -92,13 +88,11 @@ In Flyte, every task is versioned, and it precisely captures the dependency set.
 Moreover, every piece of code is registered with the version of the code that was used to create the instance.
 Therefore, users can easily construct the data lineage for all the parts of the workflow.
 
-
 ## What is the cost of versioning and reproducibility?
 
 One of the costs of versioning and allowing on-demand reproducibility is the need to re-instantiate the infrastructure from scratch.
 This may sometimes result in additional overhead.
 However, the advent of Docker containers and Kubernetes has made it possible to build a platform to achieve these goals.
-
 
 ## What is the best way to version your tasks and workflows?
 

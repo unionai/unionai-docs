@@ -91,7 +91,6 @@ the protocol and host appropriately.
 
 Cluster resources are how you configure Kubernetes namespace attributes that are applied at execution time. This includes per-namespace resource quota, patching the default service account with a bounded IAM role, or attaching    `imagePullSecrets` to the default service account for accessing a private container registry
 
-
 #### Configuring cluster resources
 
 The format of all these parameters are free-form key-value pairs used for populating the Kubernetes object templates consumed by the cluster resource controller. The cluster resource controller ensures these fully rendered object templates are applied as Kubernetes resources for each execution namespace.
@@ -104,7 +103,6 @@ In the absence of custom customized values, your Flyte installation will use ``c
 FlyteAdmin config
 as the per-domain defaults. Flyte specifies these defaults by domain and applies them to every
 project-domain namespace combination.
-
 
 #### Customizing cluster resource configuration
 
@@ -151,7 +149,6 @@ apply.
 You can view all custom cluster-resource-attributes by visiting ``protocol://<host/api/v1/matchable_attributes?resource_type=1>``
 and substitute the protocol and host appropriately.
 
-
 ### Workflow execution configuration
 
 
@@ -177,7 +174,6 @@ flytectl update workflow-execution-config
 This matchable attribute allows forcing a matching execution to consistently execute on a specific Kubernetes cluster for multi-cluster Flyte deployment set-up. In lieu of an explicit customization, cluster assignment is random.
 
 For setting up a multi-cluster environment, follow [the guide](https://www.union.ai/docs/flyte/deployment/flyte-deployment/multicluster/)
-
 
 #### Customizing execution cluster label configuration
 
@@ -205,7 +201,6 @@ You can view all custom execution cluster attributes by visiting
 ``protocol://<host/api/v1/matchable_attributes?resource_type=3>`` and substitute
 the protocol and host appropriately.
 
-
 ### Execution queues
 
 Execution queues are defined in [FlyteAdmin configuration](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/flyteadmin/flyteadmin_config.yaml#L138-L148).
@@ -225,7 +220,6 @@ flytectl update execution-queue-attribute
 You can view existing attributes for which tags can be assigned by visiting
 ``protocol://<host>/api/v1/matchable_attributes?resource_type=2`` and substitute
 the protocol and host appropriately.
-
 
 ## Adding new customizable resources
 

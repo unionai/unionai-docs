@@ -19,7 +19,6 @@ Dynamic workflows become essential when you need to do the following:
 - Modify the logic of the code at runtime
 - Change or decide on feature extraction parameters on the fly
 
-
 ## Defining a dynamic workflow
 
 You can define a dynamic workflow using the `@{{< key kit_as >}}.dynamic` decorator.

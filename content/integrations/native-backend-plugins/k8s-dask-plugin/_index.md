@@ -84,7 +84,6 @@ you may need to adjust the resource quotas for the namespace accordingly.
 > When working with [Dask's custom resources](https://kubernetes.dask.org/en/latest/operator_resources.html#custom-resources),
 > your Flyte service account needs explicit > permissions. To that end, you need to create and bind a Cluster role.
 
-
 ##### Sample Cluster Role
 
 ```yaml

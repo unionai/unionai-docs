@@ -36,7 +36,6 @@ In such cases, utilizing a pre-spawned cluster could be more advantageous.
 A job can be considered "short" if its runtime is less than 2 to 3 minutes.
 In these situations, the cost of initializing pods might outweigh the actual execution cost.
 
-
 ## Why use Kubernetes Spark?
 
 Managing Python dependencies can be challenging, but Flyte simplifies the process

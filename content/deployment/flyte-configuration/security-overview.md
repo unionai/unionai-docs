@@ -23,7 +23,6 @@ and by default, its containers run as root. This gives full permissions to the
 system but may not be suitable for production deployments where a security breach
 could comprise your application deployments.
 
-
 ## Changes
 
 A new user group and user have been added to the Docker files for all the Flyte components:
@@ -39,7 +38,6 @@ Additionally, the K8s manifest files for the flyte components define the overrid
 user and group to run them. The following shows the overridden security context added for flyteadmin
 [Flyteadmin](https://github.com/flyteorg/flyte/blob/master/charts/flyte/templates/admin/deployment.yaml).
 
-
 ## Overriding base configuration
 
 Certain init-containers still require root permissions, and hence we are required to override the security
@@ -47,7 +45,6 @@ context for these.
 For example: in the case of [Flyteadmin](https://github.com/flyteorg/flyte/blob/master/charts/flyte/templates/admin/deployment.yaml),
 the init container of check-db-ready that runs postgres-provided docker image cannot resolve the host for the checks and fails. This is mostly due to no read
 permissions on etc/hosts file. Only the check-db-ready container is run using the root user, which we will also plan to fix.
-
 
 ## Running flyteadmin and flyteconsole on different domains
 

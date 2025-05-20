@@ -12,4 +12,3 @@ CODE1 = 10
 ```python
 CODE2 = 10
 ```
-

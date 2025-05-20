@@ -15,7 +15,6 @@ variants: -flyte -serverless -byoc -byok
 
 List of icons [here](https://shoelace.style/components/icon)
 
-
 ## Notes
 
 > &gt; [!NOTE] This is the title
@@ -55,31 +54,31 @@ Various links to test navigation.
 ## Grid
 
 > &#123;&#123;&lt; grid &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; link-card target="navigation" title="Navigation Tests" icon="bullseye" &gt;&#125;&#125;
 > Various links to test navigation.
 > &#123;&#123;&lt; /link-card &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; link-card target="navigation" title="Navigation Tests" icon="bullseye" &gt;&#125;&#125;
 > Various links to test navigation.
 > &#123;&#123;&lt; /link-card &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; markdown &gt;&#125;&#125;
 > A container with markdown
 > &#123;&#123;&lt; /markdown &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; markdown &gt;&#125;&#125;
 > Another container with markdown
 > &#123;&#123;&lt; /markdown &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; link-card target="navigation" title="Navigation Tests" icon="bullseye" &gt;&#125;&#125;
 > Various links to test navigation.
 > &#123;&#123;&lt; /link-card &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; link-card target="navigation" title="Navigation Tests" icon="bullseye" &gt;&#125;&#125;
 > Various links to test navigation.
 > &#123;&#123;&lt; /link-card &gt;&#125;&#125;
-> 
+>
 > &#123;&#123;&lt; /grid &gt;&#125;&#125;
 
 ### Renders as

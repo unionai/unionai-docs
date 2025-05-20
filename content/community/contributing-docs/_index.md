@@ -10,7 +10,6 @@ sidebar_expanded: true
 We welcome contributions to the docs and examples for both Flyte and Union.
 This section will explain how the docs site works, how to author and build it locally, and how to publish your changes.
 
-
 ## The combined Flyte and Union docs site
 
 As the primary maintainer and contributor of the open-source Flyte project, Union AI is responsible for hosting the Flyte documentation.
@@ -37,7 +36,6 @@ And finally:
 * Different version of the documentation are also supported, independently of the variants.
 
 For details on how this works, see [Variants](./variants.md) and [Versions](./versions.md).
-
 
 ## Both Flyte and Union docs are open source
 

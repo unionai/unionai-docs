@@ -66,7 +66,6 @@ A user or application with multiple policies will have the logical union of the 
 > But this is only the case due to how these particular roles are defined.
 > In general, it is possible to create roles where assigning multiple ones is meaningful.
 
-
 ## Custom roles and policies
 
 It is possible to create new custom roles and policies.
@@ -74,7 +73,6 @@ Custom roles and policies can, for example, be used to mix and match permissions
 
 Roles and policies are created using the [`uctl` CLI](../../api-reference/uctl-cli) (not the [{{< key cli_name >}} CLI](../../api-reference/union-cli)).
 Make sure you have the [`uctl` CLI installed and configured to point to your {{< key product_name >}} instance](../../api-reference/uctl-cli).
-
 
 ### Create a role
 
@@ -96,7 +94,6 @@ Create the role from the command line:
 ```shell
 $ uctl create role --roleFile my_role.yaml
 ```
-
 
 ### Create a policy
 
@@ -146,7 +143,6 @@ $ uctl append identityassignments \
        --application "contoso-operator" \
        --policy "Workflow Developer Policy"
 ```
-
 
 ## Initial onboarding
 

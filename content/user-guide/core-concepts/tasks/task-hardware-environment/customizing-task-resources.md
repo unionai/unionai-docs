@@ -126,7 +126,6 @@ To remedy such a failure, you should make sure that the appropriate node types a
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## The `with_overrides` method
 
 When `requests`, `limits`, or `accelerator` are specified in the `@{{< key kit_as >}}.task` decorator, they apply every time that a task is invoked from a workflow.

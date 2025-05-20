@@ -175,7 +175,6 @@ def wf():
 ```
 <!-- TODO: emphasize-lines: 16,35-36 -->
 
-
 ### Passing a value to a custom partition key by input
 
 ```python

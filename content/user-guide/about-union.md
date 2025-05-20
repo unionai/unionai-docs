@@ -36,7 +36,6 @@ You can try out Flyte's technology:
 
 For production use, you have to [deploy and manage Flyte on your own cloud infrastructure](../deployment).
 
-
 ## {{< key product_name >}} Serverless
 
 [{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
@@ -62,7 +61,6 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 * Smart defaults and automatic linking
 * UI based workflow builder
 
-
 ## {{< key product_name >}} BYOC
 
 [{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
@@ -75,7 +73,6 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 * Multi-cluster and multi-cloud
 * Single sign-on (SSO)
 * SOC-2 Type 2 compliance
-
 
 ## {{< key product_name >}} BYOK
 

@@ -52,7 +52,6 @@ It is important to be aware of any operations on your `FlyteFile` that might cal
 Some examples include, calling `open(ff, mode="r")` directly on a `FlyteFile` (rather than on the `path` attribute) to get the contents of the path,
 or similarly calling `shutil.copy` or `pathlib.Path` directly on a `FlyteFile`.
 
-
 ## FlyteDirectory
 
 **Calling `download` on a FlyteDirectory**

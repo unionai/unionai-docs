@@ -22,7 +22,6 @@ This is what that process looks like:
    > This templating process *should* be done by **all** plugins, even plugins that don't run a container but need some information from the execution side.
    > For example, a query task that submits a query to an engine that writes the output to the raw output location. Or a query that uses the unique retry key as a temp table name, etc.
 
-
 ## Command templating
 
 The templating of container arguments at run-time is one of the more advanced constructs of Flyte, but one that authors of new task types should be aware of.

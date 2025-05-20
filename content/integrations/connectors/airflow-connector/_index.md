@@ -29,7 +29,6 @@ This plugin has two components:
 > You don't need an Airflow cluster to run Airflow tasks, since flytekit will
 > automatically compile Airflow tasks to {{< key product_name >}} tasks and execute them on the Airflow connector.
 
-
 ## Example usage
 
 {{< variant flyte >}}
@@ -46,7 +45,6 @@ For an example query, see [Airflow connector example usage](./airflow-connector-
 
 {{< /markdown >}}
 {{< /variant >}}
-
 
 ## Local testing
 

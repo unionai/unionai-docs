@@ -27,7 +27,6 @@ Flyte’s data separation avoids bottlenecks and security risks:
 
 Moreover, a unique property of this separation is that all meta values are read by FlytePropeller engine and available on the UI or CLI from the control plane.
 
-
 ## Example
 
 Consider a basic Flyte task:
@@ -48,7 +47,6 @@ Flyte treats each differently:
 Flytekit TypeTransformers make it possible to use complex objects as if they are available locally, just like persistent filehandles.
 However, the Flyte backend only deals with the references.
 
-
 ## Raw data path
 
 Every task can read/write its own data files. If `FlyteFile` or any natively supported type like `pandas.DataFrame` is used, Flyte will automatically offload and download data from the configured object-store paths.
@@ -63,7 +61,6 @@ you can specify an alternate location when invoking a Flyte execution in the lau
 
 In the local demo cluster, the default raw output path is configured to be the root of the local bucket.
 Hence Flyte will write all the raw data (reference types like blob, file, df/schema/parquet, etc.) under a path defined by the execution.
-
 
 ## `LiteralType` and `Literal`
 
@@ -125,14 +122,12 @@ It is transformed the following:
 }
 ```
 
-
 ### Runtime
 
 At runtime, data passes through Flyte using `Literal` where the values are set.
 For files, the corresponding `Literal` is called `LiteralBlob (Blob)` which is a binary large object.
 Many different objects can be mapped to the underlying `Blob` or `Struct` types.
 For example, an image is a `Blob`, a `pandas.DataFrame` is a `Blob `of type `parquet`, etc.
-
 
 ## Data movement
 
@@ -147,16 +142,13 @@ The illustration below explains how data flows from engine to the task and how t
 The medium to transfer the data can change, and will change in the future.
 We could use fast metadata stores to speed up data movement or exploit locality.
 
-
 ### Between FlytePropeller and tasks
 
 [Flyte data movement](/_static/images/architecture/data-handling/flyte-data-movement.png)
 
-
 ### Between tasks
 
 [Flyte data transfer](/_static/images/architecture/data-handling/flyte-data-transfer.png)
-
 
 ### Practical example
 
@@ -216,7 +208,6 @@ def wf() -> FlyteFile:
 
 This example shows how to access an existing file in a MinIO bucket from the Flyte local demo cluster and pass it between tasks with FlyteFile.
 When a workflow outputs a local file as a FlyteFile, Flyte automatically uploads it to MinIO and provides an S3 URL for downstream tasks, no manual uploads needed.
-
 
 ### Bringing in your own datastores for raw data
 

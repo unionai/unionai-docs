@@ -17,7 +17,6 @@ Errors causing task failure are categorized into two main types, influencing the
 
 * `USER`: These errors are due to issues in the user-defined code, like a value error or a logic mistake, which usually require code modifications to resolve.
 
-
 ## Configuring retries
 
 Retries in {{< key product_name>}} are configurable to address both `USER` and `SYSTEM` errors, allowing for tailored fault tolerance strategies:
@@ -64,13 +63,11 @@ This is useful for tasks running on preemptible compute resources like spot inst
 
 See [Interruptible instances](./interruptible-instances)
 
-
 ## Retrying map tasks
 
 For map tasks, the interruptible behavior aligns with that of regular tasks. The retries field in the task annotation is not necessary for handling SYSTEM errors, as these are managed by the platform’s configuration. Alternatively, the USER budget is set by defining retries in the task decorator.
 
 See [Map tasks](../map-tasks).
-
 
 ## Timeouts
 

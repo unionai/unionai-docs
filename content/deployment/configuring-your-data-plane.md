@@ -26,7 +26,6 @@ You will need to send the following details to the {{< key product_name >}} team
         * [Taints](#taints)
         * [Disk](#disk)
 
-
 ## Cloud provider
 
 You can choose either AWS or GCP as your cloud provider.

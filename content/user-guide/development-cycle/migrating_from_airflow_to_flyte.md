@@ -74,7 +74,6 @@ AIRFLOW_CONN_FS_DEFAULT="/" pyflyte run workflows.py airflow_wf
 > Some Airflow operators may require certain permissions to execute. For instance, `DataprocCreateClusterOperator` requires the `dataproc.clusters.create` permission.
 > When running Airflow tasks locally, you may need to set the necessary permissions locally for the task to execute successfully.
 
-
 ### 3. Move your workflow to production
 
 > [!NOTE]

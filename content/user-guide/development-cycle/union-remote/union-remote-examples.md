@@ -92,7 +92,6 @@ completed_execution = remote.wait(execution)
 print(completed_execution.outputs)  # print out the outputs
 ```
 
-
 ## Terminating all running executions for a workflow
 
 This example shows how to terminate all running executions in a given workflow name.
@@ -266,7 +265,6 @@ input_keys = execution.inputs.keys()
 output_keys = execution.outputs.keys()
 ```
 
-
 ## Launch workflow via {{< key kit_remote >}}
 
 Workflows can be executed with UnionRemote because under the hood it fetches and triggers a default launch plan.
@@ -295,7 +293,6 @@ execution = remote.execute(
     workflow, inputs={"mean": 1}, execution_name_prefix="flyte", wait=True
 )
 ```
-
 
 ## Launch launchplan via {{< key kit_remote >}}
 

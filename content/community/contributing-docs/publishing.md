@@ -24,7 +24,6 @@ $ cp hugo.local.toml~sample hugo.local.toml
 
 3. Make sure you review `hugo.local.toml`.
 
-
 ## Managing the Tutorial Pages
 
 The tutorials are maintained in the [unionai/unionai-examples](https://github.com/unionai/unionai-examples) repository and is imported as a git submodule in the `external`
@@ -42,13 +41,11 @@ To update the submodule to the latest `main` branch, run:
 $ make update-examples
 ```
 
-
 ## Building and running locally
 
 ```
 $ make dev
 ```
-
 
 ## Building Production
 
@@ -94,7 +91,6 @@ You can change how the development environment works by settings values in `hugo
 * `highlight_active` - If 'true', it will also highlight the *current* content for the variant.
 * `highlight_keys`   - If 'true'', it highlights replacement keys and their values
 
-
 ### Changing 'variants'
 
 Variants are flavors of the site (that you can change at the top).
@@ -122,7 +118,6 @@ highlight_active = true
 
 > You can create you own copy of `hugo.local.toml` by copying from `hugo.local.toml~sample` to get started.
 
-
 ## Troubleshootting
 
 ### Identifying Problems: Missing Content
@@ -140,7 +135,6 @@ For a full-developer experience, set:
     show_inactive = true
     highlight_active = true
 
-
 ### Identifying Problems: Page Visibility
 
 The developer site will show you in red any pages missing from the variant.
@@ -148,7 +142,6 @@ For a page to exist in the variant (or be excluded, you have to pick one), it mu
 Clicking on the red page will give you the path you must add to the appropriate variant in the YAML file and a link with guidance.
 
 Please refer to [Authoring](./authoring) for more details.
-
 
 ## Building Production
 

@@ -124,14 +124,12 @@ Here we have the simplest possible `ImageSpec` object, which specifies:
 
 See [ImageSpec](../development-cycle/image-spec) for more information.
 
-
 ### Tasks
 
 The `@{{< key kit_as >}}.task` decorator indicates a Python function that defines a [**task**](../core-concepts/tasks).
 A task tasks some input and produces an output.
 When deployed to {{< key product_name >}} cluster, each task runs in its own Kubernetes pod.
 For a full list of task parameters, see [Task parameters](../core-concepts/tasks/task-parameters).
-
 
 ### Workflow
 
@@ -149,7 +147,6 @@ When deployed to {{< key product_name >}}, the workflow function is compiled to 
 >   other Python modules or scripts.
 > * Task and workflow function signatures must be type-annotated with Python type hints.
 > * Task and workflow functions must be invoked with keyword arguments.
-
 
 ## pyproject.toml
 

@@ -1,6 +1,6 @@
 ---
 title: AWS Batch plugin
-weight: 3 
+weight: 3
 variants: +flyte -serverless -byoc -byok
 ---
 
@@ -104,7 +104,6 @@ with distinct attributes and matching logic based on project/domain/workflowName
 ```
 These settings can also be dynamically altered through ``flytectl`` (or FlyteAdmin API).
 [Learn about how to customize resources](https://www.union.ai/docs/flyte/deployment/flyte-configuration/customizable_resources/).
-
 
 ### Update FlytePropeller's configuration
 

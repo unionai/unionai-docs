@@ -6,13 +6,11 @@ variants: +flyte +serverless +byoc +byok
 
 # Authoring
 
-
 ## Getting started
 
 Content is located in the [`content`](content/) folder.
 
 To create a new page, simply create a new Markdown file in the appropriate folder and start writing it!
-
 
 ## Live preview
 
@@ -29,12 +27,10 @@ As you edit the preview will update automatically.
 
 See [Publishing](./publishing) for how to set up your machine.
 
-
 ## Pull Requests + Site Preview
 
 Pull requests will create a preview build of the site on CloudFlare.
 Check the pull request for a dynamic link to the site changes within that PR.
-
 
 ## Page Visibility
 
@@ -59,7 +55,6 @@ In this example the page will be:
 > All variants must be explicitly listed in the `variants` field.
 > This helps avoid missing or extraneous pages.
 
-
 ## Page order
 
 Pages are ordered by the value of `weight` field (an integer >= 0) in the frontmatter of the page,
@@ -78,7 +73,6 @@ weight: 3
 ---
 ```
 
-
 ## Page settings
 
 | Setting            | Type | Description                                                                       |
@@ -88,14 +82,12 @@ weight: 3
 | `site_root`        | bool | If `true` indicates that the page is the site landing page                        |
 | `toc_max`          | int  | Maximum heading to incorporate in the right navigation table of contents.         |
 
-
 ## Conditional Content
 
 The site has "flavors" of the documentation. We leverage the `{{</* variant */>}}` tag to control
 which content is rendered on which flavor.
 
 Refer to [**Variants**](./shortcodes#variants) for detailed explanation.
-
 
 ## Warnings and Notices
 
@@ -114,13 +106,11 @@ Or if you want a warning:
 > And here you write what you want to warn about.
 ```
 
-
 ## Special Content Generation
 
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
 
 Refer to [**Content Generation**](SHORTCODES.md) for more information.
-
 
 ## Python Generated Content
 
@@ -164,7 +154,6 @@ Note that the text content is embedded in comments as Markdown, and the code is 
 
 The generator will convert the markdown into normal page text content and the code into code blocks within that Markdown content.
 
-
 ### Run on Union Instructions
 
 We can add the run on Union instructions anywhere in the content.
@@ -180,7 +169,6 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
 
 The resulting **Run on Union** section in the rendered docs will include the run command and source location,
 specified as `run_command` and `source_locaiton` in the front matter of the corrsponding `.md` page.
-
 
 ## Jupyter Notebooks
 
@@ -204,7 +192,6 @@ $ make -f Makefile.jupyter
 
 **Committing the change:** When the PR is pushed, a check for consistency between the notebook and its source will run. Please ensure that if you change the notebook, you re-run the `Makefile.jupyter` target to update the page.
 
-
 ## Mapped Keys (`{{</* key */>}}`)
 
 Key is a very special command that allows us to define mapped values to a variant.
@@ -213,7 +200,6 @@ we can define a single key `product_full_name` and map it to reflect automatical
 without the need to `if variant` around it.
 
 Please refer to [{{</* key */>}} shortcode](SHORTCODES.md#-key-) for more details.
-
 
 ## Mermaid Graphs
 

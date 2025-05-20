@@ -36,7 +36,6 @@ For an example query, see [OpenAI Batch connector example usage](./openai-batch-
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Local testing
 
 To test an connector locally, create a class for the connector task that inherits from

@@ -8,7 +8,6 @@ variants: -flyte +serverless +byoc +byok
 
 In the following example, we define an upstream workflow and a downstream workflow, and define a [trigger](../launch-plans/reactive-workflows/) in a launch plan to connect the two workflows via an [artifact event](../launch-plans/reactive-workflows#artifact-events).
 
-
 ## Imports
 
 {{< variant byoc byok flyte >}}
@@ -30,7 +29,6 @@ from flytekit.core.artifact import Inputs
 from typing_extensions import Annotated
 
 ```
-
 
 ## Upstream artifact and workflow definition
 
@@ -55,7 +53,6 @@ def upstream_t1(key1: str) -> Annotated[pd.DataFrame, UpstreamArtifact(key1=Inpu
 def upstream_wf() -> pd.DataFrame:
     return upstream_t1(key1="value1")
 ```
-
 
 ## Artifact event definition
 

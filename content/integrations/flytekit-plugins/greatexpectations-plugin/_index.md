@@ -36,7 +36,6 @@ The datasources can be well-integrated with the plugin using the following two m
 - **Flyte Type**: A Flyte type helps attach the `GreatExpectationsType` to any dataset.
   Under the hood, `GreatExpectationsType` can be assumed as a combination of Great Expectations and Flyte types where every data is validated against the expectations, much like the OpenAPI Spec or the gRPC validator.
 
-
 ### Data Validation Failure
 
 If the data validation fails, the plugin will raise a `GreatExpectationsValidationError`.

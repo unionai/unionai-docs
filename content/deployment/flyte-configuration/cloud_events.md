@@ -41,7 +41,7 @@ To turn on, add the following to your FlyteAdmin configuration:
 
 {{< dropdown title="AWS SNS" icon=arrow_forward >}}
 {{< markdown >}}
-   
+
 ```yaml
 cloud_events.yaml: |
   cloudEvents:
@@ -60,8 +60,8 @@ cloud_events.yaml: |
 
 {{< dropdown title="GCP Pub/Sub" icon=arrow_forward >}}
 {{< markdown >}}
-   
-```yaml 
+
+```yaml
 cloud_events.yaml: |
   cloudEvents:
     enable: true
@@ -72,13 +72,13 @@ cloud_events.yaml: |
       - all # or node, task, workflow
       topicName: my-topic
     type: gcp
-  ``` 
+  ```
 {{< /markdown >}}
 {{< /dropdown >}}
 
 {{< dropdown title="Apache Kafka" icon=arrow_forward >}}
 {{< markdown >}}
-   
+
 ```yaml
 cloud_events.yaml: |
   cloudEvents:
@@ -99,7 +99,6 @@ cloud_events.yaml: |
 There should already be a section for this in the ``values.yaml`` file. Update
 the settings under the ``cloud_events`` key and turn ``enable`` to ``true``.
 The same flag is used for Helm as for Admin itself.
-
 
 ## Usage
 
@@ -129,4 +128,4 @@ Note that these message wrap the underlying event messages
         "jsonschemaurl": "https://github.com/flyteorg/flyteidl/blob/master/jsonschema/workflow_execution.json",
         "data" : "workflow execution event"
     }
-``` 
+```

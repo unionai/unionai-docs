@@ -8,7 +8,7 @@ variants: +flyte -serverless -byoc -byok
 Used for updating various Union resources including
 tasks/workflows/launchplans/executions/project.
 
-# Synopsis
+## Synopsis
 
 Used for updating various union/flyte resources including
 tasks/workflows/launchplans/executions/project.
@@ -24,7 +24,7 @@ tasks/workflows/launchplans/executions/project.
 | Option | Type | Description |
 |--------|------|-------------|
 | `--admin.audience` | string | Audience to use when initiating OAuth2 authorization requests. |
-| `--admin.authType` | string | Type of OAuth2 flow used for communicating with admin.ClientSecret, Pkce, ExternalCommand are valid values (default "ClientSecret") |
+| `--admin.authType` | string | Type of OAuth2 flow used for communicating with admin. ClientSecret, Pkce, ExternalCommand are valid values (default "ClientSecret") |
 | `--admin.authorizationHeader` | string | Custom metadata header to pass JWT |
 | `--admin.authorizationServerUrl` | string | This is the URL to your IdP's authorization server. It'll default to Endpoint |
 | `--admin.caCertFilePath` | string | Use specified certificate file to verify the admin server peer. |

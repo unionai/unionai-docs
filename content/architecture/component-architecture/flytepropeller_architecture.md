@@ -9,7 +9,6 @@ variants: +flyte -serverless -byoc -byok
 > [!NOTE]
 > In the frame of this document, we use the term “workflow” to describe the single execution of a workflow definition.
 
-
 ## Introduction
 
 A Flyte [workflow](../../user-guide/core-concepts/workflows/standard-workflows) is represented as a Directed Acyclic Graph (DAG) of interconnected Nodes. Flyte supports a robust collection of Node types to ensure diverse functionality.
@@ -33,13 +32,11 @@ This document attempts to break down the FlytePropeller architecture by tracking
 
 ![FlytePropeller Architecture](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/concepts/architecture/flytepropeller_architecture.png)
 
-
 ## Components
 
 ### FlyteAdmin
 
 FlyteAdmin is the common entry point, where initialization of FlyteWorkflow Custom Resources may be triggered by user workflow definition executions, automatic relaunches, or periodically scheduled workflow definition executions.
-
 
 ### FlyteWorkflow CRD / K8s integration
 
@@ -128,7 +125,6 @@ K8s exposes a powerful controller/operator API that enables entities to track cr
 > [!NOTE]
 > Manual creation of `flyteworkflow` CRs, without the intervention of `flyteadmin`, is possible but not supported as the resulting resource will have limited visibility and usability.
 
-
 ### WorkQueue/WorkerPool
 
 FlytePropeller supports concurrent execution of multiple, unique workflows using a WorkQueue and WorkerPool.
@@ -143,11 +139,9 @@ The WorkQueue is a FIFO queue storing workflow ID strings that require a lookup 
 
 The WorkerPool is implemented as a collection of `goroutines`, one for each worker. Using this lightweight construct, FlytePropeller can scale to 1000s of workers on a single CPU. Workers continually poll the WorkQueue for workflows. On success, the workflow is passed to the WorkflowExecutor.
 
-
 ### WorkflowExecutor
 
 The WorkflowExecutor is responsible for handling high-level workflow operations. This includes maintaining the workflow phase (for example: running, failing, succeeded, etc.) according to the underlying node phases and administering pending cleanup operations. For example, aborting existing node evaluations during workflow failures or removing FlyteWorkflow CRD finalizers on completion to ensure the CR is deleted. Additionally, at the conclusion of each evaluation round, the WorkflowExecutor updates the FlyteWorkflow CR with updated metadata fields to track the status between evaluation iterations.
-
 
 ### NodeExecutor
 
@@ -163,7 +157,6 @@ There are many configurable parameters to tune evaluation criteria including max
 Go to the [Optimizing Performance](https://union.ai/docs/flyte/deployment/) section for more information on how to tune Propeller parameters.
 
 The NodeExecutor is also responsible for linking data readers/writers to facilitate data transfer between node executions. The data transfer process occurs automatically within Flyte, using efficient K8s events rather than a polling listener pattern which incurs more overhead. Relatively small amounts of data may be passed between nodes inline, but it is more common to pass data URLs to backing storage. A component of this is writing to and checking the data cache, which facilitates the reuse of previously completed evaluations.
-
 
 ### NodeHandlers
 
@@ -181,11 +174,9 @@ FlytePropeller includes a robust collection of NodeHandlers to support diverse e
 * **BranchHandler**: The branch handler allows the DAG to follow a specific control path based on input (or computed) values.
 * **Start / End Handlers**: These are dummy handlers which process input and output data and in turn transition start and end nodes to success.
 
-
 ### FlyteAdmin events
 
 It should be noted that the WorkflowExecutor, NodeExecutor, and TaskHandlers send events to FlyteAdmin, enabling it to track workflows in near real-time.
-
 
 ### FlytePlugins
 

@@ -10,7 +10,6 @@ A user container task plugin runs a user-defined container that has the user cod
 
 This tutorial will walk you through writing your own sensor-style plugin that allows users to wait for a file to land in the object store. Remember that if you follow the flyte/flytekit constructs, you will automatically make your plugin portable across all cloud platforms that Flyte supports.
 
-
 ## Sensor plugin
 
 A sensor plugin waits for some event to happen before marking the task as success. You need not worry about the timeout as that will be handled by the flyte engine itself when running in production.
@@ -27,7 +26,6 @@ def wait_and_run(path: str) -> int:
     return do_next(path=path)
 ```
 
-
 ## Plugin API
 
 First, we import the reuired modules.
@@ -40,7 +38,6 @@ from time import sleep
 from flytekit import TaskMetadata, task, workflow
 from flytekit.extend import Interface, PythonTask, context_manager
 ```
-
 
 ### Plugin structure
 
@@ -85,7 +82,6 @@ class WaitForObjectStoreFile(PythonTask):
             sleep(self._poll_interval.seconds)
 ```
 
-
 ### Config objects
 
 Flytekit routes to the right plugin based on the type of `task_config` class if using the `@task` decorator.
@@ -101,7 +97,6 @@ plugin understands.
 > In this example, we are creating a named class plugin, and hence, this construct does not need a plugin.
 
 Refer to the [spark plugin](https://github.com/flyteorg/flytekit/tree/master/plugins/flytekit-spark) for an example of a config object.
-
 
 ### Actual usage
 

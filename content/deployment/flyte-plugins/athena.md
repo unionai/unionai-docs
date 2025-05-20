@@ -1,6 +1,6 @@
 ---
 title: AWS Athena plugin
-weight: 2 
+weight: 2
 variants: +flyte -serverless -byoc -byok
 ---
 
@@ -18,7 +18,6 @@ This guide provides an overview of setting up Athena in your Flyte deployment.
 3. Double-check that your ``~/.flyte/config.yaml`` file contains the correct Flytectl configuration
 
 ## Specify plugin configuration
-
 
 ### flyte-binary
 

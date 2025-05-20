@@ -15,7 +15,6 @@ Updating any trigger associated with a launch plan will create a new version of 
 > [!NOTE]
 > Currently, there are only artifact event-based triggers, but in the future, triggers will be expanded to include other event-based workflow triggering mechanisms.
 
-
 ## Scope
 
 Since a trigger is part of a launch plan, it is scoped as follows:

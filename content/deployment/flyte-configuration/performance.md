@@ -21,12 +21,12 @@ In the following sections you will learn how Flyte ensures the correct and relia
 
 ## Summarized steps of a workflow execution
 
-Let's revisit the lifecycle of a workflow execution. 
-The following diagram aims to summarize the process described in the [FlytePropeller Architecture](https://www.union.ai/docs/flyte/architecture/component-architecture/flytepropeller_architecture/) and [execution timeline](https://www.union.ai/docs/flyte/architecture/workflow-timeline/) sections, focusing on the main steps. 
+Let's revisit the lifecycle of a workflow execution.
+The following diagram aims to summarize the process described in the [FlytePropeller Architecture](https://www.union.ai/docs/flyte/architecture/component-architecture/flytepropeller_architecture/) and [execution timeline](https://www.union.ai/docs/flyte/architecture/workflow-timeline/) sections, focusing on the main steps.
 
 ![](/_static/images/deployment/propeller-perf-lifecycle-01.png)
 
-The ``Worker`` is the independent, lightweight, and idempotent process that interacts with all the components in the Propeller controller to drive executions. 
+The ``Worker`` is the independent, lightweight, and idempotent process that interacts with all the components in the Propeller controller to drive executions.
 It's implemented as a ``goroutine``, and illustrated here as a hard-working gopher which:
 
 1. Pulls from the ``WorkQueue`` and loads what it needs to do the job: the workflow specification (desired state) and the previously recorded execution status.
@@ -36,12 +36,12 @@ It's implemented as a ``goroutine``, and illustrated here as a hard-working goph
 5. Reports status to the control plane and, hence, to the user.
 
 This process is known as the "evaluation loop".
-While there are multiple metrics that could indicate a slow down in execution performance, ``round_latency`` -or the time it takes FlytePropeller to complete a single evaluation loop- is typically the "golden signal". 
+While there are multiple metrics that could indicate a slow down in execution performance, ``round_latency`` -or the time it takes FlytePropeller to complete a single evaluation loop- is typically the "golden signal".
 Optimizing ``round_latency`` is one of the main goals of the recommendations provided in the following sections.
 
 ## Performance tuning at each stage
 
-### 1. Workers, the WorkQueue, and the evaluation loop 
+### 1. Workers, the WorkQueue, and the evaluation loop
 
 | Property           | Description                                                                                                                                                                                                                                                                                                                                 | Relevant metric                                | Impact on performance                                                                                                                                                                                                                      | Configuration parameter                          |
 |--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
@@ -51,21 +51,21 @@ Optimizing ``round_latency`` is one of the main goals of the recommendations pro
 ### 2. Querying observed state
 
 
-The Kube client config controls the request throughput from FlytePropeller to the Kube API server. These requests may include creating/monitoring pods or creating/updating FlyteWorkflow CRDs to track workflow execution. 
-The [default configuration provided by K8s](https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/client/config#GetConfigWithContext) results in very conservative rate-limiting. FlytePropeller provides a default configuration that may offer better performance. 
-However, if your workload involves larger scales (e.g., >5k fanout dynamic or map tasks, >8k concurrent workflows, etc.,) the kube-client rate limiting config provided by FlytePropeller may still contribute to a noticeable drop in performance. 
+The Kube client config controls the request throughput from FlytePropeller to the Kube API server. These requests may include creating/monitoring pods or creating/updating FlyteWorkflow CRDs to track workflow execution.
+The [default configuration provided by K8s](https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/client/config#GetConfigWithContext) results in very conservative rate-limiting. FlytePropeller provides a default configuration that may offer better performance.
+However, if your workload involves larger scales (e.g., >5k fanout dynamic or map tasks, >8k concurrent workflows, etc.,) the kube-client rate limiting config provided by FlytePropeller may still contribute to a noticeable drop in performance.
 Increasing the ``qps`` and ``burst`` values may help alleviate back pressure and improve FlytePropeller performance. The following is an example kube-client config applied to Propeller:
 
 ```yaml
     propeller:
       kube-client-config:
         qps: 100 # Refers to max rate of requests (queries per second) to kube-apiserver
-        burst: 120 # refers to max burst rate. 
+        burst: 120 # refers to max burst rate.
         timeout: 30s # Refers to timeout when talking with the kube-apiserver
 ```
 > In the previous example, the kube-apiserver will accept ``100`` queries per second, temporariliy admitting up to ``120`` before blocking any subsequent query. A query blocked for ``30s`` will timeout.
 
-It is worth noting that the Kube API server tends to throttle requests transparently. This means that even after increasing the allowed frequency of API requests (e.g., increasing FlytePropeller workers or relaxing Kube client config rate-limiting), there may be steep performance decreases for no apparent reason. 
+It is worth noting that the Kube API server tends to throttle requests transparently. This means that even after increasing the allowed frequency of API requests (e.g., increasing FlytePropeller workers or relaxing Kube client config rate-limiting), there may be steep performance decreases for no apparent reason.
 While it's possible to easily monitor Kube API saturation using system-level metrics like CPU, memory, and network usage, we recommend looking at kube-apiserver-specific metrics like ``workqueue_depth`` which can assist in identifying whether throttling is to blame. Unfortunately, there is no one-size-fits-all solution here, and customizing these parameters for your workload will require trial and error.
 [Learn more about Kubernetes metrics](https://kubernetes.io/docs/reference/instrumentation/metrics/)
 
@@ -90,7 +90,7 @@ While it's possible to easily monitor Kube API saturation using system-level met
 ![](/_static/images/deployment/resourceversion-01.png)
 
 Kubernetes stores the definition and state of all the resources under its management on ``etcd``: a fast, distributed and consistent key-value store.
-Every resource has a ``resourceVersion`` field representing the version of that resource as stored in ``etcd``. 
+Every resource has a ``resourceVersion`` field representing the version of that resource as stored in ``etcd``.
 
 **Example**
 
@@ -120,14 +120,14 @@ Every time a resource (e.g. a pod, a flyteworkflow CR, etc.) is modified, this c
 As ``etcd`` is a distributed key-value store, it needs to manage writes from multiple clients (controllers in this case)
 in a way that maintains consistency and performance.
 That's why, in addition to using ``Revisions`` (implemented in Kubernetes as ``Resource Version``), ``etcd`` also prevents clients from writing if they're using
-an outdated ``ResourceVersion``, which could happen after a temporary client disconnection or whenever a status replication from the Kubernetes API to 
+an outdated ``ResourceVersion``, which could happen after a temporary client disconnection or whenever a status replication from the Kubernetes API to
 the Informer cache hasn't completed yet. Poorly handled by a controller, this could result in kube-server and FlytePropeller worker overload by repeatedly attempting to perform outdated (or "stale") writes.
 
 FlytePropeller handles these situations by keeping a record of the last known ``ResourceVersion``. In the event that ``etcd`` denies a write operation due to an outdated version, FlytePropeller continues the workflow
 evaluation loop, waiting for the Informer cache to become consistent. This mechanism, enabled by default and known as ``ResourceVersionCache``, avoids both overloading the K8s API and wasting ``workers`` resources on invalid operations.
 It also mitigates the impact of cache propagation latency, which can be on the order of seconds.
 
-If ``max-streak-length`` is enabled, instead of waiting for the Informer cache to become consistent during the evaluation loop, FlytePropeller runs multiple evaluation loops using its in-memory copy of the ``ResourceVersion`` and corresponding Resource state, as long 
+If ``max-streak-length`` is enabled, instead of waiting for the Informer cache to become consistent during the evaluation loop, FlytePropeller runs multiple evaluation loops using its in-memory copy of the ``ResourceVersion`` and corresponding Resource state, as long
 as there are mutations in any of the resources associated with that particular workflow. When the ``max-streak-length`` limit is reached, the evaluation loop is done and, if further evaluation is required, the cycle will start again by trying to get the most recent ``Resource Version`` as stored in ``etcd``.
 
 Other supported options for ``workflowStore.policy`` are described below:
@@ -142,10 +142,9 @@ Other supported options for ``workflowStore.policy`` are described below:
 |--------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `admin-launcher.tps`, `admin-launcher.cacheSize`, `admin-launcher.workers` | Configure the maximum rate and number of launchplans that FlytePropeller can launch against FlyteAdmin. | Limiting writes from FlytePropeller to FlyteAdmin prevents server brown-outs or throttling. A larger cache size reduces server calls, improving efficiency.      |
 
-
 ## Concurrency vs parallelism
 
-While FlytePropeller is designed to efficiently handle concurrency using the mechanisms described in this section, parallel executions (not only concurrent, but evaluated at the same time) pose an additional challenge, especially with workflows that have an extremely large fan-out. 
+While FlytePropeller is designed to efficiently handle concurrency using the mechanisms described in this section, parallel executions (not only concurrent, but evaluated at the same time) pose an additional challenge, especially with workflows that have an extremely large fan-out.
 This is because FlytePropeller implements a greedy traversal algorithm, that tries to evaluate all unblocked nodes within a workflow in every round.
 A way to mitigate the potential performance impact is to limit the maximum number of nodes that can be evaluated simultaneously. This can be done by setting ``max-parallelism`` using any of the following methods:
 
@@ -173,10 +172,9 @@ b. Default for a specific launch plan. For any launch plan, the ``max_parallelis
 
 #. Specify for an execution. ``max-parallelism`` can be overridden using ``pyflyte run --max-parallelism`` or by setting it in the UI.
 
-
 ## Scaling out FlyteAdmin
 
-FlyteAdmin is a stateless service. Often, before needing to scale FlyteAdmin, you need to scale the backing database. 
+FlyteAdmin is a stateless service. Often, before needing to scale FlyteAdmin, you need to scale the backing database.
 Check the [FlyteAdmin Dashboard](https://github.com/flyteorg/flyte/blob/master/deployment/stats/prometheus/flyteadmin-dashboard.json)  for signs of database or API latency degradation.
 PostgreSQL scaling techniques like connection pooling can help alleviate pressure on the database instance.
 If needed, change the number of replicas of the FlyteAdmin K8s deployment to allow higher throughput.
@@ -186,7 +184,6 @@ If needed, change the number of replicas of the FlyteAdmin K8s deployment to all
 Datacatalog is a stateless service that connects to the same database as FlyteAdmin, so the recommendation to scale out the backing PostgreSQL database also applies here.
 
 ## Scaling out FlytePropeller
-
 
 ### Sharded scale-out
 
@@ -253,7 +250,6 @@ The project and domain shard strategies, denoted by ``type: Project`` and ``type
 
 
 If the K8s cluster itself becomes a performance bottleneck, Flyte supports adding multiple K8s dataplane clusters by default. Each dataplane cluster has one or more FlytePropellers running in it, and flyteadmin manages the routing and assigning of workloads to these clusters.
-
 
 ## Improving etcd Performance
 

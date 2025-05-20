@@ -32,7 +32,6 @@ For an example query, see [ChatGPT connector example usage](./chatgpt-connector-
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Local testing
 
 To test the ChatGPT connector locally, create a class for the connector task that inherits from

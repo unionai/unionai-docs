@@ -112,7 +112,6 @@ Steps to Set Up ClientSecret Authentication:
 > [!NOTE]
 > Never commit API keys to version control. Use environment variables or a secure vault.
 
-
 ## Managing Authentication Configuration
 
 By default, the {{< key cli_name >}} CLI looks for configuration files in `~/.{{< key product >}}/config.yaml`. You can override this by:

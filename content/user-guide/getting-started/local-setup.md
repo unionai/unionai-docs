@@ -81,7 +81,6 @@ Furthermore, the pushed images will need to be accessible to the Flyte installat
 (The registry must be accessible and the images themselves must also have the appropriate permissions.
 For example, a public registry like `ghcr.io` with the images set to public, would work).
 
-
 ## Install `flytectl` to set up a local cluster
 
 For production use you will need to install Flyte in your cloud infrastructure (see [Deployment](../../deployment)).
