@@ -33,7 +33,6 @@ for Google Cloud [Dataproc Operators](https://airflow.apache.org/docs/apache-air
 Flytekit compiles Airflow tasks into Flyte tasks, so you can use
 any Airflow sensor or operator in a Flyte workflow:
 
-
 ```python
 from flytekit import task, workflow
 from airflow.sensors.filesystem import FileSensor
@@ -60,7 +59,6 @@ For example,
 ```bash
 export AIRFLOW_CONN_MY_PROD_DATABASE='my-conn-type://login:password@host:port/schema?param1=val1&param2=val2'
 ```
-
 
 Although Airflow doesn't support local execution, you can run your workflow that contains Airflow tasks locally, which is helpful for testing and debugging your tasks before moving to production.
 
