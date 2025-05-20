@@ -12,14 +12,12 @@ The docs site is built using the [Hugo](https://gohugo.io/) static site generato
 You will need to install it to build the site locally.
 See [Hugo Installation](https://gohugo.io/getting-started/installing/).
 
-
 ## Clone the repository
 
 Clone the [`unionai/docs`](https://github.com/unionai/docs) repository to your local machine.
 
 The content is located in the `content/` folder in the form of Markdown files.
 The hierarchy of the files and folders under `content/` directly reflect the URL and navigation structure of the site.
-
 
 ## Live preview
 
@@ -42,7 +40,6 @@ $ make dev
 This will build the site and launch a local server at `http://localhost:1313`.
 Go to that URL to the live preview. Leave the server running.
 As you edit the content you will see the changes reflected in the live preview.
-
 
 ## Distribution build
 

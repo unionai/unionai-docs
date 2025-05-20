@@ -49,7 +49,6 @@ Users can also provide additional tags (or override tags) for custom stats.
 
 * `wf`:  `{{project}}:{{domain}}:{{workflow_name}}` Fully qualified name of the workflow that was executing when this metric was emitted.
 
-
 ## User Stats With Flyte
 
 The workflow parameters object that the SDK injects into various tasks has a ``statsd`` handle that users should call to emit stats of their workflows not captured by the default metrics. The usual caveats around cardinality apply, of course.
@@ -57,7 +56,6 @@ The workflow parameters object that the SDK injects into various tasks has a ``s
 Users are encouraged to avoid creating their own stats handlers.
 If not done correctly, these can pollute the general namespace and accidentally interfere with the production stats of live services, causing pages and wreaking havoc.
 If you're using any libraries that emit stats, it's best to turn them off if possible.
-
 
 ## Use Published Dashboards to Monitor Flyte Deployment
 

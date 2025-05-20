@@ -46,7 +46,6 @@ The managers utilize additional components to process requests. These additional
 - [runtime](#runtime) loads values from a config file to assign task resources, initialization values, execution queues, and more.
 - [async processes](#async-processes) provides functions to schedule and execute the workflows as well as enqueue and trigger notifications.
 
-
 ## Repository {#repository}
 
 Serialized entities (tasks, workflows, launch plans) and executions (workflow-, node- and task-) are stored as protos defined [here](https://github.com/flyteorg/flyte/tree/master/flyteidl/protos/flyteidl/admin).

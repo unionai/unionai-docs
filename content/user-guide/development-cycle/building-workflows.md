@@ -13,7 +13,6 @@ Doing so may result in better computational performance, improved cache performa
 However, decomposition comes at the cost of the overhead among tasks, including spinning up nodes and downloading data.
 In some cases, these costs may be remediated by using [Actors](../core-concepts/actors).
 
-
 ### Differing runtime requirements
 
 Firstly, decomposition provides support for heterogeneous environments among the operations in the task.
@@ -24,7 +23,6 @@ By doing so, you could request significantly less memory for the second task in 
 If you are working with even more data, then you might benefit from decomposing the batch inference task via `map_task` such that you may further parallelize this operation, substantially reducing the runtime of this step.
 Generally speaking, decomposition provides infrastructural flexibility regarding the ability to define resources, dependencies, and execution parallelism.
 
-
 ### Improved cache performance
 
 Secondly, you may decompose large tasks into smaller tasks to enable “fine-grained” caching.
@@ -33,7 +31,6 @@ Thus, by breaking down a large workflow into its many natural tasks, one may min
 This is especially useful during rapid, iterative development, during which a user may attempt to run the same workflow multiple times in a short period of time.
 “Fine-grained” caching will dramatically improve productivity while executing workflows both locally and remotely.
 
-
 ### Take advantage of interruptible tasks
 
 Lastly, one may utilize “fine-grained” caching to leverage interruptible tasks.
@@ -41,7 +38,6 @@ Interruptible tasks will attempt to run on spot instances or spot VMs, where pos
 These nodes are interruptible, meaning that the task may occasionally fail due to another organization willing to pay more to use it.
 However, these spot instances can be substantially cheaper than their non-interruptible counterparts (on-demand instances / VMs).
 By utilizing “fine-grained” caching, one may reap the significant cost savings on interruptible tasks while minimizing the effects of having their tasks being interrupted.
-
 
 ## When should I parallelize tasks?
 
@@ -54,7 +50,6 @@ With reusable containers via [Actors](../core-concepts/actors), however, these o
 In any case, it may be useful to batch the inputs and outputs to amortize any overheads.
 Please be mindful to keep the sequencing of inputs within a batch, and of the batches themselves, to ensure reliable cache hits.
 
-
 ### Parallelization constructs
 
 The two main parallelization constructs in {{< key product_name >}} are the [map task](../core-concepts/tasks/task-types#map-tasks) and the [dynamic workflow](../core-concepts/workflows/dynamic-workflows).
@@ -66,7 +61,6 @@ The parallelism is controlled by the overall workflow parallelism.
 Map tasks are more efficient and have no such sequencing guarantees.
 They also have their own concurrency setting separate from the overall workflow and can have a minimum failure threshold of their constituent tasks.
 A deeper explanation of their differences is available [here]() while examples of how to use them together can be found [here]().
-
 
 ## When should I use caching?
 

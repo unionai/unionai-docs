@@ -32,7 +32,6 @@ def t0():
     print("Running t0")
     return
 
-
 # Chaining tasks
 @{{< key kit_as >}}.workflow
 def chain_tasks_wf():

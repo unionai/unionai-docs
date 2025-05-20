@@ -109,7 +109,6 @@ def secret_task() -> str:
 > - The `Secret` group and key are required parameters during declaration
 >   and usage. Failure to specify will cause a `ValueError`.
 
-
 ### Multiple keys grouped into one secret
 
 In some cases you may have multiple secrets and sometimes, they maybe grouped
@@ -233,7 +232,6 @@ you need to:
 from flytekit import kwtypes
 from flytekitplugins.sqlalchemy import SQLAlchemyTask, SQLAlchemyConfig
 
-
 # define the secrets
 secrets = {
     "username": fl.Secret(group="<SECRET_GROUP>", key="<USERNAME_SECRET>"),
@@ -264,7 +262,6 @@ sql_query = SQLAlchemyTask(
 
 You can then use the `sql_query` task inside a workflow to grab data and
 perform downstream transformations on it.
-
 
 ## How secrets injection works
 

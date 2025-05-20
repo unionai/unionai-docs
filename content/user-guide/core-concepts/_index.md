@@ -197,7 +197,6 @@ $ {{< key ctl >}} get task \
 
 See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli) for more details.
 
-
 ### Inspecting tasks and workflows in Python with `{{< key kit_remote >}}`
 
 Use the method [`{{< key kit_remote >}}.fetch_workflow`]() or [`{{< key kit_remote >}}.client.get_workflow`]() to get a workflow.
@@ -249,7 +248,6 @@ To run a workflow remotely on your {{< key product_name >}} installation, use th
 ```shell
 $  {{< key cli >}} run --remote my_example.py my_workflow --a 1 --b 2 --c 3 --m 4 --n 5
 ```
-
 
 ### Running a task or workflow remotely in Python with `{{< key kit_remote >}}`
 

@@ -37,7 +37,6 @@ The execution logs provide a live view into the standard output of the task exec
 
 For example, any `print` statements in the tasks Python code will be displayed here.
 
-
 ## Kubernetes cluster logs
 
 On the left side of the page you can also see the Kubernetes cluster logs for the task execution:

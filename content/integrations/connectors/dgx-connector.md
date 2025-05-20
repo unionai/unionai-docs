@@ -8,7 +8,6 @@ variants: -flyte -serverless +byoc +byok
 
 You can run workflows on the [NVIDIA DGX platform](https://www.nvidia.com/en-us/data-center/dgx-platform/) with the DGX connector.
 
-
 ## Installation
 
 To install the DGX connector and have it enabled in your deployment, contact the {{< key product_name >}} team.

@@ -70,7 +70,6 @@ sklearn_image_spec = ImageSpec(
 )
 ```
 
-
 ## Install Conda packages
 
 Define the `ImageSpec` to install packages from a specific conda channel.
@@ -82,7 +81,6 @@ image_spec = ImageSpec(
 )
 ```
 
-
 ## Use different Python versions in the image
 
 You can specify the Python version in the `ImageSpec` to build the image with a different Python version.
@@ -93,7 +91,6 @@ image_spec = ImageSpec(
   python_version="3.9",
 )
 ```
-
 
 ## Import modules only in a specify imageSpec environment
 
@@ -131,11 +128,9 @@ def task2() -> int:
   return num_gpus
 ```
 
-
 ## Install CUDA in the image
 
 There are few ways to install CUDA in the image.
-
 
 ### Use Nvidia docker image
 
@@ -149,7 +144,6 @@ image_spec = ImageSpec(
 )
 ```
 
-
 ### Install packages from extra index
 
 CUDA can be installed by specifying the `pip_extra_index_url` in the `ImageSpec`.
@@ -161,7 +155,6 @@ image_spec = ImageSpec(
   pip_extra_index_url=["https://download.pytorch.org/whl/cu118"],
 )
 ```
-
 
 ## Build an image in different architecture
 
@@ -197,7 +190,6 @@ image_spec = ImageSpec(
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Customize the tag of the image
 
 You can customize the tag of the image by specifying the `tag_format` in the `ImageSpec`. In the following example, the tag will be `<spec_hash>-dev`.
@@ -209,7 +201,6 @@ image_spec = ImageSpec(
   tag_format="{spec_hash}-dev",
 )
 ```
-
 
 ## Copy additional files or directories
 
@@ -228,7 +219,6 @@ def my_task() -> str:
     with open("/root/files/input.txt", "r") as f:
         return f.read()
 ```
-
 
 ## Define ImageSpec in a YAML File
 
@@ -249,7 +239,6 @@ Use {{< key cli >}} to register the workflow:
 $ {{< key cli >}} run --remote --image image.yaml image_spec.py wf
 ```
 
-
 ## Build the image without registering the workflow
 
 If you only want to build the image without registering the workflow, you can use the `{{< key cli >}} build` command.
@@ -257,7 +246,6 @@ If you only want to build the image without registering the workflow, you can us
 ```shell
 $ {{< key cli >}} build --remote image_spec.py wf
 ```
-
 
 ## Force push an image
 
@@ -272,7 +260,6 @@ You can also force push an image in the Python code by calling the `force_push()
 ```python
 image = ImageSpec(packages=["pandas"]).force_push()
 ```
-
 
 ## Getting source files into ImageSpec
 

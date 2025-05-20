@@ -113,7 +113,6 @@ Once you execute this task on the {{< key product_name >}} instance, you can acc
 
 ![Union deck button](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_deck_button.png)
 
-
 ## Deck tabs
 
 Each Deck has a minimum of three tabs: input, output and default.
@@ -145,7 +144,6 @@ def frame_renderer() -> None:
 ```
 
 ![Frame renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_frame_renderer.png)
-
 
 ### Top-frame renderer
 

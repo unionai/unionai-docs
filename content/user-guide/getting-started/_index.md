@@ -128,7 +128,6 @@ You can try Flyte in your browser without any setup simply by [signing up for **
 
 [Union.ai Serverless is a fully-hosted version of Flyte]({{< docs_home serverless >}}) with additional features.
 
-
 ## Try Flyte on your local machine
 
 You can also install Flyte's SDK (called `flytekit`) and a local Flyte cluster to run workflows on your local machine.

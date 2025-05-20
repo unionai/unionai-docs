@@ -49,7 +49,6 @@ def coffee_maker(coffee: str) -> str:
     coffee_enum = take_order(coffee=coffee)
     return prep_order(coffee_enum=coffee_enum)
 
-
 # The workflow can also accept an enum value
 @{{< key kit_as >}}.workflow
 def coffee_maker_enum(coffee_enum: Coffee) -> str:

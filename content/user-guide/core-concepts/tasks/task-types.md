@@ -206,7 +206,6 @@ if __name__ == "__main__":
     print(f"Running shell_task_wf() {shell_task_wf()}")
 ```
 
-
 ## Specialized plugin task classes and configs
 
 {{< key product_name >}} supports a wide variety of plugin tasks.

@@ -127,7 +127,6 @@ print(f"Execution {synced_execution.id.name} is in {WorkflowExecutionPhase.enum_
 
     Execution f218aba055ba34a3fb75 is in SUCCEEDED phase
 
-
 ## 04. Retrieve the output
 
 Fetch the model and the model prediction.
@@ -200,7 +199,6 @@ inference_point
      'packed cell volume': [43.0],
      'outcome': ['1'],
      'abdominal distension': [4.0]}
-
 
 
 ### Generate a prediction

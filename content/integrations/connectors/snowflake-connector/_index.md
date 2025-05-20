@@ -36,7 +36,6 @@ For an example query, see [Snowflake connector example usage](./snowflake-connec
 {{< /variant >}}
 
 
-
 ## Local testing
 
 To test the Snowflake connector locally, create a class for the connector task that inherits from

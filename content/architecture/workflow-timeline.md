@@ -20,13 +20,11 @@ graph LR;
     N2 --> End;
 ```
 
-
 ## Acceptance Latency
 
 Every workflow starts in the acceptance phase.
 Acceptance refers to the time between FlyteAdmin receiving an execution request and FlytePropeller evaluating the first round of workflow.
 Usually, within this phase, the Kubernetes queuing latency is the largest contributor to latency where the overall acceptance latency of less than five seconds is desirable.
-
 
 ## Transition Latency
 
@@ -51,16 +49,13 @@ The latency involves time consumed to:
 
 5. Send a queued event for the next node to FlyteAdmin (this is what is persisted and drives the UI/CLI and historical information).
 
-
 ## Queuing Latency
 
 Queuing latency is the time taken by Kubernetes to start the pod, other services to start the job, HTTP throttle to be met, or any rate-limiting that needs to be overcome. This is usually tied to the available resources and quota, and is out of control for Flyte.
 
-
 ## Completion Latency
 
 Completion latency is the time taken to mark the workflow as complete and accumulate outputs of a workflow after the last node completes its execution.
-
 
 ## Overview of Various Latencies in FlytePropeller
 

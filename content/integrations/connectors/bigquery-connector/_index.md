@@ -30,7 +30,6 @@ For an example query, see [BigQuery connector example usage](./bigquery-connecto
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Local testing
 
 To test the BigQuery connector locally, create a class for the connector task that inherits from

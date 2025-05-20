@@ -13,7 +13,6 @@ using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensor
 > [!WARNING]
 > Serving on {{< key product_name >}} is an experimental feature. The API is subject to change.
 
-
 ## Example app
 
 We will start with a simple Streamlit app (other frameworks are available).
@@ -24,7 +23,6 @@ In a local directory, create the following file:
 ```shell
 └── app.py
 ```
-
 
 ## App declaration
 
@@ -82,7 +80,6 @@ There are a few additional available parameters that we do not use in this examp
 * `max_replicas`: The maximum number of replica containers permitted for this app.
   This defines the upper bound for auto-scaling the app. The default is 1 <!-- TODO: (see [App autoscaling]() for details) -->.
 
-
 ## Deploy the app
 
 Deploy the app with:
@@ -113,7 +110,6 @@ Created Endpoint at: https://withered--firefly--8ca31.apps.demo.hosted.unionai.c
 Click on the displayed endpoint to go to the app:
 
 ![A simple app](/_static/images/user-guide/core-concepts/serving/streamlit-hello.png)
-
 
 ## Viewing deployed apps
 
@@ -147,7 +143,6 @@ This will display the app list:
 │ streamlit-demo                          │ Click Here │ Unassigned │ Started       │ 2   │ 2Gi    │
 └─────────────────────────────────────────┴────────────┴────────────┴───────────────┴─────┴────────┘
 ```
-
 
 ## Stopping apps
 

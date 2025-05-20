@@ -4,7 +4,6 @@ weight: 3
 variants: +flyte +serverless +byoc +byok
 ---
 
-
 # Projects and domains
 
 Projects and domains are the principle organizational categories into which you group your workflows in {{< key product_name >}}.
@@ -39,14 +38,12 @@ Here is an example arrangement:
 | Project 1 | workflow_1 (v2.0) | workflow_1 (v1.0) | workflow_1 (v1.0) |
 | Project 2 | workflow_2 (v2.0) | workflow_2 (v1.0) | workflow_2 (v1.0) |
 
-
 ## Projects
 
 Projects represent independent workflows related to specific teams, business
 areas, or applications.  Each project is isolated from others, but workflows can
 reference entities (workflows or tasks) from other projects to reuse
 generalizable resources.
-
 
 ## Domains
 
@@ -63,7 +60,6 @@ A production domain ensures a “clean slate” so that cached development
 executions do not result in unexpected behavior.  Additionally, secrets may be
 configured for external production data sources.
 
-
 ## When to use different {{< key product_name >}} projects?
 
 Projects help group independent workflows related to specific teams, business
@@ -79,7 +75,6 @@ When setting up workflows in {{< key product_name >}}, effective use of **projec
 allocation.  Below are best practices to consider when organizing workflows in
 {{< key product_name >}}.
 
-
 ## Projects and Domains: The Power of the Project-Domain Pair
 
 {{< key product_name >}} uses a project-domain pair to create isolated configurations for
@@ -93,11 +88,9 @@ workflows. This pairing allows for:
 
 * **Configuring Secrets**: {{< key product_name >}} allows you to configure secrets at the project-domain level, ensuring sensitive information, such as API keys and tokens, is accessible only within the specific workflows that need them. This enhances security by isolating secrets according to the project and domain, reducing the risk of unauthorized access across environments. More details [here](managing-secrets).
 
-
 ## Domains: Clear Environment Separation
 
 Domains represent distinct environments within {{< key product_name >}}, allowing clear separation between development, staging, and production. This structure helps prevent cross-environment interference, ensuring that changes made in development or testing do not affect production workflows. Using domains for this separation ensures that workflows can evolve in a controlled manner across different stages, from initial development through to production deployment.
-
 
 ## Projects: Organizing Workflows by Teams, Business Areas, or Applications
 

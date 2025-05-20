@@ -17,8 +17,6 @@ In addition to migration capabilities, Flyte users can seamlessly integrate Airf
 By combining the robust Airflow ecosystem with Flyte's capabilities such as scalability, versioning, and reproducibility, users can run more complex data and machine learning workflows with ease.
 For more information, see the [Airflow connector documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/airflow_connector/index.html).
 
-# For current Flyte users
-
 Even if you're already using Flyte and have no intentions of migrating from Airflow,
 you can still incorporate Airflow tasks into your Flyte workflows. For instance, Airflow offers support
 for Google Cloud [Dataproc Operators](https://airflow.apache.org/docs/apache-airflow-providers-google/stable/operators/cloud/dataproc.html), facilitating the execution of Spark jobs on Google Cloud Dataproc clusters. Rather than developing a custom plugin in Flyte, you can seamlessly integrate Airflow's Dataproc Operators into your Flyte workflows to execute Spark jobs.
@@ -34,7 +32,6 @@ for Google Cloud [Dataproc Operators](https://airflow.apache.org/docs/apache-air
 
 Flytekit compiles Airflow tasks into Flyte tasks, so you can use
 any Airflow sensor or operator in a Flyte workflow:
-
 
 ```python
 from flytekit import task, workflow
@@ -63,7 +60,6 @@ For example,
 export AIRFLOW_CONN_MY_PROD_DATABASE='my-conn-type://login:password@host:port/schema?param1=val1&param2=val2'
 ```
 
-
 Although Airflow doesn't support local execution, you can run your workflow that contains Airflow tasks locally, which is helpful for testing and debugging your tasks before moving to production.
 
 ```bash
@@ -73,7 +69,6 @@ AIRFLOW_CONN_FS_DEFAULT="/" pyflyte run workflows.py airflow_wf
 > [!WARNING]
 > Some Airflow operators may require certain permissions to execute. For instance, `DataprocCreateClusterOperator` requires the `dataproc.clusters.create` permission.
 > When running Airflow tasks locally, you may need to set the necessary permissions locally for the task to execute successfully.
-
 
 ### 3. Move your workflow to production
 

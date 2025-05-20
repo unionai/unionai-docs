@@ -14,12 +14,10 @@ When you initially onboard your organization to {{< key product_name >}} you mus
 
 For details, see [Configuring your data plane](../deployment/configuring-your-data-plane).
 
-
 ### How do I change the machine types in my cluster?
 
 If you have already been onboarded and wish to change your machine types, {{< key product_name >}} will need to re-configure your node groups (in AWS) or instance groups (in GCP).
 To initiate the process, submit the [Node Group Configuration Change form](https://wkf.ms/3pGNJqh).
-
 
 ## Data storage and handling
 
@@ -34,11 +32,9 @@ By default, both metadata and raw data are stored in {{< key product_name >}}'s 
 
 For more details see [Task input and output](./data-input-output/task-input-and-output).
 
-
 ### Can I change the raw data storage location?
 
 Yes. See [Task input and output > Changing the raw storage location](./data-input-output/task-input-and-output#changing-the-raw-data-storage-location).
-
 
 ### Can I use my own blob store for data storage that I handle myself?
 
@@ -48,7 +44,6 @@ The only caveat is that you must ensure that your task code has access to the st
 See [Enabling AWS S3](../deployment/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../deployment/enabling-gcp-resources/enabling-google-cloud-storage), or
 [Enabling Azure Blob Storage](../deployment/enabling-azure-resources/enabling-azure-blob-storage).
 
-
 ### Can I control access to my own blob store?
 
 Yes. As with all resources used by your task code, the storage must be accessible from within the cluster running that code on your data plane.
@@ -56,7 +51,6 @@ However, the data plane is your own, and you have full control over access.
 
 See [Enabling AWS S3](../deployment/enabling-aws-resources/enabling-aws-s3), [Enabling Google Cloud Storage](../deployment/enabling-gcp-resources/enabling-google-cloud-storage), or
 [Enabling Azure Blob Storage](../deployment/enabling-azure-resources/enabling-azure-blob-storage).
-
 
 ### Could someone maliciously delete or otherwise access my raw data?
 
@@ -67,7 +61,6 @@ In either case, you control access to it.
 The {{< key product_name >}} team does have access to your data plane for purposes of maintenance but does not have access to your raw data, secrets in secret managers, database, etc. unless you choose to permit such access.
 
 Having said that, since the data plane is yours, you are ultimately responsible for preventing access by malicious third parties.
-
 
 ### Can I use s3fs from within a task?
 
@@ -97,7 +90,6 @@ See also:
 <!-- TODO: add nbck when podtemplste section added in union  [Using PodTemplates](../deployment/flyte-configuration/configuring-podtemplates) -->
 * [Configure a Security Context for a Pod or Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
 
-
 ### Can I use BigQuery from within a task?
 
 If your {{< key product_name >}} data plane is running on GCP, access to BigQuery should be enabled by default and bound to the default Google Service Account (referred to in this documentation as **\<UserFlyteGSA>**).
@@ -107,7 +99,6 @@ If you want to bind it to a different GSA, follow the instructions in [Enabling 
 To actually access your BigQuery instance from your code, you will need to use a `BigQueryTask`.
 For details see [BigQuery connector](../integrations/connectors/bigquery-connector).
 
-
 ## `FlyteFile` and `FlyteDirectory`
 
 ### Where do `FlyteFile` and `FlyteDirectory` store their data?
@@ -116,18 +107,15 @@ For details see [BigQuery connector](../integrations/connectors/bigquery-connect
 They do this by wrapping a file or directory location path and, if necessary, uploading the referenced file to {{< key product_name >}}'s internal object store to persist it
 across task containers.
 
-
 ### Can I accidentally overwrite `FlyteFil`e data?
 
 In general, no.
 When a task returns a [`FlyteFile` or `FlyteDirectory`](./data-input-output/flyte-file-and-flyte-directory) whose source is local to the origin container, {{< key product_name >}} automatically uploads it to a location with a randomized path in the raw data store.
 This ensures that subsequent runs will not overwrite earlier data.
 
-
 ### Can I use my own blob store for `FlyteFile` and `FlyteDirectory` data storage?
 
 Yes. If you do not want to use the default raw output store that is provided with your data plane you can configure your own storage.
-
 
 ### How do the typed aliases of `FlyteFile` and `FlyteDirectory` work?
 
@@ -135,14 +123,12 @@ Yes. If you do not want to use the default raw output store that is provided wit
 These aliases can be used when handling a file or directory of the specified type.
 For details see [`FlyteFile` and `FlyteDirectory` > Typed aliases](./data-input-output/flyte-file-and-flyte-directory#typed-aliases).
 
-
 ## Building and running workflows
 
 ### What SDK should I download and use in workflow code?
 
 You should install the `{{< key kit >}}` package, which will install the Union and Flytekit SDKs and the `{{< key cli >}}` command-line tool.
 You will need to use the Flytekit SDK the majority of the time in the code to import core features and use the Union SDK for {{< key product_name >}}-specific features, such as artifacts.
-
 
 ### How do I authenticate `{{< key ctl >}}` and `{{< key cli >}}` CLIs to {{< key product_name >}}?
 
@@ -161,7 +147,6 @@ These methods are all configured in the `config.yaml` that your `{{< key ctl >}}
 
 Note that if you wish to run or register workflows in a remote SSH session, you will need to authenticate using the DeviceFlow or ClientSecret methods as PKCE attempts to open a local browser from the CLI.
 
-
 ### How do I specify resource requirements for a task?
 
 You can specify either `requests` or `limits` (or both) on the resources that will be used by a specific task when it runs in its container.
@@ -172,11 +157,9 @@ You can also override the settings in the `@{{< key kit_as >}}.task` in a for mo
 
 See [Customizing task resources](./core-concepts/tasks/task-hardware-environment/customizing-task-resources) for more information.
 
-
 ### What command-line tools should I use to register and run workflows?
 
 You should use the `{{< key cli >}}` CLI to register and run workflows and perform other operations on the command line. The `{{< key cli >}}` CLI is installed when you install the `{{< key kit >}}` package, which will also install the {{< key product_name >}} and Flytekit SDKs.
-
 
 ### How do I fix import errors when running workflows remotely?
 
@@ -205,7 +188,6 @@ Instead of building a custom Dockerfile that copies all the files and modules in
 
 Both of these methods work by adding all the files within your local project root to the container running your tasks. The project root is defined as the directory immediately above the highest-level directory containing an `__init__.py` file.
 
-
 ### What happens if an automated process launches a very large number of workflows?
 
 By default, {{< key product_name >}} has a built-in limiting mechanism that prevents more than 10,000 concurrent workflow executions per data plane cluster (equivalently, per organization).
@@ -215,7 +197,6 @@ Executions beyond the limit will be executed as soon as resources become availab
 While waiting, the workflow execution will be reported as in the UNKNOWN state.
 
 This limit prevents workflow requests from overwhelming the cluster and, in effect, performing a self-caused denial of service attack.
-
 
 ### How can I constrain the number of parallel executions for large, complex workflows?
 

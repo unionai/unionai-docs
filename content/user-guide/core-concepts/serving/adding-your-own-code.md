@@ -22,7 +22,6 @@ In a local directory, create the following files:
 └── utils.py
 ```
 
-
 ## App declaration
 
 The file `app.py` contains the app declaration:
@@ -101,7 +100,6 @@ def generate_data(columns: list[str], seed: int = 42):
     data = pd.DataFrame(rng.random(size=(20, len(columns))), columns=columns)
     return data
 ```
-
 
 ## Deploy the app
 

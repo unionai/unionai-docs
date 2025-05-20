@@ -69,7 +69,6 @@ Also, add relevant labels to your issue. For example, if you are filing a Flytek
 
 For feedback at any point in the contribution process, feel free to reach out to us on [Slack](https://flyte-org.slack.com/archives/C04NJPLRWUX).
 
-
 ## 🧱 Component Reference
 
 To understand how the below components interact with each other, refer to [Understand the lifecycle of a workflow](#workflow-lifecycle).

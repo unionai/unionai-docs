@@ -32,7 +32,6 @@ For an example query, see [Slurm connector example usage](./slurm-connector-exam
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Local testing
 
 To test the Slurm connector locally, create a class for the connector task that inherits from

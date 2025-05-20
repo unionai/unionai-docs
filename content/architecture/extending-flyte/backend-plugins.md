@@ -26,12 +26,10 @@ To recap, here are a few examples of why you would want to implement a backend p
 > For the rest of the cases, it is possible to extend flytekit to achieve these scenarios, but this is less desirable,
 > because of the associated overhead of first launching a container that launches these jobs downstream.
 
-
 ## Basics
 
 In this section we'll go through the components of a backend plugin using the Spark plugin as a reference.
 A Flyte backend extension consists of 3 parts: interface specification, `flytekit` plugin implementation, and `flytepropeller` plugin implementation.
-
 
 ### Interface specification
 
@@ -52,7 +50,6 @@ From here, on we refer to this as the **Plugin Specification**.
 > [!NOTE]
 > For Spark, we decided to use Protobuf to specify the plugin as can be seen [here](https://github.com/flyteorg/flyteidl/blob/master/protos/flyteidl/plugins/spark.proto).
 > Note it isn't necessary to have the Plugin structure specified in `flyteidl`, but we do it for simplicity, ease of maintenance alongside the core platform, and convenience leveraging existing tooling to generate code for protobuf.
-
 
 ### Flytekit plugin implementation
 

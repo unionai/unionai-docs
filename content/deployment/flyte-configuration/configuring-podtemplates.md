@@ -75,7 +75,6 @@ define a PodTemplate name and use that in the declaration of the task. Those two
 in the situation where a default PodTemplate is set and a PodTemplate name is present in the task definition, only the
 PodTemplate name will be used.
 
-
 ## Set the ``default-pod-template-name`` in FlytePropeller
 
 This [option](https://docs.flyte.org/en/latest/deployment/cluster_config/flytepropeller_config.html#default-pod-template-name-string)
@@ -152,7 +151,6 @@ It's also possible to use PodTemplate in tasks by specifying ``pod_template_name
 ```
 In this example we're specifying that a previously created Runtime PodTemplate resource named ``a_pod_template`` is going to be applied.
 The only requirement is that this PodTemplate exists at the moment this task is about to be executed.
-
 
 ## Flyte's K8s Plugin Configuration
 
@@ -341,7 +339,6 @@ The resultant Pod is as follows:
           # remaining container configuration omitted
 ```
 Notice how options follow the same merging rules, i.e. lists append and maps override.
-
 
 ### Example 3: Runtime and Compile-time PodTemplates and K8s Plugin Configuration
 

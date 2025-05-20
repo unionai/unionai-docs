@@ -42,7 +42,6 @@ You should see a new workspace created in the Workspaces view:
 
 ![Create Workspace](/_static/images/user-guide/core-concepts/workspaces/create-new-workspace-3.png)
 
-
 ## Running a workspace
 
 To run a workspace, click on the switch on the workspace item:
@@ -82,14 +81,12 @@ Note that you can change everything except the workspace name.
 
 ![Edit Workspace](/_static/images/user-guide/core-concepts/workspaces/edit-workspace-2.png)
 
-
 ## The workspace detail view
 
 Clicking on the workspace item on the list view will reveal the workspace detail view,
 which provides all the information about the workspace.
 
 ![Workspace Detail](/_static/images/user-guide/core-concepts/workspaces/workspace-detail.png)
-
 
 ## Archiving a workspace
 
@@ -102,7 +99,6 @@ on the top right of the workspaces list view. Unarchive a workspace by clicking
 on the **Unarchive** button:
 
 ![Unarchive Workspace](/_static/images/user-guide/core-concepts/workspaces/unarchive-workspace.png)
-
 
 ## Workspace CLI commands
 
@@ -190,7 +186,6 @@ Updated: workspace_definition {
 }
 ```
 
-
 ### Get existing workspaces
 
 To get existing workspaces, use the `union get workspace` command:
@@ -230,7 +225,6 @@ Starting workspace 'my-workspace'
 
 🚀 Workspace started: Open VSCode in Browser
 ```
-
 
 ## Customizing a workspace
 
@@ -279,7 +273,6 @@ secrets:
 ...
 ```
 
-
 ### Setting CPU, memory, and GPU resources
 
 You can also set the resources for your workspace:
@@ -319,7 +312,6 @@ value is `nvidia-tesla-v100`.
 
 {{< /markdown >}}
 {{< /variant >}}
-
 
 ### Specifying custom `on_startup` commands
 
@@ -429,7 +421,6 @@ print(torch.cuda.is_available())
 > [!NOTE]
 > See the [Setting CPU, Memory, and GPU Resources](#setting-cpu-memory-and-gpu-resources)
 > section for more details on how to configure specific GPU accelerators.
-
 
 ## Authenticating with GitHub
 

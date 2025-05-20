@@ -55,7 +55,6 @@ There are two main dependencies required for a complete auth flow in Flyte:
 > [!NOTE]
 > Checkout this [community-maintained guide](https://github.com/davidmirror-ops/flyte-the-hard-way/blob/main/docs/06-intro-to-ingress.md) for more information about setting up Flyte in production, including Ingress.
 
-
 ### Configuring your IdP for OIDC
 
 In this section, you can find canonical examples of how to set up OIDC on some of the supported IdPs; enabling users to authenticate in the
@@ -78,13 +77,11 @@ browser.
 4. *Optional* - Add logout redirect URIs: `http://localhost:30081/logout` for sandbox, `https://<your-Ingress-host>/callback` for other Flyte deployment methods.
 5. Take note of the Client ID and Client Secret.
 
-
 #### Keycloak
 
 1. Create a realm using the [admin console](https://wjw465150.gitbooks.io/keycloak-documentation/content/server_admin/topics/realms/create.html).
 2. [Create an OIDC client with client secret](https://wjw465150.gitbooks.io/keycloak-documentation/content/server_admin/topics/clients/client-oidc.html) and note them down.
 3. Add Login redirect URIs: `http://localhost:30081/callback` for sandbox or `https://<your-Ingress-host>/callback` for other Flyte deployment methods.
-
 
 #### Microsoft Entra ID
 
@@ -126,7 +123,6 @@ For further reference, check out the official [Entra ID Docs](https://docs.micro
 > **The OpenIDConnect authentication will not work otherwise**.
 > Please refer to [this GitHub Issue](https://github.com/coreos/go-oidc/issues/215) and [Entra ID Docs](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc#sample-response) for more information.
 
-
 ### Apply the OIDC configuration to the Flyte backend
 
 Select the Helm chart you used to install Flyte:
@@ -167,7 +163,6 @@ $ helm upgrade <release-name> flyteorg/flyte-binary -n <your-namespace> --values
 Where `<release-name>` is the name of your Helm release, typically `flyte-backend`. You can find it using `helm ls -n <your-namespace>`
 
 6. Verify that your Flyte deployment now requires successful login to your IdP to access the UI (`https://<your domain>/console`)
-
 
 #### flyte-core
 
@@ -308,7 +303,6 @@ Where `<release-name>` is the name of your Helm release, typically `flyte-backen
 It should now be possible to go to Flyte UI and be prompted for authentication with the default `PKCE` auth flow. Flytectl should automatically pickup the change and start prompting for authentication as well.
 
 The following sections guide you to configure an external auth server (optional for most authorization flows) and describe the client-side configuration for all the auth flows supported by Flyte.
-
 
 ## Configuring your IdP as an External Authorization Server
 
@@ -544,7 +538,6 @@ configmap:
 
 At this point, every interaction with Flyte components -be it in the UI or CLI- should require a successful login to your IdP, where your security policies are maintained and enforced.
 
-
 ## Configuring supported authorization flows
 
 ### PKCE
@@ -637,7 +630,6 @@ You can instruct Helm not to create and manage the secret for `flytepropeller`. 
 
 
 If your organization does any automated registration, then you'll need to authenticate using the [Client Credentials](#client-credentials) flow.
-
 
 ### Flytekit / pyflyte
 

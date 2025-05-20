@@ -22,7 +22,6 @@ In a local directory, create the following files:
 └── train_wf.py
 ```
 
-
 ## App configuration
 
 First, we declare the resources, runtime image, and the Scikit-learn model required
@@ -105,7 +104,6 @@ async def predict(x: float, y: float) -> float:
     return {"result": result}
 ```
 
-
 ## Training workflow
 
 The training workflow trains a random forest regression and saves it to a {{< key product_name >}}
@@ -150,7 +148,6 @@ def train_model() -> Annotated[union.FlyteFile, SklearnModel]:
     joblib.dump(rf, model_file)
     return model_file
 ```
-
 
 ## Run the example
 

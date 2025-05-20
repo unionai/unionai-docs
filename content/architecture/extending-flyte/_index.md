@@ -87,7 +87,6 @@ Writing your own Flytekit plugin is simple and is typically where you want to st
 | | A bug fix to the runtime needs a new library version of the plugin. |
 | | Not trivial to implement resource controls, like throttling, resource pooling, etc. |
 
-
 ## User Container vs. Pre-built Container Task Plugin
 
 A Flytekit-only task plugin can be a [User container](./user-container-task-plugins) or [Pre-built container](./prebuilt-container-task-plugins) task plugin.
@@ -99,7 +98,6 @@ A Flytekit-only task plugin can be a [User container](./user-container-task-plug
 | Run-time      | When Flyte runs the task, the container is launched, and the user-given instructions recreate a Python object representing the task. | When Flyte runs the task, the container is launched. The container should have an executor built into it that knows how to execute the task. |
 | Run-time | The task object that gets serialized at compile-time is recreated using the user's code at run time. | The task object that gets serialized at compile-time does not exist at run time. |
 | Run-time | At platform-run-time, the user-decorated function is executed. | At platform-run-time, there is no user function, and the executor is responsible for producing outputs, given the inputs to the task. |
-
 
 ## Backend Plugin
 
@@ -115,7 +113,6 @@ This enables complete control of the visualization and availability of the plugi
 | Flyteconsole plugins (capability coming soon!) can be added to customize visualization and progress tracking of the execution.| Development cycle can be much slower than flytekit-only plugins. |
 | Resource controls and backpressure management is available.| |
 | Implement once, use in any SDK or language!| |
-
 
 ## Flyte Connector Service
 

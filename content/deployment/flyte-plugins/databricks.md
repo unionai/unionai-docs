@@ -19,10 +19,10 @@ To set up your Databricks account, follow these steps:
 5. Create an [instance profile](https://docs.databricks.com/administration-guide/cloud-configurations/aws/instance-profiles.html) for the Spark cluster. This profile enables the Spark job to access your data in the S3 bucket.
 Please follow all four steps specified in the documentation.
 
-Upload the following entrypoint.py file to either 
-[DBFS](https://docs.databricks.com/archive/legacy/data-tab.html) 
-(the final path can be ``dbfs:///FileStore/tables/entrypoint.py``) or S3. 
-This file will be executed by the Spark driver node, overriding the default command in the 
+Upload the following entrypoint.py file to either
+[DBFS](https://docs.databricks.com/archive/legacy/data-tab.html)
+(the final path can be ``dbfs:///FileStore/tables/entrypoint.py``) or S3.
+This file will be executed by the Spark driver node, overriding the default command in the
 [dbx](https://docs.databricks.com/dev-tools/dbx.html) job.
 
 ```python
@@ -81,7 +81,6 @@ This file will be executed by the Spark driver node, overriding the default comm
 
 ## Specify plugin configuration
 
-
 ### flyte-binary
 
 Edit the relevant YAML file to specify the plugin.
@@ -105,7 +104,7 @@ Edit the relevant YAML file to specify the plugin.
                 entrypointFile: dbfs:///FileStore/tables/entrypoint.py
                 databricksInstance: <DATABRICKS_ACCOUNT>.cloud.databricks.com
 ```
-        
+
 Substitute ``<DATABRICKS_ACCOUNT>`` with the name of your Databricks account.
 
 ### flyte-core
@@ -134,7 +133,7 @@ Create a file named ``values-override.yaml`` and add the following config to it:
             databricks:
               entrypointFile: dbfs:///FileStore/tables/entrypoint.py
               databricksInstance: <DATABRICKS_ACCOUNT>.cloud.databricks.com
-```  
+```
 Substitute ``<DATABRICKS_ACCOUNT>`` with the name of your Databricks account.
 
 ## Add the Databricks access token
@@ -156,7 +155,7 @@ Create a secret as follows (or add to it if it already exists from other plugins
           stringData:
             FLYTE_DATABRICKS_API_TOKEN: <ACCESS_TOKEN>
           EOF
-```        
+```
 Reference the newly created secret in  ``.Values.configuration.inlineSecretRef`` in your YAML file as follows:
 
 ```yaml

@@ -48,7 +48,6 @@ To make sure that your multicluster deployment is able to scale and process  req
 > Use the recommended security strategy for the cloud provider you're running on. For example, IRSA for EKS environments or Workload Identity Federation for GCP.
 3.  Mapping between the `default` Service Account in each `project-domain` namespace and the assumed role in your cloud environment. By default, every Pod created for a Task execution, uses the `default` Service Account in their respective namespace. In your cluster, you'll have as many namespaces as `project` and `domain` combinations you may have.
 
-
 ### Data Plane Deployment
 
 This guide assumes that you have two Kubernetes clusters and that you can access them all with `kubectl`.
@@ -350,7 +349,6 @@ project-domain or a single specific workflow will be scheduled on the target lab
 cluster.
 
 ## Day 2 Operations
-
 
 ### Add another Kubernetes cluster
 

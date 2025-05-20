@@ -10,7 +10,6 @@ variants: +flyte +serverless +byoc +byok
 
 If you have not already done so, follow the [Getting started](../getting-started) section to sign in to {{< key product_name >}}, and set up your local environment.
 
-
 ## CLI commands for running your code
 
 The {{< key cli_name >}} CLI and {{<key ctl_name >}} CLI provide commands that allow you to deploy and run your code at different stages of the development cycle:
@@ -41,7 +40,6 @@ The following diagram provides a summarized view of the different registration p
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Running a script in local Python with `{{< key cli >}} run` {#running-a-script-in-local-python}
 
 During the development cycle you will want to run a specific workflow or task in your local Python environment to test it.
@@ -66,7 +64,6 @@ This command is useful for quickly testing a workflow locally to check for basic
 For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
 {{< /markdown >}}
 {{< /variant >}}
-
 
 ## Running a script on {{< key product_name >}} with `{{< key cli >}} run --remote`
 
@@ -113,7 +110,6 @@ This command is useful for quickly deploying and running a specific workflow on 
 For more details see [{{< key cli >}} run details](./details-of-pyflyte-run).
 {{< /markdown >}}
 {{< /variant >}}
-
 
 ## Running tasks through {{< key ctl >}}
 
@@ -223,7 +219,6 @@ The command will not run the workflow. You can run it from the Web interface.
 
 This command is useful for deploying your full set of workflows to {{< key product_name >}} for testing.
 
-
 ### Fast registration
 
 `{{< key cli >}} register` packages up your code through a mechanism called fast registration.
@@ -251,7 +246,6 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 > A common pattern for making your Python packages fully discoverable is to have a top-level `src` folder, adding that to your `PYTHONPATH`,
 > and making all your imports absolute.
 > This avoids having to “install” your Python project in the image at any point e.g. via `pip install -e`.
-
 
 ## Inspecting executions
 
@@ -323,7 +317,6 @@ Note that the presence of the `__init__.py` file in this directory is necessary 
 >
 > `{{< key cli >}} --pkgs <dir1> package --source ./src -f`
 
-
 ### Register the package with `{{< key ctl >}} register`
 
 Once the code is packaged you register it using the `{{< key ctl >}}` CLI:
@@ -361,7 +354,6 @@ See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index) for more det
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Using {{< key cli >}} register versus {{< key cli >}} package + {{< key ctl >}} register
 
 As a rule of thumb, `{{< key cli >}} register` works well when you are working on a single cluster and iterating quickly on your task/workflow code.
@@ -377,7 +369,6 @@ On the other hand, `{{< key cli >}} package` and `{{< key ctl >}} register` is a
 > [!NOTE] Programmatic Python API
 > You can also perform the equivalent of the three methods of registration using a [{{< key kit_remote >}} object](../development-cycle/union-remote/_index).
 
-
 ## Image management and registration method
 
 The `ImageSpec` construct available in `{{< key kit >}}` also has a mechanism to copy files into the image being built.
@@ -388,7 +379,6 @@ Its behavior depends on the type of registration used:
 * If fast register is not used (which is the default for `{{< key cli >}} package`, or if `{{< key cli >}} register --copy none` is specified), then it’s assumed that you do want source files copied into the built image.
 
 * If your `ImageSpec` constructor specifies a `source_root` and the `copy` argument is set to something other than `CopyFileDetection.NO_COPY`, then files will be copied regardless of fast registration status.
-
 
 ## Building your own images
 
@@ -438,7 +428,6 @@ Once you’ve built the image, you can push it to the specified registry. For ex
 $ docker login ghcr.io
 $ docker push TAG
 ```
-
 
 ## CI/CD with Flyte and GitHub Actions
 

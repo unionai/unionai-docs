@@ -16,7 +16,6 @@ This site has special blocks that can be used to generate code for Union.
 > If you need instructions on how to create the local environment and get the
 > `localhost:1313` server running, please refer to the [local development guide](DEVELOPER.md).
 
-
 ## How to specify a "shortcode"
 
 The shortcode is a string that is used to generate the HTML that is displayed.
@@ -58,7 +57,6 @@ The Union SDK provides the Python API for building Union workflows and apps.
 > * The `{{</* markdown */>}}` shortcode is designed to contain only Markdown (not other shortcodes).
 > * All other container shortcodes are designed to contain only other shortcodes.
 
-
 ## Variants
 
 The big difference of this site, compared to other documentation sites, is that we generate multiple "flavors" of the documentation that are slightly different from each other. We are calling these "variants."
@@ -81,7 +79,6 @@ Example:
 {{</* /variant */>}}
 ```
 
-
 ## Component Library
 
 ### `{{</* audio */>}}`
@@ -90,13 +87,11 @@ Generates an audio media player.
 
 <!-- TODO: document parameters -->
 
-
 ### `{{</* grid */>}}`
 
 Creates a fixed column grid for lining up content.
 
 <!-- TODO: document parameters -->
-
 
 ### `{{</* variant */>}}`
 
@@ -104,13 +99,11 @@ Filters content based on which flavor you're seeing.
 
 <!-- TODO: document parameters -->
 
-
 ### `{{</* link-card */>}}`
 
 A floating, clickable, navigable card.
 
 <!--  TODO: document parameters -->
-
 
 ### `{{</* markdown */>}}`
 
@@ -118,20 +111,17 @@ Generates a markdown block, to be used inside containers such as `{{</* dropdown
 
 <!-- TODO: document parameters -->
 
-
 ### `{{</* multiline */>}}`
 
 Generates a multiple line, single paragraph. Useful for making a multiline table cell.
 
 <!-- TODO: document parameters -->
 
-
 ### `{{</* tabs */>}}` and `{{</* tab */>}}`
 
 Generates a tab panel with content switching per tab.
 
 <!-- TODO: document parameters -->
-
 
 ### `{{</* key */>}}`
 
@@ -162,7 +152,6 @@ byoc = "Union BYOC"
 byok = "Union BYOK"
 ```
 
-
 #### List of available keys
 
 | Key               | Description                           | Example Usage (Flyte → Union)                                          |
@@ -187,7 +176,6 @@ byok = "Union BYOK"
 | logo              | Logo image filename                   | `{{</* key logo */>}}` → "flyte-logo.svg" or "union-logo.svg"              |
 | favicon           | Favicon image filename                | `{{</* key favicon */>}}` → "flyte-favicon.ico" or "union-favicon.ico"     |
 
-
 ### `{{</* download */>}}`
 
 Generates a download link.
@@ -203,7 +191,6 @@ Example:
 {{</* download "/_static/public/public-key.txt" "public-key.txt" */>}}
 ```
 
-
 ### `{{</* docs_home */>}}`
 
 Produces a link to the home page of the documentation for a specific variant.
@@ -213,7 +200,6 @@ Example:
 ```markdown
 [See this in Flyte]({{</* docs_home flyte>}}/wherever/you/want/to/go/in/flyte/docs)
 ```
-
 
 ### `{{</* py_class_docsum */>}}`, `{{</* py_class_ref */>}}`, and `{{</* py_func_ref */>}}`
 
@@ -229,7 +215,6 @@ Example:
 ```markdown
 Please see {{</* py_class_ref flyte.core.Image */>}} for more details.
 ```
-
 
 ### `{{</* icon name */>}}`
 

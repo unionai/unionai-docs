@@ -27,14 +27,12 @@ To illustrate the process, we will walk through an example.
     └── imagespec-simple-example.py
 ```
 
-
 ### requirements.txt
 
 ```shell
 union
 pandas
 ```
-
 
 ### imagespec-simple-example.py
 
@@ -60,7 +58,6 @@ def get_pandas_dataframe() -> typing.Tuple[pd.DataFrame, pd.Series]:
 def wf() -> typing.Tuple[pd.DataFrame, pd.Series]:
     return get_pandas_dataframe()
 ```
-
 
 ## Install and configure `{{< key cli >}}` and Docker
 
@@ -149,7 +146,6 @@ Assuming your image is publicly accessible, you can now run the workflow on {{< 
 > ... Back-off pulling image ...
 > ... Error: ImagePullBackOff
 > ```
-
 
 ## Multi-image workflows
 

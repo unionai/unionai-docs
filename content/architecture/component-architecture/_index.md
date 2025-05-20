@@ -62,19 +62,19 @@ The Data Plane is the engine that accepts DAGs, and fulfills workflow executions
 
 In order to support compute-intensive workflows at massive scale, the Data Plane needs to launch containers on a cluster of machines. The current implementation leverages [Kubernetes](https://kubernetes.io/) for cluster management.
 
-Unlike the user-facing Control Plane, the Data Plane does not expose a traditional REST/gRPC API. To launch an execution in the Data Plane, you create a “flyteworkflow” resource in Kubernetes. A “flyteworkflow” is a Kubernetes [Custom Resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) (CRD) created by our team. This custom resource represents the Flyte workflow DAG.
+Unlike the user-facing Control Plane, the Data Plane does not expose a traditional REST/gRPC API. To launch an execution in the Data Plane, you create a “`flyteworkflow`” resource in Kubernetes. A “`flyteworkflow`” is a Kubernetes [Custom Resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) (CRD) created by our team. This custom resource represents the Flyte workflow DAG.
 
-The core state machine that processes flyteworkflows is the worker known as **FlytePropeller**.
+The core state machine that processes `flyteworkflow`s is the worker known as **FlytePropeller**.
 
-FlytePropeller leverages the Kubernetes [operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/). It polls the Kubernetes API, looking for newly created flyteworkflow resources. FlytePropeller understands the workflow DAG, and launches the appropriate Kubernetes pods as needed to complete tasks. It periodically checks for completed tasks, launching downstream tasks until the workflow is complete.
+FlytePropeller leverages the Kubernetes [operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/). It polls the Kubernetes API, looking for newly created `flyteworkflow` resources. FlytePropeller understands the workflow DAG, and launches the appropriate Kubernetes pods as needed to complete tasks. It periodically checks for completed tasks, launching downstream tasks until the workflow is complete.
 
 #### Plugins
 
-Each task in a flyteworkflow DAG has a specified **type**. The logic for fulfilling a task is determined by its task type. In the basic case, FlytePropeller launches a single Kubernetes pod to fulfill a task. Complex task types require workloads to be distributed across hundreds of pods.
+Each task in a `flyteworkflow` DAG has a specified **type**. The logic for fulfilling a task is determined by its task type. In the basic case, FlytePropeller launches a single Kubernetes pod to fulfill a task. Complex task types require workloads to be distributed across hundreds of pods.
 
 The type-specific task logic is separated into isolated code modules known as **plugins**. Each task type has an associated plugin that is responsible for handling tasks of its type. For each task in a workflow, FlytePropeller activates the appropriate plugin based on the task type in order to fulfill the task.
 
-The Flyte team has pre-built plugins for Hive, Spark, AWS Batch, and [more](integrations). To support new use-cases, developers can create their own plugins and bundle them in their FlytePropeller deployment.
+The Flyte team has pre-built plugins for Hive, Spark, AWS Batch, and more. To support new use-cases, developers can create their own plugins and bundle them in their FlytePropeller deployment.
 
 ## Component Code Architecture
 

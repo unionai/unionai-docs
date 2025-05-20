@@ -72,7 +72,6 @@ There are two types of connectors: **async** and **sync**.
 > we currently only support Python connectors.
 > We may support other languages in the future.
 
-
 ### Async connector interface specification
 
 To create a new async connector, extend the `AsyncConnectorBase` and implement `create`, `get`, and `delete` methods. These methods must be idempotent.
@@ -83,7 +82,6 @@ To create a new async connector, extend the `AsyncConnectorBase` and implement `
 
 For an example implementation, see the [BigQuery connector code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-bigquery/flytekitplugins/bigquery/connector.py).
 
-
 ### Sync connector interface specification
 
 To create a new sync connector, extend the `SyncConnectorBase` class and implement a `do` method. This method must be idempotent.
@@ -91,7 +89,6 @@ To create a new sync connector, extend the `SyncConnectorBase` class and impleme
 - `do`: This method is used to execute the synchronous task, and the worker in {{< key product_name >}} will be blocked until the method returns.
 
 For an example implementation, see the [ChatGPT connector code](https://github.com/flyteorg/flytekit/blob/master/plugins/flytekit-openai/flytekitplugins/openai/chatgpt/connector.py).
-
 
 ### Testing your connector locally
 

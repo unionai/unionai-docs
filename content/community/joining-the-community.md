@@ -14,7 +14,6 @@ Please join us on:
 [![Twitter](https://img.shields.io/badge/Twitter-Social-blue?style=for-the-badge)](https://twitter.com/flyteorg)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Social-lightblue?style=for-the-badge)](https://www.linkedin.com/groups/13962256)
 
-
 ## Community sync
 
 1. **When**: First Tuesday of every month, 9:00 AM Pacific Time.
@@ -25,7 +24,6 @@ Please join us on:
 
 You're welcome to join and learn from other community members sharing their experiences with Flyte or any other technology from the AI ecosystem.
 
-
 ## Contributor's sync
 
 1. **When**: Every 2 weeks on Thursdays. Alternating schedule between 11:00 AM PT and 7:00 AM PT.
@@ -33,22 +31,18 @@ You're welcome to join and learn from other community members sharing their expe
 3. **Purpose**: Address questions from new contributors, discuss active initiatives, and RFCs.
 4. **Import the public calendar**: [here](https://lists.lfaidata.foundation/g/flyte-announce/ics/12031983/2145304139/feed.ics) to not miss any event.
 
-
 ## Newsletter
 
 [Join the Flyte mailing list](https://lists.lfaidata.foundation/g/flyte-announce/join) to receive the monthly newsletter.
-
 
 ## Slack guidelines
 
 Flyte strives to build and maintain an open, inclusive, productive, and self-governing open source community.
 In consequence, we expect all community members to respect the following guidelines:
 
-
 ### Abide by the [LF's Code of Conduct](https://lfprojects.org/policies/code-of-conduct/)
 
 As a Linux Foundation project, we must enforce the rules that govern professional and positive open source communities.
-
 
 ### Avoid using DMs and @mentions
 
@@ -56,7 +50,6 @@ Whenever possible, post your questions and responses in public channels so other
 Exceptions to this are when you need to share private or sensitive information.
 In such a case, the outcome should still be shared publicly.
 Limit the use of `@mentions` of other community members to be considerate of notification noise.
-
 
 ### Make use of threads
 
@@ -70,13 +63,11 @@ Threads help us keep conversations contained and organized, reducing the time it
 * Avoid using the “Also send to channel” feature unless it's really necessary.
 * If your question contains multiple questions, make sure to break them into multiple messages, so each could be answered in a separate thread.
 
-
 ### Do not post the same question across multiple channels
 
 If you consider that a question needs to be shared on other channels, ask it once and then indicate explicitly that you're cross-posting.
 
 If you're having a tough time getting the support you need (or aren't sure where to go!), please DM `@David Espejo` or `@Samhita Alla` for support.
-
 
 ### Do not solicit members of our Slack
 

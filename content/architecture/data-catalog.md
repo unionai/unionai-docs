@@ -9,7 +9,6 @@ variants: +flyte -serverless -byoc -byok
 DataCatalog is a service to index parameterized, strongly-typed data artifacts across revisions.
 It allows clients to query artifacts based on meta information and tags.
 
-
 ## How Flyte memoizes task executions on data catalog
 
 Flyte memoizes task executions by creating artifacts in DataCatalog and associating meta information regarding the execution with the artifact.

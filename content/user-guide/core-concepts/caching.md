@@ -93,7 +93,6 @@ Additionally, if the same node is invoked again with the same inputs (excluding 
 the cached result is returned immediately instead of re-executing the process.
 This applies even if the cached node is invoked externally through the UI or CLI.
 
-
 ## The `Cache` object
 
 The [Cache]() object takes the following parameters:
@@ -271,7 +270,6 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 ```
 {{< /markdown >}}
 {{< /variant >}}
-
 
 ## How caching works
 

@@ -75,7 +75,6 @@ Flytekit functionality. For comparison, these plugins can be thought of like
 | [Weights and Biases](./flytekit-plugins/wandb-plugin/_index) | `wandb`: Machine learning platform to build better models faster. |
 | [WhyLogs](./flytekit-plugins/whylogs-plugin/_index) | `whylogs`: the open standard for data logging. |
 
-
 ### Using Flytekit plugins
 
 Data is automatically marshalled and unmarshalled in and out of the plugin. Users should mostly implement the `flytekit.core.base-task.PythonTask` API defined in Flytekit.
@@ -83,7 +82,6 @@ Data is automatically marshalled and unmarshalled in and out of the plugin. User
 Flytekit plugins are lazily loaded and can be released independently like libraries. The naming convention is `flytekitplugins-*`, where `*` indicates the package to be integrated into Flytekit. For example, `flytekitplugins-papermill` enables users to author Flytekit tasks using [Papermill](https://papermill.readthedocs.io/en/latest/).
 
 You can find the plugins maintained by the core Flyte team [here](https://github.com/flyteorg/flytekit/tree/master/plugins).
-
 
 ## Native backend plugins
 
@@ -100,7 +98,6 @@ Native backend plugins can be executed without any external service dependencies
 
 <!-- TODO: Include this above? | [Kubernetes pods](./native-backend-plugins/k8s-pod-plugin/_index) | Execute Kubernetes pods for arbitrary workloads. | -->
 
-
 ## External service backend plugins
 
 As the term suggests, these plugins rely on external services to handle the workload defined in the Flyte task that uses the plugin.
@@ -111,7 +108,6 @@ As the term suggests, these plugins rely on external services to handle the work
 | [AWS Batch](./external-service-backend-plugins/aws-batch-plugin/_index) | Running tasks and workflows on AWS batch service |
 | [Flyte Interactive](./external-service-backend-plugins/flyteinteractive-plugin/_index) | Execute tasks using Flyte Interactive to debug. |
 | [Hive](./external-service-backend-plugins/hive-plugin/_index) | Run Hive jobs in your workflows. |
-
 
 ## Enabling backend plugins
 
@@ -134,7 +130,6 @@ tasks:
 **Finding the `ID` of the backend plugin**
 
 To find the `ID` of the backend plugin, look at the source code of the plugin. For examples, in the case of Spark, the value of `ID` is used [here](https://github.com/flyteorg/flyteplugins/blob/v0.5.25/go/tasks/plugins/k8s/spark/spark.go#L424), defined as [spark](https://github.com/flyteorg/flyteplugins/blob/v0.5.25/go/tasks/plugins/k8s/spark/spark.go#L41).
-
 
 ## Flyte operators
 

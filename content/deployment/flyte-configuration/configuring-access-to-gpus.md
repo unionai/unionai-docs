@@ -1,14 +1,14 @@
 ---
 title: Access to GPUs
-weight: 4 
+weight: 4
 variants: +flyte -serverless -byoc -byok
 ---
 
 # Configuring Access to GPUs
 
-Along with compute resources like CPU and memory, you may want to configure and access GPU resources. 
+Along with compute resources like CPU and memory, you may want to configure and access GPU resources.
 
-This section describes the different ways Flyte provides to request accelerator resources directly from the task decorator. 
+This section describes the different ways Flyte provides to request accelerator resources directly from the task decorator.
 
 ## Requesting a GPU with no device preference
 The goal in this example is to run the task on a single available GPU :
@@ -61,7 +61,7 @@ configuration:
   inline:
     plugins:
       k8s:
-        gpu-resource-name: <YOUR_GPU_RESOURCE_NAME> 
+        gpu-resource-name: <YOUR_GPU_RESOURCE_NAME>
 ```
 
 If your infrastructure requires additional tolerations for the scheduling of GPU resources to succeed, adjust the following section in the Helm values file:
@@ -73,11 +73,11 @@ configmap:
     plugins:
       k8s:
         resource-tolerations:
-        - nvidia.com/gpu: 
+        - nvidia.com/gpu:
           - key: "mykey"
             operator: "Equal"
             value: "myvalue"
-            effect: "NoSchedule"  
+            effect: "NoSchedule"
 ```
 **flyte-binary**
 ```yaml
@@ -86,11 +86,11 @@ configuration:
     plugins:
       k8s:
         resource-tolerations:
-        - nvidia.com/gpu: 
+        - nvidia.com/gpu:
           - key: "mykey"
             operator: "Equal"
             value: "myvalue"
-            effect: "NoSchedule" 
+            effect: "NoSchedule"
 ```
 
 >For the above configuration, your worker nodes should have a  `mykey=myvalue:NoSchedule` configured [taint](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/).
@@ -115,11 +115,10 @@ image = ImageSpec(
 @task(
     requests=Resources(gpu="1"),
     accelerator=V100,  #NVIDIA Tesla V100
-) 
+)
 def gpu_available() -> bool:
    return torch.cuda.is_available()
 ```
-
 
 ### How it works
 
@@ -171,9 +170,9 @@ configuration:
   inline:
     plugins:
       k8s:
-       gpu-device-node-label: "cloud.google.com/gke-accelerator" #change to match your node's config 
+       gpu-device-node-label: "cloud.google.com/gke-accelerator" #change to match your node's config
 ```
- While the `key` is arbitrary, the value (`nvidia-tesla-v100`) is not. `flytekit` has a set of [predefined](../../user-guide/core-concepts/tasks/task-hardware-environment/accelerators) constants and your node label has to use one of those values. 
+ While the `key` is arbitrary, the value (`nvidia-tesla-v100`) is not. `flytekit` has a set of [predefined](../../user-guide/core-concepts/tasks/task-hardware-environment/accelerators) constants and your node label has to use one of those values.
 
 ## Requesting a GPU partition
 
@@ -196,7 +195,7 @@ image = ImageSpec(
 @task(
     requests=Resources( gpu="1"),
     accelerator=A100.partition_2g_10gb,  # 2 compute instances with 10GB memory slice
-) 
+)
 def gpu_available() -> bool:
    return torch.cuda.is_available()
 ```
@@ -260,7 +259,7 @@ configuration:
   inline:
     plugins:
       k8s:
-       gpu-partition-size-node-label: "nvidia.com/gpu.partition-size" #change to match your node's config 
+       gpu-partition-size-node-label: "nvidia.com/gpu.partition-size" #change to match your node's config
 ```
 The ``2g.10gb`` value comes from the [NVIDIA A100 supported instance profiles](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#concepts) and it's controlled from the Task decorator (``accelerator=A100.partition_2g_10gb`` in the above example). Depending on the profile requested in the Task, Flyte will inject the corresponding value for the node selector.
 
@@ -287,7 +286,7 @@ image = ImageSpec(
 
 @task(
     requests=Resources( gpu="1"),
-    accelerator=A100, 
+    accelerator=A100,
 )
 def gpu_available() -> bool:
    return torch.cuda.is_available()
@@ -327,7 +326,7 @@ image = ImageSpec(
  )
 
 @task(requests=Resources( gpu="1"),
-              accelerator=A100.unpartitioned, 
+              accelerator=A100.unpartitioned,
               ) # request the entire A100 device
 def gpu_available() -> bool:
    return torch.cuda.is_available()

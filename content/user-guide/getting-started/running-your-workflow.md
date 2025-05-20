@@ -39,7 +39,6 @@ $ source .venv/bin/activate
 >
 > In our examples we assume that you are doing the latter.
 
-
 ## Run the code locally
 
 Because tasks and workflows are defined as regular Python functions, they can be executed in your local Python environment.

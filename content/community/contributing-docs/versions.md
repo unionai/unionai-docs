@@ -22,14 +22,12 @@ while the URL for the `v1.0` version of the same page is:
 
 `https://www.union.ai/docs/v1.0/flyte/community/contributing-docs/platform-overview`
 
-
 ### Versions are branches
 
 The versioning system is based on long-lived Git branches in the `unionai/docs` GitHub repository:
 
 - The `main` branch contains the latest version of the documentation. Currently, `v2.0`.
 - Other versions of the docs are contained in branches named `vX.Y`, where `X` and `Y` are the major and minor version numbers, respectively. Currently, there is one other version, `v1.0`.
-
 
 ## How to create an archive version
 
@@ -41,8 +39,8 @@ such as preserving the content and structure of the site at a specific point in 
 ### How to create an archive version
 
 1. Create a new branch from `main` named `v<major>.<minor>`, e.g. `v1.15`.
-2. Add the version to the `VERSION` field in [`makefile.inc`](makefile.inc), e.g. `VERSION := v1.15`.
-3. Add the version to the `versions` field in the [`hugo.ver.toml`](hugo.ver.toml) file, e.g. `versions = [ "v1.15" ]`.
+2. Add the version to the `VERSION` field in the `makefile.inc` file, e.g. `VERSION := v1.15`.
+3. Add the version to the `versions` field in the `hugo.ver.toml` file, e.g. `versions = [ "v1.15" ]`.
 
 > [!NOTE]
 > **Important:** You must update the `versions` field in **ALL** published and archived versions of the site.

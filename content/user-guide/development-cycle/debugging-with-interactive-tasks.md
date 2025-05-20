@@ -505,7 +505,6 @@ def wf(name: str = "world") -> str:
 {{< /markdown >}}
 {{< /variant >}}
 
-
 ## Debugging execution issues
 
 The inspection of task and workflow execution provides log links to debug things further.

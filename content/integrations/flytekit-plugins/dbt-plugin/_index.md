@@ -42,7 +42,6 @@ adapters, `dbt-redshift`, `dbt-snowflake`, or `dbt-bigquery`. See
 [the official installation page](https://docs.getdbt.com/docs/get-started/pip-install)
 for details.
 
-
 ## Running the Example
 
 We use a Postgres database installed on the cluster and an example project from

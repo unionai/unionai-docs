@@ -138,7 +138,6 @@ def pandas_to_csv_wf() -> Annotated[StructuredDataset, CSV]:
     return pandas_to_csv(df=pandas_df)
 ```
 
-
 ## Storage driver and location
 
 By default, the data will be written to the same place that all other pointer-types (FlyteFile, FlyteDirectory, etc.) are written to.
@@ -151,7 +150,6 @@ That is to say, in the simple default case, {{< key kit_name >}} will,
 - Use these two settings to select an encoder and invoke it.
 
 So what's an encoder? To understand that, let's look into how the structured dataset plugin works.
-
 
 ## Inner workings of a structured dataset plugin
 

@@ -48,7 +48,6 @@ def is_even_wf(point_a: list[int]) -> list[bool]:
 ```
 <!-- TODO: emphasize-lines: 2,3,4,5,6,7,8,9,10,11,13,18,24 -->
 
-
 ## Multiple instances of the same task
 
 In this example, the `actor.task`-decorated task is invoked multiple times in one workflow, and will use the same `ActorEnvironment` on each invocation:

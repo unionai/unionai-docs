@@ -8,7 +8,6 @@ variants: +flyte -serverless -byoc -byok
 
 [Flyte](https://flyte.org) is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
 
-
 ## Flyte
 
 Flyte provides the building blocks need for an end-to-end AI platform:
@@ -21,14 +20,12 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 * Task parallelism with *map tasks*
 * Dynamic workflows created at runtime for process flexibility
 
-
 ## Trying out Flyte
 
 You can try out Flyte in a couple ways:
 
 * To set up a local cluster on your own machine, go to [Getting started](../user-guide/getting-started).
 * To try a turn-key cloud service that includes all of Flyte plus additional features, go to [Union.ai Serverless Getting started]({{< docs_home serverless>}}/user-guide/getting-started).
-
 
 ## Flyte in production
 
