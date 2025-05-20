@@ -146,6 +146,7 @@ You will need to enable the following service APIs.
 |------|----------|
 | Artifact Registry API | `artifactregistry.googleapis.com` |
 | Cloud Autoscaling API | `autoscaling.googleapis.com` |
+ | Cloud Billing API | `cloudbilling.googleapis.com` |
 | Cloud Key Management Service (KMS) API | `cloudkms.googleapis.com` |
 | Cloud Resource Manager API | `cloudresourcemanager.googleapis.com` |
 | Compute Engine API | `compute.googleapis.com` |
@@ -173,6 +174,7 @@ Perform the following `gcloud` commands:
 ```shell
 $ gcloud services enable artifactregistry.googleapis.com
 $ gcloud services enable autoscaling.googleapis.com
+$ gcloud services enable cloudbilling.googleapis.com
 $ gcloud services enable cloudkms.googleapis.com
 $ gcloud services enable cloudresourcemanager.googleapis.com
 $ gcloud services enable compute.googleapis.com
