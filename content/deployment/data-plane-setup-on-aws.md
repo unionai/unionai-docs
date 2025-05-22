@@ -1,6 +1,6 @@
 ---
 title: Data plane setup on AWS
-weight: 3
+weight: 5
 variants: -flyte -serverless +byoc +byok
 ---
 

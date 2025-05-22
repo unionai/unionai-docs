@@ -1,6 +1,6 @@
 ---
 title: Configuring your data plane
-weight: 6
+weight: 3
 variants: -flyte -serverless +byoc +byok
 ---
 

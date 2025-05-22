@@ -1,7 +1,7 @@
 ---
 title: Flyte deployment
 variants: +flyte -serverless -byoc -byok
-weight: 1
+weight: 13
 sidebar_expanded: true
 ---
 

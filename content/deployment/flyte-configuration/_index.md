@@ -1,7 +1,7 @@
 ---
 title: Platform configuration
 variants: +flyte -serverless -byoc -byok
-weight: 2
+weight: 14
 sidebar_expanded: true
 ---
 

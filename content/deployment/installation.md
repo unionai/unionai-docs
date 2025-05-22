@@ -1,6 +1,6 @@
 ---
 title: Installing Union.ai
-weight: 1
+weight: 2
 variants: -flyte -serverless -byoc +byok
 ---
 

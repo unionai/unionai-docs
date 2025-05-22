@@ -15,7 +15,7 @@ Resources are specified in the `@{{< key kit_as >}}.task` decorator. Here is an 
 from flytekit.extras.accelerators import A100
 
 @{{< key kit_as >}}.task(
-    requests=Resources(mem="120Gi", cpu="44", gpu="8", ephemeral_storage="100Gi"),
+    requests=Resources(mem="120Gi", cpu="44", ephemeral_storage="100Gi"),
     limits=Resources(mem="200Gi", cpu="100", gpu="12", ephemeral_storage="200Gi"),
     accelerator=GPUAccelerator("nvidia-tesla-a100")
 )
@@ -91,7 +91,7 @@ This will open a dialog:
 
 ![](/_static/images/user-guide/core-concepts/tasks/task-hardware-environment/customizing-task-resources/execution-defaults-dialog.png)
 
-> [!NOTE] Note on ephemeral storage
+> [!NOTE]
 > An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.
 > This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on
 > ephemeral storage, we recommend being explicit with the ephemeral storage you request to avoid pod eviction.
