@@ -1,7 +1,7 @@
 ---
 title: Great Expectations
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Great Expectations
   title_expanded: Flytekit Great Expectations Plugin

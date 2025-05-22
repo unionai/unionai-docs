@@ -1,7 +1,7 @@
 ---
 title: SQLAlchemy
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: SQLAlchemy
   title_expanded: Flytekit SQLAlchemy Plugin

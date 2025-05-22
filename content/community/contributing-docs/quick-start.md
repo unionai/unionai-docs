@@ -1,7 +1,7 @@
 ---
 title: Quick start
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Quick start

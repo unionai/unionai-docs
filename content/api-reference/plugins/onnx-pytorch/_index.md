@@ -1,7 +1,7 @@
 ---
 title: ONNX PyTorch
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: ONNX PyTorch
   title_expanded: Flytekit ONNX PyTorch Plugin

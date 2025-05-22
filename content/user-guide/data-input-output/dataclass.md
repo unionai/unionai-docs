@@ -1,7 +1,7 @@
 ---
 title: Dataclass
 weight: 6
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 <!-- TODO: check for variant accuracy, remove mention of flytesnacks figure out "UnionTypes" -->
@@ -148,7 +148,7 @@ def dataclass_wf(x: int, y: int) -> (Datum, FlyteTypes):
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok serverless >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
 ```python
@@ -221,7 +221,7 @@ $ pyflyte run \
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok serverless >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
 Here is another example of triggering a task that accepts a dataclass as an input with `{{< key cli >}} run`, you can provide a JSON file as an input:

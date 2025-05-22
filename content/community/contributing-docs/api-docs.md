@@ -1,7 +1,7 @@
 ---
 title: API docs
 weight: 8
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # API docs

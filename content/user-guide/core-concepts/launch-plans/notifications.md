@@ -1,7 +1,7 @@
 ---
 title: Notifications
 weight: 3
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Notifications
@@ -37,7 +37,7 @@ from flytekit import (
 @{{< key kit_as >}}.task
 def add_numbers(a: int, b: int, c: int) -> int:
     return a + b + c
-    
+
 @{{< key kit_as >}}.task
 def generate_message(s: int, kickoff_time: datetime) -> str:
     return f"sum: {s} at {kickoff_time}"

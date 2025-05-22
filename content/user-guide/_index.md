@@ -1,7 +1,7 @@
 ---
 title: User guide
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
 site_root: true
 sidebar_expanded: true
@@ -40,11 +40,11 @@ sidebar_expanded: true
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byok >}}
+{{< variant selfmanaged >}}
 {{< markdown >}}
 
-> [!NOTE] {{< key product_name >}} BYOK
-> Welcome to the offical documentation for [**{{< key product_name >}} BYOK**](./about-union#union-byok).
+> [!NOTE] {{< key product_name >}} Self-managed
+> Welcome to the official documentation for [**{{< key product_name >}} Self-managed**](./about-union#union-selfmanaged).
 >
 > You can switch to another product version with the selector above.
 
@@ -61,7 +61,7 @@ Flyte empowers AI development teams to rapidly ship high-quality code to product
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown>}}
 
 The {{< key product_name >}} platform empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
@@ -82,7 +82,7 @@ Flyte is the leading open-source Kubernetes-native workflow orchestrator.
 {{< /link-card >}}
 
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 
 {{< link-card target="about-union" icon="lightbulb" title="About Union.ai" >}}
 {{< key product_name >}} builds on the leading open-source workflow orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI applications.
@@ -110,7 +110,7 @@ Manage the input and output of data in your {{< key product_name >}} workflow.
 Learn about {{< key product_name >}}-specific programming constructs.
 {{< /link-card >}}
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 
 {{< link-card target="administration" icon="person-add" title="Administration" >}}
 {{< key product_full_name >}} administrators can manage users, projects, and resources.

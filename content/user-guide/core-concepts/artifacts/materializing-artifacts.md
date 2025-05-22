@@ -1,7 +1,7 @@
 ---
 title: Materializing artifacts
 weight: 2
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Materializing artifacts
@@ -11,7 +11,7 @@ You can materialize an artifact by executing the task or workflow that emits the
 In the example below, to materialize the `BasicArtifact` artifact, the `t1` task must be executed. The `wf` workflow runs the `t1` task three times with different values for the `key1` partition each time.
 Note that each time `t1` is executed, it emits a new version of the `BasicArtifact` artifact.
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 > [!NOTE]
 > To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.

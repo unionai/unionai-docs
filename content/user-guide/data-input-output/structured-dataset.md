@@ -1,7 +1,7 @@
 ---
 title: StructuredDataset
 weight: 11
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # StructuredDataset

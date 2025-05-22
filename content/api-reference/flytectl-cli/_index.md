@@ -1,7 +1,7 @@
 ---
 title: Flytectl CLI
 weight: 4
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 sidebar_expanded: true
 ---
 
@@ -17,7 +17,7 @@ It also includes much of the functionality of the [`{{< key cli >}}` CLI](../uni
 
 ## Installation
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< tabs >}}
 {{< tab "macOS" >}}
 {{< markdown >}}
@@ -169,7 +169,7 @@ To download the binary manually, see the [`flytectl` releases page](https://gith
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
@@ -198,7 +198,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag
@@ -209,7 +209,7 @@ By default, the `{{< key ctl >}}` CLI will use the configuration file at `~/.{{<
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag

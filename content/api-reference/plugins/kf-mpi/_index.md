@@ -1,7 +1,7 @@
 ---
 title: Kubeflow MPI
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Kubeflow MPI
   title_expanded: Flytekit Kubeflow MPI Plugin

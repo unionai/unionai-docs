@@ -1,7 +1,7 @@
 ---
 title: Bigquery
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Bigquery
   title_expanded: Flytekit BigQuery Plugin

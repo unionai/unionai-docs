@@ -1,6 +1,6 @@
 ---
 title: flytectl config docs
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl config docs

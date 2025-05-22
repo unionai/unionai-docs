@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Pod
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Kubernetes Pod
   title_expanded: Flytekit Kubernetes Pod Plugin

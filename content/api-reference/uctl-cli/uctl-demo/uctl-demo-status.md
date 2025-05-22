@@ -1,6 +1,6 @@
 ---
 title: uctl demo status
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl demo status

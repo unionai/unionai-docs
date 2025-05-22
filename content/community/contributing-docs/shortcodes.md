@@ -1,7 +1,7 @@
 ---
 title: Shortcodes
 weight: 5
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Shortcodes
@@ -138,7 +138,7 @@ In the Flyte variant of the site this will render as:
 
 > The Flyte platform is awesome.
 
-While, in the BYOC, BYOK and Serverless variants of the site it will render as:
+While, in the BYOC, Self-managed and Serverless variants of the site it will render as:
 
 > The Union.ai platform is awesome.
 
@@ -149,7 +149,7 @@ You can add keywords and specify their value, per variant, in `hugo.toml`:
 flyte = "Flyte"
 serverless = "Union Serverless"
 byoc = "Union BYOC"
-byok = "Union BYOK"
+selfmanaged = "Union Self-managed"
 ```
 
 #### List of available keys

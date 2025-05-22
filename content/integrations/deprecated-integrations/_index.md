@@ -1,7 +1,7 @@
 ---
 title: Deprecated integrations
 weight: 6
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 sidebar_expanded: true
 ---
 

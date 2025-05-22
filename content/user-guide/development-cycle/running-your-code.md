@@ -1,7 +1,7 @@
 ---
 title: Running your code
 weight: 8
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Running your code
@@ -52,7 +52,7 @@ $ {{< key cli >}} run workflows/example.py wf --name 'Albert'
 Here you are invoking `{{< key cli >}} run` and passing the name of the Python file and the name of the workflow within that file that you want to run.
 In addition, you are passing the named parameter `name` and its value.
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 This command is useful for quickly testing a workflow locally to check for basic errors.
 For more details see [{{< key cli >}} run details](./details-of-union-run).
@@ -98,7 +98,7 @@ This command is useful for quickly deploying and running a specific workflow on 
 For more details see [{{< key cli >}} run details](./details-of-union-run).
 
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 This command is useful for quickly deploying and running a specific workflow on {{< key product_name >}}.
 For more details see [{{< key cli >}} run details](./details-of-union-run).
@@ -167,7 +167,7 @@ More details can be found [here](../../api-reference/flytectl-cli/flytectl-creat
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 This is multi-step process where we create an execution spec file, update the spec file and then create the execution.
@@ -257,7 +257,7 @@ You can do so by specifying these files in a .flyteignore file in the root of yo
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 {{< key ctl_name >}} supports inspecting execution by retrieving its details. For a deeper dive, refer to the
@@ -346,7 +346,7 @@ See [{{< key ctl_name >}} CLI](../../api-reference/flytectl-cli/_index) for more
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 See [{{< key ctl_name >}} CLI](../../api-reference/uctl-cli/_index) for more details.
@@ -382,7 +382,7 @@ Its behavior depends on the type of registration used:
 
 ## Building your own images
 
-{{< variant byoc byok serverless >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
 While we recommend that you use `ImageSpec` and the `union` cloud image builder, you can, if you wish build and deploy your own images.

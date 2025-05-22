@@ -1,7 +1,7 @@
 ---
 title: Mocking tasks
 weight: 1
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 ---
 
 # Mocking tasks

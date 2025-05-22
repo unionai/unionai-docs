@@ -1,7 +1,7 @@
 ---
 title: First project
 weight: 3
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # First project
@@ -10,7 +10,7 @@ In this section we will set up a new project.
 This involves creating a local project directory holding your project code
 and a corresponding {{< key product_name >}} project to which you will deploy that code using the `{{< key cli >}}` CLI.
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 ## Create a new {{< key product_name >}} project

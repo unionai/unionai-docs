@@ -1,6 +1,6 @@
 ---
 title: uctl append identityassignments
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl append identityassignments

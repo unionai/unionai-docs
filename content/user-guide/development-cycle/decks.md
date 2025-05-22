@@ -1,7 +1,7 @@
 ---
 title: Decks
 weight: 19
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Decks
@@ -54,7 +54,7 @@ custom_image = {{< key kit_as >}}.ImageSpec(
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok serverless >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
 ```python

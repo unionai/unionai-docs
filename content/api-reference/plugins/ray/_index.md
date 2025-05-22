@@ -1,7 +1,7 @@
 ---
 title: Ray
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Ray
   title_expanded: Flytekit Ray Plugin

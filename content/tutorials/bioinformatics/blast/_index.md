@@ -1,7 +1,7 @@
 ---
 title: Nucleotide Sequence Querying with BLASTX
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 sidebar_expanded: false
 ---
 

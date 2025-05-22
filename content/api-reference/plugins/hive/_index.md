@@ -1,7 +1,7 @@
 ---
 title: Hive
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Hive
   title_expanded: Flytekit Hive Plugin

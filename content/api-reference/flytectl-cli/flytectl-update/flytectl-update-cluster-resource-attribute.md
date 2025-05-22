@@ -1,6 +1,6 @@
 ---
 title: flytectl update cluster-resource-attribute
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl update cluster-resource-attribute

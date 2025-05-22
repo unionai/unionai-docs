@@ -1,7 +1,7 @@
 ---
 title: Setting up a production project
 weight: 5
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Setting up a production project
@@ -25,7 +25,7 @@ Promotion is done simply by [re-registering the workflow to the new project-doma
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 * **Organization**: Your {{< key product_name >}} instance, accessible at a specific URL like `{{< key product >}}.my-company.com`.
@@ -72,7 +72,7 @@ $ flytectl create project \
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 You can create a new project in the {{< key product_name >}} UI by clicking on the project breadcrumb at the top left and selecting **All projects**:
