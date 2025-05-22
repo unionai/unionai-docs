@@ -2,7 +2,7 @@
 title: Enabling Azure resources
 weight: 11
 variants: -flyte -serverless +byoc +byok
-sidebar_expanded: false
+sidebar_expanded: true
 ---
 
 # Enabling Azure resources
