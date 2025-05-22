@@ -60,8 +60,8 @@ flowchart TD
     n4 --> n5["Run Flyte"] & n8["Run {{< key product_name >}}"]
     n5 -- small scale --> n6["flyte-binary<br>Helm chart"]
     n5 -- large scale or multi-cluster --> n7["flyte-core<br>Helm chart"]
-    n8 -- "You manage your data plane. {{< key product_name >}} manages the control plane" --> n9["Bring Your Own K8s<br>(Self-managed)"]
-    n8 -- {{< key product_name >}} manages control and data planes --> n10["Bring Your Own Cloud<br>(BYOC)"]
+    n8 -- "You manage your data plane. {{< key product_name >}} manages the control plane" --> n9["Self-managed"]
+    n8 -- {{< key product_name >}} manages control and data planes --> n10["BYOC"]
 
     n1@{ shape: diam}
     n4@{ shape: rounded}

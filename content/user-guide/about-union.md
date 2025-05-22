@@ -76,7 +76,7 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 
 ## {{< key product_name >}} Self-managed
 
-[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) lets you keep your data and workflow code on your infrastructure and under your own management.
 
 {{< key product_name >}} Self-managed provides all the features of BYOC, with the only difference being that you manage your own data plane.
 
