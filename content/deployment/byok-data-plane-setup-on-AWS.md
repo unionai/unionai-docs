@@ -6,7 +6,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Data plane setup on AWS
 
-{{< key product_name >}}’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.  The Union architecture is described on the [Architecture](../../architecture) page.
+{{< key product_name >}}’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.  The Union architecture is described on the [Architecture](../architecture) page.
 
 ## Assumptions
 * You have a {{< key product_name >}} organization and you know the Control Plane URL for your Organization.
