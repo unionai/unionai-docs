@@ -1,6 +1,6 @@
 ---
 title: flytectl append identityassignments
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl append identityassignments

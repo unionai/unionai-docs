@@ -1,7 +1,7 @@
 ---
 title: FSSpec
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: FSSpec
   title_expanded: "fsspec data plugin for Flytekit \u2014 Experimental"

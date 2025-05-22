@@ -1,7 +1,7 @@
 ---
 title: Chaining entities
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Chaining Entities

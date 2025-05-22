@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.async_fsspec.s3fs.constants
 version: 0.0.0+develop
-variants: +flyte +byoc +byok +serverless
+variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 

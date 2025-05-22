@@ -1,7 +1,7 @@
 ---
 title: Failure node
 weight: 3
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Failure node

@@ -1,7 +1,7 @@
 ---
 title: AWS Athena
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: AWS Athena
   title_expanded: Flytekit AWS Athena Plugin

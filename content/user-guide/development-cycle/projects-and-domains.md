@@ -1,7 +1,7 @@
 ---
 title: Projects and domains
 weight: 3
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Projects and domains
@@ -18,7 +18,7 @@ Domains represent distinct steps through which the entities in a project transit
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 By default, {{< key product_name >}} provides three domains: `development`, `staging`, and `production`.

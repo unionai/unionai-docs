@@ -1,7 +1,7 @@
 ---
 title: Dask
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Dask
   title_expanded: Flytekit Dask Plugin

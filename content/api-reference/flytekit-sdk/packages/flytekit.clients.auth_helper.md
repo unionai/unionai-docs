@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.auth_helper
 version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +byok +serverless
+variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
@@ -93,7 +93,7 @@ It is possible to pass additional options to the underlying channel. Examples fo
 get_channel(cfg=PlatformConfig(...))
 ```
 
-> [!NOTE] 
+> [!NOTE]
 > Additional options to insecure / secure channel. Example `options` and `compression` refer to grpc guide
 
 ```python
@@ -101,7 +101,7 @@ get_channel(cfg=PlatformConfig(...), options=..., compression=...)
 ```
 
 
-> [!NOTE] 
+> [!NOTE]
 > Create secure channel with custom `grpc.ssl_channel_credentials`
 
  ```python

@@ -1,7 +1,7 @@
 ---
 title: Local setup
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Local setup
@@ -197,7 +197,7 @@ The local Flyte cluster will be available at `localhost:30080`.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok serverless >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
 ## Configure the connection to your cluster
@@ -218,12 +218,12 @@ This will create the `~/.union/config.yaml` with the configuration information t
 > [!NOTE] These directions apply to {{< key product_name >}} Serverless
 > To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOC, see the
 > [BYOC version of this page]({{< docs_home byoc >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
-> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} BYOK, see the
-> [BYOK version of this page]({{< docs_home byok >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
+> To configure a connection to your {{< key product_name >}} instance in {{< key product_name >}} Self-managed, see the
+> [Self-managed version of this page]({{< docs_home selfmanaged >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ```shell
@@ -235,7 +235,7 @@ $ {{< key cli >}} create login --host <union-host-url>
 This will create the `~/.union/config.yaml` with the configuration information to connect to your {{< key product_name >}} instance.
 
 > [!NOTE]
-> These directions apply to {{< key product_name >}} BYOC and BYOK, where you connect to your own dedicated {{< key product_name >}} instance.
+> These directions apply to {{< key product_name >}} BYOC and Self-managed, where you connect to your own dedicated {{< key product_name >}} instance.
 > To configure a connection to {{< key product_name >}} Serverless, see the
 > [Serverless version of this page]({{< docs_home serverless >}}/user-guide/getting-started/local-setup#configure-the-connection-to-your-cluster).
 
@@ -244,7 +244,7 @@ See [Running in a local cluster](../development-cycle/running-in-a-local-cluster
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 By default, the {{< key cli_name >}} CLI will look for a configuration file at `~/.union/config.yaml`. (See [{{< key cli_name >}} CLI](../../api-reference/union-cli) for more details.)
@@ -312,7 +312,7 @@ $ {{< key cli >}} info
 
 You should get a response like this:
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ```shell

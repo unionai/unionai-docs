@@ -1,7 +1,7 @@
 ---
 title: K8s Data Service connector
 weight: 12
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 ## Kubernetes (K8s) Data Service Connector

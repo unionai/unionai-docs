@@ -1,7 +1,7 @@
 ---
 title: Container interface
 weight: 5
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Container interface

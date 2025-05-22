@@ -1,7 +1,7 @@
 ---
 title: Apache Airflow
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Apache Airflow
   title_expanded: Flytekit Airflow Plugin

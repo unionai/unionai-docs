@@ -1,6 +1,6 @@
 ---
 title: flytectl get execution
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl get execution

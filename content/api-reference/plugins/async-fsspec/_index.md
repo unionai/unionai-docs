@@ -1,7 +1,7 @@
 ---
 title: Async FSSpec
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Async FSSpec
   title_expanded: Flytekit Async fsspec Plugin

@@ -1,7 +1,7 @@
 ---
 title: Community
 weight: 7
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
 ---
@@ -26,7 +26,7 @@ If you are interested, see [Contributing code](./contributing-code).
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 Union.ai is a commercial product built on top of the open source Flyte project.

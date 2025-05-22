@@ -1,10 +1,13 @@
 ---
 title: Data retention policy
 weight: 8
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +selfmanaged
 ---
 
 # Data retention policy
+
+{{< variant byoc >}}
+{{< markdown >}}
 
 Data retention polices allow you to control what data is stored in your data plane and for how long.
 This allows you to reduce costs by ensuring that you only keep data that you actually need.
@@ -14,9 +17,33 @@ As a {{< key product_name >}} administrator, you can specify retention policies 
 The policies are specified in discussion with the {{< key product_name >}} team when you set up your {{< key product_name >}} instance.
 They are not adjustable through the UI or CLI.
 
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+Each data plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
+As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane.
+
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Data categories
 
+{{< variant byoc >}}
+{{< markdown >}}
+
 The retention policy system distinguishes three categories of data:
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+There are three categories of data:
+
+{{< /markdown >}}
+{{< /variant >}}
 
 1. Workflow execution data:
    - Task inputs and outputs (that is, primitive type literals)
@@ -28,9 +55,15 @@ The retention policy system distinguishes three categories of data:
    - Local code artifacts that will be copied into the Flyte task container at runtime when using `union register` or `union run --remote --copy-all`.
 3. Flyte plugin metadata (for example, Spark history server data).
 
+{{< variant byoc >}}
+{{< markdown >}}
+
 Each category of data is stored in a separate {{< key product_name >}}-managed object store bucket and versioning is enabled on these buckets.
 This means that two separate retention policies can be specified for each data category: one for current versions and one for non-current versions.
 The result is that there are four distinct retention policies to specify (though in most cases you can stick with the defaults, see below).
+
+{{< /markdown >}}
+{{< /variant >}}
 
 > [!NOTE] Object versions are not the same as {{< key product_name >}} entity versions
 > The versions discussed here are at the object level and are not related to the versions of workflows,
@@ -38,9 +71,25 @@ The result is that there are four distinct retention policies to specify (though
 
 ## How policies are specified
 
+{{< variant byoc >}}
+{{< markdown >}}
+
 A policy determines how long data in a given category and version-state (current vs. non-current) will be retained in the object store before it is automatically deleted.
 
 A policy is specified as a time period in days, or `unlimited` (in which case automatic data deletion is disabled for that category and version-state).
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+The policy will be configured on the object store bucket(s) which you are using for {{< key product_name >}}.
+- For AWS S3 buckets use [S3 Lifecycle policies](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)
+- For GCP GCS buckets use [Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle)
+- For Azure Blob Storage use [lifecycle management policies](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-policy-configure?tabs=azure-portal)
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Deletion of current versions
 
@@ -50,14 +99,33 @@ For current version, deletion due to a retention period running out means moving
 
 For non-current versions, deletion due to a retention period running out means permanent deletion.
 
+{{< variant byoc >}}
+{{< markdown >}}
+
 ## Defaults
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+## Example policy
+
+{{< /markdown >}}
+{{< /variant >}}
 
 |                     | Workflow execution data | Fast-registered code | Flyte-plugin metadata |
 | ------------------- | ----------------------- | -------------------- | --------------------- |
 | Current version     | unlimited               | unlimited            | unlimited             |
 | Non-current version | 7 days                  | 7 days               | 7 days                |
 
+{{< variant byoc >}}
+{{< markdown >}}
+
 By default:
+
+{{< /markdown >}}
+{{< /variant >}}
 
 - The retention policy for _current versions in all categories_ is `unlimited`, meaning that auto-deletion is disabled.
 
@@ -70,8 +138,8 @@ By default:
 If you attempt to access deleted data, you will receive an error:
 
 - When workflow node input/output data is deleted, the Input/Output tabs in the UI will display a _Not Found_ error.
-- When Flyte `Deck` data is deleted, the `Deck` view in the UI will display a _Not Found_ error.
-- When artifacts are deleted, the artifacts UI will work, but it will display an URL that points to no longer existing artifact.
+- When `Deck` data is deleted, the `Deck` view in the UI will display a _Not Found_ error.
+- When artifacts are deleted, the artifacts UI will work, but it will display a URL that points to no longer existing artifact.
 
 To remedy these types of errors, you will have to re-run the workflow that generated the data in question.
 

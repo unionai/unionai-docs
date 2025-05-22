@@ -1,7 +1,7 @@
 ---
 title: Streaming Data for BERT Training
 weight: 5
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +selfmanaged
 layout: py_example
 example_file: /external/unionai-examples/tutorials/data_streaming/arabic_bert.py
 run_on_union_secrets:

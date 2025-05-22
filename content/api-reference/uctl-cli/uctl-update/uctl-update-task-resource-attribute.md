@@ -1,6 +1,6 @@
 ---
 title: uctl update task-resource-attribute
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl update task-resource-attribute

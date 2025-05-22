@@ -1,7 +1,7 @@
 ---
 title: Polars
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Polars
   title_expanded: Flytekit Polars Plugin

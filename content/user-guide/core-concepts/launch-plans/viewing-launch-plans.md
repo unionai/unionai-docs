@@ -1,7 +1,7 @@
 ---
 title: Viewing launch plans
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Viewing launch plans
@@ -37,7 +37,7 @@ Here you can see:
 In the top right you can see if this launch plan is active (and if it is, which version, specifically, is active). There is also a control for changing the active version or deactivating the launch plan entirely.
 See [Activating and deactivating](./activating-and-deactivating) for more details.
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ## Viewing launch plans on the command line with `uctl`

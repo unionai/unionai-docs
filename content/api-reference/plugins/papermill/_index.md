@@ -1,7 +1,7 @@
 ---
 title: Papermill
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Papermill
   title_expanded: Flytekit Papermill Plugin

@@ -1,7 +1,7 @@
 ---
 title: Supermarket regression notebook
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb
 content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567 # hash managed by Makefile.jupyter (do not edit)
 ---
@@ -131,41 +131,41 @@ num_cols = ['Product_Weight', 'Product_Shelf_Visibility',
 # bar plot for categorial features
 for col in cat_cols:
     fig = plt.figure(figsize=(6,6)) # define plot area
-    ax = fig.gca() # define axis  
-    
+    ax = fig.gca() # define axis
+
     counts = newdata[col].value_counts() # find the counts for each unique category
     counts.plot.bar(ax = ax) # use the plot.bar method on the counts data frame
     ax.set_title('Bar plot for ' + col)
 ```
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_8_0.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_8_1.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_8_2.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_8_3.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_8_4.png)
-    
+
 
 
 
@@ -173,40 +173,40 @@ for col in cat_cols:
 # scatter plot for numerical features
 for col in num_cols:
     fig = plt.figure(figsize=(6,6)) # define plot area
-    ax = fig.gca() # define axis  
+    ax = fig.gca() # define axis
 
     newdata.plot.scatter(x = col, y = 'Product_Supermarket_Sales', ax = ax)
 
 ```
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_9_0.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_9_1.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_9_2.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_9_3.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_9_4.png)
-    
+
 
 
 
@@ -216,37 +216,37 @@ for col in cat_cols:
     sns.boxplot(x=col, y='Product_Supermarket_Sales', data=newdata)
     plt.xlabel(col)
     plt.ylabel('Product Supermarket Sales')
-    plt.show() 
+    plt.show()
 ```
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_10_0.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_10_1.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_10_2.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_10_3.png)
-    
 
 
 
-    
+
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_10_4.png)
-    
+
 
 
 
@@ -265,9 +265,9 @@ sns.heatmap(corrmat, square=True)
 
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_11_1.png)
-    
+
 
 
 
@@ -299,9 +299,9 @@ for col in cat_cols_pair:
 
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_12_1.png)
-    
+
 
 
 
@@ -309,9 +309,9 @@ for col in cat_cols_pair:
 
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_12_3.png)
-    
+
 
 
 
@@ -319,9 +319,9 @@ for col in cat_cols_pair:
 
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_12_5.png)
-    
+
 
 
 
@@ -364,7 +364,7 @@ def cluster_open_year(year):
         return 0
     else:
         return 1
-    
+
 newdata['open_in_the_2000s'] = newdata['Supermarket_Opening_Year'].apply(cluster_open_year)
 ```
 
@@ -405,7 +405,7 @@ def cluster_prod_type(product):
         return 0
     else:
         return 1
-    
+
 newdata['Product_type_cluster'] = newdata['Product_Type'].apply(cluster_prod_type)
 ```
 
@@ -460,9 +460,9 @@ plt.title("Transformation of Product_Supermarket_Sales feature")
 
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_19_1.png)
-    
+
 
 
 
@@ -489,9 +489,9 @@ plt.title("Transformation of Product_Shelf_Visibility feature")
 
 
 
-    
+
 ![png](../supermarket_regression.gen_files/supermarket_regression.gen_20_1.png)
-    
+
 
 
 
@@ -713,7 +713,7 @@ scaler = RobustScaler()
 
 scaler.fit(X_train)
 
-X_train = scaler.transform(X_train) 
+X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
 X_train[:5, :5]

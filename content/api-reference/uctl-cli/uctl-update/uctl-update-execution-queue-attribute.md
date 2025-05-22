@@ -1,6 +1,6 @@
 ---
 title: uctl update execution-queue-attribute
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl update execution-queue-attribute
