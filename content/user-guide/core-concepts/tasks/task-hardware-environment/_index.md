@@ -1,7 +1,7 @@
 ---
 title: Task hardware environment
 weight: 7
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -23,7 +23,7 @@ See [Customizing task resources](./customizing-task-resources) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 You can customize the hardware environment in which your task code executes.
@@ -57,14 +57,14 @@ This requires that you set up the required machine types and node groups with th
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 This requires that you coordinate with {{< key product_name >}} to set up the required machine types and node groups with the appropriate node assignment configuration (node selector labels, node affinities, taints, tolerations, etc.)
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 In your task definition you then use a `PodTemplate` that that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.

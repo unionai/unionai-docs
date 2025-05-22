@@ -1,7 +1,7 @@
 ---
 title: flytekit.clients.friendly
 version: 0.1.dev2192+g7c539c3.d20250403
-variants: +flyte +byoc +byok +serverless
+variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
@@ -26,7 +26,7 @@ layout: py_api
 This is a low-level client that users can use to make direct gRPC service calls to the control plane. See the
 :std:doc:`service spec <idl:protos/docs/service/index>`. This is more user-friendly interface than the
 {{< py_class_ref flytekit.clients.raw.RawSynchronousFlyteClient >}} so users should try to use this class
-first. Create a client by 
+first. Create a client by
 
 ```python
 SynchronousFlyteClient("your.domain:port", insecure=True)

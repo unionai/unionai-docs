@@ -1,7 +1,7 @@
 ---
 title: OpenAI Batch connector
 weight: 1
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -28,7 +28,7 @@ For an example query, see [OpenAI Batch connector example usage](./openai-batch-
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 For an example query, see [OpenAI Batch connector example usage](./openai-batch-connector-example-usage-union)

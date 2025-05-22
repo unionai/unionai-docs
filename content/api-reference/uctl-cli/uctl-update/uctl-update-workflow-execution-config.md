@@ -1,6 +1,6 @@
 ---
 title: uctl update workflow-execution-config
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl update workflow-execution-config

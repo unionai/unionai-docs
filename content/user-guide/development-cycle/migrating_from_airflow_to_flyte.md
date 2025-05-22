@@ -1,7 +1,7 @@
 ---
 title: Migrating from Airflow to Flyte
 weight: 19
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Migrating from Airflow to Flyte

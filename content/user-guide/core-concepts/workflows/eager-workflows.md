@@ -1,12 +1,12 @@
 ---
 title: Eager workflows
 weight: 4
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Eager workflows
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 > [!NOTE]
@@ -106,7 +106,7 @@ defining a task or workflow that you want to invoke within an eager workflow.
 Similar to [dynamic workflows](./dynamic-workflows), eager workflows are
 actually tasks. The main difference is that, while dynamic workflows compile
 a static workflow at runtime using materialized inputs, eager workflows do
-not compile any workflow at all. Instead, they use the [`{{< key kit_remote >}}`](../../development-cycle/union-remote/_index) 
+not compile any workflow at all. Instead, they use the [`{{< key kit_remote >}}`](../../development-cycle/union-remote/_index)
 object together with Python's `asyncio` API to kick off tasks and subworkflow
 executions eagerly whenever you `await` on a coroutine. This means that eager
 workflows can materialize an output of a task or subworkflow and use it as a

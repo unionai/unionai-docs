@@ -1,7 +1,7 @@
 ---
 title: Caching
 weight: 8
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Caching
@@ -241,7 +241,7 @@ execution = remote.execute(wf, inputs={"name": "Kermit"}, overwrite_cache=True)
 ```
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 ```python
 from flytekit.configuration import Config
@@ -345,7 +345,7 @@ When a node's behavior does change though, you can bump `version` to invalidate 
 If you modify the signature of a node by adding, removing, or editing input parameters or output return types, {{< key product_name >}} invalidates the cache entries for that node.
 During the next execution, {{< key product_name >}} executes the process again and caches the outputs as new values stored under an updated key.
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ### Caching when running locally

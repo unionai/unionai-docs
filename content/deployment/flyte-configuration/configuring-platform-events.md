@@ -1,7 +1,7 @@
 ---
 title: Platform events
 weight: 8
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Platform Events
@@ -23,7 +23,7 @@ Event egress can be configured to work with **AWS** using [SQS](https://aws.amaz
 To turn on, add the following to your FlyteAdmin:
 
 ### AWS SNS
-   
+
 ```yaml
 cloud_events.yaml: |
   cloudEvents:
@@ -35,10 +35,10 @@ cloud_events.yaml: |
       - all # or node, task, workflow
       topicName: arn:aws:sns:us-east-2:123456:123-my-topic
     type: aws
-``` 
+```
 ### GCP Pub/Sub
 
-```yaml   
+```yaml
 cloud_events.yaml: |
   cloudEvents:
     enable: true
@@ -49,7 +49,7 @@ cloud_events.yaml: |
       - all # or node, task, workflow
       topicName: my-topic
     type: gcp
-```  
+```
 
 ### Helm configuration
 

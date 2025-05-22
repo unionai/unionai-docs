@@ -1,7 +1,7 @@
 ---
 title: ONNX ScikitLearn
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: ONNX ScikitLearn
   title_expanded: Flytekit ONNX ScikitLearn Plugin

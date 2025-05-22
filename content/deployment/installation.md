@@ -1,7 +1,7 @@
 ---
 title: Installing Union.ai
 weight: 2
-variants: -flyte -serverless -byoc +byok
+variants: -flyte -serverless -byoc +selfmanaged
 ---
 
 # Installing {{< key product_name >}}

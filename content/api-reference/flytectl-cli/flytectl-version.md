@@ -1,7 +1,7 @@
 ---
 title: flytectl version
 weight: 2
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl version

@@ -1,7 +1,7 @@
 ---
 title: Vaex
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Vaex
   title_expanded: Flytekit Vaex Plugin

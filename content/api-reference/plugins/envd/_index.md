@@ -1,7 +1,7 @@
 ---
 title: Envd
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Envd
   title_expanded: Flytekit Envd Plugin

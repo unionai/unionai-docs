@@ -1,6 +1,6 @@
 ---
 title: flytectl delete identityassignments
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl delete identityassignments

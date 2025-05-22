@@ -1,7 +1,7 @@
 ---
 title: How to trigger the Feast workflow using FlyteRemote
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb
 content_hash: 2b296a9470b53436bf3b49ad8420a79de0945ca4dd3e1ae5017312e41ee0f089 # hash managed by Makefile.jupyter (do not edit)
 ---

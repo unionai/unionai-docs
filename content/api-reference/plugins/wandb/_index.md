@@ -1,7 +1,7 @@
 ---
 title: Weights & Biases
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Weights & Biases
   title_expanded: Flytekit Weights and Biases Plugin

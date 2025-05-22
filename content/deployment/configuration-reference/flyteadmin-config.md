@@ -1,10 +1,10 @@
 ---
 title: FlyteAdmin configuration
 weight: 2
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
-# Flyte Admin Configuration 
+# Flyte Admin Configuration
 
 - [admin](#section-admin)
 - [auth](#section-auth)

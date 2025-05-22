@@ -1,7 +1,7 @@
 ---
 title: Actor examples
 weight: 2
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Actor examples
@@ -84,7 +84,7 @@ def wf(input: int = 0) -> int:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```python
@@ -175,7 +175,7 @@ def my_parent_wf(name: str) -> str:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```python
@@ -362,7 +362,7 @@ def run_inference(values: list[int] = list(range(20))) -> list[int]:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```python
@@ -488,7 +488,7 @@ def wf(state: int = 2) -> int:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```python

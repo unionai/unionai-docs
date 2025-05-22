@@ -1,7 +1,7 @@
 ---
 title: Flyte operators
 weight: 5
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 sidebar_expanded: true
 ---
 

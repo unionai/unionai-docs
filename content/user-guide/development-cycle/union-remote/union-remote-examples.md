@@ -1,7 +1,7 @@
 ---
 title: UnionRemote examples
 weight: 1
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # {{< key kit_remote >}} examples

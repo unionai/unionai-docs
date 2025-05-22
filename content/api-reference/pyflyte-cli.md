@@ -1,7 +1,7 @@
 ---
 title: Pyflyte CLI
 weight: 3
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # {{< key cli_name >}} CLI
@@ -31,10 +31,10 @@ $ {{< key cli >}} create login --serverless
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
-To configure the `{{< key cli >}}` CLI to connect to you {{< key product_name >}}  BYOC or BYOK instance, run the following command:
+To configure the `{{< key cli >}}` CLI to connect to you {{< key product_name >}}  BYOC or Self-managed instance, run the following command:
 
 ```shell
 $ {{< key cli >}} create login --host <{{< key product >}}-host-url>
@@ -71,7 +71,7 @@ The `{{< key cli >}}` CLI will check for configuration files as follows:
 
 First, if a `--config` option is used, it will use the specified config file.
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 Second, the config files pointed to by the following environment variables (in this order):
@@ -92,7 +92,7 @@ Second, the config file pointed to by the `FLYTECTL_CONFIG` environment variable
 
 Third, the following hard-coded locations (in this order):
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 Third, the following hard-coded locations (in this order):

@@ -1,6 +1,6 @@
 ---
 title: uctl update cluster-resource-attribute
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl update cluster-resource-attribute
