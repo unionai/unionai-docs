@@ -1,6 +1,6 @@
 ---
 title: Plugins setup
-weight: 5
+weight: 16
 variants: +flyte -serverless -byoc -byok
 sidebar_expanded: true
 ---

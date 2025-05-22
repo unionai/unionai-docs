@@ -1,6 +1,6 @@
 ---
 title: Connector setup
-weight: 4
+weight: 15
 variants: +flyte -serverless -byoc -byok
 sidebar_expanded: true
 ---

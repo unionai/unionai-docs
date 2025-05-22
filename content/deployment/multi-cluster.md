@@ -1,6 +1,6 @@
 ---
 title: Multi-cluster and multi-cloud
-weight: 7
+weight: 4
 variants: -flyte -serverless +byoc +byok
 ---
 
