@@ -1,6 +1,6 @@
 ---
 title: uctl get role
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl get role

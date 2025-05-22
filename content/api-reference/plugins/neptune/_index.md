@@ -1,7 +1,7 @@
 ---
 title: Neptune
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Neptune
   title_expanded: Flytekit Neptune Plugin

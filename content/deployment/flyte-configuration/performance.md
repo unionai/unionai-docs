@@ -1,7 +1,7 @@
 ---
 title: Optimizing performance
 weight: 10
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Optimizing Performance

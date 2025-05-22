@@ -1,7 +1,7 @@
 ---
 title: Viewing logs
 weight: 6
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Viewing logs
@@ -54,7 +54,7 @@ Alongside the **Execution logs** tab in the **Execution details page**, you will
 
 In addition to the **Task Logs** link, you will also see a link to your cloud provider's logs (**Cloudwatch Logs** for AWS, **Stackdriver Logs** for GCP, and **Azure Logs** for Azure):
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 
 {{< markdown >}}
 

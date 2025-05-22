@@ -1,7 +1,7 @@
 ---
 title: Google IAP
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Google IAP
   title_expanded: Flytekit Identity Aware Proxy

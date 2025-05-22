@@ -1,7 +1,7 @@
 ---
 title: Variants
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Variants
@@ -18,9 +18,9 @@ Currently, the docs site supports four variants:
 - **Flyte**: The open-source Flyte project.
 - **Serverless**: The Union.ai product that is hosted and managed by Union AI.
 - **BYOC**: The Union.ai product that is hosted on the customer's infrastructure but managed by Union AI.
-- **BYOK**: The Union.ai product that is hosted and managed by the customer.
+- **Self-managed**: The Union.ai product that is hosted and managed by the customer.
 
-Each variant is referenced in the page logic using its respective code name: `flyte`, `serverless`, `byoc`, or `byok`.
+Each variant is referenced in the page logic using its respective code name: `flyte`, `serverless`, `byoc`, or `selfmanaged`.
 
 The available set of variants are defined in the `config.<code_name>.toml` files in the root of the repository.
 
@@ -39,25 +39,25 @@ For example, if you look at the Markdown source for [this page (the page you are
 ---
 title: Platform overview
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 ```
 
 The `variants` field has the value:
 
-`+flyte +serverless +byoc +byok`
+`+flyte +serverless +byoc +selfmanaged`
 
 The `+` indicates that the page is available for the specified variant.
 In this case, the page is available for all four variants.
 If you wanted to make the page available for only the `flyte` and `serverless` variants, you would change the `variants` field to:
 
-`+flyte +serverless -byoc -byok`
+`+flyte +serverless -byoc -selfmanaged`
 
 In [live preview mode](./authoring-core-content#live-preview) with the `show_inactive` flag enabled, you will see all pages in the navigation tree, with the ones unavailable for the current variant grayed out.
 
 As you can see, the `variants` field expects a space-separated list of keywords:
 
-* The code names for the currently variants are, `flyte`, `serverless`, `byoc`, and `byok`.
+* The code names for the currently variants are, `flyte`, `serverless`, `byoc`, and `selfmanaged`.
 * All supported variants must be included explicitly in every `variants` field with a leading `+` or `-`. There is no default behavior.
 * The supported variants are configured in the root of the repository in the files named `config.<variant>.toml`.
 
@@ -115,10 +115,10 @@ For example the `product_name` used above is defined in that file as
 flyte = "Flyte"
 serverless = "Union.ai"
 byoc = "Union.ai"
-byok = "Union.ai"
+selfmanaged = "Union.ai"
 ```
 
-Meaning that in any content that appears in the `flyte` variant of the site `{{</* key product_name */>}}` shortcode will be replaced with `Flyte`, and in any content that appears in the `serverless`, `byoc`, or `byok` variants, it will be replaced with `Union.ai`.
+Meaning that in any content that appears in the `flyte` variant of the site `{{</* key product_name */>}}` shortcode will be replaced with `Flyte`, and in any content that appears in the `serverless`, `byoc`, or `selfmanaged` variants, it will be replaced with `Union.ai`.
 
 
 For more details on the `{{</* key */>}}` shortcode, see the [Shortcodes > `key`](./shortcodes#key)
@@ -137,10 +137,10 @@ Here is full example. If you look at the Markdown source for [this page (the pag
 >
 > {{</* /markdown */>}}
 > {{</* /variant */>}}
-> {{</* variant serverless byoc byok */>}}
+> {{</* variant serverless byoc selfmanaged */>}}
 > {{</* markdown */>}}
 >
-> **This text is only visible in the `serverless`, `byoc`, and `byok` variants.**
+> **This text is only visible in the `serverless`, `byoc`, and `selfmanaged` variants.**
 >
 > {{</* /markdown */>}}
 > {{</* /variant */>}}
@@ -162,10 +162,10 @@ This Markdown source is rendered as:
 >
 > {{< /markdown >}}
 > {{< /variant >}}
-> {{< variant serverless byoc byok>}}
+> {{< variant serverless byoc selfmanaged>}}
 > {{< markdown >}}
 >
-> **This text is only visible in the `serverless`, `byoc`, and `byok` variants.**
+> **This text is only visible in the `serverless`, `byoc`, and `selfmanaged` variants.**
 >
 > {{< /markdown >}}
 > {{< /variant >}}

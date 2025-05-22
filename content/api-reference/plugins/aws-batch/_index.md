@@ -1,7 +1,7 @@
 ---
 title: AWS Batch
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: AWS Batch
   title_expanded: Flytekit AWS Batch Plugin

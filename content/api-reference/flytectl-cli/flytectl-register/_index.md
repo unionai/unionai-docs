@@ -1,6 +1,6 @@
 ---
 title: flytectl register
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl register

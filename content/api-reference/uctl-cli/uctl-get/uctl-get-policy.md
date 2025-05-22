@@ -1,6 +1,6 @@
 ---
 title: uctl get policy
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl get policy

@@ -1,7 +1,7 @@
 ---
 title: Actors
 weight: 4
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -18,7 +18,7 @@ To create an actor, instantiate the [`ActorEnvironment`](../../../api-reference/
 * **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed. Defaults to `cr.union.ai/union/unionai:py3.11-latest`.
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 * **container_image:** The container image to use for the task. This container must have the `{{< key kit >}}` python package installed, so this must be updated from the default (i.e. `cr.flyte.org/flyteorg/flytekit:py3.11-latest`).
 {{< /markdown >}}
@@ -64,7 +64,7 @@ def wf():
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```python
@@ -164,7 +164,7 @@ def wf(init_value: int = 1, state: int = 3) -> int:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```python

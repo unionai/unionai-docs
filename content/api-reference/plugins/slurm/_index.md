@@ -1,7 +1,7 @@
 ---
 title: Slurm
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Slurm
   title_expanded: Flytekit Slurm Plugin

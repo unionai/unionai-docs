@@ -1,7 +1,7 @@
 ---
 title: Running in a local cluster
 weight: 16
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 ---
 
 # Running in a local cluster

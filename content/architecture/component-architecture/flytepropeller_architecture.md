@@ -1,7 +1,7 @@
 ---
 title: FlytePropeller architecture
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # FlytePropeller architecture

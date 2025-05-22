@@ -1,6 +1,6 @@
 ---
 title: flytectl delete plugin-override
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl delete plugin-override

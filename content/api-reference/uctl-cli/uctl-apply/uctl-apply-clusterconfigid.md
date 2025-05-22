@@ -1,6 +1,6 @@
 ---
 title: uctl apply clusterconfigid
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl apply clusterconfigid

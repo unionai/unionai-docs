@@ -1,7 +1,7 @@
 ---
 title: Tasks
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -31,7 +31,7 @@ The {{< key product_name >}} type system is also used for caching, data lineage 
 
 While (most) tasks are locally executable, when a task is deployed to {{< key product_name >}} as part of the registration process it is containerized and run in its own independent Kubernetes pod.
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 This allows tasks to have their own independent set of [software dependencies](./task-software-environment/_index) and [hardware requirements](./task-hardware-environment/_index).
@@ -68,7 +68,7 @@ When deciding if a unit of execution is suitable to be encapsulated as a task, c
 
 For details on task caching, see [Caching](../caching).
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 ## Workflows can contain many types of tasks
 

@@ -26,7 +26,7 @@ fi
 cat <<EOF > "${output}"
 ---
 title: "${name}"
-variants: +byoc +byok +serverless +flyte
+variants: +byoc +selfmanaged +serverless +flyte
 ---
 
 # ${name}

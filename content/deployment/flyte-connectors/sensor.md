@@ -1,7 +1,7 @@
 ---
 title: Sensor connector
 weight: 16
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 # Sensor connector
 

@@ -1,15 +1,15 @@
 ---
 title: Snowflake connector
 weight: 18
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 # Snowflake connector
 
 This guide provides an overview of how to set up the Snowflake connector in your Flyte deployment.
 
 1. Set up the key pair authentication in Snowflake. For more details, see the [Snowflake key-pair authentication and key-pair rotation guide](https://docs.snowflake.com/en/user-guide/key-pair-auth).
-2. Create a secret with the group `"private-key"` and the key `"snowflake"`.  
-   This is hardcoded in the flytekit SDK, since we can't know the group and key name in advance.  
+2. Create a secret with the group `"private-key"` and the key `"snowflake"`.
+   This is hardcoded in the flytekit SDK, since we can't know the group and key name in advance.
    This is for permission to upload and download data with structured dataset in the Python task pod.
 
 ```bash

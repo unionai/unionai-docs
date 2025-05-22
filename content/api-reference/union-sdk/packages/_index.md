@@ -1,7 +1,7 @@
 ---
 title: Packages
 version: 0.1.171.dev4+g052020f1.d20250404
-variants: +byoc +byok +serverless -flyte
+variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
 

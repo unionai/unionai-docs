@@ -1,7 +1,7 @@
 ---
 title: flytekitplugins.flyteinteractive.vscode_lib.vscode_constants
 version: 0.0.0+develop
-variants: +flyte +byoc +byok +serverless
+variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 

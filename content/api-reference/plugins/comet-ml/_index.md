@@ -1,7 +1,7 @@
 ---
 title: Comet ML
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Comet ML
   title_expanded: Flytekit Comet Plugin

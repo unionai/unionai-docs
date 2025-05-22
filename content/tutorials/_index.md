@@ -1,7 +1,7 @@
 ---
 title: Tutorials
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
 ---
@@ -11,7 +11,7 @@ sidebar_expanded: true
 This section provides tutorials that walk you through the process of building AI/ML applications on {{< key product_name >}}.
 The example applications range from training XGBoost models in tabular datasets to fine-tuning large language models for text generation tasks.
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< grid >}}
 
 {{< link-card target="language-models/sentiment-classifier" icon="" title="Sentiment Classification with DistilBERT" >}}

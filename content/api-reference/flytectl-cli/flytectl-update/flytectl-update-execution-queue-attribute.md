@@ -1,6 +1,6 @@
 ---
 title: flytectl update execution-queue-attribute
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl update execution-queue-attribute

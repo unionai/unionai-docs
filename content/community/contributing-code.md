@@ -1,7 +1,7 @@
 ---
 title: Contributing code
 weight: 2
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Contributing code

@@ -1,7 +1,7 @@
 ---
 title: Task software environment
 weight: 6
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 

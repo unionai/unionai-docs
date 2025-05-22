@@ -1,6 +1,6 @@
 ---
 title: flytectl apply app
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl apply app

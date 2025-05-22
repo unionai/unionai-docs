@@ -1,6 +1,6 @@
 ---
 title: Docs Builder Test Area. Nothing to see here.
-variants: -flyte -serverless -byoc -byok
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Docs Builder Test
