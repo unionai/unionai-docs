@@ -3,6 +3,7 @@ title: Multiple Clusters
 weight: 3
 variants: -flyte -serverless -byoc +selfmanaged
 ---
+
 # Multiple Clusters
 
 Union enables you to integrate multiple Kubernetes clusters into a single Union control plane using the `clusterPool` abstraction.

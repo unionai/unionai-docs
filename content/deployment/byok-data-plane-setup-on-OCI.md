@@ -4,12 +4,16 @@ weight: 4
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
-# Installing {{< key product_name >}} on an OKE Cluster
+# Data plane setup on OCI
 
-{{< key product_name >}}’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.  The Union architecture is described on the [Architecture](../../architecture) page.
+{{< key product_name >}}’s modular architecture allows for great flexibility and control.
+The customer can decide how many clusters to have, their shape, and who has access to what.
+All communication is encrypted.
+The Union architecture is described on the [Architecture](../architecture) page.
 
 ## Assumptions
-* You have a {{< key product_name >}} organization and you know the Control Plane URL for your Organization.
+
+* You have a {{< key product_name >}} organization and you know the Control Plane URL for your organization.
 * You have a cluster name provided by or coordinated with Union
 * You have a Kubernetes cluster, running one of the most recent three minor K8s versions. [Learn more](https://kubernetes.io/releases/version-skew-policy/)
 * You have configured an storage bucket(s)

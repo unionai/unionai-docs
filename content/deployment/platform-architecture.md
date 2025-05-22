@@ -1,7 +1,7 @@
 ---
 title: Platform architecture
 weight: 1
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Platform architecture
