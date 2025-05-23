@@ -3,6 +3,7 @@ title: Secrets
 weight: 6
 variants: -flyte -serverless -byoc +selfmanaged
 ---
+
 # Secrets
 
 [Union Secrets](../user-guide/development-cycle/managing-secrets.md) are enabled by default. Union Secrets are managed secrets created through the native Kubernetes secret manager.

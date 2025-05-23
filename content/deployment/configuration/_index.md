@@ -6,4 +6,5 @@ sidebar_expanded: true
 ---
 
 # Advanced Configurations
+
 This section covers the configuration of union features on your {{< key product_name >}} cluster.
