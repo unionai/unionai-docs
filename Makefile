@@ -14,8 +14,9 @@ usage:
 predist:
 	@if ! scripts/pre-build-checks.sh; then exit 1; fi
 
-# Add back when pre-build-check is fixed to exclude mention of full URLs as needed in community controburtion guide
-#base: predist
+# Add back when predist is fixed to not trigger error on full URLs inside backticks
+# base: predist
+
 base:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
 	rm -rf dist
