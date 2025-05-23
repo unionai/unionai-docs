@@ -1,7 +1,7 @@
 ---
 title: Troubeshooting
 weight: 5
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Troubleshooting guide

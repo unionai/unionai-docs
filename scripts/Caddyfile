@@ -16,8 +16,8 @@ handle_errors {
     @byoc_path {
         path_regexp byoc ^/docs/byoc(/.*)?$
     }
-    @byok_path {
-        path_regexp byok ^/docs/byok(/.*)?$
+    @selfmanaged_path {
+        path_regexp selfmanaged ^/docs/selfmanaged(/.*)?$
     }
     @serverless_path {
         path_regexp serverless ^/docs/serverless(/.*)?$
@@ -28,7 +28,7 @@ handle_errors {
 
     # Rewrite to appropriate 404 pages based on path
     rewrite @byoc_path /docs/byoc/404.html
-    rewrite @byok_path /docs/byok/404.html
+    rewrite @selfmanaged_path /docs/selfmanaged/404.html
     rewrite @serverless_path /docs/serverless/404.html
     rewrite @flyte_path /docs/flyte/404.html
 

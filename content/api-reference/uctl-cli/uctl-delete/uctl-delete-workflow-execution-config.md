@@ -1,6 +1,6 @@
 ---
 title: uctl delete workflow-execution-config
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl delete workflow-execution-config

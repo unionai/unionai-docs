@@ -1,7 +1,7 @@
 ---
 title: Pandera
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Pandera
   title_expanded: Flytekit Pandera Plugin

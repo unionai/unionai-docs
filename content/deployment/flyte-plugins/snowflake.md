@@ -1,7 +1,7 @@
 ---
 title: Snowflake plugin
 weight: 7
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Snowflake Plugin
@@ -29,7 +29,7 @@ Edit the relevant YAML file to specify the plugin.
                 - snowflake: snowflake
 ```
 ### flyte-core
-    
+
 Create a file named ``values-override.yaml`` and add the following config to it:
 
 ```yaml
@@ -74,7 +74,7 @@ Create a secret as follows (or add to it if it already exists from other plugins
           stringData:
             FLYTE_SNOWFLAKE_CLIENT_TOKEN: <JWT_TOKEN>
           EOF
-  ```     
+  ```
 Replace ``<JWT_TOKEN>`` with your JWT token.
 
 Reference the newly created secret in ``.Values.configuration.inlineSecretRef`` in your YAML file as follows:

@@ -1,7 +1,7 @@
 ---
 title: Flyte Interactive
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Flyte Interactive
   title_expanded: Flytekit FlyteInteractive Plugin

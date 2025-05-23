@@ -1,14 +1,14 @@
 ---
 title: ImageSpec with ECR
 weight: 2
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 ---
 
 # ImageSpec with ECR
 
 In this section we explain how to set up and use AWS Elastic Container Registry (ECR) to build and deploy task container images using `ImageSpec`.
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## Prerequisites
@@ -39,7 +39,7 @@ This means that you have to decide on the name of your image and create a reposi
 
 In the AWS console, go to **Amazon ECR > Repositories** and find the correct ECR registry
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 If you are in the same account as your {{< key product_name >}} data plane you should go directly to the ECR registry that was set up for you by {{< key product_name >}}. If there are multiple ECR registries present, consult with your {{< key product_name >}} administrator to find out which one to use.

@@ -1,7 +1,7 @@
 ---
 title: Uctl CLI
 weight: 4
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -99,7 +99,7 @@ To download the binary manually, see the [`uctl` releases page](https://github.c
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 To create a configuration file that contains your Union connection information, run the following command, replacing `<union-host-url>` with the URL of your Union instance:
@@ -128,7 +128,7 @@ By default, the `uctl` CLI will use the configuration file at `~/.union/config.y
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 * `--config <path-to-config>` flag

@@ -1,7 +1,7 @@
 ---
 title: Decorating workflows
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Decorating workflows
@@ -147,7 +147,7 @@ pyflyte run --remote \
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 ```bash
 union run --remote decorating_workflows.py decorating_workflow --x 10.0

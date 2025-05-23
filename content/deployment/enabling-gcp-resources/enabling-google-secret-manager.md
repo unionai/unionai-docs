@@ -1,7 +1,7 @@
 ---
 title: Enabling Google Secret Manager
 weight: 3
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Enabling Google Secret Manager

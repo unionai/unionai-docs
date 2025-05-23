@@ -1,7 +1,7 @@
 ---
 title: Adding your own code
 weight: 1
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Adding your own code

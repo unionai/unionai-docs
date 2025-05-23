@@ -1,6 +1,6 @@
 ---
 title: Navigation Tests (Test 1)
-variants: -flyte -serverless -byoc -byok
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Navigation Tests
@@ -11,7 +11,7 @@ variants: -flyte -serverless -byoc -byok
 | ---------------------------------------- |
 | [{{< docs_home byoc >}}/user-guide]({{< docs_home byoc >}}/user-guide) |
 | [{{< docs_home flyte >}}/user-guide]({{< docs_home flyte >}}/user-guide) |
-| [{{< docs_home byok >}}/user-guide]({{< docs_home byok >}}/user-guide) |
+| [{{< docs_home selfmanaged >}}/user-guide]({{< docs_home selfmanaged >}}/user-guide) |
 | [{{< docs_home serverless >}}/user-guide]({{< docs_home serverless >}}/user-guide) |
 
 ## External URL

@@ -1,7 +1,7 @@
 ---
 title: Planning your deployment
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Components of a Flyte deployment

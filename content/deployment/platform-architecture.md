@@ -1,14 +1,14 @@
 ---
 title: Platform architecture
 weight: 1
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Platform architecture
 
 The {{< key product_name >}} architecture consists of two virtual private clouds, referred to as planes—the control plane and the data plane.
 
-![](/_static/images/user-guide/platform-architecture/union-architecture.png)
+![](/_static/images/user-guide/platform-architecture/union-architecture.svg)
 
 ## Control plane
 
@@ -19,19 +19,36 @@ The control plane:
 
 ## Data plane
 
-All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident {{< key product_name >}} operator with minimal required permissions.
+{{< variant byoc >}}
+{{< markdown >}}
+All your workflow and task executions are performed in the data plane, which runs within your AWS or GCP account. The data plane's clusters are provisioned and managed by the control plane through a resident Union operator with minimal required permissions.
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< key product_name >}} operates one control plane for each supported region, which supports all data planes within that region. You can choose the region in which to locate your data plane. Currently, {{< key product_name >}} supports the `us-west`, `us-east`, `eu-west`, and `eu-central` regions, and more are being added.
 
 ### Data plane nodes
 
+{{< variant byoc >}}
+{{< markdown >}}
+
 Once the data plane is deployed in your AWS or GCP account, there are different kinds of nodes with different responsibilities running in your cluster. In {{< key product_name >}}, we distinguish between default nodes and worker nodes.
 
 Default nodes guarantee the basic operation of the data plane and are always running. Example services that run on these nodes include autoscaling (worker nodes), monitoring services, union operator, and many more.
 
-Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](./configuring-your-data-plane#worker-node-groups).
+Worker nodes are responsible for executing your workloads. You have full control over the configuration of your [worker nodes](./data-plane-setup/configuring-your-data-plane#worker-node-groups).
 
 When worker nodes are not in use, they automatically scale down to the configured minimum. (The default is zero.)
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant selfmanaged >}}
+{{< markdown >}}
+
+Worker nodes are responsible for executing your workloads. You have full control over the configuration of your worker nodes. When worker nodes are not in use, they automatically scale down to the configured minimum.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ## {{< key product_name >}} operator
 
@@ -49,7 +66,7 @@ This further enhances the security of your data plane.
 
 ## Registry data
 
-Registry data is comprised of:
+Registry data is composed of:
 
 * Names of workflows, tasks, launch plans, and artifacts
 * Input and output types for workflows and tasks
@@ -62,7 +79,7 @@ This does not include any workflow or task code, nor any data that is processed 
 
 ## Execution data
 
-Execution data is comprised of::
+Execution data is composed of::
 
 * Event data
 * Workflow inputs
@@ -73,7 +90,7 @@ This data is divided into two categories: *raw data* and *literal data*.
 
 ### Raw data
 
-Raw data is comprised of:
+Raw data is composed of:
 
 * Files and directories
 * Dataframes

@@ -19,7 +19,7 @@ generate: clean_output_folder
 		--variants \
 			+flyte \
 			+byoc \
-			+byok \
+			+selfmanaged \
 			+serverless \
 		--output "${OUTPUT_FOLDER}" \
 		--ignore_types \

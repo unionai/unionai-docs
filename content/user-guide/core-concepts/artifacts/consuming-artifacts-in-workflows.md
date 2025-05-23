@@ -1,7 +1,7 @@
 ---
 title: Consuming artifacts in workflows
 weight: 3
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Consuming artifacts in workflows
@@ -12,7 +12,7 @@ You can define a workflow that consumes an artifact by defining a query and pass
 
 The following code defines a query, `data_query`, that searches across all versions of `BasicArtifact` that match the partition values. This query binds parameters to the workflow's `key1` and `time_partition` inputs and returns the most recent version of the artifact.
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 > [!NOTE]
 > To use the example code on this page, you will need to add your `registry` to the `pandas_image` ImageSpec block.

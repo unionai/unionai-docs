@@ -1,7 +1,7 @@
 ---
 title: Deck
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Deck
   title_expanded: Flytekit Deck Plugin

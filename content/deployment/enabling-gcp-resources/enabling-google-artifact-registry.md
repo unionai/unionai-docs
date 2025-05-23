@@ -1,7 +1,7 @@
 ---
 title: Enabling Google Artifact Registry
 weight: 2
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Enabling Google Artifact Registry

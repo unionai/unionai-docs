@@ -1,7 +1,7 @@
 ---
 title: DBT
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: DBT
   title_expanded: Flytekit dbt plugin

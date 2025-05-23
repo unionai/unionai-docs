@@ -1,7 +1,7 @@
 ---
 title: Managing secrets
 weight: 12
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Managing secrets

@@ -1,7 +1,7 @@
 ---
 title: ImageSpec
 weight: 10
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # ImageSpec
@@ -14,7 +14,7 @@ and get familiar with the ins and outs of `ImageSpec`!
 
 `ImageSpec` allows you to customize the container image for your {{< key product_name >}} tasks without a Dockerfile. `ImageSpec` speeds up the build process by allowing you to reuse previously downloaded packages from the PyPI and APT caches.
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 By default, the `ImageSpec` will be built using the [remote builder](../development-cycle/image-spec#cloud-image-builder), but you can always specify your own e.g. local Docker.

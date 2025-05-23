@@ -1,7 +1,7 @@
 ---
 title: Other identity providers
 weight: 4
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Other identity providers

@@ -1,7 +1,7 @@
 ---
 title: FlyteFile and FlyteDirectory
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 
@@ -361,7 +361,7 @@ if __name__ == "__main__":
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 In {{< key product_name >}}, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
@@ -471,7 +471,7 @@ def workflow():
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ## Changing the data upload location

@@ -1,9 +1,10 @@
 ---
 title: Datacatalog configuration
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
-# Flyte Datacatalog Configuration 
+
+# Flyte Datacatalog Configuration
 
 - [application](#section-application)
 - [database](#section-database)

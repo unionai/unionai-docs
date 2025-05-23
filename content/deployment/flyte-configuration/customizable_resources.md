@@ -1,7 +1,7 @@
 ---
 title: Customizing resources
 weight: 7
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Customizing project, domain, and workflow resources with flytectl

@@ -1,6 +1,6 @@
 ---
 title: Test 3
-variants: -flyte -serverless -byoc -byok
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Test 3
