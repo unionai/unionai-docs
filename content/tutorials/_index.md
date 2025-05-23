@@ -90,8 +90,8 @@ Serve models and run background jobs like data ingestion — all within {{< key 
 {{< /link-card >}}
 
 {{< variant byoc >}}
-{{< link-card target="language-models/data-streaming" icon="" title="Streaming Data for BERT Training" >}}
-Train a BERT model on a large Arabic text dataset using PyTorch Lightning and the streaming library from MosaicML.
+{{< link-card target="language-models/data-streaming" icon="" title="Fine-Tune BERT on Arabic Reviews with Multi-Node Training and Data Streaming" >}}
+Fine-tune a BERT model on a sizable Arabic review dataset using PyTorch Lightning and the streaming library on a multi-node setup.
 {{< /link-card >}}
 {{< /variant >}}
 
