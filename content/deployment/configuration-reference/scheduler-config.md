@@ -3,6 +3,7 @@ title: FlyteScheduler configuration
 weight: 4
 variants: +flyte -serverless -byoc -selfmanaged
 ---
+
 # Flyte Scheduler Configuration
 
 - [admin](#section-admin)

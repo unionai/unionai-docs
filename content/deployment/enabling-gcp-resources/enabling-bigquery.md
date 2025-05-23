@@ -1,7 +1,7 @@
 ---
 title: Enabling BigQuery
 weight: 4
-variants: -flyte -serverless +byoc +selfmanaged
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Enabling BigQuery

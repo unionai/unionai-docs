@@ -3,6 +3,7 @@ title: FlytePropeller configuration
 weight: 3
 variants: +flyte -serverless -byoc -selfmanaged
 ---
+
 # Flyte Propeller Configuration
 
 - [admin](#section-admin)

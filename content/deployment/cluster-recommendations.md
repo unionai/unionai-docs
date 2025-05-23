@@ -3,6 +3,7 @@ title: Cluster Recommendations
 weight: 2
 variants: -flyte -serverless -byoc +selfmanaged
 ---
+
 # Cluster recommendations
 
 {{< key product_name >}} is capable of running on any Kubernetes cluster.  This includes managed Kubernetes services such as Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS), as well as self-managed Kubernetes clusters.

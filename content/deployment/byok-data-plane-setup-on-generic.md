@@ -4,7 +4,7 @@ weight: 3
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
-# Installing {{< key product_name >}} on Kubernetes
+# Data plane setup on generic Kubernetes
 
 {{< key product_name >}}’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.  The Union architecture is described on the [Architecture](../../architecture) page.
 
