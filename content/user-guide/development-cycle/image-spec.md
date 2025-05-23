@@ -6,23 +6,44 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # ImageSpec
 
-During the development cycle you will want to be able to run your workflows both locally on your machine and remotely on {{< key product_name >}},
-so you will need to ensure that the required dependencies are installed in both environments.
+When deploying a task, {{< key product_name >}} needs to know how to build the container image that will be used to run that task.
+You specify this information in an `ImageSpec` object that is passed to the `@{{< key kit_as >}}.task` decorator.
 
-Here we will explain how to set up the dependencies for your workflow to run remotely on {{< key product_name >}}.
-For information on how to make your dependencies available locally, see [Local dependencies](./local-dependencies).
+Here is a simple example:
 
-When a workflow is deployed to {{< key product_name >}}, each task is set up to run in its own container in the Kubernetes cluster.
-You specify the dependencies as part of the definition of the container image to be used for each task using the `ImageSpec` class.
-For example::
+{{< variant flyte >}}
+{{< markdown >}}
 
 ```python
 import {{< key kit_import >}}
 
 image_spec = union.ImageSpec(
-{{< variant byoc selfmanaged >}}
-    builder="union",
+    builder="default",
+    name="say-hello-image",
+    requirements="uv.lock",
+    registry=registry=os.environ.get("IMAGE_REGISTRY", None),
+)
+
+@{{< key kit_as >}}.task(container_image=image_spec)
+def say_hello(name: str) -> str:
+    return f"Hello, {name}!"
+
+@{{< key kit_as >}}.workflow
+def hello_world_wf(name: str = "world") -> str:
+    greeting = say_hello(name=name)
+    return greeting
+```
+
+{{< /markdown >}}
 {{< /variant >}}
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
+
+```python
+import {{< key kit_import >}}
+
+image_spec = union.ImageSpec(
+    builder="union",
     name="say-hello-image",
     requirements="uv.lock",
 )
@@ -37,12 +58,44 @@ def hello_world_wf(name: str = "world") -> str:
     return greeting
 ```
 
-Here, the `ImageSpec` class is used to specify the container image to be used for the `say_hello` task.
+{{< /markdown >}}
+{{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
-* The `builder` parameter specifies how the image should be built. The value `union` means that the image will be built using {{< key product_name >}}'s built-in cloud builder.
-  In some cases you may want to build the image locally on your machine and push it to a container registry. In that case, you would remove the `builder` parameter
-  (or set it to `envd`) and add a `registry` parameter with the URL of the registry to push the image to. See below for more details.
+Here, the `ImageSpec` class is used to specify the container image to be used for the `say_hello` task:
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+* The `builder` parameter specifies how the image should be built.
+  * In this case we specify `default`. This will build the image using `docker` on your local machine and push it to the registry you specify in the `registry` parameter.
+    **You must ensure that the registry and the image itself are accessible to your {{< key product_name >}} cluster. For example, you can use a public registry and make you image publically visible.**
+  * Another builder, `envd`, is also available. This is an alternative local image builder.
+    It requires the package [`flytekitplugins-envd`](https://pypi.org/project/flytekitplugins-envd/).
+    Like `default`, it will also push the image to the location specified in `registry`.
+
+> [!NOTE]
+> Omitting the `builder` parameter is equivalent to specifying `builder="default"`.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
+
+* The `builder` parameter specifies how the image should be built.
+  * In this case we specify `union`, meaning that the image will be built in the cloud using {{< key product_name >}}'s built-in cloud image builder.
+    It will then be pushed to an internal {{< key product_name >}} registry from which the system will later pull it when spinning up the task.
+  * Alternatively, you can specify `default`. This will build the image using `docker` on your local machine.
+    In this case you will also have to add a `registry` parameter with the URL of a container registry to which the system will push the image.
+    **You must ensure that this registry and the image itself are accessible to your {{< key product_name >}} cluster. One option is to use a public registry and make you image publically visible.**
+  * Another option, `envd`, is also available. This is an alternative local image builder.
+    It requires the package [`flytekitplugins-envd`](https://pypi.org/project/flytekitplugins-envd/).
+
+> [!NOTE]
+> In {{< key product_name >}} Serverless, omitting the `builder` parameter is equivalent to specifying `builder="union"`.
+> In {{< key product_name >}} BYOC and Self-managed, omitting the `builder` parameter is equivalent to specifying `builder="default"`
+> (this differentiation exists for purposes of backward compatibility).
+
+{{< /markdown >}}
 {{< /variant >}}
 
 * The `name` parameter specifies the name of the image. This name will be used to identify the image in the container registry.
@@ -53,6 +106,14 @@ Here, the `ImageSpec` class is used to specify the container image to be used fo
   * A `uv.lock` file generated by the `uv sync` command.
   * A `poetry.lock` file generated by the `poetry install` command.
   * A `pyproject.toml` file.
+
+
+
+
+
+
+
+
 
 When you execute the `{{< key cli >}} run` or `{{< key cli >}} register` command, {{< key product_name >}} will build the container image defined in `ImageSpec` block
 (as well as registering the tasks and workflows defined in your code).
