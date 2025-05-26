@@ -23,8 +23,53 @@ There are three ways of defining [PodTemplate](https://kubernetes.io/docs/concep
 
 ## A note about containers kinds
 
-In a Kubernetes Pod, you can have multiple containers but typically there is one considered "primary", or the one that runs the microservice or app. 
-You can also have [initContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers) which are designed to run before the primary to perfomr anciliarry tasks like downloading data.
+In a Kubernetes Pod, you can have multiple containers but typically there is one considered "primary", or the one that runs the microservice or main application. 
+You can also have [initContainers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/#understanding-init-containers) which are designed to run before the primary to perform anciliary tasks like downloading data. They run sequentially and must complete succesfully before the primary container can run. You would define them under a separate section of the PodTemplate spec:
+
+```yaml
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: myPodTemplate
+template:
+  spec:
+    containers:
+    - name: myapp-container #primary container
+      image: busybox:1.28
+      command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+    initContainers:
+    - name: init-mydb
+      image: busybox:1.28
+      command: ['sh', '-c', "until nslookup mydb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+```
+A special case of `initContainer` are the [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/#pod-sidecar-containers). They are also designed to extend the functionality of the primary container but they remain running even after the Pod startup process completes. 
+You would configure them as an `initContainer` but with a policy that enables them to be restarted independently from the primary container:
+
+```yaml
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: myPodTemplate
+template:
+  spec:
+    containers:
+    - name: myapp-container #primary container
+      image: busybox:1.28
+      command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+    initContainers:
+    - name: init-mydb
+      image: busybox:1.28
+      command: ['sh', '-c', "until nslookup mydb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+    - name: logshipper
+        image: alpine:latest
+        restartPolicy: Always #overrides the Pod's restart policy. This makes it a sidecar container
+        command: ['sh', '-c', 'tail -F /opt/logs.txt']
+        volumeMounts:
+          - name: data
+            mountPath: /opt
+```
+Flyte support any of the above mentioned container kinds. In the following sections you will learn how to use PodTemplates in Flyte for different scenarios.
+
 ## Compile-time PodTemplates
 
 Using the [Kubernetes Python client](https://github.com/kubernetes-client/python), we can define a compile-time PodTemplate as part of the configuration of a [Task](https://docs.flyte.org/en/latest/api/flytekit/generated/flytekit.task.html#flytekit-task).
