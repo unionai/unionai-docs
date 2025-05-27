@@ -21,6 +21,10 @@ div.DocSearch-Logo {
     display: none;
 }
 
+form.DocSearch-Form {
+    z-index: 100;
+}
+
 div.DocSearch-Logo .cls-1,
 div.DocSearch-Logo .cls-2 {
     fill: var(--docsearch-primary-color) !important;
