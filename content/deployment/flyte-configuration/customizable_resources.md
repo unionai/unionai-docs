@@ -1,7 +1,7 @@
 ---
 title: Customizing resources
 weight: 7
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Customizing project, domain, and workflow resources with flytectl
@@ -30,7 +30,6 @@ The following section will show you how to configure the settings along
 these dimensions.
 
 ### Task resources
-
 
 As a system administrator you may want to define default task resource requests and limits across your Flyte deployment. This can be set globally in the FlyteAdmin [config](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/charts/flyte-core/values.yaml#L786-L795)
 under `task_resource_defaults`.
@@ -89,7 +88,8 @@ the protocol and host appropriately.
 ### Cluster resources
 
 
-Cluster resources are how you configure Kubernetes namespace attributes that are applied at execution time. This includes per-namespace resource quota, patching the default service account with a bounded IAM role, or attaching    `imagePullSecrets` to the default service account for accessing a private container registry
+Cluster resources are how you configure Kubernetes namespace attributes that are applied at execution time.
+This includes per-namespace resource quota, patching the default service account with a bounded IAM role, or attaching `imagePullSecrets` to the default service account for accessing a private container registry
 
 #### Configuring cluster resources
 
@@ -99,18 +99,14 @@ The keys represent templatized variables in the
 [cluster resource template](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/charts/flyte-core/values.yaml#L1035-L1056)
 and the values are what you want to see filled in.
 
-In the absence of custom customized values, your Flyte installation will use ``customData`` from the
-FlyteAdmin config
-as the per-domain defaults. Flyte specifies these defaults by domain and applies them to every
-project-domain namespace combination.
+In the absence of custom customized values, your Flyte installation will use ``customData`` from the FlyteAdmin config
+as the per-domain defaults. Flyte specifies these defaults by domain and applies them to every project-domain namespace combination.
 
 #### Customizing cluster resource configuration
-
 
 The cluster resource template values can be specified on domain, and project-and-domain.
 Since Flyte execution namespaces are never on a per-workflow or a launch plan basis, specifying a workflow or launch plan level customization is non-actionable.
 This is a departure from the usual hierarchy for customizable resources.
-
 
 Define an attributes file, ``cra.yaml``:
 

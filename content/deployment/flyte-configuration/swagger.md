@@ -1,7 +1,7 @@
 ---
 title: API playground
 weight: 13
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Flyte API Playground: Swagger
@@ -23,7 +23,7 @@ flytectl demo start
 Once sandbox setup is complete, a ready-to-explore message is shown:
 
 ```bash
-   👨‍💻 Flyte is ready! Flyte UI is available at http://localhost:30081/console 🚀 🚀 🎉 
+   👨‍💻 Flyte is ready! Flyte UI is available at http://localhost:30081/console 🚀 🚀 🎉
 ```
 
 Visit ``http://localhost:30080/api/v1/openapi`` to view the swagger documentation of the payload fields.

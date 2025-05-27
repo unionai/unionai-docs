@@ -1,7 +1,7 @@
 ---
 title: Reference tasks
 weight: 7
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Reference tasks
@@ -33,7 +33,7 @@ A reference_task references tasks that have already been defined, serialized, an
 
    ```python
    from flytekit import reference_task
-   
+
    @reference_task(
        project="flytesnacks",
        domain="development",
@@ -42,7 +42,7 @@ A reference_task references tasks that have already been defined, serialized, an
    )
    def add_two_numbers(a: int, b: int) -> int:
        ...
-       
+
    @{{< key kit_as >}}.workflow
    def wf(a: int, b: int) -> int:
        return add_two_numbers(a, b)

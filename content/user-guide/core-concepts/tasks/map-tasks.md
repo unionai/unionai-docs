@@ -1,7 +1,7 @@
 ---
 title: Map tasks
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 ## Map tasks
@@ -60,7 +60,7 @@ def map_workflow_with_additional_params(
 ) -> list[typing.Optional[bool]]:
 
     return {{< key kit_as >}}.{{<key map_func>}}(
-        detect_anomalies, 
+        detect_anomalies,
         concurrency=1,
         min_success_ratio=0.75
     )(data_point=data)

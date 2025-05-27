@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on Azure
-weight: 5
-variants: -flyte -serverless +byoc +byok
+weight: 7
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Data plane setup on Azure

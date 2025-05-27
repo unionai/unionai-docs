@@ -1,7 +1,7 @@
 ---
 title: Configuration reference
-variants: +flyte -serverless -byoc -byok
-weight: 6
+variants: +flyte -serverless -byoc -selfmanaged
+weight: 17
 sidebar_expanded: true
 ---
 

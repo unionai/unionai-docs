@@ -1,6 +1,6 @@
 ---
 title: uctl update workflow-meta
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl update workflow-meta

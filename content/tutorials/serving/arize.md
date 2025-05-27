@@ -1,7 +1,7 @@
 ---
 title: Trace and Evaluate Models and RAG Apps with Arize
 weight: 5
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +selfmanaged
 layout: py_example
 example_file: /external/unionai-examples/tutorials/arize/apps.py
 run_on_union_secrets:

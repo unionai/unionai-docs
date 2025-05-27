@@ -9,7 +9,7 @@ all:
 	python tools/plugin_generator/main.py \
 		--flytekit_root ~/src/flyteorg/flytekit \
 		--output content/api-reference/plugins \
-		--variants "+flyte -byoc -byok -serverless"
+		--variants "+flyte -byoc -selfmanaged -serverless"
 
 .PHONY: base
 base:
@@ -32,7 +32,7 @@ generate: clean_output_folder
 		--variants \
 			+flyte \
 			+byoc \
-			+byok \
+			+selfmanaged \
 			+serverless \
 		--output "${OUTPUT}" \
 		--ignore_types \

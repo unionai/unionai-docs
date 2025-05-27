@@ -1,7 +1,7 @@
 ---
 title: Memory Machine Cloud
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Memory Machine Cloud
   title_expanded: Flytekit Memory Machine Cloud Plugin

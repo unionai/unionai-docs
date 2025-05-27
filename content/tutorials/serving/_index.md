@@ -1,6 +1,6 @@
 ---
 title: Serving
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 weight: 1
 sidebar_expanded: true
 ---

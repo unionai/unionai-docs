@@ -1,6 +1,6 @@
 ---
 title: uctl get execution-cluster-label
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl get execution-cluster-label

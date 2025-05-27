@@ -1,7 +1,7 @@
 ---
 title: CI/CD deployment
 weight: 17
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +selfmanaged
 ---
 
 # CI/CD deployment
@@ -90,7 +90,7 @@ logger:
 
 Finally, you need to set up the CI/CD configuration file. For GitHub Actions you might create the file `example-project/.github/workflows/deploy.yaml` that looks like this:
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 ```yaml
 name: Deploy

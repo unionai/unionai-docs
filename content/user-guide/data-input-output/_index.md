@@ -1,7 +1,7 @@
 ---
 title: Data input/output
 weight: 6
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -84,7 +84,7 @@ This section covers how to manage data input and output in {{< key product_name 
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 This section covers how to manage data input and output in {{< key product_name >}}.

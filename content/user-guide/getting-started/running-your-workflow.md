@@ -1,7 +1,7 @@
 ---
 title: Running your workflow
 weight: 5
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Running your workflow
@@ -102,7 +102,7 @@ The output displays a URL that links to the workflow execution in the UI:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ```shell

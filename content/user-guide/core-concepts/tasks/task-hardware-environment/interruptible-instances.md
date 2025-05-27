@@ -1,7 +1,7 @@
 ---
 title: Interruptible instances
 weight: 4
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 ---
 
 # Interruptible instances
@@ -15,7 +15,7 @@ An interruptible instance is a machine instance made available to your cluster b
 As a result, interruptible instances are cheaper than regular instances.
 In order to use an interruptible instance for a compute workload you have to be prepared for the possibility that an attempt to run the workload could fail due to lack of available resources and will need to be retried.
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 When onboarding your organization onto {{< key product_name >}}, you [specify the configuration of your cluster](../../../../deployment/configuring-your-data-plane).

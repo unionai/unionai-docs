@@ -1,7 +1,7 @@
 ---
 title: Declaring artifacts
 weight: 1
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Declaring artifacts
@@ -13,7 +13,7 @@ In order to define a task or workflow that emits an artifact, you must first dec
 
 In the following example, an artifact called `BasicTaskData` is declared, along with a task that emits that artifact. Since it is a basic artifact, it doesn't have any partitions.
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 > [!NOTE]

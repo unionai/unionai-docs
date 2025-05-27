@@ -1,9 +1,10 @@
 ---
 title: FlytePropeller configuration
 weight: 3
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
-# Flyte Propeller Configuration 
+
+# Flyte Propeller Configuration
 
 - [admin](#section-admin)
 - [catalog-cache](#section-catalog-cache)

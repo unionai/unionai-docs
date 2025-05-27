@@ -1,6 +1,6 @@
 ---
 title: uctl delete app
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # uctl delete app
