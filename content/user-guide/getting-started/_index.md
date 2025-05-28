@@ -2,7 +2,7 @@
 title: Getting started
 weight: 3
 sidebar_expanded: true
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Getting started
@@ -93,7 +93,7 @@ stop it manually on the Workspaces page.
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## Gather your credentials

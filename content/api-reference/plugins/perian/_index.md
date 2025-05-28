@@ -1,7 +1,7 @@
 ---
 title: Perian Job Platform
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Perian Job Platform
   title_expanded: Flytekit Perian Job Platform Plugin

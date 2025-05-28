@@ -8,7 +8,6 @@ button.DocSearch {
     width: 100%;
     margin: 0;
 }
-
 kbd.DocSearch-Commands-Key:not(.compound) {
     padding: 0;
 }
@@ -16,6 +15,14 @@ kbd.DocSearch-Commands-Key:not(.compound) {
 div.DocSearch-Hit-content-wrapper {
     /* prevent scrollbar from showing up */
     overflow-y: hidden;
+}
+
+div.DocSearch-Logo {
+    display: none;
+}
+
+form.DocSearch-Form {
+    z-index: 100;
 }
 
 div.DocSearch-Logo .cls-1,

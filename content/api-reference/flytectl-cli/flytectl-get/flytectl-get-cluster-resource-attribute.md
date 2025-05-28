@@ -1,6 +1,6 @@
 ---
 title: flytectl get cluster-resource-attribute
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # flytectl get cluster-resource-attribute

@@ -1,7 +1,7 @@
 ---
 title: Inference
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Inference
   title_expanded: Inference Plugins

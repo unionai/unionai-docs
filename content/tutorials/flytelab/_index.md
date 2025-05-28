@@ -1,7 +1,7 @@
 ---
 title: Flytelab
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 sidebar_expanded: true
 ---
 

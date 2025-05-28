@@ -1,7 +1,7 @@
 ---
 title: MLflow
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: MLflow
   title_expanded: Flytekit MLflow Plugin

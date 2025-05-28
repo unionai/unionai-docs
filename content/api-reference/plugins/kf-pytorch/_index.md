@@ -1,7 +1,7 @@
 ---
 title: Kubeflow PyTorch
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Kubeflow PyTorch
   title_expanded: Flytekit Kubeflow PyTorch Plugin

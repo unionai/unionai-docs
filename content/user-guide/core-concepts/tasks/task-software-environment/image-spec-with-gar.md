@@ -1,7 +1,7 @@
 ---
 title: ImageSpec with GAR
 weight: 3
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 ---
 
 # ImageSpec with GAR
@@ -9,7 +9,7 @@ variants: +flyte -serverless +byoc +byok
 In this section we explain how to set up and use Google Artifact Registry (GAR) to build and deploy task container images using `ImageSpec`.
 
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 ## Prerequisites
@@ -43,7 +43,7 @@ This means that you have to decide on the name of your repository and create it,
 * Your repository will be called `my-image-repository`.
 * Your image will be called `simple-example-image`.
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 In the GCP console, within your {{< key product_name >}} data plane project, go to **Artifact Registry**. You should see a list of repositories. The existing ones are used internally by {{< key product_name >}}. For your own work you should create a new one. Click **Create Repository**:
@@ -65,7 +65,7 @@ On the **Create repository** page,
 * Enter the name of the repository. In this example it would be `my-image-repository`.
 * Select **Docker** for the artifact type.
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 * Select the region. If you want to access the GAR without further configuration, make sure this the same region as your {{< key product_name >}} data plane.

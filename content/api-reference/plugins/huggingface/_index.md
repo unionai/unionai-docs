@@ -1,7 +1,7 @@
 ---
 title: Hugging Face
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Hugging Face
   title_expanded: Flytekit Hugging Face Plugin

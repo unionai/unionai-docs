@@ -1,7 +1,7 @@
 ---
 title: Enabling AWS S3
 weight: 1
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Enabling AWS S3

@@ -1,7 +1,7 @@
 ---
 title: Memray Profiling
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Memray Profiling
   title_expanded: Memray Profiling Plugin

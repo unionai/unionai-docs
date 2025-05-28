@@ -33,6 +33,7 @@
   --main-content-padding: 2rem;
   --toc-bg: var(--bg-color);
   --docsearch-primary-color: #edab1c !important;
+  --docsearch-highlight-color: var(--docsearch-primary-color) !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
   --breadcrumbs-height: 128px;
   --old-version-border: 3px solid var(--union-color);
@@ -46,6 +47,7 @@
   --union-color-dark: #523a82;
   --union-color-very-light: #c7b1dc;
   --docsearch-primary-color: #7652A2 !important;
+  --docsearch-highlight-color: #7652A2 !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
   --old-version-border: 3px solid var(--union-color);
 }
@@ -75,6 +77,8 @@
   --union-color-light: #8566a1;
   --union-color-dark: #432d6e;
   --union-color-very-light: #88749a;
+  --docsearch-primary-color: #7652A2 !important;
+  --docsearch-highlight-color: #7652A2 !important;
   --table-row-even: #1a1720;
   --table-row-hover: #292532;
 }

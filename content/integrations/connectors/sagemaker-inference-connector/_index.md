@@ -1,7 +1,7 @@
 ---
 title: SageMaker connector
 weight: 1
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -27,7 +27,7 @@ For an example query, see [SageMaker connector example usage](./sagemaker-infere
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 For an example query, see [SageMaker connector example usage](./sagemaker-inference-connector-example-usage-union)

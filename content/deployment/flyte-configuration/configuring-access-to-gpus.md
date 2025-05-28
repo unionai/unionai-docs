@@ -1,7 +1,7 @@
 ---
 title: Access to GPUs
 weight: 4
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Configuring Access to GPUs

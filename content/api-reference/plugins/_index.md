@@ -1,6 +1,6 @@
 ---
 title: FlyteKit Plugins
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 weight: 99
 sidebar_expanded: true
 ---
