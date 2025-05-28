@@ -4,9 +4,9 @@ weight: 3
 variants: +flyte -serverless -byoc -selfmanaged
 ---
 
-## Flyte multi-cluster setup
+# Multi-cluster
 
-The multi-cluster deployment described in this section, assumes you have deployed the `flyte-core` helm chart, which runs the individual flyte components separately.
+The multi-cluster deployment described in this section assumes that you have deployed the `flyte-core` helm chart, which runs the individual flyte components separately.
 This is needed because in a multi-cluster setup, the execution engine (`flytepropeller`) is deployed to multiple k8s clusters; hence it wouldn't work with the `flyte-binary` helm chart, since it deploys all flyte services as one single binary.
 
 > [!NOTE]
