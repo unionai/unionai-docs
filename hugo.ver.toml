@@ -1,6 +1,7 @@
 [params]
 # List of available versions. Format: v<major>.<minor>
 versions = [
+  "2.0-beta1"
 ]
 
 # Set legacy version number
