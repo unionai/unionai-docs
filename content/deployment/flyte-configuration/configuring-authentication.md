@@ -598,6 +598,8 @@ A succesful response here it's a link with an authorization code you can use in 
 
 You can instruct Helm not to create and manage the secret for `flytepropeller`. In that case, you'll have to create it following these steps:
 
+> [!NOTE]
+> Verify that your "headless" machine has the `keyrings.alt` Python package installed for this flow to work.
 
 1. Disable Helm secrets management in your values file
 
