@@ -12,7 +12,7 @@ the integrity of the overall system.
 
 Flyte supports most of the [OAuth2.0](https://tools.ietf.org/html/rfc6749) authorization grants and use them to control access to workflow and task executions as the main protected resources.
 
-Additionally, Flyte implements the [OIDC1.0](https://openid.net/specs/openid-connect-core-1_0.html) standard to attach user identity to the autorization flow. This feature requires integration with an external Identity Provider.
+Additionally, Flyte implements the [OIDC1.0](https://openid.net/specs/openid-connect-core-1_0.html) standard to attach user identity to the authorization flow. This feature requires integration with an external Identity Provider.
 
 The following diagram illustrates how the elements of the OAuth2.0 protocol map to the Flyte components involved in the authentication process:
 
@@ -40,7 +40,7 @@ There are two main dependencies required for a complete auth flow in Flyte:
 * **An authorization server** The authorization server job is to issue access tokens to clients for them to access the protected resources.
   Flyte ships with two options for the authorization server:
   * **Internal authorization server**: It's part of `flyteadmin` and is a suitable choice for quick start or testing purposes.
-  * **External (custom) authorization server**: This a service provided by one of the supported IdPs and is the recommended option if your organization needs to retain control over scope definitions, token expiration policies and other advanced security controls.
+  * **External (custom) authorization server**: This is a service provided by one of the supported IdPs and is the recommended option if your organization needs to retain control over scope definitions, token expiration policies and other advanced security controls.
 
 > [!NOTE]
 > Regardless of the type of authorization server to use, you will still need an IdP to provide identity through OIDC.
@@ -592,42 +592,42 @@ admin:
   authType: DeviceFlow
   clientId: <your_clientID> #provided by your IdP
 ```
-A succesful response here it's a link with an authorization code you can use in a system with a browser to complete the auth flow.
+A successful response here it's a link with an authorization code you can use in a system with a browser to complete the auth flow.
 
 ## Disable Helm secret management
 
 You can instruct Helm not to create and manage the secret for `flytepropeller`. In that case, you'll have to create it following these steps:
 
+> [!NOTE]
+> Verify that your "headless" machine has the `keyrings.alt` Python package installed for this flow to work.
 
 1. Disable Helm secrets management in your values file
 
 ```yaml
-
-   secrets:
-     adminOauthClientCredentials:
-       enabled: true # enable mounting the flyte-secret-auth secret to the flytepropeller.
-       clientSecret: null # disable Helm from creating the flyte-secret-auth secret.
-       # Replace with the client_id provided by provided by your IdP for flytepropeller.
-       clientId: <client_id>
+secrets:
+  adminOauthClientCredentials:
+    enabled: true # enable mounting the flyte-secret-auth secret to the flytepropeller.
+    clientSecret: null # disable Helm from creating the flyte-secret-auth secret.
+    # Replace with the client_id provided by provided by your IdP for flytepropeller.
+    clientId: <client_id>
 ```
 2. Create a secret declaratively:
 
 ```yaml
-
-   apiVersion: v1
-   kind: Secret
-   metadata:
-    name: flyte-secret-auth
-    namespace: flyte
-   type: Opaque
-   stringData:
-  # Replace with the client_secret provided by your IdP for flytepropeller.
-     client_secret: <client_secret>
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flyte-secret-auth
+  namespace: flyte
+  type: Opaque
+  stringData:
+    # Replace with the client_secret provided by your IdP for flytepropeller.
+    client_secret: <client_secret>
 ```
+
 `flytepropeller` then will mount this secret.
 
 ## Continuous Integration - CI
-
 
 If your organization does any automated registration, then you'll need to authenticate using the [Client Credentials](#client-credentials) flow.
 
@@ -645,8 +645,7 @@ Also, `FLYTE_CREDENTIALS_CLIENT_SECRET_FROM_FILE` redirect is available as well,
 
 The following is a list of flytekit configuration values the community has used in CI, along with a brief explanation:
 
-```bash
-
+```shell
 # When using OAuth2 service auth, this is the username and password.
 export FLYTE_CREDENTIALS_CLIENT_ID=<client_id>
 export FLYTE_CREDENTIALS_CLIENT_SECRET=<client_secret>
@@ -667,5 +666,3 @@ export FLYTE_CREDENTIALS_OAUTH_SCOPES=<idp defined scopes>
 # rolling out the requirement.
 export FLYTE_PLATFORM_AUTH=True
 ```
-
-
