@@ -12,7 +12,7 @@ Here are some guidelines for you to follow, which will make your first and follo
 
 TL;DR: Find the repo-specific contribution guidelines in the [Component Reference](#component-reference) section.
 
-## 💻 Becoming a contributor
+## Becoming a contributor
 
 An issue tagged with [`good first issue`](https://github.com/flyteorg/flyte/labels/good%20first%20issue) is the best place to start for first-time contributors.
 
@@ -69,7 +69,7 @@ Also, add relevant labels to your issue. For example, if you are filing a Flytek
 
 For feedback at any point in the contribution process, feel free to reach out to us on [Slack](https://flyte-org.slack.com/archives/C04NJPLRWUX).
 
-## 🧱 Component Reference
+## Component Reference
 
 To understand how the below components interact with each other, refer to [Understand the lifecycle of a workflow](#workflow-lifecycle).
 
@@ -177,7 +177,7 @@ To understand how the below components interact with each other, refer to [Under
 | **Language** | Go |
 | **Guidelines** | Refer to the [FlyteCTL Contribution Guide](https://docs.flyte.org/en/latest/flytectl/contribute.html) |
 
-## 🔮 Development Environment Setup Guide
+## Development Environment Setup Guide
 
 This guide provides a step-by-step approach to setting up a local
 development environment for
@@ -193,9 +193,7 @@ development environment for
 The video below is a tutorial on how to set up a local development
 environment for Flyte.
 
-::: youtube
-V-KlVQmQAjE
-:::
+{{< youtube V-KlVQmQAjE >}}
 
 ### Requirements
 
@@ -209,10 +207,10 @@ image. The following tools are required:
 ### Content
 
 - [Contributing code](#contributing-code)
-  - [💻 Becoming a contributor](#-becoming-a-contributor)
+  - [Becoming a contributor](#becoming-a-contributor)
     - [Before submitting your PR](#before-submitting-your-pr)
   - [🐞 File an issue](#-file-an-issue)
-  - [🧱 Component Reference](#-component-reference)
+  - [Component Reference](#component-reference)
     - [`flyte`](#flyte)
     - [`flyteidl`](#flyteidl)
     - [`flytepropeller`](#flytepropeller)
@@ -223,7 +221,7 @@ image. The following tools are required:
     - [`flyteplugins`](#flyteplugins)
     - [`flytestdlib`](#flytestdlib)
     - [`flytectl`](#flytectl)
-  - [🔮 Development Environment Setup Guide](#-development-environment-setup-guide)
+  - [Development Environment Setup Guide](#development-environment-setup-guide)
     - [Requirements](#requirements)
     - [Content](#content)
     - [How to setup dev environment for flyteidl, flyteadmin, flyteplugins, flytepropeller, datacatalog and flytestdlib?](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
@@ -235,8 +233,7 @@ image. The following tools are required:
 
 **1. Install flytectl**
 
-[Flytectl](https://github.com/flyteorg/flytectl) is a portable and
-lightweight command-line interface to work with Flyte.
+[Flytectl](https://github.com/flyteorg/flytectl) is a portable and lightweight command-line interface to work with Flyte.
 
 ``` shell
 # Step 1: Install the latest version of flytectl
@@ -251,11 +248,9 @@ export PATH=$PATH:/home/ubuntu/bin # replace with your path
 
 **2. Build a k3s cluster that runs minio and postgres Pods.**
 
-| [Minio](https://min.io/) is an S3-compatible object store that will be
-  used later to store task output, input, etc.
-| [Postgres](https://www.postgresql.org/) is an open-source
-  object-relational database that will later be used by
-  flyteadmin/dataCatalog to store all Flyte information.
+[Minio](https://min.io/) is an S3-compatible object store that will be used later to store task output, input, etc.
+
+[Postgres](https://www.postgresql.org/) is an open-source object-relational database that will later be used by flyteadmin/dataCatalog to store all Flyte information.
 
 ``` shell
 # Step 1: Start k3s cluster, create Pods for postgres and minio. Note: We cannot access Flyte UI yet! but we can access the minio console now.
@@ -280,11 +275,9 @@ kubectl get pod -n flyte
 # flyte-sandbox-postgresql-0                            1/1     Running   0          5m
 ```
 
-**3. Run all Flyte components (flyteadmin, flytepropeller, datacatalog,
-flyteconsole, etc) in a single binary.**
+**3. Run all Flyte components (flyteadmin, flytepropeller, datacatalog, flyteconsole, etc) in a single binary.**
 
-The [Flyte repository](https://github.com/flyteorg/flyte) includes Go
-code that integrates all Flyte components into a single binary.
+The [Flyte repository](https://github.com/flyteorg/flyte) includes Go code that integrates all Flyte components into a single binary.
 
 ``` shell
 # Step 1: Clone flyte repo
@@ -319,16 +312,11 @@ POD_NAMESPACE=flyte flyte start --config flyte-single-binary-local.yaml
 
 **4. Build single binary with your own code.**
 
-The following instructions provide guidance on how to build single
-binary with your customized code under the `flyteadmin` as an example.
+The following instructions provide guidance on how to build single binary with your customized code under the `flyteadmin` as an example.
 
-- **Note** Although we\'ll use `flyteadmin` as an example, these steps
-  can be applied to other Flyte components or libraries as well.
-  `{flyteadmin}` below can be substituted with other Flyte
-  components/libraries: `flyteidl`, `flyteplugins`, `flytepropeller`,
-  `datacatalog`, or `flytestdlib`.
-- **Note** If you want to learn how flyte compiles those components and
-  replace the repositories, you can study how `go mod edit` works.
+- **Note** Although we\'ll use `flyteadmin` as an example, these steps can be applied to other Flyte components or libraries as well.
+  `{flyteadmin}` below can be substituted with other Flyte components/libraries: `flyteidl`, `flyteplugins`, `flytepropeller`, `datacatalog`, or `flytestdlib`.
+- **Note** If you want to learn how flyte compiles those components and replace the repositories, you can study how `go mod edit` works.
 
 ``` shell
 # Step 1: Install Go. Flyte uses Go 1.19, so make sure to switch to Go 1.19.
@@ -378,10 +366,8 @@ flytectl demo teardown
 
 **1. Set up local Flyte Cluster.**
 
-If you are also modifying the code for flyteidl, flyteadmin,
-flyteplugins, flytepropeller datacatalog, or flytestdlib, refer to the
-instructions in the [previous
-section](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
+If you are also modifying the code for flyteidl, flyteadmin, flyteplugins, flytepropeller datacatalog, or flytestdlib, refer to the instructions in the
+[previous section](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
 to set up a local Flyte cluster.
 
 If not, we can start backends with a single command.
@@ -446,14 +432,11 @@ pyflyte run https://raw.githubusercontent.com/flyteorg/flytesnacks/master/exampl
 
 **3. Run workflow in sandbox.**
 
-Before running your workflow in the sandbox, make sure you\'re able to
-successfully run it locally. To deploy the workflow in the sandbox,
-you\'ll need to build a Flytekit image. Create a Dockerfile in your
-Flytekit directory with the minimum required configuration to run a
-task, as shown below. If your task requires additional components, such
-as plugins, you may find it useful to refer to the construction of the
-[official flytekit
-image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile)
+Before running your workflow in the sandbox, make sure you're able to successfully run it locally.
+To deploy the workflow in the sandbox, you'll need to build a Flytekit image.
+Create a Dockerfile in your Flytekit directory with the minimum required configuration to run a task, as shown below.
+If your task requires additional components, such as plugins, you may find it useful to refer to the construction of the
+[official flytekit image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile)
 
 ``` Dockerfile
 FROM python:3.9-slim-buster
@@ -494,16 +477,11 @@ pyflyte run --image ${FLYTE_INTERNAL_IMAGE} --remote https://raw.githubuserconte
 
 **1. Set up local Flyte cluster.**
 
-Depending on your needs, refer to one of the following guides to setup
-up the Flyte cluster:
+Depending on your needs, refer to one of the following guides to set up up the Flyte cluster:
 
-- If you do not need to change the backend code, refer to the section on
-  [How to Set Up a Dev Environment for
-  Flytekit?](#how-to-setup-dev-environment-for-flytekit)
-- If you need to change the backend code, refer to the section on [How
-  to setup dev environment for flyteidl, flyteadmin, flyteplugins,
-  flytepropeller, datacatalog and
-  flytestdlib?](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
+- If you do not need to change the backend code, refer to the section on [How to Set Up a Dev Environment for Flytekit?](#how-to-setup-dev-environment-for-flytekit)
+- If you need to change the backend code, refer to the section on
+  [How to setup dev environment for flyteidl, flyteadmin, flyteplugins, flytepropeller, datacatalog and flytestdlib?](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
 
 **2. Start flyteconsole.**
 
@@ -556,45 +534,35 @@ resources.
 ### How to access Flyte UI, minio, postgres, k3s, and endpoints?
 
 This section presumes a local Flyte cluster is already setup. If it
-isn\'t, refer to either:
+isn't, refer to either:
 
-- [How to setup dev environment for
-  flytekit?](#how-to-setup-dev-environment-for-flytekit)
-- [How to setup dev environment for flyteidl, flyteadmin, flyteplugins,
-  flytepropeller, datacatalog and
-  flytestdlib?](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
+- [How to setup dev environment for flytekit?](#how-to-setup-dev-environment-for-flytekit)
+- [How to setup dev environment for flyteidl, flyteadmin, flyteplugins, flytepropeller, datacatalog and flytestdlib?](#how-to-setup-dev-environment-for-flyteidl-flyteadmin-flyteplugins-flytepropeller-datacatalog-and-flytestdlib)
 
 **1. Access the Flyte UI.**
 
-[Flyte UI](https://docs.flyte.org/en/latest/concepts/flyte_console.html)
-is a web-based user interface for Flyte that lets you interact with
-Flyte objects and build directed acyclic graphs (DAGs) for your
-workflows.
+[Flyte UI](https://docs.flyte.org/en/latest/concepts/flyte_console.html) is a web-based user interface for Flyte
+that lets you interact with Flyte objects and build directed acyclic graphs (DAGs) for your workflows.
 
 You can access it via <http://localhost:30080/console>.
 
 **2. Access the minio console.**
 
-Core Flyte components, such as admin, propeller, and datacatalog, as
-well as user runtime containers rely on an object store (in this case,
-minio) to hold files. During development, you might need to examine
-files such as
-[input.pb/output.pb](https://docs.flyte.org/en/latest/concepts/data_management.html#serialization-time),
-or
-[deck.html](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1)
-stored in minio.
+Core Flyte components, such as admin, propeller, and datacatalog, as well as user runtime containers rely on an object store (in this case, minio) to hold files.
+During development, you might need to examine files such as
+[input.pb/output.pb](https://docs.flyte.org/en/latest/concepts/data_management.html#serialization-time), or
+[deck.html](https://docs.flyte.org/en/latest/user_guide/development_lifecycle/decks.html#id1) stored in minio.
 
-Access the minio console at: <http://localhost:30080/minio/login>. The
-default credentials are:
+Access the minio console at: <http://localhost:30080/minio/login>.
+The default credentials are:
 
 - Username: `minio`
 - Password: `miniostorage`
 
 **3. Access the postgres.**
 
-FlyteAdmin and datacatalog use postgres to store persistent records, and
-you can interact with postgres on port `30001`. Here is an example of
-using [psql]{.title-ref} to connect:
+FlyteAdmin and datacatalog use postgres to store persistent records, and you can interact with postgres on port `30001`.
+Here is an example of using `psql` to connect:
 
 ``` shell
 # Step 1: Install the PostgreSQL client.
@@ -612,9 +580,8 @@ Access the k3s dashboard at:
 
 **5. Access the endpoints.**
 
-Service endpoints are defined in the [flyteidl]{.title-ref} repository
-under the [service]{.title-ref} directory. You can browse them at
-[here](https://github.com/flyteorg/flyteidl/tree/master/protos/flyteidl/service).
+Service endpoints are defined in the `flyteidl` repository under the `service` directory.
+You can browse them at [here](https://github.com/flyteorg/flyteidl/tree/master/protos/flyteidl/service).
 
 For example, the endpoint for the
 [ListTaskExecutions](https://github.com/flyteorg/flyteidl/blob/b219c2ab37886801039fda67d913760ac6fc4c8b/protos/flyteidl/service/admin.proto#L442)
