@@ -1,5 +1,5 @@
 OUTPUT_FOLDER=content/api-reference/union-sdk
-API_DATA=/Users/shalomz/flt/union.api.yaml
+API_DATA=/tmp/union.api.yaml
 
 .PHONY: all
 all: parser generate
