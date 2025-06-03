@@ -1,16 +1,18 @@
 ---
-title: Union v2
-version: 0.1.0
-variants: +flyte +byoc +byok +serverless
+title: Flyte V2
+version: 0.2.0b4.dev1+g1e3e3e4
+variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# Union v2
+# Flyte V2
 
-This is the new Union SDK.
+This is the new Union, based on the new Flyte SDK.
 
 ## Why?
-The world is evolving. The gap between batch and real-time workflows is shrinking. Workflow orchestration—especially multi-step workflows with integrated dataflow—is now a critical need across various domains:
+
+The world is evolving. The gap between batch and real-time workflows is shrinking.
+Workflow orchestration—especially multi-step workflows with integrated dataflow—is now a critical need across various domains:
 
 •	**Batch workflows** for large-scale data processing
 

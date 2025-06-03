@@ -1,11 +1,11 @@
 ---
-title: union.io
-version: 0.1.0
-variants: +flyte +byoc +byok +serverless
+title: flyte.io
+version: 0.2.0b4.dev1+g1e3e3e4
+variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# union.io
+# flyte.io
 
 
 ## IO data types
@@ -19,13 +19,15 @@ of large datasets in Union.
 
 | Class | Description |
 |-|-|
-| [`Dir`](.././union.io#unioniodir) | A generic directory class representing a directory with files of a specified format. |
-| [`File`](.././union.io#unioniofile) | A generic file class representing a file with a specified format. |
+| [`Dir`](.././flyte.io#flyteiodir) | A generic directory class representing a directory with files of a specified format. |
+| [`File`](.././flyte.io#flyteiofile) | A generic file class representing a file with a specified format. |
 
-## union.io.Dir
+## flyte.io.Dir
 
 A generic directory class representing a directory with files of a specified format.
 Provides both async and sync interfaces for directory operations.
+Users are responsible for handling all I/O - the type transformer for Dir does not do any automatic uploading
+or downloading of files.
 
 The generic type T represents the format of the files in the directory.
 
@@ -49,18 +51,20 @@ Example:
 
 ```python
 class Dir(
-    path: str,
-    name: Optional[str],
+    data: Any,
 )
 ```
-Create a new Dir reference.
+Create a new model by parsing and validating input data from keyword arguments.
 
+Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.
+
+`self` is explicitly positional-only to allow `self` as a field name.
 
 
 | Parameter | Type |
 |-|-|
-| `path` | `str` |
-| `name` | `Optional[str]` |
+| `data` | `Any` |
 
 ### Methods
 
@@ -95,8 +99,10 @@ Create a new Dir reference.
 | [`parse_file()`](#parse_file) |  |
 | [`parse_obj()`](#parse_obj) |  |
 | [`parse_raw()`](#parse_raw) |  |
+| [`pre_init()`](#pre_init) |  |
 | [`schema()`](#schema) |  |
 | [`schema_json()`](#schema_json) |  |
+| [`schema_match()`](#schema_match) |  |
 | [`update_forward_refs()`](#update_forward_refs) |  |
 | [`validate()`](#validate) |  |
 | [`walk()`](#walk) | Asynchronously walk through the directory and yield File objects. |
@@ -678,6 +684,17 @@ def parse_raw(
 | `proto` | `DeprecatedParseProtocol \| None` |
 | `allow_pickle` | `bool` |
 
+#### pre_init()
+
+```python
+def pre_init(
+    data,
+)
+```
+| Parameter | Type |
+|-|-|
+| `data` |  |
+
 #### schema()
 
 ```python
@@ -706,6 +723,17 @@ def schema_json(
 | `ref_template` | `str` |
 | `dumps_kwargs` | `Any` |
 
+#### schema_match()
+
+```python
+def schema_match(
+    incoming: dict,
+)
+```
+| Parameter | Type |
+|-|-|
+| `incoming` | `dict` |
+
 #### update_forward_refs()
 
 ```python
@@ -733,7 +761,6 @@ def validate(
 ```python
 def walk(
     recursive: bool,
-    file_pattern: str,
     max_depth: Optional[int],
 ) -> AsyncIterator[File[T]]
 ```
@@ -744,7 +771,6 @@ Asynchronously walk through the directory and yield File objects.
 | Parameter | Type |
 |-|-|
 | `recursive` | `bool` |
-| `file_pattern` | `str` |
 | `max_depth` | `Optional[int]` |
 
 #### walk_sync()
@@ -782,10 +808,11 @@ Returns:
         i.e. that were not filled from defaults.
 {{< /multiline >}} |
 
-## union.io.File
+## flyte.io.File
 
 A generic file class representing a file with a specified format.
 Provides both async and sync interfaces for file operations.
+Users must handle all I/O operations themselves by instantiating this class with the appropriate class methods.
 
 The generic type T represents the format of the file.
 
@@ -803,21 +830,65 @@ Example:
         content = f.read()
     ```
 
+Example: Read a file input in a Task.
+```
+@env.task
+async def my_task(file: File[DataFrame]):
+    async with file.open() as f:
+        df = pd.read_csv(f)
+```
+
+Example: Write a file by streaming it directly to blob storage
+```
+@env.task
+async def my_task() -> File[DataFrame]:
+    df = pd.DataFrame(...)
+    file = File.new_remote()
+    async with file.open("wb") as f:
+        df.to_csv(f)
+    # No additional uploading will be done here.
+    return file
+```
+Example: Write a file by writing it locally first, and then uploading it.
+```
+@env.task
+async def my_task() -> File[DataFrame]:
+    # write to /tmp/data.csv
+    return File.from_local("/tmp/data.csv", optional="s3://my-bucket/data.csv")
+```
+
+Example: From an existing remote file
+```
+@env.task
+async def my_task() -> File[DataFrame]:
+    return File.from_existing_remote("s3://my-bucket/data.csv")
+```
+
+Example: Take a remote file as input and return the same one, should not do any copy
+```
+@env.task
+async def my_task(file: File[DataFrame]) -> File[DataFrame]:
+    return file
+```
+
+
 
 ```python
 class File(
-    path: str,
-    name: Optional[str],
+    data: Any,
 )
 ```
-Create a new File reference.
+Create a new model by parsing and validating input data from keyword arguments.
 
+Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.
+
+`self` is explicitly positional-only to allow `self` as a field name.
 
 
 | Parameter | Type |
 |-|-|
-| `path` | `str` |
-| `name` | `Optional[str]` |
+| `data` | `Any` |
 
 ### Methods
 
@@ -827,9 +898,9 @@ Create a new File reference.
 | [`copy()`](#copy) | Returns a copy of the model. |
 | [`dict()`](#dict) |  |
 | [`download()`](#download) | Asynchronously download the file to a local path. |
-| [`download_sync()`](#download_sync) | Synchronously download the file to a local path. |
-| [`from_local()`](#from_local) | Asynchronously create a new File by uploading a local file to the configured remote store. |
-| [`from_local_sync()`](#from_local_sync) | Synchronously create a new File by uploading a local file to the configured remote store. |
+| [`exists_sync()`](#exists_sync) | Synchronously check if the file exists. |
+| [`from_existing_remote()`](#from_existing_remote) | Create a File reference from an existing remote file. |
+| [`from_local()`](#from_local) | Create a new File object from a local file that will be uploaded to the configured remote store. |
 | [`from_orm()`](#from_orm) |  |
 | [`json()`](#json) |  |
 | [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
@@ -843,13 +914,16 @@ Create a new File reference.
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
 | [`model_validate_json()`](#model_validate_json) | Usage docs: https://docs. |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
+| [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
 | [`open()`](#open) | Asynchronously open the file and return a file-like object. |
 | [`open_sync()`](#open_sync) | Synchronously open the file and return a file-like object. |
 | [`parse_file()`](#parse_file) |  |
 | [`parse_obj()`](#parse_obj) |  |
 | [`parse_raw()`](#parse_raw) |  |
+| [`pre_init()`](#pre_init) |  |
 | [`schema()`](#schema) |  |
 | [`schema_json()`](#schema_json) |  |
+| [`schema_match()`](#schema_match) |  |
 | [`update_forward_refs()`](#update_forward_refs) |  |
 | [`validate()`](#validate) |  |
 
@@ -935,54 +1009,61 @@ Asynchronously download the file to a local path.
 |-|-|
 | `local_path` | `Optional[Union[str, Path]]` |
 
-#### download_sync()
+#### exists_sync()
 
 ```python
-def download_sync(
-    local_path: Optional[Union[str, Path]],
-) -> str
+def exists_sync()
 ```
-Synchronously download the file to a local path.
+Synchronously check if the file exists.
+
+Returns:
+    True if the file exists, False otherwise
+
+Example:
+    ```python
+    if file.exists_sync():
+        # Process the file
+    ```
+
+
+#### from_existing_remote()
+
+```python
+def from_existing_remote(
+    remote_path: str,
+) -> File[T]
+```
+Create a File reference from an existing remote file.
+
+Example:
+```python
+@env.task
+async def my_task() -> File[DataFrame]:
+    return File.from_existing_remote("s3://my-bucket/data.csv")
+```
 
 
 
 | Parameter | Type |
 |-|-|
-| `local_path` | `Optional[Union[str, Path]]` |
+| `remote_path` | `str` |
 
 #### from_local()
 
 ```python
 def from_local(
     local_path: Union[str, Path],
-    remote_path: Optional[str],
+    remote_destination: Optional[str],
 ) -> File[T]
 ```
-Asynchronously create a new File by uploading a local file to the configured remote store.
+Create a new File object from a local file that will be uploaded to the configured remote store.
 
 
 
 | Parameter | Type |
 |-|-|
 | `local_path` | `Union[str, Path]` |
-| `remote_path` | `Optional[str]` |
-
-#### from_local_sync()
-
-```python
-def from_local_sync(
-    local_path: Union[str, Path],
-    remote_path: Optional[str],
-) -> File[T]
-```
-Synchronously create a new File by uploading a local file to the configured remote store.
-
-
-
-| Parameter | Type |
-|-|-|
-| `local_path` | `Union[str, Path]` |
-| `remote_path` | `Optional[str]` |
+| `remote_destination` | `Optional[str]` |
 
 #### from_orm()
 
@@ -1280,6 +1361,25 @@ Validate the given object with string data against the Pydantic model.
 | `strict` | `bool \| None` |
 | `context` | `Any \| None` |
 
+#### new_remote()
+
+```python
+def new_remote()
+```
+Create a new File reference for a remote file that will be written to.
+
+Example:
+```
+@env.task
+async def my_task() -> File[DataFrame]:
+    df = pd.DataFrame(...)
+    file = File.new_remote()
+    async with file.open("wb") as f:
+        df.to_csv(f)
+    return file
+```
+
+
 #### open()
 
 ```python
@@ -1290,7 +1390,7 @@ def open(
     cache_options: Optional[dict],
     compression: Optional[str],
     kwargs,
-) -> AsyncContextManager[IO[Any]]
+) -> AsyncGenerator[IO[Any]]
 ```
 Asynchronously open the file and return a file-like object.
 
@@ -1303,7 +1403,7 @@ Asynchronously open the file and return a file-like object.
 | `cache_type` | `str` |
 | `cache_options` | `Optional[dict]` |
 | `compression` | `Optional[str]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### open_sync()
 
@@ -1315,7 +1415,7 @@ def open_sync(
     cache_options: Optional[dict],
     compression: Optional[str],
     kwargs,
-) -> IO[Any]
+) -> Generator[IO[Any]]
 ```
 Synchronously open the file and return a file-like object.
 
@@ -1328,7 +1428,7 @@ Synchronously open the file and return a file-like object.
 | `cache_type` | `str` |
 | `cache_options` | `Optional[dict]` |
 | `compression` | `Optional[str]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### parse_file()
 
@@ -1379,6 +1479,17 @@ def parse_raw(
 | `proto` | `DeprecatedParseProtocol \| None` |
 | `allow_pickle` | `bool` |
 
+#### pre_init()
+
+```python
+def pre_init(
+    data,
+)
+```
+| Parameter | Type |
+|-|-|
+| `data` |  |
+
 #### schema()
 
 ```python
@@ -1406,6 +1517,17 @@ def schema_json(
 | `by_alias` | `bool` |
 | `ref_template` | `str` |
 | `dumps_kwargs` | `Any` |
+
+#### schema_match()
+
+```python
+def schema_match(
+    incoming: dict,
+)
+```
+| Parameter | Type |
+|-|-|
+| `incoming` | `dict` |
 
 #### update_forward_refs()
 

@@ -1,23 +1,23 @@
-OUTPUT_FOLDER=content/api-reference/unionv2
-API_DATA=/tmp/unionv2.api.yaml
+OUTPUT_FOLDER=content/api-reference/flytev2
+API_DATA=/tmp/flytev2.api.yaml
 
 .PHONY: all
 all: parser generate
 
 .PHONY: parser
 parser:
-	tools/api_generator/parser --package union --output ${API_DATA}
+	tools/api_generator/parser --package flyte --output ${API_DATA}
 
 .PHONY: generate
 generate: clean_output_folder
 	tools/api_generator/generate \
-		--title "Union v2" \
+		--title "Flyte V2" \
 		--api "${API_DATA}" \
-		--include include/api.unionv2.md \
+		--include include/api.flytev2.md \
 		--variants \
 			+flyte \
 			+byoc \
-			+byok \
+			+selfmanaged \
 			+serverless \
 		--output "${OUTPUT_FOLDER}"
 

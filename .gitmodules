@@ -2,7 +2,3 @@
 	path = external/unionai-examples
 	url = git@github.com:unionai/unionai-examples
 	branch = main
-[submodule "external/unionv2"]
-	path = external/unionv2
-	url = https://github.com/unionai/unionv2.git
-	branch = main

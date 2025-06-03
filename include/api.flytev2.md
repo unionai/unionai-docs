@@ -1,7 +1,9 @@
-This is the new Union SDK.
+This is the new Union, based on the new Flyte SDK.
 
 ## Why?
-The world is evolving. The gap between batch and real-time workflows is shrinking. Workflow orchestration—especially multi-step workflows with integrated dataflow—is now a critical need across various domains:
+
+The world is evolving. The gap between batch and real-time workflows is shrinking.
+Workflow orchestration—especially multi-step workflows with integrated dataflow—is now a critical need across various domains:
 
 •	**Batch workflows** for large-scale data processing
 
