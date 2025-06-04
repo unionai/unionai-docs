@@ -40,7 +40,7 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 
 [{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
-Your Data and workflow code stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
+Your data and workflow code is stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
 {{< key product_name >}} Serverless provides:
 
 * All the features of Flyte
