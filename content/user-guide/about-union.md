@@ -76,9 +76,12 @@ Your data and workflow code is stored safely and securely in {{< key product_nam
 
 ## {{< key product_name >}} Self-managed
 
-[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) lets you keep your data and workflow code on your infrastructure and under your own management.
+[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) lets you keep full control of your data, code, and infrastructure.
+{{< key product_name >}} Self-managed provides all the features of BYOC, with the only difference being that you manage the system yourself.
 
-{{< key product_name >}} Self-managed provides all the features of BYOC, with the only difference being that you manage your own data plane.
+There are two options:
 
-The control plane continues to be located in a {{< key product_name >}} AWS account and managed by Union AI.
-However, none of your data ever leaves your data plane, ensuring privacy and security.
+* Deploy and manage your data plane yourself on your infrastructure while Union.ai manages the control plane on our infrastructure.
+
+* Deploy and manage both your data plane and control plane on your infrastructure with support and guidance from Union.ai.
+  This option is suitable for air-gapped deployments.
