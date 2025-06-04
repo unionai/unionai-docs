@@ -1,35 +1,8 @@
-img[title="icon"] {
-  max-width: 40px;
-}
-
-img[title="icon:center"] {
-  max-width: 40px;
-  height: auto;
-  margin: auto;
-}
-
-img[title="tiny:center"] {
-  max-width: 256px;
-}
-
-img[title="tiny:center"] {
-  max-width: 256px;
-  height: auto;
-  margin: auto;
-}
-
-img[title="small:center"] {
-  max-width: 450px;
-}
 
 img[title="small:center"] {
   max-width: 450px;
   height: auto;
   margin: auto;
-}
-
-img[title="medium"] {
-  max-width: 600px;
 }
 
 img[title="medium:center"] {
@@ -37,3 +10,4 @@ img[title="medium:center"] {
   height: auto;
   margin: auto;
 }
+  
