@@ -11,6 +11,8 @@
   {{ end }}
 {{ end }}
 
+{{ partial "check-pages.html" . }}
+
 {{ $destination = partial "rel-link.html" $destination }}
 
 <img src="{{ $destination | safeURL }}"

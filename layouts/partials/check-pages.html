@@ -1,0 +1,23 @@
+{{- if or (hasPrefix .Destination "https://") (hasPrefix .Destination "http://") -}}
+  {{- $allowed := false -}}
+  {{- range site.Data.allowed_external.images -}}
+    {{- if eq $.Destination . -}}
+      {{- $allowed = true -}}
+      {{- break -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not $allowed -}}
+    {{- warnf "Link %s is external. Must be allowed in data/allowed-external-images.yaml." .Destination -}}
+    <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        Link '{{ .Destination -}}' is external.
+        Must be allowed in <code>data/allowed-external-images.yaml</code>.
+    </div>
+  {{- end -}}
+{{- end -}}
+
+{{- if hasPrefix .Destination "/" -}}
+  {{- warnf "Link %s is absolute to the site root. Must be relative." .Destination -}}
+  <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+    Link '{{ .Destination -}}' is absolute to the root site. Must be relative.
+  </div>
+{{- end -}}
