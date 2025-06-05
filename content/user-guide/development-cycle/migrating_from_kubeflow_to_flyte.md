@@ -10,7 +10,7 @@ Kubeflow Pipelines served its purpose, but it's time to level up. Flyte offers a
 
 For this migration guide, we will use this example kubeflow pipeline to walk you through the following. 
 
-{{< download "./static/code/example_kubeflow_pipeline.py" "example_kubeflow_pipeline.py" >}}
+{{< download "/docs/flyte/code/example_kubeflow_pipeline.py" "example_kubeflow_pipeline.py" >}}
 
 ## Components vs Tasks
 
@@ -398,4 +398,4 @@ Take a look at the Flyte workflow shown below — it mirrors the same logic as t
 - By leveraging **FlyteDirectories**, we reduced the number of tasks from two to one — simplifying the overall structure.
 - …and much more!
 
-{{< download "./static/code/example_flyte_workflow.py" "example_flyte_workflow.py" >}}
+{{< download "/docs/flyte/code/example_flyte_workflow.py" "example_flyte_workflow.py" >}}
