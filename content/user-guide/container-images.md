@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
 ```
 
-Here we leverage [`uv` inline script metadata`](https://docs.astral.sh/uv/inline-scripts/) to specify the dependencies required by our task.
+Here we leverage [`uv` inline script metadata](https://docs.astral.sh/uv/inline-scripts) to specify the dependencies required by our task.
 You simply add a comment at the top of your script as shown above, that includes your dependencies, and then use the `flyte.Image.from_uv_script` method to create a `flyte.Image` object.
 
 ## Image building
@@ -97,5 +97,5 @@ You must ensure that:
 ## Image pulling
 
 Once the image is built and pushed to the registry, Flyte will deploy your code to your Flyte/Union instance.
-When a task is executed, Flyte will pull the image from the registry and run the task in a container based on that image.
+Before a task is executed, Flyte pulls the image from the registry in preparation for running the task in a container based on that image.
 This is why you need to ensure that your Flyte/Union instance has access to the registry where your image is stored.
