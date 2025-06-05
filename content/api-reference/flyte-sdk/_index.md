@@ -4,6 +4,7 @@ weight: 1
 version: 0.2.0b7
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
+sidebar_expanded: true
 ---
 
 # Flyte SDK
