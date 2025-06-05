@@ -1,6 +1,6 @@
 ---
 title: Scaling
-weight: 6
+weight: 7
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
