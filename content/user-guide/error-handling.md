@@ -44,7 +44,7 @@ Finally, we define the main task (the top level workflow task) that will handle 
 
 ```python
 @env.task
-async def failure_recovery() -> int:
+async def error_handling() -> int:
     try:
         await oomer(1000)  # This is likely to cause an OOM error
     except flyte.errors.OOMError as e:
@@ -60,8 +60,8 @@ async def failure_recovery() -> int:
 
 
 if __name__ == "__main__":
-    flyte.init_auto_f
-    run = flyte.run(f
+    flyte.init_auto_from_config("./config.yaml")
+    run = flyte.run(error_handling)
     print(run.name)
     print(run.url)
     run.wait(run)
