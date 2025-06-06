@@ -6,11 +6,12 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Files and directories
 
-Flyte allows you to read, write, and manipulate files and directories
-and pass them across task boundaries without worrying about how the file
-contents are transferred from one container to the next.
+Flyte continues to support files and folders and top level type constructs. These are two of the three major offloaded types
+(dataframes of all kinds being the third). Once offloaded, they are persisted on the blob store configured for your Flyte cluster.
+While the SDK will handle the underlying call to the blob store, users are still responsible for invoking the commands.
+Files and folders are no longer uploaded automatically at the end of a task simply by returning them.
 
-Here is an example:
+The examples below show the basic use-cases of uploading Files and Dirs created locally, and using them as inputs to a task.
 
 ```python
 import asyncio
@@ -18,10 +19,9 @@ import tempfile
 from pathlib import Path
 
 import flyte
-from flyte.io._dir import Dir
-from flyte.io._file import File
+from flyte.io import Dir, File
 
-env = flyte.TaskEnvironment(name="examples-offloaded")
+env = flyte.TaskEnvironment(name="files-and-folders")
 
 
 @env.task
@@ -35,7 +35,15 @@ async def write_file(name: str) -> File:
     uploaded_file_obj = await File.from_local("test.txt")
     return uploaded_file_obj
 
+```
 
+The upload happens when the `from_local` command is called, which is why it's an async function. The Flyte SDK frequently
+uses this class constructor pattern so you'll see it with other types as well.
+
+
+This is a slightly more complicated task that calls the task above to produce Files. These files are assembled into a directory
+and the Dir is returned, also via invoking `from_local`.
+```python
 @env.task
 async def write_and_check_files() -> Dir:
     coros = []
@@ -59,7 +67,12 @@ async def write_and_check_files() -> Dir:
 
     my_dir = await Dir.from_local(temp_dir)
     return my_dir
+```
 
+Finally these tasks show how to use an offloaded type as an input. Helper functions like `walk` and `open` have been added to the objects
+and do what you might expect.
+
+```python
 
 @env.task
 async def check_dir(my_dir: Dir):
