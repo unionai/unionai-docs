@@ -43,8 +43,8 @@ custom_js = [
 ]
 
 [params.variant_weights]
-flyte = 1
-serverless = 4
+# flyte = 1
+# serverless = 4
 byoc = 2
 selfmanaged = 3
 
@@ -63,116 +63,116 @@ selfmanaged = 3
 [params.key]
 
 [params.key.default_project]
-flyte = "flytesnacks"
-serverless = "default"
+#flyte = "flytesnacks"
+#serverless = "default"
 byoc = "flytesnacks"
 selfmanaged = "flytesnacks"
 
 [params.key.product_full_name]
-flyte = "Flyte OSS"
-serverless = "Union.ai Serverless"
+#flyte = "Flyte OSS"
+#serverless = "Union.ai Serverless"
 byoc = "Union.ai BYOC"
 selfmanaged = "Union.ai Self-managed"
 
 [params.key.product_name]
-flyte = "Flyte"
-serverless = "Union.ai"
+#flyte = "Flyte"
+#serverless = "Union.ai"
 byoc = "Union.ai"
 selfmanaged = "Union.ai"
 
 [params.key.product]
-flyte = "flyte"
-serverless = "union"
+#flyte = "flyte"
+#serverless = "union"
 byoc = "union"
 selfmanaged = "union"
 
 [params.key.kit_name]
-flyte = "Flytekit"
-serverless = "Union"
+#flyte = "Flytekit"
+#serverless = "Union"
 byoc = "Union"
 selfmanaged = "Union"
 
 [params.key.kit]
-flyte = "flytekit"
-serverless = "union"
+#flyte = "flytekit"
+#serverless = "union"
 byoc = "union"
 selfmanaged = "union"
 
 [params.key.kit_as]
-flyte = "fl"
-serverless = "union"
+#flyte = "fl"
+#serverless = "union"
 byoc = "union"
 selfmanaged = "union"
 
 [params.key.kit_import]
-flyte = "flytekit as fl"
-serverless = "union"
+#flyte = "flytekit as fl"
+#serverless = "union"
 byoc = "union"
 selfmanaged = "union"
 
 [params.key.kit_remote]
-flyte = "FlyteRemote"
-serverless = "UnionRemote"
+#flyte = "FlyteRemote"
+#serverless = "UnionRemote"
 byoc = "UnionRemote"
 selfmanaged = "UnionRemote"
 
 [params.key.cli_name]
-flyte = "Pyflyte"
-serverless = "Union"
+#flyte = "Pyflyte"
+#serverless = "Union"
 byoc = "Union"
 selfmanaged = "Union"
 
 [params.key.cli]
-flyte = "pyflyte"
-serverless = "union"
+#flyte = "pyflyte"
+#serverless = "union"
 byoc = "union"
 selfmanaged = "union"
 
 [params.key.ctl_name]
-flyte = "Flytectl"
-serverless = "Uctl"
+#flyte = "Flytectl"
+#serverless = "Uctl"
 byoc = "Uctl"
 selfmanaged = "Uctl"
 
 [params.key.ctl]
-flyte = "flytectl"
-serverless = "uctl"
+#flyte = "flytectl"
+#serverless = "uctl"
 byoc = "uctl"
 selfmanaged = "uctl"
 
 [params.key.config_env]
-flyte = "FLYTECTL_CONFIG"
-serverless = "UNION_CONFIG"
+#flyte = "FLYTECTL_CONFIG"
+#serverless = "UNION_CONFIG"
 byoc = "UNION_CONFIG"
 selfmanaged = "UNION_CONFIG"
 
 [params.key.env_prefix]
-flyte = "FLYTE"
-serverless = "UNION"
+#flyte = "FLYTE"
+#serverless = "UNION"
 byoc = "UNION"
 selfmanaged = "UNION"
 
 [params.key.docs_home]
-flyte = "https://www.union.ai/docs/flyte"
-serverless = "https://www.union.ai/docs/serverless"
+#flyte = "https://www.union.ai/docs/flyte"
+#serverless = "https://www.union.ai/docs/serverless"
 byoc = "https://www.union.ai/docs/byoc"
 selfmanaged = "https://www.union.ai/docs/selfmanaged"
 
 [params.key.map_func]
-flyte = "map_task"
-serverless = "map"
+#flyte = "map_task"
+#serverless = "map"
 byoc = "map"
 selfmanaged = "map"
 
 [params.key.logo]
-flyte = "icon-logo-flyte.png"
-serverless = "icon-logo.svg"
+#flyte = "icon-logo-flyte.png"
+#serverless = "icon-logo.svg"
 byoc = "icon-logo.svg"
 selfmanaged = "icon-logo.svg"
 
 [params.key.favicon]
-flyte = "icon-logo-flyte.png"
-serverless = "favicon.ico"
+#flyte = "icon-logo-flyte.png"
+#serverless = "favicon.ico"
 byoc = "favicon.ico"
 selfmanaged = "favicon.ico"
 
