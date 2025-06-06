@@ -7,6 +7,33 @@ variants: +flyte +byoc +selfmanaged +serverless
 
 This is the command line interface for Flyte.
 
+{{< grid >}}
+{{< markdown >}}
+| Object | Action |
+| ------ | -- |
+| `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
+| `secret` | [`create`](#flyte-create-secret), [`get`](#flyte-get-secret)  |
+| `docs` | [`gen`](#flyte-gen-docs)  |
+| `action` | [`get`](#flyte-get-action)  |
+| `io` | [`get`](#flyte-get-io)  |
+| `logs` | [`get`](#flyte-get-logs)  |
+| `project` | [`get`](#flyte-get-project)  |
+| `task` | [`get`](#flyte-get-task)  |
+{{< /markdown >}}
+{{< markdown >}}
+| Action | On |
+| ------ | -- |
+| `abort` | [`run`](#flyte-abort-run)  |
+| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret)  |
+| `deploy` |   |
+| `gen` | [`docs`](#flyte-gen-docs)  |
+| `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task)  |
+| `run` |   |
+{{< /markdown >}}
+{{< /grid >}}
+
+
 ## flyte
 
 The flyte cli follows a simple verb based structure, where the top-level commands are verbs that describe the action
