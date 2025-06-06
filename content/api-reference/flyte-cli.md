@@ -15,21 +15,21 @@ The Flyte CLI follows a simple verb/noun based structure, where the top-level co
 Here is the full tree of commands:
 
 * `flyte`
-  * [`abort run`]()
+  * [`abort run`](#flyte-abort-run)
   * `create`
-    * [`config`]()
-    * [`secret`]()
-  * [`deploy`]()
+    * [`config`](#flyte-create-config)
+    * [`secret`](#flyte-create-secret)
+  * [`deploy`](#flyte-deploy)
   * `get`
-    * [`action`]()
-    * [`config`]()
-    * [`io`]()
-    * [`logs`]()
-    * [`project`]()
-    * [`run`]()
-    * [`secret`]()
-    * [`task`]()
-  * [`run`]()
+    * [`action`](#flyte-get-action)
+    * [`config`](#flyte-get-config)
+    * [`io`](#flyte-get-config)
+    * [`logs`](#flyte-get-logs)
+    * [`project`](#flyte-get-project)
+    * [`run`](#flyte-get-run)
+    * [`secret`](#flyte-get-secret)
+    * [`task`](#flyte-get-secret)
+  * [`run`](#flyte-run)
 
 ### `flyte abort run`
 
