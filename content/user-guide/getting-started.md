@@ -6,15 +6,14 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Getting started
 
-This section gives you a quick introduction to writing and running Flyte workflows on Union.ai.
+This section gives you a quick introduction to writing and running workflows on Union.ai.
 
 
 ## Hello world in plain Python
 
 We'll start with a "Hello world" example.
 
-To begin with we'll just use plain Python and run the code locally, then we will see how you can use the FLyte SDK to deploy the code to
-your Union cluster.
+To begin with we'll just use plain Python and run the code locally, then we will see how you can use the Flyte SDK to deploy the code to your Union.ai instance.
 
 Create a file called `hello.py` with the following content:
 
@@ -64,7 +63,7 @@ Now let's say that some parts of the above program could benefit from running in
 for example on a GPU or with more memory.
 Obviously, this is not really the case in this example, but let's pretend.
 
-With Flyte, you can easily augment your code with a few decorators and auxiliary functions, and it is ready to be deployed to a Kubernetes cluster where  each function runs in its own container with, potentially, its own dependencies and specific hardware.
+With Flyte, you can easily augment your code with a few decorators and auxiliary functions, and it is ready to be deployed to a Kubernetes cluster where each function runs in its own container with, potentially, its own dependencies and specific hardware.
 
 You just need to:
 * Import the flyte package,

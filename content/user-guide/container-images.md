@@ -22,7 +22,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Flyte/Union instance can access.
+This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union.ai instance can access.
 
 But, in many cases, you will want to build your own custom image that includes the dependencies required by your task, and you want to do that in as convenient a way as possible.
 

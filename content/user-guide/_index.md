@@ -7,41 +7,12 @@ site_root: true
 sidebar_expanded: true
 ---
 
-{{< variant flyte >}}
-{{< markdown >}}
-
-# Flyte OSS
-
-Flyte OSS is a free and open source platform that provides a full suite of powerful features for orchestrating AI workflows.
-You deploy and manage Flyte OSS yourself, on your own cloud infrastructure.
-
-> [!NOTE]
-> This documentation for Flyte OSS is maintained by Union.ai.
-> You can switch to the documentation for the commercial versions with the selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant serverless >}}
-{{< markdown >}}
-
-# {{< key product_name >}} Serverless
-
-Union.ai Serverless provides [all the features of Flyte OSS, plus much more](./about-union#-key-product_name--serverless),
-all in a turn-key, fully-managed, cloud environment.
-There is zero infrastructure to deal with, and you pay only for the resources you use.
-Your data and workflow code is stored safely and securely in Union.ai’s cloud infrastructure.
-
-> [!NOTE]
-> You can switch to another product version with the selector above.
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant byoc >}}
 {{< markdown >}}
 
 # {{< key product_name >}} BYOC
 
-{{< key product_name >}} BYOC (Bring Your Own Cloud) provides [all the features of Flyte, plus much more](./about-union#-key-product_name--byoc) in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+{{< key product_name >}} BYOC (Bring Your Own Cloud) provides all the features of Flyte OSS, plus much more in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 
 > [!NOTE]
 > You can switch to another product version with the selector above.
@@ -53,7 +24,7 @@ Your data and workflow code is stored safely and securely in Union.ai’s cloud 
 
 # {{< key product_name >}} Self-managed
 
-{{< key product_name >}} Self-managed provides [all the features of Flyte, plus much more](./about-union#-key-product_name--self-managed) while letting you keep your data and workflow code on your infrastructure and under your own management.
+{{< key product_name >}} Self-managed provides all the features of Flyte OSS, plus much more while letting you keep your data and workflow code on your infrastructure and under your own management.
 
 > [!NOTE]
 > You can switch to another product version with the selector above.
@@ -61,16 +32,6 @@ Your data and workflow code is stored safely and securely in Union.ai’s cloud 
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant flyte >}}
-{{< markdown >}}
-
-Flyte is an open-source, Kubernetes-native workflow orchestrator implemented in Go.
-
-Flyte empowers AI development teams to rapidly ship high-quality code to production by offering optimized performance, unparalleled resource efficiency, and a delightful workflow authoring experience.
-
-
-{{< /markdown >}}
-{{< /variant >}}
 {{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
@@ -89,7 +50,43 @@ Flyte 2 provides a new and powerful way author and run workflows and apps on you
 {{< /link-card >}}
 
 {{< link-card target="getting-started" icon="123" title="Getting started" >}}
-Build your first Flyte workflow, exploring the major features of the platform along the way.
+Build your first Flyte workflow
+{{< /link-card >}}
+
+{{< link-card target="task-environment" icon="thermometer-sun" title="Task environment" >}}
+Task environments define the resources and dependencies for your tasks.
+{{< /link-card >}}
+
+{{< link-card target="container-images" icon="123" title="Container images" >}}
+Each task runs in its own container, and every container needs a container image to define it.
+{{< /link-card >}}
+
+{{< link-card target="error-handling" icon="bug" title="Error handling" >}}
+Dynamically adjust your settings and retry when you run out of memory, or other resources.
+{{< /link-card >}}
+
+{{< link-card target="files-and-directories" icon="folder2-open" title="Files and directories" >}}
+Pass files and directories between tasks without worrying about transferring data from one container to the next.
+{{< /link-card >}}
+
+{{< link-card target="dataclasses" icon="clipboard-data" title="Dataclasses" >}}
+Work with Python dataclasses to define your data types.
+{{< /link-card >}}
+
+{{< link-card target="notebooks" icon="journal-album" title="Notebooks" >}}
+Run your workflows in Jupyter notebooks.
+{{< /link-card >}}
+
+{{< link-card target="scaling" icon="graph-up-arrow" title="Scaling" >}}
+Scale effortlessly using native Python contructs.
+{{< /link-card >}}
+
+{{< link-card target="considerations" icon="cone-striped" title="Considerations" >}}
+Some considerations to keep in mind when working with Flyte.
+{{< /link-card >}}
+
+{{< link-card target="flyte-cli" icon="terminal" title="Flyte CLI" >}}
+Deploy and run workflows both programmatically and via CLI.
 {{< /link-card >}}
 
 {{< /grid >}}

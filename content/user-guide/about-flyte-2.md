@@ -1,10 +1,12 @@
 ---
-title: About Flyte 2
+title: About Flyte SDK 2
 weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# About Flyte 2
+# About Flyte SDK 2
+
+Flyte SDK 2 is the new toolkit for deploying and managing your Union .aiinstance.
 
 ## What has changed?
 

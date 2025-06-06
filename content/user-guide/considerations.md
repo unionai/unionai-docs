@@ -1,6 +1,6 @@
 ---
 title: Considerations
-weight: 10
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -12,11 +12,7 @@ In this section we look at some considerations you should keep in mind when work
 
 ## Determinism
 
-[TODO: Add content and example
-
-
-
-]
+[TODO: Add content and example]
 
 ## Type safety
 
