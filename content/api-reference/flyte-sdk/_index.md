@@ -1,5 +1,5 @@
 ---
-title: Flyte
+title: Flyte SDK
 weight: 1
 version: 0.2.0b7
 variants: +flyte +byoc +selfmanaged +serverless

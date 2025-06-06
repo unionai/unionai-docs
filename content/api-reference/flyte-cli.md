@@ -1,10 +1,10 @@
 ---
-title: Flyte CLI reference
+title: Flyte CLI
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Flyte CLI reference
+# Flyte CLI
 
 `flyte [OPTIONS] COMMAND [ARGS]`
 
