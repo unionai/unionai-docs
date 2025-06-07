@@ -68,7 +68,7 @@ Create a new secret.
 | Option | Type | Description |
 |--------|------|-------------|
 | `--from-file` | `PATH` | Path to a file with a binary secret. |
-│ `--type` | `[regular|image_pull]` | Type of the secret. Defaults to `regular` |]
+│ `--type` | `[regular \| image_pull]` | Type of the secret. Defaults to `regular` |
 | `--project` `-p` | `TEXT` | Project to operate on. |
 | `--domain` `-d` | `TEXT` | Domain to operate on. |
 | `--help` | | Display help. |
@@ -85,8 +85,8 @@ Deploy one or more environments from a Python file.
 | `--domain` `-d` | `TEXT` | Domain to operate on. |
 | `--version` | `TEXT` | Version of the environment to deploy. |
 | `--dry-run`  `--dryrun` | | Dry run. Do not actually call the backend service. |
-| `--local` | | Run the task locally. |
-| `--copy-style` | `[loaded_modules|all|none]` | Copy style to use when running the task. Defaults to `loaded_modules` |
+| `--local` |  | Run the task locally. |
+| `--copy-style` | `[loaded_modules \| all \| none]` | Copy style to use when running the task. Defaults to `loaded_modules` |
 | `--help` | | Display help. |
 
 ### `flyte get action`
@@ -202,7 +202,7 @@ Run a task directly from a Python file.
 | `--project` `-p` | `TEXT` | Project to operate on. |
 | `--domain` `-d` | `TEXT` | Domain to operate on. |
 | `--local` | | Run the task locally. |
-| `--copy-style` | `[loaded_modules|all|none]` | Copy style to use when running the task. Defaults to `loaded_modules` |
+| `--copy-style` | `[loaded_modules \| all \| none ]` | Copy style to use when running the task. Defaults to `loaded_modules` |
 | `--name` | `TEXT` | Name of the run. If not provided, a random name will be generated. │
 │ `--follow` `-f` | | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--help` | | Display help. |
