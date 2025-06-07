@@ -9,70 +9,11 @@ variants: +flyte +serverless +byoc +selfmanaged
 This section gives you a quick introduction to writing and running workflows on Union.ai.
 
 
-## Hello world in plain Python
+## Hello world
 
 We'll start with a "Hello world" example.
 
-To begin with we'll just use plain Python and run the code locally, then we will see how you can use the Flyte SDK to deploy the code to your Union.ai instance.
-
 Create a file called `hello.py` with the following content:
-
-```python
-# hello.py
-
-import asyncio
-from typing import List
-
-async def say_hello(data: str, lt: List[int]) -> str:
-    print("say_hello")
-    return f"Hello {data} {lt}"
-
-
-async def square(i: int = 3) -> int:
-    print("square")
-    return i * i
-
-
-async def hello_wf(data: str = "default string") -> str:
-    print("hello_wf")
-    coros = []
-    for i in range(3):
-        coros.append(square(i=i))
-
-    vals = await asyncio.gather(*coros)
-    return await say_hello(data=data, lt=vals)
-
-
-if __name__ == "__main__":
-    asyncio.run(hello_wf("hello world"))
-
-```
-
-This script defines three asynchronous functions: `say_hello`, `square`, and `hello_wf`.
-The `say_hello_wf` is the top-level "workflow" function that orchestrates the execution of the other two functions.
-
-You can run this script directly:
-
-```shell
-$ python hello.py
-```
-
-## Hello world with Flyte SDK
-
-Now let's say that some parts of the above program could benefit from running in a different environment,
-for example on a GPU or with more memory.
-Obviously, this is not really the case in this example, but let's pretend.
-
-With Flyte, you can easily augment your code with a few decorators and auxiliary functions, and it is ready to be deployed to a Kubernetes cluster where each function runs in its own container with, potentially, its own dependencies and specific hardware.
-
-You just need to:
-* Import the flyte package,
-* Create a `TaskEnvironment`.
-* Decorate your functions with `@env.task`.
-* Change your main guard initialize and run the workflow using the Flyte SDK.
-* (We also add some extra information in the print statements, so you can see what is going on)
-
-Here is the changed code:
 
 ```python
 # hello.py
@@ -115,6 +56,21 @@ if __name__ == "__main__":
     print(run.url)
     run.wait(run)
 ```
+
+This script defines three asynchronous functions: `say_hello`, `square`, and `hello_wf`.
+The `say_hello_wf` is the top-level "workflow" function that orchestrates the execution of the other two functions.
+
+Now let's say that some parts of the above program could benefit from running in a different environment,
+for example on a GPU or with more memory.
+Obviously, this is not really the case in this example, but let's pretend.
+
+With Flyte, you can easily augment your code with a few decorators and auxiliary functions, and it is ready to be deployed to a Kubernetes cluster where each function runs in its own container with, potentially, its own dependencies and specific hardware.
+
+In our example above, we can achieve this as follows:
+* Import the flyte package,
+* Create a `TaskEnvironment`.
+* Decorate your functions with `@env.task`.
+* Change your main guard initialize and run the workflow using the Flyte SDK.
 
 ## Run the code on your Union.ai instance
 
