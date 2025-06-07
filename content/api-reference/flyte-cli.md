@@ -1,208 +1,255 @@
 ---
-title: Flyte CLI
-weight: 2
-variants: +flyte +serverless +byoc +selfmanaged
+title: "Flyte CLI"
+variants: +flyte +byoc +selfmanaged +serverless
 ---
 
 # Flyte CLI
 
-`flyte [OPTIONS] COMMAND [ARGS]`
+This is the command line interface for Flyte.
 
-## Commands
+{{< grid >}}
+{{< markdown >}}
+| Object | Action |
+| ------ | -- |
+| `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
+| `secret` | [`create`](#flyte-create-secret), [`get`](#flyte-get-secret)  |
+| `docs` | [`gen`](#flyte-gen-docs)  |
+| `action` | [`get`](#flyte-get-action)  |
+| `io` | [`get`](#flyte-get-io)  |
+| `logs` | [`get`](#flyte-get-logs)  |
+| `project` | [`get`](#flyte-get-project)  |
+| `task` | [`get`](#flyte-get-task)  |
+{{< /markdown >}}
+{{< markdown >}}
+| Action | On |
+| ------ | -- |
+| `abort` | [`run`](#flyte-abort-run)  |
+| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret)  |
+| `deploy` |   |
+| `gen` | [`docs`](#flyte-gen-docs)  |
+| `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task)  |
+| `run` |   |
+{{< /markdown >}}
+{{< /grid >}}
 
-The Flyte CLI follows a simple verb/noun based structure, where the top-level commands are verbs that describe the action to be taken, and the sub-commands are nouns that describe the object of the action.
 
-Here is the full tree of commands:
+## flyte
 
-* `flyte`
-  * [`abort run`](#flyte-abort-run)
-  * `create`
-    * [`config`](#flyte-create-config)
-    * [`secret`](#flyte-create-secret)
-  * [`deploy`](#flyte-deploy)
-  * `get`
-    * [`action`](#flyte-get-action)
-    * [`config`](#flyte-get-config)
-    * [`io`](#flyte-get-config)
-    * [`logs`](#flyte-get-logs)
-    * [`project`](#flyte-get-project)
-    * [`run`](#flyte-get-run)
-    * [`secret`](#flyte-get-secret)
-    * [`task`](#flyte-get-secret)
-  * [`run`](#flyte-run)
+The flyte cli follows a simple verb based structure, where the top-level commands are verbs that describe the action
+    to be taken, and the subcommands are nouns that describe the object of the action.
 
-### `flyte abort run`
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--endpoint` | `text` |  | The endpoint to connect to, this will override any config and simply used pkce to connect. |
+| {{< multiline >}}`--insecure`
+`--secure`{{< /multiline >}} | `boolean` |  | Use insecure connection to the endpoint. If secure is specified, the CLI will use TLS |
+| {{< multiline >}}`-v`
+`--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces |
+| `--org` | `text` |  | Organization to use |
+| {{< multiline >}}`-c`
+`--config`{{< /multiline >}} | `path` |  | Path to config file (YAML format) to use for the CLI. If not specified, the default config file will be used. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-`flyte abort run [OPTIONS] RUN_NAME`
+### flyte abort
 
 Abort a run.
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+#### flyte abort run
 
-### `flyte create config`
+Abort a run.
 
-`flyte create config [OPTIONS]`
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte create
+
+Create a new task or environment.
+
+#### flyte create config
 
 Create a new config file.
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--endpoint` | `TEXT` | Endpoint of the backend. |
-| `--insecure` | | Use an insecure connection to the backend. |
-| `--org` | `TEXT` | Organization to operate on. This will override the organization in the config file. |
-| `--output` | `PATH` | Path to the output directory where the config will be saved. Defaults to current directory. |
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--endpoint` | `text` |  | Endpoint of the Flyte backend. |
+| `--insecure` | `boolean` | `False` | Use insecure connection to the Flyte backend. |
+| `--org` | `text` |  | Organization to use, this will override the organization in the config file. |
+| {{< multiline >}}`-o`
+`--output`{{< /multiline >}} | `path` | `config.yaml` | Path to the output dir where the config will be saved, defaults to current directory. |
+| `--force` | `boolean` | `False` | Force overwrite the config file if it already exists. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-### `flyte create secret`
-
-`flyte create secret [OPTIONS] NAME [VALUE]`
+#### flyte create secret
 
 Create a new secret.
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--from-file` | `PATH` | Path to a file with a binary secret. |
-│ `--type` | `[regular|image_pull]` | Type of the secret. Defaults to `regular` |]
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--from-file` | `path` |  | Path to the file with the binary secret. |
+| `--type` | `choice` | `regular` | Type of the secret. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-### `flyte deploy`
+### flyte deploy
 
-`flyte deploy [OPTIONS] COMMAND [ARGS]`
+deploy one or more environments from a python file.
 
-Deploy one or more environments from a Python file.
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--version` | `text` |  | Version of the environment to deploy |
+| {{< multiline >}}`--dry-run`
+`--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run, do not actually call the backend service. |
+| `--local` | `boolean` | `False` | Run the task locally |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--version` | `TEXT` | Version of the environment to deploy. |
-| `--dry-run`  `--dryrun` | | Dry run. Do not actually call the backend service. |
-| `--local` | | Run the task locally. |
-| `--copy-style` | `[loaded_modules|all|none]` | Copy style to use when running the task. Defaults to `loaded_modules` |
-| `--help` | | Display help. |
+### flyte gen
 
-### `flyte get action`
+Generate documentation
 
-`flyte get action [OPTIONS] RUN_NAME [ACTION_NAME]`
+#### flyte gen docs
+
+Generate documentation
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--type` | `text` |  | Type of documentation (valid: markdown) |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte get
+
+Get the value of a task or environment.
+
+#### flyte get action
 
 Get all actions for a run or details for a specific action.
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
+#### flyte get config
 
-### `flyte get config`
+Shows the automatically detected configuration to connect with remote Flyte services.
 
-`flyte get config [OPTIONS]`
-
-Shows the automatically detected configuration to connect with remote backend services.
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `--help` | | Display help. |
-
-### `flyte get io`
-
-`flyte get io [OPTIONS] RUN_NAME [ACTION_NAME]`
+#### flyte get io
 
 Get the inputs and outputs of a run or action.
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--inputs-only -i` | | Show only inputs │
-| `--outputs-only -0` | | Show only outputs │
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--inputs-only`
+`-i`{{< /multiline >}} | `boolean` | `False` | Show only inputs |
+| {{< multiline >}}`--outputs-only`
+`-o`{{< /multiline >}} | `boolean` | `False` | Show only outputs |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-### `flyte get logs`
+#### flyte get logs
 
-`flyte get logs [OPTIONS] RUN_NAME [ACTION_NAME]`
+Stream logs for the provided run or action. If the run is provided, only the logs for the parent action will be
+    streamed.
 
-Stream logs for the provided run or action. If the run is provided, only the logs for the parent action will be streamed.
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--lines`
+`-l`{{< /multiline >}} | `integer` | `30` | Number of lines to show, only useful for --pretty |
+| `--show-ts` | `boolean` | `False` | Show timestamps |
+| `--pretty` | `boolean` | `False` | Show logs in a auto scrolling box, where number of lines is limited to `--lines` |
+| {{< multiline >}}`--attempt`
+`-a`{{< /multiline >}} | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
+| `--filter-system` | `boolean` | `False` | Filter all system logs from the output. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--lines -l` | `INTEGER` | `Number of lines to show. Only useful for `--pretty` │
-│ `--show-ts` | | Show timestamps │
-│ `--pretty` | | Show logs in an auto-scrolling box, where number of lines is limited to `--lines` │
-│ `--attempt -a` | | `INTEGER` |  Attempt number to show logs for, defaults to the latest attempt. │
-│ `--filter-system` | | Filter all system logs from the output. |
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+#### flyte get project
 
-### `flyte get project`
+Get the current project.
 
-`flyte get project [OPTIONS] [NAME]`
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-Get the specified project.
+#### flyte get run
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--help` | | Display help. |
+Get the current run.
 
-### `flyte get run`
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-`flyte get run [OPTIONS] [NAME]`
+#### flyte get secret
 
-Get the specified run.
+Get the current secret.
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-### `flyte get secret`
+#### flyte get task
 
-`flyte get secret [OPTIONS] [NAME]`
+Get the current task.
 
-Get the specified secret.
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
+### flyte run
 
-### `flyte get task`
+Run a task from a python file.
 
-`flyte get task [OPTIONS] [NAME] [VERSION]`
-
-Get the specified task.
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--help` | | Display help. |
-
-### `flyte run`
-
-`flyte run [OPTIONS] COMMAND [ARGS]`
-
-Run a task directly from a Python file.
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `--endpoint` | `TEXT` | Endpoint of the backend. If not provided, the CLI will use the endpoint from the default config file. |
-| `--config` | `PATH` | Path to the config file. If not provided, the CLI will use the default config file.
-| `--project` `-p` | `TEXT` | Project to operate on. |
-| `--domain` `-d` | `TEXT` | Domain to operate on. |
-| `--local` | | Run the task locally. |
-| `--copy-style` | `[loaded_modules|all|none]` | Copy style to use when running the task. Defaults to `loaded_modules` |
-| `--name` | `TEXT` | Name of the run. If not provided, a random name will be generated. │
-│ `--follow` `-f` | | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
-| `--help` | | Display help. |
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+| `--local` | `boolean` | `False` | Run the task locally |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the cli will exit after successfully launching a remote execution with a link to the UI. |
+| `--help` | `boolean` | `False` | Show this message and exit. |

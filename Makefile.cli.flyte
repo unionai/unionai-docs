@@ -1,4 +1,4 @@
-OUTPUT_FILE=content/api-reference/flyte.md
+OUTPUT_FILE=content/api-reference/flyte-cli.md
 
 .PHONY: all
 all:
