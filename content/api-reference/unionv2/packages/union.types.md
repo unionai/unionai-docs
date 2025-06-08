@@ -1,11 +1,11 @@
 ---
-title: flyte.types
-version: 0.2.0b4.dev17+g5fd94e2
-variants: +flyte +byoc +selfmanaged +serverless
+title: union.types
+version: 0.1.0
+variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
 
-# flyte.types
+# union.types
 
 ## Directory
 
@@ -13,44 +13,29 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`TypeEngine`](.././flyte.types#flytetypestypeengine) | Core Extensible TypeEngine of Flytekit. |
-| [`TypeTransformer`](.././flyte.types#flytetypestypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`TypeEngine`](.././union.types#uniontypestypeengine) | Core Extensible TypeEngine of Flytekit. |
+| [`TypeTransformer`](.././union.types#uniontypestypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 
 ### Protocols
 
 | Protocol | Description |
 |-|-|
-| [`Renderable`](.././flyte.types#flytetypesrenderable) | Base class for protocol classes. |
+| [`Renderable`](.././union.types#uniontypesrenderable) | Base class for protocol classes. |
 
 ### Errors
 
 | Exception | Description |
 |-|-|
-| [`TypeTransformerFailedError`](.././flyte.types#flytetypestypetransformerfailederror) | Inappropriate argument type. |
+| [`TypeTransformerFailedError`](.././union.types#uniontypestypetransformerfailederror) | Inappropriate argument type. |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`guess_interface()`](#guess_interface) | Returns the interface of the task with guessed types, as types may not be present in current env. |
 | [`literal_string_repr()`](#literal_string_repr) | This method is used to convert a literal map to a string representation. |
 
 
 ## Methods
-
-#### guess_interface()
-
-```python
-def guess_interface(
-    interface: flyteidl.core.interface_pb2.TypedInterface,
-) -> flyte.models.NativeInterface
-```
-Returns the interface of the task with guessed types, as types may not be present in current env.
-
-
-| Parameter | Type |
-|-|-|
-| `interface` | `flyteidl.core.interface_pb2.TypedInterface` |
 
 #### literal_string_repr()
 
@@ -66,7 +51,7 @@ This method is used to convert a literal map to a string representation.
 |-|-|
 | `lm` | `typing.Union[flyteidl.core.literals_pb2.Literal, workflow.run_definition_pb2.NamedLiteral, workflow.run_definition_pb2.Inputs, workflow.run_definition_pb2.Outputs, flyteidl.core.literals_pb2.LiteralMap, typing.Dict[str, flyteidl.core.literals_pb2.Literal]]` |
 
-## flyte.types.Renderable
+## union.types.Renderable
 
 Base class for protocol classes.
 
@@ -125,7 +110,7 @@ Returns: An HTML document as a string.
 |-|-|
 | `python_value` | `typing.Any` |
 
-## flyte.types.TypeEngine
+## union.types.TypeEngine
 
 Core Extensible TypeEngine of Flytekit. This should be used to extend the capabilities of FlyteKits type system.
 Users can implement their own TypeTransformers and register them with the TypeEngine. This will allow special
@@ -229,7 +214,7 @@ Transforms a flyte-specific ``LiteralType`` to a regular python value.
 ```python
 def guess_python_types(
     flyte_variable_dict: typing.Dict[str, interface_pb2.Variable],
-) -> typing.Dict[str, Type[Any]]
+) -> typing.Dict[str, type]
 ```
 Transforms a dictionary of flyte-specific ``Variable`` objects to a dictionary of regular python values.
 
@@ -406,7 +391,7 @@ def unwrap_offloaded_literal(
 |-|-|
 | `lv` | `literals_pb2.Literal` |
 
-## flyte.types.TypeTransformer
+## union.types.TypeTransformer
 
 Base transformer type that should be implemented for every python native type that can be handled by flytekit
 
@@ -583,7 +568,7 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 | `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
 {{< /multiline >}} |
 
-## flyte.types.TypeTransformerFailedError
+## union.types.TypeTransformerFailedError
 
 Inappropriate argument type.
 

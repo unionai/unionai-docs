@@ -1,11 +1,11 @@
 ---
-title: flyte.io.structured_dataset.basic_dfs
-version: 0.2.0b4.dev17+g5fd94e2
-variants: +flyte +byoc +selfmanaged +serverless
+title: union.io.structured_dataset.basic_dfs
+version: 0.1.0
+variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
 
-# flyte.io.structured_dataset.basic_dfs
+# union.io.structured_dataset.basic_dfs
 
 ## Directory
 
@@ -13,12 +13,12 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ArrowToParquetEncodingHandler`](.././flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfsarrowtoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`CSVToPandasDecodingHandler`](.././flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfscsvtopandasdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`PandasToCSVEncodingHandler`](.././flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfspandastocsvencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`PandasToParquetEncodingHandler`](.././flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfspandastoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`ParquetToArrowDecodingHandler`](.././flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfsparquettoarrowdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
-| [`ParquetToPandasDecodingHandler`](.././flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfsparquettopandasdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`ArrowToParquetEncodingHandler`](.././union.io.structured_dataset.basic_dfs#unioniostructured_datasetbasic_dfsarrowtoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`CSVToPandasDecodingHandler`](.././union.io.structured_dataset.basic_dfs#unioniostructured_datasetbasic_dfscsvtopandasdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`PandasToCSVEncodingHandler`](.././union.io.structured_dataset.basic_dfs#unioniostructured_datasetbasic_dfspandastocsvencodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`PandasToParquetEncodingHandler`](.././union.io.structured_dataset.basic_dfs#unioniostructured_datasetbasic_dfspandastoparquetencodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`ParquetToArrowDecodingHandler`](.././union.io.structured_dataset.basic_dfs#unioniostructured_datasetbasic_dfsparquettoarrowdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
+| [`ParquetToPandasDecodingHandler`](.././union.io.structured_dataset.basic_dfs#unioniostructured_datasetbasic_dfsparquettopandasdecodinghandler) | Helper class that provides a standard way to create an ABC using. |
 
 ### Methods
 
@@ -52,7 +52,7 @@ def get_pandas_storage_options(
 | `data_config` |  |
 | `anonymous` | `bool` |
 
-## flyte.io.structured_dataset.basic_dfs.ArrowToParquetEncodingHandler
+## union.io.structured_dataset.basic_dfs.ArrowToParquetEncodingHandler
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -80,7 +80,7 @@ the StructuredDatasetEncoder
 
 ```python
 def encode(
-    structured_dataset: flyte.io.structured_dataset.structured_dataset.StructuredDataset,
+    structured_dataset: union.io.structured_dataset.structured_dataset.StructuredDataset,
     structured_dataset_type: flyteidl.core.types_pb2.StructuredDatasetType,
 ) -> flyteidl.core.literals_pb2.StructuredDataset
 ```
@@ -94,7 +94,7 @@ the
 
 | Parameter | Type |
 |-|-|
-| `structured_dataset` | `flyte.io.structured_dataset.structured_dataset.StructuredDataset` |
+| `structured_dataset` | `union.io.structured_dataset.structured_dataset.StructuredDataset` |
 | `structured_dataset_type` | `flyteidl.core.types_pb2.StructuredDatasetType` |
 
 ### Properties
@@ -105,7 +105,7 @@ the
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.basic_dfs.CSVToPandasDecodingHandler
+## union.io.structured_dataset.basic_dfs.CSVToPandasDecodingHandler
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -154,7 +154,7 @@ value into a Python instance.
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.basic_dfs.PandasToCSVEncodingHandler
+## union.io.structured_dataset.basic_dfs.PandasToCSVEncodingHandler
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -182,7 +182,7 @@ the StructuredDatasetEncoder
 
 ```python
 def encode(
-    structured_dataset: flyte.io.structured_dataset.structured_dataset.StructuredDataset,
+    structured_dataset: union.io.structured_dataset.structured_dataset.StructuredDataset,
     structured_dataset_type: flyteidl.core.types_pb2.StructuredDatasetType,
 ) -> flyteidl.core.literals_pb2.StructuredDataset
 ```
@@ -196,7 +196,7 @@ the
 
 | Parameter | Type |
 |-|-|
-| `structured_dataset` | `flyte.io.structured_dataset.structured_dataset.StructuredDataset` |
+| `structured_dataset` | `union.io.structured_dataset.structured_dataset.StructuredDataset` |
 | `structured_dataset_type` | `flyteidl.core.types_pb2.StructuredDatasetType` |
 
 ### Properties
@@ -207,7 +207,7 @@ the
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.basic_dfs.PandasToParquetEncodingHandler
+## union.io.structured_dataset.basic_dfs.PandasToParquetEncodingHandler
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -235,7 +235,7 @@ the StructuredDatasetEncoder
 
 ```python
 def encode(
-    structured_dataset: flyte.io.structured_dataset.structured_dataset.StructuredDataset,
+    structured_dataset: union.io.structured_dataset.structured_dataset.StructuredDataset,
     structured_dataset_type: flyteidl.core.types_pb2.StructuredDatasetType,
 ) -> flyteidl.core.literals_pb2.StructuredDataset
 ```
@@ -249,7 +249,7 @@ the
 
 | Parameter | Type |
 |-|-|
-| `structured_dataset` | `flyte.io.structured_dataset.structured_dataset.StructuredDataset` |
+| `structured_dataset` | `union.io.structured_dataset.structured_dataset.StructuredDataset` |
 | `structured_dataset_type` | `flyteidl.core.types_pb2.StructuredDatasetType` |
 
 ### Properties
@@ -260,7 +260,7 @@ the
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.basic_dfs.ParquetToArrowDecodingHandler
+## union.io.structured_dataset.basic_dfs.ParquetToArrowDecodingHandler
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -309,7 +309,7 @@ value into a Python instance.
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.basic_dfs.ParquetToPandasDecodingHandler
+## union.io.structured_dataset.basic_dfs.ParquetToPandasDecodingHandler
 
 Helper class that provides a standard way to create an ABC using
 inheritance.

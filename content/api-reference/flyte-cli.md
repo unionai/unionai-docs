@@ -36,16 +36,44 @@ This is the command line interface for Flyte.
 
 ## flyte
 
+### Flyte entrypoint for the CLI
+The Flyte CLI is a command line interface for interacting with Flyte.
+
 The flyte cli follows a simple verb based structure, where the top-level commands are verbs that describe the action
-    to be taken, and the subcommands are nouns that describe the object of the action.
+to be taken, and the subcommands are nouns that describe the object of the action.
+
+The root command can be used to configure the CLI for most commands, such as setting the endpoint,
+ organization, and verbosity level.
+
+ Example: Set endpoint and organization
+ ```bash
+  flyte --endpoint <endpoint> --org <org> get project <project_name>
+ ```
+
+ Example: Increase verbosity level (This is useful for debugging, this will show more logs and exception traces)
+  ```bash
+  flyte -vvv get logs <run-name>
+  ```
+
+  Example: Override the default config file
+```bash
+flyte --config /path/to/config.yaml run ...
+```
+
+👉 [Documentation](https://www.union.ai/docs/flyte/user-guide/) 
+
+👉 [GitHub](https://github.com/flyteorg/flyte) - Please leave a ⭐. 
+
+👉 [Slack](https://slack.flyte.org) - Join the community and ask questions.
+👉 [Issues](https://github.com/flyteorg/flyte/issues)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--endpoint` | `text` |  | The endpoint to connect to, this will override any config and simply used pkce to connect. |
 | {{< multiline >}}`--insecure`
-`--secure`{{< /multiline >}} | `boolean` |  | Use insecure connection to the endpoint. If secure is specified, the CLI will use TLS |
+`--secure`{{< /multiline >}} | `boolean` |  | Use insecure connection to the endpoint. If secure is specified, the CLI will use TLS. |
 | {{< multiline >}}`-v`
-`--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces |
+`--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces, multiple times increases verbosity (e.g., -vvv). |
 | `--org` | `text` |  | Organization to use |
 | {{< multiline >}}`-c`
 `--config`{{< /multiline >}} | `path` |  | Path to config file (YAML format) to use for the CLI. If not specified, the default config file will be used. |
@@ -69,11 +97,13 @@ Abort a run.
 
 ### flyte create
 
-Create a new task or environment.
+The create subcommand allows you to create resources in a Flyte deployment.
 
 #### flyte create config
 
-Create a new config file.
+This command creates a configuration file for Flyte CLI.
+If the `--output` option is not specified, it will create a file named `config.yaml` in the current directory.
+If the file already exists, it will raise an error unless the `--force` option is used.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -91,7 +121,23 @@ Create a new config file.
 
 #### flyte create secret
 
-Create a new secret.
+Create a new secret, the name of the secret is required.
+
+Examples:
+```bash
+flyte create secret my_secret --value my_value
+```
+If `--from-file` is specified, the value will be read from the file instead of being provided directly.
+Example:
+```bash
+flyte create secret my_secret --from-file /path/to/secret_file
+```
+Secret types can be used to create specific types of secrets. Some secrets are useful for image pull, while some
+are `regular` / general purpose secrets.
+Example:
+```bash
+flyte create secret my_secret --type image_pull
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -105,7 +151,8 @@ Create a new secret.
 
 ### flyte deploy
 
-deploy one or more environments from a python file.
+Deploy one or more environments from a python file.
+    The deploy command will create or update environments in the Flyte system.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -139,7 +186,16 @@ Generate documentation
 
 ### flyte get
 
-Get the value of a task or environment.
+The `get` subcommand allows you to retrieve various resources from a Flyte deployment.
+
+You can get information about projects, runs, tasks, actions, secrets, and more.
+Each command supports optional parameters to filter or specify the resource you want to retrieve.
+
+Every `get` subcommand for example ``get project` without any arguments will list all projects.
+`get project my_project` will return the details of the project named `my_project`.
+
+In some cases `get action my_run` will return all actions for the run named `my_run` and
+`get action my_run my_action` will return the details of the action named `my_action` for the run `my_run`.
 
 #### flyte get action
 
@@ -157,9 +213,24 @@ Get all actions for a run or details for a specific action.
 
 Shows the automatically detected configuration to connect with remote Flyte services.
 
+The configuration will include the endpoint, organization, and other settings that are used by the CLI.
+
 #### flyte get io
 
 Get the inputs and outputs of a run or action.
+if only the run name is provided, it will show the inputs and outputs of the root action of that run.
+If an action name is provided, it will show the inputs and outputs for that action.
+
+If `--inputs-only` or `--outputs-only` is specified, it will only show the inputs or outputs respectively.
+
+Example:
+```bash
+flyte get io my_run
+```
+or
+```bash
+flyte get io my_run my_action
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -175,8 +246,23 @@ Get the inputs and outputs of a run or action.
 
 #### flyte get logs
 
-Stream logs for the provided run or action. If the run is provided, only the logs for the parent action will be
-    streamed.
+Stream logs for the provided run or action.
+If only the run is provided, only the logs for the parent action will be streamed.
+
+Example:
+```bash
+flyte get logs my_run
+```
+
+But, if you want to see the logs for a specific action, you can provide the action name as well:
+```bash
+flyte get logs my_run my_action
+```
+By default logs will be shown in the raw format, will scroll on the terminal. If automatic scrolling and only
+tailing --lines lines is desired, use the `--pretty` flag:
+```bash
+flyte get logs my_run my_action --pretty --lines 50
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -195,7 +281,7 @@ Stream logs for the provided run or action. If the run is provided, only the log
 
 #### flyte get project
 
-Get the current project.
+Retrieve a list of all projects or details of a specific project by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -203,7 +289,11 @@ Get the current project.
 
 #### flyte get run
 
-Get the current run.
+Get list of all runs or details of a specific run by name.
+
+The run details will include information about the run, its status, but only the root action will be shown.
+
+If you want to see the actions for a run, use `get action <run_name>`.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -215,7 +305,7 @@ Get the current run.
 
 #### flyte get secret
 
-Get the current secret.
+Retrieve a list of all secrets or details of a specific secret by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -227,7 +317,9 @@ Get the current secret.
 
 #### flyte get task
 
-Get the current task.
+Retrieve a list of all tasks or details of a specific task by name and version.
+
+Currently name+version are required to get a specific task.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -240,6 +332,24 @@ Get the current task.
 ### flyte run
 
 Run a task from a python file.
+
+Example usage:
+```bash
+flyte run --name examples/basics/hello.py my_task --arg1 value1 --arg2 value2
+```
+Note: all arguments for the run command are provided right after the `run` command and before the file name.
+
+You can also specify the project and domain using the `--project` and `--domain` options, respectively. These
+options can be set in the config file or passed as command line arguments.
+
+Note: The arguments for the task are provided after the task name and can be retrieved using `--help`
+Example:
+```bash
+flyte run --name examples/basics/hello.py my_task --help
+```
+
+To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
+ Flyte environment.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

@@ -1,24 +1,11 @@
 ---
-title: flyte.io.structured_dataset
-version: 0.2.0b4.dev17+g5fd94e2
-variants: +flyte +byoc +selfmanaged +serverless
+title: union.io.structured_dataset.structured_dataset
+version: 0.1.0
+variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
 
-# flyte.io.structured_dataset
-
-
-Flytekit StructuredDataset
-==========================================================
-.. currentmodule:: flytekit.types.structured
-
-.. autosummary::
-   :template: custom.rst
-   :toctree: generated/
-
-    StructuredDataset
-    StructuredDatasetDecoder
-    StructuredDatasetEncoder
+# union.io.structured_dataset.structured_dataset
 
 ## Directory
 
@@ -26,26 +13,89 @@ Flytekit StructuredDataset
 
 | Class | Description |
 |-|-|
-| [`StructuredDataset`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddataset) | This is the user facing StructuredDataset class. |
-| [`StructuredDatasetDecoder`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasetdecoder) | Helper class that provides a standard way to create an ABC using. |
-| [`StructuredDatasetEncoder`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasetencoder) | Helper class that provides a standard way to create an ABC using. |
-| [`StructuredDatasetTransformerEngine`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasettransformerengine) | Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
+| [`StructuredDataset`](.././union.io.structured_dataset.structured_dataset#unioniostructured_datasetstructured_datasetstructureddataset) | This is the user facing StructuredDataset class. |
+| [`StructuredDatasetDecoder`](.././union.io.structured_dataset.structured_dataset#unioniostructured_datasetstructured_datasetstructureddatasetdecoder) | Helper class that provides a standard way to create an ABC using. |
+| [`StructuredDatasetEncoder`](.././union.io.structured_dataset.structured_dataset#unioniostructured_datasetstructured_datasetstructureddatasetencoder) | Helper class that provides a standard way to create an ABC using. |
+| [`StructuredDatasetTransformerEngine`](.././union.io.structured_dataset.structured_dataset#unioniostructured_datasetstructured_datasetstructureddatasettransformerengine) | Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
+
+### Errors
+
+| Exception | Description |
+|-|-|
+| [`DuplicateHandlerError`](.././union.io.structured_dataset.structured_dataset#unioniostructured_datasetstructured_datasetduplicatehandlererror) | Inappropriate argument value (of correct type). |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`lazy_import_structured_dataset_handler()`](#lazy_import_structured_dataset_handler) |  |
+| [`extract_cols_and_format()`](#extract_cols_and_format) | Helper function, just used to iterate through Annotations and extract out the following information:. |
+| [`flatten_dict()`](#flatten_dict) |  |
+| [`get_supported_types()`](#get_supported_types) |  |
 
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `CSV` | `str` |  |
+| `DF` | `TypeVar` |  |
+| `GENERIC_FORMAT` | `str` |  |
+| `GENERIC_PROTOCOL` | `str` |  |
+| `MESSAGEPACK` | `str` |  |
+| `PARQUET` | `str` |  |
+| `T` | `TypeVar` |  |
+| `flyte_dataset_transformer` | `StructuredDatasetTransformerEngine` |  |
 
 ## Methods
 
-#### lazy_import_structured_dataset_handler()
+#### extract_cols_and_format()
 
 ```python
-def lazy_import_structured_dataset_handler()
+def extract_cols_and_format(
+    t: typing.Any,
+) -> typing.Tuple[Type[T], Optional[typing.OrderedDict[str, Type]], Optional[str], Optional['pa.lib.Schema']]
 ```
-## flyte.io.structured_dataset.StructuredDataset
+Helper function, just used to iterate through Annotations and extract out the following information:
+  - base type, if not Annotated, it will just be the type that was passed in.
+  - column information, as a collections.OrderedDict,
+  - the storage format, as a ``StructuredDatasetFormat`` (str),
+  - pa.lib.Schema
+
+If more than one of any type of thing is found, an error will be raised.
+If no instances of a given type are found, then None will be returned.
+
+If we add more things, we should put all the returned items in a dataclass instead of just a tuple.
+
+
+
+| Parameter | Type |
+|-|-|
+| `t` | `typing.Any` |
+
+#### flatten_dict()
+
+```python
+def flatten_dict(
+    sub_dict: dict,
+    parent_key: str,
+) -> typing.Dict
+```
+| Parameter | Type |
+|-|-|
+| `sub_dict` | `dict` |
+| `parent_key` | `str` |
+
+#### get_supported_types()
+
+```python
+def get_supported_types()
+```
+## union.io.structured_dataset.structured_dataset.DuplicateHandlerError
+
+Inappropriate argument value (of correct type).
+
+
+## union.io.structured_dataset.structured_dataset.StructuredDataset
 
 This is the user facing StructuredDataset class. Please don't confuse it with the literals.StructuredDataset
 class (that is just a model, a Python class representation of the protobuf).
@@ -201,7 +251,7 @@ def to_json(
 | `literal` |  |  |
 | `metadata` |  |  |
 
-## flyte.io.structured_dataset.StructuredDatasetDecoder
+## union.io.structured_dataset.structured_dataset.StructuredDatasetDecoder
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -262,7 +312,7 @@ value into a Python instance.
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.StructuredDatasetEncoder
+## union.io.structured_dataset.structured_dataset.StructuredDatasetEncoder
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -325,7 +375,7 @@ the
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.StructuredDatasetTransformerEngine
+## union.io.structured_dataset.structured_dataset.StructuredDatasetTransformerEngine
 
 Think of this transformer as a higher-level meta transformer that is used for all the dataframe types.
 If you are bringing a custom data frame type, or any data frame type, to flytekit, instead of

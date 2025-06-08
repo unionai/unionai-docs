@@ -1,11 +1,11 @@
 ---
-title: flyte.io.pickle.transformer
-version: 0.2.0b4.dev17+g5fd94e2
-variants: +flyte +byoc +selfmanaged +serverless
+title: union.io.pickle.transformer
+version: 0.1.0
+variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
 
-# flyte.io.pickle.transformer
+# union.io.pickle.transformer
 
 ## Directory
 
@@ -13,8 +13,8 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`FlytePickle`](.././flyte.io.pickle.transformer#flyteiopickletransformerflytepickle) | This type is only used by flytekit internally. |
-| [`FlytePickleTransformer`](.././flyte.io.pickle.transformer#flyteiopickletransformerflytepickletransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`FlytePickle`](.././union.io.pickle.transformer#unioniopickletransformerflytepickle) | This type is only used by flytekit internally. |
+| [`FlytePickleTransformer`](.././union.io.pickle.transformer#unioniopickletransformerflytepickletransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 
 ### Variables
 
@@ -22,7 +22,7 @@ layout: py_api
 |-|-|-|
 | `T` | `TypeVar` |  |
 
-## flyte.io.pickle.transformer.FlytePickle
+## union.io.pickle.transformer.FlytePickle
 
 This type is only used by flytekit internally. User should not use this type.
 Any type that flyte can't recognize will become FlytePickle
@@ -64,7 +64,7 @@ def to_pickle(
 |-|-|
 | `python_val` | `typing.Any` |
 
-## flyte.io.pickle.transformer.FlytePickleTransformer
+## union.io.pickle.transformer.FlytePickleTransformer
 
 Base transformer type that should be implemented for every python native type that can be handled by flytekit
 
@@ -146,7 +146,7 @@ Converts the python type to a Flyte LiteralType
 ```python
 def guess_python_type(
     literal_type: flyteidl.core.types_pb2.LiteralType,
-) -> typing.Type[flyte.io.pickle.transformer.FlytePickle.__class_getitem__.<locals>._SpecificFormatClass]
+) -> typing.Type[union.io.pickle.transformer.FlytePickle.__class_getitem__.<locals>._SpecificFormatClass]
 ```
 Converts the Flyte LiteralType to a python object type.
 

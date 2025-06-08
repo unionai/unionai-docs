@@ -1,11 +1,11 @@
 ---
-title: flyte.io.structured_dataset
-version: 0.2.0b4.dev17+g5fd94e2
-variants: +flyte +byoc +selfmanaged +serverless
+title: union.io.structured_dataset
+version: 0.1.0
+variants: +flyte +byoc +byok +serverless
 layout: py_api
 ---
 
-# flyte.io.structured_dataset
+# union.io.structured_dataset
 
 
 Flytekit StructuredDataset
@@ -26,10 +26,10 @@ Flytekit StructuredDataset
 
 | Class | Description |
 |-|-|
-| [`StructuredDataset`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddataset) | This is the user facing StructuredDataset class. |
-| [`StructuredDatasetDecoder`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasetdecoder) | Helper class that provides a standard way to create an ABC using. |
-| [`StructuredDatasetEncoder`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasetencoder) | Helper class that provides a standard way to create an ABC using. |
-| [`StructuredDatasetTransformerEngine`](.././flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasettransformerengine) | Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
+| [`StructuredDataset`](.././union.io.structured_dataset#unioniostructured_datasetstructureddataset) | This is the user facing StructuredDataset class. |
+| [`StructuredDatasetDecoder`](.././union.io.structured_dataset#unioniostructured_datasetstructureddatasetdecoder) | Helper class that provides a standard way to create an ABC using. |
+| [`StructuredDatasetEncoder`](.././union.io.structured_dataset#unioniostructured_datasetstructureddatasetencoder) | Helper class that provides a standard way to create an ABC using. |
+| [`StructuredDatasetTransformerEngine`](.././union.io.structured_dataset#unioniostructured_datasetstructureddatasettransformerengine) | Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 
 ### Methods
 
@@ -45,7 +45,7 @@ Flytekit StructuredDataset
 ```python
 def lazy_import_structured_dataset_handler()
 ```
-## flyte.io.structured_dataset.StructuredDataset
+## union.io.structured_dataset.StructuredDataset
 
 This is the user facing StructuredDataset class. Please don't confuse it with the literals.StructuredDataset
 class (that is just a model, a Python class representation of the protobuf).
@@ -201,7 +201,7 @@ def to_json(
 | `literal` |  |  |
 | `metadata` |  |  |
 
-## flyte.io.structured_dataset.StructuredDatasetDecoder
+## union.io.structured_dataset.StructuredDatasetDecoder
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -262,7 +262,7 @@ value into a Python instance.
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.StructuredDatasetEncoder
+## union.io.structured_dataset.StructuredDatasetEncoder
 
 Helper class that provides a standard way to create an ABC using
 inheritance.
@@ -325,7 +325,7 @@ the
 | `python_type` |  |  |
 | `supported_format` |  |  |
 
-## flyte.io.structured_dataset.StructuredDatasetTransformerEngine
+## union.io.structured_dataset.StructuredDatasetTransformerEngine
 
 Think of this transformer as a higher-level meta transformer that is used for all the dataframe types.
 If you are bringing a custom data frame type, or any data frame type, to flytekit, instead of
