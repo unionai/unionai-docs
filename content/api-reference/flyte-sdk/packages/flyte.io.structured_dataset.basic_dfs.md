@@ -1,6 +1,6 @@
 ---
 title: flyte.io.structured_dataset.basic_dfs
-version: 0.2.0b4.dev17+g5fd94e2
+version: 0.2.0b8
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

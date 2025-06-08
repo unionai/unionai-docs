@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b4.dev17+g5fd94e2
+version: 0.2.0b8
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -591,8 +591,7 @@ Example:
 ```
 
 For more information on the uv script format, see the documentation:
-<href="https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies">
-    UV: Declaring script dependencies</href>
+[UV: Declaring script dependencies](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
 
 
@@ -937,7 +936,7 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 class Secret(
     key: str,
     group: typing.Optional[str],
-    mount: pathlib._local.Path | None,
+    mount: pathlib.Path | None,
     as_env_var: typing.Optional[str],
 )
 ```
@@ -945,7 +944,7 @@ class Secret(
 |-|-|
 | `key` | `str` |
 | `group` | `typing.Optional[str]` |
-| `mount` | `pathlib._local.Path \| None` |
+| `mount` | `pathlib.Path \| None` |
 | `as_env_var` | `typing.Optional[str]` |
 
 ## flyte.TaskEnvironment
