@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 0.2.0b8
+version: 0.2.0b8.dev8+ge2aa0cb.d20250606
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,7 +40,7 @@ layout: py_api
 ```python
 def get(
     from_path: str,
-    to_path: typing.Union[str, pathlib._local.Path, NoneType],
+    to_path: typing.Union[str, pathlib.Path, NoneType],
     recursive: bool,
     kwargs,
 ) -> str
@@ -48,7 +48,7 @@ def get(
 | Parameter | Type |
 |-|-|
 | `from_path` | `str` |
-| `to_path` | `typing.Union[str, pathlib._local.Path, NoneType]` |
+| `to_path` | `typing.Union[str, pathlib.Path, NoneType]` |
 | `recursive` | `bool` |
 | `kwargs` | `**kwargs` |
 
@@ -65,15 +65,15 @@ def get_random_local_directory()
 
 ```python
 def get_random_local_path(
-    file_path_or_file_name: pathlib._local.Path | str | None,
-) -> pathlib._local.Path
+    file_path_or_file_name: pathlib.Path | str | None,
+) -> pathlib.Path
 ```
 Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name
 
 
 | Parameter | Type |
 |-|-|
-| `file_path_or_file_name` | `pathlib._local.Path \| str \| None` |
+| `file_path_or_file_name` | `pathlib.Path \| str \| None` |
 
 #### get_stream()
 
@@ -121,7 +121,7 @@ def get_underlying_filesystem(
 
 ```python
 def is_remote(
-    path: typing.Union[pathlib._local.Path, str],
+    path: typing.Union[pathlib.Path, str],
 ) -> bool
 ```
 Let's find a replacement
@@ -129,7 +129,7 @@ Let's find a replacement
 
 | Parameter | Type |
 |-|-|
-| `path` | `typing.Union[pathlib._local.Path, str]` |
+| `path` | `typing.Union[pathlib.Path, str]` |
 
 #### join()
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 0.2.0b8
+version: 0.2.0b8.dev8+ge2aa0cb.d20250606
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -86,15 +86,15 @@ validated to form a valid model.
 | [`list_files()`](#list_files) | Asynchronously get a list of all files in the directory (non-recursive). |
 | [`list_files_sync()`](#list_files_sync) | Synchronously get a list of all files in the directory (non-recursive). |
 | [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
-| [`model_copy()`](#model_copy) | !!! abstract "Usage Documentation". |
-| [`model_dump()`](#model_dump) | !!! abstract "Usage Documentation". |
-| [`model_dump_json()`](#model_dump_json) | !!! abstract "Usage Documentation". |
+| [`model_copy()`](#model_copy) | Usage docs: https://docs. |
+| [`model_dump()`](#model_dump) | Usage docs: https://docs. |
+| [`model_dump_json()`](#model_dump_json) | Usage docs: https://docs. |
 | [`model_json_schema()`](#model_json_schema) | Generates a JSON schema for a model class. |
 | [`model_parametrized_name()`](#model_parametrized_name) | Compute the class name for parametrizations of generic classes. |
 | [`model_post_init()`](#model_post_init) | Override this method to perform additional initialization after `__init__` and `model_construct`. |
 | [`model_rebuild()`](#model_rebuild) | Try to rebuild the pydantic-core schema for the model. |
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
-| [`model_validate_json()`](#model_validate_json) | !!! abstract "Usage Documentation". |
+| [`model_validate_json()`](#model_validate_json) | Usage docs: https://docs. |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
 | [`parse_file()`](#parse_file) |  |
 | [`parse_obj()`](#parse_obj) |  |
@@ -134,8 +134,8 @@ def copy(
 ```
 Returns a copy of the model.
 
-!!! warning "Deprecated"
-    This method is now deprecated; use `model_copy` instead.
+> [!WARNING] Deprecated
+> This method is now deprecated; use `model_copy` instead.
 
 If you need `include` or `exclude`, use:
 
@@ -390,12 +390,12 @@ Creates a new instance of the `Model` class with validated data.
 Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 
-!!! note
-    `model_construct()` generally respects the `model_config.extra` setting on the provided model.
-    That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
-    and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
-    Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
-    an error if extra values are passed, but they will be ignored.
+> [!NOTE]
+> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+> an error if extra values are passed, but they will be ignored.
 
 
 
@@ -412,15 +412,9 @@ def model_copy(
     deep: bool,
 ) -> Self
 ```
-!!! abstract "Usage Documentation"
-    [`model_copy`](../concepts/serialization.md#model_copy)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/serialization/#model_copy
 
 Returns a copy of the model.
-
-!!! note
-    The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
-    might have unexpected side effects if you store anything in it, on top of the model
-    fields (e.g. the value of [cached properties][functools.cached_property]).
 
 
 
@@ -437,18 +431,16 @@ def model_dump(
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
-    by_alias: bool | None,
+    by_alias: bool,
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
-    fallback: Callable[[Any], Any] | None,
     serialize_as_any: bool,
 ) -> dict[str, Any]
 ```
-!!! abstract "Usage Documentation"
-    [`model_dump`](../concepts/serialization.md#modelmodel_dump)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
@@ -460,13 +452,12 @@ Generate a dictionary representation of the model, optionally specifying which f
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
+| `by_alias` | `bool` |
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
-| `fallback` | `Callable[[Any], Any] \| None` |
 | `serialize_as_any` | `bool` |
 
 #### model_dump_json()
@@ -477,18 +468,16 @@ def model_dump_json(
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
-    by_alias: bool | None,
+    by_alias: bool,
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
-    fallback: Callable[[Any], Any] | None,
     serialize_as_any: bool,
 ) -> str
 ```
-!!! abstract "Usage Documentation"
-    [`model_dump_json`](../concepts/serialization.md#modelmodel_dump_json)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump_json
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
 
@@ -500,13 +489,12 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
+| `by_alias` | `bool` |
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
-| `fallback` | `Callable[[Any], Any] \| None` |
 | `serialize_as_any` | `bool` |
 
 #### model_json_schema()
@@ -551,7 +539,7 @@ This method can be overridden to achieve a custom naming scheme for generic Base
 
 ```python
 def model_post_init(
-    context: Any,
+    _BaseModel__context: Any,
 )
 ```
 Override this method to perform additional initialization after `__init__` and `model_construct`.
@@ -560,7 +548,7 @@ This is useful if you want to do some validation that requires the entire model 
 
 | Parameter | Type |
 |-|-|
-| `context` | `Any` |
+| `_BaseModel__context` | `Any` |
 
 #### model_rebuild()
 
@@ -594,8 +582,6 @@ def model_validate(
     strict: bool | None,
     from_attributes: bool | None,
     context: Any | None,
-    by_alias: bool | None,
-    by_name: bool | None,
 ) -> Self
 ```
 Validate a pydantic model instance.
@@ -608,8 +594,6 @@ Validate a pydantic model instance.
 | `strict` | `bool \| None` |
 | `from_attributes` | `bool \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
-| `by_name` | `bool \| None` |
 
 #### model_validate_json()
 
@@ -618,12 +602,9 @@ def model_validate_json(
     json_data: str | bytes | bytearray,
     strict: bool | None,
     context: Any | None,
-    by_alias: bool | None,
-    by_name: bool | None,
 ) -> Self
 ```
-!!! abstract "Usage Documentation"
-    [JSON Parsing](../concepts/json.md#json-parsing)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/json/#json-parsing
 
 Validate the given JSON data against the Pydantic model.
 
@@ -634,8 +615,6 @@ Validate the given JSON data against the Pydantic model.
 | `json_data` | `str \| bytes \| bytearray` |
 | `strict` | `bool \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
-| `by_name` | `bool \| None` |
 
 #### model_validate_strings()
 
@@ -644,8 +623,6 @@ def model_validate_strings(
     obj: Any,
     strict: bool | None,
     context: Any | None,
-    by_alias: bool | None,
-    by_name: bool | None,
 ) -> Self
 ```
 Validate the given object with string data against the Pydantic model.
@@ -657,8 +634,6 @@ Validate the given object with string data against the Pydantic model.
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
-| `by_name` | `bool \| None` |
 
 #### parse_file()
 
@@ -929,15 +904,15 @@ validated to form a valid model.
 | [`from_orm()`](#from_orm) |  |
 | [`json()`](#json) |  |
 | [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
-| [`model_copy()`](#model_copy) | !!! abstract "Usage Documentation". |
-| [`model_dump()`](#model_dump) | !!! abstract "Usage Documentation". |
-| [`model_dump_json()`](#model_dump_json) | !!! abstract "Usage Documentation". |
+| [`model_copy()`](#model_copy) | Usage docs: https://docs. |
+| [`model_dump()`](#model_dump) | Usage docs: https://docs. |
+| [`model_dump_json()`](#model_dump_json) | Usage docs: https://docs. |
 | [`model_json_schema()`](#model_json_schema) | Generates a JSON schema for a model class. |
 | [`model_parametrized_name()`](#model_parametrized_name) | Compute the class name for parametrizations of generic classes. |
 | [`model_post_init()`](#model_post_init) | Override this method to perform additional initialization after `__init__` and `model_construct`. |
 | [`model_rebuild()`](#model_rebuild) | Try to rebuild the pydantic-core schema for the model. |
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
-| [`model_validate_json()`](#model_validate_json) | !!! abstract "Usage Documentation". |
+| [`model_validate_json()`](#model_validate_json) | Usage docs: https://docs. |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
 | [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
 | [`open()`](#open) | Asynchronously open the file and return a file-like object. |
@@ -978,8 +953,8 @@ def copy(
 ```
 Returns a copy of the model.
 
-!!! warning "Deprecated"
-    This method is now deprecated; use `model_copy` instead.
+> [!WARNING] Deprecated
+> This method is now deprecated; use `model_copy` instead.
 
 If you need `include` or `exclude`, use:
 
@@ -1141,12 +1116,12 @@ Creates a new instance of the `Model` class with validated data.
 Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 
-!!! note
-    `model_construct()` generally respects the `model_config.extra` setting on the provided model.
-    That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
-    and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
-    Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
-    an error if extra values are passed, but they will be ignored.
+> [!NOTE]
+> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+> an error if extra values are passed, but they will be ignored.
 
 
 
@@ -1163,15 +1138,9 @@ def model_copy(
     deep: bool,
 ) -> Self
 ```
-!!! abstract "Usage Documentation"
-    [`model_copy`](../concepts/serialization.md#model_copy)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/serialization/#model_copy
 
 Returns a copy of the model.
-
-!!! note
-    The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
-    might have unexpected side effects if you store anything in it, on top of the model
-    fields (e.g. the value of [cached properties][functools.cached_property]).
 
 
 
@@ -1188,18 +1157,16 @@ def model_dump(
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
-    by_alias: bool | None,
+    by_alias: bool,
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
-    fallback: Callable[[Any], Any] | None,
     serialize_as_any: bool,
 ) -> dict[str, Any]
 ```
-!!! abstract "Usage Documentation"
-    [`model_dump`](../concepts/serialization.md#modelmodel_dump)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump
 
 Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
 
@@ -1211,13 +1178,12 @@ Generate a dictionary representation of the model, optionally specifying which f
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
+| `by_alias` | `bool` |
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
-| `fallback` | `Callable[[Any], Any] \| None` |
 | `serialize_as_any` | `bool` |
 
 #### model_dump_json()
@@ -1228,18 +1194,16 @@ def model_dump_json(
     include: IncEx | None,
     exclude: IncEx | None,
     context: Any | None,
-    by_alias: bool | None,
+    by_alias: bool,
     exclude_unset: bool,
     exclude_defaults: bool,
     exclude_none: bool,
     round_trip: bool,
     warnings: bool | Literal['none', 'warn', 'error'],
-    fallback: Callable[[Any], Any] | None,
     serialize_as_any: bool,
 ) -> str
 ```
-!!! abstract "Usage Documentation"
-    [`model_dump_json`](../concepts/serialization.md#modelmodel_dump_json)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/serialization/#modelmodel_dump_json
 
 Generates a JSON representation of the model using Pydantic's `to_json` method.
 
@@ -1251,13 +1215,12 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 | `include` | `IncEx \| None` |
 | `exclude` | `IncEx \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
+| `by_alias` | `bool` |
 | `exclude_unset` | `bool` |
 | `exclude_defaults` | `bool` |
 | `exclude_none` | `bool` |
 | `round_trip` | `bool` |
 | `warnings` | `bool \| Literal['none', 'warn', 'error']` |
-| `fallback` | `Callable[[Any], Any] \| None` |
 | `serialize_as_any` | `bool` |
 
 #### model_json_schema()
@@ -1302,7 +1265,7 @@ This method can be overridden to achieve a custom naming scheme for generic Base
 
 ```python
 def model_post_init(
-    context: Any,
+    _BaseModel__context: Any,
 )
 ```
 Override this method to perform additional initialization after `__init__` and `model_construct`.
@@ -1311,7 +1274,7 @@ This is useful if you want to do some validation that requires the entire model 
 
 | Parameter | Type |
 |-|-|
-| `context` | `Any` |
+| `_BaseModel__context` | `Any` |
 
 #### model_rebuild()
 
@@ -1345,8 +1308,6 @@ def model_validate(
     strict: bool | None,
     from_attributes: bool | None,
     context: Any | None,
-    by_alias: bool | None,
-    by_name: bool | None,
 ) -> Self
 ```
 Validate a pydantic model instance.
@@ -1359,8 +1320,6 @@ Validate a pydantic model instance.
 | `strict` | `bool \| None` |
 | `from_attributes` | `bool \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
-| `by_name` | `bool \| None` |
 
 #### model_validate_json()
 
@@ -1369,12 +1328,9 @@ def model_validate_json(
     json_data: str | bytes | bytearray,
     strict: bool | None,
     context: Any | None,
-    by_alias: bool | None,
-    by_name: bool | None,
 ) -> Self
 ```
-!!! abstract "Usage Documentation"
-    [JSON Parsing](../concepts/json.md#json-parsing)
+Usage docs: https://docs.pydantic.dev/2.10/concepts/json/#json-parsing
 
 Validate the given JSON data against the Pydantic model.
 
@@ -1385,8 +1341,6 @@ Validate the given JSON data against the Pydantic model.
 | `json_data` | `str \| bytes \| bytearray` |
 | `strict` | `bool \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
-| `by_name` | `bool \| None` |
 
 #### model_validate_strings()
 
@@ -1395,8 +1349,6 @@ def model_validate_strings(
     obj: Any,
     strict: bool | None,
     context: Any | None,
-    by_alias: bool | None,
-    by_name: bool | None,
 ) -> Self
 ```
 Validate the given object with string data against the Pydantic model.
@@ -1408,8 +1360,6 @@ Validate the given object with string data against the Pydantic model.
 | `obj` | `Any` |
 | `strict` | `bool \| None` |
 | `context` | `Any \| None` |
-| `by_alias` | `bool \| None` |
-| `by_name` | `bool \| None` |
 
 #### new_remote()
 

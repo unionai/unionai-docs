@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b8
+version: 0.2.0b8.dev8+ge2aa0cb.d20250606
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -264,9 +264,7 @@ Protocol classes are defined as::
             ...
 
 Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).
-
-For example::
+structural subtyping (static duck-typing), for example::
 
     class C:
         def meth(self) -> int:
@@ -282,7 +280,7 @@ See PEP 544 for details. Protocol classes decorated with
 only the presence of given attributes, ignoring their type signatures.
 Protocol classes can be generic, they are defined as::
 
-    class GenProto[T](Protocol):
+    class GenProto(Protocol[T]):
         def meth(self) -> T:
             ...
 
@@ -936,7 +934,7 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 class Secret(
     key: str,
     group: typing.Optional[str],
-    mount: pathlib._local.Path | None,
+    mount: pathlib.Path | None,
     as_env_var: typing.Optional[str],
 )
 ```
@@ -944,7 +942,7 @@ class Secret(
 |-|-|
 | `key` | `str` |
 | `group` | `typing.Optional[str]` |
-| `mount` | `pathlib._local.Path \| None` |
+| `mount` | `pathlib.Path \| None` |
 | `as_env_var` | `typing.Optional[str]` |
 
 ## flyte.TaskEnvironment
