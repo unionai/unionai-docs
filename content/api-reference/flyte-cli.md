@@ -63,10 +63,10 @@ Override the default config file:
 flyte --config /path/to/config.yaml run ...
 ```
 
-👉 [Documentation](https://www.union.ai/docs/flyte/user-guide/)
-👉 [GitHub](https://github.com/flyteorg/flyte) - Please leave a ⭐.
-👉 [Slack](https://slack.flyte.org) - Join the community and ask questions.
-👉 [Issues](https://github.com/flyteorg/flyte/issues)
+* [Documentation](https://www.union.ai/docs/flyte/user-guide/)
+* [GitHub](https://github.com/flyteorg/flyte) - Please leave a ⭐.
+* [Slack](https://slack.flyte.org) - Join the community and ask questions.
+* [Issues](https://github.com/flyteorg/flyte/issues)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
