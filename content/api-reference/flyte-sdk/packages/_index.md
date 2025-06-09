@@ -1,9 +1,8 @@
 ---
 title: Packages
-version: 0.2.0b7
+version: 0.2.0b8
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
-sidebar_expanded: true
 ---
 
 # Packages
@@ -23,5 +22,5 @@ sidebar_expanded: true
 | [`flyte.remote`](flyte.remote) | Remote Entities that are accessible from the Union Server once deployed or created. |
 | [`flyte.report`](flyte.report) |  |
 | [`flyte.storage`](flyte.storage) |  |
-| [`flyte.syncify`](flyte.syncify) |  |
+| [`flyte.syncify`](flyte.syncify) | # Syncify Module. |
 | [`flyte.types`](flyte.types) |  |

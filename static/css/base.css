@@ -5,6 +5,7 @@
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
   --border-color: #e2e8f0;
+  --separator: #c7ccd6;
   --code-bg: #f1f5f9;
   --pre-bg: #1e293b;
   --pre-color: #e2e8f0;
@@ -159,6 +160,7 @@ code {
   border-radius: 4px;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: nowrap;
 }
 pre {
   background: var(--pre-bg);
@@ -339,4 +341,7 @@ footer {
 
 hr {
   margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid var(--separator);
 }

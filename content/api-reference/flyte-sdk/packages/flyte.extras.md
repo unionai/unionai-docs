@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 0.2.0b7
+version: 0.2.0b8
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -61,6 +61,7 @@ class ContainerTask(
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
 | [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
 | [`execute()`](#execute) | This is the pure python function that will be executed when the task is called. |
+| [`forward()`](#forward) | Think of this as a local execute method for your task. |
 | [`override()`](#override) | Override various parameters of the task template. |
 | [`post()`](#post) | This is the postexecute function that will be. |
 | [`pre()`](#pre) | This is the preexecute function that will be. |
@@ -141,6 +142,24 @@ This is the pure python function that will be executed when the task is called.
 
 | Parameter | Type |
 |-|-|
+| `kwargs` | `**kwargs` |
+
+#### forward()
+
+```python
+def forward(
+    args: *args,
+    kwargs: **kwargs,
+) -> Coroutine[Any, Any, R] | R
+```
+Think of this as a local execute method for your task. This function will be invoked by the __call__ method
+when not in a Flyte task execution context.  See the implementation below for an example.
+
+
+
+| Parameter | Type |
+|-|-|
+| `args` | `*args` |
 | `kwargs` | `**kwargs` |
 
 #### override()

@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b7
+version: 0.2.0b8
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -361,6 +361,7 @@ class Environment(
 | Method | Description |
 |-|-|
 | [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
+| [`clone_with()`](#clone_with) |  |
 
 
 #### add_dependency()
@@ -376,6 +377,29 @@ Add a dependency to the environment.
 | Parameter | Type |
 |-|-|
 | `env` | `Environment` |
+
+#### clone_with()
+
+```python
+def clone_with(
+    name: str,
+    image: Optional[Union[str, Image, Literal['auto']]],
+    resources: Optional[Resources],
+    env: Optional[Dict[str, str]],
+    secrets: Optional[SecretRequest],
+    env_dep_hints: Optional[List[Environment]],
+    kwargs: **kwargs,
+) -> Environment
+```
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
+| `image` | `Optional[Union[str, Image, Literal['auto']]]` |
+| `resources` | `Optional[Resources]` |
+| `env` | `Optional[Dict[str, str]]` |
+| `secrets` | `Optional[SecretRequest]` |
+| `env_dep_hints` | `Optional[List[Environment]]` |
+| `kwargs` | `**kwargs` |
 
 ## flyte.Image
 
@@ -949,7 +973,7 @@ class TaskEnvironment(
     resources: Optional[Resources],
     image: Union[str, Image, Literal['auto']],
     cache: Union[CacheRequest],
-    reusable: Union[ReusePolicy, Literal['auto'], None],
+    reusable: ReusePolicy | None,
 )
 ```
 | Parameter | Type |
@@ -963,7 +987,7 @@ class TaskEnvironment(
 | `resources` | `Optional[Resources]` |
 | `image` | `Union[str, Image, Literal['auto']]` |
 | `cache` | `Union[CacheRequest]` |
-| `reusable` | `Union[ReusePolicy, Literal['auto'], None]` |
+| `reusable` | `ReusePolicy \| None` |
 
 ### Methods
 
@@ -971,7 +995,8 @@ class TaskEnvironment(
 |-|-|
 | [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
 | [`add_task()`](#add_task) | Add a task to the environment. |
-| [`clone_with()`](#clone_with) | Clone the environment with new settings. |
+| [`clone_with()`](#clone_with) | Clone the TaskEnvironment with new parameters. |
+| [`task()`](#task) |  |
 
 
 #### add_dependency()
@@ -1009,14 +1034,14 @@ def clone_with(
     name: str,
     image: Optional[Union[str, Image, Literal['auto']]],
     resources: Optional[Resources],
-    cache: Union[CacheRequest, None],
     env: Optional[Dict[str, str]],
-    reusable: Union[ReusePolicy, None],
     secrets: Optional[SecretRequest],
     env_dep_hints: Optional[List[Environment]],
+    kwargs: **kwargs,
 ) -> TaskEnvironment
 ```
-Clone the environment with new settings.
+Clone the TaskEnvironment with new parameters.
+besides the base environment parameters, you can override, kwargs like `cache`, `reusable`, etc.
 
 
 | Parameter | Type |
@@ -1024,22 +1049,42 @@ Clone the environment with new settings.
 | `name` | `str` |
 | `image` | `Optional[Union[str, Image, Literal['auto']]]` |
 | `resources` | `Optional[Resources]` |
-| `cache` | `Union[CacheRequest, None]` |
 | `env` | `Optional[Dict[str, str]]` |
-| `reusable` | `Union[ReusePolicy, None]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `env_dep_hints` | `Optional[List[Environment]]` |
+| `kwargs` | `**kwargs` |
+
+#### task()
+
+```python
+def task(
+    _func,
+    name: Optional[str],
+    cache: Union[CacheRequest] | None,
+    retries: Union[int, RetryStrategy],
+    timeout: Union[timedelta, int],
+    docs: Optional[Documentation],
+    secrets: Optional[SecretRequest],
+    pod_template: Optional[Union[str, 'V1PodTemplate']],
+    report: bool,
+) -> Union[AsyncFunctionTaskTemplate, Callable[P, R]]
+```
+| Parameter | Type |
+|-|-|
+| `_func` |  |
+| `name` | `Optional[str]` |
+| `cache` | `Union[CacheRequest] \| None` |
+| `retries` | `Union[int, RetryStrategy]` |
+| `timeout` | `Union[timedelta, int]` |
+| `docs` | `Optional[Documentation]` |
+| `secrets` | `Optional[SecretRequest]` |
+| `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `report` | `bool` |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `task` |  | {{< multiline >}}Decorator to create a new task with the environment settings.
-The task will be executed in its own container with the specified image, resources, and environment variables,
-unless reusePolicy is set, in which case the same container will be reused for all tasks with the same
-environment settings.
-
-{{< /multiline >}} |
 | `tasks` |  | {{< multiline >}}Get all tasks defined in the environment.
 {{< /multiline >}} |
 
