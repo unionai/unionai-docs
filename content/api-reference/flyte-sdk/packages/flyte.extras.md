@@ -31,8 +31,8 @@ class ContainerTask(
     inputs: typing.Optional[typing.Dict[str, typing.Type]],
     arguments: typing.Optional[typing.List[str]],
     outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    input_data_dir: str | pathlib.Path,
-    output_data_dir: str | pathlib.Path,
+    input_data_dir: str | pathlib._local.Path,
+    output_data_dir: str | pathlib._local.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
     kwargs,
@@ -46,8 +46,8 @@ class ContainerTask(
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
 | `arguments` | `typing.Optional[typing.List[str]]` |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `input_data_dir` | `str \| pathlib.Path` |
-| `output_data_dir` | `str \| pathlib.Path` |
+| `input_data_dir` | `str \| pathlib._local.Path` |
+| `output_data_dir` | `str \| pathlib._local.Path` |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` |
 | `local_logs` | `bool` |
 | `kwargs` | `**kwargs` |

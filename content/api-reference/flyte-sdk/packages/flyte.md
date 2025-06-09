@@ -936,7 +936,7 @@ TODO: Add support for secret versioning (some stores) and secret groups (some st
 class Secret(
     key: str,
     group: typing.Optional[str],
-    mount: pathlib.Path | None,
+    mount: pathlib._local.Path | None,
     as_env_var: typing.Optional[str],
 )
 ```
@@ -944,7 +944,7 @@ class Secret(
 |-|-|
 | `key` | `str` |
 | `group` | `typing.Optional[str]` |
-| `mount` | `pathlib.Path \| None` |
+| `mount` | `pathlib._local.Path \| None` |
 | `as_env_var` | `typing.Optional[str]` |
 
 ## flyte.TaskEnvironment

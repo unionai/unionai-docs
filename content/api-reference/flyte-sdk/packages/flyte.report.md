@@ -58,14 +58,14 @@ Get a tab by name. If the tab does not exist, create it.
 class Report(
     name: str,
     tabs: typing.Dict[str, flyte.report._report.Tab],
-    template_path: pathlib.Path,
+    template_path: pathlib._local.Path,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
 | `tabs` | `typing.Dict[str, flyte.report._report.Tab]` |
-| `template_path` | `pathlib.Path` |
+| `template_path` | `pathlib._local.Path` |
 
 ### Methods
 

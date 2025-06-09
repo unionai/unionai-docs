@@ -83,7 +83,7 @@ and create authentication interceptors that perform async operations.
 
 ```python
 def upload_dir(
-    dir_path: pathlib.Path,
+    dir_path: pathlib._local.Path,
     verify: bool,
 ) -> str
 ```
@@ -93,14 +93,14 @@ Uploads a directory to a remote location and returns the remote URI.
 
 | Parameter | Type |
 |-|-|
-| `dir_path` | `pathlib.Path` |
+| `dir_path` | `pathlib._local.Path` |
 | `verify` | `bool` |
 
 #### upload_file()
 
 ```python
 def upload_file(
-    fp: pathlib.Path,
+    fp: pathlib._local.Path,
     verify: bool,
 ) -> typing.Tuple[str, str]
 ```
@@ -110,7 +110,7 @@ Uploads a file to a remote location and returns the remote URI.
 
 | Parameter | Type |
 |-|-|
-| `fp` | `pathlib.Path` |
+| `fp` | `pathlib._local.Path` |
 | `verify` | `bool` |
 
 ## flyte.remote.Action
