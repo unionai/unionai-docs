@@ -6,9 +6,7 @@ all: parser generate
 
 .PHONY: parser
 parser:
-	tools/api_generator/parser \
-		--package flyte \
-		--output ${API_DATA}
+	tools/api_generator/parser --package flyte --output ${API_DATA}
 
 .PHONY: generate
 generate: clean_output_folder
@@ -17,7 +15,7 @@ generate: clean_output_folder
 		--api "${API_DATA}" \
 		--include include/api.flyte-sdk.md \
 		--variants \
-			-flyte \
+			+flyte \
 			+byoc \
 			+selfmanaged \
 			+serverless \
