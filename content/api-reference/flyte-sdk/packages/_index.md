@@ -3,6 +3,8 @@ title: Packages
 version: 0.2.0b8
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
+weight: 2
+sidebar_expanded: true
 ---
 
 # Packages
