@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 0.2.0b8.dev8+ge2aa0cb.d20250606
+version: 0.2.0b9.dev1+g28a3f43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -58,14 +58,14 @@ Get a tab by name. If the tab does not exist, create it.
 class Report(
     name: str,
     tabs: typing.Dict[str, flyte.report._report.Tab],
-    template_path: pathlib.Path,
+    template_path: pathlib._local.Path,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
 | `tabs` | `typing.Dict[str, flyte.report._report.Tab]` |
-| `template_path` | `pathlib.Path` |
+| `template_path` | `pathlib._local.Path` |
 
 ### Methods
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 0.2.0b8.dev8+ge2aa0cb.d20250606
+version: 0.2.0b9.dev1+g28a3f43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -31,8 +31,8 @@ class ContainerTask(
     inputs: typing.Optional[typing.Dict[str, typing.Type]],
     arguments: typing.Optional[typing.List[str]],
     outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    input_data_dir: str | pathlib.Path,
-    output_data_dir: str | pathlib.Path,
+    input_data_dir: str | pathlib._local.Path,
+    output_data_dir: str | pathlib._local.Path,
     metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
     local_logs: bool,
     kwargs,
@@ -46,8 +46,8 @@ class ContainerTask(
 | `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
 | `arguments` | `typing.Optional[typing.List[str]]` |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `input_data_dir` | `str \| pathlib.Path` |
-| `output_data_dir` | `str \| pathlib.Path` |
+| `input_data_dir` | `str \| pathlib._local.Path` |
+| `output_data_dir` | `str \| pathlib._local.Path` |
 | `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` |
 | `local_logs` | `bool` |
 | `kwargs` | `**kwargs` |
