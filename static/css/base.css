@@ -160,7 +160,6 @@ code {
   border-radius: 4px;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  white-space: nowrap;
 }
 pre {
   background: var(--pre-bg);
