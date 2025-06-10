@@ -219,6 +219,8 @@ The configuration will include the endpoint, organization, and other settings th
 #### flyte get io
 
 Get the inputs and outputs of a run or action.
+if only the run name is provided, it will show the inputs and outputs of the root action of that run.
+If an action name is provided, it will show the inputs and outputs for that action.
 
 * If only the run name is provided, it will show the inputs and outputs of the root action of that run.
 * If an action name is provided, it will show the inputs and outputs for that action.
