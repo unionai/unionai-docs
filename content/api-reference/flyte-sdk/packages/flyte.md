@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -54,7 +54,11 @@ async def my_task():
 | [`GPU()`](#gpu) | Create a GPU device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`ctx()`](#ctx) | Retrieve the current task context from the context variable. |
+| [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
 | [`group()`](#group) | Create a new group with the given name. |
+| [`init()`](#init) | Initialize the Flyte system with the given configuration. |
+| [`init_auto_from_config()`](#init_auto_from_config) | Initialize the Flyte system using a configuration file or Config object. |
+| [`run()`](#run) | Run a task with the given parameters. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
 | [`with_runcontext()`](#with_runcontext) | Launch a new run with the given parameters as the context. |
 
@@ -110,6 +114,28 @@ def ctx()
 Retrieve the current task context from the context variable.
 
 
+#### deploy()
+
+```python
+def deploy(
+    envs: Environment,
+    dryrun: bool,
+    version: str | None,
+    interactive_mode: bool | None,
+    copy_style: CopyFiles,
+) -> Deployment
+```
+Deploy the given environment or list of environments.
+
+
+| Parameter | Type |
+|-|-|
+| `envs` | `Environment` |
+| `dryrun` | `bool` |
+| `version` | `str \| None` |
+| `interactive_mode` | `bool \| None` |
+| `copy_style` | `CopyFiles` |
+
 #### group()
 
 ```python
@@ -134,6 +160,94 @@ async def my_task():
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
+
+#### init()
+
+```python
+def init(
+    org: str | None,
+    project: str | None,
+    domain: str | None,
+    root_dir: Path | None,
+    log_level: int | None,
+    endpoint: str | None,
+    headless: bool,
+    insecure: bool,
+    insecure_skip_verify: bool,
+    ca_cert_file_path: str | None,
+    auth_type: AuthType,
+    command: List[str] | None,
+    proxy_command: List[str] | None,
+    api_key: str | None,
+    client_id: str | None,
+    client_credentials_secret: str | None,
+    auth_client_config: ClientConfig | None,
+    rpc_retries: int,
+    http_proxy_url: str | None,
+    storage: Storage | None,
+)
+```
+Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
+remote API methods are called. Thread-safe implementation.
+
+
+
+| Parameter | Type |
+|-|-|
+| `org` | `str \| None` |
+| `project` | `str \| None` |
+| `domain` | `str \| None` |
+| `root_dir` | `Path \| None` |
+| `log_level` | `int \| None` |
+| `endpoint` | `str \| None` |
+| `headless` | `bool` |
+| `insecure` | `bool` |
+| `insecure_skip_verify` | `bool` |
+| `ca_cert_file_path` | `str \| None` |
+| `auth_type` | `AuthType` |
+| `command` | `List[str] \| None` |
+| `proxy_command` | `List[str] \| None` |
+| `api_key` | `str \| None` |
+| `client_id` | `str \| None` |
+| `client_credentials_secret` | `str \| None` |
+| `auth_client_config` | `ClientConfig \| None` |
+| `rpc_retries` | `int` |
+| `http_proxy_url` | `str \| None` |
+| `storage` | `Storage \| None` |
+
+#### init_auto_from_config()
+
+```python
+def init_auto_from_config(
+    path_or_config: str | Config | None,
+)
+```
+Initialize the Flyte system using a configuration file or Config object. This method should be called before any
+other Flyte remote API methods are called. Thread-safe implementation.
+
+
+
+| Parameter | Type |
+|-|-|
+| `path_or_config` | `str \| Config \| None` |
+
+#### run()
+
+```python
+def run(
+    task: TaskTemplate[P, R],
+    args: *args,
+    kwargs: **kwargs,
+) -> Union[R, Run]
+```
+Run a task with the given parameters
+
+
+| Parameter | Type |
+|-|-|
+| `task` | `TaskTemplate[P, R]` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### trace()
 
@@ -1085,7 +1199,7 @@ def task(
 
 | Property | Type | Description |
 |-|-|-|
-| `tasks` |  | {{< multiline >}}Get all tasks defined in the environment.
+| `tasks` | `None` | {{< multiline >}}Get all tasks defined in the environment.
 {{< /multiline >}} |
 
 ## flyte.Timeout

@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -221,17 +221,17 @@ Watch the action for updates. This is a placeholder for watching the action.
 
 | Property | Type | Description |
 |-|-|-|
-| `action_id` |  | {{< multiline >}}Get the action ID.
+| `action_id` | `None` | {{< multiline >}}Get the action ID.
 {{< /multiline >}} |
-| `name` |  | {{< multiline >}}Get the name of the action.
+| `name` | `None` | {{< multiline >}}Get the name of the action.
 {{< /multiline >}} |
-| `phase` |  | {{< multiline >}}Get the phase of the action.
+| `phase` | `None` | {{< multiline >}}Get the phase of the action.
 {{< /multiline >}} |
-| `raw_phase` |  | {{< multiline >}}Get the raw phase of the action.
+| `raw_phase` | `None` | {{< multiline >}}Get the raw phase of the action.
 {{< /multiline >}} |
-| `run_name` |  | {{< multiline >}}Get the name of the run.
+| `run_name` | `None` | {{< multiline >}}Get the name of the run.
 {{< /multiline >}} |
-| `task_name` |  | {{< multiline >}}Get the name of the task.
+| `task_name` | `None` | {{< multiline >}}Get the name of the task.
 {{< /multiline >}} |
 
 ## flyte.remote.ActionDetails
@@ -318,27 +318,27 @@ def watch_updates(
 
 | Property | Type | Description |
 |-|-|-|
-| `abort_info` |  |  |
-| `action_id` |  | {{< multiline >}}Get the action ID.
+| `abort_info` | `None` |  |
+| `action_id` | `None` | {{< multiline >}}Get the action ID.
 {{< /multiline >}} |
-| `attempts` |  | {{< multiline >}}Get the number of attempts of the action.
+| `attempts` | `None` | {{< multiline >}}Get the number of attempts of the action.
 {{< /multiline >}} |
-| `error_info` |  |  |
-| `is_running` |  | {{< multiline >}}Check if the action is currently running.
+| `error_info` | `None` |  |
+| `is_running` | `None` | {{< multiline >}}Check if the action is currently running.
 {{< /multiline >}} |
-| `metadata` |  |  |
-| `name` |  | {{< multiline >}}Get the name of the action.
+| `metadata` | `None` |  |
+| `name` | `None` | {{< multiline >}}Get the name of the action.
 {{< /multiline >}} |
-| `phase` |  | {{< multiline >}}Get the phase of the action.
+| `phase` | `None` | {{< multiline >}}Get the phase of the action.
 {{< /multiline >}} |
-| `raw_phase` |  | {{< multiline >}}Get the raw phase of the action.
+| `raw_phase` | `None` | {{< multiline >}}Get the raw phase of the action.
 {{< /multiline >}} |
-| `run_name` |  | {{< multiline >}}Get the name of the run.
+| `run_name` | `None` | {{< multiline >}}Get the name of the run.
 {{< /multiline >}} |
-| `runtime` |  | {{< multiline >}}Get the runtime of the action.
+| `runtime` | `None` | {{< multiline >}}Get the runtime of the action.
 {{< /multiline >}} |
-| `status` |  |  |
-| `task_name` |  | {{< multiline >}}Get the name of the task.
+| `status` | `None` |  |
+| `task_name` | `None` | {{< multiline >}}Get the name of the task.
 {{< /multiline >}} |
 
 ## flyte.remote.ActionInputs
@@ -474,13 +474,13 @@ Get the details of the run. This is a placeholder for getting the run details.
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  | {{< multiline >}}Get the name of the run.
+| `name` | `None` | {{< multiline >}}Get the name of the run.
 {{< /multiline >}} |
-| `phase` |  | {{< multiline >}}Get the phase of the run.
+| `phase` | `None` | {{< multiline >}}Get the phase of the run.
 {{< /multiline >}} |
-| `raw_phase` |  | {{< multiline >}}Get the raw phase of the run.
+| `raw_phase` | `None` | {{< multiline >}}Get the raw phase of the run.
 {{< /multiline >}} |
-| `url` |  | {{< multiline >}}Get the URL of the run.
+| `url` | `None` | {{< multiline >}}Get the URL of the run.
 {{< /multiline >}} |
 
 ## flyte.remote.RunDetails
@@ -536,11 +536,11 @@ Placeholder for outputs. This can be extended to handle outputs from the run con
 
 | Property | Type | Description |
 |-|-|-|
-| `action_id` |  | {{< multiline >}}Get the action ID.
+| `action_id` | `None` | {{< multiline >}}Get the action ID.
 {{< /multiline >}} |
-| `name` |  | {{< multiline >}}Get the name of the action.
+| `name` | `None` | {{< multiline >}}Get the name of the action.
 {{< /multiline >}} |
-| `task_name` |  | {{< multiline >}}Get the name of the task.
+| `task_name` | `None` | {{< multiline >}}Get the name of the task.
 {{< /multiline >}} |
 
 ## flyte.remote.Secret
@@ -558,8 +558,8 @@ class Secret(
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  |  |
-| `type` |  |  |
+| `name` | `None` |  |
+| `type` | `None` |  |
 
 ## flyte.remote.Task
 
@@ -634,16 +634,16 @@ def override(
 
 | Property | Type | Description |
 |-|-|-|
-| `cache` |  | {{< multiline >}}The cache policy of the task.
+| `cache` | `None` | {{< multiline >}}The cache policy of the task.
 {{< /multiline >}} |
-| `name` |  | {{< multiline >}}The name of the task.
+| `name` | `None` | {{< multiline >}}The name of the task.
 {{< /multiline >}} |
-| `resources` |  | {{< multiline >}}The resources of the task.
+| `resources` | `None` | {{< multiline >}}The resources of the task.
 {{< /multiline >}} |
-| `secrets` |  | {{< multiline >}}The secrets of the task.
+| `secrets` | `None` | {{< multiline >}}The secrets of the task.
 {{< /multiline >}} |
-| `task_type` |  | {{< multiline >}}The type of the task.
+| `task_type` | `None` | {{< multiline >}}The type of the task.
 {{< /multiline >}} |
-| `version` |  | {{< multiline >}}The version of the task.
+| `version` | `None` | {{< multiline >}}The version of the task.
 {{< /multiline >}} |
 

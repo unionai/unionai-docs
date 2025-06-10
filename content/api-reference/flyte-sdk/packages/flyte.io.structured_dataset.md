@@ -1,6 +1,6 @@
 ---
 title: flyte.io.structured_dataset
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -197,9 +197,9 @@ def to_json(
 
 | Property | Type | Description |
 |-|-|-|
-| `dataframe` |  |  |
-| `literal` |  |  |
-| `metadata` |  |  |
+| `dataframe` | `None` |  |
+| `literal` | `None` |  |
+| `metadata` | `None` |  |
 
 ## flyte.io.structured_dataset.StructuredDatasetDecoder
 
@@ -258,9 +258,9 @@ value into a Python instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.StructuredDatasetEncoder
 
@@ -321,9 +321,9 @@ the
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.StructuredDatasetTransformerEngine
 
@@ -690,9 +690,9 @@ with only one column.
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
+| `name` | `None` |  |
+| `python_type` | `None` | {{< multiline >}}This returns the python type
 {{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
+| `type_assertions_enabled` | `None` | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
 {{< /multiline >}} |
 

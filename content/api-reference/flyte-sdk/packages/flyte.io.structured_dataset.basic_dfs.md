@@ -1,6 +1,6 @@
 ---
 title: flyte.io.structured_dataset.basic_dfs
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -101,9 +101,9 @@ the
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.basic_dfs.CSVToPandasDecodingHandler
 
@@ -150,9 +150,9 @@ value into a Python instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.basic_dfs.PandasToCSVEncodingHandler
 
@@ -203,9 +203,9 @@ the
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.basic_dfs.PandasToParquetEncodingHandler
 
@@ -256,9 +256,9 @@ the
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.basic_dfs.ParquetToArrowDecodingHandler
 
@@ -305,9 +305,9 @@ value into a Python instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 
 ## flyte.io.structured_dataset.basic_dfs.ParquetToPandasDecodingHandler
 
@@ -354,7 +354,7 @@ value into a Python instance.
 
 | Property | Type | Description |
 |-|-|-|
-| `protocol` |  |  |
-| `python_type` |  |  |
-| `supported_format` |  |  |
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,7 +20,10 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`current_report()`](#current_report) | Get the current report. |
+| [`flush()`](#flush) | Flush the report. |
 | [`get_tab()`](#get_tab) | Get a tab by name. |
+| [`log()`](#log) | Log content to the main tab. |
+| [`replace()`](#replace) | Get the report. |
 
 
 ## Methods
@@ -33,6 +36,14 @@ def current_report()
 Get the current report. This is a dummy report if not in a task context.
 
 :return: The current report.
+
+
+#### flush()
+
+```python
+def flush()
+```
+Flush the report.
 
 
 #### get_tab()
@@ -51,6 +62,42 @@ Get a tab by name. If the tab does not exist, create it.
 |-|-|
 | `name` | `str` |
 | `create_if_missing` | `bool` |
+
+#### log()
+
+```python
+def log(
+    content: str,
+    do_flush: bool,
+)
+```
+Log content to the main tab. The content should be a valid HTML string, but not a complete HTML document,
+ as it will be inserted into a div.
+
+
+
+| Parameter | Type |
+|-|-|
+| `content` | `str` |
+| `do_flush` | `bool` |
+
+#### replace()
+
+```python
+def replace(
+    content: str,
+    do_flush: bool,
+)
+```
+Get the report. Replaces the content of the main tab.
+
+:return: The report.
+
+
+| Parameter | Type |
+|-|-|
+| `content` | `str` |
+| `do_flush` | `bool` |
 
 ## flyte.report.Report
 

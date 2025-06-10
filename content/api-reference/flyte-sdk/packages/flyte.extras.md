@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -56,6 +56,7 @@ class ContainerTask(
 
 | Method | Description |
 |-|-|
+| [`aio()`](#aio) | The aio function allows executing "sync" tasks, in an async context. |
 | [`config()`](#config) | Returns additional configuration for the task. |
 | [`container_args()`](#container_args) | Returns the container args for the task. |
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
@@ -67,6 +68,38 @@ class ContainerTask(
 | [`pre()`](#pre) | This is the preexecute function that will be. |
 | [`sql()`](#sql) | Returns the SQL for the task. |
 
+
+#### aio()
+
+```python
+def aio(
+    args: *args,
+    kwargs: **kwargs,
+) -> Coroutine[Any, Any, R] | R
+```
+The aio function allows executing "sync" tasks, in an async context. This helps with migrating v1 defined sync
+tasks to be used within an asyncio parent task.
+This function will also re-raise exceptions from the underlying task.
+
+Example:
+```python
+@env.task
+def my_legacy_task(x: int) -> int:
+    return x
+
+@env.task
+async def my_new_parent_task(n: int) -> List[int]:
+    collect = []
+    for x in range(n):
+        collect.append(my_legacy_task.aio(x))
+    return asyncio.gather(*collect)
+```
+
+
+| Parameter | Type |
+|-|-|
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### config()
 
@@ -246,5 +279,5 @@ configure the task execution environment at runtime. This is usually used by plu
 
 | Property | Type | Description |
 |-|-|-|
-| `native_interface` |  |  |
+| `native_interface` | `None` |  |
 

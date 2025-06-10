@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -821,12 +821,12 @@ Synchronously walk through the directory and yield File objects.
 
 | Property | Type | Description |
 |-|-|-|
-| `model_extra` |  | {{< multiline >}}Get extra fields set during validation.
+| `model_extra` | `None` | {{< multiline >}}Get extra fields set during validation.
 
 Returns:
     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`.
 {{< /multiline >}} |
-| `model_fields_set` |  | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
+| `model_fields_set` | `None` | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
 
 Returns:
     A set of strings representing the fields that have been set,
@@ -1605,12 +1605,12 @@ def validate(
 
 | Property | Type | Description |
 |-|-|-|
-| `model_extra` |  | {{< multiline >}}Get extra fields set during validation.
+| `model_extra` | `None` | {{< multiline >}}Get extra fields set during validation.
 
 Returns:
     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`.
 {{< /multiline >}} |
-| `model_fields_set` |  | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
+| `model_fields_set` | `None` | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
 
 Returns:
     A set of strings representing the fields that have been set,

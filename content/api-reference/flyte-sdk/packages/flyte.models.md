@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -408,6 +408,7 @@ class TaskContext(
     code_bundle: CodeBundle | None,
     compiled_image_cache: ImageCache | None,
     data: Dict[str, Any],
+    mode: Literal['local', 'remote', 'hybrid'],
 )
 ```
 | Parameter | Type |
@@ -423,6 +424,7 @@ class TaskContext(
 | `code_bundle` | `CodeBundle \| None` |
 | `compiled_image_cache` | `ImageCache \| None` |
 | `data` | `Dict[str, Any]` |
+| `mode` | `Literal['local', 'remote', 'hybrid']` |
 
 ### Methods
 

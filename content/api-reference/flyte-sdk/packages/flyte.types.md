@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 0.2.0b9.dev1+g28a3f43
+version: 0.2.0b9.dev6+g43d042f
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -577,10 +577,10 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 | Property | Type | Description |
 |-|-|-|
-| `name` |  |  |
-| `python_type` |  | {{< multiline >}}This returns the python type
+| `name` | `None` |  |
+| `python_type` | `None` | {{< multiline >}}This returns the python type
 {{< /multiline >}} |
-| `type_assertions_enabled` |  | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
+| `type_assertions_enabled` | `None` | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
 {{< /multiline >}} |
 
 ## flyte.types.TypeTransformerFailedError

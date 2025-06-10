@@ -36,52 +36,53 @@ This is the command line interface for Flyte.
 
 ## flyte
 
-### Flyte entrypoint for the CLI
-The Flyte CLI is a command line interface for interacting with Flyte.
+The Flyte CLI is the the command line interface for working with the Flyte SDK and backend.
 
-The flyte cli follows a simple verb based structure, where the top-level commands are verbs that describe the action
-to be taken, and the subcommands are nouns that describe the object of the action.
+It follows a simple verb/noun structure,
+where the top-level commands are verbs that describe the action to be taken,
+and the subcommands are nouns that describe the object of the action.
 
-The root command can be used to configure the CLI for most commands, such as setting the endpoint,
- organization, and verbosity level.
+The root command can be used to configure the CLI for persistent settings,
+such as the endpoint, organization, and verbosity level.
 
- Example: Set endpoint and organization
- ```bash
-  flyte --endpoint <endpoint> --org <org> get project <project_name>
- ```
+Set endpoint and organization:
 
- Example: Increase verbosity level (This is useful for debugging, this will show more logs and exception traces)
-  ```bash
-  flyte -vvv get logs <run-name>
-  ```
-
-  Example: Override the default config file
 ```bash
-flyte --config /path/to/config.yaml run ...
+$ flyte --endpoint <endpoint> --org <org> get project <project_name>
 ```
 
-👉 [Documentation](https://www.union.ai/docs/flyte/user-guide/) 
+Increase verbosity level (This is useful for debugging,
+this will show more logs and exception traces):
 
-👉 [GitHub](https://github.com/flyteorg/flyte) - Please leave a ⭐. 
+```bash
+$ flyte -vvv get logs <run-name>
+```
 
-👉 [Slack](https://slack.flyte.org) - Join the community and ask questions.
-👉 [Issues](https://github.com/flyteorg/flyte/issues)
+Override the default config file:
+
+```bash
+$ flyte --config /path/to/config.yaml run ...
+```
+
+* [Documentation](https://www.union.ai/docs/flyte/user-guide/)
+* [GitHub](https://github.com/flyteorg/flyte): Please leave a star if you like Flyte!
+* [Slack](https://slack.flyte.org): Join the community and ask questions.
+* [Issues](https://github.com/flyteorg/flyte/issues)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--endpoint` | `text` |  | The endpoint to connect to, this will override any config and simply used pkce to connect. |
-| {{< multiline >}}`--insecure`
-`--secure`{{< /multiline >}} | `boolean` |  | Use insecure connection to the endpoint. If secure is specified, the CLI will use TLS. |
+| `--endpoint` | `text` |  | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
+| `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
 | {{< multiline >}}`-v`
-`--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces, multiple times increases verbosity (e.g., -vvv). |
-| `--org` | `text` |  | Organization to use |
+`--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
+| `--org` | `text` |  | The organization to which the command applies. |
 | {{< multiline >}}`-c`
-`--config`{{< /multiline >}} | `path` |  | Path to config file (YAML format) to use for the CLI. If not specified, the default config file will be used. |
+`--config`{{< /multiline >}} | `path` |  | Path to the configuration file to use. If not specified, the default configuration file is used. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
 
-Abort a run.
+Abort an ongoing process.
 
 #### flyte abort run
 
@@ -97,22 +98,22 @@ Abort a run.
 
 ### flyte create
 
-The create subcommand allows you to create resources in a Flyte deployment.
+Create resources in a Flyte deployment.
 
 #### flyte create config
 
-This command creates a configuration file for Flyte CLI.
+Creates a configuration file for Flyte CLI.
 If the `--output` option is not specified, it will create a file named `config.yaml` in the current directory.
 If the file already exists, it will raise an error unless the `--force` option is used.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--endpoint` | `text` |  | Endpoint of the Flyte backend. |
-| `--insecure` | `boolean` | `False` | Use insecure connection to the Flyte backend. |
-| `--org` | `text` |  | Organization to use, this will override the organization in the config file. |
+| `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
+| `--org` | `text` |  | Organization to use, this will override the organization in the configusraion file. |
 | {{< multiline >}}`-o`
-`--output`{{< /multiline >}} | `path` | `config.yaml` | Path to the output dir where the config will be saved, defaults to current directory. |
-| `--force` | `boolean` | `False` | Force overwrite the config file if it already exists. |
+`--output`{{< /multiline >}} | `path` | `config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
+| `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to operate on |
 | {{< multiline >}}`-d`
@@ -121,22 +122,26 @@ If the file already exists, it will raise an error unless the `--force` option i
 
 #### flyte create secret
 
-Create a new secret, the name of the secret is required.
+Create a new secret. The name of the secret is required. For example:
 
-Examples:
 ```bash
-flyte create secret my_secret --value my_value
+$ flyte create secret my_secret --value my_value
 ```
-If `--from-file` is specified, the value will be read from the file instead of being provided directly.
-Example:
+
+If `--from-file` is specified, the value will be read from the file instead of being provided directly:
+
 ```bash
-flyte create secret my_secret --from-file /path/to/secret_file
+$ flyte create secret my_secret --from-file /path/to/secret_file
 ```
-Secret types can be used to create specific types of secrets. Some secrets are useful for image pull, while some
-are `regular` / general purpose secrets.
-Example:
+
+The `--type` option can be used to create specific types of secrets.
+Either `regular` or `image_pull` can be specified.
+Secrets intended to access container images should be specified as `image_pull`.
+Other secrets should be specified as `regular`.
+If no type is specified, `regular` is assumed.
+
 ```bash
-flyte create secret my_secret --type image_pull
+$ flyte create secret my_secret --type image_pull
 ```
 
 | Option | Type | Default | Description |
@@ -152,7 +157,7 @@ flyte create secret my_secret --type image_pull
 ### flyte deploy
 
 Deploy one or more environments from a python file.
-    The deploy command will create or update environments in the Flyte system.
+The deploy command will create or update environments in the Flyte system.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -169,11 +174,11 @@ Deploy one or more environments from a python file.
 
 ### flyte gen
 
-Generate documentation
+Generate documentation.
 
 #### flyte gen docs
 
-Generate documentation
+Generate documentation.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -186,16 +191,23 @@ Generate documentation
 
 ### flyte get
 
-The `get` subcommand allows you to retrieve various resources from a Flyte deployment.
+Retrieve resources from a Flyte deployment.
 
-You can get information about projects, runs, tasks, actions, secrets, and more.
+You can get information about projects, runs, tasks, actions, secrets, logs and input/output values.
+
 Each command supports optional parameters to filter or specify the resource you want to retrieve.
 
-Every `get` subcommand for example ``get project` without any arguments will list all projects.
-`get project my_project` will return the details of the project named `my_project`.
+Using a `get` subcommand without any arguments will retrieve a list of available resources to get.
+For example:
 
-In some cases `get action my_run` will return all actions for the run named `my_run` and
-`get action my_run my_action` will return the details of the action named `my_action` for the run `my_run`.
+* `get project` (without specifiying aproject), will list all projects.
+* `get project my_project` will return the details of the project named `my_project`.
+
+In some cases, a partially specified command will act as a filter and return available further parameters.
+For example:
+
+* `get action my_run` will return all actions for the run named `my_run`.
+* `get action my_run my_action` will return the details of the action named `my_action` for the run `my_run`.
 
 #### flyte get action
 
@@ -211,25 +223,25 @@ Get all actions for a run or details for a specific action.
 
 #### flyte get config
 
-Shows the automatically detected configuration to connect with remote Flyte services.
+Shows the automatically detected configuration to connect with the remote backend.
 
 The configuration will include the endpoint, organization, and other settings that are used by the CLI.
 
 #### flyte get io
 
 Get the inputs and outputs of a run or action.
-if only the run name is provided, it will show the inputs and outputs of the root action of that run.
+If only the run name is provided, it will show the inputs and outputs of the root action of that run.
 If an action name is provided, it will show the inputs and outputs for that action.
-
 If `--inputs-only` or `--outputs-only` is specified, it will only show the inputs or outputs respectively.
 
-Example:
+Examples:
+
 ```bash
-flyte get io my_run
+$ flyte get io my_run
 ```
-or
+
 ```bash
-flyte get io my_run my_action
+$ flyte get io my_run my_action
 ```
 
 | Option | Type | Default | Description |
@@ -247,21 +259,23 @@ flyte get io my_run my_action
 #### flyte get logs
 
 Stream logs for the provided run or action.
-If only the run is provided, only the logs for the parent action will be streamed.
+If only the run is provided, only the logs for the parent action will be streamed:
 
-Example:
 ```bash
-flyte get logs my_run
+$ flyte get logs my_run
 ```
 
-But, if you want to see the logs for a specific action, you can provide the action name as well:
+If you want to see the logs for a specific action, you can provide the action name as well:
+
 ```bash
-flyte get logs my_run my_action
+$ flyte get logs my_run my_action
 ```
-By default logs will be shown in the raw format, will scroll on the terminal. If automatic scrolling and only
-tailing --lines lines is desired, use the `--pretty` flag:
+
+By default, logs will be shown in the raw format and will scroll the terminal.
+If automatic scrolling and only tailing `--lines` number of lines is desired, use the `--pretty` flag:
+
 ```bash
-flyte get logs my_run my_action --pretty --lines 50
+$ flyte get logs my_run my_action --pretty --lines 50
 ```
 
 | Option | Type | Default | Description |
@@ -281,7 +295,7 @@ flyte get logs my_run my_action --pretty --lines 50
 
 #### flyte get project
 
-Retrieve a list of all projects or details of a specific project by name.
+Get a list of all projects, or details of a specific project by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -289,7 +303,7 @@ Retrieve a list of all projects or details of a specific project by name.
 
 #### flyte get run
 
-Get list of all runs or details of a specific run by name.
+Get a list of all runs, or details of a specific run by name.
 
 The run details will include information about the run, its status, but only the root action will be shown.
 
@@ -305,7 +319,7 @@ If you want to see the actions for a run, use `get action <run_name>`.
 
 #### flyte get secret
 
-Retrieve a list of all secrets or details of a specific secret by name.
+Get a list of all secrets, or details of a specific secret by name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -317,9 +331,9 @@ Retrieve a list of all secrets or details of a specific secret by name.
 
 #### flyte get task
 
-Retrieve a list of all tasks or details of a specific task by name and version.
+Retrieve a list of all tasks, or details of a specific task by name and version.
 
-Currently name+version are required to get a specific task.
+Currently, both `name` and `version` are required to get a specific task.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
