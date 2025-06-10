@@ -2,6 +2,7 @@ import inspect
 from typing import Optional, Any
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
+from sys import stderr
 
 
 def parse_method(name: str, member: object) -> Optional[MethodInfo]:
@@ -47,6 +48,7 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optiona
                 ),
                 kind=str(param.kind),
                 type=str(param_types[param.name]),
+                doc=None
             )
             for param in inspect.signature(member).parameters.values()
         ],
@@ -67,6 +69,7 @@ def parse_property(name: str, member: object) -> Optional[PropertyInfo]:
     property_info = PropertyInfo(
         name=name,
         doc=docstr,
+        type=None
     )
     return property_info
 
@@ -79,6 +82,7 @@ def parse_variable(name: str, member: object) -> Optional[VariableInfo]:
     var_info = VariableInfo(
         name=name,
         type=mtype,
+        doc=None
     )
 
     return var_info
