@@ -1,5 +1,3 @@
-import inspect
-import io
 import os
 from typing import Dict, List
 
@@ -22,9 +20,9 @@ def convert_package_list_to_tree(pkgs: List[PackageInfo]) -> PackageTree:
         for p in parts:
             parent = glued
             glued = f"{glued}.{p}" if glued != "" else p
-            if not glued in result:
+            if glued not in result:
                 result[glued] = []
-            if parent != "" and not glued in result[parent]:
+            if parent != "" and glued not in result[parent]:
                 result[parent].append(glued)
 
     return result
@@ -44,7 +42,7 @@ def generate_package_index(
 
         index.write("# Packages\n\n")
 
-        index.write(f"| Package | Description |\n")
+        index.write("| Package | Description |\n")
         index.write("|-|-|\n")
 
         for pkg in packages:

@@ -2,7 +2,7 @@ import sys
 import importlib.util
 from types import ModuleType
 from os import path
-from typing import TypedDict, List, Dict, Any, NotRequired
+from typing import TypedDict, List, Dict, NotRequired
 import yaml
 
 class Metadata(TypedDict, total=False):

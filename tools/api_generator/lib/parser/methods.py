@@ -2,7 +2,6 @@ import inspect
 from typing import Optional, Any
 from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
-from sys import stderr
 
 
 def parse_method(name: str, member: object) -> Optional[MethodInfo]:

@@ -2,7 +2,7 @@ import os
 from typing import Dict, List
 
 from lib.generate.classes import generate_class_index, generate_classes
-from lib.generate.hugo import set_variants, set_version, write_front_matter, FrontMatterExtra
+from lib.generate.hugo import set_variants, set_version, write_front_matter
 from lib.generate.packages import (
     generate_package_folders,
     generate_package_index,
@@ -69,10 +69,17 @@ def generate_site(
     )
 
     generate_package_index(
-        packages=source["packages"], classes=source["classes"], pkg_root=pkg_root
+        packages=source["packages"],
+        classes=source["classes"],
+        pkg_root=pkg_root,
     )
+    
     generate_class_index(
-        classes=source["classes"], output_folder=output_folder, pkg_root=pkg_root, flatten=flatten, ignore_types=ignore_types
+        classes=source["classes"],
+        output_folder=output_folder,
+        pkg_root=pkg_root,
+        flatten=flatten,
+        ignore_types=ignore_types
     )
 
     generate_package_folders(

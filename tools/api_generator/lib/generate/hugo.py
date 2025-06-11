@@ -20,14 +20,14 @@ class FrontMatterExtra(TypedDict):
     expand_sidebar: Optional[bool]
 
 def write_front_matter(title: str, output: io.TextIOWrapper, extra: Optional[FrontMatterExtra] = None):
-    output.write(f"---\n")
+    output.write("---\n")
     output.write(f"title: {title}\n")
     output.write(f"version: {version}\n")
     output.write(f"variants: {variants}\n")
-    output.write(f"layout: py_api\n")
+    output.write("layout: py_api\n")
     if extra:
         if extra['weight']:
             output.write(f"weight: {extra['weight']}\n")
         if extra['expand_sidebar']:
-            output.write(f"sidebar_expanded: true\n")
-    output.write(f"---\n\n")
+            output.write("sidebar_expanded: true\n")
+    output.write("---\n\n")

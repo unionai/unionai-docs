@@ -1,7 +1,6 @@
 from typing import Any, Optional
 from lib.parser.methods import do_parse_method
 from lib.ptypes import MethodInfo
-from sys import stderr
 
 
 def is_syncify_method(name: str, member: object) -> bool:
