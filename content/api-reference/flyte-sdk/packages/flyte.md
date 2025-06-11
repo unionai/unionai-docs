@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b9.dev6+g43d042f
+version: 0.2.0b10.dev2+g9bf3bb9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -57,7 +57,7 @@ async def my_task():
 | [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
-| [`init_auto_from_config()`](#init_auto_from_config) | Initialize the Flyte system using a configuration file or Config object. |
+| [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
 | [`with_runcontext()`](#with_runcontext) | Launch a new run with the given parameters as the context. |
@@ -215,10 +215,10 @@ remote API methods are called. Thread-safe implementation.
 | `http_proxy_url` | `str \| None` |
 | `storage` | `Storage \| None` |
 
-#### init_auto_from_config()
+#### init_from_config()
 
 ```python
-def init_auto_from_config(
+def init_from_config(
     path_or_config: str | Config | None,
 )
 ```

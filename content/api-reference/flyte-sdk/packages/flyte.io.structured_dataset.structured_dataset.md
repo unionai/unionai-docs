@@ -1,6 +1,6 @@
 ---
 title: flyte.io.structured_dataset.structured_dataset
-version: 0.2.0b9.dev6+g43d042f
+version: 0.2.0b10.dev2+g9bf3bb9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

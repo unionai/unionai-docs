@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 0.2.0b9.dev6+g43d042f
+version: 0.2.0b10.dev2+g9bf3bb9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,6 +41,10 @@ layout: py_api
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras#flyteextrascontainertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.io.Dir`](../packages/flyte.io#flyteiodir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io#flyteiofile) |A generic file class representing a file with a specified format. |
+| [`flyte.io.StructuredDataset`](../packages/flyte.io#flyteiostructureddataset) |This is the user facing StructuredDataset class. |
+| [`flyte.io.StructuredDatasetDecoder`](../packages/flyte.io#flyteiostructureddatasetdecoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.StructuredDatasetEncoder`](../packages/flyte.io#flyteiostructureddatasetencoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.StructuredDatasetTransformerEngine`](../packages/flyte.io#flyteiostructureddatasettransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.io.pickle.transformer.FlytePickle`](../packages/flyte.io.pickle.transformer#flyteiopickletransformerflytepickle) |This type is only used by flytekit internally. |
 | [`flyte.io.pickle.transformer.FlytePickleTransformer`](../packages/flyte.io.pickle.transformer#flyteiopickletransformerflytepickletransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 | [`flyte.io.structured_dataset.StructuredDataset`](../packages/flyte.io.structured_dataset#flyteiostructured_datasetstructureddataset) |This is the user facing StructuredDataset class. |
@@ -81,6 +85,7 @@ layout: py_api
 | [`flyte.storage.S3`](../packages/flyte.storage#flytestorages3) |S3 specific configuration. |
 | [`flyte.storage.Storage`](../packages/flyte.storage#flytestoragestorage) |Data storage configuration that applies across any provider. |
 | [`flyte.syncify.Syncify`](../packages/flyte.syncify#flytesyncifysyncify) |A decorator to convert asynchronous functions or methods into synchronous ones. |
+| [`flyte.types.FlytePickle`](../packages/flyte.types#flytetypesflytepickle) |This type is only used by flytekit internally. |
 | [`flyte.types.TypeEngine`](../packages/flyte.types#flytetypestypeengine) |Core Extensible TypeEngine of Flytekit. |
 | [`flyte.types.TypeTransformer`](../packages/flyte.types#flytetypestypetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 | [`flyte.types.TypeTransformerFailedError`](../packages/flyte.types#flytetypestypetransformerfailederror) |Inappropriate argument type. |

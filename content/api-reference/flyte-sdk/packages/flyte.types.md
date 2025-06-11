@@ -1,11 +1,31 @@
 ---
 title: flyte.types
-version: 0.2.0b9.dev6+g43d042f
+version: 0.2.0b10.dev2+g9bf3bb9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
 # flyte.types
+
+
+# Flyte Type System
+
+The Flyte type system provides a way to define, transform, and manipulate types in Flyte workflows.
+Since the data flowing through Flyte has to often cross process, container and langauge boundaries, the type system
+is designed to be serializable to a universal format that can be understood across different environments. This
+universal format is based on Protocol Buffers. The types are called LiteralTypes and the runtime
+representation of data is called Literals.
+
+The type system includes:
+- **TypeEngine**: The core engine that manages type transformations and serialization. This is the main entry point for
+  for all the internal type transformations and serialization logic.
+- **TypeTransformer**: A class that defines how to transform one type to another. This is extensible
+    allowing users to define custom types and transformations.
+- **Renderable**: An interface for types that can be rendered as HTML, that can be outputted to a flyte.report.
+
+It is always possible to bypass the type system and use the `FlytePickle` type to serialize any python object
+ into a pickle format. The pickle format is not human-readable, but can be passed between flyte tasks that are
+ written in python. The Pickled objects cannot be represented in the UI, and may be in-efficient for large datasets.
 
 ## Directory
 
@@ -13,6 +33,7 @@ layout: py_api
 
 | Class | Description |
 |-|-|
+| [`FlytePickle`](.././flyte.types#flytetypesflytepickle) | This type is only used by flytekit internally. |
 | [`TypeEngine`](.././flyte.types#flytetypestypeengine) | Core Extensible TypeEngine of Flytekit. |
 | [`TypeTransformer`](.././flyte.types#flytetypestypetransformer) | Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
 
@@ -65,6 +86,48 @@ This method is used to convert a literal map to a string representation.
 | Parameter | Type |
 |-|-|
 | `lm` | `typing.Union[flyteidl.core.literals_pb2.Literal, workflow.run_definition_pb2.NamedLiteral, workflow.run_definition_pb2.Inputs, workflow.run_definition_pb2.Outputs, flyteidl.core.literals_pb2.LiteralMap, typing.Dict[str, flyteidl.core.literals_pb2.Literal]]` |
+
+## flyte.types.FlytePickle
+
+This type is only used by flytekit internally. User should not use this type.
+Any type that flyte can't recognize will become FlytePickle
+
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`from_pickle()`](#from_pickle) |  |
+| [`python_type()`](#python_type) |  |
+| [`to_pickle()`](#to_pickle) |  |
+
+
+#### from_pickle()
+
+```python
+def from_pickle(
+    uri: str,
+) -> typing.Any
+```
+| Parameter | Type |
+|-|-|
+| `uri` | `str` |
+
+#### python_type()
+
+```python
+def python_type()
+```
+#### to_pickle()
+
+```python
+def to_pickle(
+    python_val: typing.Any,
+) -> str
+```
+| Parameter | Type |
+|-|-|
+| `python_val` | `typing.Any` |
 
 ## flyte.types.Renderable
 
