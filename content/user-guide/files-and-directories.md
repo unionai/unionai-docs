@@ -43,6 +43,7 @@ uses this class constructor pattern so you'll see it with other types as well.
 
 This is a slightly more complicated task that calls the task above to produce Files. These files are assembled into a directory
 and the Dir is returned, also via invoking `from_local`.
+
 ```python
 @env.task
 async def write_and_check_files() -> Dir:
@@ -69,11 +70,10 @@ async def write_and_check_files() -> Dir:
     return my_dir
 ```
 
-Finally these tasks show how to use an offloaded type as an input. Helper functions like `walk` and `open` have been added to the objects
+Finally, these tasks show how to use an offloaded type as an input. Helper functions like `walk` and `open` have been added to the objects
 and do what you might expect.
 
 ```python
-
 @env.task
 async def check_dir(my_dir: Dir):
     print(f"Dir {my_dir.path} contents:")
@@ -96,5 +96,4 @@ if __name__ == "__main__":
     print(run.name)
     print(run.url)
     run.wait(run)
-
 ```

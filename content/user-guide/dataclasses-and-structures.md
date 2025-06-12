@@ -43,6 +43,7 @@ async def predict_one(request: InferenceRequest) -> float:
 ```
 
 ### Running
+
 When invoking keep in mind you can just call the task directly. This keeps Flyte out of the way and just invokes the raw function.
 
 ```python
