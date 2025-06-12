@@ -1,10 +1,10 @@
 ---
 title: Getting started
-weight: 2
+weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Getting Started
+# Getting started
 
 This section gives you a quick introduction to writing and running workflows on Union.ai.
 
@@ -32,7 +32,7 @@ In our example above, we can achieve this as follows:
 * Decorate your functions with `@env.task`.
 * Change your main guard initialize and run the workflow using the Flyte SDK.
 
-## Configuration Setup
+## Configuration setup
 
 First, make sure you are in a Python virtual environment, then install the v2 SDK.
 For example, you can use the [`uv` package manager](https://docs.astral.sh/uv/) to create a virtual environment and install the `flyte` package like this:
@@ -43,16 +43,23 @@ source .venv/bin/activate
 uv pip install --no-cache --prerelease=allow --upgrade flyte
 ```
 
-Next, create a `config.yaml` file in the same directory as your `hello.py` file that points to your Union instance by running the following: 
+Next, create a `config.yaml` file in the same directory as your `hello.py` file that points to your Union instance using the [flyte create config](../api-reference/flyte-cli#flyte-create-config) command:
 
 ```shell
-flyte create config --endpoint dns:///<your-union-endpoint> --org <your-union-org> --project <default-project> --domain <default-domain> 
+flyte create config \
+    --endpoint dns:///<your-union-endpoint> \
+    --org <your-union-org> \
+    --project <default-project> \
+    --domain <default-domain>
 ```
 
-Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`), as well as an `org` (`<your-union-org>`). 
+Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`), as well as an `org` (`<your-union-org>`).
+
+The default project and domain will be used when you deploy your workflows without specifying a project or domain explicitly.
+
 Please reach out to Union support if you're unable to locate values for `<your-union-endpoint>` and `<your-union-org>`.
 
-## Running Remotely
+## Running remotely
 
 Now, simply run the script:
 

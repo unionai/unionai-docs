@@ -1,6 +1,6 @@
 ---
 title: Task environments
-weight: 3
+weight: 50
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

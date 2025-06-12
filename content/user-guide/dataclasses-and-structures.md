@@ -1,10 +1,10 @@
 ---
-title: Dataclasses
-weight: 6
+title: Dataclasses and structures
+weight: 80
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Dataclasses
+# Dataclasses and structures
 
 Dataclasses and Pydantic models are fully supported in Flyte. Use these as you would normally, passing them as inputs and outputs of tasks.
 The only thing to keep in mind is that data between tasks is serialized, stored, and deserialized. That means that the fields in your dataclass

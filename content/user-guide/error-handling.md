@@ -1,6 +1,6 @@
 ---
 title: Error handling
-weight: 4
+weight: 60
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -60,7 +60,7 @@ async def error_handling() -> int:
 
 
 if __name__ == "__main__":
-    flyte.init_auto_from_config("./config.yaml")
+    flyte.init_from_config("./config.yaml")
     run = flyte.run(error_handling)
     print(run.name)
     print(run.url)

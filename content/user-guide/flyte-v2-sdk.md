@@ -1,18 +1,18 @@
 ---
 title: Flyte v2 SDK
-weight: 1
+weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Introduction
 
-The Flyte v2 SDK is the new toolkit for authoring workflows in Union and Flyte v2.
+The Flyte v2 SDK is the new toolkit for authoring workflows in Union.ai and Flyte v2.
 
 ## What has changed?
 
 The SDK introduces several key improvements:
 
-### Pure Python Execution
+### Pure Python execution
 
 * The SDK allows you to write workflows in pure Python, enabling a more natural and flexible development experience.
 * In the previous Flytekit SDK, individual tasks were written in Python, but the workflow DAG was defined in a python-like, but not Python-native DSL (`@workflow`) which restricted users to static behavior (no loops, try-catch, or dynamic branching).
@@ -29,7 +29,7 @@ The SDK introduces several key improvements:
 
 * Tasks are defined within Environments, which encapsulate the context and resources needed for execution.
 
-### Workflows are now Tasks
+### Workflows are now tasks
 
 * Because workflows can now be written in pure Python, they no longer require a separate construct.
 * You simply define your workflow as a function (with a `@task` decorator) and have it call other tasks.

@@ -1,6 +1,6 @@
 ---
 title: Container images
-weight: 3
+weight: 40
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -71,7 +71,7 @@ async def workflow():
 
 
 if __name__ == "__main__":
-    flyte.init_auto_from_config("./config.yaml")
+    flyte.init_from_config("./config.yaml")
     run = flyte.run(workflow)
     print(run.name)
     print(run.url)

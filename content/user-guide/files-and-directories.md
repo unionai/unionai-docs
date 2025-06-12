@@ -1,6 +1,6 @@
 ---
 title: Files and directories
-weight: 5
+weight: 70
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -91,7 +91,7 @@ async def create_and_check_dir():
 
 
 if __name__ == "__main__":
-    flyte.init_auto_from_config("./config.yaml")
+    flyte.init_from_config("./config.yaml")
     run = flyte.run(create_and_check_dir)
     print(run.name)
     print(run.url)
