@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 0.2.0b10.dev2+g9bf3bb9
+version: 0.2.0b10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -15,10 +15,6 @@ sidebar_expanded: true
 | [`flyte.errors`](flyte.errors) | Exceptions raised by Union. |
 | [`flyte.extras`](flyte.extras) |  |
 | [`flyte.io`](flyte.io) | ## IO data types. |
-| [`flyte.io.pickle.transformer`](flyte.io.pickle.transformer) |  |
-| [`flyte.io.structured_dataset`](flyte.io.structured_dataset) | Flytekit StructuredDataset. |
-| [`flyte.io.structured_dataset.basic_dfs`](flyte.io.structured_dataset.basic_dfs) |  |
-| [`flyte.io.structured_dataset.structured_dataset`](flyte.io.structured_dataset.structured_dataset) |  |
 | [`flyte.models`](flyte.models) |  |
 | [`flyte.remote`](flyte.remote) | Remote Entities that are accessible from the Union Server once deployed or created. |
 | [`flyte.report`](flyte.report) |  |

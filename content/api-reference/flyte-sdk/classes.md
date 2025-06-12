@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 0.2.0b10.dev2+g9bf3bb9
+version: 0.2.0b10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -45,23 +45,6 @@ layout: py_api
 | [`flyte.io.StructuredDatasetDecoder`](../packages/flyte.io#flyteiostructureddatasetdecoder) |Helper class that provides a standard way to create an ABC using. |
 | [`flyte.io.StructuredDatasetEncoder`](../packages/flyte.io#flyteiostructureddatasetencoder) |Helper class that provides a standard way to create an ABC using. |
 | [`flyte.io.StructuredDatasetTransformerEngine`](../packages/flyte.io#flyteiostructureddatasettransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
-| [`flyte.io.pickle.transformer.FlytePickle`](../packages/flyte.io.pickle.transformer#flyteiopickletransformerflytepickle) |This type is only used by flytekit internally. |
-| [`flyte.io.pickle.transformer.FlytePickleTransformer`](../packages/flyte.io.pickle.transformer#flyteiopickletransformerflytepickletransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
-| [`flyte.io.structured_dataset.StructuredDataset`](../packages/flyte.io.structured_dataset#flyteiostructured_datasetstructureddataset) |This is the user facing StructuredDataset class. |
-| [`flyte.io.structured_dataset.StructuredDatasetDecoder`](../packages/flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasetdecoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.StructuredDatasetEncoder`](../packages/flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasetencoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.StructuredDatasetTransformerEngine`](../packages/flyte.io.structured_dataset#flyteiostructured_datasetstructureddatasettransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
-| [`flyte.io.structured_dataset.basic_dfs.ArrowToParquetEncodingHandler`](../packages/flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfsarrowtoparquetencodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.basic_dfs.CSVToPandasDecodingHandler`](../packages/flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfscsvtopandasdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.basic_dfs.PandasToCSVEncodingHandler`](../packages/flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfspandastocsvencodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.basic_dfs.PandasToParquetEncodingHandler`](../packages/flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfspandastoparquetencodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.basic_dfs.ParquetToArrowDecodingHandler`](../packages/flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfsparquettoarrowdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.basic_dfs.ParquetToPandasDecodingHandler`](../packages/flyte.io.structured_dataset.basic_dfs#flyteiostructured_datasetbasic_dfsparquettopandasdecodinghandler) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.structured_dataset.DuplicateHandlerError`](../packages/flyte.io.structured_dataset.structured_dataset#flyteiostructured_datasetstructured_datasetduplicatehandlererror) |Inappropriate argument value (of correct type). |
-| [`flyte.io.structured_dataset.structured_dataset.StructuredDataset`](../packages/flyte.io.structured_dataset.structured_dataset#flyteiostructured_datasetstructured_datasetstructureddataset) |This is the user facing StructuredDataset class. |
-| [`flyte.io.structured_dataset.structured_dataset.StructuredDatasetDecoder`](../packages/flyte.io.structured_dataset.structured_dataset#flyteiostructured_datasetstructured_datasetstructureddatasetdecoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.structured_dataset.StructuredDatasetEncoder`](../packages/flyte.io.structured_dataset.structured_dataset#flyteiostructured_datasetstructured_datasetstructureddatasetencoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.structured_dataset.structured_dataset.StructuredDatasetTransformerEngine`](../packages/flyte.io.structured_dataset.structured_dataset#flyteiostructured_datasetstructured_datasetstructureddatasettransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.models.ActionID`](../packages/flyte.models#flytemodelsactionid) |A class representing the ID of an Action, nested within a Run. |
 | [`flyte.models.Checkpoints`](../packages/flyte.models#flytemodelscheckpoints) |A class representing the checkpoints for a task. |
 | [`flyte.models.CodeBundle`](../packages/flyte.models#flytemodelscodebundle) |A class representing a code bundle for a task. |

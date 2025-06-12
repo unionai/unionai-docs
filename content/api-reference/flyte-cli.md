@@ -92,9 +92,9 @@ Abort a run.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte create
@@ -111,14 +111,14 @@ If the file already exists, it will raise an error unless the `--force` option i
 |--------|------|---------|-------------|
 | `--endpoint` | `text` |  | Endpoint of the Flyte backend. |
 | `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
-| `--org` | `text` |  | Organization to use, this will override the organization in the configusraion file. |
+| `--org` | `text` |  | Organization to use. This will override the organization in the configuration file. |
 | {{< multiline >}}`-o`
 `--output`{{< /multiline >}} | `path` | `config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create secret
@@ -150,9 +150,9 @@ $ flyte create secret my_secret --type image_pull
 | `--from-file` | `path` |  | Path to the file with the binary secret. |
 | `--type` | `choice` | `regular` | Type of the secret. |
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte deploy
@@ -163,12 +163,12 @@ The deploy command will create or update environments in the Flyte system.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--version` | `text` |  | Version of the environment to deploy |
 | {{< multiline >}}`--dry-run`
-`--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run, do not actually call the backend service. |
+`--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
 | `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -185,9 +185,9 @@ Generate documentation.
 |--------|------|---------|-------------|
 | `--type` | `text` |  | Type of documentation (valid: markdown) |
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte get
@@ -217,9 +217,9 @@ Get all actions for a run or details for a specific action.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get config
@@ -252,9 +252,9 @@ $ flyte get io my_run my_action
 | {{< multiline >}}`--outputs-only`
 `-o`{{< /multiline >}} | `boolean` | `False` | Show only outputs |
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get logs
@@ -289,9 +289,9 @@ $ flyte get logs my_run my_action --pretty --lines 50
 `-a`{{< /multiline >}} | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
 | `--filter-system` | `boolean` | `False` | Filter all system logs from the output. |
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get project
@@ -313,9 +313,9 @@ If you want to see the actions for a run, use `get action <run_name>`.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get secret
@@ -325,9 +325,9 @@ Get a list of all secrets, or details of a specific secret by name.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get task
@@ -339,9 +339,9 @@ Currently, both `name` and `version` are required to get a specific task.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte run
@@ -369,9 +369,9 @@ To run a task locally, use the `--local` flag. This will run the task in the loc
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to operate on |
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to operate on |
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
