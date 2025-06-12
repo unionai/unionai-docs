@@ -15,7 +15,7 @@ from lib.generate.properties import generate_props
 from lib.ptypes import ClassDetails, ClassMap, ClassPackageMap, PackageInfo
 from lib.generate.helper import generate_anchor_from_name
 
-type PackageTree = Dict[str, List[str]]
+PackageTree = Dict[str, List[str]]
 
 ProtocolBaseClass = "Protocol"
 
@@ -43,7 +43,7 @@ def generate_class_link(
     pkg_base = os.path.relpath(pkg_root, os.path.dirname(relative_to_file))
     if flatten:
         anchor = generate_anchor_from_name(fullname)
-        result = f"{os.path.join("..", pkg_base, ".".join(nameParts[0:-1])).lower()}#{anchor}"
+        result = f"{os.path.join('..', pkg_base, '.'.join(nameParts[0:-1])).lower()}#{anchor}"
         return result
     else:
         result = os.path.join(
@@ -111,7 +111,7 @@ def generate_class_index(
                     flatten=flatten,
                 )
                 index.write(
-                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n"
+                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo['doc'])} |\n"
                 )
 
         if len(protocolList) > 0:
@@ -130,7 +130,7 @@ def generate_class_index(
                     flatten=flatten,
                 )
                 index.write(
-                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo["doc"])} |\n"
+                    f"| [`{cls}`]({class_link}) |{docstring_summary(clsInfo['doc'])} |\n"
                 )
 
 
@@ -139,7 +139,7 @@ def generate_class(fullname: str, info: ClassDetails, pkg_root: str):
     with open(class_file, "w") as output:
         write_front_matter(info["name"], output)
 
-        output.write(f"# {info["name"]}\n\n")
+        output.write(f"# {info['name']}\n\n")
         output.write(f"**Package:** `{'.'.join(info['path'].split('.')[:-1])}`\n\n")
 
         generate_class_details(info, output, doc_level=2)
@@ -228,8 +228,9 @@ def generate_classes_and_error_list(
                 flatten=flatten,
             )
 
+            classNameWithoutPackage = classNameFull.replace(f"{pkg['name']}.", "")
             output.write(
-                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+                f"| [`{classNameWithoutPackage}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")
@@ -249,8 +250,9 @@ def generate_classes_and_error_list(
                 flatten=flatten,
             )
 
+            classNameWithoutPackage = classNameFull.replace(f"{pkg['name']}.", "")
             output.write(
-                f"| [`{classNameFull.replace(f"{pkg['name']}.", "")}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+                f"| [`{classNameWithoutPackage}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")
@@ -270,7 +272,7 @@ def generate_classes_and_error_list(
                 flatten=flatten,
             )
             output.write(
-                f"| [`{clsInfo["name"]}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
+                f"| [`{clsInfo['name']}`]({classLink}) | {docstring_summary(clsInfo['doc'])} |\n"
             )
 
         output.write("\n")
