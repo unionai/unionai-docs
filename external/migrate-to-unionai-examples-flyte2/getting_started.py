@@ -32,7 +32,7 @@ async def hello_wf(data: str = "default string") -> str:
 
 
 if __name__ == "__main__":
-    flyte.init_auto_from_config("./config.yaml")
+    flyte.init_from_config("config.yaml")
     run = flyte.run(hello_wf, data="hello world")
     print(run.name)
     print(run.url)

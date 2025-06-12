@@ -6,31 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Getting started
 
-This section gives you a quick introduction to writing and running workflows on Union.ai.
-
-
-## Hello world
-
-We'll start with a "Hello world" example.
-
-Create a file called `hello.py` with the following content:
-
-{{< code file="/external/migrate-to-unionai-examples-flyte2/getting_started.py" lang="python" >}}
-
-This script defines three asynchronous functions: `say_hello`, `square`, and `hello_wf`.
-The `say_hello_wf` is the top-level "workflow" function that orchestrates the execution of the other two functions.
-
-Now let's say that some parts of the above program could benefit from running in a different environment,
-for example on a GPU or with more memory.
-Obviously, this is not really the case in this example, but let's pretend.
-
-With Flyte, you can easily augment your code with a few decorators and auxiliary functions, and it is ready to be deployed to a Kubernetes cluster where each function runs in its own container with, potentially, its own dependencies and specific hardware.
-
-In our example above, we can achieve this as follows:
-* Import the flyte package,
-* Create a `TaskEnvironment`.
-* Decorate your functions with `@env.task`.
-* Change your main guard initialize and run the workflow using the Flyte SDK.
+This section gives you a quick introduction to writing and running workflows on Union and Flyte v2.
 
 ## Configuration setup
 
@@ -53,38 +29,68 @@ flyte create config \
     --domain <default-domain>
 ```
 
+For example, your config file might look like:
+
+```shell
+flyte create config \
+    --endpoint dns:///demo.hosted.unionai.cloud \
+    --org demo \
+    --project flytesnacks \
+    --domain development
+```
+
 Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`), as well as an `org` (`<your-union-org>`).
 
 The default project and domain will be used when you deploy your workflows without specifying a project or domain explicitly.
 
 Please reach out to Union support if you're unable to locate values for `<your-union-endpoint>` and `<your-union-org>`.
 
+
+## Hello world
+
+We'll start with a "Hello world" example.
+
+Create a file called `hello.py` with the following content:
+
+{{< code file="/external/migrate-to-unionai-examples-flyte2/getting_started.py" lang="python" >}}
+
+This script defines three asynchronous functions: `say_hello`, `square`, and `hello_wf`.
+The `hello_wf` is the top-level "workflow" function that orchestrates the execution of the other two functions.
+
+We have instrumented this code to run remotely in a Flyte or Union instance:
+* Import the `flyte` package,
+* Create a `TaskEnvironment`.
+* Decorate functions with `@env.task`.
+* Add logic below the main guard to initialize and run the workflow using the Flyte SDK.
+
 ## Running remotely
 
 Now, simply run the script:
 
 ```shell
-$ python hello.py
+python hello.py
 ```
 
-You should see something like this:
+You can also run using the CLI:
 
 ```shell
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-I0000 00:00:1749121657.498681 3214165 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
-I0000 00:00:1749121657.558185 3214165 fork_posix.cc:71] Other threads are currently calling into gRPC, skipping fork() handlers
-Files to be copied for fast registration...
-📂 /Users/myuser/repos/unionai/unionv2 (detected source root)
-┗━━ examples
-    ┗━━ basics
-        ┗━━ hello_2.py
-[flyte] Code bundle created at /var/folders/vn/72xlcb5d5jbbb3kk_q71sqww0000gn/T/tmpo18zj1vx/fast520a2f2d50cc981784e0180c3b32943d.tar.gz, size: 0.009765625 MB, archive size: 0.0005788803100585938 MB
-t4m7ph57xchdw2dxx7bc
-https://union.example.com/v2/runs/project/myproject/domain/development/t4m7ph57xchdw2dxx7bc
-
+flyte run hello.py hello_wf --data "hello world"
 ```
 
-Click the link to go to your Union.ai instance and see the run in the UI:
+You should see an output like this:
+
+```shell
+(unionv2) johnvotta@JV---Work unionv2 % python hello.py                         
+Files to be copied for fast registration...
+📂 /Users/johnvotta/code/unionv2 (detected source root)
+┗━━ hello.py
+[flyte] Code bundle created at /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpighost5t/fast1891d8b2749d0bb45bbe938d8221fef6.tar.gz, size: 0.009765625 MB, archive size: 0.0005626678466796875 MB
+62ml7tgbdcb6llmbbb8l
+https://demo.hosted.unionai.cloud/v2/runs/project/flytesnacks/domain/development/62ml7tgbdcb6llmbbb8l
+Run 'a0' completed successfully.
+```
+
+Click the link to go to your Union instance and see the run in the UI:
 
 ![V2 UI](/_static/images/user-guide/v2ui.png)
 
