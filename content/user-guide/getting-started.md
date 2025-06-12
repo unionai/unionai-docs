@@ -4,7 +4,7 @@ weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Getting started
+# Getting Started
 
 This section gives you a quick introduction to writing and running workflows on Union.ai.
 
@@ -32,18 +32,27 @@ In our example above, we can achieve this as follows:
 * Decorate your functions with `@env.task`.
 * Change your main guard initialize and run the workflow using the Flyte SDK.
 
-## Run the code on your Union.ai instance
+## Configuration Setup
 
-First, make sure you are in a Python virtual environment, and you have the `flyte` package installed.
+First, make sure you are in a Python virtual environment, then install the v2 SDK.
 For example, you can use the [`uv` package manager](https://docs.astral.sh/uv/) to create a virtual environment and install the `flyte` package like this:
 
 ```shell
-$ uv venv
-$ source .venv/bin/activate
-$ uv pip install --no-cache --prerelease=allow --upgrade flyte
+uv venv
+source .venv/bin/activate
+uv pip install --no-cache --prerelease=allow --upgrade flyte
 ```
 
-Next make sure you have a `config.yaml` file in the same directory as your `hello.py` file that points to your Union.ai instance
+Next, create a `config.yaml` file in the same directory as your `hello.py` file that points to your Union instance by running the following: 
+
+```shell
+flyte create config --endpoint dns:///<your-union-endpoint> --org <your-union-org> --project <default-project> --domain <default-domain> 
+```
+
+Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`), as well as an `org` (`<your-union-org>`). 
+Please reach out to Union support if you're unable to locate values for `<your-union-endpoint>` and `<your-union-org>`.
+
+## Running Remotely
 
 Now, simply run the script:
 
