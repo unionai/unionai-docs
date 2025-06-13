@@ -225,3 +225,63 @@ Example:
 ```markdown
 [Download {{</* icon download */>}}](/download)
 ```
+
+### `{{</* code */>}}`
+
+Includes a code snippet or file.
+
+Parameters:
+- `file`: The path to the file to include.
+- `fragment`: The name of the fragment to include.
+- `from`: The line number to start including from.
+- `to`: The line number to stop including at.
+- `lang`: The language of the code snippet.
+
+#### Including a section of a file: `{{</* docs-fragment */>}}`
+
+```python
+def main():
+    """
+    A sample function
+    """
+    return 42
+
+# {{docs-fragment entrypoint}}
+if __name__ == "__main__":
+    main()
+# {{/docs-fragment}}
+```
+
+Example:
+
+```markdown
+{{</* code file="/_static/__docs_builder__/sample.py" fragment="entrypoint" */>}}
+```
+Link to [/_static/__docs_builder__/sample.py](/_static/__docs_builder__/sample.py)
+
+Effect:
+
+{{< code file="/_static/__docs_builder__/sample.py" fragment="entrypoint" >}}
+
+#### Including a file with a specific line range: `from` and `to`
+
+```markdown
+{{</* code file="/_static/public/public-key.txt" from="1" to="3" */>}}
+```
+Link to [/_static/public/public-key.txt](/_static/public/public-key.txt)
+
+Effect:
+
+{{< code file="/_static/public/public-key.txt" from="1" to="3" >}}
+
+#### Including a whole file
+
+Simply specify no filters, just the `file` attribute:
+
+    {{</* code file="/_static/public/public-key.txt" */>}}
+
+Link to [/_static/public/public-key.txt](/_static/public/public-key.txt)
+
+Effect:
+
+{{< code file="/_static/public/public-key.txt" >}}
