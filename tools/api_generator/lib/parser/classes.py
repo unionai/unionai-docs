@@ -2,7 +2,7 @@ import importlib
 import inspect
 import sys
 from types import ModuleType
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 from enum import Enum
 
 import yaml
