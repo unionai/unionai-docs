@@ -15,8 +15,7 @@ As we saw in [Getting started](./getting-started) you can create a configuration
 
 ```shell
 flyte create config \
-    --endpoint dns:///<your-union-endpoint> \
-    --org <your-union-org> \
+    --endpoint <your-union-endpoint> \
     --project <default-project> \
     --domain <default-domain> \
     --output <path-to-config-file>
@@ -45,7 +44,7 @@ For example, in [Getting started](./getting-started) we run our workflow using t
 {{< code file="/external/migr" language="python" >}}
 ```python
 if __name__ == "__main__":
-    flyte.init_from_config("./config.yaml")
+    flyte.init_from_config("config.yaml")
     run = flyte.run(hello_wf, data="hello world")
     print(run.name)
     print(run.url)
@@ -74,8 +73,7 @@ If we wanted to replace the above `init_from_config` with `init`, it would look 
 ```python
 if __name__ == "__main__":
     flyte.init(
-        endpoint="dns:///<your-union-url>",
-        org="<your-union-org>",
+        endpoint="<your-union-url>",
         project="<default-project>",
         domain="<default-domain>",
     )
@@ -105,8 +103,7 @@ You can also pass the configuration parameters directly in the command line, lik
 
 ```shell
 flyte \
-    --endpoint dns:///<your-union-endpoint> \
-    --org <your-union-org> \
+    --endpoint <your-union-endpoint> \
     run \
     --project <project> \
     --domain <domain> \
