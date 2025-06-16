@@ -126,22 +126,26 @@ For each resource type, the sum of all the `limits` parameters set on all the ta
 This dashboard displays information about configured node pools in the organization.
 
 {{< variant byoc >}}
+{{< markdown >}}
+
 ### Configuring Resource Quotas
+
 > [!NOTE]
 > Self serve quota configuration is currently only available to AWS customers. To configure quotas on other cloud providers (GCP, Azure, etc.) please reach out to the Union team.
 
 To configure resource quotas for a given project-domain, e.g. flytesnacks-development, start by navigating to the Dashboard in the UI for a given project-domain.
 
-![Dashboard](../../_static/images/user-guide/administration/resources/dashboard.png)
+![Dashboard](/_static/images/user-guide/administration/resources/dashboard.png)
 
 Next, click the gear icon beside the "Resource Quotas" section which is located at the bottom of the right sidebar on the Dashboard page.
 From here, you can enter your desired memory, CPU, and GPU quotas and select "Save."
 
-![Resource Quotas Configuration](../../_static/images/user-guide/administration/resources/quotas.png)
+![Resource Quotas Configuration](/_static/images/user-guide/administration/resources/quotas.png)
 
+{{< /markdown >}}
 {{< /variant >}}
 
-![Resources compute](../../_static/images/user-guide/administration/resources/resources-compute.png)
+![Resources compute](/_static/images/user-guide/administration/resources/resources-compute.png)
 
 {{< key product_name >}} will schedule tasks on a node pool that meets the requirements of the task (as defined by the `requests` and `limits` parameters in the task definition) and can vertically scale these node pools according to the minimum and maximum configured limits. This dashboard shows all currently-configured node pools, whether they are interruptible, labels and taints, minimum and maximum sizes, and allocatable resources.
 
@@ -173,7 +177,6 @@ In the screenshot above, there is a `t3a.xlarge` with `3670m` (3670 millicores) 
       limits=Resources(cpu="3670m", mem="1Gi"))
 ```
 
-
 In the absence of confounding factors (for example, other workloads fully utilizing all `t3a.xlarge` instances), this task will spin up a `t3a.xlarge` instance and run the execution on it, taking all available allocatable CPU resources.
 
 Conversely, if a user requests the following:
@@ -182,7 +185,6 @@ Conversely, if a user requests the following:
 @{{< key kit_as >}}.task(requests=Resources(cpu="4000m", mem="1Gi"),
       limits=Resources(cpu="4000m", mem="1Gi"))
 ```
-
 
 The workload will schedule on a larger instance (like the `c5.4xlarge`) because `4000m` exceeds the allocatable CPU on the `t3a.xlarge`, despite the fact that this instance type is [marketed](https://instances.vantage.sh/aws/ec2/t3a.xlarge) as having 4 CPU cores. The discrepancy is due to overheads and holdbacks introduced by Kubernetes to ensure adequate resources to schedule pods on the node.
 
