@@ -3,6 +3,7 @@
 # /// script
 # dependencies = [
 #    "polars",
+#    "flyte>=0.2.0b12"
 # ]
 # ///
 
@@ -15,9 +16,9 @@ env = flyte.TaskEnvironment(
     image=flyte.Image.from_uv_script(
         __file__,
         name="flyte",
-        registry="ghcr.io/unionai-oss",
+        registry="ghcr.io/jpvotta",
         arch=("linux/amd64", "linux/arm64"),
-    ),
+    ).with_apt_packages("ca-certificates"),
 )
 
 
@@ -40,7 +41,7 @@ async def workflow():
 
 
 if __name__ == "__main__":
-    flyte.init_from_config("./config.yaml")
+    flyte.init_from_config("config.yaml")
     run = flyte.run(workflow)
     print(run.name)
     print(run.url)

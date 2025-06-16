@@ -44,8 +44,10 @@ You can specify a registry of you choice.
 You must ensure that:
 
 * Docker is running on your local machine.
-* You have successfully ran `docker login` to that registry from your local machine
+* You have successfully ran `docker login` to that registry from your local machine (Github uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
 * Your Flyte/Union installation has read access to that registry.
+
+Note that if using `ghcr.io`, you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image. Note that public images are on the public internet and should only be used for testing purposes. Do not place proprietary code in public images.
 
 ## Image pulling
 
@@ -64,31 +66,22 @@ uv pip install polars
 Next, with the docker daemon running on your local machine, run the script:
 
 ```shell
-flyte run container_images.py workflow
+uv run --prerelease=allow container_images.py
 ```
 
 Your terminal will show something like the following:
 
 ```shell
-(unionv2) johnvotta@JV---Work unionv2 % python container_images.py 
-[flyte] Building Image for environment polars_image, image: Image(base_image='debian:bookworm-slim', dockerfile=None, registry='ghcr.io/jpvotta', name='flyte', platform=('linux/amd64', 'linux/arm64'), tag=None, python_version=(3, 12), _identifier_override=None, is_final=False, _layers=(PipPackages(packages=('polars',)),))
-[flyte] Building image flyte for environment polars_image
-[flyte] Image ghcr.io/jpvotta/flyte:33f83688ff9c10a6eb6a9b34d8fac7d7 does not exist in registry or force/dry-run, building...
-[flyte] Buildx builder already exists.
-[flyte] Temporary directory: /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpaz1hej1e
-Run command: docker buildx build --builder flytex --tag ghcr.io/jpvotta/flyte:33f83688ff9c10a6eb6a9b34d8fac7d7 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpaz1hej1e 
+(unionv2) johnvotta@JV---Work unionv2 % uv run --prerelease=allow container_images.py
+Reading inline script metadata from `container_images.py`
+[flyte] Temporary directory: /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
+Run command: docker buildx build --builder flytex --tag ghcr.io/jpvotta/flyte:d1c1a0a9c3e65c329bae976afddea670 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj 
 
 ...
 
-View build details: docker-desktop://dashboard/build/flytex/flytex0/ugdzhhtdb2bdb8ovrf1kipl7p
-[flyte] Built Image for environment polars_image, image: ghcr.io/jpvotta/flyte:33f83688ff9c10a6eb6a9b34d8fac7d7
-Files to be copied for fast registration...
-📂 /Users/johnvotta/code/unionv2 (detected source root)
-┗━━ container_images.py
-[flyte] Code bundle created at /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpbdjdoidu/fastef28a17cb2bb830b3eafb7170aa14112.tar.gz, size: 0.009765625 MB, archive size: 0.0006113052368164062 MB
-bs4574422hln9kwkzwnn
-https://demo.hosted.unionai.cloud/v2/runs/project/flytesnacks/domain/development/bs4574422hln9kwkzwnn
+View build details: docker-desktop://dashboard/build/flytex/flytex0/dz3x633t2seh5wkxk3ubhmg4s
+7lkfjscn4pbf429drr98
+https://playground.canary.unionai.cloud/v2/runs/project/flytesnacks/domain/development/7lkfjscn4pbf429drr98
+Run 'a0' completed successfully.
 ```
-
-Note that if using `ghcr.io`, you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image. Note that public images are on the public internet and should only be used for testing purposes. Do not place proprietary code in public images!
 
