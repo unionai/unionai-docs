@@ -1,7 +1,7 @@
 ---
 title: Authoring
 weight: 4
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Authoring
@@ -42,14 +42,14 @@ For example:
 ```markdown
 ---
 title: My Page
-variants: -flyte +serverless +byoc -byok
+variants: -flyte +serverless +byoc -selfmanaged
 ---
 ```
 
 In this example the page will be:
 
 * Included in Serverless and BYOC.
-* Excluded from Flyte and BYOK.
+* Excluded from Flyte and Self-managed.
 
 > [!NOTE]
 > All variants must be explicitly listed in the `variants` field.

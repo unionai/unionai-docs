@@ -1,7 +1,7 @@
 ---
 title: Kubeflow TensorFlow
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Kubeflow TensorFlow
   title_expanded: Flytekit Kubeflow TensorFlow Plugin

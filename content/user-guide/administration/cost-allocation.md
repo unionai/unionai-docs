@@ -1,7 +1,7 @@
 ---
 title: Cost allocation
 weight: 2
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +selfmanaged
 ---
 
 # Cost allocation
@@ -109,7 +109,7 @@ This means that the system can still fail to allocate costs to nodes which are l
 Cost is scoped to nodes that have been used in running executions.
 The accuracy of cost allocation depends on the accuracy of the underlying resource metrics as well as per-node pricing information.
 
-This feature limits lookback to 30 days and allows picking any time range within the past 30 days to assess cost.
+This feature limits lookback to 60 days and allows picking any time range within the past 60 days to assess cost.
 
 ## Future Enhancements
 

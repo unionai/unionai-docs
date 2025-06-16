@@ -4,10 +4,14 @@
 {{- /* - lang: The language of the code block. */ -}}
 {{- /* - from: The starting line number of the code block. */ -}}
 {{- /* - to: The ending line number of the code block. */ -}}
+{{- /* - fragment: The fragment identifier to extract code between markers. */ -}}
+{{- /* - show_fragments: Whether to show fragments in the code block. */ -}}
 {{- /* Example usage: */ -}}
-{{- /*     {{< code file="path/to/file" lang="html" from="1" to="5" >}} */ -}}
+{{- /*     {{< code file="path/to/file" lang="html" from="1" to="5" fragment="my-fragment" >}} */ -}}
 
 {{- $fileName := .Get "file" -}}
+{{- $fragment := .Get "fragment" -}}
+{{- $showFragments := .Params.show_fragments -}}
 
 {{- /* Define allowed prefixes */ -}}
 {{- $allowedPrefixes := slice "/static/" "/assets/" "/_static/" "/external/" -}}
@@ -36,8 +40,31 @@
 {{- $lines := split $file "\n" -}}
 {{- $filteredLines := slice -}}
 
-{{/* Filter lines based on lineStart and lineEnd if provided */}}
-{{- if and $lineStart $lineEnd -}}
+{{- /* Handle fragment if specified */ -}}
+{{- if $fragment -}}
+  {{- $startMarker := printf "{{docs-fragment %s}}" $fragment -}}
+  {{- $endMarker := "{{/docs-fragment}}" -}}
+  {{- $foundStart := false -}}
+  {{- $foundEnd := false -}}
+  {{- range $lines -}}
+    {{- $lineClean := replaceRE `^\s*(#|//|/\*+|\*+)?\s*` "" . -}}
+    {{- if eq $lineClean $startMarker -}}
+      {{- $foundStart = true -}}
+    {{- else if eq $lineClean $endMarker -}}
+      {{- $foundEnd = true -}}
+    {{- else if and $foundStart (not $foundEnd) -}}
+      {{- $filteredLines = $filteredLines | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not $foundStart -}}
+    {{- warnf "Fragment marker '%s' not found in file %s. Please mark a section with the following markers: %s and %s" 
+          $fragment $fileName (printf "{{docs-fragment %s}}" $fragment) "{{/docs-fragment}}" -}}
+    <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+      Fragment marker '{{$fragment}}' not found in file {{$fileName}}. Please mark a section with the following markers:
+      <code>{{ "{{docs-fragment " }}{{ $fragment }}{{ "}}" }}</code> and <code>{{ "{{/docs-fragment}}" }}</code>
+    </div>
+  {{- end -}}
+{{- else if and $lineStart $lineEnd -}}
   {{- $start := int $lineStart -}}
   {{- $end := int $lineEnd -}}
   {{- $filteredLines = first (add (sub $end $start) 1) (after (sub $start 1) $lines) -}}
@@ -48,11 +75,8 @@
 {{/* Prepare content with line numbers and highlighting */}}
 {{- $content := "" -}}
 {{- range $index, $line := $filteredLines -}}
-  {{- $lineNum := 0 -}}
-  {{- if $lineStart -}}
-    {{- $lineNum = add $index (int $lineStart) -}}
-  {{- else -}}
-    {{- $lineNum = add $index 1 -}}
+  {{- if and (in $line "docs-fragment") (not $showFragments) -}}
+    {{- continue -}}
   {{- end -}}
   {{- $content = print $content $line "\n" -}}
 {{- end -}}

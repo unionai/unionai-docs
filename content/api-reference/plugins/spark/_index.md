@@ -1,7 +1,7 @@
 ---
 title: Spark
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Spark
   title_expanded: Flytekit Spark Plugin

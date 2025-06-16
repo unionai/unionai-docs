@@ -1,8 +1,8 @@
 ---
 title: Enabling AWS resources
 weight: 9
-variants: -flyte -serverless +byoc +byok
-sidebar_expanded: false
+variants: -flyte -serverless +byoc -selfmanaged
+sidebar_expanded: true
 ---
 
 # Enabling AWS resources

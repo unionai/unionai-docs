@@ -1,7 +1,7 @@
 ---
 title: Understanding the code
 weight: 4
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Understanding the code
@@ -58,7 +58,7 @@ def hello_world_wf(name: str = "world") -> str:
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 ```python
@@ -113,7 +113,7 @@ Here we have the simplest possible `ImageSpec` object, which specifies:
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant serverless byoc byok >}}
+{{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
 
 * The `builder` to use to build the image.

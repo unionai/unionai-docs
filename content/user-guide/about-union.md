@@ -1,7 +1,7 @@
 ---
 title: About Union.ai
 weight: 2
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # About {{< key product_name >}}
@@ -11,7 +11,7 @@ variants: -flyte +serverless +byoc +byok
 {{< key product_name >}} builds on [Flyte](https://flyte.org), the open-source standard for orchestrating AI workflows.
 It offers all the features of Flyte while adding more capability to scale, control costs and serve models.
 
-There are three deployment options for {{< key product_name >}}: **Serverless**, **BYOC** (Bring Your Own Cloud), and **BYOK** (Bring Your Own Kubernetes).
+There are three deployment options for {{< key product_name >}}: **Serverless**, **BYOC** (Bring Your Own Cloud), and **Self-managed**.
 
 ## Flyte
 
@@ -40,7 +40,7 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 
 [{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
-Your Data and workflow code stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
+Your data and workflow code is stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
 {{< key product_name >}} Serverless provides:
 
 * All the features of Flyte
@@ -74,11 +74,14 @@ Your Data and workflow code stored safely and securely in {{< key product_name >
 * Single sign-on (SSO)
 * SOC-2 Type 2 compliance
 
-## {{< key product_name >}} BYOK
+## {{< key product_name >}} Self-managed
 
-[{{< key product_name >}} BYOK]({{< docs_home byok >}}) (Bring Your Own Kubernetes) lets you keep your data and workflow code on your infrastructure and under your own management.
+[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) lets you keep full control of your data, code, and infrastructure.
+{{< key product_name >}} Self-managed provides all the features of BYOC, with the only difference being that you manage the system yourself.
 
-{{< key product_name >}} BYOK provides all the features of BYOC, with the only difference being that you manage your own data plane.
+There are two options:
 
-The control plane continues to be located in a {{< key product_name >}} AWS account and managed by Union AI.
-However, none of your data ever leaves your data plane, ensuring privacy and security.
+* Deploy and manage your data plane yourself on your infrastructure while Union.ai manages the control plane on our infrastructure.
+
+* Deploy and manage both your data plane and control plane on your infrastructure with support and guidance from Union.ai.
+  This option is suitable for air-gapped deployments.

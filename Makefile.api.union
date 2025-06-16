@@ -1,5 +1,5 @@
 OUTPUT_FOLDER=content/api-reference/union-sdk
-API_DATA=/Users/shalomz/flt/union.api.yaml
+API_DATA=/tmp/union.api.yaml
 
 .PHONY: all
 all: parser generate
@@ -16,7 +16,7 @@ generate: clean_output_folder
 		--title "Union SDK" \
 		--api "${API_DATA}" \
 		--include include/api.union.md \
-		--variants='+byoc +byok +serverless -flyte' \
+		--variants='+byoc +selfmanaged +serverless -flyte' \
 		--output "${OUTPUT_FOLDER}"
 
 .PHONY: clean_output_folder

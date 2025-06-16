@@ -1,7 +1,7 @@
 ---
 title: Resources
 weight: 1
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Resources
@@ -40,9 +40,7 @@ For all workflows in the selected project and domain which reached their final s
 * The number of aborted workflows.
 * The number of failed workflows.
 
-<!-- TODO: Add back when docs_home shortcode is working
-See [Workflow States]({< docs_home flyte/architecture/content/workflow-state-transitions#workflow-states >}}) for the precise definitions of these states.
--->
+See [Workflow States]({{< docs_home flyte >}}/architecture/content/workflow-state-transitions#workflow-states) for the precise definitions of these states.
 
 ### Task Executions in Final State
 
@@ -56,9 +54,8 @@ For all tasks in the selected project and domain which reached their final state
 * The number of aborted tasks.
 * The number of failed tasks.
 
-<!-- TODO: Add back when docs_home shortcode is working
-See [Task States]({< docs_home flyte/architecture/content/workflow-state-transitions#task-states >}}) for the precise definitions of these states.
--->
+See [Task States]({{< docs_home flyte >}}/architecture/content/workflow-state-transitions#task-states) for the precise definitions of these states.
+
 ### Running Pods
 
 This chart shows the absolute resource consumption for
@@ -95,29 +92,30 @@ Under the hood, {{< key product_name >}} uses Kubernetes to run workloads. To de
 
 Within each namespace, a [resource quota](https://kubernetes.io/docs/concepts/policy/resource-quotas/) is set for each resource type (memory, CPU, GPU). This dashboard displays the current point-in-time quota consumption for memory, CPU, and GPU. Quotas are defined as part of the set-up of the instance types in your data plane. To change them, talk to the {{< key product_name >}} team.
 
-<!-- TODO: Add section back in when we have screenshots for specific percentage examples
 
 ### Examples
 
-In Flyte you set resource requests and limits at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources)):
+Resource requests and limits are set at the task level like this (see [Customizing task resources](../core-concepts/tasks/task-hardware-environment/customizing-task-resources)):
 
 ```python
 @{{< key kit_as >}}.task(requests=Resources(cpu="1", mem="1Gi"),
       limits=Resources(cpu="10", mem="10Gi"))
 ```
 
-
-This task (which will manifest as a Kubernetes pod) requests 1 CPU and 1 gibibyte of memory. It sets a limit of 10 CPUs and 10 gibibytes of memory.
+This task requests 1 CPU and 1 gibibyte of memory. It sets a limit of 10 CPUs and 10 gibibytes of memory.
 
 If a task requesting the above resources (1 CPU and 1Gi) is executed in a project (for example **cluster-observability**) and domain (for example, **development**) with 10 CPU and 10Gi of quota for CPU and memory respectively, the dashboard will show that 10% of both memory and CPU quotas have been consumed.
 
+<!-- TODO add back when screenshot available
 ![Resource Quotas 10%](/_static/images/user-guide/administration/resources/resources-resource-quotas-10.png)
-
-Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
-
-![Resource Quotas 100%](/_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
-
 -->
+
+Likewise, if a task requesting 10 CPU and 10Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
+
+<!-- TODO add back when screenshot available
+![Resource Quotas 100%](/_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
+-->
+
 
 ### Quota Consumption
 

@@ -1,7 +1,7 @@
 ---
 title: Add Tracing and Guardrails to an Airbnb RAG App with Weave
 weight: 5
-variants: -flyte -serverless +byoc +byok
+variants: -flyte -serverless +byoc +selfmanaged
 layout: py_example
 example_file: /external/unionai-examples/tutorials/weave/rag_app.py
 run_on_union_secrets:
@@ -20,11 +20,11 @@ example_setup:
   - union cache model-from-hf microsoft/Phi-3-mini-128k-instruct \
     --hf-token-key <YOUR_HF_TOKEN> \
     --union-api-key <YOUR_UNION_API_KEY> \
-  - "# replace `<YOUR_MODEL_ARTIFACT_URI>` in the code with the model artifact URI returned from the union cache step."
+  - "# replace `<YOUR_MODEL_ARTIFACT_URI>` with the model artifact URI returned from the union cache step."
   - "# run the following command with the appropriate dataset URL and index name to ingest documents:"
   - union run --remote ingestion.py ingest_data \
     --inside_airbnb_listings_url https://data.insideairbnb.com/the-netherlands/north-holland/amsterdam/2025-03-02/data/listings.csv.gz \
     --index_name AirbnbListings
-  - "# replace `<YOUR_WANDB_ENTITY>` in the code with your wandb entity. an entity represents a user name or a team name."
+  - "# replace `<YOUR_WANDB_ENTITY>` with your wandb entity. an entity represents a user name or a team name."
 example_run_cmd: union deploy apps rag_app.py weave-rag
 ---

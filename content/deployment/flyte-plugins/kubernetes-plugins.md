@@ -1,7 +1,7 @@
 ---
 title: Kubernetes plugins
 weight: 1
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Kubernetes Plugins
@@ -112,6 +112,28 @@ To install the Dask operator, run the following command:
 
 helm install dask-operator dask/dask-kubernetes-operator --namespace dask-operator --create-namespace
 ```
+{{< /markdown >}}
+{{< /dropdown >}}
+
+{{< dropdown title="Volcano-Scheduled PodTask" icon=arrow_forward >}}
+{{< markdown >}}
+
+PodTasks in Flyte can be scheduled using the Volcano scheduler, which offers queue-based features such as multi-tenant resource management, task prioritization, and resource preemption. These features enhance scheduling efficiency and improve overall cluster utilization in shared environments.
+
+To enable Volcano-scheduled PodTasks in Flyte, follow these steps:
+
+1. Install Volcano in your cluster by following the [instructions in the volcano repository](https://github.com/volcano-sh/volcano).
+
+2. Configure a Flyte PodTemplate to use the Volcano scheduler for your PodTasks:
+  
+```yaml
+
+template:
+  spec:
+    schedulerName: "volcano"
+```
+
+
 {{< /markdown >}}
 {{< /dropdown >}}
 
@@ -999,6 +1021,38 @@ configmap:
           container_array: k8s-array
           dask: dask
 ```
+{{< /markdown >}}
+{{< /dropdown >}}
+
+
+{{< dropdown title="Volcano-Scheduled PodTask" icon=arrow_forward >}}
+{{< markdown >}}
+
+### flyte-binary
+
+Create a file named ``values-override.yaml`` and add the following config to it:
+
+```yaml
+
+configuration:
+  inline:
+    plugins:
+      k8s:
+        enable-create-pod-group-for-pod: true
+```
+### flyte-core
+
+Create a file named ``values-override.yaml`` and add the following config to it:
+
+```yaml
+
+configmap:
+  k8s:
+    plugins:
+      k8s:
+        enable-create-pod-group-for-pod: true
+```
+
 {{< /markdown >}}
 {{< /dropdown >}}
 

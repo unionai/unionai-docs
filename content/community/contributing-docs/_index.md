@@ -1,7 +1,7 @@
 ---
 title: Contributing docs and examples
 weight: 3
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
@@ -17,7 +17,7 @@ As the primary maintainer and contributor of the open-source Flyte project, Unio
 Additionally, Union AI is also the company behind the commercial Union.ai product, which is based on Flyte.
 
 Since Flyte and Union.ai share a lot of common functionality, much of the documentation content is common between the two.
-However, there are some significant differences between not only Flyte and Union.ai but also among the different Union.ai product offering (Serverless, BYOC, and BYOK).
+However, there are some significant differences between not only Flyte and Union.ai but also among the different Union.ai product offering (Serverless, BYOC, and Self-managed).
 
 To effectively and efficiently maintain the documentation for all of these variants, we employ a single-source-of-truth approach where:
 
@@ -27,7 +27,7 @@ To effectively and efficiently maintain the documentation for all of these varia
 
 Multiple variants of the documentation are supported as follows:
 
-* There are currently four product variants: Flyte, Serverless, BYOC, and BYOK.
+* There are currently four product variants: Flyte, Serverless, BYOC, and Self-managed.
 * Content that is common to all variants is authored and stored once. There is no need to keep multiple copies of the same content in-sync.
 * Content specific to a variant is conditionally rendered based on the selected variant.
 

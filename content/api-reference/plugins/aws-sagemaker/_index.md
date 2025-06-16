@@ -1,7 +1,7 @@
 ---
 title: AWS SageMaker
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: AWS SageMaker
   title_expanded: AWS SageMaker Plugin

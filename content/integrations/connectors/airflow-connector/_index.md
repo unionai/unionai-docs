@@ -1,7 +1,7 @@
 ---
 title: Airflow connector
 weight: 1
-variants: +flyte -serverless +byoc +byok
+variants: +flyte -serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -38,7 +38,7 @@ For an example query, see [Airflow connector example usage](./airflow-connector-
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 For an example query, see [Airflow connector example usage](./airflow-connector-example-usage-union)

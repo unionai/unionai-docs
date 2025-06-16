@@ -9,7 +9,7 @@ from lib.generate.packages import (
 )
 from lib.ptypes import ParsedInfo
 
-type PackageTree = Dict[str, List[str]]
+PackageTree = Dict[str, List[str]]
 
 
 def generate_home(

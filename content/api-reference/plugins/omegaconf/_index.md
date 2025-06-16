@@ -1,7 +1,7 @@
 ---
 title: OmegaConf
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: OmegaConf
   title_expanded: Flytekit OmegaConf Plugin

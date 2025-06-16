@@ -33,7 +33,7 @@ app_id = "JXAX1VOSS0"
 search_key = "f90406df1c8707c844facf29564446dc"
 index_name = "union"
 
-[params.search.byok]
+[params.search.selfmanaged]
 app_id = "ZK72K15QRI"
 search_key = "59e5451a3db8540ee70dc8dd04fe6287"
 index_name = "union"

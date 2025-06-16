@@ -1,7 +1,7 @@
 ---
 title: Configuring your data plane
-weight: 6
-variants: -flyte -serverless +byoc +byok
+weight: 3
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Configuring your data plane
@@ -22,7 +22,7 @@ You will need to send the following details to the {{< key product_name >}} team
         * [Node type](#node-type)
         * [Minimum](#minimum)
         * [Maximum](#maximum)
-        * [Interruptible](#interruptible-instances)?
+        * [Interruptible](#interruptible-instances)
         * [Taints](#taints)
         * [Disk](#disk)
 

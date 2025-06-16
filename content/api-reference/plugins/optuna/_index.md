@@ -1,7 +1,7 @@
 ---
 title: Optuna (wrapper)
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Optuna (wrapper)
   title_expanded: Fully Parallelized Wrapper Around Optuna Using Flyte

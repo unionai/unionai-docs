@@ -1,7 +1,7 @@
 ---
 title: Accelerators
 weight: 2
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Accelerators
@@ -76,7 +76,7 @@ def my_task():
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 > [!NOTE] _Accelerators_ and _Accelerated datasets_ are entirely different things
@@ -160,7 +160,7 @@ Note that in order for a specific accelerator to be available in your Flyte inst
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 If using the constants, you can import them directly from the module, e.g.:

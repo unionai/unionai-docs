@@ -1,7 +1,7 @@
 ---
 title: Snowflake
 layout: plugin
-variants: +flyte -byoc -byok -serverless
+variants: +flyte -byoc -selfmanaged -serverless
 metadata:
   title: Snowflake
   title_expanded: Flytekit Snowflake Plugin

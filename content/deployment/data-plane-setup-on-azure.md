@@ -1,7 +1,7 @@
 ---
 title: Data plane setup on Azure
-weight: 5
-variants: -flyte -serverless +byoc +byok
+weight: 7
+variants: -flyte -serverless +byoc -selfmanaged
 ---
 
 # Data plane setup on Azure
@@ -29,7 +29,7 @@ creating a {{< key product_name >}} specific App and granting it sufficient perm
 7. Select "Application permissions".
 8. Add the following permissions:
 
-- Application.Read.All
+- Application.ReadWrite.All
 - Group.ReadWrite.All
 
 9. Navigate to your target [Azure Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).

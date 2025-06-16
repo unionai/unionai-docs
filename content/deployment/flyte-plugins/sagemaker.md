@@ -1,7 +1,7 @@
 ---
 title: AWS Sagemaker plugin
 weight: 4
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # Sagemaker Plugin Setup
@@ -12,7 +12,7 @@ This guide gives an overview of how to set up Sagemaker in your Flyte deployment
 > The Sagemaker plugin needs Flyte deployment in AWS cloud; sandbox/GCP/Azure won't work.
 
 ## Prerequisites
-   
+
 * Flyte cluster in [AWS](https://docs.flyte.org/en/latest/deployment/aws/index.html#deployment-aws)
 * [AWS role set up for SageMaker](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html)
 * [AWS SageMaker K8s operator](https://github.com/aws/amazon-sagemaker-operator-for-k8s) is installed in your k8s cluster
@@ -66,9 +66,9 @@ flytectl register files https://github.com/flyteorg/flytesnacks/releases/downloa
 * Submit the form.
 
 #### flytectl
-   
+
 Retrieve an execution form in the form of a YAML file:
-   
+
 ```bash
 flytectl get launchplan --config ~/.flyte/flytectl.yaml \
     --project flytesnacks \
@@ -76,9 +76,9 @@ flytectl get launchplan --config ~/.flyte/flytectl.yaml \
     sagemaker_training.sagemaker_custom_training.mnist_trainer \
     --latest \
     --execFile exec_spec.yaml
- ```  
+ ```
 Launch! 🚀
-   
+
 ```bash
 flytectl --config ~/.flyte/flytectl.yaml create execution \
     -p <project> -d <domain> --execFile ~/exec_spec.yaml

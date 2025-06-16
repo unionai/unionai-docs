@@ -1,11 +1,11 @@
 ---
 title: BigQuery connector
 weight: 9
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 # Google BigQuery connector
 
-This guide provides an overview of setting up BigQuery connector in your Flyte deployment.  
+This guide provides an overview of setting up BigQuery connector in your Flyte deployment.
 Please note that the BigQuery connector requires Flyte deployment in the GCP cloud; it is not compatible with demo/AWS/Azure.
 
 ## Set up the GCP Flyte cluster

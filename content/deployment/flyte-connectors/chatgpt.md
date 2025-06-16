@@ -1,12 +1,12 @@
 ---
 title: ChatGPT connector
 weight: 10
-variants: +flyte -serverless -byoc -byok
+variants: +flyte -serverless -byoc -selfmanaged
 ---
 
 # ChatGPT connector
 
-This guide provides an overview of how to set up the ChatGPT connector in your Flyte deployment.  
+This guide provides an overview of how to set up the ChatGPT connector in your Flyte deployment.
 Please note that you have to set up the OpenAI API key in the connector server to run ChatGPT tasks.
 
 ## Specify connector configuration
@@ -29,7 +29,7 @@ tasks:
 plugins:
   connector-service:
     # Configuring the timeout is optional.
-    # Tasks like using ChatGPT with a large model might require a longer time, 
+    # Tasks like using ChatGPT with a large model might require a longer time,
     # so we have the option to adjust the timeout setting here.
     defaultConnector:
       timeouts:
@@ -59,7 +59,7 @@ configmap:
     plugins:
       connector-service:
         # Configuring the timeout is optional.
-        # Tasks like using ChatGPT with a large model might require a longer time, 
+        # Tasks like using ChatGPT with a large model might require a longer time,
         # so we have the option to adjust the timeout setting here.
         defaultConnector:
           timeouts:

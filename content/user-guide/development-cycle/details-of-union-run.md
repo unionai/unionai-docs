@@ -1,7 +1,7 @@
 ---
 title: Details of union run
 weight: 10
-variants: -flyte +serverless +byoc +byok
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Details of {{< key cli >}} run

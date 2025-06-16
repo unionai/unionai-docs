@@ -2,6 +2,7 @@
   /* Light theme variables (default) */
   --primary-color: var(--union-color);
   --text-color: #1f2937;
+  --text-color-light: #bfbfbf;
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
   --border-color: #e2e8f0;
@@ -33,6 +34,7 @@
   --main-content-padding: 2rem;
   --toc-bg: var(--bg-color);
   --docsearch-primary-color: #edab1c !important;
+  --docsearch-highlight-color: var(--docsearch-primary-color) !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
   --breadcrumbs-height: 128px;
   --old-version-border: 3px solid var(--union-color);
@@ -46,6 +48,7 @@
   --union-color-dark: #523a82;
   --union-color-very-light: #c7b1dc;
   --docsearch-primary-color: #7652A2 !important;
+  --docsearch-highlight-color: #7652A2 !important;
   --docsearch-searchbox-shadow: 0 0 0 2px var(--docsearch-primary-color) !important;
   --old-version-border: 3px solid var(--union-color);
 }
@@ -54,6 +57,7 @@
 [data-theme="dark"] {
   --primary-color: var(--union-color);
   --text-color: #cbd1d9;
+  --text-color-light: hsl(214, 0%, 50%);
   --bg-color: #121212;
   --sidebar-bg: #191919;
   --border-color: #282828;
@@ -75,6 +79,8 @@
   --union-color-light: #8566a1;
   --union-color-dark: #432d6e;
   --union-color-very-light: #88749a;
+  --docsearch-primary-color: #7652A2 !important;
+  --docsearch-highlight-color: #7652A2 !important;
   --table-row-even: #1a1720;
   --table-row-hover: #292532;
 }

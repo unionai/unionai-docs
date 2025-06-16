@@ -1,7 +1,7 @@
 ---
 title: FlyteFile and FlyteDirectory
 weight: 1
-variants: +flyte +serverless +byoc +byok
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 
@@ -48,7 +48,7 @@ which involves mean-centering and standard-deviation-scaling.
 
 > [!NOTE]
 > The `FlyteFile` literal can be scoped with a string, which gets inserted
-> into the format of the Blob type ("jpeg" is the string in
+> into the format of the Blob type (`"jpeg"` is the string in
 > `FlyteFile[typing.TypeVar("jpeg")]`). The format is entirely optional,
 > and if not specified, defaults to `""`.
 > Predefined aliases for commonly used flyte file formats are also available.
@@ -155,7 +155,7 @@ $  brew install libmagic
 ```
 
 {{< /markdown >}}
-{{< /tab>}}
+{{< /tab >}}
 {{< tab "Linux" >}}
 {{< markdown >}}
 
@@ -174,12 +174,8 @@ $ sudo apt-get install libmagic1
 
 ## Streaming support
 
-Flyte `1.5` introduced support for streaming `FlyteFile` types via the `fsspec` library.
+`FlyteFile` supports streaming via the `fsspec` library.
 This integration enables efficient, on-demand access to remote files, eliminating the need for fully downloading them to local storage.
-
-
-> [!NOTE]
-> This feature is marked as experimental. We'd love feedback on the API! @Peeter we should provide a link here for people to give feedback, thoughts?
 
 Here is a simple example of removing some columns from a CSV file and writing the result to a new file:
 
@@ -361,7 +357,7 @@ if __name__ == "__main__":
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok >}}
+{{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
 In {{< key product_name >}}, each task runs in its own container. This means that a file or directory created locally in one task will not automatically be available in other tasks.
@@ -471,7 +467,7 @@ def workflow():
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc byok flyte >}}
+{{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
 ## Changing the data upload location
@@ -488,9 +484,9 @@ However, you can change the upload location by setting the raw data prefix to yo
 > [!NOTE] Setting up your own object store bucket
 > For details on how to set up your own object store bucket, consult the direction for your cloud provider:
 >
-> * [Enabling AWS S3](../integrations/enabling-aws-resources/enabling-aws-s3)
-> * [Enabling Google Cloud Storage](../integrations/enabling-gcp-resources/enabling-google-cloud-storage)
-> * [Enabling Azure Blob Storage](../integrations/enabling-azure-resources/enabling-azure-blob-storage)
+> * [Enabling AWS S3](../../deployment/enabling-aws-resources/enabling-aws-s3)
+> * [Enabling Google Cloud Storage](../../deployment/enabling-gcp-resources/enabling-google-cloud-storage)
+> * [Enabling Azure Blob Storage](../../deployment/enabling-azure-resources/enabling-azure-blob-storage)
 
 ### Changing the raw data prefix
 

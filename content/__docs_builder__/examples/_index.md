@@ -1,4 +1,4 @@
 ---
-title: Shortcode Examples
-variants: -flyte -serverless -byoc -byok
+title: General Examples
+variants: -flyte -serverless -byoc -selfmanaged
 ---
