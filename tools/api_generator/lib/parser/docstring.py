@@ -36,6 +36,9 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
     except:
         pass
 
+    # Removes the specicial !!!! notes
+    docstring = format_three_exclamation_notes(docstring)
+
     lines = docstring.split("\n")
     # print(lines)
 
@@ -85,6 +88,9 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 param = ParamInfo(
                     name=current_param,
                     doc=param_parts[1],
+                    type=None,
+                    default=None,
+                    kind=None,
                 )
                 result["params"][current_param] = param
                 args_continuation_spaces = -1
@@ -130,6 +136,9 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 param = ParamInfo(
                     name=param_name,
                     doc=param_doc,
+                    type=None,
+                    default=None,
+                    kind=None,
                 )
                 result["params"][current_param] = param
                 # print("PARAM: ", param_name, param_doc)
@@ -194,6 +203,43 @@ def test_parse_args():
         python_exec: Python executable to use for install packages
     """
     print(json.dumps(parse_docstring(doc_with_args, source=None), indent=2))
+
+def format_three_exclamation_notes(docstring: str) -> str:
+    """
+    Receives a docstring that contains lines like:
+
+        !!! warning "Deprecated"
+        This method is now deprecated; use `model_copy` instead.
+
+    And converts thm to:
+
+        > [WARN] Deprecated
+        > This method is now deprecated; use `model_copy` instead.
+    """
+    lines = docstring.split("\n")
+    result = []
+    converting = False
+    for line in lines:
+        if line.startswith("!!! warning"):
+            parts = line.split(" ")
+            if len(parts) < 3:
+                continue
+            title = parts[2].replace('"', '')
+            result.append(f"> [!WARNING] {title}")
+            converting = True
+        elif line.startswith("!!! note"):
+            result.append(f"> [!NOTE]")
+            converting = True
+        elif converting:
+            if len(line.strip()) > 0 and line != len(line.strip()):
+                result.append(f"> {line.strip()}")
+            else:
+                result.append("")
+                converting = False
+        else:
+            converting = 0
+            result.append(line)
+    return "\n".join(result)
 
 
 def main():

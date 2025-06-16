@@ -25,6 +25,7 @@ custom_css = [
   "codeblock.css",
   "footer.css",
   "header.css",
+  "heading.css",
   "images.css",
   "key.css",
   "markdown.css",
