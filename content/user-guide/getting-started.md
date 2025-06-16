@@ -23,8 +23,7 @@ Next, create a `config.yaml` file in the same directory as your `hello.py` file 
 
 ```shell
 flyte create config \
-    --endpoint dns:///<your-union-endpoint> \
-    --org <your-union-org> \
+    --endpoint <your-union-endpoint> \
     --project <default-project> \
     --domain <default-domain>
 ```
@@ -33,17 +32,15 @@ For example, your config file might look like:
 
 ```shell
 flyte create config \
-    --endpoint dns:///demo.hosted.unionai.cloud \
-    --org demo \
+    --endpoint demo.hosted.unionai.cloud \
     --project flytesnacks \
     --domain development
 ```
 
-Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`), as well as an `org` (`<your-union-org>`).
-
+Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`).
 The default project and domain will be used when you deploy your workflows without specifying a project or domain explicitly.
 
-Please reach out to Union support if you're unable to locate values for `<your-union-endpoint>` and `<your-union-org>`.
+A quick way to get your Union endpoint is to go to the UI and copy the first part of the URL.
 
 
 ## Hello world
@@ -53,15 +50,6 @@ We'll start with a "Hello world" example.
 Create a file called `hello.py` with the following content:
 
 {{< code file="/external/migrate-to-unionai-examples-flyte2/getting_started.py" lang="python" >}}
-
-This script defines three asynchronous functions: `say_hello`, `square`, and `hello_wf`.
-The `hello_wf` is the top-level "workflow" function that orchestrates the execution of the other two functions.
-
-We have instrumented this code to run remotely in a Flyte or Union instance:
-* Import the `flyte` package,
-* Create a `TaskEnvironment`.
-* Decorate functions with `@env.task`.
-* Add logic below the main guard to initialize and run the workflow using the Flyte SDK.
 
 ## Running remotely
 
@@ -74,19 +62,15 @@ python hello.py
 You can also run using the CLI:
 
 ```shell
-flyte run hello.py hello_wf --data "hello world"
+flyte run hello.py main
 ```
 
 You should see an output like this:
 
 ```shell
-(unionv2) johnvotta@JV---Work unionv2 % python hello.py                         
-Files to be copied for fast registration...
-📂 /Users/johnvotta/code/unionv2 (detected source root)
-┗━━ hello.py
-[flyte] Code bundle created at /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpighost5t/fast1891d8b2749d0bb45bbe938d8221fef6.tar.gz, size: 0.009765625 MB, archive size: 0.0005626678466796875 MB
-62ml7tgbdcb6llmbbb8l
-https://demo.hosted.unionai.cloud/v2/runs/project/flytesnacks/domain/development/62ml7tgbdcb6llmbbb8l
+(unionv2) johnvotta@JV---Work unionv2 % python hello.py
+cg9s54pksbjsdxlz2gmc
+https://playground.canary.unionai.cloud/v2/runs/project/flytesnacks/domain/development/cg9s54pksbjsdxlz2gmc
 Run 'a0' completed successfully.
 ```
 
