@@ -45,7 +45,7 @@ The {{< key product_name >}} platform empowers AI development teams to rapidly s
 {{< /variant >}}
 
 {{< grid >}}
-{{< link-card target="about-flyte-2" icon="lightbulb" title="About Flyte 2" >}}
+{{< link-card target="flyte-v2-sdk" icon="lightbulb" title="About Flyte 2" >}}
 Flyte 2 provides a new and powerful way author and run workflows and apps on your Flyte OSS or Union cluster.
 {{< /link-card >}}
 
@@ -53,7 +53,7 @@ Flyte 2 provides a new and powerful way author and run workflows and apps on you
 Build your first Flyte workflow
 {{< /link-card >}}
 
-{{< link-card target="task-environment" icon="thermometer-sun" title="Task environment" >}}
+{{< link-card target="task-environments" icon="thermometer-sun" title="Task environments" >}}
 Task environments define the resources and dependencies for your tasks.
 {{< /link-card >}}
 
@@ -69,7 +69,7 @@ Dynamically adjust your settings and retry when you run out of memory, or other 
 Pass files and directories between tasks without worrying about transferring data from one container to the next.
 {{< /link-card >}}
 
-{{< link-card target="dataclasses" icon="clipboard-data" title="Dataclasses" >}}
+{{< link-card target="dataclasses-and-structures" icon="clipboard-data" title="Dataclasses" >}}
 Work with Python dataclasses to define your data types.
 {{< /link-card >}}
 

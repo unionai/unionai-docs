@@ -47,7 +47,7 @@ You must ensure that:
 * You have successfully ran `docker login` to that registry from your local machine (Github uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
 * Your Flyte/Union installation has read access to that registry.
 
-Note that if using `ghcr.io`, you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image. Note that public images are on the public internet and should only be used for testing purposes. Do not place proprietary code in public images.
+Note that if using GitHub Packages (i.e. `ghcr.io`), you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image. Note that public images are on the public internet and should only be used for testing purposes. Do not place proprietary code in public images.
 
 ## Image pulling
 

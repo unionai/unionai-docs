@@ -1,10 +1,10 @@
 ---
-title: Flyte v2 SDK Introduction
+title: Flyte v2 SDK
 weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Flyte v2 SDK Introduction
+# Flyte v2 SDK
 
 The Flyte v2 SDK is the new toolkit for authoring workflows in Union and Flyte v2.
 
