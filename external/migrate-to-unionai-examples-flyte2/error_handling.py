@@ -1,16 +1,14 @@
-# error_handling.py
-
 import asyncio
 
 import flyte
 import flyte.errors
 
-env = flyte.TaskEnvironment(name="failure_handling", resources=flyte.Resources(cpu=1, memory="250Mi"))
+env = flyte.TaskEnvironment(name="fail", resources=flyte.Resources(cpu=1, memory="250Mi"))
 
 
 @env.task
 async def oomer(x: int):
-    large_list = [0] * 100000000 * x  # This will cause an OOM error if x is too large
+    large_list = [0] * 100000000
     print(len(large_list))
 
 
@@ -21,9 +19,9 @@ async def always_succeeds() -> int:
 
 
 @env.task
-async def error_handling() -> int:
+async def failure_recovery() -> int:
     try:
-        await oomer(1000)  # This is likely to cause an OOM error
+        await oomer(2)
     except flyte.errors.OOMError as e:
         print(f"Failed with oom trying with more resources: {e}, of type {type(e)}, {e.code}")
         try:
@@ -33,12 +31,13 @@ async def error_handling() -> int:
             raise e
     finally:
         await always_succeeds()
+
     return await always_succeeds()
 
 
 if __name__ == "__main__":
-    flyte.init_from_config("./config.yaml")
-    run = flyte.run(error_handling)
-    print(run.name)
+    flyte.init_from_config("config.yaml")
+
+    run = flyte.run(failure_recovery)
     print(run.url)
     run.wait(run)

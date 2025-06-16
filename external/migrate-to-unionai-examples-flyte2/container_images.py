@@ -11,6 +11,7 @@ import polars as pl
 
 import flyte
 
+
 env = flyte.TaskEnvironment(
     name="polars_image",
     image=flyte.Image.from_uv_script(
