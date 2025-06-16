@@ -81,4 +81,4 @@ if __name__ == "__main__":
     run.wait(run)
 
     # Run with:
-    # uv run --prerelease=allow examples/ml/rfe.py
+    # uv run --prerelease=allow rfe.py
