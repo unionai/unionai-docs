@@ -10,9 +10,6 @@ sidebar_expanded: false
 {{< key product_name >}} lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
 using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne).
 
-> [!WARNING]
-> Serving on {{< key product_name >}} is an experimental feature. The API is subject to change.
-
 ## Example app
 
 We will start with a simple Streamlit app (other frameworks are available).

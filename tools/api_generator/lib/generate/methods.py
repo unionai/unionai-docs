@@ -44,13 +44,13 @@ def generate_method_decl(
                 output.write(f"    {param['name']}")
                 if "type" in param and param["type"]:
                     output.write(
-                        f": {format_type(param["name"], param['type'], code=True)}"
+                        f": {format_type(param['name'], param['type'], code=True)}"
                     )
                 output.write(",\n")
 
             if not is_class and method["return_type"] and method["return_type"] != "None":
                 output.write(
-                    f") -> {format_type(None, method["return_type"], markdown=False)}\n"
+                    f") -> {format_type(None, method['return_type'], markdown=False)}\n"
                 )
             else:
                 output.write(")\n")

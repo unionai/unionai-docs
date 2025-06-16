@@ -8,7 +8,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 The {{< key product_name >}} architecture consists of two components, referred to as planes — the control plane and the data plane.
 
-![](/_static/images/user-guide/platform-architecture/union-architecture.png)
+![](/_static/images/deployment/architecture.svg)
 
 ## Control plane
 
