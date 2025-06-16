@@ -3,7 +3,7 @@ import inspect
 import sys
 from types import ModuleType
 from typing import Any, Dict, List, Optional
-from enum import EnumType
+from enum import Enum
 
 import yaml
 
@@ -15,7 +15,7 @@ from lib.parser.methods import parse_method, parse_property, parse_variable
 
 def isclass(member: Any) -> bool:
     memberClass = getattr(member, "__class__", None)
-    return inspect.isclass(member) and (memberClass is None or memberClass != EnumType)
+    return inspect.isclass(member) and (memberClass is None or memberClass != Enum)
 
 def get_classes(source: PackageInfo, package: ModuleType) -> Dict[str, ClassDetails]:
     # Skip if any private packages
