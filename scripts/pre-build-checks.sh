@@ -1,26 +1,29 @@
 #!/bin/bash
 
-declare homepage
-homepage=$(grep ^homepage ./themes/union/theme.toml \
-               | cut -d= -f2 | tr -d '"' | tr -d " ")
-readonly homepage
+check_mentions_docs() {
+  local -r homepage=$1
 
-declare mentions_doc
-mentions_doc=$(grep -r "${homepage}" content | grep -vi binary \
-                   | cut -d: -f1 | sort | uniq)
-readonly mentions_doc
+  declare mentions_doc
+  mentions_doc=$(grep -r "${homepage}" content \
+                     | grep -vi binary \
+                     | grep -v content/community/contributing-docs/redirects.md \
+                     | cut -d: -f1 | sort | uniq)
+  readonly mentions_doc
 
-if [[ ! -z $mentions_doc ]]; then
-  cat <<EOF
+  if [[ ! -z $mentions_doc ]]; then
+    cat <<EOF
 FATAL: The following files contain an absolute external URL pointing to the docs pages.
-       Make it a relative instead:
+       (mentions: ${homepage})
+
+Make them relative instead:
 
 $(for file in $mentions_doc; do echo "  - $file"; done)
 
 EOF
 
-  exit 1
-fi
+    exit 1
+  fi
+}
 
 declare mentions_docs_home
 mentions_docs_home=$(grep -r "(/docs/" content | grep -vi binary \
@@ -38,3 +41,7 @@ EOF
 
   exit 1
 fi
+
+check_mentions_docs "https://docs.union.ai"
+check_mentions_docs "https://union.ai/docs"
+check_mentions_docs "https://www.union.ai/docs"
