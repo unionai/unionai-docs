@@ -11,3 +11,5 @@ To run many tasks concurrently, you simply use the `asyncio.gather()` function.
 Here is an example:
 
 {{< code file="/external/migrate-to-unionai-examples-flyte2/scaling.py" lang="python" >}}
+
+Note that we are using the `flyte.group` context manager which allows you to group actions together in the UI.
