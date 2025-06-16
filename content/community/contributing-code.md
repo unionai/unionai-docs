@@ -74,9 +74,9 @@ For feedback at any point in the contribution process, feel free to reach out to
 To understand how the below components interact with each other, refer to [Understand the lifecycle of a workflow](#workflow-lifecycle).
 
 > [!NOTE]
-> With the exception of `flytekit`, the below components are maintained in the [flyte monorepo](https://github.com/flyteorg/flyte).
+> Except for `flytekit`, the below components are maintained in the [`flyte` monorepo](https://github.com/flyteorg/flyte).
 
-![Dependency graph between various flyteorg repos](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/contribution_guide/dependency_graph.png)
+![Dependency graph between various flyteorg repos](../_static/images/community/contributing-code/dependency-graph.png)
 
 ### `flyte`
 
@@ -575,8 +575,7 @@ psql -h localhost -p 30001 -U postgres -d flyte
 
 **4. Access the k3s dashboard.**
 
-Access the k3s dashboard at:
-<http://localhost:30080/kubernetes-dashboard>.
+Access the k3s dashboard at [http://localhost:30080/kubernetes-dashboard](http://localhost:30080/kubernetes-dashboard).
 
 **5. Access the endpoints.**
 

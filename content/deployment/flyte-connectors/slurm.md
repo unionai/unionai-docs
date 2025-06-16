@@ -171,11 +171,11 @@ The Slurm connector has 3 core methods:
 2. `get`: Query job status using `scontrol`
 3. `delete`: Cancel job using `scancel`
 
-![Basic architecture](https://github.com/flyteorg/static-resources/blob/main/flytekit/plugins/slurm/basic_arch.png?raw=true)
+![Basic architecture](../../_static/images/deployment/flyte-connectors/slurm/basic-architecture.png)
 
 For Python function tasks:
 
-![Function task](https://github.com/flyteorg/static-resources/blob/main/flytekit/plugins/slurm/slurm_function_task.png?raw=true)
+![Function task](../../_static/images/deployment/flyte-connectors/slurm/slurm-function-task.png)
 
 ### Set up a local test environment
 

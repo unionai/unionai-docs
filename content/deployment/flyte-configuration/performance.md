@@ -6,10 +6,9 @@ variants: +flyte -serverless -byoc -selfmanaged
 
 # Optimizing Performance
 
-Before getting started, it is always important to measure the performance. Consider using the Grafana dashboard templates as described in the [monitoring section](https://www.union.ai/docs/flytedeployment/flyte-configuration/monitoring/).
+Before getting started, it is always important to measure the performance. Consider using the Grafana dashboard templates as described in the [monitoring section](./monitoring).
 
 ## Introduction
-
 
 There are some base design attributes and assumptions that FlytePropeller applies:
 
@@ -22,9 +21,9 @@ In the following sections you will learn how Flyte ensures the correct and relia
 ## Summarized steps of a workflow execution
 
 Let's revisit the lifecycle of a workflow execution.
-The following diagram aims to summarize the process described in the [FlytePropeller Architecture](https://www.union.ai/docs/flyte/architecture/component-architecture/flytepropeller_architecture/) and [execution timeline](https://www.union.ai/docs/flyte/architecture/workflow-timeline/) sections, focusing on the main steps.
+The following diagram aims to summarize the process described in the [FlytePropeller Architecture](../../architecture/component-architecture/flytepropeller_architecture) and [execution timeline](../../architecture/workflow-timeline) sections, focusing on the main steps.
 
-![](/_static/images/deployment/propeller-perf-lifecycle-01.png)
+![](../../_static/images/deployment/propeller-perf-lifecycle-01.png)
 
 The ``Worker`` is the independent, lightweight, and idempotent process that interacts with all the components in the Propeller controller to drive executions.
 It's implemented as a ``goroutine``, and illustrated here as a hard-working gopher which:
@@ -43,10 +42,10 @@ Optimizing ``round_latency`` is one of the main goals of the recommendations pro
 
 ### 1. Workers, the WorkQueue, and the evaluation loop
 
-| Property           | Description                                                                                                                                                                                                                                                                                                                                 | Relevant metric                                | Impact on performance                                                                                                                                                                                                                      | Configuration parameter                          |
-|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| `workers`          | Number of processes that can work concurrently. Also implies number of workflows that can be executed in parallel. Since FlytePropeller uses `goroutines`, it can accommodate significantly more processes than the number of physical cores.                                                                                          | `flyte:propeller:all:free_workers_count`      | A low number may result in higher overall latency for each workflow evaluation loop, while a higher number implies that more workflows can be evaluated in parallel, reducing latency. The number of workers depends on the number of CPU cores assigned to the FlytePropeller pod, and should be evaluated against the cost of context switching. A number around 500 - 800 workers with 4-8 CPU cores is usually adequate. | `propeller.workers` Default value: `20`.  |
-| Workqueue depth    | Current number of workflow IDs in the queue awaiting processing                                                                                                                                                                                                                                                                        | `sum(rate(flyte:propeller:all:main_depth[5m]))` | A growing trend indicates the processing queue depth is long and is taking longer to drain, delaying start time for executions.                                                                                                            | `propeller.queue.capacity`. Default value: `10000` |
+| Property | Description | Relevant metric | Impact on performance | Configuration parameter |
+|----------|-------------|-----------------|-----------------------|-------------------------|
+| `workers`| Number of processes that can work concurrently. Also implies number of workflows that can be executed in parallel. Since FlytePropeller uses `goroutines`, it can accommodate significantly more processes than the number of physical cores. | `flyte:propeller:all:free_workers_count` | A low number may result in higher overall latency for each workflow evaluation loop, while a higher number implies that more workflows can be evaluated in parallel, reducing latency. The number of workers depends on the number of CPU cores assigned to the FlytePropeller pod, and should be evaluated against the cost of context switching. A number around 500 - 800 workers with 4-8 CPU cores is usually adequate. | `propeller.workers` Default value: `20`. |
+| Workqueue depth | Current number of workflow IDs in the queue awaiting processing | `sum(rate(flyte:propeller:all:main_depth[5m]))` | A growing trend indicates the processing queue depth is long and is taking longer to drain, delaying start time for executions. | `propeller.queue.capacity`. Default value: `10000` |
 
 ### 2. Querying observed state
 
@@ -87,7 +86,7 @@ While it's possible to easily monitor Kube API saturation using system-level met
 
 **How `ResourceVersionCache` works?**
 
-![](/_static/images/deployment/resourceversion-01.png)
+![](../../_static/images/deployment/resourceversion-01.png)
 
 Kubernetes stores the definition and state of all the resources under its management on ``etcd``: a fast, distributed and consistent key-value store.
 Every resource has a ``resourceVersion`` field representing the version of that resource as stored in ``etcd``.

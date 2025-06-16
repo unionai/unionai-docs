@@ -31,7 +31,7 @@ def gpu_available() -> bool:
 ```
 ### How it works
 
-![](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/deployment/gpus/generic_gpu_access.png)
+![Generic GPU access](../../_static/images/deployment/flyte-configuration/configuring-access-to-gpus/generic-gpu-access.png)
 
 When this task is evaluated, `flytepropeller` injects a [toleration](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) in the pod spec:
 

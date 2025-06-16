@@ -26,7 +26,7 @@ If you've installed Flyte using the
 [flyte-core helm chart](https://github.com/flyteorg/flyte/tree/master/charts/flyte-core), please ensure:
 
 - You have the correct kubeconfig and have selected the correct Kubernetes context.
-- You have configured the correct flytectl settings in `~/.flyte/config.yaml`.
+- You have configured the correct `flytectl` settings in `~/.flyte/config.yaml`.
 
 > [!NOTE]
 > Add the Flyte chart repo to Helm if you're installing via the Helm charts.
@@ -41,16 +41,16 @@ To set up your Databricks account, follow these steps:
 
 1. Create a [Databricks account](https://www.databricks.com/).
 
-   ![A screenshot of Databricks workspace creation.](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/deployment/plugins/databricks/databricks_workspace.png)
+   ![A screenshot of Databricks workspace creation.](../../_static/images/deployment/flyte-connectors/databricks/databricks-workspace.png)
 
 2. Ensure that you have a Databricks workspace up and running.
 
-   ![A screenshot of Databricks workspace.](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/deployment/plugins/databricks/open_workspace.png)
+   ![A screenshot of Databricks workspace.](../../_static/images/deployment/flyte-connectors/databricks/open-workspace.png)
 
 3. Generate a [personal access token](https://docs.databricks.com/dev-tools/auth.html#databricks-personal-ACCESS_TOKEN-authentication) to be used in the Flyte configuration.
    You can find the personal access token in the user settings within the workspace. **User settings** -> **Developer** -> **Access tokens**
 
-   ![A screenshot of access token.](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/deployment/plugins/databricks/databricks_access_token.png)
+   ![A screenshot of access token.](../../_static/images/deployment/flyte-connectors/databricks/databricks-access-token.png)
 
 4. Enable custom containers on your Databricks cluster before you trigger the workflow.
 
@@ -80,7 +80,7 @@ For more detail, check [custom containers](https://docs.databricks.com/administr
 
 In the role summary, copy the Role ARN.
 
-   ![A screenshot of s3 arn.](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/deployment/plugins/databricks/s3_arn.png)
+   ![A screenshot of s3 ARN.](../../_static/images/deployment/flyte-connectors/databricks/s3-arn.png)
 
 ### Locate the IAM role that created the Databricks deployment
 

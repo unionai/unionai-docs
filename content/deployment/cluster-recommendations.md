@@ -165,4 +165,4 @@ By default, the Union installation request the following resources:
 | Requests  |  14 | 27.1  |
 | Limits  | 17  |  32 |
 
-For GPU access, Union injects tolerations and label selectors to execution Pods. [Learn](https://www.union.ai/docs/flyte/deployment/flyte-configuration/configuring-access-to-gpus/) more and validate your AKS nodes have matching labels and/or taints.
+For GPU access, Union injects tolerations and label selectors to execution Pods. [Learn](./flyte-configuration/configuring-access-to-gpus) more and validate your AKS nodes have matching labels and/or taints.

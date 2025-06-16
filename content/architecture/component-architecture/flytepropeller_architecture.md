@@ -20,17 +20,17 @@ A Flyte [workflow](../../user-guide/core-concepts/workflows/standard-workflows) 
 
 FlytePropeller is responsible for scheduling and tracking execution of Flyte workflows. It is implemented using a K8s controller that follows the reconciler pattern.
 
-![Reconciler Pattern](https://raw.githubusercontent.com/flyteorg/static-resources/main/common/reconciler-pattern.png)
+![Reconciler Pattern](../../_static/images/architecture/component-architecture/flytepropeller-architecture/reconciler-pattern.png)
 
 In this scheme, resources are periodically evaluated and the goal is to transition from the observed state to a requested state.
 
 In our case, workflows are the resources, whose desired state (*workflow definition*) is expressed using Flyte's SDK. Workflows are iteratively evaluated to transition from the current state to success. During each evaluation loop, the current workflow state is established as the [phase of workflow nodes](../../api-reference/flyteidl#flyteidlcoreworkflowproto) and subsequent tasks, and FlytePropeller performs operations to transition this state to success. The operations may include scheduling (or rescheduling) node executions, evaluating dynamic or branch nodes, etc.
 
-By using a simple yet robust mechanism, FlytePropeller can scale to manage a large number of concurrent workflows without significant performance degradation.
+By using a simple yet robust mechanism, FlytePropeller can scale to manage many concurrent workflows without significant performance degradation.
 
 This document attempts to break down the FlytePropeller architecture by tracking the workflow life cycle through each internal component. Below is a high-level illustration of the FlytePropeller architecture and a flow chart of each component's responsibilities during FlyteWorkflow execution.
 
-![FlytePropeller Architecture](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/concepts/architecture/flytepropeller_architecture.png)
+![FlytePropeller Architecture](../../_static/images/architecture/component-architecture/flytepropeller-architecture/flytepropeller-architecture.png)
 
 ## Components
 
@@ -42,8 +42,7 @@ FlyteAdmin is the common entry point, where initialization of FlyteWorkflow Cust
 
 Workflows in Flyte are maintained as [Custom Resource Definitions (CRDs)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) in Kubernetes, which are stored in the backing `etcd` key-value store. Each workflow execution results in the creation of a new `flyteworkflow` CR (Custom Resource) which maintains its state for the duration of the execution. CRDs provide variable definitions to describe both resource specifications (`spec`) and status (`status`). The `flyteworkflow` CRD uses the `spec` subsection to detail the workflow DAG, embodying node dependencies, etc.
 
-<!-- TODO: Fix link when target availalable -->
-1. Execute an [example workflow](https://union.ai/docs/flyte/tutorials/) on a remote Flyte cluster:
+1. Execute an [example workflow](../../tutorials) on a remote Flyte cluster:
 
    ```shell
    $ pyflyte run --remote example.py training_workflow --hyperparameters '{"C": 0.4}'
@@ -153,8 +152,7 @@ The NodeExecutor is executed on a single node, beginning with the workflow's sta
 
 There are many configurable parameters to tune evaluation criteria including max parallelism which restricts the number of nodes which may be scheduled concurrently. Additionally, nodes may be retried to ensure recoverability on failure.
 
-<!-- TODO: Fix link when target availalable -->
-Go to the [Optimizing Performance](https://union.ai/docs/flyte/deployment/) section for more information on how to tune Propeller parameters.
+Go to the [Optimizing Performance](../../deployment) section for more information on how to tune Propeller parameters.
 
 The NodeExecutor is also responsible for linking data readers/writers to facilitate data transfer between node executions. The data transfer process occurs automatically within Flyte, using efficient K8s events rather than a polling listener pattern which incurs more overhead. Relatively small amounts of data may be passed between nodes inline, but it is more common to pass data URLs to backing storage. A component of this is writing to and checking the data cache, which facilitates the reuse of previously completed evaluations.
 
@@ -182,5 +180,4 @@ It should be noted that the WorkflowExecutor, NodeExecutor, and TaskHandlers sen
 
 Every operation that Propeller performs makes use of a plugin. The following diagram describes the different types of plugins available for Propeller and an example operation when using the Spark integration:
 
-![FlytePropeller Plugins Architecture](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/concepts/architecture/flytepropeller_plugins_architecture.png)
-
+![FlytePropeller Plugins Architecture](../../_static/images/architecture/component-architecture/flytepropeller-architecture/flytepropeller-plugins-architecture.png)

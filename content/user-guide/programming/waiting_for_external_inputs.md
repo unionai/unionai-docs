@@ -93,7 +93,6 @@ import typing
 from flytekit import wait_for_input
 
 
-
 @{{< key kit_as >}}.task
 def create_report(data: typing.List[float]) -> dict:  # o0
     """A toy report task."""
@@ -236,13 +235,13 @@ there are two ways of using `wait_for_input` and `approve` nodes:
 If you launch the `reporting_wf` workflow on the Flyte UI, you'll see a
 **Graph** view of the workflow execution like this:
 
-![reporting workflow wait for input graph](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/wait_for_input_graph.png)
+![Reporting workflow wait for input graph](../../_static/images/user-guide/programming/waiting-for-external-inputs/wait-for-input-graph.png)
 
 Clicking on the play-circle icon of the `title` task node or the
 **Resume** button on the sidebar will create a modal form that you can use to
 provide the custom title input.
 
-![reporting workflow wait for input form](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/wait_for_input_form.png)
+![Reporting workflow wait for input form](../../_static/images/user-guide/programming/waiting-for-external-inputs/wait-for-input-form.png)
 
 ### Using `FlyteRemote`
 

@@ -5,6 +5,11 @@ variants: -flyte -serverless -byoc -selfmanaged
 
 # Shortcode Examples {.docs-builder .shortcodes}
 
+## Docs Home
+
+- Site root: {{< docs_home root >}}
+- Variant (flyte): {{< docs_home flyte >}}
+
 ## Icon
 
 > &#123;&#123;&lt; icon "book" &gt;&#125;&#125;

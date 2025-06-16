@@ -14,7 +14,7 @@ jobs:
           fetch-depth: 0  # Fetch all history for proper git operations
 
       - name: Run Jupyter notebook validation
-        run: ./tools/jupyter_generator/check_jupyter.sh
+        run: make check-jupyter
 
       - name: Report status
         if: ${{ failure() }}

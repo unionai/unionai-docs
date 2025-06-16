@@ -15,6 +15,7 @@ title = 'Union.ai Docs'
 [params]
 _merge = "deep"
 signup_link = "https://www.union.ai/pricing"
+docs_root = "https://www.union.ai/docs"
 
 custom_css = [
   "404.css",
