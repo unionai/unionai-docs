@@ -106,20 +106,17 @@ This task requests 1 CPU and 1 gibibyte of memory. It sets a limit of 10 CPUs an
 
 If a task requesting the above resources (1 CPU and 1Gi) is executed in a project (for example **cluster-observability**) and domain (for example, **development**) with 10 CPU and 10Gi of quota for CPU and memory respectively, the dashboard will show that 10% of both memory and CPU quotas have been consumed.
 
-(Resource Quotas 10%)(../../_static/images/user-guide/administration/resources/resources-resource-quotas-10.png)
+<!-- TODO: Add screenshot
+[Resource Quotas 10%](../../_static/images/user-guide/administration/resources/resources-resource-quotas-10.png)
+-->
 
 Likewise, if a task requesting 10 CPU and 10 Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
 
-(Resource Quotas 100%)(../../_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
-
+<!-- TODO: Add screenshot
+[Resource Quotas 100%](../../_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
 -->
 
 Likewise, if a task requesting 10 CPU and 10Gi of memory is executed, the dashboard will show that 100% of both memory and CPU quotas have been consumed.
-
-<!-- TODO add back when screenshot available
-![Resource Quotas 100%](/_static/images/user-guide/administration/resources/resources-resource-quotas-100.png)
--->
-
 
 ### Quota Consumption
 
@@ -161,7 +158,6 @@ In the screenshot above, there is a `t3a.xlarge` with `3670m` (3670 millicores) 
       limits=Resources(cpu="3670m", mem="1Gi"))
 ```
 
-
 In the absence of confounding factors (for example, other workloads fully utilizing all `t3a.xlarge` instances), this task will spin up a `t3a.xlarge` instance and run the execution on it, taking all available allocatable CPU resources.
 
 Conversely, if a user requests the following:
@@ -170,7 +166,6 @@ Conversely, if a user requests the following:
 @{{< key kit_as >}}.task(requests=Resources(cpu="4000m", mem="1Gi"),
       limits=Resources(cpu="4000m", mem="1Gi"))
 ```
-
 
 The workload will schedule on a larger instance (like the `c5.4xlarge`) because `4000m` exceeds the allocatable CPU on the `t3a.xlarge`, despite the fact that this instance type is [marketed](https://instances.vantage.sh/aws/ec2/t3a.xlarge) as having 4 CPU cores. The discrepancy is due to overheads and holdbacks introduced by Kubernetes to ensure adequate resources to schedule pods on the node.
 

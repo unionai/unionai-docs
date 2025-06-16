@@ -14,7 +14,7 @@ In the [Execution view](../workflows/viewing-workflow-executions), selecting a t
 
 Within that panel, in the **Execution** tab,  you will find the stack trace associated with that node:
 
-![Task logs link](/_static/images/user-guide/core-concepts/tasks/viewing-logs/viewing_logs_flyte.png)
+![Task logs link](../../../_static/images/user-guide/core-concepts/tasks/viewing-logs/viewing_logs_flyte.png)
 
 Also, if you configure the Kubernetes dashboard, the Flyte console will display a link to the specific Pod logs.
 

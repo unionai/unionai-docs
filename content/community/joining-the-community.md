@@ -9,10 +9,10 @@ variants: +flyte -serverless -byoc -selfmanaged
 Keeping the lines of communication open is important in growing and maintain the Flyte community.
 Please join us on:
 
-[![Flyte Slack](https://img.shields.io/badge/Slack-Chat-pink?style=for-the-badge)](https://slack.flyte.org)
-[![Github Discussion](https://img.shields.io/badge/Github-Discussion-green?style=for-the-badge)](https://github.com/flyteorg/flyte/discussions)
-[![Twitter](https://img.shields.io/badge/Twitter-Social-blue?style=for-the-badge)](https://twitter.com/flyteorg)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Social-lightblue?style=for-the-badge)](https://www.linkedin.com/groups/13962256)
+[![Flyte Slack](../_static/images/community/joining-the-community/slack-chat-pink.svg)](https://slack.flyte.org)
+[![GitHub Discussion](../_static/images/community/joining-the-community/github-discussion-badge.svg)](https://github.com/flyteorg/flyte/discussions)
+[![Twitter](../_static/images/community/joining-the-community/twitter-social-blue.svg)](https://twitter.com/flyteorg)
+[![LinkedIn](../_static/images/community/joining-the-community/linkedin-social-lightblue.svg)](https://www.linkedin.com/groups/13962256)
 
 ## Community sync
 

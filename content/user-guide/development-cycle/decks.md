@@ -9,7 +9,6 @@ variants: +flyte +serverless +byoc +selfmanaged
 Decks lets you display customized data visualizations from within your task code.
 Decks are rendered as HTML and appear right in the {{< key product_name >}} UI when you run your workflow.
 
-
 > [!NOTE]
 > Decks is an opt-in feature; to enable it, set `enable_deck` to `True` in the task parameters.
 
@@ -107,11 +106,11 @@ The following is the expected output containing the path to the `deck.html` file
 {"asctime": "2023-07-11 13:16:04,558", "name": "flytekit", "levelname": "INFO", "message": "pca_plot task creates flyte deck html to file:///var/folders/6f/xcgm46ds59j7g__gfxmkgdf80000gn/T/flyte-0_8qfjdd/sandbox/local_flytekit/c085853af5a175edb17b11cd338cbd61/deck.html"}
 ```
 
-![Union deck plot](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_deck_plot_local.webp)
+![Union deck plot](../../_static/images/user-guide/development-cycle/decks/flyte-deck-plot-local.webp)
 
 Once you execute this task on the {{< key product_name >}} instance, you can access the deck by going to the task view and clicking the _Deck_ button:
 
-![Union deck button](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_deck_button.png)
+![Union deck button](../../_static/images/user-guide/development-cycle/decks/flyte-deck-button.png)
 
 ## Deck tabs
 
@@ -143,7 +142,7 @@ def frame_renderer() -> None:
     {{< key kit_as >}}.Deck("Frame Renderer", FrameProfilingRenderer().to_html(df=df))
 ```
 
-![Frame renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_frame_renderer.png)
+![Frame renderer](../../_static/images/user-guide/development-cycle/decks/flyte-decks-frame-renderer.png)
 
 ### Top-frame renderer
 
@@ -160,7 +159,7 @@ def top_frame_renderer() -> Annotated[pd.DataFrame, TopFrameRenderer(1)]:
     return pd.DataFrame(data={"col1": [1, 2], "col2": [3, 4]})
 ```
 
-![Top frame renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_top_frame_renderer.png)
+![Top frame renderer](../../_static/images/user-guide/development-cycle/decks/flyte-decks-top-frame-renderer.png)
 
 ### Markdown renderer
 
@@ -178,7 +177,7 @@ def markdown_renderer() -> None:
     )
 ```
 
-![Markdown renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_markdown_renderer.png)
+![Markdown renderer](../../_static/images/user-guide/development-cycle/decks/flyte-decks-markdown-renderer.png)
 
 ### Box renderer
 
@@ -201,7 +200,7 @@ def box_renderer() -> None:
     {{< key kit_as >}}.Deck("Box Plot", BoxRenderer("sepal_length").to_html(iris_df))
 ```
 
-![Box renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_box_renderer.png)
+![Box renderer](../../_static/images/user-guide/development-cycle/decks/flyte-decks-box-renderer.png)
 
 ### Image renderer
 
@@ -223,7 +222,7 @@ def image_renderer_wf(image: {{< key kit_as >}}.FlyteFile = "https://bit.ly/3KZ9
     image_renderer(image=image)
 ```
 
-![Image renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_image_renderer.png)
+![Image renderer](../../_static/images/user-guide/development-cycle/decks/flyte-decks-image-renderer.png)
 
 #### Table renderer
 
@@ -242,7 +241,7 @@ def table_renderer() -> None:
     )
 ```
 
-![Table renderer](https://raw.githubusercontent.com/flyteorg/static-resources/main/flytesnacks/user_guide/flyte_decks_table_renderer.png)
+![Table renderer](../../_static/images/user-guide/development-cycle/decks/flyte-decks-table-renderer.png)
 
 
 {{< variant flyte >}}
@@ -260,9 +259,9 @@ Feel encouraged to open a pull request and play a part in enhancing the Flyte de
 
 ### Custom renderers
 
-YOU can also create your own cusome renderer.
-A renderer is essentially a class with a to_html method.
-Here we create custom renderer that summarizes the data from a Pandas DataFRame instead of showing raw values.
+You can also create your own custom renderer.
+A renderer is essentially a class with a `to_html` method.
+Here we create custom renderer that summarizes the data from a Pandas `DataFrame` instead of showing raw values.
 
 ```python
 class DataFrameSummaryRenderer:
@@ -272,7 +271,7 @@ class DataFrameSummaryRenderer:
         return df.describe().to_html()
 ```
 
-Then we can use the Annotated type to override the default renderer of the pandas.DataFrame type:
+Then we can use the Annotated type to override the default renderer of the `pandas.DataFrame` type:
 
 ```python
 try:
@@ -311,10 +310,12 @@ def t_deck():
     {{< key kit_as >}}.Deck.publish()
 ```
 
-This will create a live deck that where you can click the refresh button and see the Deck update until the task succeeds.
+This will create a live deck that where you can click the refresh button and see the deck update until the task succeeds.
 
 ### Union Deck Succeed Video
+
 {{< youtube LJaBP0mdFeE >}}
 
 ### Union Deck Fail Video
+
 {{< youtube xaBF6Jlzjq0 >}}

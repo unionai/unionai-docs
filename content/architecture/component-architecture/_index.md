@@ -34,7 +34,7 @@ Flyte components are separated into 3 logical planes. The planes are summarized 
 |                     | launching tasks on a cluster of machines as necessary based on the workflow graph.                         |
 |                     | It sends status events back to the control plane so the information can be stored and surfaced to end-users.|
 
-![Flyte Logical Architecture](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/concepts/architecture/flyte-logical-architecture.png)
+![Flyte Logical Architecture](../../_static/images/architecture/component-architecture/flyte-logical-architecture.png)
 
 ### User Plane
 

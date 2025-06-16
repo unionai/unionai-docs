@@ -20,7 +20,7 @@ A Flyte [workflow](../../user-guide/core-concepts/workflows/standard-workflows) 
 
 FlytePropeller is responsible for scheduling and tracking execution of Flyte workflows. It is implemented using a K8s controller that follows the reconciler pattern.
 
-![Reconciler Pattern](https://raw.githubusercontent.com/flyteorg/static-resources/main/common/reconciler-pattern.png)
+![Reconciler Pattern](../../_static/images/architecture/component-architecture/flytepropeller-architecture/reconciler-pattern.png)
 
 In this scheme, resources are periodically evaluated and the goal is to transition from the observed state to a requested state.
 
@@ -30,7 +30,7 @@ By using a simple yet robust mechanism, FlytePropeller can scale to manage a lar
 
 This document attempts to break down the FlytePropeller architecture by tracking the workflow life cycle through each internal component. Below is a high-level illustration of the FlytePropeller architecture and a flow chart of each component's responsibilities during FlyteWorkflow execution.
 
-![FlytePropeller Architecture](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/concepts/architecture/flytepropeller_architecture.png)
+![FlytePropeller Architecture](../../_static/images/architecture/component-architecture/flytepropeller-architecture/flytepropeller-architecture.png)
 
 ## Components
 
@@ -182,5 +182,4 @@ It should be noted that the WorkflowExecutor, NodeExecutor, and TaskHandlers sen
 
 Every operation that Propeller performs makes use of a plugin. The following diagram describes the different types of plugins available for Propeller and an example operation when using the Spark integration:
 
-![FlytePropeller Plugins Architecture](https://raw.githubusercontent.com/flyteorg/static-resources/main/flyte/concepts/architecture/flytepropeller_plugins_architecture.png)
-
+![FlytePropeller Plugins Architecture](../../_static/images/architecture/component-architecture/flytepropeller-architecture/flytepropeller-plugins-architecture.png)

@@ -10,7 +10,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 ## Architecture
 
-![Installation](../_static/images/deployment/architecture.png)
+![Installation](../_static/images/deployment/architecture.svg)
 
 ### Control plane
 

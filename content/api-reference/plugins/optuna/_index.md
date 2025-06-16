@@ -42,9 +42,6 @@ metadata:
 
 This documentation provides a guide to a fully parallelized Flyte plugin for Optuna. This wrapper leverages Flyte's scalable and distributed workflow orchestration capabilities to parallelize Optuna's hyperparameter optimization across multiple trials efficiently.
 
-![Timeline](timeline.png)
-
-
 ## Features
 
 - **Ease of Use**: This plugin requires no external data storage or experiment tracking.

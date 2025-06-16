@@ -15,7 +15,7 @@ This section covers the architecture of the {{< key product_name >}} system.
 
 Union’s modular architecture allows for great flexibility and control. The customer can decide how many clusters to have, their shape, and who has access to what. All communication is encrypted.
 
-![Architecture](/_static/images/deployment/architecture.svg)
+![Architecture](../_static/images/deployment/architecture.svg)
 
 ## Control plane
 
