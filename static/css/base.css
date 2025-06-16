@@ -2,6 +2,7 @@
   /* Light theme variables (default) */
   --primary-color: var(--union-color);
   --text-color: #1f2937;
+  --text-color-light: #bfbfbf;
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
   --border-color: #e2e8f0;
@@ -56,6 +57,7 @@
 [data-theme="dark"] {
   --primary-color: var(--union-color);
   --text-color: #cbd1d9;
+  --text-color-light: hsl(214, 0%, 50%);
   --bg-color: #121212;
   --sidebar-bg: #191919;
   --border-color: #282828;
