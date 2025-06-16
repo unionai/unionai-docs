@@ -27,7 +27,7 @@ Along the left side the following sections are available:
     This field is for specifying this setting at the workflow execution level.
     If this field is filled in it overrides any settings at higher levels.
     The parameter is expected to be a URL to a writable resource (for example, `http://s3.amazonaws.com/my-bucket/`).
-    See [Raw data store](https://www.union.ai/docs/byoc/user-guide/data-input-output/task-input-and-output/#raw-data-store).
+    See [Raw data store](../../data-input-output/task-input-and-output#raw-data-store).
   * **Max parallelism**: Number of workflow nodes that can be executed in parallel. If not specified, project/domain defaults are used. If 0 then no limit is applied.
   * **Force interruptible**: A three valued setting for overriding the interruptible setting of the workflow for this particular execution.
     If not set, the workflow's interruptible setting is used.

@@ -16,11 +16,11 @@ Versions and variants are independent of each other, with the version being "abo
 For backward compatibility, the latest version of the content has no URL prefix, while all other versions do have a prefix.
 For example, the URL for the latest version of the current page (the one you are one right now) in the Flyte variant is:
 
-`https://www.union.ai/docs/flyte/community/contributing-docs/platform-overview`
+`{{< docs_home flyte >}}/community/contributing-docs/platform-overview`
 
 while the URL for the `v1.0` version of the same page is:
 
-`https://www.union.ai/docs/v1.0/flyte/community/contributing-docs/platform-overview`
+`{{< docs_home root >}}/v1.0/flyte/community/contributing-docs/platform-overview`
 
 ### Versions are branches
 

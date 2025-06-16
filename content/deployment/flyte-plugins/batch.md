@@ -103,7 +103,7 @@ with distinct attributes and matching logic based on project/domain/workflowName
          - default
 ```
 These settings can also be dynamically altered through ``flytectl`` (or FlyteAdmin API).
-[Learn about how to customize resources](https://www.union.ai/docs/flyte/deployment/flyte-configuration/customizable_resources/).
+[Learn about how to customize resources](../flyte-configuration/customizable_resources).
 
 ### Update FlytePropeller's configuration
 

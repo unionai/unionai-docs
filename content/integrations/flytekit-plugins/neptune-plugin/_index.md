@@ -24,7 +24,7 @@ To run {doc}`Neptune example <neptune_example>` locally:
 1. Neptune Scale is available to select customers. You can access it [here](https://neptune.ai/free-trial).
 2. Create a project on Neptune.
 3. In the example, set `NEPTUNE_PROJECT` to your project name.
-4. Add a secret using [Flyte's Secrets manager](https://www.union.ai/docs/flyte/deployment/flyte-configuration/secrets) with `key="neptune-api-token"` and `group="neptune-api-group"`
+4. Add a secret using [Flyte's Secrets manager](../../../deployment/flyte-configuration/secrets) with `key="neptune-api-token"` and `group="neptune-api-group"`
 5. If you want to see the dynamic log links in the UI, then add the configuration available in the next section.
 
 ## Flyte deployment configuration
