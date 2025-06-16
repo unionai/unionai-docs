@@ -10,7 +10,7 @@ from lib.ptypes import ClassPackageMap, PackageInfo
 from lib.generate.methods import generate_method, generate_method_list
 from lib.generate.properties import generate_props
 
-type PackageTree = Dict[str, List[str]]
+PackageTree = Dict[str, List[str]]
 
 
 def convert_package_list_to_tree(pkgs: List[PackageInfo]) -> PackageTree:
@@ -83,7 +83,7 @@ def generate_package_folders(
         with open(pkg_index, "w") as index:
             write_front_matter(pkg["name"], index)
 
-            index.write(f"# {pkg["name"]}\n\n")
+            index.write(f"# {pkg['name']}\n\n")
 
             doc = pkg["doc"] if "doc" in pkg else ""
             if doc:
