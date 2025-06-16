@@ -225,3 +225,57 @@ Example:
 ```markdown
 [Download {{</* icon download */>}}](/download)
 ```
+
+### `{{</* code */>}}`
+
+Includes a code snippet or file.
+
+Parameters:
+- `file`: The path to the file to include.
+- `fragment`: The name of the fragment to include.
+- `from`: The line number to start including from.
+- `to`: The line number to stop including at.
+- `lang`: The language of the code snippet.
+- `show_fragments`: Whether to show the fragment names in the code block.
+- `highlight`: Whether to highlight the code snippet.
+
+The examples in this section uses this file as base:
+
+{{< code file="/_static/__docs_builder__/sample.py" show_fragments=true lang=python >}}
+Link to [/_static/__docs_builder__/sample.py](/_static/__docs_builder__/sample.py)
+
+#### Including a section of a file: `{{docs-fragment}}`
+
+```markdown
+{{</* code file="/_static/__docs_builder__/sample.py" fragment=entrypoint lang=python */>}}
+```
+
+Effect:
+
+{{< code file="/_static/__docs_builder__/sample.py" fragment=entrypoint lang=python >}}
+
+#### Including a file with a specific line range: `from` and `to`
+
+```markdown
+{{</* code file="/_static/__docs_builder__/sample.py" from=2 to=4 lang=python */>}}
+```
+
+Effect:
+
+{{< code file="/_static/__docs_builder__/sample.py" from=2 to=4 lang=python >}}
+
+#### Including a whole file
+
+Simply specify no filters, just the `file` attribute:
+
+```markdown
+{{</* code file="/_static/__docs_builder__/sample.py" */>}}
+```
+
+> [!NOTE]
+> Note that without `show_fragments=true` the fragment markers will not be shown.
+
+Effect:
+
+{{< code file="/_static/__docs_builder__/sample.py" >}}
+

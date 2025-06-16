@@ -1,0 +1,17 @@
+A.ref {
+    color: unset;
+}
+
+A.ref:hover {
+    color: var(--text-color-light);
+}
+
+A.ref:hover + DIV.ref::after {
+    content: "#";
+    color: var(--text-color-light);
+    margin-left: 0.25em;
+}
+
+A.ref:hover + DIV.ref {
+    display: inline-block;
+}
