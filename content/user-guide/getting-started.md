@@ -37,7 +37,7 @@ flyte create config \
     --domain development
 ```
 
-Note that the v2 configuration includes a default project (`<default-project>`) and domain (`<default-domain>`).
+Note that [the configuration](./configuring-and-running#setting-up-a-configuration-file) includes a default project (`<default-project>`) and domain (`<default-domain>`).
 The default project and domain will be used when you deploy your workflows without specifying a project or domain explicitly.
 
 A quick way to get your Union endpoint is to go to the UI and copy the first part of the URL.
@@ -49,7 +49,7 @@ We'll start with a "Hello world" example.
 
 Create a file called `hello.py` with the following content:
 
-{{< code file="/external/migrate-to-unionai-examples-flyte2/getting_started.py" lang="python" >}}
+{{< code file="/external/migrate-to-unionai-examples-flyte2/hello.py" lang="python" >}}
 
 ## Running remotely
 

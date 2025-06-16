@@ -25,6 +25,7 @@ The SDK introduces several key improvements:
 * Tasks are defined within Environments, which encapsulate the context and resources needed for execution.
 
 ### Improved Remote functionality
-* Run workflows either through the CLI (i.e. `flyte run ...`) or via Remote (i.e. `flyte.run(my_task)`).
+
+* Run workflows either through the CLI (i.e. `flyte run ...`) or programmatically (i.e. `flyte.run(my_task)`).
 * Fetch and run remote (previously-deployed) Tasks within the course of a running workflow.
 * Author, run, and fetch metadata (i.e. I/O and logs) from workflows directly from Jupyter notebooks.

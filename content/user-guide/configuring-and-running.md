@@ -28,21 +28,24 @@ If not specified, the configuration file will be created in the current director
 
 The `--force` flag is used to overwrite the existing configuration file if it already exists.
 
-## Programmatic execution
+## Programmatic initialization and execution
 
-Programmatic execution means running workflows directly from Python code executing on your local machine.
+Programmatic initialization and execution lets you run workflows directly from Python code executing on your local machine.
 
 ### `init_from_config`
 
 You can use the [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config) function to initialize the Flyte SDK with the configuration file you created earlier.
+
+Once `flyte` is initialized, you can run workflows using the `flyte.run` function.
+
 This is the way we do it in the examples in this guide.
 
 For example, in [Getting started](./getting-started) we run our workflow using this main guard in the same file as the workflow definition:
 
-
+{{< code file="/external/migr" language="python" >}}
 ```python
 if __name__ == "__main__":
-    flyte.init_from_config("config.yaml")
+    flyte.init_from_config("./config.yaml")
     run = flyte.run(hello_wf, data="hello world")
     print(run.name)
     print(run.url)
@@ -57,7 +60,7 @@ To run the workflow on Union, you simply execute the workflow definition file in
 $ python hello.py
 ```
 
-You can also execute via the CLI like so:
+Alternatively, you can also execute via the CLI like so:
 
 ```shell
 flyte run hello.py hello_wf --data "hello world"
@@ -65,7 +68,7 @@ flyte run hello.py hello_wf --data "hello world"
 
 ### `init`
 
-You can also initialize the Flyte SDK using the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) function, which allows you to specify the backend endpoint and other parameters directly in your code.
+Using the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) function allows you to specify the backend endpoint and other parameters directly in your code.
 If we wanted to replace the above `init_from_config` with `init`, it would look like this:
 
 ```python
@@ -107,7 +110,7 @@ flyte \
     run \
     --project <project> \
     --domain <domain> \
-    hello.py hello_wf --data "hello world" 
+    hello.py hello_wf --data "hello world"
 ```
 
 This will run the workflow without requiring a configuration file, but you will have to specify all the parameters every time you run the command.
