@@ -76,5 +76,5 @@ Run 'a0' completed successfully.
 
 Click the link to go to your Union instance and see the run in the UI:
 
-![V2 UI](/_static/images/user-guide/v2ui.png)
+![V2 UI](../_static/images/user-guide/v2ui.png)
 

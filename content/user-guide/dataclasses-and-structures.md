@@ -58,7 +58,7 @@ run = flyte.run(predict_one, InferenceRequest(feature_a=1.0, feature_b=2.0))
 print(run.url)
 ```
 
-Keep in mind if you're running from the command line, you can pass in the dataclass using json.
+Keep in mind if you're running from the command line, you can pass in the dataclass using JSON.
 
 ```bash
 flyte --org testorg --endpoint dns:///<endpoint> run -p testproject -d development dataclass_example.py predict_one \
@@ -66,7 +66,7 @@ flyte --org testorg --endpoint dns:///<endpoint> run -p testproject -d developme
 ```
 
 Dataclasses can also be nested within others, as in a list.  Also, Flyte's offloaded types can also be included as fields. Because Flyte
-comes with de/serialization for these types, there's no need to add any transformers to the type engine.
+comes with a serialization/deserialization mechanism for these types, there's no need to add any transformers to the type engine.
 
 This example below runs a set of predictions, writes out to a file, and invokes a subsequent task to read from the file.
 

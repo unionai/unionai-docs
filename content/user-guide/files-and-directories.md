@@ -7,11 +7,11 @@ variants: +flyte +serverless +byoc +selfmanaged
 # Files and directories
 
 Flyte continues to support files and folders and top level type constructs. These are two of the three major offloaded types
-(dataframes of all kinds being the third). Once offloaded, they are persisted on the blob store configured for your Flyte cluster.
+(dataframes of all kinds being the third). Once offloaded, they are persisted in the blob store configured for your Flyte cluster.
 While the SDK will handle the underlying call to the blob store, users are still responsible for invoking the commands.
 Files and folders are no longer uploaded automatically at the end of a task simply by returning them.
 
-The examples below show the basic use-cases of uploading Files and Dirs created locally, and using them as inputs to a task.
+The examples below show the basic use-cases of uploading `File`s and `Dir`s created locally, and using them as inputs to a task.
 
 ```python
 import asyncio
@@ -37,8 +37,8 @@ async def write_file(name: str) -> File:
 
 ```
 
-The upload happens when the `from_local` command is called, which is why it's an async function. The Flyte SDK frequently
-uses this class constructor pattern so you'll see it with other types as well.
+The upload happens when the `from_local` command is called, which is why it's an `async` function.
+The Flyte SDK frequently uses this class constructor pattern, so you will see it with other types as well.
 
 
 This is a slightly more complicated task that calls the task above to produce Files. These files are assembled into a directory

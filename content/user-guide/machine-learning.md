@@ -1,12 +1,12 @@
 ---
-title: Machine learning examples
+title: Machine learning
 weight: 90
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Machine learning examples
+# Machine learning
 
-Flyte v2 is well-equipped to orchestrate parallelized multi-container operations such as hyperparameter optimation, recursive feature elimination, etc. 
+Flyte v2 is well-equipped to orchestrate parallelized multi-container operations such as hyperparameter optimization, recursive feature elimination, etc.
 
 ## Recursive feature elimination example
 
@@ -16,6 +16,6 @@ The below script performs a recursive feature elimination workflow. In each iter
 
 Each group is shown together in the UI to facilitate easy inspection:
 
-![RFE visualization](/_static/images/user-guide/rfe.png)
+![RFE visualization](../_static/images/user-guide/rfe.png)
 
 

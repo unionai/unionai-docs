@@ -45,19 +45,20 @@ The {{< key product_name >}} platform empowers AI development teams to rapidly s
 {{< /variant >}}
 
 {{< grid >}}
-{{< link-card target="flyte-v2-sdk" icon="lightbulb" title="About Flyte 2" >}}
-Flyte 2 provides a new and powerful way author and run workflows and apps on your Flyte OSS or Union cluster.
-{{< /link-card >}}
 
 {{< link-card target="getting-started" icon="123" title="Getting started" >}}
-Build your first Flyte workflow
+Build your first Flyte workflow.
+{{< /link-card >}}
+
+{{< link-card target="flyte-v2-sdk" icon="lightbulb" title="Flyte v2 SDK" >}}
+Flyte v2 provides a new and powerful way author and run workflows and apps on your Flyte OSS or Union cluster.
 {{< /link-card >}}
 
 {{< link-card target="task-environments" icon="thermometer-sun" title="Task environments" >}}
 Task environments define the resources and dependencies for your tasks.
 {{< /link-card >}}
 
-{{< link-card target="container-images" icon="123" title="Container images" >}}
+{{< link-card target="container-images" icon="boxes" title="Container images" >}}
 Each task runs in its own container, and every container needs a container image to define it.
 {{< /link-card >}}
 
@@ -73,20 +74,20 @@ Pass files and directories between tasks without worrying about transferring dat
 Work with Python dataclasses to define your data types.
 {{< /link-card >}}
 
+{{< link-card target="machine-learning" icon="sliders" title="Machine learning" >}}
+Orchestrate machine learning workflows.
+{{< /link-card >}}
+
 {{< link-card target="notebooks" icon="journal-album" title="Notebooks" >}}
 Run your workflows in Jupyter notebooks.
 {{< /link-card >}}
 
 {{< link-card target="scaling" icon="graph-up-arrow" title="Scaling" >}}
-Scale effortlessly using native Python contructs.
+Scale effortlessly using native Python constructs.
 {{< /link-card >}}
 
 {{< link-card target="considerations" icon="cone-striped" title="Considerations" >}}
 Some considerations to keep in mind when working with Flyte.
-{{< /link-card >}}
-
-{{< link-card target="flyte-cli" icon="terminal" title="Flyte CLI" >}}
-Deploy and run workflows both programmatically and via CLI.
 {{< /link-card >}}
 
 {{< /grid >}}

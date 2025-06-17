@@ -1,6 +1,6 @@
 ---
 title: Considerations
-weight: 110
+weight: 120
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -98,7 +98,7 @@ async def t1():
     t2(floats=list_floats)
 ```
 
-The pod running `t1` needs to have memory to handle that 1GB of floats. Those numbers will be materialized in that pod's memory.
+The pod running `t1` needs to have memory to handle that 1 GB of floats. Those numbers will be materialized in that pod's memory.
 This can lead to out of memory issues.
 
 Note that `flyte.io.File` and `flyte.io.Dir` will not suffer from this because while those are materialized, they're only materialized as pointers to offloaded data, so their memory footprint is much lower.

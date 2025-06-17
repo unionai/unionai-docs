@@ -37,7 +37,7 @@ This is the command line interface for Flyte.
 
 ## flyte
 
-The Flyte CLI is the the command line interface for working with the Flyte SDK and backend.
+The Flyte CLI is the command line interface for working with the Flyte SDK and backend.
 
 It follows a simple verb/noun structure,
 where the top-level commands are verbs that describe the action to be taken,
@@ -158,7 +158,7 @@ $ flyte create secret my_secret --type image_pull
 ### flyte deploy
 
 Deploy one or more environments from a python file.
-The deploy command will create or update environments in the Flyte system.
+The `deploy` command will create or update environments in the Flyte system.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -201,7 +201,7 @@ Each command supports optional parameters to filter or specify the resource you 
 Using a `get` subcommand without any arguments will retrieve a list of available resources to get.
 For example:
 
-* `get project` (without specifiying aproject), will list all projects.
+* `get project` (without specifying a project), will list all projects.
 * `get project my_project` will return the details of the project named `my_project`.
 
 In some cases, a partially specified command will act as a filter and return available further parameters.
@@ -284,7 +284,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 | {{< multiline >}}`--lines`
 `-l`{{< /multiline >}} | `integer` | `30` | Number of lines to show, only useful for --pretty |
 | `--show-ts` | `boolean` | `False` | Show timestamps |
-| `--pretty` | `boolean` | `False` | Show logs in a auto scrolling box, where number of lines is limited to `--lines` |
+| `--pretty` | `boolean` | `False` | Show logs in an auto-scrolling box, where number of lines is limited to `--lines` |
 | {{< multiline >}}`--attempt`
 `-a`{{< /multiline >}} | `integer` |  | Attempt number to show logs for, defaults to the latest attempt. |
 | `--filter-system` | `boolean` | `False` | Filter all system logs from the output. |
@@ -376,5 +376,5 @@ To run a task locally, use the `--local` flag. This will run the task in the loc
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
 | {{< multiline >}}`--follow`
-`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the cli will exit after successfully launching a remote execution with a link to the UI. |
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--help` | `boolean` | `False` | Show this message and exit. |

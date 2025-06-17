@@ -1,6 +1,6 @@
 ---
 title: Container images
-weight: 40
+weight: 50
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -44,7 +44,7 @@ You can specify a registry of you choice.
 You must ensure that:
 
 * Docker is running on your local machine.
-* You have successfully ran `docker login` to that registry from your local machine (Github uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
+* You have successfully run `docker login` to that registry from your local machine (GitHub uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
 * Your Flyte/Union installation has read access to that registry.
 
 Note that if using GitHub Packages (i.e. `ghcr.io`), you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image. Note that public images are on the public internet and should only be used for testing purposes. Do not place proprietary code in public images.
@@ -75,7 +75,7 @@ Your terminal will show something like the following:
 (unionv2) johnvotta@JV---Work unionv2 % uv run --prerelease=allow container_images.py
 Reading inline script metadata from `container_images.py`
 [flyte] Temporary directory: /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
-Run command: docker buildx build --builder flytex --tag ghcr.io/jpvotta/flyte:d1c1a0a9c3e65c329bae976afddea670 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj 
+Run command: docker buildx build --builder flytex --tag ghcr.io/jpvotta/flyte:d1c1a0a9c3e65c329bae976afddea670 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
 
 ...
 

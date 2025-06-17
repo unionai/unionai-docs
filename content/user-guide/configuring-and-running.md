@@ -41,7 +41,6 @@ This is the way we do it in the examples in this guide.
 
 For example, in [Getting started](./getting-started) we run our workflow using this main guard in the same file as the workflow definition:
 
-{{< code file="/external/migr" language="python" >}}
 ```python
 if __name__ == "__main__":
     flyte.init_from_config("config.yaml")
