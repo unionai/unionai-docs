@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 0.2.0b10
+version: 0.2.0b12
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -13,6 +13,7 @@ layout: py_api
 | [`flyte.Device`](../packages/flyte#flytedevice) |Represents a device type, its quantity and partition if applicable. |
 | [`flyte.Environment`](../packages/flyte#flyteenvironment) | |
 | [`flyte.Image`](../packages/flyte#flyteimage) |This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`flyte.PodTemplate`](../packages/flyte#flytepodtemplate) |Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](../packages/flyte#flyteresources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`flyte.RetryStrategy`](../packages/flyte#flyteretrystrategy) |Retry strategy for the task or task environment. |
 | [`flyte.ReusePolicy`](../packages/flyte#flytereusepolicy) |ReusePolicy can be used to configure a task to reuse the environment. |
@@ -32,6 +33,7 @@ layout: py_api
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors#flyteerrorsprimarycontainernotfounderror) |This error is raised when the primary container is not found. |
 | [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors#flyteerrorsreferencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors#flyteerrorsretriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
+| [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors#flyteerrorsruntimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.RuntimeSystemError`](../packages/flyte.errors#flyteerrorsruntimesystemerror) |This error is raised when the underlying task execution fails because of a system error. |
 | [`flyte.errors.RuntimeUnknownError`](../packages/flyte.errors#flyteerrorsruntimeunknownerror) |This error is raised when the underlying task execution fails because of an unknown error. |
 | [`flyte.errors.RuntimeUserError`](../packages/flyte.errors#flyteerrorsruntimeusererror) |This error is raised when the underlying task execution fails because of an error in the user's code. |

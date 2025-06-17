@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 0.2.0b10
+version: 0.2.0b12
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

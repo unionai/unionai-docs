@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b10
+version: 0.2.0b12
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,6 +34,7 @@ async def my_task():
 | [`Device`](.././flyte#flytedevice) | Represents a device type, its quantity and partition if applicable. |
 | [`Environment`](.././flyte#flyteenvironment) |  |
 | [`Image`](.././flyte#flyteimage) | This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`PodTemplate`](.././flyte#flytepodtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](.././flyte#flyteresources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](.././flyte#flyteretrystrategy) | Retry strategy for the task or task environment. |
 | [`ReusePolicy`](.././flyte#flytereusepolicy) | ReusePolicy can be used to configure a task to reuse the environment. |
@@ -185,6 +186,7 @@ def init(
     rpc_retries: int,
     http_proxy_url: str | None,
     storage: Storage | None,
+    batch_size: int,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -214,6 +216,7 @@ remote API methods are called. Thread-safe implementation.
 | `rpc_retries` | `int` |
 | `http_proxy_url` | `str \| None` |
 | `storage` | `Storage \| None` |
+| `batch_size` | `int` |
 
 #### init_from_config()
 
@@ -221,6 +224,7 @@ remote API methods are called. Thread-safe implementation.
 def init_from_config(
     path_or_config: str | Config | None,
     root_dir: Path | None,
+    log_level: int | None,
 )
 ```
 Initialize the Flyte system using a configuration file or Config object. This method should be called before any
@@ -232,6 +236,7 @@ other Flyte remote API methods are called. Thread-safe implementation.
 |-|-|
 | `path_or_config` | `str \| Config \| None` |
 | `root_dir` | `Path \| None` |
+| `log_level` | `int \| None` |
 
 #### run()
 
@@ -901,6 +906,26 @@ This will override any existing working directory
 | Parameter | Type |
 |-|-|
 | `workdir` | `str` |
+
+## flyte.PodTemplate
+
+Custom PodTemplate specification for a Task.
+
+
+```python
+class PodTemplate(
+    pod_spec: typing.Optional[ForwardRef('V1PodSpec')],
+    primary_container_name: str,
+    labels: typing.Optional[typing.Dict[str, str]],
+    annotations: typing.Optional[typing.Dict[str, str]],
+)
+```
+| Parameter | Type |
+|-|-|
+| `pod_spec` | `typing.Optional[ForwardRef('V1PodSpec')]` |
+| `primary_container_name` | `str` |
+| `labels` | `typing.Optional[typing.Dict[str, str]]` |
+| `annotations` | `typing.Optional[typing.Dict[str, str]]` |
 
 ## flyte.Resources
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 0.2.0b10
+version: 0.2.0b12
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -105,8 +105,8 @@ async def my_new_parent_task(n: int) -> List[int]:
 
 ```python
 def config(
-    sctx: flyte.models.SerializationContext,
-) -> typing.Dict[str, str]
+    sctx: SerializationContext,
+) -> Dict[str, str]
 ```
 Returns additional configuration for the task. This is a set of key-value pairs that can be used to
 configure the task execution environment at runtime. This is usually used by plugins.
@@ -114,7 +114,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 | Parameter | Type |
 |-|-|
-| `sctx` | `flyte.models.SerializationContext` |
+| `sctx` | `SerializationContext` |
 
 #### container_args()
 

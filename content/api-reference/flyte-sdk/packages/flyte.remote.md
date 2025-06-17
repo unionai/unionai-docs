@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 0.2.0b10
+version: 0.2.0b12
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -565,19 +565,18 @@ class Secret(
 
 ```python
 class Task(
-    pb2: task_definition_pb2.TaskDetails,
+    pb2: task_definition_pb2.Task,
 )
 ```
 | Parameter | Type |
 |-|-|
-| `pb2` | `task_definition_pb2.TaskDetails` |
+| `pb2` | `task_definition_pb2.Task` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`get()`](#get) | Get a task by its ID or name. |
-| [`override()`](#override) |  |
 
 
 #### get()
@@ -601,48 +600,11 @@ Either version or auto_version are required parameters.
 | `version` | `str \| None` |
 | `auto_version` | `AutoVersioning \| None` |
 
-#### override()
-
-```python
-def override(
-    local: Optional[bool],
-    ref: Optional[bool],
-    resources: Optional[flyte.Resources],
-    cache: flyte.CacheRequest,
-    retries: Union[int, flyte.RetryStrategy],
-    timeout: Optional[flyte.TimeoutType],
-    reusable: Union[flyte.ReusePolicy, Literal['auto'], None],
-    env: Optional[Dict[str, str]],
-    secrets: Optional[flyte.SecretRequest],
-    kwargs: **kwargs,
-) -> Task
-```
-| Parameter | Type |
-|-|-|
-| `local` | `Optional[bool]` |
-| `ref` | `Optional[bool]` |
-| `resources` | `Optional[flyte.Resources]` |
-| `cache` | `flyte.CacheRequest` |
-| `retries` | `Union[int, flyte.RetryStrategy]` |
-| `timeout` | `Optional[flyte.TimeoutType]` |
-| `reusable` | `Union[flyte.ReusePolicy, Literal['auto'], None]` |
-| `env` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[flyte.SecretRequest]` |
-| `kwargs` | `**kwargs` |
-
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `cache` | `None` | {{< multiline >}}The cache policy of the task.
-{{< /multiline >}} |
 | `name` | `None` | {{< multiline >}}The name of the task.
-{{< /multiline >}} |
-| `resources` | `None` | {{< multiline >}}The resources of the task.
-{{< /multiline >}} |
-| `secrets` | `None` | {{< multiline >}}The secrets of the task.
-{{< /multiline >}} |
-| `task_type` | `None` | {{< multiline >}}The type of the task.
 {{< /multiline >}} |
 | `version` | `None` | {{< multiline >}}The version of the task.
 {{< /multiline >}} |

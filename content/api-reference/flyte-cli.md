@@ -338,6 +338,7 @@ Currently, both `name` and `version` are required to get a specific task.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of tasks to show. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
