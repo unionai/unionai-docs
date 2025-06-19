@@ -8,14 +8,16 @@ variants: +flyte -serverless -byoc -selfmanaged
 
 When a workflow completes, users can be notified by email, [Pagerduty](https://support.pagerduty.com/docs/email-integration-guide#integrating-with-a-pagerduty-service),
 or [Slack](https://slack.com/help/articles/206819278-Send-emails-to-Slack).
-
 The content of these notifications is configurable at the platform level.
 
 ## Usage
 
-When a workflow reaches a specified [terminal workflow execution phase](https://github.com/flyteorg/flytekit/blob/b6f806d2fa493eb78f9c2d964989b5a5a94a44ed/flytekit/core/notification.py#L26-L31)
-the `flytekit:flytekit.Email`, `flytekit:flytekit.PagerDuty`, or `flytekit:flytekit.Slack`
-objects can be used in the construction of a `flytekit:flytekit.LaunchPlan`.
+When a workflow reaches a specified [terminal workflow execution phase](https://github.com/flyteorg/flytekit/blob/b6f806d2fa493eb78f9c2d964989b5a5a94a44ed/flytekit/core/notification.py#L26-L31) the
+[`flytekit.core.notification.Email`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationemail),
+[`flytekit.core.notification.Notification`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationnotification)
+[`flytekit.core.notification.PagerDuty`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationpagerduty), or
+[`flytekit.core.notification.Slack`](../../api-reference/flytekit-sdk/packages/flytekit.core.notification#flytekitcorenotificationslack)
+objects can be used in the construction of a `LaunchPlan`.
 
 ```python
 from flytekit import Email, LaunchPlan
