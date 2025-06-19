@@ -131,3 +131,6 @@ with Self-managed you are responsible for the system infrastructure, either part
 
 * Deploy and manage both your data plane and control plane on your infrastructure with support and guidance from Union.ai.
   This option is suitable for air-gapped deployments.
+
+{{< /markdown >}}
+{{< /variant >}}
