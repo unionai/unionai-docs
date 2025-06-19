@@ -1,13 +1,13 @@
 ---
-title: Details of union run
+title: Run details
 weight: 10
-variants: -flyte +serverless +byoc +selfmanaged
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Details of {{< key cli >}} run
+# Run details
 
 The `{{< key cli >}} run` command is used to run a specific workflow or task in your local Python environment or on {{< key product_name >}}.
-In this section we will discuss some of the details of how and why to use it.
+In this section we will discuss some details of how and why to use it.
 
 ## Passing parameters
 
@@ -38,7 +38,7 @@ if the code were altered to accept a `last_name` parameter then the following co
 $ {{< key cli >}} run example.py wf --last-name 'Einstein'
 ```
 
-would pass the value `Einstein` for that parameter.
+This passes the value `Einstein` for that parameter.
 
 ## Why `{{< key cli >}} run` rather than `python`?
 
@@ -64,7 +64,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     training_workflow(hyperparameters=args.hyperparameters)Py
-
 ```
 
-`{{< key cli >}} run` lets you dispense with this verbosity and run the workflow with the desired arguments conveniently.
+`{{< key cli >}} run` is less verbose and more convenient for running workflows with arguments.
