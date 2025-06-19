@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 You can import Python APIs and host them on the site. To do that you will use
 the `tools/api_generator` to parse and create the appropriate markdown.
 
-Please refer to [`api_generator/README`](../../../tools/api_generator/README.md) for more details.
+Please refer to [`api_generator/README`](https://github.com/unionai/docs/blob/main/tools/api_generator/README.md) for more details.
 
 ## API naming convention
 
