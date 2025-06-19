@@ -18,21 +18,20 @@ the `flytekit:flytekit.Email`, `flytekit:flytekit.PagerDuty`, or `flytekit:flyte
 objects can be used in the construction of a `flytekit:flytekit.LaunchPlan`.
 
 ```python
-    from flytekit import Email, LaunchPlan
-    from flytekit.models.core.execution import WorkflowExecutionPhase
-
-    # This launch plan triggers email notifications when the workflow execution it triggered reaches the phase `SUCCEEDED`.
-    my_notifiying_lp = LaunchPlan.create(
-        "my_notifiying_lp",
-        my_workflow_definition,
-        default_inputs={"a": 4},
-        notifications=[
-            Email(
-                phases=[WorkflowExecutionPhase.SUCCEEDED],
-                recipients_email=["admin@example.com"],
-            )
-        ],
-    )
+from flytekit import Email, LaunchPlan
+from flytekit.models.core.execution import WorkflowExecutionPhase
+# This launch plan triggers email notifications when the workflow execution it triggered reaches the phase `SUCCEEDED`.
+my_notifiying_lp = LaunchPlan.create(
+    "my_notifiying_lp",
+    my_workflow_definition,
+    default_inputs={"a": 4},
+    notifications=[
+        Email(
+            phases=[WorkflowExecutionPhase.SUCCEEDED],
+            recipients_email=["admin@example.com"],
+        )
+    ],
+)
 ```
 
 Notifications can be combined with schedules to automatically alert you when a scheduled job succeeds or fails.
@@ -58,44 +57,34 @@ The role you use to run FlyteAdmin must have permissions to read and write to yo
 Let's look at the following config section and explain what each value represents:
 
 ```yaml
-  notifications:
-    # By default, the no-op executor is used.
-    type: "aws"
-
-    # This specifies which region AWS clients will use when creating SNS and SQS clients.
-    region: "us-east-1"
-
-    # This handles pushing notification events to your SNS topic.
-    publisher:
-
-      # This is the arn of your SNS topic.
-      topicName: "arn:aws:sns:us-east-1:{{ YOUR ACCOUNT ID }}:{{ YOUR TOPIC }}"
-
-    # This handles the recording notification events and enqueueing them to be
-    # processed asynchronously.
-    processor:
-
-      # This is the name of the SQS queue which will capture pending notification events.
-      queueName: "{{ YOUR QUEUE NAME }}"
-
-      # Your AWS `account id, see: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html#FindingYourAWSId
-      accountId: "{{ YOUR ACCOUNT ID }}"
-
-    # This section encloses config details for sending and formatting emails
-    # used as notifications.
-    emailer:
-
-      # Configurable subject line used in notification emails.
-      subject: "Notice: Execution \"{{ workflow.name }}\" has {{ phase }} in \"{{ domain }}\"."
-
-      # Your verified SES email sender.
-      sender:  "flyte-notifications@company.com"
-
-      # Configurable email body used in notifications.
-      body: >
-        Execution \"{{ workflow.name }} [{{ name }}]\" has {{ phase }} in \"{{ domain }}\". View details at
-        <a href=\http://flyte.company.com/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}>
-        http://flyte.company.com/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}</a>. {{ error }}
+notifications:
+  # By default, the no-op executor is used.
+  type: "aws"
+  # This specifies which region AWS clients will use when creating SNS and SQS clients.
+  region: "us-east-1"
+  # This handles pushing notification events to your SNS topic.
+  publisher:
+    # This is the arn of your SNS topic.
+    topicName: "arn:aws:sns:us-east-1:{{ YOUR ACCOUNT ID }}:{{ YOUR TOPIC }}"
+  # This handles the recording notification events and enqueueing them to be
+  # processed asynchronously.
+  processor:
+    # This is the name of the SQS queue which will capture pending notification events.
+    queueName: "{{ YOUR QUEUE NAME }}"
+    # Your AWS `account id, see: https://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html#FindingYourAWSId
+    accountId: "{{ YOUR ACCOUNT ID }}"
+  # This section encloses config details for sending and formatting emails
+  # used as notifications.
+  emailer:
+    # Configurable subject line used in notification emails.
+    subject: "Notice: Execution \"{{ workflow.name }}\" has {{ phase }} in \"{{ domain }}\"."
+    # Your verified SES email sender.
+    sender:  "flyte-notifications@company.com"
+    # Configurable email body used in notifications.
+    body: >
+      Execution \"{{ workflow.name }} [{{ name }}]\" has {{ phase }} in \"{{ domain }}\". View details at
+      <a href=\http://flyte.company.com/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}>
+      http://flyte.company.com/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}</a>. {{ error }}
 ```
 
 The full set of parameters which can be used for email templating are checked
@@ -127,17 +116,17 @@ kubectl create secret generic -n flyte --from-file key sendgrid-key
 Mount the secret by adding the following to the ``flyte-core`` values YAML:
 
 ```yaml
-    flyteadmin:
-      additionalVolumes:
-      - name: sendgrid-key
-        secret:
-          secretName: sendgrid-key
-          items:
-            - key: key
-              path: key
-      additionalVolumeMounts:
-      - name: sendgrid-key
-        mountPath: /sendgrid
+flyteadmin:
+  additionalVolumes:
+  - name: sendgrid-key
+    secret:
+      secretName: sendgrid-key
+      items:
+        - key: key
+          path: key
+  additionalVolumeMounts:
+  - name: sendgrid-key
+    mountPath: /sendgrid
 ```
 
 ### Helm configuration
@@ -146,24 +135,24 @@ In the ``flyte-core`` values YAML, the top-level ``notifications`` config should
 placed under ``workflow_notifications``.
 
 ```yaml
-    workflow_notifications:
-      enabled: true
-      config:
-        notifications:
-          type: gcp
-          gcp:
-            projectId: "{{ YOUR PROJECT ID }}"
-          publisher:
-            topicName: "{{ YOUR PUB/SUB TOPIC NAME }}"
-          processor:
-            queueName: "{{ YOUR PUB/SUB SUBSCRIBER NAME }}"
-          emailer:
-            emailServerConfig:
-              serviceName: sendgrid
-              apiKeyFilePath: /sendgrid/key
-            subject: "Flyte execution \"{{ name }}\" has {{ phase }} in \"{{ project }}\"."
-            sender: "{{ YOUR SENDGRID SENDER EMAIL }}"
-            body: View details at <a href=https://{{ YOUR FLYTE HOST }}/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}>https://{{ YOUR FLYTE HOST }}/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}</a>
+workflow_notifications:
+  enabled: true
+  config:
+    notifications:
+      type: gcp
+      gcp:
+        projectId: "{{ YOUR PROJECT ID }}"
+      publisher:
+        topicName: "{{ YOUR PUB/SUB TOPIC NAME }}"
+      processor:
+        queueName: "{{ YOUR PUB/SUB SUBSCRIBER NAME }}"
+      emailer:
+        emailServerConfig:
+          serviceName: sendgrid
+          apiKeyFilePath: /sendgrid/key
+        subject: "Flyte execution \"{{ name }}\" has {{ phase }} in \"{{ project }}\"."
+        sender: "{{ YOUR SENDGRID SENDER EMAIL }}"
+        body: View details at <a href=https://{{ YOUR FLYTE HOST }}/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}>https://{{ YOUR FLYTE HOST }}/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}</a>
 ```
 
  ### Webhook connector
