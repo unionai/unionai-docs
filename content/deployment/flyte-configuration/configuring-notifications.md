@@ -18,7 +18,6 @@ the `flytekit:flytekit.Email`, `flytekit:flytekit.PagerDuty`, or `flytekit:flyte
 objects can be used in the construction of a `flytekit:flytekit.LaunchPlan`.
 
 ```python
-
     from flytekit import Email, LaunchPlan
     from flytekit.models.core.execution import WorkflowExecutionPhase
 
@@ -59,7 +58,6 @@ The role you use to run FlyteAdmin must have permissions to read and write to yo
 Let's look at the following config section and explain what each value represents:
 
 ```yaml
-
   notifications:
     # By default, the no-op executor is used.
     type: "aws"
@@ -99,6 +97,7 @@ Let's look at the following config section and explain what each value represent
         <a href=\http://flyte.company.com/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}>
         http://flyte.company.com/console/projects/{{ project }}/domains/{{ domain }}/executions/{{ name }}</a>. {{ error }}
 ```
+
 The full set of parameters which can be used for email templating are checked
 into [code](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/flyteadmin/pkg/async/notifications/email.go#L15-L30).
 
@@ -124,6 +123,7 @@ Create a K8s secret in FlyteAdmin's cluster with that file:
 ```bash
 kubectl create secret generic -n flyte --from-file key sendgrid-key
 ```
+
 Mount the secret by adding the following to the ``flyte-core`` values YAML:
 
 ```yaml
@@ -146,7 +146,6 @@ In the ``flyte-core`` values YAML, the top-level ``notifications`` config should
 placed under ``workflow_notifications``.
 
 ```yaml
-
     workflow_notifications:
       enabled: true
       config:
@@ -172,8 +171,7 @@ placed under ``workflow_notifications``.
  In recent Flytekit versions (`>=1.15.0`) it's possible to set up a [`WebhookTask`](https://github.com/flyteorg/flytekit/pull/3058) object to send notifications to any system through webhooks.
  The following example uses Slack without email or queue configurations:
 
- ```python
-
+```python
 notification_task = WebhookTask(
     name="failure-notification",
     url="https://hooks.slack.com/services/xyz", #your Slack webhook
@@ -198,4 +196,4 @@ def ml_workflow_with_failure_handling() -> float:
         # Trigger the notification task on failure
         notification_task(error_message=str(e))
         raise
- ```
+```
