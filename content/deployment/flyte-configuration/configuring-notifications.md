@@ -4,9 +4,9 @@ weight: 9
 variants: +flyte -serverless -byoc -selfmanaged
 ---
 
-# Notifications
+# Workflow notifications
 
-When a workflow completes, users can be notified by email,  [Pagerduty](https://support.pagerduty.com/docs/email-integration-guide#integrating-with-a-pagerduty-service),
+When a workflow completes, users can be notified by email, [Pagerduty](https://support.pagerduty.com/docs/email-integration-guide#integrating-with-a-pagerduty-service),
 or [Slack](https://slack.com/help/articles/206819278-Send-emails-to-Slack).
 
 The content of these notifications is configurable at the platform level.
@@ -16,8 +16,6 @@ The content of these notifications is configurable at the platform level.
 When a workflow reaches a specified [terminal workflow execution phase](https://github.com/flyteorg/flytekit/blob/b6f806d2fa493eb78f9c2d964989b5a5a94a44ed/flytekit/core/notification.py#L26-L31)
 the `flytekit:flytekit.Email`, `flytekit:flytekit.PagerDuty`, or `flytekit:flytekit.Slack`
 objects can be used in the construction of a `flytekit:flytekit.LaunchPlan`.
-
-**Example**
 
 ```python
 
@@ -40,7 +38,7 @@ objects can be used in the construction of a `flytekit:flytekit.LaunchPlan`.
 
 Notifications can be combined with schedules to automatically alert you when a scheduled job succeeds or fails.
 
-## Setting Up Workflow Notifications
+## Setting up workflow notifications
 
 The ``notifications`` top-level portion of the FlyteAdmin config specifies how to handle notifications.
 
@@ -48,7 +46,7 @@ As with schedules, the notifications handling is composed of two parts. One hand
 
 This is only supported for Flyte instances running on AWS or GCP.
 
-### AWS Config
+### AWS configuration
 
 To publish notifications, you'll need to set up an [SNS topic](https://aws.amazon.com/sns/?whats-new-cards.sort-by=item.additionalFields.postDateTime&whats-new-cards.sort-order=desc).
 
@@ -104,22 +102,17 @@ Let's look at the following config section and explain what each value represent
 The full set of parameters which can be used for email templating are checked
 into [code](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/flyteadmin/pkg/async/notifications/email.go#L15-L30).
 
-#### Example config
-
-
 You can find the full configuration file [here](https://github.com/flyteorg/flyte/blob/95baed556f5844e6a494507c3aa5a03fe6d42fbb/flyteadmin/flyteadmin_config.yaml#L93-L107).
 
-### GCP Config
-
+### GCP configuration
 
 You'll need to set up a [Pub/Sub topic](https://cloud.google.com/pubsub/docs/create-topic) to publish notifications to,
 and a [Pub/Sub subscriber](https://cloud.google.com/pubsub/docs/subscription-overview) to consume from that topic
 and process notifications. The GCP service account used by FlyteAdmin must also have Pub/Sub publish and subscribe permissions.
 
-### Email service
+### Email notifications
 
-
-In order to actually publish notifications, you'll need an account with an external email service which will be
+To set up email notifications, you'll need an account with an external email service which will be
 used to send notification emails and alerts using email APIs.
 
 Currently, [SendGrid](https://sendgrid.com/en-us) is the only supported external email service,
@@ -146,6 +139,7 @@ Mount the secret by adding the following to the ``flyte-core`` values YAML:
       - name: sendgrid-key
         mountPath: /sendgrid
 ```
+
 ### Helm configuration
 
 In the ``flyte-core`` values YAML, the top-level ``notifications`` config should be
@@ -175,7 +169,8 @@ placed under ``workflow_notifications``.
 
  ### Webhook connector
 
- In recent flytekit versions (`>=1.15.0`) it's possible to setup a [WebhookTask](https://github.com/flyteorg/flytekit/pull/3058) object to send notifications to any system through webhooks. The following example uses Slack without email or queue configurations:
+ In recent Flytekit versions (`>=1.15.0`) it's possible to set up a [`WebhookTask`](https://github.com/flyteorg/flytekit/pull/3058) object to send notifications to any system through webhooks.
+ The following example uses Slack without email or queue configurations:
 
  ```python
 
@@ -192,7 +187,7 @@ notification_task = WebhookTask(
 )
 ...
 
-@fl.workflow
+@fl.task
 def ml_workflow_with_failure_handling() -> float:
     try:
         X, y = load_and_preprocess_data()
