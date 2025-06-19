@@ -34,7 +34,7 @@ Union supports data planes on Kubernetes clusters running on-premise or on cloud
 {{< /markdown >}}
 {{< /variant >}}
 
-{{< variant byoc selfmanaged >}}
+{{< variant selfmanaged >}}
 {{< grid >}}
 
 {{< link-card target="../deployment/cluster-recommendations" icon="box" title="Installation" >}}
