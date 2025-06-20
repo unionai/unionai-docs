@@ -67,7 +67,7 @@ This requires that you coordinate with {{< key product_name >}} to set up the re
 {{< variant byoc selfmanaged flyte >}}
 {{< markdown >}}
 
-In your task definition you then use a `PodTemplate` that that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
+In your task definition you then use a `PodTemplate` that uses the matching node assignment configuration to make sure that the task will only be scheduled on the appropriate machine type.
 
 ### `pod_template` and `pod_template_name` @{{< key kit_as >}}.task parameters
 

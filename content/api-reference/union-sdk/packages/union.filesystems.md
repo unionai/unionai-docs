@@ -225,7 +225,7 @@ Get the contents of byte ranges from one or more files
 Parameters
 ----------
 paths: list
-    A list of of filepaths on this filesystems
+    A list of filepaths on this filesystems
 starts, ends: int or list
     Bytes limits of the read. If using a single int, the same value will be
     used to read all the specified files.
@@ -1997,7 +1997,7 @@ Get the contents of byte ranges from one or more files
 Parameters
 ----------
 paths: list
-    A list of of filepaths on this filesystems
+    A list of filepaths on this filesystems
 starts, ends: int or list
     Bytes limits of the read. If using a single int, the same value will be
     used to read all the specified files.

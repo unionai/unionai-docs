@@ -91,7 +91,7 @@ Refer to [**Variants**](./shortcodes#variants) for detailed explanation.
 
 ## Warnings and Notices
 
-You can write regular markdown and use the notation below to create information and warning boxes:
+You can write regular Markdown and use the notation below to create information and warning boxes:
 
 ```markdown
 > [!NOTE] This is the note title
@@ -110,7 +110,7 @@ Or if you want a warning:
 
 There are various short codes to generate content or special components (tabs, dropdowns, etc.)
 
-Refer to [**Content Generation**](SHORTCODES.md) for more information.
+Refer to [**Content Generation**](./shortcodes.md) for more information.
 
 ## Python Generated Content
 
@@ -168,7 +168,7 @@ Annotate the location you want to include it with `{{run-on-union}}`. Like this:
 ```
 
 The resulting **Run on Union** section in the rendered docs will include the run command and source location,
-specified as `run_command` and `source_locaiton` in the front matter of the corrsponding `.md` page.
+specified as `run_command` and `source_location` in the front matter of the corresponding `.md` page.
 
 ## Jupyter Notebooks
 
