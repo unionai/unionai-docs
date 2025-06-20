@@ -62,7 +62,7 @@ python hello.py
 You can also run using the CLI:
 
 ```shell
-flyte run hello.py main
+flyte run hello.py main --x_list '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]'
 ```
 
 You should see an output like this:

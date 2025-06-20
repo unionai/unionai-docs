@@ -61,7 +61,7 @@ $ python hello.py
 Alternatively, you can also execute via the CLI like so:
 
 ```shell
-flyte run hello.py hello_wf --data "hello world"
+flyte run hello.py main --x_list '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]'
 ```
 
 ### `init`
