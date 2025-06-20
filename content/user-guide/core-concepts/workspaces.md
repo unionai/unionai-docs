@@ -283,7 +283,7 @@ You can also set the resources for your workspace:
 {{< markdown >}}
 
 These resources must be compatible with the resource limits available to you
-on your Union.ai serverless account. Go the the top-level dashboard to view your
+on your Union.ai serverless account. Go the top-level dashboard to view your
 execution settings:
 
 ![Execution Settings](../../_static/images/user-guide/core-concepts/workspaces/serverless-execution-settings.png)

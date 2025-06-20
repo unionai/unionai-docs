@@ -13,7 +13,7 @@ information that Flyte needs, you will need to use the built-in `functools.wraps
 
 To begin, create a file called `decorating_tasks.py`.
 
-Add the the imports:
+Add the imports:
 
 ```python
 import logging

@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 ## Running a launch plan in the UI
 
 
-To invoke a launch plan, go to the **Workflows** list, select the desired workflow, click **Launch Workflow**. In the new execution dialog, select the desired launch plan from from the **Launch Plan** dropdown menu and click **Launch**.
+To invoke a launch plan, go to the **Workflows** list, select the desired workflow, click **Launch Workflow**. In the new execution dialog, select the desired launch plan from the **Launch Plan** dropdown menu and click **Launch**.
 
 ## Running a launch plan on the command line with `uctl`
 

@@ -24,14 +24,14 @@ To get started with Memory Machine Cloud, see the [Memory Machine Cloud user gui
 {{< variant flyte >}}
 {{< markdown >}}
 
-For an example query, see [Memory Machine Cloud connector connector example usage](./mmcloud-connector-example-usage)
+For an example query, see [Memory Machine Cloud connector example usage](./mmcloud-connector-example-usage)
 
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
-For an example query, see [Memory Machine Cloud connector connector example usage](./mmcloud-connector-example-usage-union)
+For an example query, see [Memory Machine Cloud connector example usage](./mmcloud-connector-example-usage-union)
 
 {{< /markdown >}}
 {{< /variant >}}

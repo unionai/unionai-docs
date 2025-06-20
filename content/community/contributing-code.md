@@ -477,7 +477,7 @@ pyflyte run --image ${FLYTE_INTERNAL_IMAGE} --remote https://raw.githubuserconte
 
 **1. Set up local Flyte cluster.**
 
-Depending on your needs, refer to one of the following guides to set up up the Flyte cluster:
+Depending on your needs, refer to one of the following guides to set up the Flyte cluster:
 
 - If you do not need to change the backend code, refer to the section on [How to Set Up a Dev Environment for Flytekit?](#how-to-setup-dev-environment-for-flytekit)
 - If you need to change the backend code, refer to the section on
