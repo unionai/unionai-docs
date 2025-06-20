@@ -91,7 +91,7 @@ You can also run workflows using the Flyte CLI.
 For example, you can run the same workflow we defined in [Getting started](./getting-started) using the following command:
 
 ```shell
-flyte --config config.yaml run hello.py hello_wf --data "hello world"
+flyte --config config.yaml run hello.py main --x_list '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]'
 ```
 This command will execute the `hello_wf` workflow with the specified inputs and using the configuration file you created earlier.
 
@@ -106,7 +106,7 @@ flyte \
     run \
     --project <project> \
     --domain <domain> \
-    hello.py hello_wf --data "hello world"
+    hello.py main --x_list '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]'
 ```
 
 This will run the workflow without requiring a configuration file, but you will have to specify all the parameters every time you run the command.
