@@ -118,7 +118,7 @@ You can monitor the progress of the trials via the Flyte Console. Each trial run
 
 You may access the `optuna.Study` like so: `optimizer.study`.
 
-Therefore, with `plotly` installed, you may create create Flyte Decks of the study like so:
+Therefore, with `plotly` installed, you may create Flyte Decks of the study like so:
 
 ```python
 import plotly

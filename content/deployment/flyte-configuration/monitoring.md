@@ -32,7 +32,7 @@ At a high level, workflow execution goes through the following discrete steps:
 
 ## Flyte statistics schema
 
-The following list the prefix used for each metric emitted by Flyte. The standardized prefixes make it it easy to query and analyze the statistics.
+The following list the prefix used for each metric emitted by Flyte. The standardized prefixes make it easy to query and analyze the statistics.
 
 * `propeller.all.workflow.acceptance-latency-ms` (timer in ms): Measures the time consumed from receiving a service call to creating an Execution (Unknown) and moving to QUEUED.
 * `propeller.all.node.queueing-latency-ms` (timer in ms): Measures the latency between the node moving to QUEUED and the handler reporting the executable moving to RUNNING state.
