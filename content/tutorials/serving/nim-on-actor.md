@@ -1,5 +1,5 @@
 ---
-title: Serving NVIDIA NIM Models with Union Actors
+title: Serve NVIDIA NIM Models with Union Actors
 weight: 8
 variants: -flyte -serverless +byoc +selfmanaged
 layout: py_example
