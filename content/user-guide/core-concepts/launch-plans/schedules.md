@@ -73,48 +73,67 @@ def my_workflow(a: int, b: int, c: int) -> int:
 
 ### Cron expression format
 
-A `cron` expression is a string that defines a schedule using five space-separated fields, each representing a time unit. The format of the string is:
+A `cron` expression is a string that defines a schedule using five space-separated fields, each representing a time unit.
+The format of the string is:
 
 ```
-minutes hours day-of-month month day-of-week year
+minute hour day-of-month month day-of-week
 ```
 
-Where each field can contain specific values, wildcards, and special characters. The fields are defined as follows:
+Each field can contain values and special characters.
+The fields are defined as follows:
 
-| Field | Values | Special characters |
-| `minutes` | `0-59` | `, - * /` |
-| `hours` | `0-23` | `, - * /` |
-| `day-of-month` | `1-31` | `, - * / ?` |
-| `month` | `1-12 or JAN-DEC` | `, - * /` |
-| `day-of-week` | `0-6 or SUN-SAT` | `, - * ?` |
+| Field          | Values              | Special characters |
+|----------------|---------------------|--------------------|
+| `minute`       | `0-59`              | `* / , -`          |
+| `hour`         | `0-23`              | `* / , -`          |
+| `day-of-month` | `1-31`              | `* / , - ?`        |
+| `month`        | `1-12` or `JAN-DEC` | `* / , -`          |
+| `day-of-week`  | `0-6` or` SUN-SAT`  | `* / , - ?`        |
 
+* The `month` and `day-of-week` abbreviations are not case-sensitive.
 
-The `,` (comma) is used to specify multiple values.
+* The `,` (comma) is used to specify multiple values.
 For example, in the `month` field, `JAN,FEB,MAR` means every January, February, and March.
 
-The `-` (dash) specifies a range of values.
+* The `-` (dash) specifies a range of values.
 For example, in the `day-of-month` field, `1-15` means every day from `1` through `15` of the specified month.
 
-The `*` (asterisk) specifies all values of the field.
-For example, in the `hours` field, `*` means every hour (on the hour), from `0` to `23`.
+* The `*` (asterisk) specifies all values of the field.
+For example, in the `hour` field, `*` means every hour (on the hour), from `0` to `23`.
 You cannot use `*` in both the `day-of-month` and `day-of-week` fields in the same `cron` expression.
 If you use it in one, you must use `?` in the other.
 
-The `/` (slash) specifies increments.
-For example, in the `minutes` field, `1/10` means every tenth minute, starting from the first minute of the hour (that is, the 11th, 21st, and 31st minute, and so on).
+* The `/` (slash) specifies increments.
+For example, in the `minute` field, `1/10` means every tenth minute, starting from the first minute of the hour (that is, the 11th, 21st, and 31st minute, and so on).
 
-The `?` (question mark) specifies any value of the field.
+* The `?` (question mark) specifies any value of the field.
 For example, in the `day-of-month` field you could enter `7` and, if any day of the week was acceptable, you would enter `?` in the `day-of-week` field.
 
 ### Cron expression examples
 
-`0 0 * * *`: Midnight every day.
-`0 12 * * MON-FRI`: Noon every weekday.
-`0 0 1 * *`: Midnight on the first day of every month.
-`0 0 * JAN,JUL *`: Midnight every day in January and July.
-`*/5 * * * *`: Every five minutes.
-`30 2 * * 1`: At 2:30 AM every Monday.
-`0 0 15 * ?`: Midnight on the 15th of every month.
+| Expression         | Description                               |
+|--------------------|-------------------------------------------|
+| `0 0 * * *`        | Midnight every day.                       |
+| `0 12 * * MON-FRI` | Noon every weekday.                       |
+| `0 0 1 * *`        | Midnight on the first day of every month. |
+| `0 0 * JAN,JUL *`  | Midnight every day in January and July.   |
+| `*/5 * * * *`      | Every five minutes.                       |
+| `30 2 * * 1`       | At 2:30 AM every Monday.                  |
+| `0 0 15 * ?`       | Midnight on the 15th of every month.      |
+
+### Cron aliases
+
+The following aliases are also available.
+An alias is used in place of an entire `cron` expression.
+
+| Alias      | Description                                                      | Equivalent to   |
+|------------|------------------------------------------------------------------|-----------------|
+| `@yearly`  | Once a year at midnight at the start of 1 January.               | `0 0 1 1 *`     |
+| `@monthly` | Once a month at midnight at the start of first day of the month. | `0 0 1 * *`     |
+| `@weekly`  | Once a week at midnight at the start of Sunday.                  | `0 0 * * 0`     |
+| `@daily`   | Once a day at midnight.                                          | `0 0 * * *`     |
+| `@hourly`  | Once an hour at the beginning of the hour.                       | `0 * * * *`     |
 
 ## kickoff_time_input_arg
 
