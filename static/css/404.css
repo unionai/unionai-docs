@@ -24,6 +24,7 @@
 
 .four-o-four.container .sorry .title {
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .four-o-four.container .report {
