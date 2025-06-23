@@ -6,9 +6,9 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Dataclasses and structures
 
-Dataclasses and Pydantic models are fully supported in Flyte. Use these as you would normally, passing them as inputs and outputs of tasks.
-The only thing to keep in mind is that data between tasks is serialized, stored, and deserialized. That means that the fields in your dataclass
-should also be serializable.
+Dataclasses and Pydantic models are fully supported in Flyte.
+Use these as you would normally, passing them as inputs and outputs of tasks.
+The only thing to keep in mind is that data between tasks is serialized, stored, and deserialized. That means that the fields in your dataclass should also be serializable.
 
 ## Basic Usage
 
@@ -65,8 +65,9 @@ flyte --org testorg --endpoint dns:///<endpoint> run -p testproject -d developme
   --request '{"feature_a": 1, "feature_b": 2}'
 ```
 
-Dataclasses can also be nested within others, as in a list.  Also, Flyte's offloaded types can also be included as fields. Because Flyte
-comes with a serialization/deserialization mechanism for these types, there's no need to add any transformers to the type engine.
+Dataclasses can also be nested within others, as in a list.
+Also, Flyte's offloaded types can also be included as fields.
+Because Flyte comes with a serialization/deserialization mechanism for these types, there's no need to add any transformers to the type engine.
 
 This example below runs a set of predictions, writes out to a file, and invokes a subsequent task to read from the file.
 

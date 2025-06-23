@@ -35,7 +35,7 @@ Programmatic initialization and execution lets you run workflows directly from P
 
 You can use the [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config) function to initialize the Flyte SDK with the configuration file you created earlier.
 
-Once `flyte` is initialized, you can run workflows using the `flyte.run` function.
+Once `flyte` is initialized, you can run workflows using the [`flyte.run`](../api-reference/flyte-sdk/packages/flyte#run) function.
 
 This is the way we do it in the examples in this guide.
 
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
 ## CLI execution
 
-You can also run workflows using the Flyte CLI.
+You can also run workflows using the [`flyte run`](../api-reference/flyte-cli#flyte-run) CLI command.
 
 ### `flyte run` with a configuration file
 

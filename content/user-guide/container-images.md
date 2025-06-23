@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Every `task` in Flyte runs in its own container and every container needs a container image to define it.
 
-We use the `image` parameter of the `TaskEnvironment` to specify an image.
+We use the `image` parameter of the [`TaskEnvironment`](../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
 Every task that uses that `TaskEnvironment` will run in a container based on that image.
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image.
