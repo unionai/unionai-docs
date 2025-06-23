@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{- $variant := .Site.Params.variant -}}
-{{- $upperVariant := strings.ToUpper $variant -}}
+{{- $variantFullName := index .Site.Params.Key.product_full_name $variant -}}
 {{- $extraContent := readFile (printf "404.inc.html~%s" $variant) -}}
 <script>
     // Extract query string parameters
@@ -45,8 +45,8 @@
     </h1>
 
     <div class="sorry variant-change">
-        The page you were on (<span id="title" class="title"></span>) has no directly corresponding page in {{ $upperVariant }}.<br/>
-        Try searching from the {{ $upperVariant }} home page.
+        The page you were on (<span id="title" class="title"></span>) has no directly corresponding page in {{ $variantFullName }}.<br/>
+        Try searching from the {{ $variantFullName }} home page.
     </div>
     <div class="sorry direct">
         Sorry, the page you're looking for does not exist
