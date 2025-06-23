@@ -8,6 +8,8 @@
     const source = url.searchParams.get('source');
     const variant = url.searchParams.get('variant');
     const origin = url.searchParams.get('origin');
+    const targetVariant = url.searchParams.get('targetVariant');
+    const targetHomeUrl = '/docs/' + targetVariant;
 
     document.addEventListener('DOMContentLoaded', function() {
         if (variant !== null) {
@@ -18,10 +20,9 @@
 
             const button = document.createElement('sl-button');
             console.log(button);
-            button.href = origin;
+            button.href = targetHomeUrl;
             button.innerHTML = `
-                <sl-icon name="arrow-left"></sl-icon>
-                Return to ${variant.toLocaleUpperCase()}
+                Go to ${targetVariant.toLocaleUpperCase()} home
             `;
             buttonContainer.appendChild(button);
 
@@ -37,17 +38,15 @@
     });
 </script>
 <div class="four-o-four container not-found">
-    <div class="small-header">404</div>
+    <div class="direct small-header">404</div>
 
-    <h1 class="variant-change">
-        Not available in {{ $upperVariant }}
-    </h1>
     <h1 class="direct">
         Page not found
     </h1>
 
     <div class="sorry variant-change">
-        Sorry, <span id="title" class="title"></span> is not available in {{ $upperVariant }}
+        The page you were on (<span id="title" class="title"></span>) has no directly corresponding page in {{ $upperVariant }}.<br/>
+        Try searching from the {{ $upperVariant }} home page.
     </div>
     <div class="sorry direct">
         Sorry, the page you're looking for does not exist
@@ -58,10 +57,6 @@
     <div class="content">
         {{ $extraContent | safeHTML }}
         {{ .Content }}
-    </div>
-
-    <div class="report">
-        If you believe you have reached this page in error, please report it to us.
     </div>
 </div>
 {{ end }}
