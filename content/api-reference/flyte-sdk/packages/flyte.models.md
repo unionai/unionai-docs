@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 0.2.0b12
+version: 0.2.0b14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

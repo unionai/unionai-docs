@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b12
+version: 0.2.0b14
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -285,6 +285,7 @@ def with_runcontext(
     interactive_mode: bool | None,
     raw_data_path: str | None,
     run_base_dir: str | None,
+    overwrite_cache: bool,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -316,6 +317,7 @@ if __name__ == "__main__":
 | `interactive_mode` | `bool \| None` |
 | `raw_data_path` | `str \| None` |
 | `run_base_dir` | `str \| None` |
+| `overwrite_cache` | `bool` |
 
 ## flyte.Cache
 

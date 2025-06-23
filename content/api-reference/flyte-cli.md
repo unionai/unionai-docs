@@ -14,7 +14,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
-| `secret` | [`create`](#flyte-create-secret), [`get`](#flyte-get-secret)  |
+| `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `action` | [`get`](#flyte-get-action)  |
 | `io` | [`get`](#flyte-get-io)  |
@@ -27,6 +27,7 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
 | `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret)  |
+| `delete` | [`secret`](#flyte-delete-secret)  |
 | `deploy` |   |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task)  |
@@ -155,10 +156,26 @@ $ flyte create secret my_secret --type image_pull
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+### flyte delete
+
+Remove resources from a Flyte deployment.
+
+#### flyte delete secret
+
+Delete a secret. The name of the secret is required.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 ### flyte deploy
 
 Deploy one or more environments from a python file.
-The `deploy` command will create or update environments in the Flyte system.
+This command will create or update environments in the Flyte system.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
