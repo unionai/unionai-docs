@@ -19,9 +19,9 @@ The `{{< key kit_remote >}}` Python API supports functionality similar to that o
 Ensure that you have the {{<key kit_name >}} SDK installed, import the `{{< key kit_remote >}}` class and create the object like this:
 
 ```python
-from {{< key cli >}} import {{< key kit_remote >}}
+import {{< key kit_import >}}
 
-remote = {{< key kit_remote >}}()
+remote = {{< key kit_as >}}.{{< key kit_remote >}}()
 ```
 
 By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}}, that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment (see [{{< key cli_name >}} CLI configuration search path](../../../api-reference/union-cli#union-cli-configuration-search-path)).
@@ -34,10 +34,10 @@ In the default case, as with the {{< key cli_name >}} CLI, all operations will b
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionall, the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
 ```python
-from {{< key cli >}} import {{< key kit_remote >}}
+import {{< key kit_import >}}
 from flytekit.configuration import Config
 
-remote = {{< key kit_remote >}}(
+remote = {{< key kit_as >}}.{{< key kit_remote >}}(
     config=Config.for_endpoint(endpoint="union.example.com"),
     default_project="my-project",
     default_domain="my-domain",
@@ -54,10 +54,10 @@ In general, you have all the same options as you would when specifying a connect
 In some cases, you may be running a script with `{{< key kit_remote >}}` in a CI/CD pipeline or via SSH, where you don't have access to a browser for the default authentication flow. In such scenarios, you can use the [client secret](../../development-cycle/authentication#3-clientsecret-best-for-cicd-and-automation) authentication method to establish a connection to {{< key product_name >}}. After [creating an API key](../managing-api-keys), you can initialize `{{< key kit_remote >}}` as follows:
 
 ```python
-from {{< key cli >}} import {{< key kit_remote >}}
+import {{< key kit_import >}}
 from flytekit.configuration import Config, PlatformConfig
 
-remote = {{< key kit_remote >}}(
+remote = {{< key kit_as >}}.{{< key kit_remote >}}(
         config=Config(
             platform=PlatformConfig(
                 endpoint="union.example.com",
@@ -81,9 +81,9 @@ For details see [the API docs for `flytekit.configuration.Config`](../../../api-
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a project, and a domain:
 
 ```python
-from {{< key cli >}} import {{< key kit_remote >}}
+import {{< key kit_import >}}
 
-remote = {{< key kit_remote >}}(
+remote = {{< key kit_as >}}.{{< key kit_remote >}}(
     default_project="my-project",
     default_domain="my-domain",
 )
