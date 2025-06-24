@@ -1,7 +1,7 @@
 ---
-title: UnionRemote
-weight: 18
-variants: -flyte +serverless +byoc +selfmanaged
+title: Remote management
+weight: 19
+variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
@@ -24,12 +24,22 @@ import {{< key kit_import >}}
 remote = {{< key kit_as >}}.{{< key kit_remote >}}()
 ```
 
-By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}}, that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment (see [{{< key cli_name >}} CLI configuration search path](../../../api-reference/union-cli#-key-cli--cli-configuration-search-path)).
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
+By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
+that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment
+(see [{{< key cli_name >}} CLI configuration search path](../../../api-reference/union-cli#-key-cli--cli-configuration-search-path)).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+By default, when created with a no-argument constructor, `{{< key kit_remote >}}` will use the prevailing configuration in the local environment to connect to {{< key product_name >}},
+that is, the same configuration as would be used by the {{< key cli_name >}} CLI in that environment
+(see [{{< key cli_name >}} CLI configuration search path](../../../api-reference/pyflyte-cli#-key-cli--cli-configuration-search-path)).
+{{< /markdown >}}
+{{< /variant >}}
 
 In the default case, as with the {{< key cli_name >}} CLI, all operations will be applied to the default project, `{{< key default_project >}}` and default domain, `development`.
-
-{{< variant byoc selfmanaged flyte >}}
-{{< markdown >}}
 
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionall, the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
@@ -46,7 +56,7 @@ remote = {{< key kit_as >}}.{{< key kit_remote >}}(
 ```
 
 Here we use the `Config.for_endpoint` method to specify the URL to connect to.
-There are number of other ways to configure the `Config` object.
+There are other ways to configure the `Config` object.
 In general, you have all the same options as you would when specifying a connection for the {{< key cli_name >}} CLI using a `config.yaml` file.
 
 ### Authenticating using a client secret
@@ -69,7 +79,6 @@ remote = {{< key kit_as >}}.{{< key kit_remote >}}(
         ),
     )
 ```
-
 
 For details see [the API docs for `flytekit.configuration.Config`](../../../api-reference/flytekit-sdk/packages/flytekit.configuration#flytekitconfigurationconfig)
 

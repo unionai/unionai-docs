@@ -667,6 +667,8 @@ www.union.ai/docs/byoc/tutorials/language-models/vllm-serving-on-actor,https://w
 www.union.ai/docs/byoc/tutorials/multimodal-ai/video-dubbing,https://www.union.ai/docs/byoc/tutorials/compound-ai-systems/video-dubbing,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/byoc/user-guide/about-union,https://www.union.ai/docs/byoc/user-guide/introduction,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/byoc/user-guide/development-cycle/details-of-union-run,https://www.union.ai/docs/byoc/user-guide/development-cycle/run-details,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/byoc/user-guide/development-cycle/union-remote,https://www.union.ai/docs/byoc/user-guide/development-cycle/remote-management,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/byoc/user-guide/development-cycle/union-remote/union-remote-examples,https://www.union.ai/docs/byoc/user-guide/development-cycle/remote-management/remote-examples,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/byoc/user-guide/integrations,https://www.union.ai/docs/byoc/integrations,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/byoc/user-guide/integrations/agents,https://www.union.ai/docs/byoc/integrations/connectors,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/byoc/user-guide/integrations/agents/airflow-agent,https://www.union.ai/docs/byoc/integrations/connectors/airflow-connector,302,TRUE,FALSE,TRUE,TRUE
@@ -812,6 +814,8 @@ www.union.ai/docs/flyte/integrations/native-backend-plugins/ray_plugin,https://w
 www.union.ai/docs/flyte/integrations/native-backend-plugins/ray_plugin/ray_example,https://www.union.ai/docs/flyte/integrations/native-backend-plugins/ray-plugin/ray-example,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/flyte/user-guide/about-flyte,https://www.union.ai/docs/flyte/user-guide/introduction,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/flyte/user-guide/development-cycle/details-of-pyflyte-run,https://www.union.ai/docs/flyte/user-guide/development-cycle/run-details,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/flyte/user-guide/development-cycle/flyte-remote,https://www.union.ai/docs/flyte/user-guide/development-cycle/remote-management,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/flyte/user-guide/development-cycle/flyte-remote/flyte-remote-examples,https://www.union.ai/docs/flyte/user-guide/development-cycle/remote-management/remote-examples,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/flyte/user-guide/integrations,https://www.union.ai/docs/flyte/integrations,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/flyte/user-guide/integrations/agents,https://www.union.ai/docs/flyte/integrations/connectors,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/flyte/user-guide/integrations/agents/airflow-agent,https://www.union.ai/docs/flyte/integrations/connectors/airflow-connector,302,TRUE,FALSE,TRUE,TRUE
@@ -842,6 +846,8 @@ www.union.ai/docs/flyte/user-guide/integrations/agents/snowflake-agent/snowflake
 www.union.ai/docs/flyte/user-guide/integrations/agents/snowflake-agent/snowflake-connector-example,https://www.union.ai/docs/flyte/integrations/connectors/snowflake-connector/snowflake-connector-example-usage,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/selfmanaged/user-guide/about-union,https://www.union.ai/docs/selfmanaged/user-guide/introduction,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/selfmanaged/user-guide/development-cycle/details-of-union-run,https://www.union.ai/docs/selfmanaged/user-guide/development-cycle/run-details,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/selfmanaged/user-guide/development-cycle/union-remote,https://www.union.ai/docs/selfmanaged/user-guide/development-cycle/remote-management,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/selfmanaged/user-guide/development-cycle/union-remote/union-remote-examples,https://www.union.ai/docs/selfmanaged/user-guide/development-cycle/remote-management/remote-examples,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/serverless/tutorials/language-models/agentic-rag,https://www.union.ai/docs/serverless/tutorials/retrieval-augmented-generation/agentic-rag,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/serverless/tutorials/language-models/contextual-rag,https://www.union.ai/docs/serverless/tutorials/retrieval-augmented-generation/contextual-rag,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/serverless/tutorials/language-models/llama_edge_deployment,https://www.union.ai/docs/serverless/tutorials/serving/llama_edge_deployment,302,TRUE,FALSE,TRUE,TRUE
@@ -851,3 +857,5 @@ www.union.ai/docs/serverless/tutorials/language-models/vllm-serving-on-actor,htt
 www.union.ai/docs/serverless/tutorials/multimodal-ai/video-dubbing,https://www.union.ai/docs/serverless/tutorials/compound-ai-systems/video-dubbing,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/serverless/user-guide/about-union,https://www.union.ai/docs/serverless/user-guide/introduction,302,TRUE,FALSE,TRUE,TRUE
 www.union.ai/docs/serverless/user-guide/development-cycle/details-of-union-run,https://www.union.ai/docs/serverless/user-guide/development-cycle/run-details,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/serverless/user-guide/development-cycle/union-remote,https://www.union.ai/docs/serverless/user-guide/development-cycle/remote-management,302,TRUE,FALSE,TRUE,TRUE
+www.union.ai/docs/serverless/user-guide/development-cycle/union-remote/union-remote-examples,https://www.union.ai/docs/serverless/user-guide/development-cycle/remote-management/remote-examples,302,TRUE,FALSE,TRUE,TRUE

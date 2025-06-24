@@ -1,7 +1,7 @@
 ---
-title: UnionRemote examples
+title: Remote examples
 weight: 1
-variants: -flyte +serverless +byoc +selfmanaged
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # {{< key kit_remote >}} examples
@@ -64,9 +64,18 @@ The output is also be available via the UI, in the **Outputs** tab of the `creat
 
 ![Outputs](../../../_static/images/user-guide/development-cycle/union-remote/outputs.png)
 
+{{< variant serverless byoc selfmanaged >}}
+{{< markdown >}}
 The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
-For more options and details see [API reference > {{< key kit_remote >}} > Entrypoint]().
-<!-- TODO: Add link to API -->
+For more options and details see [API reference > {{< key kit_remote >}}](../../../api-reference/union-sdk/packages/union.remote).
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+The steps above demonstrates the simplest way of registering and running a workflow with `{{< key kit_remote >}}`.
+For more options and details see [API reference > {{< key kit_remote >}}](../../../api-reference/flytekit-sdk/packages/flytekit.remote.remote).
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Fetching outputs
 
