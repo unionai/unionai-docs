@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b14
+version: 0.2.0b15.dev17+g58ccfeb.d20250624
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -54,6 +54,7 @@ async def my_task():
 |-|-|
 | [`GPU()`](#gpu) | Create a GPU device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
+| [`build()`](#build) | Build an image. |
 | [`ctx()`](#ctx) | Retrieve the current task context from the context variable. |
 | [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
 | [`group()`](#group) | Create a new group with the given name. |
@@ -106,6 +107,29 @@ Create a TPU device instance.
 |-|-|
 | `device` | `typing.Literal['V5P', 'V6E']` |
 | `partition` | `typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType]` |
+
+#### build()
+
+```python
+def build(
+    image: Image,
+) -> str
+```
+Build an image. The existing async context will be used.
+
+Example:
+```
+import flyte
+image = flyte.Image("example_image")
+if __name__ == "__main__":
+    asyncio.run(flyte.build.aio(image))
+```
+
+
+
+| Parameter | Type |
+|-|-|
+| `image` | `Image` |
 
 #### ctx()
 
@@ -459,7 +483,7 @@ class Device(
 ```python
 class Environment(
     name: str,
-    env_dep_hints: List[Environment],
+    depends_on: List[Environment],
     pod_template: Optional[Union[str, 'V1PodTemplate']],
     description: Optional[str],
     secrets: Optional[SecretRequest],
@@ -471,7 +495,7 @@ class Environment(
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
-| `env_dep_hints` | `List[Environment]` |
+| `depends_on` | `List[Environment]` |
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
@@ -510,7 +534,7 @@ def clone_with(
     resources: Optional[Resources],
     env: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
-    env_dep_hints: Optional[List[Environment]],
+    depends_on: Optional[List[Environment]],
     kwargs: **kwargs,
 ) -> Environment
 ```
@@ -521,7 +545,7 @@ def clone_with(
 | `resources` | `Optional[Resources]` |
 | `env` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
-| `env_dep_hints` | `Optional[List[Environment]]` |
+| `depends_on` | `Optional[List[Environment]]` |
 | `kwargs` | `**kwargs` |
 
 ## flyte.Image
@@ -546,9 +570,7 @@ class Image(
     registry: Optional[str],
     name: Optional[str],
     platform: Tuple[Architecture, ...],
-    tag: Optional[str],
     python_version: Tuple[int, int],
-    is_final: bool,
     _layers: Tuple[Layer, ...],
 )
 ```
@@ -559,26 +581,22 @@ class Image(
 | `registry` | `Optional[str]` |
 | `name` | `Optional[str]` |
 | `platform` | `Tuple[Architecture, ...]` |
-| `tag` | `Optional[str]` |
 | `python_version` | `Tuple[int, int]` |
-| `is_final` | `bool` |
 | `_layers` | `Tuple[Layer, ...]` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`auto()`](#auto) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`clone()`](#clone) | Use this method to clone the current image and change the registry and name. |
+| [`from_base()`](#from_base) | Use this method to start with a pre-built base image. |
+| [`from_debian_base()`](#from_debian_base) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`from_dockerfile()`](#from_dockerfile) | Use this method to create a new image with the specified dockerfile. |
-| [`from_prebuilt()`](#from_prebuilt) | Use this method to start with a pre-built base image. |
-| [`from_uv_debian()`](#from_uv_debian) | This creates a new debian-based base image. |
 | [`from_uv_script()`](#from_uv_script) | Use this method to create a new image with the specified uv script. |
 | [`validate()`](#validate) |  |
 | [`with_apt_packages()`](#with_apt_packages) | Use this method to create a new image with the specified apt packages layered on top of the current image. |
 | [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image. |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
-| [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
 | [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file layered on top of the current image. |
@@ -586,28 +604,6 @@ class Image(
 | [`with_uv_project()`](#with_uv_project) | Use this method to create a new image with the specified uv. |
 | [`with_workdir()`](#with_workdir) | Use this method to create a new image with the specified working directory. |
 
-
-#### auto()
-
-```python
-def auto(
-    python_version: Optional[Tuple[int, int]],
-    flyte_version: Optional[str],
-    registry: Optional[str],
-    name: Optional[str],
-) -> Image
-```
-Use this method to start using the default base image, built from this library's base Dockerfile
-Default images are multi-arch amd/arm64
-
-
-
-| Parameter | Type |
-|-|-|
-| `python_version` | `Optional[Tuple[int, int]]` |
-| `flyte_version` | `Optional[str]` |
-| `registry` | `Optional[str]` |
-| `name` | `Optional[str]` |
 
 #### clone()
 
@@ -628,31 +624,10 @@ Use this method to clone the current image and change the registry and name
 | `name` | `Optional[str]` |
 | `addl_layer` | `Optional[Layer]` |
 
-#### from_dockerfile()
+#### from_base()
 
 ```python
-def from_dockerfile(
-    file: Path,
-    registry: str,
-    name: str,
-    tag: Optional[str],
-) -> Image
-```
-Use this method to create a new image with the specified dockerfile
-
-
-
-| Parameter | Type |
-|-|-|
-| `file` | `Path` |
-| `registry` | `str` |
-| `name` | `str` |
-| `tag` | `Optional[str]` |
-
-#### from_prebuilt()
-
-```python
-def from_prebuilt(
+def from_base(
     image_uri: str,
 ) -> Image
 ```
@@ -664,29 +639,46 @@ Use this method to start with a pre-built base image. This image must already ex
 |-|-|
 | `image_uri` | `str` |
 
-#### from_uv_debian()
+#### from_debian_base()
 
 ```python
-def from_uv_debian(
-    registry: str,
-    name: str,
-    tag: Optional[str],
+def from_debian_base(
     python_version: Optional[Tuple[int, int]],
-    arch: Union[Architecture, Tuple[Architecture, ...]],
+    flyte_version: Optional[str],
+    registry: Optional[str],
+    name: Optional[str],
 ) -> Image
 ```
-This creates a new debian-based base image.
-If using the Union or docker builders, image will have uv available and a virtualenv created at /opt/venv.
+Use this method to start using the default base image, built from this library's base Dockerfile
+Default images are multi-arch amd/arm64
 
 
 
 | Parameter | Type |
 |-|-|
+| `python_version` | `Optional[Tuple[int, int]]` |
+| `flyte_version` | `Optional[str]` |
+| `registry` | `Optional[str]` |
+| `name` | `Optional[str]` |
+
+#### from_dockerfile()
+
+```python
+def from_dockerfile(
+    file: Path,
+    registry: str,
+    name: str,
+) -> Image
+```
+Use this method to create a new image with the specified dockerfile
+
+
+
+| Parameter | Type |
+|-|-|
+| `file` | `Path` |
 | `registry` | `str` |
 | `name` | `str` |
-| `tag` | `Optional[str]` |
-| `python_version` | `Optional[Tuple[int, int]]` |
-| `arch` | `Union[Architecture, Tuple[Architecture, ...]]` |
 
 #### from_uv_script()
 
@@ -735,7 +727,7 @@ def validate()
 
 ```python
 def with_apt_packages(
-    packages: Union[str, List[str], Tuple[str, ...]],
+    packages: str,
 ) -> Image
 ```
 Use this method to create a new image with the specified apt packages layered on top of the current image
@@ -744,7 +736,7 @@ Use this method to create a new image with the specified apt packages layered on
 
 | Parameter | Type |
 |-|-|
-| `packages` | `Union[str, List[str], Tuple[str, ...]]` |
+| `packages` | `str` |
 
 #### with_commands()
 
@@ -778,22 +770,11 @@ the current image. Cannot be used in conjunction with conda
 |-|-|
 | `env_vars` | `Dict[str, str]` |
 
-#### with_local_v2()
-
-```python
-def with_local_v2()
-```
-Use this method to create a new image with the local v2 builder
-This will override any existing builder
-
-:return: Image
-
-
 #### with_pip_packages()
 
 ```python
 def with_pip_packages(
-    packages: Union[str, List[str], Tuple[str, ...]],
+    packages: str,
     index_url: Optional[str],
     extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
     pre: bool,
@@ -807,7 +788,7 @@ Example:
 ```python
 @flyte.task(image=(flyte.Image
                 .ubuntu_python()
-                .with_pip_packages(["requests", "numpy"])))
+                .with_pip_packages("requests", "numpy")))
 def my_task(x: int) -> int:
     import numpy as np
     return np.sum([x, 1])
@@ -817,7 +798,7 @@ def my_task(x: int) -> int:
 
 | Parameter | Type |
 |-|-|
-| `packages` | `Union[str, List[str], Tuple[str, ...]]` |
+| `packages` | `str` |
 | `index_url` | `Optional[str]` |
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
 | `pre` | `bool` |
@@ -1108,7 +1089,7 @@ async def my_task():
 ```python
 class TaskEnvironment(
     name: str,
-    env_dep_hints: List[Environment],
+    depends_on: List[Environment],
     pod_template: Optional[Union[str, 'V1PodTemplate']],
     description: Optional[str],
     secrets: Optional[SecretRequest],
@@ -1122,7 +1103,7 @@ class TaskEnvironment(
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
-| `env_dep_hints` | `List[Environment]` |
+| `depends_on` | `List[Environment]` |
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
@@ -1179,7 +1160,7 @@ def clone_with(
     resources: Optional[Resources],
     env: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
-    env_dep_hints: Optional[List[Environment]],
+    depends_on: Optional[List[Environment]],
     kwargs: **kwargs,
 ) -> TaskEnvironment
 ```
@@ -1194,7 +1175,7 @@ besides the base environment parameters, you can override, kwargs like `cache`, 
 | `resources` | `Optional[Resources]` |
 | `env` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
-| `env_dep_hints` | `Optional[List[Environment]]` |
+| `depends_on` | `Optional[List[Environment]]` |
 | `kwargs` | `**kwargs` |
 
 #### task()

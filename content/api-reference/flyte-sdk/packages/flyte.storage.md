@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 0.2.0b14
+version: 0.2.0b15.dev17+g58ccfeb.d20250624
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,6 +23,7 @@ layout: py_api
 | Method | Description |
 |-|-|
 | [`get()`](#get) |  |
+| [`get_configured_fsspec_kwargs()`](#get_configured_fsspec_kwargs) |  |
 | [`get_random_local_directory()`](#get_random_local_directory) | :return: a random directory. |
 | [`get_random_local_path()`](#get_random_local_path) | Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name. |
 | [`get_stream()`](#get_stream) | Get a stream of data from a remote location. |
@@ -51,6 +52,19 @@ def get(
 | `to_path` | `typing.Union[str, pathlib._local.Path, NoneType]` |
 | `recursive` | `bool` |
 | `kwargs` | `**kwargs` |
+
+#### get_configured_fsspec_kwargs()
+
+```python
+def get_configured_fsspec_kwargs(
+    protocol: typing.Optional[str],
+    anonymous: bool,
+) -> typing.Dict[str, typing.Any]
+```
+| Parameter | Type |
+|-|-|
+| `protocol` | `typing.Optional[str]` |
+| `anonymous` | `bool` |
 
 #### get_random_local_directory()
 

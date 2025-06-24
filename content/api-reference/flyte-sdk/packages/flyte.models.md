@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 0.2.0b14
+version: 0.2.0b15.dev17+g58ccfeb.d20250624
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -199,6 +199,7 @@ class NativeInterface(
     inputs: Dict[str, Tuple[Type, Any]],
     outputs: Dict[str, Type],
     docstring: Optional[Docstring],
+    _remote_defaults: Optional[Dict[str, literals_pb2.Literal]],
 )
 ```
 | Parameter | Type |
@@ -206,6 +207,7 @@ class NativeInterface(
 | `inputs` | `Dict[str, Tuple[Type, Any]]` |
 | `outputs` | `Dict[str, Type]` |
 | `docstring` | `Optional[Docstring]` |
+| `_remote_defaults` | `Optional[Dict[str, literals_pb2.Literal]]` |
 
 ### Methods
 
@@ -216,6 +218,7 @@ class NativeInterface(
 | [`from_types()`](#from_types) | Create a new NativeInterface from the given types. |
 | [`get_input_types()`](#get_input_types) | Get the input types for the task. |
 | [`has_outputs()`](#has_outputs) | Check if the task has outputs. |
+| [`num_required_inputs()`](#num_required_inputs) | Get the number of required inputs for the task. |
 
 
 #### convert_to_kwargs()
@@ -253,8 +256,9 @@ Extract the native interface from the given function. This is used to create a n
 
 ```python
 def from_types(
-    inputs: Dict[str, Type],
+    inputs: Dict[str, Tuple[Type, Type[_has_default] | Type[inspect._empty]]],
     outputs: Dict[str, Type],
+    default_inputs: Optional[Dict[str, literals_pb2.Literal]],
 ) -> NativeInterface
 ```
 Create a new NativeInterface from the given types. This is used to create a native interface for the task.
@@ -262,8 +266,9 @@ Create a new NativeInterface from the given types. This is used to create a nati
 
 | Parameter | Type |
 |-|-|
-| `inputs` | `Dict[str, Type]` |
+| `inputs` | `Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]` |
 | `outputs` | `Dict[str, Type]` |
+| `default_inputs` | `Optional[Dict[str, literals_pb2.Literal]]` |
 
 #### get_input_types()
 
@@ -279,6 +284,15 @@ Get the input types for the task. This is used to get the types of the inputs fo
 def has_outputs()
 ```
 Check if the task has outputs. This is used to determine if the task has outputs or not.
+
+
+#### num_required_inputs()
+
+```python
+def num_required_inputs()
+```
+Get the number of required inputs for the task. This is used to determine how many inputs are required for the
+task execution.
 
 
 ## flyte.models.RawDataPath

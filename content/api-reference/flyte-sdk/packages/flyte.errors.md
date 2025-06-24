@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 0.2.0b14
+version: 0.2.0b15.dev17+g58ccfeb.d20250624
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,6 +22,7 @@ unknown error.
 | [`ActionNotFoundError`](.././flyte.errors#flyteerrorsactionnotfounderror) | This error is raised when the user tries to access an action that does not exist. |
 | [`BaseRuntimeError`](.././flyte.errors#flyteerrorsbaseruntimeerror) | Base class for all Union runtime errors. |
 | [`CustomError`](.././flyte.errors#flyteerrorscustomerror) | This error is raised when the user raises a custom error. |
+| [`DeploymentError`](.././flyte.errors#flyteerrorsdeploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
 | [`ImagePullBackOffError`](.././flyte.errors#flyteerrorsimagepullbackofferror) | This error is raised when the image cannot be pulled. |
 | [`InitializationError`](.././flyte.errors#flyteerrorsinitializationerror) | This error is raised when the Union system is tried to access without being initialized. |
 | [`InvalidImageNameError`](.././flyte.errors#flyteerrorsinvalidimagenameerror) | This error is raised when the image name is invalid. |
@@ -102,6 +103,20 @@ message is used as the error message.
 | Parameter | Type |
 |-|-|
 | `e` | `Exception` |
+
+## flyte.errors.DeploymentError
+
+This error is raised when the deployment of a task fails, or some preconditions for deployment are not met.
+
+
+```python
+class DeploymentError(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
 
 ## flyte.errors.ImagePullBackOffError
 

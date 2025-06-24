@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 0.2.0b14
+version: 0.2.0b15.dev17+g58ccfeb.d20250624
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,6 +24,7 @@ layout: py_api
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors#flyteerrorsactionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors#flyteerrorsbaseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors#flyteerrorscustomerror) |This error is raised when the user raises a custom error. |
+| [`flyte.errors.DeploymentError`](../packages/flyte.errors#flyteerrorsdeploymenterror) |This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
 | [`flyte.errors.ImagePullBackOffError`](../packages/flyte.errors#flyteerrorsimagepullbackofferror) |This error is raised when the image cannot be pulled. |
 | [`flyte.errors.InitializationError`](../packages/flyte.errors#flyteerrorsinitializationerror) |This error is raised when the Union system is tried to access without being initialized. |
 | [`flyte.errors.InvalidImageNameError`](../packages/flyte.errors#flyteerrorsinvalidimagenameerror) |This error is raised when the image name is invalid. |
