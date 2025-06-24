@@ -26,14 +26,18 @@ This works well if you have a pre-built image available in a public registry lik
 
 But, in many cases, you will want to build your own custom image that includes the dependencies required by your task, and you want to do that in as convenient a way as possible.
 
-With Flyte you can do it right in your Python code, using the [`Image`](../api-reference/flyte-sdk/packages/flyte#flyteimage) object.
+With Flyte you can do it right in your Python code, using the [`Image`](../api-reference/flyte-sdk/packages/flyte#flyteimage) object and [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
+
+## Example
 
 Here is an example:
 
 {{< code file="/external/migrate-to-unionai-examples-flyte2/container_images.py" lang="python" >}}
 
-Here we leverage [`uv` inline script metadata](https://docs.astral.sh/uv/inline-scripts) to specify the dependencies required by our task.
-You simply add a comment at the top of your script as shown above, that includes your dependencies, and then use the `flyte.Image.from_uv_script` method to create a `flyte.Image` object.
+First, specify your dependencies using [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
+Simply add a comment at the top of your script as shown above, that includes your dependencies.
+
+Next, use the `flyte.Image.from_uv_script` method to create a [`flyte.Image`](../api-reference/flyte-sdk/packages/flyte#flyteimage) object.
 
 ## Image building
 
@@ -47,35 +51,33 @@ You must ensure that:
 * You have successfully run `docker login` to that registry from your local machine (GitHub uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
 * Your Flyte/Union installation has read access to that registry.
 
-Note that if using GitHub Packages (i.e. `ghcr.io`), you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image. Note that public images are on the public internet and should only be used for testing purposes. Do not place proprietary code in public images.
+Note that images pushed to `ghcr.io` are private by default.
+If using GitHub Packages (i.e. `ghcr.io`), you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image.
 
-## Image pulling
+> [!NOTE]
+> Public images are on the public internet and should only be used for testing purposes.
+> Do not place proprietary code in public images.)
 
-Once the image is built and pushed to the registry, Flyte will deploy your code to your Flyte/Union instance.
-Before a task is executed, Flyte pulls the image from the registry in preparation for running the task in a container based on that image.
-This is why you need to ensure that your Flyte/Union instance has access to the registry where your image is stored. Note that images pushed to `ghcr.io` are private by default.
+Once the image is built and pushed to the registry, Flyte will deploy your code to your backend.
+When a Flyte task is executed, The backend pulls the image from the registry to set up the container for that task.
 
-## Example
+## uv run
 
-To run the above script, ensure you are in a virtual environment and install the dependencies locally:
-
-```shell
-uv pip install polars
-```
-
-Next, with the docker daemon running on your local machine, run the script:
+To run the script, use the `uv run` command:
 
 ```shell
 uv run --prerelease=allow container_images.py
 ```
 
-Your terminal will show something like the following:
+[`uv run`](https://docs.astral.sh/uv/reference/cli/#uv-run) will read the [inline script metadata](https://docs.astral.sh/uv/guides/scripts/#running-a-script-with-dependencies), create an on-demand virtual environment, install the dependencies, and then execute the Flyte code.
+
+In your terminal you should see something like this:
 
 ```shell
-(unionv2) johnvotta@JV---Work unionv2 % uv run --prerelease=allow container_images.py
+$ uv run --prerelease=allow container_images.py
 Reading inline script metadata from `container_images.py`
 [flyte] Temporary directory: /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
-Run command: docker buildx build --builder flytex --tag ghcr.io/jpvotta/flyte:d1c1a0a9c3e65c329bae976afddea670 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
+Run command: docker buildx build --builder flytex --tag ghcr.io/myregistry/flyte:d1c1a0a9c3e65c329bae976afddea670 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
 
 ...
 

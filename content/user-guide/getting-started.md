@@ -68,7 +68,7 @@ flyte run hello.py main --x_list '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]'
 You should see an output like this:
 
 ```shell
-(unionv2) johnvotta@JV---Work unionv2 % python hello.py
+$ python hello.py
 cg9s54pksbjsdxlz2gmc
 https://playground.canary.unionai.cloud/v2/runs/project/flytesnacks/domain/development/cg9s54pksbjsdxlz2gmc
 Run 'a0' completed successfully.
