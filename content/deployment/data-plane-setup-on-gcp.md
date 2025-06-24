@@ -190,14 +190,6 @@ $ gcloud services enable sqladmin.googleapis.com
 $ gcloud services enable storage-api.googleapis.com
 ```
 
-## Export Workflow Identity Config
-
-1. Go to the newly created [workload identity pool](https://console.cloud.google.com/iam-admin/workload-identity-pools/pool/unionai) page.
-2. Select **Connected Service Accounts** in the right pane.
-3. Select **Download** under **Client Library Config**.
-4. Send the downloaded file to the {{< key product_name >}} Team to complete the setup process.
-   There are no secrets stored in this file.
-
 ## Setting up and managing your own VPC (optional)
 
 If you decide to manage your own VPC instead of leaving it to {{< key product_name >}}, then you will need to set it up yourself.
