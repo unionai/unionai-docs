@@ -41,6 +41,9 @@ that is, the same configuration as would be used by the {{< key cli_name >}} CLI
 
 In the default case, as with the {{< key cli_name >}} CLI, all operations will be applied to the default project, `{{< key default_project >}}` and default domain, `development`.
 
+{{< variant byoc selfmanaged flyte >}}
+{{< markdown >}}
+
 Alternatively, you can initialize `{{< key kit_remote >}}` by explicitly specifying a `flytekit.configuration.Config` object with connection information to a {{< key product_name >}} instance, a project, and a domain. Additionall, the constructor supports specifying a file upload location (equivalent to a default raw data prefix):
 
 ```python
