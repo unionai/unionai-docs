@@ -1,6 +1,6 @@
 ---
 title: Flyte v2 SDK
-weight: 20
+weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
