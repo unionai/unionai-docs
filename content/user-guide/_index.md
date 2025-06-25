@@ -54,6 +54,11 @@ Flyte v2 provides a new and powerful way author and run workflows and apps on yo
 Build your first Flyte workflow.
 {{< /link-card >}}
 
+{{< link-card target="configuring-and-running" icon="gear" title="Configuring and running" >}}
+Configure and run your Flyte code.
+{{< /link-card >}}
+
+
 {{< link-card target="task-environments" icon="thermometer-sun" title="Task environments" >}}
 Task environments define the resources and dependencies for your tasks.
 {{< /link-card >}}

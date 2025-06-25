@@ -1,6 +1,6 @@
 ---
 title: Getting started
-weight: 10
+weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
