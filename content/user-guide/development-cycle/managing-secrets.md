@@ -15,7 +15,7 @@ You can use secrets to interact with external services.
 To create a secret, use the `{{< key cli >}} create secret` command:
 
 ```shell
-$ {{< key cli >}} create secret --project my_project --domain my_domain my_secret
+$ {{< key cli >}} create secret my_secret_name
 ```
 
 You'll be prompted to enter a secret value in the terminal:
@@ -29,21 +29,44 @@ Enter secret value: ...
 To create a secret from a file, run the following command:
 
 ```shell
-$ {{< key cli >}} create secret --project my_project --domain my_domain my_file_secret -f /path/to/file
+$ {{< key cli >}} create secret my_secret_name -f /path/to/secret_file
+```
+
+### Scoping secrets
+
+When you create a secret without specifying a project or domain, as we did above, the secret is scoped to the organization level. This means that the secret will be available across all projects and domains in the organization.
+
+You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
+* A specific project (across all domains)
+* A specific domain (across all project)
+* A specific project and a specific domain.
+
+For example, to create a secret so that it is only available to workflows in `my_project/development`, you would run:
+
+```shell
+$ {{< key cli >}} create secret my_secret_name --project my_project --domain development
 ```
 
 ## Listing secrets
 
-You can list existing secrets with the `{{< key cli >}} get secret` command:
+You can list existing secrets with the `{{< key cli >}} get secret` command.
+For example the following command will list all secrets in the organization:
 
 ```shell
-$ {{< key cli >}} get secret --project my_project --domain my_domain
+$ {{< key cli >}} get secret
+```
+
+Specifying either or both of the `--project` and `--domain` flags will list the secrets that are **only** available in that project and/or domain.
+
+For example, to list the secrets that are only available in `my_project` and domain `development`, you would run:
+
+```shell
+$ {{< key cli >}} get secret --project my_project --domain development
 ```
 
 ## Using secrets in workflow code
 
-Note that secrets are stored per project/domain pair.
-A workflow can only access secrets created within its own project and domain.
+Note that a workflow can only access secrets whose scope includes the project and domain of the workflow.
 
 ### Using a secret created on the command line
 
