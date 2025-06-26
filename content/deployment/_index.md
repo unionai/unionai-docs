@@ -1,6 +1,6 @@
 ---
 title: Deployment
-weight: 4
+weight: 1
 variants: +flyte -serverless +byoc +selfmanaged
 top_menu: true
 mermaid: true
