@@ -36,8 +36,7 @@ $ {{< key cli >}} create secret my_secret_name -f /path/to/secret_file
 
 When you create a secret without specifying a project or domain, as we did above, the secret is scoped to the organization level. This means that the secret will be available across all projects and domains in the organization.
 
-You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to
-
+You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
 * A specific project (across all domains)
 * A specific domain (across all project)
 * A specific project and a specific domain.
@@ -57,9 +56,9 @@ For example the following command will list all secrets in the organization:
 $ {{< key cli >}} get secret
 ```
 
-Specifying either or both of the `--project` and `--domain` flags will list the secrets that are **only** aailable in that project and/or domain.
+Specifying either or both of the `--project` and `--domain` flags will list the secrets that are **only** available in that project and/or domain.
 
-For example, to list the secrets are only available in `my_project` and domain `development`, you would run:
+For example, to list the secrets that are only available in `my_project` and domain `development`, you would run:
 
 ```shell
 $ {{< key cli >}} get secret --project my_project --domain development
