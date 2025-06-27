@@ -1,6 +1,6 @@
 ---
 title: Data plane setup on OCI
-weight: 4
+weight: 6
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
