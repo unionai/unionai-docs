@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b16
+version: 0.2.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -55,6 +55,7 @@ async def my_task():
 | [`GPU()`](#gpu) | Create a GPU device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
+| [`build_images()`](#build_images) | Build the images for the given environments. |
 | [`ctx()`](#ctx) | Retrieve the current task context from the context variable. |
 | [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
 | [`group()`](#group) | Create a new group with the given name. |
@@ -130,6 +131,20 @@ if __name__ == "__main__":
 | Parameter | Type |
 |-|-|
 | `image` | `Image` |
+
+#### build_images()
+
+```python
+def build_images(
+    envs: Environment,
+) -> ImageCache
+```
+Build the images for the given environments.
+
+
+| Parameter | Type |
+|-|-|
+| `envs` | `Environment` |
 
 #### ctx()
 
@@ -211,6 +226,7 @@ def init(
     http_proxy_url: str | None,
     storage: Storage | None,
     batch_size: int,
+    image_builder: ImageBuildEngine.ImageBuilderType,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -241,6 +257,7 @@ remote API methods are called. Thread-safe implementation.
 | `http_proxy_url` | `str \| None` |
 | `storage` | `Storage \| None` |
 | `batch_size` | `int` |
+| `image_builder` | `ImageBuildEngine.ImageBuilderType` |
 
 #### init_from_config()
 
@@ -310,6 +327,13 @@ def with_runcontext(
     raw_data_path: str | None,
     run_base_dir: str | None,
     overwrite_cache: bool,
+    project: str | None,
+    domain: str | None,
+    env: Dict[str, str] | None,
+    labels: Dict[str, str] | None,
+    annotations: Dict[str, str] | None,
+    interruptible: bool,
+    log_level: int | None,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -342,6 +366,13 @@ if __name__ == "__main__":
 | `raw_data_path` | `str \| None` |
 | `run_base_dir` | `str \| None` |
 | `overwrite_cache` | `bool` |
+| `project` | `str \| None` |
+| `domain` | `str \| None` |
+| `env` | `Dict[str, str] \| None` |
+| `labels` | `Dict[str, str] \| None` |
+| `annotations` | `Dict[str, str] \| None` |
+| `interruptible` | `bool` |
+| `log_level` | `int \| None` |
 
 ## flyte.Cache
 
@@ -808,7 +839,7 @@ def my_task(x: int) -> int:
 
 ```python
 def with_requirements(
-    file: Path,
+    file: str | Path,
 ) -> Image
 ```
 Use this method to create a new image with the specified requirements file layered on top of the current image
@@ -818,14 +849,14 @@ Cannot be used in conjunction with conda
 
 | Parameter | Type |
 |-|-|
-| `file` | `Path` |
+| `file` | `str \| Path` |
 
 #### with_source_file()
 
 ```python
 def with_source_file(
-    context_source: Path,
-    image_dest: Optional[str],
+    src: Path,
+    dst: str,
 ) -> Image
 ```
 Use this method to create a new image with the specified local file layered on top of the current image.
@@ -835,15 +866,15 @@ If dest is not specified, it will be copied to the working directory of the imag
 
 | Parameter | Type |
 |-|-|
-| `context_source` | `Path` |
-| `image_dest` | `Optional[str]` |
+| `src` | `Path` |
+| `dst` | `str` |
 
 #### with_source_folder()
 
 ```python
 def with_source_folder(
-    context_source: Path,
-    image_dest: Optional[str],
+    src: Path,
+    dst: str,
 ) -> Image
 ```
 Use this method to create a new image with the specified local directory layered on top of the current image.
@@ -853,8 +884,8 @@ If dest is not specified, it will be copied to the working directory of the imag
 
 | Parameter | Type |
 |-|-|
-| `context_source` | `Path` |
-| `image_dest` | `Optional[str]` |
+| `src` | `Path` |
+| `dst` | `str` |
 
 #### with_uv_project()
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 0.2.0b16
+version: 0.2.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -406,19 +406,10 @@ class Run(
 
 | Method | Description |
 |-|-|
-| [`details()`](#details) | Get the details of the run. |
 | [`done()`](#done) | Check if the run is done. |
 | [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the run with the remote server. |
 | [`watch()`](#watch) | Get the details of the run. |
-
-
-#### details()
-
-```python
-def details()
-```
-Get the details of the run. This is a placeholder for getting the run details.
 
 
 #### done()
@@ -584,6 +575,8 @@ class Task(
 ```python
 def get(
     name: str,
+    project: str | None,
+    domain: str | None,
     version: str | None,
     auto_version: AutoVersioning | None,
 ) -> LazyEntity
@@ -597,6 +590,8 @@ Either version or auto_version are required parameters.
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
+| `project` | `str \| None` |
+| `domain` | `str \| None` |
 | `version` | `str \| None` |
 | `auto_version` | `AutoVersioning \| None` |
 

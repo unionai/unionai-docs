@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 0.2.0b16
+version: 0.2.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -82,6 +82,7 @@ this object holds all the config necessary to
 class Config(
     platform: PlatformConfig,
     task: TaskConfig,
+    image: ImageConfig,
     source: pathlib.Path | None,
 )
 ```
@@ -89,6 +90,7 @@ class Config(
 |-|-|
 | `platform` | `PlatformConfig` |
 | `task` | `TaskConfig` |
+| `image` | `ImageConfig` |
 | `source` | `pathlib.Path \| None` |
 
 ### Methods
@@ -123,10 +125,12 @@ Automatically constructs the Config Object. The order of precedence is as follow
 def with_params(
     platform: PlatformConfig | None,
     task: TaskConfig | None,
+    image: ImageConfig | None,
 ) -> 'Config'
 ```
 | Parameter | Type |
 |-|-|
 | `platform` | `PlatformConfig \| None` |
 | `task` | `TaskConfig \| None` |
+| `image` | `ImageConfig \| None` |
 

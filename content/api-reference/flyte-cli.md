@@ -26,6 +26,7 @@ This is the command line interface for Flyte.
 | Action | On |
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
+| `build` |   |
 | `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret)  |
 | `delete` | [`secret`](#flyte-delete-secret)  |
 | `deploy` |   |
@@ -80,6 +81,7 @@ $ flyte --config /path/to/config.yaml run ...
 | `--org` | `text` |  | The organization to which the command applies. |
 | {{< multiline >}}`-c`
 `--config`{{< /multiline >}} | `path` |  | Path to the configuration file to use. If not specified, the default configuration file is used. |
+| `--simple` | `boolean` | `False` | Use a simple output format for commands that support it. This is useful for copying, pasting, and scripting. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
@@ -96,6 +98,16 @@ Abort a run.
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte build
+
+Build the environments defined in a python file or directory. This will build the images associated with the
+environments.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--noop` | `boolean` |  | Dummy parameter, placeholder for future use. Does not affect the build process. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte create
@@ -116,6 +128,8 @@ If the file already exists, it will raise an error unless the `--force` option i
 | {{< multiline >}}`-o`
 `--output`{{< /multiline >}} | `path` | `config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
+| {{< multiline >}}`--image-builder`
+`--builder`{{< /multiline >}} | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -186,7 +200,6 @@ This command will create or update environments in the Flyte system.
 | `--version` | `text` |  | Version of the environment to deploy |
 | {{< multiline >}}`--dry-run`
 `--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
-| `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
