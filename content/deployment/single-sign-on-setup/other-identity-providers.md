@@ -30,17 +30,17 @@ Now, referencing those directions, follow the steps below:
 1. Copy the public key provided by {{< key product_name >}} here:
     {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
 
-2. Go to [https://pgptool.org](https://pgptool.org/).
+2. Go to [https://pgptool.net](https://pgptool.net/).
 
-3. Click the **Encrypt** tab.
+3. Click the **Encrypt (+Sign)** tab.
 
-4. Upload the public key provided by {{< key product_name >}} under **Receiver's public key**.
+4. Enter public key in **Public Key (For Verification)** section.
 
-5. Skip the **Signer’s Private Key** section.
+5. Skip the **Private Key** section.
 
 6. Enter the **client secret** in plain text and encrypt it.
 
-7. Download the encrypted text and share it with the {{< key product_name >}} team over Slack.
+7. Save encypted text to a file and share with the {{< key product_name >}} team over Slack.
 
 8. Delete the client secret from the text file on your computer.
 
