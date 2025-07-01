@@ -64,7 +64,7 @@ Copy the **Value** of this secret to a plain text file on your computer.
 1. Copy the public key provided by {{< key product_name >}} here:
    {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
 
-2. Go to [https://pgptool.github.io](https://pgptool.github.io/).
+2. Go to [https://pgptool.net](https://pgptool.net/).
 
 3. Click the **Encrypt** tab.
 
