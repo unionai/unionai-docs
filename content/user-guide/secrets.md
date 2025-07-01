@@ -102,7 +102,7 @@ env = flyte.TaskEnvironment(
 
 @env.task
 def t1():
-    my_secret = os.getenv("MY_SECRET_ENV_VAR")
+    my_secret_value = os.getenv("MY_SECRET_ENV_VAR")
     # Do something with the secret
     ...
 ```
@@ -126,7 +126,7 @@ env = flyte.TaskEnvironment(
 @env.task
 def t1():
     with open("/root/my_secret_file", "r") as f:
-        secret_value = f.read()
+        my_secret_value = f.read()
     # Do something with the secret
     ...
 ```
