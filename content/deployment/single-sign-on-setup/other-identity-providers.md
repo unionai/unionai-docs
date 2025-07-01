@@ -30,7 +30,7 @@ Now, referencing those directions, follow the steps below:
 1. Copy the public key provided by {{< key product_name >}} here:
     {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
 
-2. Go to [https://pgptool.org](https://pgptool.org/).
+2. Go to [https://pgptool.github.io](https://pgptool.github.io/).
 
 3. Click the **Encrypt** tab.
 
