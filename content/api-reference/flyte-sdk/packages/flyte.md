@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b20
+version: 0.2.0b22
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -719,6 +719,10 @@ def from_uv_script(
     name: str,
     registry: str | None,
     python_version: Optional[Tuple[int, int]],
+    index_url: Optional[str],
+    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
+    pre: bool,
+    extra_args: Optional[str],
     arch: Union[Architecture, Tuple[Architecture, ...]],
 ) -> Image
 ```
@@ -747,6 +751,10 @@ For more information on the uv script format, see the documentation:
 | `name` | `str` |
 | `registry` | `str \| None` |
 | `python_version` | `Optional[Tuple[int, int]]` |
+| `index_url` | `Optional[str]` |
+| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
+| `pre` | `bool` |
+| `extra_args` | `Optional[str]` |
 | `arch` | `Union[Architecture, Tuple[Architecture, ...]]` |
 
 #### validate()
@@ -892,6 +900,10 @@ If dest is not specified, it will be copied to the working directory of the imag
 ```python
 def with_uv_project(
     pyproject_file: Path,
+    index_url: Optional[str],
+    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
+    pre: bool,
+    extra_args: Optional[str],
 ) -> Image
 ```
 Use this method to create a new image with the specified uv.lock file layered on top of the current image
@@ -904,6 +916,10 @@ In the Union builders, using this will change the virtual env to /root/.venv
 | Parameter | Type |
 |-|-|
 | `pyproject_file` | `Path` |
+| `index_url` | `Optional[str]` |
+| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
+| `pre` | `bool` |
+| `extra_args` | `Optional[str]` |
 
 #### with_workdir()
 

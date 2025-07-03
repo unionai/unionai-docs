@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 0.2.0b20
+version: 0.2.0b22
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
