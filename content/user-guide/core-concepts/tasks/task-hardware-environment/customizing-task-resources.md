@@ -73,12 +73,15 @@ The `accelerator` setting further specifies the *type* of GPU required for the t
 {{< markdown >}}
 
 The `accelerator` setting further specifies the *type* of specialized hardware required for the task.
-This may be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
+This can be a GPU, a specific variation of a GPU, a fractional GPU, or a different hardware device, such as a TPU.
 
 {{< /markdown >}}
 {{< /variant >}}
 
 See [Accelerators](./accelerators) for more information.
+
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
 
 ## Execution defaults and resource quotas
 
@@ -95,6 +98,9 @@ This will open a dialog:
 > An ephemeral storage default value of zero means that the task pod will consume storage on the node as needed.
 > This makes it possible for a pod to get evicted if a node doesn't have enough storage. If your tasks are built to rely on
 > ephemeral storage, we recommend being explicit with the ephemeral storage you request to avoid pod eviction.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
