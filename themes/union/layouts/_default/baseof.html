@@ -57,6 +57,7 @@
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB6L88S" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+    {{- partial "flyte-banner.html" . -}}
     <header>{{- partial "header.html" . -}}</header>
     <div class="tabs">{{- partial "tabs.html" (dict "page" .) -}}</div>
     <div class="container">

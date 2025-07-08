@@ -61,7 +61,7 @@ function handleVersionChange(event, queryString) {
     const oldBaseURL = "{{- .Site.BaseURL -}}";
     const isLatest = opt.getAttribute('data-latest') === 'true';
     let newPrefix;
-    
+
     if (isLatest) {
         // For latest version, use /docs/<variant>/
         newPrefix = `/docs/${currentVariant}/`;
@@ -69,7 +69,7 @@ function handleVersionChange(event, queryString) {
         // For specific version, use /docs/<version>/<variant>/
         newPrefix = `/docs/${newVersion}/${currentVariant}/`;
     }
-    
+
     // Replace the old base URL with the new one
     if (newTarget.pathname.includes(currentVariant)) {
         newTarget.pathname = newTarget.pathname.replace(oldBaseURL, newPrefix);
