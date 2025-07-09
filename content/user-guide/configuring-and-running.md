@@ -18,7 +18,7 @@ flyte create config \
     --endpoint <your-union-endpoint> \
     --project <default-project> \
     --domain <default-domain> \
-    --output <path-to-config-file>
+    --output <path-to-config-file> \
     --force
 ```
 
