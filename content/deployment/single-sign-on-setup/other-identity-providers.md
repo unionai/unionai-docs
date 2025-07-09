@@ -27,8 +27,11 @@ Now, referencing those directions, follow the steps below:
 
 ## Share the client secret securely with the {{< key product_name >}} team
 
-1. Copy the public key provided by {{< key product_name >}} here:
+1. Copy the public key provided by {{< key product_name >}} here: [public-key.txt](../../_static/public/public-key.txt)
+
+<!-- TODO add back when fixed
     {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
+-->
 
 2. Go to [https://pgptool.net](https://pgptool.net/).
 

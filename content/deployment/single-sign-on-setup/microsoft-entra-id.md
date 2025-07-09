@@ -61,9 +61,11 @@ Copy the **Value** of this secret to a plain text file on your computer.
 
 ## Share the client secret securely with {{< key product_name >}}
 
-1. Copy the public key provided by {{< key product_name >}} here:
-   {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
+1. Copy the public key provided by {{< key product_name >}} here: [public-key.txt](../../_static/public/public-key.txt)
 
+<!-- TODO add back when fixed
+   {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
+-->
 2. Go to [https://pgptool.net](https://pgptool.net/).
 
 3. Click the **Encrypt (+Sign)** tab.
