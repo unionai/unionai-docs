@@ -179,4 +179,4 @@ serverless = "favicon.ico"
 byoc = "favicon.ico"
 selfmanaged = "favicon.ico"
 
-# Plase DO NOT add new keys without documenting them the contributing guide in the same PR.
+# Please DO NOT add new keys without documenting them the contributing guide in the same PR.
