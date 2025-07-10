@@ -719,15 +719,15 @@ To deploy the Union operator in your EKS cluster and to perform troubleshooting 
 
 The requirements described so far, enable Union to operate with a `Public` or `Public and Private` EKS endpoint. 
 
-For endpoints configured as `Private` only, Union implements a VPC Endpoint connection over Private Link, using a "jumper" ECS container to forward incoming connections to the EKS API endpoint. This is needed to handle the EKS Endpoint dynamic IP allocation
+For endpoints configured as `Private` only, Union implements a VPC Endpoint connection over Private Link, using a "jumper" ECS container behind a Network Load Balancer to forward incoming connections to the EKS API endpoint. This is needed to handle the dynamic nature of the EKS Endpoint allocated IP address.
 
 ![](../_static/images/deployment/data-plane-setup-on-aws/aws_private_link_architecture.png)
 
 For this setup, there are additional requirements you'll need to complete in your AWS account:
 
-1. Create two additional roles for ECS:
+### Create additional roles for ECS
 
-### ECS Task Execution role
+#### ECS Task Execution role
 - **Role name**: `unionai-access-<REGION>-ecs-execution-role` 
 - **Attached policy**: `AmazonECSTaskExecutionRolePolicy` (built-in policy)
 - **Trust Relationship**:
@@ -746,7 +746,7 @@ For this setup, there are additional requirements you'll need to complete in you
 }
 ```
 
-### ECS Task Definition role
+#### ECS Task Definition role
 - **Role name**: `unionai-access-<REGION>-ecs-task-role`  
 - **Attached policy**: None 
 - **Trust Relationship**:
@@ -764,7 +764,9 @@ For this setup, there are additional requirements you'll need to complete in you
     ]
 }
 ```
-2. Add the following permissions to the IAM policy described in the [Prepare the policy document](#prepare-the-policy-documents) section , replacing `REGION` and `ACCOUNT_ID` to match your environment:
+### Extend the base IAM policy
+
+Add the following permissions to the IAM policy described in the [Prepare the policy document](#prepare-the-policy-documents) section , replacing `REGION` and `ACCOUNT_ID` to match your environment:
 
 ```json
 {
