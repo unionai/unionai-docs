@@ -826,7 +826,8 @@ Add the following permissions to the IAM policy described in the [Prepare the po
 				"ec2:ModifyVpcEndpointServiceConfiguration",
 				"ec2:AcceptVpcEndpointConnections",
 				"ec2:RejectVpcEndpointConnections",
-				"ec2:CreateTags"
+				"ec2:CreateTags",
+            "vpce:AllowMultiRegion"
 			],
 			"Resource": "arn:aws:ec2:<REGION>:<ACCOUNT_ID>:vpc-endpoint-service/*"
 		},
