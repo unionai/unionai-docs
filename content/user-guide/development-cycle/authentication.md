@@ -85,6 +85,14 @@ Steps to Set Up ClientSecret Authentication:
     ```
    With this environment variable set, `{{< key cli >}}` and `uctl` commands do not require a configuration yaml to be referenced.
 
+3. Give the API Key admin permissions:
+    ```
+    uctl --config ~/path/to/a/pkce/config.yaml append identityassignment --application my-custom-name --policy admin --org <org name>
+    ```
+   Let's note a couple of things here. First, the config file here must be [PKCE](./authentication#1-pkce-proof-key-of-code-exchange) which will require you to authenticate though your browser. If you don't know where your config file is, check `~/.union/config.yaml`. This is where the automatically generated config would have been saved if you followed the ["Getting Started"](../getting-started) guide. Second, your org name can be found from your endpoint. For example, if your endpoint is `https://my-org.hosted.unionai.cloud`, then your org name is `my-org`.
+
+Now, with your `{{< key env_prefix >}}_API_KEY` environment variable set, your `{{< key cli >}}` command will use the API key to authenticate automatically - no need to pass in a config file anymore!
+
 > [!NOTE]
 > Never commit API keys to version control. Use environment variables or a secure vault.
 
