@@ -366,6 +366,8 @@ $ {{< key cli >}} local-cache clear
 
 This removes the contents of the `~/.flyte/local-cache/` directory.
 
+Occasionally, you may want to disable the local cache for testing purposes, without making any code changes to your task decorators. You can set the `FLYTE_LOCAL_CACHE_ENABLED` environment variable to `false` in your terminal in order to bypass caching temporarily. 
+
 {{< /markdown >}}
 {{< /variant >}}
 
