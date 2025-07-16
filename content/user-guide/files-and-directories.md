@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Flyte provides the [`flyte.io.File`](../api-reference/flyte-sdk/packages/flyte.io#flyteiofile) and
 [`flyte.io.Dir`](../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and folders, respectively.
-Together with ([`flyte.io.StructuredDataset`](../api-reference/flyte-sdk/packages/flyte.io#flyteiostructureddataset) they constitute the *offloaded data types*.
+Together with [`flyte.io.StructuredDataset`](../api-reference/flyte-sdk/packages/flyte.io#flyteiostructureddataset) they constitute the *offloaded data types*.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
 The actual data is stored in the internal blob store of your Union/Flyte instance.
@@ -49,7 +49,8 @@ async def write_file(name: str) -> File:
 
 ```
 
-The upload happens when the [`from_local`](../api-reference/flyte-sdk/packages/flyte.io#from_local) command is called, which is why it's an `async` function.
+The upload happens when the [`from_local`](../api-reference/flyte-sdk/packages/flyte.io#from_local) command is called.
+Because the upload would otherwise block execution, `from_local` is implemented as an `async` function.
 The Flyte SDK frequently uses this class constructor pattern, so you will see it with other types as well.
 
 This is a slightly more complicated task that calls the task above to produce `File` objects.
