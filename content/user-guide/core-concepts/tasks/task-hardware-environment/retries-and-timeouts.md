@@ -22,11 +22,12 @@ Errors causing task failure are categorized into two main types, influencing the
 Retries in {{< key product_name>}} are configurable to address both `USER` and `SYSTEM` errors, allowing for tailored fault tolerance strategies:
 
 `USER` error can be handled by setting the `retries` attribute in the task decorator to define how many times a task should retry.
-This is straightforward and directly controlled in the task definition:
+This requires a `FlyteRecoverableException` to be raised in the task definition, any other exception will not be retried:
 
 ```python
 import random
 from flytekit import task
+from flytekit.exceptions.user import FlyteRecoverableException
 
 @task(retries=3)
 def compute_mean(data: List[float]) -> float:
