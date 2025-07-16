@@ -6,13 +6,24 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Files and directories
 
-Flyte continues to support files and folders and top level type constructs.
-These are two of the three major offloaded types (dataframes of all kinds being the third).
-Once offloaded, they are persisted in the blob store configured for your Flyte cluster.
-While the SDK will handle the underlying call to the blob store, users are still responsible for invoking the commands.
-Files and folders are no longer uploaded automatically at the end of a task simply by returning them.
+Flyte provides the [`flyte.io.File`](../api-reference/flyte-sdk/packages/flyte.io#flyteiofile) and
+[`flyte.io.Dir`](../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and folders, respectively.
+Together with ([`flyte.io.StructuredDataset`](../api-reference/flyte-sdk/packages/flyte.io#flyteiostructureddataset) they constitute the *offloaded data types*.
 
-The examples below show the basic use-cases of uploading [`File`](../api-reference/flyte-sdk/packages/flyte.io#flyteiofile)s and [`Dir`](../api-reference/flyte-sdk/packages/flyte.io#flyteiodir)s created locally, and using them as inputs to a task.
+A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
+The actual data is stored in the internal blob store of your Union/Flyte instance.
+When a variable of an offloaded type is first created, its data is uploaded to the blob store.
+It can then be passed from task to task as a reference.
+The actual data is only downloaded from the blob stored when the task needs to access it, for example, when the task calls `open()` on a `File` or `Dir` object.
+
+This allows Flyte to efficiently handle large files and directories without needing to transfer the data unnecessarily.
+Even very large data objects like video files and DNA datasets can be passed efficiently between tasks.
+
+The `File` and `Dir` classes provide both `sync` and `async` methods to interact with the data.
+
+## Example usage
+
+The examples below show the basic use-cases of uploading files and directories created locally, and using them as inputs to a task.
 
 ```python
 import asyncio
@@ -41,8 +52,8 @@ async def write_file(name: str) -> File:
 The upload happens when the [`from_local`](../api-reference/flyte-sdk/packages/flyte.io#from_local) command is called, which is why it's an `async` function.
 The Flyte SDK frequently uses this class constructor pattern, so you will see it with other types as well.
 
-This is a slightly more complicated task that calls the task above to produce `File`s. These are assembled into a directory
-and the `Dir` is returned, also via invoking `from_local`.
+This is a slightly more complicated task that calls the task above to produce `File` objects.
+These are assembled into a directory and the `Dir` object is returned, also via invoking `from_local`.
 
 ```python
 @env.task
