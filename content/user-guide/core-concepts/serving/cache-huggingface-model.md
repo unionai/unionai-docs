@@ -6,13 +6,15 @@ variants: -flyte +serverless +byoc +selfmanaged
 
 # Cache a HuggingFace Model as an Artifact
 
+This guide shows you how to cache HuggingFace models as Union Artifacts.
+
 The [`union cache model-from-hf`](../../../api-reference/union-cli#model-from-hf) command allows you to automatically download and cache models from HuggingFace Hub as Union Artifacts. This is particularly useful for serving large language models (LLMs) and other AI models efficiently in production environments.
 
 ## Why Cache Models from HuggingFace?
 
 Caching models from HuggingFace Hub as Union Artifacts provides several key benefits:
 
-- **Faster model downloads**: Once cached, models load much faster since they're stored in Union's optimized blob storage.
+- **Faster Model Downloads**: Once cached, models load much faster since they're stored in Union's optimized blob storage.
 - **Stream model weights into GPU memory**: Union's [`SGLangApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmsglangapp) and [`VLLMApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmvllmapp) classes also allow you to load model weights
   directly into GPU memory instead of downloading the weights to disk first, then loading to GPU memory.
 - **Reliability**: Eliminates dependency on HuggingFace Hub availability during model serving.
@@ -54,10 +56,11 @@ union cache model-from-hf Qwen/Qwen2.5-0.5B-Instruct \
     --artifact-name qwen2-5-0-5b-instruct \
     --cpu 2 \
     --mem 8Gi \
-    --ephemeral-storage 10Gi
+    --ephemeral-storage 10Gi \
+    --wait
 ```
 
-Let's break down each flag in the command:
+### Command Breakdown
 
 - `Qwen/Qwen2.5-0.5B-Instruct`: The HuggingFace model repository
 - `--hf-token-key HUGGINGFACE_TOKEN`: Union secret containing your HuggingFace API token
@@ -68,8 +71,11 @@ Let's break down each flag in the command:
 - `--cpu 2`: CPU resources for downloading the caching
 - `--mem 8Gi`: Memory resources for downloading and caching
 - `--ephemeral-storage 10Gi`: Temporary storage for the download process
+- `--wait`: Wait for the caching process to complete
 
-When you run the command, you'll see outputs like this:
+### Output
+
+When the command runs, you'll see outputs like this:
 
 ```
 🔄 Started background process to cache model from Hugging Face repo Qwen/Qwen2.5-0.5B-Instruct.
@@ -184,52 +190,22 @@ union cache model-from-hf unsloth/Llama-3.3-70B-Instruct \
     --accelerator nvidia-l40s \
     --shard-config shard_config.yaml \
     --project flytesnacks \
-    --domain development
+    --domain development \
+    --wait
 ```
 
-Let's break down each input to the command:
+## Best Practices
 
-- `unsloth/Llama-3.3-70B-Instruct`: The HuggingFace model repository to download from
-- `--hf-token-key HUGGINGFACE_TOKEN`: References a Union secret containing your HuggingFace API token for authentication
-- `--union-api-key EAGER_API_KEY`: References a Union secret containing API key with admin permissions
-- `--artifact-name llama-3-3-70b-instruct-sharded`: Custom name for the cached model artifact
-- `--cpu 36`: Allocates 36 CPU cores for the download and sharding process
-- `--gpu 4`: Allocates 4 GPUs for model sharding
-- `--mem 300Gi`: Allocates 300GB of memory for the process
-- `--ephemeral-storage 300Gi`: Allocates 300GB of temporary storage for downloading
-- `--accelerator nvidia-l40s`: Specifies NVIDIA L40S GPUs
-- `--shard-config shard_config.yaml`: Points to the YAML file containing sharding configuration
-- `--project flytesnacks`: The Union project to store the artifact in
-- `--domain development`: The domain within the project (defaults to "development")
+When caching models without sharding
 
-The large resource allocations (CPU, GPU, memory, storage) are necessary due to the size of the 70B parameter model
-being loaded into memory and sharded into the 4 GPUs that will be used for inference.
+1. **Resource Sizing**: Allocate sufficient resources for the model size:
+   - Small models (< 1B): 2-4 CPU, 4-8Gi memory
+   - Medium models (1-7B): 4-8 CPU, 8-16Gi memory
+   - Large models (7B+): 8+ CPU, 16Gi+ memory
 
+2. **Sharding for Large Models**: Use tensor parallelism for models > 7B parameters:
+   - 7-13B models: 2-4 GPUs
+   - 13-70B models: 4-8 GPUs
+   - 70B+ models: 8+ GPUs
 
-## Configuring the appropriate compute resources
-
-The `union cache model-from-hf` command exposes five flags to configure the
-compute resources used for caching the model.
-
-- `--cpu`: Number of CPU cores to use for the caching process
-- `--gpu`: Number of GPUs to use for the caching process
-- `--mem`: Amount of memory to use for the caching process
-- `--ephemeral-storage`: Amount of temporary storage to use for the caching process
-- `--accelerator`: The accelerator to use for the caching process
-
-### When caching models as-is
-
-When caching models as-is, the important flag to consider is `--ephemeral-storage`,
-since the model weights are downloaded to disk and then directly serialized into
-Union's data storage as an Artifact. For example, if you're caching a 1GB model,
-you should allocate at least 1GB of ephemeral storage.
-
-### When caching sharded models
-
-When sharding models, it's important to know ahead of time what accelerator and
-how many you need to provision at inference time. Therefore, it's critical that
-the compute-related flags that you pass into `union cache model-from-hf` the
-compute resources specified by the serving app that is consuming the cached model.
-
-The page for [deploying optimized LLM endpoints with SGlang and vLLM](./deploy-optimized-llm-endpoints) provides a guide for setting up the correct
-configurations for the model caching step and the downstream inference app.
+3. **Storage Considerations**: Ensure sufficient ephemeral storage for the download process
