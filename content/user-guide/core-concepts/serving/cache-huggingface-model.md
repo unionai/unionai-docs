@@ -6,18 +6,20 @@ variants: -flyte +serverless +byoc +selfmanaged
 
 # Cache a HuggingFace Model as an Artifact
 
-The `union cache model-from-hf` command allows you to automatically download and cache models from HuggingFace Hub as Union Artifacts. This is particularly useful for serving large language models (LLMs) and other AI models efficiently in production environments.
+The [`union cache model-from-hf`](../../../api-reference/union-cli#model-from-hf) command allows you to automatically download and cache models from HuggingFace Hub as Union Artifacts. This is particularly useful for serving large language models (LLMs) and other AI models efficiently in production environments.
 
 ## Why Cache Models from HuggingFace?
 
 Caching models from HuggingFace Hub as Union Artifacts provides several key benefits:
 
-- **Faster Model Loading**: Once cached, models load much faster since they're stored in Union's optimized blob storage
-- **Reliability**: Eliminates dependency on HuggingFace Hub availability during model serving
-- **Cost Efficiency**: Reduces repeated downloads and bandwidth costs
-- **Version Control**: Each cached model gets a unique artifact ID for reproducible deployments
-- **Sharding Support**: Large models can be automatically sharded for distributed inference
-- **Streaming**: Models can be streamed directly from blob storage to GPU memory
+- **Faster model downloads**: Once cached, models load much faster since they're stored in Union's optimized blob storage.
+- **Stream model weights into GPU memory**: Union's [`SGLangApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmsglangapp) and [`VLLMApp`](../../../api-reference/union-sdk/packages/union.app.llm#unionappllmvllmapp) classes also allow you to load model weights
+  directly into GPU memory instead of downloading the weights to disk first, then loading to GPU memory.
+- **Reliability**: Eliminates dependency on HuggingFace Hub availability during model serving.
+- **Cost Efficiency**: Reduces repeated downloads and bandwidth costs from HuggingFace Hub.
+- **Version Control**: Each cached model gets a unique artifact ID for reproducible deployments.
+- **Sharding Support**: Large models can be automatically sharded for distributed inference.
+- **Streaming**: Models can be streamed directly from blob storage to GPU memory.
 
 ## Prerequisites
 
@@ -31,11 +33,15 @@ Before using the `union cache model-from-hf` command, you need to set up authent
    union create secret --name HUGGINGFACE_TOKEN
    ```
 
-2. **Create a Union API Key** (for admin permissions):
+2. **Create a Union API Key** (optional):
    ```bash
-   union create api-key admin --name EAGER_API_KEY
-   union create secret --name EAGER_API_KEY
+   union create api-key admin --name MY_API_KEY
+   union create secret --name MY_API_KEY
    ```
+
+If you don't want to create a Union API key, Union tenants typically ship with
+a `EAGER_API_KEY` secret, which is an internally-provision Union API key that
+you can use for the purpose of caching HuggingFace models.
 
 ## Basic Example: Cache a Model As-Is
 
@@ -48,87 +54,50 @@ union cache model-from-hf Qwen/Qwen2.5-0.5B-Instruct \
     --artifact-name qwen2-5-0-5b-instruct \
     --cpu 2 \
     --mem 8Gi \
-    --ephemeral-storage 10Gi \
-    --wait
+    --ephemeral-storage 10Gi
 ```
 
-### Command Breakdown
+Let's break down each flag in the command:
 
 - `Qwen/Qwen2.5-0.5B-Instruct`: The HuggingFace model repository
 - `--hf-token-key HUGGINGFACE_TOKEN`: Union secret containing your HuggingFace API token
 - `--union-api-key EAGER_API_KEY`: Union secret with admin permissions
-- `--artifact-name qwen2-5-0-5b-instruct`: Custom name for the cached artifact
-- `--cpu 2 --mem 8Gi`: Compute resources for downloading and caching
+- `--artifact-name qwen2-5-0-5b-instruct`: Custom name for the cached artifact.
+  If not provided, the model repository name is lower-cased and `.` characters are
+  replaced with `-`.
+- `--cpu 2`: CPU resources for downloading the caching
+- `--mem 8Gi`: Memory resources for downloading and caching
 - `--ephemeral-storage 10Gi`: Temporary storage for the download process
-- `--wait`: Wait for the caching process to complete
 
-### Output
-
-When the command completes, you'll see output like:
+When you run the command, you'll see outputs like this:
 
 ```
-✅ Model cached successfully!
-Cached model at: s3://union-serving-mvp-us-west-2-serving-mvp/model-loading-test/.cache/huggingface/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301
-Model Artifact ID: flyte://av0.2/dogfood-gcp/thomasjpfan/development/qwen2-5-0-5b-instruct@f4d7a98b650ce14367b5f6ba77e70144
+🔄 Started background process to cache model from Hugging Face repo Qwen/Qwen2.5-0.5B-Instruct.
+ Check the console for status at
+https://acme.union.ai/console/projects/flytesnacks/domains/development/executions/a5nr2
+g79xb9rtnzczqtp
+```
+
+You can then visit the URL to see the model caching workflow on the Union UI.
+
+If you provide the `--wait` flag to the `union cache model-from-hf` command,
+the command will wait for the model to be cached and then output additional
+information:
+
+```
+Cached model at:
+/tmp/flyte-axk70dc8/sandbox/local_flytekit/50b27158c2bb42efef8e60622a4d2b6d/model_snapshot
+Model Artifact ID:
+flyte://av0.2/acme/flytesnacks/development/qwen2-5-0-5b-instruct@322a60c7ba4df41621be528a053f3b1a
 
 To deploy this model run:
-union deploy model --project dogfood-gcp --domain thomasjpfan/development flyte://av0.2/dogfood-gcp/thomasjpfan/development/qwen2-5-0-5b-instruct@f4d7a98b650ce14367b5f6ba77e70144
+union deploy model --project None --domain development
+flyte://av0.2/acme/flytesnacks/development/qwen2-5-0-5b-instruct@322a60c7ba4df41621be528a053f3b1a
 ```
-
-## Advanced Example: Sharding a Model with vLLM Engine
-
-For large models that require distributed inference, you can use the `--shard-config` option to automatically shard the model using vLLM's tensor parallelism.
-
-### Step 1: Create a Shard Configuration File
-
-Create a YAML file (e.g., `shard_config.yaml`) with the sharding parameters:
-
-```yaml
-engine: vllm
-args:
-  model: unsloth/Llama-3.3-70B-Instruct
-  tensor_parallel_size: 4
-  gpu_memory_utilization: 0.9
-  extra_args:
-    max_model_len: 16384
-```
-
-### Step 2: Cache the Sharded Model
-
-```bash
-union cache model-from-hf unsloth/Llama-3.3-70B-Instruct \
-    --hf-token-key HUGGINGFACE_TOKEN \
-    --union-api-key EAGER_API_KEY \
-    --artifact-name llama-3-3-70b-instruct-sharded \
-    --cpu 36 \
-    --gpu 4 \
-    --mem 300Gi \
-    --ephemeral-storage 300Gi \
-    --accelerator nvidia-l40s \
-    --shard-config shard_config.yaml \
-    --project flytesnacks \
-    --domain development \
-    --wait
-```
-
-### Shard Configuration Options
-
-The `VLLMShardArgs` class supports the following parameters:
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `model` | str | Required | HuggingFace model identifier |
-| `tensor_parallel_size` | int | Required | Number of GPUs for tensor parallelism |
-| `trust_remote_code` | bool | False | Whether to trust remote code from HuggingFace |
-| `revision` | str | None | Specific model revision/commit |
-| `file_pattern` | str | None | Pattern for saved filenames |
-| `max_file_size` | int | 5GB | Max size of each safetensors file |
-| `gpu_memory_utilization` | float | 0.9 | GPU memory utilization ratio |
-| `extra_args` | dict | {} | Additional vLLM engine arguments |
 
 ## Using Cached Models in Applications
 
-Once you have cached a model, you can use it in your Union applications:
+Once you have cached a model, you can use it in your Union serving apps:
 
 ### VLLM App Example
 
@@ -176,72 +145,91 @@ sglang_app = SGLangApp(
 )
 ```
 
-## Command Options Reference
 
-The `union cache model-from-hf` command supports the following options:
+## Advanced Example: Sharding a Model with the vLLM Engine
 
-### Required Arguments
-- `repo`: HuggingFace repository identifier (e.g., `Qwen/Qwen2.5-0.5B-Instruct`)
+For large models that require distributed inference, you can use the `--shard-config` option to automatically shard the model using the [vLLM](https://docs.vllm.ai/en/latest/) inference engine.
 
-### Optional Arguments
+### Create a Shard Configuration File
 
-#### Artifact Configuration
-- `--artifact-name`: Custom name for the cached artifact (alphanumeric, underscores, hyphens only)
-- `--architecture`: Model architecture from HuggingFace config.json
-- `--task`: Model task type (`generate`, `classify`, `embed`, `score`, or `auto`)
-- `--modality`: Model modalities (`text`, `image`, `audio`, `video`) - can be specified multiple times
-- `--format`: Model serialization format (`safetensors`, `onnx`, `torchscript`, `joblib`, etc.)
-- `--model-type`: Model type (`transformer`, `xgboost`, `custom`, etc.)
-- `--short-description`: Brief description of the model
+Create a YAML file (e.g., `shard_config.yaml`) with the sharding parameters:
 
-#### Authentication
-- `--hf-token-key`: Union secret key containing HuggingFace token (default: `HF_TOKEN`)
-- `--union-api-key`: Union secret key with admin permissions (default: `UNION_API_KEY`)
+```yaml
+engine: vllm
+args:
+  model: unsloth/Llama-3.3-70B-Instruct
+  tensor_parallel_size: 4
+  gpu_memory_utilization: 0.9
+  extra_args:
+    max_model_len: 16384
+```
 
-#### Compute Resources
-- `--cpu`: CPU resources for downloading and caching
-- `--gpu`: GPU resources for downloading and caching
-- `--mem`: Memory resources for downloading and caching
-- `--ephemeral-storage`: Ephemeral storage for downloading and caching
-- `--accelerator`: GPU accelerator type (e.g., `nvidia-l40s`, `nvidia-a100`, etc.)
+The `shard_config.yaml` file is a YAML file that should conform to the
+[`remote.ShardConfig`](../../../api-reference/union-sdk/packages/union.remote#unionremoteshardconfig)
+dataclass, where the `args` field contains configuration that's forwarded to the
+underlying inference engine. Currently, only the `vLLM` engine is supported for sharding, so
+the `args` field should conform to the [`remote.VLLMShardArgs`](../../../api-reference/union-sdk/packages/union.remote#unionremotevllmshardargs) dataclass.
 
-#### Sharding Configuration
-- `--shard-config`: Path to YAML file with sharding configuration
+### Cache the Sharded Model
 
-#### Execution Control
-- `--force`: Force caching with retry number (1, 2, 3, etc.)
-- `--wait`: Wait for caching to complete before returning
+```bash
+union cache model-from-hf unsloth/Llama-3.3-70B-Instruct \
+    --hf-token-key HUGGINGFACE_TOKEN \
+    --union-api-key EAGER_API_KEY \
+    --artifact-name llama-3-3-70b-instruct-sharded \
+    --cpu 36 \
+    --gpu 4 \
+    --mem 300Gi \
+    --ephemeral-storage 300Gi \
+    --accelerator nvidia-l40s \
+    --shard-config shard_config.yaml \
+    --project flytesnacks \
+    --domain development
+```
 
-## Best Practices
+Let's break down each input to the command:
 
-1. **Resource Sizing**: Allocate sufficient resources for the model size:
-   - Small models (< 1B): 2-4 CPU, 4-8Gi memory
-   - Medium models (1-7B): 4-8 CPU, 8-16Gi memory
-   - Large models (7B+): 8+ CPU, 16Gi+ memory
+- `unsloth/Llama-3.3-70B-Instruct`: The HuggingFace model repository to download from
+- `--hf-token-key HUGGINGFACE_TOKEN`: References a Union secret containing your HuggingFace API token for authentication
+- `--union-api-key EAGER_API_KEY`: References a Union secret containing API key with admin permissions
+- `--artifact-name llama-3-3-70b-instruct-sharded`: Custom name for the cached model artifact
+- `--cpu 36`: Allocates 36 CPU cores for the download and sharding process
+- `--gpu 4`: Allocates 4 GPUs for model sharding
+- `--mem 300Gi`: Allocates 300GB of memory for the process
+- `--ephemeral-storage 300Gi`: Allocates 300GB of temporary storage for downloading
+- `--accelerator nvidia-l40s`: Specifies NVIDIA L40S GPUs
+- `--shard-config shard_config.yaml`: Points to the YAML file containing sharding configuration
+- `--project flytesnacks`: The Union project to store the artifact in
+- `--domain development`: The domain within the project (defaults to "development")
 
-2. **Sharding for Large Models**: Use tensor parallelism for models > 7B parameters:
-   - 7-13B models: 2-4 GPUs
-   - 13-70B models: 4-8 GPUs
-   - 70B+ models: 8+ GPUs
+The large resource allocations (CPU, GPU, memory, storage) are necessary due to the size of the 70B parameter model
+being loaded into memory and sharded into the 4 GPUs that will be used for inference.
 
-3. **Storage Considerations**: Ensure sufficient ephemeral storage for the download process
 
-4. **Authentication**: Always use secrets for API tokens and never hardcode them
+## Configuring the appropriate compute resources
 
-5. **Monitoring**: Use the `--wait` flag to monitor the caching process, or check the execution URL for progress
+The `union cache model-from-hf` command exposes five flags to configure the
+compute resources used for caching the model.
 
-## Troubleshooting
+- `--cpu`: Number of CPU cores to use for the caching process
+- `--gpu`: Number of GPUs to use for the caching process
+- `--mem`: Amount of memory to use for the caching process
+- `--ephemeral-storage`: Amount of temporary storage to use for the caching process
+- `--accelerator`: The accelerator to use for the caching process
 
-### Common Issues
+### When caching models as-is
 
-1. **Authentication Errors**: Ensure your HuggingFace token has read access to the repository
-2. **Insufficient Resources**: Increase CPU, memory, or ephemeral storage allocation
-3. **Model Not Found**: Verify the repository name and ensure it's publicly accessible
-4. **Sharding Failures**: Check that the shard configuration matches your available GPU resources
+When caching models as-is, the important flag to consider is `--ephemeral-storage`,
+since the model weights are downloaded to disk and then directly serialized into
+Union's data storage as an Artifact. For example, if you're caching a 1GB model,
+you should allocate at least 1GB of ephemeral storage.
 
-### Debugging
+### When caching sharded models
 
-- Use the execution URL to monitor progress and view logs
-- Check the Union console for detailed error messages
-- Verify that all required secrets are properly configured
+When sharding models, it's important to know ahead of time what accelerator and
+how many you need to provision at inference time. Therefore, it's critical that
+the compute-related flags that you pass into `union cache model-from-hf` the
+compute resources specified by the serving app that is consuming the cached model.
 
+The page for [deploying optimized LLM endpoints with SGlang and vLLM](./deploy-optimized-llm-endpoints) provides a guide for setting up the correct
+configurations for the model caching step and the downstream inference app.
