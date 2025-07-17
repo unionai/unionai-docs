@@ -1,6 +1,6 @@
 ---
 title: union.artifacts
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -14,8 +14,8 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`Artifact`](.././union.artifacts#unionartifactsartifact) | This is a wrapper around the Flytekit Artifact class. |
-| [`DataCard`](.././union.artifacts#unionartifactsdatacard) | . |
-| [`ModelCard`](.././union.artifacts#unionartifactsmodelcard) | . |
+| [`DataCard`](.././union.artifacts#unionartifactsdatacard) |  |
+| [`ModelCard`](.././union.artifacts#unionartifactsmodelcard) |  |
 | [`OnArtifact`](.././union.artifacts#unionartifactsonartifact) | Event used to link upstream and downstream workflows together. |
 
 ## union.artifacts.Artifact
@@ -57,7 +57,7 @@ class Artifact(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
+| `args` | `*args` |
 | `project` | `Optional[str]` |
 | `domain` | `Optional[str]` |
 | `name` | `Optional[str]` |
@@ -74,7 +74,7 @@ class Artifact(
 | `short_description` | `Optional[str]` |
 | `source` | `Optional[artifacts_pb2.ArtifactSource]` |
 | `card` | `Optional[Card]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
@@ -99,7 +99,7 @@ class Artifact(
 def create_from(
     o: O,
     card: Optional[SerializableToString],
-    args: `*args`,
+    args: *args,
     kwargs,
 ) -> O
 ```
@@ -130,8 +130,8 @@ You can mix and match with the input syntax as well.
 |-|-|
 | `o` | `O` |
 | `card` | `Optional[SerializableToString]` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### embed_as_query()
 
@@ -243,7 +243,7 @@ def query(
 | `domain` | `Optional[str]` |
 | `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` |
 | `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### set_resolver()
 
@@ -441,6 +441,6 @@ def to_flyte_idl(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 

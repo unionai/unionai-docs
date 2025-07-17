@@ -1,6 +1,6 @@
 ---
 title: union.cache
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -34,7 +34,7 @@ a SHA-256 hash of the function's source code combined with a salt.
 def get_version(
     salt: str,
     params: flytekit.core.cache.VersionParameters,
-) -> n: A string that represents the version of the function.
+) -> str
 ```
 This method generates a version string for a function by hashing the function's source code
 combined with a salt.

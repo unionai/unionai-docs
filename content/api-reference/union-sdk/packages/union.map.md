@@ -1,6 +1,6 @@
 ---
 title: union.map
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -42,5 +42,5 @@ launch plans.
 | `concurrency` | `typing.Optional[int]` |
 | `min_successes` | `typing.Optional[int]` |
 | `min_success_ratio` | `float` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
