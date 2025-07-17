@@ -163,6 +163,8 @@ workflow_notifications:
  The following example uses Slack without email or queue configurations:
 
 ```python
+from flytekit.extras.webhook import WebhookTask
+
 notification_task = WebhookTask(
     name="failure-notification",
     url="https://hooks.slack.com/services/xyz", #your Slack webhook
@@ -176,7 +178,7 @@ notification_task = WebhookTask(
 )
 ...
 
-@fl.task
+@fl.workflow
 def ml_workflow_with_failure_handling() -> float:
     try:
         X, y = load_and_preprocess_data()
