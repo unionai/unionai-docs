@@ -1,6 +1,6 @@
 ---
 title: union.actor
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -109,7 +109,7 @@ class ActorTask(
 |-|-|
 | `task_config` | `ActorEnvironment` |
 | `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
@@ -160,8 +160,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type |
 |-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### compile_into_workflow()
 
@@ -180,7 +180,7 @@ then proceed to be executed.
 |-|-|
 | `ctx` | `FlyteContext` |
 | `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### construct_node_metadata()
 
@@ -234,7 +234,7 @@ representing that newly generated workflow, instead of executing it.
 | Parameter | Type |
 |-|-|
 | `task_function` | `Callable` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### execute()
 
@@ -249,7 +249,7 @@ handle dynamic tasks or you will no longer be able to use the task as a dynamic 
 
 | Parameter | Type |
 |-|-|
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### find_lhs()
 
@@ -325,7 +325,7 @@ Returns the container definition (if any) that is used to run the task on hosted
 ```python
 def get_custom(
     settings: SerializationSettings,
-) -> n: Dictionary representation of the dask task config.
+) -> Optional[Dict[str, Any]]
 ```
 Serialize the `ActorTask` config into a dict.
 
@@ -461,7 +461,7 @@ Python native values).
 | Parameter | Type |
 |-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### local_execution_mode()
 

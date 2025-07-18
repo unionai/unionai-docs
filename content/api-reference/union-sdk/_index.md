@@ -1,9 +1,8 @@
 ---
 title: Union SDK
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
-sidebar_expanded: true
 ---
 
 # Union SDK

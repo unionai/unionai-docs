@@ -1,12 +1,12 @@
 ---
-title: Deploying your own connector
-weight: 3
+title: Deploy Custom Flyte Connectors
+weight: 5
 variants: -flyte +serverless +byoc +selfmanaged
 ---
 
-# Deploying your own connector
+# Deploying Custom Flyte Connectors
 
-Flyte connectors allow you to extend Union's capabilities by integrating with external services.
+[Flyte connectors](../../../integrations/connectors/_index.md) allow you to extend Union's capabilities by integrating with external services.
 This guide explains how to deploy custom connectors that can be used in your Flyte workflows.
 
 ## Overview

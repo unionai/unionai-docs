@@ -1,19 +1,25 @@
 ---
-title: Serving
+title: App Serving
 weight: 6
 variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: false
 ---
 
-# Serving
+# App Serving
 
-{{< key product_name >}} lets you build and serve your own web apps, enabling you to build interactive dashboards and other interfaces to interact with and visualize data and models from your workflows,
-using your favorite Python-based front-end frameworks (Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne).
+{{< key product_name >}} lets you build and serve your own web apps, enabling you to build:
+
+- **Model endpoints** with generic web frameworks like FastAPI or optimized inference frameworks like vLLM and SGLang.
+- **AI inference-time** components like MCP servers, ephemeral agent memory state stores, etc.
+- **Interactive dashboards** and other interfaces to interact with and visualize data and models from your workflows using frameworks like Streamlit, Gradio, Tensorboard, FastHTML, Dash, Panel, Voila, FiftyOne.
+- **Flyte Connectors**, which are [light-weight, long running services](../../../integrations/connectors/_index.md) that connect to external
+services like OpenAI, BigQuery, and Snowflake.
+- **Any other web services** like [web hooks](../../../tutorials/serving/custom-webhooks.md) that can be implemented via web frameworks like FastAPI, Starlette.
 
 ## Example app
 
-We will start with a simple Streamlit app (other frameworks are available).
-In this case we will use the default Streamlit "Hello, World!" app.
+We will start with a simple Streamlit app. In this case we will use the default
+Streamlit "Hello, World!" app.
 
 In a local directory, create the following file:
 
