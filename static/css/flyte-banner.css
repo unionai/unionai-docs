@@ -1,5 +1,6 @@
 .flyte-banner {
     align-items: center;
+    color: white;
     box-sizing: border-box;
     display: flex;
     font-family: Inter,sans-serif;
@@ -12,9 +13,12 @@
     z-index: 100;
     -webkit-font-smoothing: antialiased;
 }
+.flyte-banner a{
+    color: white;
+}
 .flyte-banner-link {
     align-items: center;
-    background-color: #3b8bfa;
+    background-color: var(--union-color);
     box-sizing: border-box;
     color: white;
     column-gap: 16px;
@@ -35,8 +39,8 @@
     width: 100%;
 }
 a.flyte-banner-link:hover {
-    background-color: #2a6bbd;
-    color: white
+    background-color: var(--union-color-dark);
+    color: white;
 }
 .flyte-banner-button {
     align-items: center;
