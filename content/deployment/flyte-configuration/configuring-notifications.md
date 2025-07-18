@@ -22,6 +22,7 @@ For example:
 ```python
 from flytekit import Email, LaunchPlan
 from flytekit.models.core.execution import WorkflowExecutionPhase
+
 # This launch plan triggers email notifications when the workflow execution it triggered reaches the phase `SUCCEEDED`.
 my_notifiying_lp = LaunchPlan.create(
     "my_notifiying_lp",
@@ -178,8 +179,8 @@ notification_task = WebhookTask(
 )
 ...
 
-@fl.workflow
-def ml_workflow_with_failure_handling() -> float:
+@fl.task
+def ml_task_with_failure_handling() -> float:
     try:
         X, y = load_and_preprocess_data()
         model = train_model(X=X, y=y)
