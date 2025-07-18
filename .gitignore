@@ -28,6 +28,7 @@ link_checker_output.json
 # IDEs
 .vscode
 .idea
+*.code-workspace
 
 # Do not save temporary uv settings
 pyproject.toml

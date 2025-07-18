@@ -1,11 +1,11 @@
 ---
-title: union.app
+title: union.app.llm
 version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
 
-# union.app
+# union.app.llm
 
 ## Directory
 
@@ -13,157 +13,20 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`App`](.././union.app#unionappapp) | App specification. |
-| [`ArizeConfig`](.././union.app#unionapparizeconfig) |  |
-| [`FlyteConnectorApp`](.././union.app#unionappflyteconnectorapp) | FlyteConnector application specification that inherits from App. |
-| [`Input`](.././union.app#unionappinput) | Input for application. |
-| [`Link`](.././union.app#unionapplink) |  |
-| [`PhoenixConfig`](.././union.app#unionappphoenixconfig) |  |
-| [`ScalingMetric`](.././union.app#unionappscalingmetric) |  |
-| [`URLQuery`](.././union.app#unionappurlquery) |  |
-| [`WeaveConfig`](.././union.app#unionappweaveconfig) |  |
+| [`SGLangApp`](.././union.app.llm#unionappllmsglangapp) | App backed by FastAPI. |
+| [`VLLMApp`](.././union.app.llm#unionappllmvllmapp) | App backed by FastAPI. |
 
-## union.app.App
+## union.app.llm.SGLangApp
 
-App specification.
+App backed by FastAPI.
 
 
 
 ```python
-class App(
+class SGLangApp(
     name: str,
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate],
-    port: typing.Union[int, union.app._models.App.Port, NoneType],
-    limits: typing.Optional[flytekit.core.resources.Resources],
-    requests: typing.Optional[flytekit.core.resources.Resources],
-    secrets: typing.List[flytekit.models.security.Secret],
-    args: *args,
-    command: typing.Union[typing.List[str], str, NoneType],
-    min_replicas: int,
-    max_replicas: int,
-    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
-    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
-    include: typing.List[str],
-    inputs: typing.List[union.app._models.Input],
-    env: dict,
-    cluster_pool: str,
-    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
-    requires_auth: bool,
-    type: typing.Optional[str],
-    description: typing.Optional[str],
-    framework_app: typing.Optional[typing.Any],
-    dependencies: typing.List[ForwardRef('App')],
-    config: typing.Optional[union.app._models.AppConfigProtocol],
-    subdomain: typing.Optional[str],
-    custom_domain: typing.Optional[str],
-    links: typing.List[union.app._models.Link],
-    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
-)
-```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate]` |
-| `port` | `typing.Union[int, union.app._models.App.Port, NoneType]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `secrets` | `typing.List[flytekit.models.security.Secret]` |
-| `args` | `*args` |
-| `command` | `typing.Union[typing.List[str], str, NoneType]` |
-| `min_replicas` | `int` |
-| `max_replicas` | `int` |
-| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` |
-| `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` |
-| `include` | `typing.List[str]` |
-| `inputs` | `typing.List[union.app._models.Input]` |
-| `env` | `dict` |
-| `cluster_pool` | `str` |
-| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` |
-| `requires_auth` | `bool` |
-| `type` | `typing.Optional[str]` |
-| `description` | `typing.Optional[str]` |
-| `framework_app` | `typing.Optional[typing.Any]` |
-| `dependencies` | `typing.List[ForwardRef('App')]` |
-| `config` | `typing.Optional[union.app._models.AppConfigProtocol]` |
-| `subdomain` | `typing.Optional[str]` |
-| `custom_domain` | `typing.Optional[str]` |
-| `links` | `typing.List[union.app._models.Link]` |
-| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`query_endpoint()`](#query_endpoint) | Query for endpoint. |
-
-
-#### query_endpoint()
-
-```python
-def query_endpoint(
-    public: bool,
-) -> union.app._models.URLQuery
-```
-Query for endpoint.
-
-
-
-| Parameter | Type |
-|-|-|
-| `public` | `bool` |
-
-### Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `endpoint` |  | {{< multiline >}}Return endpoint for App.
-{{< /multiline >}} |
-| `include_resolved` |  |  |
-
-## union.app.ArizeConfig
-
-```python
-class ArizeConfig(
-    endpoint: str,
-)
-```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App. |
-
-
-#### before_to_union_idl()
-
-```python
-def before_to_union_idl(
-    app: App,
-    settings: union.app._models.AppSerializationSettings,
-)
-```
-Modify app in place at the beginning of `App._to_union_idl`.
-
-
-| Parameter | Type |
-|-|-|
-| `app` | `App` |
-| `settings` | `union.app._models.AppSerializationSettings` |
-
-## union.app.FlyteConnectorApp
-
-FlyteConnector application specification that inherits from App.
-
-
-```python
-class FlyteConnectorApp(
-    name: str,
-    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate],
-    port: typing.Union[int, union.app._models.App.Port],
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType],
+    port: int,
     limits: typing.Optional[flytekit.core.resources.Resources],
     requests: typing.Optional[flytekit.core.resources.Resources],
     secrets: typing.List[flytekit.models.security.Secret],
@@ -188,13 +51,17 @@ class FlyteConnectorApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    extra_args: typing.Union[str, typing.List[str]],
+    model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
+    model_id: str,
+    stream_model: bool,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate]` |
-| `port` | `typing.Union[int, union.app._models.App.Port]` |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType]` |
+| `port` | `int` |
 | `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
 | `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
 | `secrets` | `typing.List[flytekit.models.security.Secret]` |
@@ -219,6 +86,10 @@ class FlyteConnectorApp(
 | `custom_domain` | `typing.Optional[str]` |
 | `links` | `typing.List[union.app._models.Link]` |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| `extra_args` | `typing.Union[str, typing.List[str]]` |
+| `model` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery]` |
+| `model_id` | `str` |
+| `stream_model` | `bool` |
 
 ### Methods
 
@@ -250,136 +121,108 @@ Query for endpoint.
 {{< /multiline >}} |
 | `include_resolved` |  |  |
 
-## union.app.Input
+## union.app.llm.VLLMApp
 
-Input for application.
+App backed by FastAPI.
 
 
-
-```python
-class Input(
-    value: typing.Union[str, flytekit.core.artifact.ArtifactQuery, union.app._models.URLQuery],
-    name: typing.Optional[str],
-    env_var: typing.Optional[str],
-    type: typing.Optional[union.app._models.Input.Type],
-    download: bool,
-    mount: typing.Optional[str],
-    ignore_patterns: list[str],
-)
-```
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery, union.app._models.URLQuery]` |
-| `name` | `typing.Optional[str]` |
-| `env_var` | `typing.Optional[str]` |
-| `type` | `typing.Optional[union.app._models.Input.Type]` |
-| `download` | `bool` |
-| `mount` | `typing.Optional[str]` |
-| `ignore_patterns` | `list[str]` |
-
-## union.app.Link
 
 ```python
-class Link(
-    path: str,
-    title: str,
-    is_relative: bool,
-)
-```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `title` | `str` |
-| `is_relative` | `bool` |
-
-## union.app.PhoenixConfig
-
-```python
-class PhoenixConfig(
-    endpoint: str,
-    project: str,
-)
-```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `project` | `str` |
-
-### Methods
-
-| Method | Description |
-|-|-|
-| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App. |
-
-
-#### before_to_union_idl()
-
-```python
-def before_to_union_idl(
-    app: App,
-    settings: union.app._models.AppSerializationSettings,
-)
-```
-Modify app in place at the beginning of `App._to_union_idl`.
-
-
-| Parameter | Type |
-|-|-|
-| `app` | `App` |
-| `settings` | `union.app._models.AppSerializationSettings` |
-
-## union.app.ScalingMetric
-
-## union.app.URLQuery
-
-```python
-class URLQuery(
+class VLLMApp(
     name: str,
-    public: bool,
+    container_image: typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType],
+    port: int,
+    limits: typing.Optional[flytekit.core.resources.Resources],
+    requests: typing.Optional[flytekit.core.resources.Resources],
+    secrets: typing.List[flytekit.models.security.Secret],
+    args: *args,
+    command: typing.Union[typing.List[str], str, NoneType],
+    min_replicas: int,
+    max_replicas: int,
+    scaledown_after: typing.Union[datetime.timedelta, int, NoneType],
+    scaling_metric: typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType],
+    include: typing.List[str],
+    inputs: typing.List[union.app._models.Input],
+    env: dict,
+    cluster_pool: str,
+    accelerator: typing.Optional[flytekit.extras.accelerators.BaseAccelerator],
+    requires_auth: bool,
+    type: str,
+    description: typing.Optional[str],
+    framework_app: typing.Optional[typing.Any],
+    dependencies: typing.List[ForwardRef('App')],
+    config: typing.Optional[union.app._models.AppConfigProtocol],
+    subdomain: typing.Optional[str],
+    custom_domain: typing.Optional[str],
+    links: typing.List[union.app._models.Link],
+    shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    extra_args: typing.Union[str, typing.List[str]],
+    model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
+    model_id: str,
+    stream_model: bool,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
-| `public` | `bool` |
-
-## union.app.WeaveConfig
-
-```python
-class WeaveConfig(
-    project: str,
-    entity: str,
-    api_host: str,
-    host: str,
-)
-```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `entity` | `str` |
-| `api_host` | `str` |
-| `host` | `str` |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate, NoneType]` |
+| `port` | `int` |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
+| `secrets` | `typing.List[flytekit.models.security.Secret]` |
+| `args` | `*args` |
+| `command` | `typing.Union[typing.List[str], str, NoneType]` |
+| `min_replicas` | `int` |
+| `max_replicas` | `int` |
+| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` |
+| `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` |
+| `include` | `typing.List[str]` |
+| `inputs` | `typing.List[union.app._models.Input]` |
+| `env` | `dict` |
+| `cluster_pool` | `str` |
+| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` |
+| `requires_auth` | `bool` |
+| `type` | `str` |
+| `description` | `typing.Optional[str]` |
+| `framework_app` | `typing.Optional[typing.Any]` |
+| `dependencies` | `typing.List[ForwardRef('App')]` |
+| `config` | `typing.Optional[union.app._models.AppConfigProtocol]` |
+| `subdomain` | `typing.Optional[str]` |
+| `custom_domain` | `typing.Optional[str]` |
+| `links` | `typing.List[union.app._models.Link]` |
+| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| `extra_args` | `typing.Union[str, typing.List[str]]` |
+| `model` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery]` |
+| `model_id` | `str` |
+| `stream_model` | `bool` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`before_to_union_idl()`](#before_to_union_idl) | Modify app in place at the beginning of `App. |
+| [`query_endpoint()`](#query_endpoint) | Query for endpoint. |
 
 
-#### before_to_union_idl()
+#### query_endpoint()
 
 ```python
-def before_to_union_idl(
-    app: App,
-    settings: union.app._models.AppSerializationSettings,
-)
+def query_endpoint(
+    public: bool,
+) -> union.app._models.URLQuery
 ```
-Modify app in place at the beginning of `App._to_union_idl`.
+Query for endpoint.
+
 
 
 | Parameter | Type |
 |-|-|
-| `app` | `App` |
-| `settings` | `union.app._models.AppSerializationSettings` |
+| `public` | `bool` |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` |  | {{< multiline >}}Return endpoint for App.
+{{< /multiline >}} |
+| `include_resolved` |  |  |
 

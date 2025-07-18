@@ -307,6 +307,87 @@ union build build.py [OPTIONS] COMMAND [ARGS]...
 
 ---
 
+### `cache`
+
+Cache certain artifacts from remote registries.
+
+```shell
+union cache [OPTIONS] COMMAND [ARGS]...
+```
+
+#### `model-from-hf`
+
+Create a model with NAME from HuggingFace REPO
+
+```shell
+union cache model-from-hf [OPTIONS] REPO
+```
+
+##### Options
+
+- `--artifact-name <artifact_name>`
+  Artifact name to use for the cached model. Must only contain alphanumeric characters, underscores, and hyphens. If not provided, the repo name will be used (replacing '.' with '-').
+
+- `--architecture <architecture>`
+  Model architecture, as given in HuggingFace config.json, For non transformer models use XGBoost, Custom etc.
+
+- `--task <task>`
+  Model task, E.g, `generate`, `classify`, `embed`, `score` etc refer to VLLM docs, `auto` will try to discover this automatically
+
+- `--modality <modality>`
+  Modalities supported by Model, E.g, `text`, `image`, `audio`, `video` etc refer to VLLM Docs
+
+- `--format <format>`
+  Model serialization format, e.g safetensors, onnx, torchscript, joblib, etc
+
+- `--model-type <model_type>`
+  Model type, e.g, `transformer`, `xgboost`, `custom` etc. Model Type is important for non-transformer models.For huggingface models, this is auto determined from config.json['model_type']
+
+- `--short-description <short_description>`
+  Short description of the model
+
+- `--force <force>`
+  Force caching of the model, pass `--force=1/2/3...` to force cache invalidation
+
+- `--wait`
+  Wait for the model to be cached.
+
+- `--hf-token-key <hf_token_key>`
+  Union secret key with hugging face token
+
+- `--union-api-key <union_api_key>`
+  Union secret key with admin permissions
+
+- `--cpu <cpu>`
+  Amount of CPU to use for downloading, (optionally) sharding, and caching hugging face model
+
+- `--gpu <gpu>`
+  Amount of GPU to use for downloading (optionally) sharding, and caching hugging face model
+
+- `--mem <mem>`
+  Amount of Memory to use for downloading, (optionally) sharding, and caching hugging face model
+
+- `--ephemeral-storage <ephemeral_storage>`
+  Amount of Ephemeral Storage to use for downloading, (optionally) sharding, and caching hugging face model
+
+- `--accelerator <accelerator>`
+  The accelerator to use for downloading, (optionally) sharding, and caching hugging face model.
+  **Options:**: `nvidia-l4`, `nvidia-l4-vws`, `nvidia-l40s`, `nvidia-a100`, `nvidia-a100-80gb`, `nvidia-a10g`, `nvidia-tesla-k80`, `nvidia-tesla-m60`, `nvidia-tesla-p4`, `nvidia-tesla-p100`, `nvidia-tesla-t4`, `nvidia-tesla-v100`
+
+- `--shard-config <shard_config>`
+  The engine to shard the model with. A yaml configuration file conforming to [`remote.ShardConfig`](../union-sdk/packages/union.remote#unionremoteshardconfig).
+
+- `-p`, `--project <project>`
+  Project to operate on
+
+- `-d`, `--domain <domain>`
+  Domain to operate on
+  **Default:** `development`
+
+- `--help`
+  Show this message and exit.
+
+
 ### `create`
 
 Create a resource.

@@ -129,7 +129,7 @@ SklearnModel = union.Artifact(name="sklearn-model")
 # Set the environment variable `REGISTRY` to be the URI for your container registry.
 # If you are using `ghcr.io` as your registry, make sure the image is public.
 image_spec = union.ImageSpec(
-    packages=["scikit-learn==1.5.2"],
+    packages=["scikit-learn==1.5.2", "joblib==1.5.1"],
     registry=os.getenv("REGISTRY"),
 )
 
@@ -159,7 +159,7 @@ $ {{< key cli >}} run --remote train_wf.py train_model
 
 
 This task trains a `RandomForestRegressor`, saves it to a file, and uploads it to
-a {{< key product_name >}} `Artifact`. This artifact is retrieved layer by the FastAPI app for
+a {{< key product_name >}} `Artifact`. This artifact is retrieved by the FastAPI app for
 serving the model.
 
 ![scikit-learn Artifact](../../../_static/images/user-guide/core-concepts/serving/fastapi-sklearn/sklearn-artifact.png)

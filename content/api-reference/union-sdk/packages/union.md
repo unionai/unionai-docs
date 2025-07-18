@@ -1,6 +1,6 @@
 ---
 title: union
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -16,7 +16,6 @@ layout: py_api
 | [`ActorEnvironment`](.././union#unionactorenvironment) | ActorEnvironment class. |
 | [`Artifact`](.././union#unionartifact) | This is a wrapper around the Flytekit Artifact class. |
 | [`Cache`](.././union#unioncache) | Cache configuration for a task. |
-| [`CachePolicy`](.././union#unioncachepolicy) | Base class for protocol classes. |
 | [`ContainerTask`](.././union#unioncontainertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`Deck`](.././union#uniondeck) | Deck enable users to get customizable and default visibility into their tasks. |
 | [`FlyteDirectory`](.././union#unionflytedirectory) |  |
@@ -29,6 +28,12 @@ layout: py_api
 | [`StructuredDataset`](.././union#unionstructureddataset) | This is the user facing StructuredDataset class. |
 | [`UnionRemote`](.././union#unionunionremote) | Main entrypoint for programmatically accessing a Flyte remote backend. |
 | [`VersionParameters`](.././union#unionversionparameters) | Parameters used for version hash generation. |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`CachePolicy`](.././union#unioncachepolicy) | Base class for protocol classes. |
 
 ### Methods
 
@@ -99,7 +104,7 @@ launch plans.
 | `concurrency` | `typing.Optional[int]` |
 | `min_successes` | `typing.Optional[int]` |
 | `min_success_ratio` | `float` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### map_task()
 
@@ -123,7 +128,7 @@ or the drop in replacement ArrayNode implementation
 | `concurrency` | `typing.Optional[int]` |
 | `min_successes` | `typing.Optional[int]` |
 | `min_success_ratio` | `float` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### task()
 
@@ -213,7 +218,7 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 | `pickle_untyped` | `bool` |
 | `shared_memory` | `Optional[Union[L[True], str]]` |
 | `resources` | `Optional[Resources]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### workflow()
 
@@ -865,7 +870,7 @@ class Artifact(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
+| `args` | `*args` |
 | `project` | `Optional[str]` |
 | `domain` | `Optional[str]` |
 | `name` | `Optional[str]` |
@@ -882,7 +887,7 @@ class Artifact(
 | `short_description` | `Optional[str]` |
 | `source` | `Optional[artifacts_pb2.ArtifactSource]` |
 | `card` | `Optional[Card]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
@@ -907,7 +912,7 @@ class Artifact(
 def create_from(
     o: O,
     card: Optional[SerializableToString],
-    args: `*args`,
+    args: *args,
     kwargs,
 ) -> O
 ```
@@ -938,8 +943,8 @@ You can mix and match with the input syntax as well.
 |-|-|
 | `o` | `O` |
 | `card` | `Optional[SerializableToString]` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### embed_as_query()
 
@@ -1051,7 +1056,7 @@ def query(
 | `domain` | `Optional[str]` |
 | `time_partition` | `Optional[Union[datetime.datetime, TimePartition, art_id.InputBindingData]]` |
 | `partitions` | `Optional[Union[typing.Dict[str, str], Partitions]]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### set_resolver()
 
@@ -1186,16 +1191,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class CachePolicy(
-    args,
-    kwargs,
-)
+protocol CachePolicy()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -1266,7 +1263,7 @@ class ContainerTask(
 | `pod_template_name` | `typing.Optional[str]` |
 | `local_logs` | `bool` |
 | `resources` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
@@ -1308,8 +1305,8 @@ Generates a node that encapsulates this task in a workflow definition.
 | Parameter | Type |
 |-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### construct_node_metadata()
 
@@ -1353,7 +1350,7 @@ This method will be invoked to execute the task.
 
 | Parameter | Type |
 |-|-|
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### find_lhs()
 
@@ -1501,7 +1498,7 @@ Python native values).
 | Parameter | Type |
 |-|-|
 | `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### local_execution_mode()
 
@@ -1735,7 +1732,7 @@ Example:
 |-|-|
 | `maxdepth` | `typing.Optional[int]` |
 | `topdown` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### deserialize_flyte_dir()
 
@@ -1747,8 +1744,8 @@ def deserialize_flyte_dir(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### download()
 
@@ -1940,8 +1937,8 @@ def serialize_flyte_dir(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### to_dict()
 
@@ -2041,8 +2038,8 @@ def deserialize_flyte_file(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### download()
 
@@ -2166,8 +2163,8 @@ def serialize_flyte_file(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### to_dict()
 
@@ -2201,6 +2198,51 @@ file for the user. In case the user wants access to the original path, it will b
 
 This class is used to specify the docker image that will be used to run the task.
 
+Attributes:
+    name (str): Name of the image.
+    python_version (str): Python version of the image. Use default python in the base image if None.
+    builder (Optional[str]): Type of plugin to build the image. Use envd by default.
+    source_root (Optional[str]): Source root of the image.
+    env (Optional[Dict[str, str]]): Environment variables of the image.
+    registry (Optional[str]): Registry of the image.
+    packages (Optional[List[str]]): List of python packages to install.
+    conda_packages (Optional[List[str]]): List of conda packages to install.
+    conda_channels (Optional[List[str]]): List of conda channels.
+    requirements (Optional[str]): Path to the requirements.txt file.
+    apt_packages (Optional[List[str]]): List of apt packages to install.
+    cuda (Optional[str]): Version of cuda to install.
+    cudnn (Optional[str]): Version of cudnn to install.
+    base_image (Optional[Union[str, 'ImageSpec']]): Base image of the image.
+    platform (str): Specify the target platforms for the build output (for example, windows/amd64 or linux/amd64,darwin/arm64).
+    pip_index (Optional[str]): Specify the custom pip index url.
+    pip_extra_index_url (Optional[List[str]]): Specify one or more pip index urls as a list.
+    pip_secret_mounts (Optional[List[Tuple[str, str]]]): Specify a list of tuples to mount secret for pip install. Each tuple should contain the path to
+        the secret file and the mount path. For example, [(".gitconfig", "/etc/gitconfig")]. This is experimental and
+        the interface may change in the future. Configuring this should not change the built image.
+    pip_extra_args (Optional[str]): Specify one or more extra pip install arguments as a space-delimited string.
+    registry_config (Optional[str]): Specify the path to a JSON registry config file.
+    entrypoint (Optional[List[str]]): List of strings to overwrite the entrypoint of the base image with, set to [] to remove the entrypoint.
+    commands (Optional[List[str]]): Command to run during the building process.
+    tag_format (Optional[str]): Custom string format for image tag. The ImageSpec hash passed in as `spec_hash`. For example,
+        to add a "dev" suffix to the image tag, set `tag_format="{spec_hash}-dev"`.
+    source_copy_mode (Optional[CopyFileDetection]): This option allows the user to specify which source files to copy from the local host, into the image.
+        Not setting this option means to use the default flytekit behavior. The default behavior is:
+            - if fast register is used, source files are not copied into the image (because they're already copied
+              into the fast register tar layer).
+            - if fast register is not used, then the LOADED_MODULES (aka 'auto') option is used to copy loaded
+              Python files into the image.
+        If the option is set by the user, then that option is of course used.
+    copy (Optional[List[str]]): List of files/directories to copy to /root. e.g. ["src/file1.txt", "src/file2.txt"].
+    python_exec (Optional[str]): Python executable to use for install packages.
+    runtime_packages (Optional[List[str]]): List of packages to be installed during runtime. `runtime_packages` requires `pip` to be installed
+        in your base image.
+            - If you are using an ImageSpec as your base image, please include `pip` into your packages:
+              `ImageSpec(..., packages=["pip"])`.
+            - If you want to install runtime packages into a fixed base_image and not use an image builder, you can
+              use `builder="noop"`: `ImageSpec(base_image="ghcr.io/name/my-custom-image", builder="noop").with_runtime_packages(["numpy"])`.
+    builder_options (Optional[Dict[str, Any]]): Additional options for the builder. This is a dictionary that will be passed to the builder.
+        The options are builder-specific and may not be supported by all builders.
+    builder_config (Optional[typing.Dict[str, typing.Any]]): Custom builder images configuration, such as uv and micromamba images.
 
 
 ```python
@@ -2231,6 +2273,9 @@ class ImageSpec(
     source_copy_mode: typing.Optional[flytekit.constants.CopyFileDetection],
     copy: typing.Optional[typing.List[str]],
     python_exec: typing.Optional[str],
+    runtime_packages: typing.Optional[typing.List[str]],
+    builder_options: typing.Optional[typing.Dict[str, typing.Any]],
+    builder_config: typing.Optional[typing.Dict[str, typing.Any]],
 )
 ```
 | Parameter | Type |
@@ -2261,6 +2306,9 @@ class ImageSpec(
 | `source_copy_mode` | `typing.Optional[flytekit.constants.CopyFileDetection]` |
 | `copy` | `typing.Optional[typing.List[str]]` |
 | `python_exec` | `typing.Optional[str]` |
+| `runtime_packages` | `typing.Optional[typing.List[str]]` |
+| `builder_options` | `typing.Optional[typing.Dict[str, typing.Any]]` |
+| `builder_config` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 
 ### Methods
 
@@ -2272,9 +2320,11 @@ class ImageSpec(
 | [`image_name()`](#image_name) | Full image name with tag. |
 | [`is_container()`](#is_container) | Check if the current container image in the pod is built from current image spec. |
 | [`with_apt_packages()`](#with_apt_packages) | Builder that returns a new image spec with an additional list of apt packages that will be executed during the building process. |
+| [`with_builder_options()`](#with_builder_options) | Builder that returns a new image spec with additional builder options. |
 | [`with_commands()`](#with_commands) | Builder that returns a new image spec with an additional list of commands that will be executed during the building process. |
 | [`with_copy()`](#with_copy) | Builder that returns a new image spec with the source files copied to the destination directory. |
 | [`with_packages()`](#with_packages) | Builder that returns a new image speck with additional python packages that will be installed during the building process. |
+| [`with_runtime_packages()`](#with_runtime_packages) | Builder that returns a new image spec with runtime packages. |
 
 
 #### exist()
@@ -2309,7 +2359,7 @@ Create ImageSpec with the environment's Python version and packages pinned to th
 | Parameter | Type |
 |-|-|
 | `pinned_packages` | `typing.Optional[typing.List[str]]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### image_name()
 
@@ -2341,6 +2391,20 @@ Builder that returns a new image spec with an additional list of apt packages th
 | Parameter | Type |
 |-|-|
 | `apt_packages` | `typing.Union[str, typing.List[str]]` |
+
+#### with_builder_options()
+
+```python
+def with_builder_options(
+    builder_options: typing.Dict[str, typing.Any],
+) -> ImageSpec
+```
+Builder that returns a new image spec with additional builder options.
+
+
+| Parameter | Type |
+|-|-|
+| `builder_options` | `typing.Dict[str, typing.Any]` |
 
 #### with_commands()
 
@@ -2384,17 +2448,19 @@ Builder that returns a new image speck with additional python packages that will
 |-|-|
 | `packages` | `typing.Union[str, typing.List[str]]` |
 
-### Properties
+#### with_runtime_packages()
 
-| Property | Type | Description |
-|-|-|-|
-| `tag` |  | {{< multiline >}}Calculate a hash from the image spec. The hash will be the tag of the image.
-We will also read the content of the requirement file and the source root to calculate the hash.
-Therefore, it will generate different hash if new dependencies are added or the source code is changed.
+```python
+def with_runtime_packages(
+    runtime_packages: typing.List[str],
+) -> ImageSpec
+```
+Builder that returns a new image spec with runtime packages. Dev packages will be installed during runtime.
 
-Keep in mind the fields source_root and copy may be changed by update_image_spec_copy_handling, so when
-you call this property in relation to that function matter will change the output.
-{{< /multiline >}} |
+
+| Parameter | Type |
+|-|-|
+| `runtime_packages` | `typing.List[str]` |
 
 ## union.LaunchPlan
 
@@ -2664,6 +2730,18 @@ class PodTemplate(
 | `labels` | `typing.Optional[typing.Dict[str, str]]` |
 | `annotations` | `typing.Optional[typing.Dict[str, str]]` |
 
+### Methods
+
+| Method | Description |
+|-|-|
+| [`version_hash()`](#version_hash) |  |
+
+
+#### version_hash()
+
+```python
+def version_hash()
+```
 ## union.Resources
 
 This class is used to specify both resource requests and resource limits.
@@ -2857,7 +2935,7 @@ class StructuredDataset(
 | `dataframe` | `typing.Optional[typing.Any]` |
 | `uri` | `typing.Optional[str]` |
 | `metadata` | `typing.Optional[literals.StructuredDatasetMetadata]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
@@ -2902,8 +2980,8 @@ def deserialize_structured_dataset(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### from_dict()
 
@@ -2959,8 +3037,8 @@ def serialize_structured_dataset(
 ```
 | Parameter | Type |
 |-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
 
 #### set_literal()
 
@@ -3037,17 +3115,18 @@ Initialize a FlyteRemote object.
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `typing.Optional[bool]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`activate_launchplan()`](#activate_launchplan) | Given a launchplan, activate it, all previous versions are deactivated. |
-| [`approve()`](#approve) | . |
+| [`approve()`](#approve) |  |
 | [`async_channel()`](#async_channel) |  |
 | [`auto()`](#auto) |  |
 | [`create_artifact()`](#create_artifact) | Create an artifact in FlyteAdmin. |
+| [`deactivate_launchplan()`](#deactivate_launchplan) | Given a launchplan, deactivate it, all previous versions are deactivated. |
 | [`deploy_app()`](#deploy_app) | Deploy an application. |
 | [`download()`](#download) | Download the data to the specified location. |
 | [`execute()`](#execute) | Execute a task, workflow, or launchplan, either something that's been declared locally, or a fetched entity. |
@@ -3082,7 +3161,7 @@ Initialize a FlyteRemote object.
 | [`get_extra_headers_for_protocol()`](#get_extra_headers_for_protocol) |  |
 | [`launch_backfill()`](#launch_backfill) | Creates and launches a backfill workflow for the given launchplan. |
 | [`list_projects()`](#list_projects) | Lists registered projects from flyte admin. |
-| [`list_signals()`](#list_signals) | . |
+| [`list_signals()`](#list_signals) |  |
 | [`list_tasks_by_version()`](#list_tasks_by_version) |  |
 | [`raw_register()`](#raw_register) | Raw register method, can be used to register control plane entities. |
 | [`recent_executions()`](#recent_executions) |  |
@@ -3090,11 +3169,11 @@ Initialize a FlyteRemote object.
 | [`register_script()`](#register_script) | Use this method to register a workflow via script mode. |
 | [`register_task()`](#register_task) | Register a qualified task (PythonTask) with Remote. |
 | [`register_workflow()`](#register_workflow) | Use this method to register a workflow. |
-| [`reject()`](#reject) | . |
+| [`reject()`](#reject) |  |
 | [`remote_context()`](#remote_context) | Context manager with remote-specific configuration. |
 | [`search_artifacts()`](#search_artifacts) |  |
-| [`set_input()`](#set_input) | . |
-| [`set_signal()`](#set_signal) | . |
+| [`set_input()`](#set_input) |  |
+| [`set_signal()`](#set_signal) |  |
 | [`stop_app()`](#stop_app) | Stop an application. |
 | [`stream_execution_events()`](#stream_execution_events) | Stream execution events from the given tenant. |
 | [`sync()`](#sync) | This function was previously a singledispatchmethod. |
@@ -3161,14 +3240,14 @@ def auto(
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### create_artifact()
 
 ```python
 def create_artifact(
     artifact: Artifact,
-) -> n: The artifact as persisted in the service.
+) -> Artifact
 ```
 Create an artifact in FlyteAdmin.
 
@@ -3178,6 +3257,20 @@ Create an artifact in FlyteAdmin.
 |-|-|
 | `artifact` | `Artifact` |
 
+#### deactivate_launchplan()
+
+```python
+def deactivate_launchplan(
+    ident: Identifier,
+)
+```
+Given a launchplan, deactivate it, all previous versions are deactivated.
+
+
+| Parameter | Type |
+|-|-|
+| `ident` | `Identifier` |
+
 #### deploy_app()
 
 ```python
@@ -3185,7 +3278,7 @@ def deploy_app(
     app: App,
     project: Optional[str],
     domain: Optional[str],
-) -> n: The App IDL for the deployed application.
+) -> AppIDL
 ```
 Deploy an application.
 
@@ -3306,7 +3399,7 @@ def execute_local_launch_plan(
     cluster_pool: typing.Optional[str],
     execution_cluster_label: typing.Optional[str],
     serialization_settings: typing.Optional[SerializationSettings],
-) -> n: FlyteWorkflowExecution object
+) -> FlyteWorkflowExecution
 ```
 Execute a locally defined `LaunchPlan`.
 
@@ -3354,7 +3447,7 @@ def execute_local_task(
     execution_cluster_label: typing.Optional[str],
     options: typing.Optional[Options],
     serialization_settings: typing.Optional[SerializationSettings],
-) -> n: FlyteWorkflowExecution object.
+) -> FlyteWorkflowExecution
 ```
 Execute a @task-decorated function or TaskTemplate task.
 
@@ -3403,7 +3496,7 @@ def execute_local_workflow(
     cluster_pool: typing.Optional[str],
     execution_cluster_label: typing.Optional[str],
     serialization_settings: typing.Optional[SerializationSettings],
-) -> n: FlyteWorkflowExecution object
+) -> FlyteWorkflowExecution
 ```
 Execute an @workflow decorated function.
 
@@ -3640,7 +3733,7 @@ def fast_package(
     deref_symlinks: bool,
     output: str,
     options: typing.Optional[FastPackageOptions],
-) -> n: md5_bytes, url
+) -> typing.Tuple[bytes, str]
 ```
 Packages the given paths into an installable zip and returns the md5_bytes and the URL of the uploaded location
 
@@ -3662,7 +3755,7 @@ def fast_register_workflow(
     default_launch_plan: typing.Optional[bool],
     options: typing.Optional[Options],
     fast_package_options: typing.Optional[FastPackageOptions],
-) -> n:
+) -> FlyteWorkflow
 ```
 Use this method to register a workflow with zip mode.
 
@@ -3866,7 +3959,7 @@ def for_endpoint(
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### for_sandbox()
 
@@ -3885,7 +3978,7 @@ def for_sandbox(
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### from_api_key()
 
@@ -3907,7 +4000,7 @@ Call this if you want to directly instantiate a UnionRemote from an API key
 | `default_project` | `typing.Optional[str]` |
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### generate_console_http_domain()
 
@@ -3962,7 +4055,7 @@ def get_artifact(
     artifact_id: typing.Optional[art_id.ArtifactID],
     query: typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]],
     get_details: bool,
-) -> n: The artifact as persisted in the service.
+) -> typing.Optional[Artifact]
 ```
 Get the specified artifact.
 
@@ -4030,7 +4123,7 @@ def launch_backfill(
     parallel: bool,
     failure_policy: typing.Optional[WorkflowFailurePolicy],
     overwrite_cache: typing.Optional[bool],
-) -> n: In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default
+) -> typing.Optional[FlyteWorkflowExecution, FlyteWorkflow, WorkflowBase]
 ```
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
 then the latest launchplan is retrieved.
@@ -4127,7 +4220,7 @@ def raw_register(
     create_default_launchplan: bool,
     options: Options,
     og_entity: FlyteLocalEntity,
-) -> n: Identifier of the created entity
+) -> typing.Optional[Identifier]
 ```
 Raw register method, can be used to register control plane entities. Usually if you have a Flyte Entity like a
 WorkflowBase, Task, LaunchPlan then use other methods. This should be used only if you have already serialized entities
@@ -4203,8 +4296,9 @@ def register_script(
     source_path: typing.Optional[str],
     module_name: typing.Optional[str],
     envs: typing.Optional[typing.Dict[str, str]],
+    default_resources: typing.Optional[ResourceSpec],
     fast_package_options: typing.Optional[FastPackageOptions],
-) -> n:
+) -> typing.Union[FlyteWorkflow, FlyteTask, FlyteLaunchPlan, ReferenceEntity]
 ```
 Use this method to register a workflow via script mode.
 
@@ -4223,6 +4317,7 @@ Use this method to register a workflow via script mode.
 | `source_path` | `typing.Optional[str]` |
 | `module_name` | `typing.Optional[str]` |
 | `envs` | `typing.Optional[typing.Dict[str, str]]` |
+| `default_resources` | `typing.Optional[ResourceSpec]` |
 | `fast_package_options` | `typing.Optional[FastPackageOptions]` |
 
 #### register_task()
@@ -4232,7 +4327,7 @@ def register_task(
     entity: PythonTask,
     serialization_settings: typing.Optional[SerializationSettings],
     version: typing.Optional[str],
-) -> n:
+) -> FlyteTask
 ```
 Register a qualified task (PythonTask) with Remote
 For any conflicting parameters method arguments are regarded as overrides
@@ -4254,7 +4349,7 @@ def register_workflow(
     version: typing.Optional[str],
     default_launch_plan: typing.Optional[bool],
     options: typing.Optional[Options],
-) -> n:
+) -> FlyteWorkflow
 ```
 Use this method to register a workflow.
 
@@ -4372,7 +4467,7 @@ def stop_app(
     name: str,
     project: Optional[str],
     domain: Optional[str],
-) -> n: The App IDL for the stopped application.
+)
 ```
 Stop an application.
 
@@ -4418,7 +4513,7 @@ def sync(
     execution: FlyteWorkflowExecution,
     entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
     sync_nodes: bool,
-) -> n: Returns the same execution object, but with additional information pulled in.
+) -> FlyteWorkflowExecution
 ```
 This function was previously a singledispatchmethod. We've removed that but this function remains
 so that we don't break people.
@@ -4521,7 +4616,7 @@ def upload_file(
     project: typing.Optional[str],
     domain: typing.Optional[str],
     filename_root: typing.Optional[str],
-) -> n: The uploaded location.
+) -> typing.Tuple[bytes, str]
 ```
 Function will use remote's client to hash and then upload the file using Admin's data proxy service.
 
