@@ -1,10 +1,10 @@
 ---
-title: Adding your own code
+title: Serving custom code
 weight: 1
 variants: -flyte +serverless +byoc +selfmanaged
 ---
 
-# Adding your own code
+# Serving custom code
 
 In the introductory section we saw how to define and deploy a simple Streamlit app.
 The app deployed was the default hello world Streamlit example app.

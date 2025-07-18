@@ -1,6 +1,6 @@
 ---
 title: union.remote
-version: 0.1.171.dev4+g052020f1.d20250404
+version: 0.1.187
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -14,7 +14,9 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`HuggingFaceModelInfo`](.././union.remote#unionremotehuggingfacemodelinfo) | Captures information about a Hugging Face model. |
+| [`ShardConfig`](.././union.remote#unionremoteshardconfig) |  |
 | [`UnionRemote`](.././union.remote#unionremoteunionremote) | Main entrypoint for programmatically accessing a Flyte remote backend. |
+| [`VLLMShardArgs`](.././union.remote#unionremotevllmshardargs) |  |
 
 ## union.remote.HuggingFaceModelInfo
 
@@ -26,23 +28,40 @@ automatically determined from the model's config.json file. If not found, the fi
 ```python
 class HuggingFaceModelInfo(
     repo: str,
+    artifact_name: str | None,
     model_type: str | None,
     architecture: str | None,
     task: str,
     modality: typing.List[str] | None,
     serial_format: str,
     short_description: str | None,
+    shard_config: ShardConfig | None,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `repo` | `str` |
+| `artifact_name` | `str \| None` |
 | `model_type` | `str \| None` |
 | `architecture` | `str \| None` |
 | `task` | `str` |
 | `modality` | `typing.List[str] \| None` |
 | `serial_format` | `str` |
 | `short_description` | `str \| None` |
+| `shard_config` | `ShardConfig \| None` |
+
+## union.remote.ShardConfig
+
+```python
+class ShardConfig(
+    engine: str,
+    args: *args,
+)
+```
+| Parameter | Type |
+|-|-|
+| `engine` | `str` |
+| `args` | `*args` |
 
 ## union.remote.UnionRemote
 
@@ -75,17 +94,18 @@ Initialize a FlyteRemote object.
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `typing.Optional[bool]` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`activate_launchplan()`](#activate_launchplan) | Given a launchplan, activate it, all previous versions are deactivated. |
-| [`approve()`](#approve) | . |
+| [`approve()`](#approve) |  |
 | [`async_channel()`](#async_channel) |  |
 | [`auto()`](#auto) |  |
 | [`create_artifact()`](#create_artifact) | Create an artifact in FlyteAdmin. |
+| [`deactivate_launchplan()`](#deactivate_launchplan) | Given a launchplan, deactivate it, all previous versions are deactivated. |
 | [`deploy_app()`](#deploy_app) | Deploy an application. |
 | [`download()`](#download) | Download the data to the specified location. |
 | [`execute()`](#execute) | Execute a task, workflow, or launchplan, either something that's been declared locally, or a fetched entity. |
@@ -120,7 +140,7 @@ Initialize a FlyteRemote object.
 | [`get_extra_headers_for_protocol()`](#get_extra_headers_for_protocol) |  |
 | [`launch_backfill()`](#launch_backfill) | Creates and launches a backfill workflow for the given launchplan. |
 | [`list_projects()`](#list_projects) | Lists registered projects from flyte admin. |
-| [`list_signals()`](#list_signals) | . |
+| [`list_signals()`](#list_signals) |  |
 | [`list_tasks_by_version()`](#list_tasks_by_version) |  |
 | [`raw_register()`](#raw_register) | Raw register method, can be used to register control plane entities. |
 | [`recent_executions()`](#recent_executions) |  |
@@ -128,11 +148,11 @@ Initialize a FlyteRemote object.
 | [`register_script()`](#register_script) | Use this method to register a workflow via script mode. |
 | [`register_task()`](#register_task) | Register a qualified task (PythonTask) with Remote. |
 | [`register_workflow()`](#register_workflow) | Use this method to register a workflow. |
-| [`reject()`](#reject) | . |
+| [`reject()`](#reject) |  |
 | [`remote_context()`](#remote_context) | Context manager with remote-specific configuration. |
 | [`search_artifacts()`](#search_artifacts) |  |
-| [`set_input()`](#set_input) | . |
-| [`set_signal()`](#set_signal) | . |
+| [`set_input()`](#set_input) |  |
+| [`set_signal()`](#set_signal) |  |
 | [`stop_app()`](#stop_app) | Stop an application. |
 | [`stream_execution_events()`](#stream_execution_events) | Stream execution events from the given tenant. |
 | [`sync()`](#sync) | This function was previously a singledispatchmethod. |
@@ -199,14 +219,14 @@ def auto(
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### create_artifact()
 
 ```python
 def create_artifact(
     artifact: Artifact,
-) -> n: The artifact as persisted in the service.
+) -> Artifact
 ```
 Create an artifact in FlyteAdmin.
 
@@ -216,6 +236,20 @@ Create an artifact in FlyteAdmin.
 |-|-|
 | `artifact` | `Artifact` |
 
+#### deactivate_launchplan()
+
+```python
+def deactivate_launchplan(
+    ident: Identifier,
+)
+```
+Given a launchplan, deactivate it, all previous versions are deactivated.
+
+
+| Parameter | Type |
+|-|-|
+| `ident` | `Identifier` |
+
 #### deploy_app()
 
 ```python
@@ -223,7 +257,7 @@ def deploy_app(
     app: App,
     project: Optional[str],
     domain: Optional[str],
-) -> n: The App IDL for the deployed application.
+) -> AppIDL
 ```
 Deploy an application.
 
@@ -344,7 +378,7 @@ def execute_local_launch_plan(
     cluster_pool: typing.Optional[str],
     execution_cluster_label: typing.Optional[str],
     serialization_settings: typing.Optional[SerializationSettings],
-) -> n: FlyteWorkflowExecution object
+) -> FlyteWorkflowExecution
 ```
 Execute a locally defined `LaunchPlan`.
 
@@ -392,7 +426,7 @@ def execute_local_task(
     execution_cluster_label: typing.Optional[str],
     options: typing.Optional[Options],
     serialization_settings: typing.Optional[SerializationSettings],
-) -> n: FlyteWorkflowExecution object.
+) -> FlyteWorkflowExecution
 ```
 Execute a @task-decorated function or TaskTemplate task.
 
@@ -441,7 +475,7 @@ def execute_local_workflow(
     cluster_pool: typing.Optional[str],
     execution_cluster_label: typing.Optional[str],
     serialization_settings: typing.Optional[SerializationSettings],
-) -> n: FlyteWorkflowExecution object
+) -> FlyteWorkflowExecution
 ```
 Execute an @workflow decorated function.
 
@@ -678,7 +712,7 @@ def fast_package(
     deref_symlinks: bool,
     output: str,
     options: typing.Optional[FastPackageOptions],
-) -> n: md5_bytes, url
+) -> typing.Tuple[bytes, str]
 ```
 Packages the given paths into an installable zip and returns the md5_bytes and the URL of the uploaded location
 
@@ -700,7 +734,7 @@ def fast_register_workflow(
     default_launch_plan: typing.Optional[bool],
     options: typing.Optional[Options],
     fast_package_options: typing.Optional[FastPackageOptions],
-) -> n:
+) -> FlyteWorkflow
 ```
 Use this method to register a workflow with zip mode.
 
@@ -904,7 +938,7 @@ def for_endpoint(
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### for_sandbox()
 
@@ -923,7 +957,7 @@ def for_sandbox(
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
 | `interactive_mode_enabled` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### from_api_key()
 
@@ -945,7 +979,7 @@ Call this if you want to directly instantiate a UnionRemote from an API key
 | `default_project` | `typing.Optional[str]` |
 | `default_domain` | `typing.Optional[str]` |
 | `data_upload_location` | `str` |
-| `kwargs` | ``**kwargs`` |
+| `kwargs` | `**kwargs` |
 
 #### generate_console_http_domain()
 
@@ -1000,7 +1034,7 @@ def get_artifact(
     artifact_id: typing.Optional[art_id.ArtifactID],
     query: typing.Optional[typing.Union[art_id.ArtifactQuery, ArtifactQuery]],
     get_details: bool,
-) -> n: The artifact as persisted in the service.
+) -> typing.Optional[Artifact]
 ```
 Get the specified artifact.
 
@@ -1068,7 +1102,7 @@ def launch_backfill(
     parallel: bool,
     failure_policy: typing.Optional[WorkflowFailurePolicy],
     overwrite_cache: typing.Optional[bool],
-) -> n: In case of dry-run, return WorkflowBase, else if no_execute return FlyteWorkflow else in the default
+) -> typing.Optional[FlyteWorkflowExecution, FlyteWorkflow, WorkflowBase]
 ```
 Creates and launches a backfill workflow for the given launchplan. If launchplan version is not specified,
 then the latest launchplan is retrieved.
@@ -1165,7 +1199,7 @@ def raw_register(
     create_default_launchplan: bool,
     options: Options,
     og_entity: FlyteLocalEntity,
-) -> n: Identifier of the created entity
+) -> typing.Optional[Identifier]
 ```
 Raw register method, can be used to register control plane entities. Usually if you have a Flyte Entity like a
 WorkflowBase, Task, LaunchPlan then use other methods. This should be used only if you have already serialized entities
@@ -1241,8 +1275,9 @@ def register_script(
     source_path: typing.Optional[str],
     module_name: typing.Optional[str],
     envs: typing.Optional[typing.Dict[str, str]],
+    default_resources: typing.Optional[ResourceSpec],
     fast_package_options: typing.Optional[FastPackageOptions],
-) -> n:
+) -> typing.Union[FlyteWorkflow, FlyteTask, FlyteLaunchPlan, ReferenceEntity]
 ```
 Use this method to register a workflow via script mode.
 
@@ -1261,6 +1296,7 @@ Use this method to register a workflow via script mode.
 | `source_path` | `typing.Optional[str]` |
 | `module_name` | `typing.Optional[str]` |
 | `envs` | `typing.Optional[typing.Dict[str, str]]` |
+| `default_resources` | `typing.Optional[ResourceSpec]` |
 | `fast_package_options` | `typing.Optional[FastPackageOptions]` |
 
 #### register_task()
@@ -1270,7 +1306,7 @@ def register_task(
     entity: PythonTask,
     serialization_settings: typing.Optional[SerializationSettings],
     version: typing.Optional[str],
-) -> n:
+) -> FlyteTask
 ```
 Register a qualified task (PythonTask) with Remote
 For any conflicting parameters method arguments are regarded as overrides
@@ -1292,7 +1328,7 @@ def register_workflow(
     version: typing.Optional[str],
     default_launch_plan: typing.Optional[bool],
     options: typing.Optional[Options],
-) -> n:
+) -> FlyteWorkflow
 ```
 Use this method to register a workflow.
 
@@ -1410,7 +1446,7 @@ def stop_app(
     name: str,
     project: Optional[str],
     domain: Optional[str],
-) -> n: The App IDL for the stopped application.
+)
 ```
 Stop an application.
 
@@ -1456,7 +1492,7 @@ def sync(
     execution: FlyteWorkflowExecution,
     entity_definition: typing.Union[FlyteWorkflow, FlyteTask],
     sync_nodes: bool,
-) -> n: Returns the same execution object, but with additional information pulled in.
+) -> FlyteWorkflowExecution
 ```
 This function was previously a singledispatchmethod. We've removed that but this function remains
 so that we don't break people.
@@ -1559,7 +1595,7 @@ def upload_file(
     project: typing.Optional[str],
     domain: typing.Optional[str],
     filename_root: typing.Optional[str],
-) -> n: The uploaded location.
+) -> typing.Tuple[bytes, str]
 ```
 Function will use remote's client to hash and then upload the file using Admin's data proxy service.
 
@@ -1619,4 +1655,47 @@ Wait for an execution to finish.
 | `sync_channel` |  | {{< multiline >}}Return channel from client. This channel already has the org passed in dynamically by the interceptor.
 {{< /multiline >}} |
 | `users_client` |  |  |
+
+## union.remote.VLLMShardArgs
+
+```python
+class VLLMShardArgs(
+    model: str,
+    tensor_parallel_size: int,
+    trust_remote_code: bool,
+    revision: str | None,
+    file_pattern: str | None,
+    max_file_size: int | None,
+    gpu_memory_utilization: float,
+    extra_args: dict[str, typing.Any],
+)
+```
+| Parameter | Type |
+|-|-|
+| `model` | `str` |
+| `tensor_parallel_size` | `int` |
+| `trust_remote_code` | `bool` |
+| `revision` | `str \| None` |
+| `file_pattern` | `str \| None` |
+| `max_file_size` | `int \| None` |
+| `gpu_memory_utilization` | `float` |
+| `extra_args` | `dict[str, typing.Any]` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`get_vllm_args()`](#get_vllm_args) |  |
+
+
+#### get_vllm_args()
+
+```python
+def get_vllm_args(
+    model_path: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `model_path` | `str` |
 
