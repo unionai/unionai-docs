@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 0.2.0b23
+version: 0.2.0b27
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -350,11 +350,157 @@ remote Union API.
 ```python
 class ActionInputs(
     pb2: run_definition_pb2.Inputs,
+    data: Dict[str, Any],
 )
 ```
 | Parameter | Type |
 |-|-|
 | `pb2` | `run_definition_pb2.Inputs` |
+| `data` | `Dict[str, Any]` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`clear()`](#clear) | D. |
+| [`copy()`](#copy) |  |
+| [`fromkeys()`](#fromkeys) |  |
+| [`get()`](#get) | D. |
+| [`items()`](#items) | D. |
+| [`keys()`](#keys) | D. |
+| [`pop()`](#pop) | D. |
+| [`popitem()`](#popitem) | D. |
+| [`setdefault()`](#setdefault) | D. |
+| [`update()`](#update) | D. |
+| [`values()`](#values) | D. |
+
+
+#### clear()
+
+```python
+def clear()
+```
+D.clear() -> None.  Remove all items from D.
+
+
+#### copy()
+
+```python
+def copy()
+```
+#### fromkeys()
+
+```python
+def fromkeys(
+    iterable,
+    value,
+)
+```
+| Parameter | Type |
+|-|-|
+| `iterable` |  |
+| `value` |  |
+
+#### get()
+
+```python
+def get(
+    key,
+    default,
+)
+```
+D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+
+
+| Parameter | Type |
+|-|-|
+| `key` |  |
+| `default` |  |
+
+#### items()
+
+```python
+def items()
+```
+D.items() -> a set-like object providing a view on D's items
+
+
+#### keys()
+
+```python
+def keys()
+```
+D.keys() -> a set-like object providing a view on D's keys
+
+
+#### pop()
+
+```python
+def pop(
+    key,
+    default,
+)
+```
+D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
+If key is not found, d is returned if given, otherwise KeyError is raised.
+
+
+| Parameter | Type |
+|-|-|
+| `key` |  |
+| `default` |  |
+
+#### popitem()
+
+```python
+def popitem()
+```
+D.popitem() -> (k, v), remove and return some (key, value) pair
+as a 2-tuple; but raise KeyError if D is empty.
+
+
+#### setdefault()
+
+```python
+def setdefault(
+    key,
+    default,
+)
+```
+D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
+
+
+| Parameter | Type |
+|-|-|
+| `key` |  |
+| `default` |  |
+
+#### update()
+
+```python
+def update(
+    other,
+    kwds,
+)
+```
+D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
+If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
+If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
+In either case, this is followed by: for k, v in F.items(): D[k] = v
+
+
+| Parameter | Type |
+|-|-|
+| `other` |  |
+| `kwds` |  |
+
+#### values()
+
+```python
+def values()
+```
+D.values() -> an object providing a view on D's values
+
 
 ## flyte.remote.ActionOutputs
 
@@ -365,11 +511,13 @@ remote Union API.
 ```python
 class ActionOutputs(
     pb2: run_definition_pb2.Outputs,
+    data: Tuple[Any, ...],
 )
 ```
 | Parameter | Type |
 |-|-|
 | `pb2` | `run_definition_pb2.Outputs` |
+| `data` | `Tuple[Any, ...]` |
 
 ## flyte.remote.Project
 

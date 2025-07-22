@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b23
+version: 0.2.0b27
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,21 +8,7 @@ layout: py_api
 # flyte
 
 
-Flyte SDK for authoring Compound AI applications, services and workflows.
-
-## Environments
-
-TaskEnvironment class to define a new environment for a set of tasks.
-
-Example usage:
-
-```python
-env = flyte.TaskEnvironment(name="my_env", image="my_image", resources=Resources(cpu="1", memory="1Gi"))
-
-@env.task
-async def my_task():
-    pass
-```
+Flyte SDK for authoring compound AI applications, services and workflows.
 
 ## Directory
 
@@ -628,6 +614,7 @@ class Image(
 | [`with_apt_packages()`](#with_apt_packages) | Use this method to create a new image with the specified apt packages layered on top of the current image. |
 | [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image. |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
+| [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
 | [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file layered on top of the current image. |
@@ -642,6 +629,7 @@ class Image(
 def clone(
     registry: Optional[str],
     name: Optional[str],
+    python_version: Optional[Tuple[int, int]],
     addl_layer: Optional[Layer],
 ) -> Image
 ```
@@ -653,6 +641,7 @@ Use this method to clone the current image and change the registry and name
 |-|-|
 | `registry` | `Optional[str]` |
 | `name` | `Optional[str]` |
+| `python_version` | `Optional[Tuple[int, int]]` |
 | `addl_layer` | `Optional[Layer]` |
 
 #### from_base()
@@ -676,8 +665,10 @@ Use this method to start with a pre-built base image. This image must already ex
 def from_debian_base(
     python_version: Optional[Tuple[int, int]],
     flyte_version: Optional[str],
+    install_flyte: bool,
     registry: Optional[str],
     name: Optional[str],
+    platform: Optional[Tuple[Architecture, ...]],
 ) -> Image
 ```
 Use this method to start using the default base image, built from this library's base Dockerfile
@@ -689,8 +680,10 @@ Default images are multi-arch amd/arm64
 |-|-|
 | `python_version` | `Optional[Tuple[int, int]]` |
 | `flyte_version` | `Optional[str]` |
+| `install_flyte` | `bool` |
 | `registry` | `Optional[str]` |
 | `name` | `Optional[str]` |
+| `platform` | `Optional[Tuple[Architecture, ...]]` |
 
 #### from_dockerfile()
 
@@ -723,7 +716,7 @@ def from_uv_script(
     extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
     pre: bool,
     extra_args: Optional[str],
-    arch: Union[Architecture, Tuple[Architecture, ...]],
+    platform: Optional[Tuple[Architecture, ...]],
 ) -> Image
 ```
 Use this method to create a new image with the specified uv script.
@@ -755,7 +748,7 @@ For more information on the uv script format, see the documentation:
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
 | `pre` | `bool` |
 | `extra_args` | `Optional[str]` |
-| `arch` | `Union[Architecture, Tuple[Architecture, ...]]` |
+| `platform` | `Optional[Tuple[Architecture, ...]]` |
 
 #### validate()
 
@@ -808,6 +801,17 @@ the current image. Cannot be used in conjunction with conda
 | Parameter | Type |
 |-|-|
 | `env_vars` | `Dict[str, str]` |
+
+#### with_local_v2()
+
+```python
+def with_local_v2()
+```
+Use this method to create a new image with the local v2 builder
+This will override any existing builder
+
+:return: Image
+
 
 #### with_pip_packages()
 
@@ -957,6 +961,18 @@ class PodTemplate(
 | `labels` | `typing.Optional[typing.Dict[str, str]]` |
 | `annotations` | `typing.Optional[typing.Dict[str, str]]` |
 
+### Methods
+
+| Method | Description |
+|-|-|
+| [`to_k8s_pod()`](#to_k8s_pod) |  |
+
+
+#### to_k8s_pod()
+
+```python
+def to_k8s_pod()
+```
 ## flyte.Resources
 
 Resources such as CPU, Memory, and GPU that can be allocated to a task.
@@ -1071,12 +1087,25 @@ Caution: It is important to note that the environment is shared, so managing mem
 class ReusePolicy(
     replicas: typing.Union[int, typing.Tuple[int, int]],
     idle_ttl: typing.Union[int, datetime.timedelta, NoneType],
+    reuse_salt: str | None,
+    concurrency: int,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `replicas` | `typing.Union[int, typing.Tuple[int, int]]` |
 | `idle_ttl` | `typing.Union[int, datetime.timedelta, NoneType]` |
+| `reuse_salt` | `str \| None` |
+| `concurrency` | `int` |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `max_replicas` | `None` | {{< multiline >}}Returns the maximum number of replicas.
+{{< /multiline >}} |
+| `ttl` | `None` | {{< multiline >}}Returns the idle TTL as a timedelta. If idle_ttl is not set, returns the global default.
+{{< /multiline >}} |
 
 ## flyte.Secret
 
@@ -1118,6 +1147,21 @@ class Secret(
 | `mount` | `pathlib._local.Path \| None` |
 | `as_env_var` | `typing.Optional[str]` |
 
+### Methods
+
+| Method | Description |
+|-|-|
+| [`stable_hash()`](#stable_hash) | Deterministic, process-independent hash (as hex string). |
+
+
+#### stable_hash()
+
+```python
+def stable_hash()
+```
+Deterministic, process-independent hash (as hex string).
+
+
 ## flyte.TaskEnvironment
 
 Environment class to define a new environment for a set of tasks.
@@ -1145,6 +1189,7 @@ class TaskEnvironment(
     image: Union[str, Image, Literal['auto']],
     cache: Union[CacheRequest],
     reusable: ReusePolicy | None,
+    plugin_config: Optional[Any],
 )
 ```
 | Parameter | Type |
@@ -1159,6 +1204,7 @@ class TaskEnvironment(
 | `image` | `Union[str, Image, Literal['auto']]` |
 | `cache` | `Union[CacheRequest]` |
 | `reusable` | `ReusePolicy \| None` |
+| `plugin_config` | `Optional[Any]` |
 
 ### Methods
 

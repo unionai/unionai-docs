@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 0.2.0b23
+version: 0.2.0b27
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,6 +41,7 @@ layout: py_api
 | [`flyte.errors.TaskInterruptedError`](../packages/flyte.errors#flyteerrorstaskinterruptederror) |This error is raised when the underlying task execution is interrupted. |
 | [`flyte.errors.TaskTimeoutError`](../packages/flyte.errors#flyteerrorstasktimeouterror) |This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`flyte.errors.UnionRpcError`](../packages/flyte.errors#flyteerrorsunionrpcerror) |This error is raised when communication with the Union server fails. |
+| [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend#flyteextendasyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras#flyteextrascontainertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.io.Dir`](../packages/flyte.io#flyteiodir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io#flyteiofile) |A generic file class representing a file with a specified format. |

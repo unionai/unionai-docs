@@ -1,11 +1,11 @@
 ---
-title: flyte.extras
+title: flyte.extend
 version: 0.2.0b27
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# flyte.extras
+# flyte.extend
 
 ## Directory
 
@@ -13,44 +13,106 @@ layout: py_api
 
 | Class | Description |
 |-|-|
-| [`ContainerTask`](.././flyte.extras#flyteextrascontainertask) | This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`AsyncFunctionTaskTemplate`](.././flyte.extend#flyteextendasyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
 
-## flyte.extras.ContainerTask
+### Methods
 
-This is an intermediate class that represents Flyte Tasks that run a container at execution time. This is the vast
-majority of tasks - the typical ``@task`` decorated tasks; for instance, all run a container. An example of
-something that doesn't run a container would be something like the Athena SQL task.
+| Method | Description |
+|-|-|
+| [`is_initialized()`](#is_initialized) | Check if the system has been initialized. |
+| [`pod_spec_from_resources()`](#pod_spec_from_resources) |  |
 
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `PRIMARY_CONTAINER_DEFAULT_NAME` | `str` |  |
+| `TaskPluginRegistry` | `_Registry` |  |
+
+## Methods
+
+#### is_initialized()
+
+```python
+def is_initialized()
+```
+Check if the system has been initialized.
+
+:return: True if initialized, False otherwise
+
+
+#### pod_spec_from_resources()
+
+```python
+def pod_spec_from_resources(
+    primary_container_name: str,
+    requests: typing.Optional[flyte._resources.Resources],
+    limits: typing.Optional[flyte._resources.Resources],
+    k8s_gpu_resource_key: str,
+) -> V1PodSpec
+```
+| Parameter | Type |
+|-|-|
+| `primary_container_name` | `str` |
+| `requests` | `typing.Optional[flyte._resources.Resources]` |
+| `limits` | `typing.Optional[flyte._resources.Resources]` |
+| `k8s_gpu_resource_key` | `str` |
+
+## flyte.extend.AsyncFunctionTaskTemplate
+
+A task template that wraps an asynchronous functions. This is automatically created when an asynchronous function
+is decorated with the task decorator.
 
 
 ```python
-class ContainerTask(
+class AsyncFunctionTaskTemplate(
     name: str,
-    image: typing.Union[str, flyte._image.Image],
-    command: typing.List[str],
-    inputs: typing.Optional[typing.Dict[str, typing.Type]],
-    arguments: typing.Optional[typing.List[str]],
-    outputs: typing.Optional[typing.Dict[str, typing.Type]],
-    input_data_dir: str | pathlib._local.Path,
-    output_data_dir: str | pathlib._local.Path,
-    metadata_format: typing.Literal['JSON', 'YAML', 'PROTO'],
-    local_logs: bool,
-    kwargs,
+    interface: NativeInterface,
+    friendly_name: str,
+    task_type: str,
+    task_type_version: int,
+    image: Union[str, Image, Literal['auto']],
+    resources: Optional[Resources],
+    cache: CacheRequest,
+    interruptable: bool,
+    retries: Union[int, RetryStrategy],
+    reusable: Union[ReusePolicy, Literal['auto'], None],
+    docs: Optional[Documentation],
+    env: Optional[Dict[str, str]],
+    secrets: Optional[SecretRequest],
+    timeout: Optional[TimeoutType],
+    pod_template: Optional[Union[str, PodTemplate]],
+    report: bool,
+    parent_env: Optional[weakref.ReferenceType[TaskEnvironment]],
+    _call_as_synchronous: bool,
+    func: FunctionTypes,
+    plugin_config: Optional[Any],
 )
 ```
 | Parameter | Type |
 |-|-|
 | `name` | `str` |
-| `image` | `typing.Union[str, flyte._image.Image]` |
-| `command` | `typing.List[str]` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `arguments` | `typing.Optional[typing.List[str]]` |
-| `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `input_data_dir` | `str \| pathlib._local.Path` |
-| `output_data_dir` | `str \| pathlib._local.Path` |
-| `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` |
-| `local_logs` | `bool` |
-| `kwargs` | `**kwargs` |
+| `interface` | `NativeInterface` |
+| `friendly_name` | `str` |
+| `task_type` | `str` |
+| `task_type_version` | `int` |
+| `image` | `Union[str, Image, Literal['auto']]` |
+| `resources` | `Optional[Resources]` |
+| `cache` | `CacheRequest` |
+| `interruptable` | `bool` |
+| `retries` | `Union[int, RetryStrategy]` |
+| `reusable` | `Union[ReusePolicy, Literal['auto'], None]` |
+| `docs` | `Optional[Documentation]` |
+| `env` | `Optional[Dict[str, str]]` |
+| `secrets` | `Optional[SecretRequest]` |
+| `timeout` | `Optional[TimeoutType]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
+| `report` | `bool` |
+| `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` |
+| `_call_as_synchronous` | `bool` |
+| `func` | `FunctionTypes` |
+| `plugin_config` | `Optional[Any]` |
 
 ### Methods
 
@@ -61,7 +123,7 @@ class ContainerTask(
 | [`container_args()`](#container_args) | Returns the container args for the task. |
 | [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
 | [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
-| [`execute()`](#execute) | This is the pure python function that will be executed when the task is called. |
+| [`execute()`](#execute) | This is the execute method that will be called when the task is invoked. |
 | [`forward()`](#forward) | Think of this as a local execute method for your task. |
 | [`override()`](#override) | Override various parameters of the task template. |
 | [`post()`](#post) | This is the postexecute function that will be. |
@@ -120,8 +182,8 @@ configure the task execution environment at runtime. This is usually used by plu
 
 ```python
 def container_args(
-    sctx: flyte.models.SerializationContext,
-) -> typing.List[str]
+    serialize_context: SerializationContext,
+) -> List[str]
 ```
 Returns the container args for the task. This is a set of key-value pairs that can be used to
 configure the task execution environment at runtime. This is usually used by plugins.
@@ -129,7 +191,7 @@ configure the task execution environment at runtime. This is usually used by plu
 
 | Parameter | Type |
 |-|-|
-| `sctx` | `flyte.models.SerializationContext` |
+| `serialize_context` | `SerializationContext` |
 
 #### custom_config()
 
@@ -150,8 +212,8 @@ configure the task execution environment at runtime. This is usually used by plu
 
 ```python
 def data_loading_config(
-    sctx: flyte.models.SerializationContext,
-) -> flyteidl.core.tasks_pb2.DataLoadingConfig
+    sctx: SerializationContext,
+) -> DataLoadingConfig
 ```
 This configuration allows executing raw containers in Flyte using the Flyte CoPilot system
 Flyte CoPilot, eliminates the needs of sdk inside the container. Any inputs required by the users container
@@ -161,20 +223,23 @@ Any outputs generated by the user container - within output_path are automatical
 
 | Parameter | Type |
 |-|-|
-| `sctx` | `flyte.models.SerializationContext` |
+| `sctx` | `SerializationContext` |
 
 #### execute()
 
 ```python
 def execute(
-    kwargs,
-) -> typing.Any
+    args: *args,
+    kwargs: **kwargs,
+) -> R
 ```
-This is the pure python function that will be executed when the task is called.
+This is the execute method that will be called when the task is invoked. It will call the actual function.
+# TODO We may need to keep this as the bare func execute, and need a pre and post execute some other func.
 
 
 | Parameter | Type |
 |-|-|
+| `args` | `*args` |
 | `kwargs` | `**kwargs` |
 
 #### forward()

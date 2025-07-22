@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 0.2.0b23
+version: 0.2.0b27
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -282,14 +282,14 @@ This error is raised when the user tries to access a resource that does not exis
 ```python
 class RuntimeDataValidationError(
     var: str,
-    e: Exception,
+    e: Exception | str,
     task_name: str,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `var` | `str` |
-| `e` | `Exception` |
+| `e` | `Exception \| str` |
 | `task_name` | `str` |
 
 ## flyte.errors.RuntimeSystemError
