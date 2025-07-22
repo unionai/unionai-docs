@@ -6,7 +6,13 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Configuration
 
-To run workflows on your Union/Flyte instance, you need to configure the connection to the instance.
+To run workflows on your Union/Flyte instance, you can also use the `flyte CLI` without an explicit `--config` like this:
+
+```shell
+flyte run hello.py main
+```
+
+You can also initialize the Flyte SDK programmatically without specifying a configuration file, like this:on/Flyte instance, you need to configure the connection to the instance.
 
 ## Setting up a configuration file
 
@@ -106,7 +112,7 @@ or just using the `-c` shorthand:
 flyte -c my-config.yaml run hello.py main
 ```
 
-When invoking flyte commands programmatically you have to first initialize the Flyte SDK with the configuration file.
+When invoking flyte commands programmatically, you have to first initialize the Flyte SDK with the configuration file.
 
 To initialize with an explicitly specified configuration file, use [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config):
 

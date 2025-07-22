@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Flyte SDK lets you seamlessly switch between running your workflows locally on your machine and running them remotely on your Union/Flyte instance.
 
-Furthermore, you perfrom these actions either programmatically from within Python code or from the command line using the `flyte` CLI.
+Furthermore, you perform these actions either programmatically from within Python code or from the command line using the `flyte` CLI.
 
 ## Running remotely
 
@@ -22,7 +22,7 @@ flyte run hello.py main --name "Ada"
 
 ### From Python
 
-To run your workflow remlotely from Python, use [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
+To run your workflow remotely from Python, use [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
 
 ```python
 # hello.py
@@ -48,7 +48,7 @@ The `flyte.run()` function then takes care of
 
 ### From the command-line
 
-To run you code on your local machine, you can use the `flyte run` command with the `--local` flag:
+To run your code on your local machine, you can use the `flyte run` command with the `--local` flag:
 
 ```shell
 flyte run --local hello.py main --name "Ada"
@@ -56,7 +56,7 @@ flyte run --local hello.py main --name "Ada"
 
 ### From Python
 
-To run you workflow locally from Python, you chain [`flyte.with_runcontext()`](../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
+To run your workflow locally from Python, you chain [`flyte.with_runcontext()`](../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
 
 ```python
 # hello.py

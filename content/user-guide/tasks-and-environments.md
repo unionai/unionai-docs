@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Tasks and environments
 
-Previously we saw how you can instrument your pure Python functions to run them on Union.ai.
+Previously we saw how you can instrument your pure Python functions to run them on Union/Flyte.
 By decorating your functions with `@env.task` you can run them in a distributed manner, with each function running in its own container.
 
 In that example the tasks did run in separate containers but the containers themselves were identical.

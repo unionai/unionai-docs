@@ -47,19 +47,19 @@ The {{< key product_name >}} platform empowers AI development teams to rapidly s
 {{< grid >}}
 
 {{< link-card target="flyte-v2-sdk" icon="lightbulb" title="Flyte v2 SDK" >}}
-Flyte v2 provides a new and powerful way author and run workflows and apps on your Flyte OSS or Union cluster.
+Flyte v2 provides a new and powerful way to author and run workflows and apps on your Flyte OSS or Union cluster.
 {{< /link-card >}}
 
 {{< link-card target="getting-started" icon="123" title="Getting started" >}}
 Build your first Flyte workflow.
 {{< /link-card >}}
 
-{{< link-card target="configuring-and-running" icon="gear" title="Configuring and running" >}}
+{{< link-card target="running" icon="gear" title="Configuring and running" >}}
 Configure and run your Flyte code.
 {{< /link-card >}}
 
 
-{{< link-card target="task-environments" icon="thermometer-sun" title="Task environments" >}}
+{{< link-card target="tasks-and-environments" icon="thermometer-sun" title="Task environments" >}}
 Task environments define the resources and dependencies for your tasks.
 {{< /link-card >}}
 

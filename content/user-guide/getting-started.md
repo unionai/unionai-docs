@@ -104,7 +104,7 @@ In your terminal, you should see output like this:
 
 ```shell
 cg9s54pksbjsdxlz2gmc
-https://my-inxtance.example.com/v2/runs/project/my-project/domain/development/cg9s54pksbjsdxlz2gmc
+https://my-instance.example.com/v2/runs/project/my-project/domain/development/cg9s54pksbjsdxlz2gmc
 Run 'a0' completed successfully.
 ```
 
