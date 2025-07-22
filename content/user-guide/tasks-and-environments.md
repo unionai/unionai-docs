@@ -1,12 +1,12 @@
 ---
-title: Task environments
-weight: 40
+title: Tasks and environments
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Task environments
+# Tasks and environments
 
-In the previous section we saw how you can instrument your pure Python functions to run them on Union.ai.
+Previously we saw how you can instrument your pure Python functions to run them on Union.ai.
 By decorating your functions with `@env.task` you can run them in a distributed manner, with each function running in its own container.
 
 In that example the tasks did run in separate containers but the containers themselves were identical.
@@ -38,7 +38,7 @@ async def hello_wf(data: str = "default string") -> str:
 
 Because we used the same `env` for all the tasks, they all ran in the same environment, which means they all had the same configuration and dependencies.
 
-To truly take advantage of distributed and heterogeneous compute environments offered by Flyte/Union, you have to define multiple task environments that differ.
+To truly take advantage of distributed and heterogeneous compute environments offered by Union/Flyte, you have to define multiple task environments that differ.
 
 Change the code in your `hello.py` file to define two different task environments:
 
@@ -67,7 +67,7 @@ async def hello_wf(data: str = "default string") -> str:
     ...
 ```
 
-When you run this on Flyte/Union each task will run in its own container,
+When you run this on Union/Flyte, each task will run in its own container,
 but now the containers will have different configurations based on the task environment they are associated with:
 
 * The `hello_wf` and `say_hello` tasks will run in containers with the default configuration (defined by `env1`)

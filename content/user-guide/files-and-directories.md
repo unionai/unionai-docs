@@ -1,13 +1,13 @@
 ---
 title: Files and directories
-weight: 70
+weight: 8
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Files and directories
 
 Flyte provides the [`flyte.io.File`](../api-reference/flyte-sdk/packages/flyte.io#flyteiofile) and
-[`flyte.io.Dir`](../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and folders, respectively.
+[`flyte.io.Dir`](../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and directories, respectively.
 Together with [`flyte.io.StructuredDataset`](../api-reference/flyte-sdk/packages/flyte.io#flyteiostructureddataset) they constitute the *offloaded data types*.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
@@ -54,6 +54,7 @@ Because the upload would otherwise block execution, `from_local` is implemented 
 The Flyte SDK frequently uses this class constructor pattern, so you will see it with other types as well.
 
 This is a slightly more complicated task that calls the task above to produce `File` objects.
+
 These are assembled into a directory and the `Dir` object is returned, also via invoking `from_local`.
 
 ```python

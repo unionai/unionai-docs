@@ -1,6 +1,6 @@
 ---
 title: Notebooks
-weight: 100
+weight: 13
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

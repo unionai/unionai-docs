@@ -3,7 +3,7 @@
 # /// script
 # dependencies = [
 #    "polars",
-#    "flyte>=0.2.0b12"
+#    "flyte>=0.2.0b27"
 # ]
 # ///
 
@@ -11,15 +11,16 @@ import polars as pl
 
 import flyte
 
+# Replace with your container registry URL
+MY_CONTAINER_REGISTRY = "<my-container-registry>"
 
 env = flyte.TaskEnvironment(
-    name="polars_image",
+    name="polars_env",
     image=flyte.Image.from_uv_script(
         __file__,
-        name="flyte",
-        registry="ghcr.io/<your-github-handle>",
-        arch=("linux/amd64", "linux/arm64"),
-    ).with_apt_packages("ca-certificates"),
+        name="polars_image",
+        registry=MY_CONTAINER_REGISTRY,
+    ),
 )
 
 
@@ -47,6 +48,3 @@ if __name__ == "__main__":
     print(run.name)
     print(run.url)
     run.wait(run)
-
-    # Run with:
-    # uv run --prerelease=allow container_images.py

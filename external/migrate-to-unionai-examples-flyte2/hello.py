@@ -1,35 +1,50 @@
 # hello.py
 
+# /// script
+# requires-python = "==3.13"
+# dependencies = [
+#    "flyte==0.2.0b23",
+# ]
+# ///
+
 import flyte
 
-# TaskEnvironments provide a simple way of grouping configuration used by tasks.
+# A TaskEnvironment provides a way of grouping the configuration used by tasks.
 env = flyte.TaskEnvironment(name="hello_world", resources=flyte.Resources(memory="250Mi"))
 
-# use TaskEnvironments to define tasks, which are regular Python functions.
+# Use a TaskEnvironment to define tasks, which are regular Python functions.
 @env.task
-def fn(x: int) -> int: # type annotations are recommended.
+def fn(x: int) -> int: # Type annotations are recommended.
     slope, intercept = 2, 5
     return slope * x + intercept
 
-# tasks can also call other tasks, which will be manifested in different containers.
+# Tasks can call other tasks.
+# All tasks defined with a given TaskEnvironment will run in their own separate containers,
+# but those containers will all be configured identically.
 @env.task
 def main(x_list: list[int]) -> float:
 
     x_len = len(x_list)
     if x_len < 10:
         raise ValueError(f"x_list doesn't have a larger enough sample size, found: {x_len}")
-    
-    y_list = list(flyte.map(fn, x_list)) # flyte.map is like Python map, but runs in parallel.
+
+    # flyte.map is like Python map, but runs in parallel.
+    y_list = list(flyte.map(fn, x_list))
     y_mean = sum(y_list) / len(y_list)
     return y_mean
 
-
+# Running this script locally will perform a flyte.run, sending your task code to your remote Union/Flyte instance.
 if __name__ == "__main__":
-    flyte.init_from_config("config.yaml") # establish remote connection from within your script.
-    run = flyte.run(main, x_list=list(range(10))) # run remotely inline and pass data.
-    
-    # print various attributes of the run.
+
+    # Establish a remote connection from within your script.
+    flyte.init_from_config("config.yaml")
+
+    # Run your tasks remotely inline and pass parameter data.
+    run = flyte.run(main, x_list=list(range(10)))
+
+    # Print various attributes of the run.
     print(run.name)
     print(run.url)
 
-    run.wait(run) # stream the logs from the root action to the terminal.
+    # Stream the logs from the remote run to the terminal.
+    run.wait(run)

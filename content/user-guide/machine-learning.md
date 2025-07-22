@@ -1,6 +1,6 @@
 ---
 title: Machine learning
-weight: 90
+weight: 12
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

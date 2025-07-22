@@ -1,6 +1,6 @@
 ---
 title: Reports
-weight: 87
+weight: 11
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

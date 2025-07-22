@@ -1,6 +1,6 @@
 ---
 title: Container images
-weight: 50
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -11,7 +11,10 @@ Every `task` in Flyte runs in its own container and every container needs a cont
 We use the `image` parameter of the [`TaskEnvironment`](../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
 Every task that uses that `TaskEnvironment` will run in a container based on that image.
 
-If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image.
+If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/unionai-oss/flyte:latest`](https://github.com/orgs/unionai-oss/packages/container/package/)).
+
+
+## Specifying your own image directly
 
 You can directly reference an image by URL in the `image` parameter, like this:
 
@@ -23,6 +26,8 @@ env = flyte.TaskEnvironment(
 ```
 
 This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union instance can access.
+
+## Specify dependencies in your Python file
 
 But, in many cases, you will want to build your own custom image that includes the dependencies required by your task, and you want to do that in as convenient a way as possible.
 
@@ -41,27 +46,20 @@ Next, use the `flyte.Image.from_uv_script` method to create a [`flyte.Image`](..
 
 ## Image building
 
-When you run the code above, Flyte will automatically build the image for you on your local machine and push it to the registry you specified in the image definition.
-Above we used `registry="ghcr.io/<your-github-handle>"`.
-You can specify a registry of you choice.
+There are two ways that the image can be built:
 
-You must ensure that:
+* If you are running a Flyte OSS instance then the image will be built locally on your machine and pushed to the container registry you specified in the `Image` definition.
+* If you are running a Union instance, the image can be built locally, as with Flyte OSS, or using the Union `ImageBuilder`, which runs remotely on Union's infrastructure.
 
-* Docker is running on your local machine.
-* You have successfully run `docker login` to that registry from your local machine (GitHub uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
-* Your Flyte/Union installation has read access to that registry.
+### Configuring the `builder`
 
-Note that images pushed to `ghcr.io` are private by default.
-If using GitHub Packages (i.e. `ghcr.io`), you may need to go to the image URI, click Package Settings, and change the visibility to public in order to access the image.
+In [Configuration > Setting up the configuration file > `image` section](./configuration#image-section), we discussed the `image.builder` property in the `config.yaml`.
 
-> [!NOTE]
-> Public images are on the public internet and should only be used for testing purposes.
-> Do not place proprietary code in public images.)
+For Flyte OSS instances, this property must be set to `local`.
 
-Once the image is built and pushed to the registry, Flyte will deploy your code to your backend.
-When a Flyte task is executed, The backend pulls the image from the registry to set up the container for that task.
+For Union instances, this property can be set to `remote` to use the Union `ImageBuilder`, or `local` to build the image locally on your machine.
 
-## uv run
+### Running the script
 
 To run the script, use the `uv run` command:
 
@@ -69,21 +67,47 @@ To run the script, use the `uv run` command:
 uv run --prerelease=allow container_images.py
 ```
 
-[`uv run`](https://docs.astral.sh/uv/reference/cli/#uv-run) will read the [inline script metadata](https://docs.astral.sh/uv/guides/scripts/#running-a-script-with-dependencies), create an on-demand virtual environment, install the dependencies, and then execute the Flyte code.
+### Local image building
 
-In your terminal you should see something like this:
+When `image.builder` in the `config.yaml` is set to `local`, running the code above executes the `flyte.run()` command, which does the following:
 
-```shell
-$ uv run --prerelease=allow container_images.py
-Reading inline script metadata from `container_images.py`
-[flyte] Temporary directory: /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
-Run command: docker buildx build --builder flytex --tag ghcr.io/myregistry/flyte:d1c1a0a9c3e65c329bae976afddea670 --platform linux/amd64,linux/arm64 --push --push /var/folders/1b/j0rhj5ms7hg20_jml81gscsh0000gn/T/tmpsjk553dj
+* Builds the Docker image using your local Docker installation, installing the dependencies specified in the `uv` inline script metadata.
+* Pushes the image to the container registry you specified.
+* Deploys your code to the backend.
+* Kicks off the execution of your workflow
+* Before the task that uses your custom image is executed, the backend pulls the image from the registry to set up the container.
 
-...
+> [!NOTE]
+> Above, we used `registry=MY_CONTAINER_REGISTRY`.
+>
+> Be sure to set the constant `MY_CONTAINER_REGISTRY`
+> to the URL of your actual container registry.
 
-View build details: docker-desktop://dashboard/build/flytex/flytex0/dz3x633t2seh5wkxk3ubhmg4s
-7lkfjscn4pbf429drr98
-https://playground.canary.unionai.cloud/v2/runs/project/flytesnacks/domain/development/7lkfjscn4pbf429drr98
-Run 'a0' completed successfully.
-```
+You must ensure that:
 
+* Docker is running on your local machine.
+* You have successfully run `docker login` to that registry from your local machine (For example GitHub uses the syntax `echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin`)
+* Your Union/Flyte installation has read access to that registry.
+
+> [!NOTE]
+> If you are using the GitHub container registry (`ghcr.io`)
+> note that images pushed there are private by default. You may need to go to the image URI,
+> click Package Settings, and change the visibility to public in order to access the image.
+>
+> Other registries (such as Docker Hub) require that you pre-create the image repository
+> before pushing the image. In that case you can set it to public when you create it.
+>
+> Public images are on the public internet and should only be used for testing purposes.
+> Do not place proprietary code in public images.
+
+### Remote `ImageBuilder`
+
+When `image.builder` in the `config.yaml` is set to `remote` (and you are running Union.ai), running the code above executes the `flyte.run()` command, which does the following:
+
+* Builds the Docker image on you Union instance with `ImageBuilder`, installing the dependencies specified in the `uv` inline script metadata.
+* Pushes the image to the internal container registry of your Union instance.
+* Deploys your code to the backend.
+* Kicks off the execution of your workflow
+* Before the task that uses your custom image is executed, the backend pulls the image from the internal registry to set up the container.
+
+There is no set up of Docker nor any access control configuration required on your part.

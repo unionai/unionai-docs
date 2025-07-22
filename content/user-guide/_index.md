@@ -39,7 +39,7 @@ The {{< key product_name >}} platform empowers AI development teams to rapidly s
 
 * Run complex AI workloads with performance, scale, and efficiency.
 * Achieve millisecond-level execution times with reusable containers.
-* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale or compliance.
+* Scale out to multiple regions, clusters, and clouds as needed for resource availability, scale, or compliance.
 
 {{< /markdown >}}
 {{< /variant >}}
