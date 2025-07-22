@@ -11,13 +11,13 @@ displaying content ordered by the `weight` parameter in markdown front matter wh
 
 ## Features
 
-✅ **Hugo Weight-Based Sorting**: Automatically orders files and directories based on the `weight` parameter in YAML front matter
-✅ **Complete Explorer Functionality**: All native VS Code Explorer features including context menus, drag-and-drop, and file operations
-✅ **Multi-Workspace Support**: Works seamlessly with multiple workspace folders
-✅ **Drag-and-Drop File Moving**: Move files and folders while maintaining Hugo ordering
-✅ **Native Context Menus**: Full right-click context menus identical to the native Explorer
-✅ **Hugo _index.md Support**: Recognizes `_index.md` files for directory weight ordering
-✅ **Fallback Alphabetical Sorting**: Items without weight are sorted alphabetically
+* **Hugo Weight-Based Sorting**: Automatically orders files and directories based on the `weight` parameter in YAML front matter.
+* **Complete Explorer Functionality**: All native VS Code Explorer features including context menus, drag-and-drop, and file operations.
+* **Multi-Workspace Support**: Works seamlessly with multiple workspace folders.
+* **Drag-and-Drop File Moving**: Move files and folders while maintaining Hugo ordering.
+* **Native Context Menus**: Full right-click context menus identical to the native Explorer.
+* **Hugo _index.md Support**: Recognizes `_index.md` files for directory weight ordering.
+* **Fallback Alphabetical Sorting**: Items without weight are sorted alphabetically.
 
 ## Installation
 
