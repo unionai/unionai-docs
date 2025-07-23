@@ -21,7 +21,7 @@ displaying content ordered by the `weight` parameter in markdown front matter wh
 
 ## Installation
 
-1. Download the VSIX file from here: [Hugo Explorer VSIX](../../_static/public/hugo-explorer-1.0.2.vsix)
+1. Download the VSIX file from here: [Hugo Explorer VSIX](../../_static/public/hugo-explorer.vsix)
 2. Install via the command `Extensions: Install from VSIX...`
 
 ## Usage
