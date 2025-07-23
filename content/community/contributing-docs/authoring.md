@@ -213,3 +213,14 @@ Also add `mermaid: true` to the top of your page to enable rendering.
 
 > [!NOTE]
 > You can use [Mermaid's playground](https://www.mermaidchart.com/play) to design diagrams and get the code
+
+## Useful tools
+
+We recommend that you use [Visual Studio Code](https://code.visualstudio.com/) as you authoring environment.
+If you do, you may find the following publicly available extensions useful:
+
+* [Harper - Grammar / Spell Checking](https://marketplace.visualstudio.com/items?itemName=elijah-potter.harper)
+* [Hugo Shortcode Syntax Highlighting](https://marketplace.visualstudio.com/items?itemName=kaellarkin.hugo-shortcode-syntax)
+* [Render Line Endings](https://marketplace.visualstudio.com/items?itemName=medo64.render-crlf)
+
+In addition, Union.ai has developed the [**Hugo Explorer**](./hugo-explorer) extension that helps in viewing and navigating the Hugo site structure in source code.
