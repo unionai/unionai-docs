@@ -1,6 +1,6 @@
 ---
 title: Running
-weight: 4
+weight: 40
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -77,9 +77,6 @@ It also lets you quickly iterate on your code without the overhead of deployment
 Obviously, if your code relies on remote resources or services, you will need to mock those in your local environment, or temporarily work around any missing functionality.
 At the very least, local execution can be used to catch immediate syntax errors and other relatively simple issues before deploying your code to a remote instance.
 
-
-<!-- TODO Add when supported
-
 ## Deploying to your Union/Flyte instance without running
 
 You can also deploy your workflow to your Union/Flyte instance without running it immediately
@@ -139,6 +136,7 @@ deployment = flyte.deploy(
 ```
 
 ### Running a deployed workflow from the UI
+
 
 Once your workflow is deployed, you can run it from the Union/Flyte web interface.
 
@@ -227,4 +225,306 @@ run = flyte.with_runcontext(
     labels={"team": "data-science"}
 ).run(main, name="Ada")
 ```
--->
+
+## Managing Remote Executions
+
+Once your workflows are running, you can connect to and manage them remotely from anywhere. This includes monitoring active executions, accessing completed runs, and retrieving results.
+
+### Accessing Existing Runs
+
+#### Get Run by Name
+
+```python
+import flyte.remote
+
+# Connect to a specific run
+run = flyte.remote.Run.get("my-run-name")
+
+print(f"Status: {run.phase}")
+print(f"URL: {run.url}")
+
+# Wait for completion if still running
+if not run.done():
+    run.wait()
+
+print(f"Final status: {run.phase}")
+```
+
+#### List Recent Runs
+
+```python
+# List all recent runs
+async for run in flyte.remote.Run.listall():
+    print(f"Run: {run.name}, Status: {run.phase}")
+
+# Filter by project/domain
+async for run in flyte.remote.Run.listall(
+    filters="project=my-project AND domain=production"
+):
+    print(f"Production run: {run.name}")
+```
+
+### Monitoring Running Executions
+
+#### Real-time Log Streaming
+
+```python
+# Connect to running execution
+run = flyte.remote.Run.get("training-run-12345")
+
+# Stream logs in real-time
+run.show_logs(follow=True)
+
+# Get specific log lines
+logs = run.show_logs(max_lines=100, show_ts=True)
+print(logs)
+```
+
+#### Watching Execution Progress
+
+```python
+# Monitor execution status changes
+async for details in run.watch():
+    print(f"Status: {details.phase}")
+    if details.has_logs():
+        recent_logs = details.logs()[-10:]  # Last 10 lines
+        print(f"Recent logs: {recent_logs}")
+
+    if details.done():
+        break
+```
+
+#### Getting Execution Details
+
+```python
+# Get comprehensive run information
+run = flyte.remote.Run.get("my-run")
+
+print(f"Created: {run.created_at}")
+print(f"Duration: {run.duration}")
+print(f"Resources used: {run.resources}")
+
+# Get task-level details
+for node in run.node_executions:
+    print(f"Task: {node.display_name}, Status: {node.phase}")
+```
+
+### Cross-Environment Management
+
+#### Multi-Environment Monitoring
+
+```python
+# Monitor production from development environment
+prod_config = {
+    "endpoint": "https://prod-cluster.com",
+    "project": "my-project",
+    "domain": "production"
+}
+
+dev_config = {
+    "endpoint": "https://dev-cluster.com",
+    "project": "my-project",
+    "domain": "development"
+}
+
+# Check production status
+flyte.init(**prod_config)
+prod_runs = [run async for run in flyte.remote.Run.listall()]
+print(f"Production runs: {len(prod_runs)}")
+
+# Switch to development
+flyte.init(**dev_config)
+dev_runs = [run async for run in flyte.remote.Run.listall()]
+print(f"Development runs: {len(dev_runs)}")
+```
+
+#### Environment Comparison
+
+```python
+# Compare same workflow across environments
+def get_workflow_runs(endpoint, domain, workflow_name):
+    flyte.init(endpoint=endpoint, domain=domain)
+    return [
+        run async for run in flyte.remote.Run.listall()
+        if workflow_name in run.name
+    ]
+
+prod_runs = get_workflow_runs("prod-cluster.com", "production", "ml-pipeline")
+staging_runs = get_workflow_runs("staging-cluster.com", "staging", "ml-pipeline")
+
+print(f"Production: {len(prod_runs)} runs")
+print(f"Staging: {len(staging_runs)} runs")
+```
+
+### Accessing Results and Data
+
+#### Retrieving Outputs
+
+```python
+# Get outputs from completed run
+run = flyte.remote.Run.get("completed-run")
+
+if run.done() and run.phase == "SUCCEEDED":
+    outputs = run.outputs()
+    print(f"Results: {outputs}")
+else:
+    print(f"Run not completed: {run.phase}")
+```
+
+#### Downloading Artifacts
+
+```python
+# Download files produced by remote execution
+run = flyte.remote.Run.get("data-processing-run")
+outputs = run.outputs()
+
+# Download specific output files
+if "processed_data_path" in outputs:
+    local_path = flyte.remote.download_file(
+        outputs["processed_data_path"],
+        local_path="./downloaded_data.csv"
+    )
+    print(f"Downloaded to: {local_path}")
+```
+
+## Common Remote Management Use Cases
+
+### Production Monitoring
+
+```python
+# Monitor critical production workflows
+import asyncio
+from datetime import datetime, timedelta
+
+async def monitor_production():
+    flyte.init_from_config("prod-config.yaml")
+
+    while True:
+        # Check for failed runs in last hour
+        recent_runs = [
+            run async for run in flyte.remote.Run.listall()
+            if run.created_at > datetime.now() - timedelta(hours=1)
+        ]
+
+        failed_runs = [run for run in recent_runs if run.phase == "FAILED"]
+
+        if failed_runs:
+            for run in failed_runs:
+                print(f"ALERT: Failed run {run.name}")
+                # Get error details
+                logs = run.show_logs(max_lines=50)
+                print(f"Error logs: {logs}")
+
+        await asyncio.sleep(300)  # Check every 5 minutes
+
+# Run monitoring
+asyncio.run(monitor_production())
+```
+
+### Debugging Failed Executions
+
+```python
+# Investigate failed runs
+def debug_failed_run(run_name):
+    run = flyte.remote.Run.get(run_name)
+
+    print(f"Run: {run.name}")
+    print(f"Status: {run.phase}")
+    print(f"Error: {run.error}")
+
+    # Get detailed logs
+    logs = run.show_logs(max_lines=1000)
+    print("Full logs:")
+    print(logs)
+
+    # Check individual task failures
+    for node in run.node_executions:
+        if node.phase == "FAILED":
+            print(f"Failed task: {node.display_name}")
+            task_logs = node.show_logs()
+            print(f"Task logs: {task_logs}")
+
+debug_failed_run("failed-training-run-456")
+```
+
+### Result Comparison
+
+```python
+# Compare results across different runs
+def compare_model_runs(run_names):
+    results = {}
+
+    for run_name in run_names:
+        run = flyte.remote.Run.get(run_name)
+        if run.done() and run.phase == "SUCCEEDED":
+            outputs = run.outputs()
+            results[run_name] = outputs.get("model_accuracy", 0)
+
+    print("Model comparison:")
+    for run_name, accuracy in results.items():
+        print(f"{run_name}: {accuracy:.3f}")
+
+    best_run = max(results.items(), key=lambda x: x[1])
+    print(f"Best model: {best_run[0]} with accuracy {best_run[1]:.3f}")
+
+compare_model_runs([
+    "model-v1-run-123",
+    "model-v2-run-124",
+    "model-v3-run-125"
+])
+```
+
+## Best Practices for Remote Management
+
+### Connection Management
+
+```python
+# Use context managers for connection handling
+class RemoteConnection:
+    def __init__(self, config):
+        self.config = config
+
+    def __enter__(self):
+        flyte.init(**self.config)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # Cleanup if needed
+        pass
+
+# Usage
+with RemoteConnection(prod_config) as conn:
+    runs = [run async for run in flyte.remote.Run.listall()]
+    print(f"Found {len(runs)} runs")
+```
+
+### Error Handling
+
+```python
+import flyte.errors
+
+def safe_remote_access(run_name):
+    try:
+        run = flyte.remote.Run.get(run_name)
+        return run.outputs() if run.done() else None
+    except flyte.errors.NotFoundError:
+        print(f"Run {run_name} not found")
+        return None
+    except flyte.errors.RuntimeSystemError as e:
+        print(f"System error: {e}")
+        return None
+```
+
+### Efficient Querying
+
+```python
+# Use filters to reduce network overhead
+async def get_recent_failed_runs():
+    # More efficient than fetching all runs
+    async for run in flyte.remote.Run.listall(
+        filters="phase=FAILED AND created_at>2024-01-01",
+        sort_by=("created_at", "desc"),
+        limit=50
+    ):
+        yield run
+```

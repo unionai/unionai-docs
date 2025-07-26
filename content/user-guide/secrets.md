@@ -1,6 +1,6 @@
 ---
 title: Secrets
-weight: 10
+weight: 140
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

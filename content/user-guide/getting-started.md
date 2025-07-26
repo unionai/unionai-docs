@@ -1,6 +1,6 @@
 ---
 title: Getting started
-weight: 2
+weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -15,29 +15,46 @@ This section gives you a quick introduction to writing and running workflows on 
 First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/).
 
 > [!NOTE]
-> We strongly recommend using the [`uv` package manager](https://docs.astral.sh/uv/).
-> In this guide we use it to enable [embedding of dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
-> You can also use its `uvx` sub-command to it [run the `flyte` CLI instantly](https://docs.astral.sh/uv/concepts/tools/) without installing it in a virtual environment.
+> You will need to use the [`uv` package manager](https://docs.astral.sh/uv/) to run the examples in this guide.
+> In particular, we leverage `uv`'s ability to [embed dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
+
+### Ensure that you have Python 3.10 or later installed
+
+Install Python 3.10 or later on your machine and pin it as the default Python version for `uv`:
+
+```shell
+uv python install 3.10
+uv python pin 3.10 --global
+```
+
+### Create and activate a Pyhton virtual environment
+
+In your working directory, create a Python virtual environment and activate it:
+
+```shell
+uv venv
+source .venv/bin/activate
+```
+
+### Install the `flyte` package
+
+Install the latest flyte package in the virtual environment (we are currently in beta, so you have to enable prerelease installation):
+
+```shell
+uv pip install --no-cache --prerelease=allow --upgrade flyte
+```
 
 ### Create a config.yaml
 
 Next, create a `config.yaml` file that points to your Union/Flyte instance using the [`flyte create config`](../api-reference/flyte-cli#flyte-create-config) command.
 
 ```shell
-uvx --prerelease allow flyte create config \
+flyte create config \
     --endpoint <your-instance-endpoint> \
     --builder <image-builder> \
     --domain <default-domain> \
     --project <default-project>
 ```
-
-> [!NOTE]
-> Here we use the [`flyte` CLI](../api-reference/flyte-cli) via [`uvx`](https://docs.astral.sh/uv/concepts/tools/)
-> to quickly install the `flyte` package and invoke the `flyte` CLI in one step.
-> You can also [install the `flyte` package in a virtual environment]() and use the `flyte` CLI directly, but using `uvx` is more convenient for quick examples.
->
-> In further examples, we show only the `flyte` command itself and assume that you have either installed
-> the `flyte` package in your Python environment or are using `uvx` to run it.
 
 For example, this command:
 
@@ -112,3 +129,6 @@ Click the link to go to your Union instance and see the run in the UI:
 
 ![V2 UI](../_static/images/user-guide/v2ui.png)
 
+## Understanding the UI
+
+<!-- TODO: Add explanation of the UI elements and their functionality -->

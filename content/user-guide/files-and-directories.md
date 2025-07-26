@@ -1,6 +1,6 @@
 ---
 title: Files and directories
-weight: 8
+weight: 70
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

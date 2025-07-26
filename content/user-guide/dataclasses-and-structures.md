@@ -1,6 +1,6 @@
 ---
 title: Dataclasses and structures
-weight: 9
+weight: 80
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

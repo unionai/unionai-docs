@@ -1,6 +1,6 @@
 ---
 title: Configuration
-weight: 3
+weight: 30
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

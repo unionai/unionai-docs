@@ -1,13 +1,13 @@
 ---
 title: Considerations
-weight: 15
+weight: 14
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Considerations
 
-Flyte v2 represents a substantial change from Flyte v1.
-While the static graph execution model will soon be available and will mirror Flyte v1 almost exactly, the primary mode of execution in Flyte v2 should remain pure-Python-based.
+Flyte 2 represents a substantial change from Flyte 1.
+While the static graph execution model will soon be available and will mirror Flyte 1 almost exactly, the primary mode of execution in Flyte 2 should remain pure-Python-based.
 That is, each Python-based task action has the ability to act as its own engine, kicking off sub-actions, and assembling the outputs, passing them to yet other sub-actions and such.
 
 While this model of execution comes with an enormous amount of flexibility, as the examples in this tutorial demonstrate, that flexibility does warrant some caveats to keep in mind when authoring your tasks.
@@ -53,23 +53,23 @@ In the earlier scenario, if `t1` crashes unexpectedly, and Flyte retries the exe
 
 ## Type safety
 
-In Flyte v1, the top-level workflow was defined by a Python-like DSL that was compiled into a static DAG composed of tasks, each of which was, internally, defined in real Python.
+In Flyte 1, the top-level workflow was defined by a Python-like DSL that was compiled into a static DAG composed of tasks, each of which was, internally, defined in real Python.
 The system was able to guarantee type safety across task boundaries because the task definitions were static and the inputs and outputs were defined in a way that Flytekit could validate them.
 
-In Flyte v2, the top-level workflow is defined by Python code that runs at runtime.
+In Flyte 2, the top-level workflow is defined by Python code that runs at runtime.
 This means that the system can no longer guarantee type safety at the workflow level.
 
-Happily, the Python ecosystem has evolved considerably since Flyte v1, and Python type hints are now a standard way to define types.
+Happily, the Python ecosystem has evolved considerably since Flyte 1, and Python type hints are now a standard way to define types.
 
-Consequently, in Flyte v2, developers should use Python type hints and type checkers like `mypy` to ensure type safety at all levels, including the top-most task (i.e., the "workflow" level).
+Consequently, in Flyte 2, developers should use Python type hints and type checkers like `mypy` to ensure type safety at all levels, including the top-most task (i.e., the "workflow" level).
 
 ## Driver pod requirements
 
 Tasks don't have to kick off downstream tasks of course and may themselves represent a leaf level atomic unit of compute.
 However, when tasks do run other tasks, and more so if they assemble the outputs of those other tasks, then that parent task becomes a driver
 pod of sorts.
-In Flyte v1, this assembling of intermediate outputs was done by Flyte Propeller.
-In v2, it's done by the parent task.
+In Flyte 1, this assembling of intermediate outputs was done by Flyte Propeller.
+In 2, it's done by the parent task.
 
 This means that the pod running your parent task must be appropriately sized, and should ideally not be CPU-bound. For example,
 if you had this also scenario,
