@@ -29,8 +29,7 @@ env = flyte.TaskEnvironment(
     resources=flyte.Resources(memory="1Gi", cpu="500m"),
     reusable=flyte.ReusePolicy(
         replicas=2,        # Number of container instances
-        idle_ttl=300,      # 5 minutes idle timeout
-        concurrency=1      # Tasks per container
+        idle_ttl=300       # 5 minutes idle timeout
     )
 )
 
@@ -54,15 +53,11 @@ async def main() -> list[int]:
 
 - **`replicas`**: Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling)
 - **`idle_ttl`**: How long containers stay alive without processing tasks (in seconds)
-- **`concurrency`**: Number of tasks that can run simultaneously per container (requires async tasks for values > 1)
-- **`reuse_salt`**: Version control string to force container recreation when needed
 
 ```python
 reuse_policy = flyte.ReusePolicy(
     replicas=3,
-    idle_ttl=600,  # 10 minutes
-    concurrency=1,
-    reuse_salt="v1"
+    idle_ttl=600  # 10 minutes
 )
 ```
 
@@ -99,7 +94,6 @@ batch_env = flyte.TaskEnvironment(
     name="batch-processor",
     reusable=flyte.ReusePolicy(
         replicas=4,
-        concurrency=3,  # Process multiple items concurrently
         idle_ttl=300
     )
 )
@@ -147,9 +141,7 @@ env = flyte.TaskEnvironment(
     resources=flyte.Resources(memory="1Gi", cpu="500m"),
     reusable=flyte.ReusePolicy(
         replicas=3,      # Based on expected load
-        idle_ttl=600,    # Reasonable cleanup interval
-        concurrency=1    # Match task characteristics
-    )
+        idle_ttl=600    # Reasonable cleanup interval    )
 )
 ```
 
