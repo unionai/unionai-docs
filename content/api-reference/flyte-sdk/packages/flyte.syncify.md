@@ -1,6 +1,6 @@
 ---
 title: flyte.syncify
-version: 0.2.0b27
+version: 0.2.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

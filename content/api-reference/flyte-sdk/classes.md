@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 0.2.0b27
+version: 0.2.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,7 @@ layout: py_api
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors#flyteerrorsbaseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors#flyteerrorscustomerror) |This error is raised when the user raises a custom error. |
 | [`flyte.errors.DeploymentError`](../packages/flyte.errors#flyteerrorsdeploymenterror) |This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`flyte.errors.ImageBuildError`](../packages/flyte.errors#flyteerrorsimagebuilderror) |This error is raised when the image build fails. |
 | [`flyte.errors.ImagePullBackOffError`](../packages/flyte.errors#flyteerrorsimagepullbackofferror) |This error is raised when the image cannot be pulled. |
 | [`flyte.errors.InitializationError`](../packages/flyte.errors#flyteerrorsinitializationerror) |This error is raised when the Union system is tried to access without being initialized. |
 | [`flyte.errors.InvalidImageNameError`](../packages/flyte.errors#flyteerrorsinvalidimagenameerror) |This error is raised when the image name is invalid. |
@@ -43,12 +44,12 @@ layout: py_api
 | [`flyte.errors.UnionRpcError`](../packages/flyte.errors#flyteerrorsunionrpcerror) |This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend#flyteextendasyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras#flyteextrascontainertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`flyte.io.DataFrame`](../packages/flyte.io#flyteiodataframe) |This is the user facing DataFrame class. |
+| [`flyte.io.DataFrameDecoder`](../packages/flyte.io#flyteiodataframedecoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.DataFrameEncoder`](../packages/flyte.io#flyteiodataframeencoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.DataFrameTransformerEngine`](../packages/flyte.io#flyteiodataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.io.Dir`](../packages/flyte.io#flyteiodir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io#flyteiofile) |A generic file class representing a file with a specified format. |
-| [`flyte.io.StructuredDataset`](../packages/flyte.io#flyteiostructureddataset) |This is the user facing StructuredDataset class. |
-| [`flyte.io.StructuredDatasetDecoder`](../packages/flyte.io#flyteiostructureddatasetdecoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.StructuredDatasetEncoder`](../packages/flyte.io#flyteiostructureddatasetencoder) |Helper class that provides a standard way to create an ABC using. |
-| [`flyte.io.StructuredDatasetTransformerEngine`](../packages/flyte.io#flyteiostructureddatasettransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
 | [`flyte.models.ActionID`](../packages/flyte.models#flytemodelsactionid) |A class representing the ID of an Action, nested within a Run. |
 | [`flyte.models.Checkpoints`](../packages/flyte.models#flytemodelscheckpoints) |A class representing the checkpoints for a task. |
 | [`flyte.models.CodeBundle`](../packages/flyte.models#flytemodelscodebundle) |A class representing a code bundle for a task. |

@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 0.2.0b27
+version: 0.2.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -77,7 +77,7 @@ class AsyncFunctionTaskTemplate(
     cache: CacheRequest,
     interruptable: bool,
     retries: Union[int, RetryStrategy],
-    reusable: Union[ReusePolicy, Literal['auto'], None],
+    reusable: Union[ReusePolicy, None],
     docs: Optional[Documentation],
     env: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
@@ -102,7 +102,7 @@ class AsyncFunctionTaskTemplate(
 | `cache` | `CacheRequest` |
 | `interruptable` | `bool` |
 | `retries` | `Union[int, RetryStrategy]` |
-| `reusable` | `Union[ReusePolicy, Literal['auto'], None]` |
+| `reusable` | `Union[ReusePolicy, None]` |
 | `docs` | `Optional[Documentation]` |
 | `env` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
@@ -264,13 +264,11 @@ when not in a Flyte task execution context.  See the implementation below for an
 
 ```python
 def override(
-    local: Optional[bool],
-    ref: Optional[bool],
     resources: Optional[Resources],
     cache: CacheRequest,
     retries: Union[int, RetryStrategy],
     timeout: Optional[TimeoutType],
-    reusable: Union[ReusePolicy, Literal['auto'], None],
+    reusable: Union[ReusePolicy, Literal['off'], None],
     env: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     kwargs: **kwargs,
@@ -282,13 +280,11 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
-| `local` | `Optional[bool]` |
-| `ref` | `Optional[bool]` |
 | `resources` | `Optional[Resources]` |
 | `cache` | `CacheRequest` |
 | `retries` | `Union[int, RetryStrategy]` |
 | `timeout` | `Optional[TimeoutType]` |
-| `reusable` | `Union[ReusePolicy, Literal['auto'], None]` |
+| `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
 | `env` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `kwargs` | `**kwargs` |

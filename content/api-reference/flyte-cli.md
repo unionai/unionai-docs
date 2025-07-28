@@ -76,6 +76,7 @@ $ flyte --config /path/to/config.yaml run ...
 |--------|------|---------|-------------|
 | `--endpoint` | `text` |  | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
+| `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | {{< multiline >}}`-v`
 `--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
 | `--org` | `text` |  | The organization to which the command applies. |
@@ -130,6 +131,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
 | {{< multiline >}}`--image-builder`
 `--builder`{{< /multiline >}} | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
+| `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`

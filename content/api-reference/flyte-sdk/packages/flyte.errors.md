@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 0.2.0b27
+version: 0.2.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,6 +23,7 @@ unknown error.
 | [`BaseRuntimeError`](.././flyte.errors#flyteerrorsbaseruntimeerror) | Base class for all Union runtime errors. |
 | [`CustomError`](.././flyte.errors#flyteerrorscustomerror) | This error is raised when the user raises a custom error. |
 | [`DeploymentError`](.././flyte.errors#flyteerrorsdeploymenterror) | This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`ImageBuildError`](.././flyte.errors#flyteerrorsimagebuilderror) | This error is raised when the image build fails. |
 | [`ImagePullBackOffError`](.././flyte.errors#flyteerrorsimagepullbackofferror) | This error is raised when the image cannot be pulled. |
 | [`InitializationError`](.././flyte.errors#flyteerrorsinitializationerror) | This error is raised when the Union system is tried to access without being initialized. |
 | [`InvalidImageNameError`](.././flyte.errors#flyteerrorsinvalidimagenameerror) | This error is raised when the image name is invalid. |
@@ -111,6 +112,20 @@ This error is raised when the deployment of a task fails, or some preconditions 
 
 ```python
 class DeploymentError(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
+
+## flyte.errors.ImageBuildError
+
+This error is raised when the image build fails.
+
+
+```python
+class ImageBuildError(
     message: str,
 )
 ```

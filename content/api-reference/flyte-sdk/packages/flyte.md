@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 0.2.0b27
+version: 0.2.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -613,6 +613,7 @@ class Image(
 | [`validate()`](#validate) |  |
 | [`with_apt_packages()`](#with_apt_packages) | Use this method to create a new image with the specified apt packages layered on top of the current image. |
 | [`with_commands()`](#with_commands) | Use this method to create a new image with the specified commands layered on top of the current image. |
+| [`with_dockerignore()`](#with_dockerignore) |  |
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
@@ -692,9 +693,15 @@ def from_dockerfile(
     file: Path,
     registry: str,
     name: str,
+    platform: Union[Architecture, Tuple[Architecture, ...], None],
 ) -> Image
 ```
-Use this method to create a new image with the specified dockerfile
+Use this method to create a new image with the specified dockerfile. Note you cannot use additional layers
+after this, as the system doesn't attempt to parse/understand the Dockerfile, and what kind of setup it has
+(python version, uv vs poetry, etc), so please put all logic into the dockerfile itself.
+
+Also since Python sees paths as from the calling directory, please use Path objects with absolute paths. The
+context for the builder will be the directory where the dockerfile is located.
 
 
 
@@ -703,6 +710,7 @@ Use this method to create a new image with the specified dockerfile
 | `file` | `Path` |
 | `registry` | `str` |
 | `name` | `str` |
+| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` |
 
 #### from_uv_script()
 
@@ -785,6 +793,17 @@ Be sure not to use RUN in your command.
 | Parameter | Type |
 |-|-|
 | `commands` | `List[str]` |
+
+#### with_dockerignore()
+
+```python
+def with_dockerignore(
+    path: Path,
+) -> Image
+```
+| Parameter | Type |
+|-|-|
+| `path` | `Path` |
 
 #### with_env_vars()
 
