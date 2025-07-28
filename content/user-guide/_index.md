@@ -1,7 +1,7 @@
 ---
 title: User guide
 weight: 1
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte -serverless +byoc +selfmanaged
 top_menu: true
 site_root: true
 sidebar_expanded: true

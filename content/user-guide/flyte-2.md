@@ -1,43 +1,63 @@
 ---
 title: Flyte 2
 weight: 10
-variants: +flyte +serverless +byoc +selfmanaged
+variants: +flyte -serverless +byoc +selfmanaged
 ---
 
 # Flyte 2
 
-With Flyte 2, we introduce a new SDK that simplifies workflow authoring and execution and a new UI that support the new capabilities of the SDK and enhances the user experience.
+{{< variant flyte >}}
+{{< markdown >}}
 
-## What has changed?
+Flyte 2 represents a fundamental shift in how workflows are written and executed in Flyte.
 
-Flyte 2 introduce several key improvements:
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+
+Flyte 2 and Union 2 represent a fundamental shift in how workflows are written and executed in Union.
+
+{{< /markdown >}}
+{{< /variant >}}
+
+### Simplified API
+
+* The new API is more intuitive, with fewer abstractions and a focus on simplicity.
+* There is no `@workflow` decorator. Instead, "workflows" are authored through a pattern of tasks calling tasks.
+* Tasks are defined within environments, which encapsulate the context and resources needed for execution.
 
 ### Pure Python execution
 
-* Write workflows in pure Python, enabling a more natural and flexible development experience.
-* Cleanly express loops, conditionals via if-then statements, and error handling with try-catch statements.
-* Dynamically apply overrides at runtime (i.e. catch OOM errors and retry with more memory).
+* Workflows are written in pure Python, removing the constraints of a domain-specific language (DSL) and enabling full use of Python's capabilities.
+* Workflows can be constructed at runtime, allowing for more flexible and adaptive behavior.
+* Python's asynchronous programming model can be used to express parallelism.
+* Standard Python error handling patterns (try/except) can be used to retry executions with changed parameters (like additional resources).
+* Predefined static workflows are still supported when needed.
 
-### Simplified data model and API
+### Fine-grained reproducibility and recoverability
 
-* The new API is more intuitive, with fewer abstractions and a focus on simplicity.
-* There are no Workflows. Instead, "workflows" are authored through a pattern of Tasks calling Tasks.
-* Tasks are defined within Environments, which encapsulate the context and resources needed for execution.
+* Tracing augments task level-caching to enable reproducibility and recovery at the sub-task function level.
 
-### Robust support for reliable execution
+### Improved remote functionality
 
-* Caching at the task level, allowing for efficient reuse of previously computed results.
-* Tracing and checkpointing at the level of individual functions within tasks,
-  enabling retries and recovery from failures at a finer granularity.
+* Full management of the workflow lifecycle through both CLI and Python (programmatically).
+* Fetch and run remote (previously deployed) tasks within the course of a running workflow.
+* Author and run workflows and fetch workflow metadata (I/O and logs) directly from Jupyter notebooks.
 
-### Improved Remote functionality
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
 
-* Run workflows either through the CLI (i.e., `flyte run ...`) or programmatically (i.e., `flyte.run(my_task)`).
-* Fetch and run remote (previously-deployed) Tasks within the course of a running workflow.
-* Author, run, and fetch metadata (i.e. I/O and logs) from workflows directly from Jupyter notebooks.
+### High performance engine
+
+* Schedule tasks in milliseconds with reusable containers.
+* Workflows can span multiple clusters, clouds, and regions
 
 ### Enhanced UI
 
-* The new UI provides a more streamlined and user-friendly experience for authoring and managing workflows.
+* New UI with a streamlined and user-friendly experience for authoring and managing workflows.
 * Improved visualization of workflow execution and monitoring.
 * Simplified access to logs, metadata, and other important information.
+
+{{< /markdown >}}
+{{< /variant >}}
