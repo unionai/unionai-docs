@@ -1,6 +1,6 @@
 ---
 title: Pure Python
-weight: 11
+weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -12,9 +12,9 @@ Flyte 2 introduces a new way of writing workflows that is based on pure Python, 
 
 | Flyte 1 | Flyte 2 |
 | --- | --- |
-| `@workflow`-decorated functions are constrained to a subset of Python for defining a static directed acyclic graph (DAG) of tasks. | **No more `@workflow` decorator**: Everything is a `@task`, so your top-level “workflow” is simply a task that calls other tasks. |
-| `@task`-decorated functions could leverage the full power of Python, but only within individual container executions. | `@task`s can call other `@task`s and be used to construct workflows with dynamic structures using loops, conditionals, try/except, and any Python construct anywhere. |
-| Workflows were compiled into static DAGs at registration time, with tasks as the nodes and the DSL defining the structure. | Workflows are simply tasks that call other tasks. Compile-time safety will be available in the future as `compiled_task`s. |
+| `@workflow`-decorated functions are constrained to a subset of Python for defining a static directed acyclic graph (DAG) of tasks. | **No more `@workflow` decorator**: Everything is a `@env.task`, so your top-level “workflow” is simply a task that calls other tasks. |
+| `@task`-decorated functions could leverage the full power of Python, but only within individual container executions. | `@env.task`s can call other `@env.task`s and be used to construct workflows with dynamic structures using loops, conditionals, try/except, and any Python construct anywhere. |
+| Workflows were compiled into static DAGs at registration time, with tasks as the nodes and the DSL defining the structure. | Workflows are simply tasks that call other tasks. Compile-time safety will be available in the future as `compiled_task`. |
 
 {{< tabs "whats-new-dsl-to-python" >}}
 {{< tab "Flyte 1" >}}

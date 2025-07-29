@@ -49,7 +49,7 @@ async def main() -> list[int]:
 
 ## Configuration
 
-### ReusePolicy Parameters
+### `ReusePolicy` Parameters
 
 - **`replicas`**: Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling).
   **Note: Autoscaling is coming soon**.

@@ -1,6 +1,6 @@
 ---
 title: Caching
-weight: 115
+weight: 140
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Flyte 2 provides intelligent **task output caching** that automatically avoids redundant computation by reusing previously computed task results. Caching operates at the **task level** (`@env.task`) and caches the entire output of task executions. This is especially valuable for expensive operations like model training, data processing, or complex analyses where identical inputs should produce identical outputs.
 
-**Note**: Caching works at the task level and caches complete task outputs. For function-level checkpointing and resumption within tasks, see [Traces]({{< relref "traces" >}}), which provide fine-grained observability and recovery at the individual function level.
+**Note**: Caching works at the task level and caches complete task outputs. For function-level checkpointing and resumption within tasks, see [Traces](./traces), which provide fine-grained observability and recovery at the individual function level.
 
 ## Overview
 

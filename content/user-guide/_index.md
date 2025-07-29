@@ -37,7 +37,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > [!NOTE]
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
 >
-> {{< key product_name >}} Serverless provides all the features of Flyte, plus much more.
+> {{< key product_name >}} Serverless provides all the features of Flyte, plus much more,
 > all in a turn-key, fully-managed, cloud environment.
 > There is zero infrastructure to deal with, and you pay only for the resources you use.
 > Your data and workflow code is stored safely and securely in the Union.ai cloud infrastructure.
@@ -91,7 +91,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< grid >}}
 
-{{< link-card target="flyte-2" icon="lightbulb" title="Introduction to Flyte 2" >}}
+{{< link-card target="flyte-2" icon="lightbulb" title="Flyte 2" >}}
 Flyte 2 represents a fundamental shift in how AI workflows are written and executed. Learn
 more in this section.
 {{< /link-card >}}

@@ -1,6 +1,6 @@
 ---
 title: Container images
-weight: 60
+weight: 70
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

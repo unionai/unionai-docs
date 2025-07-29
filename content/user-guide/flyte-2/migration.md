@@ -1,6 +1,6 @@
 ---
 title: Migration
-weight: 13
+weight: 30
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -15,7 +15,7 @@ In the meantime you can migrate manually by following the steps below.:
 
 ### 1. Move task configuration to a `TaskEnvironment` object
 
-- Instead of configuring the image, hardware resources and so forth direcly in the task decorator.
+- Instead of configuring the image, hardware resources, and so forth, directly in the task decorator.
 You configure it in `TaskEnvironment` object. For example:
 
 ```python

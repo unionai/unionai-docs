@@ -1,6 +1,6 @@
 ---
 title: Error handling
-weight: 100
+weight: 120
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

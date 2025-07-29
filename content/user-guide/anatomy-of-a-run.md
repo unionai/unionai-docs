@@ -1,6 +1,6 @@
 ---
 title: Anatomy of a run
-weight: 42
+weight: 50
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

@@ -2,6 +2,7 @@
 title: Flyte 2
 weight: 10
 variants: +flyte +serverless +byoc +selfmanaged
+sidebar_expanded: true
 ---
 
 # Flyte 2
@@ -22,7 +23,7 @@ Flyte 2 and Union 2 represent a fundamental shift in how workflows are written a
 {{< /variant >}}
 
 {{< note title="Ready to get started?" >}}
-Ready to get started? Go the [Getting started](./getting-started.md) guide to install Flyte 2 and run your first task.
+Ready to get started? Go the [Getting started](../getting-started.md) guide to install Flyte 2 and run your first task.
 {{< /note >}}
 
 ## Pure Python execution
@@ -86,7 +87,7 @@ As you can see in the hello world example, workflows can be constructed at runti
 adaptive behavior. The Flyte 2 also supports:
 * Python's asynchronous programming model to express parallelism.
 * Python's native error handling with `try-except` to overridden configurations, like resource requests.
-* Predefined static workflows when compile-time safety is critical..
+* Predefined static workflows when compile-time safety is critical.
 
 ## Simplified API
 
@@ -161,7 +162,7 @@ def main() -> flyte.File:
 
 Author and run workflows and fetch workflow metadata (I/O and logs) directly from Jupyter notebooks.
 
-![Native Notebook](../_static/images/user-guide/notebook.png)
+![Native Notebook](../../_static/images/user-guide/notebook.png)
 
 ## High performance engine
 
@@ -186,7 +187,7 @@ workflows.
 
 New UI with a streamlined and user-friendly experience for authoring and managing workflows.
 
-![New UI](../_static/images/user-guide/v2ui.png)
+![New UI](../../_static/images/user-guide/v2ui.png)
 
 This UI improves the visualization of workflow execution and monitoring, simplifying access to logs, metadata, and other
 important information.

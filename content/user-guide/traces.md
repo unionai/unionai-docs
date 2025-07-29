@@ -1,6 +1,6 @@
 ---
 title: Traces
-weight: 110
+weight: 130
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

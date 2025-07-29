@@ -1,6 +1,6 @@
 ---
 title: Fanout
-weight: 130
+weight: 160
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -197,6 +197,6 @@ Fanout patterns are particularly valuable for:
 
 ## Organizing large fanouts
 
-For very large fanouts with hundreds or thousands of parallel tasks, consider using [groups](groups.md) to organize the UI display and make workflows easier to understand and debug.
+For very large fanouts with hundreds or thousands of parallel tasks, consider using [groups](./grouping-actions.md) to organize the UI display and make workflows easier to understand and debug.
 
 Fanout is a fundamental pattern in Flyte that enables you to scale your workflows to handle large-scale parallel processing efficiently.

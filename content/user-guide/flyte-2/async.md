@@ -1,6 +1,6 @@
 ---
 title: Asynchronous model
-weight: 12
+weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -170,7 +170,7 @@ The `flyte.map` function provides:
 
 - **Dual interfaces**: `flyte.map.aio()` for async contexts, `flyte.map()` for sync contexts.
 - **Built-in error handling**: `return_exceptions` parameter for graceful failure handling. This matches the `asyncio.gather` interface,
-  and allows you to decide how errors are to be handled.
+  allowing you to decide how to handle errors.
   If you are coming from Flyte 1, it allows you to replace `min_success_ratio` in a more flexible way.
 - **Automatic UI grouping**: Creates logical groups for better workflow visualization.
 - **Concurrency control**: Optional limits for resource management.
