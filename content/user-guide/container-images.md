@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Container images
 
-Every `task` in Flyte runs in its own container and every container needs a container image to define it.
+Every `task` in Flyte runs in its own container (unless you are using [reusable containers](./reusable-containers)) and every container needs a container image to define it.
 
 We use the `image` parameter of the [`TaskEnvironment`](../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
 Every task that uses that `TaskEnvironment` will run in a container based on that image.
@@ -37,6 +37,10 @@ With Flyte you can do it right in your Python code, using the [`Image`](../api-r
 
 Here is an example:
 
+<!-- TODO:
+Ketan Umare:
+Its weird to have this as the first example. I think we should have a regular image building example Image.from_debian_base().with_pip_packages(...) and then have this maybe as an additional example
+-->
 {{< code file="/external/migrate-to-unionai-examples-flyte2/container_images.py" lang="python" >}}
 
 First, specify your dependencies using [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).

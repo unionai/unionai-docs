@@ -9,6 +9,15 @@ variants: +flyte +serverless +byoc +selfmanaged
 Flyte is designed to scale effortlessly, allowing you to run workflows with large fan-outs.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
+> [!NOTE]
+> By default fanouts in Union are limited to a maximum size.
+> Adjustment can made to this maximum by consulting with the Union team.
+> Full documentation of this aspect of fanout is coming soon.
+{{< /markdown >}}
+{{< /variant >}}
+
 ## Understanding fanout patterns
 
 A "fanout" pattern occurs when you spawn multiple tasks concurrently, typically in a loop.

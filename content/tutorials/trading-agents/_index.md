@@ -1,11 +1,11 @@
 ---
-title: Run a Multi-Agent Trading Simulation with Agents That Think (and Debate)
+title: Multi-agent trading simulation
 weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Run a Multi-Agent Trading Simulation with Agents That Think (and Debate)
+# Multi-agent trading simulation
 
 _(code available [here](https://github.com/unionai/unionai-examples/tutorials-v2/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents))_
 

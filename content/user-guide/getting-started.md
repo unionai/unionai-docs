@@ -20,11 +20,11 @@ First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-star
 
 ### Ensure that you have Python 3.10 or later installed
 
-Install Python 3.10 or later on your machine and pin it as the default Python version for `uv`:
+Install Python 3.13 or later on your machine and pin it as the default Python version for `uv`:
 
 ```shell
-uv python install 3.10
-uv python pin 3.10 --global
+uv python install 3.13
+uv python pin 3.13 --global
 ```
 
 ### Create and activate a Python virtual environment

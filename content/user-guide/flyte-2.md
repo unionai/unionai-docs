@@ -1,7 +1,7 @@
 ---
 title: Flyte 2
 weight: 10
-variants: +flyte -serverless +byoc +selfmanaged
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Flyte 2

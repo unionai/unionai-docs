@@ -18,6 +18,8 @@ You can also initialize the Flyte SDK programmatically without specifying a conf
 
 In [Getting started](./getting-started) we used the following command to create a configuration:
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
 ```shell
 flyte create config \
     --endpoint my-instance.example.com \
@@ -25,9 +27,24 @@ flyte create config \
     --domain development \
     --project my-project
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+```shell
+flyte create config \
+    --endpoint my-instance.example.com \
+    --builder local \
+    --domain development \
+    --project my-project
+```
+{{< /markdown >}}
+{{< /variant >}}
 
 A full example using all available parameters would look like this:
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -39,11 +56,30 @@ flyte create config \
     --output my-config.yaml \
     --force
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --insecure \
+    --builder local \
+    --domain development \
+    --org my-org \
+    --project my-project \
+    --output my-config.yaml \
+    --force
+```
+{{< /markdown >}}
+{{< /variant >}}
 
 See the [API reference](../api-reference/flyte-cli#flyte-create-config) for details on the available parameters.
 
 The result of the above command would be the creation of a file called `my-config.yaml` with the following content:
 
+{{< variant byoc selfmanaged >}}
+{{< markdown >}}
 ```yaml
 admin:
   endpoint: dns:///my-org.my-company.com
@@ -55,6 +91,23 @@ task:
   org: my-org
   project: my-project
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+  insecure: true
+image:
+  builder: local
+task:
+  domain: development
+  org: my-org
+  project: my-project
+```
+{{< /markdown >}}}}
+{{< /variant >}}
 
 A few notes about the properties in the config file:
 
@@ -74,9 +127,8 @@ The `image` section contains the configuration for building Docker images for yo
 
 `image.builder` specifies the image builder to use for building Docker images for your tasks.
 
-For Union instances this is usually set to `remote`, which means that the images will be built on Union's infrastructure using the Union `ImageBuilder`.
-
-For Flyte OSS instances, `ImageBuilder` is not available, so this property must be set to `local`.
+- For Union instances this is usually set to `remote`, which means that the images will be built on Union's infrastructure using the Union `ImageBuilder`.
+- For Flyte OSS instances, `ImageBuilder` is not available, so this property must be set to `local`.
 This means that the images will be built locally on your machine.
 You need to have Docker installed and running for this to work.
 See [Image building](./container-images#image-building) for details.

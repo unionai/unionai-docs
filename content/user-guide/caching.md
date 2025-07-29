@@ -71,11 +71,17 @@ async def auto_versioned_task(data: str) -> str:
     return transform_data(data)
 ```
 
-- **When to use**: Development and most production scenarios
-- **Cache invalidation**: Automatic when function code changes
-- **Benefits**: Zero-maintenance caching that "just works"
+<!-- TODO:
+Figure out what this refers to:
 
-### `"override"` - Manual versioning
+> Ketan Umare
+> you can specifiy version alongwith "auto" as well
+-->
+
+- **When to use**: Development and most production scenarios.
+- **Cache invalidation**: Automatic when function code changes.
+- **Benefits**: Zero-maintenance caching that "just works".
+### `"override"`
 
 ```python
 @env.task(cache=Cache(behavior="override", version_override="v1.2"))
@@ -84,9 +90,9 @@ async def manually_versioned_task(data: str) -> str:
     return transform_data(data)
 ```
 
-- **When to use**: When you need explicit control over cache invalidation
-- **Cache invalidation**: Manual, by changing `version_override`
-- **Benefits**: Stable caching across code changes that don't affect logic
+- **When to use**: When you need explicit control over cache invalidation.
+- **Cache invalidation**: Manual, by changing `version_override`.
+- **Benefits**: Stable caching across code changes that don't affect logic.
 
 ### `"disable"` - No caching
 
@@ -100,6 +106,8 @@ async def always_fresh_task(data: str) -> str:
 - **When to use**: Non-deterministic functions, side effects, or always-fresh data
 - **Cache invalidation**: N/A - never cached
 - **Benefits**: Ensures execution every time
+
+**This is the default.**
 
 ## Advanced caching configuration
 

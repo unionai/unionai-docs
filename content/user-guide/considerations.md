@@ -10,7 +10,7 @@ Flyte 2 represents a substantial change from Flyte 1.
 While the static graph execution model will soon be available and will mirror Flyte 1 almost exactly, the primary mode of execution in Flyte 2 should remain pure-Python-based.
 That is, each Python-based task action has the ability to act as its own engine, kicking off sub-actions, and assembling the outputs, passing them to yet other sub-actions and such.
 
-While this model of execution comes with an enormous amount of flexibility, as the examples in this tutorial demonstrate, that flexibility does warrant some caveats to keep in mind when authoring your tasks.
+While this model of execution comes with an enormous amount of flexibility, that flexibility does warrant some caveats to keep in mind when authoring your tasks.
 
 ## Non-deterministic behavior
 
@@ -51,17 +51,33 @@ async def t1():
 Here, depending on what time it is, either `t2` or `t3` may end up running.
 In the earlier scenario, if `t1` crashes unexpectedly, and Flyte retries the execution, a different downstream task may get kicked off instead.
 
+### Dealing with non-determinism
+
+As a developer, the best way to manage non-deterministic behavior (if it is unavoidable) is to be able to observe it and see exactly what is happening in your code. Flyte 2 provides precisely the tool needed to enable this: Traces.
+
+With this feature you decorate the sub-task functions in your code with `@trace`, enabling checkpointing, reproducibility and recovery at a fine-grained level. See [Traces](./traces) for more details.
+
 ## Type safety
 
 In Flyte 1, the top-level workflow was defined by a Python-like DSL that was compiled into a static DAG composed of tasks, each of which was, internally, defined in real Python.
 The system was able to guarantee type safety across task boundaries because the task definitions were static and the inputs and outputs were defined in a way that Flytekit could validate them.
 
-In Flyte 2, the top-level workflow is defined by Python code that runs at runtime.
+In Flyte 2, the top-level workflow is defined by Python code that runs at runtime (unless using a compiled task).
 This means that the system can no longer guarantee type safety at the workflow level.
 
 Happily, the Python ecosystem has evolved considerably since Flyte 1, and Python type hints are now a standard way to define types.
 
 Consequently, in Flyte 2, developers should use Python type hints and type checkers like `mypy` to ensure type safety at all levels, including the top-most task (i.e., the "workflow" level).
+
+## No global state
+
+A core principle of Flyte 2 (that is also shared with Flyte 1) is that you should not try to maintain global state across your workflow.
+It will not be translated across tasks containers,
+
+In a single process Python program, global variables are available across functions.
+In the distributed execution model of Flyte, each task runs in its own container, and each container is isolated from the others.
+
+If there is some state that needs to be preserved, it must be reconstructable through repeated deterministic execution.
 
 ## Driver pod requirements
 
@@ -71,8 +87,9 @@ pod of sorts.
 In Flyte 1, this assembling of intermediate outputs was done by Flyte Propeller.
 In 2, it's done by the parent task.
 
-This means that the pod running your parent task must be appropriately sized, and should ideally not be CPU-bound. For example,
-if you had this also scenario,
+This means that the pod running your parent task must be appropriately sized, and should ideally not be CPU-bound, otherwise it slow down downstream evaluation and kickoff of tasks.
+
+For example, if you had this also scenario,
 
 ```python
 @env.task
@@ -83,7 +100,7 @@ async def t_main():
 ```
 The pod running `t_main` will hang in between tasks `t1` and `t2`. Your parent tasks should ideally focus only on orchestration.
 
-### OOM risk from materialized IO
+## OOM risk from materialized I/O
 
 Something maybe more nuanced to keep in mind is that if you're not using the soon-to-be-released ref mode, outputs are actually
 materialized. That is, if you have the following scenario,
@@ -101,4 +118,4 @@ async def t1():
 The pod running `t1` needs to have memory to handle that 1 GB of floats. Those numbers will be materialized in that pod's memory.
 This can lead to out of memory issues.
 
-Note that `flyte.io.File` and `flyte.io.Dir` will not suffer from this because while those are materialized, they're only materialized as pointers to offloaded data, so their memory footprint is much lower.
+Note that `flyte.io.File`, `flyte.io.Dir` and `flyte.io.DataFrame` will not suffer from this because while those are materialized, they're only materialized as pointers to offloaded data, so their memory footprint is much lower.

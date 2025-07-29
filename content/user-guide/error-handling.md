@@ -9,10 +9,18 @@ variants: +flyte +serverless +byoc +selfmanaged
 One of the key features of Flyte 2 is the ability to recover from user-level errors in a workflow execution.
 This includes out-of-memory errors and other exceptions.
 
-This is a direct result of the fact that workflows are now written in regular Python, and provide you with all the power and flexibility of Python error handling.
+In a distributed system with heterogeneous compute, certain types of errors are expected and even, in a sense, acceptable.
+Flyte 2 recognizes this and allows you to handle them gracefully as part of your workflow logic.
+
+This ability is a direct result of the fact that workflows are now written in regular Python,
+giving you with all the power and flexibility of Python error handling.
 Let's look at an example:
 
 {{< code file="/external/migrate-to-unionai-examples-flyte2/error_handling.py" lang="python" >}}
+<!-- TODO:
+Ketan Umare
+OMG We need a better example. This is something stupid i wrote.
+-->
 
 In this code, we do the following:
 

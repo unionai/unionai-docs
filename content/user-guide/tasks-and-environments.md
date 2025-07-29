@@ -6,6 +6,14 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Tasks and environments
 
+<!-- TODO:
+link from here to various environment strategies, when available
+- Single environment app (workflow)
+- Multi-env workflow, deployed together
+- Deploying all environments recursively (coming soon)
+- Managing environments with different dependencies.
+-->
+
 Previously we saw how you can instrument your pure Python functions to run them on Union/Flyte.
 By decorating your functions with `@env.task` you can run them in a distributed manner, with each function running in its own container.
 
@@ -69,6 +77,11 @@ async def hello_wf(data: str = "default string") -> str:
 
 When you run this on Union/Flyte, each task will run in its own container,
 but now the containers will have different configurations based on the task environment they are associated with:
+
+<!-- TODO:
+We need to talk about depends_on attribute, otherwise downstream environments will not be built
+-->
+
 
 * The `hello_wf` and `say_hello` tasks will run in containers with the default configuration (defined by `env1`)
 * The `square` task will run in a container with the specified CPU and memory (defined by the `env2`).

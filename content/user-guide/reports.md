@@ -30,6 +30,11 @@ You can `log()` or `replace()` HTML on the `Tab` object just as you can directly
 Finally, you send the report to the Flyte server and make it visible in the UI:
 
 * [`flyte.report.flush()`](../api-reference/flyte-sdk/packages/flyte.report#flush) dispatches the report.
+  **It is important to call this method to ensure that the report is sent**.
+
+<!-- TODO:
+Check (test) if implicit flush is performed at the end of the task execution.
+-->
 
 Here is an example of how to use the reporting feature in a task:
 

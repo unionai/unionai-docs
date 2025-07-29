@@ -8,20 +8,21 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 The `@flyte.trace` decorator provides fine-grained observability and resumption capabilities for functions called within your Flyte workflows.
 Traces are primarily used on **helper functions** that tasks call to perform specific operations like API calls, data processing, or computations.
+Traces are particularly useful for [managing the challenges of non-deterministic behavior in workflows](./considerations#non-deterministic-behavior)), allowing you to track execution details and resume from failures.
 
-## Architecture Overview
+## Tasks vs. traced functions
 
-Flyte workflows follow a clear separation of concerns:
+Flyte differentiates between tasks and traced functions:
 
-- **Tasks** (`@env.task`) = Orchestration layer that manages workflow execution, caching, and resources
-- **Traced functions** (`@flyte.trace`) = Helper functions that perform specific operations and create checkpoints
+- **Tasks** (`@env.task`): The orchestration layer that manages workflow execution, caching, and resources.
+- **Traced functions** (`@flyte.trace`) = Helper functions that perform specific operations and create checkpoints.
 
 ```python
 import flyte
 
 env = flyte.TaskEnvironment("my-app")
 
-# ✅ Traced helper functions - the main use case
+# Traced helper functions - the main use case
 @flyte.trace
 async def call_llm(prompt: str) -> str:
     """Helper function for LLM calls - traced for observability."""
@@ -33,7 +34,7 @@ async def process_data(data: str) -> dict:
     """Helper function for data processing - traced for checkpointing."""
     return await expensive_computation(data)
 
-# ✅ Tasks orchestrate traced helper functions
+# Tasks orchestrate traced helper functions
 @env.task
 async def research_workflow(topic: str) -> dict:
     # Task coordinates the workflow
@@ -43,54 +44,61 @@ async def research_workflow(topic: str) -> dict:
     return {"topic": topic, "result": processed_data}
 ```
 
-**Key Benefits:**
+This division has the following benefits:
+
 - **Granular observability**: See exactly which helper functions succeed or fail
 - **Efficient resumption**: Skip successful operations when workflows resume after failures
 - **Clean architecture**: Tasks handle orchestration, traced functions handle execution
 
-## How Traces Work
+## How traces work
 
-### Context Requirement
+### Context requirement
 
-**Critical**: Traces only function within task execution contexts. They either fail or do nothing when called outside tasks:
+Traces only function within task execution contexts. They either fail or do nothing when called outside tasks:
 
 ```python
-# ❌ Outside task context
 @flyte.trace
 def sync_function(x: int) -> int:
     return x * 2
-
-# sync_function(5)  # Raises NotImplementedError!
 
 @flyte.trace
 async def async_function(x: int) -> int:
     return x * 2
 
-# await async_function(5)  # Works but no tracing occurs
+# ❌ Outside task context - neither work
+sync_function(5)  # Fails
+await async_function(5)  # Fails
 
 # ✅ Within task context - both work and are traced
 @env.task
 async def my_task():
-    result1 = sync_function(5)       # ✅ Traced!
+    result1 = sync_function(5)       # ✅ Traced! (Coming soon)
     result2 = await async_function(5) # ✅ Traced!
     return result1 + result2
 ```
 
+> [!NOTE]
+> Tracing of synchronous functions (within a task context) is coming soon.
+
 ### What Gets Traced
 
 Traces capture detailed execution information:
-- **Execution time**: How long each function call takes
-- **Inputs and outputs**: Function parameters and return values
-- **Errors**: Exception details when functions fail
-- **Checkpoints**: State that enables workflow resumption
+- **Execution time**: How long each function call takes.
+- **Inputs and outputs**: Function parameters and return values.
+- **Checkpoints**: State that enables workflow resumption.
+
+### Errors are not recorded
+
+Errors are not traced. Only successful executions are recorded.
+Any failure will bubble up and user code can retry it.
 
 ### Supported Function Types
 
 The trace decorator works with:
-- **Synchronous functions**: Regular Python functions
-- **Asynchronous functions**: Functions defined with `async def`
-- **Generator functions**: Functions that `yield` values
-- **Async generators**: Functions that `async yield` values
+- **Synchronous functions**: Regular Python functions **(Coming soon)**.
+- **Asynchronous functions**: Functions defined with `async def`.
+- **Generator functions**: Functions that `yield` values.
+- **Async generators**: Functions that `async yield` values.
 
 ```python
 @flyte.trace
@@ -180,6 +188,10 @@ Understanding how traces work with Flyte's other execution features:
 
 ### How They Work Together
 
+<!-- TODO
+Lets use better typing for all of these examples, we have the opportunity to make this right for our users
+-->
+
 ```python
 @env.task  # Task-level caching enabled by default
 async def data_pipeline(dataset_id: str) -> dict:
@@ -225,36 +237,15 @@ async def traced_model_training(features: dict) -> dict:
 6. **Failure Recovery**: If workflow fails, resume from last successful checkpoint
 7. **Task Completion**: Final result is cached for future identical inputs
 
-## Advanced Usage
-
-### Tracing Tasks (Less Common)
-
-While the typical pattern is to trace helper functions, you can also trace tasks themselves:
-
-```python
-# ⚠️ Less common: Both task AND traced
-@flyte.trace
-@env.task
-async def traced_task(data: str) -> str:
-    """This has both task-level caching AND trace checkpointing."""
-    return process(data)
-
-@env.task
-async def main_workflow(input_data: str) -> dict:
-    # This call has both task caching and trace checkpointing
-    result = await traced_task(input_data)
-    return {"result": result}
-```
-
-**When to trace tasks:**
-- When you need both task-level caching AND trace-level checkpointing
-- For debugging specific task executions
-- When tasks perform single, expensive operations that benefit from tracing
 
 ## Error Handling and Observability
 
 Traces capture comprehensive execution information for debugging and monitoring:
 
+<!-- TODO:
+Add more examples of error handling with traces
+
+-->
 ```python
 @flyte.trace
 async def risky_api_call(endpoint: str, data: dict) -> dict:
@@ -332,25 +323,10 @@ async def research_workflow(topic: str) -> dict:
 - **Efficient serialization**: Only occurs when checkpointing is enabled
 - **Streaming support**: Generator functions stream efficiently without buffering
 
-## Implementation Details
-
-### TraceInfo Objects
-
-Each traced function execution creates a `TraceInfo` object containing:
-- **action**: Unique identifier for the function execution
-- **interface**: Function signature and type information
-- **inputs_path**: Location of serialized input data
-- **name**: Function name
-- **output**: Function return value (when available)
-- **error**: Exception information (if an error occurred)
-- **duration**: Execution time
-
-### Controller Integration
-
-Traces integrate with Flyte's execution system:
-- **Local Controller**: Records traces for local execution and testing
-- **Remote Controller**: Records traces for cloud execution with persistent storage
-- **Storage Systems**: Automatic persistence of inputs, outputs, and metadata
+<!--
+TODO:
+Ketan Umare:
+we should show an example where tasks and traces can be used interchangeably
 
 ## Examples in Practice
 
@@ -393,3 +369,4 @@ async def process_documents(documents: list[str]) -> dict:
 ```
 
 This comprehensive tracing system provides visibility into your workflow execution while enabling robust error recovery and resumption capabilities.
+-->

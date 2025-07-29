@@ -51,7 +51,8 @@ async def main() -> list[int]:
 
 ### ReusePolicy Parameters
 
-- **`replicas`**: Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling)
+- **`replicas`**: Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling).
+  **Note: Autoscaling is coming soon**.
 - **`idle_ttl`**: How long containers stay alive without processing tasks (in seconds)
 
 ```python
@@ -66,6 +67,16 @@ reuse_policy = flyte.ReusePolicy(
 ### Machine Learning Inference
 
 Ideal for ML workloads where model loading is expensive:
+<!-- TODO:
+Referring to  the section in the code below
+
+```
+# Model loaded once per container
+model = None
+```
+Ketan Umare
+this should have an asyncio lock. Better to use alru_cache
+-->
 
 ```python
 ml_env = flyte.TaskEnvironment(
