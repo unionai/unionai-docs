@@ -5,5 +5,7 @@ versions = [
   "v1"
 ]
 
+show_deprecation_message = false
+
 # Set legacy version number
 # current_version = "<do-not-set>" # set by build
