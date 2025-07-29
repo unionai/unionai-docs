@@ -57,7 +57,6 @@
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB6L88S" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
-    {{- partial "flyte-banner.html" . -}}
     <header>{{- partial "header.html" . -}}</header>
     <div class="tabs">{{- partial "tabs.html" (dict "page" .) -}}</div>
     <div class="container">
@@ -84,7 +83,7 @@
           <code>{{- strings.TrimSuffix "/" .RelPermalink -}}</code>
         </div>
         {{- end -}}
-        {{- if .Site.Params.current_version -}}
+        {{- if (and .Site.Params.current_version (default true .Site.Params.show_deprecation_message)) -}}
         <div class="old-version">
           <div class="title">You are viewing documentation for version: {{ .Site.Params.current_version }}</div>
           <div class="message">

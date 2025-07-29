@@ -18,6 +18,8 @@ def main():
     parser.add_argument("--include", nargs="+", help="List of files to include")
     parser.add_argument("--no-flatten", type=bool, help="Flatten the package structure", default=False)
     parser.add_argument("--ignore_types", nargs="+", help="Types to skip generation", default=[])
+    parser.add_argument("--weight", type=int, help="Root page weight", required=False, default=0)
+    parser.add_argument("--expanded", type=bool, help="Expand the package structure", default=False)
     args = parser.parse_args()
 
     # Read out.yaml file, parse and convert to ptypes.ParsedInfo
@@ -33,6 +35,8 @@ def main():
             variants=args.variants,
             flatten=(not args.no_flatten),
             ignore_types=args.ignore_types,
+            weight=args.weight,
+            expanded=args.expanded,
         )
 
 

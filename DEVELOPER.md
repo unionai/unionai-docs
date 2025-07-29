@@ -47,30 +47,6 @@ To update the submodule to the latest `main` branch, run:
 $ make update-examples
 ```
 
-# Updating the API Reference
-
-Create and activate a fresh venv:
-
-```bash
-uv venv
-source .venv/bin/activate
-```
-
-Install union:
-
-```
-uv pip install union
-```
-
-Install [`flytectl`](https://www.union.ai/docs/flyte/api-reference/flytectl-cli/),
-then run the following commands to update the different API reference sections
-
-- Union SDK: `run make -f Makefile.api.union`
-- Flytekit: `run make -f Makefile.api.flytekit`
-- Plugins: `run make -f Makefile.api.plugins`
-- FlyteCTL: `run make -f Makefile.api.flytectl`
-
-**Note:** the `pyflyte`, `union`, and `uctl` CLIs are currently manually maintained.
 
 ## Building and running locally
 

@@ -1,5 +1,6 @@
 {{ $map := page.Scratch.Get "resource_permalinks" }}
 {{ $destination := .Destination }}
+{{- $uniqueID := printf "image-%s-%d" (sha1 .Destination) .Ordinal -}}
 
 {{/* Check if we need to remap the destination path */}}
 {{ if $map }}
