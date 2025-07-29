@@ -6,9 +6,9 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Getting started
 
-This section gives you a quick introduction to writing and running workflows on Union and Flyte.
+This section gives you a quick introduction to writing and running workflows on Union and Flyte 2.
 
-## Configuration setup
+## Installing Flyte 2
 
 ### Install uv
 
@@ -27,7 +27,7 @@ uv python install 3.10
 uv python pin 3.10 --global
 ```
 
-### Create and activate a Pyhton virtual environment
+### Create and activate a Python virtual environment
 
 In your working directory, create a Python virtual environment and activate it:
 
@@ -43,6 +43,8 @@ Install the latest flyte package in the virtual environment (we are currently in
 ```shell
 uv pip install --no-cache --prerelease=allow --upgrade flyte
 ```
+
+## Configuration setup
 
 ### Create a config.yaml
 

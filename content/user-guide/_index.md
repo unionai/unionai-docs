@@ -88,3 +88,15 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< /markdown >}}
 {{< /variant >}}
+
+{{< grid >}}
+
+{{< link-card target="flyte-2" icon="lightbulb" title="Introduction to Flyte 2" >}}
+Flyte 2 represents a fundamental shift in how AI workflows are written and executed. Learn
+more in this section.
+{{< /link-card >}}
+
+{{< link-card target="getting-started" icon="123" title="Getting started" >}}
+Install Flyte 2, configure your local IDE, and create run your first task, and inspect the results in 2 minutes.
+{{< /link-card >}}
+{{< /grid >}}

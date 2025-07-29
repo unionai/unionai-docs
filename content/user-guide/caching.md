@@ -6,13 +6,13 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Caching
 
-Flyte v2 provides intelligent **task output caching** that automatically avoids redundant computation by reusing previously computed task results. Caching operates at the **task level** (`@env.task`) and caches the entire output of task executions. This is especially valuable for expensive operations like model training, data processing, or complex analyses where identical inputs should produce identical outputs.
+Flyte 2 provides intelligent **task output caching** that automatically avoids redundant computation by reusing previously computed task results. Caching operates at the **task level** (`@env.task`) and caches the entire output of task executions. This is especially valuable for expensive operations like model training, data processing, or complex analyses where identical inputs should produce identical outputs.
 
 **Note**: Caching works at the task level and caches complete task outputs. For function-level checkpointing and resumption within tasks, see [Traces]({{< relref "traces" >}}), which provide fine-grained observability and recovery at the individual function level.
 
 ## Overview
 
-Caching in Flyte v2 works by creating a **cache key** from the task's inputs, code version, and configuration. When a task runs, Flyte checks if a cache entry exists for that key. If found, the cached result is returned immediately instead of re-executing the task.
+Caching in Flyte 2 works by creating a **cache key** from the task's inputs, code version, and configuration. When a task runs, Flyte checks if a cache entry exists for that key. If found, the cached result is returned immediately instead of re-executing the task.
 
 Key benefits of caching:
 
@@ -60,7 +60,7 @@ async def never_cached_task(x: int) -> int:
 
 ## Cache behaviors
 
-Flyte v2 supports three main cache behaviors:
+Flyte 2 supports three main cache behaviors:
 
 ### `"auto"` - Automatic versioning
 
@@ -173,7 +173,7 @@ Salt is useful for:
 
 ## Cache policies
 
-For automatic versioning, Flyte v2 uses cache policies to generate version hashes:
+For automatic versioning, Flyte 2 uses cache policies to generate version hashes:
 
 ### Function body policy (default)
 
@@ -267,7 +267,7 @@ Caches are automatically isolated by:
 
 ### Local development caching
 
-When running locally, Flyte v2 maintains a local cache:
+When running locally, Flyte 2 maintains a local cache:
 
 ```python
 # Local execution uses ~/.flyte/local-cache/
@@ -367,5 +367,5 @@ async def ml_pipeline(dataset_name: str, config: dict, hyperparams: dict) -> str
     return report
 ```
 
-This pipeline efficiently caches expensive operations while ensuring fresh outputs where needed, demonstrating the flexibility and power of Flyte v2's caching system.
+This pipeline efficiently caches expensive operations while ensuring fresh outputs where needed, demonstrating the flexibility and power of Flyte 2's caching system.
 

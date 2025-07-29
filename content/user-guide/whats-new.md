@@ -7,31 +7,81 @@ variants: +flyte +serverless +byoc +selfmanaged
 # What's new?
 
 Flyte 2 represents a fundamental shift in how workflows are written and executed.
-The most significant change is the move from a constrained domain-specific language to pure Python, combined with the wholehearted adoption of asynchronous programming for expressing parallelism.
+The most significant change is the move from a constrained domain-specific language (DSL) to pure Python, combined with the wholehearted adoption of asynchronous programming for expressing parallelism.
+
 This transformation makes Flyte workflows more intuitive, flexible, and powerful than ever before.
 
-## The evolution: From DSL to pure Python
+## From `@workflow` DSL  to pure Python
 
-### Flyte 1: The constraints of static workflows
+| Flyte 1 | Flyte 2 |
+| --- | --- |
+| `@workflow`-decorated functions are constrained to a subset of Python for defining a static directed acyclic graph (DAG) of tasks. | **No more `@workflow` decorator**: Everything is a `@task`, so your top-level “workflow” is simply a task that calls other tasks. |
+| `@task`-decorated functions could leverage the full power of Python, but only within individual container executions. | `@task`s can call other `@task`s and be used to construct workflows with dynamic structures using loops, conditionals, try/except, and any Python construct anywhere. |
+| Workflows were compiled into static DAGs at registration time, with tasks as the nodes and the DSL defining the structure. | Workflows are simply tasks that call other tasks. Compile-time safety will be available in the future as `compiled_task`s. |
 
-In Flyte 1, there was a clear distinction between workflows and tasks:
+{{< tabs "whats-new-dsl-to-python" >}}
+{{< tab "Flyte 1" >}}
+{{< markdown >}}
+```python
+import flytekit
 
-- **Workflows** used the `@workflow` decorator and were constrained to a subset of Python syntax —-essentially a domain-specific language (DSL) that defined a static directed acyclic graph (DAG) of tasks.
-- **Tasks** used the `@task` decorator and could leverage the full power of Python, but only within individual container executions.
+image = flytekit.ImageSpec(
+    name="hello-world-image",
+    packages=[...],
+)
 
-This separation meant that while both appeared to be Python code, only tasks could use loops, conditionals, error handling, and other standard Python features.
-Workflows were compiled into static DAGs at registration time, with tasks as the nodes and the DSL defining the structure.
+@flytekit.task(container_image=image)
+def mean(data: list[float]) -> float:
+    return sum(list) / len(list)
 
-### Flyte 2: True Python freedom
+@flytekit.workflow
+def main(data: list[float]) -> float:
+    output = mean(data)
 
-Flyte 2 eliminates this distinction:
+    # ❌ performing trivial operations in a workflow is not allowed
+    # output = output / 100
 
-- **No more `@workflow` decorator**: Everything is a `@task`.
-- **Pure Python everywhere**: Your top-level "workflow" is simply a task that calls other tasks.
-- **Dynamic execution**: Workflows are constructed at runtime based on your Python code.
-- **Full language support**: Use loops, conditionals, try/except, and any Python construct anywhere.
+    # ❌ if/else is not allowed
+    # if output < 0:
+    #     raise ValueError("Output cannot be negative")
 
-This change brings several transformative benefits:
+    return output
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Flyte 2" >}}
+{{< markdown >}}
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(
+    "hello_world",
+    image=flyte.Image.from_debian_base().with_pip_packages(...),
+)
+
+@env.task
+def mean(data: list[float]) -> float:
+    return sum(list) / len(list)
+
+@env.task
+def main(data: list[float]) -> float:
+    output = mean(data)
+
+    # ✅ performing trivial operations in a workflow is allowed
+    output = output / 100
+
+    # ✅ if/else is allowed
+    if output < 0:
+        raise ValueError("Output cannot be negative")
+
+    return output
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
+
+These fundamental changes bring several transformative benefits:
 
 - **Flexibility**: Harness the complete Python language for workflow definition, including all control flow constructs previously forbidden in workflows.
 - **Dynamic workflows**: Create workflows that adapt to runtime conditions, handle variable data structures, and make decisions based on intermediate results.
@@ -44,10 +94,10 @@ This change brings several transformative benefits:
 
 Before diving into Flyte 2's approach, it's essential to understand the distinction between concurrency and parallelism:
 
-- **Concurrency**: Dealing with multiple tasks at once through interleaved execution, even on a single thread.
-  Performance benefits come from allowing the system to switch between tasks when one is waiting for external operations.
-- **Parallelism**: Executing multiple tasks truly simultaneously across multiple cores or machines.
-  This is a subset of concurrency where tasks run at the same time rather than being interleaved.
+| Concurrency | Parallelism |
+| --- | --- |
+| Dealing with multiple tasks at once through interleaved execution, even on a single thread. | Executing multiple tasks truly simultaneously across multiple cores or machines. |
+| Performance benefits come from allowing the system to switch between tasks when one is waiting for external operations. | This is a subset of concurrency where tasks run at the same time rather than being interleaved. |
 
 ### Python's async evolution
 
@@ -59,16 +109,10 @@ Python's asynchronous programming capabilities have evolved significantly:
   - `threading`: Useful for I/O-bound tasks where the GIL could be released during external operations
 - **The async revolution**: The `asyncio` library introduced cooperative multitasking within a single thread, using an event loop to manage multiple tasks efficiently.
 
-### How Flyte 1 handled parallelism
+| | Flyte 1 | Flyte 2 |
+| --- | --- | --- |
+| Parallelism | The workflow DSL automatically parallelized tasks that weren't dependent on each other. The `map` operator allowed running a task multiple times in parallel with different inputs. | Leverages Python's `asyncio` as the primary mechanism for expressing parallelism, but with a crucial difference: **the Flyte orchestrator acts as the event loop**, managing task execution across distributed infrastructure. |
 
-Flyte 1 achieved parallelism through two mechanisms:
-
-- **Static DAG Structure**: The workflow DSL automatically parallelized tasks that weren't dependent on each other.
-- **Map Operations**: The `map` operator allowed running a task multiple times in parallel with different inputs.
-
-### How Flyte 2 transforms parallelism
-
-Flyte 2 leverages Python's `asyncio` as the primary mechanism for expressing parallelism, but with a crucial difference: **the Flyte orchestrator acts as the event loop**, managing task execution across distributed infrastructure.
 
 #### The core async concepts
 
@@ -108,8 +152,10 @@ async def parallel_pipeline(data_chunks: List[str]) -> List[str]:
     return results
 ```
 
+{{< note title="Note" >}}
 In standard Python, this would provide concurrency benefits primarily for I/O-bound operations.
-In Flyte 2, the orchestrator schedules each `process_chunk` task on separate Kubernetes pods, achieving true parallelism for any type of work.
+However, in Flyte 2, the orchestrator schedules each `process_chunk` task on *separate Kubernetes pods*, achieving true parallelism for any type of work.
+{{< /note >}}
 
 ### True parallelism for all workloads
 
@@ -155,17 +201,10 @@ You don't need to rewrite existing code—just leverage the `.aio()` method when
 
 For scenarios that previously used Flyte 1's `map` operation, Flyte 2 provides `flyte.map` as a direct replacement:
 
+{{< tabs "whats-new-map-function" >}}
+{{< tab "Sync Map" >}}
+{{< markdown >}}
 ```python
-@env.task
-async def async_map_example(n: int) -> List[str]:
-    # Async version using flyte.map
-    results = []
-    async for result in flyte.map.aio(process_item, range(n)):
-        if isinstance(result, Exception):
-            raise result
-        results.append(result)
-    return results
-
 @env.task
 def sync_map_example(n: int) -> List[str]:
     # Synchronous version for easier migration
@@ -176,6 +215,26 @@ def sync_map_example(n: int) -> List[str]:
         results.append(result)
     return results
 ```
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< tab "Async Map" >}}
+{{< markdown >}}
+```python
+@env.task
+async def async_map_example(n: int) -> List[str]:
+    # Async version using flyte.map
+    results = []
+    async for result in flyte.map.aio(process_item, range(n)):
+        if isinstance(result, Exception):
+            raise result
+        results.append(result)
+    return results
+```
+{{< /markdown >}}
+{{< /tab >}}
+
+{{< /tabs >}}
 
 The `flyte.map` function provides:
 
@@ -199,8 +258,7 @@ def my_workflow(data: List[str]) -> List[str]:
 # Flyte 2
 @env.task
 async def my_workflow(data: List[str]) -> List[str]:
-    tasks = [process_item.aio(item) for item in data]
-    return await asyncio.gather(*tasks)
+    return await flyte.map.aio(process_item)(data)
 ```
 
 ### 2. Adopt async patterns
@@ -217,7 +275,7 @@ async def my_workflow(data: List[str]) -> List[str]:
 
 ## Trade-offs and considerations
 
-### The dynamic nature
+### The dynamic nature of modern workflows
 
 Dynamic workflows bring immense flexibility but also some considerations:
 
@@ -225,7 +283,7 @@ Dynamic workflows bring immense flexibility but also some considerations:
 - **Testing strategies**: Dynamic workflows benefit from comprehensive unit testing of individual components and integration testing of full workflow paths.
 - **Runtime dependencies**: Workflow structure depends on runtime data and decisions, requiring careful consideration of edge cases.
 
-### Learning curve management
+### Making the transition to Flyte 2 easier
 
 The transition to async programming is smoothed by:
 
@@ -244,7 +302,7 @@ Flyte 2's transformation represents more than a version upgrade—it's a fundame
 
 The result is a platform where expressing complex, parallel workflows feels as natural as writing standard Python code, while the underlying infrastructure handles the complexities of distributed execution at scale.
 
-For detailed exploration of specific async patterns, see [Fanout](./fanout.md) for large-scale parallel processing and [Groups](./groups.md) for organizing complex workflows in the UI.
+For detailed exploration of specific async patterns, see [Fanout](../fanout.md) for large-scale parallel processing and [Groups](../groups.md) for organizing complex workflows in the UI.
 
 ## Looking ahead: Static DAG compilation
 
@@ -254,7 +312,7 @@ While Flyte 2's dynamic execution model provides unprecedented flexibility, the 
 
 This upcoming feature will provide:
 
-- **Static snalysis**: Enable workflow visualization and validation before execution
+- **Static analysis**: Enable workflow visualization and validation before execution
 - **Predictable resources**: Allow precise resource planning and scheduling optimization
 - **Traditional tooling**: Support existing DAG-based analysis and monitoring tools
 - **Hybrid approach**: Choose between dynamic and static execution based on workflow characteristics
