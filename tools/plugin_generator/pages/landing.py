@@ -9,14 +9,14 @@ def generate(name: str, title_expanded: str, metadata: Metadata, plugin_source: 
     found_header = False
     index_file = path.join(output, "_index.md")
     with open(index_file, "w") as f:
-        f.write(f"---\n")
+        f.write("---\n")
         f.write(f"title: {name}\n")
-        f.write(f"layout: plugin\n")
+        f.write("layout: plugin\n")
         f.write(f"variants: {' '.join(variants)}\n")
-        f.write(f"metadata:\n")
+        f.write("metadata:\n")
         for line in md_yaml:
             f.write(f"{' ' * 2}{line}\n")
-        f.write(f"---\n\n")
+        f.write("---\n\n")
 
         with open(path.join(plugin_source, "README.md"), "r") as r:
             for line in r:

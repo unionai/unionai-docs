@@ -37,7 +37,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > [!NOTE]
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
 >
-> {{< key product_name >}} Serverless provides [all the features of Flyte, plus much more](./introduction#-key-product_name--serverless)
+> {{< key product_name >}} Serverless provides all the features of Flyte, plus much more,
 > all in a turn-key, fully-managed, cloud environment.
 > There is zero infrastructure to deal with, and you pay only for the resources you use.
 > Your data and workflow code is stored safely and securely in the Union.ai cloud infrastructure.
@@ -60,7 +60,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > [!NOTE]
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
 >
-> {{< key product_name >}} BYOC (Bring Your Own Cloud) provides [all the features of Flyte, plus much more](./introduction#-key-product_name--byoc)
+> {{< key product_name >}} BYOC (Bring Your Own Cloud) provides all the features of Flyte, plus much more
 > in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 >
 > You can switch to another product version with the selector above.
@@ -81,7 +81,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > [!NOTE]
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
 >
-> {{< key product_name >}} Self-managed provides [all the features of Flyte, plus much more](./introduction#-key-product_name--self-managed)
+> {{< key product_name >}} Self-managed provides all the features of Flyte, plus much more
 > while letting you keep your data and workflow code on your infrastructure and under your own management.
 >
 > You can switch to another product version with the selector above.
@@ -91,55 +91,12 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 {{< grid >}}
 
-{{< variant flyte >}}
-
-{{< link-card target="introduction" icon="lightbulb" title="Introduction" >}}
-Flyte is the leading open-source Kubernetes-native workflow orchestrator.
+{{< link-card target="flyte-2" icon="lightbulb" title="Flyte 2" >}}
+Flyte 2 represents a fundamental shift in how AI workflows are written and executed. Learn
+more in this section.
 {{< /link-card >}}
-
-{{< /variant >}}
-{{< variant serverless byoc selfmanaged >}}
-
-{{< link-card target="introduction" icon="lightbulb" title="Introduction" >}}
-{{< key product_name >}} builds on the leading open-source workflow orchestrator, Flyte, to provide a powerful, scalable, and flexible platform for AI applications.
-{{< /link-card >}}
-
-{{< /variant >}}
 
 {{< link-card target="getting-started" icon="123" title="Getting started" >}}
-Build your first {{< key product_name >}} workflow, exploring the major features of the platform along the way.
+Install Flyte 2, configure your local IDE, and create run your first task, and inspect the results in 2 minutes.
 {{< /link-card >}}
-
-{{< link-card target="core-concepts" icon="mortarboard" title="Core concepts" >}}
-Understand the core concepts of the {{< key product_name >}} platform.
-{{< /link-card >}}
-
-{{< link-card target="development-cycle" icon="arrow-repeat" title="Development cycle" >}}
-Explore the {{< key product_name >}} development cycle from experimentation to production.
-{{< /link-card >}}
-
-{{< link-card target="data-input-output" icon="arrow-left-right" title="Data input/output" >}}
-Manage the input and output of data in your {{< key product_name >}} workflow.
-{{< /link-card >}}
-
-{{< link-card target="programming" icon="code-slash" title="Programming" >}}
-Learn about {{< key product_name >}}-specific programming constructs.
-{{< /link-card >}}
-
-{{< variant byoc selfmanaged >}}
-
-{{< link-card target="administration" icon="person-add" title="Administration" >}}
-{{< key product_full_name >}} administrators can manage users, projects, and resources.
-{{< /link-card >}}
-
-{{< link-card target="integrations" icon="tools" title="Integrations" >}}
-{{< key product_full_name >}} integrates with your cloud resources and external services.
-{{< /link-card >}}
-
-{{< link-card target="faq" icon="question-circle" title="FAQ" >}}
-Frequently asked questions.
-{{< /link-card >}}
-
-{{< /variant >}}
-
 {{< /grid >}}
