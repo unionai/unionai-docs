@@ -8,10 +8,14 @@ sidebar_expanded: true
 
 # Tutorials
 
-This section contains tutorials that showcase releavnt use cases and provide step-by-step instructions on how to implement various features using Flyte and Union.
+This section contains tutorials that showcase relevant use cases and provide step-by-step instructions on how to implement various features using Flyte and Union.
 
 {{< grid >}}
-{{< link-card target="trading-agents" icon="cash-coin" title="Multi-agent trading simulation" >}}
+{{< link-card target="trading-agents" title="Multi-agent trading simulation" >}}
 A multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
+{{< /link-card >}}
+
+{{< link-card target="trading-agents" title="Run and refine LLM code securely" >}}
+Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
 {{< /link-card >}}
 {{< /grid >}}
