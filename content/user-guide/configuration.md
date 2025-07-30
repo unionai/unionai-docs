@@ -21,8 +21,6 @@ In [Getting started](./getting-started) we used the following command to create 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 ```shell
-{{< markdown >}}
-```shell
 flyte create config \
     --endpoint my-instance.example.com \
     --builder remote \
