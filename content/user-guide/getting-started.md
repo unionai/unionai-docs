@@ -64,7 +64,7 @@ For example, this command:
 {{< markdown >}}
 ```shell
 flyte create config \
-    --endpoint my-instance.example.com \
+    --endpoint my-org.my-company.com \
     --builder local \
     --domain development \
     --project my-project
@@ -74,13 +74,13 @@ will create this `config.yaml` file:
 
 ```yaml
 admin:
-  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+  endpoint: dns:///my-org.my-company.com
 image:
   builder: local
 task:
   domain: development
-  org: dogfood-gcp
-  project: andrew
+  org: my-org
+  project: my-project
 ```
 {{< /markdown >}}
 {{< /variant >}}
@@ -88,7 +88,7 @@ task:
 {{< markdown >}}
 ```shell
 flyte create config \
-    --endpoint my-instance.example.com \
+    --endpoint my-org.my-company.com \
     --builder remote \
     --domain development \
     --project my-project
@@ -98,13 +98,13 @@ will create this `config.yaml` file:
 
 ```yaml
 admin:
-  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+  endpoint: dns:///my-org.my-company.com
 image:
   builder: remote
 task:
   domain: development
-  org: dogfood-gcp
-  project: andrew
+  org: my-org
+  project: my-project
 ```
 {{< /markdown >}}
 {{< /variant >}}

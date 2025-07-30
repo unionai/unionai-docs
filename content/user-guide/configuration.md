@@ -22,7 +22,7 @@ In [Getting started](./getting-started) we used the following command to create 
 {{< markdown >}}
 ```shell
 flyte create config \
-    --endpoint my-instance.example.com \
+    --endpoint my-org.my-company.com \
     --builder remote \
     --domain development \
     --project my-project
@@ -33,7 +33,7 @@ flyte create config \
 {{< markdown >}}
 ```shell
 flyte create config \
-    --endpoint my-instance.example.com \
+    --endpoint my-org.my-company.com \
     --builder local \
     --domain development \
     --project my-project
