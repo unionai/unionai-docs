@@ -15,7 +15,7 @@ This section contains tutorials that showcase relevant use cases and provide ste
 A multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 {{< /link-card >}}
 
-{{< link-card target="trading-agents" title="Run and refine LLM code securely" >}}
+{{< link-card target="code-agent" title="Run LLM-generated code" >}}
 Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
 {{< /link-card >}}
 {{< /grid >}}
