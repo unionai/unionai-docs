@@ -168,6 +168,8 @@ Click the link to go to your Union instance and see the run in the UI:
 
 ![V2 UI](../_static/images/user-guide/v2ui.png)
 
+
+<!-- TODO: Add explanation of the UI elements and their functionality
 ## Understanding the UI
 
-<!-- TODO: Add explanation of the UI elements and their functionality -->
+-->
