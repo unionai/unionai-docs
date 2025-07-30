@@ -39,7 +39,8 @@
   --breadcrumbs-height: 128px;
   --old-version-border: 3px solid var(--union-color);
   --old-version-background: hsl(0, 0%, 97%);
-  --banner-height: 48px;
+  /* --banner-height: 48px; banner removed. Add it back when re-enabling banner in base_of.html */
+  --banner-height: 0px;
 }
 
 :root .variant-flyte {
