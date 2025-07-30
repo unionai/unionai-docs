@@ -57,6 +57,7 @@
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MB6L88S" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+    {{- partial "flyte-banner.html" . -}}
     <header>{{- partial "header.html" . -}}</header>
     <div class="tabs">{{- partial "tabs.html" (dict "page" .) -}}</div>
     <div class="container">
@@ -93,16 +94,6 @@
           </div>
         </div>
         {{- end -}}
-
-        <div>
-        <sl-alert open>
-            <sl-icon slot="icon" name="info-circle"></sl-icon>
-            <strong>This is the Flyte 2.0 beta documentation.</strong><br />
-            For Flyte and Union 1.0 please go
-            <a href="https://www.union.ai/docs/v1/">here</a>.
-        </sl-alert>
-        </div>
-
         {{- partial "breadcrumb.html" . -}}
         {{- block "main" . -}}{{- end -}}
       </div>
