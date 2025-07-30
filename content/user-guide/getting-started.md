@@ -60,9 +60,35 @@ flyte create config \
 
 For example, this command:
 
+{{< variant flyte >}}
+{{< markdown >}}
 ```shell
 flyte create config \
-    --endpoint my-instance.example.com \
+    --endpoint my-org.my-company.com \
+    --builder local \
+    --domain development \
+    --project my-project
+```
+
+will create this `config.yaml` file:
+
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+image:
+  builder: local
+task:
+  domain: development
+  org: my-org
+  project: my-project
+```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
     --builder remote \
     --domain development \
     --project my-project
@@ -70,7 +96,18 @@ flyte create config \
 
 will create this `config.yaml` file:
 
-{{< code file="/external/migrate-to-unionai-examples-flyte2/config.yaml" lang="yaml" >}}
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+image:
+  builder: remote
+task:
+  domain: development
+  org: my-org
+  project: my-project
+```
+{{< /markdown >}}
+{{< /variant >}}
 
 See [Setting up a configuration file](./configuration#setting-up-a-configuration-file) for details.
 
@@ -131,6 +168,8 @@ Click the link to go to your Union instance and see the run in the UI:
 
 ![V2 UI](../_static/images/user-guide/v2ui.png)
 
+
+<!-- TODO: Add explanation of the UI elements and their functionality
 ## Understanding the UI
 
-<!-- TODO: Add explanation of the UI elements and their functionality -->
+-->
