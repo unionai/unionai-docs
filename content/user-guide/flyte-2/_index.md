@@ -14,7 +14,7 @@ Flyte 2 represents a fundamental shift in how workflows are written and executed
 
 {{< /markdown >}}
 {{< /variant >}}
-{{< variant byoc selfmanaged >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
 Flyte 2 and Union 2 represent a fundamental shift in how workflows are written and executed in Union.

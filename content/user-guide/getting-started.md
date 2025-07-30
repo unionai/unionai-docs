@@ -60,6 +60,8 @@ flyte create config \
 
 For example, this command:
 
+{{< variant flyte >}}
+{{< markdown >}}
 ```shell
 flyte create config \
     --endpoint my-instance.example.com \
@@ -70,7 +72,42 @@ flyte create config \
 
 will create this `config.yaml` file:
 
-{{< code file="/external/migrate-to-unionai-examples-flyte2/config.yaml" lang="yaml" >}}
+```yaml
+admin:
+  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+image:
+  builder: remote
+task:
+  domain: development
+  org: dogfood-gcp
+  project: andrew
+```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+```shell
+flyte create config \
+    --endpoint my-instance.example.com \
+    --builder local \
+    --domain development \
+    --project my-project
+```
+
+will create this `config.yaml` file:
+
+```yaml
+admin:
+  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+image:
+  builder: local
+task:
+  domain: development
+  org: dogfood-gcp
+  project: andrew
+```
+{{< /markdown >}}
+{{< /variant >}}
 
 See [Setting up a configuration file](./configuration#setting-up-a-configuration-file) for details.
 

@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 Flyte is designed to scale effortlessly, allowing you to run workflows with large fan-outs.
 When you need to execute many tasks in parallel—such as processing a large dataset or running hyperparameter sweeps—Flyte provides powerful patterns to implement these operations efficiently.
 
-{{< variant byoc selfmanaged >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 > [!NOTE]
 > By default fanouts in Union are limited to a maximum size.

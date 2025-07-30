@@ -18,7 +18,9 @@ You can also initialize the Flyte SDK programmatically without specifying a conf
 
 In [Getting started](./getting-started) we used the following command to create a configuration:
 
-{{< variant byoc selfmanaged >}}
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+```shell
 {{< markdown >}}
 ```shell
 flyte create config \
@@ -43,7 +45,7 @@ flyte create config \
 
 A full example using all available parameters would look like this:
 
-{{< variant byoc selfmanaged >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 ```shell
 flyte create config \
@@ -78,7 +80,7 @@ See the [API reference](../api-reference/flyte-cli#flyte-create-config) for deta
 
 The result of the above command would be the creation of a file called `my-config.yaml` with the following content:
 
-{{< variant byoc selfmanaged >}}
+{{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 ```yaml
 admin:
