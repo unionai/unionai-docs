@@ -97,6 +97,6 @@ more in this section.
 {{< /link-card >}}
 
 {{< link-card target="getting-started" icon="123" title="Getting started" >}}
-Install Flyte 2, configure your local IDE, and create run your first task, and inspect the results in 2 minutes.
+Install Flyte 2, configure your local IDE, create and run your first task, and inspect the results in 2 minutes.
 {{< /link-card >}}
 {{< /grid >}}
