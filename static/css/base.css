@@ -40,6 +40,7 @@
   --breadcrumbs-height: 128px;
   --old-version-border: 3px solid var(--union-color);
   --old-version-background: hsl(0, 0%, 97%);
+  --banner-height: 48px;
 }
 
 :root .variant-flyte {
@@ -103,7 +104,7 @@ body {
   z-index: 100;
 }
 .container {
-  height: calc(100dvh - var(--header-height) - var(--tabs-height));
+  height: calc(100dvh - var(--header-height) - var(--tabs-height) - var(--banner-height));
   overflow-y: auto;
 }
 .main-content {
