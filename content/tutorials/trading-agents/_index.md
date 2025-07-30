@@ -7,7 +7,8 @@ sidebar_expanded: true
 
 # Multi-agent trading simulation
 
-_(code available [here](https://github.com/unionai/unionai-examples/tutorials-v2/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents))_
+> [!NOTE]
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/trading_agents) based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
 
 This example walks you through building a multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 
