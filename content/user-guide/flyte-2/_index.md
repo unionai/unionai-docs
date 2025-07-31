@@ -164,6 +164,9 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 
 ![Native Notebook](../../_static/images/user-guide/notebook.png)
 
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+
 ## High performance engine
 
 Schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
@@ -182,6 +185,8 @@ env = flyte.TaskEnvironment(
 
 Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 can scale to handle even the most demanding
 workflows.
+{{< /markdown >}}
+{{< /variant >}}
 
 ## Enhanced UI
 
