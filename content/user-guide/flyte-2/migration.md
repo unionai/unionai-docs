@@ -94,6 +94,8 @@ To use Python async syntax, you need to:
 - Use `asyncio.gather()` or `flyte.map()` for parallel execution
 - Add `async`/`await` keywords where you want parallelism
 - Keep existing sync task functions unchanged
+
+Learn more about about the benefits of async in the [Asynchronous Model](./async) guide.
 {{< /note >}}
 
 {{< /tab >}}
