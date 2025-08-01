@@ -8,7 +8,7 @@ sidebar_expanded: true
 # Multi-agent trading simulation
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/trading_agents) based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
 
 This example walks you through building a multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 
@@ -163,7 +163,7 @@ If you'd like to run the `reflect_on_decisions` task instead, comment out the `m
 Then run:
 
 ```
-uv run main.py
+uv run --prerelease=allow main.py
 ```
 
 ## Why Flyte? _(A quick note before you go)_
