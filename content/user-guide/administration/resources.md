@@ -40,7 +40,7 @@ For all workflows in the selected project and domain which reached their final s
 * The number of aborted workflows.
 * The number of failed workflows.
 
-See [Workflow States]({{< docs_home flyte >}}/architecture/content/workflow-state-transitions#workflow-states) for the precise definitions of these states.
+See [Workflow States]({{< docs_home flyte v1 >}}/architecture/content/workflow-state-transitions#workflow-states) for the precise definitions of these states.
 
 ### Task Executions in Final State
 
@@ -54,7 +54,7 @@ For all tasks in the selected project and domain which reached their final state
 * The number of aborted tasks.
 * The number of failed tasks.
 
-See [Task States]({{< docs_home flyte >}}/architecture/content/workflow-state-transitions#task-states) for the precise definitions of these states.
+See [Task States]({{< docs_home flyte v1 >}}/architecture/content/workflow-state-transitions#task-states) for the precise definitions of these states.
 
 ### Running Pods
 

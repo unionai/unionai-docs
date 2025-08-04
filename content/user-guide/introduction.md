@@ -28,7 +28,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 You can try out Flyte in a couple ways:
 
 * To set up a local cluster on your own machine, go to [Getting started](../user-guide/getting-started).
-* To try a turn-key cloud service that includes all of Flyte plus additional features, go to [Union.ai Serverless Getting started]({{< docs_home serverless>}}/user-guide/getting-started).
+* To try a turn-key cloud service that includes all of Flyte plus additional features, go to [Union.ai Serverless Getting started]({{< docs_home serverless v1 >}}/user-guide/getting-started).
 
 ## Flyte in production
 
@@ -36,8 +36,8 @@ For production use, you will need to [deploy and manage Flyte on your own cloud 
 
 If you prefer a managed solution, have a look at:
 
-* [Union.ai Serverless]({{< docs_home serverless>}}).
-* [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc>}}).
+* [Union.ai Serverless]({{< docs_home serverless v1 >}}).
+* [Union.ai BYOC (Bring Your Own Cloud)]({{< docs_home byoc v1 >}}).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -65,7 +65,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-You can switch to the Flyte docs [here]({{< docs_home flyte >}}).
+You can switch to the Flyte docs [here]({{< docs_home flyte v1 >}}).
 
 You can try out Flyte's technology:
 
@@ -76,7 +76,7 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 
 ## {{< key product_name >}} Serverless
 
-[{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[{{< key product_name >}} Serverless]({{< docs_home serverless v1 >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
 Your data and workflow code is stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
 
@@ -102,7 +102,7 @@ Your data and workflow code is stored safely and securely in {{< key product_nam
 
 ## {{< key product_name >}} BYOC
 
-[{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+[{{< key product_name >}} BYOC]({{< docs_home byoc v1 >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 
 {{< key product_name >}} BYOC provides:
 
@@ -116,7 +116,7 @@ Your data and workflow code is stored safely and securely in {{< key product_nam
 
 ## {{< key product_name >}} Self-managed
 
-[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) lets you keep full control of your data, code, and infrastructure.
+[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged v1 >}}) lets you keep full control of your data, code, and infrastructure.
 
 {{< key product_name >}} Self-managed provides:
 

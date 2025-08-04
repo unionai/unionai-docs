@@ -29,8 +29,8 @@ For redirects from the old `docs.union.ai` site to the new `www.union.ai/docs` s
 |
 |-|-|
 | Request URL | `https://docs.union.ai/administration` |
-| Target URL | `{{< docs_home byoc >}}/user-guide/administration` |
-| Redirect Entry | `docs.union.ai/administration,{{< docs_home byoc >}}/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE` |
+| Target URL | `{{< docs_home byoc v1 >}}/user-guide/administration` |
+| Redirect Entry | `docs.union.ai/administration,{{< docs_home byoc v1 >}}/user-guide/administration,302,TRUE,FALSE,TRUE,TRUE` |
 
 ## `docs.flyte.org` redirects
 
@@ -40,7 +40,7 @@ For directs from the old `docs.flyte.org` to the new `www.union.ai/docs`, we rep
 |-|-|
 | Request URL | `https://docs.flyte.org/projects/flytekit/en/latest/generated/flytekit.dynamic.html` |
 | Converted request URL | `www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html` |
-| Target URL | `{{< docs_home flyte >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/` |
-| Redirect Entry | `www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html,{{< docs_home flyte >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/,302,TRUE,FALSE,TRUE,TRUE` |
+| Target URL | `{{< docs_home flyte v1 >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/` |
+| Redirect Entry | `www.union.ai/_r_/flyte/projects/flytekit/en/latest/generated/flytekit.dynamic.html,{{< docs_home flyte v1 >}}/api-reference/flytekit-sdk/packages/flytekit.core.dynamic_workflow_task/,302,TRUE,FALSE,TRUE,TRUE` |
 
 The special prefix is used so that we can include both `docs.union.ai` and `docs.flyte.org` redirects in the same file and apply them on the same domain (`www.union.ai`).

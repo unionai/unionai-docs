@@ -7,8 +7,8 @@ variants: -flyte -serverless -byoc -selfmanaged
 
 ## Docs Home
 
-- Site root: {{< docs_home root >}}
-- Variant (flyte): {{< docs_home flyte >}}
+- Site root: {{< docs_home root v1>}}
+- Variant (flyte): {{< docs_home flyte v1 >}}
 
 ## Icon
 

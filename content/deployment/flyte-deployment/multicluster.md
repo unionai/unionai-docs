@@ -11,7 +11,7 @@ This is needed because in a multi-cluster setup, the execution engine (`flytepro
 
 > [!NOTE]
 > Union.ai offers simplified support for multi-cluster and multi-cloud.
-> [Learn more]({{< docs_home byoc >}}/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
+> [Learn more]({{< docs_home byoc v1 >}}/deployment/multi-cluster#multi-cluster-and-multi-cloud) or [book a demo](https://union.ai/demo).
 
 ## Scaling Beyond Kubernetes
 

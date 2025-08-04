@@ -22,7 +22,7 @@ However, there are some significant differences between not only Flyte and Union
 To effectively and efficiently maintain the documentation for all of these variants, we employ a single-source-of-truth approach where:
 
 * All content is stored in a single GitHub repository, [`unionai/docs`](https://github.com/unionai/docs)
-* All content is published on a single website, [`www.union.ai/docs`]({{< docs_home root >}}).
+* All content is published on a single website, [`www.union.ai/docs`]({{< docs_home root v1 >}}).
 * The website has a variant selector at the top of the page that lets you choose which variant you want to view.
 
 Multiple variants of the documentation are supported as follows:
