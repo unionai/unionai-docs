@@ -1,7 +1,7 @@
 ---
 title: Reusable containers
 weight: 180
-variants: +flyte +serverless +byoc +selfmanaged
+variants: -flyte +serverless +byoc +selfmanaged
 ---
 
 # Reusable containers
