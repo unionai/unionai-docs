@@ -39,7 +39,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > These are the Union.ai **2.0 beta** docs.
 > To switch to version 1.0 or to another product variant, use the selectors above.
 >
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
+> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
 >
 > {{< key product_name >}} Serverless provides all the features of Flyte, plus much more,
 > all in a turn-key, fully-managed, cloud environment.
@@ -63,7 +63,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > These are the Union.ai **2.0 beta** docs.
 > To switch to version 1.0 or to another product variant, use the selectors above.
 >
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
+> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
 >
 > {{< key product_name >}} BYOC (Bring Your Own Cloud) provides all the features of Flyte, plus much more
 > in an environment where you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
@@ -85,7 +85,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 > These are the Union.ai **2.0 beta** docs.
 > To switch to version 1.0 or to another product variant, use the selectors above.
 >
-> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte >}}).
+> {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
 >
 > {{< key product_name >}} Self-managed provides all the features of Flyte, plus much more
 > while letting you keep your data and workflow code on your infrastructure and under your own management.
