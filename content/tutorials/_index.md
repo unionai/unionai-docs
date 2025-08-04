@@ -22,4 +22,8 @@ Securely execute and iterate on LLM-generated code using a code agent with error
 {{< link-card target="deep-research" title="Deep research" >}}
 Build an agentic workflow for deep research with multi-step reasoning and evaluation.
 {{< /link-card >}}
+
+{{< link-card target="hpo" title="Hyperparameter optimization" >}}
+Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
+{{< /link-card >}}
 {{< /grid >}}

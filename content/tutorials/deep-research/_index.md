@@ -117,7 +117,7 @@ This flexibility lets us mix and match models for planning, summarization, and f
 
 {{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=main lang=python >}}
 
-## Running the deep research agent
+## Run the deep research agent
 
 First, create the required secrets:
 
