@@ -18,7 +18,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 > [!NOTE]
 > These are the Flyte **2.0 beta** docs.
-> To switch to version 1.0 or to the commercial product, **Union.ai**, use the selectors above.
+> To switch to [version 1.0]({{< docs_home flyte v1 >}}) or to the commercial product, [**Union.ai**]({{< docs_home byoc v2 >}}), use the selectors above.
 >
 > This documentation for open-source Flyte is maintained by Union.ai.
 
@@ -37,7 +37,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 > [!NOTE]
 > These are the Union.ai **2.0 beta** docs.
-> To switch to version 1.0 or to another product variant, use the selectors above.
+> To switch to [version 1.0]({{< docs_home serverless v1 >}}) or to another product variant, use the selectors above.
 >
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
 >
@@ -61,7 +61,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 > [!NOTE]
 > These are the Union.ai **2.0 beta** docs.
-> To switch to version 1.0 or to another product variant, use the selectors above.
+> To switch to [version 1.0]({{< docs_home byoc v1 >}}) or to another product variant, use the selectors above.
 >
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
 >
@@ -83,7 +83,7 @@ You deploy and manage Flyte yourself, on your own cloud infrastructure.
 
 > [!NOTE]
 > These are the Union.ai **2.0 beta** docs.
-> To switch to version 1.0 or to another product variant, use the selectors above.
+> To switch to [version 1.0]({{< docs_home selfmanaged v1 >}}) or to another product variant, use the selectors above.
 >
 > {{< key product_name >}} is built on top of the leading open-source workflow orchestrator, [Flyte]({{< docs_home flyte v2 >}}).
 >
