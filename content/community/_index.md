@@ -41,7 +41,7 @@ For information on how to get involved and how keep in touch, see the [Flyte var
 
 ## Contributing to documentation
 
-Union AI maintains and hosts both Flyte and Union documentation at [www.union.ai/docs]({{< docs_home root >}}).
+Union AI maintains and hosts both Flyte and Union documentation at [www.union.ai/docs]({{< docs_home root v1 >}}).
 The two sets of documentation are deeply integrated, as the Union product is built on top of Flyte.
 To better maintain both sets of docs, they are hosted in the same repository (but rendered so that you can choose to view one or the other).
 
