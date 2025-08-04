@@ -34,7 +34,7 @@ Union.ai is a commercial product built on top of the open source Flyte project.
 Since the success of Flyte is essential to the success of Union.ai,
 the company is dedicated to building and expanding the Flyte open source project and community.
 
-For information on how to get involved and how keep in touch, see the [Flyte variant of this page]({{< docs_home flyte >}}/community).
+For information on how to get involved and how keep in touch, see the [Flyte variant of this page]({{< docs_home flyte v1 >}}/community).
 
 {{< /markdown >}}
 {{< /variant >}}

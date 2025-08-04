@@ -65,7 +65,7 @@ Flyte provides the building blocks need for an end-to-end AI platform:
 
 Flyte is open source and free to use.
 
-You can switch to the Flyte docs [here]({{< docs_home flyte >}}).
+You can switch to the Flyte docs [here]({{< docs_home flyte v1 >}}).
 
 You can try out Flyte's technology:
 
@@ -76,7 +76,7 @@ For production use, you have to [deploy and manage Flyte on your own cloud infra
 
 ## {{< key product_name >}} Serverless
 
-[{{< key product_name >}} Serverless]({{< docs_home serverless >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
+[{{< key product_name >}} Serverless]({{< docs_home serverless v1 >}}) is a turn-key solution that provides a fully managed cloud environment for running your workflows.
 There is zero infrastructure to manage, and you pay only for the resources you use.
 Your data and workflow code is stored safely and securely in {{< key product_name >}}'s cloud infrastructure.
 
@@ -102,7 +102,7 @@ Your data and workflow code is stored safely and securely in {{< key product_nam
 
 ## {{< key product_name >}} BYOC
 
-[{{< key product_name >}} BYOC]({{< docs_home byoc >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
+[{{< key product_name >}} BYOC]({{< docs_home byoc v1 >}}) (Bring Your Own Cloud) lets you keep your data and workflow code on your infrastructure, while {{< key product_name >}} takes care of the management.
 
 {{< key product_name >}} BYOC provides:
 
@@ -116,7 +116,7 @@ Your data and workflow code is stored safely and securely in {{< key product_nam
 
 ## {{< key product_name >}} Self-managed
 
-[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged >}}) lets you keep full control of your data, code, and infrastructure.
+[{{< key product_name >}} Self-managed]({{< docs_home selfmanaged v1 >}}) lets you keep full control of your data, code, and infrastructure.
 
 {{< key product_name >}} Self-managed provides:
 
