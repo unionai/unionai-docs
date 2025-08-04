@@ -18,4 +18,8 @@ A multi-agent trading simulation, modeling how agents within a firm might intera
 {{< link-card target="code-agent" title="Run LLM-generated code" >}}
 Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
 {{< /link-card >}}
+
+{{< link-card target="deep-research" title="Deep research" >}}
+Build an agentic workflow for deep research with multi-step reasoning and evaluation.
+{{< /link-card >}}
 {{< /grid >}}
