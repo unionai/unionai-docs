@@ -9,10 +9,10 @@ variants: -flyte -serverless -byoc -selfmanaged
 
 | Link                                     |
 | ---------------------------------------- |
-| [{{< docs_home byoc >}}/user-guide]({{< docs_home byoc >}}/user-guide) |
-| [{{< docs_home flyte >}}/user-guide]({{< docs_home flyte >}}/user-guide) |
-| [{{< docs_home selfmanaged >}}/user-guide]({{< docs_home selfmanaged >}}/user-guide) |
-| [{{< docs_home serverless >}}/user-guide]({{< docs_home serverless >}}/user-guide) |
+| [{{< docs_home byoc v2 >}}/user-guide]({{< docs_home byoc v2 >}}/user-guide) |
+| [{{< docs_home flyte v2 >}}/user-guide]({{< docs_home flyte v2 >}}/user-guide) |
+| [{{< docs_home selfmanaged v2 >}}/user-guide]({{< docs_home selfmanaged v2 >}}/user-guide) |
+| [{{< docs_home serverless v2 >}}/user-guide]({{< docs_home serverless v2 >}}/user-guide) |
 
 ## External URL
 
