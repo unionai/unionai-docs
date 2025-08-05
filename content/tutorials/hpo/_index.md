@@ -77,10 +77,13 @@ This environment specifies that the tasks will run with 1 CPU and 250Mi of memor
 
 {{< variant byoc selfmanaged >}}
 
-> [!NOTE]
-> You can configure the Flyte task environment to reuse containers across multiple executions by setting the `reusable` field to `flyte.ReusePolicy(replicas=..., idle_ttl=...)`.
-> This is especially useful when the final objective computations are short-lived, as it avoids unnecessary container spin-up costs.
-> Learn more about reusable containers [here](../../user-guide/reusable-containers/).
+<p>
+  You can configure the Flyte task environment to reuse containers across multiple executions by setting the
+  <code>reusable</code> field to
+  <code>flyte.ReusePolicy(replicas=..., idle_ttl=...)</code>. This is especially useful when the final objective
+  computations are short-lived, as it avoids unnecessary container spin-up costs. Learn more about reusable containers
+  <a href="../../user-guide/reusable-containers/">here</a>.
+</p>
 
 {{< /variant >}}
 
