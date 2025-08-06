@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.0b1
+version: 2.0.0b5
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -206,6 +206,7 @@ def override(
     reusable: Union[ReusePolicy, Literal['off'], None],
     env: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
+    max_inline_io_bytes: int | None,
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
@@ -222,6 +223,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
 | `env` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
+| `max_inline_io_bytes` | `int \| None` |
 | `kwargs` | `**kwargs` |
 
 #### post()
@@ -276,4 +278,5 @@ configure the task execution environment at runtime. This is usually used by plu
 | Property | Type | Description |
 |-|-|-|
 | `native_interface` | `None` |  |
+| `source_file` | `None` |  |
 
