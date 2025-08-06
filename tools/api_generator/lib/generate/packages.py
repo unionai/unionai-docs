@@ -1,11 +1,9 @@
-import inspect
-import io
 import os
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from lib.generate.classes import generate_class_details, generate_classes_and_error_list
 from lib.generate.docstring import docstring_summary
-from lib.generate.hugo import write_front_matter
+from lib.generate.hugo import write_front_matter, FrontMatterExtra
 from lib.ptypes import ClassPackageMap, PackageInfo
 from lib.generate.methods import generate_method, generate_method_list
 from lib.generate.properties import generate_props
@@ -22,16 +20,16 @@ def convert_package_list_to_tree(pkgs: List[PackageInfo]) -> PackageTree:
         for p in parts:
             parent = glued
             glued = f"{glued}.{p}" if glued != "" else p
-            if not glued in result:
+            if glued not in result:
                 result[glued] = []
-            if parent != "" and not glued in result[parent]:
+            if parent != "" and glued not in result[parent]:
                 result[parent].append(glued)
 
     return result
 
 
 def generate_package_index(
-    pkg_root: str, packages: List[PackageInfo], classes: ClassPackageMap
+    pkg_root: str, packages: List[PackageInfo], classes: ClassPackageMap, frontmatter_extra: FrontMatterExtra
 ):
     # Check if any package has classes defined
     has_classes = any(bool(pkg_classes) for pkg_classes in classes.values())
@@ -40,11 +38,11 @@ def generate_package_index(
 
     pkg_index = os.path.join(pkg_root, "_index.md")
     with open(pkg_index, "w") as index:
-        write_front_matter("Packages", index)
+        write_front_matter("Packages", index, frontmatter_extra)
 
         index.write("# Packages\n\n")
 
-        index.write(f"| Package | Description |\n")
+        index.write("| Package | Description |\n")
         index.write("|-|-|\n")
 
         for pkg in packages:
@@ -63,6 +61,7 @@ def generate_package_folders(
     pkg_root: str,
     flatten: bool,
     ignore_types: List[str],
+    frontmatter_extra: Optional[FrontMatterExtra],
 ):
     print("Generating package folders")
 
@@ -73,6 +72,7 @@ def generate_package_folders(
 
         if flatten:
             pkg_index = os.path.join(pkg_root, f"{pkg['name']}.md")
+            frontmatter_extra = None
         else:
             pkg_folder = os.path.join(pkg_root, pkg["name"])
             if not os.path.isdir(pkg_folder):
@@ -81,7 +81,7 @@ def generate_package_folders(
 
         # print(f"Generating package index for {pkg['name']}")
         with open(pkg_index, "w") as index:
-            write_front_matter(pkg["name"], index)
+            write_front_matter(pkg["name"], index, frontmatter_extra)
 
             index.write(f"# {pkg['name']}\n\n")
 

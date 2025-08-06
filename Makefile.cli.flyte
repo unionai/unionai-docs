@@ -1,0 +1,6 @@
+OUTPUT_FILE=content/api-reference/flyte-cli.md
+
+.PHONY: all
+all:
+	(cat "include/cli.flyte.md"; echo; flyte gen docs --type markdown) > ${OUTPUT_FILE}.tmp
+	mv ${OUTPUT_FILE}.tmp ${OUTPUT_FILE}

@@ -1,7 +1,6 @@
 import inspect
 import json
 from typing import TypedDict, Optional
-from sys import stderr
 
 from lib.ptypes import ParamDict, ParamInfo
 
@@ -228,7 +227,7 @@ def format_three_exclamation_notes(docstring: str) -> str:
             result.append(f"> [!WARNING] {title}")
             converting = True
         elif line.startswith("!!! note"):
-            result.append(f"> [!NOTE]")
+            result.append("> [!NOTE]")
             converting = True
         elif converting:
             if len(line.strip()) > 0 and line != len(line.strip()):

@@ -77,14 +77,14 @@
             {{- else -}}
             This page visibility is not declared for '{{- $variant -}}'.
             <div class="not-allowed how-to-fix">
-              <a href="https://github.com/unionai/docs-builder/blob/master/AUTHOR.md#page-visibility">How to fix?</a>
+              <a href="https://github.com/unionai/unionai-docs/blob/master/AUTHOR.md#page-visibility">How to fix?</a>
             </div>
             {{- end -}}
           </div>
           <code>{{- strings.TrimSuffix "/" .RelPermalink -}}</code>
         </div>
         {{- end -}}
-        {{- if .Site.Params.current_version -}}
+        {{- if (and .Site.Params.current_version (default true .Site.Params.show_deprecation_message)) -}}
         <div class="old-version">
           <div class="title">You are viewing documentation for version: {{ .Site.Params.current_version }}</div>
           <div class="message">

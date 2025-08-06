@@ -6,6 +6,7 @@
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
   --border-color: #e2e8f0;
+  --separator: #c7ccd6;
   --code-bg: #f1f5f9;
   --pre-bg: #1e293b;
   --pre-color: #e2e8f0;
@@ -39,6 +40,7 @@
   --breadcrumbs-height: 128px;
   --old-version-border: 3px solid var(--union-color);
   --old-version-background: hsl(0, 0%, 97%);
+  --banner-height: 48px;
 }
 
 :root .variant-flyte {
@@ -102,7 +104,7 @@ body {
   z-index: 100;
 }
 .container {
-  height: calc(100dvh - var(--header-height) - var(--tabs-height));
+  height: calc(100dvh - var(--header-height) - var(--tabs-height) - var(--banner-height));
   overflow-y: auto;
 }
 .main-content {
@@ -341,4 +343,7 @@ footer {
 
 hr {
   margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid var(--separator);
 }
