@@ -132,7 +132,9 @@ All parameters are optional except `name`.
 ## Configuration at the `@env.task` level
 
 Each task decorated with `@env.task` will inherit the settings from its `TaskEnvironment` object.
-But there are addional settings settable only at the `@env.task` level and others in common with `TAskEnvironment`, which, when set, will override the setting from the `TaskEnvironment` for that specific task function definition only.
+Then, within the decorator you can set additional paremeters.
+Some of these are settable only at the `@env.task` level while other are shared with `TaskEnvironment`.
+When one of these shared parameters is set in the decorator it will override any setting from the `TaskEnvironment` for that specific task function only.
 
 For example:
 
