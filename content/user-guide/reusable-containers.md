@@ -1,12 +1,26 @@
 ---
 title: Reusable containers
 weight: 180
-variants: -flyte +serverless +byoc +selfmanaged
+variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Reusable containers
 
-Container reuse is an optimization feature that allows you to reuse containers across multiple task executions. This reduces container startup overhead and improves resource efficiency, especially for frequent, short-duration tasks.
+Container reuse is an optimization feature that allows you to reuse containers across multiple task executions.
+This reduces container startup overhead and improves resource efficiency, especially for frequent, short-duration tasks.
+
+{{< variant flyte >}}
+{{< markdown >}}
+
+> [!NOTE]
+> The reusable container feature is only available when running your Flyte code on a Union.ai backend.
+> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2>}}/user-guide/reusable-containers) for details.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+
 
 ## How It Works
 
@@ -21,8 +35,17 @@ By default, Flyte creates a new container for each task execution. Container reu
 
 Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
+> [!NOTE]
+> The reusable containers feature currently requires a dedicated runtime library ([`unionai-reuse`](https://pypi.org/project/unionai-reuse/)) to be installed in the task image used by the reusable task.
+> You can add this library to your task image using the `flyte.Image.with_pip_packages` method, as shown below.
+> This library only needs to be added to the task image.
+> It does not need to be installed in your local development environment.
+
 ```python
 import flyte
+
+# Currently required to enable resuable containers
+reusable_image = flyte.Image.from_debian_base().with_pip_packages("unionai-reuse==0.1.3")
 
 env = flyte.TaskEnvironment(
     name="reusable-env",
@@ -30,7 +53,8 @@ env = flyte.TaskEnvironment(
     reusable=flyte.ReusePolicy(
         replicas=2,        # Number of container instances
         idle_ttl=300       # 5 minutes idle timeout
-    )
+    ),
+    image=reusable_image  # Use the container image augmented with the unionai-reuse library.
 )
 
 @env.task
@@ -171,3 +195,6 @@ env = flyte.TaskEnvironment(
 - Environments requiring strict resource isolation
 
 Container reuse provides significant performance improvements for appropriate workloads while maintaining the reliability and observability of the Flyte execution environment.
+
+{{< /markdown >}}
+{{< /variant >}}
