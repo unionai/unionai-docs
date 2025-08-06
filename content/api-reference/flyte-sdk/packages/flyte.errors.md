@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b1
+version: 2.0.0b5
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,8 +26,10 @@ unknown error.
 | [`ImageBuildError`](.././flyte.errors#flyteerrorsimagebuilderror) | This error is raised when the image build fails. |
 | [`ImagePullBackOffError`](.././flyte.errors#flyteerrorsimagepullbackofferror) | This error is raised when the image cannot be pulled. |
 | [`InitializationError`](.././flyte.errors#flyteerrorsinitializationerror) | This error is raised when the Union system is tried to access without being initialized. |
+| [`InlineIOMaxBytesBreached`](.././flyte.errors#flyteerrorsinlineiomaxbytesbreached) | This error is raised when the inline IO max bytes limit is breached. |
 | [`InvalidImageNameError`](.././flyte.errors#flyteerrorsinvalidimagenameerror) | This error is raised when the image name is invalid. |
 | [`LogsNotYetAvailableError`](.././flyte.errors#flyteerrorslogsnotyetavailableerror) | This error is raised when the logs are not yet available for a task. |
+| [`ModuleLoadError`](.././flyte.errors#flyteerrorsmoduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`NotInTaskContextError`](.././flyte.errors#flyteerrorsnotintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`OOMError`](.././flyte.errors#flyteerrorsoomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`PrimaryContainerNotFoundError`](.././flyte.errors#flyteerrorsprimarycontainernotfounderror) | This error is raised when the primary container is not found. |
@@ -171,6 +173,21 @@ class InitializationError(
 | `root_cause_message` | `str` |
 | `worker` | `str \| None` |
 
+## flyte.errors.InlineIOMaxBytesBreached
+
+This error is raised when the inline IO max bytes limit is breached.
+This can be adjusted per task by setting max_inline_io_bytes in the task definition.
+
+
+```python
+class InlineIOMaxBytesBreached(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
+
 ## flyte.errors.InvalidImageNameError
 
 This error is raised when the image name is invalid.
@@ -196,6 +213,21 @@ This error is raised when the logs are not yet available for a task.
 
 ```python
 class LogsNotYetAvailableError(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
+
+## flyte.errors.ModuleLoadError
+
+This error is raised when the module cannot be loaded, either because it does not exist or because of a
+ syntax error.
+
+
+```python
+class ModuleLoadError(
     message: str,
 )
 ```
