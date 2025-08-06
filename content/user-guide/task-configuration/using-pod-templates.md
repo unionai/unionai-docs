@@ -1,7 +1,8 @@
 ---
-title: Container tasks
+title: Using pod templates
 weight: 190
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Container tasks
+# Using pod templates
+
