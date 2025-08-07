@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.0.0b5
+version: 2.0.0b6
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
