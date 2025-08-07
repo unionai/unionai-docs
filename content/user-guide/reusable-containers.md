@@ -45,7 +45,7 @@ Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 import flyte
 
 # Currently required to enable resuable containers
-reusable_image = flyte.Image.from_debian_base().with_pip_packages("unionai-reuse==0.1.3")
+reusable_image = flyte.Image.from_debian_base().with_pip_packages("unionai-reuse>=0.1.3")
 
 env = flyte.TaskEnvironment(
     name="reusable-env",
