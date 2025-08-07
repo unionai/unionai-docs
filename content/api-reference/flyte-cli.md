@@ -111,6 +111,16 @@ environments.
 | `--noop` | `boolean` |  | Dummy parameter, placeholder for future use. Does not affect the build process. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+### flyte build
+
+Build the environments defined in a python file or directory. This will build the images associated with the
+environments.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--noop` | `boolean` |  | Dummy parameter, placeholder for future use. Does not affect the build process. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 ### flyte create
 
 Create resources in a Flyte deployment.
@@ -203,6 +213,33 @@ This command will create or update environments in the Flyte system.
 | {{< multiline >}}`--dry-run`
 `--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| {{< multiline >}}`--recursive`
+`-r`{{< /multiline >}} | `boolean` | `False` | Recursively deploy all environments in the current directory |
+| `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
+| {{< multiline >}}`--ignore-load-errors`
+`-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte deploy
+
+Deploy one or more environments from a python file.
+This command will create or update environments in the Flyte system.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--version` | `text` |  | Version of the environment to deploy |
+| {{< multiline >}}`--dry-run`
+`--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| {{< multiline >}}`--recursive`
+`-r`{{< /multiline >}} | `boolean` | `False` | Recursively deploy all environments in the current directory |
+| `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
+| {{< multiline >}}`--ignore-load-errors`
+`-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte gen
@@ -375,6 +412,41 @@ Currently, both `name` and `version` are required to get a specific task.
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte run
+
+Run a task from a python file.
+
+Example usage:
+```bash
+flyte run --name examples/basics/hello.py my_task --arg1 value1 --arg2 value2
+```
+Note: all arguments for the run command are provided right after the `run` command and before the file name.
+
+You can also specify the project and domain using the `--project` and `--domain` options, respectively. These
+options can be set in the config file or passed as command line arguments.
+
+Note: The arguments for the task are provided after the task name and can be retrieved using `--help`
+Example:
+```bash
+flyte run --name examples/basics/hello.py my_task --help
+```
+
+To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
+ Flyte environment.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--local` | `boolean` | `False` | Run the task locally |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte run
