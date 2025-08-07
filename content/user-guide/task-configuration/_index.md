@@ -111,33 +111,6 @@ Here is a comprehensive overview of the task configuration parameters available 
 
 ### Reusable container constraints
 
-> [!NOTE]
-> The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
-> This feature is currently not implemented in the Flyte OSS backend.
-> It is only available when running on a Union.ai backend.
-
-When a `TaskEnvironment` has `reusable` set, then `resources`, `env`, and `secrets` can only be overridden in `task.override()` if accompanied by an
-explicit `reusable="off"` in the same `task.override()` invocation.
-For example:
-
-```python
-env = flyte.TaskEnvironment(
-    name="my_env",
-    resources=Resources(cpu=1),
-    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=300)
-)
-
-@env.task
-async def my_task(data: str) -> str:
-    ...
-
-@env.task
-async def main_workflow() -> str:
-    # `my_task.override(resources=Resources(cpu=4))` will fail. Instead use:
-    result = await my_task.override(reusable="off", resources=Resources(cpu=4))
-```
-
-Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
 ### Key patterns
 
@@ -153,6 +126,7 @@ The full set of parameters available for configuring a task environment, task de
 ### `name`
 
 * Type: `str`
+
 * In a `TaskEnvironment` constructor it defines the name of the environment and is required.
   Used in conjunction with the name of each `@env.task` functions to define the fully-qualified task name. For example:
 
@@ -187,108 +161,172 @@ The full set of parameters available for configuring a task environment, task de
 
 * Specifies the compute resources, such as CPU and Memory, required by the task environment using a
   [`Resources`](../../api-reference/flyte-sdk/packages/flyte#flyteresources) object.
+  <!-- [TODO: add when available]
   See [Resource specification](./resources) for more details.
+  -->
+
+* Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level
+  (but only if `reuseable` is not in effect).
 
 ### `env`
 
 * Type: `Optional[Dict[str, str]]`
-* A dictionary of environment variables that will be made available in the task container.
+
+* A dictionary of environment variables to be made available in the task container.
   These variables can be used to configure the task at runtime, such as setting API keys or other configuration values.
 
 ### `secrets`
 
-* Type: `Optional[SecretRequest]`
+* Type: `Optional[SecretRequest]` where `SecretRequest` is an alias for `Union[str, Secret, List[str | Secret]]`
+
 * The secrets to be made available in the environment.
-  A [`Secret`](../../api-reference/flyte-sdk/packages/flyte#flytesecret) object.
-  See [Secrets](./secrets).
+  See the [Secrets section](./secrets) and the API docs for the [`Secret` object](../../api-reference/flyte-sdk/packages/flyte#flytesecret).
+
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level, but, in both cases, only if `reuseable` is not in effect.
 
 ### `cache`
-* Type: `Union[CacheRequest]`
-* A `CacheRequest` object that defines how the task results should be cached.
+
+* Type: `Union[CacheRequest]` where `CacheRequest` is an alias for `Literal["auto", "override", "disable", "enabled"] | Cache`.
+
+* Specifies the caching policy to be used for this task.
   See [Caching](./caching).
 
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level
+  and at the `task.override()` invocation level.
+
 ### `pod_template`
+
 * Type: `Optional[Union[str, kubernetes.client.V1PodTemplate]]`
+
 * A pod template that defines the Kubernetes pod configuration for the task.
   A string reference to a named template or a `kubernetes.client.V1PodTemplate` object.
-    See [Using pod templates](./pod-templates).
+  <!-- TODO: Add when available
+  See [Using pod templates](./pod-templates).
+  -->
+
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level, but not at the `task.override()` invocation level.
 
 ### `reusable`
 
 * Type: `ReusePolicy | None`
+
 * A `ReusePolicy` that defines whether the task environment can be reused.
   If set, the task environment will be reused across multiple task invocations.
-  See [Reusable containers](./reusable-containers) for more details.
+  See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte#flytereusepolicy).
 
+> [!NOTE]
+> The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
+> This feature is currently not implemented in the Flyte OSS backend.
+> It is only available when running on a Union.ai backend.
 
+When a `TaskEnvironment` has `reusable` set, then `resources`, `env`, and `secrets` can only be overridden in `task.override()` if accompanied by an
+explicit `reusable="off"` in the same `task.override()` invocation.
+For example:
+
+```python
+env = flyte.TaskEnvironment(
+    name="my_env",
+    resources=Resources(cpu=1),
+    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=300)
+)
+
+@env.task
+async def my_task(data: str) -> str:
+    ...
+
+@env.task
+async def main_workflow() -> str:
+    # `my_task.override(resources=Resources(cpu=4))` will fail. Instead use:
+    result = await my_task.override(reusable="off", resources=Resources(cpu=4))
+```
+
+Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
 ### `depends_on`
-### `description`
-### `plugin_config`
-### `report`
-### `max_inline_io_bytes`
-### `retries`
-### `timeout`
-### `docs`
 
+* Type: `List[Environment]`)
 
-### `name`
-
-
-
-* `depends_on` (`List[Environment]`):
-   A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte#flyteenvironment)
-   objects that this [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) depends on.
+* A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte#flyteenvironment)
+   objects that this `TaskEnvironment` depends on.
    When deploying this `TaskEnvironment`, the system will ensure that any dependencies
    of the listed `Environment`s are also available.
    This is useful when you have a set of environments that depend on each other.
-   <!-- See environment dependencies -->
+   <!-- TODO: Add when available
+   See [Environment dependencies](./environment-dependencies)
+   -->
 
-* `pod_template` (`Optional[Union[str, kubernetes.client.V1PodTemplate]]`):
-   A pod template that defines the Kubernetes pod configuration for the task.
-   A string reference to a named template or a `kubernetes.client.V1PodTemplate` object.
-   <!-- see Using podtemplates -->
+* Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level or the `task.override()` invocation level.
 
-* `description` (`Optional[str]`):
-   A description of the task environment.
+### `description`
 
-* `secrets` (`Optional[SecretRequest]`):
-   The secrets to be made available in the environment.
-   A [`Secret`](../../api-reference/flyte-sdk/packages/flyte#flytesecret) object.
-   See [Secrets](./secrets).
+* Type: `Optional[str]`
 
-* `env` (`Optional[Dict[str, str]]`):
-   A dictionary of environment variables that will be made available in the task container.
+* A description of the task environment.
+  This can be used to provide additional context about the task environment, such as its purpose or usage.
 
-* `resources` (`Optional[Resources]`):
+* Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
+  or the `task.override()` invocation level.
 
+### `plugin_config`
 
-*
+* Type: `Optional[Any]`
 
-* `cache` (`Union[CacheRequest]`):
-   A `CacheRequest` object that defines how the task results should be cached.
-   See [Caching](./caching).
+* Additional configuration for plugins that can be used with the task environment.
+  This can include settings for specific plugins that are used in the task environment.
 
-* `reusable` (`ReusePolicy | None`):
-   A `ReusePolicy` that defines whether the task environment can be reused.
+* Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
+  or the `task.override()` invocation level.
 
-   > [!NOTE]
-   > [Reusable containers]({{< docs-home byoc v2 >}}/user-guide/reusable-containers)
-   > are only available when running on Union.ai backend.
+### `report`
 
-* `plugin_config` (`Optional[Any]`):
-   Additional configuration for plugins that can be used with the task environment.
-   <!-- see plugins -->
+* Type: `bool`
+* Whether to generate the HTML report for the task.
+  If set to `True`, the task will generate an HTML report that can be viewed in the Flyte UI.
+* Can only be set at the `@env.task` decorator level,
+  not at the `TaskEnvironment` level or the `task.override()` invocation level.
 
-All parameters are optional except `name`.
+### `max_inline_io_bytes`
 
-<!-- TODO: Reference advance task environment mgmt/config including clone_with and depends_on -->
+* Type: `int`
 
+* Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task
+  (e.g., primitives, strings, dicts).
+  Does not apply to [`flyte.File`, `flyte.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
 
+* Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+  If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 100 MiB).
 
+### `retries`
 
+* Type: `Union[int, RetryStrategy]`
 
+* The number of retries for the task, or a `RetryStrategy` object that defines the retry behavior.
+  If set to `0`, no retries will be attempted.
+  <!-- TODO: Add when available
+  See [Retries](./retries).
+  ==>
 
+* Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+
+### `timeout`
+
+* Type: `Union[timedelta, int]`
+
+* The timeout for the task, either as a `timedelta` object or an integer representing seconds.
+  If set to `0`, no timeout will be applied.
+  <!-- TODO: Add when available
+  See [Timeouts](./timeouts).
+  -->
+
+* Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+
+### `docs`
+
+* Type: `Optional[Documentation]`
+
+* Documentation for the task, including usage examples and explanations of the task's behavior.
+
+* Can only be set at the `@env.task` decorator level. It cannot be overridden.
 
 
 
