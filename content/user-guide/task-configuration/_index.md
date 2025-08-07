@@ -40,40 +40,201 @@ async def say_hello(data: str, lt: List[int]) -> str:
 This will run your task in the default container environment with default settings.
 
 But, of course, one of the key advantages of Flyte is the ability to control the software environment, hardware environment, and other execution parameters for each task, right in your Python code.
-To do this you have to configure your tasks.
-We will explore how to do this in the following sections.
+In this section we will explore the various configuration options available for tasks in Flyte.
 
-Task configuration is done at three levels. From most general to most specific, they are: The `TaskEnvironment` level, the `@env.task` decorator level, and the task invocation level.
+## Task configuration levels
 
-Each level has some settings specific to it (because they only make sense at that level) and some settings in common with the other levels.
-In the case of common settings, the more setting at the more specific level will override the one at the more general level
+Task configuration is done at three levels. From most general to most specific, they are:
 
-## Configuration at the `TaskEnvironment` level
+* The `TaskEnvironment` level: setting parameters when defining the `TaskEnvironment` object.
+* The `@env.task` decorator level: Setting parameters in the `@env.task` decorator when defining a task function.
+* The task invocation level: Using the `task.override()` method when invoking task execution.
 
-A `TaskEnvironment` object represents a collection of settings.
-You can apply this collection to multiple different individual task definitions using the `@env.task` decorator,
-where `env` is the variable to which you assigned the `TaskEnvironment` object.
+Each level has its own set of parameters, and some parameters are shared across levels.
+For shared parameters, the more specific level will override the more general one.
+
+Here is an example of how these levels work together:
+
+```python
+import flyte
+
+# Level 1: TaskEnvironment - Base configuration
+env = flyte.TaskEnvironment(
+    name="data_processing",
+    resources=flyte.Resources(cpu=1, memory="512Mi"),
+    cache="disable",
+    secrets=flyte.Secret("db-credentials")
+)
+
+# Level 2: Decorator - Override some environment settings
+@env.task(
+    cache="auto",           # Overrides environment cache policy
+    retries=3,              # Decorator-only parameter
+    timeout=300,            # Decorator-only parameter
+)
+async def process_data(data_path: str) -> str:
+    """Process data with custom cache and retry settings."""
+    return f"Processed {data_path}"
+
+@env.task
+async def main_workflow() -> str:
+    # Level 3: Invocation - Runtime overrides
+    result = await process_data.override(
+        resources=flyte.Resources(cpu=4, memory="2Gi"),  # Override environment resources
+    )("input.csv")
+
+    return result
+```
+
+## Task configuration parameters
+
+Here is a comprehensive overview of the task configuration parameters available at each level and how they interact:
+
+| Parameter | `TaskEnvironment` | `@env.task` decorator | `task.override()` invocation |
+|-----------|-------------|-----------|------------|
+| **name** | ✅ Yes (required) | ✅ Yes (sets friendly name, does not override. See below)| ❌ No |
+| **image** | ✅ Yes | ❌ No | ❌ No |
+| **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`)|
+| **env** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
+| **secrets** | ✅ Yes | ✅ Yes (if not `reusable`) | ✅ Yes (if not `reusable`) |
+| **cache** | ✅ Yes | ✅ Yes | ✅ Yes |
+| **pod_template** | ✅ Yes | ✅ Yes | ❌ No |
+| **reusable** | ✅ Yes (see below)| ❌ No | ✅ Yes (can be disabled with `off`) |
+| **depends_on** | ✅ Yes | ❌ No | ❌ No |
+| **description** | ✅ Yes | ❌ No | ❌ No |
+| **plugin_config** | ✅ Yes | ❌ No | ❌ No |
+| **report** | ❌ No | ✅ Yes | ❌ No |
+| **max_inline_io_bytes** | ❌ No | ✅ Yes | ✅ Yes |
+| **retries** | ❌ No | ✅ Yes | ✅ Yes |
+| **timeout** | ❌ No | ✅ Yes | ✅ Yes |
+| **docs** | ❌ No | ✅ Yes | ❌ No |
+
+### Reusable container constraints
+
+> [!NOTE]
+> The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
+> This feature is currently not implemented in the Flyte OSS backend.
+> It is only available when running on a Union.ai backend.
+
+When a `TaskEnvironment` has `reusable` set, then `resources`, `env`, and `secrets` can only be overridden in `task.override()` if accompanied by an
+explicit `reusable="off"` in the same `task.override()` invocation.
 For example:
 
 ```python
-env = flyte.TaskEnvironment(name="my_env", resources=flyte.Resources(cpu=1, memory="250Mi"))
+env = flyte.TaskEnvironment(
+    name="my_env",
+    resources=Resources(cpu=1),
+    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=300)
+)
 
 @env.task
 async def my_task(data: str) -> str:
     ...
+
+@env.task
+async def main_workflow() -> str:
+    # `my_task.override(resources=Resources(cpu=4))` will fail. Instead use:
+    result = await my_task.override(reusable="off", resources=Resources(cpu=4))
 ```
 
-Here we define a task environment with resource requirements (1 CPU and 250 MiB of memory).
-Every time a task decorated with `@env.task` (like `my_task`) is invoked, that execution will run in its own container with these resource settings.
-Note that *each invocation* of *each `@env.task` function* will have its own container (unless you are employing [reusable containers](./reusable-containers)),
-but because they share the same `env`, all of these containers will have the same resource configuration.
+Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
-### Task environment parameters
+### Key patterns
 
-The full set of parameters for the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) are:
+1. **Environment-only**: Infrastructure settings (`image`, `depends_on`, `plugin_config`)
+2. **Runtime-only**: Execution behavior (`retries`, `timeout`, `report`)
+3. **Full chain**: Core execution settings (`cache`, `secrets`)
+4. **Reusable-constrained**: Resource-related settings (`resources`, `env`, `secrets`)
 
-* `name` (`str`, required):
-   The name for the task environment. A string.
+## Task configuration parameters
+
+The full set of parameters available for configuring a task environment, task definition, and task invocation are:
+
+### `name`
+
+* Type: `str`
+* In a `TaskEnvironment` constructor it defines the name of the environment and is required.
+  Used in conjunction with the name of each `@env.task` functions to define the fully-qualified task name. For example:
+
+  ```python
+  env = flyte.TaskEnvironment(name="my_env")
+
+  @env.task
+  async def my_task(data: str) -> str:
+      ...
+  ```
+  Here, the fully qualified name of the task will be `my_env.my_task`.
+
+* Can optionally be set in the `@env.task` decorator level, in which case it overrides,
+  not the `TaskEnvironment` name but the friendly name of the task.
+  By default, the friendly name of a task is the name of the function.
+  The friendly name is used for display purposes in the UI.
+
+### `image`
+
+* Type: `Union[str, Image, Literal['auto']]`
+
+* Specifies the Docker image to use for the task container.
+  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte#flyteimage), or the string `auto`.
+  If set to `auto`, or if this parameter is not set, the [default image]() will be used.
+  See [Container images](./container-images).
+
+* Only settable at the `TaskEnvironment` level.
+
+### `resources`
+
+* Type: `Optional[Resources]`
+
+* Specifies the compute resources, such as CPU and Memory, required by the task environment using a
+  [`Resources`](../../api-reference/flyte-sdk/packages/flyte#flyteresources) object.
+  See [Resource specification](./resources) for more details.
+
+### `env`
+
+* Type: `Optional[Dict[str, str]]`
+* A dictionary of environment variables that will be made available in the task container.
+  These variables can be used to configure the task at runtime, such as setting API keys or other configuration values.
+
+### `secrets`
+
+* Type: `Optional[SecretRequest]`
+* The secrets to be made available in the environment.
+  A [`Secret`](../../api-reference/flyte-sdk/packages/flyte#flytesecret) object.
+  See [Secrets](./secrets).
+
+### `cache`
+* Type: `Union[CacheRequest]`
+* A `CacheRequest` object that defines how the task results should be cached.
+  See [Caching](./caching).
+
+### `pod_template`
+* Type: `Optional[Union[str, kubernetes.client.V1PodTemplate]]`
+* A pod template that defines the Kubernetes pod configuration for the task.
+  A string reference to a named template or a `kubernetes.client.V1PodTemplate` object.
+    See [Using pod templates](./pod-templates).
+
+### `reusable`
+
+* Type: `ReusePolicy | None`
+* A `ReusePolicy` that defines whether the task environment can be reused.
+  If set, the task environment will be reused across multiple task invocations.
+  See [Reusable containers](./reusable-containers) for more details.
+
+
+
+### `depends_on`
+### `description`
+### `plugin_config`
+### `report`
+### `max_inline_io_bytes`
+### `retries`
+### `timeout`
+### `docs`
+
+
+### `name`
+
+
 
 * `depends_on` (`List[Environment]`):
    A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte#flyteenvironment)
@@ -100,15 +261,9 @@ The full set of parameters for the [`TaskEnvironment`](../../api-reference/flyte
    A dictionary of environment variables that will be made available in the task container.
 
 * `resources` (`Optional[Resources]`):
-   The compute resources, such as CPU and Memory, required by the task environment.
-   A [`Resources`](../../api-reference/flyte-sdk/packages/flyte#flyteresources) object.
-   <!-- See resource specification -->
 
-* `image` (`Union[str, Image, Literal['auto']]`):
-   The Docker image to use for the task container.
-   Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte#flyteimage), or the string `auto`.
-   If set to `auto`, or if this parameter is not set, the [default image]() will be used.
-   See [Container images](./container-images).
+
+*
 
 * `cache` (`Union[CacheRequest]`):
    A `CacheRequest` object that defines how the task results should be cached.
@@ -128,6 +283,36 @@ The full set of parameters for the [`TaskEnvironment`](../../api-reference/flyte
 All parameters are optional except `name`.
 
 <!-- TODO: Reference advance task environment mgmt/config including clone_with and depends_on -->
+
+
+
+
+
+
+
+
+
+
+
+## Configuration at the `TaskEnvironment` level
+
+A `TaskEnvironment` object represents a collection of settings.
+You can apply this collection to multiple different individual task definitions using the `@env.task` decorator,
+where `env` is the variable to which you assigned the `TaskEnvironment` object.
+For example:
+
+```python
+env = flyte.TaskEnvironment(name="my_env", resources=flyte.Resources(cpu=1, memory="250Mi"))
+
+@env.task
+async def my_task(data: str) -> str:
+    ...
+```
+
+Here we define a task environment with resource requirements (1 CPU and 250 MiB of memory).
+Every time a task decorated with `@env.task` (like `my_task`) is invoked, that execution will run in its own container with these resource settings.
+Note that *each invocation* of *each `@env.task` function* will have its own container (unless you are employing [reusable containers](./reusable-containers)),
+but because they share the same `env`, all of these containers will have the same resource configuration.
 
 ## Configuration at the `@env.task` level
 
@@ -152,7 +337,7 @@ Here we have the original definition of `my_task` above, unchanged, but we add a
 The `my_big_task` function is decorated with `@env.task` but with an additional `resources` parameter.
 This will override the `resources` parameter defined in `env`, specifying that `my_big_task` requires 2 CPUs and 500 MiB of memory.
 
-The full signature of the `@env.task` decorator is (defined in ):
+The full set of parameters for the `@env.task` decorator are:
 
 ```python
 def task(
@@ -189,54 +374,20 @@ def task(
          task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes.
         """
 
-
-
-
 ## Configuration at the task invocation level
 
 When invoking a task you can use override the task environment and resource requirements for a specific task when
 
 
- that can be used when
 
 
-, Task
-1. **`TaskEnvironment`: The `TaskEnvironment` object defines a collection of settings that define the container environment in a task will run.
-   When you declare a TaskEnvironment you assign it to a variable. You then use that variable name  which all tasks decorated with `env.task` will run. This includes dependencies, resource requirements, and other settings.
-   You can think of it as a blueprint for how the tasks in your workflow will run.
-   The `TaskEnvironment` is used to define the environment in which the
 
 
- task will run, including dependencies,
-   resource requirements, and other settings.
 
 
-   You can define multiple `TaskEnvironment`s, each with its own configuration,
-   and then use them to decorate your tasks.
-
-which will be used for all
-
-in which one or morethe task will run, including dependencies
-   and resource requirements.
-2. **Task resources**: Specify the hardware resources required by the task, such as CPU and memory.
-3. **Task overrides**: Allow you to override the task environment and resource requirements
 
 
- your tasktask configuration works task environments in Flyte.
 
-
-Previously we deomonstrated the simplets possible configuraiton of
-When setting up your functions to run as Flyte tasks, there is some conifguration
-
-
- this section, we will explore how to configure tasks in Flyte/Union, including:
-
-- Defining task environments
--
-- Specifying resource requirements
-
-Previously we saw how you can decorate your pure Python functions to run them on Union/Flyte.
-By decorating your functions with `@env.task` you can run them in a distributed manner, with each function running in its own container.
 
 ## Single task environment
 
@@ -312,15 +463,11 @@ We need to talk about depends_on attribute, otherwise downstream environments wi
 
 Here we used the `resources` parameter to specify hardware requirements for the task.
 
-
-
 - Via the SDK when triggering a run: `flyte.run(task_queue="gcp-useast1-1", ...)`
 - Via the CLI when triggering a run: `flyte run --task_queue "gcp-useast-1" ...`
 - Via the launch form when running, rerunning, or recovering a run
 - Via Environments: `env=flyte.TaskEnvironment(task_queue="gcp-useast-1", ...`
 - Via overrides: `await my_task.override(task_queue="gcp-useast-1", ...)`
-
-
 
 import flyte
 
