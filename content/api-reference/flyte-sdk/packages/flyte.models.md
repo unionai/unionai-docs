@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b1
+version: 2.0.0b6
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,6 +33,7 @@ layout: py_api
 
 | Property | Type | Description |
 |-|-|-|
+| `MAX_INLINE_IO_BYTES` | `int` |  |
 | `TYPE_CHECKING` | `bool` |  |
 
 ## Methods
@@ -219,6 +220,7 @@ class NativeInterface(
 | [`get_input_types()`](#get_input_types) | Get the input types for the task. |
 | [`has_outputs()`](#has_outputs) | Check if the task has outputs. |
 | [`num_required_inputs()`](#num_required_inputs) | Get the number of required inputs for the task. |
+| [`required_inputs()`](#required_inputs) | Get the names of the required inputs for the task. |
 
 
 #### convert_to_kwargs()
@@ -293,6 +295,16 @@ def num_required_inputs()
 ```
 Get the number of required inputs for the task. This is used to determine how many inputs are required for the
 task execution.
+
+
+#### required_inputs()
+
+```python
+def required_inputs()
+```
+Get the names of the required inputs for the task. This is used to determine which inputs are required for the
+task execution.
+:return: A list of required input names.
 
 
 ## flyte.models.RawDataPath
