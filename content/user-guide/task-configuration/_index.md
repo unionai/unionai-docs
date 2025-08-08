@@ -212,16 +212,25 @@ See [Using pod templates](./pod-templates).
 
 ### `reusable`
 
+{{< variant flyte >}}
+{{< markdown >}}
+
+> [!NOTE]
+> The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
+> This feature is only available when running your Flyte code on a Union.ai backend.
+> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2>}}/user-guide/reusable-containers) for details.
+
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+
 * Type: `ReusePolicy | None`
 
 * A `ReusePolicy` that defines whether the task environment can be reused.
   If set, the task environment will be reused across multiple task invocations.
   See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte#flytereusepolicy).
 
-> [!NOTE]
-> The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
-> This feature is currently not implemented in the Flyte OSS backend.
-> It is only available when running on a Union.ai backend.
 
 When a `TaskEnvironment` has `reusable` set, then `resources`, `env`, and `secrets` can only be overridden in `task.override()` if accompanied by an
 explicit `reusable="off"` in the same `task.override()` invocation.
@@ -245,6 +254,9 @@ async def main_workflow() -> str:
 ```
 
 Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
+
+{{< /markdown >}}
+{{< /variant >}}
 
 ### `depends_on`
 
