@@ -304,7 +304,7 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
   If set to `0`, no retries will be attempted.
   <!-- TODO: Add when available
   See [Retries](./retries).
-  ==>
+  -->
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
 
