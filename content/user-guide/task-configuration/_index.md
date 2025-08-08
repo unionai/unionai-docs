@@ -103,14 +103,14 @@ Here is an overview of all task configuration parameters available at each level
 
 | Parameter | `TaskEnvironment` | `@env.task` decorator | `task.override()` invocation |
 |-----------|-------------|-----------|------------|
-| **name** | ✅ Yes (required) | ✅ Yes (sets friendly name, does not override. See below)| ❌ No |
+| **name** | ✅ Yes (required) | ✅ Yes (sets friendly name)| ❌ No |
 | **image** | ✅ Yes | ❌ No | ❌ No |
 | **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **env** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **secrets** | ✅ Yes | ✅ Yes (if not `reusable`) | ✅ Yes (if not `reusable`) |
 | **cache** | ✅ Yes | ✅ Yes | ✅ Yes |
 | **pod_template** | ✅ Yes | ✅ Yes | ❌ No |
-| **reusable** | ✅ Yes (see below)| ❌ No | ✅ Yes (can be disabled with `off`) |
+| **reusable** | ✅ Yes (see below)| ❌ No | ✅ Yes |
 | **depends_on** | ✅ Yes | ❌ No | ❌ No |
 | **description** | ✅ Yes | ❌ No | ❌ No |
 | **plugin_config** | ✅ Yes | ❌ No | ❌ No |
