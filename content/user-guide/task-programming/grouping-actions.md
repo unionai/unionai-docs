@@ -29,7 +29,7 @@ Groups solve this by:
 
 ### How groups work
 
-Groups are declared using the [`flyte.group`](../api-reference/flyte-sdk/packages/flyte#group) context manager.
+Groups are declared using the [`flyte.group`](../../api-reference/flyte-sdk/packages/flyte#group) context manager.
 Any task invocations that occur within the `with flyte.group()` block are automatically associated with that group:
 
 ```python
