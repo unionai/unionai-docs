@@ -21,7 +21,7 @@ You can directly reference an image by URL in the `image` parameter, like this:
 ```python
 env = flyte.TaskEnvironment(
     name="my_task_env",
-    image="docker.io/myorg/myimage:latest"
+    image="docker.io/myorg/myimage"
 )
 ```
 

@@ -6,14 +6,6 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Task configuration
 
-<!-- TODO:
-link from here to various environment strategies, when available
-- Single environment app (workflow)
-- Multi-env workflow, deployed together
-- Deploying all environments recursively (coming soon)
-- Managing environments with different dependencies.
--->
-
 As we saw in [**Getting started**](../getting-started), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
 
 This allows you to run your Python code in a distributed manner, with each function running in its own container.
@@ -53,42 +45,60 @@ Task configuration is done at three levels. From most general to most specific, 
 Each level has its own set of parameters, and some parameters are shared across levels.
 For shared parameters, the more specific level will override the more general one.
 
-Here is an example of how these levels work together:
+### Example
+
+Here is an example of how these levels work together, showing each level with all available parameters:
 
 ```python
 import flyte
 
 # Level 1: TaskEnvironment - Base configuration
 env = flyte.TaskEnvironment(
-    name="data_processing",
+    name="data_processing_env",
+    image=flyte.Image.from_debian_base(),
     resources=flyte.Resources(cpu=1, memory="512Mi"),
+    env={"MY_VAR": "value"},
+    secrets=flyte.Secret(key="my_api_key", as_env_var="MY_API_KEY"),
     cache="disable",
-    secrets=flyte.Secret("db-credentials")
+    pod_template=my_pod_template_spec,
+    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=300),
+    depends_on=[another_env],
+    description="My task environment",
+    plugin_config=my_plugin_config
 )
 
 # Level 2: Decorator - Override some environment settings
 @env.task(
-    cache="auto",           # Overrides environment cache policy
-    retries=3,              # Decorator-only parameter
-    timeout=300,            # Decorator-only parameter
+    name="data_processing_task",
+    secrets=flyte.Secret(key="my_api_key_2", as_env_var="MY_API_KEY"),
+    cache="auto"
+    pod_template=my_pod_template_spec_2,
+    report=True,
+    max_inline_io_bytes=100 * 1024
+    retries=3,
+    timeout=60
+    docs="This task processes data and generates a report."
 )
 async def process_data(data_path: str) -> str:
-    """Process data with custom cache and retry settings."""
     return f"Processed {data_path}"
 
 @env.task
 async def main_workflow() -> str:
-    # Level 3: Invocation - Runtime overrides
     result = await process_data.override(
-        resources=flyte.Resources(cpu=4, memory="2Gi"),  # Override environment resources
+        resources=flyte.Resources(cpu=4, memory="2Gi"),
+        env={"MY_VAR": "new_value"},
+        secrets=flyte.Secret(key="my_api_key_3", as_env_var="MY_API_KEY"),
+        cache="enable",
+        max_inline_io_bytes=100 * 1024,
+        retries=3,
+        timeout=60
     )("input.csv")
-
     return result
 ```
 
-## Task configuration parameters
+### Parameter interaction
 
-Here is a comprehensive overview of the task configuration parameters available at each level and how they interact:
+Here is an overview of all task configuration parameters available at each level and how they interact:
 
 | Parameter | `TaskEnvironment` | `@env.task` decorator | `task.override()` invocation |
 |-----------|-------------|-----------|------------|
@@ -108,16 +118,6 @@ Here is a comprehensive overview of the task configuration parameters available 
 | **retries** | ❌ No | ✅ Yes | ✅ Yes |
 | **timeout** | ❌ No | ✅ Yes | ✅ Yes |
 | **docs** | ❌ No | ✅ Yes | ❌ No |
-
-### Reusable container constraints
-
-
-### Key patterns
-
-1. **Environment-only**: Infrastructure settings (`image`, `depends_on`, `plugin_config`)
-2. **Runtime-only**: Execution behavior (`retries`, `timeout`, `report`)
-3. **Full chain**: Core execution settings (`cache`, `secrets`)
-4. **Reusable-constrained**: Resource-related settings (`resources`, `env`, `secrets`)
 
 ## Task configuration parameters
 
@@ -327,194 +327,3 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
 * Documentation for the task, including usage examples and explanations of the task's behavior.
 
 * Can only be set at the `@env.task` decorator level. It cannot be overridden.
-
-
-
-
-
-## Configuration at the `TaskEnvironment` level
-
-A `TaskEnvironment` object represents a collection of settings.
-You can apply this collection to multiple different individual task definitions using the `@env.task` decorator,
-where `env` is the variable to which you assigned the `TaskEnvironment` object.
-For example:
-
-```python
-env = flyte.TaskEnvironment(name="my_env", resources=flyte.Resources(cpu=1, memory="250Mi"))
-
-@env.task
-async def my_task(data: str) -> str:
-    ...
-```
-
-Here we define a task environment with resource requirements (1 CPU and 250 MiB of memory).
-Every time a task decorated with `@env.task` (like `my_task`) is invoked, that execution will run in its own container with these resource settings.
-Note that *each invocation* of *each `@env.task` function* will have its own container (unless you are employing [reusable containers](./reusable-containers)),
-but because they share the same `env`, all of these containers will have the same resource configuration.
-
-## Configuration at the `@env.task` level
-
-Each task decorated with `@env.task` will inherit the settings from its `TaskEnvironment` object.
-Then, within the decorator you can set additional paremeters.
-Some of these are settable only at the `@env.task` level while other are shared with `TaskEnvironment`.
-When one of these shared parameters is set in the decorator it will override any setting from the `TaskEnvironment` for that specific task function only.
-
-For example:
-
-```python
-@env.task()
-async def my_task(data: str) -> str:
-    ...
-
-@env.task(resources=flyte.Resources(cpu=2, memory="500Mi"))
-async def my_big_task(data: str) -> str:
-    ...
-
-```
-Here we have the original definition of `my_task` above, unchanged, but we add another task, `my_big_task`.
-The `my_big_task` function is decorated with `@env.task` but with an additional `resources` parameter.
-This will override the `resources` parameter defined in `env`, specifying that `my_big_task` requires 2 CPUs and 500 MiB of memory.
-
-The full set of parameters for the `@env.task` decorator are:
-
-```python
-def task(
-        self,
-        _func=None,
-        *,
-        name: Optional[str] = None,
-        cache: Union[CacheRequest] | None = None,
-        retries: Union[int, RetryStrategy] = 0,
-        timeout: Union[timedelta, int] = 0,
-        docs: Optional[Documentation] = None,
-        secrets: Optional[SecretRequest] = None,
-        pod_template: Optional[Union[str, "V1PodTemplate"]] = None,
-        report: bool = False,
-        max_inline_io_bytes: int = MAX_INLINE_IO_BYTES,
-    ) -> Union[AsyncFunctionTaskTemplate, Callable[P, R]]
-```
-        """
-        Decorate a function to be a task.
-
-        :param _func: Optional The function to decorate. If not provided, the decorator will return a callable that
-        accepts a function to be decorated.
-        :param name: Optional A friendly name for the task (defaults to the function name)
-        :param cache: Optional The cache policy for the task, defaults to auto, which will cache the results of the
-        task.
-        :param retries: Optional The number of retries for the task, defaults to 0, which means no retries.
-        :param docs: Optional The documentation for the task, if not provided the function docstring will be used.
-        :param secrets: Optional The secrets that will be injected into the task at runtime.
-        :param timeout: Optional The timeout for the task.
-        :param pod_template: Optional The pod template for the task, if not provided the default pod template will be
-        used.
-        :param report: Optional Whether to generate the html report for the task, defaults to False.
-        :param max_inline_io_bytes: Maximum allowed size (in bytes) for all inputs and outputs passed directly to the
-         task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes.
-        """
-
-## Configuration at the task invocation level
-
-When invoking a task you can use override the task environment and resource requirements for a specific task when
-
-
-
-
-
-
-
-
-
-
-
-
-## Single task environment
-
-In that example the tasks did run in separate containers but the containers themselves were identical.
-This is because we defined a single task environment and used it for all the tasks.
-
-We defined the task environment using [`flyte.TaskEnvironment`](../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment), like this:
-
-```python
-env = flyte.TaskEnvironment(name="hello_world")
-```
-
-And then decorated each of the functions with `@env.task`, like this:
-
-```python
-@env.task
-async def say_hello(data: str, lt: List[int]) -> str:
-    ...
-
-
-@env.task
-async def square(i: int = 3) -> int:
-    ...
-
-
-@env.task
-async def hello_wf(data: str = "default string") -> str:
-    ...
-```
-
-## Multiple task environments
-
-Because we used the same `env` for all the tasks, they all ran in the same environment, which means they all had the same configuration and dependencies.
-
-To truly take advantage of distributed and heterogeneous compute environments offered by Union/Flyte, you have to define multiple task environments that differ.
-
-Change the code in your `hello.py` file to define two different task environments:
-
-```python
-env1 = flyte.TaskEnvironment(name="env1")
-env2 = flyte.TaskEnvironment(name="env2", resources=flyte.Resources(cpu=1, memory="250Mi"))
-```
-
-In this case we have defined two task environments: `env1` and `env2`.
-The first one is the default environment, while the second one has specific resource requirements (1 CPU and 250 MiB of memory).
-Now you can decorate your tasks with different environments:
-
-```python
-@env1.task
-async def say_hello(data: str, lt: List[int]) -> str:
-    ...
-
-
-@env2.task
-async def square(i: int = 3) -> int:
-    ...
-
-
-@env1.task
-async def hello_wf(data: str = "default string") -> str:
-    ...
-```
-
-When you run this on Union/Flyte, each task will run in its own container,
-but now the containers will have different configurations based on the task environment they are associated with:
-
-<!-- TODO:
-We need to talk about depends_on attribute, otherwise downstream environments will not be built
--->
-
-* The `hello_wf` and `say_hello` tasks will run in containers with the default configuration (defined by `env1`)
-* The `square` task will run in a container with the specified CPU and memory (defined by the `env2`).
-
-Here we used the `resources` parameter to specify hardware requirements for the task.
-
-- Via the SDK when triggering a run: `flyte.run(task_queue="gcp-useast1-1", ...)`
-- Via the CLI when triggering a run: `flyte run --task_queue "gcp-useast-1" ...`
-- Via the launch form when running, rerunning, or recovering a run
-- Via Environments: `env=flyte.TaskEnvironment(task_queue="gcp-useast-1", ...`
-- Via overrides: `await my_task.override(task_queue="gcp-useast-1", ...)`
-
-import flyte
-
-env = flyte.TaskEnvironment("x")
-
-@env.task(max_inline_io_bytes=100*1024*1024)
-async def foo():
-   ...
-
-@env.task
-async def main():
-   await foo.with_overrides(max_inline_io_bytes=1)()
