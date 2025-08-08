@@ -2,6 +2,7 @@
 title: Getting started
 weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
+sidebar_expanded: true
 ---
 
 # Getting started

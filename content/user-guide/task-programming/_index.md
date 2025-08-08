@@ -2,6 +2,7 @@
 title: Task programming
 weight: 65
 variants: +flyte +serverless +byoc +selfmanaged
+sidebar_expanded: true
 ---
 
 # Task programming
