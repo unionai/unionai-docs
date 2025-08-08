@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Flyte 2 provides intelligent **task output caching** that automatically avoids redundant computation by reusing previously computed task results. Caching operates at the **task level** (`@env.task`) and caches the entire output of task executions. This is especially valuable for expensive operations like model training, data processing, or complex analyses where identical inputs should produce identical outputs.
 
-**Note**: Caching works at the task level and caches complete task outputs. For function-level checkpointing and resumption within tasks, see [Traces](./traces), which provide fine-grained observability and recovery at the individual function level.
+**Note**: Caching works at the task level and caches complete task outputs. For function-level checkpointing and resumption within tasks, see [Traces](../task-programming/traces), which provide fine-grained observability and recovery at the individual function level.
 
 ## Overview
 
@@ -75,7 +75,7 @@ async def auto_versioned_task(data: str) -> str:
 Figure out what this refers to:
 
 > Ketan Umare
-> you can specifiy version alongwith "auto" as well
+> you can specifiy version along with "auto" as well
 -->
 
 - **When to use**: Development and most production scenarios.
@@ -376,4 +376,3 @@ async def ml_pipeline(dataset_name: str, config: dict, hyperparams: dict) -> str
 ```
 
 This pipeline efficiently caches expensive operations while ensuring fresh outputs where needed, demonstrating the flexibility and power of Flyte 2's caching system.
-

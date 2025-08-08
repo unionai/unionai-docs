@@ -2,6 +2,7 @@
 title: Getting started
 weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
+sidebar_expanded: true
 ---
 
 # Getting started
@@ -126,7 +127,7 @@ In the code above we do the following:
 * Define a `TaskEnvironment` to group the configuration used by tasks.
 * Define two tasks using the `@env.task` decorator.
     * Tasks are regular Python functions, and each runs in its own container.
-    * When deployed to your Union/Flyte instance, each task will run in its own separate container.
+    * When deployed to your Union/Flyte instance, each task execution will run in its own separate container.
     * Both tasks use the same `env` (the same `TaskEnvironment`) so, while each runs in its own container, those containers will be configured identically.
 
 > [!NOTE]
@@ -166,7 +167,7 @@ Run 'a0' completed successfully.
 
 Click the link to go to your Union instance and see the run in the UI:
 
-![V2 UI](../_static/images/user-guide/v2ui.png)
+![V2 UI](../../_static/images/user-guide/v2ui.png)
 
 
 <!-- TODO: Add explanation of the UI elements and their functionality

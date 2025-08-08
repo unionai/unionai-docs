@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Every `task` in Flyte runs in its own container (unless you are using [reusable containers](./reusable-containers)) and every container needs a container image to define it.
 
-We use the `image` parameter of the [`TaskEnvironment`](../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
+We use the `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
 Every task that uses that `TaskEnvironment` will run in a container based on that image.
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/unionai-oss/flyte:latest`](https://github.com/orgs/unionai-oss/packages/container/package/)).
@@ -21,7 +21,7 @@ You can directly reference an image by URL in the `image` parameter, like this:
 ```python
 env = flyte.TaskEnvironment(
     name="my_task_env",
-    image="docker.io/myorg/myimage:latest"
+    image="docker.io/myorg/myimage"
 )
 ```
 
@@ -31,7 +31,7 @@ This works well if you have a pre-built image available in a public registry lik
 
 But, in many cases, you will want to build your own custom image that includes the dependencies required by your task, and you want to do that in as convenient a way as possible.
 
-With Flyte you can do it right in your Python code, using the [`Image`](../api-reference/flyte-sdk/packages/flyte#flyteimage) object and [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
+With Flyte you can do it right in your Python code, using the [`Image`](../../api-reference/flyte-sdk/packages/flyte#flyteimage) object and [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
 
 ## Example
 
@@ -46,7 +46,7 @@ Its weird to have this as the first example. I think we should have a regular im
 First, specify your dependencies using [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
 Simply add a comment at the top of your script as shown above, that includes your dependencies.
 
-Next, use the `flyte.Image.from_uv_script` method to create a [`flyte.Image`](../api-reference/flyte-sdk/packages/flyte#flyteimage) object.
+Next, use the `flyte.Image.from_uv_script` method to create a [`flyte.Image`](../../api-reference/flyte-sdk/packages/flyte#flyteimage) object.
 
 ## Image building
 
@@ -57,7 +57,7 @@ There are two ways that the image can be built:
 
 ### Configuring the `builder`
 
-In [Configuration > Setting up the configuration file > `image` section](./configuration#image-section), we discussed the `image.builder` property in the `config.yaml`.
+In [Earlier](../getting-started/local-setup#image-section), we discussed the `image.builder` property in the `config.yaml`.
 
 For Flyte OSS instances, this property must be set to `local`.
 

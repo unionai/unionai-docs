@@ -10,7 +10,7 @@ Flyte is designed to work seamlessly with Jupyter notebooks, allowing you to wri
 
 ## Iterating on and running a workflow
 
-Download the following notebook file and open it in your favorite Jupyter environment: [interactive.ipynb](../_static/public/interactive.ipynb)
+Download the following notebook file and open it in your favorite Jupyter environment: [interactive.ipynb](../../_static/public/interactive.ipynb)
 
 <!-- TODO: add back when working
 {{< download "/_static/public/interactive.ipynb" "interactive.ipynb" >}}
@@ -19,7 +19,7 @@ Download the following notebook file and open it in your favorite Jupyter enviro
 In this example we have a simple workflow defined in our notebook.
 You can iterate on the code in the notebook while running each cell in turn.
 
-Note that the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) call at the top of the notebook looks like this:
+Note that the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) call at the top of the notebook looks like this:
 
 ```python
 flyte.init(
@@ -34,12 +34,12 @@ You will have to adjust it to match your Union server endpoint, organization, pr
 
 ## Accessing runs and downloading logs
 
-Similarly, you can download the following notebook file and open it in your favorite Jupyter environment: [remote.ipynb](../_static/public/remote.ipynb)
+Similarly, you can download the following notebook file and open it in your favorite Jupyter environment: [remote.ipynb](../../_static/public/remote.ipynb)
 
 <!-- TODO: add back when working
 {{< download "/_static/public/remote.ipynb" "remote.ipynb" >}}
 -->
 
-In this example we use [`flyte.remote`](../api-reference/flyte-sdk/packages/flyte.remote) to list existing runs, access them, and download their details and logs
+In this example we use [`flyte.remote`](../../api-reference/flyte-sdk/packages/flyte.remote) to list existing runs, access them, and download their details and logs
 
 

@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 The `@flyte.trace` decorator provides fine-grained observability and resumption capabilities for functions called within your Flyte workflows.
 Traces are primarily used on **helper functions** that tasks call to perform specific operations like API calls, data processing, or computations.
-Traces are particularly useful for [managing the challenges of non-deterministic behavior in workflows](./considerations#non-deterministic-behavior)), allowing you to track execution details and resume from failures.
+Traces are particularly useful for [managing the challenges of non-deterministic behavior in workflows](../considerations#non-deterministic-behavior)), allowing you to track execution details and resume from failures.
 
 ## Tasks vs. traced functions
 

@@ -1,10 +1,10 @@
 ---
-title: Configuration
+title: Local setup
 weight: 30
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Configuration
+# Local setup
 
 To run workflows on your Union/Flyte instance, you can also use the `flyte CLI` without an explicit `--config` like this:
 

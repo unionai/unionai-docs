@@ -17,7 +17,7 @@ Secrets in the store can be accessed and used within your workflow tasks, withou
 
 ## Creating a secret
 
-You can create a secret using the [`flyte create secret`](../api-reference/flyte-cli#flyte-create-secret) command like this:
+You can create a secret using the [`flyte create secret`](../../api-reference/flyte-cli#flyte-create-secret) command like this:
 
 ```shell
 flyte create secret MY_SECRET_KEY my_secret_value
@@ -58,7 +58,7 @@ flyte create secret  --project my_project --domain development MY_SECRET_KEY my_
 
 ## Listing secrets
 
-You can list existing secrets with the [`flyte get secret`](../api-reference/flyte-cli#flyte-get-secret) command.
+You can list existing secrets with the [`flyte get secret`](../../api-reference/flyte-cli#flyte-get-secret) command.
 For example, the following command will list all secrets in the organization:
 
 ```shell
@@ -75,7 +75,7 @@ flyte get secret --project my_project --domain development
 
 ## Deleting secrets
 
-To delete a secret, use the [`flyte delete secret`](../api-reference/flyte-cli#flyte-delete-secret) command:
+To delete a secret, use the [`flyte delete secret`](../../api-reference/flyte-cli#flyte-delete-secret) command:
 
 ```shell
 flyte delete secret MY_SECRET_KEY
