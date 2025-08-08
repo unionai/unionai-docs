@@ -104,7 +104,7 @@ Here is an overview of all task configuration parameters available at each level
 |-----------|-------------|-----------|------------|
 | **name** | ✅ Yes (required) | ✅ Yes (sets friendly name, does not override. See below)| ❌ No |
 | **image** | ✅ Yes | ❌ No | ❌ No |
-| **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`)|
+| **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **env** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **secrets** | ✅ Yes | ✅ Yes (if not `reusable`) | ✅ Yes (if not `reusable`) |
 | **cache** | ✅ Yes | ✅ Yes | ✅ Yes |
@@ -137,6 +137,7 @@ The full set of parameters available for configuring a task environment, task de
   async def my_task(data: str) -> str:
       ...
   ```
+
   Here, the fully qualified name of the task will be `my_env.my_task`.
 
 * Can optionally be set in the `@env.task` decorator level, in which case it overrides,
@@ -161,9 +162,10 @@ The full set of parameters available for configuring a task environment, task de
 
 * Specifies the compute resources, such as CPU and Memory, required by the task environment using a
   [`Resources`](../../api-reference/flyte-sdk/packages/flyte#flyteresources) object.
-  <!-- [TODO: add when available]
+
+<!-- [TODO: add when available]
   See [Resource specification](./resources) for more details.
-  -->
+-->
 
 * Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level
   (but only if `reuseable` is not in effect).
@@ -200,9 +202,10 @@ The full set of parameters available for configuring a task environment, task de
 
 * A pod template that defines the Kubernetes pod configuration for the task.
   A string reference to a named template or a `kubernetes.client.V1PodTemplate` object.
-  <!-- TODO: Add when available
-  See [Using pod templates](./pod-templates).
-  -->
+
+<!-- TODO: Add when available
+See [Using pod templates](./pod-templates).
+-->
 
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level, but not at the `task.override()` invocation level.
 
@@ -244,16 +247,17 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
 
 ### `depends_on`
 
-* Type: `List[Environment]`)
+* Type: `List[Environment]`
 
 * A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte#flyteenvironment)
    objects that this `TaskEnvironment` depends on.
    When deploying this `TaskEnvironment`, the system will ensure that any dependencies
    of the listed `Environment`s are also available.
    This is useful when you have a set of environments that depend on each other.
-   <!-- TODO: Add when available
-   See [Environment dependencies](./environment-dependencies)
-   -->
+
+<!-- TODO: Add when available
+See [Environment dependencies](./environment-dependencies)
+-->
 
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level or the `task.override()` invocation level.
 
@@ -302,9 +306,10 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
 
 * The number of retries for the task, or a `RetryStrategy` object that defines the retry behavior.
   If set to `0`, no retries will be attempted.
-  <!-- TODO: Add when available
-  See [Retries](./retries).
-  -->
+
+<!-- TODO: Add when available
+See [Retries](./retries).
+-->
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
 
@@ -314,9 +319,10 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
 
 * The timeout for the task, either as a `timedelta` object or an integer representing seconds.
   If set to `0`, no timeout will be applied.
-  <!-- TODO: Add when available
-  See [Timeouts](./timeouts).
-  -->
+
+<!-- TODO: Add when available
+See [Timeouts](./timeouts).
+-->
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
 
