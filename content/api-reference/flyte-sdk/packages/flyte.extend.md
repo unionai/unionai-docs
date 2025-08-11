@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b1
+version: 2.0.0b6
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -85,6 +85,7 @@ class AsyncFunctionTaskTemplate(
     pod_template: Optional[Union[str, PodTemplate]],
     report: bool,
     parent_env: Optional[weakref.ReferenceType[TaskEnvironment]],
+    max_inline_io_bytes: int,
     _call_as_synchronous: bool,
     func: FunctionTypes,
     plugin_config: Optional[Any],
@@ -110,6 +111,7 @@ class AsyncFunctionTaskTemplate(
 | `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `report` | `bool` |
 | `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` |
+| `max_inline_io_bytes` | `int` |
 | `_call_as_synchronous` | `bool` |
 | `func` | `FunctionTypes` |
 | `plugin_config` | `Optional[Any]` |
@@ -271,6 +273,7 @@ def override(
     reusable: Union[ReusePolicy, Literal['off'], None],
     env: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
+    max_inline_io_bytes: int | None,
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
@@ -287,6 +290,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
 | `env` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
+| `max_inline_io_bytes` | `int \| None` |
 | `kwargs` | `**kwargs` |
 
 #### post()
@@ -341,4 +345,6 @@ configure the task execution environment at runtime. This is usually used by plu
 | Property | Type | Description |
 |-|-|-|
 | `native_interface` | `None` |  |
+| `source_file` | `None` | {{< multiline >}}Returns the source file of the function, if available. This is useful for debugging and tracing.
+{{< /multiline >}} |
 

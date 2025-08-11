@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b1
+version: 2.0.0b6
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,7 +24,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Resources`](.././flyte#flyteresources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`RetryStrategy`](.././flyte#flyteretrystrategy) | Retry strategy for the task or task environment. |
 | [`ReusePolicy`](.././flyte#flytereusepolicy) | ReusePolicy can be used to configure a task to reuse the environment. |
-| [`Secret`](.././flyte#flytesecret) | Secrets are used to inject sensitive information into tasks. |
+| [`Secret`](.././flyte#flytesecret) | Secrets are used to inject sensitive information into tasks or image build context. |
 | [`TaskEnvironment`](.././flyte#flytetaskenvironment) | Environment class to define a new environment for a set of tasks. |
 | [`Timeout`](.././flyte#flytetimeout) | Timeout class to define a timeout for a task. |
 
@@ -149,7 +149,7 @@ def deploy(
     version: str | None,
     interactive_mode: bool | None,
     copy_style: CopyFiles,
-) -> Deployment
+) -> List[Deployment]
 ```
 Deploy the given environment or list of environments.
 
@@ -320,6 +320,7 @@ def with_runcontext(
     annotations: Dict[str, str] | None,
     interruptible: bool,
     log_level: int | None,
+    disable_run_cache: bool,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -359,6 +360,7 @@ if __name__ == "__main__":
 | `annotations` | `Dict[str, str] \| None` |
 | `interruptible` | `bool` |
 | `log_level` | `int \| None` |
+| `disable_run_cache` | `bool` |
 
 ## flyte.Cache
 
@@ -725,6 +727,7 @@ def from_uv_script(
     pre: bool,
     extra_args: Optional[str],
     platform: Optional[Tuple[Architecture, ...]],
+    secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
 Use this method to create a new image with the specified uv script.
@@ -757,6 +760,7 @@ For more information on the uv script format, see the documentation:
 | `pre` | `bool` |
 | `extra_args` | `Optional[str]` |
 | `platform` | `Optional[Tuple[Architecture, ...]]` |
+| `secret_mounts` | `Optional[SecretRequest]` |
 
 #### validate()
 
@@ -768,6 +772,7 @@ def validate()
 ```python
 def with_apt_packages(
     packages: str,
+    secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
 Use this method to create a new image with the specified apt packages layered on top of the current image
@@ -777,6 +782,7 @@ Use this method to create a new image with the specified apt packages layered on
 | Parameter | Type |
 |-|-|
 | `packages` | `str` |
+| `secret_mounts` | `Optional[SecretRequest]` |
 
 #### with_commands()
 
@@ -841,6 +847,7 @@ def with_pip_packages(
     extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
     pre: bool,
     extra_args: Optional[str],
+    secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
 Use this method to create a new image with the specified pip packages layered on top of the current image
@@ -865,12 +872,14 @@ def my_task(x: int) -> int:
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
 | `pre` | `bool` |
 | `extra_args` | `Optional[str]` |
+| `secret_mounts` | `Optional[SecretRequest]` |
 
 #### with_requirements()
 
 ```python
 def with_requirements(
     file: str | Path,
+    secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
 Use this method to create a new image with the specified requirements file layered on top of the current image
@@ -881,6 +890,7 @@ Cannot be used in conjunction with conda
 | Parameter | Type |
 |-|-|
 | `file` | `str \| Path` |
+| `secret_mounts` | `Optional[SecretRequest]` |
 
 #### with_source_file()
 
@@ -922,11 +932,13 @@ If dest is not specified, it will be copied to the working directory of the imag
 
 ```python
 def with_uv_project(
-    pyproject_file: Path,
+    pyproject_file: str | Path,
+    uvlock: Path | None,
     index_url: Optional[str],
-    extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
+    extra_index_urls: Union[List[str], Tuple[str, ...], None],
     pre: bool,
     extra_args: Optional[str],
+    secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
 Use this method to create a new image with the specified uv.lock file layered on top of the current image
@@ -938,11 +950,13 @@ In the Union builders, using this will change the virtual env to /root/.venv
 
 | Parameter | Type |
 |-|-|
-| `pyproject_file` | `Path` |
+| `pyproject_file` | `str \| Path` |
+| `uvlock` | `Path \| None` |
 | `index_url` | `Optional[str]` |
-| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
+| `extra_index_urls` | `Union[List[str], Tuple[str, ...], None]` |
 | `pre` | `bool` |
 | `extra_args` | `Optional[str]` |
+| `secret_mounts` | `Optional[SecretRequest]` |
 
 #### with_workdir()
 
@@ -1128,8 +1142,9 @@ class ReusePolicy(
 
 ## flyte.Secret
 
-Secrets are used to inject sensitive information into tasks. Secrets can be mounted as environment variables or
-files. The secret key is the name of the secret in the secret store. The group is optional and maybe used with some
+Secrets are used to inject sensitive information into tasks or image build context.
+Secrets can be mounted as environment variables or files.
+ The secret key is the name of the secret in the secret store. The group is optional and maybe used with some
 secret stores to organize secrets. The secret_mount is used to specify how the secret should be mounted. If the
 secret_mount is set to "env" the secret will be mounted as an environment variable. If the secret_mount is set to
 "file" the secret will be mounted as a file. The as_env_var is an optional parameter that can be used to specify the
@@ -1232,7 +1247,7 @@ class TaskEnvironment(
 | [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
 | [`add_task()`](#add_task) | Add a task to the environment. |
 | [`clone_with()`](#clone_with) | Clone the TaskEnvironment with new parameters. |
-| [`task()`](#task) |  |
+| [`task()`](#task) | Decorate a function to be a task. |
 
 
 #### add_dependency()
@@ -1258,6 +1273,9 @@ def add_task(
 ```
 Add a task to the environment.
 
+Useful when you want to add a task to an environment that is not defined using the `task` decorator.
+
+
 
 | Parameter | Type |
 |-|-|
@@ -1277,7 +1295,9 @@ def clone_with(
 ) -> TaskEnvironment
 ```
 Clone the TaskEnvironment with new parameters.
-besides the base environment parameters, you can override, kwargs like `cache`, `reusable`, etc.
+
+Besides the base environment parameters, you can override kwargs like `cache`, `reusable`, etc.
+
 
 
 | Parameter | Type |
@@ -1303,8 +1323,13 @@ def task(
     secrets: Optional[SecretRequest],
     pod_template: Optional[Union[str, 'V1PodTemplate']],
     report: bool,
+    max_inline_io_bytes: int,
 ) -> Union[AsyncFunctionTaskTemplate, Callable[P, R]]
 ```
+Decorate a function to be a task.
+
+
+
 | Parameter | Type |
 |-|-|
 | `_func` |  |
@@ -1316,6 +1341,7 @@ def task(
 | `secrets` | `Optional[SecretRequest]` |
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
 | `report` | `bool` |
+| `max_inline_io_bytes` | `int` |
 
 ### Properties
 

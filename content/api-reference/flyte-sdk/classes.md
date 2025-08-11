@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b1
+version: 2.0.0b6
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,7 +17,7 @@ layout: py_api
 | [`flyte.Resources`](../packages/flyte#flyteresources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
 | [`flyte.RetryStrategy`](../packages/flyte#flyteretrystrategy) |Retry strategy for the task or task environment. |
 | [`flyte.ReusePolicy`](../packages/flyte#flytereusepolicy) |ReusePolicy can be used to configure a task to reuse the environment. |
-| [`flyte.Secret`](../packages/flyte#flytesecret) |Secrets are used to inject sensitive information into tasks. |
+| [`flyte.Secret`](../packages/flyte#flytesecret) |Secrets are used to inject sensitive information into tasks or image build context. |
 | [`flyte.TaskEnvironment`](../packages/flyte#flytetaskenvironment) |Environment class to define a new environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte#flytetimeout) |Timeout class to define a timeout for a task. |
 | [`flyte.config.Config`](../packages/flyte.config#flyteconfigconfig) |This the parent configuration object and holds all the underlying configuration object types. |
@@ -28,8 +28,10 @@ layout: py_api
 | [`flyte.errors.ImageBuildError`](../packages/flyte.errors#flyteerrorsimagebuilderror) |This error is raised when the image build fails. |
 | [`flyte.errors.ImagePullBackOffError`](../packages/flyte.errors#flyteerrorsimagepullbackofferror) |This error is raised when the image cannot be pulled. |
 | [`flyte.errors.InitializationError`](../packages/flyte.errors#flyteerrorsinitializationerror) |This error is raised when the Union system is tried to access without being initialized. |
+| [`flyte.errors.InlineIOMaxBytesBreached`](../packages/flyte.errors#flyteerrorsinlineiomaxbytesbreached) |This error is raised when the inline IO max bytes limit is breached. |
 | [`flyte.errors.InvalidImageNameError`](../packages/flyte.errors#flyteerrorsinvalidimagenameerror) |This error is raised when the image name is invalid. |
 | [`flyte.errors.LogsNotYetAvailableError`](../packages/flyte.errors#flyteerrorslogsnotyetavailableerror) |This error is raised when the logs are not yet available for a task. |
+| [`flyte.errors.ModuleLoadError`](../packages/flyte.errors#flyteerrorsmoduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors#flyteerrorsnotintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](../packages/flyte.errors#flyteerrorsoomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors#flyteerrorsprimarycontainernotfounderror) |This error is raised when the primary container is not found. |
