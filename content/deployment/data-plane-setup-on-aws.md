@@ -1011,7 +1011,7 @@ The {{< key product_name >}} team will get back to you to verify that they are a
 
 ### Configure VPC Endpoints
 
-Ensure your VPC include these endpoints:
+Ensure your VPC include these endpoints so when the Union stack needs to connect to the corresponding AWS services, it does so without leaving the AWS network:
 
 - `com.amazonaws.<REGION>.autoscaling`
 - `com.amazonaws.<REGION>.xray`
