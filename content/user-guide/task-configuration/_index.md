@@ -84,7 +84,7 @@ async def process_data(data_path: str) -> str:
     return f"Processed {data_path}"
 
 @env.task
-async def main_workflow() -> str:
+async def main() -> str:
     result = await process_data.override(
         resources=flyte.Resources(cpu=4, memory="2Gi"),
         env={"MY_VAR": "new_value"},
@@ -101,7 +101,7 @@ async def main_workflow() -> str:
 
 Here is an overview of all task configuration parameters available at each level and how they interact:
 
-| Parameter | `TaskEnvironment` | `@env.task` decorator | `task.override()` invocation |
+| Parameter | `TaskEnvironment` | `@env.task` decorator | Task (and run) invocation |
 |-----------|-------------|-----------|------------|
 | **name** | ✅ Yes (required) | ✅ Yes (sets friendly name)| ❌ No |
 | **image** | ✅ Yes | ❌ No | ❌ No |
