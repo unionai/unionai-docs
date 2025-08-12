@@ -6,22 +6,32 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Caching
 
-Flyte 2 provides intelligent **task output caching** that automatically avoids redundant computation by reusing previously computed task results. Caching operates at the **task level** (`@env.task`) and caches the entire output of task executions. This is especially valuable for expensive operations like model training, data processing, or complex analyses where identical inputs should produce identical outputs.
+Flyte 2 provides intelligent **task output caching** that automatically avoids redundant computation by reusing previously computed task results.
 
-**Note**: Caching works at the task level and caches complete task outputs. For function-level checkpointing and resumption within tasks, see [Traces](../task-programming/traces), which provide fine-grained observability and recovery at the individual function level.
+> [!NOTE]
+> Caching works at the task level and caches complete task outputs.
+> For function-level checkpointing and resumption *within tasks*, see [Traces](../task-programming/traces).
 
 ## Overview
 
-Caching in Flyte 2 works by creating a **cache key** from the task's inputs, code version, and configuration. When a task runs, Flyte checks if a cache entry exists for that key. If found, the cached result is returned immediately instead of re-executing the task.
+By default, caching is disabled.
+
+If caching is enabled for a task, then Flyte determines a **cache key** for the task.
+When the task runs, Flyte checks if a cache entry exists for that key.
+If found, the cached result is returned immediately instead of re-executing the task.
+
+The cache key is either generated automatically based on the task's inputs and configuration, or specified explicitly in the code as a version string.
 
 Key benefits of caching:
 
-- **Faster iteration**: Skip expensive recomputation during development
-- **Cost optimization**: Reduce compute costs by avoiding redundant work
-- **Reliability**: Consistent results for identical inputs across executions
-- **Development efficiency**: Focus on changing code without waiting for unchanged dependencies
+- **Faster iteration**: Skip expensive recomputation during development.
+- **Cost optimization**: Reduce compute costs by avoiding redundant work.
+- **Reliability**: Consistent results for identical inputs across executions.
+- **Development efficiency**: Focus on changing code without waiting for unchanged dependencies.
 
 ## Basic caching usage
+
+
 
 ### Enabling caching with default behavior
 
@@ -81,6 +91,7 @@ Figure out what this refers to:
 - **When to use**: Development and most production scenarios.
 - **Cache invalidation**: Automatic when function code changes.
 - **Benefits**: Zero-maintenance caching that "just works".
+
 ### `"override"`
 
 ```python
