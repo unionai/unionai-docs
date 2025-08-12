@@ -1006,8 +1006,6 @@ Add the following permissions as a new IAM policy attached to the `union-ai-admi
     "Version": "2012-10-17"
 }
 ```
-
-
 Share the ARN of the two roles with the {{< key product_name >}} team.
 The {{< key product_name >}} team will get back to you to verify that they are able to assume the role.
 
