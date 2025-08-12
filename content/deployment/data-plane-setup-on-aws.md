@@ -713,12 +713,15 @@ Once your VPC is set up, you will need to provide the {{< key product_name >}} t
 
 ## Private EKS endpoint
 
-To deploy the Union operator in your EKS cluster and to perform troubleshooting at the Kubernetes layer, Union  requires access to the [EKS endpoint](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html). 
-
-> This connection is not used for executions, only for cluster onboarding, upgrades and support.
 The requirements described so far, enable Union to operate with a `Public` or `Public and Private` EKS endpoint. 
 
-For endpoints configured as `Private` only, Union implements a VPC Endpoint connection over Private Link, using a "jumper" ECS container behind a Network Load Balancer to forward incoming connections to the EKS API endpoint. This is needed to handle the dynamic nature of the EKS Endpoint allocated IP address.
+To deploy the Union operator in your EKS cluster and to perform troubleshooting at the Kubernetes layer, Union requires access to the [EKS endpoint](https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html). 
+
+> This connection is not used for executions, only for cluster onboarding, upgrades and support.
+
+For additional security, the EKS endpoint can be configured as `Private` only. In such case, Union implements a VPC Endpoint connection over [Private Link](https://docs.aws.amazon.com/vpc/latest/userguide/endpoint-services-overview.html), a lightweight yet robust mechanism to ensure management traffic doesn't leave the AWS network.
+
+When AWS rolls out changes to the EKS endpoint, its IP address might change. To handle this and prevent any disconnect, the Union automation sets up a "jumper" ECS container in the customer account which forwards the incoming requests to the EKS Endpoint, acting as a reverse proxy, while a Network Load Balancer exposes an stable endpoint address. In this way, you get the security of a fully private connection and a reliable channel for Union staff to manage your cluster proactively or troubleshoot issues when needed.
 
 ![](../_static/images/deployment/data-plane-setup-on-aws/aws_private_link_architecture.png)
 
