@@ -9,7 +9,7 @@ sidebar_expanded: true
 
 This section gives you a quick introduction to writing and running workflows on Union and Flyte 2.
 
-## Installing Flyte 2
+## Prerequisites
 
 ### Install uv
 
@@ -19,7 +19,7 @@ First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-star
 > You will need to use the [`uv` package manager](https://docs.astral.sh/uv/) to run the examples in this guide.
 > In particular, we leverage `uv`'s ability to [embed dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
 
-### Ensure that you have Python 3.10 or later installed
+### Ensure that you have Python 3.13 or later installed
 
 Install Python 3.13 or later on your machine and pin it as the default Python version for `uv`:
 
@@ -37,7 +37,7 @@ uv venv
 source .venv/bin/activate
 ```
 
-### Install the `flyte` package
+## Install the `flyte` package
 
 Install the latest flyte package in the virtual environment (we are currently in beta, so you have to enable prerelease installation):
 
@@ -45,24 +45,19 @@ Install the latest flyte package in the virtual environment (we are currently in
 uv pip install --no-cache --prerelease=allow --upgrade flyte
 ```
 
-## Configuration setup
-
-### Create a config.yaml
-
-Next, create a `config.yaml` file that points to your Union/Flyte instance using the [`flyte create config`](../api-reference/flyte-cli#flyte-create-config) command.
-
-```shell
-flyte create config \
-    --endpoint <your-instance-endpoint> \
-    --builder <image-builder> \
-    --domain <default-domain> \
-    --project <default-project>
-```
-
-For example, this command:
+## Create a config.yaml
 
 {{< variant flyte >}}
 {{< markdown >}}
+
+Next, create a `config.yaml` file that points to your Flyte instance.
+Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
+
+* Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
+  You can simply copy the domain part of the URL from your browser when logged into your backend instance.
+* Replace `my-project` with an actual project.
+  The project you specify must already exist on your Flyte backend instance.
+
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -71,22 +66,19 @@ flyte create config \
     --project my-project
 ```
 
-will create this `config.yaml` file:
-
-```yaml
-admin:
-  endpoint: dns:///my-org.my-company.com
-image:
-  builder: local
-task:
-  domain: development
-  org: my-org
-  project: my-project
-```
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
+
+Next, create a `config.yaml` file that points to your Union instance.
+Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
+
+* Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
+  You can simply copy the domain part of the URL from your browser when logged into your backend instance.
+* Replace `my-project` with an actual project.
+  The project you specify must already exist on your Union backend instance.
+
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -95,26 +87,14 @@ flyte create config \
     --project my-project
 ```
 
-will create this `config.yaml` file:
-
-```yaml
-admin:
-  endpoint: dns:///my-org.my-company.com
-image:
-  builder: remote
-task:
-  domain: development
-  org: my-org
-  project: my-project
-```
 {{< /markdown >}}
 {{< /variant >}}
 
-See [Setting up a configuration file](./configuration#setting-up-a-configuration-file) for details.
+This will create a `config.yaml` file in your current working directory.
+See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for details.
 
 ## Hello world example
 
-We'll start with a "Hello world" example.
 Create a file called `hello.py` with the following content:
 
 {{< code file="/external/migrate-to-unionai-examples-flyte2/hello.py" lang="python" >}}
@@ -126,20 +106,9 @@ In the code above we do the following:
 * Import the `flyte` package.
 * Define a `TaskEnvironment` to group the configuration used by tasks.
 * Define two tasks using the `@env.task` decorator.
-    * Tasks are regular Python functions, and each runs in its own container.
+    * Tasks are regular Python functions, but each runs in its own container.
     * When deployed to your Union/Flyte instance, each task execution will run in its own separate container.
     * Both tasks use the same `env` (the same `TaskEnvironment`) so, while each runs in its own container, those containers will be configured identically.
-
-> [!NOTE]
-> In this guide we adopt a few conventions to make each example script as self-contained as possible
-> and therefore easy to run:
->
-> * Each script has a main guard that programmatically deploys and runs the tasks defined in the same file.
->   All you have to do is execute the script itself.
-> * Each script has a comment at the top that specifies the dependencies required to run it.
->   These dependencies are automatically installed locally when you run the script using `uv run`.
->   This is [a feature of `uv`](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies),
->   and one reason that we recommend using it.
 
 ## Running the code
 
@@ -151,9 +120,12 @@ Now, run the script with:
 uv run --prerelease allow hello.py
 ```
 
-**This executes the script locally, but in doing so, it actually deploys the tasks defined in the script to your Union/Flyte instance and runs those there.**
-
 The main guard section in the script performs a `flyte.init_from_config` to set up the connection with your Union/Flyte instance and a `flyte.run` to send your task code to that instance and execute it there.
+
+> [!NOTE]
+> The example scripts in this guide have a main guard that programmatically deploys and runs the tasks defined in the same file.
+> All you have to do is execute the script itself.
+> You can also deploy tasks using the `flyte` CLI instead. We will cover this in a later section.
 
 ## Viewing the results
 
@@ -172,5 +144,4 @@ Click the link to go to your Union instance and see the run in the UI:
 
 <!-- TODO: Add explanation of the UI elements and their functionality
 ## Understanding the UI
-
 -->

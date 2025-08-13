@@ -22,7 +22,7 @@ flyte run hello.py main --name "Ada"
 
 ### From Python
 
-To run your workflow remotely from Python, use [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
+To run your workflow remotely from Python, use [`flyte.run()`](../../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
 
 ```python
 # hello.py
@@ -57,7 +57,7 @@ flyte run --local hello.py main --name "Ada"
 
 ### From Python
 
-To run your workflow locally from Python, you chain [`flyte.with_runcontext()`](../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
+To run your workflow locally from Python, you chain [`flyte.with_runcontext()`](../../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
 
 ```python
 # hello.py
@@ -91,7 +91,7 @@ To deploy your workflow to your Union/Flyte instance without running it immediat
 flyte [TOP_LEVEL_OPTIONS] deploy [SUB_COMMAND_OPTIONS] [FILE] [TASK_ENV_VAR]
 ```
 
-* `TOP_LEVEL_OPTIONS`: Options that apply to the `flyte` command as a whole, such as `--config`, `--endpoint`, etc. See the [Flyte CLI documentation](../api-reference/flyte-cli#flyte) for more details.
+* `TOP_LEVEL_OPTIONS`: Options that apply to the `flyte` command as a whole, such as `--config`, `--endpoint`, etc. See the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte) for more details.
 * `SUB_COMMAND_OPTIONS`: Options that apply to the `deploy` sub-command. These are:
     * `--project | -p` `<string>`: The project to which this command applies.
     * `--domain | -d` `<string>`: The domain to which this command applies.
@@ -109,7 +109,7 @@ flyte deploy --version "v1.0.0" hello.py env
 
 ### Deploying programmatically
 
-You can also deploy your workflow programmatically using the [`flyte.deploy()`](../api-reference/flyte-sdk/packages/flyte#deploy) function:
+You can also deploy your workflow programmatically using the [`flyte.deploy()`](../../api-reference/flyte-sdk/packages/flyte#deploy) function:
 
 ```python
 import flyte
@@ -139,7 +139,6 @@ deployment = flyte.deploy(
 
 ### Running a deployed workflow from the UI
 
-
 Once your workflow is deployed, you can run it from the Union/Flyte web interface.
 
 The UI will provide you with a live view of your workflow execution, including logs, task status, and outputs.
@@ -153,7 +152,7 @@ print(f"View in UI: {run.url}")
 
 ### Running a deployed workflow from the CLI
 
-After deploying your workflow, you can run it using the same [`flyte run`](../api-reference/flyte-cli#flyte-run) command:
+After deploying your workflow, you can run it using the same [`flyte run`](../../api-reference/flyte-cli#flyte-run) command:
 
 ```shell
 flyte run hello.py main --name "Ada"
