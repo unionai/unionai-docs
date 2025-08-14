@@ -6,9 +6,6 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Versions
 
-> [!NOTE]
-> The versions feature is **coming soon**!
-
 In addition to the product variants, the docs site also supports multiple versions of the documentation.
 The version selector is located at the top of the page, next to the variant selector.
 Versions and variants are independent of each other, with the version being "above" the variant in the URL hierarchy.
@@ -23,7 +20,7 @@ while the URL for version `v2` of the same page is:
 
 ### Versions are branches
 
-The versioning system is based on long-lived Git branches in the `unionai/docs` GitHub repository:
+The versioning system is based on long-lived Git branches in the `unionai/unionai-docs` GitHub repository:
 
 - The `main` branch contains the latest version of the documentation. Currently, `v2`.
 - Other versions of the docs are contained in branches named `vX`, where `X` is the major version number. Currently, there is one other version, `v1`.

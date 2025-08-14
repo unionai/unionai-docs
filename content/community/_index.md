@@ -17,7 +17,7 @@ Union AI is the primary maintainer of Flyte and developer of Union.ai, a closed 
 Since the success of Flyte is essential to the success of Union.ai,
 the company is dedicated to building and expanding the Flyte open source project and community.
 
-For information on how to get involved and how keep in touch, see [Joining the community](./joining-the-community).
+For information on how to get involved and how to keep in touch, see [Joining the community](./joining-the-community).
 
 ## Contributing to the codebase
 
@@ -34,7 +34,7 @@ Union.ai is a commercial product built on top of the open source Flyte project.
 Since the success of Flyte is essential to the success of Union.ai,
 the company is dedicated to building and expanding the Flyte open source project and community.
 
-For information on how to get involved and how keep in touch, see the [Flyte variant of this page]({{< docs_home flyte v1 >}}/community).
+For information on how to get involved and how to keep in touch, see the [Flyte variant of this page]({{< docs_home flyte v2 >}}/community).
 
 {{< /markdown >}}
 {{< /variant >}}
