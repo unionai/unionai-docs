@@ -6,13 +6,13 @@
     // Extract query string parameters
     const url = new URL(window.location);
     const source = url.searchParams.get('source');
-    const variant = url.searchParams.get('variant');
+    const pVariant = url.searchParams.get('variant');
     const origin = url.searchParams.get('origin');
     const targetVariant = url.searchParams.get('targetVariant');
     const targetHomeUrl = '/docs/' + targetVariant;
 
     document.addEventListener('DOMContentLoaded', function() {
-        if (variant !== null) {
+        if (pVariant !== null) {
             const title = document.getElementById('title');
             title.innerHTML = source;
 
@@ -34,6 +34,22 @@
             document.querySelectorAll('.direct').forEach(el => {
                 el.style.display = 'none';
             });
+        } else {
+            // If the url already has originalUrl, just remove 1 level
+            // else add the current URL as originalUrl
+            //
+            // ... user-guide/a/b/c/
+            // ... user-guide/a/b/
+            // ... user-guide/a/
+            // ... user-guide/
+            url.pathname = url.pathname.endsWith("/")
+                ? url.pathname.replace(/\/[^\/]+\/$/, '/')
+                : url.pathname.replace(/\/[^\/]+$/, '');
+            if (url.searchParams.get('404') === null) {
+                url.searchParams.set('404', window.location.href);
+            }
+            alert(url.toString())
+            window.location.href = url.toString();
         }
     });
 </script>
