@@ -16,8 +16,8 @@ To create a new page, simply create a new Markdown file in the appropriate folde
 
 Remember that there are two production branches in the docs: `main` and `v1`.
 
-* **If the change you want to make is for Flyte or Union 1, then you must create a branch off of `v1` and your pull request must target the `v1` branch.**
-* **If the change you want to make is for Flyte or Union 2, then you must create a branch off of `main` and your pull request must target the `main` branch.**
+* **For Flyte or Union 1, create a branch off of `v1` and target your pull request to `v1`**
+* **For Flyte or Union 2, create a branch off of `main` and target your pull request to `main`**
 
 ## Live preview
 
