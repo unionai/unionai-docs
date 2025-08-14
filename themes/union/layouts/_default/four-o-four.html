@@ -4,7 +4,7 @@
 {{- $extraContent := readFile (printf "404.inc.html~%s" $variant) -}}
 <script>
     // Extract query string parameters
-    const url = new URL(window.location);
+    let url = new URL(window.location);
     const source = url.searchParams.get('source');
     const pVariant = url.searchParams.get('variant');
     const origin = url.searchParams.get('origin');
@@ -35,6 +35,13 @@
                 el.style.display = 'none';
             });
         } else {
+            // If url is present, it was redirected by a 404 handler
+            let hit = window.location.href;
+            if (url.searchParams.get("url") != null) {
+                url = new URL(url.searchParams.get("url"));
+                hit = url.toString();
+            }
+
             // If the url already has originalUrl, just remove 1 level
             // else add the current URL as originalUrl
             //
@@ -46,7 +53,7 @@
                 ? url.pathname.replace(/\/[^\/]+\/$/, '/')
                 : url.pathname.replace(/\/[^\/]+$/, '');
             if (url.searchParams.get('404') === null) {
-                url.searchParams.set('404', window.location.href);
+                url.searchParams.set('404', hit);
             }
             alert(url.toString())
             window.location.href = url.toString();
