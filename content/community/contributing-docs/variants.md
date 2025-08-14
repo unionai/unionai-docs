@@ -15,7 +15,7 @@ There are separate mechanisms for:
 
 Currently, the docs site supports four variants:
 
-- **Flyte**: The open-source Flyte project.
+- **Flyte OSS**: The open-source Flyte project.
 - **Serverless**: The Union.ai product that is hosted and managed by Union AI.
 - **BYOC**: The Union.ai product that is hosted on the customer's infrastructure but managed by Union AI.
 - **Self-managed**: The Union.ai product that is hosted and managed by the customer.

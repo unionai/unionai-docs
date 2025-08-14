@@ -8,9 +8,16 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 ## Getting started
 
-Content is located in the [`content`](content/) folder.
+Content is located in the `content` folder.
 
 To create a new page, simply create a new Markdown file in the appropriate folder and start writing it!
+
+## Target the right branch
+
+Remember that there are two production branches in the docs: `main` and `v1`.
+
+* **For Flyte or Union 1, create a branch off of `v1` and target your pull request to `v1`**
+* **For Flyte or Union 2, create a branch off of `main` and target your pull request to `main`**
 
 ## Live preview
 
