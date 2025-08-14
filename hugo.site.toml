@@ -39,6 +39,7 @@ custom_css = [
   "toc.css",
 ]
 custom_js = [
+  "404.js",
   "key.js",
   "sidebar.js",
   "theme.js",
