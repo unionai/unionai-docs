@@ -23,18 +23,18 @@ Ensure that you are logged into the desired AWS account and then select the appr
 
 | Region         | Launch Stack                                                                                                                                                                                                                                                                                                                                                                                                         |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `us-east-1`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-east-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `us-west-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-1`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-west-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
-| `eu-central-1` | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.12%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
+| `us-east-1`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-east-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `us-west-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-1`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-west-2`    | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-west-2.console.aws.amazon.com/cloudformation/home?region=eu-west-2#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin)       |
+| `eu-central-1` | [![Launch AWS CloudFormation Stack](../_static/images/deployment/data-plane-setup-on-aws/cloudformation-launch-stack.png)](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/quickcreate?templateURL=https%3A%2F%2Funion-public.s3.amazonaws.com%2Ftemplates%2Fv0.13%2Funion-ai-admin-role.template.yaml&stackName=UnionCloudAccess&param_CrossAccountRoleName=union-ai-admin) |
 
 > [!NOTE] CloudFormation template
 > All of these buttons launch the same CloudFormation template, just in different regions.
 > The CloudFormation template itself is available at this URL:
 >
-> [https://union-public.s3.amazonaws.com/templates/v0.12/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.11/union-ai-admin-role.template.yaml)
+> [https://union-public.s3.amazonaws.com/templates/v0.13/union-ai-admin-role.template.yaml](https://union-public.s3.amazonaws.com/templates/v0.13/union-ai-admin-role.template.yaml)
 >
 > For details on the functionality enabled by each of the permissions,
 > see the [release notes](https://github.com/unionai/union-cloud-infrastructure/releases).
@@ -44,11 +44,12 @@ Ensure that you are logged into the desired AWS account and then select the appr
 Once you have selected **Launch Stack**, you will be taken to the CloudFormation interface. Do the following:
 
 1. Check the profile name in the top right corner to confirm that you are in the correct account.
-1. Leave the default values in place:
-   - `union-ai-admin` for **Cross Account Role Name**.
+2. Leave the default values in place:
    - `UnionCloudAccess` for the **Stack Name**.
-1. Select the checkbox indicating that you acknowledge that AWS CloudFormation may create IAM resources with custom names.
-1. Select **Create Stack**.
+   - `union-ai-admin` for **Cross Account Role Name**.
+3. Enter the `external ID` provided by {{< key product_name >}} team for **ExternalId**  
+4. Select the checkbox indicating that you acknowledge that AWS CloudFormation may create IAM resources with custom names.
+5. Select **Create Stack**.
 
 ### Share the role ARN
 
