@@ -94,6 +94,12 @@
           </div>
         </div>
         {{- end -}}
+        <div class="four-notice" style="display: none;">
+          <sl-alert open variant="danger">
+            <sl-icon slot="icon" name="info-circle"></sl-icon>
+            The page you navigated to <span class="four-page"></span> does not exist, so we brought you to the closest page to it.
+          </sl-alert>
+        </div>
         {{- partial "breadcrumb.html" . -}}
         {{- block "main" . -}}{{- end -}}
       </div>
