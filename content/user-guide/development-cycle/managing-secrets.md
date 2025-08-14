@@ -34,14 +34,12 @@ $ {{< key cli >}} create secret my_secret_name -f /path/to/secret_file
 
 ### Scoping secrets
 
-When you create a secret without specifying a project or domain, as we did above, the secret is scoped to the organization level. This means that the secret will be available across all projects and domains in the organization.
+* When you create a secret without specifying a project` or domain, as we did above, the secret will be available across all projects-domain combinations.
+* If you specify only a domain, the secret will be available across all projects, but only in that domain.
+* If you specify both a project and a domain, the secret will be available in that project-domain combination only.
+* If you specify only a project, you will get an error.
 
-You can optionally specify either or both of the `--project` and `--domain` flags to restrict the scope of the secret to:
-* A specific project (across all domains)
-* A specific domain (across all project)
-* A specific project and a specific domain.
-
-For example, to create a secret so that it is only available to workflows in `my_project/development`, you would run:
+For example, to create a secret so that it is only available in `my_project-development`, you would run:
 
 ```shell
 $ {{< key cli >}} create secret my_secret_name --project my_project --domain development
@@ -50,7 +48,7 @@ $ {{< key cli >}} create secret my_secret_name --project my_project --domain dev
 ## Listing secrets
 
 You can list existing secrets with the `{{< key cli >}} get secret` command.
-For example the following command will list all secrets in the organization:
+For example, the following command will list all secrets in the organization:
 
 ```shell
 $ {{< key cli >}} get secret
