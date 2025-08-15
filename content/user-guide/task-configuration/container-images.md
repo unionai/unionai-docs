@@ -62,39 +62,136 @@ Additionally, the `Image` class provides:
 
 Here are some examples of the most common patterns for building images with `flyte.Image`.
 
-### Building custom images with `Image.from_debian_base`
+## Building custom images with `Image.from_debian_base`
 
 The `Image.from_debian_base()` method is the recommended way to create custom container images for your tasks.
 It provides the default Flyte image as the base. This image is itself based on the official Python Docker image (specifically `python:{version}-slim-bookworm`) with the addition of the Flyte SDK pre-installed.
 
+The `from_debian_base()` method accepts the following optional parameters:
+
+### `python_version`
+
+* Type: `(Optional[Tuple[int, int]])`
+* Specify the python version as a tuple `(<major>, <minor>)`. For example, `(3, 12)`
+* Defaults to the current Python version detected from `sys.version_info` in the local environment.
+
+### `flyte_version`
+
+* Type: `(Optional[str])`
+* Specify the Flyte SDK version as a string. For example, `"v2.0.0"`.
+* Defaults to the current SDK version (`flyte.__version__`) in the local environment.
+
+### `install_flyte`
+
+* Type: `(Optional[bool])`
+* Whether to install the Flyte SDK in the image.
+* Defaults to `True`. Set to `False` if you want a clean Python environment without Flyte.
+
+### `registry`
+
+* Type: `(Optional[str])`
+* URL of the container registry to use for the image if [built locally](#image-building).
+* Defaults to the default registry of your locally install Docker (you must have Docker installed locally when [building locally](#image-building)).
+
+### `name`
+
+* Type: `(Optional[str])`
+* Custom name for the image.
+* Default: Uses default naming convention.
+* Example: `"my-custom-image"`
+
+### `platform`
+
+* Type: `(Optional[Tuple[Architecture, ...]])`
+* Target architectures for the image.
+* Default: `("linux/amd64", "linux/arm64")` (multi-arch).
+* Examples: `("linux/amd64",)`, `("linux/arm64",)`
+
+
+* In a `TaskEnvironment` constructor it defines the name of the environment and is required.
+  Used in conjunction with the name of each `@env.task` functions to define the fully-qualified task name. For example:
+
+  ```python
+  env = flyte.TaskEnvironment(name="my_env")
+
+  @env.task
+  async def my_task(data: str) -> str:
+      ...
+  ```
+
+  Here, the fully qualified name of the task will be `my_env.my_task`.
+
+* Can optionally be set in the `@env.task` decorator level, in which case it overrides,
+  not the `TaskEnvironment` name but the friendly name of the task.
+  By default, the friendly name of a task is the name of the function.
+  The friendly name is used for display purposes in the UI.
+
+### `image`
+
+* Type: `Union[str, Image, Literal['auto']]`
+
+* Specifies the Docker image to use for the task container.
+  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte#flyteimage), or the string `auto`.
+  If set to `auto`, or if this parameter is not set, the [default image]() will be used.
+  See [Container images](./container-images).
+
+* Only settable at the `TaskEnvironment` level.
 
 
 
 
 
-### Basic usage
 
-```python
-import flyte
 
-# Create a basic image with current Python version
-image = flyte.Image.from_debian_base()
 
-# Use it in a TaskEnvironment
-env = flyte.TaskEnvironment(name="my_env", image=image)
-```
 
-### Parameters
 
-The `from_debian_base()` method accepts several optional parameters:
 
 - **`python_version`**: Specify the Python version as a tuple, e.g., `(3, 12)`
+- **`flyte_version`**: Specify the Flyte version to use, defaults to the version installed locally
 - **`install_flyte`**: Set to `False` if you want a clean Python environment without the Flyte SDK
 - **`registry`**: Custom Docker registry for your image
 - **`name`**: Custom name for your image
 - **`platform`**: Target architecture(s), defaults to multi-arch (`linux/amd64`, `linux/arm64`)
 
+* `python_version (Optional[Tuple[int, int]])`:
+
+
+
+Specific Flyte SDK version to install
+Default: Uses current SDK version (__version__)
+Examples: "v2.0.0", "2.1.0"
+install_flyte (bool):
+
+Whether to install the Flyte SDK in the image
+Default: True
+Set to False if you want a clean Python environment without Flyte
+registry (Optional[str]):
+
+Docker registry to use for the image
+Default: Uses the default registry
+Example: "my-registry.com"
+name (Optional[str]):
+
+Custom name for the image
+Default: Uses default naming convention
+Example: "my-custom-image"
+platform (Optional[Tuple[Architecture, ...]]):
+
+Target architectures for the image
+Default: ("linux/amd64", "linux/arm64") (multi-arch)
+Examples: ("linux/amd64",), ("linux/arm64",)
+
+
+
+
+
 ### Common patterns
+
+
+
+
+
 
 #### Specific Python version
 ```python
