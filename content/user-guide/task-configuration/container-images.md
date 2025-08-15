@@ -6,10 +6,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Container images
 
-Every `task` in Flyte runs in its own container (unless you are using [reusable containers](./reusable-containers)) and every container needs a container image to define it.
-
-We use the `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
-Every task that uses that `TaskEnvironment` will run in a container based on that image.
+The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify a container image.
+Every task defined using that `TaskEnvironment` will run in a container based on that image.
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/unionai-oss/flyte:latest`](https://github.com/orgs/unionai-oss/packages/container/package/)).
 
@@ -25,7 +23,124 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union instance can access.
+This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union/Flyte instance can access.
+
+## Specifying your own image with the `flyte.Image` object
+
+You can also construct an image programmatically using the `flyte.Image` object.
+
+The `flyte.Image` object provides a fluent interface for building container images with specific dependencies.
+
+You start building your image with on of the `from_` methods:
+
+* [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte#from_base): Start from a specified Dockerfile.
+* [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte#from_debian_base): Start from the Flyte default image
+* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Starte from
+
+You can then layer on additional components using the `with_` methods:
+
+* [`Image.with_apt_packages()`](../../api-reference/flyte-sdk/packages/flyte#with_apt_packages): Add Debian packages to the image.
+* [`Image.with_commands()`](../../api-reference/flyte-sdk/packages/flyte#with_commands): Add commands to run in the image.
+* [`Image.with_dockerignore()`](../../api-reference/flyte-sdk/packages/flyte#with_dockerignore): Specify a `.dockerignore` file.
+* [`Image.with_env_vars()`](../../api-reference/flyte-sdk/packages/flyte#with_env_vars): Set environment variables in the image.
+* [`Image.with_pip_packages()`](../../api-reference/flyte-sdk/packages/flyte#with_pip_packages): Add Python packages to the image.
+* [`Image.with_requirements()`](../../api-reference/flyte-sdk/packages/flyte#with_requirements): Specify a requirements.txt file.
+* [`Image.with_source_file()`](../../api-reference/flyte-sdk/packages/flyte#with_source_file): Specify a source file to include in the image.
+* [`Image.with_source_folder()`](../../api-reference/flyte-sdk/packages/flyte#with_source_folder): Specify a source folder to include in the image.
+* [`Image.with_uv_project()`](../../api-reference/flyte-sdk/packages/flyte#with_uv_project): Use the `uv` script metadata in the source file to specify the image.
+* [`Image.with_workdir()`](../../api-reference/flyte-sdk/packages/flyte#with_workdir): Specify the working directory for the image.
+
+You can also specify an image in one shot (with no possibility of layering) with:
+
+* [`Image.from_dockerfile()`](../../api-reference/flyte-sdk/packages/flyte#from_dockerfile): Build the final image from a single Dockerfile.
+
+Additionally, the `Image` class provides:
+
+* [`Image.clone()`](../../api-reference/flyte-sdk/packages/flyte#clone): Clone an existing image.
+* [`Image.validate()`](../../api-reference/flyte-sdk/packages/flyte#validate): Validate the image configuration.
+* [`Image.with_local_v2()`](../../api-reference/flyte-sdk/packages/flyte#with_local_v2): Does not add a layer, instead it overrides any existing builder configuration and builds the image locally. See [Image building](#image-building) for more details.
+
+Here are some examples of the most common patterns for building images with `flyte.Image`.
+
+### Building custom images with `Image.from_debian_base`
+
+The `Image.from_debian_base()` method is the recommended way to create custom container images for your tasks.
+It provides the default Flyte image as the base. This image is itself based on the official Python Docker image (specifically `python:{version}-slim-bookworm`) with the addition of the Flyte SDK pre-installed.
+
+
+
+
+
+
+### Basic usage
+
+```python
+import flyte
+
+# Create a basic image with current Python version
+image = flyte.Image.from_debian_base()
+
+# Use it in a TaskEnvironment
+env = flyte.TaskEnvironment(name="my_env", image=image)
+```
+
+### Parameters
+
+The `from_debian_base()` method accepts several optional parameters:
+
+- **`python_version`**: Specify the Python version as a tuple, e.g., `(3, 12)`
+- **`install_flyte`**: Set to `False` if you want a clean Python environment without the Flyte SDK
+- **`registry`**: Custom Docker registry for your image
+- **`name`**: Custom name for your image
+- **`platform`**: Target architecture(s), defaults to multi-arch (`linux/amd64`, `linux/arm64`)
+
+### Common patterns
+
+#### Specific Python version
+```python
+# Use Python 3.12
+image = flyte.Image.from_debian_base(python_version=(3, 12))
+```
+
+#### Clean Python environment
+```python
+# Python environment without Flyte SDK pre-installed
+image = flyte.Image.from_debian_base(install_flyte=False)
+```
+
+#### Custom registry and name
+```python
+# Push to your own registry
+image = flyte.Image.from_debian_base(
+    registry="my-registry.com",
+    name="my-python-env"
+)
+```
+
+### Layering additional components
+
+The power of `from_debian_base()` comes from chaining it with additional methods to build up your image:
+
+```python
+image = (
+    flyte.Image.from_debian_base()
+    .with_apt_packages("git", "curl")  # System packages
+    .with_pip_packages("numpy", "pandas", "scikit-learn")  # Python packages
+    .with_env_vars({"MY_CONFIG": "production"})  # Environment variables
+    .with_source_folder(Path("./src"))  # Include local code
+)
+```
+
+### When to use `from_debian_base`
+
+Use `Image.from_debian_base()` when you need:
+- A standardized, reliable Python environment
+- Multi-architecture support (AMD64 and ARM64)
+- Integration with Flyte's caching and optimization features
+- A starting point for complex, layered image builds
+- Consistent development and production environments
+
+The method creates images that are optimized for Flyte's execution environment while giving you full control over dependencies and configuration.
 
 ## Specify dependencies in your Python file
 
@@ -41,7 +156,7 @@ Here is an example:
 Ketan Umare:
 Its weird to have this as the first example. I think we should have a regular image building example Image.from_debian_base().with_pip_packages(...) and then have this maybe as an additional example
 -->
-{{< code file="/external/migrate-to-unionai-examples-flyte2/container_images.py" lang="python" >}}
+{{< code file="/external/migrate/user-guide/task-configuration/container-images/container_images.py" lang="python" >}}
 
 First, specify your dependencies using [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
 Simply add a comment at the top of your script as shown above, that includes your dependencies.

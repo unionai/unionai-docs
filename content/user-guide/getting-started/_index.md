@@ -97,7 +97,7 @@ See [Setting up a configuration file](./local-setup#setting-up-a-configuration-f
 
 Create a file called `hello.py` with the following content:
 
-{{< code file="/external/migrate-to-unionai-examples-flyte2/hello.py" lang="python" >}}
+{{< code file="/external/migrate/user-guide/getting-started/hello.py" lang="python" >}}
 
 ## Understanding the code
 
