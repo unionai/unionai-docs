@@ -23,7 +23,7 @@ base:
 
 dist: base
 	make variant VARIANT=flyte
-	make variant VARIANT=serverless
+	# make variant VARIANT=serverless
 	make variant VARIANT=byoc
 	make variant VARIANT=selfmanaged
 

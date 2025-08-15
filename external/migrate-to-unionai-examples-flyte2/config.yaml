@@ -1,0 +1,8 @@
+admin:
+  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+image:
+  builder: remote
+task:
+  domain: development
+  org: dogfood-gcp
+  project: andrew

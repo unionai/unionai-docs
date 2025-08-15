@@ -43,7 +43,7 @@
 {{- /* Handle fragment if specified */ -}}
 {{- if $fragment -}}
   {{- $startMarker := printf "{{docs-fragment %s}}" $fragment -}}
-  {{- $endMarker := "{{/docs-fragment}}" -}}
+  {{- $endMarker := printf "{{/docs-fragment %s}}" $fragment -}}
   {{- $foundStart := false -}}
   {{- $foundEnd := false -}}
   {{- range $lines -}}
@@ -57,8 +57,8 @@
     {{- end -}}
   {{- end -}}
   {{- if not $foundStart -}}
-    {{- warnf "Fragment marker '%s' not found in file %s. Please mark a section with the following markers: %s and %s" 
-          $fragment $fileName (printf "{{docs-fragment %s}}" $fragment) "{{/docs-fragment}}" -}}
+    {{- warnf "Fragment marker '%s' not found in file %s. Please mark a section with the following markers: %s and %s"
+          $fragment $fileName (printf "{{docs-fragment %s}}" $fragment) (printf "{{/docs-fragment %s}}" $fragment) -}}
     <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
       Fragment marker '{{$fragment}}' not found in file {{$fileName}}. Please mark a section with the following markers:
       <code>{{ "{{docs-fragment " }}{{ $fragment }}{{ "}}" }}</code> and <code>{{ "{{/docs-fragment}}" }}</code>

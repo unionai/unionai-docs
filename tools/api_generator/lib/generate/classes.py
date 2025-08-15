@@ -1,10 +1,9 @@
 import io
 import os
-from sys import flags
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 from lib.generate.docstring import docstring_summary
-from lib.generate.hugo import write_front_matter
+from lib.generate.hugo import FrontMatterExtra, write_front_matter
 from lib.generate.methods import (
     generate_method,
     generate_method_decl,
@@ -58,6 +57,7 @@ def generate_class_index(
     pkg_root: str,
     flatten: bool,
     ignore_types: List[str],
+    frontmatter_extra: Optional[FrontMatterExtra],
 ):
     # Check if any package has classes defined
     has_classes = any(
@@ -69,6 +69,7 @@ def generate_class_index(
 
     if flatten:
         pkg_index = os.path.join(output_folder, "classes.md")
+        frontmatter_extra = None
     else:
         cls_root = os.path.join(output_folder, "classes")
         if not os.path.isdir(cls_root):
@@ -89,16 +90,16 @@ def generate_class_index(
                     classList[cls] = clsInfo
 
         if len(protocolList) > 0 and len(classList) > 0:
-            write_front_matter("Classes & Protocols", index)
+            write_front_matter("Classes & Protocols", index, frontmatter_extra)
         elif len(classList) > 0:
-            write_front_matter("Classes", index)
+            write_front_matter("Classes", index, frontmatter_extra)
         else:
-            write_front_matter("Protocols", index)
+            write_front_matter("Protocols", index, frontmatter_extra)
 
         if len(classList) > 0:
             index.write("# Classes\n\n")
 
-            index.write(f"| Class | Description |\n")
+            index.write("| Class | Description |\n")
             index.write("|-|-|\n")
 
             for cls, clsInfo in classList.items():
@@ -117,7 +118,7 @@ def generate_class_index(
         if len(protocolList) > 0:
             index.write("# Protocols\n\n")
 
-            index.write(f"| Protocol | Description |\n")
+            index.write("| Protocol | Description |\n")
             index.write("|-|-|\n")
 
             for cls, clsInfo in protocolList.items():
@@ -216,7 +217,7 @@ def generate_classes_and_error_list(
     if len(class_list) > 0:
         output.write(f"{'#' * (doc_level)} Classes\n\n")
 
-        output.write(f"| Class | Description |\n")
+        output.write("| Class | Description |\n")
         output.write("|-|-|\n")
 
         for classNameFull in class_list:
@@ -238,7 +239,7 @@ def generate_classes_and_error_list(
     if len(protocol_list) > 0:
         output.write(f"{'#' * (doc_level)} Protocols\n\n")
 
-        output.write(f"| Protocol | Description |\n")
+        output.write("| Protocol | Description |\n")
         output.write("|-|-|\n")
 
         for classNameFull in protocol_list:
@@ -260,7 +261,7 @@ def generate_classes_and_error_list(
     if len(exceptions) > 0:
         output.write(f"{'#' * (doc_level)} Errors\n\n")
 
-        output.write(f"| Exception | Description |\n")
+        output.write("| Exception | Description |\n")
         output.write("|-|-|\n")
 
         for exc in exceptions:

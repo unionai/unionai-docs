@@ -6,6 +6,7 @@
   --bg-color: #ffffff;
   --sidebar-bg: #f8fafc;
   --border-color: #e2e8f0;
+  --separator: #c7ccd6;
   --code-bg: #f1f5f9;
   --pre-bg: #1e293b;
   --pre-color: #e2e8f0;
@@ -342,4 +343,7 @@ footer {
 
 hr {
   margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid var(--separator);
 }

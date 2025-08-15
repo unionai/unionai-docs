@@ -1,6 +1,4 @@
-import inspect
 from typing import Any, Optional
-from lib.parser.docstring import parse_docstring
 from lib.parser.methods import do_parse_method
 from lib.ptypes import MethodInfo
 

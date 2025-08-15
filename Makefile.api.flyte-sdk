@@ -1,0 +1,28 @@
+OUTPUT_FOLDER=content/api-reference/flyte-sdk
+API_DATA=/tmp/flyte-sdk.api.yaml
+
+.PHONY: all
+all: parser generate
+
+.PHONY: parser
+parser:
+	tools/api_generator/parser --package flyte --output ${API_DATA}
+
+.PHONY: generate
+generate: clean_output_folder
+	tools/api_generator/generate \
+		--title "Flyte SDK" \
+		--api "${API_DATA}" \
+		--include include/api.flyte-sdk.md \
+		--weight 1 \
+		--expanded true \
+		--variants \
+			+flyte \
+			+byoc \
+			+selfmanaged \
+			+serverless \
+		--output "${OUTPUT_FOLDER}"
+
+.PHONY: clean_output_folder
+clean_output_folder:
+	rm -rf "${OUTPUT_FOLDER}"

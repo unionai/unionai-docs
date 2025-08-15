@@ -1,4 +1,3 @@
-from typing import List
 from metadata import Metadata
 import os
 import subprocess
