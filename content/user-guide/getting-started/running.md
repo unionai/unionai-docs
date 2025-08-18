@@ -17,12 +17,14 @@ Furthermore, you perform these actions either programmatically from within Pytho
 To run your code on your Union/Flyte instance, you can use the `flyte run` command without the `--local` flag:
 
 ```shell
-flyte run hello.py main --name "Ada"
+flyte run hello.py main
 ```
+
+This deploys your code to the configured Union/Flyte instance and runs it immediately (Since no explicit `--config` is specified, the configuration found according to the [default configuration search](./local-setup#use-the-configuration-file-implicitly) will be used).
 
 ### From Python
 
-To run your workflow remotely from Python, use [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
+To run your workflow remotely from Python, use [`flyte.run()`](../../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
 
 ```python
 # hello.py
@@ -40,10 +42,7 @@ if __name__ == "__main__":
 
 This is the approach we use throughout our examples in this guide.
 We execute the script, thus invoking the `flyte.run()` function, with the top-level task as a parameter.
-The `flyte.run()` function then takes care of
-
-* Bundles your code and sends to your Union/Flyte instance.
-* Kicking off the execution of the top-level task.
+The `flyte.run()` function then deploys and runs the code in that file itself on your remote Union/Flyte instance.
 
 ## Running locally
 
@@ -52,17 +51,17 @@ The `flyte.run()` function then takes care of
 To run your code on your local machine, you can use the `flyte run` command with the `--local` flag:
 
 ```shell
-flyte run --local hello.py main --name "Ada"
+flyte run --local hello.py main
 ```
 
 ### From Python
 
-To run your workflow locally from Python, you chain [`flyte.with_runcontext()`](../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
+To run your workflow locally from Python, you chain [`flyte.with_runcontext()`](../../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
 
 ```python
 # hello.py
 
-... # Your sub-task definitions here
+... # Your other task definitions here
 
 @env.task
 def main(name: str):
@@ -70,7 +69,7 @@ def main(name: str):
 
 if __name__ == "__main__":
     flyte.init_from_config()
-    flyte.with_runcontext(mode="local").run(main, name="Ada")
+    flyte.with_runcontext(mode="local").run(main)
 ```
 
 Running your workflow locally is useful for testing and debugging, as it allows you to run your code without deploying it to a remote instance.
@@ -79,10 +78,42 @@ It also lets you quickly iterate on your code without the overhead of deployment
 Obviously, if your code relies on remote resources or services, you will need to mock those in your local environment, or temporarily work around any missing functionality.
 At the very least, local execution can be used to catch immediate syntax errors and other relatively simple issues before deploying your code to a remote instance.
 
+<!--
+
+
+Usages as intended in final design:
+
+# Deploy a specific environment from a file
+flyte deploy examples/hello.py my_env
+
+# Deploy all environments in a file
+flyte deploy examples/hello.py
+
+# Deploy all environments in a directory
+flyte deploy examples/
+
+# Recursively deploy all environments in a directory and its subdirectories
+flyte deploy --recursive examples/
+
+# Other options
+--project -p
+--domain -d
+--version
+--dry-run,--dryrun
+--copy-style [loaded_modules|all|none]
+--ignore-load-errors
+--help
+
+
+
+
+
+
+TODO: Add back when properly available
+
 ## Deploying to your Union/Flyte instance without running
 
 You can also deploy your workflow to your Union/Flyte instance without running it immediately
-
 ### Deploying from the command-line
 
 To deploy your workflow to your Union/Flyte instance without running it immediately, use the [`flyte deploy`]() command:
@@ -91,7 +122,7 @@ To deploy your workflow to your Union/Flyte instance without running it immediat
 flyte [TOP_LEVEL_OPTIONS] deploy [SUB_COMMAND_OPTIONS] [FILE] [TASK_ENV_VAR]
 ```
 
-* `TOP_LEVEL_OPTIONS`: Options that apply to the `flyte` command as a whole, such as `--config`, `--endpoint`, etc. See the [Flyte CLI documentation](../api-reference/flyte-cli#flyte) for more details.
+* `TOP_LEVEL_OPTIONS`: Options that apply to the `flyte` command as a whole, such as `--config`, `--endpoint`, etc. See the [Flyte CLI documentation](../../api-reference/flyte-cli#flyte) for more details.
 * `SUB_COMMAND_OPTIONS`: Options that apply to the `deploy` sub-command. These are:
     * `--project | -p` `<string>`: The project to which this command applies.
     * `--domain | -d` `<string>`: The domain to which this command applies.
@@ -109,7 +140,7 @@ flyte deploy --version "v1.0.0" hello.py env
 
 ### Deploying programmatically
 
-You can also deploy your workflow programmatically using the [`flyte.deploy()`](../api-reference/flyte-sdk/packages/flyte#deploy) function:
+You can also deploy your workflow programmatically using the [`flyte.deploy()`](../../api-reference/flyte-sdk/packages/flyte#deploy) function:
 
 ```python
 import flyte
@@ -139,7 +170,6 @@ deployment = flyte.deploy(
 
 ### Running a deployed workflow from the UI
 
-
 Once your workflow is deployed, you can run it from the Union/Flyte web interface.
 
 The UI will provide you with a live view of your workflow execution, including logs, task status, and outputs.
@@ -153,7 +183,7 @@ print(f"View in UI: {run.url}")
 
 ### Running a deployed workflow from the CLI
 
-After deploying your workflow, you can run it using the same [`flyte run`](../api-reference/flyte-cli#flyte-run) command:
+After deploying your workflow, you can run it using the same [`flyte run`](../../api-reference/flyte-cli#flyte-run) command:
 
 ```shell
 flyte run hello.py main --name "Ada"
@@ -228,7 +258,7 @@ run = flyte.with_runcontext(
 ).run(main, name="Ada")
 
 ```
-
+-->
 <!--
 TODO: Check this code for accuracy, relevance
 This was generated by an LLM doc writer

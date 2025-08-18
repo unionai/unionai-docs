@@ -6,13 +6,10 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Container images
 
-Every `task` in Flyte runs in its own container (unless you are using [reusable containers](./reusable-containers)) and every container needs a container image to define it.
-
-We use the `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify an image.
-Every task that uses that `TaskEnvironment` will run in a container based on that image.
+The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) to specify a container image.
+Every task defined using that `TaskEnvironment` will run in a container based on that image.
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/unionai-oss/flyte:latest`](https://github.com/orgs/unionai-oss/packages/container/package/)).
-
 
 ## Specifying your own image directly
 
@@ -25,28 +22,106 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union instance can access.
+This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union/Flyte instance can access.
 
-## Specify dependencies in your Python file
+## Specifying your own image with the `flyte.Image` object
 
-But, in many cases, you will want to build your own custom image that includes the dependencies required by your task, and you want to do that in as convenient a way as possible.
+You can also construct an image programmatically using the `flyte.Image` object.
 
-With Flyte you can do it right in your Python code, using the [`Image`](../../api-reference/flyte-sdk/packages/flyte#flyteimage) object and [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
+The `flyte.Image` object provides a fluent interface for building container images with specific dependencies.
 
-## Example
+You start building your image with on of the `from_` methods:
 
-Here is an example:
+* [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte#from_base): Start from a specified Dockerfile.
+* [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte#from_debian_base): Start from the Flyte default image
+* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Starte from
 
-<!-- TODO:
-Ketan Umare:
-Its weird to have this as the first example. I think we should have a regular image building example Image.from_debian_base().with_pip_packages(...) and then have this maybe as an additional example
--->
-{{< code file="/external/migrate-to-unionai-examples-flyte2/container_images.py" lang="python" >}}
+You can then layer on additional components using the `with_` methods:
 
-First, specify your dependencies using [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
-Simply add a comment at the top of your script as shown above, that includes your dependencies.
+* [`Image.with_apt_packages()`](../../api-reference/flyte-sdk/packages/flyte#with_apt_packages): Add Debian packages to the image.
+* [`Image.with_commands()`](../../api-reference/flyte-sdk/packages/flyte#with_commands): Add commands to run in the image.
+* [`Image.with_dockerignore()`](../../api-reference/flyte-sdk/packages/flyte#with_dockerignore): Specify a `.dockerignore` file.
+* [`Image.with_env_vars()`](../../api-reference/flyte-sdk/packages/flyte#with_env_vars): Set environment variables in the image.
+* [`Image.with_pip_packages()`](../../api-reference/flyte-sdk/packages/flyte#with_pip_packages): Add Python packages to the image.
+* [`Image.with_requirements()`](../../api-reference/flyte-sdk/packages/flyte#with_requirements): Specify a requirements.txt file.
+* [`Image.with_source_file()`](../../api-reference/flyte-sdk/packages/flyte#with_source_file): Specify a source file to include in the image.
+* [`Image.with_source_folder()`](../../api-reference/flyte-sdk/packages/flyte#with_source_folder): Specify a source folder to include in the image.
+* [`Image.with_uv_project()`](../../api-reference/flyte-sdk/packages/flyte#with_uv_project): Use the `uv` script metadata in the source file to specify the image.
+* [`Image.with_workdir()`](../../api-reference/flyte-sdk/packages/flyte#with_workdir): Specify the working directory for the image.
 
-Next, use the `flyte.Image.from_uv_script` method to create a [`flyte.Image`](../../api-reference/flyte-sdk/packages/flyte#flyteimage) object.
+You can also specify an image in one shot (with no possibility of layering) with:
+
+* [`Image.from_dockerfile()`](../../api-reference/flyte-sdk/packages/flyte#from_dockerfile): Build the final image from a single Dockerfile.
+
+Additionally, the `Image` class provides:
+
+* [`Image.clone()`](../../api-reference/flyte-sdk/packages/flyte#clone): Clone an existing image.
+* [`Image.validate()`](../../api-reference/flyte-sdk/packages/flyte#validate): Validate the image configuration.
+* [`Image.with_local_v2()`](../../api-reference/flyte-sdk/packages/flyte#with_local_v2): Does not add a layer, instead it overrides any existing builder configuration and builds the image locally. See [Image building](#image-building) for more details.
+
+Here are some examples of the most common patterns for building images with `flyte.Image`.
+
+## Example: Defining a custom image with `Image.from_debian_base`
+
+The `Image.from_debian_base()` provides the default Flyte image as the base.
+This image is itself based on the official Python Docker image (specifically `python:{version}-slim-bookworm`) with the addition of the Flyte SDK pre-installed.
+Starting there, you can layer additional features onto your image.
+For example:
+
+```python
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image = (
+        flyte.Image.from_debian_base(
+            name="my-image"
+            python_version=(3, 13),
+            registry="ghcr.io/my_gh_org"
+        )
+        .with_apt_packages("git", "curl")
+        .with_pip_packages("numpy", "pandas", "scikit-learn")
+        .with_env_vars({"MY_CONFIG": "production"})
+    )
+)
+```
+
+> [!NOTE]
+> The registry parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
+> See [Image building](#image-building) for more details.
+
+## Example: Defining an image based on uv script metadata
+
+Another common technique for defining an image is to use [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) to specify your dependencies right in your Python file and then use the `flyte.Image.from_uv_script()` method to create a `flyte.Image` object.
+The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
+This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.
+For example:
+
+```python
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#    "flyte",
+#    "numpy",
+#    "pandas",
+#    "scikit-learn"
+# ]
+# ///
+
+...
+
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image=flyte.Image.from_uv_script(
+            __file__,
+            name="my_image",
+            registry="ghcr.io/my_gh_org"
+        )
+        .with_apt_packages("git", "curl")
+        .with_env_vars({"MY_CONFIG": "production"})
+)
+```
+
+In this example we are including the same dependencies as in the previous example, but using the `uv` metadata mechanism.
+We then use the `with_apt_packages`, and `with_env_vars` methods to add additional features to the image.
 
 ## Image building
 

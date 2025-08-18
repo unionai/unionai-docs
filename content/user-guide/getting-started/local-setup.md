@@ -6,41 +6,14 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Local setup
 
-To run workflows on your Union/Flyte instance, you can also use the `flyte CLI` without an explicit `--config` like this:
+In this section we will explain the options for configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 
-```shell
-flyte run hello.py main
-```
-
-You can also initialize the Flyte SDK programmatically without specifying a configuration file, like this:on/Flyte instance, you need to configure the connection to the instance.
+Before proceeding, make sure you have completed the steps in [Getting started](../getting-started).
+You will need to have the `uv` tool and the `flyte` Python package installed.
 
 ## Setting up a configuration file
 
-In [Getting started](./getting-started) we used the following command to create a configuration:
-
-{{< variant byoc selfmanaged serverless >}}
-{{< markdown >}}
-```shell
-flyte create config \
-    --endpoint my-org.my-company.com \
-    --builder remote \
-    --domain development \
-    --project my-project
-```
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant flyte >}}
-{{< markdown >}}
-```shell
-flyte create config \
-    --endpoint my-org.my-company.com \
-    --builder local \
-    --domain development \
-    --project my-project
-```
-{{< /markdown >}}
-{{< /variant >}}
-
+In [Getting started](../getting-started) we used the `flyte create config` command to create a `config.yaml`.
 A full example using all available parameters would look like this:
 
 {{< variant byoc selfmanaged serverless >}}
@@ -74,7 +47,7 @@ flyte create config \
 {{< /markdown >}}
 {{< /variant >}}
 
-See the [API reference](../api-reference/flyte-cli#flyte-create-config) for details on the available parameters.
+See the [API reference](../../api-reference/flyte-cli#flyte-create-config) for details on the available parameters.
 
 The result of the above command would be the creation of a file called `my-config.yaml` with the following content:
 
@@ -115,34 +88,34 @@ A few notes about the properties in the config file:
 
 The `admin` section contains the connection details for your Union/Flyte instance.
 
-`admin.endpoint` is the URL (always with `dns:///` prefix) of your Union/Flyte instance.
+* `admin.endpoint` is the URL (always with `dns:///` prefix) of your Union/Flyte instance.
 If your instance UI is found at https://my-org.my-company.com, the actual endpoint used in this file would be `dns:///my-org.my-company.com`.
 
-`admin.insecure` indicates whether to use an insecure connection (without TLS) to the Union/Flyte instance.
+* `admin.insecure` indicates whether to use an insecure connection (without TLS) to the Union/Flyte instance.
 A setting of `true` is almost always only used for connecting to a local instance on your own machine.
 
 ### `image` section
 
 The `image` section contains the configuration for building Docker images for your tasks.
 
-`image.builder` specifies the image builder to use for building Docker images for your tasks.
-
-- For Union instances this is usually set to `remote`, which means that the images will be built on Union's infrastructure using the Union `ImageBuilder`.
-- For Flyte OSS instances, `ImageBuilder` is not available, so this property must be set to `local`.
-This means that the images will be built locally on your machine.
-You need to have Docker installed and running for this to work.
-See [Image building](./container-images#image-building) for details.
+* `image.builder` specifies the image builder to use for building Docker images for your tasks.
+  * For Union instances this is usually set to `remote`, which means that the images will be built on Union's infrastructure using the Union `ImageBuilder`.
+  * For Flyte OSS instances, `ImageBuilder` is not available, so this property must be set to `local`.
+    This means that the images will be built locally on your machine.
+    You need to have Docker installed and running for this to work.
+    See [Image building](../task-configuration/container-images#image-building) for details.
 
 ### `task` section
 
 The `task` section contains the configuration for running tasks on your Union/Flyte instance.
 
-`task.domain` specifies the domain in which the tasks will run.
-Domains are used to separate different environments, such as development, staging, and production.
+* `task.domain` specifies the domain in which the tasks will run.
+Domains are used to separate different environments, such as `development`, `staging`, and `production`.
 
-`task.org` specifies the organization in which the tasks will run. The organization is usually synonymous with the name of the Union instance you are using, which is usually the same as the first part of the `admin.endpoint` URL.
+* `task.org` specifies the organization in which the tasks will run. The organization is usually synonymous with the name of the Union instance you are using, which is usually the same as the first part of the `admin.endpoint` URL.
 
-`task.project` specifies the project in which the tasks will run.
+* `task.project` specifies the project in which the tasks will run. The project you specify here will be the default project to which tasks are deployed if no other project is specified. The project you specify must already exist on your Union/Flyte instance (it will not be auto-created on first deploy).
+<!-- TODO: add link to project creation when available -->
 
 ## Using the configuration file
 
@@ -166,13 +139,13 @@ flyte -c my-config.yaml run hello.py main
 
 When invoking flyte commands programmatically, you have to first initialize the Flyte SDK with the configuration file.
 
-To initialize with an explicitly specified configuration file, use [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config):
+To initialize with an explicitly specified configuration file, use [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte#init_from_config):
 
 ```python
 flyte.init_from_config("my-config.yaml")
 ```
 
-Then you can continue with other flyte commands, such as running a workflow:
+Then you can continue with other `flyte` commands, such as running the main task:
 
 ```python
     run = flyte.run(main)
@@ -246,14 +219,13 @@ flyte \
         main
 ```
 
-See the [Flyte CLI reference](../api-reference/flyte-cli) for details.
+See the [Flyte CLI reference](../../api-reference/flyte-cli) for details.
 
-
-When using the Flyte SDK programmatically, you can use the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) function to specify the backend endpoint and other parameters directly in your code.
+When using the Flyte SDK programmatically, you can use the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) function to specify the backend endpoint and other parameters directly in your code.
 
 ### With `flyte` SDK
 
-To initialize the Flyte SDK with inline parameters, you can use the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) function like this:
+To initialize the Flyte SDK with inline parameters, you can use the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) function like this:
 
 ```python
 flyte.init(
@@ -264,4 +236,4 @@ flyte.init(
 )
 ```
 
-See the [`flyte.init` reference](../api-reference/flyte-sdk/packages/flyte#init) for details on the available parameters.
+See the [`flyte.init` reference](../../api-reference/flyte-sdk/packages/flyte#init) for details.
