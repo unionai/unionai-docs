@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.0b6
+version: 2.0.0b9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
