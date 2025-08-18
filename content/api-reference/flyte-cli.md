@@ -82,7 +82,8 @@ $ flyte --config /path/to/config.yaml run ...
 | `--org` | `text` |  | The organization to which the command applies. |
 | {{< multiline >}}`-c`
 `--config`{{< /multiline >}} | `path` |  | Path to the configuration file to use. If not specified, the default configuration file is used. |
-| `--simple` | `boolean` | `False` | Use a simple output format for commands that support it. This is useful for copying, pasting, and scripting. |
+| {{< multiline >}}`--output-format`
+`-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
@@ -156,6 +157,14 @@ Create a new secret. The name of the secret is required. For example:
 $ flyte create secret my_secret --value my_value
 ```
 
+If you don't provide a `--value` flag, you will be prompted to enter the
+secret value in the terminal.
+
+```bash
+$ flyte create secret my_secret
+Enter secret value:
+```
+
 If `--from-file` is specified, the value will be read from the file instead of being provided directly:
 
 ```bash
@@ -174,7 +183,8 @@ $ flyte create secret my_secret --type image_pull
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--from-file` | `path` |  | Path to the file with the binary secret. |
+| `--value` | `text` |  | Secret value Mutually exclusive with from_file. |
+| `--from-file` | `path` |  | Path to the file with the binary secret. Mutually exclusive with value. |
 | `--type` | `choice` | `regular` | Type of the secret. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
@@ -381,6 +391,7 @@ If you want to see the actions for a run, use `get action <run_name>`.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -407,7 +418,7 @@ Currently, both `name` and `version` are required to get a specific task.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--limit` | `integer` | `100` | Limit the number of tasks to show. |
+| `--limit` | `integer` | `100` | Limit the number of tasks to fetch. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -419,22 +430,28 @@ Currently, both `name` and `version` are required to get a specific task.
 Run a task from a python file.
 
 Example usage:
-```bash
-flyte run --name examples/basics/hello.py my_task --arg1 value1 --arg2 value2
-```
-Note: all arguments for the run command are provided right after the `run` command and before the file name.
 
-You can also specify the project and domain using the `--project` and `--domain` options, respectively. These
-options can be set in the config file or passed as command line arguments.
-
-Note: The arguments for the task are provided after the task name and can be retrieved using `--help`
-Example:
 ```bash
-flyte run --name examples/basics/hello.py my_task --help
+flyte run --project my-project --domain development hello.py my_task --arg1 value1 --arg2 value2
 ```
+
+Arguments to the run command are provided right after the `run` command and before the file name.
+For example, the command above specifies the project and domain.
 
 To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
- Flyte environment.
+Flyte environment:
+
+```bash
+flyte run --local hello.py my_task --arg1 value1 --arg2 value2
+```
+
+Other arguments to the run command are listed below.
+
+Arguments for the task itself are provided after the task name and can be retrieved using `--help`. For example:
+
+```bash
+flyte run hello.py my_task --help
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -454,22 +471,28 @@ To run a task locally, use the `--local` flag. This will run the task in the loc
 Run a task from a python file.
 
 Example usage:
-```bash
-flyte run --name examples/basics/hello.py my_task --arg1 value1 --arg2 value2
-```
-Note: all arguments for the run command are provided right after the `run` command and before the file name.
 
-You can also specify the project and domain using the `--project` and `--domain` options, respectively. These
-options can be set in the config file or passed as command line arguments.
-
-Note: The arguments for the task are provided after the task name and can be retrieved using `--help`
-Example:
 ```bash
-flyte run --name examples/basics/hello.py my_task --help
+flyte run --project my-project --domain development hello.py my_task --arg1 value1 --arg2 value2
 ```
+
+Arguments to the run command are provided right after the `run` command and before the file name.
+For example, the command above specifies the project and domain.
 
 To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
- Flyte environment.
+Flyte environment:
+
+```bash
+flyte run --local hello.py my_task --arg1 value1 --arg2 value2
+```
+
+Other arguments to the run command are listed below.
+
+Arguments for the task itself are provided after the task name and can be retrieved using `--help`. For example:
+
+```bash
+flyte run hello.py my_task --help
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
