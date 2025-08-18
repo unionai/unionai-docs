@@ -91,8 +91,7 @@ env = flyte.TaskEnvironment(
 ## Example: Defining an image based on uv script metadata
 
 Another common technique for defining an image is to use [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) to specify your dependencies right in your Python file and then use the `flyte.Image.from_uv_script()` method to create a `flyte.Image` object.
-The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
-This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.
+The `from_uv_script` method starts with the default Flyte image and adds the dependencies specified in the `uv` metadata.
 For example:
 
 ```python
@@ -115,13 +114,20 @@ env = flyte.TaskEnvironment(
             name="my_image",
             registry="ghcr.io/my_gh_org"
         )
-        .with_apt_packages("git", "curl")
-        .with_env_vars({"MY_CONFIG": "production"})
 )
 ```
 
-In this example we are including the same dependencies as in the previous example, but using the `uv` metadata mechanism.
-We then use the `with_apt_packages`, and `with_env_vars` methods to add additional features to the image.
+The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
+This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.
+
+<!-- explain how to run a script locally with flyteinit() vs flyte.init_from_config() -->
+
+<!-- exmplain that flyte is installed by default by from_uv_script but the one you specify in metadatd will oerride -->
+
+> [!NOTE]
+> When using `uv` metadata in this way, be sure to include the `flyte` package in your `uv` script dependencies.
+> This will ensure that `flyte` is installed when running the script locally using `uv run`.
+> When running on the Flyte/Union backend, the `flyte` package from the uv script dependencies will overwrite the one included automatically in any case from the default Flyte image.
 
 ## Image building
 
