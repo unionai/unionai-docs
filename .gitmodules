@@ -1,4 +1,4 @@
 [submodule "external/unionai-examples"]
 	path = external/unionai-examples
 	url = git@github.com:unionai/unionai-examples
-	branch = enghabu/marimo-wasm
+	branch = origin/main
