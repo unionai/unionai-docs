@@ -11,7 +11,6 @@ Every task defined using that `TaskEnvironment` will run in a container based on
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/unionai-oss/flyte:latest`](https://github.com/orgs/unionai-oss/packages/container/package/)).
 
-
 ## Specifying your own image directly
 
 You can directly reference an image by URL in the `image` parameter, like this:
@@ -62,203 +61,67 @@ Additionally, the `Image` class provides:
 
 Here are some examples of the most common patterns for building images with `flyte.Image`.
 
-## Building custom images with `Image.from_debian_base`
+## Example: Defining a custom image with `Image.from_debian_base`
 
-The `Image.from_debian_base()` method is the recommended way to create custom container images for your tasks.
-It provides the default Flyte image as the base. This image is itself based on the official Python Docker image (specifically `python:{version}-slim-bookworm`) with the addition of the Flyte SDK pre-installed.
+The `Image.from_debian_base()` provides the default Flyte image as the base.
+This image is itself based on the official Python Docker image (specifically `python:{version}-slim-bookworm`) with the addition of the Flyte SDK pre-installed.
+Starting there, you can layer additional features onto your image.
+For example:
 
-The `from_debian_base()` method accepts the following optional parameters:
-
-### `python_version`
-
-* Type: `(Optional[Tuple[int, int]])`
-* Specify the python version as a tuple `(<major>, <minor>)`. For example, `(3, 12)`
-* Defaults to the current Python version detected from `sys.version_info` in the local environment.
-
-### `flyte_version`
-
-* Type: `(Optional[str])`
-* Specify the Flyte SDK version as a string. For example, `"v2.0.0"`.
-* Defaults to the current SDK version (`flyte.__version__`) in the local environment.
-
-### `install_flyte`
-
-* Type: `(Optional[bool])`
-* Whether to install the Flyte SDK in the image.
-* Defaults to `True`. Set to `False` if you want a clean Python environment without Flyte.
-
-### `registry`
-
-* Type: `(Optional[str])`
-* URL of the container registry to use for the image if [built locally](#image-building).
-* Defaults to the default registry of your locally install Docker (you must have Docker installed locally when [building locally](#image-building)).
-
-### `name`
-
-* Type: `(Optional[str])`
-* Custom name for the image.
-* Default: Uses default naming convention.
-* Example: `"my-custom-image"`
-
-### `platform`
-
-* Type: `(Optional[Tuple[Architecture, ...]])`
-* Target architectures for the image.
-* Default: `("linux/amd64", "linux/arm64")` (multi-arch).
-* Examples: `("linux/amd64",)`, `("linux/arm64",)`
-
-
-* In a `TaskEnvironment` constructor it defines the name of the environment and is required.
-  Used in conjunction with the name of each `@env.task` functions to define the fully-qualified task name. For example:
-
-  ```python
-  env = flyte.TaskEnvironment(name="my_env")
-
-  @env.task
-  async def my_task(data: str) -> str:
-      ...
-  ```
-
-  Here, the fully qualified name of the task will be `my_env.my_task`.
-
-* Can optionally be set in the `@env.task` decorator level, in which case it overrides,
-  not the `TaskEnvironment` name but the friendly name of the task.
-  By default, the friendly name of a task is the name of the function.
-  The friendly name is used for display purposes in the UI.
-
-### `image`
-
-* Type: `Union[str, Image, Literal['auto']]`
-
-* Specifies the Docker image to use for the task container.
-  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte#flyteimage), or the string `auto`.
-  If set to `auto`, or if this parameter is not set, the [default image]() will be used.
-  See [Container images](./container-images).
-
-* Only settable at the `TaskEnvironment` level.
-
-
-
-
-
-
-
-
-
-
-
-- **`python_version`**: Specify the Python version as a tuple, e.g., `(3, 12)`
-- **`flyte_version`**: Specify the Flyte version to use, defaults to the version installed locally
-- **`install_flyte`**: Set to `False` if you want a clean Python environment without the Flyte SDK
-- **`registry`**: Custom Docker registry for your image
-- **`name`**: Custom name for your image
-- **`platform`**: Target architecture(s), defaults to multi-arch (`linux/amd64`, `linux/arm64`)
-
-* `python_version (Optional[Tuple[int, int]])`:
-
-
-
-Specific Flyte SDK version to install
-Default: Uses current SDK version (__version__)
-Examples: "v2.0.0", "2.1.0"
-install_flyte (bool):
-
-Whether to install the Flyte SDK in the image
-Default: True
-Set to False if you want a clean Python environment without Flyte
-registry (Optional[str]):
-
-Docker registry to use for the image
-Default: Uses the default registry
-Example: "my-registry.com"
-name (Optional[str]):
-
-Custom name for the image
-Default: Uses default naming convention
-Example: "my-custom-image"
-platform (Optional[Tuple[Architecture, ...]]):
-
-Target architectures for the image
-Default: ("linux/amd64", "linux/arm64") (multi-arch)
-Examples: ("linux/amd64",), ("linux/arm64",)
-
-
-
-
-
-### Common patterns
-
-
-
-
-
-
-#### Specific Python version
 ```python
-# Use Python 3.12
-image = flyte.Image.from_debian_base(python_version=(3, 12))
-```
-
-#### Clean Python environment
-```python
-# Python environment without Flyte SDK pre-installed
-image = flyte.Image.from_debian_base(install_flyte=False)
-```
-
-#### Custom registry and name
-```python
-# Push to your own registry
-image = flyte.Image.from_debian_base(
-    registry="my-registry.com",
-    name="my-python-env"
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image = (
+        flyte.Image.from_debian_base(
+            name="my-image"
+            python_version=(3, 13),
+            registry="ghcr.io/my_gh_org"
+        )
+        .with_apt_packages("git", "curl")
+        .with_pip_packages("numpy", "pandas", "scikit-learn")
+        .with_env_vars({"MY_CONFIG": "production"})
+    )
 )
 ```
 
-### Layering additional components
+> [!NOTE]
+> The registry parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
+> See [Image building](#image-building) for more details.
 
-The power of `from_debian_base()` comes from chaining it with additional methods to build up your image:
+## Example: Defining an image based on uv script metadata
+
+Another common technique for defining an image is to use [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) to specify your dependencies right in your Python file and then use the `flyte.Image.from_uv_script()` method to create a `flyte.Image` object.
+The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
+This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.
+For example:
 
 ```python
-image = (
-    flyte.Image.from_debian_base()
-    .with_apt_packages("git", "curl")  # System packages
-    .with_pip_packages("numpy", "pandas", "scikit-learn")  # Python packages
-    .with_env_vars({"MY_CONFIG": "production"})  # Environment variables
-    .with_source_folder(Path("./src"))  # Include local code
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#    "flyte",
+#    "numpy",
+#    "pandas",
+#    "scikit-learn"
+# ]
+# ///
+
+...
+
+env = flyte.TaskEnvironment(
+    name="my_env",
+    image=flyte.Image.from_uv_script(
+            __file__,
+            name="my_image",
+            registry="ghcr.io/my_gh_org"
+        )
+        .with_apt_packages("git", "curl")
+        .with_env_vars({"MY_CONFIG": "production"})
 )
 ```
 
-### When to use `from_debian_base`
-
-Use `Image.from_debian_base()` when you need:
-- A standardized, reliable Python environment
-- Multi-architecture support (AMD64 and ARM64)
-- Integration with Flyte's caching and optimization features
-- A starting point for complex, layered image builds
-- Consistent development and production environments
-
-The method creates images that are optimized for Flyte's execution environment while giving you full control over dependencies and configuration.
-
-## Specify dependencies in your Python file
-
-But, in many cases, you will want to build your own custom image that includes the dependencies required by your task, and you want to do that in as convenient a way as possible.
-
-With Flyte you can do it right in your Python code, using the [`Image`](../../api-reference/flyte-sdk/packages/flyte#flyteimage) object and [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
-
-## Example
-
-Here is an example:
-
-<!-- TODO:
-Ketan Umare:
-Its weird to have this as the first example. I think we should have a regular image building example Image.from_debian_base().with_pip_packages(...) and then have this maybe as an additional example
--->
-{{< code file="/external/migrate/user-guide/task-configuration/container-images/container_images.py" lang="python" >}}
-
-First, specify your dependencies using [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
-Simply add a comment at the top of your script as shown above, that includes your dependencies.
-
-Next, use the `flyte.Image.from_uv_script` method to create a [`flyte.Image`](../../api-reference/flyte-sdk/packages/flyte#flyteimage) object.
+In this example we are including the same dependencies as in the previous example, but using the `uv` metadata mechanism.
+We then use the `with_apt_packages`, and `with_env_vars` methods to add additional features to the image.
 
 ## Image building
 
