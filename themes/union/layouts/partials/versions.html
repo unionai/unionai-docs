@@ -6,6 +6,7 @@ Version:
 {{- if not hugo.IsProduction -}}
     onmouseenter="document.getElementById('verwarn').style.display = '';"
     onmouseout="document.getElementById('verwarn').style.display = 'none';"
+    disabled
 {{- end -}}
 >
     {{- range $i, $ver := $versions -}}

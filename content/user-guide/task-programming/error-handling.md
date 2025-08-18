@@ -16,7 +16,7 @@ This ability is a direct result of the fact that workflows are now written in re
 giving you with all the power and flexibility of Python error handling.
 Let's look at an example:
 
-{{< code file="/external/migrate-to-unionai-examples-flyte2/error_handling.py" lang="python" >}}
+{{< code file="/external/migrate/user-guide/task-programming/error-handling/error_handling.py" lang="python" >}}
 <!-- TODO:
 Ketan Umare
 OMG We need a better example. This is something stupid i wrote.

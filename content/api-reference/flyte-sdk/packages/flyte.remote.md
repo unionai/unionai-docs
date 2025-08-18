@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b6
+version: 2.0.0b9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -135,8 +135,9 @@ class Action(
 |-|-|
 | [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
-| [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the action with the remote server. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Watch the action for updates. |
 
@@ -157,31 +158,34 @@ def done()
 Check if the action is done.
 
 
-#### show_logs()
-
-```python
-def show_logs(
-    attempt: int | None,
-    max_lines: int,
-    show_ts: bool,
-    raw: bool,
-    filter_system: bool,
-)
-```
-| Parameter | Type |
-|-|-|
-| `attempt` | `int \| None` |
-| `max_lines` | `int` |
-| `show_ts` | `bool` |
-| `raw` | `bool` |
-| `filter_system` | `bool` |
-
 #### sync()
 
 ```python
 def sync()
 ```
 Sync the action with the remote server. This is a placeholder for syncing the action.
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
 
 
 #### wait()
@@ -260,6 +264,8 @@ class ActionDetails(
 | [`inputs()`](#inputs) | Placeholder for inputs. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
 | [`outputs()`](#outputs) | Placeholder for outputs. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`watch_updates()`](#watch_updates) |  |
 
 
@@ -301,6 +307,28 @@ If attempt is None, it checks for the latest attempt.
 def outputs()
 ```
 Placeholder for outputs. This can be extended to handle outputs from the run context.
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
 
 
 #### watch_updates()
@@ -371,6 +399,8 @@ class ActionInputs(
 | [`pop()`](#pop) | D. |
 | [`popitem()`](#popitem) | D. |
 | [`setdefault()`](#setdefault) | D. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`update()`](#update) | D. |
 | [`values()`](#values) | D. |
 
@@ -475,6 +505,28 @@ D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
 | `key` |  |
 | `default` |  |
 
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
 #### update()
 
 ```python
@@ -519,6 +571,36 @@ class ActionOutputs(
 | `pb2` | `run_definition_pb2.Outputs` |
 | `data` | `Tuple[Any, ...]` |
 
+### Methods
+
+| Method | Description |
+|-|-|
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
 ## flyte.remote.Project
 
 A class representing a project in the Union API.
@@ -526,12 +608,42 @@ A class representing a project in the Union API.
 
 ```python
 class Project(
-    _pb2: project_pb2.Project,
+    pb2: project_pb2.Project,
 )
 ```
 | Parameter | Type |
 |-|-|
-| `_pb2` | `project_pb2.Project` |
+| `pb2` | `project_pb2.Project` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
 
 ## flyte.remote.Run
 
@@ -555,8 +667,9 @@ class Run(
 | Method | Description |
 |-|-|
 | [`done()`](#done) | Check if the run is done. |
-| [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the run with the remote server. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`watch()`](#watch) | Get the details of the run. |
 
 
@@ -568,31 +681,34 @@ def done()
 Check if the run is done.
 
 
-#### show_logs()
-
-```python
-def show_logs(
-    attempt: int | None,
-    max_lines: int,
-    show_ts: bool,
-    raw: bool,
-    filter_system: bool,
-)
-```
-| Parameter | Type |
-|-|-|
-| `attempt` | `int \| None` |
-| `max_lines` | `int` |
-| `show_ts` | `bool` |
-| `raw` | `bool` |
-| `filter_system` | `bool` |
-
 #### sync()
 
 ```python
 def sync()
 ```
 Sync the run with the remote server. This is a placeholder for syncing the run.
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
 
 
 #### watch()
@@ -644,6 +760,8 @@ class RunDetails(
 | [`done()`](#done) | Check if the run is in a terminal state (completed or failed). |
 | [`inputs()`](#inputs) | Placeholder for inputs. |
 | [`outputs()`](#outputs) | Placeholder for outputs. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
 
 #### done()
@@ -671,6 +789,28 @@ def outputs()
 Placeholder for outputs. This can be extended to handle outputs from the run context.
 
 
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
 ### Properties
 
 | Property | Type | Description |
@@ -692,6 +832,36 @@ class Secret(
 | Parameter | Type |
 |-|-|
 | `pb2` | `definition_pb2.Secret` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
 
 ### Properties
 
@@ -716,6 +886,8 @@ class Task(
 | Method | Description |
 |-|-|
 | [`get()`](#get) | Get a task by its ID or name. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
 
 #### get()
@@ -742,6 +914,28 @@ Either version or auto_version are required parameters.
 | `domain` | `str \| None` |
 | `version` | `str \| None` |
 | `auto_version` | `AutoVersioning \| None` |
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
 
 ### Properties
 

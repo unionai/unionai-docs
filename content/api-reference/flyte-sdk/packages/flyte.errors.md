@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b6
+version: 2.0.0b9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,6 +35,7 @@ unknown error.
 | [`PrimaryContainerNotFoundError`](.././flyte.errors#flyteerrorsprimarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`ReferenceTaskError`](.././flyte.errors#flyteerrorsreferencetaskerror) | This error is raised when the user tries to access a task that does not exist. |
 | [`RetriesExhaustedError`](.././flyte.errors#flyteerrorsretriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
+| [`RunAbortedError`](.././flyte.errors#flyteerrorsrunabortederror) | This error is raised when the run is aborted by the user. |
 | [`RuntimeDataValidationError`](.././flyte.errors#flyteerrorsruntimedatavalidationerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`RuntimeSystemError`](.././flyte.errors#flyteerrorsruntimesystemerror) | This error is raised when the underlying task execution fails because of a system error. |
 | [`RuntimeUnknownError`](.././flyte.errors#flyteerrorsruntimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
@@ -42,6 +43,31 @@ unknown error.
 | [`TaskInterruptedError`](.././flyte.errors#flyteerrorstaskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`TaskTimeoutError`](.././flyte.errors#flyteerrorstasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`UnionRpcError`](.././flyte.errors#flyteerrorsunionrpcerror) | This error is raised when communication with the Union server fails. |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`silence_grpc_polling_error()`](#silence_grpc_polling_error) | Suppress specific gRPC polling errors in the event loop. |
+
+
+## Methods
+
+#### silence_grpc_polling_error()
+
+```python
+def silence_grpc_polling_error(
+    loop,
+    context,
+)
+```
+Suppress specific gRPC polling errors in the event loop.
+
+
+| Parameter | Type |
+|-|-|
+| `loop` |  |
+| `context` |  |
 
 ## flyte.errors.ActionNotFoundError
 
@@ -321,6 +347,20 @@ class RetriesExhaustedError(
 | `message` | `str` |
 | `worker` | `str \| None` |
 
+## flyte.errors.RunAbortedError
+
+This error is raised when the run is aborted by the user.
+
+
+```python
+class RunAbortedError(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
+
 ## flyte.errors.RuntimeDataValidationError
 
 This error is raised when the user tries to access a resource that does not exist or is invalid.
@@ -419,16 +459,12 @@ This error is raised when the underlying task execution runs for longer than the
 
 ```python
 class TaskTimeoutError(
-    code: str,
     message: str,
-    worker: str | None,
 )
 ```
 | Parameter | Type |
 |-|-|
-| `code` | `str` |
 | `message` | `str` |
-| `worker` | `str \| None` |
 
 ## flyte.errors.UnionRpcError
 

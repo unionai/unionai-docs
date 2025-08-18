@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b6
+version: 2.0.0b9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,6 +37,7 @@ layout: py_api
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors#flyteerrorsprimarycontainernotfounderror) |This error is raised when the primary container is not found. |
 | [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors#flyteerrorsreferencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors#flyteerrorsretriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
+| [`flyte.errors.RunAbortedError`](../packages/flyte.errors#flyteerrorsrunabortederror) |This error is raised when the run is aborted by the user. |
 | [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors#flyteerrorsruntimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.RuntimeSystemError`](../packages/flyte.errors#flyteerrorsruntimesystemerror) |This error is raised when the underlying task execution fails because of a system error. |
 | [`flyte.errors.RuntimeUnknownError`](../packages/flyte.errors#flyteerrorsruntimeunknownerror) |This error is raised when the underlying task execution fails because of an unknown error. |
