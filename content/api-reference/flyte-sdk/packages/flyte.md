@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b6
+version: 2.0.0b9
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -369,7 +369,7 @@ Cache configuration for a task.
 
 ```python
 class Cache(
-    behavior: typing.Literal['auto', 'override', 'disable', 'enabled'],
+    behavior: typing.Literal['auto', 'override', 'disable'],
     version_override: typing.Optional[str],
     serialize: bool,
     ignored_inputs: typing.Union[typing.Tuple[str, ...], str],
@@ -379,7 +379,7 @@ class Cache(
 ```
 | Parameter | Type |
 |-|-|
-| `behavior` | `typing.Literal['auto', 'override', 'disable', 'enabled']` |
+| `behavior` | `typing.Literal['auto', 'override', 'disable']` |
 | `version_override` | `typing.Optional[str]` |
 | `serialize` | `bool` |
 | `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` |
@@ -1221,7 +1221,7 @@ class TaskEnvironment(
     env: Optional[Dict[str, str]],
     resources: Optional[Resources],
     image: Union[str, Image, Literal['auto']],
-    cache: Union[CacheRequest],
+    cache: CacheRequest,
     reusable: ReusePolicy | None,
     plugin_config: Optional[Any],
 )
@@ -1236,7 +1236,7 @@ class TaskEnvironment(
 | `env` | `Optional[Dict[str, str]]` |
 | `resources` | `Optional[Resources]` |
 | `image` | `Union[str, Image, Literal['auto']]` |
-| `cache` | `Union[CacheRequest]` |
+| `cache` | `CacheRequest` |
 | `reusable` | `ReusePolicy \| None` |
 | `plugin_config` | `Optional[Any]` |
 
@@ -1316,7 +1316,7 @@ Besides the base environment parameters, you can override kwargs like `cache`, `
 def task(
     _func,
     name: Optional[str],
-    cache: Union[CacheRequest] | None,
+    cache: CacheRequest | None,
     retries: Union[int, RetryStrategy],
     timeout: Union[timedelta, int],
     docs: Optional[Documentation],
@@ -1334,7 +1334,7 @@ Decorate a function to be a task.
 |-|-|
 | `_func` |  |
 | `name` | `Optional[str]` |
-| `cache` | `Union[CacheRequest] \| None` |
+| `cache` | `CacheRequest \| None` |
 | `retries` | `Union[int, RetryStrategy]` |
 | `timeout` | `Union[timedelta, int]` |
 | `docs` | `Optional[Documentation]` |
