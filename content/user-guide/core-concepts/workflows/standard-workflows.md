@@ -14,7 +14,6 @@ The syntax of a standard workflow definition can only include the following:
 * Calls to other functions decorated with `@{{< key kit_as >}}.workflow` and assignment of variables to the returned values (see [Subworkflows](./subworkflows-and-sub-launch-plans)).
 * Calls to [`LaunchPlan` objects](../launch-plans) (see [When to use sub-launch plans](./subworkflows-and-sub-launch-plans#when-to-use-sub-launch-plans))
 * Calls to functions decorated with `@{{< key kit_as >}}.dynamic` and assignment of variables to the returned values (see [Dynamic workflows](./dynamic-workflows)).
-* Calls to functions decorated with `@eager` and assignment of variables to the returned values (see [Eager workflows](./eager-workflows)).
 * The special [`conditional` construct](../../programming/conditionals).
 * Statements using the [chaining operator `>>`](../../programming/chaining-entities).
 
@@ -34,10 +33,10 @@ However, when it is registered to {{< key product_name >}}, the top level `@{{< 
 {{< /variant >}}
 
 * Inputs to the workflow are materialized as lazily-evaluated promises which are propagated to downstream tasks and subworkflows.
-* All values returned by calls to functions decorated with `@{{< key kit_as >}}.task` , `@{{< key kit_as >}}.dynamic`and `@eager` are also materialized as lazily-evaluated promises.
+* All values returned by calls to functions decorated with `@{{< key kit_as >}}.task` or `@{{< key kit_as >}}.dynamic` are also materialized as lazily-evaluated promises.
 
 The resulting structure is used to construct the Directed Acyclic Graph (DAG) and deploy the required containers to the cluster.
-The actual evaluation of these promises occurs when the tasks (or dynamic or eager workflows) are executed in their respective containers.
+The actual evaluation of these promises occurs when the tasks (or dynamic workflows) are executed in their respective containers.
 
 ## Conditional construct
 
