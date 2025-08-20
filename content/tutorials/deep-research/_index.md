@@ -35,7 +35,7 @@ Flyte is uniquely well-suited for this kind of system. It provides:
 - Traceability and observability into each step and iteration
 - Scalability for long-running or compute-intensive workloads
 
-![Result](../../_static/gifs/tutorials/deep-research/result.gif)
+![Result](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/gifs/tutorials/deep-research/result.gif)
 
 Throughout this guide, we'll show how to design this workflow using the Flyte SDK, and how to unlock the full potential of agentic development with tools you already know and trust.
 
@@ -160,4 +160,4 @@ uv run --prerelease=allow weave_evals.py
 The script will run all tasks in the pipeline and log the evaluation results to Weights & Biases.
 While you can also evaluate individual tasks, this script focuses on end-to-end evaluation of the end-to-end deep research workflow.
 
-![Weave evaluations](../../_static/images/tutorials/deep-research/weave_evals.png)
+![Weave evaluations](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/deep-research/weave_evals.png)

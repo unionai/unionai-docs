@@ -38,7 +38,7 @@ flyte create secret openai_api_key <YOUR_OPENAI_API_KEY>
 
 We also define CSS styles for live HTML reports that track prompt optimization in real time:
 
-![Results](../../_static/gifs/tutorials/prompt_engineering/results.gif)
+![Results](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/gifs/tutorials/prompt_engineering/results.gif)
 
 ## Prepare the evaluation dataset
 
@@ -125,7 +125,7 @@ We start with a _baseline_ evaluation using the user-provided prompt. Then for e
 
 At the end, we return the best prompt and its accuracy. The report shows how accuracy improves over time and which prompts were tested.
 
-![Report](../../_static/gifs/tutorials/prompt_engineering/prompt_accuracies.png)
+![Report](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/gifs/tutorials/prompt_engineering/prompt_accuracies.png)
 
 ## Build the full pipeline
 
@@ -150,7 +150,7 @@ Run it with:
 uv run --prerelease=allow optimizer.py
 ```
 
-![Execution](../../_static/gifs/tutorials/prompt_engineering/execution.gif)
+![Execution](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/gifs/tutorials/prompt_engineering/execution.gif)
 
 ## Why this matters
 
