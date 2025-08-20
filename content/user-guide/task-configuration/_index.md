@@ -58,7 +58,7 @@ env = flyte.TaskEnvironment(
     name="data_processing_env",
     image=flyte.Image.from_debian_base(),
     resources=flyte.Resources(cpu=1, memory="512Mi"),
-    env={"MY_VAR": "value"},
+    env_vars={"MY_VAR": "value"},
     secrets=flyte.Secret(key="my_api_key", as_env_var="MY_API_KEY"),
     cache="disable",
     pod_template=my_pod_template_spec,
@@ -87,7 +87,7 @@ async def process_data(data_path: str) -> str:
 async def main() -> str:
     result = await process_data.override(
         resources=flyte.Resources(cpu=4, memory="2Gi"),
-        env={"MY_VAR": "new_value"},
+        env_vars={"MY_VAR": "new_value"},
         secrets=flyte.Secret(key="my_api_key_3", as_env_var="MY_API_KEY"),
         cache="enable",
         max_inline_io_bytes=100 * 1024,
@@ -106,7 +106,7 @@ Here is an overview of all task configuration parameters available at each level
 | **name** | ✅ Yes (required) | ✅ Yes (sets friendly name)| ❌ No |
 | **image** | ✅ Yes | ❌ No | ❌ No |
 | **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
-| **env** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
+| **env_vars** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **secrets** | ✅ Yes | ✅ Yes (if not `reusable`) | ✅ Yes (if not `reusable`) |
 | **cache** | ✅ Yes | ✅ Yes | ✅ Yes |
 | **pod_template** | ✅ Yes | ✅ Yes | ❌ No |
@@ -171,7 +171,7 @@ The full set of parameters available for configuring a task environment, task de
 * Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level
   (but only if `reuseable` is not in effect).
 
-### `env`
+### `env_vars`
 
 * Type: `Optional[Dict[str, str]]`
 
@@ -182,7 +182,7 @@ The full set of parameters available for configuring a task environment, task de
 
 * Type: `Optional[SecretRequest]` where `SecretRequest` is an alias for `Union[str, Secret, List[str | Secret]]`
 
-* The secrets to be made available in the environment.
+* The secrets to be made available in the task container.
   See the [Secrets section](./secrets) and the API docs for the [`Secret` object](../../api-reference/flyte-sdk/packages/flyte#flytesecret).
 
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level, but, in both cases, only if `reuseable` is not in effect.
@@ -232,7 +232,7 @@ See [Using pod templates](./pod-templates).
   See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte#flytereusepolicy).
 
 
-When a `TaskEnvironment` has `reusable` set, then `resources`, `env`, and `secrets` can only be overridden in `task.override()` if accompanied by an
+When a `TaskEnvironment` has `reusable` set, then `resources`, `env_vars`, and `secrets` can only be overridden in `task.override()` if accompanied by an
 explicit `reusable="off"` in the same `task.override()` invocation.
 For example:
 
@@ -266,7 +266,7 @@ Additionally, `secrets` can only be overridden at the `@env.task` decorator leve
    objects that this `TaskEnvironment` depends on.
    When deploying this `TaskEnvironment`, the system will ensure that any dependencies
    of the listed `Environment`s are also available.
-   This is useful when you have a set of environments that depend on each other.
+   This is useful when you have a set of task environments that depend on each other.
 
 <!-- TODO: Add when available
 See [Environment dependencies](./environment-dependencies)

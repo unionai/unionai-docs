@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b9
+version: 2.0.0b13
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -315,7 +315,7 @@ def with_runcontext(
     overwrite_cache: bool,
     project: str | None,
     domain: str | None,
-    env: Dict[str, str] | None,
+    env_vars: Dict[str, str] | None,
     labels: Dict[str, str] | None,
     annotations: Dict[str, str] | None,
     interruptible: bool,
@@ -355,7 +355,7 @@ if __name__ == "__main__":
 | `overwrite_cache` | `bool` |
 | `project` | `str \| None` |
 | `domain` | `str \| None` |
-| `env` | `Dict[str, str] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
 | `labels` | `Dict[str, str] \| None` |
 | `annotations` | `Dict[str, str] \| None` |
 | `interruptible` | `bool` |
@@ -506,7 +506,7 @@ class Environment(
     pod_template: Optional[Union[str, 'V1PodTemplate']],
     description: Optional[str],
     secrets: Optional[SecretRequest],
-    env: Optional[Dict[str, str]],
+    env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     image: Union[str, Image, Literal['auto']],
 )
@@ -518,7 +518,7 @@ class Environment(
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
-| `env` | `Optional[Dict[str, str]]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
 | `resources` | `Optional[Resources]` |
 | `image` | `Union[str, Image, Literal['auto']]` |
 
@@ -551,7 +551,7 @@ def clone_with(
     name: str,
     image: Optional[Union[str, Image, Literal['auto']]],
     resources: Optional[Resources],
-    env: Optional[Dict[str, str]],
+    env_vars: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     depends_on: Optional[List[Environment]],
     kwargs: **kwargs,
@@ -562,7 +562,7 @@ def clone_with(
 | `name` | `str` |
 | `image` | `Optional[Union[str, Image, Literal['auto']]]` |
 | `resources` | `Optional[Resources]` |
-| `env` | `Optional[Dict[str, str]]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `depends_on` | `Optional[List[Environment]]` |
 | `kwargs` | `**kwargs` |
@@ -1119,23 +1119,40 @@ Caution: It is important to note that the environment is shared, so managing mem
 ```python
 class ReusePolicy(
     replicas: typing.Union[int, typing.Tuple[int, int]],
-    idle_ttl: typing.Union[int, datetime.timedelta, NoneType],
-    reuse_salt: str | None,
+    idle_ttl: typing.Union[int, datetime.timedelta],
     concurrency: int,
+    scaledown_ttl: typing.Union[int, datetime.timedelta],
 )
 ```
 | Parameter | Type |
 |-|-|
 | `replicas` | `typing.Union[int, typing.Tuple[int, int]]` |
-| `idle_ttl` | `typing.Union[int, datetime.timedelta, NoneType]` |
-| `reuse_salt` | `str \| None` |
+| `idle_ttl` | `typing.Union[int, datetime.timedelta]` |
 | `concurrency` | `int` |
+| `scaledown_ttl` | `typing.Union[int, datetime.timedelta]` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`get_scaledown_ttl()`](#get_scaledown_ttl) | Returns the scaledown TTL as a timedelta. |
+
+
+#### get_scaledown_ttl()
+
+```python
+def get_scaledown_ttl()
+```
+Returns the scaledown TTL as a timedelta. If scaledown_ttl is not set, returns None.
+
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `max_replicas` | `None` | {{< multiline >}}Returns the maximum number of replicas.
+{{< /multiline >}} |
+| `min_replicas` | `None` | {{< multiline >}}Returns the minimum number of replicas.
 {{< /multiline >}} |
 | `ttl` | `None` | {{< multiline >}}Returns the idle TTL as a timedelta. If idle_ttl is not set, returns the global default.
 {{< /multiline >}} |
@@ -1152,14 +1169,14 @@ name of the environment variable that the secret should be mounted as.
 
 Example:
 ```python
-@task(secrets="MY_SECRET")
+@task(secrets="my-secret")
 async def my_task():
-    os.environ["MY_SECRET"]  # This will be set to the value of the secret
+    # This will be set to the value of the secret. Note: The env var is always uppercase, and - is replaced with _.
+    os.environ["MY_SECRET"]
 
-@task(secrets=Secret("MY_SECRET", mount="/path/to/secret"))
+@task(secrets=Secret("my-openai-api-key", as_env_var="OPENAI_API_KEY"))
 async def my_task2():
-    async with open("/path/to/secret") as f:
-        secret_value = f.read()
+    os.environ["OPENAI_API_KEY"]
 ```
 
 TODO: Add support for secret versioning (some stores) and secret groups (some stores) and mounting as files.
@@ -1218,7 +1235,7 @@ class TaskEnvironment(
     pod_template: Optional[Union[str, 'V1PodTemplate']],
     description: Optional[str],
     secrets: Optional[SecretRequest],
-    env: Optional[Dict[str, str]],
+    env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
     image: Union[str, Image, Literal['auto']],
     cache: CacheRequest,
@@ -1233,7 +1250,7 @@ class TaskEnvironment(
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
-| `env` | `Optional[Dict[str, str]]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
 | `resources` | `Optional[Resources]` |
 | `image` | `Union[str, Image, Literal['auto']]` |
 | `cache` | `CacheRequest` |
@@ -1288,7 +1305,7 @@ def clone_with(
     name: str,
     image: Optional[Union[str, Image, Literal['auto']]],
     resources: Optional[Resources],
-    env: Optional[Dict[str, str]],
+    env_vars: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     depends_on: Optional[List[Environment]],
     kwargs: **kwargs,
@@ -1305,7 +1322,7 @@ Besides the base environment parameters, you can override kwargs like `cache`, `
 | `name` | `str` |
 | `image` | `Optional[Union[str, Image, Literal['auto']]]` |
 | `resources` | `Optional[Resources]` |
-| `env` | `Optional[Dict[str, str]]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `depends_on` | `Optional[List[Environment]]` |
 | `kwargs` | `**kwargs` |
@@ -1320,7 +1337,6 @@ def task(
     retries: Union[int, RetryStrategy],
     timeout: Union[timedelta, int],
     docs: Optional[Documentation],
-    secrets: Optional[SecretRequest],
     pod_template: Optional[Union[str, 'V1PodTemplate']],
     report: bool,
     max_inline_io_bytes: int,
@@ -1338,7 +1354,6 @@ Decorate a function to be a task.
 | `retries` | `Union[int, RetryStrategy]` |
 | `timeout` | `Union[timedelta, int]` |
 | `docs` | `Optional[Documentation]` |
-| `secrets` | `Optional[SecretRequest]` |
 | `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
 | `report` | `bool` |
 | `max_inline_io_bytes` | `int` |

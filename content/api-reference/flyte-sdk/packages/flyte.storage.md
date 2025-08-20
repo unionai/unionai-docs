@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.0.0b9
+version: 2.0.0b13
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -96,7 +96,7 @@ def get_stream(
     path: str,
     chunk_size,
     kwargs,
-) -> typing.AsyncIterator[bytes]
+) -> typing.AsyncGenerator[bytes, NoneType]
 ```
 Get a stream of data from a remote location.
 This is useful for downloading streaming data from a remote location.

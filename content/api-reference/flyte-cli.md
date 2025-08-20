@@ -26,13 +26,13 @@ This is the command line interface for Flyte.
 | Action | On |
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
-| `build` |   |
+| [`build`](#flyte-build) | - |
 | `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret)  |
 | `delete` | [`secret`](#flyte-delete-secret)  |
-| `deploy` |   |
+| [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task)  |
-| `run` |   |
+| [`run`](#flyte-run) | - |
 {{< /markdown >}}
 {{< /grid >}}
 
@@ -100,16 +100,6 @@ Abort a run.
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte build
-
-Build the environments defined in a python file or directory. This will build the images associated with the
-environments.
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--noop` | `boolean` |  | Dummy parameter, placeholder for future use. Does not affect the build process. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte build
@@ -206,28 +196,6 @@ Delete a secret. The name of the secret is required.
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte deploy
-
-Deploy one or more environments from a python file.
-This command will create or update environments in the Flyte system.
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--version` | `text` |  | Version of the environment to deploy |
-| {{< multiline >}}`--dry-run`
-`--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
-| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
-| {{< multiline >}}`--recursive`
-`-r`{{< /multiline >}} | `boolean` | `False` | Recursively deploy all environments in the current directory |
-| `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
-| {{< multiline >}}`--ignore-load-errors`
-`-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte deploy
@@ -427,7 +395,9 @@ Currently, both `name` and `version` are required to get a specific task.
 
 ### flyte run
 
-Run a task from a python file.
+Run a task from a python file or deployed task.
+
+To run a remote task that already exists in Flyte, use the deployed-task command:
 
 Example usage:
 
@@ -445,45 +415,28 @@ Flyte environment:
 flyte run --local hello.py my_task --arg1 value1 --arg2 value2
 ```
 
-Other arguments to the run command are listed below.
-
-Arguments for the task itself are provided after the task name and can be retrieved using `--help`. For example:
+To run tasks that you've already deployed to Flyte, use the deployed-task command:
 
 ```bash
-flyte run hello.py my_task --help
+flyte run deployed-task my_env.my_task --arg1 value1 --arg2 value2
 ```
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| {{< multiline >}}`-p`
-`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
-| {{< multiline >}}`-d`
-`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--local` | `boolean` | `False` | Run the task locally |
-| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
-| `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
-| {{< multiline >}}`--follow`
-`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
-| `--help` | `boolean` | `False` | Show this message and exit. |
-
-### flyte run
-
-Run a task from a python file.
-
-Example usage:
+To run a specific version of a deployed task, use the `env.task:version` syntax:
 
 ```bash
-flyte run --project my-project --domain development hello.py my_task --arg1 value1 --arg2 value2
+flyte run deployed-task my_env.my_task:xyz123 --arg1 value1 --arg2 value2
 ```
 
-Arguments to the run command are provided right after the `run` command and before the file name.
-For example, the command above specifies the project and domain.
-
-To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
-Flyte environment:
+You can specify the `--config` flag to point to a specific Flyte cluster:
 
 ```bash
-flyte run --local hello.py my_task --arg1 value1 --arg2 value2
+flyte run --config my-config.yaml deployed-task ...
+```
+
+You can discover what deployed tasks are available by running:
+
+```bash
+flyte run deployed-task
 ```
 
 Other arguments to the run command are listed below.
