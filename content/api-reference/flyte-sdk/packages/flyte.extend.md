@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b9
+version: 2.0.0b13
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -79,7 +79,7 @@ class AsyncFunctionTaskTemplate(
     retries: Union[int, RetryStrategy],
     reusable: Union[ReusePolicy, None],
     docs: Optional[Documentation],
-    env: Optional[Dict[str, str]],
+    env_vars: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     timeout: Optional[TimeoutType],
     pod_template: Optional[Union[str, PodTemplate]],
@@ -105,7 +105,7 @@ class AsyncFunctionTaskTemplate(
 | `retries` | `Union[int, RetryStrategy]` |
 | `reusable` | `Union[ReusePolicy, None]` |
 | `docs` | `Optional[Documentation]` |
-| `env` | `Optional[Dict[str, str]]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `timeout` | `Optional[TimeoutType]` |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` |
@@ -266,14 +266,16 @@ when not in a Flyte task execution context.  See the implementation below for an
 
 ```python
 def override(
+    friendly_name: Optional[str],
     resources: Optional[Resources],
-    cache: CacheRequest,
+    cache: Optional[CacheRequest],
     retries: Union[int, RetryStrategy],
     timeout: Optional[TimeoutType],
     reusable: Union[ReusePolicy, Literal['off'], None],
-    env: Optional[Dict[str, str]],
+    env_vars: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     max_inline_io_bytes: int | None,
+    pod_template: Optional[Union[str, PodTemplate]],
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
@@ -283,14 +285,16 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
+| `friendly_name` | `Optional[str]` |
 | `resources` | `Optional[Resources]` |
-| `cache` | `CacheRequest` |
+| `cache` | `Optional[CacheRequest]` |
 | `retries` | `Union[int, RetryStrategy]` |
 | `timeout` | `Optional[TimeoutType]` |
 | `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
-| `env` | `Optional[Dict[str, str]]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `max_inline_io_bytes` | `int \| None` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `kwargs` | `**kwargs` |
 
 #### post()

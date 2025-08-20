@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b9
+version: 2.0.0b13
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
