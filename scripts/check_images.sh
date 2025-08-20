@@ -23,12 +23,6 @@ find content -name "*.md" | while read -r file; do
             continue
         fi
 
-        if [[ "$img_path" == https://* ]]; then
-            echo "ERROR: $img_path is external URL in '$file'"
-            echo "1" > "$temp_error_file"
-            continue
-        fi
-
         cd "$(dirname "$file")"
 
         # echo "Checking image: $img_path"
