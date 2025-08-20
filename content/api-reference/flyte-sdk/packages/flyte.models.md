@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b9
+version: 2.0.0b13
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -456,7 +456,17 @@ class TaskContext(
 
 | Method | Description |
 |-|-|
+| [`is_in_cluster()`](#is_in_cluster) | Check if the task is running in a cluster. |
 | [`replace()`](#replace) |  |
+
+
+#### is_in_cluster()
+
+```python
+def is_in_cluster()
+```
+Check if the task is running in a cluster.
+:return: bool
 
 
 #### replace()
