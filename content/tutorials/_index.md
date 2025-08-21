@@ -26,4 +26,9 @@ Build an agentic workflow for deep research with multi-step reasoning and evalua
 {{< link-card target="hpo" title="Hyperparameter optimization" >}}
 Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
 {{< /link-card >}}
+
+{{< link-card target="auto-prompt-engineering" title="Automatic prompt engineering" >}}
+Easily run prompt optimization with real-time observability, traceability, and automatic recovery.
+{{< /link-card >}}
+
 {{< /grid >}}

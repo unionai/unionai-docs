@@ -34,6 +34,7 @@ domain-specific language (DSL).
 {{< tabs "flyte-2-python" >}}
 {{< tab "Sync Python" >}}
 {{< markdown >}}
+
 ```python
 import flyte
 
@@ -53,6 +54,7 @@ if __name__ == "__main__":
     flyte.init()
     flyte.run(main, name="World")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Async Python" >}}
@@ -79,30 +81,32 @@ if __name__ == "__main__":
     flyte.init()
     flyte.run(main, name="World")
 ```
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
 As you can see in the hello world example, workflows can be constructed at runtime, allowing for more flexible and
 adaptive behavior. The Flyte 2 also supports:
-* Python's asynchronous programming model to express parallelism.
-* Python's native error handling with `try-except` to overridden configurations, like resource requests.
-* Predefined static workflows when compile-time safety is critical.
+
+- Python's asynchronous programming model to express parallelism.
+- Python's native error handling with `try-except` to overridden configurations, like resource requests.
+- Predefined static workflows when compile-time safety is critical.
 
 ## Simplified API
 
 The new API is more intuitive, with fewer abstractions to learn and a focus on simplicity.
 
-| Use case | Flyte 1 | Flyte 2 |
-|---|---|---|
-| Environment management | `N/A` | `TaskEnvironment` |
-| Perform basic computation | `@task` | `@env.task` |
-| Combine tasks into a workflow | `@workflow` | `@env.task` |
-| Create dynamic workflows | `@dynamic` | `@env.task` |
-| Fanout parallelism | `flytekit.map` | Python `for` loop with `asyncio.gather` |
-| Conditional execution | `flytekit.conditional` | Python `if-elif-else` |
-| Catching workflow failures | `@workflow(on_failure=...)` | Python `try-except` |
-| Schedule workflows | `LaunchPlan` | `@env.task(on_schedule=...)` |
+| Use case                      | Flyte 1                     | Flyte 2                                 |
+| ----------------------------- | --------------------------- | --------------------------------------- |
+| Environment management        | `N/A`                       | `TaskEnvironment`                       |
+| Perform basic computation     | `@task`                     | `@env.task`                             |
+| Combine tasks into a workflow | `@workflow`                 | `@env.task`                             |
+| Create dynamic workflows      | `@dynamic`                  | `@env.task`                             |
+| Fanout parallelism            | `flytekit.map`              | Python `for` loop with `asyncio.gather` |
+| Conditional execution         | `flytekit.conditional`      | Python `if-elif-else`                   |
+| Catching workflow failures    | `@workflow(on_failure=...)` | Python `try-except`                     |
+| Schedule workflows            | `LaunchPlan`                | `@env.task(on_schedule=...)`            |
 
 There is no `@workflow` decorator. Instead, "workflows" are authored through a pattern of tasks calling tasks.
 Tasks are defined within environments, which encapsulate the context and resources needed for execution.
@@ -135,9 +139,9 @@ observability in the UI. If the task run fails, the workflow is able to recover 
 
 Flyte 2 provides full management of the workflow lifecycle through a standardized API through the CLI and the Python SDK.
 
-| Use case | CLI | Python SDK |
-| --- | --- | --- |
-| Run a task | `flyte run ...` | `flyte.run(...)` |
+| Use case      | CLI                | Python SDK          |
+| ------------- | ------------------ | ------------------- |
+| Run a task    | `flyte run ...`    | `flyte.run(...)`    |
 | Deploy a task | `flyte deploy ...` | `flyte.deploy(...)` |
 
 You can also fetch and run remote (previously deployed) tasks within the course of a running workflow.
@@ -162,7 +166,7 @@ def main() -> flyte.File:
 
 Author and run workflows and fetch workflow metadata (I/O and logs) directly from Jupyter notebooks.
 
-![Native Notebook](../../_static/images/user-guide/notebook.png)
+![Native Notebook](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/notebook.png)
 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
@@ -192,7 +196,7 @@ workflows.
 
 New UI with a streamlined and user-friendly experience for authoring and managing workflows.
 
-![New UI](../../_static/images/user-guide/v2ui.png)
+![New UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 
 This UI improves the visualization of workflow execution and monitoring, simplifying access to logs, metadata, and other
 important information.

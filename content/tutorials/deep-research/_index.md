@@ -35,8 +35,7 @@ Flyte is uniquely well-suited for this kind of system. It provides:
 - Traceability and observability into each step and iteration
 - Scalability for long-running or compute-intensive workloads
 
-![Deep research execution](../../_static/images/tutorials/deep-research/run.png)
-_How the deep research agent workflow appears in the Union UI_
+![Result](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/gifs/tutorials/deep-research/result.gif)
 
 Throughout this guide, we'll show how to design this workflow using the Flyte SDK, and how to unlock the full potential of agentic development with tools you already know and trust.
 
@@ -56,14 +55,13 @@ The Python packages are declared at the top of the file using the `uv` script st
 # /// script
 # requires-python = "==3.13"
 # dependencies = [
-#    "flyte>=2.0.0b0",
+#    "flyte>=2.0.0b6",
 #    "pydantic==2.11.5",
 #    "litellm==1.72.2",
-#    "pypandoc==1.15",
-#    "pandoc==2.4",
 #    "tavily-python==0.7.5",
-#    "commonmark==0.9.1",
-#    "xhtml2pdf==0.2.17",
+#    "together==1.5.24",
+#    "markdown==3.8.2",
+#    "pymdown-extensions==10.16.1",
 # ]
 # ///
 ```
@@ -111,7 +109,7 @@ Next, we define a `research_topic` task to orchestrate the entire deep research 
 
 {{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=research_topic lang=python >}}
 
-The `main` task wraps this entire pipeline and adds PDF generation as the final step.
+The `main` task wraps this entire pipeline and adds report generation in HTML format as the final step.
 It also serves as the main entry point to the workflow, allowing us to pass in all configuration parameters, including which LLMs to use at each stage.
 This flexibility lets us mix and match models for planning, summarization, and final synthesis, helping us optimize for both cost and quality.
 
@@ -162,4 +160,4 @@ uv run --prerelease=allow weave_evals.py
 The script will run all tasks in the pipeline and log the evaluation results to Weights & Biases.
 While you can also evaluate individual tasks, this script focuses on end-to-end evaluation of the end-to-end deep research workflow.
 
-![Weave evaluations](../../_static/images/tutorials/deep-research/weave_evals.png)
+![Weave evaluations](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/deep-research/weave_evals.png)

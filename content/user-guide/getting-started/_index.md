@@ -53,9 +53,9 @@ uv pip install --no-cache --prerelease=allow --upgrade flyte
 Next, create a `config.yaml` file that points to your Flyte instance.
 Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
-* Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
+- Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
   You can simply copy the domain part of the URL from your browser when logged into your backend instance.
-* Replace `my-project` with an actual project.
+- Replace `my-project` with an actual project.
   The project you specify must already exist on your Flyte backend instance.
 
 ```shell
@@ -74,9 +74,9 @@ flyte create config \
 Next, create a `config.yaml` file that points to your Union instance.
 Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
-* Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
+- Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
   You can simply copy the domain part of the URL from your browser when logged into your backend instance.
-* Replace `my-project` with an actual project.
+- Replace `my-project` with an actual project.
   The project you specify must already exist on your Union backend instance.
 
 ```shell
@@ -103,12 +103,12 @@ Create a file called `hello.py` with the following content:
 
 In the code above we do the following:
 
-* Import the `flyte` package.
-* Define a `TaskEnvironment` to group the configuration used by tasks.
-* Define two tasks using the `@env.task` decorator.
-    * Tasks are regular Python functions, but each runs in its own container.
-    * When deployed to your Union/Flyte instance, each task execution will run in its own separate container.
-    * Both tasks use the same `env` (the same `TaskEnvironment`) so, while each runs in its own container, those containers will be configured identically.
+- Import the `flyte` package.
+- Define a `TaskEnvironment` to group the configuration used by tasks.
+- Define two tasks using the `@env.task` decorator.
+  - Tasks are regular Python functions, but each runs in its own container.
+  - When deployed to your Union/Flyte instance, each task execution will run in its own separate container.
+  - Both tasks use the same `env` (the same `TaskEnvironment`) so, while each runs in its own container, those containers will be configured identically.
 
 ## Running the code
 
@@ -139,8 +139,7 @@ Run 'a0' completed successfully.
 
 Click the link to go to your Union instance and see the run in the UI:
 
-![V2 UI](../../_static/images/user-guide/v2ui.png)
-
+![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 
 <!-- TODO: Add explanation of the UI elements and their functionality
 ## Understanding the UI
