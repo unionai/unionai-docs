@@ -10,7 +10,7 @@ Thank you for your interest in Flyte!
 
 > [!NOTE]
 > This page is part of the Flyte 2 documentation.
-> If you are interested in contributing code to for Flyte 1, switch the selector at the top of the page to *v1**.
+> If you are interested in contributing code to for Flyte 1, switch the selector at the top of the page to \*v1\*\*.
 
 ## FLyte 2
 
@@ -95,7 +95,7 @@ To understand how the below components interact with each other, refer to [Under
 > [!NOTE]
 > Except for `flytekit`, the below components are maintained in the [`flyte` monorepo](https://github.com/flyteorg/flyte).
 
-![Dependency graph between various flyteorg repos](../_static/images/community/contributing-code/dependency-graph.png)
+![Dependency graph between various flyteorg repos](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/community/contributing-code/dependency-graph.png)
 
 ### `flyte`
 

@@ -12,7 +12,7 @@ sidebar_expanded: true
 
 This example walks you through building a multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 
-![Trading agents execution visualization](../../_static/images/tutorials/trading-agents/execution.png)
+![Trading agents execution visualization](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/trading-agents/execution.png)
 _Trading agents execution visualization_
 
 ## TL;DR
@@ -51,7 +51,7 @@ With Flyte, you get:
 
 This simulation is powered by a Flyte task that orchestrates multiple intelligent agents working together to analyze a company's stock and make informed trading decisions.
 
-![Trading agents schema](../../_static/images/tutorials/trading-agents/schema.png)
+![Trading agents schema](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/tutorials/trading-agents/schema.png)
 _Trading agents schema_
 
 ### Entry point
