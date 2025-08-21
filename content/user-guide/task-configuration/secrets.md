@@ -11,16 +11,12 @@ Secrets reside in a secret store on the data plane of your Union/Flyte backend.
 You can create, list, and delete secrets in the store using the Flyte CLI or SDK.
 Secrets in the store can be accessed and used within your workflow tasks, without exposing any cleartext values in your code.
 
-<!-- TODO: add back when file secrets are supported
 ## Creating a literal string secret
--->
-
-## Creating a secret
 
 You can create a secret using the [`flyte create secret`](../../api-reference/flyte-cli#flyte-create-secret) command like this:
 
 ```shell
-flyte create secret MY_SECRET_KEY my_secret_value
+flyte create secret MY_SECRET_KEY --value my_secret_value
 ```
 
 This will create a secret called `MY_SECRET_KEY` with the value `my_secret_value`.
