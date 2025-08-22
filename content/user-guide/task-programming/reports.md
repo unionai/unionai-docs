@@ -30,13 +30,13 @@ You can `log()` or `replace()` HTML on the `Tab` object just as you can directly
 Finally, you send the report to the Flyte server and make it visible in the UI:
 
 - [`flyte.report.flush()`](../../api-reference/flyte-sdk/packages/flyte.report#flush) dispatches the report.
-  **It is important to call this method to ensure that the report is sent**.
+  **It is important to call this method to ensure that the data is sent**.
 
 <!-- TODO:
 Check (test) if implicit flush is performed at the end of the task execution.
 -->
 
-Here is an example of how to use the reporting feature in a task:
+## Example 1:
 
 ```python
 import flyte
@@ -63,6 +63,29 @@ if __name__ == "__main__":
 Here we define a task `task1` that logs some HTML content to the default tab and creates a new tab named "Tab 2" where it logs additional HTML content.
 The `flush` method is called to sent the report to the backend.
 
-When the task is run, the report will be visible in the Flyte UI under the task execution details:
+## Example 2:
 
+As above, we import the required modules:
+
+{{< code file="/external/unionai-examples/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=imports lang=python >}}
+
+We then define the initial HTML content for the report (Here we exclude it  because it is rather long. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py)):
+
+```python
+HTML_CONTENT = """
+    <!DOCTYPE html>
+    <html lang="en">
+    ...
+    </html>
+"""
+```
+
+Finally, we define the logic that generates the report:
+
+{{< code file="/external/unionai-examples/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=core_logic lang=python >}}
+
+When the workflow is run, the report will be visible in the UI:
+
+<!--
 ![Reports](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/reports.png)
+-->
