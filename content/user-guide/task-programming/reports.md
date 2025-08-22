@@ -69,7 +69,7 @@ As above, we import the required modules:
 
 {{< code file="/external/unionai-examples/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=imports lang=python >}}
 
-We then define the initial HTML content for the report (Here we exclude it  because it is rather long. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py)):
+We then define the initial HTML content for the report (Here we exclude it because it is rather long. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py)):
 
 ```python
 HTML_CONTENT = """
