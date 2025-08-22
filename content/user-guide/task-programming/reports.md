@@ -91,8 +91,6 @@ Finally, we run the workflow:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=section-2 lang=python >}}
 
-When the workflow is run, the report will be visible in the UI:
+When the workflow runs, the report will be visible in the UI:
 
-<!--
-![Reports](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/reports.png)
--->
+![Globe visualization](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/globe_visualization.png)
