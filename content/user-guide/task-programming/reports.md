@@ -65,26 +65,31 @@ The `flush` method is called to sent the report to the backend.
 
 ## Example 2:
 
-As above, we import the required modules:
+Here is another example.
+We import the necessary modules, set up the task environment, define the main task with reporting enabled and define the data generation function:
 
+{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=section-1 lang=python >}}
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=imports lang=python >}}
-
-
-We then define the initial HTML content for the report (Here we exclude it because it is rather long. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py)):
+We then define the HTML content for the report:
 
 ```python
-HTML_CONTENT = """
+def get_html_content():
+    data_points = generate_globe_data()
+
+    html_content = f"""
     <!DOCTYPE html>
     <html lang="en">
     ...
     </html>
+    return html_content
 """
 ```
 
-Finally, we define the logic that generates the report:
+We exclude it here due to length. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py).
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=core_logic lang=python >}}
+Finally, we run the workflow:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=section-2 lang=python >}}
 
 When the workflow is run, the report will be visible in the UI:
 
