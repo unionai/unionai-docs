@@ -120,7 +120,8 @@ DATA_PROCESSING_DASHBOARD_HTML = """
 """
 ```
 
-We exclude it here due to length. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/streaming_reports.py).
+We exclude it here due to length. You can find it in the [source file](
+https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-programming/reports/streaming_reports.py).
 
 Finally, we define the task that renders the report (`data_processing_dashboard`), the driver task of the workflow (`main`), and the run logic:
 
