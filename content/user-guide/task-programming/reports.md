@@ -42,7 +42,7 @@ Check (test) if implicit flush is performed at the end of the task execution.
 import flyte
 import flyte.report
 
-env = flyte.TaskEnvironment("name")
+env = flyte.TaskEnvironment(name="reports_example")
 
 
 @env.task(report=True)
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 ```
 
 Here we define a task `task1` that logs some HTML content to the default tab and creates a new tab named "Tab 2" where it logs additional HTML content.
-The `flush` method is called to sent the report to the backend.
+The `flush` method is called to send the report to the backend.
 
 ## A more complex example
 
