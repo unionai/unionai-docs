@@ -85,7 +85,7 @@ def get_html_content():
 """
 ```
 
-We exclude it here due to length. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py).
+We exclude it here due to length. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-programming/reports/globe_visualization.py).
 
 Finally, we run the workflow:
 
