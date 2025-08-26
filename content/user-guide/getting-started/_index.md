@@ -22,7 +22,7 @@ First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-star
 ### Install Python 3.10 or later
 
 Flyte 2 requires Python 3.10 or later.
-We recommend that you install the most recent version of Python (>= 3.10) compatible with your codebase and pin it as the default Python version.
+Install the most recent version of Python (>= 3.10) compatible with your codebase and pin it.
 For example, to install and pin Python 3.13, do the following:
 
 ```shell
