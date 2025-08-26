@@ -20,7 +20,7 @@ First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-star
 > In particular, we leverage `uv`'s ability to [embed dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
 
 ### Ensure that you have Python 3.10 or later installed
-  `
+
 **Flyte 2 requires Python 3.10 or later.**
 
 Install the most recent version of Python (>= 3.10) compatible with your codebase and pin it as the default Python version.
