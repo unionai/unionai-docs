@@ -19,9 +19,12 @@ First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-star
 > You will need to use the [`uv` package manager](https://docs.astral.sh/uv/) to run the examples in this guide.
 > In particular, we leverage `uv`'s ability to [embed dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
 
-### Ensure that you have Python 3.13 or later installed
+### Ensure that you have Python 3.10 or later installed
+  `
+**Flyte 2 requires Python 3.10 or later.**
 
-Install Python 3.13 or later on your machine and pin it as the default Python version for `uv`:
+Install the most recent version of Python (>= 3.10) compatible with your codebase and pin it as the default Python version.
+For example, to install and pin Python 3.13, do the following:
 
 ```shell
 uv python install 3.13
@@ -39,7 +42,7 @@ source .venv/bin/activate
 
 ## Install the `flyte` package
 
-Install the latest flyte package in the virtual environment (we are currently in beta, so you have to enable prerelease installation):
+Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation):
 
 ```shell
 uv pip install --no-cache --prerelease=allow --upgrade flyte
