@@ -211,7 +211,7 @@ Repeat the following steps for each project-domain pair:
 
 ```yaml
 attributes:
-defaultUserRoleValue: <ARN from step 11 above>
+  defaultUserRoleValue: <ARN from step 11 above>
 domain: <domain>
 project: <project>
 ```
