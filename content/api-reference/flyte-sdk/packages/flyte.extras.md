@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.0b13
+version: 2.0.0b17
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -199,7 +199,7 @@ when not in a Flyte task execution context.  See the implementation below for an
 
 ```python
 def override(
-    friendly_name: Optional[str],
+    short_name: Optional[str],
     resources: Optional[Resources],
     cache: Optional[CacheRequest],
     retries: Union[int, RetryStrategy],
@@ -218,7 +218,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
-| `friendly_name` | `Optional[str]` |
+| `short_name` | `Optional[str]` |
 | `resources` | `Optional[Resources]` |
 | `cache` | `Optional[CacheRequest]` |
 | `retries` | `Union[int, RetryStrategy]` |

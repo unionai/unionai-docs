@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b13
+version: 2.0.0b17
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -426,6 +426,7 @@ class TaskContext(
     action: ActionID,
     version: str,
     raw_data_path: RawDataPath,
+    input_path: str | None,
     output_path: str,
     run_base_dir: str,
     report: Report,
@@ -435,6 +436,7 @@ class TaskContext(
     compiled_image_cache: ImageCache | None,
     data: Dict[str, Any],
     mode: Literal['local', 'remote', 'hybrid'],
+    interactive_mode: bool,
 )
 ```
 | Parameter | Type |
@@ -442,6 +444,7 @@ class TaskContext(
 | `action` | `ActionID` |
 | `version` | `str` |
 | `raw_data_path` | `RawDataPath` |
+| `input_path` | `str \| None` |
 | `output_path` | `str` |
 | `run_base_dir` | `str` |
 | `report` | `Report` |
@@ -451,6 +454,7 @@ class TaskContext(
 | `compiled_image_cache` | `ImageCache \| None` |
 | `data` | `Dict[str, Any]` |
 | `mode` | `Literal['local', 'remote', 'hybrid']` |
+| `interactive_mode` | `bool` |
 
 ### Methods
 
