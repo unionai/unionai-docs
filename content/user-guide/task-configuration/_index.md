@@ -70,7 +70,7 @@ env = flyte.TaskEnvironment(
 
 # Level 2: Decorator - Override some environment settings
 @env.task(
-    name="data_processing_task",
+    short_name="process",
     secrets=flyte.Secret(key="my_api_key_2", as_env_var="MY_API_KEY"),
     cache="auto"
     pod_template=my_pod_template_spec_2,
