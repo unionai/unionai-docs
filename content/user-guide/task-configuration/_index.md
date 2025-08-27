@@ -101,9 +101,10 @@ async def main() -> str:
 
 Here is an overview of all task configuration parameters available at each level and how they interact:
 
-| Parameter | `TaskEnvironment` | `@env.task` decorator | Task (and run) invocation |
+| Parameter | `TaskEnvironment` | `@env.task` decorator | Task invocation |
 |-----------|-------------|-----------|------------|
-| **name** | ✅ Yes (required) | ✅ Yes (sets friendly name)| ❌ No |
+| **name** | ✅ Yes (required) | ❌ N/A | ❌ N/A |
+| **short_name** | ❌ N/A | ✅ Yes | ✅ Yes |
 | **image** | ✅ Yes | ❌ No | ❌ No |
 | **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **env_vars** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
@@ -126,10 +127,14 @@ The full set of parameters available for configuring a task environment, task de
 
 ### `name`
 
-* Type: `str`
+* Type: `str` (required)
 
-* In a `TaskEnvironment` constructor it defines the name of the environment and is required.
-  Used in conjunction with the name of each `@env.task` functions to define the fully-qualified task name. For example:
+* Defines the name of the `TaskEnvironment`.
+  Since it specifies the name *of the environment*, it cannot, logically, be overridden at the `@env.task` decorator or the `task.override()` invocation level.
+
+  It is used in conjunction with the name of each `@env.task` function to define the fully-qualified name of the task.
+  The fully qualified name is always the `TaskEnvironment` name (the one above) followed by a period and then the task function name (the name of the Python function being decorated).
+  For example:
 
   ```python
   env = flyte.TaskEnvironment(name="my_env")
@@ -139,12 +144,19 @@ The full set of parameters available for configuring a task environment, task de
       ...
   ```
 
-  Here, the fully qualified name of the task will be `my_env.my_task`.
+  Here, the name of the TaskEnvironment is `my_env` and the fully qualified name of the task is `my_env.my_task`.
+  The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
 
-* Can optionally be set in the `@env.task` decorator level, in which case it overrides,
-  not the `TaskEnvironment` name but the friendly name of the task.
-  By default, the friendly name of a task is the name of the function.
-  The friendly name is used for display purposes in the UI.
+### `short_name`
+
+* Type: `str` (required)
+
+* Defines the short name of the task or action (the execution of a task).
+  Since it specifies the name *of the task*, it is not, logically, available to be set at the ``TaskEnvironment` level.
+
+  By default, the short name of a task is the name of the task function (the name of the Python function being decorated).
+  The short name is used, for example, in parts of the UI.
+  Overriding it does not change the fully qualified name of the task.
 
 ### `image`
 
