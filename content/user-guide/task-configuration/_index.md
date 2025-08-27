@@ -101,7 +101,7 @@ async def main() -> str:
 
 Here is an overview of all task configuration parameters available at each level and how they interact:
 
-| Parameter | `TaskEnvironment` | `@env.task` decorator | Task invocation |
+| Parameter | `TaskEnvironment` | `@env.task` decorator | `override` on task invocation |
 |-----------|-------------|-----------|------------|
 | **name** | ✅ Yes (required) | ❌ No | ❌ No |
 | **short_name** | ❌ No | ✅ Yes | ✅ Yes |
