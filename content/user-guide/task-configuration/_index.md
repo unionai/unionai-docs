@@ -103,8 +103,8 @@ Here is an overview of all task configuration parameters available at each level
 
 | Parameter | `TaskEnvironment` | `@env.task` decorator | Task invocation |
 |-----------|-------------|-----------|------------|
-| **name** | ✅ Yes (required) | ❌ N/A | ❌ N/A |
-| **short_name** | ❌ N/A | ✅ Yes | ✅ Yes |
+| **name** | ✅ Yes (required) | ❌ No | ❌ No |
+| **short_name** | ❌ No | ✅ Yes | ✅ Yes |
 | **image** | ✅ Yes | ❌ No | ❌ No |
 | **resources** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
 | **env_vars** | ✅ Yes | ❌ No | ✅ Yes (if not `reusable`) |
