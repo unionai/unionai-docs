@@ -6,8 +6,9 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Reusable containers
 
-Container reuse is an optimization feature that allows you to reuse containers across multiple task executions.
-This reduces container startup overhead and improves resource efficiency, especially for frequent, short-duration tasks.
+By default, in Flyte, each task execution runs in a fresh container instance.
+Container reuse is an optimization feature that allows the same container to be used across multiple executions of a task.
+This reduces start up overhead and improves resource efficiency, especially for frequent, short-duration tasks.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -24,12 +25,13 @@ This reduces container startup overhead and improves resource efficiency, especi
 
 ## How It Works
 
-By default, Flyte creates a new container for each task execution. Container reuse changes this by maintaining a pool of persistent containers that can handle multiple task executions. When you configure a `TaskEnvironment` with a `ReusePolicy`, Flyte:
+With reusable containers, Flyte maintains a pool of persistent containers that can handle multiple task executions.
+When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the following:
 
-1. Creates a pool of persistent containers
-2. Routes task executions to available container instances
-3. Manages container lifecycle with configurable timeouts
-4. Supports concurrent task execution within containers (for async tasks)
+1. Creates a pool of persistent containers.
+2. Routes task executions to available container instances.
+3. Manages container lifecycle with configurable timeouts.
+4. Supports concurrent task execution within containers (for async tasks).
 
 ## Basic Usage
 
@@ -75,9 +77,19 @@ async def main() -> list[int]:
 
 ### `ReusePolicy` Parameters
 
-- **`replicas`**: Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling).
-  **Note: Autoscaling is coming soon**.
-- **`idle_ttl`**: How long containers stay alive without processing tasks (in seconds)
+- **`replicas`** `typing.Union[int, typing.Tuple[int, int]]`:
+  Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling).
+
+- **`idle_ttl`** `typing.Union[int, datetime.timedelta]`:
+  How long containers stay alive without processing tasks (in seconds).
+
+- **`concurrency`** int:
+  Number of concurrent task executions allowed per container (default is `1`).
+
+- **`scaledown_ttl`** `typing.Union[int, datetime.timedelta]`:
+  Time to wait before scaling down idle containers (in seconds).,
+
+
 
 ```python
 reuse_policy = flyte.ReusePolicy(
