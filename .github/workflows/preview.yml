@@ -1,0 +1,92 @@
+name: Preview (Workers via Makefile)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-name: site-dist
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # If you use submodules (e.g. examples), pull them:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Set up Hugo (extended)
+        uses: peaceiris/actions-hugo@v2
+        with:
+          extended: true  # installs latest Hugo Extended
+
+      # If your scripts need extra system tools, uncomment and add them
+      # - name: Install system deps
+      #   run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Ensure scripts are executable
+        run: chmod +x scripts/*.sh tools/*/*/*.sh || true
+
+      - name: Build site with Makefile
+        run: make dist   # this runs your scripts/run_hugo.sh etc.
+
+      - name: Upload built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: dist/
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # Protect secrets for forks: require approval on the "preview" environment
+    environment: preview
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+
+      - name: Write wrangler.jsonc for this preview
+        run: |
+          cat > wrangler.jsonc <<'JSON'
+          {
+            "name": "my-site-pr-${{ github.event.number }}",
+            "compatibility_date": "2025-08-27",
+            "assets": {
+              "directory": "./dist",
+              "not_found_handling": "single-page-application"
+            }
+          }
+          JSON
+
+      - name: Deploy to workers.dev
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        env:
+          CF_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
+        with:
+          script: |
+            const url = `https://my-site-pr-${{ github.event.number }}.${process.env.CF_SUBDOMAIN}.workers.dev`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `🚀 Preview: ${url}`
+            });

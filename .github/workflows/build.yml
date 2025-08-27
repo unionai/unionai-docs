@@ -1,0 +1,60 @@
+name: Deploy Sandbox (Workers via Makefile)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Optional VERSION env for Makefile (e.g. 1.2.3)"
+        required: false
+        type: string
+  push:
+    branches:
+      - "experiment/**"
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}   # passed into Makefile if provided
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Hugo (extended)
+        uses: peaceiris/actions-hugo@v2
+        with:
+          extended: true
+
+      - name: Ensure scripts are executable
+        run: chmod +x scripts/*.sh tools/*/*/*.sh || true
+
+      - name: Build via Makefile
+        run: make dist
+
+      # If your repo already has wrangler.jsonc, you can skip the next step.
+      - name: Write (temporary) wrangler.jsonc
+        run: |
+          cat > wrangler.jsonc <<'JSON'
+          {
+            "name": "my-site-sandbox",
+            "compatibility_date": "2025-08-27",
+            "assets": {
+              "directory": "./dist",
+              "not_found_handling": "single-page-application"
+            }
+            // Intentionally no routes/custom_domains here
+          }
+          JSON
+
+      - name: Deploy to workers.dev
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
