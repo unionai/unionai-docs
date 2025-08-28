@@ -1,4 +1,4 @@
-name: Deploy Sandbox (Workers via Makefile)
+name: Build and deploy unionai-docs
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         type: string
   push:
     branches:
-      - "experiment/**"
+      - "worker/**"
 
 permissions:
   contents: read
@@ -36,21 +36,6 @@ jobs:
 
       - name: Build via Makefile
         run: make dist
-
-      # If your repo already has wrangler.jsonc, you can skip the next step.
-      - name: Write (temporary) wrangler.jsonc
-        run: |
-          cat > wrangler.jsonc <<'JSON'
-          {
-            "name": "my-site-sandbox",
-            "compatibility_date": "2025-08-27",
-            "assets": {
-              "directory": "./dist",
-              "not_found_handling": "single-page-application"
-            }
-            // Intentionally no routes/custom_domains here
-          }
-          JSON
 
       - name: Deploy to workers.dev
         uses: cloudflare/wrangler-action@v3
