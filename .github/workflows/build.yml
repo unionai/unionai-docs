@@ -37,16 +37,24 @@ jobs:
       - name: Build via Makefile
         run: make dist
 
-      - name: Debug - Check build output
+      - name: Debug - Check build output and files
         run: |
-          echo "Checking dist directory structure:"
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Directory contents ==="
+          ls -la
+          echo "=== dist directory structure ==="
           ls -la dist/
-          echo "Checking wrangler.jsonc:"
-          cat wrangler.jsonc
+          echo "=== src directory ==="
+          ls -la src/ || echo "src directory not found"
+          echo "=== wrangler.json contents ==="
+          cat wrangler.json || cat wrangler.jsonc || echo "No wrangler config found"
+          echo "=== src/index.js contents ==="
+          cat src/index.js || echo "src/index.js not found"
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: deploy src/index.js

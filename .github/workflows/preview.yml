@@ -57,9 +57,9 @@ jobs:
           name: site-dist
           path: dist
 
-      - name: Write wrangler.jsonc for this preview
+      - name: Write wrangler.json for this preview
         run: |
-          cat > wrangler.jsonc <<'JSON'
+          cat > wrangler.json <<'JSON'
           {
             "name": "my-site-pr-${{ github.event.number }}",
             "compatibility_date": "2025-08-27",
