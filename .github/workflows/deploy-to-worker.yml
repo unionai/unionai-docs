@@ -2,7 +2,7 @@ name: Build & Deploy Docs to Cloudflare Worker (GitHub-built)
 
 on:
   push:
-    branches: [ main, v1 ]
+    # Triggers on all branches - jobs will filter appropriately
   pull_request_target:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
@@ -18,7 +18,7 @@ permissions:
 jobs:
   # === Production branches (main -> v2 path, v1 -> v1 path) ===
   prod_build_deploy:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'v1')
     runs-on: ubuntu-latest
     env:
       CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
@@ -97,6 +97,88 @@ jobs:
         run: |
           SUB=${CF_WORKERS_SUBDOMAIN:-"example-subdomain"}
           echo "🚀 Production Worker: https://unionai-docs.${SUB}.workers.dev"
+        env:
+          CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
+
+  # === PR branch pushes (same repo): build and deploy directly ===
+  pr_branch_push:
+    if: github.event_name == 'push' && github.ref_name != 'main' && github.ref_name != 'v1'
+    runs-on: ubuntu-latest
+    env:
+      CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Hugo (extended)
+        uses: peaceiris/actions-hugo@v2
+        with:
+          extended: true
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh tools/*/*/*.sh || true
+
+      - name: Build site
+        run: |
+          echo "Building Hugo site for PR branch: ${{ github.ref_name }}"
+          make dist
+
+      - name: Organize output for PR preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Convert branch name to safe path segment
+          BRANCH_SLUG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          PR_PATH="dist/docs/pr-${BRANCH_SLUG}"
+          echo "Moving branch content -> ${PR_PATH}/"
+          mkdir -p "$PR_PATH"
+          find dist/docs -mindepth 1 -maxdepth 1 ! -name "pr-*" -exec mv {} "$PR_PATH/" \;
+          echo "Preview path: /docs/pr-${BRANCH_SLUG}/"
+
+      - name: Create Worker files (index.js + wrangler.jsonc)
+        run: |
+          mkdir -p src
+          cat > src/index.js <<'JS'
+          export default {
+            async fetch(request, env) {
+              const url = new URL(request.url);
+              const p = url.pathname;
+              if (p === '/' || p === '/docs' || p === '/docs/') {
+                return Response.redirect(`${url.origin}/docs/v2/`, 302);
+              }
+              return env.ASSETS.fetch(request);
+            }
+          };
+          JS
+          cat > wrangler.jsonc <<'JSONC'
+          {
+            "name": "unionai-docs",
+            "main": "src/index.js",
+            "compatibility_date": "2025-01-01",
+            "assets": {
+              "directory": "./dist",
+              "binding": "ASSETS",
+              "html_handling": "auto-trailing-slash",
+              "not_found_handling": "single-page-application"
+            }
+          }
+          JSONC
+
+      - name: Deploy to Cloudflare Worker (PR branch)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --config wrangler.jsonc --preview-alias pr-branch-${{ github.ref_name }}
+          wranglerVersion: "latest"
+
+      - name: Echo PR branch preview URL
+        run: |
+          SUB=${CF_WORKERS_SUBDOMAIN:-"summer-butterfly-4aa4"}
+          BRANCH_SLUG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "🚀 PR Branch Preview: https://pr-branch-${{ github.ref_name }}-unionai-docs.${SUB}.workers.dev/docs/pr-${BRANCH_SLUG}/"
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
