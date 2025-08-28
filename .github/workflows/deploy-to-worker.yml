@@ -171,14 +171,14 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --config wrangler.jsonc --preview-alias pr-branch-${{ github.ref_name }}
+          command: versions upload --config wrangler.jsonc --preview-alias pr-branch-$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
           wranglerVersion: "latest"
 
       - name: Echo PR branch preview URL
         run: |
           SUB=${CF_WORKERS_SUBDOMAIN:-"summer-butterfly-4aa4"}
           BRANCH_SLUG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-          echo "🚀 PR Branch Preview: https://pr-branch-${{ github.ref_name }}-unionai-docs.${SUB}.workers.dev/docs/pr-${BRANCH_SLUG}/"
+          echo "🚀 PR Branch Preview: https://pr-branch-${BRANCH_SLUG}-unionai-docs.${SUB}.workers.dev/docs/pr-${BRANCH_SLUG}/"
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
