@@ -85,7 +85,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy src/index.js --name ${{ steps.worker-name.outputs.name }}
+          command: deploy src/index.js --name ${{ steps.worker-name.outputs.name }} --compatibility-date 2025-08-28 --assets dist
 
       - name: Output deployment URL
         run: |
