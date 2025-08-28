@@ -63,12 +63,26 @@ jobs:
           {
             "name": "my-site-pr-${{ github.event.number }}",
             "compatibility_date": "2025-08-27",
+            "main": "src/index.js",
             "assets": {
               "directory": "./dist",
-              "not_found_handling": "single-page-application"
+              "binding": "ASSETS",
+              "html_handling": "auto-trailing-slash"
             }
           }
           JSON
+
+      - name: Create Worker script for preview
+        run: |
+          mkdir -p src
+          cat > src/index.js <<'JS'
+          // Static site handler for Hugo site preview
+          export default {
+            async fetch(request, env) {
+              return env.ASSETS.fetch(request);
+            },
+          };
+          JS
 
       - name: Deploy to workers.dev
         uses: cloudflare/wrangler-action@v3

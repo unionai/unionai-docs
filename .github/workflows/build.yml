@@ -37,7 +37,14 @@ jobs:
       - name: Build via Makefile
         run: make dist
 
-      - name: Deploy to workers.dev
+      - name: Debug - Check build output
+        run: |
+          echo "Checking dist directory structure:"
+          ls -la dist/
+          echo "Checking wrangler.jsonc:"
+          cat wrangler.jsonc
+
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
