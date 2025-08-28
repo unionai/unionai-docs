@@ -1,6 +1,6 @@
 ---
 title: union.app
-version: 0.1.187
+version: 0.1.191
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -58,6 +58,7 @@ class App(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
 )
 ```
 | Parameter | Type |
@@ -89,6 +90,7 @@ class App(
 | `custom_domain` | `typing.Optional[str]` |
 | `links` | `typing.List[union.app._models.Link]` |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
 
 ### Methods
 
@@ -188,6 +190,7 @@ class FlyteConnectorApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
 )
 ```
 | Parameter | Type |
@@ -219,6 +222,7 @@ class FlyteConnectorApp(
 | `custom_domain` | `typing.Optional[str]` |
 | `links` | `typing.List[union.app._models.Link]` |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
 
 ### Methods
 
