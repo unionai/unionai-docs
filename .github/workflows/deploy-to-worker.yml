@@ -127,6 +127,7 @@ jobs:
 
       - name: Organize output for PR preview
         shell: bash
+        id: organize
         run: |
           set -euo pipefail
           # Convert branch name to safe path segment
@@ -136,6 +137,10 @@ jobs:
           mkdir -p "$PR_PATH"
           find dist/docs -mindepth 1 -maxdepth 1 ! -name "pr-*" -exec mv {} "$PR_PATH/" \;
           echo "Preview path: /docs/pr-${BRANCH_SLUG}/"
+          
+          # Export for next steps
+          echo "branch-slug=${BRANCH_SLUG}" >> $GITHUB_OUTPUT
+          echo "pr-path=/docs/pr-${BRANCH_SLUG}" >> $GITHUB_OUTPUT
 
       - name: Create Worker files (index.js + wrangler.jsonc)
         run: |
@@ -171,14 +176,13 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --config wrangler.jsonc --preview-alias pr-branch-$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          command: versions upload --config wrangler.jsonc --preview-alias pr-branch-${{ steps.organize.outputs.branch-slug }}
           wranglerVersion: "latest"
 
       - name: Echo PR branch preview URL
         run: |
           SUB=${CF_WORKERS_SUBDOMAIN:-"summer-butterfly-4aa4"}
-          BRANCH_SLUG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-          echo "🚀 PR Branch Preview: https://pr-branch-${BRANCH_SLUG}-unionai-docs.${SUB}.workers.dev/docs/pr-${BRANCH_SLUG}/"
+          echo "🚀 PR Branch Preview: https://pr-branch-${{ steps.organize.outputs.branch-slug }}-unionai-docs.${SUB}.workers.dev${{ steps.organize.outputs.pr-path }}/"
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
