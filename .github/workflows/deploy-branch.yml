@@ -66,12 +66,26 @@ jobs:
           };
           EOF
 
+      - name: Debug - Check created files
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          ls -la
+          echo "=== dist directory ==="
+          ls -la dist/ | head -10
+          echo "=== src directory ==="
+          ls -la src/
+          echo "=== wrangler.json ==="
+          cat wrangler.json
+          echo "=== src/index.js ==="
+          cat src/index.js
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: deploy src/index.js --name ${{ steps.worker-name.outputs.name }}
 
       - name: Output deployment URL
         run: |
