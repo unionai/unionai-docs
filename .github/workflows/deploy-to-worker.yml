@@ -1,21 +1,30 @@
-name: Deploy to Single Cloudflare Worker
+name: Build & Deploy Docs to Cloudflare Worker (GitHub-built)
 
 on:
   push:
-    branches: [main, v1]
-  pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [ main, v1 ]
+  pull_request_target:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+concurrency:
+  group: cf-docs-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
+  pull-requests: write
   deployments: write
-  pull-requests: write  # For PR comments
 
 jobs:
-  deploy:
+  # === Production branches (main -> v2 path, v1 -> v1 path) ===
+  prod_build_deploy:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      CF_PREVIEW_HOSTNAME: ${{ secrets.CF_PREVIEW_HOSTNAME }}
+      CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
     steps:
-      - name: Checkout
+      - name: Checkout (submodules)
         uses: actions/checkout@v4
         with:
           submodules: recursive
@@ -28,157 +37,295 @@ jobs:
       - name: Make scripts executable
         run: chmod +x scripts/*.sh tools/*/*/*.sh || true
 
-      - name: Build site with Makefile
-        run: make dist
-
-      - name: Determine deployment configuration
-        id: deploy-config
+      - name: Build site
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            # For PRs, use PR number
-            DEPLOY_PATH="pr-${{ github.event.number }}"
-            URL_PATH="/docs/pr-${{ github.event.number }}"
-            DEPLOYMENT_TYPE="pr"
-            echo "🚀 Deploying PR #${{ github.event.number }}"
-          elif [[ "${{ github.ref_name }}" == "main" ]]; then
-            DEPLOY_PATH="v2"
-            URL_PATH="/docs/v2"
-            DEPLOYMENT_TYPE="main"
-            echo "🚀 Deploying main branch to /docs/v2"
+          echo "Building Hugo site for branch: ${{ github.ref_name }}"
+          make dist
+
+      - name: Organize output for docs versioning
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "Moving main -> dist/docs/v2/"
+            mkdir -p dist/docs/v2
+            find dist/docs -mindepth 1 -maxdepth 1 ! -name v2 -exec mv {} dist/docs/v2/ \;
           elif [[ "${{ github.ref_name }}" == "v1" ]]; then
-            DEPLOY_PATH="v1"
-            URL_PATH="/docs/v1"
-            DEPLOYMENT_TYPE="v1"
-            echo "🚀 Deploying v1 branch to /docs/v1"
-          else
-            echo "❌ Unsupported branch: ${{ github.ref_name }}"
-            exit 1
+            echo "Moving v1 -> dist/docs/v1/"
+            mkdir -p dist/docs/v1
+            find dist/docs -mindepth 1 -maxdepth 1 ! -name v1 -exec mv {} dist/docs/v1/ \;
           fi
+          echo "Final dist structure sample:"; find dist -name '*.html' | head -n 20
 
-          echo "deploy-path=$DEPLOY_PATH" >> $GITHUB_OUTPUT
-          echo "url-path=$URL_PATH" >> $GITHUB_OUTPUT
-          echo "deployment-type=$DEPLOYMENT_TYPE" >> $GITHUB_OUTPUT
-
-      - name: Create Worker with smart routing
+      - name: Create Worker files (index.js + wrangler.jsonc)
         run: |
           mkdir -p src
           cat > src/index.js <<'JS'
-          // Smart router for unionai-docs - serves different content based on URL path
           export default {
             async fetch(request, env) {
               const url = new URL(request.url);
-              const pathname = url.pathname;
-
-              console.log('Request for:', pathname);
-
-              // Root redirects
-              if (pathname === '/' || pathname === '/docs' || pathname === '/docs/') {
-                return Response.redirect(url.origin + '/docs/v2/', 302);
+              const p = url.pathname;
+              if (p === '/' || p === '/docs' || p === '/docs/') {
+                return Response.redirect(`${url.origin}/docs/v2/`, 302);
               }
-
-              // Route to appropriate content
-              if (pathname.startsWith('/docs/v2/')) {
-                if (env.ASSETS_V2) {
-                  return env.ASSETS_V2.fetch(request);
-                } else {
-                  console.log('ASSETS_V2 not available');
-                  return new Response('v2 content not yet deployed', { status: 503 });
-                }
-              }
-
-              if (pathname.startsWith('/docs/v1/')) {
-                if (env.ASSETS_V1) {
-                  return env.ASSETS_V1.fetch(request);
-                } else {
-                  console.log('ASSETS_V1 not available');
-                  return new Response('v1 content not yet deployed', { status: 503 });
-                }
-              }
-
-              // Handle PR paths: /docs/pr-123/
-              const prMatch = pathname.match(/^\/docs\/(pr-\d+)\//);
-              if (prMatch) {
-                const prFolder = prMatch[1].toUpperCase().replace('-', '_'); // pr-123 -> PR_123
-                const assetBinding = env['ASSETS_' + prFolder];
-                if (assetBinding) {
-                  return assetBinding.fetch(request);
-                } else {
-                  console.log('PR assets not found for:', prFolder);
-                  return new Response('PR content not found', { status: 404 });
-                }
-              }
-
-              // Fallback
-              console.log('No route found for:', pathname);
-              return new Response('Not found', { status: 404 });
+              return env.ASSETS.fetch(request);
             }
           };
           JS
-
-      - name: Create wrangler configuration
-        run: |
-          cat > wrangler.json <<EOF
+          cat > wrangler.jsonc <<'JSONC'
           {
-            "name": "unionai-docs-smart",
-            "compatibility_date": "2025-08-28",
-            "main": "src/index.js"
+            "name": "unionai-docs",
+            "main": "src/index.js",
+            "compatibility_date": "2025-01-01",
+            "assets": {
+              "directory": "./dist",
+              "binding": "ASSETS",
+              "html_handling": "auto-trailing-slash",
+              "not_found_handling": "single-page-application"
+            }
           }
-          EOF
+          JSONC
 
-      - name: Debug - Check deployment setup
-        run: |
-          echo "=== Deployment Configuration ==="
-          echo "Branch/Event: ${{ github.ref_name }} (${{ github.event_name }})"
-          echo "Deploy Path: ${{ steps.deploy-config.outputs.deploy-path }}"
-          echo "URL Path: ${{ steps.deploy-config.outputs.url-path }}"
-          echo "Type: ${{ steps.deploy-config.outputs.deployment-type }}"
-          echo ""
-          echo "=== Built site structure ==="
-          find dist -type f | head -10
-          echo ""
-          echo "=== Worker configuration ==="
-          cat wrangler.json
-          echo ""
-          echo "=== Worker code preview ==="
-          head -20 src/index.js
-
-      - name: Deploy Worker (initial/structure only)
+      - name: Deploy to Cloudflare Worker (production)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: deploy --config wrangler.jsonc
+          wranglerVersion: "latest"
 
-      - name: Output deployment information
+      - name: Echo production URLs
         run: |
-          WORKER_URL="https://unionai-docs-smart.${CF_WORKERS_SUBDOMAIN:-summer-butterfly-4aa4}.workers.dev"
-          CONTENT_URL="${WORKER_URL}${{ steps.deploy-config.outputs.url-path }}"
-
-          echo "🚀 Worker deployed to: $WORKER_URL"
-          echo "📖 Content available at: $CONTENT_URL"
-          echo ""
-          echo "⚠️  NOTE: This deployment only created the Worker structure."
-          echo "   Content upload for ${{ steps.deploy-config.outputs.deploy-path }} will be implemented in next steps."
+          SUB=${CF_WORKERS_SUBDOMAIN:-"example-subdomain"}
+          echo "🚀 Production Worker: https://unionai-docs.${SUB}.workers.dev"
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
-      - name: Comment on PR (if applicable)
-        if: github.event_name == 'pull_request'
+      - name: Create Preview Router Worker files (router/index.js + wrangler.router.jsonc)
+        run: |
+          if [ -z "${CF_PREVIEW_HOSTNAME}" ]; then
+            echo "CF_PREVIEW_HOSTNAME not set (skipping router creation)."; exit 0; fi
+          mkdir -p router
+          cat > router/index.js <<'JS'
+          export default {
+            async fetch(request, env) {
+              const url = new URL(request.url);
+              // Accept both /pr-123 and /pr-123/anything
+              const m = url.pathname.match(/^\/?pr-(\d+)(\/.*)?$/);
+              if (!m) {
+                return new Response('Not found. Try /pr-<number>/', { status: 404 });
+              }
+              const pr = m[1];
+              const rest = m[2] || '/';
+              const target = `https://pr-${pr}-${env.ROUTED_WORKER}.${env.SUBDOMAIN}.workers.dev/docs/pr-${pr}${rest}`;
+              const init = {
+                method: request.method,
+                headers: request.headers,
+                body: request.body,
+                redirect: 'follow'
+              };
+              return fetch(new Request(target, init));
+            }
+          };
+          JS
+          # JSONC heredoc without quotes to allow env expansion
+          cat > wrangler.router.jsonc <<JSONC
+          {
+            "name": "unionai-docs-preview-router",
+            "main": "router/index.js",
+            "compatibility_date": "2025-01-01",
+            "routes": [
+              { "pattern": "${CF_PREVIEW_HOSTNAME}", "custom_domain": true }
+            ],
+            "vars": {
+              "SUBDOMAIN": "${CF_WORKERS_SUBDOMAIN}",
+              "ROUTED_WORKER": "unionai-docs"
+            }
+          }
+          JSONC
+
+      - name: Deploy Preview Router to custom domain (if configured)
+        if: ${{ env.CF_PREVIEW_HOSTNAME != '' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --config wrangler.router.jsonc
+          wranglerVersion: "latest"
+
+  # === PRs from forks (safe): build without secrets, then deploy using preview alias ===
+  pr_build:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout PR merge ref (safe)
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.number }}/merge
+          submodules: recursive
+
+      - name: Set up Hugo (extended)
+        uses: peaceiris/actions-hugo@v2
+        with:
+          extended: true
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh tools/*/*/*.sh || true
+
+      - name: Build site
+        run: |
+          echo "Building Hugo site for PR #${{ github.event.number }}"
+          make dist
+
+      - name: Put PR content under a PR-scoped path
+        shell: bash
+        run: |
+          set -euo pipefail
+          PR_PATH="dist/docs/pr-${{ github.event.number }}"
+          mkdir -p "$PR_PATH"
+          find dist/docs -mindepth 1 -maxdepth 1 ! -name "pr-*" -exec mv {} "$PR_PATH/" \;
+          echo "Preview path inside Worker: /docs/pr-${{ github.event.number }}/"
+
+      - name: Upload built site as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-pr-${{ github.event.number }}
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
+
+  pr_deploy:
+    if: github.event_name == 'pull_request_target'
+    needs: pr_build
+    runs-on: ubuntu-latest
+    env:
+      CF_PREVIEW_HOSTNAME: ${{ secrets.CF_PREVIEW_HOSTNAME }}
+      CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
+    permissions:
+      contents: read
+      pull-requests: write
+      deployments: write
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-pr-${{ github.event.number }}
+          path: dist
+
+      - name: Create Worker files (index.js + wrangler.jsonc)
+        run: |
+          mkdir -p src
+          cat > src/index.js <<'JS'
+          export default {
+            async fetch(request, env) {
+              const url = new URL(request.url);
+              const p = url.pathname;
+              if (p === '/' || p === '/docs' || p === '/docs/') {
+                return Response.redirect(`${url.origin}/docs/v2/`, 302);
+              }
+              return env.ASSETS.fetch(request);
+            }
+          };
+          JS
+          cat > wrangler.jsonc <<'JSONC'
+          {
+            "name": "unionai-docs",
+            "main": "src/index.js",
+            "compatibility_date": "2025-01-01",
+            "assets": {
+              "directory": "./dist",
+              "binding": "ASSETS",
+              "html_handling": "auto-trailing-slash",
+              "not_found_handling": "single-page-application"
+            }
+          }
+          JSONC
+
+      - name: Upload a preview version with alias pr-<number>
+        id: preview
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --config wrangler.jsonc --preview-alias pr-${{ github.event.number }}
+          wranglerVersion: "latest"
+
+      - name: Compute preview URL
+        id: url
+        run: |
+          SUB=${CF_WORKERS_SUBDOMAIN:-"summer-butterfly-4aa4"}
+          echo "url=https://pr-${{ github.event.number }}-unionai-docs.${SUB}.workers.dev/docs/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+        env:
+          CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
+
+      - name: Compute custom-domain preview URL (if configured)
+        id: custom
+        run: |
+          if [ -n "${CF_PREVIEW_HOSTNAME}" ]; then
+            echo "url=https://${CF_PREVIEW_HOSTNAME}/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
+          else
+            echo "url=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Deployment (Preview)
+        id: gh_deploy
         uses: actions/github-script@v7
         with:
           script: |
-            const workerUrl = `https://unionai-docs-smart.${process.env.CF_WORKERS_SUBDOMAIN || 'summer-butterfly-4aa4'}.workers.dev`;
-            const contentUrl = `${workerUrl}/docs/pr-${{ github.event.number }}`;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const ref = context.payload.pull_request.head.sha;
+            const env = `preview/pr-${{ github.event.number }}`;
+            const res = await github.rest.repos.createDeployment({
+              owner,
+              repo,
+              ref,
+              required_contexts: [],
+              environment: env,
+              auto_merge: false,
+              transient_environment: true,
+              production_environment: false,
+              description: `Workers preview for PR #${{ github.event.number }}`,
+            });
+            core.setOutput('id', res.data.id);
 
+      - name: Set Deployment Status (success)
+        if: steps.gh_deploy.outputs.id
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const deployment_id = Number(`${{ steps.gh_deploy.outputs.id }}`);
+            const fallback = `${{ steps.url.outputs.url }}`;
+            const custom = `${{ steps.custom.outputs.url }}`;
+            const env_url = custom || fallback;
+            await github.rest.repos.createDeploymentStatus({
+              owner,
+              repo,
+              deployment_id,
+              state: 'success',
+              environment_url: env_url,
+              log_url: env_url,
+              auto_inactive: true,
+              description: 'Preview is live on Cloudflare Workers',
+            });
+
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const std = `${{ steps.url.outputs.url }}`;
+            const custom = `${{ steps.custom.outputs.url }}`;
+            const lines = [
+              `✅ **PR Preview**: ${std}`
+            ];
+            if (custom) lines.push(`🌐 **Custom Domain**: ${custom}`);
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: `🚀 **PR Preview Deployed**
-
-Preview URL: ${contentUrl}
-
-⚠️ **Note**: This is the first phase deployment (Worker structure only). Content upload is coming in the next implementation phase.`
+              body: lines.join('\n') + '\n\n*(Built in GitHub, deployed as a Workers **Preview Alias**. Will update on every push.)*'
             });
-        env:
-          CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
