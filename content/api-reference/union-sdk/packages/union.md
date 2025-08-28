@@ -1,6 +1,6 @@
 ---
 title: union
-version: 0.1.187
+version: 0.1.191
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -159,6 +159,8 @@ def task(
     pickle_untyped: bool,
     shared_memory: Optional[Union[L[True], str]],
     resources: Optional[Resources],
+    labels: Optional[dict[str, str]],
+    annotations: Optional[dict[str, str]],
     kwargs,
 ) -> Union[Callable[P, FuncOut], Callable[[Callable[P, FuncOut]], PythonFunctionTask[T]], PythonFunctionTask[T]]
 ```
@@ -218,6 +220,8 @@ Please see some cookbook :std:ref:`task examples <cookbook:tasks>` for additiona
 | `pickle_untyped` | `bool` |
 | `shared_memory` | `Optional[Union[L[True], str]]` |
 | `resources` | `Optional[Resources]` |
+| `labels` | `Optional[dict[str, str]]` |
+| `annotations` | `Optional[dict[str, str]]` |
 | `kwargs` | `**kwargs` |
 
 #### workflow()
@@ -3320,7 +3324,7 @@ configure your credentials appropriately.
 ```python
 def execute(
     entity: typing.Union[FlyteTask, FlyteLaunchPlan, FlyteWorkflow, PythonTask, WorkflowBase, LaunchPlan, ReferenceEntity],
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     project: str,
     domain: str,
     name: str,
@@ -3359,7 +3363,7 @@ settings for entities that have already been registered on Admin.
 | Parameter | Type |
 |-|-|
 | `entity` | `typing.Union[FlyteTask, FlyteLaunchPlan, FlyteWorkflow, PythonTask, WorkflowBase, LaunchPlan, ReferenceEntity]` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
@@ -3383,7 +3387,7 @@ settings for entities that have already been registered on Admin.
 ```python
 def execute_local_launch_plan(
     entity: LaunchPlan,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     version: str,
     project: typing.Optional[str],
     domain: typing.Optional[str],
@@ -3408,7 +3412,7 @@ Execute a locally defined `LaunchPlan`.
 | Parameter | Type |
 |-|-|
 | `entity` | `LaunchPlan` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `version` | `str` |
 | `project` | `typing.Optional[str]` |
 | `domain` | `typing.Optional[str]` |
@@ -3430,7 +3434,7 @@ Execute a locally defined `LaunchPlan`.
 ```python
 def execute_local_task(
     entity: PythonTask,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     project: str,
     domain: str,
     name: str,
@@ -3456,7 +3460,7 @@ Execute a @task-decorated function or TaskTemplate task.
 | Parameter | Type |
 |-|-|
 | `entity` | `PythonTask` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
@@ -3479,7 +3483,7 @@ Execute a @task-decorated function or TaskTemplate task.
 ```python
 def execute_local_workflow(
     entity: WorkflowBase,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     project: str,
     domain: str,
     name: str,
@@ -3505,7 +3509,7 @@ Execute an @workflow decorated function.
 | Parameter | Type |
 |-|-|
 | `entity` | `WorkflowBase` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `project` | `str` |
 | `domain` | `str` |
 | `name` | `str` |
@@ -3528,7 +3532,7 @@ Execute an @workflow decorated function.
 ```python
 def execute_reference_launch_plan(
     entity: ReferenceLaunchPlan,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     execution_name: typing.Optional[str],
     execution_name_prefix: typing.Optional[str],
     options: typing.Optional[Options],
@@ -3548,7 +3552,7 @@ Execute a ReferenceLaunchPlan.
 | Parameter | Type |
 |-|-|
 | `entity` | `ReferenceLaunchPlan` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `execution_name` | `typing.Optional[str]` |
 | `execution_name_prefix` | `typing.Optional[str]` |
 | `options` | `typing.Optional[Options]` |
@@ -3566,7 +3570,7 @@ Execute a ReferenceLaunchPlan.
 ```python
 def execute_reference_task(
     entity: ReferenceTask,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     execution_name: typing.Optional[str],
     execution_name_prefix: typing.Optional[str],
     options: typing.Optional[Options],
@@ -3586,7 +3590,7 @@ Execute a ReferenceTask.
 | Parameter | Type |
 |-|-|
 | `entity` | `ReferenceTask` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `execution_name` | `typing.Optional[str]` |
 | `execution_name_prefix` | `typing.Optional[str]` |
 | `options` | `typing.Optional[Options]` |
@@ -3604,7 +3608,7 @@ Execute a ReferenceTask.
 ```python
 def execute_reference_workflow(
     entity: ReferenceWorkflow,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     execution_name: typing.Optional[str],
     execution_name_prefix: typing.Optional[str],
     options: typing.Optional[Options],
@@ -3624,7 +3628,7 @@ Execute a ReferenceWorkflow.
 | Parameter | Type |
 |-|-|
 | `entity` | `ReferenceWorkflow` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `execution_name` | `typing.Optional[str]` |
 | `execution_name_prefix` | `typing.Optional[str]` |
 | `options` | `typing.Optional[Options]` |
@@ -3642,7 +3646,7 @@ Execute a ReferenceWorkflow.
 ```python
 def execute_remote_task_lp(
     entity: typing.Union[FlyteTask, FlyteLaunchPlan],
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     project: str,
     domain: str,
     execution_name: typing.Optional[str],
@@ -3666,7 +3670,7 @@ NOTE: the name and version arguments are currently not used and only there consi
 | Parameter | Type |
 |-|-|
 | `entity` | `typing.Union[FlyteTask, FlyteLaunchPlan]` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `project` | `str` |
 | `domain` | `str` |
 | `execution_name` | `typing.Optional[str]` |
@@ -3686,7 +3690,7 @@ NOTE: the name and version arguments are currently not used and only there consi
 ```python
 def execute_remote_wf(
     entity: FlyteWorkflow,
-    inputs: typing.Dict[str, typing.Any],
+    inputs: typing.Optional[typing.Dict[str, typing.Any]],
     project: str,
     domain: str,
     execution_name: typing.Optional[str],
@@ -3710,7 +3714,7 @@ NOTE: the name and version arguments are currently not used and only there consi
 | Parameter | Type |
 |-|-|
 | `entity` | `FlyteWorkflow` |
-| `inputs` | `typing.Dict[str, typing.Any]` |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
 | `project` | `str` |
 | `domain` | `str` |
 | `execution_name` | `typing.Optional[str]` |
@@ -4656,6 +4660,7 @@ Wait for an execution to finish.
 |-|-|-|
 | `apps_service_client` |  |  |
 | `artifacts_client` |  |  |
+| `authorizer_service_client` |  |  |
 | `client` |  | {{< multiline >}}Return a SynchronousFlyteClient for additional operations.
 {{< /multiline >}} |
 | `config` |  | {{< multiline >}}Image config.
@@ -4675,6 +4680,7 @@ Wait for an execution to finish.
 | `secret_client` |  |  |
 | `sync_channel` |  | {{< multiline >}}Return channel from client. This channel already has the org passed in dynamically by the interceptor.
 {{< /multiline >}} |
+| `user_service_client` |  |  |
 | `users_client` |  |  |
 
 ## union.VersionParameters

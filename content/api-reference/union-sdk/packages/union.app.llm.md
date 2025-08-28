@@ -1,6 +1,6 @@
 ---
 title: union.app.llm
-version: 0.1.187
+version: 0.1.191
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -15,6 +15,15 @@ layout: py_api
 |-|-|
 | [`SGLangApp`](.././union.app.llm#unionappllmsglangapp) | App backed by FastAPI. |
 | [`VLLMApp`](.././union.app.llm#unionappllmvllmapp) | App backed by FastAPI. |
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `DEFAULT_SGLANG_IMAGE` | `str` |  |
+| `DEFAULT_VLLM_IMAGE` | `str` |  |
+| `OPTIMIZED_SGLANG_IMAGE` | `str` |  |
+| `OPTIMIZED_VLLM_IMAGE` | `str` |  |
 
 ## union.app.llm.SGLangApp
 
@@ -51,6 +60,7 @@ class SGLangApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
     extra_args: typing.Union[str, typing.List[str]],
     model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
     model_id: str,
@@ -86,6 +96,7 @@ class SGLangApp(
 | `custom_domain` | `typing.Optional[str]` |
 | `links` | `typing.List[union.app._models.Link]` |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
 | `extra_args` | `typing.Union[str, typing.List[str]]` |
 | `model` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery]` |
 | `model_id` | `str` |
@@ -156,6 +167,7 @@ class VLLMApp(
     custom_domain: typing.Optional[str],
     links: typing.List[union.app._models.Link],
     shared_memory: typing.Union[typing.Literal[True], str, NoneType],
+    request_timeout: typing.Union[datetime.timedelta, int, NoneType],
     extra_args: typing.Union[str, typing.List[str]],
     model: typing.Union[str, flytekit.core.artifact.ArtifactQuery],
     model_id: str,
@@ -191,6 +203,7 @@ class VLLMApp(
 | `custom_domain` | `typing.Optional[str]` |
 | `links` | `typing.List[union.app._models.Link]` |
 | `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
 | `extra_args` | `typing.Union[str, typing.List[str]]` |
 | `model` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery]` |
 | `model_id` | `str` |
