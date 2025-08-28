@@ -21,7 +21,6 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
-      CF_PREVIEW_HOSTNAME: ${{ secrets.CF_PREVIEW_HOSTNAME }}
       CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
     steps:
       - name: Checkout (submodules)
@@ -101,58 +100,6 @@ jobs:
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
-      - name: Create Preview Router Worker files (router/index.js + wrangler.router.jsonc)
-        run: |
-          if [ -z "${CF_PREVIEW_HOSTNAME}" ]; then
-            echo "CF_PREVIEW_HOSTNAME not set (skipping router creation)."; exit 0; fi
-          mkdir -p router
-          cat > router/index.js <<'JS'
-          export default {
-            async fetch(request, env) {
-              const url = new URL(request.url);
-              // Accept both /pr-123 and /pr-123/anything
-              const m = url.pathname.match(/^\/?pr-(\d+)(\/.*)?$/);
-              if (!m) {
-                return new Response('Not found. Try /pr-<number>/', { status: 404 });
-              }
-              const pr = m[1];
-              const rest = m[2] || '/';
-              const target = `https://pr-${pr}-${env.ROUTED_WORKER}.${env.SUBDOMAIN}.workers.dev/docs/pr-${pr}${rest}`;
-              const init = {
-                method: request.method,
-                headers: request.headers,
-                body: request.body,
-                redirect: 'follow'
-              };
-              return fetch(new Request(target, init));
-            }
-          };
-          JS
-          # JSONC heredoc without quotes to allow env expansion
-          cat > wrangler.router.jsonc <<JSONC
-          {
-            "name": "unionai-docs-preview-router",
-            "main": "router/index.js",
-            "compatibility_date": "2025-01-01",
-            "routes": [
-              { "pattern": "${CF_PREVIEW_HOSTNAME}", "custom_domain": true }
-            ],
-            "vars": {
-              "SUBDOMAIN": "${CF_WORKERS_SUBDOMAIN}",
-              "ROUTED_WORKER": "unionai-docs"
-            }
-          }
-          JSONC
-
-      - name: Deploy Preview Router to custom domain (if configured)
-        if: ${{ env.CF_PREVIEW_HOSTNAME != '' }}
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config wrangler.router.jsonc
-          wranglerVersion: "latest"
-
   # === PRs from forks (safe): build without secrets, then deploy using preview alias ===
   pr_build:
     if: github.event_name == 'pull_request_target'
@@ -201,7 +148,6 @@ jobs:
     needs: pr_build
     runs-on: ubuntu-latest
     env:
-      CF_PREVIEW_HOSTNAME: ${{ secrets.CF_PREVIEW_HOSTNAME }}
       CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
     permissions:
       contents: read
@@ -260,15 +206,6 @@ jobs:
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
-      - name: Compute custom-domain preview URL (if configured)
-        id: custom
-        run: |
-          if [ -n "${CF_PREVIEW_HOSTNAME}" ]; then
-            echo "url=https://${CF_PREVIEW_HOSTNAME}/pr-${{ github.event.number }}/" >> $GITHUB_OUTPUT
-          else
-            echo "url=" >> $GITHUB_OUTPUT
-          fi
-
       - name: Create GitHub Deployment (Preview)
         id: gh_deploy
         uses: actions/github-script@v7
@@ -299,9 +236,7 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const deployment_id = Number(`${{ steps.gh_deploy.outputs.id }}`);
-            const fallback = `${{ steps.url.outputs.url }}`;
-            const custom = `${{ steps.custom.outputs.url }}`;
-            const env_url = custom || fallback;
+            const env_url = `${{ steps.url.outputs.url }}`;
             await github.rest.repos.createDeploymentStatus({
               owner,
               repo,
@@ -318,14 +253,10 @@ jobs:
         with:
           script: |
             const std = `${{ steps.url.outputs.url }}`;
-            const custom = `${{ steps.custom.outputs.url }}`;
-            const lines = [
-              `✅ **PR Preview**: ${std}`
-            ];
-            if (custom) lines.push(`🌐 **Custom Domain**: ${custom}`);
+            const body = `✅ **PR Preview**: ${std}\n\n*(Built in GitHub, deployed as a Workers **Preview Alias**. Will update on every push.)*`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: lines.join('\n') + '\n\n*(Built in GitHub, deployed as a Workers **Preview Alias**. Will update on every push.)*'
+              body
             });
