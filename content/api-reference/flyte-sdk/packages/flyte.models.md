@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b17
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -377,6 +377,7 @@ class SerializationContext(
     code_bundle: Optional[CodeBundle],
     input_path: str,
     output_path: str,
+    interpreter_path: str,
     image_cache: ImageCache | None,
     root_dir: Optional[pathlib.Path],
 )
@@ -390,6 +391,7 @@ class SerializationContext(
 | `code_bundle` | `Optional[CodeBundle]` |
 | `input_path` | `str` |
 | `output_path` | `str` |
+| `interpreter_path` | `str` |
 | `image_cache` | `ImageCache \| None` |
 | `root_dir` | `Optional[pathlib.Path]` |
 
@@ -404,7 +406,7 @@ class SerializationContext(
 
 ```python
 def get_entrypoint_path(
-    interpreter_path: str,
+    interpreter_path: Optional[str],
 ) -> str
 ```
 Get the entrypoint path for the task. This is used to determine the entrypoint for the task execution.
@@ -412,7 +414,7 @@ Get the entrypoint path for the task. This is used to determine the entrypoint f
 
 | Parameter | Type |
 |-|-|
-| `interpreter_path` | `str` |
+| `interpreter_path` | `Optional[str]` |
 
 ## flyte.models.TaskContext
 

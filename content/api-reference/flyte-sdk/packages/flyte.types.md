@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 2.0.0b17
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -202,7 +202,6 @@ of user objects
 
 | Method | Description |
 |-|-|
-| [`calculate_hash()`](#calculate_hash) |  |
 | [`dict_to_literal_map()`](#dict_to_literal_map) | Given a dictionary mapping string keys to python values and a dictionary containing guessed types for such. |
 | [`get_available_transformers()`](#get_available_transformers) | Returns all python types for which transformers are available. |
 | [`get_transformer()`](#get_transformer) | Implements a recursive search for the transformer. |
@@ -221,19 +220,6 @@ of user objects
 | [`to_python_value()`](#to_python_value) | Converts a Literal value with an expected python type into a python value. |
 | [`unwrap_offloaded_literal()`](#unwrap_offloaded_literal) |  |
 
-
-#### calculate_hash()
-
-```python
-def calculate_hash(
-    python_val: typing.Any,
-    python_type: Type[T],
-) -> Optional[str]
-```
-| Parameter | Type |
-|-|-|
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
 
 #### dict_to_literal_map()
 
