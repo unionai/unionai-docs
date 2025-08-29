@@ -1,6 +1,6 @@
 ---
 title: Flyte SDK
-version: 2.0.0b13
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 weight: 1

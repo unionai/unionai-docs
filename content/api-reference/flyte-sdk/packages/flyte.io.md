@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 2.0.0b13
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -756,6 +756,7 @@ validated to form a valid model.
 | [`download_sync()`](#download_sync) | Synchronously download the entire directory to a local path. |
 | [`exists()`](#exists) | Asynchronously check if the directory exists. |
 | [`exists_sync()`](#exists_sync) | Synchronously check if the directory exists. |
+| [`from_existing_remote()`](#from_existing_remote) | Create a Dir reference from an existing remote directory. |
 | [`from_local()`](#from_local) | Asynchronously create a new Dir by uploading a local directory to the configured remote store. |
 | [`from_local_sync()`](#from_local_sync) | Synchronously create a new Dir by uploading a local directory to the configured remote store. |
 | [`from_orm()`](#from_orm) |  |
@@ -918,12 +919,30 @@ Example:
     ```
 
 
+#### from_existing_remote()
+
+```python
+def from_existing_remote(
+    remote_path: str,
+    dir_cache_key: Optional[str],
+) -> Dir[T]
+```
+Create a Dir reference from an existing remote directory.
+
+
+
+| Parameter | Type |
+|-|-|
+| `remote_path` | `str` |
+| `dir_cache_key` | `Optional[str]` |
+
 #### from_local()
 
 ```python
 def from_local(
     local_path: Union[str, Path],
     remote_path: Optional[str],
+    dir_cache_key: Optional[str],
 ) -> Dir[T]
 ```
 Asynchronously create a new Dir by uploading a local directory to the configured remote store.
@@ -934,6 +953,7 @@ Asynchronously create a new Dir by uploading a local directory to the configured
 |-|-|
 | `local_path` | `Union[str, Path]` |
 | `remote_path` | `Optional[str]` |
+| `dir_cache_key` | `Optional[str]` |
 
 #### from_local_sync()
 
@@ -1737,6 +1757,7 @@ Example:
 ```python
 def from_existing_remote(
     remote_path: str,
+    file_cache_key: Optional[str],
 ) -> File[T]
 ```
 Create a File reference from an existing remote file.
@@ -1753,6 +1774,7 @@ async def my_task() -> File[DataFrame]:
 | Parameter | Type |
 |-|-|
 | `remote_path` | `str` |
+| `file_cache_key` | `Optional[str]` |
 
 #### from_local()
 
@@ -1760,6 +1782,7 @@ async def my_task() -> File[DataFrame]:
 def from_local(
     local_path: Union[str, Path],
     remote_destination: Optional[str],
+    hash_method: Optional[HashMethod | str],
 ) -> File[T]
 ```
 Create a new File object from a local file that will be uploaded to the configured remote store.
@@ -1770,6 +1793,7 @@ Create a new File object from a local file that will be uploaded to the configur
 |-|-|
 | `local_path` | `Union[str, Path]` |
 | `remote_destination` | `Optional[str]` |
+| `hash_method` | `Optional[HashMethod \| str]` |
 
 #### from_orm()
 
@@ -2097,7 +2121,9 @@ Validate the given object with string data against the Pydantic model.
 #### new_remote()
 
 ```python
-def new_remote()
+def new_remote(
+    hash_method: Optional[HashMethod | str],
+) -> File[T]
 ```
 Create a new File reference for a remote file that will be written to.
 
@@ -2113,6 +2139,10 @@ async def my_task() -> File[DataFrame]:
 ```
 
 
+| Parameter | Type |
+|-|-|
+| `hash_method` | `Optional[HashMethod \| str]` |
+
 #### open()
 
 ```python
@@ -2123,7 +2153,7 @@ def open(
     cache_options: Optional[dict],
     compression: Optional[str],
     kwargs,
-) -> AsyncGenerator[IO[Any]]
+) -> AsyncGenerator[Union[IO[Any], 'HashingWriter'], None]
 ```
 Asynchronously open the file and return a file-like object.
 
