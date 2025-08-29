@@ -54,7 +54,7 @@ jobs:
             mkdir -p dist/docs/v1
             find dist/docs -mindepth 1 -maxdepth 1 ! -name v1 -exec mv {} dist/docs/v1/ \;
           fi
-          echo "Final dist structure sample:"; find dist -name '*.html' | head -n 20
+          echo "Final dist structure sample:"; find dist -name '*.html' | head -n 20 || true
 
       - name: Create Worker files (index.js + wrangler.jsonc)
         run: |
@@ -143,7 +143,7 @@ jobs:
           find dist/docs -mindepth 1 -maxdepth 1 ! -name v2 -exec mv {} dist/docs/v2/ \;
 
           echo "Final dist structure:"
-          find dist -type f -name '*.html' | head -5
+          find dist -type f -name '*.html' | head -5 || true
           echo "Total HTML files:" $(find dist -name '*.html' | wc -l)
 
           # Export branch slug for subdomain
