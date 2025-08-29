@@ -164,9 +164,9 @@ jobs:
             }
           };
           JS
-          cat > wrangler.jsonc <<'JSONC'
+          cat > wrangler.jsonc <<JSONC
           {
-            "name": "unionai-docs",
+            "name": "pr-${{ steps.organize.outputs.branch-slug }}-unionai-docs",
             "main": "src/index.js",
             "compatibility_date": "2025-01-01",
             "assets": {
@@ -177,13 +177,17 @@ jobs:
             }
           }
           JSONC
+          
+          echo "=== Generated wrangler.jsonc ==="
+          cat wrangler.jsonc
+          echo "=== End wrangler.jsonc ==="
 
       - name: Deploy to Cloudflare Worker (PR branch)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --config wrangler.jsonc --preview-alias pr-${{ steps.organize.outputs.branch-slug }}
+          command: deploy --config wrangler.jsonc
           wranglerVersion: "latest"
 
       - name: Echo PR branch preview URL
