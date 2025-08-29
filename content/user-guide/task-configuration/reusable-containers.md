@@ -7,7 +7,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 # Reusable containers
 
 By default, each task execution in Flyte and Union runs in a fresh container instance that is created just for that execution and then discarded.
-Container reuse is an optimization feature that allows the same container to be reused across multiple executions of the same task.
+Container reuse is an optimization feature that allows the same container to be reused across multiple executions and tasks.
 This approach reduces startup overhead and improves resource efficiency, making it especially beneficial for frequent, short-duration tasks.
 
 {{< variant flyte >}}
@@ -132,13 +132,15 @@ concurrent_policy = flyte.ReusePolicy(
 
 These parameters work together to manage container lifecycle at different levels:
 
-**`idle_ttl`** (Individual Container Timeout):
+#### `idle_ttl`: Individual container timeout
+
 - **Scope**: Controls individual container instances.
 - **Behavior**: When a container finishes a task and becomes idle, it will be terminated after `idle_ttl` expires.
 - **Purpose**: Prevents resource waste from idle containers.
 - **Typical values**: 5-30 minutes for most workloads.
 
-**`scaledown_ttl`** (Environment Timeout):
+#### `scaledown_ttl`: Environment timeout
+
 - **Scope**: Controls the entire reusable environment infrastructure.
 - **Behavior**: When there are no active or queued tasks, the entire environment scales down after `scaledown_ttl` expires.
 - **Purpose**: Manages the lifecycle of the entire container pool.
@@ -171,12 +173,12 @@ reuse_policy = flyte.ReusePolicy(
 # Entire environment shuts down after 1 hour of no tasks
 ```
 
-**Key relationships:**
+### Key relationships
+
 - **Total throughput** = `replicas × concurrency`
 - **Resource usage** = `replicas × TaskEnvironment.resources`
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
 - **Lifecycle management**: `idle_ttl` manages individual containers, `scaledown_ttl` manages the environment
-
 
 ## Examples
 
