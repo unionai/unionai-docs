@@ -125,22 +125,27 @@ jobs:
           echo "Building Hugo site for PR branch: ${{ github.ref_name }}"
           make dist
 
-      - name: Organize output for PR preview
+      - name: Organize output for PR preview (full site structure)
         shell: bash
         id: organize
         run: |
           set -euo pipefail
-          # Convert branch name to safe path segment
+          # Convert branch name to safe path segment for subdomain
           BRANCH_SLUG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-          PR_PATH="dist/docs/pr-${BRANCH_SLUG}"
-          echo "Moving branch content -> ${PR_PATH}/"
-          mkdir -p "$PR_PATH"
-          find dist/docs -mindepth 1 -maxdepth 1 ! -name "pr-*" -exec mv {} "$PR_PATH/" \;
-          echo "Preview path: /docs/pr-${BRANCH_SLUG}/"
+          echo "Organizing PR branch as full site structure (not PR-scoped path)"
           
-          # Export for next steps
+          # For PR branches, we want the same structure as production: 
+          # dist/docs/v2/* and dist/docs/v1/* (if v1 content exists)
+          # This branch will contain v2 content, but we'll organize it properly
+          echo "Moving main branch content -> dist/docs/v2/"
+          mkdir -p dist/docs/v2
+          find dist/docs -mindepth 1 -maxdepth 1 ! -name v2 -exec mv {} dist/docs/v2/ \;
+          
+          echo "Final dist structure:"
+          find dist -name '*.html' | head -10
+          
+          # Export branch slug for subdomain
           echo "branch-slug=${BRANCH_SLUG}" >> $GITHUB_OUTPUT
-          echo "pr-path=/docs/pr-${BRANCH_SLUG}" >> $GITHUB_OUTPUT
 
       - name: Create Worker files (index.js + wrangler.jsonc)
         run: |
@@ -182,7 +187,9 @@ jobs:
       - name: Echo PR branch preview URL
         run: |
           SUB=${CF_WORKERS_SUBDOMAIN:-"summer-butterfly-4aa4"}
-          echo "🚀 PR Branch Preview: https://pr-branch-${{ steps.organize.outputs.branch-slug }}-unionai-docs.${SUB}.workers.dev${{ steps.organize.outputs.pr-path }}/"
+          echo "🚀 PR Branch Preview:"
+          echo "  v2 (latest): https://pr-branch-${{ steps.organize.outputs.branch-slug }}-unionai-docs.${SUB}.workers.dev/docs/v2/"
+          echo "  Main site: https://pr-branch-${{ steps.organize.outputs.branch-slug }}-unionai-docs.${SUB}.workers.dev/"
         env:
           CF_WORKERS_SUBDOMAIN: ${{ secrets.CF_WORKERS_SUBDOMAIN }}
 
