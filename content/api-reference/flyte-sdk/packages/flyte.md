@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b17
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -503,7 +503,7 @@ class Device(
 class Environment(
     name: str,
     depends_on: List[Environment],
-    pod_template: Optional[Union[str, 'V1PodTemplate']],
+    pod_template: Optional[Union[str, PodTemplate]],
     description: Optional[str],
     secrets: Optional[SecretRequest],
     env_vars: Optional[Dict[str, str]],
@@ -515,7 +515,7 @@ class Environment(
 |-|-|
 | `name` | `str` |
 | `depends_on` | `List[Environment]` |
-| `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `env_vars` | `Optional[Dict[str, str]]` |
@@ -961,7 +961,12 @@ def with_uv_project(
 Use this method to create a new image with the specified uv.lock file layered on top of the current image
 Must have a corresponding pyproject.toml file in the same directory
 Cannot be used in conjunction with conda
-In the Union builders, using this will change the virtual env to /root/.venv
+
+By default, this method copies the entire project into the image,
+ including files such as pyproject.toml, uv.lock, and the src/ directory.
+
+If you prefer not to install the current project, you can pass the extra argument --no-install-project.
+ In this case, the image builder will only copy pyproject.toml and uv.lock into the image.
 
 
 
@@ -1249,7 +1254,7 @@ async def my_task():
 class TaskEnvironment(
     name: str,
     depends_on: List[Environment],
-    pod_template: Optional[Union[str, 'V1PodTemplate']],
+    pod_template: Optional[Union[str, PodTemplate]],
     description: Optional[str],
     secrets: Optional[SecretRequest],
     env_vars: Optional[Dict[str, str]],
@@ -1264,7 +1269,7 @@ class TaskEnvironment(
 |-|-|
 | `name` | `str` |
 | `depends_on` | `List[Environment]` |
-| `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `env_vars` | `Optional[Dict[str, str]]` |
