@@ -430,7 +430,74 @@ pyflyte run https://raw.githubusercontent.com/flyteorg/flytesnacks/master/exampl
 # Running hello_world_wf() hello world
 ```
 
-**3. Run workflow in sandbox.**
+**3. Run integration test**
+
+- Step 1: Build the dev container
+
+```sh
+make build-dev
+```
+
+- Step 2: Run integration test
+
+```sh
+# Run integration test
+make integration_test
+
+# Run integration test with code coverage report
+make integration_test_codecov
+
+# Run integration test with higher verbosity
+make integration_test PYTEST_OPTS="-n auto --dist=loadfile -vv"
+```
+
+**4-1. Run workflow in sandbox - with ImageSpec**
+
+Before running your workflow in the sandbox, make sure you're able to successfully run it
+locally. To run the workflow in the sandbox with the newest modification, you can use
+`ImageSpec` to define your container image directly in Python code.
+
+Create a workflow file that uses `ImageSpec` to define the image with your custom flytekit version:
+
+```python
+from flytekit import ImageSpec, task, workflow
+
+# Define your custom flytekit version - replace with your own repo and commit hash
+# You need to push your modifications to your fork and get the commit hash first
+new_flytekit = "git+https://github.com/your-github-username/flytekit.git@your-commit-hash"
+
+# To install your modified plugins, use following:
+# new_deck_plugin = "git+https://github.com/your-github-username/flytekit.git@your-commit-hash#subdirectory=plugins/flytekit-kf-pytorch"
+
+# Create ImageSpec with your custom flytekit
+image_spec = ImageSpec(
+   registry="localhost:30000",
+   packages=[
+       new_flytekit,
+       # new_deck_plugin
+   ],
+   apt_packages=["git"],
+)
+
+@task(container_image=image_spec)
+def hello_world_task(name: str) -> str:
+   return f"Hello {name}!"
+
+@workflow
+def wf(name: str = "World") -> str:
+   return hello_world_task(name=name)
+```
+
+
+Then submit the workflow to the Flyte cluster:
+
+```sh
+# ImageSpec will automatically build and push the image to the local registry
+pyflyte run --remote custom_workflow.py wf
+# Go to http://localhost:30080/console/projects/flytesnacks/domains/development/executions/<execution-id> to see execution in the console.
+```
+
+**4-2. Run workflow in sandbox - with Dockerfile**
 
 Before running your workflow in the sandbox, make sure you're able to successfully run it locally.
 To deploy the workflow in the sandbox, you'll need to build a Flytekit image.
@@ -438,7 +505,7 @@ Create a Dockerfile in your Flytekit directory with the minimum required configu
 If your task requires additional components, such as plugins, you may find it useful to refer to the construction of the
 [official flytekit image](https://github.com/flyteorg/flytekit/blob/master/Dockerfile)
 
-``` Dockerfile
+```dockerfile
 FROM python:3.9-slim-buster
 USER root
 WORKDIR /root
@@ -454,7 +521,7 @@ ENV FLYTE_INTERNAL_IMAGE "localhost:30000/flytekit:demo" # replace with your own
 The instructions below explain how to build the image, push the image to
 the Flyte cluster, and finally submit the workflow.
 
-``` shell
+```sh
 # Step 1: Ensure you have pushed your changes to the remote repo
 # In the flytekit folder
 git add . && git commit -s -m "develop" && git push
@@ -472,6 +539,89 @@ cd flytesnacks
 pyflyte run --image ${FLYTE_INTERNAL_IMAGE} --remote https://raw.githubusercontent.com/flyteorg/flytesnacks/master/examples/basics/basics/hello_world.py hello_world_wf
 # Go to http://localhost:30080/console/projects/flytesnacks/domains/development/executions/f5c17e1b5640c4336bf8 to see execution in the console.
 ```
+
+### How to debug flytekit remote workflow?
+
+For running locally, we can easily debug with the help of debugger. However,
+this approach does not work if we want to debug the remote workflow. When you
+need to debug your flytekit changes while running a remote workflow and set
+breakpoints to inspect variables, you can follow these steps:
+
+**1. Add breakpoints to your flytekit code**
+
+Insert `breakpoint()` function calls at the locations in your flytekit modifications where
+you want to pause execution and inspect variables. This is particularly useful when
+debugging changes you've made to flytekit's core functionality:
+
+
+**2. Run your workflow remotely**
+
+Execute your workflow using the remote flag:
+
+```sh
+pyflyte run --remote custom_workflow.py wf
+```
+
+**3. Describe the pod to get container arguments**
+
+First, find the pod name from your execution. You can get this from the Flyte UI execution page or by listing pods:
+
+```sh
+# List pods to find your execution pod
+kubectl get pods -n flytesnacks-development
+
+# Look for pods with names matching your execution ID
+# Example output:
+# NAME                           READY   STATUS    RESTARTS   AGE
+# ab5mg9lzgth62h82qprp-n0-0     1/1     Running   0          2m
+```
+
+Then describe the pod to get the container arguments:
+
+```sh
+# Replace with your actual pod name from the execution
+kubectl describe pod -n flytesnacks-development ab5mg9lzgth62h82qprp-n0-0
+```
+
+Look for the `Args:` section in the container specification and copy all the arguments. Example output:
+
+```sh
+Args:
+    pyflyte-fast-execute
+    --additional-distribution
+    /opt/venv
+    --dest-dir
+    /tmp/flyte
+    --input
+    s3://my-bucket/metadata/...
+```
+
+**4. Set up environment variables**
+
+Export the necessary Minio environment variables to access the object store if you are using demo cluster:
+
+```sh
+export FLYTE_AWS_ENDPOINT="http://localhost:30002"
+export FLYTE_AWS_ACCESS_KEY_ID="minio" 
+export FLYTE_AWS_SECRET_ACCESS_KEY="miniostorage"
+```
+
+**5. Run the container arguments locally**
+
+Take the container arguments from step 3, combine them into a single line, and execute
+them in your terminal. This will run the task locally with the same configuration as the
+remote execution, allowing you to hit your breakpoints and inspect variables.
+
+```sh
+# Example: Convert the multi-line args to a single command
+pyflyte-fast-execute --additional-distribution /opt/venv --dest-dir /tmp/flyte --input s3://my-bucket/metadata/... --output-prefix s3://my-bucket/data/...
+```
+
+This approach allows you to debug your flytekit changes in a remote workflow execution
+locally while maintaining the same execution context and data access patterns. This is
+especially valuable when you need to step through your modifications to flytekit's
+internals during remote execution.
+
 
 ### How to setup dev environment for flyteconsole?
 
