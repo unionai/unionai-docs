@@ -1,4 +1,7 @@
 {{- $url := .Get 0 -}}
+{{- if not $url -}}
+  {{- $url = .Get "file" -}}
+{{- end -}}
 {{- if not (or (hasPrefix $url "/_static/public/") (hasPrefix $url "https://github.com/unionai/"))  -}}
   {{- warnf "The download shortcode should only be used for files in the /_static/public directory or a Union.ai's GitHub repository. Found: %s" $url -}}
   <div style="border: 2px dashed red; color: red; padding: 0.5rem 1rem; margin-bottom: 1rem;">
@@ -11,8 +14,16 @@
     {{- $name = .Get 1 -}}
 {{- end -}}
 {{- $description := .Get 2 -}}
+{{- $finalUrl := printf "%s%s" .Site.BaseURL (strings.TrimPrefix "/" $url) -}}
+{{- $display := .Get "display" -}}
+
+{{- if eq $display "paragraph" -}}
+<div class="download">
+{{- else -}}
 <span class="download">
-    <a href="{{- $url }}" download="{{ $name -}}">
+{{- end -}}
+
+    <a href="{{- $finalUrl }}" download="{{ $name -}}">
         <sl-icon name="cloud-download"></sl-icon>&nbsp;
         {{- $name -}}
     </a>
@@ -21,4 +32,9 @@
             {{- $description -}}
         </div>
     {{- end -}}
+
+{{- if eq $display "paragraph" -}}
+</div>
+{{- else -}}
 </span>
+{{- end -}}
