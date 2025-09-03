@@ -188,7 +188,6 @@ A good use case for re-usable containers is machine learning inference. The over
 
 In this example we mock the model loading and prediction process. The full source code can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/reusable-containers/reuse.py).
 
-
 First, import the needed modules:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=import lang=python >}}
