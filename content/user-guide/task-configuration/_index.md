@@ -1,6 +1,6 @@
 ---
 title: Task configuration
-weight: 60
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
