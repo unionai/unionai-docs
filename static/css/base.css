@@ -139,6 +139,9 @@ h2 {
   margin: 2rem 0 1rem;
   color: var(--text-color);
 }
+h3, h4 {
+  margin: 1rem 0;
+}
 p {
   margin-bottom: 1.5rem;
   color: var(--text-color);
@@ -333,8 +336,12 @@ sl-alert P + P {
   margin-top: 1rem;
 }
 
-.download {
+span.download {
   display: inline-flex;
+}
+
+div.download {
+  margin: 0.5rem 0;
 }
 
 footer {
