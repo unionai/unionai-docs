@@ -31,10 +31,15 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 2. Routes task executions to available container instances.
 3. Manages container lifecycle with configurable timeouts.
 4. Supports concurrent task execution within containers (for async tasks).
+5. For Python tasks, the Python execution environment is preserved across task executions.
+   This allows you to maintain state through global variables from one execution to the next.
 
 ## Basic Usage
 
 Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
+
+```python
+import flyte
 
 > [!NOTE]
 > The reusable containers feature currently requires a dedicated runtime library
@@ -180,60 +185,41 @@ reuse_policy = flyte.ReusePolicy(
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
 - **Lifecycle management**: `idle_ttl` manages individual containers, `scaledown_ttl` manages the environment
 
-## Examples
+## Example
 
-### Machine learning inference
+A good use case for re-usable containers is machine learning inference. The overhead of loading a large model can be significant, so re-using containers for multiple inference requests can improve efficiency.
 
-Ideal for ML workloads where model loading is expensive:
+In this example we mock the model loading and prediction process. The fukllk source code can be found
 
-```python
-ml_env = flyte.TaskEnvironment(
-    name="ml-inference",
-    resources=flyte.Resources(memory="4Gi", cpu="2", gpu="1"),
-    reusable=flyte.ReusePolicy(
-        replicas=2,                    # 2 GPU containers (expensive resources)
-        concurrency=5,                 # 5 concurrent predictions per container (GPU can handle multiple)
-        idle_ttl=1800,                 # 30 minutes (longer due to expensive model loading)
-        scaledown_ttl=3600             # 1 hour environment timeout
-    )
-)
+### Imports
 
-# Model loaded once per container
-model = None
+First, import the needed modules:
 
-@ml_env.task
-async def predict(data: list[float]) -> float:
-    global model
-    if model is None:
-        model = load_expensive_model()  # Only happens once per container
-    return model.predict(data)
-```
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=import lang=python >}}
 
-### Batch processing
+Next, mock-up the model loading and prediction process:
 
-Efficient for processing many small items with high concurrency:
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=mock lang=python >}}
 
-```python
-batch_env = flyte.TaskEnvironment(
-    name="batch-processor",
-    resources=flyte.Resources(memory="2Gi", cpu="1"),
-    reusable=flyte.ReusePolicy(
-        replicas=3,                    # 3 container instances
-        concurrency=8,                 # 8 concurrent tasks per container (24 total capacity)
-        idle_ttl=300,                  # 5 minutes individual timeout
-        scaledown_ttl=1800             # 30 minutes environment timeout
-    )
-)
+Now, we set up the reusable task environment. Note that, currently, the image used for a reusable environment requires an extra package to be installed:
 
-@batch_env.task
-async def process_item(item: dict) -> dict:
-    return {"processed": item["data"], "result": transform(item)}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=env lang=python >}}
 
-@flyte.workflow
-async def batch_workflow(items: list[dict]) -> list[dict]:
-    results = await flyte.map_task(process_item)(item=items)
-    return results
-```
+We define the `do_predict` task that loads the model and performs predictions using that model.
+
+The key aspect of this task is that the model is loaded once per container and reused for all subsequent predictions, thus minimizes the overhead.
+
+This is achieved through the use of a global variable to store the model and a lock to ensure that the model is only loaded once.
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=do_predict lang=python >}}
+
+The `main` task ofthe workflow drives the prediction loop with a set of test data:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=main lang=python >}}
+
+Finally, we deploy and run the workflow programmatically, so all you have to do is execute `python reuse.py` to see it in action:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=run lang=python >}}
 
 {{< /markdown >}}
 {{< /variant >}}
