@@ -8,11 +8,11 @@ variants: -flyte -serverless +byoc -selfmanaged
 
 Depending on the type of identity provider you are using, open the appropriate directions below on the Okta site:
 
-* [Okta-to-Okta](https://developer.okta.com/docs/guides/add-an-external-idp/oktatookta/main/)
+- [Okta-to-Okta](https://developer.okta.com/docs/guides/add-an-external-idp/oktatookta/main/)
 
-* [OpenID Connect (OIDC)](https://developer.okta.com/docs/guides/add-an-external-idp/openidconnect/main/)
+- [OpenID Connect (OIDC)](https://developer.okta.com/docs/guides/add-an-external-idp/openidconnect/main/)
 
-* [SAML 2.0](https://developer.okta.com/docs/guides/add-an-external-idp/saml2/main/)
+- [SAML 2.0](https://developer.okta.com/docs/guides/add-an-external-idp/saml2/main/)
 
 Now, referencing those directions, follow the steps below:
 
@@ -27,11 +27,7 @@ Now, referencing those directions, follow the steps below:
 
 ## Share the client secret securely with the {{< key product_name >}} team
 
-1. Copy the public key provided by {{< key product_name >}} here: [public-key.txt](../../_static/public/public-key.txt)
-
-<!-- TODO add back when fixed
-    {{< download "/_static/public/public-key.txt" "public-key.txt" >}}
--->
+1. Copy the public key provided by {{< key product_name >}} here: {{< download "/_static/public/public-key.txt" >}}
 
 2. Go to [https://pgptool.net](https://pgptool.net/).
 
