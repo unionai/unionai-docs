@@ -217,7 +217,5 @@ Finally, we deploy and run the workflow programmatically, so all you have to do 
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=run lang=python >}}
 
-<!--
 {{< /markdown >}}
 {{< /variant >}}
--->
