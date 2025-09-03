@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 By default, each task execution in Flyte and Union runs in a fresh container instance that is created just for that execution and then discarded.
 Container reuse is an optimization feature that allows the same container to be reused across multiple executions and tasks.
-This approach reduces startup overhead and improves resource efficiency, making it especially beneficial for frequent, short-duration tasks.
+This approach reduces start up overhead and improves resource efficiency, making it especially beneficial for frequent, short-duration tasks.
 
 {{< variant flyte >}}
 {{< markdown >}}
