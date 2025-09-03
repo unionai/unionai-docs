@@ -190,15 +190,21 @@ In this example we mock the model loading and prediction process. The full sourc
 
 First, import the needed modules:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=import lang=python >}}
+{{< markdown >}}
 
 Next, mock-up the model loading and prediction process:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=mock lang=python >}}
+{{< markdown >}}
 
 Now, we set up the reusable task environment. Note that, currently, the image used for a reusable environment requires an extra package to be installed:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=env lang=python >}}
+{{< markdown >}}
 
 We define the `do_predict` task that loads the model and performs predictions using that model.
 
@@ -206,15 +212,19 @@ The key aspect of this task is that the model is loaded once per container and r
 
 This is achieved through the use of a global variable to store the model and a lock to ensure that the model is only loaded once.
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=do_predict lang=python >}}
+{{< markdown >}}
 
 The `main` task ofthe workflow drives the prediction loop with a set of test data:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=main lang=python >}}
+{{< markdown >}}
 
 Finally, we deploy and run the workflow programmatically, so all you have to do is execute `python reuse.py` to see it in action:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=run lang=python >}}
 
-{{< /markdown >}}
 {{< /variant >}}
