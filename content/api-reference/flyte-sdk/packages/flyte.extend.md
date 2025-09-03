@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b13
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -69,7 +69,7 @@ is decorated with the task decorator.
 class AsyncFunctionTaskTemplate(
     name: str,
     interface: NativeInterface,
-    friendly_name: str,
+    short_name: str,
     task_type: str,
     task_type_version: int,
     image: Union[str, Image, Literal['auto']],
@@ -95,7 +95,7 @@ class AsyncFunctionTaskTemplate(
 |-|-|
 | `name` | `str` |
 | `interface` | `NativeInterface` |
-| `friendly_name` | `str` |
+| `short_name` | `str` |
 | `task_type` | `str` |
 | `task_type_version` | `int` |
 | `image` | `Union[str, Image, Literal['auto']]` |
@@ -266,7 +266,7 @@ when not in a Flyte task execution context.  See the implementation below for an
 
 ```python
 def override(
-    friendly_name: Optional[str],
+    short_name: Optional[str],
     resources: Optional[Resources],
     cache: Optional[CacheRequest],
     retries: Union[int, RetryStrategy],
@@ -285,7 +285,7 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
-| `friendly_name` | `Optional[str]` |
+| `short_name` | `Optional[str]` |
 | `resources` | `Optional[Resources]` |
 | `cache` | `Optional[CacheRequest]` |
 | `retries` | `Union[int, RetryStrategy]` |

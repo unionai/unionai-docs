@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b13
+version: 2.0.0b18
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -503,7 +503,7 @@ class Device(
 class Environment(
     name: str,
     depends_on: List[Environment],
-    pod_template: Optional[Union[str, 'V1PodTemplate']],
+    pod_template: Optional[Union[str, PodTemplate]],
     description: Optional[str],
     secrets: Optional[SecretRequest],
     env_vars: Optional[Dict[str, str]],
@@ -515,7 +515,7 @@ class Environment(
 |-|-|
 | `name` | `str` |
 | `depends_on` | `List[Environment]` |
-| `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `env_vars` | `Optional[Dict[str, str]]` |
@@ -789,6 +789,7 @@ Use this method to create a new image with the specified apt packages layered on
 ```python
 def with_commands(
     commands: List[str],
+    secret_mounts: Optional[SecretRequest],
 ) -> Image
 ```
 Use this method to create a new image with the specified commands layered on top of the current image
@@ -799,6 +800,7 @@ Be sure not to use RUN in your command.
 | Parameter | Type |
 |-|-|
 | `commands` | `List[str]` |
+| `secret_mounts` | `Optional[SecretRequest]` |
 
 #### with_dockerignore()
 
@@ -855,9 +857,24 @@ Cannot be used in conjunction with conda
 
 Example:
 ```python
-@flyte.task(image=(flyte.Image
-                .ubuntu_python()
-                .with_pip_packages("requests", "numpy")))
+@flyte.task(image=(flyte.Image.from_debian_base().with_pip_packages("requests", "numpy")))
+def my_task(x: int) -> int:
+    import numpy as np
+    return np.sum([x, 1])
+```
+
+To mount secrets during the build process to download private packages, you can use the `secret_mounts`.
+In the below example, "GITHUB_PAT" will be mounted as env var "GITHUB_PAT",
+ and "apt-secret" will be mounted at /etc/apt/apt-secret.
+Example:
+```python
+private_package = "git+https://$GITHUB_PAT@github.com/flyteorg/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
+@flyte.task(
+    image=(
+        flyte.Image.from_debian_base()
+        .with_pip_packages("private_package", secret_mounts=[Secret(key="GITHUB_PAT")])
+        .with_apt_packages("git", secret_mounts=[Secret(key="apt-secret", mount="/etc/apt/apt-secret")])
+)
 def my_task(x: int) -> int:
     import numpy as np
     return np.sum([x, 1])
@@ -944,7 +961,12 @@ def with_uv_project(
 Use this method to create a new image with the specified uv.lock file layered on top of the current image
 Must have a corresponding pyproject.toml file in the same directory
 Cannot be used in conjunction with conda
-In the Union builders, using this will change the virtual env to /root/.venv
+
+By default, this method copies the entire project into the image,
+ including files such as pyproject.toml, uv.lock, and the src/ directory.
+
+If you prefer not to install the current project, you can pass the extra argument --no-install-project.
+ In this case, the image builder will only copy pyproject.toml and uv.lock into the image.
 
 
 
@@ -1232,7 +1254,7 @@ async def my_task():
 class TaskEnvironment(
     name: str,
     depends_on: List[Environment],
-    pod_template: Optional[Union[str, 'V1PodTemplate']],
+    pod_template: Optional[Union[str, PodTemplate]],
     description: Optional[str],
     secrets: Optional[SecretRequest],
     env_vars: Optional[Dict[str, str]],
@@ -1247,7 +1269,7 @@ class TaskEnvironment(
 |-|-|
 | `name` | `str` |
 | `depends_on` | `List[Environment]` |
-| `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `description` | `Optional[str]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `env_vars` | `Optional[Dict[str, str]]` |
@@ -1332,7 +1354,7 @@ Besides the base environment parameters, you can override kwargs like `cache`, `
 ```python
 def task(
     _func,
-    name: Optional[str],
+    short_name: Optional[str],
     cache: CacheRequest | None,
     retries: Union[int, RetryStrategy],
     timeout: Union[timedelta, int],
@@ -1349,7 +1371,7 @@ Decorate a function to be a task.
 | Parameter | Type |
 |-|-|
 | `_func` |  |
-| `name` | `Optional[str]` |
+| `short_name` | `Optional[str]` |
 | `cache` | `CacheRequest \| None` |
 | `retries` | `Union[int, RetryStrategy]` |
 | `timeout` | `Union[timedelta, int]` |
