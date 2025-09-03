@@ -36,17 +36,14 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 
 ## Basic Usage
 
-Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
-
-```python
-import flyte
-
 > [!NOTE]
 > The reusable containers feature currently requires a dedicated runtime library
 > ([`unionai-reuse`](https://pypi.org/project/unionai-reuse/)) to be installed in the task image used by the reusable task.
 > You can add this library to your task image using the `flyte.Image.with_pip_packages` method, as shown below.
 > This library only needs to be added to the task image.
 > It does not need to be installed in your local development environment.
+
+Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
 ```python
 import flyte
@@ -189,9 +186,8 @@ reuse_policy = flyte.ReusePolicy(
 
 A good use case for re-usable containers is machine learning inference. The overhead of loading a large model can be significant, so re-using containers for multiple inference requests can improve efficiency.
 
-In this example we mock the model loading and prediction process. The fukllk source code can be found
+In this example we mock the model loading and prediction process. The full source code can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/reusable-containers/reuse.py).
 
-### Imports
 
 First, import the needed modules:
 
@@ -221,5 +217,7 @@ Finally, we deploy and run the workflow programmatically, so all you have to do 
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=run lang=python >}}
 
+<!--
 {{< /markdown >}}
 {{< /variant >}}
+-->
