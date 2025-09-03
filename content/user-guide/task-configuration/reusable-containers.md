@@ -7,8 +7,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 # Reusable containers
 
 By default, each task execution in Flyte and Union runs in a fresh container instance that is created just for that execution and then discarded.
-Container reuse is an optimization feature that allows the same container to be reused across multiple executions and tasks.
-This approach reduces start up overhead and improves resource efficiency, making it especially beneficial for frequent, short-duration tasks.
+With reusable containers, the same container can be reused across multiple executions and tasks.
+This approach reduces start up overhead and improves resource efficiency.
 
 {{< variant flyte >}}
 {{< markdown >}}
@@ -22,6 +22,9 @@ This approach reduces start up overhead and improves resource efficiency, making
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
+> [!NOTE]
+> The reusable container feature is only available when running your Flyte code on a Union backend.
+
 ## How It Works
 
 With reusable containers, the system maintains a pool of persistent containers that can handle multiple task executions.
@@ -31,8 +34,7 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 2. Routes task executions to available container instances.
 3. Manages container lifecycle with configurable timeouts.
 4. Supports concurrent task execution within containers (for async tasks).
-5. For Python tasks, the Python execution environment is preserved across task executions.
-   This allows you to maintain state through global variables from one execution to the next.
+5. Preserves the Python execution environment across task executions, allowing you to maintain state through global variables.
 
 ## Basic Usage
 
@@ -182,7 +184,7 @@ reuse_policy = flyte.ReusePolicy(
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
 - **Lifecycle management**: `idle_ttl` manages individual containers, `scaledown_ttl` manages the environment
 
-## Example
+## Machine learning example
 
 A good use case for re-usable containers is machine learning inference. The overhead of loading a large model can be significant, so re-using containers for multiple inference requests can improve efficiency.
 
