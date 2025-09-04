@@ -1,6 +1,6 @@
 ---
 title: Caching
-weight: 140
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

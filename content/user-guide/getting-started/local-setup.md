@@ -1,6 +1,6 @@
 ---
 title: Local setup
-weight: 30
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

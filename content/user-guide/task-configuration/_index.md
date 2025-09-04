@@ -1,6 +1,6 @@
 ---
 title: Task configuration
-weight: 60
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -313,6 +313,7 @@ See [Environment dependencies](./environment-dependencies)
   If set to `True`, the task will generate an HTML report that can be viewed in the Flyte UI.
 * Can only be set at the `@env.task` decorator level,
   not at the `TaskEnvironment` level or the `task.override()` invocation level.
+* See [Reports](../task-programming/reports).
 
 ### `max_inline_io_bytes`
 

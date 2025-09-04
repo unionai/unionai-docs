@@ -1,6 +1,6 @@
 ---
 title: Task programming
-weight: 65
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
