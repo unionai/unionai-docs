@@ -6,34 +6,88 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Resources
 
-Flyte allows you to specify precise resource requirements for your tasks, including CPU, memory, GPU, and storage.
-Proper resource allocation ensures optimal performance while managing costs effectively.
+Task resources specify the computational limits and requests (CPU, memory, GPU, storage) that will be allocated to each task's container during execution.
 
-## Overview
+To specify resource requirements for your task, instantiate a `Resources` object with the desired parameters and assign it to either
+the `resources` parameter of the `TaskEnvironment` or the `resources` parameter of the `Task` decorator.
 
-The `Resources` class provides a comprehensive way to define computational requirements for tasks.
-You can specify both resource requests (minimum guaranteed resources) and limits (maximum allowed resources).
+Every task defined using that `TaskEnvironment` will run with the specified resources.
+If a specific task has its own `resources` defined in the decorator, it will override the environment's resources for that task only.
+
+If neither `TaskEnvironment` nor the task decorator specifies `resources`, the default resource allocation will be used.
+
+## Resources dataclass
+
+The `Resources` dataclass provides the following initialization parameters:
+
+```python
+resources = Resources(
+    cpu: Union[int, float, str, Tuple[Union[int, float, str], Union[int, float, str]], None] = None,
+    memory: Union[str, Tuple[str, str], None] = None,
+    gpu: Union[str, int, Device, None] = None,  # Accelerators string, count, or Device object
+    disk: Union[str, None] = None,
+    shm: Union[str, Literal["auto"], None] = None
+)
+```
+
+Each parameter is optional and allows you to specify different types of resources:
+
+- **`cpu`**: CPU allocation - can be a number, string, or tuple for request/limit ranges (e.g., `2` or `(2, 4)`).
+- **`memory`**: Memory allocation - string with units (e.g., `"4Gi"`) or tuple for ranges.
+- **`gpu`**: GPU allocation - accelerator string (e.g., `"A100:2"`), count, or `Device` (a [`GPU`](#gpu-resources), [`TPU`](#tpu-resources) or [custom `Device` object](#custom-device-specifications)).
+- **`disk`**: Ephemeral storage - string with units (e.g., `"10Gi"`).
+- **`shm`**: Shared memory - string with units or `"auto"` for automatic sizing (e.g., `"8Gi"` or `"auto"`).
+
+## Examples
+
+### Usage in TaskEnvironment
+
+Here's a complete example of defining a TaskEnvironment with resource specifications for a machine learning training workload:
 
 ```python
 import flyte
 
-# Basic resource allocation
-resources = flyte.Resources(
-    cpu="2",           # 2 CPU cores
-    memory="4Gi",      # 4 GiB of memory
-    gpu="A100:1",      # 1 NVIDIA A100 GPU
-    disk="10Gi"        # 10 GiB of ephemeral storage
+# Define a TaskEnvironment for ML training tasks
+ml_training_env = flyte.TaskEnvironment(
+    name="ml-training",
+    resources=flyte.Resources(
+        cpu=("2", "8"),        # Request 2 cores, allow up to 8 cores for scaling
+        memory=("8Gi", "32Gi"), # Request 8 GiB, allow up to 32 GiB for large datasets
+        gpu="A100:2",          # 2 NVIDIA A100 GPUs for training
+        disk="50Gi",           # 50 GiB ephemeral storage for checkpoints
+        shm="8Gi"              # 8 GiB shared memory for efficient data loading
+    )
 )
 
-env = flyte.TaskEnvironment(
-    name="ml-training",
-    resources=resources
-)
+# Use the environment for tasks
+@ml_training_env.task
+async def train_model(dataset_path: str) -> str:
+    # This task will run with flexible resource allocation
+    return "model_trained_successfully"
 ```
 
-## Resource Types
+### Usage in a task-specific override
 
-### CPU Resources
+```python
+from flyte import task
+
+# Override resources for specific tasks
+@task(
+    resources=flyte.Resources(
+        cpu="16",
+        memory="64Gi",
+        gpu="H100:2",
+        disk="50Gi",
+        shm="8Gi"
+    )
+)
+async def heavy_training_task() -> str:
+    return "heavy_model_trained"
+```
+
+## Resource types
+
+### CPU resources
 
 CPU can be specified in several formats:
 
@@ -52,7 +106,7 @@ flyte.Resources(cpu=("1", "2"))    # Request 1 core, limit to 2 cores
 flyte.Resources(cpu=(1, 4))        # Request 1 core, limit to 4 cores
 ```
 
-### Memory Resources
+### Memory resources
 
 Memory specifications follow Kubernetes conventions:
 
@@ -68,11 +122,12 @@ flyte.Resources(memory="1G")       # 1 GB (decimal)
 flyte.Resources(memory=("1Gi", "4Gi"))  # Request 1 GiB, limit to 4 GiB
 ```
 
-### GPU Resources
+### GPU resources
 
 Flyte supports various GPU types and configurations:
 
-#### Simple GPU Allocation
+#### Simple GPU allocation
+
 ```python
 # Basic GPU count
 flyte.Resources(gpu=1)             # 1 GPU (any available type)
@@ -84,7 +139,10 @@ flyte.Resources(gpu="A100:2")      # 2 NVIDIA A100 GPUs
 flyte.Resources(gpu="H100:8")      # 8 NVIDIA H100 GPUs
 ```
 
-#### Advanced GPU Configuration
+#### Advanced GPU configuration
+
+You can also use the `GPU` helper class for more detailed configurations:
+
 ```python
 # Using the GPU helper function
 gpu_config = flyte.GPU(device="A100", quantity=2)
@@ -106,7 +164,7 @@ large_partition = flyte.GPU(
 )
 ```
 
-#### Supported GPU Types
+#### Supported GPU types
 - **T4**: Entry-level training and inference
 - **L4**: Optimized for AI inference
 - **L40s**: High-performance compute
@@ -114,143 +172,9 @@ large_partition = flyte.GPU(
 - **A100 80G**: High-end training with more memory (80GB)
 - **H100**: Latest generation, highest performance
 
-### TPU Resources
+### Custom device specifications
 
-For Google Cloud TPU workloads:
-
-```python
-# TPU v5p configuration
-tpu_config = flyte.TPU(device="V5P", partition="2x2x1")
-flyte.Resources(gpu=tpu_config)  # Note: TPUs use the gpu parameter
-
-# TPU v6e configuration
-tpu_v6e = flyte.TPU(device="V6E", partition="4x4")
-flyte.Resources(gpu=tpu_v6e)
-```
-
-### Storage Resources
-
-#### Disk Storage
-```python
-flyte.Resources(disk="10Gi")       # 10 GiB ephemeral storage
-flyte.Resources(disk="100Gi")      # 100 GiB ephemeral storage
-```
-
-#### Shared Memory
-```python
-flyte.Resources(shm="1Gi")         # 1 GiB shared memory (/dev/shm)
-flyte.Resources(shm="auto")        # Auto-sized shared memory
-```
-
-## Resource Patterns
-
-### Development vs Production
-
-```python
-# Development environment - minimal resources
-dev_resources = flyte.Resources(
-    cpu="500m",
-    memory="1Gi"
-)
-
-# Production environment - guaranteed resources
-prod_resources = flyte.Resources(
-    cpu=("2", "4"),      # Request 2, limit to 4 cores
-    memory=("4Gi", "8Gi"), # Request 4Gi, limit to 8Gi
-    disk="50Gi"
-)
-```
-
-### Machine Learning Workloads
-
-```python
-# Training environment
-training_resources = flyte.Resources(
-    cpu="8",
-    memory="32Gi",
-    gpu="A100:4",        # 4 A100 GPUs for distributed training
-    disk="100Gi",
-    shm="16Gi"           # Large shared memory for data loading
-)
-
-# Inference environment
-inference_resources = flyte.Resources(
-    cpu="2",
-    memory="4Gi",
-    gpu="T4:1",          # Single T4 for inference
-    disk="20Gi"
-)
-
-# Large model inference with partitioning
-efficient_inference = flyte.Resources(
-    cpu="4",
-    memory="16Gi",
-    gpu=flyte.GPU(device="A100", quantity=1, partition="3g.20gb"),
-    disk="50Gi"
-)
-```
-
-### Data Processing Workloads
-
-```python
-# Memory-intensive data processing
-data_processing_resources = flyte.Resources(
-    cpu="4",
-    memory="16Gi",       # High memory for in-memory processing
-    disk="200Gi"         # Large disk for temporary data
-)
-
-# Distributed computing
-spark_resources = flyte.Resources(
-    cpu=("2", "8"),      # Flexible CPU allocation
-    memory=("8Gi", "32Gi"), # Flexible memory allocation
-    disk="100Gi"
-)
-```
-
-## Usage in TaskEnvironment
-
-### Environment-Level Resources
-
-Set default resources for all tasks in an environment:
-
-```python
-# All tasks in this environment get these resources
-ml_env = flyte.TaskEnvironment(
-    name="ml-training",
-    resources=flyte.Resources(
-        cpu="4",
-        memory="8Gi",
-        gpu="A100:1"
-    )
-)
-
-@ml_env.task
-async def train_model(data: str) -> str:
-    # This task uses the environment's resources
-    return "model_trained"
-```
-
-### Task-Specific Resource Override
-
-```python
-from flyte import task
-
-# Override resources for specific tasks
-@task(
-    resources=flyte.Resources(
-        cpu="8",
-        memory="16Gi",
-        gpu="H100:2"
-    )
-)
-async def heavy_training_task() -> str:
-    return "heavy_model_trained"
-```
-
-## Advanced Configurations
-
-### Custom Device Specifications
+You can also define custom devices if your infrastructure supports them:
 
 ```python
 # Custom device configuration
@@ -263,139 +187,46 @@ custom_device = flyte.Device(
 resources = flyte.Resources(gpu=custom_device)
 ```
 
-### Resource Validation
+### TPU resources
 
-The Resources class includes built-in validation:
-
-```python
-# This will raise a ValueError
-try:
-    invalid_resources = flyte.Resources(cpu=-1)  # CPU must be >= 0
-except ValueError as e:
-    print(f"Invalid resource: {e}")
-
-# This will raise a ValueError
-try:
-    invalid_gpu = flyte.Resources(gpu="InvalidGPU:1")
-except ValueError as e:
-    print(f"Invalid GPU: {e}")
-```
-
-## Best Practices
-
-### Right-Sizing Resources
+For Google Cloud TPU workloads you can specify TPU resources using the `TPU` helper class:
 
 ```python
-# ✅ Good: Match resources to workload
-light_task_resources = flyte.Resources(
-    cpu="500m",          # Adequate for light processing
-    memory="1Gi"
-)
+# TPU v5p configuration
+tpu_config = flyte.TPU(device="V5P", partition="2x2x1")
+flyte.Resources(gpu=tpu_config)  # Note: TPUs use the gpu parameter
 
-# ❌ Avoid: Over-provisioning wastes resources
-wasteful_resources = flyte.Resources(
-    cpu="16",            # Too much for a simple task
-    memory="64Gi"
-)
+# TPU v6e configuration
+tpu_v6e = flyte.TPU(device="V6E", partition="4x4")
+flyte.Resources(gpu=tpu_v6e)
 ```
 
-### Using Resource Ranges
+### Storage resources
+
+Flyte provides two types of storage resources for tasks: ephemeral disk storage and shared memory.
+These resources are essential for tasks that need temporary storage for processing data, caching intermediate results, or sharing data between processes.
+
+#### Disk storage
+
+Ephemeral disk storage provides temporary space for your tasks to store intermediate files, downloaded datasets, model checkpoints, and other temporary data. This storage is automatically cleaned up when the task completes.
 
 ```python
-# ✅ Good: Allow flexible scaling
-flexible_resources = flyte.Resources(
-    cpu=("1", "4"),      # Scale from 1-4 cores based on load
-    memory=("2Gi", "8Gi") # Scale memory accordingly
-)
+flyte.Resources(disk="10Gi")       # 10 GiB ephemeral storage
+flyte.Resources(disk="100Gi")      # 100 GiB ephemeral storage
+flyte.Resources(disk="1Ti")        # 1 TiB for large-scale data processing
+
+# Common use cases
+flyte.Resources(disk="50Gi")       # ML model training with checkpoints
+flyte.Resources(disk="200Gi")      # Large dataset preprocessing
+flyte.Resources(disk="500Gi")      # Video/image processing workflows
 ```
 
-### GPU Resource Management
+#### Shared memory
+
+Shared memory (`/dev/shm`) is a high-performance, RAM-based storage area that can be shared between processes within the same container. It's particularly useful for machine learning workflows that need fast data loading and inter-process communication.
 
 ```python
-# ✅ Good: Use appropriate GPU types
-inference_gpu = flyte.Resources(
-    gpu="T4:1"           # T4 sufficient for inference
-)
-
-training_gpu = flyte.Resources(
-    gpu="A100:4"         # A100s needed for large model training
-)
-
-# ✅ Good: Use partitioning for cost efficiency
-partitioned_gpu = flyte.Resources(
-    gpu=flyte.GPU(device="A100", quantity=1, partition="1g.5gb")
-)
+flyte.Resources(shm="1Gi")         # 1 GiB shared memory (/dev/shm)
+flyte.Resources(shm="auto")        # Auto-sized shared memory
+flyte.Resources(shm="16Gi")        # Large shared memory for distributed training
 ```
-
-### Memory and Storage
-
-```python
-# ✅ Good: Allocate sufficient shared memory for data loading
-data_heavy_resources = flyte.Resources(
-    cpu="4",
-    memory="8Gi",
-    shm="2Gi",           # Shared memory for efficient data loading
-    disk="50Gi"          # Adequate temporary storage
-)
-```
-
-## Monitoring and Optimization
-
-### Resource Utilization
-
-Monitor your tasks to optimize resource allocation:
-
-```python
-# Start conservative, then optimize based on usage
-initial_resources = flyte.Resources(
-    cpu="1",
-    memory="2Gi"
-)
-
-# After monitoring, adjust as needed
-optimized_resources = flyte.Resources(
-    cpu=("2", "4"),      # Found we need more CPU flexibility
-    memory="4Gi"         # Memory usage was higher than expected
-)
-```
-
-### Cost Optimization
-
-```python
-# Use spot instances with appropriate resource ranges
-spot_resources = flyte.Resources(
-    cpu=("2", "8"),      # Wide range for spot instance flexibility
-    memory=("4Gi", "16Gi")
-)
-
-# Use GPU partitioning for cost efficiency
-cost_efficient_gpu = flyte.Resources(
-    gpu=flyte.GPU(device="A100", quantity=1, partition="2g.10gb")
-)
-```
-
-## Integration with Other Features
-
-Resources work seamlessly with other Flyte features:
-
-```python
-# Resources with reusable containers
-reusable_env = flyte.TaskEnvironment(
-    name="reusable-ml",
-    resources=flyte.Resources(cpu="2", memory="4Gi", gpu="T4:1"),
-    reusable=flyte.ReusePolicy(
-        replicas=2,
-        concurrency=3,
-        idle_ttl=300
-    )
-)
-
-# Resources with caching
-cached_env = flyte.TaskEnvironment(
-    name="cached-processing",
-    resources=flyte.Resources(cpu="4", memory="8Gi"),
-    cache=flyte.Cache(ttl="1h")
-)
-```
-
-Resource allocation is fundamental to achieving optimal performance and cost efficiency in your Flyte workflows. Start with conservative estimates and refine based on monitoring and profiling data.
