@@ -6,11 +6,13 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Resources
 
-Flyte allows you to specify precise resource requirements for your tasks, including CPU, memory, GPU, and storage. Proper resource allocation ensures optimal performance while managing costs effectively.
+Flyte allows you to specify precise resource requirements for your tasks, including CPU, memory, GPU, and storage.
+Proper resource allocation ensures optimal performance while managing costs effectively.
 
 ## Overview
 
-The `Resources` class provides a comprehensive way to define computational requirements for tasks. You can specify both resource requests (minimum guaranteed resources) and limits (maximum allowed resources).
+The `Resources` class provides a comprehensive way to define computational requirements for tasks.
+You can specify both resource requests (minimum guaranteed resources) and limits (maximum allowed resources).
 
 ```python
 import flyte
