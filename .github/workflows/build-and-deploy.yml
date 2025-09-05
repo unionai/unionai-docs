@@ -1,0 +1,82 @@
+name: Build and Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+      - v1
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Initialize submodules with retry
+        run: |
+          # Try to initialize submodules, but don't fail if it doesn't work
+          echo "Initializing submodules..."
+          git submodule update --init --recursive --timeout=60 || {
+            echo "Warning: Submodule initialization failed, continuing without submodules"
+            # Create empty directories to prevent build failures
+            mkdir -p external/unionai-examples
+            touch external/unionai-examples/.gitkeep
+          }
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.145.0'
+          extended: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install wrangler
+        run: npm install -g wrangler
+
+      - name: Build combined site
+        run: |
+          ./scripts/build-combined.sh --type production --output final_dist
+
+      - name: Create redirects file for Cloudflare Pages
+        run: |
+          cat > final_dist/_redirects << 'EOF'
+          # Root redirect to default variant
+          / /docs/byoc/ 301
+          /docs /docs/byoc/ 301
+          
+          # Version-less paths redirect to v2 (latest)
+          /docs/flyte/* /docs/v2/flyte/:splat 301
+          /docs/serverless/* /docs/v2/serverless/:splat 301
+          /docs/byoc/* /docs/v2/byoc/:splat 301
+          /docs/selfmanaged/* /docs/v2/selfmanaged/:splat 301
+          
+          # Legacy domain redirects
+          https://docs.flyte.org/* https://www.union.ai/docs/v2/flyte/:splat 301
+          EOF
+
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # Deploy to production
+          wrangler pages deploy final_dist \
+            --project-name=unionai-docs \
+            --compatibility-date=2024-01-01
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build-${{ steps.versions.outputs.current_version }}-${{ github.sha }}
+          path: final_dist/
+          retention-days: 30
