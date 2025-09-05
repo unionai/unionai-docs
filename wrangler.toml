@@ -1,0 +1,14 @@
+name = "unionai-docs"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Configuration for Cloudflare Pages
+[site]
+bucket = "./final_dist"
+
+# Environment variables (these will be set in the GitHub Actions)
+[env.production]
+name = "unionai-docs"
+
+[env.preview]
+name = "unionai-docs-preview"
