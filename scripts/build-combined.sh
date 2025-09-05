@@ -81,6 +81,13 @@ OUTPUT_DIR="${OUTPUT_DIR:-final_dist}"
 
 cd "$REPO_ROOT"
 
+# Ensure submodules are available
+if [ ! -d "external/unionai-examples" ] || [ -z "$(ls -A external/unionai-examples 2>/dev/null)" ]; then
+    log "Warning: unionai-examples submodule not available, creating placeholder"
+    mkdir -p external/unionai-examples
+    touch external/unionai-examples/.gitkeep
+fi
+
 # Clean up any previous builds
 rm -rf dist current_dist pr_dist "$OUTPUT_DIR"
 
@@ -105,14 +112,14 @@ if [[ "$BUILD_TYPE" == "production" ]]; then
     fi
     
     log "Building current version ($CURRENT_VERSION) from $CURRENT_BRANCH"
-    make dist
+    make dist-ci
     mv dist current_dist
     
     log "Switching to $OTHER_BRANCH for $OTHER_VERSION"
     git checkout "$OTHER_BRANCH"
     
     log "Building other version ($OTHER_VERSION) from $OTHER_BRANCH"
-    make dist
+    make dist-ci
     
     # Switch back to original branch
     git checkout "$CURRENT_BRANCH"
@@ -153,14 +160,14 @@ elif [[ "$BUILD_TYPE" == "preview" ]]; then
     fi
     
     log "Building PR version ($PR_VERSION) from current HEAD"
-    make dist
+    make dist-ci
     mv dist pr_dist
     
     log "Switching to $OTHER_BRANCH for $OTHER_VERSION"
     git checkout "$OTHER_BRANCH"
     
     log "Building other version ($OTHER_VERSION) from $OTHER_BRANCH"
-    make dist
+    make dist-ci
     
     # Switch back to PR branch
     git checkout "$HEAD_REF" || git checkout -

@@ -18,6 +18,17 @@ jobs:
           submodules: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Initialize submodules with retry
+        run: |
+          # Try to initialize submodules, but don't fail if it doesn't work
+          echo "Initializing submodules..."
+          git submodule update --init --recursive --timeout=60 || {
+            echo "Warning: Submodule initialization failed, continuing without submodules"
+            # Create empty directories to prevent build failures
+            mkdir -p external/unionai-examples
+            touch external/unionai-examples/.gitkeep
+          }
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
@@ -57,6 +68,20 @@ jobs:
       - name: Build PR preview
         run: |
           ./scripts/build-combined.sh --type preview --base-ref "${{ github.base_ref }}" --head-ref "${{ github.head_ref }}" --output final_dist
+
+      - name: Create redirects file for PR preview
+        run: |
+          cat > final_dist/_redirects << 'EOF'
+          # Root redirect to default variant
+          / /docs/byoc/ 301
+          /docs /docs/byoc/ 301
+          
+          # Version-less paths redirect to v2 (latest)
+          /docs/flyte/* /docs/v2/flyte/:splat 301
+          /docs/serverless/* /docs/v2/serverless/:splat 301
+          /docs/byoc/* /docs/v2/byoc/:splat 301
+          /docs/selfmanaged/* /docs/v2/selfmanaged/:splat 301
+          EOF
 
       - name: Create preview environment name
         id: preview
