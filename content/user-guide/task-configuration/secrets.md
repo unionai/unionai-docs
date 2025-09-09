@@ -98,7 +98,7 @@ def t1():
 
 ## Using a file secret
 
-To use a file secret, specify it in the `TaskEnvironment` along with the `mount="/etc/flyte/secrets"` argument.
+To use a file secret, specify it in the `TaskEnvironment` along with the `mount="/etc/flyte/secrets"` argument (with that precise value).
 
 The file will be mounted at `/etc/flyte/secrets/<SECRET_KEY>`.
 
@@ -122,7 +122,7 @@ def t1():
 ```
 
 > [!NOTE]
-> Currently, only the `mount` parameter value of `"/etc/flyte/secrets"` is supported.
+> Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.
 > This fixed path is the directory in which the secret file will be placed.
 > The name of the secret file will be equal to the key of the secret.
 
