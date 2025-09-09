@@ -118,18 +118,18 @@ Save the following in a ``flyte-monitoring-overrides.yaml`` file and run a ``hel
 
 ```yaml
 configuration:
-inline:
+  inline:
     propeller:
-    prof-port: 10254
-    metrics-prefix: "flyte:"
+      prof-port: 10254
+      metrics-prefix: "flyte:"
     scheduler:
-    profilerPort: 10254
-    metricsScope: "flyte:"
+      profilerPort: 10254
+      metricsScope: "flyte:"
     flyteadmin:
-    profilerPort: 10254
+      profilerPort: 10254
 service:
-extraPorts:
-- name: http-metrics
+  extraPorts:
+  - name: http-metrics
     protocol: TCP
     port: 10254
 ```
