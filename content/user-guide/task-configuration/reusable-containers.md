@@ -6,40 +6,46 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Reusable containers
 
-Container reuse is an optimization feature that allows you to reuse containers across multiple task executions.
-This reduces container startup overhead and improves resource efficiency, especially for frequent, short-duration tasks.
+By default, each task execution in Flyte and Union runs in a fresh container instance that is created just for that execution and then discarded.
+With reusable containers, the same container can be reused across multiple executions and tasks.
+This approach reduces start up overhead and improves resource efficiency.
 
 {{< variant flyte >}}
 {{< markdown >}}
 
 > [!NOTE]
-> The reusable container feature is only available when running your Flyte code on a Union.ai backend.
-> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2>}}/user-guide/reusable-containers) for details.
+> The reusable container feature is only available when running your Flyte code on a Union backend.
+> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2 >}}/user-guide/reusable-containers) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
+> [!NOTE]
+> The reusable container feature is only available when running your Flyte code on a Union backend.
 
 ## How It Works
 
-By default, Flyte creates a new container for each task execution. Container reuse changes this by maintaining a pool of persistent containers that can handle multiple task executions. When you configure a `TaskEnvironment` with a `ReusePolicy`, Flyte:
+With reusable containers, the system maintains a pool of persistent containers that can handle multiple task executions.
+When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the following:
 
-1. Creates a pool of persistent containers
-2. Routes task executions to available container instances
-3. Manages container lifecycle with configurable timeouts
-4. Supports concurrent task execution within containers (for async tasks)
+1. Creates a pool of persistent containers.
+2. Routes task executions to available container instances.
+3. Manages container lifecycle with configurable timeouts.
+4. Supports concurrent task execution within containers (for async tasks).
+5. Preserves the Python execution environment across task executions, allowing you to maintain state through global variables.
 
 ## Basic Usage
 
-Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
-
 > [!NOTE]
-> The reusable containers feature currently requires a dedicated runtime library ([`unionai-reuse`](https://pypi.org/project/unionai-reuse/)) to be installed in the task image used by the reusable task.
+> The reusable containers feature currently requires a dedicated runtime library
+> ([`unionai-reuse`](https://pypi.org/project/unionai-reuse/)) to be installed in the task image used by the reusable task.
 > You can add this library to your task image using the `flyte.Image.with_pip_packages` method, as shown below.
 > This library only needs to be added to the task image.
 > It does not need to be installed in your local development environment.
+
+Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
 ```python
 import flyte
@@ -51,8 +57,10 @@ env = flyte.TaskEnvironment(
     name="reusable-env",
     resources=flyte.Resources(memory="1Gi", cpu="500m"),
     reusable=flyte.ReusePolicy(
-        replicas=2,        # Number of container instances
-        idle_ttl=300       # 5 minutes idle timeout
+        replicas=2,                    # Create 2 container instances
+        concurrency=1,                 # Process 1 task per container at a time
+        idle_ttl=300,                  # Individual containers shut down after 5 minutes of inactivity
+        scaledown_ttl=1800             # Entire environment shuts down after 30 minutes of no tasks
     ),
     image=reusable_image  # Use the container image augmented with the unionai-reuse library.
 )
@@ -71,131 +79,154 @@ async def main() -> list[int]:
     return results
 ```
 
-## Configuration
+## `ReusePolicy` parameters
 
-### `ReusePolicy` Parameters
+The `ReusePolicy` class controls how containers are managed in a reusable environment:
 
-- **`replicas`**: Number of container instances in the pool (e.g., `2` or `(2, 5)` for auto-scaling).
-  **Note: Autoscaling is coming soon**.
-- **`idle_ttl`**: How long containers stay alive without processing tasks (in seconds)
+```python
+flyte.ReusePolicy(
+    replicas: typing.Union[int, typing.Tuple[int, int]],
+    idle_ttl: typing.Union[int, datetime.timedelta],
+    concurrency: int,
+    scaledown_ttl: typing.Union[int, datetime.timedelta],
+)
+```
+
+### `replicas`: Container pool size
+
+Controls the number of container instances in the reusable pool:
+
+- **Fixed size**: `replicas=3` creates exactly 3 container instances.
+- **Auto-scaling**: `replicas=(2, 5)` scales from 2 to 5 containers based on demand.
+- **Resource impact**: Each replica consumes the full resources defined in `TaskEnvironment.resources`.
+
+```python
+# Fixed pool size
+reuse_policy = flyte.ReusePolicy(replicas=3, idle_ttl=300, concurrency=1)
+
+# Auto-scaling pool
+reuse_policy = flyte.ReusePolicy(replicas=(1, 10), idle_ttl=300, concurrency=1)
+```
+
+### `concurrency`: Tasks per container
+
+Controls how many tasks can execute simultaneously within a single container:
+
+- **Default**: `concurrency=1` (one task per container at a time).
+- **Higher concurrency**: `concurrency=5` allows 5 tasks to run simultaneously in each container.
+- **Total capacity**: `replicas × concurrency` = maximum concurrent tasks across the entire pool.
+
+```python
+# Sequential processing (default)
+sequential_policy = flyte.ReusePolicy(
+    replicas=2,
+    concurrency=1,  # One task per container
+    idle_ttl=300
+)
+
+# Concurrent processing
+concurrent_policy = flyte.ReusePolicy(
+    replicas=2,
+    concurrency=5,  # 5 tasks per container = 10 total concurrent tasks
+    idle_ttl=300
+)
+```
+
+### `idle_ttl` vs `scaledown_ttl`: Container lifecycle
+
+These parameters work together to manage container lifecycle at different levels:
+
+#### `idle_ttl`: Individual container timeout
+
+- **Scope**: Controls individual container instances.
+- **Behavior**: When a container finishes a task and becomes idle, it will be terminated after `idle_ttl` expires.
+- **Purpose**: Prevents resource waste from idle containers.
+- **Typical values**: 5-30 minutes for most workloads.
+
+#### `scaledown_ttl`: Environment timeout
+
+- **Scope**: Controls the entire reusable environment infrastructure.
+- **Behavior**: When there are no active or queued tasks, the entire environment scales down after `scaledown_ttl` expires.
+- **Purpose**: Manages the lifecycle of the entire container pool.
+- **Typical values**: 1-2 hours, or `None` for always-on environments
+
+```python
+from datetime import timedelta
+
+lifecycle_policy = flyte.ReusePolicy(
+    replicas=3,
+    concurrency=2,
+    idle_ttl=timedelta(minutes=10),    # Individual containers shut down after 10 minutes of inactivity
+    scaledown_ttl=timedelta(hours=2)   # Entire environment shuts down after 2 hours of no tasks
+)
+```
+
+## Understanding parameter relationships
+
+The four `ReusePolicy` parameters work together to control different aspects of container management:
 
 ```python
 reuse_policy = flyte.ReusePolicy(
-    replicas=3,
-    idle_ttl=600  # 10 minutes
+    replicas=4,           # Infrastructure: How many containers?
+    concurrency=3,        # Throughput: How many tasks per container?
+    idle_ttl=600,         # Individual: When do idle containers shut down?
+    scaledown_ttl=3600    # Environment: When does the whole pool shut down?
 )
+# Total capacity: 4 × 3 = 12 concurrent tasks
+# Individual containers shut down after 10 minutes of inactivity
+# Entire environment shuts down after 1 hour of no tasks
 ```
 
-## Common Use Cases
+### Key relationships
 
-### Machine Learning Inference
+- **Total throughput** = `replicas × concurrency`
+- **Resource usage** = `replicas × TaskEnvironment.resources`
+- **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
+- **Lifecycle management**: `idle_ttl` manages individual containers, `scaledown_ttl` manages the environment
 
-Ideal for ML workloads where model loading is expensive:
+## Machine learning example
 
-<!-- TODO:
-Referring to  the section in the code below
+A good use case for re-usable containers is machine learning inference. The overhead of loading a large model can be significant, so re-using containers for multiple inference requests can improve efficiency.
 
-```
-# Model loaded once per container
-model = None
-```
-Ketan Umare
-this should have an asyncio lock. Better to use alru_cache
--->
+In this example we mock the model loading and prediction process. The full source code can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/reusable-containers/reuse.py).
 
-```python
-ml_env = flyte.TaskEnvironment(
-    name="ml-inference",
-    resources=flyte.Resources(memory="4Gi", cpu="2", gpu="1"),
-    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=1800)  # 30 minutes
-)
-
-# Model loaded once per container
-model = None
-
-@ml_env.task
-async def predict(data: list[float]) -> float:
-    global model
-    if model is None:
-        model = load_expensive_model()  # Only happens once per container
-    return model.predict(data)
-```
-
-### Batch Processing
-
-Efficient for processing many small items:
-
-```python
-batch_env = flyte.TaskEnvironment(
-    name="batch-processor",
-    reusable=flyte.ReusePolicy(
-        replicas=4,
-        idle_ttl=300
-    )
-)
-
-@batch_env.task
-async def process_item(item: dict) -> dict:
-    return {"processed": item["data"], "result": transform(item)}
-
-@flyte.workflow
-async def batch_workflow(items: list[dict]) -> list[dict]:
-    results = await flyte.map_task(process_item)(item=items)
-    return results
-```
-
-## Best Practices
-
-### Task Design
-
-Design tasks to be stateless and avoid global state modifications:
-
-```python
-# ✅ Good: Stateless task
-@env.task
-async def process_data(data: dict) -> dict:
-    result = transform_data(data)  # No side effects
-    return result
-
-# ❌ Avoid: Tasks with global state
-cache = {}  # Global state
-
-@env.task
-async def stateful_task(data: dict) -> dict:
-    cache[data["id"]] = data  # State leaks between executions
-    return data
-```
-
-### Resource Sizing
-
-Size resources appropriately for your workload:
-
-```python
-# Right-sized for workload
-env = flyte.TaskEnvironment(
-    name="optimized",
-    resources=flyte.Resources(memory="1Gi", cpu="500m"),
-    reusable=flyte.ReusePolicy(
-        replicas=3,      # Based on expected load
-        idle_ttl=600    # Reasonable cleanup interval    )
-)
-```
-
-## When to Use Container Reuse
-
-**Ideal for:**
-- Frequent, short-duration tasks
-- Tasks with expensive initialization (model loading, database connections)
-- Batch processing workloads
-- Development and testing scenarios
-
-**Avoid for:**
-- Long-running tasks that occupy containers for extended periods
-- Tasks that consume large amounts of memory without cleanup
-- Tasks that modify global state or have persistent side effects
-- Environments requiring strict resource isolation
-
-Container reuse provides significant performance improvements for appropriate workloads while maintaining the reliability and observability of the Flyte execution environment.
+First, import the needed modules:
 
 {{< /markdown >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=import lang=python >}}
+{{< markdown >}}
+
+Next, mock-up the model loading and prediction process:
+
+{{< /markdown >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=mock lang=python >}}
+{{< markdown >}}
+
+Now, we set up the reusable task environment. Note that, currently, the image used for a reusable environment requires an extra package to be installed:
+
+{{< /markdown >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=env lang=python >}}
+{{< markdown >}}
+
+We define the `do_predict` task that loads the model and performs predictions using that model.
+
+The key aspect of this task is that the model is loaded once per container and reused for all subsequent predictions, thus minimizes the overhead.
+
+This is achieved through the use of a global variable to store the model and a lock to ensure that the model is only loaded once.
+
+{{< /markdown >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=do_predict lang=python >}}
+{{< markdown >}}
+
+The `main` task ofthe workflow drives the prediction loop with a set of test data:
+
+{{< /markdown >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=main lang=python >}}
+{{< markdown >}}
+
+Finally, we deploy and run the workflow programmatically, so all you have to do is execute `python reuse.py` to see it in action:
+
+{{< /markdown >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse.py" fragment=run lang=python >}}
+
 {{< /variant >}}

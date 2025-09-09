@@ -99,7 +99,7 @@ See [Setting up a configuration file](./local-setup#setting-up-a-configuration-f
 
 Create a file called `hello.py` with the following content:
 
-{{< code file="/external/migrate/user-guide/getting-started/hello.py" lang="python" >}}
+{{< code file="/external/unionai-examples/user-guide-v2/getting-started/hello.py" lang="python" >}}
 
 ## Understanding the code
 
