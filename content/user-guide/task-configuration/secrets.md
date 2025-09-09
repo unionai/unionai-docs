@@ -1,6 +1,6 @@
 ---
 title: Secrets
-weight: 170
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -11,34 +11,30 @@ Secrets reside in a secret store on the data plane of your Union/Flyte backend.
 You can create, list, and delete secrets in the store using the Flyte CLI or SDK.
 Secrets in the store can be accessed and used within your workflow tasks, without exposing any cleartext values in your code.
 
-<!-- TODO: add back when file secrets are supported
 ## Creating a literal string secret
--->
-
-## Creating a secret
 
 You can create a secret using the [`flyte create secret`](../../api-reference/flyte-cli#flyte-create-secret) command like this:
 
 ```shell
-flyte create secret MY_SECRET_KEY my_secret_value
+flyte create secret MY_SECRET_KEY --value my_secret_value
 ```
 
 This will create a secret called `MY_SECRET_KEY` with the value `my_secret_value`.
 This secret will be scoped to your entire organization.
 It will be available across all projects and domains in your organization.
 See the [scoping secrets](#scoping-secrets) section below for more details.
+See [Using a literal string secret](#using-a-literal-string-secret) for how to access the secret in your task code.
 
-<!-- TODO: add back when file secrets are supported
+
 ## Creating a file secret
 
-You can also create a secret with a file as the value
+You can also create a secret by specifying a local file:
 
 ```shell
-flyte create secret MY_SECRET_KEY --from-file /path/to/my_secret_file
+flyte create secret MY_SECRET_KEY --from-file /local/path/to/my_secret_file
 ```
 
-In this case, when accessing the secret in your task code, you will need to [mount it as a file](#using-a-secret-created-from-a-file).
--->
+In this case, when accessing the secret in your task code, you will need to [mount it as a file](#using-a-file-secret).
 
 ## Scoping secrets
 
@@ -81,13 +77,9 @@ To delete a secret, use the [`flyte delete secret`](../../api-reference/flyte-cl
 flyte delete secret MY_SECRET_KEY
 ```
 
-<!-- TODO: add back when file secrets are supported
 ## Using a literal string secret
--->
 
-## Using a secret
-
-To use a secret, specify it in the `TaskEnvironment` along with the name of the environment variable into which it will be injected.
+To use a literal string secret, specify it in the `TaskEnvironment` along with the name of the environment variable into which it will be injected.
 You can then access it using `os.getenv()` in your task code.
 For example:
 
@@ -99,7 +91,6 @@ env = flyte.TaskEnvironment(
     ]
 )
 
-
 @env.task
 def t1():
     my_secret_value = os.getenv("MY_SECRET_ENV_VAR")
@@ -107,30 +98,35 @@ def t1():
     ...
 ```
 
-<!-- TODO: add back when file secrets are supported
-
 ## Using a file secret
 
-To use a file secret, specify it in the `TaskEnvironment` along with the path to which the file will be mounted.
-You can then access it as a local file within your task code.
+To use a file secret, specify it in the `TaskEnvironment` along with the `mount="/etc/flyte/secrets"` argument (with that precise value).
+
+The file will be mounted at `/etc/flyte/secrets/<SECRET_KEY>`.
+
+For example:
+
 
 ```python
 env = flyte.TaskEnvironment(
     name="my_task_env",
     secrets=[
-        flyte.Secret(key="MY_SECRET_KEY", mount="/root/my_secret_file"),
+        flyte.Secret(key="MY_SECRET_KEY", mount="/etc/flyte/secrets"),
     ]
 )
 
-
 @env.task
 def t1():
-    with open("/root/my_secret_file", "r") as f:
-        my_secret_value = f.read()
-    # Do something with the secret
+    with open("/etc/flyte/secrets/MY_SECRET_KEY", "r") as f:
+        my_secret_file_content = f.read()
+        # Do something with the secret file content
     ...
 ```
--->
+
+> [!NOTE]
+> Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.
+> This fixed path is the directory in which the secret file will be placed.
+> The name of the secret file will be equal to the key of the secret.
 
 > [!NOTE]
 > A `TaskEnvironment` can only access a secret if the scope of the secret includes the project and domain where the `TaskEnvironment` is deployed.

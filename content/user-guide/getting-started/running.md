@@ -1,6 +1,6 @@
 ---
 title: Running
-weight: 40
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

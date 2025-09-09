@@ -12,7 +12,7 @@ Add DataFrames fully in this page as well, or create own page for them.
 
 Flyte provides the [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiofile) and
 [`flyte.io.Dir`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and directories, respectively.
-Together with [`flyte.io.DatasFrame`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) they constitute the *offloaded data types*.
+Together with [`flyte.io.DataFrame`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) they constitute the *offloaded data types*.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
 The actual data is stored in the internal blob store of your Union/Flyte instance.
