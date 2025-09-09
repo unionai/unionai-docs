@@ -20,9 +20,9 @@ It ensures environments are deployed in a specific order but doesn't affect task
 ### Deployment orchestration
 
 The `depends_on` parameter:
-- **ONLY** affects deployment order to the cluster
-- **Does NOT** create runtime dependencies between tasks
-- Helps organize logical relationships between environments
+- **ONLY** affects deployment order to the cluster.
+- **Does NOT** create runtime dependencies between tasks.
+- Helps organize logical relationships between environments.
 
 ## Basic usage
 
@@ -116,10 +116,10 @@ training_env = base_template.clone_with(
 
 ## Best practices
 
-- **Use meaningful names**: Follow consistent naming conventions (e.g., `data-processing`, `ml-training`)
-- **Organize by function**: Group environments by domain or purpose
-- **Document relationships**: Use descriptions to explain environment purposes
-- **Avoid circular dependencies**: Flyte validates and prevents circular references
-- **Keep dependencies minimal**: Only add dependencies for logical deployment ordering
+- **Use meaningful names**: Follow consistent naming conventions (e.g., `data-processing`, `ml-training`).
+- **Organize by function**: Group environments by domain or purpose.
+- **Document relationships**: Use descriptions to explain environment purposes.
+- **Avoid circular dependencies**: Flyte validates and prevents circular references.
+- **Keep dependencies minimal**: Only add dependencies for logical deployment ordering.
 
 Multiple environments enable organized, scalable workflows with clear separation of concerns and controlled deployment orchestration.
