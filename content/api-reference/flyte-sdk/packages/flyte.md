@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b18
+version: 2.0.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -249,7 +249,7 @@ remote API methods are called. Thread-safe implementation.
 
 ```python
 def init_from_config(
-    path_or_config: str | Config | None,
+    path_or_config: str | Path | Config | None,
     root_dir: Path | None,
     log_level: int | None,
 )
@@ -261,7 +261,7 @@ other Flyte remote API methods are called. Thread-safe implementation.
 
 | Parameter | Type |
 |-|-|
-| `path_or_config` | `str \| Config \| None` |
+| `path_or_config` | `str \| Path \| Config \| None` |
 | `root_dir` | `Path \| None` |
 | `log_level` | `int \| None` |
 

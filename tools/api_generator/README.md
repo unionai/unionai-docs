@@ -31,7 +31,7 @@ For example, to generate the documentation for the `flytekit` package, you do th
 5 Run the generator for `flytekit`:
 
    ```bash
-   $ make -f Makefile.flytekit.api
+   $ make -f Makefile.api.flytekit
    ```
 
 The generator will introspect the `flytekit` package and produce the documentation in the form of Markdown files in the directory `content/api-reference/flytekirt-sdk/`.
@@ -52,9 +52,9 @@ $ make -f Makefile.<type>.<name>
 There is a predefined `Makefile` for each API/CLI:
 
 * `Makefile.api.flytekit`
-* `Makefile.api.union`
-* `Makefile.api.flytev2`
+* `Makefile.api.flyte-sdk`
 * `Makefile.api.plugins`
+* `Makefile.api.flyte`
 * `Makefile.cli.flytectl`
 
 ## How it works

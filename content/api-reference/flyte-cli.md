@@ -128,7 +128,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 | `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
 | `--org` | `text` |  | Organization to use. This will override the organization in the configuration file. |
 | {{< multiline >}}`-o`
-`--output`{{< /multiline >}} | `path` | `config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
+`--output`{{< /multiline >}} | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
 | {{< multiline >}}`--image-builder`
 `--builder`{{< /multiline >}} | `choice` | `local` | Image builder to use for building images. Defaults to 'local'. |
