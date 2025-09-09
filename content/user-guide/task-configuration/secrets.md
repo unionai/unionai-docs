@@ -23,16 +23,18 @@ This will create a secret called `MY_SECRET_KEY` with the value `my_secret_value
 This secret will be scoped to your entire organization.
 It will be available across all projects and domains in your organization.
 See the [scoping secrets](#scoping-secrets) section below for more details.
+See [Using a literal string secret](#using-a-literal-string-secret) for how to access the secret in your task code.
+
 
 ## Creating a file secret
 
-You can also create a secret with a file as the value
+You can also create a secret by specifying a local file:
 
 ```shell
-flyte create secret MY_SECRET_KEY --from-file /path/to/my_secret_file
+flyte create secret MY_SECRET_KEY --from-file /local/path/to/my_secret_file
 ```
 
-In this case, when accessing the secret in your task code, you will need to [mount it as a file](#using-a-secret-created-from-a-file).
+In this case, when accessing the secret in your task code, you will need to [mount it as a file](#using-a-file-secret).
 
 ## Scoping secrets
 
