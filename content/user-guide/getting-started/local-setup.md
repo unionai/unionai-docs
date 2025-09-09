@@ -13,11 +13,53 @@ You will need to have the `uv` tool and the `flyte` Python package installed.
 
 ## Setting up a configuration file
 
-In [Getting started](../getting-started) we used the `flyte create config` command to create a `config.yaml`.
-A full example using all available parameters would look like this:
+In [Getting started](../getting-started) we used the `flyte create config` command to create a configuration file at `./.flyte/config.yaml`.
+
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --project my-project \
+    --domain development \
+    --builder remote
+```
+
+The result of the above command would be the creation of a file called `./flyte/config.yaml` in your current working directory
+with the following content:
 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+image:
+  builder: remote
+task:
+  domain: development
+  org: my-org
+  project: my-project
+```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+```yaml
+admin:
+  endpoint: dns:///my-org.my-company.com
+image:
+  builder: remote
+task:
+  domain: development
+  org: my-org
+  project: my-project
+```
+{{< /markdown >}}
+{{< /variant >}}
+
+{{< dropdown title="💡 See full example using all available options" >}}
+
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
+The example below creates a configuration file called `my-config.yaml` in the current working directory with all of the available options
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -33,6 +75,7 @@ flyte create config \
 {{< /variant >}}
 {{< variant flyte >}}
 {{< markdown >}}
+The example below creates a configuration file called `my-config.yaml` in the current working directory.
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -47,46 +90,16 @@ flyte create config \
 {{< /markdown >}}
 {{< /variant >}}
 
+{{< markdown >}}
 See the [API reference](../../api-reference/flyte-cli#flyte-create-config) for details on the available parameters.
-
-The result of the above command would be the creation of a file called `my-config.yaml` with the following content:
-
-{{< variant byoc selfmanaged serverless >}}
-{{< markdown >}}
-```yaml
-admin:
-  endpoint: dns:///my-org.my-company.com
-  insecure: true
-image:
-  builder: remote
-task:
-  domain: development
-  org: my-org
-  project: my-project
-```
 {{< /markdown >}}
-{{< /variant >}}
-{{< variant flyte >}}
+
+{{< /dropdown >}}
+
+{{< dropdown title="ℹ️ Notes about the properties in the config file" >}}
 {{< markdown >}}
-```yaml
-admin:
-  endpoint: dns:///my-org.my-company.com
-  insecure: true
-image:
-  builder: local
-task:
-  domain: development
-  org: my-org
-  project: my-project
-```
-{{< /markdown >}}}}
-{{< /variant >}}
 
-A few notes about the properties in the config file:
-
-### `admin` section
-
-The `admin` section contains the connection details for your Union/Flyte instance.
+**`admin` section**: contains the connection details for your Union/Flyte instance.
 
 * `admin.endpoint` is the URL (always with `dns:///` prefix) of your Union/Flyte instance.
 If your instance UI is found at https://my-org.my-company.com, the actual endpoint used in this file would be `dns:///my-org.my-company.com`.
@@ -94,9 +107,7 @@ If your instance UI is found at https://my-org.my-company.com, the actual endpoi
 * `admin.insecure` indicates whether to use an insecure connection (without TLS) to the Union/Flyte instance.
 A setting of `true` is almost always only used for connecting to a local instance on your own machine.
 
-### `image` section
-
-The `image` section contains the configuration for building Docker images for your tasks.
+**`image` section**: contains the configuration for building Docker images for your tasks.
 
 * `image.builder` specifies the image builder to use for building Docker images for your tasks.
   * For Union instances this is usually set to `remote`, which means that the images will be built on Union's infrastructure using the Union `ImageBuilder`.
@@ -105,9 +116,7 @@ The `image` section contains the configuration for building Docker images for yo
     You need to have Docker installed and running for this to work.
     See [Image building](../task-configuration/container-images#image-building) for details.
 
-### `task` section
-
-The `task` section contains the configuration for running tasks on your Union/Flyte instance.
+**`task` section**: contains the configuration for running tasks on your Union/Flyte instance.
 
 * `task.domain` specifies the domain in which the tasks will run.
 Domains are used to separate different environments, such as `development`, `staging`, and `production`.
@@ -115,7 +124,11 @@ Domains are used to separate different environments, such as `development`, `sta
 * `task.org` specifies the organization in which the tasks will run. The organization is usually synonymous with the name of the Union instance you are using, which is usually the same as the first part of the `admin.endpoint` URL.
 
 * `task.project` specifies the project in which the tasks will run. The project you specify here will be the default project to which tasks are deployed if no other project is specified. The project you specify must already exist on your Union/Flyte instance (it will not be auto-created on first deploy).
+
 <!-- TODO: add link to project creation when available -->
+{{< /markdown >}}
+{{< /dropdown >}}
+
 
 ## Using the configuration file
 
@@ -148,7 +161,7 @@ flyte.init_from_config("my-config.yaml")
 Then you can continue with other `flyte` commands, such as running the main task:
 
 ```python
-    run = flyte.run(main)
+run = flyte.run(main)
 ```
 
 ### Use the configuration file implicitly
@@ -170,6 +183,7 @@ flyte.init_from_config()
 In these cases, the SDK will search in the following order until it finds a configuration file:
 
 * `./config.yaml` (i.e., in the current working directory).
+* `./flyte/config.yaml` (i.e., in the `.flyte` directory in the current working directory).
 * `UCTL_CONFIG` (a file pointed to by this environment variable).
 * `FLYTECTL_CONFIG` (a file pointed to by this environment variable)
 * `~/.union/config.yaml`
@@ -213,10 +227,10 @@ flyte \
     --endpoint my-org.my-company.com \
     --org my-org \
     run \
-        --domain development \
-        --project my-project
-        hello.py \
-        main
+    --domain development \
+    --project my-project
+    hello.py \
+    main
 ```
 
 See the [Flyte CLI reference](../../api-reference/flyte-cli) for details.

@@ -52,7 +52,7 @@ uv pip install --no-cache --prerelease=allow --upgrade flyte
 {{< variant flyte >}}
 {{< markdown >}}
 
-Next, create a `config.yaml` file that points to your Flyte instance.
+Next, create a configuration file that points to your Flyte instance.
 Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
 - Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
@@ -73,7 +73,7 @@ flyte create config \
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
-Next, create a `config.yaml` file that points to your Union instance.
+Next, create a configuration file that points to your Union instance.
 Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
 - Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
@@ -92,8 +92,12 @@ flyte create config \
 {{< /markdown >}}
 {{< /variant >}}
 
-This will create a `config.yaml` file in your current working directory.
+By default, this will create a `./.flyte/config.yaml` file in your current working directory.
 See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for details.
+
+{{< note >}}
+Run `flyte get config` to see the current configuration file being used by the `flyte` CLI.
+{{< /note >}}
 
 ## Hello world example
 

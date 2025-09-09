@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.0.0b18
+version: 2.0.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -15,6 +15,7 @@ sidebar_expanded: true
 | [`flyte.errors`](flyte.errors) | Exceptions raised by Union. |
 | [`flyte.extend`](flyte.extend) |  |
 | [`flyte.extras`](flyte.extras) |  |
+| [`flyte.git`](flyte.git) |  |
 | [`flyte.io`](flyte.io) | ## IO data types. |
 | [`flyte.models`](flyte.models) |  |
 | [`flyte.remote`](flyte.remote) | Remote Entities that are accessible from the Union Server once deployed or created. |
