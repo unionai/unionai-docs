@@ -23,9 +23,6 @@ disableKinds = ["RSS"]
   # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
   taxonomy = ["HTML", "RSS"]
 
-  # 'taxonomy': Used for taxonomy term pages (previously 'taxonomyTerm'). Only 'HTML' is needed for these listings.
-  taxonomy = ["HTML"]
-
 [params]
 _merge = "deep"
 show_inactive = false
