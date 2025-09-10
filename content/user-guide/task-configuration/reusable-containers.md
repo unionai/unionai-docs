@@ -57,10 +57,10 @@ env = flyte.TaskEnvironment(
     name="reusable-env",
     resources=flyte.Resources(memory="1Gi", cpu="500m"),
     reusable=flyte.ReusePolicy(
-        replicas=2,                    # Create 2 container instances
-        concurrency=1,                 # Process 1 task per container at a time
-        idle_ttl=300,                  # Individual containers shut down after 5 minutes of inactivity
-        scaledown_ttl=1800             # Entire environment shuts down after 30 minutes of no tasks
+        replicas=2,                          # Create 2 container instances
+        concurrency=1,                       # Process 1 task per container at a time
+        scaledown_ttl=timedelta(minutes=10)  # Individual containers shut down after 5 minutes of inactivity
+        idle_ttl=timedelta(hours=1)          # Entire environment shuts down after 30 minutes of no tasks
     ),
     image=reusable_image  # Use the container image augmented with the unionai-reuse library.
 )
@@ -86,9 +86,9 @@ The `ReusePolicy` class controls how containers are managed in a reusable enviro
 ```python
 flyte.ReusePolicy(
     replicas: typing.Union[int, typing.Tuple[int, int]],
-    idle_ttl: typing.Union[int, datetime.timedelta],
     concurrency: int,
     scaledown_ttl: typing.Union[int, datetime.timedelta],
+    idle_ttl: typing.Union[int, datetime.timedelta],
 )
 ```
 
@@ -96,16 +96,30 @@ flyte.ReusePolicy(
 
 Controls the number of container instances in the reusable pool:
 
-- **Fixed size**: `replicas=3` creates exactly 3 container instances.
-- **Auto-scaling**: `replicas=(2, 5)` scales from 2 to 5 containers based on demand.
+- **Fixed size**: `replicas=3` Creates exactly 3 container instances. These 3 replicas will be shutdown after `idle_ttl` expires.
+- **Auto-scaling**: `replicas=(2, 5)` Starts with 2 containers and can scale up to 5 based on demand.
+  - If the task is running on 2 replicas and demand drops to zero then these 2 containers will be shutdown after `idle_ttl` expires.
+  - If the task is running on 2 replicas and demand increases, new containers will be created up to the maximum of 5.
+  - If the task is running on 5 replicas and demand drops, container 5 will be shutdown after `scaledown_ttl` expires.
+  - If demand drops again, container 4 will be also shutdown after another period of `scaledown_ttl` expires.
 - **Resource impact**: Each replica consumes the full resources defined in `TaskEnvironment.resources`.
 
 ```python
 # Fixed pool size
-reuse_policy = flyte.ReusePolicy(replicas=3, idle_ttl=300, concurrency=1)
+reuse_policy = flyte.ReusePolicy(
+    replicas=3,
+    concurrency=1,
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
+)
 
 # Auto-scaling pool
-reuse_policy = flyte.ReusePolicy(replicas=(1, 10), idle_ttl=300, concurrency=1)
+reuse_policy = flyte.ReusePolicy(
+    replicas=(1, 10),
+    concurrency=1,
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
+)
 ```
 
 ### `concurrency`: Tasks per container
@@ -121,14 +135,16 @@ Controls how many tasks can execute simultaneously within a single container:
 sequential_policy = flyte.ReusePolicy(
     replicas=2,
     concurrency=1,  # One task per container
-    idle_ttl=300
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
 )
 
 # Concurrent processing
 concurrent_policy = flyte.ReusePolicy(
     replicas=2,
     concurrency=5,  # 5 tasks per container = 10 total concurrent tasks
-    idle_ttl=300
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
 )
 ```
 
@@ -136,19 +152,20 @@ concurrent_policy = flyte.ReusePolicy(
 
 These parameters work together to manage container lifecycle at different levels:
 
-#### `idle_ttl`: Individual container timeout
-
-- **Scope**: Controls individual container instances.
-- **Behavior**: When a container finishes a task and becomes idle, it will be terminated after `idle_ttl` expires.
-- **Purpose**: Prevents resource waste from idle containers.
-- **Typical values**: 5-30 minutes for most workloads.
-
-#### `scaledown_ttl`: Environment timeout
+#### `idle_ttl`: Environment timeout
 
 - **Scope**: Controls the entire reusable environment infrastructure.
-- **Behavior**: When there are no active or queued tasks, the entire environment scales down after `scaledown_ttl` expires.
+- **Behavior**: When there are no active or queued tasks, the entire environment scales down after `idle_ttl` expires.
 - **Purpose**: Manages the lifecycle of the entire container pool.
 - **Typical values**: 1-2 hours, or `None` for always-on environments
+
+#### `scaledown_ttl`: Individual container timeout
+
+- **Scope**: Controls individual container instances.
+- **Behavior**: When a container finishes a task and becomes inactive, it will be terminated after `scaledown_ttl` expires.
+- **Purpose**: Prevents resource waste from inactive containers.
+- **Typical values**: 5-30 minutes for most workloads.
+
 
 ```python
 from datetime import timedelta
@@ -156,8 +173,8 @@ from datetime import timedelta
 lifecycle_policy = flyte.ReusePolicy(
     replicas=3,
     concurrency=2,
-    idle_ttl=timedelta(minutes=10),    # Individual containers shut down after 10 minutes of inactivity
-    scaledown_ttl=timedelta(hours=2)   # Entire environment shuts down after 2 hours of no tasks
+    scaledown_ttl=timedelta(minutes=10),  # Individual containers shut down after 10 minutes of inactivity
+    idle_ttl=timedelta(hours=1)         # Entire environment shuts down after 1 hour of no tasks
 )
 ```
 
@@ -167,10 +184,10 @@ The four `ReusePolicy` parameters work together to control different aspects of 
 
 ```python
 reuse_policy = flyte.ReusePolicy(
-    replicas=4,           # Infrastructure: How many containers?
-    concurrency=3,        # Throughput: How many tasks per container?
-    idle_ttl=600,         # Individual: When do idle containers shut down?
-    scaledown_ttl=3600    # Environment: When does the whole pool shut down?
+    replicas=4,                           # Infrastructure: How many containers?
+    concurrency=3,                        # Throughput: How many tasks per container?
+    scaledown_ttl=timedelta(minutes=10),  # Individual: When do idle containers shut down?
+    idle_ttl=timedelta(hours=1)           # Environment: When does the whole pool shut down?
 )
 # Total capacity: 4 × 3 = 12 concurrent tasks
 # Individual containers shut down after 10 minutes of inactivity
@@ -182,7 +199,7 @@ reuse_policy = flyte.ReusePolicy(
 - **Total throughput** = `replicas × concurrency`
 - **Resource usage** = `replicas × TaskEnvironment.resources`
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
-- **Lifecycle management**: `idle_ttl` manages individual containers, `scaledown_ttl` manages the environment
+- **Lifecycle management**:  `scaledown_ttl` manages individual containers, `idle_ttl` manages the environment
 
 ## Machine learning example
 
