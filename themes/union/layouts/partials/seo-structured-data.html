@@ -1,0 +1,87 @@
+{{- /* Structured Data Partial - Safe to include in head without affecting layout */ -}}
+{{- $description := .Description | default .Summary | default .Site.Params.description | default "Union.ai documentation for AI workflow orchestration and machine learning pipelines" -}}
+{{- /* Process Hugo shortcodes and clean up content */ -}}
+{{- $variant := .Site.Params.variant -}}
+{{- $description = $description | replaceRE "\\{\\{< key product_name >\\}\\}" (index .Site.Params.key.product_name $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key product_full_name >\\}\\}" (index .Site.Params.key.product_full_name $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key kit_name >\\}\\}" (index .Site.Params.key.kit_name $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key kit >\\}\\}" (index .Site.Params.key.kit $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key cli_name >\\}\\}" (index .Site.Params.key.cli_name $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key ctl_name >\\}\\}" (index .Site.Params.key.ctl_name $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key default_project >\\}\\}" (index .Site.Params.key.default_project $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key product >\\}\\}" (index .Site.Params.key.product $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key kit_as >\\}\\}" (index .Site.Params.key.kit_as $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key kit_import >\\}\\}" (index .Site.Params.key.kit_import $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key kit_remote >\\}\\}" (index .Site.Params.key.kit_remote $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key cli >\\}\\}" (index .Site.Params.key.cli $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key ctl >\\}\\}" (index .Site.Params.key.ctl $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key config_env >\\}\\}" (index .Site.Params.key.config_env $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key env_prefix >\\}\\}" (index .Site.Params.key.env_prefix $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key map_func >\\}\\}" (index .Site.Params.key.map_func $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key logo >\\}\\}" (index .Site.Params.key.logo $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key favicon >\\}\\}" (index .Site.Params.key.favicon $variant) -}}
+{{- $description = $description | replaceRE "\\{\\{< key docs_home >\\}\\}" (index .Site.Params.key.docs_home $variant) -}}
+{{- $description = $description | replaceRE "\\s+" " " -}}
+{{- $description = $description | replaceRE "^\\s+" "" -}}
+{{- $description = $description | replaceRE "\\s+$" "" -}}
+{{- /* Fix duplication issues from title + content */ -}}
+{{- $description = $description | replace "Union.ai BYOCUnion.ai" "Union.ai BYOC" -}}
+{{- $description = $description | replace "Union.ai Self-managedUnion.ai" "Union.ai Self-managed" -}}
+{{- $description = $description | replace "Union.ai ServerlessUnion.ai" "Union.ai Serverless" -}}
+{{- $description = $description | replace "FlyteFlyte" "Flyte" -}}
+{{- /* Fix multiple Union.ai repetitions */ -}}
+{{- $description = $description | replaceRE "Union\\.aiUnion\\.aiUnion\\.ai" "Union.ai" -}}
+{{- $description = $description | replaceRE "Union\\.aiUnion\\.ai" "Union.ai" -}}
+{{- /* Fix redirect duplication */ -}}
+{{- $description = $description | replaceRE "Redirect to User guideUnion\\.aiUnion\\.aiUnion\\.aiRedirect to User guideUnion\\.aiUnion\\.aiUnion\\.ai" "Redirect to User guide" -}}
+{{- $description = $description | replaceRE "Redirect to User guideUnion\\.aiUnion\\.aiUnion\\.ai" "Redirect to User guide" -}}
+{{- $description = $description | replaceRE "Redirect to User guideUnion\\.ai" "Redirect to User guide" -}}
+{{- $description = $description | replaceRE "(Redirect to User guide)+" "Redirect to User guide" -}}
+{{- $description = $description | plainify -}}
+{{- $description = $description | truncate 160 -}}
+{{- $title := .Title | default .Site.Title -}}
+{{- $canonical := .Permalink | absURL -}}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  {{- if .IsHome -}}
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "description": "{{ $description }}",
+  "url": "{{ .Site.BaseURL }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ .Site.BaseURL }}search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  {{- else -}}
+  "@type": "Article",
+  "headline": "{{ $title }}",
+  "description": "{{ $description }}",
+  "url": "{{ $canonical }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- if .Lastmod -}}
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  {{- end -}}
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.author | default "Union.ai" }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.author | default "Union.ai" }}",
+    "url": "{{ .Site.BaseURL }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.BaseURL }}images/logo.png"
+    }
+  },
+  {{- end -}}
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ $canonical }}"
+  }
+}
+</script>
