@@ -83,7 +83,7 @@ Steps to Set Up ClientSecret Authentication:
     ```
     export {{< key env_prefix >}}_API_KEY="<SECRET>"
     ```
-   With this environment variable set, `{{< key cli >}}` and `uctl` commands do not require a configuration yaml to be referenced.
+   With this environment variable set, `{{< key cli >}}` commands do not require a configuration yaml to be referenced.
 
 3. Give the API Key admin permissions with a [`uctl`](../../api-reference/uctl-cli) command:
     ```
