@@ -8,6 +8,7 @@
 languageCode = 'en-us'
 theme = 'union'
 disableKinds = ["RSS"]
+enableRobotsTXT = true
 
 # Enable sitemap generation
 [outputs]
@@ -22,6 +23,9 @@ disableKinds = ["RSS"]
 
   # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
   taxonomy = ["HTML", "RSS"]
+
+  # 'robotsTXT': Generate robots.txt file for search engine crawling
+  robotsTXT = ["ROBOTS"]
 
 [params]
 _merge = "deep"
