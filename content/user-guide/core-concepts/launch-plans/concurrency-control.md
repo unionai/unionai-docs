@@ -9,9 +9,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Concurrency control allows you to limit the number of concurrently running workflow executions for a specific launch plan, identified by its unique `project`, `domain`, and `name`. This control is applied across all versions of that launch plan.
 
-```{note}
-To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
-```
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/productionizing/).
 
 ## How It Works
 
@@ -132,5 +131,3 @@ Currently, there is no built-in notification system for skipped executions. When
 3. **Monitor Skipped Executions**: Regularly check FlyteAdmin logs to monitor if executions are being skipped due to concurrency limits.
 
 4. **Version Management**: Be aware that different versions of the same launch plan can have different concurrency policies, but the check is performed across all versions.
-
-[flytesnacks]: https://github.com/flyteorg/flytesnacks/tree/master/examples/productionizing/
