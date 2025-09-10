@@ -135,7 +135,7 @@ This is an area for future enhancement.
 
 ## Best practices
 
-1. **Use with Scheduled Workflows**: Concurrency control is most beneficial for scheduled workflows that might take longer than the schedule interval to complete.
-2. **Set Appropriate Limits**: Consider your system resources and the resource requirements of your workflows when setting `max_concurrency`.
-3. **Monitor Skipped Executions**: Regularly check FlyteAdmin logs to monitor if executions are being skipped due to concurrency limits.
-4. **Version Management**: Be aware that different versions of the same launch plan can have different concurrency policies, but the check is performed across all versions.
+1. **Use with scheduled workflows**: Concurrency control is most beneficial for scheduled workflows that might take longer than the schedule interval to complete.
+2. **Set appropriate limits**: Consider your system resources and the resource requirements of your workflows when setting `max_concurrency`.
+3. **Monitor skipped executions**: Regularly check FlyteAdmin logs to monitor if executions are being skipped due to concurrency limits.
+4. **Version management**: Be aware that different versions of the same launch plan can have different concurrency policies, but the check is performed across all versions.
