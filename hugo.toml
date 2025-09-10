@@ -11,11 +11,20 @@ disableKinds = ["RSS"]
 
 # Enable sitemap generation
 [outputs]
+  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers, 'SITEMAP' for search engine indexing.
   home = ["HTML", "RSS", "SITEMAP"]
+
+  # 'page': Individual content pages. Only 'HTML' is needed for standard page rendering.
   page = ["HTML"]
+
+  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds.
   section = ["HTML", "RSS"]
+
+  # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
   taxonomy = ["HTML", "RSS"]
-  taxonomyTerm = ["HTML"]
+
+  # 'taxonomy': Used for taxonomy term pages (previously 'taxonomyTerm'). Only 'HTML' is needed for these listings.
+  taxonomy = ["HTML"]
 
 [params]
 _merge = "deep"
