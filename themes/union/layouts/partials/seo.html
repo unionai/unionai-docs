@@ -1,0 +1,109 @@
+{{- /* SEO partial for enhanced search engine optimization */ -}}
+{{- $seo := .Site.Params.seo -}}
+{{- $page := . -}}
+
+{{- /* Page-specific SEO settings */ -}}
+{{- $priority := 0.5 -}}
+{{- $changefreq := "monthly" -}}
+{{- if $seo.pages -}}
+  {{- $pageType := $page.Type -}}
+  {{- if eq $pageType "page" -}}
+    {{- $pageType = $page.Section -}}
+  {{- end -}}
+  {{- if index $seo.pages $pageType -}}
+    {{- $pageConfig := index $seo.pages $pageType -}}
+    {{- $priority = $pageConfig.priority | default 0.5 -}}
+    {{- $changefreq = $pageConfig.changefreq | default "monthly" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Enhanced meta description */ -}}
+{{- $description := "" -}}
+{{- if $page.Description -}}
+  {{- $description = $page.Description | truncate 160 -}}
+{{- else if $page.Summary -}}
+  {{- $description = $page.Summary | truncate 160 -}}
+{{- else if $seo.default_description -}}
+  {{- $description = $seo.default_description | truncate 160 -}}
+{{- else -}}
+  {{- $description = "Union.ai and Flyte documentation for AI workflow orchestration, machine learning pipelines, and data processing." | truncate 160 -}}
+{{- end -}}
+
+{{- /* Enhanced keywords */ -}}
+{{- $keywords := slice -}}
+{{- if $page.Params.keywords -}}
+  {{- $keywords = $page.Params.keywords -}}
+{{- else if $seo.default_keywords -}}
+  {{- $keywords = $seo.default_keywords -}}
+{{- else -}}
+  {{- $keywords = slice "AI workflows" "machine learning" "data orchestration" "Flyte" "Union.ai" "workflow automation" "MLOps" "data pipelines" -}}
+{{- end -}}
+
+{{- /* Additional meta tags for performance */ -}}
+{{- if $seo.additional_meta -}}
+  {{- range $seo.additional_meta -}}
+    <meta name="{{ . }}" />
+  {{- end -}}
+{{- end -}}
+
+{{- /* Preconnect to external domains for performance */ -}}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+{{- /* DNS prefetch for external resources */ -}}
+<link rel="dns-prefetch" href="//www.google-analytics.com" />
+<link rel="dns-prefetch" href="//www.googletagmanager.com" />
+
+{{- /* Enhanced structured data with breadcrumbs */ -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{- if eq $page.Type "page" -}}WebPage{{- else -}}DocumentationPage{{- end -}}",
+  "name": "{{- if $page.Title -}}{{$page.Title}}{{else}}{{$page.Site.Title}}{{end}}",
+  "description": "{{ $description }}",
+  "url": "{{ $page.Permalink | absURL }}",
+  "datePublished": "{{ $page.Date | default $page.PublishDate | default now | dateFormat "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ $page.Lastmod | default $page.Date | default now | dateFormat "2006-01-02T15:04:05Z07:00" }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ $seo.structured_data.organization_name | default "Union.ai" }}",
+    "url": "{{ $seo.structured_data.organization_url | default "https://www.union.ai" }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ ($seo.structured_data.organization_logo | default "images/icon-logo-flyte.png") | absURL }}",
+      "width": 200,
+      "height": 200
+    }
+  },
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "{{ $seo.structured_data.software_name | default "Union.ai / Flyte" }}",
+    "applicationCategory": "{{ $seo.structured_data.software_category | default "DeveloperApplication" }}",
+    "operatingSystem": "{{ $seo.structured_data.software_operating_system | default "Cloud, Kubernetes" }}",
+    "description": "{{ if eq $page.Site.Params.variant "flyte" }}Open source workflow orchestration platform for AI and data workflows{{ else }}Enterprise AI workflow orchestration platform{{ end }}"
+  }
+  {{- if $page.Breadcrumb -}},
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {{- range $index, $element := $page.Breadcrumb -}}
+      {
+        "@type": "ListItem",
+        "position": {{ add $index 1 }},
+        "name": "{{ $element.Name }}",
+        "item": "{{ $element.URL | absURL }}"
+      }{{- if ne $index (sub (len $.Breadcrumb) 1) -}},{{- end -}}
+      {{- end -}}
+    ]
+  }
+  {{- end -}}
+}
+</script>
+
+{{- /* Sitemap hints for this page */ -}}
+{{- if hugo.IsProduction -}}
+<meta name="sitemap-priority" content="{{ $priority }}" />
+<meta name="sitemap-changefreq" content="{{ $changefreq }}" />
+{{- end -}}

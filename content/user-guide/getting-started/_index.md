@@ -1,5 +1,7 @@
 ---
 title: Getting started
+description: "Get started with Union.ai and Flyte in minutes. Learn to install, configure, and run your first AI workflow with our step-by-step getting started guide."
+keywords: ["getting started", "tutorial", "installation", "first workflow", "quick start", "setup", "configuration"]
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true

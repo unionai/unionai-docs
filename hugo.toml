@@ -9,6 +9,20 @@ languageCode = 'en-us'
 theme = 'union'
 disableKinds = ["RSS"]
 
+# Enable sitemap generation
+[outputs]
+  home = ["HTML", "RSS", "SITEMAP"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  taxonomyTerm = ["HTML", "RSS"]
+
+# Sitemap configuration
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
 [params]
 _merge = "deep"
 show_inactive = false

@@ -1,0 +1,56 @@
+# hugo.seo.toml - SEO-specific configurations
+# This file contains SEO optimizations and configurations
+
+[params.seo]
+  # Default meta description for pages without specific descriptions
+  default_description = "Union.ai and Flyte documentation for AI workflow orchestration, machine learning pipelines, and data processing."
+  
+  # Default keywords for the site
+  default_keywords = ["AI workflows", "machine learning", "data orchestration", "Flyte", "Union.ai", "workflow automation", "MLOps", "data pipelines"]
+  
+  # Social media images
+  og_image = "images/icon-logo-flyte.png"
+  twitter_image = "images/icon-logo-flyte.png"
+  
+  # Site verification (add your actual verification codes)
+  google_site_verification = ""
+  bing_site_verification = ""
+  
+  # Analytics (if not using GTM)
+  google_analytics = ""
+  
+  # Additional meta tags
+  additional_meta = [
+    "format-detection=telephone=no",
+    "format-detection=date=no",
+    "format-detection=address=no"
+  ]
+
+# Page-specific SEO configurations
+[params.seo.pages]
+  # Homepage
+  home = { priority = 1.0, changefreq = "weekly" }
+  
+  # Documentation sections
+  user_guide = { priority = 0.9, changefreq = "monthly" }
+  api_reference = { priority = 0.8, changefreq = "monthly" }
+  tutorials = { priority = 0.8, changefreq = "monthly" }
+  community = { priority = 0.7, changefreq = "monthly" }
+  integrations = { priority = 0.7, changefreq = "monthly" }
+  
+  # Individual pages
+  getting_started = { priority = 0.9, changefreq = "monthly" }
+  local_setup = { priority = 0.8, changefreq = "monthly" }
+  task_programming = { priority = 0.8, changefreq = "monthly" }
+  task_configuration = { priority = 0.8, changefreq = "monthly" }
+
+# Structured data configurations
+[params.seo.structured_data]
+  organization_name = "Union.ai"
+  organization_url = "https://www.union.ai"
+  organization_logo = "images/icon-logo-flyte.png"
+  
+  # Software application info
+  software_name = "Union.ai / Flyte"
+  software_category = "DeveloperApplication"
+  software_operating_system = "Cloud, Kubernetes"
