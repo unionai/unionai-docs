@@ -7,21 +7,76 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{- .Title -}}&nbsp;|&nbsp;{{- .Site.Title -}}</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>{{- if .Title -}}{{ .Title }} | {{ .Site.Title }}{{- else -}}{{ .Site.Title }}{{- end -}}</title>
+    <meta name="description" content="{{- if .Description -}}{{ .Description | truncate 160 -}}{{- else -}}{{ .Summary | truncate 160 | default "Union.ai and Flyte documentation for AI workflow orchestration, machine learning pipelines, and data processing." -}}{{- end -}}" />
+    <meta name="keywords" content="{{- if .Params.keywords -}}{{ delimit .Params.keywords ", " -}}{{- else -}}AI workflows, machine learning, data orchestration, Flyte, Union.ai, workflow automation, MLOps, data pipelines{{- end -}}" />
+    <meta name="author" content="Union.ai" />
+    <meta name="robots" content="{{- if .Params.noindex -}}noindex,nofollow{{- else -}}index,follow{{- end -}}" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{- .Permalink | absURL -}}" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{- .Permalink | absURL -}}" />
+    <meta property="og:title" content="{{- if .Title -}}{{ .Title }} | {{ .Site.Title }}{{- else -}}{{ .Site.Title }}{{- end -}}" />
+    <meta property="og:description" content="{{- if .Description -}}{{ .Description | truncate 160 -}}{{- else -}}{{ .Summary | truncate 160 | default "Union.ai and Flyte documentation for AI workflow orchestration, machine learning pipelines, and data processing." -}}{{- end -}}" />
+    <meta property="og:site_name" content="{{ .Site.Title }}" />
+    <meta property="og:image" content="{{- "images/icon-logo-flyte.png" | absURL -}}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Union.ai Logo" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="{{- .Permalink | absURL -}}" />
+    <meta name="twitter:title" content="{{- if .Title -}}{{ .Title }} | {{ .Site.Title }}{{- else -}}{{ .Site.Title }}{{- end -}}" />
+    <meta name="twitter:description" content="{{- if .Description -}}{{ .Description | truncate 160 -}}{{- else -}}{{ .Summary | truncate 160 | default "Union.ai and Flyte documentation for AI workflow orchestration, machine learning pipelines, and data processing." -}}{{- end -}}" />
+    <meta name="twitter:image" content="{{- "images/icon-logo-flyte.png" | absURL -}}" />
+    <meta name="twitter:image:alt" content="Union.ai Logo" />
+    
+    <!-- Favicon -->
     <link rel="icon" href="{{- printf "images/%s" (index .Site.Params.Key.favicon .Site.Params.variant) | relURL -}}?v={{- $v -}}"/>
+    <link rel="apple-touch-icon" href="{{- "images/icon-logo-flyte.png" | relURL -}}" />
+    
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="msapplication-TileColor" content="#1a1a1a" />
+    
+    <!-- Enhanced SEO partial -->
+    {{- partial "seo.html" . -}}
     {{- range .Site.Params.custom_css }}
     <link rel="stylesheet" href='{{- (printf "css/%s" .) | relURL -}}?v={{- $v -}}' />
     {{- end }}
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
     <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/light.css" />
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/light.css"
+      media="print"
+      onload="this.media='all'" />
     <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" />
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"
+      media="print"
+      onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/themes/light.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css" />
+    </noscript>
     <script type="module"
-      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"></script>
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.0/cdn/shoelace-autoloader.js"
+      defer></script>
     {{ if .Params.mermaid }}
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';

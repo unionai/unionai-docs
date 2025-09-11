@@ -1,5 +1,7 @@
 ---
 title: User guide
+description: "Complete guide to Union.ai and Flyte workflow orchestration platform. Learn to build, deploy, and manage AI workflows with our comprehensive documentation."
+keywords: ["AI workflows", "workflow orchestration", "machine learning", "data pipelines", "Flyte", "Union.ai", "MLOps", "data processing"]
 weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
