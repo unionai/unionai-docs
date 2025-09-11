@@ -12,8 +12,8 @@ enableRobotsTXT = true
 
 # Enable sitemap generation
 [outputs]
-  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers, 'SITEMAP' for search engine indexing.
-  home = ["HTML", "RSS", "SITEMAP"]
+  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
+  home = ["HTML", "RSS"]
 
   # 'page': Individual content pages. Only 'HTML' is needed for standard page rendering.
   page = ["HTML"]
