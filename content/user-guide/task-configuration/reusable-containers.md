@@ -57,10 +57,10 @@ env = flyte.TaskEnvironment(
     name="reusable-env",
     resources=flyte.Resources(memory="1Gi", cpu="500m"),
     reusable=flyte.ReusePolicy(
-        replicas=2,                          # Create 2 container instances
-        concurrency=1,                       # Process 1 task per container at a time
+        replicas=2,                           # Create 2 container instances
+        concurrency=1,                        # Process 1 task per container at a time
         scaledown_ttl=timedelta(minutes=10),  # Individual containers shut down after 5 minutes of inactivity
-        idle_ttl=timedelta(hours=1)          # Entire environment shuts down after 30 minutes of no tasks
+        idle_ttl=timedelta(hours=1)           # Entire environment shuts down after 30 minutes of no tasks
     ),
     image=reusable_image  # Use the container image augmented with the unionai-reuse library.
 )
