@@ -28,6 +28,7 @@
 {{- $description = $description | replace "Union.ai BYOCUnion.ai" "Union.ai BYOC" -}}
 {{- $description = $description | replace "Union.ai Self-managedUnion.ai" "Union.ai Self-managed" -}}
 {{- $description = $description | replace "Union.ai ServerlessUnion.ai" "Union.ai Serverless" -}}
+
 {{- $description = $description | replace "FlyteFlyte" "Flyte" -}}
 {{- /* Fix multiple Union.ai repetitions */ -}}
 {{- $description = $description | replaceRE "Union\\.aiUnion\\.aiUnion\\.ai" "Union.ai" -}}
@@ -41,7 +42,18 @@
 {{- $description = $description | truncate 160 -}}
 {{- $title := .Title | default .Site.Title -}}
 {{- $canonical := .Permalink | absURL -}}
-{{- $image := .Params.image | default .Site.Params.og_image | default "/images/og-image.png" | absURL -}}
+{{- /* Set image based on product_full_name */ -}}
+{{- $product_full_name := index .Site.Params.key.product_full_name $variant -}}
+{{- $image := "" -}}
+{{- if eq $product_full_name "Flyte OSS" -}}
+{{- $image = printf "%s/images/icon-logo-flyte.png" (strings.TrimSuffix "/" .Site.BaseURL) -}}
+{{- else -}}
+{{- $image = printf "%s/images/icon-logo.svg" (strings.TrimSuffix "/" .Site.BaseURL) -}}
+{{- end -}}
+{{- /* Fallback to page params or site params if no variant-specific image */ -}}
+{{- if not $image -}}
+{{- $image = .Params.image | default .Site.Params.og_image | default "/images/og-image.png" | absURL -}}
+{{- end -}}
 
 <!-- SEO Meta Tags -->
 <meta name="description" content="{{ $description | truncate 160 }}">
