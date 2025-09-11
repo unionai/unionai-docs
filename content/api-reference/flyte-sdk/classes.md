@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b18
+version: 2.0.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -42,6 +42,7 @@ layout: py_api
 | [`flyte.errors.RuntimeSystemError`](../packages/flyte.errors#flyteerrorsruntimesystemerror) |This error is raised when the underlying task execution fails because of a system error. |
 | [`flyte.errors.RuntimeUnknownError`](../packages/flyte.errors#flyteerrorsruntimeunknownerror) |This error is raised when the underlying task execution fails because of an unknown error. |
 | [`flyte.errors.RuntimeUserError`](../packages/flyte.errors#flyteerrorsruntimeusererror) |This error is raised when the underlying task execution fails because of an error in the user's code. |
+| [`flyte.errors.SlowDownError`](../packages/flyte.errors#flyteerrorsslowdownerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`flyte.errors.TaskInterruptedError`](../packages/flyte.errors#flyteerrorstaskinterruptederror) |This error is raised when the underlying task execution is interrupted. |
 | [`flyte.errors.TaskTimeoutError`](../packages/flyte.errors#flyteerrorstasktimeouterror) |This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`flyte.errors.UnionRpcError`](../packages/flyte.errors#flyteerrorsunionrpcerror) |This error is raised when communication with the Union server fails. |

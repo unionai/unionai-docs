@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b18
+version: 2.0.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,6 +40,7 @@ unknown error.
 | [`RuntimeSystemError`](.././flyte.errors#flyteerrorsruntimesystemerror) | This error is raised when the underlying task execution fails because of a system error. |
 | [`RuntimeUnknownError`](.././flyte.errors#flyteerrorsruntimeunknownerror) | This error is raised when the underlying task execution fails because of an unknown error. |
 | [`RuntimeUserError`](.././flyte.errors#flyteerrorsruntimeusererror) | This error is raised when the underlying task execution fails because of an error in the user's code. |
+| [`SlowDownError`](.././flyte.errors#flyteerrorsslowdownerror) | This error is raised when the user tries to access a resource that does not exist or is invalid. |
 | [`TaskInterruptedError`](.././flyte.errors#flyteerrorstaskinterruptederror) | This error is raised when the underlying task execution is interrupted. |
 | [`TaskTimeoutError`](.././flyte.errors#flyteerrorstasktimeouterror) | This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`UnionRpcError`](.././flyte.errors#flyteerrorsunionrpcerror) | This error is raised when communication with the Union server fails. |
@@ -433,6 +434,20 @@ class RuntimeUserError(
 | `code` | `str` |
 | `message` | `str` |
 | `worker` | `str \| None` |
+
+## flyte.errors.SlowDownError
+
+This error is raised when the user tries to access a resource that does not exist or is invalid.
+
+
+```python
+class SlowDownError(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
 
 ## flyte.errors.TaskInterruptedError
 

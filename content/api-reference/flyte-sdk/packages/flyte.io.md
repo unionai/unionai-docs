@@ -1,6 +1,6 @@
 ---
 title: flyte.io
-version: 2.0.0b18
+version: 2.0.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -49,18 +49,20 @@ class (that is just a model, a Python class representation of the protobuf).
 
 ```python
 class DataFrame(
-    val: typing.Optional[typing.Any],
-    uri: typing.Optional[str],
-    metadata: typing.Optional[literals_pb2.StructuredDatasetMetadata],
-    kwargs,
+    data: Any,
 )
 ```
+Create a new model by parsing and validating input data from keyword arguments.
+
+Raises [`ValidationError`][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.
+
+`self` is explicitly positional-only to allow `self` as a field name.
+
+
 | Parameter | Type |
 |-|-|
-| `val` | `typing.Optional[typing.Any]` |
-| `uri` | `typing.Optional[str]` |
-| `metadata` | `typing.Optional[literals_pb2.StructuredDatasetMetadata]` |
-| `kwargs` | `**kwargs` |
+| `data` | `Any` |
 
 ### Methods
 
@@ -69,15 +71,36 @@ class DataFrame(
 | [`all()`](#all) |  |
 | [`column_names()`](#column_names) |  |
 | [`columns()`](#columns) |  |
+| [`construct()`](#construct) |  |
+| [`copy()`](#copy) | Returns a copy of the model. |
 | [`deserialize_dataframe()`](#deserialize_dataframe) |  |
-| [`from_dict()`](#from_dict) |  |
-| [`from_json()`](#from_json) |  |
+| [`dict()`](#dict) |  |
+| [`from_df()`](#from_df) | Wrapper to create a DataFrame from a dataframe. |
+| [`from_existing_remote()`](#from_existing_remote) | Create a DataFrame reference from an existing remote dataframe. |
+| [`from_orm()`](#from_orm) |  |
 | [`iter()`](#iter) |  |
+| [`json()`](#json) |  |
+| [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
+| [`model_copy()`](#model_copy) | !!! abstract "Usage Documentation". |
+| [`model_dump()`](#model_dump) | !!! abstract "Usage Documentation". |
+| [`model_dump_json()`](#model_dump_json) | !!! abstract "Usage Documentation". |
+| [`model_json_schema()`](#model_json_schema) | Generates a JSON schema for a model class. |
+| [`model_parametrized_name()`](#model_parametrized_name) | Compute the class name for parametrizations of generic classes. |
+| [`model_post_init()`](#model_post_init) | This function is meant to behave like a BaseModel method to initialise private attributes. |
+| [`model_rebuild()`](#model_rebuild) | Try to rebuild the pydantic-core schema for the model. |
+| [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
+| [`model_validate_json()`](#model_validate_json) | !!! abstract "Usage Documentation". |
+| [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
 | [`open()`](#open) | Load the handler if needed. |
+| [`parse_file()`](#parse_file) |  |
+| [`parse_obj()`](#parse_obj) |  |
+| [`parse_raw()`](#parse_raw) |  |
+| [`schema()`](#schema) |  |
+| [`schema_json()`](#schema_json) |  |
 | [`serialize_dataframe()`](#serialize_dataframe) |  |
 | [`set_literal()`](#set_literal) | A public wrapper method to set the DataFrame Literal. |
-| [`to_dict()`](#to_dict) |  |
-| [`to_json()`](#to_json) |  |
+| [`update_forward_refs()`](#update_forward_refs) |  |
+| [`validate()`](#validate) |  |
 
 
 #### all()
@@ -95,6 +118,51 @@ def column_names()
 ```python
 def columns()
 ```
+#### construct()
+
+```python
+def construct(
+    _fields_set: set[str] | None,
+    values: Any,
+) -> Self
+```
+| Parameter | Type |
+|-|-|
+| `_fields_set` | `set[str] \| None` |
+| `values` | `Any` |
+
+#### copy()
+
+```python
+def copy(
+    include: AbstractSetIntStr | MappingIntStrAny | None,
+    exclude: AbstractSetIntStr | MappingIntStrAny | None,
+    update: Dict[str, Any] | None,
+    deep: bool,
+) -> Self
+```
+Returns a copy of the model.
+
+> [!WARNING] Deprecated
+> This method is now deprecated; use `model_copy` instead.
+
+If you need `include` or `exclude`, use:
+
+```python {test="skip" lint="skip"}
+data = self.model_dump(include=include, exclude=exclude, round_trip=True)
+data = {**data, **(update or {})}
+copied = self.model_validate(data)
+```
+
+
+
+| Parameter | Type |
+|-|-|
+| `include` | `AbstractSetIntStr \| MappingIntStrAny \| None` |
+| `exclude` | `AbstractSetIntStr \| MappingIntStrAny \| None` |
+| `update` | `Dict[str, Any] \| None` |
+| `deep` | `bool` |
+
 #### deserialize_dataframe()
 
 ```python
@@ -106,39 +174,395 @@ def deserialize_dataframe(
 |-|-|
 | `info` |  |
 
-#### from_dict()
+#### dict()
 
 ```python
-def from_dict(
-    d,
-    dialect,
-)
+def dict(
+    include: IncEx | None,
+    exclude: IncEx | None,
+    by_alias: bool,
+    exclude_unset: bool,
+    exclude_defaults: bool,
+    exclude_none: bool,
+) -> Dict[str, Any]
 ```
 | Parameter | Type |
 |-|-|
-| `d` |  |
-| `dialect` |  |
+| `include` | `IncEx \| None` |
+| `exclude` | `IncEx \| None` |
+| `by_alias` | `bool` |
+| `exclude_unset` | `bool` |
+| `exclude_defaults` | `bool` |
+| `exclude_none` | `bool` |
 
-#### from_json()
+#### from_df()
 
 ```python
-def from_json(
-    data: typing.Union[str, bytes, bytearray],
-    decoder: collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]],
-    from_dict_kwargs: typing.Any,
-) -> ~T
+def from_df(
+    val: typing.Optional[typing.Any],
+    uri: typing.Optional[str],
+) -> DataFrame
+```
+Wrapper to create a DataFrame from a dataframe.
+The reason this is implemented as a wrapper instead of a full translation invoking
+the type engine and the encoders is because there's too much information in the type
+signature of the task that we don't want the user to have to replicate.
+
+
+| Parameter | Type |
+|-|-|
+| `val` | `typing.Optional[typing.Any]` |
+| `uri` | `typing.Optional[str]` |
+
+#### from_existing_remote()
+
+```python
+def from_existing_remote(
+    remote_path: str,
+    format: typing.Optional[str],
+    kwargs,
+) -> 'DataFrame'
+```
+Create a DataFrame reference from an existing remote dataframe.
+
+
+
+| Parameter | Type |
+|-|-|
+| `remote_path` | `str` |
+| `format` | `typing.Optional[str]` |
+| `kwargs` | `**kwargs` |
+
+#### from_orm()
+
+```python
+def from_orm(
+    obj: Any,
+) -> Self
 ```
 | Parameter | Type |
 |-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| `obj` | `Any` |
 
 #### iter()
 
 ```python
 def iter()
 ```
+#### json()
+
+```python
+def json(
+    include: IncEx | None,
+    exclude: IncEx | None,
+    by_alias: bool,
+    exclude_unset: bool,
+    exclude_defaults: bool,
+    exclude_none: bool,
+    encoder: Callable[[Any], Any] | None,
+    models_as_dict: bool,
+    dumps_kwargs: Any,
+) -> str
+```
+| Parameter | Type |
+|-|-|
+| `include` | `IncEx \| None` |
+| `exclude` | `IncEx \| None` |
+| `by_alias` | `bool` |
+| `exclude_unset` | `bool` |
+| `exclude_defaults` | `bool` |
+| `exclude_none` | `bool` |
+| `encoder` | `Callable[[Any], Any] \| None` |
+| `models_as_dict` | `bool` |
+| `dumps_kwargs` | `Any` |
+
+#### model_construct()
+
+```python
+def model_construct(
+    _fields_set: set[str] | None,
+    values: Any,
+) -> Self
+```
+Creates a new instance of the `Model` class with validated data.
+
+Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+
+> [!NOTE]
+> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+> an error if extra values are passed, but they will be ignored.
+
+
+
+| Parameter | Type |
+|-|-|
+| `_fields_set` | `set[str] \| None` |
+| `values` | `Any` |
+
+#### model_copy()
+
+```python
+def model_copy(
+    update: Mapping[str, Any] | None,
+    deep: bool,
+) -> Self
+```
+!!! abstract "Usage Documentation"
+    [`model_copy`](../concepts/models.md#model-copy)
+
+Returns a copy of the model.
+
+> [!NOTE]
+> The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
+> might have unexpected side effects if you store anything in it, on top of the model
+> fields (e.g. the value of [cached properties][functools.cached_property]).
+
+
+
+| Parameter | Type |
+|-|-|
+| `update` | `Mapping[str, Any] \| None` |
+| `deep` | `bool` |
+
+#### model_dump()
+
+```python
+def model_dump(
+    mode: Literal['json', 'python'] | str,
+    include: IncEx | None,
+    exclude: IncEx | None,
+    context: Any | None,
+    by_alias: bool | None,
+    exclude_unset: bool,
+    exclude_defaults: bool,
+    exclude_none: bool,
+    round_trip: bool,
+    warnings: bool | Literal['none', 'warn', 'error'],
+    fallback: Callable[[Any], Any] | None,
+    serialize_as_any: bool,
+) -> dict[str, Any]
+```
+!!! abstract "Usage Documentation"
+    [`model_dump`](../concepts/serialization.md#python-mode)
+
+Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+
+
+
+| Parameter | Type |
+|-|-|
+| `mode` | `Literal['json', 'python'] \| str` |
+| `include` | `IncEx \| None` |
+| `exclude` | `IncEx \| None` |
+| `context` | `Any \| None` |
+| `by_alias` | `bool \| None` |
+| `exclude_unset` | `bool` |
+| `exclude_defaults` | `bool` |
+| `exclude_none` | `bool` |
+| `round_trip` | `bool` |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` |
+| `fallback` | `Callable[[Any], Any] \| None` |
+| `serialize_as_any` | `bool` |
+
+#### model_dump_json()
+
+```python
+def model_dump_json(
+    indent: int | None,
+    ensure_ascii: bool,
+    include: IncEx | None,
+    exclude: IncEx | None,
+    context: Any | None,
+    by_alias: bool | None,
+    exclude_unset: bool,
+    exclude_defaults: bool,
+    exclude_none: bool,
+    round_trip: bool,
+    warnings: bool | Literal['none', 'warn', 'error'],
+    fallback: Callable[[Any], Any] | None,
+    serialize_as_any: bool,
+) -> str
+```
+!!! abstract "Usage Documentation"
+    [`model_dump_json`](../concepts/serialization.md#json-mode)
+
+Generates a JSON representation of the model using Pydantic's `to_json` method.
+
+
+
+| Parameter | Type |
+|-|-|
+| `indent` | `int \| None` |
+| `ensure_ascii` | `bool` |
+| `include` | `IncEx \| None` |
+| `exclude` | `IncEx \| None` |
+| `context` | `Any \| None` |
+| `by_alias` | `bool \| None` |
+| `exclude_unset` | `bool` |
+| `exclude_defaults` | `bool` |
+| `exclude_none` | `bool` |
+| `round_trip` | `bool` |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` |
+| `fallback` | `Callable[[Any], Any] \| None` |
+| `serialize_as_any` | `bool` |
+
+#### model_json_schema()
+
+```python
+def model_json_schema(
+    by_alias: bool,
+    ref_template: str,
+    schema_generator: type[GenerateJsonSchema],
+    mode: JsonSchemaMode,
+) -> dict[str, Any]
+```
+Generates a JSON schema for a model class.
+
+
+
+| Parameter | Type |
+|-|-|
+| `by_alias` | `bool` |
+| `ref_template` | `str` |
+| `schema_generator` | `type[GenerateJsonSchema]` |
+| `mode` | `JsonSchemaMode` |
+
+#### model_parametrized_name()
+
+```python
+def model_parametrized_name(
+    params: tuple[type[Any], ...],
+) -> str
+```
+Compute the class name for parametrizations of generic classes.
+
+This method can be overridden to achieve a custom naming scheme for generic BaseModels.
+
+
+
+| Parameter | Type |
+|-|-|
+| `params` | `tuple[type[Any], ...]` |
+
+#### model_post_init()
+
+```python
+def model_post_init(
+    context: Any,
+)
+```
+This function is meant to behave like a BaseModel method to initialise private attributes.
+
+It takes context as an argument since that's what pydantic-core passes when calling it.
+
+
+
+| Parameter | Type |
+|-|-|
+| `context` | `Any` |
+
+#### model_rebuild()
+
+```python
+def model_rebuild(
+    force: bool,
+    raise_errors: bool,
+    _parent_namespace_depth: int,
+    _types_namespace: MappingNamespace | None,
+) -> bool | None
+```
+Try to rebuild the pydantic-core schema for the model.
+
+This may be necessary when one of the annotations is a ForwardRef which could not be resolved during
+the initial attempt to build the schema, and automatic rebuilding fails.
+
+
+
+| Parameter | Type |
+|-|-|
+| `force` | `bool` |
+| `raise_errors` | `bool` |
+| `_parent_namespace_depth` | `int` |
+| `_types_namespace` | `MappingNamespace \| None` |
+
+#### model_validate()
+
+```python
+def model_validate(
+    obj: Any,
+    strict: bool | None,
+    from_attributes: bool | None,
+    context: Any | None,
+    by_alias: bool | None,
+    by_name: bool | None,
+) -> Self
+```
+Validate a pydantic model instance.
+
+
+
+| Parameter | Type |
+|-|-|
+| `obj` | `Any` |
+| `strict` | `bool \| None` |
+| `from_attributes` | `bool \| None` |
+| `context` | `Any \| None` |
+| `by_alias` | `bool \| None` |
+| `by_name` | `bool \| None` |
+
+#### model_validate_json()
+
+```python
+def model_validate_json(
+    json_data: str | bytes | bytearray,
+    strict: bool | None,
+    context: Any | None,
+    by_alias: bool | None,
+    by_name: bool | None,
+) -> Self
+```
+!!! abstract "Usage Documentation"
+    [JSON Parsing](../concepts/json.md#json-parsing)
+
+Validate the given JSON data against the Pydantic model.
+
+
+
+| Parameter | Type |
+|-|-|
+| `json_data` | `str \| bytes \| bytearray` |
+| `strict` | `bool \| None` |
+| `context` | `Any \| None` |
+| `by_alias` | `bool \| None` |
+| `by_name` | `bool \| None` |
+
+#### model_validate_strings()
+
+```python
+def model_validate_strings(
+    obj: Any,
+    strict: bool | None,
+    context: Any | None,
+    by_alias: bool | None,
+    by_name: bool | None,
+) -> Self
+```
+Validate the given object with string data against the Pydantic model.
+
+
+
+| Parameter | Type |
+|-|-|
+| `obj` | `Any` |
+| `strict` | `bool \| None` |
+| `context` | `Any \| None` |
+| `by_alias` | `bool \| None` |
+| `by_name` | `bool \| None` |
+
 #### open()
 
 ```python
@@ -158,6 +582,83 @@ pandas is imported inside the task, so panda handler won't be loaded during dese
 | Parameter | Type |
 |-|-|
 | `dataframe_type` | `Type[DF]` |
+
+#### parse_file()
+
+```python
+def parse_file(
+    path: str | Path,
+    content_type: str | None,
+    encoding: str,
+    proto: DeprecatedParseProtocol | None,
+    allow_pickle: bool,
+) -> Self
+```
+| Parameter | Type |
+|-|-|
+| `path` | `str \| Path` |
+| `content_type` | `str \| None` |
+| `encoding` | `str` |
+| `proto` | `DeprecatedParseProtocol \| None` |
+| `allow_pickle` | `bool` |
+
+#### parse_obj()
+
+```python
+def parse_obj(
+    obj: Any,
+) -> Self
+```
+| Parameter | Type |
+|-|-|
+| `obj` | `Any` |
+
+#### parse_raw()
+
+```python
+def parse_raw(
+    b: str | bytes,
+    content_type: str | None,
+    encoding: str,
+    proto: DeprecatedParseProtocol | None,
+    allow_pickle: bool,
+) -> Self
+```
+| Parameter | Type |
+|-|-|
+| `b` | `str \| bytes` |
+| `content_type` | `str \| None` |
+| `encoding` | `str` |
+| `proto` | `DeprecatedParseProtocol \| None` |
+| `allow_pickle` | `bool` |
+
+#### schema()
+
+```python
+def schema(
+    by_alias: bool,
+    ref_template: str,
+) -> Dict[str, Any]
+```
+| Parameter | Type |
+|-|-|
+| `by_alias` | `bool` |
+| `ref_template` | `str` |
+
+#### schema_json()
+
+```python
+def schema_json(
+    by_alias: bool,
+    ref_template: str,
+    dumps_kwargs: Any,
+) -> str
+```
+| Parameter | Type |
+|-|-|
+| `by_alias` | `bool` |
+| `ref_template` | `str` |
+| `dumps_kwargs` | `Any` |
 
 #### serialize_dataframe()
 
@@ -180,23 +681,27 @@ This method provides external access to the internal _set_literal method.
 |-|-|
 | `expected` | `types_pb2.LiteralType` |
 
-#### to_dict()
+#### update_forward_refs()
 
 ```python
-def to_dict()
-```
-#### to_json()
-
-```python
-def to_json(
-    encoder: collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]],
-    to_dict_kwargs: typing.Any,
-) -> typing.Union[str, bytes, bytearray]
+def update_forward_refs(
+    localns: Any,
+)
 ```
 | Parameter | Type |
 |-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
+| `localns` | `Any` |
+
+#### validate()
+
+```python
+def validate(
+    value: Any,
+) -> Self
+```
+| Parameter | Type |
+|-|-|
+| `value` | `Any` |
 
 ### Properties
 
@@ -204,6 +709,17 @@ def to_json(
 |-|-|-|
 | `literal` | `None` |  |
 | `metadata` | `None` |  |
+| `model_extra` | `None` | {{< multiline >}}Get extra fields set during validation.
+
+Returns:
+    A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`.
+{{< /multiline >}} |
+| `model_fields_set` | `None` | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
+
+Returns:
+    A set of strings representing the fields that have been set,
+        i.e. that were not filled from defaults.
+{{< /multiline >}} |
 | `val` | `None` |  |
 
 ## flyte.io.DataFrameDecoder
@@ -345,9 +861,8 @@ def DataFrameTransformerEngine()
 | Method | Description |
 |-|-|
 | [`assert_type()`](#assert_type) |  |
-| [`dict_to_dataframe()`](#dict_to_dataframe) |  |
 | [`encode()`](#encode) |  |
-| [`from_binary_idl()`](#from_binary_idl) | If the input is from flytekit, the Life Cycle will be as follows:. |
+| [`from_binary_idl()`](#from_binary_idl) | This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and. |
 | [`get_decoder()`](#get_decoder) |  |
 | [`get_encoder()`](#get_encoder) |  |
 | [`get_literal_type()`](#get_literal_type) | Provide a concrete implementation so that writers of custom dataframe handlers since there's nothing that. |
@@ -376,24 +891,11 @@ def assert_type(
 | `t` | `Type[DataFrame]` |
 | `v` | `typing.Any` |
 
-#### dict_to_dataframe()
-
-```python
-def dict_to_dataframe(
-    dict_obj: typing.Dict[str, str],
-    expected_python_type: Type[T] | DataFrame,
-) -> T | DataFrame
-```
-| Parameter | Type |
-|-|-|
-| `dict_obj` | `typing.Dict[str, str]` |
-| `expected_python_type` | `Type[T] \| DataFrame` |
-
 #### encode()
 
 ```python
 def encode(
-    sd: DataFrame,
+    df: DataFrame,
     df_type: Type,
     protocol: str,
     format: str,
@@ -402,7 +904,7 @@ def encode(
 ```
 | Parameter | Type |
 |-|-|
-| `sd` | `DataFrame` |
+| `df` | `DataFrame` |
 | `df_type` | `Type` |
 | `protocol` | `str` |
 | `format` | `str` |
@@ -412,39 +914,29 @@ def encode(
 
 ```python
 def from_binary_idl(
-    binary_idl_object: literals_pb2.Binary,
-    expected_python_type: Type[T] | DataFrame,
-) -> T | DataFrame
+    binary_idl_object: Binary,
+    expected_python_type: Type[T],
+) -> Optional[T]
 ```
-If the input is from flytekit, the Life Cycle will be as follows:
+This function primarily handles deserialization for untyped dicts, dataclasses, Pydantic BaseModels, and
+ attribute access.
 
+For untyped dict, dataclass, and pydantic basemodel:
+Life Cycle (Untyped Dict as example):
+    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+                  (to_literal)                             (from_binary_idl)
+
+For attribute access:
 Life Cycle:
-binary IDL                 -> resolved binary         -> bytes                   -> expected Python object
-(flytekit customized          (propeller processing)     (flytekit binary IDL)      (flytekit customized
-serialization)                                                                       deserialization)
-
-Example Code:
-@dataclass
-class DC:
-    sd: StructuredDataset
-
-@workflow
-def wf(dc: DC):
-    t_sd(dc.sd)
-
-Note:
-- The deserialization is the same as put a structured dataset in a dataclass,
-  which will deserialize by the mashumaro's API.
-
-Related PR:
-- Title: Override Dataclass Serialization/Deserialization Behavior for FlyteTypes via Mashumaro
-- Link: https://github.com/flyteorg/flytekit/pull/2554
+    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar
+     -> msgpack bytes -> python val
+                  (to_literal)      (propeller attribute access)     (from_binary_idl)
 
 
 | Parameter | Type |
 |-|-|
-| `binary_idl_object` | `literals_pb2.Binary` |
-| `expected_python_type` | `Type[T] \| DataFrame` |
+| `binary_idl_object` | `Binary` |
+| `expected_python_type` | `Type[T]` |
 
 #### get_decoder()
 

@@ -42,7 +42,6 @@
 
             const legacyRedirectsDiv = document.getElementById('legacy-redirects');
             if (legacyRedirectsDiv) {
-                legacyRedirectsDiv.innerHTML = '';
                 legacyRedirectsDiv.appendChild(alert);
             }
         }

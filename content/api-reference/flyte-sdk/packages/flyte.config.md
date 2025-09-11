@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 2.0.0b18
+version: 2.0.0b20
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,7 +29,7 @@ layout: py_api
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile, None],
+    config_file: typing.Union[str, pathlib.Path, ConfigFile, None],
 ) -> Config
 ```
 Automatically constructs the Config Object. The order of precedence is as follows
@@ -47,7 +47,7 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type |
 |-|-|
-| `config_file` | `typing.Union[str, ConfigFile, None]` |
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` |
 
 #### set_if_exists()
 
@@ -105,7 +105,7 @@ class Config(
 
 ```python
 def auto(
-    config_file: typing.Union[str, ConfigFile, None],
+    config_file: typing.Union[str, pathlib.Path, ConfigFile, None],
 ) -> 'Config'
 ```
 Automatically constructs the Config Object. The order of precedence is as follows
@@ -117,7 +117,7 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type |
 |-|-|
-| `config_file` | `typing.Union[str, ConfigFile, None]` |
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` |
 
 #### with_params()
 
