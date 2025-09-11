@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: {{ .Site.BaseURL }}sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_internal/
+
+# Allow search engines to crawl CSS and JS files
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /fonts/
