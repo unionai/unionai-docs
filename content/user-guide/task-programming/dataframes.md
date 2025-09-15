@@ -8,9 +8,9 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 By default, return values from tasks are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as more complex types like DataFrames.
 
-To avoid having large datasets get downloaded into the pod's memory, Union V2 exposes the [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) type; a thin, uniform wrapper type for dataframe-style objects that allows you to pass a reference to the data, rather than the full materialized data.
+To avoid having large datasets get downloaded into memory, Union V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe); a thin, uniform wrapper type for dataframe-style objects that allows you to pass a reference to the data, rather than the full materialized data.
 
-The `flyte.io.dataframe` type provides full serialization support for common formats like `pandas`, `polars`, `pyarrow`, etc. 
+The `flyte.io.dataframe` type provides full serialization support for common engines like `pandas`, `polars`, `pyarrow`, etc. 
 
 ## Constructing a flyte.io.DataFrame
 
@@ -51,10 +51,8 @@ downloaded = await flyte_dataframe.open(pd.DataFrame).all()
 
 The `open(...)` call delegates to the DataFrame handler for the stored format and converts to the requested in-memory type.
 
-## Upload / download behavior
+When a task returns a native pandas DataFrame (or a `flyte.io.DataFrame` created via `from_df`), Flyte serializes the object and uploads it to blob storage at task exit.
 
-- When a task returns a native pandas DataFrame (or a `flyte.io.DataFrame` created via `from_df`), the SDK's type engine serializes the object and uploads it to blob storage at task exit.
-- For pandas, parquet (pyarrow) is preferred. CSV may be used in some examples, but parity and object-store compatibility is better with parquet.
 
 ## Example — full usage
 
