@@ -1,12 +1,11 @@
 {{ define "main" }}
 <article itemscope itemtype="https://schema.org/CollectionPage">
     <header class="page-header">
-        <h1 itemprop="name">{{ .Title }}</h1>
         {{- if .Description -}}
         <p class="page-description" itemprop="description">{{ .Description }}</p>
         {{- end -}}
     </header>
-    
+
     {{ if .Content }}
     <div class="page-content" itemprop="text">
         {{ .Content }}

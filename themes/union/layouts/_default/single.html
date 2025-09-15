@@ -1,7 +1,6 @@
 {{ define "main" }}
 <article itemscope itemtype="https://schema.org/Article">
     <header class="article-header">
-        <h1 itemprop="headline">{{ .Title }}</h1>
         {{- if .Description -}}
         <p class="article-description" itemprop="description">{{ .Description }}</p>
         {{- end -}}
@@ -18,7 +17,7 @@
             {{- end -}}
         </div>
     </header>
-    
+
     <div class="content" itemprop="articleBody">
         {{ if .Content }}
         {{ .Content }}
