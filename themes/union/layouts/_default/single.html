@@ -1,10 +1,10 @@
 {{ define "main" }}
 <article itemscope itemtype="https://schema.org/Article">
-    <header class="article-header">
+    <header class="sr-only">
         {{- if .Description -}}
-        <p class="article-description" itemprop="description">{{ .Description }}</p>
+        <p class="sr-only" itemprop="description">{{ .Description }}</p>
         {{- end -}}
-        <div class="article-meta">
+        <div class="sr-only">
             {{- if .Date -}}
             <time itemprop="datePublished" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
                 Published: {{ .Date.Format "January 2, 2006" }}
