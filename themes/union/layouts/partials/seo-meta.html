@@ -1,6 +1,7 @@
 {{- /* SEO Meta Tags Partial - Safe to include in head without affecting layout */ -}}
 {{- $description := .Summary | default .Site.Params.description | default "Union.ai documentation for AI workflow orchestration and machine learning pipelines" -}}
-{{- $description = $description | truncate 160 -}}
+{{- /* Process Hugo shortcodes and clean up content */ -}}
+{{- $variant := .Site.Params.variant -}}
 {{- $title := .Title | default .Site.Title -}}
 {{- $canonical := .Permalink | absURL -}}
 {{- /* Set image based on product_full_name */ -}}
@@ -17,9 +18,6 @@
 {{- end -}}
 
 <!-- SEO Meta Tags -->
-<meta name="hugo-dot-description" content="{{ .Description }}">
-<meta name="hugo-dot-summary" content="{{ .Summary }}">
-<meta name="hugo-dot-site-dot-params-description" content="{{ .Site.Params.description }}">
 <meta name="description" content="{{ $description | truncate 160 }}">
 <meta name="keywords" content="{{ if .Params.keywords }}{{ delimit .Params.keywords ", " }}{{ else }}{{ delimit (slice "Union.ai" "Flyte" "AI workflows" "machine learning" "documentation") ", " }}{{ end }}">
 <meta name="author" content="{{ .Site.Params.author | default "Union.ai" }}">
@@ -47,8 +45,7 @@
 {{- end -}}
 {{- if .Site.Params.twitter_creator -}}
 <meta property="twitter:creator" content="{{ .Site.Params.twitter_creator }}">
-{{- end -}}
-
+{{- end }}
 
 <script type="application/ld+json">
 {
@@ -93,4 +90,3 @@
   }
 }
 </script>
-

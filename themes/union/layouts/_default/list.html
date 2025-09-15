@@ -2,11 +2,11 @@
 <article itemscope itemtype="https://schema.org/CollectionPage">
     <header class="page-header">
         <h1 itemprop="name">{{ .Title }}</h1>
-        {{- if .Summary -}}
-        <p class="page-description" itemprop="description">{{ .Summary }}</p>
+        {{- if .Description -}}
+        <p class="page-description" itemprop="description">{{ .Description }}</p>
         {{- end -}}
     </header>
-
+    
     {{ if .Content }}
     <div class="page-content" itemprop="text">
         {{ .Content }}
@@ -22,8 +22,8 @@
                 <a href="{{ .RelPermalink }}" itemprop="url">
                     <span itemprop="name">{{ .Title }}</span>
                 </a>
-                {{ if .Summary }}
-                <p itemprop="description">{{ .Summary }}</p>
+                {{ if .Description }}
+                <p itemprop="description">{{ .Description }}</p>
                 {{ end }}
             </li>
             {{- end -}}

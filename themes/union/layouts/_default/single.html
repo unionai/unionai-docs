@@ -2,8 +2,8 @@
 <article itemscope itemtype="https://schema.org/Article">
     <header class="article-header">
         <h1 itemprop="headline">{{ .Title }}</h1>
-        {{- if .Summary -}}
-        <p class="article-description" itemprop="description">{{ .Summary }}</p>
+        {{- if .Description -}}
+        <p class="article-description" itemprop="description">{{ .Description }}</p>
         {{- end -}}
         <div class="article-meta">
             {{- if .Date -}}
@@ -18,7 +18,7 @@
             {{- end -}}
         </div>
     </header>
-
+    
     <div class="content" itemprop="articleBody">
         {{ if .Content }}
         {{ .Content }}
