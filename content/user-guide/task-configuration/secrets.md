@@ -16,7 +16,7 @@ Secrets in the store can be accessed and used within your workflow tasks, withou
 You can create a secret using the [`flyte create secret`](../../api-reference/flyte-cli#flyte-create-secret) command like this:
 
 ```shell
-flyte create secret MY_SECRET_KEY --value my_secret_value
+flyte create secret MY_SECRET_KEY my_secret_value
 ```
 
 This will create a secret called `MY_SECRET_KEY` with the value `my_secret_value`.
