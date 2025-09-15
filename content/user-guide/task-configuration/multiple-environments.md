@@ -6,10 +6,96 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Multiple environments
 
-Flyte allows you to define multiple task environments within a single project, enabling you to organize tasks with different requirements and configurations.
+In many real-world applications, different components of your workflow may require different dependencies or configurations. Flyte enables you to manage this complexity by allowing multiple environments within a single project.
+
+## Why use multiple environments?
+
+Multiple environments are useful when:
+- Different parts of your workflow need different dependencies
+- Some tasks require specific CPU/GPU configurations
+- You're integrating specialized tools that have conflicting requirements
+
+## Multiple environment constraints
+
+In a workflow with multiple environments, a task `task_1` in environment `env_1` can call a task `task_2` in another environment, `env_2`.
+
+In this scenario, we say that `task_1` _depends on_ `task_2` because of two important constraints:
+
+1. `env_2` must be deployed before `env_1`.
+   * Otherwise, `env_1` might spin up and its `task_1` might try to call `task_2` before `env_2` is available.
+   * To ensure this, you must explicitly declare the dependency relationship by adding the parameter `depends_on=[env_2]` to `TaskEnvironment` definition of `env_1`.
+
+2. All dependencies in `env_2` must also be included in `env_1`.
+   * Because, during the execution of `task_1`, the Python interpreter will initially load the function `task_2` into `env_1` before actually invoking the run of `task_2` in `env_2`.
+   * To ensure this, all dependencies declared in `env_2`'s container image must also be included in `env_1`'s container image definition.
+
+For example:
+
+```python
+import flyte
+
+env_2 = flyte.TaskEnvironment(
+    name="env_2",
+    image="python:3.12-slim",
+    # e2 dependencies
+    packages=["numpy", "pandas"],
+)
+
+env_1 = flyte.TaskEnvironment(
+    name="env_1",
+    image
+
+
+    image="python:3.12-slim",
+    # e1 dependencies
+    packages=["scikit-learn"],
+    depends_on=[e2]
+)
+
+
+
+
+declaring in the definition of t1 that it depends on `e2`. This ensures that the system knows to deploy `e2` before `e1`.
+
+In order comply with these constraints, the code must dotwo things:
+
+1. All dependncies declared for `e2` must also be declared for `e1`. This is achieved by ensuring that the dependencies declared `e2`'s container image are also included in `e1`'s container image.
+
+2. The definition of `e1` must declare that it depends on `e2` using, in order to ensure that the system knows to deploy `e2` before `e1`.
+
+The first of these can be achieved by ensuring that the dependencies of `e2` are also included in `e1`.
+
+
+
+
+
+2. the parent task's environment must include all dependencies from the child task's environment. This is because the parent task loads the child task during execution.
+
+that uses a different environment.
+
+
+
+
+
+When configuring and deploying a workflow with multiple environments you must take into account two constraints:
+
+* Whne a tThere are two constraints that you must take into account when con environments
+
+
+
+
+
+
+
+## The `depends_on` parameter
+
 The `depends_on` parameter in `TaskEnvironment` can be used to provide deployment hints by establishing a relationship between one `TaskEnvironment` and another.
 
-## Core concepts
+
+
+
+
+
 
 ### TaskEnvironment independence
 
