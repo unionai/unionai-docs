@@ -9,9 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{- .Title -}}&nbsp;|&nbsp;{{- .Site.Title -}}</title>
     <link rel="icon" href="{{- printf "images/%s" (index .Site.Params.Key.favicon .Site.Params.variant) | relURL -}}?v={{- $v -}}"/>
+
+    {{- /* SEO Meta Tags */ -}}
+    {{- partial "seo-meta.html" . -}}
     {{- range .Site.Params.custom_css }}
     <link rel="stylesheet" href='{{- (printf "css/%s" .) | relURL -}}?v={{- $v -}}' />
     {{- end }}
+    <link rel="stylesheet" href="{{- "css/seo.css" | relURL -}}?v={{- $v -}}" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"

@@ -61,7 +61,8 @@
 {{- end -}}
 
 {{ define "site-nav" }}
-<nav class="site-nav">
+<nav class="site-nav" role="navigation" aria-label="Site navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+  <span class="sr-only" itemprop="description">Documentation navigation for {{ .Site.Params.variant | humanize }} including user guides, tutorials, API references, and integration examples</span>
   <ul>
     {{- $current := . -}}
     {{- range .Site.Sections -}}
@@ -134,9 +135,10 @@
         {{- if and $access.development (not $access.excluded) -}}
             {{- $classes = $classes | append "disabled" -}}
         {{- end -}}
-        <li>
+        <li {{- if .page.IsSection }} itemscope itemtype="https://schema.org/CollectionPage"{{ end -}}>
             <a href="{{- .page.RelPermalink -}}"
-                class='{{- delimit $classes " " -}}'>
+                class='{{- delimit $classes " " -}}'
+                {{- if .page.IsSection }} itemprop="url"{{ end -}}>
                   <div class="content">
                     {{- if and .page.IsSection (gt (len .page.Pages) 0) -}}
                         {{- if not .page.Params.top_menu -}}
@@ -145,7 +147,7 @@
                     {{- else -}}
                       <img src="{{- "images/pixel.svg" | relURL }}" class="chevron hidden" />
                     {{- end -}}
-                    <div style="flex: 1">{{- partial "page-title.html" .page -}}</div>
+                    <div style="flex: 1" {{- if .page.IsSection }} itemprop="name"{{ end -}}>{{- partial "page-title.html" .page -}}</div>
                     {{- if and $access.variant $access.excluded -}}
                     <sl-tooltip content="This page is both included and excluded from this variant.">
                       <sl-icon name="exclamation-diamond"></sl-icon>
