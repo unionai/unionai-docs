@@ -10,7 +10,7 @@
     <div class="content" itemprop="text">
         {{ .Content }}
     </div>
-    {{ end }}
+    {{ else }}
 
     {{ if .Pages }}
     <nav class="page-list" aria-label="Page list">
@@ -29,6 +29,7 @@
             {{ end }}
         </ul>
     </nav>
+    {{ end }}
     {{ end }}
 </article>
 {{ end }}
