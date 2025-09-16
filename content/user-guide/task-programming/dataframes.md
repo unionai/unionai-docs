@@ -1,16 +1,17 @@
 ---
-title: Dataframes
+title: DataFrames
 weight: 80
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Dataframe support
+# DataFrames
 
-By default, return values from tasks are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as [structured types like dataclasses](./dataclasses-and-structures).
+By default, return values from tasks are materialized, meaning the actual data is downloaded and stored.
+This applies to simple types like integers, as well as [structured types like dataclasses](./dataclasses-and-structures).
 
-For large tabular datasets, Union V2 provides [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) as an **offloaded data type** - a thin, uniform wrapper that passes a reference to the data rather than the full materialized data. This is more efficient than materialized types for large datasets.
+For large tabular datasets, Flyte provides [`flyte.io.DataFrame`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) as an **offloaded data type**: a thin, uniform wrapper that passes a reference to the data rather than the full materialized data. This is more efficient than materialized types for large datasets.
 
-The `flyte.io.dataframe` type provides full serialization support for common engines like `pandas`, `polars`, `pyarrow`, etc.
+The `flyte.io.DataFrame` type provides full serialization support for common engines like `pandas`, `polars`, `pyarrow`, etc.
 
 ## Constructing a flyte.io.DataFrame
 
@@ -39,7 +40,6 @@ def my_task() -> Annotated[flyte.io.DataFrame, "parquet"]:
 	return flyte.io.DataFrame.from_df(df)
 ```
 
-
 ## Reading a DataFrame value inside a task
 
 - When a task receives a `flyte.io.DataFrame`, you can open it and request a concrete backend representation. For example, to download as a pandas DataFrame:
@@ -53,10 +53,9 @@ The `open(...)` call delegates to the DataFrame handler for the stored format an
 
 When a task returns a native pandas DataFrame (or a `flyte.io.DataFrame` created via `from_df`), Flyte serializes the object and uploads it to blob storage at task exit.
 
-
 ## Example — full usage
 
-The following example (adapted from upstream SDK examples) demonstrates creating a raw pandas DataFrame, wrapping a pandas DataFrame into `flyte.io.DataFrame`, joining them inside another task, and running locally.
+The following example demonstrates creating a raw pandas DataFrame, wrapping a pandas DataFrame into `flyte.io.DataFrame`, joining them inside another task, and running.
 
 ```python
 from typing import Annotated
@@ -165,11 +164,7 @@ async def get_employee_data() -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-	# Run locally with runcontext
-	flyte.init()
-	run = flyte.with_runcontext(mode="local").run(get_employee_data)
+	flyte.init_from_config()
+	run = flyte.run(get_employee_data)
 	print("Results:", run.outputs())
 ```
-
-
-
