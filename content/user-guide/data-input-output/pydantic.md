@@ -112,7 +112,7 @@ We also define a data class that accepts `StructuredDataset`, `FlyteFile` and
 
 
 ```python
-class {{< key product_name >}}Types(BaseModel):
+class {{< key kit_name >}}Types(BaseModel):
     dataframe: StructuredDataset
     file: union.FlyteFile
     directory: union.FlyteDirectory
@@ -156,7 +156,7 @@ We define a workflow that calls the tasks created above.
 
 ```python
 @{{< key kit_as >}}.workflow
-def basemodel_wf(x: int, y: int) -> (Datum, {{< key product_name >}}Types):
+def basemodel_wf(x: int, y: int) -> tuple[Datum, {{< key kit_name >}}Types]:
     o1 = add(x=stringify(s=x), y=stringify(s=y))
     o2 = upload_data()
     download_data(res=o2)
