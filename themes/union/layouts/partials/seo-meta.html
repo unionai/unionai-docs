@@ -1,20 +1,52 @@
-{{- /* SEO Meta Tags Partial - Safe to include in head without affecting layout */ -}}
-{{- $description := .Summary | default .Site.Params.description | default "Union.ai documentation for AI workflow orchestration and machine learning pipelines" -}}
-{{- /* Process Hugo shortcodes and clean up content */ -}}
+{{- $description := "" -}}
+
+{{- /* Check if this is an API reference page and provide better descriptions */ -}}
+{{- if or (in .RelPermalink "/api-reference/") (in .RelPermalink "/packages/") (.Description) -}}
+  {{- if .Description -}}
+    {{- $description = .Description -}}
+  {{- else -}}
+    {{- $description = "API reference documentation for Union.ai workflow orchestration and machine learning pipelines." -}}
+  {{- end -}}
+{{- else -}}
+  {{- /* Extract content description for regular pages */ -}}
+  {{- $body := .Content | replaceRE `(?is)^\s*<h1[^>]*>.*?</h1>\s*` "" -}}
+  {{- $p := findRE `(?is)<p[^>]*>(.*?)</p>` $body -}}
+  {{- if gt (len $p) 0 -}}
+    {{- $description = index $p 0 | plainify -}}
+  {{- else -}}
+    {{- $description = .Summary | plainify -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Clean and normalize the description */ -}}
+{{- $description = $description | htmlUnescape -}}
+{{- /* Fix common malformed patterns */ -}}
+{{- $description = $description | replaceRE `Union\.ai ServerlessUnion\.ai` "Union.ai" -}}
+{{- $description = $description | replaceRE `Union\.ai ([A-Z][a-z]+)Union\.ai` "Union.ai" -}}
+{{- /* Fix missing spaces after periods */ -}}
+{{- $description = $description | replaceRE `\.([A-Z])` ". $1" -}}
+{{- /* Remove function signatures from API descriptions */ -}}
+{{- $description = $description | replaceRE `^def [^)]+\)\s*-?&gt;?[^.]*\.?\s*` "" -}}
+{{- $description = $description | replaceRE `^Class Description\s+` "" -}}
+{{- /* Normalize whitespace and truncate */ -}}
+{{- $description = $description | replaceRE `\s+` " " | strings.TrimSpace -}}
+{{- if lt (len $description) 10 -}}
+  {{- $description = "Union.ai documentation for AI workflow orchestration and machine learning pipelines." -}}
+{{- end -}}
+{{- $description = $description | truncate 158 -}}
+
 {{- $variant := .Site.Params.variant -}}
 {{- $title := .Title | default .Site.Title -}}
 {{- $canonical := .Permalink | absURL -}}
-{{- /* Set image based on product_full_name */ -}}
 {{- $product_full_name := index .Site.Params.key.product_full_name $variant -}}
 {{- $image := "" -}}
 {{- if eq $product_full_name "Flyte OSS" -}}
-{{- $image = printf "%s/images/icon-logo-flyte.png" (strings.TrimSuffix "/" .Site.BaseURL) -}}
+  {{- $image = printf "%s/images/icon-logo-flyte.png" (strings.TrimSuffix "/" .Site.BaseURL) -}}
 {{- else -}}
-{{- $image = printf "%s/images/icon-logo.svg" (strings.TrimSuffix "/" .Site.BaseURL) -}}
+  {{- $image = printf "%s/images/icon-logo.svg" (strings.TrimSuffix "/" .Site.BaseURL) -}}
 {{- end -}}
-{{- /* Fallback to page params or site params if no variant-specific image */ -}}
 {{- if not $image -}}
-{{- $image = .Params.image | default .Site.Params.og_image | default "/images/og-image.png" | absURL -}}
+  {{- $image = .Params.image | default .Site.Params.og_image | default "/images/og-image.png" | absURL -}}
 {{- end -}}
 
 <!-- SEO Meta Tags -->
