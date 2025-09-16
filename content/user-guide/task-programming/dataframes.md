@@ -1,16 +1,16 @@
 ---
 title: Dataframes
-weight: 70
+weight: 80
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Dataframe support
 
-By default, return values from tasks are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as more complex types like DataFrames.
+By default, return values from tasks are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as [structured types like dataclasses](./dataclasses-and-structures).
 
-To avoid having large datasets get downloaded into memory, Union V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe); a thin, uniform wrapper type for dataframe-style objects that allows you to pass a reference to the data, rather than the full materialized data.
+For large tabular datasets, Union V2 provides [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) as an **offloaded data type** - a thin, uniform wrapper that passes a reference to the data rather than the full materialized data. This is more efficient than materialized types for large datasets.
 
-The `flyte.io.dataframe` type provides full serialization support for common engines like `pandas`, `polars`, `pyarrow`, etc. 
+The `flyte.io.dataframe` type provides full serialization support for common engines like `pandas`, `polars`, `pyarrow`, etc.
 
 ## Constructing a flyte.io.DataFrame
 
@@ -24,7 +24,7 @@ fdf = flyte.io.DataFrame.from_df(pd_df)
 
 - To declare a task that returns a native pandas DataFrame, you can use `pd.DataFrame` directly in the signature: the SDK will treat the return as a dataframe-type output and upload it at task completion.
 
-- To use the unified `flyte.io.DataFrame` wrapper (recommended when you want to be explicit about the dataframe type and storage format), use an `Annotated` type where the second argument encodes format or other lightweight hints. 
+- To use the unified `flyte.io.DataFrame` wrapper (recommended when you want to be explicit about the dataframe type and storage format), use an `Annotated` type where the second argument encodes format or other lightweight hints.
 
 ## Example
 
