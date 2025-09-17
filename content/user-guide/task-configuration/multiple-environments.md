@@ -165,7 +165,7 @@ ml_env = flyte.TaskEnvironment(
 
 # Option 2: Add dependencies after creation
 api_env = flyte.TaskEnvironment(name="api", image="fastapi:latest")
-api_env.add_dependency(ml_env)  # Add dependency dynamically
+api_env.add_dependency(ml_env)  # Add dependency imperatively
 ```
 
 ### Deployment order
