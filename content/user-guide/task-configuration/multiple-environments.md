@@ -89,7 +89,7 @@ When configuring and deploying a workflow with multiple environments you must ta
 
 ## The `depends_on` parameter
 
-The `depends_on` parameter in `TaskEnvironment` can be used to provide deployment hints by establishing a relationship between one `TaskEnvironment` and another.
+The `depends_on` parameter in `TaskEnvironment` can be used to provide deployment-time dependencies by establishing a relationship between one `TaskEnvironment` and another.
 
 
 
