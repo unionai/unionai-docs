@@ -100,7 +100,7 @@ The `depends_on` parameter in `TaskEnvironment` can be used to provide deploymen
 ### TaskEnvironment independence
 
 `TaskEnvironment`s are functionally independent.
-The `depends_on` parameter is a **deployment hint only**, not a runtime dependency.
+The `depends_on` parameter is a **deployment-time dependency only**, not a runtime dependency.
 It ensures environments are deployed in a specific order but doesn't affect task execution.
 
 ### Deployment orchestration
