@@ -85,7 +85,7 @@ Finally, in file `main.py` we define the task `main` that ties everything togeth
 
 We import the required modules and functions:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=import lang="python" >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="import" lang="python" >}}
 
 Notice that we import
 * The task functions that we will be calling: `run_fold` and `run_msa`.
@@ -95,7 +95,7 @@ Notice that we import
 
 We then assemble the image and the environment:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=image_and_env lang="python" >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="image_and_env" lang="python" >}}
 
 The image for the `main` task (`main_image`) is built by starting with `fold_image` (the image for the of the `run_fold` task) and adding `MSA_PACKAGES` (the dependency list for the `run_msa` task).
 This ensures that `main_imagfe` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
@@ -106,14 +106,14 @@ The environment for the `main` task is defined with:
 
 Finally, we define the `main` task itself:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=main_task lang="python">}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
 
 Here we call, in turn, the `run_msa` and `run_fold` tasks.
 Note that we call them directly, not as [remote tasks](), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
 
 The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=run lang="python">}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="run" lang="python" >}}
 
 Now you can run the workflow with:
 
