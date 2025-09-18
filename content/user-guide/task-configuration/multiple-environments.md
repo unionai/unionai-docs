@@ -17,7 +17,7 @@ Multiple environments are useful when:
 
 ## Constraints on multiple environments
 
-To use multiple environments in your workfow you define multiple `TaskEnvironment` instances, each with its own configuration, and then assign tasks to the appropriate environment.
+To use multiple environments in your workflow you define multiple `TaskEnvironment` instances, each with its own configuration, and then assign tasks to their respective environments.
 
 There are, however, two additional constraints that you must take into account.
 If `task_1` in environment `env_1` calls a `task_2` in environment `env_2`, then:
@@ -74,7 +74,7 @@ The example project looks like this:
 ```
 (The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/user-guide-v2/task-configuration/multiple-environments/af2))
 
-In file `msa/run.py` by defining the task `run_msa`, which mocks the multiple sequence alignment step of the process:
+In file `msa/run.py` we define the task `run_msa`, which mocks the multiple sequence alignment step of the process:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/msa/run.py" lang="python" >}}
 
@@ -87,7 +87,7 @@ In file `fold/run.py` we define the task `run_fold`, which mocks the fold step o
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/fold/run.py" lang="python" >}}
 
 * A dedicated image (`fold_image`) is built using the `FOLD_PACKAGES` dependency list, on top of the standard base image.
-* A dedicated environment (`fold_env`) is defined for the task, using `msa_image`.
+* A dedicated environment (`fold_env`) is defined for the task, using `fold_image`.
 * The task is defined within the context of the `fold_env` environment.
 
 Finally, in file `main.py` we define the task `main` that ties everything together into a workflow.
@@ -106,8 +106,8 @@ We then assemble the image and the environment:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="image_and_env" lang="python" >}}
 
-The image for the `main` task (`main_image`) is built by starting with `fold_image` (the image for the of the `run_fold` task) and adding `MSA_PACKAGES` (the dependency list for the `run_msa` task).
-This ensures that `main_imagfe` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
+The image for the `main` task (`main_image`) is built by starting with `fold_image` (the image for the `run_fold` task) and adding `MSA_PACKAGES` (the dependency list for the `run_msa` task).
+This ensures that `main_image` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
 
 The environment for the `main` task is defined with:
 * The image `main_image`. This ensures that the `main` task has all the dependencies it needs.
@@ -118,7 +118,7 @@ Finally, we define the `main` task itself:
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
 
 Here we call, in turn, the `run_msa` and `run_fold` tasks.
-Note that we call them directly, not as remote tasks, which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
+Since we call them directly rather than as remote tasks, we had to ensure that `main_image` includes all dependencies needed by both tasks.
 
 <!-- TODO: Link to remote tasks when that page is live
 Note that we call them directly, not as [remote tasks](../task-programming/remote-tasks), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
