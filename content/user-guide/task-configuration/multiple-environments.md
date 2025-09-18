@@ -48,3 +48,75 @@ To avoid this requirement, you can use [remote tasks]() to invoke tasks in other
 
 ## Example
 
+The following example is a (very) simple mock of an AlphaFold2 pipeline.
+It demonstrates a workflow with three tasks, each in its own environment.
+
+The example project looks like this:
+
+```bash
+├── msa/
+│   ├── __init__.py
+│   └── run.py
+├── fold/
+│   ├── __init__.py
+│   └── run.py
+├── __init__.py
+└── main.py
+```
+(The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/user-guide-v2/task-configuration/multiple-environments/af2))
+
+In file `msa/run.py` by defining the task `run_msa`, which mocks the multiple sequence alignment step of the process:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/msa/run.py" lang="python" >}}
+
+* A dedicated image (`msa_image`) is built using the `MSA_PACKAGES` dependency list, on top of the standard base image.
+* A dedicated environment (`msa_env`) is defined for the task, using `msa_image`.
+* The task is defined within the context of the `msa_env` environment.
+
+In file `fold/run.py` we define the task `run_fold`, which mocks the fold step of the process:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/fold/run.py" lang="python" >}}
+
+* A dedicated image (`fold_image`) is built using the `FOLD_PACKAGES` dependency list, on top of the standard base image.
+* A dedicated environment (`fold_env`) is defined for the task, using `msa_image`.
+* The task is defined within the context of the `fold_env` environment.
+
+Finally, in file `main.py` we define the task `main` that ties everything together into a workflow.
+
+We import the required modules and functions:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=import lang="python" >}}
+
+Notice that we import
+* The task functions that we will be calling: `run_fold` and `run_msa`.
+* The environments of those tasks: `fold_env` and `msa_env`.
+* The dependency list of the `run_msa` task: `MSA_PACKAGES`
+* The image of the `run_fold` task: `fold_image`
+
+We then assemble the image and the environment:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=image_and_env lang="python" >}}
+
+The image for the `main` task (`main_image`) is built by starting with `fold_image` (the image for the of the `run_fold` task) and adding `MSA_PACKAGES` (the dependency list for the `run_msa` task).
+This ensures that `main_imagfe` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
+
+The environment for the `main` task is defined with:
+* The image `main_image`. This ensures that the `main` task has all the dependencies it needs.
+* A depends_on list that includes both `fold_env` and `msa_env`. This establishes the deploy-time dependencies on those environments.
+
+Finally, we define the `main` task itself:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=main_task lang="python">}}
+
+Here we call, in turn, the `run_msa` and `run_fold` tasks.
+Note that we call them directly, not as [remote tasks](), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
+
+The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/run_alphafold2.py" fragment=run lang="python">}}
+
+Now you can run the workflow with:
+
+```bash
+python main.py
+```
