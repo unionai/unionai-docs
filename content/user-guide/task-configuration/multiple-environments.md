@@ -23,7 +23,11 @@ There are, however, two additional constraints that you must take into account.
 If `task_1` in environment `env_1` calls a `task_2` in environment `env_2`, then:
 
 1. `env_1` must declare a deployment-time dependency on `env_2` in the `depends_on` parameter of `TaskEnvironment` that defines `env_1`.
-2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless [`task_2` is invoked as a remote task]()).
+2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless `task_2` is invoked as a remote task).
+
+<!-- TODO: Link to remote tasks when that page is live
+2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless [`task_2` is invoked as a remote task](../task-programming/remote-tasks)).
+-->
 
 ### Task `depends_on` constraints
 
@@ -45,7 +49,11 @@ This is necessary because of the way task invocation works in Flyte:
 - This results in all the dependencies of the child task function also being imported.
 - But, nonetheless, the actual execution of the child task occurs in its own environment.
 
-To avoid this requirement, you can use [remote tasks]() to invoke tasks in other environments without importing them into the parent task's environment.
+To avoid this requirement, you can invoke a task in another environment _remotely_.
+
+<!-- TODO: Link to remote tasks when that page is live
+To avoid this requirement, you can [invoke a task in another environment _remotely_](../task-programming/remote-tasks).
+-->
 
 ## Example
 
@@ -110,7 +118,11 @@ Finally, we define the `main` task itself:
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
 
 Here we call, in turn, the `run_msa` and `run_fold` tasks.
-Note that we call them directly, not as [remote tasks](), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
+Note that we call them directly, not as remote tasks, which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
+
+<!-- TODO: Link to remote tasks when that page is live
+Note that we call them directly, not as [remote tasks](../task-programming/remote-tasks), which is why we had to ensure that `main_image` includes all dependencies needed by both tasks.
+-->
 
 The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:
 
