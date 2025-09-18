@@ -6,17 +6,18 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Dataframe support
 
-By default, return values from tasks are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as more complex types like DataFrames.
+By default, return values in Python are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as more complex types like DataFrames.
 
-To avoid having large datasets get downloaded into memory, Union V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe); a thin, uniform wrapper type for dataframe-style objects that allows you to pass a reference to the data, rather than the full materialized data.
+To avoid having large datasets get downloaded into memory, Flyte V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe): a thin, uniform wrapper type for dataframe-style objects that allows you to pass a reference to the data, rather than the fully materialized contents.
 
-The `flyte.io.dataframe` type provides full serialization support for common engines like `pandas`, `polars`, `pyarrow`, etc. 
+The `flyte.io.dataframe` type provides serialization support for common engines like `pandas`, `polars`, `pyarrow`, `dask`, etc. 
 
 ## Constructing a flyte.io.DataFrame
 
-- Use the `from_df` factory to create a `flyte.io.DataFrame` from a native object:
+- Use the `from_df` method to create a `flyte.io.DataFrame` from a native object:
 
 ```python
+pd_df = pd.DataFrame(BASIC_EMPLOYEE_DATA)
 fdf = flyte.io.DataFrame.from_df(pd_df)
 ```
 
@@ -51,30 +52,41 @@ downloaded = await flyte_dataframe.open(pd.DataFrame).all()
 
 The `open(...)` call delegates to the DataFrame handler for the stored format and converts to the requested in-memory type.
 
-When a task returns a native pandas DataFrame (or a `flyte.io.DataFrame` created via `from_df`), Flyte serializes the object and uploads it to blob storage at task exit.
+You can also avoid the download step by letting Flyte handle the automatic conversion between types:
 
+```python
+@env.task
+async def process_dataframe(
+    data: pd.DataFrame  # ← Flyte automatically converts flyte.io.DataFrame to pd.DataFrame
+) -> pd.DataFrame:
+    """
+    When you declare the input as pd.DataFrame, Flyte automatically:
+    1. Downloads the flyte.io.DataFrame 
+    2. Converts it to a pandas DataFrame
+    3. Passes it to your function
+    """
+    # No download step needed - 'data' is already a materialized pd.DataFrame
+    return data 
+
+```
 
 ## Example — full usage
 
-The following example (adapted from upstream SDK examples) demonstrates creating a raw pandas DataFrame, wrapping a pandas DataFrame into `flyte.io.DataFrame`, joining them inside another task, and running locally.
+The following example ([code](https://github.com/flyteorg/flyte-sdk/blob/main/examples/basics/dataframe_usage.py)) demonstrates creating a raw pandas DataFrame, wrapping a pandas DataFrame into `flyte.io.DataFrame`, joining them inside another task, and running locally.
 
 ```python
+import flyte.io
+import pandas as pd
+import numpy as np
 from typing import Annotated
 
-import numpy as np
-import pandas as pd
-
-import flyte
-import flyte.io
-
-# Create task environment with required dependencies
 img = flyte.Image.from_debian_base()
 img = img.with_pip_packages("pandas", "pyarrow")
 
-env = flyte.TaskEnvironment(
-	"dataframe_usage",
-	image=img,
-	resources=flyte.Resources(cpu="1", memory="2Gi"),
+env =flyte.TaskEnvironment(
+    name="hello_dataframes",
+    image=img,
+    resources=flyte.Resources(cpu="1", memory="2Gi"),
 )
 
 BASIC_EMPLOYEE_DATA = {
@@ -130,45 +142,56 @@ ADDL_EMPLOYEE_DATA = {
 	],
 }
 
-
 @env.task
 async def create_raw_dataframe() -> pd.DataFrame:
-	"""
-	Create a raw pandas DataFrame and return it. The SDK will serialize and upload
-	the dataframe (parquet/pyarrow for pandas) when the task completes.
-	"""
-	return pd.DataFrame(BASIC_EMPLOYEE_DATA)
-
+    """Creates a raw DataFrame with employee data."""
+    df = pd.DataFrame(BASIC_EMPLOYEE_DATA)
+    return df
 
 @env.task
-async def create_flyte_dataframe() -> Annotated[flyte.io.DataFrame, "csv"]:
-	"""
-	Create a Flyte DataFrame wrapper from a pandas DataFrame. The annotated
-	format string is where type-level format hints live; the wrapper itself is
-	created with `from_df`.
-	"""
-	pd_df = pd.DataFrame(ADDL_EMPLOYEE_DATA)
-	fdf = flyte.io.DataFrame.from_df(pd_df)
-	return fdf
-
+async def create_flyte_dataframe() -> Annotated [flyte.io.DataFrame, "csv"]:
+    """Creates a Flyte DataFrame with additional employee data."""
+    pd_df = pd.DataFrame(ADDL_EMPLOYEE_DATA)
+    return flyte.io.DataFrame.from_df(pd_df)
 
 @env.task
-async def get_employee_data() -> pd.DataFrame:
-	raw_dataframe = await create_raw_dataframe()
-	flyte_dataframe = await create_flyte_dataframe()
-
-	# Download the stored flyte dataframe into a pandas DataFrame
-	downloaded_fdf = await flyte_dataframe.open(pd.DataFrame).all()
-
-	joined_df = raw_dataframe.merge(downloaded_fdf, on="employee_id", how="inner")
-	return joined_df
-
+async def get_employee_data(
+    raw_data: pd.DataFrame,      # Automatically materializes pd.DataFrame
+    flyte_data: pd.DataFrame     # Automatically materializes flyte.io.DataFrame to pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Demonstrates automatic materialization solving the cumbersome download problem:
+    
+    MANUAL DOWNLOAD:
+    async def get_employee_data(flyte_data: flyte.io.DataFrame) -> pd.DataFrame:
+        # Always needs manual download step:
+        downloaded_flyte_df = await flyte_data.open(pd.DataFrame).all()
+        return downloaded_flyte_df
+    
+    AUTOMATIC CONVERSION:
+    async def get_employee_data(flyte_data: pd.DataFrame) -> pd.DataFrame:
+        # No download step needed. Flyte handles it automatically
+        return flyte_data
+    """
+    # No manual download step needed - both inputs are already materialized pd.DataFrames
+    joined_df = raw_data.merge(flyte_data, on="employee_id", how="inner")
+    return joined_df
 
 if __name__ == "__main__":
-	# Run locally with runcontext
-	flyte.init()
-	run = flyte.with_runcontext(mode="local").run(get_employee_data)
-	print("Results:", run.outputs())
+    import flyte.git
+    flyte.init_from_config(flyte.git.config_from_root())
+    
+    # Get the data sources first
+    raw_run = flyte.with_runcontext(mode="local").run(create_raw_dataframe)
+    flyte_run = flyte.with_runcontext(mode="local").run(create_flyte_dataframe)
+    
+    # Pass both to get_employee_data - Flyte auto-converts flyte.io.DataFrame to pd.DataFrame  
+    run = flyte.with_runcontext(mode="local").run(
+        get_employee_data, 
+        raw_data=raw_run.outputs(), 
+        flyte_data=flyte_run.outputs()
+    )
+    print("Results:", run.outputs())
 ```
 
 
