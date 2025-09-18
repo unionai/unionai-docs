@@ -1,25 +1,34 @@
 {{ define "main" }}
-<article>
-    {{ if .Content }}
-    {{ .Content }}
-    {{ else }}
-    <header>
-        <h1>{{ .Title }}</h1>
+<article itemscope itemtype="https://schema.org/CollectionPage">
+    <header class="sr-only">
+        {{- if .Description -}}
+        <p class="sr-only" itemprop="description">{{ .Description }}</p>
+        {{- end -}}
     </header>
 
+    {{ if .Content }}
+    <div class="content" itemprop="text">
+        {{ .Content }}
+    </div>
+    {{ else }}
+
     {{ if .Pages }}
-    <ul>
-        {{ range .Pages.ByWeight }}
-        {{- if (partial "page-allowed.html" .).allowed -}}
-        <li>
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            {{ if .Description }}
-            <p>{{ .Description }}</p>
+    <nav class="page-list" aria-label="Page list">
+        <ul>
+            {{ range .Pages.ByWeight }}
+            {{- if (partial "page-allowed.html" .).allowed -}}
+            <li itemscope itemtype="https://schema.org/ListItem">
+                <a href="{{ .RelPermalink }}" itemprop="url">
+                    <span itemprop="name">{{ .Title }}</span>
+                </a>
+                {{ if .Description }}
+                <p itemprop="description">{{ .Description }}</p>
+                {{ end }}
+            </li>
+            {{- end -}}
             {{ end }}
-        </li>
-        {{- end -}}
-        {{ end }}
-    </ul>
+        </ul>
+    </nav>
     {{ end }}
     {{ end }}
 </article>

@@ -1,10 +1,10 @@
 ---
-title: Dataframes
-weight: 70
+title: DataFrames
+weight: 80
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Dataframe support
+# DataFrames
 
 By default, return values in Python are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as more complex types like DataFrames.
 
@@ -25,7 +25,7 @@ fdf = flyte.io.DataFrame.from_df(pd_df)
 
 - To declare a task that returns a native pandas DataFrame, you can use `pd.DataFrame` directly in the signature: the SDK will treat the return as a dataframe-type output and upload it at task completion.
 
-- To use the unified `flyte.io.DataFrame` wrapper (recommended when you want to be explicit about the dataframe type and storage format), use an `Annotated` type where the second argument encodes format or other lightweight hints. 
+- To use the unified `flyte.io.DataFrame` wrapper (recommended when you want to be explicit about the dataframe type and storage format), use an `Annotated` type where the second argument encodes format or other lightweight hints.
 
 ## Example
 
@@ -39,7 +39,6 @@ def my_task() -> Annotated[flyte.io.DataFrame, "parquet"]:
 	df = pd.DataFrame(...)
 	return flyte.io.DataFrame.from_df(df)
 ```
-
 
 ## Reading a DataFrame value inside a task
 
@@ -193,6 +192,3 @@ if __name__ == "__main__":
     )
     print("Results:", run.outputs())
 ```
-
-
-
