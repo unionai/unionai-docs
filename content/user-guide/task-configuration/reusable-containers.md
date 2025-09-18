@@ -209,24 +209,24 @@ Here is a simple, but complete, example of reuse with concurrency
 First, import the needed modules, set upf logging:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment=import lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment="import" lang="python" >}}
 {{< markdown >}}
 
 Next, we set up the reusable task environment. Note that, currently, the image used for a reusable environment requires an extra package to be installed:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment=env lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment="env" lang="python" >}}
 {{< markdown >}}
 
 Now, we define the `reuse_concurrency` task (the main driver task of the workflow) and the `noop` task that will be executed multiple times reusing the same containers:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment=tasks lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment="tasks" lang="python" >}}
 {{< markdown >}}
 
 Finally, we deploy and run the workflow programmatically, so all you have to do is execute `python reuse_concurrency.py` to see it in action:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment=run lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/reusable-containers/reuse-concurrency.py" fragment="run" lang="python" >}}
 
 {{< /variant >}}
