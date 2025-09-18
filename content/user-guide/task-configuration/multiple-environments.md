@@ -19,10 +19,11 @@ Multiple environments are useful when:
 
 To use multiple environments in your workfow you define multiple `TaskEnvironment` instances, each with its own configuration, and then assign tasks to the appropriate environment.
 
-There are, however, two additional constraints that you must take into account:
+There are, however, two additional constraints that you must take into account.
+If `task_1` in environment `env_1` calls a `task_2` in environment `env_2`, then:
 
-1. If a task in one environment calls a task in another environment, the environment of the calling task must declare a deployment-time dependency on the environment of the called task using the `depends_on` parameter of `TaskEnvironment`.
-2. The environment of the calling task must include all dependencies declared in the environment of the called task (unless remote tasks are used)
+1. `env_1` must declare a deployment-time dependency on `env_2` in the `depends_on` parameter of `TaskEnvironment` that defines `env_1`.
+2. The image used in the `TaskEnvironment` of `env_1` must include all dependencies of the module containing the `task_2` (unless [`task_2` is invoked as a remote task]()).
 
 ### Task `depends_on` constraints
 
