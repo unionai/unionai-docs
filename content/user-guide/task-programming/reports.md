@@ -68,7 +68,7 @@ The `flush` method is called to send the report to the backend.
 Here is another example.
 We import the necessary modules, set up the task environment, define the main task with reporting enabled and define the data generation function:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=section-1 lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment="section-1" lang="python" >}}
 
 We then define the HTML content for the report:
 
@@ -89,7 +89,7 @@ We exclude it here due to length. You can find it in the [source file](https://g
 
 Finally, we run the workflow:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment=section-2 lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/globe_visualization.py" fragment="section-2" lang="python" >}}
 
 When the workflow runs, the report will be visible in the UI:
 
@@ -110,7 +110,7 @@ You do this by calling `flyte.report.flush()` (or specifying `do_flush=True` in 
 
 First we import the necessary modules, and set up the task environment:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/streaming_reports.py" fragment=section-1 lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/streaming_reports.py" fragment="section-1" lang="python" >}}
 
 Next we define the HTML content for the report:
 
@@ -125,7 +125,7 @@ https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-program
 
 Finally, we define the task that renders the report (`data_processing_dashboard`), the driver task of the workflow (`main`), and the run logic:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/streaming_reports.py" fragment=section-2 lang=python >}}
+{{< code file="/external/unionai-examples/user-guide-v2/task-programming/reports/streaming_reports.py" fragment="section-2" lang="python" >}}
 
 The key to the live update ability is the `while` loop that appends Javascript to the report. The Javascript calls execute on append to the document and update it.
 

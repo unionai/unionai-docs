@@ -8,6 +8,24 @@
 languageCode = 'en-us'
 theme = 'union'
 disableKinds = ["RSS"]
+enableRobotsTXT = true
+
+# Enable sitemap generation
+[outputs]
+  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
+  home = ["HTML", "RSS"]
+
+  # 'page': Individual content pages. Only 'HTML' is needed for standard page rendering.
+  page = ["HTML"]
+
+  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds.
+  section = ["HTML", "RSS"]
+
+  # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
+  taxonomy = ["HTML", "RSS"]
+
+  # 'robotsTXT': Generate robots.txt file for search engine crawling
+  robotsTXT = ["ROBOTS"]
 
 [params]
 _merge = "deep"
