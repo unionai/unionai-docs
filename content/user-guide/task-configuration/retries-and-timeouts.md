@@ -6,53 +6,34 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Retries and timeouts
 
-Flyte provides robust error handling through configurable retry strategies and timeout controls. These parameters help ensure task reliability and prevent resource waste from runaway processes.
+Flyte provides robust error handling through configurable retry strategies and timeout controls.
+These parameters help ensure task reliability and prevent resource waste from runaway processes.
 
 ## Retries
 
-The `retries` parameter controls how many times a failed task should be retried before giving up. It accepts both simple integer values and advanced retry strategies.
+The `retries` parameter controls how many times a failed task should be retried before giving up.
+A "retry" is any attempt after the first intial attempt.
+In other words, `retries=3` means the task may be attempted up to 4 times in total (1 initial + 3 retries).
 
-### Simple integer retries
+### Example
 
-```python
-import flyte
+The code for the example below can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py).
 
-env = flyte.TaskEnvironment(name="my-env", image="python:3.12")
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="retries" language="python" >}}
 
-@env.task(retries=3)
-async def unreliable_task():
-    # This task will be retried up to 3 times if it fails
-    import random
-    if random.random() < 0.7:  # 70% failure rate
-        raise Exception("Task failed!")
-    return "Success!"
-```
+In this example, the `retries` task is configured to retry up to 3 times if it fails (for a total of 4 attempts).
 
 ### Advanced retry strategy
 
 For more control over retry behavior, use `RetryStrategy`:
 
-```python
-from flyte import RetryStrategy
-from datetime import timedelta
-
-@env.task(retries=RetryStrategy(
-    count=5,                          # Retry up to 5 times
-    backoff=timedelta(seconds=10),    # Maximum backoff time between retries
-    backoff_factor=2.0                # Exponential backoff factor
-))
-async def network_task():
-    # Retries with exponential backoff: 2s, 4s, 8s, 10s (max), 10s (max)
-    import httpx
-    response = httpx.get("https://api.example.com/data")
-    response.raise_for_status()
-    return response.json()
-```
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="advanced-retry" language="python" >}}
 
 **RetryStrategy parameters:**
 - `count`: Number of retry attempts
 - `backoff`: Maximum time to wait between retries (float seconds or timedelta)
-- `backoff_factor`: Multiplier for exponential backoff (e.g., 2.0 doubles wait time each retry)
+- `backoff_factor`: Multiplier for exponential backoff (e.g., 2.0 doubles wait time each retry) Factor by which to increase delay for each retry after the first. (defaults to 1.0, meaning no change in delay)
+))
 
 ## Timeouts
 
