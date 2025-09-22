@@ -15,25 +15,26 @@ The `retries` parameter controls how many times a failed task should be retried 
 A "retry" is any attempt after the first intial attempt.
 In other words, `retries=3` means the task may be attempted up to 4 times in total (1 initial + 3 retries).
 
-### Example
+### Retry example
 
-The code for the example below can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py).
+The code for the example below can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/retries.py).
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="retries" language="python" >}}
+First we do the imports and set up a task environment:
 
-In this example, the `retries` task is configured to retry up to 3 times if it fails (for a total of 4 attempts).
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="import-and-env" language="python" >}}
 
-### Advanced retry strategy
+Then we configure our task to retry up to 3 times if it fails (for a total of 4 attempts). We also define the driver task `driver` that calls the `unreliable` task:
 
-For more control over retry behavior, use `RetryStrategy`:
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="retry" language="python" >}}
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="advanced-retry" language="python" >}}
+Notice that we configure the retries in the `@env.task` decorator of `unrelaible`
+We can also configure retries as an override when invoking the task, as shown below (using a different driver task, `diver_override`):
 
-**RetryStrategy parameters:**
-- `count`: Number of retry attempts
-- `backoff`: Maximum time to wait between retries (float seconds or timedelta)
-- `backoff_factor`: Multiplier for exponential backoff (e.g., 2.0 doubles wait time each retry) Factor by which to increase delay for each retry after the first. (defaults to 1.0, meaning no change in delay)
-))
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="retry-override" language="python" >}}
+
+Finally, we configure flyte and invoke both driver tasks:
+
+{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries-and-timeouts.py" fragment="run" language="python" >}}
 
 ## Timeouts
 
