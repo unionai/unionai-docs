@@ -12,13 +12,13 @@ These parameters help ensure task reliability and prevent resource waste from ru
 ## Retries
 
 The `retries` parameter controls how many times a failed task should be retried before giving up.
-A "retry" is any attempt after the first intial attempt.
+A "retry" is any attempt after the initial attempt.
 In other words, `retries=3` means the task may be attempted up to 4 times in total (1 initial + 3 retries).
 
 The `retries` parameter can be configured in either the `@env.task` decorator or using `override` when invoking the task.
 It cannot be configured in the `TaskEnvironment` definition.
 
-The code for the examples below can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/retries.py).
+The code for the examples below can be found on [GitHub](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/retries.py).
 
 ### Retry example
 
@@ -30,7 +30,7 @@ Then we configure our task to retry up to 3 times if it fails (for a total of 4 
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/retries.py" fragment="retry" language="python" >}}
 
-Note that we call `retry` twice. First without any `override`, and then with an `override` to increase the retries to 5 (for a total of 6 attempts).
+Note that we call `retry` twice: first without any `override`, and then with an `override` to increase the retries to 5 (for a total of 6 attempts).
 
 Finally, we configure flyte and invoke the `main` task:
 
@@ -52,7 +52,7 @@ First, we import the required modules and set up a task environment:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py" fragment="import-and-env" language="python" >}}
 
-Our first tasks sets a timeout using seconds as an integer:
+Our first task sets a timeout using seconds as an integer:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py" fragment="timeout-seconds" language="python" >}}
 
@@ -80,8 +80,8 @@ We define the `main` driver task that calls all the timeout tasks:
 
 Note that we also demonstrate overriding the timeout for `timeout_seconds` to 120 seconds when calling it.
 
-Finally, we configure flyte and invoke the `main` task:
+Finally, we configure Flyte and invoke the `main` task:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py" fragment="run" language="python" >}}
 
-Proper retry and timeout configurationensures your Flyte workflows are both reliable and efficient, handling transient failures gracefully while preventing resource waste.
+Proper retry and timeout configuration ensures your Flyte workflows are both reliable and efficient, handling transient failures gracefully while preventing resource waste.
