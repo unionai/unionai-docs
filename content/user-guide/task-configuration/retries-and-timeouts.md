@@ -74,7 +74,7 @@ Here we specify:
 - Task fails if queued for more than 1 minute.
 - Total possible runtime: 1 minute queue + (1 minute × 3 attempts).
 
-We define the `main` driver task that calls all the timeout tasks:
+We define the `main` driver task that calls all the timeout tasks concurrently and returns their outputs as a list. The return value for failed tasks will indicate failure:
 
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py" fragment="main" lang="python" >}}
 
