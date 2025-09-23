@@ -44,7 +44,7 @@ It supports multiple formats for different use cases.
 The `timeout` parameter can be configured in either the `@env.task` decorator or using `override` when invoking the task.
 It cannot be configured in the `TaskEnvironment` definition.
 
-The code for the example below can be found on [GitHUb](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py).
+The code for the example below can be found on [GitHub](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py).
 
 ### Timeout example
 
@@ -69,10 +69,10 @@ You can also combine retries and timeouts for resilience and resource control:
 {{< code file="/external/unionai-examples/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py" fragment="timeout-with-retry" lang="python" >}}
 
 Here we specify:
-- Up to 3 retry attempts
-- Each attempt times out after 1 minute
-- Task fails if queued for more than 1 minute
-- Total possible runtime: 1min queue + (1min × 3 attempts)
+- Up to 3 retry attempts.
+- Each attempt times out after 1 minute.
+- Task fails if queued for more than 1 minute.
+- Total possible runtime: 1 minute queue + (1 minute × 3 attempts).
 
 We define the `main` driver task that calls all the timeout tasks:
 
