@@ -22,7 +22,7 @@ In this tutorial, we build a Text-to-SQL workflow using LlamaIndex and evaluate 
 
 We start by ingesting the WikiTableQuestions dataset, which comes as CSV files, into a SQLite database. This database serves as the source of truth for our Text-to-SQL pipeline.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/data_ingestion.py" fragment=data_ingestion lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/data_ingestion.py" fragment=data_ingestion lang=python >}}
 
 The ingestion step:
 
@@ -33,7 +33,7 @@ The ingestion step:
 
 The Flyte task returns both the path to the database and the generated table metadata.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/data_ingestion.py" fragment=table_info lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/data_ingestion.py" fragment=table_info lang=python >}}
 
 {{< variant byoc selfmanaged >}}
 
@@ -45,7 +45,7 @@ With Union artifacts (coming soon!), you'll be able to persist the ingested SQLi
 
 Next, we define a workflow that converts natural language into executable SQL using a retrieval-augmented generation (RAG) approach.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/text_to_sql.py" fragment=text_to_sql lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/text_to_sql.py" fragment=text_to_sql lang=python >}}
 
 The main `text_to_sql` task orchestrates the pipeline:
 
@@ -61,7 +61,7 @@ We use OpenAI GPT models with carefully structured prompts to maximize SQL corre
 
 We index each table's rows semantically so the model can retrieve relevant examples during SQL generation.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/text_to_sql.py" fragment=index_tables lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/text_to_sql.py" fragment=index_tables lang=python >}}
 
 Each row becomes a text node stored in LlamaIndex’s `VectorStoreIndex`. This lets the system pull semantically similar rows when handling queries.
 
@@ -69,7 +69,7 @@ Each row becomes a text node stored in LlamaIndex’s `VectorStoreIndex`. This l
 
 We then retrieve the most relevant tables for a given query and build rich context that combines schema information with sample rows.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/text_to_sql.py" fragment=retrieve_tables lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/text_to_sql.py" fragment=retrieve_tables lang=python >}}
 
 The retriever selects tables via semantic similarity, then attaches their schema and example rows. This context grounds the model's SQL generation in the database's actual structure and content.
 
@@ -77,7 +77,7 @@ The retriever selects tables via semantic similarity, then attaches their schema
 
 Finally, we generate SQL queries and produce natural language answers.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/text_to_sql.py" fragment=sql_and_response lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/text_to_sql.py" fragment=sql_and_response lang=python >}}
 
 The SQL generation prompt includes schema, example rows, and formatting rules. After execution, the system returns a final answer.
 
@@ -99,7 +99,7 @@ With these in place, the next step is to build a "golden" QA dataset that will g
 
 We generate a dataset of natural language questions paired with executable SQL queries. This dataset acts as the benchmark for prompt tuning and evaluation.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/create_qa_dataset.py" fragment=build_eval_dataset lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/create_qa_dataset.py" fragment=build_eval_dataset lang=python >}}
 
 The pipeline does the following:
 
@@ -112,19 +112,19 @@ The pipeline does the following:
 
 We break schemas into smaller chunks to cover all tables evenly. This avoids overfitting to a subset of tables and ensures broad coverage across the dataset.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/create_qa_dataset.py" fragment=get_and_split_schema lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/create_qa_dataset.py" fragment=get_and_split_schema lang=python >}}
 
 ### Question and SQL generation
 
 Using structured prompts, we ask an LLM to generate realistic questions users might ask, then pair them with syntactically valid SQL queries. Deduplication ensures diversity across queries.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/create_qa_dataset.py" fragment=generate_questions_and_sql lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/create_qa_dataset.py" fragment=generate_questions_and_sql lang=python >}}
 
 ### Validation and quality control
 
 Each generated SQL query runs against the database, and another LLM double-checks that the result matches the intent of the natural language question.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/create_qa_dataset.py" fragment=validate_sql lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/create_qa_dataset.py" fragment=validate_sql lang=python >}}
 
 Even with automated checks, human review remains critical. Since this dataset serves as the ground truth, mislabeled pairs can distort evaluation. For production use, always invest in human-in-the-loop review.
 
@@ -138,13 +138,13 @@ Support for human-in-the-loop pipelines is coming soon in Flyte 2!
 
 With the QA dataset in place, we can turn to prompt optimization. The idea: start from a baseline prompt, generate new variants, and measure whether accuracy improves.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/optimizer.py" fragment=auto_prompt_engineering lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/optimizer.py" fragment=auto_prompt_engineering lang=python >}}
 
 ### Evaluation pipeline
 
 We evaluate each prompt variant against the golden dataset, split into validation and test sets, and record accuracy metrics in real time.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/optimizer.py" fragment=evaluate_prompt lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/optimizer.py" fragment=evaluate_prompt lang=python >}}
 
 Here's how prompt accuracy evolves over time, as shown in the UI report:
 
@@ -154,7 +154,7 @@ Here's how prompt accuracy evolves over time, as shown in the UI report:
 
 An optimizer LLM proposes new prompts by analyzing patterns in successful and failed generations. Each candidate runs through the evaluation loop, and we select the best performer.
 
-{{< code file="/external/unionai-examples/tutorials-v2/text_to_sql/optimizer.py" fragment=prompt_optimizer lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/text_to_sql/optimizer.py" fragment=prompt_optimizer lang=python >}}
 
 On paper, this creates a continuous improvement cycle: baseline → new variants → measured gains.
 

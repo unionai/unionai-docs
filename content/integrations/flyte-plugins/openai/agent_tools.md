@@ -19,18 +19,18 @@ flyte create secret OPENAI_API_KEY --value <your-api-key>
 
 Then, we'll use `uv script` to specify our dependencies.
 
-{{< code file="/external/unionai-examples/integrations-v2/flyte-plugins/openai/openai/agents_tools.py" fragment=uv-script lang=python >}}
+{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/openai/openai/agents_tools.py" fragment=uv-script lang=python >}}
 
 Next, we'll import the libraries and create a `TaskEnvironment`, which we need to run the example:
 
-{{< code file="/external/unionai-examples/integrations-v2/flyte-plugins/openai/openai/agents_tools.py" fragment=imports-task-env lang=python >}}
+{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/openai/openai/agents_tools.py" fragment=imports-task-env lang=python >}}
 
 ## Define the tools
 
 We'll define a tool that can get weather information for a
 given city. In this case, we'll use a toy function that returns a hard-coded `Weather` object.
 
-{{< code file="/external/unionai-examples/integrations-v2/flyte-plugins/openai/openai/agents_tools.py" fragment=tools lang=python >}}
+{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/openai/openai/agents_tools.py" fragment=tools lang=python >}}
 
 In this code snippet, the `@function_tool` decorator is imported from `flyteplugins.openai.agents`, which is a drop-in replacement for the `@function_tool` decorator from `openai-agents` library.
 
@@ -38,7 +38,7 @@ In this code snippet, the `@function_tool` decorator is imported from `flyteplug
 
 Then, we'll define the agent, which calls the tool:
 
-{{< code file="/external/unionai-examples/integrations-v2/flyte-plugins/openai/openai/agents_tools.py" fragment=agent lang=python >}}
+{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/openai/openai/agents_tools.py" fragment=agent lang=python >}}
 
 ## Run the agent
 
@@ -54,7 +54,7 @@ flyte create config \
 --builder remote
 ```
 
-{{< code file="/external/unionai-examples/integrations-v2/flyte-plugins/openai/openai/agents_tools.py" fragment=main lang=python >}}
+{{< code file="/external/unionai-examples/v2/integrations/flyte-plugins/openai/openai/agents_tools.py" fragment=main lang=python >}}
 
 ## Conclusion
 

@@ -44,7 +44,7 @@ This example follows the `uv` script format to declare dependencies.
 # ///
 ```
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=env lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=env lang=python >}}
 
 > [!NOTE]
 > You can set up access to the OpenAI API using a Flyte secret.
@@ -61,7 +61,7 @@ We store the LLM-generated code in a structured format. This allows us to:
 
 By capturing metadata alongside the raw code, we maintain transparency and make it easier to iterate or trace issues over time.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=code_base_model lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=code_base_model lang=python >}}
 
 We then define a state model to persist the agent's history across iterations. This includes previous messages,
 generated code, and any errors encountered.
@@ -69,7 +69,7 @@ generated code, and any errors encountered.
 Maintaining this history allows the agent to reflect on past attempts, avoid repeating mistakes,
 and iteratively improve the generated code.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=agent_state lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=agent_state lang=python >}}
 
 ## Retrieve docs
 
@@ -92,42 +92,42 @@ To handle this, we use an LLM (GPT-4 in this case) that supports extended contex
 > While this can be a lighter-weight solution for smaller datasets, its effectiveness depends on how well the LLM can
 > reason over file references and the reliability of its internal search heuristics.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=docs_retriever lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=docs_retriever lang=python >}}
 
 ## Code generation
 
 Next, we define a utility function to construct the LLM chain responsible for generating Python code from user input. This chain leverages
 a LangChain `PromptTemplate` to structure the input and an OpenAI chat model to generate well-formed, Flyte 2-compatible Python scripts.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=generate_code_gen_chain lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=generate_code_gen_chain lang=python >}}
 
 We then define a `generate` task responsible for producing the code solution.
 To improve clarity and testability, the output is structured in three parts:
 a short summary of the generated solution, a list of necessary imports,
 and the main body of executable code.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=generate lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=generate lang=python >}}
 
 A `ContainerTask` then executes this code in an isolated container environment.
 It takes the code as input, runs it safely, and returns the program’s output and exit code.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=code_runner_task lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=code_runner_task lang=python >}}
 
 This task verifies that the generated code runs as expected.
 It tests the import statements first, then executes the full code.
 It records the output and any error messages in the agent state for further analysis.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=code_check lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=code_check lang=python >}}
 
 If an error occurs, a separate task reflects on the failure and generates a response.
 This reflection is added to the agent state to guide future iterations.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=reflect lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=reflect lang=python >}}
 
 Finally, we define a `main` task that runs the code agent and orchestrates the steps above.
 If the code execution fails, we reflect on the error and retry until we reach the maximum number of iterations.
 
-{{< code file="/external/unionai-examples/tutorials-v2/code_runner/agent.py" fragment=main lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/code_runner/agent.py" fragment=main lang=python >}}
 
 ## Running the code agent
 
