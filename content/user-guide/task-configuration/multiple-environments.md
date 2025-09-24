@@ -72,7 +72,7 @@ The example project looks like this:
 ├── __init__.py
 └── main.py
 ```
-(The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/user-guide-v2/task-configuration/multiple-environments/af2))
+(The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/task-configuration/multiple-environments/af2))
 
 In file `msa/run.py` we define the task `run_msa`, which mocks the multiple sequence alignment step of the process:
 

@@ -8,7 +8,7 @@ sidebar_expanded: true
 # Deep research
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/deep_research_agent); based on work by [Together AI](https://github.com/togethercomputer/open_deep_research).
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/deep_research_agent); based on work by [Together AI](https://github.com/togethercomputer/open_deep_research).
 
 This example demonstrates how to build an agentic workflow for deep research—a multi-step reasoning system that mirrors how a human researcher explores, analyzes, and synthesizes information from the web.
 

@@ -18,7 +18,7 @@ In other words, `retries=3` means the task may be attempted up to 4 times in tot
 The `retries` parameter can be configured in either the `@env.task` decorator or using `override` when invoking the task.
 It cannot be configured in the `TaskEnvironment` definition.
 
-The code for the examples below can be found on [GitHub](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/retries.py).
+The code for the examples below can be found on [GitHub](https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-configuration/retries-and-timeouts/retries.py).
 
 ### Retry example
 
@@ -44,7 +44,7 @@ It supports multiple formats for different use cases.
 The `timeout` parameter can be configured in either the `@env.task` decorator or using `override` when invoking the task.
 It cannot be configured in the `TaskEnvironment` definition.
 
-The code for the example below can be found on [GitHub](https://github.com/unionai/unionai-examples/blob/main/user-guide-v2/task-configuration/retries-and-timeouts/timeouts.py).
+The code for the example below can be found on [GitHub](https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-configuration/retries-and-timeouts/timeouts.py).
 
 ### Timeout example
 

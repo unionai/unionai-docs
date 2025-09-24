@@ -60,4 +60,4 @@ flyte create config \
 
 In this example, we've seen how to use the `openai-agents` library to create a simple agent that can use tools to perform tasks.
 
-The full code is available [here](https://github.com/unionai/unionai-examples/tree/main/integrations-v2/flyte-plugins/openai/openai).
+The full code is available [here](https://github.com/unionai/unionai-examples/tree/main/v2/integrations/flyte-plugins/openai/openai).
