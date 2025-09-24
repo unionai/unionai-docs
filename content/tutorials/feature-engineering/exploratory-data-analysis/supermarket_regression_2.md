@@ -16,7 +16,7 @@ content_hash: 9ab56bd59154b5542e3aaf26db5da178c5132c83d741e8caa76561b53213cacd #
 -->
 
 {{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression_2.ipynb" "Download this notebook" >}}
+{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression_2.ipynb" "Download this notebook" >}}
 {{< /right >}}
 
 # Supermarket Regression 2 Notebook

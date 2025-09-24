@@ -16,7 +16,7 @@ content_hash: 2b296a9470b53436bf3b49ad8420a79de0945ca4dd3e1ae5017312e41ee0f089 #
 -->
 
 {{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb" "Download this notebook" >}}
+{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb" "Download this notebook" >}}
 {{< /right >}}
 
 # How to Trigger the Feast Workflow using FlyteRemote

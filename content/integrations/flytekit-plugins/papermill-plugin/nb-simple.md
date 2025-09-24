@@ -16,7 +16,7 @@ content_hash: f6cc2c37eb72ea746faa0fe9d36897daa4254b447f12b814dcbf6a3b2a375907 #
 -->
 
 {{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb" "Download this notebook" >}}
+{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb" "Download this notebook" >}}
 {{< /right >}}
 
 # Simple Papermill Notebook
