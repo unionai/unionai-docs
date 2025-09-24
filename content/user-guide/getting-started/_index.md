@@ -103,7 +103,7 @@ Run `flyte get config` to see the current configuration file being used by the `
 
 Create a file called `hello.py` with the following content:
 
-{{< code file="/external/unionai-examples/user-guide-v2/getting-started/hello.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
 
 ## Understanding the code
 
