@@ -130,7 +130,7 @@ At the top of your `.md` file, add:
 layout: py_example
 example_file: /path/to/your/file.py
 run_command: union run --remote tutorials//path/to/your/file.py main
-source_location: https://www.github.com/unionai/unionai-examples/tree/main/tutorials/path/to/your/file.py
+source_location: https://www.github.com/unionai/unionai-examples/tree/main/v1/tutorials/path/to/your/file.py
 ---
 ```
 

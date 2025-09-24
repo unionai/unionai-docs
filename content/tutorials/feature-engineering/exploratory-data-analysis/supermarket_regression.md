@@ -2,7 +2,7 @@
 title: Supermarket regression notebook
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
-jupyter_notebook: /external/unionai-examples/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb
+jupyter_notebook: /external/unionai-examples/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb
 content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567 # hash managed by Makefile.jupyter (do not edit)
 ---
 
@@ -16,7 +16,7 @@ content_hash: 33f3516212efb81c7e6c1a046936238cfe031ab6843f163b872ce68e13118567 #
 -->
 
 {{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb" "Download this notebook" >}}
+{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-tutorials/exploratory_data_analysis/exploratory_data_analysis/supermarket_regression.ipynb" "Download this notebook" >}}
 {{< /right >}}
 
 # Supermarket Regression Notebook
@@ -138,33 +138,33 @@ for col in cat_cols:
 ```
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_8_0.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_8_1.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_8_2.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_8_3.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_8_4.png)
-    
+
 
 
 
@@ -179,33 +179,33 @@ for col in num_cols:
 ```
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_9_0.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_9_1.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_9_2.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_9_3.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_9_4.png)
-    
+
 
 
 
@@ -219,33 +219,33 @@ for col in cat_cols:
 ```
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_10_0.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_10_1.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_10_2.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_10_3.png)
-    
 
 
 
-    
+
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_10_4.png)
-    
+
 
 
 
@@ -264,9 +264,9 @@ sns.heatmap(corrmat, square=True)
 
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_11_1.png)
-    
+
 
 
 
@@ -298,9 +298,9 @@ for col in cat_cols_pair:
 
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_12_1.png)
-    
+
 
 
 
@@ -308,9 +308,9 @@ for col in cat_cols_pair:
 
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_12_3.png)
-    
+
 
 
 
@@ -318,9 +318,9 @@ for col in cat_cols_pair:
 
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_12_5.png)
-    
+
 
 
 
@@ -459,9 +459,9 @@ plt.title("Transformation of Product_Supermarket_Sales feature")
 
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_19_1.png)
-    
+
 
 
 
@@ -488,9 +488,9 @@ plt.title("Transformation of Product_Shelf_Visibility feature")
 
 
 
-    
+
 ![png](./supermarket_regression.gen_files/supermarket_regression.gen_20_1.png)
-    
+
 
 
 

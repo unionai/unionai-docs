@@ -2,7 +2,7 @@
 title: Simple Papermill Notebook
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
-jupyter_notebook: /external/unionai-examples/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb
+jupyter_notebook: /external/unionai-examples/v1/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb
 content_hash: f6cc2c37eb72ea746faa0fe9d36897daa4254b447f12b814dcbf6a3b2a375907 # hash managed by Makefile.jupyter (do not edit)
 ---
 
@@ -16,7 +16,7 @@ content_hash: f6cc2c37eb72ea746faa0fe9d36897daa4254b447f12b814dcbf6a3b2a375907 #
 -->
 
 {{< right mb="2rem" >}}
-{{< download "https://github.com/unionai/unionai-examples/blob/main/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb" "Download this notebook" >}}
+{{< download "https://github.com/unionai/unionai-examples/blob/main/v1/flyte-integrations/flytekit-plugins/papermill_plugin/papermill_plugin/nb_simple.ipynb" "Download this notebook" >}}
 {{< /right >}}
 
 # Simple Papermill Notebook
