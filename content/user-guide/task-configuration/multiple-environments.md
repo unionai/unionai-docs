@@ -72,11 +72,11 @@ The example project looks like this:
 ├── __init__.py
 └── main.py
 ```
-(The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/user-guide-v2/task-configuration/multiple-environments/af2))
+(The source code for this example can be found here:[AlphaFold2 mock example](https://github.com/unionai/unionai-examples/tree/main/v2/user-guide/task-configuration/multiple-environments/af2))
 
 In file `msa/run.py` we define the task `run_msa`, which mocks the multiple sequence alignment step of the process:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/msa/run.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/msa/run.py" lang="python" >}}
 
 * A dedicated image (`msa_image`) is built using the `MSA_PACKAGES` dependency list, on top of the standard base image.
 * A dedicated environment (`msa_env`) is defined for the task, using `msa_image`.
@@ -84,7 +84,7 @@ In file `msa/run.py` we define the task `run_msa`, which mocks the multiple sequ
 
 In file `fold/run.py` we define the task `run_fold`, which mocks the fold step of the process:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/fold/run.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/fold/run.py" lang="python" >}}
 
 * A dedicated image (`fold_image`) is built using the `FOLD_PACKAGES` dependency list, on top of the standard base image.
 * A dedicated environment (`fold_env`) is defined for the task, using `fold_image`.
@@ -94,7 +94,7 @@ Finally, in file `main.py` we define the task `main` that ties everything togeth
 
 We import the required modules and functions:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="import" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="import" lang="python" >}}
 
 Notice that we import
 * The task functions that we will be calling: `run_fold` and `run_msa`.
@@ -104,7 +104,7 @@ Notice that we import
 
 We then assemble the image and the environment:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="image_and_env" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="image_and_env" lang="python" >}}
 
 The image for the `main` task (`main_image`) is built by starting with `fold_image` (the image for the `run_fold` task) and adding `MSA_PACKAGES` (the dependency list for the `run_msa` task).
 This ensures that `main_image` includes all dependencies needed by both the `run_fold` and `run_msa` tasks.
@@ -115,7 +115,7 @@ The environment for the `main` task is defined with:
 
 Finally, we define the `main` task itself:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="task" lang="python" >}}
 
 Here we call, in turn, the `run_msa` and `run_fold` tasks.
 Since we call them directly rather than as remote tasks, we had to ensure that `main_image` includes all dependencies needed by both tasks.
@@ -126,7 +126,7 @@ Note that we call them directly, not as [remote tasks](../task-programming/remot
 
 The final piece of the puzzle is the `if __name__ == "__main__":` block that allows us to run the `main` task on the configured Flyte backend:
 
-{{< code file="/external/unionai-examples/user-guide-v2/task-configuration/multiple-environments/af2/main.py" fragment="run" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/multiple-environments/af2/main.py" fragment="run" lang="python" >}}
 
 Now you can run the workflow with:
 

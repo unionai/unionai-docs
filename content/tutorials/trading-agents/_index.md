@@ -8,7 +8,7 @@ sidebar_expanded: true
 # Multi-agent trading simulation
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/trading_agents); based on work by [TauricResearch](https://github.com/TauricResearch/TradingAgents).
 
 This example walks you through building a multi-agent trading simulation, modeling how agents within a firm might interact, strategize, and make trades collaboratively.
 
@@ -58,7 +58,7 @@ _Trading agents schema_
 
 Everything begins with a top-level Flyte task called `main`, which serves as the entry point to the workflow.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/main.py" fragment=main lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/main.py" fragment=main lang=python >}}
 
 This task accepts several inputs:
 
@@ -72,23 +72,23 @@ The most interesting parameter here is the list of analysts to run. It determine
 
 The `main` task is written as a regular asynchronous Python function wrapped with Flyte's task decorator. No domain-specific language or orchestration glue is needed — just idiomatic Python, optionally using async for better performance. The task environment is configured once and shared across all tasks for consistency.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/flyte_env.py" fragment=env lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/flyte_env.py" fragment=env lang=python >}}
 
 ### Analyst agents
 
 Each analyst agent comes equipped with a set of tools and a carefully designed prompt tailored to its specific domain. These tools are modular Flyte tasks — for example, downloading financial reports or computing technical indicators — and benefit from Flyte's built-in caching to avoid redundant computation.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/tools/toolkit.py" fragment=get_stockstats_indicators_report_online lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/tools/toolkit.py" fragment=get_stockstats_indicators_report_online lang=python >}}
 
 When initialized, an analyst enters a structured reasoning loop (via LangChain), where it can call tools, observe outputs, and refine its internal state before generating a final report. These reports are later consumed by downstream agents.
 
 Here's an example of a news analyst that interprets global events and macroeconomic signals. We specify the tools accessible to the analyst, and the LLM selects which ones to use based on context.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/agents/analysts.py" fragment=news_analyst lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/agents/analysts.py" fragment=news_analyst lang=python >}}
 
 Each analyst agent uses a helper function to bind tools, iterate through reasoning steps (up to a configurable maximum), and produce an answer. Setting a max iteration count is crucial to prevent runaway loops. As agents reason, their message history is preserved in their internal state and passed along to the next agent in the chain.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/agents/analysts.py" fragment=agent_helper lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/agents/analysts.py" fragment=agent_helper lang=python >}}
 
 Once all analyst reports are complete, their outputs are collected and passed to the next stage of the workflow.
 
@@ -96,23 +96,23 @@ Once all analyst reports are complete, their outputs are collected and passed to
 
 The research phase consists of two agents: a bullish researcher and a bearish one. They evaluate the company from opposing viewpoints, drawing on the analysts' reports. Unlike analysts, they don't use tools. Their role is to interpret, critique, and develop positions based on the evidence.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/agents/researchers.py" fragment=bear_researcher lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/agents/researchers.py" fragment=bear_researcher lang=python >}}
 
 To aid reasoning, the agents can also retrieve relevant "memories" from a vector database, giving them richer historical context. The number of debate rounds is configurable, and after a few iterations of back-and-forth between the bull and bear, a research manager agent reviews their arguments and makes a final investment decision.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/agents/managers.py" fragment=research_manager lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/agents/managers.py" fragment=research_manager lang=python >}}
 
 ### Trading agent
 
 The trader agent consolidates the insights from analysts and researchers to generate a final recommendation. It synthesizes competing signals and produces a conclusion such as _Buy for long-term growth despite short-term volatility_.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/agents/trader.py" fragment=trader lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/agents/trader.py" fragment=trader lang=python >}}
 
 ### Risk agents
 
 Risk agents comprise agents with different risk tolerances: a risky debater, a neutral one, and a conservative one. They assess the portfolio through lenses like market volatility, liquidity, and systemic risk. Similar to the bull-bear debate, these agents engage in internal discussion, after which a risk manager makes the final call.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/agents/risk_debators.py" fragment=risk_debator lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/agents/risk_debators.py" fragment=risk_debator lang=python >}}
 
 The outcome of the risk manager — whether to proceed with the trade or not — is considered the final decision of the trading simulation.
 
@@ -138,7 +138,7 @@ s3vectors:GetVectorBucket
 
 After each trade decision, you can run a `reflect_on_decisions` task. This evaluates whether the final outcome aligned with the agent's recommendation and stores that reflection in the vector store. These stored insights can later be retrieved to provide historical context and improve future decision-making.
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/main.py" fragment=reflect_on_decisions lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/main.py" fragment=reflect_on_decisions lang=python >}}
 
 ### Running the simulation
 
@@ -158,7 +158,7 @@ uv run main.py
 
 If you'd like to run the `reflect_on_decisions` task instead, comment out the `main` function call and uncomment the `reflect_on_decisions` call in the `__main__` block:
 
-{{< code file="/external/unionai-examples/tutorials-v2/trading_agents/main.py" fragment=execute_main lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/trading_agents/main.py" fragment=execute_main lang=python >}}
 
 Then run:
 

@@ -8,7 +8,7 @@ sidebar_expanded: true
 # Deep research
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/deep_research_agent); based on work by [Together AI](https://github.com/togethercomputer/open_deep_research).
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/deep_research_agent); based on work by [Together AI](https://github.com/togethercomputer/open_deep_research).
 
 This example demonstrates how to build an agentic workflow for deep research—a multi-step reasoning system that mirrors how a human researcher explores, analyzes, and synthesizes information from the web.
 
@@ -47,7 +47,7 @@ Let's begin by setting up the task environment. We define the following componen
 - A custom image with required Python packages and apt dependencies (`pandoc`, `texlive-xetex`)
 - External YAML file with all LLM prompts baked into the container
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=env lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=env lang=python >}}
 
 The Python packages are declared at the top of the file using the `uv` script style:
 
@@ -70,11 +70,11 @@ The Python packages are declared at the top of the file using the `uv` script st
 
 This task converts a user prompt into a list of focused queries. It makes two LLM calls to generate a high-level research plan and parse that plan into atomic search queries.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=generate_research_queries lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=generate_research_queries lang=python >}}
 
 LLM calls use LiteLLM, and each is wrapped with `flyte.trace` for observability:
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/libs/utils/llms.py" fragment=asingle_shot_llm_call lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/libs/utils/llms.py" fragment=asingle_shot_llm_call lang=python >}}
 
 > [!NOTE]
 > We use `flyte.trace` to track intermediate steps within a task, like LLM calls or specific function executions. This lightweight decorator adds observability with minimal overhead and is especially useful for inspecting reasoning chains during task execution.
@@ -83,37 +83,37 @@ LLM calls use LiteLLM, and each is wrapped with `flyte.trace` for observability:
 
 We submit each research query to Tavily and summarize the results using an LLM. We run all summarization tasks with `asyncio.gather`, which signals to Flyte that these tasks can be distributed across separate compute resources.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=search_and_summarize lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=search_and_summarize lang=python >}}
 
 ## Evaluate research completeness
 
 Now we assess whether the gathered research is sufficient. Again, the task uses two LLM calls to evaluate the completeness of the results and propose additional queries if necessary.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=evaluate_research_completeness lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=evaluate_research_completeness lang=python >}}
 
 ## Filter results
 
 In this step, we evaluate the relevance of search results and rank them. This task returns the most useful sources for the final synthesis.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=filter_results lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=filter_results lang=python >}}
 
 ## Generate the final answer
 
 Finally, we generate a detailed research report by synthesizing the top-ranked results. This is the output returned to the user.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=generate_research_answer lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=generate_research_answer lang=python >}}
 
 ## Orchestration
 
 Next, we define a `research_topic` task to orchestrate the entire deep research workflow. It runs the core stages in sequence: generating research queries, performing search and summarization, evaluating the completeness of results, and producing the final report.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=research_topic lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=research_topic lang=python >}}
 
 The `main` task wraps this entire pipeline and adds report generation in HTML format as the final step.
 It also serves as the main entry point to the workflow, allowing us to pass in all configuration parameters, including which LLMs to use at each stage.
 This flexibility lets us mix and match models for planning, summarization, and final synthesis, helping us optimize for both cost and quality.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/agent.py" fragment=main lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/agent.py" fragment=main lang=python >}}
 
 ## Run the deep research agent
 
@@ -146,7 +146,7 @@ uv run --prerelease=allow agent.py
 
 We use W&B Weave to evaluate the full agent pipeline and analyze LLM-generated responses. The evaluation runs as a Flyte pipeline and uses an LLM-as-a-judge scorer to measure the quality of LLM-generated responses.
 
-{{< code file="/external/unionai-examples/tutorials-v2/deep_research_agent/weave_evals.py" lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/deep_research_agent/weave_evals.py" lang=python >}}
 
 You can run this pipeline locally as follows:
 
