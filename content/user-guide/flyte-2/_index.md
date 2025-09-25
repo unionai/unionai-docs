@@ -106,7 +106,6 @@ The new API is more intuitive, with fewer abstractions to learn and a focus on s
 | Fanout parallelism            | `flytekit.map`              | Python `for` loop with `asyncio.gather` |
 | Conditional execution         | `flytekit.conditional`      | Python `if-elif-else`                   |
 | Catching workflow failures    | `@workflow(on_failure=...)` | Python `try-except`                     |
-| Schedule workflows            | `LaunchPlan`                | `@env.task(on_schedule=...)`            |
 
 There is no `@workflow` decorator. Instead, "workflows" are authored through a pattern of tasks calling tasks.
 Tasks are defined within environments, which encapsulate the context and resources needed for execution.
