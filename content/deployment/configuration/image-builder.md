@@ -1,10 +1,10 @@
 ---
-title: ImageBuilder
+title: Image Builder
 weight: 2
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
-# ImageBuilder
+# Image Builder
 
 Union Image Builder supports the ability to build container images within the dataplane. Subsequently enabling the use of the `union` builder type within defined [ImageSpecs](../../user-guide/development-cycle/image-spec.md).
 
@@ -23,12 +23,12 @@ By default, image builder is disabled.
 
 ## Configuration
 
-Image Builder is configured directly through halm values.
+Image Builder is configured directly through helm values.
 
 ```yaml
 imageBuilder:
 
-  # Enable image builder
+  # Enable Image Builder
   enabled: true
 
   # -- The config map build-image container task attempts to reference.
