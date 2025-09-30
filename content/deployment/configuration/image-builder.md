@@ -15,15 +15,15 @@ image_spec = union.ImageSpec(
 )
 ```
 
-By default, image builder is disabled.
+> By default, Image Builder is disabled.
 
 ## Requirements
 
-* Union requires that a `production` domain exists.
+* Union requires that a `production` domain exists. The image building process runs in the `system` project by default.
 
 ## Configuration
 
-Image Builder is configured directly through helm values.
+Image Builder is configured directly through Helm values.
 
 ```yaml
 imageBuilder:
