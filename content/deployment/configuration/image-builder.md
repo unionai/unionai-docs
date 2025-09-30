@@ -5,7 +5,6 @@ variants: -flyte -serverless -byoc +selfmanaged
 ---
 
 # Image Builder
-# Image Builder
 
 Union Image Builder supports the ability to build container images within the dataplane. Subsequently enabling the use of the `union` builder type within defined [ImageSpecs](../../user-guide/development-cycle/image-spec.md).
 
