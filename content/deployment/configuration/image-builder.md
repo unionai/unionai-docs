@@ -204,9 +204,11 @@ By default, Union is designed to use Azure [Workload Identity Federation](https:
 
 ### Private registries
 
-#### GHCR
+Follow guidance in this section to integrate Image Builder with private registries:
 
-1. Encode the auth token for your registry in `base64` format:
+#### Github Container Registry
+
+1. Encode the token for your registry in `base64` format:
 
 ```bash
 echo -n "your-username:your-token" | base64
