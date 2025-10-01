@@ -15,6 +15,7 @@ This is the command line interface for Flyte.
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
+| `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `action` | [`get`](#flyte-get-action)  |
 | `io` | [`get`](#flyte-get-io)  |
@@ -27,12 +28,14 @@ This is the command line interface for Flyte.
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret)  |
-| `delete` | [`secret`](#flyte-delete-secret)  |
+| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task)  |
+| `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | [`run`](#flyte-run) | - |
+| `update` | [`trigger`](#flyte-update-trigger)  |
+| [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
 
@@ -182,6 +185,30 @@ $ flyte create secret my_secret --type image_pull
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+#### flyte create trigger
+
+Create a new trigger for a task. The task name and trigger name are required.
+
+Example:
+
+```bash
+$ flyte create trigger my_task my_trigger --schedule "0 0 * * *"
+```
+
+This will create a trigger that runs every day at midnight.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--schedule` | `text` |  | Cron schedule for the trigger. Defaults to every minute. |
+| `--description` | `text` | `` | Description of the trigger. |
+| `--auto-activate` | `boolean` | `True` | Whether the trigger should not be automatically activated. Defaults to True. |
+| `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to 'trigger_time'. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 ### flyte delete
 
 Remove resources from a Flyte deployment.
@@ -189,6 +216,18 @@ Remove resources from a Flyte deployment.
 #### flyte delete secret
 
 Delete a secret. The name of the secret is required.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte delete trigger
+
+Delete a trigger. The name of the trigger is required.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -213,6 +252,7 @@ This command will create or update environments in the Flyte system.
 | {{< multiline >}}`--dry-run`
 `--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--root-dir` | `text` |  | Override the root source directory, helpful when working with monorepos. |
 | {{< multiline >}}`--recursive`
 `-r`{{< /multiline >}} | `boolean` | `False` | Recursively deploy all environments in the current directory |
 | `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
@@ -360,6 +400,8 @@ If you want to see the actions for a run, use `get action <run_name>`.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
+| `--in-phase` | `choice` |  | Filter runs by their status. |
+| `--only-mine` | `boolean` | `False` | Show only runs created by the current user (you). |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -387,6 +429,19 @@ Currently, both `name` and `version` are required to get a specific task.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of tasks to fetch. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get trigger
+
+Get a list of all triggers, or details of a specific trigger by name.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of triggers to fetch. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -455,7 +510,39 @@ flyte run hello.py my_task --help
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
+| `--root-dir` | `text` |  | Override the root source directory, helpful when working with monorepos. |
 | `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
 | {{< multiline >}}`--follow`
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
+| `--image` | `text` |  | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte update
+
+Update various flyte entities.
+
+#### flyte update trigger
+
+Update a trigger.
+
+
+Example usage:
+
+```bash
+flyte update trigger <trigger_name> <task_name> --activate | --deactivate
+[--project <project_name> --domain <domain_name>]
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--activate`
+`--deactivate`{{< /multiline >}} | `boolean` |  | Activate or deactivate the trigger. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte whoami
+
+Display the current user information.
