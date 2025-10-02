@@ -6,11 +6,11 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # DataFrames
 
-By default, return values in Python are materialized - meaning the actual data is downloaded and stored. This applies to simple types like integers, as well as more complex types like DataFrames.
+By default, return values in Python are materialized - meaning the actual data is downloaded and loaded into memory. This applies to simple types like integers, as well as more complex types like DataFrames.
 
-To avoid having large datasets get downloaded into memory, Flyte V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe): a thin, uniform wrapper type for dataframe-style objects that allows you to pass a reference to the data, rather than the fully materialized contents.
+To avoid downloading large datasets into memory, Flyte V2 exposes [`flyte.io.dataframe`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe): a thin, uniform wrapper type for DataFrame-style objects that allows you to pass a reference to the data, rather than the fully materialized contents.
 
-The `flyte.io.dataframe` type provides serialization support for common engines like `pandas`, `polars`, `pyarrow`, `dask`, etc. 
+The `flyte.io.DataFrame` type provides serialization support for common engines like `pandas`, `polars`, `pyarrow`, `dask`, etc.; enabling you to move data between different DataFrame backends. 
 
 ## Constructing a flyte.io.DataFrame
 
@@ -21,11 +21,11 @@ pd_df = pd.DataFrame(BASIC_EMPLOYEE_DATA)
 fdf = flyte.io.DataFrame.from_df(pd_df)
 ```
 
-## How to declare DataFrame inputs and outputs
+## Declaring DataFrame inputs and outputs
 
-- To declare a task that returns a native pandas DataFrame, you can use `pd.DataFrame` directly in the signature: the SDK will treat the return as a dataframe-type output and upload it at task completion.
+- To declare a task that returns a native pandas DataFrame, you can use `pd.DataFrame` directly in the signature, the SDK will treat the return as a DataFrame-type output and upload it at task completion.
 
-- To use the unified `flyte.io.DataFrame` wrapper (recommended when you want to be explicit about the dataframe type and storage format), use an `Annotated` type where the second argument encodes format or other lightweight hints.
+- To use the unified `flyte.io.DataFrame` wrapper (recommended when you want to be explicit about the DataFrame type and storage format), use an `Annotated` type where the second argument encodes format or other lightweight hints.
 
 ## Example
 
@@ -82,7 +82,7 @@ from typing import Annotated
 img = flyte.Image.from_debian_base()
 img = img.with_pip_packages("pandas", "pyarrow")
 
-env =flyte.TaskEnvironment(
+env = flyte.TaskEnvironment(
     name="hello_dataframes",
     image=img,
     resources=flyte.Resources(cpu="1", memory="2Gi"),
@@ -148,7 +148,7 @@ async def create_raw_dataframe() -> pd.DataFrame:
     return df
 
 @env.task
-async def create_flyte_dataframe() -> Annotated [flyte.io.DataFrame, "csv"]:
+async def create_flyte_dataframe() -> Annotated[flyte.io.DataFrame, "csv"]:
     """Creates a Flyte DataFrame with additional employee data."""
     pd_df = pd.DataFrame(ADDL_EMPLOYEE_DATA)
     return flyte.io.DataFrame.from_df(pd_df)
