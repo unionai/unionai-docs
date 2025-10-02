@@ -11,44 +11,109 @@ To set up your data plane on Azure, you must allow {{< key product_name >}} to p
 ## Selecting Azure tenant and subscription
 
 - Select the tenant ID for your organization. Refer to [Microsoft Entra ID service page](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview) from the Azure portal.
-- We highly recommend creating a new subscription for {{< key product_name >}}-specific services. This helps isolate service quotas and Azure costs from your other Azure resources.
+- We highly recommend creating a new subscription for {{< key product_name >}}-specific services. This helps isolate permissions, service quotas, and costs for {{< key product_name >}} managed Azure resources.
   - Ensure the subscription is tied to an active billing account.
 - Provide the Tenant and Subscription ID to {{< key product_name >}}.
 
 ## Create a Microsoft Entra Application Registration
 
-{{< key product_name >}} uses [Microsoft Entra for AKS authentication and Kubernetes RBAC for authorization](https://learn.microsoft.com/en-us/azure/aks/azure-ad-rbac?tabs=portal). This step involves
+{{< key product_name >}} requires permissions to manage Azure and Microsoft Entra resources to create a dataplane. This step involves
 creating a {{< key product_name >}} specific App and granting it sufficient permission to manage the dataplane.
+
+### Create a Microsoft Entra ID Application for {{< key product_name >}} Access
+
+{{< key product_name >}} manages Azure resources through a [Microsoft Entra ID Application](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) via [Workload Identity Federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp).
 
 1. Navigate to the [Application Registrations](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade/quickStartType~/null/sourceType/Microsoft_AAD_IAM) page.
 2. Create a new registration.
 3. Create a new application. The name is your choice, but we recommend `union`. Leave it at the "Single Tenant" account type and do not add any registration URIs.
-4. Select "API Permissions" from the application details page after creating it.
-5. Select "Add a permission".
-6. Select "Microsoft Graph" from the "Microsofts APIs" tab.
-7. Select "Application permissions".
-8. Add the following permissions:
-
-- Application.ReadWrite.All
-- Group.ReadWrite.All
-
-9. Navigate to your target [Azure Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
-10. Within the Subscription page select Access Control (IAM). Select Add Role Assignment and add the following roles:
+4. Navigate to your target [Azure Subscription](https://portal.azure.com/#view/Microsoft_Azure_Billing/SubscriptionsBladeV2).
+5. Within the Subscription page select Access Control (IAM). Select Add Role Assignment and add the following roles scoped against the subscription:
 
 - Contributor
 - Role Based Access Control Administrator
 
-11. Provide the Application Client ID to {{< key product_name >}}.
+6. Provide the Application Client ID to {{< key product_name >}}.
+7. Go the application registration page for the app you created.
+8. Select "Certificates & secrets."
+9. Select the "Federated Credentials" tab, then select "Add credential", and choose "Other issuer".
+10. Set "Issuer" to `https://cognito-identity.amazonaws.com`
+11. Set "Subject identifier" to `us-east-2:6f9a6050-887a-c4cc-0625-120a4805bc34`
+12. "Name" is your choice, but we recommend `union-access`
+13. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
 
-## Create workload identity federation credentials for {{< key product_name >}}
+### Create Microsoft Entra ID Applications for {{< key product_name >}} cost allocation
 
-1. Go the application registration page for the app you created.
-2. Select "Certificates & secrets."
-3. Select the "Federated Credentials" tab, then select "Add credential", and choose "Other issuer".
-4. Set "Issuer" to `https://cognito-identity.amazonaws.com`
-5. Set "Subject identifier" to `us-east-2:6f9a6050-887a-c4cc-0625-120a4805bc34`
-6. "Name" is your choice, but we recommend `union-access`
-7. Set "Audience" to `us-east-2:ad71bce5-161b-4430-85a5-7ea84a941e6a`
+{{< key product_name >}} requires new roles and applications to support Union's cost allocation feature.
+This can be done by providing the `union` application additional permissions or you can choose to create the roles and applications yourself.
+
+#### Union managed cost allocation roles
+
+- Assign `User Access Administrator` role to the `union` application against the subscription. This enables {{< key product_name >}} role creation.
+- Assign `Application Administrator` role to the `union` application within Microsoft Entra ID. This allows Union to create applications.
+
+#### Create cost allocation roles and applications manually
+
+{{< key product_name >}} requires a role and service principal for the internal OpenCost subsystem. Additionally, a Microsoft Entra Application is required to generate HMAC keys for the ClickHouse subsystem.
+
+```shell
+# Create OpenCost role to retrieve pricing data
+# Name and subscription can be changed as necessary
+az role definition create --role-definition '{
+  "Name": "UnionOpenCostRole",
+  "Description": "Role used by OpenCost pod",
+  "Actions": [
+    "Microsoft.Compute/virtualMachines/vmSizes/read",
+    "Microsoft.Resources/subscriptions/locations/read",
+    "Microsoft.Resources/providers/read",
+    "Microsoft.ContainerService/containerServices/read",
+    "Microsoft.Commerce/RateCard/read"
+  ],
+  "NotActions": [],
+  "AssignableScopes": [
+    "/subscriptions/YOUR_SUBSCRIPTION_ID"
+  ]
+}'
+
+# Create OpenCost App to allow access to the API
+# This creates:
+# - Application registration
+# - Service principal
+# - Client secret
+# - Role assignment (Role created above)
+#
+# Name can change as necessary
+az ad sp create-for-rbac \
+  --name "UnionOpenCost" \
+  --role "UnionOpenCostRole" \
+  --scopes "/subscriptions/YOUR_SUBSCRIPTION_ID" \
+  --years 2
+
+# Create Clickhouse Azure Application Registration and Service Principal for Clickhouse
+#
+# Name can be changed as necessary
+export APP_NAME="clickhouse-backups-app"
+az ad app create --display-name $APP_NAME
+APP_ID=$(az ad app list --display-name $APP_NAME --query "[0].appId" -o tsv)
+APP_OBJECT_ID=$(az ad app list --display-name "$APP_NAME" --query "[0].id" -o tsv)
+az ad sp create --id $APP_ID
+
+# After the Dataplane is initially provisioned,
+# {{< key product_name >}} will provide parameters to create federated-credentials
+az ad app federated-credential create \
+  --id $APP_OBJECT_ID \
+  --parameters "{
+    \"name\": \"$FEDERATED_CRED_NAME\",
+    \"issuer\": \"$UNION_CLUSTER_OIDC_ISSUER_URL\",
+    \"subject\": \"system:serviceaccount:$YOUR_UNION_ORG:clickhouse\",
+    \"description\": \"Trust between AKS and Azure AD App\",
+    \"audiences\": [\"api://AzureADTokenExchange\"]
+  }"
+
+SP_OBJECT_ID=$(az ad sp show --id $APP_ID --query "id" -o tsv)
+```
+
+Share the output of `az ad sp create-for-rbac` and `$SP_OBJECT_ID` to {{< key product_name >}}.
 
 ## (Recommended) Create a Microsoft Entra group for cluster administration
 
