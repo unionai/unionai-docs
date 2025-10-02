@@ -1,18 +1,14 @@
 ---
 title: Files and directories
-weight: 80
+weight: 90
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Files and directories
 
-<!-- TODO:
-Add DataFrames fully in this page as well, or create own page for them.
--->
-
 Flyte provides the [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiofile) and
 [`flyte.io.Dir`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and directories, respectively.
-Together with [`flyte.io.DataFrame`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodataframe) they constitute the *offloaded data types*.
+Together with [`flyte.io.DataFrame`](./dataframes) they constitute the *offloaded data types* - unlike [materialized types](./dataclasses-and-structures) like dataclasses, these pass references rather than full data content.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
 The actual data is stored in the internal blob store of your Union/Flyte instance.
@@ -109,10 +105,9 @@ async def create_and_check_dir():
 
 
 if __name__ == "__main__":
-    flyte.init_from_config("./config.yaml")
+    flyte.init_from_config()
     run = flyte.run(create_and_check_dir)
     print(run.name)
     print(run.url)
     run.wait(run)
 ```
-
