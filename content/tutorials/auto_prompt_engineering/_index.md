@@ -8,7 +8,7 @@ sidebar_expanded: true
 # Automatic prompt engineering
 
 > [!NOTE]
-> Code available [here](https://github.com/unionai/unionai-examples/tree/main/tutorials-v2/auto_prompt_engineering).
+> Code available [here](https://github.com/unionai/unionai-examples/tree/main/v2/tutorials/auto_prompt_engineering).
 
 When building with LLMs and agents, the first prompt almost never works. We usually need several iterations before results are useful. Doing this manually is slow, inconsistent, and hard to reproduce.
 
@@ -28,7 +28,7 @@ In this tutorial, we'll build an automated prompt engineering pipeline with Flyt
 
 First, let's configure our task environment.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=env lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=env lang=python >}}
 
 We need an API key to call GPT-4.1 (our optimization model). Add it as a Flyte secret:
 
@@ -48,7 +48,7 @@ For this tutorial, we use a small geometric shapes dataset. To keep it portable,
 
 If you already have prompts and outputs in Google Sheets, simply export them as CSV with two columns: `input` and `target`.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=data_prep lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=data_prep lang=python >}}
 
 This approach works with any dataset. You can swap in your own with no extra dependencies.
 
@@ -61,17 +61,17 @@ We use two models:
 
 First, we capture all model parameters in a dataclass:
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=model_config lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=model_config lang=python >}}
 
 Then we define a Flyte `trace` to call the model. Unlike a task, a trace runs within the same runtime as the parent process. Since the model is hosted externally, this keeps the call lightweight but still observable.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=call_model lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=call_model lang=python >}}
 
 {{< variant byoc selfmanaged >}}
 
 You can also host your own models on Union. For example, we deploy <code>gpt-oss-20b</code> using vLLM.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/gpt_oss.py" lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/gpt_oss.py" lang=python >}}
 
 <p>We use an <code>A10G</code> GPU instance, and with streaming, you can load model weights directly into GPU memory instead of downloading the weights to disk first, then loading to GPU memory.</p>
 
@@ -98,7 +98,7 @@ When using a hosted model, just provide its <code>hosted_model_uri</code> in <co
 
 Finally, we wrap the trace in a task to call both target and review models:
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=generate_and_review lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=generate_and_review lang=python >}}
 
 ## Evaluate prompts
 
@@ -108,7 +108,7 @@ Each prompt in the dataset is tested in parallel, but we use a semaphore to cont
 
 The function measures accuracy as the fraction of responses that match the ground truth. Flyte streams these results to the UI, so you can watch evaluations happen live.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=evaluate_prompt lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=evaluate_prompt lang=python >}}
 
 ## Optimize prompts
 
@@ -121,7 +121,7 @@ The model then proposes a new prompt.
 
 We start with a _baseline_ evaluation using the user-provided prompt. Then for each iteration, the optimizer suggests a new prompt, which we evaluate and log. We continue until we hit the iteration limit.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=prompt_optimizer lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=prompt_optimizer lang=python >}}
 
 At the end, we return the best prompt and its accuracy. The report shows how accuracy improves over time and which prompts were tested.
 
@@ -136,13 +136,13 @@ The entrypoint task wires everything together:
 - Calls the optimizer.
 - Evaluates both baseline and best prompts on the test set.
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=auto_prompt_engineering lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=auto_prompt_engineering lang=python >}}
 
 ## Run it
 
 We add a simple main block so we can run the workflow as a script:
 
-{{< code file="/external/unionai-examples/tutorials-v2/auto_prompt_engineering/optimizer.py" fragment=main lang=python >}}
+{{< code file="/external/unionai-examples/v2/tutorials/auto_prompt_engineering/optimizer.py" fragment=main lang=python >}}
 
 Run it with:
 
