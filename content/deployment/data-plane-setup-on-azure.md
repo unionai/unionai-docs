@@ -88,32 +88,9 @@ az ad sp create-for-rbac \
   --role "UnionOpenCostRole" \
   --scopes "/subscriptions/YOUR_SUBSCRIPTION_ID" \
   --years 2
-
-# Create Clickhouse Azure Application Registration and Service Principal for Clickhouse
-#
-# Name can be changed as necessary
-export APP_NAME="clickhouse-backups-app"
-az ad app create --display-name $APP_NAME
-APP_ID=$(az ad app list --display-name $APP_NAME --query "[0].appId" -o tsv)
-APP_OBJECT_ID=$(az ad app list --display-name "$APP_NAME" --query "[0].id" -o tsv)
-az ad sp create --id $APP_ID
-
-# After the Dataplane is initially provisioned,
-# {{< key product_name >}} will provide parameters to create federated-credentials
-az ad app federated-credential create \
-  --id $APP_OBJECT_ID \
-  --parameters "{
-    \"name\": \"$FEDERATED_CRED_NAME\",
-    \"issuer\": \"$UNION_CLUSTER_OIDC_ISSUER_URL\",
-    \"subject\": \"system:serviceaccount:$YOUR_UNION_ORG:clickhouse\",
-    \"description\": \"Trust between AKS and Azure AD App\",
-    \"audiences\": [\"api://AzureADTokenExchange\"]
-  }"
-
-SP_OBJECT_ID=$(az ad sp show --id $APP_ID --query "id" -o tsv)
 ```
 
-Share the output of `az ad sp create-for-rbac` and `$SP_OBJECT_ID` to {{< key product_name >}}.
+Share the output of the above `az ad sp create-for-rbac` command with {{< key product_name >}}.
 
 ## (Recommended) Create a Microsoft Entra group for cluster administration
 
