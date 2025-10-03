@@ -54,7 +54,7 @@ This can be done by providing the `union` application additional permissions or 
 
 #### Create cost allocation roles and applications manually
 
-{{< key product_name >}} requires a role and service principal for the internal OpenCost subsystem. Additionally, a Microsoft Entra Application is required to generate HMAC keys for the ClickHouse subsystem.
+{{< key product_name >}} requires a role and service principal for the internal OpenCost subsystem.
 
 ```shell
 # Create OpenCost role to retrieve pricing data
