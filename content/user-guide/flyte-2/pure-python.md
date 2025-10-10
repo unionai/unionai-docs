@@ -49,6 +49,7 @@ def main(data: list[float]) -> float:
 {{< tab "Flyte 2" >}}
 {{< markdown >}}
 
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_2.py" lang="python" >}}
 ```python
 import flyte
 
