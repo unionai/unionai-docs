@@ -26,19 +26,7 @@ This deploys your code to the configured Union/Flyte instance and runs it immedi
 
 To run your workflow remotely from Python, use [`flyte.run()`](../../api-reference/flyte-sdk/packages/flyte#run) by itself, like this:
 
-```python
-# hello.py
-
-... # Your sub-task definitions here
-
-@env.task
-def main(name: str):
-     ... # The main task logic here
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    flyte.run(main, name="Ada")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/getting-started/running/run_from_python.py" lang="python" >}}
 
 This is the approach we use throughout our examples in this guide.
 We execute the script, thus invoking the `flyte.run()` function, with the top-level task as a parameter.
@@ -58,19 +46,7 @@ flyte run --local hello.py main
 
 To run your workflow locally from Python, you chain [`flyte.with_runcontext()`](../../api-reference/flyte-sdk/packages/flyte#with_runcontext) with [`flyte.run()`](../../api-reference/flyte-sdk/packages/flyte#run) and specify the run `mode="local"`, like this:
 
-```python
-# hello.py
-
-... # Your other task definitions here
-
-@env.task
-def main(name: str):
-     ... # The main task logic here
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    flyte.with_runcontext(mode="local").run(main)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/getting-started/running/run_local_from_python.py" lang="python" >}}
 
 Running your workflow locally is useful for testing and debugging, as it allows you to run your code without deploying it to a remote instance.
 It also lets you quickly iterate on your code without the overhead of deployment.
