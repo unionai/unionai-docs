@@ -47,50 +47,13 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 
 Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
-```python
-import flyte
-
-# Currently required to enable resuable containers
-reusable_image = flyte.Image.from_debian_base().with_pip_packages("unionai-reuse>=0.1.3")
-
-env = flyte.TaskEnvironment(
-    name="reusable-env",
-    resources=flyte.Resources(memory="1Gi", cpu="500m"),
-    reusable=flyte.ReusePolicy(
-        replicas=2,                           # Create 2 container instances
-        concurrency=1,                        # Process 1 task per container at a time
-        scaledown_ttl=timedelta(minutes=10),  # Individual containers shut down after 5 minutes of inactivity
-        idle_ttl=timedelta(hours=1)           # Entire environment shuts down after 30 minutes of no tasks
-    ),
-    image=reusable_image  # Use the container image augmented with the unionai-reuse library.
-)
-
-@env.task
-async def compute_task(x: int) -> int:
-    return x * x
-
-@env.task
-async def main() -> list[int]:
-    # These tasks will reuse containers from the pool
-    results = []
-    for i in range(10):
-        result = await compute_task(i)
-        results.append(result)
-    return results
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="first-example" lang="python" >}}
 
 ## `ReusePolicy` parameters
 
 The `ReusePolicy` class controls how containers are managed in a reusable environment:
 
-```python
-flyte.ReusePolicy(
-    replicas: typing.Union[int, typing.Tuple[int, int]],
-    concurrency: int,
-    scaledown_ttl: typing.Union[int, datetime.timedelta],
-    idle_ttl: typing.Union[int, datetime.timedelta]
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="policy-params" lang="python" >}}
 
 ### `replicas`: Container pool size
 
@@ -104,23 +67,7 @@ Controls the number of container instances in the reusable pool:
   - If demand drops again, container 4 will be also shutdown after another period of `scaledown_ttl` expires.
 - **Resource impact**: Each replica consumes the full resources defined in `TaskEnvironment.resources`.
 
-```python
-# Fixed pool size
-reuse_policy = flyte.ReusePolicy(
-    replicas=3,
-    concurrency=1,
-    scaledown_ttl=timedelta(minutes=10),
-    idle_ttl=timedelta(hours=1)
-)
-
-# Auto-scaling pool
-reuse_policy = flyte.ReusePolicy(
-    replicas=(1, 10),
-    concurrency=1,
-    scaledown_ttl=timedelta(minutes=10),
-    idle_ttl=timedelta(hours=1)
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="replicas" lang="python" >}}
 
 ### `concurrency`: Tasks per container
 
@@ -130,23 +77,7 @@ Controls how many tasks can execute simultaneously within a single container:
 - **Higher concurrency**: `concurrency=5` allows 5 tasks to run simultaneously in each container.
 - **Total capacity**: `replicas × concurrency` = maximum concurrent tasks across the entire pool.
 
-```python
-# Sequential processing (default)
-sequential_policy = flyte.ReusePolicy(
-    replicas=2,
-    concurrency=1,  # One task per container
-    scaledown_ttl=timedelta(minutes=10),
-    idle_ttl=timedelta(hours=1)
-)
-
-# Concurrent processing
-concurrent_policy = flyte.ReusePolicy(
-    replicas=2,
-    concurrency=5,  # 5 tasks per container = 10 total concurrent tasks
-    scaledown_ttl=timedelta(minutes=10),
-    idle_ttl=timedelta(hours=1)
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="concurrency" lang="python" >}}
 
 ### `idle_ttl` vs `scaledown_ttl`: Container lifecycle
 
@@ -166,33 +97,13 @@ These parameters work together to manage container lifecycle at different levels
 - **Purpose**: Prevents resource waste from inactive containers.
 - **Typical values**: 5-30 minutes for most workloads.
 
-
-```python
-from datetime import timedelta
-
-lifecycle_policy = flyte.ReusePolicy(
-    replicas=3,
-    concurrency=2,
-    scaledown_ttl=timedelta(minutes=10),  # Individual containers shut down after 10 minutes of inactivity
-    idle_ttl=timedelta(hours=1)         # Entire environment shuts down after 1 hour of no tasks
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="ttl" lang="python" >}}
 
 ## Understanding parameter relationships
 
 The four `ReusePolicy` parameters work together to control different aspects of container management:
 
-```python
-reuse_policy = flyte.ReusePolicy(
-    replicas=4,                           # Infrastructure: How many containers?
-    concurrency=3,                        # Throughput: How many tasks per container?
-    scaledown_ttl=timedelta(minutes=10),  # Individual: When do idle containers shut down?
-    idle_ttl=timedelta(hours=1)           # Environment: When does the whole pool shut down?
-)
-# Total capacity: 4 × 3 = 12 concurrent tasks
-# Individual containers shut down after 10 minutes of inactivity
-# Entire environment shuts down after 1 hour of no tasks
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="param-relationship" lang="python" >}}
 
 ### Key relationships
 
@@ -201,7 +112,6 @@ reuse_policy = flyte.ReusePolicy(
 - **Cost efficiency**: Higher `concurrency` reduces container overhead, more `replicas` provides better isolation
 - **Lifecycle management**:  `scaledown_ttl` manages individual containers, `idle_ttl` manages the environment
 
-
 ## Simple example
 
 Here is a simple, but complete, example of reuse with concurrency
@@ -209,24 +119,24 @@ Here is a simple, but complete, example of reuse with concurrency
 First, import the needed modules, set upf logging:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse-concurrency.py" fragment="import" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse_concurrency.py" fragment="import" lang="python" >}}
 {{< markdown >}}
 
 Next, we set up the reusable task environment. Note that, currently, the image used for a reusable environment requires an extra package to be installed:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse-concurrency.py" fragment="env" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse_concurrency.py" fragment="env" lang="python" >}}
 {{< markdown >}}
 
 Now, we define the `reuse_concurrency` task (the main driver task of the workflow) and the `noop` task that will be executed multiple times reusing the same containers:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse-concurrency.py" fragment="tasks" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse_concurrency.py" fragment="tasks" lang="python" >}}
 {{< markdown >}}
 
 Finally, we deploy and run the workflow programmatically, so all you have to do is execute `python reuse_concurrency.py` to see it in action:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse-concurrency.py" fragment="run" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse_concurrency.py" fragment="run" lang="python" >}}
 
 {{< /variant >}}

@@ -83,20 +83,7 @@ To use a literal string secret, specify it in the `TaskEnvironment` along with t
 You can then access it using `os.getenv()` in your task code.
 For example:
 
-```python
-env = flyte.TaskEnvironment(
-    name="my_task_env",
-    secrets=[
-        flyte.Secret(key="MY_SECRET_KEY", as_env_var="MY_SECRET_ENV_VAR"),
-    ]
-)
-
-@env.task
-def t1():
-    my_secret_value = os.getenv("MY_SECRET_ENV_VAR")
-    # Do something with the secret
-    ...
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="literal" lang="python" >}}
 
 ## Using a file secret
 
@@ -106,22 +93,7 @@ The file will be mounted at `/etc/flyte/secrets/<SECRET_KEY>`.
 
 For example:
 
-
-```python
-env = flyte.TaskEnvironment(
-    name="my_task_env",
-    secrets=[
-        flyte.Secret(key="MY_SECRET_KEY", mount="/etc/flyte/secrets"),
-    ]
-)
-
-@env.task
-def t1():
-    with open("/etc/flyte/secrets/MY_SECRET_KEY", "r") as f:
-        my_secret_file_content = f.read()
-        # Do something with the secret file content
-    ...
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/secrets/secrets.py" fragment="file" lang="python" >}}
 
 > [!NOTE]
 > Currently, to access a file secret you must specify a `mount` parameter value of `"/etc/flyte/secrets"`.

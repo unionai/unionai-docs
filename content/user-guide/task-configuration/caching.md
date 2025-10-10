@@ -160,10 +160,7 @@ By setting the cache parameter in the `task.override` method, you can override t
 
 You can also force cache invalidation for a specific run:
 
-```python
-# Disable caching for this specific execution
-run = flyte.with_runcontext(overwrite_cache=True).run(my_cached_task, data="test")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/cache_control.py" fragment="cache-control" lang="python" >}}
 
 ## Project and domain cache isolation
 
@@ -175,11 +172,7 @@ Caches are automatically isolated by:
 
 When running locally, Flyte maintains a local cache:
 
-```python
-# Local execution uses ~/.flyte/local-cache/
-flyte.init()  # Local mode
-result = flyte.run(my_cached_task, data="test")
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/local_cache.py" fragment="local-cache" lang="python" >}}
 
 Local cache behavior:
 - Stored in `~/.flyte/local-cache/` directory

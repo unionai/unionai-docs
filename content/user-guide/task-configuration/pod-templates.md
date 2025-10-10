@@ -25,74 +25,13 @@ The `pod_template` parameter accepts either a string reference or a `PodTemplate
 
 Here's a complete example showing how to use pod templates with a `TaskEnvironment`:
 
-```python
-# /// script
-# requires-python = "==3.12"
-# dependencies = [
-#    "kubernetes",
-# ]
-# ///
-
-from kubernetes.client import (
-    V1Container,
-    V1EnvVar,
-    V1LocalObjectReference,
-    V1PodSpec,
-)
-
-import flyte
-
-# Create a custom pod template
-pod_template = flyte.PodTemplate(
-    primary_container_name="primary",           # Name of the main container
-    labels={"lKeyA": "lValA"},                 # Custom pod labels
-    annotations={"aKeyA": "aValA"},            # Custom pod annotations
-    pod_spec=V1PodSpec(                        # Kubernetes pod specification
-        containers=[
-            V1Container(
-                name="primary",
-                env=[V1EnvVar(name="hello", value="world")]  # Environment variables
-            )
-        ],
-        image_pull_secrets=[                   # Access to private registries
-            V1LocalObjectReference(name="regcred-test")
-        ],
-    ),
-)
-
-# Use the pod template in a TaskEnvironment
-env = flyte.TaskEnvironment(
-    name="hello_world",
-    pod_template=pod_template,                 # Apply the custom pod template
-    image=flyte.Image.from_uv_script(__file__, name="flyte", pre=True),
-)
-
-@env.task
-async def say_hello(data: str) -> str:
-    return f"Hello {data}"
-
-@env.task
-async def say_hello_nested(data: str = "default string") -> str:
-    return await say_hello(data=data)
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    result = flyte.run(say_hello_nested, data="hello world")
-    print(result.url)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/pod-templates/pod_template.py" fragment="pod-template" lang="python" >}}
 
 ## PodTemplate components
 
 The `PodTemplate` class provides the following parameters for customizing your pod configuration:
 
-```python
-pod_template = flyte.PodTemplate(
-    primary_container_name: str = "primary",
-    pod_spec: Optional[V1PodSpec] = None,
-    labels: Optional[Dict[str, str]] = None,
-    annotations: Optional[Dict[str, str]] = None
-)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/pod-templates/pod_template_params.py" fragment="pod-template-params" lang="python" >}}
 
 ### Parameters
 

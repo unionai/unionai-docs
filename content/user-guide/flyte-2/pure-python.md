@@ -19,6 +19,7 @@ Flyte 2 introduces a new way of writing workflows that is based on pure Python, 
 {{< tabs "whats-new-dsl-to-python" >}}
 {{< tab "Flyte 1" >}}
 {{< markdown >}}
+
 ```python
 import flytekit
 
