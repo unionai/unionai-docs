@@ -33,18 +33,10 @@ domain-specific language (DSL).
 
 {{< tabs "flyte-2-python" >}}
 {{< tab "Sync Python" >}}
-{{< markdown >}}
-
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/sync.py" lang="python" >}}
-
-{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Async Python" >}}
-{{< markdown >}}
-
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async.py" lang="python" >}}
-
-{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -108,7 +100,9 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 
 Schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/reusable.py" lang="python" >}}
+{{< markdown >}}
 
 Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 can scale to handle even the most demanding
 workflows.

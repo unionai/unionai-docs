@@ -96,21 +96,11 @@ The new `flyte.map` can be used either in synchronous or asynchronous contexts, 
 
 {{< tabs "whats-new-map-function" >}}
 {{< tab "Sync Map" >}}
-{{< markdown >}}
-
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/sync_map.py" lang="python" >}}
-
-{{< /markdown >}}
 {{< /tab >}}
-
 {{< tab "Async Map" >}}
-{{< markdown >}}
-
 {{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async_map.py" lang="python" >}}
-
-{{< /markdown >}}
 {{< /tab >}}
-
 {{< /tabs >}}
 
 The `flyte.map` function provides:
