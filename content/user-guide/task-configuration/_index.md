@@ -191,7 +191,9 @@ When a `TaskEnvironment` has `reusable` set, then `resources`, `env_vars`, and `
 explicit `reusable="off"` in the same `task.override()` invocation.
 For example:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable.py" lang="python" >}}
+{{< markdown >}}
 
 Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 

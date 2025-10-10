@@ -38,6 +38,7 @@ Flyte 2 supports three main cache behaviors:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto" lang="python" >}}
 
+
 With `behavior="auto"`, the cache version is automatically generated based on the function's source code.
 If you change the function implementation, the cache is automatically invalidated.
 
@@ -80,6 +81,7 @@ You can also use the direct string shorthand:
 ### Ignoring specific inputs
 
 Sometimes you want to cache based on some inputs but not others:
+
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="ignored" lang="python" >}}
 

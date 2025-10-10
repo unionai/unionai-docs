@@ -47,13 +47,17 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 
 Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="first-example" lang="python" >}}
+{{< markdown >}}
 
 ## `ReusePolicy` parameters
 
 The `ReusePolicy` class controls how containers are managed in a reusable environment:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="policy-params" lang="python" >}}
+{{< markdown >}}
 
 ### `replicas`: Container pool size
 
@@ -67,7 +71,9 @@ Controls the number of container instances in the reusable pool:
   - If demand drops again, container 4 will be also shutdown after another period of `scaledown_ttl` expires.
 - **Resource impact**: Each replica consumes the full resources defined in `TaskEnvironment.resources`.
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="replicas" lang="python" >}}
+{{< markdown >}}
 
 ### `concurrency`: Tasks per container
 
@@ -77,7 +83,9 @@ Controls how many tasks can execute simultaneously within a single container:
 - **Higher concurrency**: `concurrency=5` allows 5 tasks to run simultaneously in each container.
 - **Total capacity**: `replicas × concurrency` = maximum concurrent tasks across the entire pool.
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="concurrency" lang="python" >}}
+{{< markdown >}}
 
 ### `idle_ttl` vs `scaledown_ttl`: Container lifecycle
 
@@ -97,13 +105,17 @@ These parameters work together to manage container lifecycle at different levels
 - **Purpose**: Prevents resource waste from inactive containers.
 - **Typical values**: 5-30 minutes for most workloads.
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="ttl" lang="python" >}}
+{{< markdown >}}
 
 ## Understanding parameter relationships
 
 The four `ReusePolicy` parameters work together to control different aspects of container management:
 
+{{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="param-relationship" lang="python" >}}
+{{< markdown >}}
 
 ### Key relationships
 
@@ -138,5 +150,4 @@ Finally, we deploy and run the workflow programmatically, so all you have to do 
 
 {{< /markdown >}}
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse_concurrency.py" fragment="run" lang="python" >}}
-
 {{< /variant >}}
