@@ -38,27 +38,7 @@ Check (test) if implicit flush is performed at the end of the task execution.
 
 ## A simple example
 
-```python
-import flyte
-import flyte.report
-
-env = flyte.TaskEnvironment(name="reports_example")
-
-
-@env.task(report=True)
-async def task1():
-    await flyte.report.replace.aio("<p>The quick, brown fox jumps over a lazy dog.</p>")
-    tab2 = flyte.report.get_tab("Tab 2")
-    tab2.log.aio("<p>The quick, brown dog jumps over a lazy fox.</p>")
-    await flyte.report.flush.aio()
-
-
-if __name__ == "__main__":
-    flyte.init_from_config("config.yaml")
-    r = flyte.run(task1)
-    print(r.name)
-    print(r.url)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/simple.py" fragment="conditional" lang="python" >}}
 
 Here we define a task `task1` that logs some HTML content to the default tab and creates a new tab named "Tab 2" where it logs additional HTML content.
 The `flush` method is called to send the report to the backend.
@@ -85,7 +65,7 @@ def get_html_content():
 """
 ```
 
-We exclude it here due to length. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-programming/reports/globe_visualization.py).
+(We exclude it here due to length. You can find it in the [source file](https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-programming/reports/globe_visualization.py)).
 
 Finally, we run the workflow:
 
@@ -120,8 +100,8 @@ DATA_PROCESSING_DASHBOARD_HTML = """
 """
 ```
 
-We exclude it here due to length. You can find it in the [source file](
-https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-programming/reports/streaming_reports.py).
+(We exclude it here due to length. You can find it in the [source file](
+https://github.com/unionai/unionai-examples/blob/main/v2/user-guide/task-programming/reports/streaming_reports.py)).
 
 Finally, we define the task that renders the report (`data_processing_dashboard`), the driver task of the workflow (`main`), and the run logic:
 
