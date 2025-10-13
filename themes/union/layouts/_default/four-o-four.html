@@ -3,25 +3,43 @@
 {{- $variantFullName := index .Site.Params.Key.product_full_name $variant -}}
 {{- $extraContent := readFile (printf "404.inc.html~%s" $variant) -}}
 <script>
+    function sanitizeText(text) {
+        if (!text) return '';
+        // Create a temporary element to escape HTML
+        const temp = document.createElement('div');
+        temp.textContent = text;
+        return temp.innerHTML;
+    }
+
+    function validateVariant(variant) {
+        // Only allow alphanumeric characters and hyphens
+        return variant && /^[a-zA-Z0-9-]+$/.test(variant) ? variant : null;
+    }
+
     // Extract query string parameters
     let url = new URL(window.location);
-    const source = url.searchParams.get('source');
-    const pVariant = url.searchParams.get('variant');
-    const origin = url.searchParams.get('origin');
-    const targetVariant = url.searchParams.get('targetVariant');
-    const targetHomeUrl = '/docs/' + targetVariant;
+    // const source = url.searchParams.get('source');
+    // const pVariant = url.searchParams.get('variant');
+    // const origin = url.searchParams.get('origin');
+    // const targetVariant = url.searchParams.get('targetVariant');
+    // const targetHomeUrl = '/docs/' + targetVariant;
+    const source = sanitizeText(url.searchParams.get('source'));
+    const pVariant = validateVariant(url.searchParams.get('variant'));
+    const origin = sanitizeText(url.searchParams.get('origin'));
+    const targetVariant = validateVariant(url.searchParams.get('targetVariant'));
+    const targetHomeUrl = targetVariant ? `/docs/${encodeURIComponent(targetVariant)}` : '/docs/';
 
     document.addEventListener('DOMContentLoaded', function() {
-        if (pVariant !== null) {
+        if (pVariant !== null && targetVariant !== null) {
             const title = document.getElementById('title');
-            title.innerHTML = source;
+            title.textContent = source;
 
             const buttonContainer = document.getElementById('button-container');
 
             const button = document.createElement('sl-button');
             console.log(button);
             button.href = targetHomeUrl;
-            button.innerHTML = `
+            button.textContent = `
                 Go to ${targetVariant.toLocaleUpperCase()} home
             `;
             buttonContainer.appendChild(button);
