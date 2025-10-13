@@ -38,7 +38,7 @@ Check (test) if implicit flush is performed at the end of the task execution.
 
 ## A simple example
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/simple.py" fragment="conditional" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/reports/simple.py" lang="python" >}}
 
 Here we define a task `task1` that logs some HTML content to the default tab and creates a new tab named "Tab 2" where it logs additional HTML content.
 The `flush` method is called to send the report to the backend.
