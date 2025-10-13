@@ -59,29 +59,7 @@ Python's asynchronous programming capabilities have evolved significantly:
 
 Consider this pattern for parallel data processing:
 
-```python
-import asyncio
-import flyte
-
-env = flyte.TaskEnvironment("data_pipeline")
-
-@env.task
-async def process_chunk(chunk_id: int, data: str) -> str:
-    # This could be any computational work - CPU or I/O bound
-    await asyncio.sleep(1)  # Simulating work
-    return f"Processed chunk {chunk_id}: {data}"
-
-@env.task
-async def parallel_pipeline(data_chunks: List[str]) -> List[str]:
-    # Create coroutines for all chunks
-    tasks = []
-    for i, chunk in enumerate(data_chunks):
-        tasks.append(process_chunk(i, chunk))
-
-    # Execute all chunks in parallel
-    results = await asyncio.gather(*tasks)
-    return results
-```
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async.py" lang="python" >}}
 
 In standard Python, this would provide concurrency benefits primarily for I/O-bound operations.
 In Flyte 2, the orchestrator schedules each `process_chunk` task on separate Kubernetes pods or configured plugins, achieving true parallelism for any type of work.
@@ -106,22 +84,7 @@ The Flyte platform handles the complex orchestration while you express paralleli
 
 Recognizing that many existing codebases use synchronous functions, Flyte 2 provides seamless backward compatibility:
 
-```python
-@env.task
-def legacy_computation(x: int) -> int:
-    # Existing synchronous function works unchanged
-    return x * x + 2 * x + 1
-
-@env.task
-async def modern_workflow(numbers: List[int]) -> List[int]:
-    # Call sync tasks from async context using .aio()
-    tasks = []
-    for num in numbers:
-        tasks.append(legacy_computation.aio(num))
-
-    results = await asyncio.gather(*tasks)
-    return results
-```
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/calling_sync_from_async.py" lang="python" >}}
 
 Under the hood, Flyte automatically "asyncifies" synchronous functions, wrapping them to participate seamlessly in the async execution model.
 You don't need to rewrite existing code—just leverage the `.aio()` method when calling sync tasks from async contexts.
@@ -133,37 +96,11 @@ The new `flyte.map` can be used either in synchronous or asynchronous contexts, 
 
 {{< tabs "whats-new-map-function" >}}
 {{< tab "Sync Map" >}}
-{{< markdown >}}
-```python
-@env.task
-def sync_map_example(n: int) -> List[str]:
-    # Synchronous version for easier migration
-    results = []
-    for result in flyte.map(process_item, range(n)):
-        if isinstance(result, Exception):
-            raise result
-        results.append(result)
-    return results
-```
-{{< /markdown >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/sync_map.py" lang="python" >}}
 {{< /tab >}}
-
 {{< tab "Async Map" >}}
-{{< markdown >}}
-```python
-@env.task
-async def async_map_example(n: int) -> List[str]:
-    # Async version using flyte.map
-    results = []
-    async for result in flyte.map.aio(process_item, range(n)):
-        if isinstance(result, Exception):
-            raise result
-        results.append(result)
-    return results
-```
-{{< /markdown >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async/async_map.py" lang="python" >}}
 {{< /tab >}}
-
 {{< /tabs >}}
 
 The `flyte.map` function provides:

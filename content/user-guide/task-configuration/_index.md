@@ -14,13 +14,7 @@ Flyte manages the spinning up of the containers, the execution of the code, and 
 
 In **Getting started** we demonstrated the simplest possible case, a `TaskEnvironment` with only a `name` parameter, and an `env.task` decorator, with no parameters:
 
-```python
-env = flyte.TaskEnvironment(name="hello_world")
-
-@env.task
-async def say_hello(data: str, lt: List[int]) -> str:
-    ...
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_env.py" lang="python" >}}
 
 > [!NOTE]
 > Notice how the `TaskEnvironment` is assigned to the variable `env` and then that variable is
@@ -50,52 +44,7 @@ For shared parameters, the more specific level will override the more general on
 
 Here is an example of how these levels work together, showing each level with all available parameters:
 
-```python
-import flyte
-
-# Level 1: TaskEnvironment - Base configuration
-env = flyte.TaskEnvironment(
-    name="data_processing_env",
-    image=flyte.Image.from_debian_base(),
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-    env_vars={"MY_VAR": "value"},
-    secrets=flyte.Secret(key="my_api_key", as_env_var="MY_API_KEY"),
-    cache="disable",
-    pod_template=my_pod_template_spec,
-    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=300),
-    depends_on=[another_env],
-    description="My task environment",
-    plugin_config=my_plugin_config
-)
-
-# Level 2: Decorator - Override some environment settings
-@env.task(
-    short_name="process",
-    secrets=flyte.Secret(key="my_api_key_2", as_env_var="MY_API_KEY"),
-    cache="auto"
-    pod_template=my_pod_template_spec_2,
-    report=True,
-    max_inline_io_bytes=100 * 1024
-    retries=3,
-    timeout=60
-    docs="This task processes data and generates a report."
-)
-async def process_data(data_path: str) -> str:
-    return f"Processed {data_path}"
-
-@env.task
-async def main() -> str:
-    result = await process_data.override(
-        resources=flyte.Resources(cpu=4, memory="2Gi"),
-        env_vars={"MY_VAR": "new_value"},
-        secrets=flyte.Secret(key="my_api_key_3", as_env_var="MY_API_KEY"),
-        cache="enable",
-        max_inline_io_bytes=100 * 1024,
-        retries=3,
-        timeout=60
-    )("input.csv")
-    return result
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/config_levels.py" lang="python" >}}
 
 ### Parameter interaction
 
@@ -136,13 +85,7 @@ The full set of parameters available for configuring a task environment, task de
   The fully qualified name is always the `TaskEnvironment` name (the one above) followed by a period and then the task function name (the name of the Python function being decorated).
   For example:
 
-  ```python
-  env = flyte.TaskEnvironment(name="my_env")
-
-  @env.task
-  async def my_task(data: str) -> str:
-      ...
-  ```
+  {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_env_name.py" lang="python" >}}
 
   Here, the name of the TaskEnvironment is `my_env` and the fully qualified name of the task is `my_env.my_task`.
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
@@ -248,22 +191,9 @@ When a `TaskEnvironment` has `reusable` set, then `resources`, `env_vars`, and `
 explicit `reusable="off"` in the same `task.override()` invocation.
 For example:
 
-```python
-env = flyte.TaskEnvironment(
-    name="my_env",
-    resources=Resources(cpu=1),
-    reusable=flyte.ReusePolicy(replicas=2, idle_ttl=300)
-)
-
-@env.task
-async def my_task(data: str) -> str:
-    ...
-
-@env.task
-async def main_workflow() -> str:
-    # `my_task.override(resources=Resources(cpu=4))` will fail. Instead use:
-    result = await my_task.override(reusable="off", resources=Resources(cpu=4))
-```
+{{< /markdown >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable.py" lang="python" >}}
+{{< markdown >}}
 
 Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
