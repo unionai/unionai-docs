@@ -156,7 +156,7 @@ To install `flytectl` on Windows, use `curl` , or download the binary manually.
 
 **curl**
 
-To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command:
+To use `curl`, in a Linux shell (such as [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)), set `BINDIR` to the install location (it defaults to `./bin`) and run the following command(note that [jq](https://jqlang.org/) needs to be installed to run this script):
 
 ```shell
 $ curl -sL https://ctl.flyte.org/install | sudo bash -s -- -b /usr/local/bin
