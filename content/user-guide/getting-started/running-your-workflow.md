@@ -83,7 +83,8 @@ When task and workflow code is registered:
 To run the workflow on {{< key product_name >}} in the cloud, use the [`--remote` option](../../api-reference/union-cli#union-cli-commands) and the
 
 ```shell
-$ {{< key cli >}} run --remote --project my-project --domain development hello_world.py hello_world_wf
+$ export FLYTE_IMAGE_REGISTRY=localhost:30000
+$ {{< key cli >}} run --remote --env FLYTE_IMAGE_REGISTRY=${FLYTE_IMAGE_REGISTRY} --project my-project --domain development hello_world.py hello_world_wf
 ```
 
 The output displays a URL that links to the workflow execution in the UI:
