@@ -44,7 +44,7 @@ For shared parameters, the more specific level will override the more general on
 
 Here is an example of how these levels work together, showing each level with all available parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="config_levels" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="config-levels" lang="python" >}}
 
 ### Parameter interaction
 

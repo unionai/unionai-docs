@@ -31,7 +31,14 @@ Here's a complete example showing how to use pod templates with a `TaskEnvironme
 
 The `PodTemplate` class provides the following parameters for customizing your pod configuration:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/pod-templates/pod_template_params.py" fragment="pod-template-params" lang="python" >}}
+```python
+pod_template = flyte.PodTemplate(
+    primary_container_name: str = "primary",
+    pod_spec: Optional[V1PodSpec] = None,
+    labels: Optional[Dict[str, str]] = None,
+    annotations: Optional[Dict[str, str]] = None
+)
+```
 
 ### Parameters
 
