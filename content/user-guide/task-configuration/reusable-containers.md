@@ -48,16 +48,21 @@ When you configure a `TaskEnvironment` with a `ReusePolicy`, the system does the
 Enable container reuse by adding a `ReusePolicy` to your `TaskEnvironment`:
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="first-example" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse.py" lang="python" >}}
 {{< markdown >}}
 
 ## `ReusePolicy` parameters
 
 The `ReusePolicy` class controls how containers are managed in a reusable environment:
 
-{{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="policy-params" lang="python" >}}
-{{< markdown >}}
+```python
+flyte.ReusePolicy(
+    replicas: typing.Union[int, typing.Tuple[int, int]],
+    concurrency: int,
+    scaledown_ttl: typing.Union[int, datetime.timedelta],
+    idle_ttl: typing.Union[int, datetime.timedelta]
+)
+```
 
 ### `replicas`: Container pool size
 
@@ -71,9 +76,23 @@ Controls the number of container instances in the reusable pool:
   - If demand drops again, container 4 will be also shutdown after another period of `scaledown_ttl` expires.
 - **Resource impact**: Each replica consumes the full resources defined in `TaskEnvironment.resources`.
 
-{{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="replicas" lang="python" >}}
-{{< markdown >}}
+```python
+# Fixed pool size
+fixed_pool_policy = flyte.ReusePolicy(
+    replicas=3,
+    concurrency=1,
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
+)
+
+# Auto-scaling pool
+auto_scaling_policy = flyte.ReusePolicy(
+    replicas=(1, 10),
+    concurrency=1,
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
+)
+```
 
 ### `concurrency`: Tasks per container
 
@@ -83,9 +102,23 @@ Controls how many tasks can execute simultaneously within a single container:
 - **Higher concurrency**: `concurrency=5` allows 5 tasks to run simultaneously in each container.
 - **Total capacity**: `replicas × concurrency` = maximum concurrent tasks across the entire pool.
 
-{{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="concurrency" lang="python" >}}
-{{< markdown >}}
+```python
+# Sequential processing (default)
+sequential_policy = flyte.ReusePolicy(
+    replicas=2,
+    concurrency=1,  # One task per container
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
+)
+
+# Concurrent processing
+concurrent_policy = flyte.ReusePolicy(
+    replicas=2,
+    concurrency=5,  # 5 tasks per container = 10 total concurrent tasks
+    scaledown_ttl=timedelta(minutes=10),
+    idle_ttl=timedelta(hours=1)
+)
+```
 
 ### `idle_ttl` vs `scaledown_ttl`: Container lifecycle
 
@@ -105,17 +138,32 @@ These parameters work together to manage container lifecycle at different levels
 - **Purpose**: Prevents resource waste from inactive containers.
 - **Typical values**: 5-30 minutes for most workloads.
 
-{{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="ttl" lang="python" >}}
-{{< markdown >}}
+```python
+from datetime import timedelta
+
+lifecycle_policy = flyte.ReusePolicy(
+    replicas=3,
+    concurrency=2,
+    scaledown_ttl=timedelta(minutes=10),  # Individual containers shut down after 10 minutes of inactivity
+    idle_ttl=timedelta(hours=1)         # Entire environment shuts down after 1 hour of no tasks
+)
+```
 
 ## Understanding parameter relationships
 
 The four `ReusePolicy` parameters work together to control different aspects of container management:
 
-{{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="param-relationship" lang="python" >}}
-{{< markdown >}}
+```python
+reuse_policy = flyte.ReusePolicy(
+    replicas=4,                           # Infrastructure: How many containers?
+    concurrency=3,                        # Throughput: How many tasks per container?
+    scaledown_ttl=timedelta(minutes=10),  # Individual: When do idle containers shut down?
+    idle_ttl=timedelta(hours=1)           # Environment: When does the whole pool shut down?
+)
+# Total capacity: 4 × 3 = 12 concurrent tasks
+# Individual containers shut down after 10 minutes of inactivity
+# Entire environment shuts down after 1 hour of no tasks
+```
 
 ### Key relationships
 
