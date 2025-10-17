@@ -18,11 +18,6 @@
 
     // Extract query string parameters
     let url = new URL(window.location);
-    // const source = url.searchParams.get('source');
-    // const pVariant = url.searchParams.get('variant');
-    // const origin = url.searchParams.get('origin');
-    // const targetVariant = url.searchParams.get('targetVariant');
-    // const targetHomeUrl = '/docs/' + targetVariant;
     const source = sanitizeText(url.searchParams.get('source'));
     const pVariant = validateVariant(url.searchParams.get('variant'));
     const origin = sanitizeText(url.searchParams.get('origin'));
