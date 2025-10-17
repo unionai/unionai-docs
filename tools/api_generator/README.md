@@ -51,11 +51,9 @@ $ make -f Makefile.<type>.<name>
 
 There is a predefined `Makefile` for each API/CLI:
 
-* `Makefile.api.flytekit`
 * `Makefile.api.flyte-sdk`
 * `Makefile.api.plugins`
-* `Makefile.api.flyte`
-* `Makefile.cli.flytectl`
+* `Makefile.cli.flyte`
 
 ## How it works
 
