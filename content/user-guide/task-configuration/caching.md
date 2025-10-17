@@ -38,7 +38,6 @@ Flyte 2 supports three main cache behaviors:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/caching.py" fragment="auto" lang="python" >}}
 
-
 With `behavior="auto"`, the cache version is automatically generated based on the function's source code.
 If you change the function implementation, the cache is automatically invalidated.
 
@@ -162,7 +161,10 @@ By setting the cache parameter in the `task.override` method, you can override t
 
 You can also force cache invalidation for a specific run:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/cache_control.py" fragment="cache-control" lang="python" >}}
+```python
+# Disable caching for this specific execution
+run = flyte.with_runcontext(overwrite_cache=True).run(my_cached_task, data="test")
+```
 
 ## Project and domain cache isolation
 
@@ -174,7 +176,11 @@ Caches are automatically isolated by:
 
 When running locally, Flyte maintains a local cache:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/caching/local_cache.py" fragment="local-cache" lang="python" >}}
+```python
+# Local execution uses ~/.flyte/local-cache/
+flyte.init()  # Local mode
+result = flyte.run(my_cached_task, data="test")
+```
 
 Local cache behavior:
 - Stored in `~/.flyte/local-cache/` directory

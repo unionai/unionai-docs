@@ -9,13 +9,18 @@ variants: +flyte +serverless +byoc +selfmanaged
 The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) is used to specify a container image.
 Every task defined using that `TaskEnvironment` will run in a container based on that image.
 
-If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/unionai-oss/flyte:latest`](https://github.com/orgs/unionai-oss/packages/container/package/)).
+If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}`](https://github.com/orgs/flyteorg/packages/container/package/flyte)).
 
 ## Specifying your own image directly
 
 You can directly reference an image by URL in the `image` parameter, like this:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/direct_image.py" fragment="direct-image" lang="python" >}}
+```python
+env = flyte.TaskEnvironment(
+    name="my_task_env",
+    image="docker.io/myorg/myimage:mytag"
+)
+```
 
 This works well if you have a pre-built image available in a public registry like Docker Hub or in a private registry that your Union/Flyte instance can access.
 
@@ -63,7 +68,7 @@ This image is itself based on the official Python Docker image (specifically `py
 Starting there, you can layer additional features onto your image.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" fragment="from-debian-base" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_debian_base.py" lang="python" >}}
 
 > [!NOTE]
 > The `registry` parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
@@ -75,7 +80,7 @@ Another common technique for defining an image is to use [`uv` inline script met
 The `from_uv_script` method starts with the default Flyte image and adds the dependencies specified in the `uv` metadata.
 For example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" fragment="from-uv-script" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/container-images/from_uv_script.py" lang="python" >}}
 
 The advantage of this approach is that the dependencies used when running a script locally and when running it on the Flyte/Union backend are always the same (as long as you use `uv` to run your scripts locally).
 This means you can develop and test your scripts in a consistent environment, reducing the chances of encountering issues when deploying to the backend.

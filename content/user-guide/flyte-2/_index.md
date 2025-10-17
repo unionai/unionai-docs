@@ -23,7 +23,7 @@ Flyte 2 and Union 2 represent a fundamental shift in how workflows are written a
 {{< /variant >}}
 
 {{< note title="Ready to get started?" >}}
-Ready to get started? Go the [Getting started](../getting-started.md) guide to install Flyte 2 and run your first task.
+Ready to get started? Go the [Getting started](../getting-started) guide to install Flyte 2 and run your first task.
 {{< /note >}}
 
 ## Pure Python execution
@@ -33,10 +33,10 @@ domain-specific language (DSL).
 
 {{< tabs "flyte-2-python" >}}
 {{< tab "Sync Python" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/sync.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/sync_example.py" fragment="all" lang="python" >}}
 {{< /tab >}}
 {{< tab "Async Python" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/async_example.py" fragment="all" lang="python" >}}
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -69,7 +69,7 @@ Tasks are defined within environments, which encapsulate the context and resourc
 Flyte tasks support caching via `@env.task(cache=...)`, but tracing with `@flyte.trace` augments task level-caching
 even further enabling reproducibility and recovery at the sub-task function level.
 
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/trace.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/trace.py" fragment="all" lang="python" >}}
 
 Here the `call_llm` function is called in the same container as `main` that serves as an automated checkpoint with full
 observability in the UI. If the task run fails, the workflow is able to recover and replay from where it left off.
@@ -85,7 +85,7 @@ Flyte 2 provides full management of the workflow lifecycle through a standardize
 
 You can also fetch and run remote (previously deployed) tasks within the course of a running workflow.
 
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/remote.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/remote.py" fragment="all" lang="python" >}}
 
 ## Native Notebook support
 
@@ -101,7 +101,7 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 Schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/reusable.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="first-example" lang="python" >}}
 {{< markdown >}}
 
 Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 can scale to handle even the most demanding

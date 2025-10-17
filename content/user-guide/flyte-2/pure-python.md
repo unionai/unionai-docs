@@ -25,7 +25,7 @@ import flytekit
 
 image = flytekit.ImageSpec(
     name="hello-world-image",
-    packages=[...],
+    packages=["requests"],
 )
 
 @flytekit.task(container_image=image)
@@ -48,7 +48,7 @@ def main(data: list[float]) -> float:
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Flyte 2" >}}
-{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_2.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/flyte-2/pure-python/flyte_2.py" fragment="all" lang="python" >}}
 {{< /tab >}}
 {{< /tabs >}}
 
