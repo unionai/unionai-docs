@@ -65,9 +65,6 @@ Flyte Spark employs the Spark on K8s operator in conjunction with a bespoke
 This plugin serves as a backend component and necessitates activation within your deployment.
 To enable it, follow the instructions outlined in [Kubernetes Plugins](../../../deployment/flyte-plugins/kubernetes-plugins).
 
-
-{ref}`deployment-plugin-setup-k8s` section.
-
 > [!NOTE]
 > Refer to [this guide](https://github.com/GoogleCloudPlatform/spark-on-k8s-operator/blob/master/docs/gcp.md) to use GCP instead of AWS.
 
