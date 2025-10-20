@@ -101,7 +101,7 @@ Author and run workflows and fetch workflow metadata (I/O and logs) directly fro
 Schedule tasks in milliseconds with reusable containers, which massively increases the throughput of containerized tasks.
 
 {{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/example.py" fragment="first-example" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable-containers/reuse.py" fragment="env" lang="python" >}}
 {{< markdown >}}
 
 Coupled with multi-cluster, multi-cloud, and multi-region support, Flyte 2 can scale to handle even the most demanding
