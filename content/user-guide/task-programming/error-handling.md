@@ -18,8 +18,7 @@ Let's look at an example:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/error-handling/error_handling.py" lang="python" >}}
 <!-- TODO:
-Ketan Umare
-OMG We need a better example. This is something stupid i wrote.
+Create better example.
 -->
 
 In this code, we do the following:
