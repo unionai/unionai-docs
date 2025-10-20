@@ -27,7 +27,7 @@ This plugin has been rigorously tested at scale, successfully managing more than
 However, please bear in mind that this functionality requires a significant Kubernetes capacity and meticulous configuration.
 
 For optimal results, we highly recommend adopting the
-[multi-cluster mode](https://docs.flyte.org/en/latest/deployment/configuration/performance.html#multi-cluster-mode).
+[multi-cluster mode](../../../deployment/flyte-configuration/performance#multi-cluster-mode).
 Additionally, consider enabling {ref}`resource quotas <deployment-configuration-general>`
 for Spark Jobs that are both large in scale and executed frequently.
 
