@@ -40,7 +40,7 @@ Flyte supports auto-serialization for the following DataFrame types:
 
 Alternatively you can also create a `flyte.io.DataFrame` object directly from a native object with the `from_df` method:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="from_df" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="from-df" lang="python" >}}
 
 The `flyte.io.DataFrame` class creates a thin wrapper around objects of any standard DataFrame type. It serves as a generic "any dataframe type" (a concept that Python itself does not cxurrently offer).
 
