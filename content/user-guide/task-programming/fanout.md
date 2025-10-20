@@ -26,26 +26,38 @@ The most common way to implement this is using the [`asyncio.gather`](https://do
 
 In Flyte terminology, each individual task execution is called an "action"—this represents a specific invocation of a task with particular inputs. When you call a task multiple times in a loop, you create multiple actions.
 
-## Settinng up our example
+## Example
 
 We start by importing our required packages, defining our Flyte environment, and creating a simple task that fetches user data from a mock API.
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="setup" lang="python" >}}
 
-## Parallel execution
+### Parallel execution
 
 Next we implement the most common fanout pattern, which is to collect task invocations and execute them in parallel using `asyncio.gather()`:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="parallel" lang="python" >}}
 
-When this pattern is used in a normal Python environment, the tasks would execute concurrently, but not necessrily in parallel.
-
-However, **in Flyte, the orchestrator acts as the event loop**, running each task action in parallel in its own container.
-
-This means that when you use `asyncio.gather()` in a Flyte task, each task invocation is scheduled to run simultaneously across the cluster, allowing for massive scalability.
-
-## Running the example
+### Running the example
 
 To actually run our example, we create a main guard that intializes Flyte and runs our main driver task:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/fanout/fanout.py" fragment="run" lang="python" >}}
+
+## How Flyte handles concurrency and parallelism
+
+In the example we use a standard `asyncio.gather()` pattern.
+When this pattern is used in a normal Python environment, the tasks would execute **concurrently** (cooperatively sharing a single thread through the event loop), but not in true **parallel** (multiple CPU cores simultaneously).
+
+However, **Flyte transforms this concurrency model into true parallelism**. When you use `asyncio.gather()` in a Flyte task:
+
+1. **Flyte acts as a distributed event loop**: Instead of scheduling coroutines on a single machine, Flyte schedules each task action to run in its own container across the cluster
+2. **Concurrent becomes parallel**: What would be cooperative multitasking in regular Python becomes true parallel execution across multiple machines
+3. **Native Python patterns**: You use familiar `asyncio` patterns, but Flyte automatically distributes the work
+
+This means that when you write:
+```python
+results = await asyncio.gather(fetch_data(1), fetch_data(2), fetch_data(3))
+```
+
+Instead of three coroutines sharing one CPU, you get three separate containers running simultaneously, each with their own CPU, memory, and resources. Flyte seamlessly bridges the gap between Python's concurrency model and distributed parallel computing, allowing for massive scalability while maintaining the familiar async/await programming model.
