@@ -15,7 +15,7 @@ to migrate your Airflow DAGs to Flyte with minimal effort.
 
 In addition to migration capabilities, Flyte users can seamlessly integrate Airflow tasks into their workflows, leveraging the ecosystem of Airflow operators and sensors.
 By combining the robust Airflow ecosystem with Flyte's capabilities such as scalability, versioning, and reproducibility, users can run more complex data and machine learning workflows with ease.
-For more information, see the [Airflow connector documentation](https://docs.flyte.org/en/latest/flytesnacks/examples/airflow_connector/index.html).
+For more information, see the [Airflow connector documentation](../../integrations/connectors/airflow-connector).
 
 Even if you're already using Flyte and have no intentions of migrating from Airflow,
 you can still incorporate Airflow tasks into your Flyte workflows. For instance, Airflow offers support

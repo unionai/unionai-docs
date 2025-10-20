@@ -40,9 +40,9 @@ os.environ["FLYTE_AWS_SECRET_ACCESS_KEY"] = os.environ["AWS_SECRET_ACCESS_KEY"] 
 
 ## 01. Register the code
 
-The actual workflow code is auto-documented and rendered using sphinx [here](https://docs.flyte.org/projects/cookbook/en/latest/auto/case_studies/feature_engineering/feast_integration/index.html). We've used [Flytekit](https://docs.flyte.org/projects/flytekit/en/latest/) to express the pipeline in pure Python.
+The actual workflow code is auto-documented and rendered using sphinx [here](../feast-integration/). We've used [Flytekit](../../../api-reference/flytekit-sdk) to express the pipeline in pure Python.
 
-You can use [FlyteConsole](https://github.com/flyteorg/flyteconsole) to launch, monitor, and introspect Flyte executions. However here, let's use [flytekit.remote](https://docs.flyte.org/projects/flytekit/en/latest/design/control_plane.html) to interact with the Flyte backend.
+You can use [FlyteConsole](https://github.com/flyteorg/flyteconsole) to launch, monitor, and introspect Flyte executions. However here, let's use [flytekit.remote](../../../api-reference/flytekit-sdk/packages/flytekit.remote.remote) to interact with the Flyte backend.
 
 
 ```python

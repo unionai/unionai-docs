@@ -24,7 +24,7 @@ instead.
 
 > [!NOTE] No need for ingress or port forwarding
 > The {{< key product_name >}} interactive tasks feature is an adaptation of the open-source
-> [FlyteInteractive plugin](https://docs.flyte.org/en/latest/flytesnacks/examples/flyteinteractive_plugin/index.html).
+> [FlyteInteractive plugin](../../integrations/external-service-backend-plugins/flyteinteractive-plugin).
 > It improves on the open-source version by removing the need for ingress
 > configuration or port forwarding, providing a more seamless debugging
 > experience.

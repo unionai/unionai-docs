@@ -23,7 +23,7 @@ They enable:
 - Simplifying access to data
 - Auto generated CLI and launch UI
 
-For a more comprehensive understanding of how Flyte manages data, refer to [Understand How Flyte Handles Data](https://docs.flyte.org/en/latest/user_guide/concepts/main_concepts/data_management.html#divedeep-data-management).
+For a more comprehensive understanding of how Flyte manages data, refer to [Understand How Flyte Handles Data](../../architecture/data-handling).
 
 ## Mapping Python to Flyte types
 
