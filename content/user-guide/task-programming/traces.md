@@ -89,41 +89,28 @@ Lets use better typing for all of these examples, we have the opportunity to mak
 6. **Failure Recovery**: If workflow fails, resume from last successful checkpoint
 7. **Task Completion**: Final result is cached for future identical inputs
 
+<!--
+Clarify what actually happens on error vs success with traces
 
 ## Error Handling and Observability
 
 Traces capture comprehensive execution information for debugging and monitoring:
 
-<!-- TODO:
-Add more examples of error handling with traces
--->
+
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/error_handling.py" fragment="all" lang="python" >}}
 
 **What traces capture:**
 - **Execution time**: Duration of each function call
 - **Inputs and outputs**: Function parameters and return values
-- **Errors**: Complete exception information when functions fail
+- **Checkpoints**: State that enables workflow resumption from successful executions
 - **Action IDs**: Unique identifiers for each execution
 
-## Best Practices
+**Error handling:**
+- Errors from traced functions are not recorded in checkpoints
+- Exceptions propagate to your task code for standard error handling
+- The error_handling example shows how to catch and handle these exceptions in your task
 
-### When to Use Traces
 
-Use `@flyte.trace` for:
-
-- **External API calls**: Track responses, errors, and performance
-- **Expensive computations**: Enable resumption for long-running operations
-- **Data processing steps**: Monitor transformation pipelines
-- **LLM interactions**: Track prompts, responses, and model performance
-- **Any operation that benefits from checkpointing**
-
-### Performance Considerations
-
-- **Minimal overhead**: Traces add negligible performance impact
-- **Efficient serialization**: Only occurs when checkpointing is enabled
-- **Streaming support**: Generator functions stream efficiently without buffering
-
-<!--
 TODO:
 Ketan Umare:
 we should show an example where tasks and traces can be used interchangeably
