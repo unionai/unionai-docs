@@ -32,7 +32,13 @@ Groups solve this by:
 Groups are declared using the [`flyte.group`](../../api-reference/flyte-sdk/packages/flyte#group) context manager.
 Any task invocations that occur within the `with flyte.group()` block are automatically associated with that group:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="simple" lang="python" >}}
+```python
+with flyte.group("my-group-name"):
+    # All task invocations here belong to "my-group-name"
+    result1 = await task_a(data)
+    result2 = await task_b(data)
+    result3 = await task_c(data)
+```
 
 The key points about groups:
 
@@ -75,38 +81,6 @@ Groups can be nested to create hierarchical organization:
 Groups can be used with conditional logic:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="conditional" lang="python" >}}
-
-## Best practices for groups
-
-1. **Meaningful names**: Use descriptive group names that indicate the purpose or phase
-
-   {{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="meaningful" lang="python" >}}
-
-2. **Logical boundaries**: Group related operations together, but don't make groups too large
-
-   {{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="logical" lang="python" >}}
-
-3. **Consistent patterns**: Use consistent naming conventions across your workflows
-
-   {{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="consistent" lang="python" >}}
-
-4. **Appropriate granularity**: Balance between too many small groups and too few large groups
-
-   {{< code file="/external/unionai-examples/v2/user-guide/task-programming/grouping-actions/grouping.py" fragment="granularity" lang="python" >}}
-
-5. **UI consideration**: Remember that groups are primarily for organization and visualization—they don't affect execution performance
-
-## When to use groups
-
-Groups are particularly valuable when you have:
-
-- **Multi-phase workflows**: Different stages that should be visually separated
-- **Large-scale parallel processing**: Hundreds or thousands of task invocations from [fanouts](fanout.md)
-- **Complex business logic**: Multiple related operations that form logical units
-- **Iterative processes**: Multiple rounds of similar operations
-- **A/B testing scenarios**: Multiple experimental conditions running in parallel
-- **Data pipelines**: ETL operations with distinct phases
-- **Machine learning workflows**: Data prep, training, validation, and deployment phases
 
 ## Key insights
 

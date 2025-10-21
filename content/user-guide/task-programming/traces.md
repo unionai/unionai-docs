@@ -7,36 +7,27 @@ variants: +flyte +serverless +byoc +selfmanaged
 # Traces
 
 The `@flyte.trace` decorator provides fine-grained observability and resumption capabilities for functions called within your Flyte workflows.
-Traces are primarily used on **helper functions** that tasks call to perform specific operations like API calls, data processing, or computations.
-Traces are particularly useful for [managing the challenges of non-deterministic behavior in workflows](../considerations#non-deterministic-behavior)), allowing you to track execution details and resume from failures.
+Traces are used on **helper functions** that tasks call to perform specific operations like API calls, data processing, or computations.
+Traces are particularly useful for [managing the challenges of non-deterministic behavior in workflows](../considerations#non-deterministic-behavior), allowing you to track execution details and resume from failures.
 
-## Tasks vs. traced functions
+## What are traced functions for?
 
-Flyte differentiates between tasks and traced functions:
+At the top level, Flyte workflows are composed of **tasks**. But it is also common practice to break down complex task logic into smaller, reusable functions by defining helper functions that tasks call to perform specific operations.
 
-- **Tasks** (`@env.task`): The orchestration layer that manages workflow execution, caching, and resources.
-- **Traced functions** (`@flyte.trace`) = Helper functions that perform specific operations and create checkpoints.
+Any helper functions defined or imported into the same file as a task definition are automatically uploaded to the Flyte environment alongside the task when it is deployed.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="tasks-vs-traced" lang="python" >}}
+At the task level, observability and resumption of failed executions is provided by caching, but what if you want these capabilities at a more granular level, for the individual operations that tasks perform?
 
-This division has the following benefits:
+This is where **traced functions** come in. By decorating helper functions with `@flyte.trace`, you enable:
+- **Detailed observability**: Track execution time, inputs/outputs, and errors for each function call.
+- **Fine-grained resumption**: If a workflow fails, resume from the last successful traced function instead of re-running the entire task.
+Each traced function is effectively a checkpoint within its task.
 
-- **Granular observability**: See exactly which helper functions succeed or fail
-- **Efficient resumption**: Skip successful operations when workflows resume after failures
-- **Clean architecture**: Tasks handle orchestration, traced functions handle execution
+Here is an example:
 
-## How traces work
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/task_vs_trace.py" fragment="all" lang="python" >}}
 
-### Context requirement
-
-Traces only function within task execution contexts. They either fail or do nothing when called outside tasks:
-
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="context" lang="python" >}}
-
-> [!NOTE]
-> Tracing of synchronous functions (within a task context) is coming soon.
-
-### What Gets Traced
+## What Gets Traced
 
 Traces capture detailed execution information:
 - **Execution time**: How long each function call takes.
@@ -45,24 +36,25 @@ Traces capture detailed execution information:
 
 ### Errors are not recorded
 
-Errors are not traced. Only successful executions are recorded.
-Any failure will bubble up and user code can retry it.
+Only successful trace executions are recorded in the checkpoint system. When a traced function fails, the exception propagates up to your task code where you can handle it with standard error handling patterns.
 
 ### Supported Function Types
 
 The trace decorator works with:
-- **Synchronous functions**: Regular Python functions **(Coming soon)**.
 - **Asynchronous functions**: Functions defined with `async def`.
 - **Generator functions**: Functions that `yield` values.
 - **Async generators**: Functions that `async yield` values.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="function-types" lang="python" >}}
+> [!NOTE]
+> Currently tracing only works for asynchronous functions. Tracing of synchronous functions is coming soon.
+
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/function_types.py" fragment="all" lang="python" >}}
 
 ## Task Orchestration Pattern
 
 The typical Flyte workflow follows this pattern:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="pattern" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/pattern.py" fragment="all" lang="python" >}}
 
 **Benefits of this pattern:**
 - If `search_web` succeeds but `summarize_content` fails, resumption skips the search step
@@ -85,7 +77,7 @@ Understanding how traces work with Flyte's other execution features:
 Lets use better typing for all of these examples, we have the opportunity to make this right for our users
 -->
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="caching-vs-checkpointing" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/caching_vs_checkpointing.py" fragment="all" lang="python" >}}
 
 ### Execution Flow
 
@@ -97,46 +89,28 @@ Lets use better typing for all of these examples, we have the opportunity to mak
 6. **Failure Recovery**: If workflow fails, resume from last successful checkpoint
 7. **Task Completion**: Final result is cached for future identical inputs
 
+<!--
+Clarify what actually happens on error vs success with traces
 
 ## Error Handling and Observability
 
 Traces capture comprehensive execution information for debugging and monitoring:
 
-<!-- TODO:
-Add more examples of error handling with traces
 
--->
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="error-handling" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/error_handling.py" fragment="all" lang="python" >}}
 
 **What traces capture:**
 - **Execution time**: Duration of each function call
 - **Inputs and outputs**: Function parameters and return values
-- **Errors**: Complete exception information when functions fail
+- **Checkpoints**: State that enables workflow resumption from successful executions
 - **Action IDs**: Unique identifiers for each execution
 
-## Best Practices
+**Error handling:**
+- Errors from traced functions are not recorded in checkpoints
+- Exceptions propagate to your task code for standard error handling
+- The error_handling example shows how to catch and handle these exceptions in your task
 
-### When to Use Traces
 
-Use `@flyte.trace` for:
-
-- **External API calls**: Track responses, errors, and performance
-- **Expensive computations**: Enable resumption for long-running operations
-- **Data processing steps**: Monitor transformation pipelines
-- **LLM interactions**: Track prompts, responses, and model performance
-- **Any operation that benefits from checkpointing**
-
-### Recommended Architecture
-
-{{< code file="/external/unionai-examples/v2/user-guide/task-programming/traces/traces.py" fragment="recommended" lang="python" >}}
-
-### Performance Considerations
-
-- **Minimal overhead**: Traces add negligible performance impact
-- **Efficient serialization**: Only occurs when checkpointing is enabled
-- **Streaming support**: Generator functions stream efficiently without buffering
-
-<!--
 TODO:
 Ketan Umare:
 we should show an example where tasks and traces can be used interchangeably

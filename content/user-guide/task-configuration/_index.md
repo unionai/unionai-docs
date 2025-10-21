@@ -12,9 +12,9 @@ As we saw in [**Getting started**](../getting-started), you can run any Python f
 This allows you to run your Python code in a distributed manner, with each function running in its own container.
 Flyte manages the spinning up of the containers, the execution of the code, and the passing of data between the tasks.
 
-In **Getting started** we demonstrated the simplest possible case, a `TaskEnvironment` with only a `name` parameter, and an `env.task` decorator, with no parameters:
+The simplest possible case is a `TaskEnvironment` with only a `name` parameter, and an `env.task` decorator, with no parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_env.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="simple" lang="python" >}}
 
 > [!NOTE]
 > Notice how the `TaskEnvironment` is assigned to the variable `env` and then that variable is
@@ -44,7 +44,7 @@ For shared parameters, the more specific level will override the more general on
 
 Here is an example of how these levels work together, showing each level with all available parameters:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/config_levels.py" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="config-levels" lang="python" >}}
 
 ### Parameter interaction
 
@@ -85,7 +85,7 @@ The full set of parameters available for configuring a task environment, task de
   The fully qualified name is always the `TaskEnvironment` name (the one above) followed by a period and then the task function name (the name of the Python function being decorated).
   For example:
 
-  {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_env_name.py" lang="python" >}}
+  {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/task_config.py" fragment="simple" lang="python" >}}
 
   Here, the name of the TaskEnvironment is `my_env` and the fully qualified name of the task is `my_env.my_task`.
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
@@ -189,11 +189,6 @@ See [Using pod templates](./pod-templates).
 
 When a `TaskEnvironment` has `reusable` set, then `resources`, `env_vars`, and `secrets` can only be overridden in `task.override()` if accompanied by an
 explicit `reusable="off"` in the same `task.override()` invocation.
-For example:
-
-{{< /markdown >}}
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/reusable.py" lang="python" >}}
-{{< markdown >}}
 
 Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
