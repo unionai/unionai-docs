@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,6 +32,7 @@ unknown error.
 | [`ModuleLoadError`](.././flyte.errors#flyteerrorsmoduleloaderror) | This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`NotInTaskContextError`](.././flyte.errors#flyteerrorsnotintaskcontexterror) | This error is raised when the user tries to access the task context outside of a task. |
 | [`OOMError`](.././flyte.errors#flyteerrorsoomerror) | This error is raised when the underlying task execution fails because of an out-of-memory error. |
+| [`OnlyAsyncIOSupportedError`](.././flyte.errors#flyteerrorsonlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
 | [`PrimaryContainerNotFoundError`](.././flyte.errors#flyteerrorsprimarycontainernotfounderror) | This error is raised when the primary container is not found. |
 | [`ReferenceTaskError`](.././flyte.errors#flyteerrorsreferencetaskerror) | This error is raised when the user tries to access a task that does not exist. |
 | [`RetriesExhaustedError`](.././flyte.errors#flyteerrorsretriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
@@ -297,6 +298,20 @@ class OOMError(
 | `code` | `str` |
 | `message` | `str` |
 | `worker` | `str \| None` |
+
+## flyte.errors.OnlyAsyncIOSupportedError
+
+This error is raised when the user tries to use sync IO in an async task.
+
+
+```python
+class OnlyAsyncIOSupportedError(
+    message: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `message` | `str` |
 
 ## flyte.errors.PrimaryContainerNotFoundError
 

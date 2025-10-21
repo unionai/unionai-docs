@@ -1,6 +1,6 @@
 ---
 title: flyte.git
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,7 +23,7 @@ layout: py_api
 ```python
 def config_from_root(
     path: pathlib._local.Path | str,
-) -> flyte.config._config.Config
+) -> flyte.config._config.Config | None
 ```
 Get the config file from the git root directory.
 

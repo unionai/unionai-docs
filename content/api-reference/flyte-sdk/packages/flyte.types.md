@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -63,8 +63,8 @@ It is always possible to bypass the type system and use the `FlytePickle` type t
 
 ```python
 def guess_interface(
-    interface: flyteidl.core.interface_pb2.TypedInterface,
-    default_inputs: typing.Optional[typing.Iterable[workflow.common_pb2.NamedParameter]],
+    interface: flyteidl2.core.interface_pb2.TypedInterface,
+    default_inputs: typing.Optional[typing.Iterable[flyteidl2.task.common_pb2.NamedParameter]],
 ) -> flyte.models.NativeInterface
 ```
 Returns the interface of the task with guessed types, as types may not be present in current env.
@@ -72,14 +72,14 @@ Returns the interface of the task with guessed types, as types may not be presen
 
 | Parameter | Type |
 |-|-|
-| `interface` | `flyteidl.core.interface_pb2.TypedInterface` |
-| `default_inputs` | `typing.Optional[typing.Iterable[workflow.common_pb2.NamedParameter]]` |
+| `interface` | `flyteidl2.core.interface_pb2.TypedInterface` |
+| `default_inputs` | `typing.Optional[typing.Iterable[flyteidl2.task.common_pb2.NamedParameter]]` |
 
 #### literal_string_repr()
 
 ```python
 def literal_string_repr(
-    lm: typing.Union[flyteidl.core.literals_pb2.Literal, workflow.run_definition_pb2.NamedLiteral, workflow.run_definition_pb2.Inputs, workflow.run_definition_pb2.Outputs, flyteidl.core.literals_pb2.LiteralMap, typing.Dict[str, flyteidl.core.literals_pb2.Literal]],
+    lm: typing.Union[flyteidl2.core.literals_pb2.Literal, flyteidl2.task.common_pb2.NamedLiteral, flyteidl2.task.common_pb2.Inputs, flyteidl2.task.common_pb2.Outputs, flyteidl2.core.literals_pb2.LiteralMap, typing.Dict[str, flyteidl2.core.literals_pb2.Literal]],
 ) -> typing.Dict[str, typing.Any]
 ```
 This method is used to convert a literal map to a string representation.
@@ -87,7 +87,7 @@ This method is used to convert a literal map to a string representation.
 
 | Parameter | Type |
 |-|-|
-| `lm` | `typing.Union[flyteidl.core.literals_pb2.Literal, workflow.run_definition_pb2.NamedLiteral, workflow.run_definition_pb2.Inputs, workflow.run_definition_pb2.Outputs, flyteidl.core.literals_pb2.LiteralMap, typing.Dict[str, flyteidl.core.literals_pb2.Literal]]` |
+| `lm` | `typing.Union[flyteidl2.core.literals_pb2.Literal, flyteidl2.task.common_pb2.NamedLiteral, flyteidl2.task.common_pb2.Inputs, flyteidl2.task.common_pb2.Outputs, flyteidl2.core.literals_pb2.LiteralMap, typing.Dict[str, flyteidl2.core.literals_pb2.Literal]]` |
 
 ## flyte.types.FlytePickle
 

@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,8 +17,10 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Class | Description |
 |-|-|
 | [`Cache`](.././flyte#flytecache) | Cache configuration for a task. |
+| [`Cron`](.././flyte#flytecron) | This class defines a Cron automation that can be associated with a Trigger in Flyte. |
 | [`Device`](.././flyte#flytedevice) | Represents a device type, its quantity and partition if applicable. |
 | [`Environment`](.././flyte#flyteenvironment) |  |
+| [`FixedRate`](.././flyte#flytefixedrate) | This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
 | [`Image`](.././flyte#flyteimage) | This is a representation of Container Images, which can be used to create layered images programmatically. |
 | [`PodTemplate`](.././flyte#flytepodtemplate) | Custom PodTemplate specification for a Task. |
 | [`Resources`](.././flyte#flyteresources) | Resources such as CPU, Memory, and GPU that can be allocated to a task. |
@@ -27,6 +29,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`Secret`](.././flyte#flytesecret) | Secrets are used to inject sensitive information into tasks or image build context. |
 | [`TaskEnvironment`](.././flyte#flytetaskenvironment) | Environment class to define a new environment for a set of tasks. |
 | [`Timeout`](.././flyte#flytetimeout) | Timeout class to define a timeout for a task. |
+| [`Trigger`](.././flyte#flytetrigger) | This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
 
 ### Protocols
 
@@ -38,17 +41,25 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 
 | Method | Description |
 |-|-|
+| [`AMD_GPU()`](#amd_gpu) | Create an AMD GPU device instance. |
 | [`GPU()`](#gpu) | Create a GPU device instance. |
+| [`HABANA_GAUDI()`](#habana_gaudi) | Create a Habana Gaudi device instance. |
+| [`Neuron()`](#neuron) | Create a Neuron device instance. |
 | [`TPU()`](#tpu) | Create a TPU device instance. |
 | [`build()`](#build) | Build an image. |
 | [`build_images()`](#build_images) | Build the images for the given environments. |
-| [`ctx()`](#ctx) | Retrieve the current task context from the context variable. |
+| [`ctx()`](#ctx) | Returns flyte. |
+| [`current_domain()`](#current_domain) | Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration. |
+| [`custom_context()`](#custom_context) | Synchronous context manager to set input context for tasks spawned within this block. |
 | [`deploy()`](#deploy) | Deploy the given environment or list of environments. |
+| [`get_custom_context()`](#get_custom_context) | Get the current input context. |
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
+| [`map()`](#map) |  |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
+| [`version()`](#version) | Returns the version of the Flyte SDK. |
 | [`with_runcontext()`](#with_runcontext) | Launch a new run with the given parameters as the context. |
 
 
@@ -57,15 +68,30 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Property | Type | Description |
 |-|-|-|
 | `TimeoutType` | `UnionType` |  |
+| `TriggerTime` | `_trigger_time` |  |
 | `__version__` | `str` |  |
 
 ## Methods
+
+#### AMD_GPU()
+
+```python
+def AMD_GPU(
+    device: typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X'],
+) -> flyte._resources.Device
+```
+Create an AMD GPU device instance.
+
+
+| Parameter | Type |
+|-|-|
+| `device` | `typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X']` |
 
 #### GPU()
 
 ```python
 def GPU(
-    device: typing.Literal['T4', 'A100', 'A100 80G', 'H100', 'L4', 'L40s'],
+    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
     partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], NoneType],
 ) -> flyte._resources.Device
@@ -75,9 +101,37 @@ Create a GPU device instance.
 
 | Parameter | Type |
 |-|-|
-| `device` | `typing.Literal['T4', 'A100', 'A100 80G', 'H100', 'L4', 'L40s']` |
+| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']` |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` |
 | `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], NoneType]` |
+
+#### HABANA_GAUDI()
+
+```python
+def HABANA_GAUDI(
+    device: typing.Literal['Gaudi1'],
+) -> flyte._resources.Device
+```
+Create a Habana Gaudi device instance.
+
+
+| Parameter | Type |
+|-|-|
+| `device` | `typing.Literal['Gaudi1']` |
+
+#### Neuron()
+
+```python
+def Neuron(
+    device: typing.Literal['Inf1', 'Inf2', 'Trn1', 'Trn1n', 'Trn2', 'Trn2u'],
+) -> flyte._resources.Device
+```
+Create a Neuron device instance.
+
+
+| Parameter | Type |
+|-|-|
+| `device` | `typing.Literal['Inf1', 'Inf2', 'Trn1', 'Trn1n', 'Trn2', 'Trn2u']` |
 
 #### TPU()
 
@@ -137,8 +191,56 @@ Build the images for the given environments.
 ```python
 def ctx()
 ```
-Retrieve the current task context from the context variable.
+Returns flyte.models.TaskContext if within a task context, else None
+Note: Only use this in task code and not module level.
 
+
+#### current_domain()
+
+```python
+def current_domain()
+```
+Returns the current domain from Runtime environment (on the cluster) or from the initialized configuration.
+This is safe to be used during `deploy`, `run` and within `task` code.
+
+NOTE: This will not work if you deploy a task to a domain and then run it in another domain.
+
+Raises InitializationError if the configuration is not initialized or domain is not set.
+:return: The current domain
+
+
+#### custom_context()
+
+```python
+def custom_context(
+    context: str,
+)
+```
+Synchronous context manager to set input context for tasks spawned within this block.
+
+Example:
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="...")
+
+@env.task
+def t1():
+    ctx = flyte.get_custom_context()
+    print(ctx)
+
+@env.task
+def main():
+    # context can be passed via a context manager
+    with flyte.custom_context(project="my-project"):
+        t1()  # will have {'project': 'my-project'} as context
+```
+
+
+
+| Parameter | Type |
+|-|-|
+| `context` | `str` |
 
 #### deploy()
 
@@ -161,6 +263,32 @@ Deploy the given environment or list of environments.
 | `version` | `str \| None` |
 | `interactive_mode` | `bool \| None` |
 | `copy_style` | `CopyFiles` |
+
+#### get_custom_context()
+
+```python
+def get_custom_context()
+```
+Get the current input context. This can be used within a task to retrieve
+context metadata that was passed to the action.
+
+Context will automatically propagate to sub-actions.
+
+Example:
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="...")
+
+@env.task
+def t1():
+    # context can be retrieved with `get_custom_context`
+    ctx = flyte.get_custom_context()
+    print(ctx)  # {'project': '...', 'entity': '...'}
+```
+
+:return: Dictionary of context key-value pairs
+
 
 #### group()
 
@@ -213,6 +341,8 @@ def init(
     storage: Storage | None,
     batch_size: int,
     image_builder: ImageBuildEngine.ImageBuilderType,
+    images: typing.Dict[str, str] | None,
+    source_config_path: Optional[Path],
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -244,6 +374,8 @@ remote API methods are called. Thread-safe implementation.
 | `storage` | `Storage \| None` |
 | `batch_size` | `int` |
 | `image_builder` | `ImageBuildEngine.ImageBuilderType` |
+| `images` | `typing.Dict[str, str] \| None` |
+| `source_config_path` | `Optional[Path]` |
 
 #### init_from_config()
 
@@ -252,6 +384,8 @@ def init_from_config(
     path_or_config: str | Path | Config | None,
     root_dir: Path | None,
     log_level: int | None,
+    storage: Storage | None,
+    images: tuple[str, ...] | None,
 )
 ```
 Initialize the Flyte system using a configuration file or Config object. This method should be called before any
@@ -264,12 +398,33 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `path_or_config` | `str \| Path \| Config \| None` |
 | `root_dir` | `Path \| None` |
 | `log_level` | `int \| None` |
+| `storage` | `Storage \| None` |
+| `images` | `tuple[str, ...] \| None` |
+
+#### map()
+
+```python
+def map(
+    func: typing.Union[flyte._task.AsyncFunctionTaskTemplate[~P, ~R, ~F], functools.partial[~R]],
+    args: *args,
+    group_name: str | None,
+    concurrency: int,
+    return_exceptions: bool,
+) -> typing.Iterator[typing.Union[~R, Exception]]
+```
+| Parameter | Type |
+|-|-|
+| `func` | `typing.Union[flyte._task.AsyncFunctionTaskTemplate[~P, ~R, ~F], functools.partial[~R]]` |
+| `args` | `*args` |
+| `group_name` | `str \| None` |
+| `concurrency` | `int` |
+| `return_exceptions` | `bool` |
 
 #### run()
 
 ```python
 def run(
-    task: TaskTemplate[P, R],
+    task: TaskTemplate[P, R, F],
     args: *args,
     kwargs: **kwargs,
 ) -> Union[R, Run]
@@ -279,7 +434,7 @@ Run a task with the given parameters
 
 | Parameter | Type |
 |-|-|
-| `task` | `TaskTemplate[P, R]` |
+| `task` | `TaskTemplate[P, R, F]` |
 | `args` | `*args` |
 | `kwargs` | `**kwargs` |
 
@@ -297,6 +452,14 @@ Works with regular functions, async functions, and async generators/iterators.
 | Parameter | Type |
 |-|-|
 | `func` | `typing.Callable[..., ~T]` |
+
+#### version()
+
+```python
+def version()
+```
+Returns the version of the Flyte SDK.
+
 
 #### with_runcontext()
 
@@ -318,9 +481,11 @@ def with_runcontext(
     env_vars: Dict[str, str] | None,
     labels: Dict[str, str] | None,
     annotations: Dict[str, str] | None,
-    interruptible: bool,
+    interruptible: bool | None,
     log_level: int | None,
     disable_run_cache: bool,
+    queue: Optional[str],
+    custom_context: Dict[str, str] | None,
 ) -> _Runner
 ```
 Launch a new run with the given parameters as the context.
@@ -358,9 +523,11 @@ if __name__ == "__main__":
 | `env_vars` | `Dict[str, str] \| None` |
 | `labels` | `Dict[str, str] \| None` |
 | `annotations` | `Dict[str, str] \| None` |
-| `interruptible` | `bool` |
+| `interruptible` | `bool \| None` |
 | `log_level` | `int \| None` |
 | `disable_run_cache` | `bool` |
+| `queue` | `Optional[str]` |
+| `custom_context` | `Dict[str, str] \| None` |
 
 ## flyte.Cache
 
@@ -476,6 +643,29 @@ def get_version(
 | `salt` | `str` |
 | `params` | `flyte._cache.cache.VersionParameters` |
 
+## flyte.Cron
+
+This class defines a Cron automation that can be associated with a Trigger in Flyte.
+Example usage:
+```python
+from flyte.trigger import Trigger, Cron
+my_trigger = Trigger(
+    name="my_cron_trigger",
+    automation=Cron("0 * * * *"),  # Runs every hour
+    description="A trigger that runs every hour",
+)
+```
+
+
+```python
+class Cron(
+    expression: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `expression` | `str` |
+
 ## flyte.Device
 
 Represents a device type, its quantity and partition if applicable.
@@ -487,6 +677,7 @@ param partition: The partition of the device (e.g., "1g.5gb", "2g.10gb" for gpus
 ```python
 class Device(
     quantity: int,
+    device_class: typing.Literal['GPU', 'TPU', 'NEURON', 'AMD_GPU', 'HABANA_GAUDI'],
     device: str | None,
     partition: str | None,
 )
@@ -494,6 +685,7 @@ class Device(
 | Parameter | Type |
 |-|-|
 | `quantity` | `int` |
+| `device_class` | `typing.Literal['GPU', 'TPU', 'NEURON', 'AMD_GPU', 'HABANA_GAUDI']` |
 | `device` | `str \| None` |
 | `partition` | `str \| None` |
 
@@ -508,6 +700,7 @@ class Environment(
     secrets: Optional[SecretRequest],
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
+    interruptible: bool,
     image: Union[str, Image, Literal['auto']],
 )
 ```
@@ -520,6 +713,7 @@ class Environment(
 | `secrets` | `Optional[SecretRequest]` |
 | `env_vars` | `Optional[Dict[str, str]]` |
 | `resources` | `Optional[Resources]` |
+| `interruptible` | `bool` |
 | `image` | `Union[str, Image, Literal['auto']]` |
 
 ### Methods
@@ -554,6 +748,7 @@ def clone_with(
     env_vars: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     depends_on: Optional[List[Environment]],
+    description: Optional[str],
     kwargs: **kwargs,
 ) -> Environment
 ```
@@ -565,7 +760,33 @@ def clone_with(
 | `env_vars` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `depends_on` | `Optional[List[Environment]]` |
+| `description` | `Optional[str]` |
 | `kwargs` | `**kwargs` |
+
+## flyte.FixedRate
+
+This class defines a FixedRate automation that can be associated with a Trigger in Flyte.
+Example usage:
+```python
+from flyte.trigger import Trigger, FixedRate
+my_trigger = Trigger(
+    name="my_fixed_rate_trigger",
+    automation=FixedRate(60),  # Runs every hour
+    description="A trigger that runs every hour",
+)
+```
+
+
+```python
+class FixedRate(
+    interval_minutes: int,
+    start_time: datetime | None,
+)
+```
+| Parameter | Type |
+|-|-|
+| `interval_minutes` | `int` |
+| `start_time` | `datetime \| None` |
 
 ## flyte.Image
 
@@ -590,7 +811,9 @@ class Image(
     name: Optional[str],
     platform: Tuple[Architecture, ...],
     python_version: Tuple[int, int],
+    _ref_name: Optional[str],
     _layers: Tuple[Layer, ...],
+    _image_registry_secret: Optional[Secret],
 )
 ```
 | Parameter | Type |
@@ -601,7 +824,9 @@ class Image(
 | `name` | `Optional[str]` |
 | `platform` | `Tuple[Architecture, ...]` |
 | `python_version` | `Tuple[int, int]` |
+| `_ref_name` | `Optional[str]` |
 | `_layers` | `Tuple[Layer, ...]` |
+| `_image_registry_secret` | `Optional[Secret]` |
 
 ### Methods
 
@@ -611,6 +836,7 @@ class Image(
 | [`from_base()`](#from_base) | Use this method to start with a pre-built base image. |
 | [`from_debian_base()`](#from_debian_base) | Use this method to start using the default base image, built from this library's base Dockerfile. |
 | [`from_dockerfile()`](#from_dockerfile) | Use this method to create a new image with the specified dockerfile. |
+| [`from_ref_name()`](#from_ref_name) |  |
 | [`from_uv_script()`](#from_uv_script) | Use this method to create a new image with the specified uv script. |
 | [`validate()`](#validate) |  |
 | [`with_apt_packages()`](#with_apt_packages) | Use this method to create a new image with the specified apt packages layered on top of the current image. |
@@ -619,6 +845,7 @@ class Image(
 | [`with_env_vars()`](#with_env_vars) | Use this method to create a new image with the specified environment variables layered on top of. |
 | [`with_local_v2()`](#with_local_v2) | Use this method to create a new image with the local v2 builder. |
 | [`with_pip_packages()`](#with_pip_packages) | Use this method to create a new image with the specified pip packages layered on top of the current image. |
+| [`with_poetry_project()`](#with_poetry_project) | Use this method to create a new image with the specified pyproject. |
 | [`with_requirements()`](#with_requirements) | Use this method to create a new image with the specified requirements file layered on top of the current image. |
 | [`with_source_file()`](#with_source_file) | Use this method to create a new image with the specified local file layered on top of the current image. |
 | [`with_source_folder()`](#with_source_folder) | Use this method to create a new image with the specified local directory layered on top of the current image. |
@@ -631,7 +858,9 @@ class Image(
 ```python
 def clone(
     registry: Optional[str],
+    registry_secret: Optional[str | Secret],
     name: Optional[str],
+    base_image: Optional[str],
     python_version: Optional[Tuple[int, int]],
     addl_layer: Optional[Layer],
 ) -> Image
@@ -643,7 +872,9 @@ Use this method to clone the current image and change the registry and name
 | Parameter | Type |
 |-|-|
 | `registry` | `Optional[str]` |
+| `registry_secret` | `Optional[str \| Secret]` |
 | `name` | `Optional[str]` |
+| `base_image` | `Optional[str]` |
 | `python_version` | `Optional[Tuple[int, int]]` |
 | `addl_layer` | `Optional[Layer]` |
 
@@ -670,6 +901,7 @@ def from_debian_base(
     flyte_version: Optional[str],
     install_flyte: bool,
     registry: Optional[str],
+    registry_secret: Optional[str | Secret],
     name: Optional[str],
     platform: Optional[Tuple[Architecture, ...]],
 ) -> Image
@@ -685,6 +917,7 @@ Default images are multi-arch amd/arm64
 | `flyte_version` | `Optional[str]` |
 | `install_flyte` | `bool` |
 | `registry` | `Optional[str]` |
+| `registry_secret` | `Optional[str \| Secret]` |
 | `name` | `Optional[str]` |
 | `platform` | `Optional[Tuple[Architecture, ...]]` |
 
@@ -714,6 +947,17 @@ context for the builder will be the directory where the dockerfile is located.
 | `name` | `str` |
 | `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` |
 
+#### from_ref_name()
+
+```python
+def from_ref_name(
+    name: str,
+) -> Image
+```
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
+
 #### from_uv_script()
 
 ```python
@@ -721,6 +965,7 @@ def from_uv_script(
     script: Path | str,
     name: str,
     registry: str | None,
+    registry_secret: Optional[str | Secret],
     python_version: Optional[Tuple[int, int]],
     index_url: Optional[str],
     extra_index_urls: Union[str, List[str], Tuple[str, ...], None],
@@ -754,6 +999,7 @@ For more information on the uv script format, see the documentation:
 | `script` | `Path \| str` |
 | `name` | `str` |
 | `registry` | `str \| None` |
+| `registry_secret` | `Optional[str \| Secret]` |
 | `python_version` | `Optional[Tuple[int, int]]` |
 | `index_url` | `Optional[str]` |
 | `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` |
@@ -891,6 +1137,36 @@ def my_task(x: int) -> int:
 | `extra_args` | `Optional[str]` |
 | `secret_mounts` | `Optional[SecretRequest]` |
 
+#### with_poetry_project()
+
+```python
+def with_poetry_project(
+    pyproject_file: str | Path,
+    poetry_lock: Path | None,
+    extra_args: Optional[str],
+    secret_mounts: Optional[SecretRequest],
+)
+```
+Use this method to create a new image with the specified pyproject.toml layered on top of the current image.
+Must have a corresponding pyproject.toml file in the same directory.
+Cannot be used in conjunction with conda.
+
+By default, this method copies the entire project into the image,
+including files such as pyproject.toml, poetry.lock, and the src/ directory.
+
+If you prefer not to install the current project, you can pass through `extra_args`
+`--no-root`. In this case, the image builder will only copy pyproject.toml and poetry.lock
+into the image.
+
+
+
+| Parameter | Type |
+|-|-|
+| `pyproject_file` | `str \| Path` |
+| `poetry_lock` | `Path \| None` |
+| `extra_args` | `Optional[str]` |
+| `secret_mounts` | `Optional[SecretRequest]` |
+
 #### with_requirements()
 
 ```python
@@ -933,6 +1209,7 @@ If dest is not specified, it will be copied to the working directory of the imag
 def with_source_folder(
     src: Path,
     dst: str,
+    copy_contents_only: bool,
 ) -> Image
 ```
 Use this method to create a new image with the specified local directory layered on top of the current image.
@@ -944,6 +1221,7 @@ If dest is not specified, it will be copied to the working directory of the imag
 |-|-|
 | `src` | `Path` |
 | `dst` | `str` |
+| `copy_contents_only` | `bool` |
 
 #### with_uv_project()
 
@@ -956,17 +1234,17 @@ def with_uv_project(
     pre: bool,
     extra_args: Optional[str],
     secret_mounts: Optional[SecretRequest],
+    project_install_mode: typing.Literal['dependencies_only', 'install_project'],
 ) -> Image
 ```
 Use this method to create a new image with the specified uv.lock file layered on top of the current image
 Must have a corresponding pyproject.toml file in the same directory
 Cannot be used in conjunction with conda
 
-By default, this method copies the entire project into the image,
- including files such as pyproject.toml, uv.lock, and the src/ directory.
+By default, this method copies the pyproject.toml and uv.lock files into the image.
 
-If you prefer not to install the current project, you can pass the extra argument --no-install-project.
- In this case, the image builder will only copy pyproject.toml and uv.lock into the image.
+If `project_install_mode` is "install_project", it will also copy directory
+ where the pyproject.toml file is located into the image.
 
 
 
@@ -979,6 +1257,7 @@ If you prefer not to install the current project, you can pass the extra argumen
 | `pre` | `bool` |
 | `extra_args` | `Optional[str]` |
 | `secret_mounts` | `Optional[SecretRequest]` |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` |
 
 #### with_workdir()
 
@@ -1052,7 +1331,7 @@ def my_task() -> int:
 class Resources(
     cpu: typing.Union[int, float, str, typing.Tuple[int | float | str, int | float | str], NoneType],
     memory: typing.Union[str, typing.Tuple[str, str], NoneType],
-    gpu: typing.Union[typing.Literal['T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8'], int, flyte._resources.Device, NoneType],
+    gpu: typing.Union[typing.Literal['A10:1', 'A10:2', 'A10:3', 'A10:4', 'A10:5', 'A10:6', 'A10:7', 'A10:8', 'A10G:1', 'A10G:2', 'A10G:3', 'A10G:4', 'A10G:5', 'A10G:6', 'A10G:7', 'A10G:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'B200:1', 'B200:2', 'B200:3', 'B200:4', 'B200:5', 'B200:6', 'B200:7', 'B200:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8', 'H200:1', 'H200:2', 'H200:3', 'H200:4', 'H200:5', 'H200:6', 'H200:7', 'H200:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'V100:1', 'V100:2', 'V100:3', 'V100:4', 'V100:5', 'V100:6', 'V100:7', 'V100:8', 'RTX PRO 6000:1', 'T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'Trn1:1', 'Trn1n:1', 'Trn2:1', 'Trn2u:1', 'Inf1:1', 'Inf2:1', 'MI100:1', 'MI210:1', 'MI250:1', 'MI250X:1', 'MI300A:1', 'MI300X:1', 'MI325X:1', 'MI350X:1', 'MI355X:1', 'Gaudi1:1'], int, flyte._resources.Device, NoneType],
     disk: typing.Optional[str],
     shm: typing.Union[str, typing.Literal['auto'], NoneType],
 )
@@ -1061,7 +1340,7 @@ class Resources(
 |-|-|
 | `cpu` | `typing.Union[int, float, str, typing.Tuple[int \| float \| str, int \| float \| str], NoneType]` |
 | `memory` | `typing.Union[str, typing.Tuple[str, str], NoneType]` |
-| `gpu` | `typing.Union[typing.Literal['T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8'], int, flyte._resources.Device, NoneType]` |
+| `gpu` | `typing.Union[typing.Literal['A10:1', 'A10:2', 'A10:3', 'A10:4', 'A10:5', 'A10:6', 'A10:7', 'A10:8', 'A10G:1', 'A10G:2', 'A10G:3', 'A10G:4', 'A10G:5', 'A10G:6', 'A10G:7', 'A10G:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'B200:1', 'B200:2', 'B200:3', 'B200:4', 'B200:5', 'B200:6', 'B200:7', 'B200:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8', 'H200:1', 'H200:2', 'H200:3', 'H200:4', 'H200:5', 'H200:6', 'H200:7', 'H200:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'V100:1', 'V100:2', 'V100:3', 'V100:4', 'V100:5', 'V100:6', 'V100:7', 'V100:8', 'RTX PRO 6000:1', 'T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'Trn1:1', 'Trn1n:1', 'Trn2:1', 'Trn2u:1', 'Inf1:1', 'Inf2:1', 'MI100:1', 'MI210:1', 'MI250:1', 'MI250X:1', 'MI300A:1', 'MI300X:1', 'MI325X:1', 'MI350X:1', 'MI355X:1', 'Gaudi1:1'], int, flyte._resources.Device, NoneType]` |
 | `disk` | `typing.Optional[str]` |
 | `shm` | `typing.Union[str, typing.Literal['auto'], NoneType]` |
 
@@ -1259,10 +1538,12 @@ class TaskEnvironment(
     secrets: Optional[SecretRequest],
     env_vars: Optional[Dict[str, str]],
     resources: Optional[Resources],
+    interruptible: bool,
     image: Union[str, Image, Literal['auto']],
     cache: CacheRequest,
     reusable: ReusePolicy | None,
     plugin_config: Optional[Any],
+    queue: Optional[str],
 )
 ```
 | Parameter | Type |
@@ -1274,18 +1555,20 @@ class TaskEnvironment(
 | `secrets` | `Optional[SecretRequest]` |
 | `env_vars` | `Optional[Dict[str, str]]` |
 | `resources` | `Optional[Resources]` |
+| `interruptible` | `bool` |
 | `image` | `Union[str, Image, Literal['auto']]` |
 | `cache` | `CacheRequest` |
 | `reusable` | `ReusePolicy \| None` |
 | `plugin_config` | `Optional[Any]` |
+| `queue` | `Optional[str]` |
 
 ### Methods
 
 | Method | Description |
 |-|-|
 | [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
-| [`add_task()`](#add_task) | Add a task to the environment. |
 | [`clone_with()`](#clone_with) | Clone the TaskEnvironment with new parameters. |
+| [`from_task()`](#from_task) | Create a TaskEnvironment from a list of tasks. |
 | [`task()`](#task) | Decorate a function to be a task. |
 
 
@@ -1303,23 +1586,6 @@ Add a dependency to the environment.
 |-|-|
 | `env` | `Environment` |
 
-#### add_task()
-
-```python
-def add_task(
-    task: TaskTemplate,
-) -> TaskTemplate
-```
-Add a task to the environment.
-
-Useful when you want to add a task to an environment that is not defined using the `task` decorator.
-
-
-
-| Parameter | Type |
-|-|-|
-| `task` | `TaskTemplate` |
-
 #### clone_with()
 
 ```python
@@ -1330,6 +1596,8 @@ def clone_with(
     env_vars: Optional[Dict[str, str]],
     secrets: Optional[SecretRequest],
     depends_on: Optional[List[Environment]],
+    description: Optional[str],
+    interruptible: Optional[bool],
     kwargs: **kwargs,
 ) -> TaskEnvironment
 ```
@@ -1347,22 +1615,50 @@ Besides the base environment parameters, you can override kwargs like `cache`, `
 | `env_vars` | `Optional[Dict[str, str]]` |
 | `secrets` | `Optional[SecretRequest]` |
 | `depends_on` | `Optional[List[Environment]]` |
+| `description` | `Optional[str]` |
+| `interruptible` | `Optional[bool]` |
 | `kwargs` | `**kwargs` |
+
+#### from_task()
+
+```python
+def from_task(
+    name: str,
+    tasks: TaskTemplate,
+) -> TaskEnvironment
+```
+Create a TaskEnvironment from a list of tasks. All tasks should have the same image or no Image defined.
+Similarity of Image is determined by the python reference, not by value.
+
+If images are different, an error is raised. If no image is defined, the image is set to "auto".
+
+For any other tasks that need to be use these tasks, the returned environment can be used in the `depends_on`
+attribute of the other TaskEnvironment.
+
+
+
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
+| `tasks` | `TaskTemplate` |
 
 #### task()
 
 ```python
 def task(
-    _func,
+    _func: F | None,
     short_name: Optional[str],
     cache: CacheRequest | None,
     retries: Union[int, RetryStrategy],
     timeout: Union[timedelta, int],
     docs: Optional[Documentation],
-    pod_template: Optional[Union[str, 'V1PodTemplate']],
+    pod_template: Optional[Union[str, PodTemplate]],
     report: bool,
+    interruptible: bool | None,
     max_inline_io_bytes: int,
-) -> Union[AsyncFunctionTaskTemplate, Callable[P, R]]
+    queue: Optional[str],
+    triggers: Tuple[Trigger, ...] | Trigger,
+) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
 
@@ -1370,15 +1666,18 @@ Decorate a function to be a task.
 
 | Parameter | Type |
 |-|-|
-| `_func` |  |
+| `_func` | `F \| None` |
 | `short_name` | `Optional[str]` |
 | `cache` | `CacheRequest \| None` |
 | `retries` | `Union[int, RetryStrategy]` |
 | `timeout` | `Union[timedelta, int]` |
 | `docs` | `Optional[Documentation]` |
-| `pod_template` | `Optional[Union[str, 'V1PodTemplate']]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `report` | `bool` |
+| `interruptible` | `bool \| None` |
 | `max_inline_io_bytes` | `int` |
+| `queue` | `Optional[str]` |
+| `triggers` | `Tuple[Trigger, ...] \| Trigger` |
 
 ### Properties
 
@@ -1413,4 +1712,240 @@ class Timeout(
 |-|-|
 | `max_runtime` | `datetime.timedelta \| int` |
 | `max_queued_time` | `datetime.timedelta \| int \| None` |
+
+## flyte.Trigger
+
+This class defines specification of a Trigger, that can be associated with any Flyte V2 task.
+The trigger then is deployed to the Flyte Platform.
+
+Triggers can be used to run tasks on a schedule, in response to events, or based on other conditions.
+The `Trigger` class encapsulates the metadata and configuration needed to define a trigger.
+
+You can associate the same Trigger object with multiple tasks.
+
+Example usage:
+```python
+from flyte.trigger import Trigger
+my_trigger = Trigger(
+    name="my_trigger",
+    description="A trigger that runs every hour",
+)
+```
+
+
+
+```python
+class Trigger(
+    name: str,
+    automation: Union[Cron, FixedRate],
+    description: str,
+    auto_activate: bool,
+    inputs: Dict[str, Any] | None,
+    env_vars: Dict[str, str] | None,
+    interruptible: bool | None,
+    overwrite_cache: bool,
+    queue: str | None,
+    labels: Mapping[str, str] | None,
+    annotations: Mapping[str, str] | None,
+)
+```
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
+| `automation` | `Union[Cron, FixedRate]` |
+| `description` | `str` |
+| `auto_activate` | `bool` |
+| `inputs` | `Dict[str, Any] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
+| `interruptible` | `bool \| None` |
+| `overwrite_cache` | `bool` |
+| `queue` | `str \| None` |
+| `labels` | `Mapping[str, str] \| None` |
+| `annotations` | `Mapping[str, str] \| None` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`daily()`](#daily) | Creates a Cron trigger that runs daily at midnight. |
+| [`hourly()`](#hourly) | Creates a Cron trigger that runs every hour. |
+| [`minutely()`](#minutely) | Creates a Cron trigger that runs every minute. |
+| [`monthly()`](#monthly) | Creates a Cron trigger that runs monthly on the 1st at midnight. |
+| [`weekly()`](#weekly) | Creates a Cron trigger that runs weekly on Sundays at midnight. |
+
+
+#### daily()
+
+```python
+def daily(
+    trigger_time_input_key: str,
+    name: str,
+    description: str,
+    auto_activate: bool,
+    inputs: Dict[str, Any] | None,
+    env_vars: Dict[str, str] | None,
+    interruptible: bool | None,
+    overwrite_cache: bool,
+    queue: str | None,
+    labels: Mapping[str, str] | None,
+    annotations: Mapping[str, str] | None,
+) -> Trigger
+```
+Creates a Cron trigger that runs daily at midnight.
+
+
+
+| Parameter | Type |
+|-|-|
+| `trigger_time_input_key` | `str` |
+| `name` | `str` |
+| `description` | `str` |
+| `auto_activate` | `bool` |
+| `inputs` | `Dict[str, Any] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
+| `interruptible` | `bool \| None` |
+| `overwrite_cache` | `bool` |
+| `queue` | `str \| None` |
+| `labels` | `Mapping[str, str] \| None` |
+| `annotations` | `Mapping[str, str] \| None` |
+
+#### hourly()
+
+```python
+def hourly(
+    trigger_time_input_key: str,
+    name: str,
+    description: str,
+    auto_activate: bool,
+    inputs: Dict[str, Any] | None,
+    env_vars: Dict[str, str] | None,
+    interruptible: bool | None,
+    overwrite_cache: bool,
+    queue: str | None,
+    labels: Mapping[str, str] | None,
+    annotations: Mapping[str, str] | None,
+) -> Trigger
+```
+Creates a Cron trigger that runs every hour.
+
+
+
+| Parameter | Type |
+|-|-|
+| `trigger_time_input_key` | `str` |
+| `name` | `str` |
+| `description` | `str` |
+| `auto_activate` | `bool` |
+| `inputs` | `Dict[str, Any] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
+| `interruptible` | `bool \| None` |
+| `overwrite_cache` | `bool` |
+| `queue` | `str \| None` |
+| `labels` | `Mapping[str, str] \| None` |
+| `annotations` | `Mapping[str, str] \| None` |
+
+#### minutely()
+
+```python
+def minutely(
+    trigger_time_input_key: str,
+    name: str,
+    description: str,
+    auto_activate: bool,
+    inputs: Dict[str, Any] | None,
+    env_vars: Dict[str, str] | None,
+    interruptible: bool | None,
+    overwrite_cache: bool,
+    queue: str | None,
+    labels: Mapping[str, str] | None,
+    annotations: Mapping[str, str] | None,
+) -> Trigger
+```
+Creates a Cron trigger that runs every minute.
+
+
+
+| Parameter | Type |
+|-|-|
+| `trigger_time_input_key` | `str` |
+| `name` | `str` |
+| `description` | `str` |
+| `auto_activate` | `bool` |
+| `inputs` | `Dict[str, Any] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
+| `interruptible` | `bool \| None` |
+| `overwrite_cache` | `bool` |
+| `queue` | `str \| None` |
+| `labels` | `Mapping[str, str] \| None` |
+| `annotations` | `Mapping[str, str] \| None` |
+
+#### monthly()
+
+```python
+def monthly(
+    trigger_time_input_key: str,
+    name: str,
+    description: str,
+    auto_activate: bool,
+    inputs: Dict[str, Any] | None,
+    env_vars: Dict[str, str] | None,
+    interruptible: bool | None,
+    overwrite_cache: bool,
+    queue: str | None,
+    labels: Mapping[str, str] | None,
+    annotations: Mapping[str, str] | None,
+) -> Trigger
+```
+Creates a Cron trigger that runs monthly on the 1st at midnight.
+
+
+
+| Parameter | Type |
+|-|-|
+| `trigger_time_input_key` | `str` |
+| `name` | `str` |
+| `description` | `str` |
+| `auto_activate` | `bool` |
+| `inputs` | `Dict[str, Any] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
+| `interruptible` | `bool \| None` |
+| `overwrite_cache` | `bool` |
+| `queue` | `str \| None` |
+| `labels` | `Mapping[str, str] \| None` |
+| `annotations` | `Mapping[str, str] \| None` |
+
+#### weekly()
+
+```python
+def weekly(
+    trigger_time_input_key: str,
+    name: str,
+    description: str,
+    auto_activate: bool,
+    inputs: Dict[str, Any] | None,
+    env_vars: Dict[str, str] | None,
+    interruptible: bool | None,
+    overwrite_cache: bool,
+    queue: str | None,
+    labels: Mapping[str, str] | None,
+    annotations: Mapping[str, str] | None,
+) -> Trigger
+```
+Creates a Cron trigger that runs weekly on Sundays at midnight.
+
+
+
+| Parameter | Type |
+|-|-|
+| `trigger_time_input_key` | `str` |
+| `name` | `str` |
+| `description` | `str` |
+| `auto_activate` | `bool` |
+| `inputs` | `Dict[str, Any] \| None` |
+| `env_vars` | `Dict[str, str] \| None` |
+| `interruptible` | `bool \| None` |
+| `overwrite_cache` | `bool` |
+| `queue` | `str \| None` |
+| `labels` | `Mapping[str, str] \| None` |
+| `annotations` | `Mapping[str, str] \| None` |
 

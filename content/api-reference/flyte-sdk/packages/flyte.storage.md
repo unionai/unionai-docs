@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -22,6 +22,8 @@ layout: py_api
 
 | Method | Description |
 |-|-|
+| [`exists()`](#exists) | Check if a path exists. |
+| [`exists_sync()`](#exists_sync) |  |
 | [`get()`](#get) |  |
 | [`get_configured_fsspec_kwargs()`](#get_configured_fsspec_kwargs) |  |
 | [`get_random_local_directory()`](#get_random_local_directory) | :return: a random directory. |
@@ -30,18 +32,49 @@ layout: py_api
 | [`get_underlying_filesystem()`](#get_underlying_filesystem) |  |
 | [`is_remote()`](#is_remote) | Let's find a replacement. |
 | [`join()`](#join) | Join multiple paths together. |
+| [`open()`](#open) | Asynchronously open a file and return an async context manager. |
 | [`put()`](#put) |  |
 | [`put_stream()`](#put_stream) | Put a stream of data to a remote location. |
 
 
 ## Methods
 
+#### exists()
+
+```python
+def exists(
+    path: str,
+    kwargs,
+) -> bool
+```
+Check if a path exists.
+
+
+
+| Parameter | Type |
+|-|-|
+| `path` | `str` |
+| `kwargs` | `**kwargs` |
+
+#### exists_sync()
+
+```python
+def exists_sync(
+    path: str,
+    kwargs,
+) -> bool
+```
+| Parameter | Type |
+|-|-|
+| `path` | `str` |
+| `kwargs` | `**kwargs` |
+
 #### get()
 
 ```python
 def get(
     from_path: str,
-    to_path: typing.Union[str, pathlib._local.Path, NoneType],
+    to_path: Optional[str | pathlib.Path],
     recursive: bool,
     kwargs,
 ) -> str
@@ -49,7 +82,7 @@ def get(
 | Parameter | Type |
 |-|-|
 | `from_path` | `str` |
-| `to_path` | `typing.Union[str, pathlib._local.Path, NoneType]` |
+| `to_path` | `Optional[str \| pathlib.Path]` |
 | `recursive` | `bool` |
 | `kwargs` | `**kwargs` |
 
@@ -79,15 +112,15 @@ def get_random_local_directory()
 
 ```python
 def get_random_local_path(
-    file_path_or_file_name: pathlib._local.Path | str | None,
-) -> pathlib._local.Path
+    file_path_or_file_name: pathlib.Path | str | None,
+) -> pathlib.Path
 ```
 Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name
 
 
 | Parameter | Type |
 |-|-|
-| `file_path_or_file_name` | `pathlib._local.Path \| str \| None` |
+| `file_path_or_file_name` | `pathlib.Path \| str \| None` |
 
 #### get_stream()
 
@@ -96,14 +129,15 @@ def get_stream(
     path: str,
     chunk_size,
     kwargs,
-) -> typing.AsyncGenerator[bytes, NoneType]
+) -> AsyncGenerator[bytes, None]
 ```
 Get a stream of data from a remote location.
 This is useful for downloading streaming data from a remote location.
 Example usage:
 ```python
 import flyte.storage as storage
-obj = storage.get_stream(path="s3://my_bucket/my_file.txt")
+async for chunk in storage.get_stream(path="s3://my_bucket/my_file.txt"):
+    process(chunk)
 ```
 
 
@@ -122,7 +156,7 @@ def get_underlying_filesystem(
     anonymous: bool,
     path: typing.Optional[str],
     kwargs,
-) -> fsspec.spec.AbstractFileSystem
+) -> fsspec.AbstractFileSystem
 ```
 | Parameter | Type |
 |-|-|
@@ -135,7 +169,7 @@ def get_underlying_filesystem(
 
 ```python
 def is_remote(
-    path: typing.Union[pathlib._local.Path, str],
+    path: typing.Union[pathlib.Path | str],
 ) -> bool
 ```
 Let's find a replacement
@@ -143,7 +177,7 @@ Let's find a replacement
 
 | Parameter | Type |
 |-|-|
-| `path` | `typing.Union[pathlib._local.Path, str]` |
+| `path` | `typing.Union[pathlib.Path \| str]` |
 
 #### join()
 
@@ -161,12 +195,35 @@ Join multiple paths together. This is a wrapper around os.path.join.
 |-|-|
 | `paths` | `str` |
 
+#### open()
+
+```python
+def open(
+    path: str,
+    mode: str,
+    kwargs,
+) -> AsyncReadableFile | AsyncWritableFile
+```
+Asynchronously open a file and return an async context manager.
+This function checks if the underlying filesystem supports obstore bypass.
+If it does, it uses obstore to open the file. Otherwise, it falls back to
+the standard _open function which uses AsyncFileSystem.
+
+It will raise NotImplementedError if neither obstore nor AsyncFileSystem is supported.
+
+
+| Parameter | Type |
+|-|-|
+| `path` | `str` |
+| `mode` | `str` |
+| `kwargs` | `**kwargs` |
+
 #### put()
 
 ```python
 def put(
     from_path: str,
-    to_path: typing.Optional[str],
+    to_path: Optional[str],
     recursive: bool,
     kwargs,
 ) -> str
@@ -174,7 +231,7 @@ def put(
 | Parameter | Type |
 |-|-|
 | `from_path` | `str` |
-| `to_path` | `typing.Optional[str]` |
+| `to_path` | `Optional[str]` |
 | `recursive` | `bool` |
 | `kwargs` | `**kwargs` |
 
@@ -182,7 +239,7 @@ def put(
 
 ```python
 def put_stream(
-    data_iterable: typing.Union[typing.AsyncIterable[bytes], bytes],
+    data_iterable: typing.AsyncIterable[bytes] | bytes,
     name: str | None,
     to_path: str | None,
     kwargs,
@@ -201,7 +258,7 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 
 | Parameter | Type |
 |-|-|
-| `data_iterable` | `typing.Union[typing.AsyncIterable[bytes], bytes]` |
+| `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` |
 | `name` | `str \| None` |
 | `to_path` | `str \| None` |
 | `kwargs` | `**kwargs` |
@@ -336,6 +393,7 @@ class S3(
     endpoint: typing.Optional[str],
     access_key_id: typing.Optional[str],
     secret_access_key: typing.Optional[str],
+    region: typing.Optional[str],
 )
 ```
 | Parameter | Type |
@@ -347,6 +405,7 @@ class S3(
 | `endpoint` | `typing.Optional[str]` |
 | `access_key_id` | `typing.Optional[str]` |
 | `secret_access_key` | `typing.Optional[str]` |
+| `region` | `typing.Optional[str]` |
 
 ### Methods
 
@@ -360,10 +419,16 @@ class S3(
 #### auto()
 
 ```python
-def auto()
+def auto(
+    region: str | None,
+) -> S3
 ```
 :return: Config
 
+
+| Parameter | Type |
+|-|-|
+| `region` | `str \| None` |
 
 #### for_sandbox()
 
