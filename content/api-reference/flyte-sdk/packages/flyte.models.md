@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -18,6 +18,7 @@ layout: py_api
 | [`CodeBundle`](.././flyte.models#flytemodelscodebundle) | A class representing a code bundle for a task. |
 | [`GroupData`](.././flyte.models#flytemodelsgroupdata) |  |
 | [`NativeInterface`](.././flyte.models#flytemodelsnativeinterface) | A class representing the native interface for a task. |
+| [`PathRewrite`](.././flyte.models#flytemodelspathrewrite) | Configuration for rewriting paths during input loading. |
 | [`RawDataPath`](.././flyte.models#flytemodelsrawdatapath) | A class representing the raw data path for a task. |
 | [`SerializationContext`](.././flyte.models#flytemodelsserializationcontext) | This object holds serialization time contextual information, that can be used when serializing the task and. |
 | [`TaskContext`](.././flyte.models#flytemodelstaskcontext) | A context class to hold the current task executions context. |
@@ -307,6 +308,43 @@ task execution.
 :return: A list of required input names.
 
 
+## flyte.models.PathRewrite
+
+Configuration for rewriting paths during input loading.
+
+
+```python
+class PathRewrite(
+    old_prefix: str,
+    new_prefix: str,
+)
+```
+| Parameter | Type |
+|-|-|
+| `old_prefix` | `str` |
+| `new_prefix` | `str` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`from_str()`](#from_str) | Create a PathRewrite from a string pattern of the form `old_prefix->new_prefix`. |
+
+
+#### from_str()
+
+```python
+def from_str(
+    pattern: str,
+) -> PathRewrite
+```
+Create a PathRewrite from a string pattern of the form `old_prefix->new_prefix`.
+
+
+| Parameter | Type |
+|-|-|
+| `pattern` | `str` |
+
 ## flyte.models.RawDataPath
 
 A class representing the raw data path for a task. This is used to store the raw data for the task execution and
@@ -316,11 +354,13 @@ also get mutations on the path.
 ```python
 class RawDataPath(
     path: str,
+    path_rewrite: Optional[PathRewrite],
 )
 ```
 | Parameter | Type |
 |-|-|
 | `path` | `str` |
+| `path_rewrite` | `Optional[PathRewrite]` |
 
 ### Methods
 
@@ -352,7 +392,7 @@ def get_random_remote_path(
     file_name: Optional[str],
 ) -> str
 ```
-Returns a random path for uploading a file/directory to.
+Returns a random path for uploading a file/directory to. This file/folder will not be created, it's just a path.
 
 
 
@@ -439,6 +479,7 @@ class TaskContext(
     data: Dict[str, Any],
     mode: Literal['local', 'remote', 'hybrid'],
     interactive_mode: bool,
+    custom_context: Dict[str, str],
 )
 ```
 | Parameter | Type |
@@ -457,6 +498,7 @@ class TaskContext(
 | `data` | `Dict[str, Any]` |
 | `mode` | `Literal['local', 'remote', 'hybrid']` |
 | `interactive_mode` | `bool` |
+| `custom_context` | `Dict[str, str]` |
 
 ### Methods
 

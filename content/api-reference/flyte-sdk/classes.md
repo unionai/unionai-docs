@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -10,8 +10,10 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`flyte.Cache`](../packages/flyte#flytecache) |Cache configuration for a task. |
+| [`flyte.Cron`](../packages/flyte#flytecron) |This class defines a Cron automation that can be associated with a Trigger in Flyte. |
 | [`flyte.Device`](../packages/flyte#flytedevice) |Represents a device type, its quantity and partition if applicable. |
 | [`flyte.Environment`](../packages/flyte#flyteenvironment) | |
+| [`flyte.FixedRate`](../packages/flyte#flytefixedrate) |This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
 | [`flyte.Image`](../packages/flyte#flyteimage) |This is a representation of Container Images, which can be used to create layered images programmatically. |
 | [`flyte.PodTemplate`](../packages/flyte#flytepodtemplate) |Custom PodTemplate specification for a Task. |
 | [`flyte.Resources`](../packages/flyte#flyteresources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
@@ -20,6 +22,7 @@ layout: py_api
 | [`flyte.Secret`](../packages/flyte#flytesecret) |Secrets are used to inject sensitive information into tasks or image build context. |
 | [`flyte.TaskEnvironment`](../packages/flyte#flytetaskenvironment) |Environment class to define a new environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte#flytetimeout) |Timeout class to define a timeout for a task. |
+| [`flyte.Trigger`](../packages/flyte#flytetrigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
 | [`flyte.config.Config`](../packages/flyte.config#flyteconfigconfig) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors#flyteerrorsactionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors#flyteerrorsbaseruntimeerror) |Base class for all Union runtime errors. |
@@ -34,6 +37,7 @@ layout: py_api
 | [`flyte.errors.ModuleLoadError`](../packages/flyte.errors#flyteerrorsmoduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors#flyteerrorsnotintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](../packages/flyte.errors#flyteerrorsoomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
+| [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors#flyteerrorsonlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors#flyteerrorsprimarycontainernotfounderror) |This error is raised when the primary container is not found. |
 | [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors#flyteerrorsreferencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors#flyteerrorsretriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
@@ -59,6 +63,7 @@ layout: py_api
 | [`flyte.models.CodeBundle`](../packages/flyte.models#flytemodelscodebundle) |A class representing a code bundle for a task. |
 | [`flyte.models.GroupData`](../packages/flyte.models#flytemodelsgroupdata) | |
 | [`flyte.models.NativeInterface`](../packages/flyte.models#flytemodelsnativeinterface) |A class representing the native interface for a task. |
+| [`flyte.models.PathRewrite`](../packages/flyte.models#flytemodelspathrewrite) |Configuration for rewriting paths during input loading. |
 | [`flyte.models.RawDataPath`](../packages/flyte.models#flytemodelsrawdatapath) |A class representing the raw data path for a task. |
 | [`flyte.models.SerializationContext`](../packages/flyte.models#flytemodelsserializationcontext) |This object holds serialization time contextual information, that can be used when serializing the task and. |
 | [`flyte.models.TaskContext`](../packages/flyte.models#flytemodelstaskcontext) |A context class to hold the current task executions context. |
@@ -71,6 +76,8 @@ layout: py_api
 | [`flyte.remote.RunDetails`](../packages/flyte.remote#flyteremoterundetails) |A class representing a run of a task. |
 | [`flyte.remote.Secret`](../packages/flyte.remote#flyteremotesecret) | |
 | [`flyte.remote.Task`](../packages/flyte.remote#flyteremotetask) | |
+| [`flyte.remote.Trigger`](../packages/flyte.remote#flyteremotetrigger) | |
+| [`flyte.remote.User`](../packages/flyte.remote#flyteremoteuser) | |
 | [`flyte.report.Report`](../packages/flyte.report#flytereportreport) | |
 | [`flyte.storage.ABFS`](../packages/flyte.storage#flytestorageabfs) |Any Azure Blob Storage specific configuration. |
 | [`flyte.storage.GCS`](../packages/flyte.storage#flytestoragegcs) |Any GCS specific configuration. |

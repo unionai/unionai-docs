@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,6 +25,8 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`RunDetails`](.././flyte.remote#flyteremoterundetails) | A class representing a run of a task. |
 | [`Secret`](.././flyte.remote#flyteremotesecret) |  |
 | [`Task`](.././flyte.remote#flyteremotetask) |  |
+| [`Trigger`](.././flyte.remote#flyteremotetrigger) |  |
+| [`User`](.././flyte.remote#flyteremoteuser) |  |
 
 ### Methods
 
@@ -377,13 +379,13 @@ remote Union API.
 
 ```python
 class ActionInputs(
-    pb2: run_definition_pb2.Inputs,
+    pb2: common_pb2.Inputs,
     data: Dict[str, Any],
 )
 ```
 | Parameter | Type |
 |-|-|
-| `pb2` | `run_definition_pb2.Inputs` |
+| `pb2` | `common_pb2.Inputs` |
 | `data` | `Dict[str, Any]` |
 
 ### Methods
@@ -562,13 +564,13 @@ remote Union API.
 
 ```python
 class ActionOutputs(
-    pb2: run_definition_pb2.Outputs,
+    pb2: common_pb2.Outputs,
     data: Tuple[Any, ...],
 )
 ```
 | Parameter | Type |
 |-|-|
-| `pb2` | `run_definition_pb2.Outputs` |
+| `pb2` | `common_pb2.Outputs` |
 | `data` | `Tuple[Any, ...]` |
 
 ### Methods
@@ -945,4 +947,119 @@ Returns:
 {{< /multiline >}} |
 | `version` | `None` | {{< multiline >}}The version of the task.
 {{< /multiline >}} |
+
+## flyte.remote.Trigger
+
+```python
+class Trigger(
+    pb2: trigger_definition_pb2.Trigger,
+    details: TriggerDetails | None,
+)
+```
+| Parameter | Type |
+|-|-|
+| `pb2` | `trigger_definition_pb2.Trigger` |
+| `details` | `TriggerDetails \| None` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`get_details()`](#get_details) | Get detailed information about this trigger. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### get_details()
+
+```python
+def get_details()
+```
+Get detailed information about this trigger.
+
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `automation_spec` | `None` |  |
+| `id` | `None` |  |
+| `is_active` | `None` |  |
+| `name` | `None` |  |
+| `task_name` | `None` |  |
+
+## flyte.remote.User
+
+```python
+class User(
+    pb2: UserInfoResponse,
+)
+```
+| Parameter | Type |
+|-|-|
+| `pb2` | `UserInfoResponse` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`name()`](#name) |  |
+| [`subject()`](#subject) |  |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### name()
+
+```python
+def name()
+```
+#### subject()
+
+```python
+def subject()
+```
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
 

@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -151,7 +151,7 @@ configure the task execution environment at runtime. This is usually used by plu
 ```python
 def data_loading_config(
     sctx: flyte.models.SerializationContext,
-) -> flyteidl.core.tasks_pb2.DataLoadingConfig
+) -> flyteidl2.core.tasks_pb2.DataLoadingConfig
 ```
 This configuration allows executing raw containers in Flyte using the Flyte CoPilot system
 Flyte CoPilot, eliminates the needs of sdk inside the container. Any inputs required by the users container
@@ -209,11 +209,14 @@ def override(
     secrets: Optional[SecretRequest],
     max_inline_io_bytes: int | None,
     pod_template: Optional[Union[str, PodTemplate]],
+    queue: Optional[str],
+    interruptible: Optional[bool],
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
 Override various parameters of the task template. This allows for dynamic configuration of the task
 when it is called, such as changing the image, resources, cache policy, etc.
+
 
 
 | Parameter | Type |
@@ -228,6 +231,8 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `secrets` | `Optional[SecretRequest]` |
 | `max_inline_io_bytes` | `int \| None` |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` |
+| `queue` | `Optional[str]` |
+| `interruptible` | `Optional[bool]` |
 | `kwargs` | `**kwargs` |
 
 #### post()

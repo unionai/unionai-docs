@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b20
+version: 2.0.0b25
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,6 +19,8 @@ layout: py_api
 
 | Method | Description |
 |-|-|
+| [`download_code_bundle()`](#download_code_bundle) | Downloads the code bundle if it is not already downloaded. |
+| [`get_proto_resources()`](#get_proto_resources) | Get main resources IDL representation from the resources object. |
 | [`is_initialized()`](#is_initialized) | Check if the system has been initialized. |
 | [`pod_spec_from_resources()`](#pod_spec_from_resources) |  |
 
@@ -31,6 +33,35 @@ layout: py_api
 | `TaskPluginRegistry` | `_Registry` |  |
 
 ## Methods
+
+#### download_code_bundle()
+
+```python
+def download_code_bundle(
+    code_bundle: flyte.models.CodeBundle,
+) -> flyte.models.CodeBundle
+```
+Downloads the code bundle if it is not already downloaded.
+
+
+| Parameter | Type |
+|-|-|
+| `code_bundle` | `flyte.models.CodeBundle` |
+
+#### get_proto_resources()
+
+```python
+def get_proto_resources(
+    resources: flyte._resources.Resources | None,
+) -> typing.Optional[flyteidl2.core.tasks_pb2.Resources]
+```
+Get main resources IDL representation from the resources object
+
+
+
+| Parameter | Type |
+|-|-|
+| `resources` | `flyte._resources.Resources \| None` |
 
 #### is_initialized()
 
@@ -75,7 +106,7 @@ class AsyncFunctionTaskTemplate(
     image: Union[str, Image, Literal['auto']],
     resources: Optional[Resources],
     cache: CacheRequest,
-    interruptable: bool,
+    interruptible: bool,
     retries: Union[int, RetryStrategy],
     reusable: Union[ReusePolicy, None],
     docs: Optional[Documentation],
@@ -84,10 +115,14 @@ class AsyncFunctionTaskTemplate(
     timeout: Optional[TimeoutType],
     pod_template: Optional[Union[str, PodTemplate]],
     report: bool,
+    queue: Optional[str],
+    debuggable: bool,
     parent_env: Optional[weakref.ReferenceType[TaskEnvironment]],
+    parent_env_name: Optional[str],
     max_inline_io_bytes: int,
+    triggers: Tuple[Trigger, ...],
     _call_as_synchronous: bool,
-    func: FunctionTypes,
+    func: F,
     plugin_config: Optional[Any],
 )
 ```
@@ -101,7 +136,7 @@ class AsyncFunctionTaskTemplate(
 | `image` | `Union[str, Image, Literal['auto']]` |
 | `resources` | `Optional[Resources]` |
 | `cache` | `CacheRequest` |
-| `interruptable` | `bool` |
+| `interruptible` | `bool` |
 | `retries` | `Union[int, RetryStrategy]` |
 | `reusable` | `Union[ReusePolicy, None]` |
 | `docs` | `Optional[Documentation]` |
@@ -110,10 +145,14 @@ class AsyncFunctionTaskTemplate(
 | `timeout` | `Optional[TimeoutType]` |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` |
 | `report` | `bool` |
+| `queue` | `Optional[str]` |
+| `debuggable` | `bool` |
 | `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` |
+| `parent_env_name` | `Optional[str]` |
 | `max_inline_io_bytes` | `int` |
+| `triggers` | `Tuple[Trigger, ...]` |
 | `_call_as_synchronous` | `bool` |
-| `func` | `FunctionTypes` |
+| `func` | `F` |
 | `plugin_config` | `Optional[Any]` |
 
 ### Methods
@@ -276,11 +315,14 @@ def override(
     secrets: Optional[SecretRequest],
     max_inline_io_bytes: int | None,
     pod_template: Optional[Union[str, PodTemplate]],
+    queue: Optional[str],
+    interruptible: Optional[bool],
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
 Override various parameters of the task template. This allows for dynamic configuration of the task
 when it is called, such as changing the image, resources, cache policy, etc.
+
 
 
 | Parameter | Type |
@@ -295,6 +337,8 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `secrets` | `Optional[SecretRequest]` |
 | `max_inline_io_bytes` | `int \| None` |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` |
+| `queue` | `Optional[str]` |
+| `interruptible` | `Optional[bool]` |
 | `kwargs` | `**kwargs` |
 
 #### post()

@@ -77,14 +77,14 @@ $ flyte --config /path/to/config.yaml run ...
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--endpoint` | `text` |  | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
+| `--endpoint` | `text` | `Sentinel.UNSET` | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
 | {{< multiline >}}`-v`
 `--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
-| `--org` | `text` |  | The organization to which the command applies. |
+| `--org` | `text` | `Sentinel.UNSET` | The organization to which the command applies. |
 | {{< multiline >}}`-c`
-`--config`{{< /multiline >}} | `path` |  | Path to the configuration file to use. If not specified, the default configuration file is used. |
+`--config`{{< /multiline >}} | `path` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
@@ -112,7 +112,7 @@ environments.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--noop` | `boolean` |  | Dummy parameter, placeholder for future use. Does not affect the build process. |
+| `--noop` | `boolean` | `Sentinel.UNSET` | Dummy parameter, placeholder for future use. Does not affect the build process. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte create
@@ -127,9 +127,9 @@ If the file already exists, it will raise an error unless the `--force` option i
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--endpoint` | `text` |  | Endpoint of the Flyte backend. |
+| `--endpoint` | `text` | `Sentinel.UNSET` | Endpoint of the Flyte backend. |
 | `--insecure` | `boolean` | `False` | Use an insecure connection to the Flyte backend. |
-| `--org` | `text` |  | Organization to use. This will override the organization in the configuration file. |
+| `--org` | `text` | `Sentinel.UNSET` | Organization to use. This will override the organization in the configuration file. |
 | {{< multiline >}}`-o`
 `--output`{{< /multiline >}} | `path` | `.flyte/config.yaml` | Path to the output directory where the configuration will be saved. Defaults to current directory. |
 | `--force` | `boolean` | `False` | Force overwrite of the configuration file if it already exists. |
@@ -176,8 +176,8 @@ $ flyte create secret my_secret --type image_pull
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--value` | `text` |  | Secret value Mutually exclusive with from_file. |
-| `--from-file` | `path` |  | Path to the file with the binary secret. Mutually exclusive with value. |
+| `--value` | `text` | `Sentinel.UNSET` | Secret value Mutually exclusive with from_file. |
+| `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value. |
 | `--type` | `choice` | `regular` | Type of the secret. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
@@ -199,7 +199,7 @@ This will create a trigger that runs every day at midnight.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--schedule` | `text` |  | Cron schedule for the trigger. Defaults to every minute. |
+| `--schedule` | `text` | `Sentinel.UNSET` | Cron schedule for the trigger. Defaults to every minute. |
 | `--description` | `text` | `` | Description of the trigger. |
 | `--auto-activate` | `boolean` | `True` | Whether the trigger should not be automatically activated. Defaults to True. |
 | `--trigger-time-var` | `text` | `trigger_time` | Variable name for the trigger time in the task inputs. Defaults to 'trigger_time'. |
@@ -248,11 +248,11 @@ This command will create or update environments in the Flyte system.
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
-| `--version` | `text` |  | Version of the environment to deploy |
+| `--version` | `text` | `Sentinel.UNSET` | Version of the environment to deploy |
 | {{< multiline >}}`--dry-run`
 `--dryrun`{{< /multiline >}} | `boolean` | `False` | Dry run. Do not actually call the backend service. |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
-| `--root-dir` | `text` |  | Override the root source directory, helpful when working with monorepos. |
+| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
 | {{< multiline >}}`--recursive`
 `-r`{{< /multiline >}} | `boolean` | `False` | Recursively deploy all environments in the current directory |
 | `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
@@ -270,7 +270,7 @@ Generate documentation.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--type` | `text` |  | Type of documentation (valid: markdown) |
+| `--type` | `text` | `Sentinel.UNSET` | Type of documentation (valid: markdown) |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -400,7 +400,7 @@ If you want to see the actions for a run, use `get action <run_name>`.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
-| `--in-phase` | `choice` |  | Filter runs by their status. |
+| `--in-phase` | `choice` | `Sentinel.UNSET` | Filter runs by their status. |
 | `--only-mine` | `boolean` | `False` | Show only runs created by the current user (you). |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
@@ -532,11 +532,11 @@ flyte run hello.py my_task --help
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
-| `--root-dir` | `text` |  | Override the root source directory, helpful when working with monorepos. |
-| `--name` | `text` |  | Name of the run. If not provided, a random name will be generated. |
+| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
+| `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | {{< multiline >}}`--follow`
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
-| `--image` | `text` |  | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
+| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte update
@@ -558,7 +558,7 @@ flyte update trigger <trigger_name> <task_name> --activate | --deactivate
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | {{< multiline >}}`--activate`
-`--deactivate`{{< /multiline >}} | `boolean` |  | Activate or deactivate the trigger. |
+`--deactivate`{{< /multiline >}} | `boolean` | `Sentinel.UNSET` | Activate or deactivate the trigger. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
