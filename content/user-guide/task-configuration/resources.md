@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 Task resources specify the computational limits and requests (CPU, memory, GPU, storage) that will be allocated to each task's container during execution.
 
 To specify resource requirements for your task, instantiate a `Resources` object with the desired parameters and assign it to either
-the `resources` parameter of the `TaskEnvironment` or the `resources` parameter of the `Task` decorator.
+the `resources` parameter of the `TaskEnvironment` or the `resources` parameter of the `override` function (for invocation overrides).
 
 Every task defined using that `TaskEnvironment` will run with the specified resources.
 If a specific task has its own `resources` defined in the decorator, it will override the environment's resources for that task only.
