@@ -6,17 +6,18 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Triggers
 
-You can attach multiple triggers to a task if you need to run a task automatically in case of a certain event. 
-Currently, we support:
-* Schedule triggers - can run your tasks based on a cron expression or fixed rate.
+Triggers allow you to automate (i.e. schedule) and paramaterize (i.e. override inputs) for your executions.
 
-In future, we will add support for:
+Currently, we support:
+* Schedule triggers - run tasks based on a cron expression or fixed rate schedule.
+
+In the future, we will add support for:
 * Webhook triggers - hit an API endpoint to run your task.
-* Artifacts triggers - run a task when a certain artifact is produced.
+* Artifact triggers - run a task when a certain artifact is produced.
 
 ## Schedule triggers
 
-You can define a task with a trigger using Python SDK like so:
+You can define a task with a trigger using the Python SDK like so:
 
 ```python
 import flyte
@@ -29,7 +30,7 @@ def example_task(trigger_time: datetime, x: int = 1) -> str:
     return f"Task executed at {trigger_time.isoformat()} with x={x}"
 ```
 
-It is possible to define triggers with custom cron expression or fixed rate interval:
+It is possible to define triggers with a custom cron expression or a fixed rate interval, and to specify inputs which will be used for triggered executions:
 ```python
 custom_cron_trigger = flyte.Trigger(
     "custom_cron",
@@ -49,9 +50,10 @@ def custom_task(start_time: datetime, x: int) -> str:
     return f"Custom task executed at {start_time.isoformat()} with x={x}"
 ```
 
+
+It's possible to pass the trigger invocation timestamp to the task.
+In the above example, we specified `"start_time": flyte.TriggerTime` in the trigger inputs.
 > [!NOTE]
-> Scheduler can pass execution time to your task, but you need to specify kick off time argument name in the inputs.
-> In our case, it was called "start_time" so we passed `"start_time": flyte.TriggerTime` to trigger inputs.
 > If your task has other arguments which doesn't have default values,
 > you must provide values for those in the trigger inputs.
 
