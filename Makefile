@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples
+.PHONY: all dist variant dev update-examples sync-examples variant-ci dist-ci
 
 all: usage
 
@@ -31,6 +31,17 @@ variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
+
+variant-ci:
+	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
+	@VERSION=${VERSION} ./scripts/run_hugo_ci.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
+	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
+
+dist-ci: base
+	make variant-ci VARIANT=flyte
+	# make variant-ci VARIANT=serverless
+	make variant-ci VARIANT=byoc
+	make variant-ci VARIANT=selfmanaged
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
