@@ -57,6 +57,21 @@ In the above example, we specified `"start_time": flyte.TriggerTime` in the trig
 > If your task has other arguments which doesn't have default values,
 > you must provide values for those in the trigger inputs.
 
+You can also override many other fields in the trigger definition that will be used
+in the triggered task pod:
+```python
+custom_cron_trigger = flyte.Trigger(
+    "custom_cron",
+    flyte.Cron("0 0 * * *"),
+    env_vars={"LOG_LEVEL": "DEBUG"},                # Environment variables
+    labels={"app": "my-app"},                       # Custom pod labels
+    annotations={"deployed_by": "john.foo@bar.com"},# Custom pod annotations
+    interruptible=True,                             # Whether triggered task can be interrupted
+    overwrite_cache=True,                           # Whether to recompute outputs for triggered task run and overwrite any existing cache.
+    queue="prod-queue",                             # The specific cluster that this action should be executed on
+)
+```
+
 ## Deploying a task with triggers
 
 To deploy a task with its triggers, you can either use Flyte CLI:
@@ -145,7 +160,7 @@ custom_rate_trigger = flyte.Trigger(
 ```
 If you deploy this trigger on October 24th, 2025, the trigger will wait until October 26th 10:00am and will create the first run at exactly 10:00am.
 
-If you define an inactive fixed rate trigger:
+You can also define an inactive fixed rate trigger:
 ```python
 custom_rate_trigger = flyte.Trigger(
     "custom_rate",
