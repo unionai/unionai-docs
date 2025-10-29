@@ -62,12 +62,12 @@ You can also override many other fields in the trigger definition that will be u
 custom_cron_trigger = flyte.Trigger(
     "custom_cron",
     flyte.Cron("0 0 * * *"),
-    env_vars={"LOG_LEVEL": "DEBUG"},                # Environment variables
-    labels={"app": "my-app"},                       # Custom labels
-    annotations={"deployed_by": "john.foo@bar.com"},# Custom annotations
-    interruptible=True,                             # Override to use interruptible
-    overwrite_cache=True,                           # Override to recompute cached outputs
-    queue="prod-queue",                             # Execution queue
+    env_vars={"LOG_LEVEL": "DEBUG"},                 # Environment variables
+    labels={"app": "my-app"},                        # Custom labels
+    annotations={"deployed_by": "john.foo@bar.com"}, # Custom annotations
+    interruptible=True,                              # Override to use interruptible
+    overwrite_cache=True,                            # Override to recompute cached outputs
+    queue="prod-queue",                              # Execution queue
 )
 ```
 
