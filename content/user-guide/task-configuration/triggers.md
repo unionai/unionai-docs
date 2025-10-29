@@ -54,8 +54,22 @@ def custom_task(start_time: datetime, x: int) -> str:
 It's possible to pass the trigger invocation timestamp to the task.
 In the above example, we specified `"start_time": flyte.TriggerTime` in the trigger inputs.
 > [!NOTE]
-> If your task has other arguments which doesn't have default values,
+> If your task has other arguments which don't have default values,
 > you must provide values for those in the trigger inputs.
+
+You can also override many other fields in the trigger definition that will be used in the triggered task:
+```python
+custom_cron_trigger = flyte.Trigger(
+    "custom_cron",
+    flyte.Cron("0 0 * * *"),
+    env_vars={"LOG_LEVEL": "DEBUG"},                # Environment variables
+    labels={"app": "my-app"},                       # Custom labels
+    annotations={"deployed_by": "john.foo@bar.com"},# Custom annotations
+    interruptible=True,                             # Override to use interruptible
+    overwrite_cache=True,                           # Override to recompute cached outputs
+    queue="prod-queue",                             # Execution queue
+)
+```
 
 ## Deploying a task with triggers
 
@@ -145,7 +159,7 @@ custom_rate_trigger = flyte.Trigger(
 ```
 If you deploy this trigger on October 24th, 2025, the trigger will wait until October 26th 10:00am and will create the first run at exactly 10:00am.
 
-If you define an inactive fixed rate trigger:
+You can also define an inactive fixed rate trigger:
 ```python
 custom_rate_trigger = flyte.Trigger(
     "custom_rate",
