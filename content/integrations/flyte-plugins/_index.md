@@ -14,3 +14,4 @@ Flyte plugins extend the functionality of the `flyte` SDK.
 | [Ray](./ray) | Run Ray jobs on your Flyte cluster |
 | [Spark](./spark) | Run Spark jobs on your Flyte cluster |
 | [OpenAI](./openai) | Integrate with OpenAI SDKs in your Flyte workflows |
+| [Dask](./dask) | Run Dask jobs on your Flyte cluster |
