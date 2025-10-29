@@ -34,7 +34,7 @@ You start building your image with on of the `from_` methods:
 
 * [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte#from_base): Start from a specified Dockerfile.
 * [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte#from_debian_base): Start from the Flyte default image
-* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Starte from
+* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Start from an [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
 You can then layer on additional components using the `with_` methods:
 
@@ -152,3 +152,60 @@ When `image.builder` in the `config.yaml` is set to `remote` (and you are runnin
 * Before the task that uses your custom image is executed, the backend pulls the image from the internal registry to set up the container.
 
 There is no set up of Docker nor any access control configuration required on your part.
+
+#### Handling image pull and push operations between the Union remote builder and a private registry
+
+If you are want to push your images to a private registry, you can do this by setting the `registry` parameter in the `Image` object.
+You also need to set the `registry_secret` parameter to provide the secret needed to pull and push images to the private registry.
+For example:
+
+```python
+# Add registry credentials so the Union remote builder can pull the base image
+# and push the resulting image to your private registry.
+image=flyte.Image.from_debian_base(
+    name="my-image",
+    base_image="registry.example.com/my-org/my-private-image:latest",
+    registry="registry.example.com/my-org"
+    registry_secret="my-secret"
+)
+
+# Reference the same secret in the TaskEnvironment so Flyte can pull the image at runtime.
+env = flyte.TaskEnvironment(
+    name="my_task_env",
+    image=image,
+    secrets="my-secret"
+)
+```
+
+To create an image pull secret for the remote builder and the task environment. Run the following command:
+
+```shell
+$ flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
+```
+
+The format of this secret matches the standard Kubernetes [image pull secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker-hub), and should look like this:
+
+```json
+{
+  "auths": {
+    "registry.example.com": {
+      "auth": "base64-encoded-auth"
+    }
+  }
+}
+```
+> [!NOTE]
+> The auth field contains the base64-encoded credentials for your registry (username and password or token).
+
+### Install private pypi packages
+To install Python packages from a private PyPI index (for example, from GitHub), you can mount a secret to the image layer.
+This allows your build to authenticate securely during dependency installation.
+For example:
+```python
+private_package = "git+https://$GITHUB_PAT@github.com/pingsutw/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
+image = (
+    Image.from_debian_base()
+    .with_apt_packages("git")
+    .with_pip_packages(private_package, pre=True, secret_mounts=Secret("GITHUB_PAT"))
+)
+```
