@@ -57,26 +57,6 @@ In the above example, we specified `"start_time": flyte.TriggerTime` in the trig
 > If your task has other arguments which don't have default values,
 > you must provide values for those in the trigger inputs.
 
-### Time zones and Daylight Savings Time
-Cron expressions are by default in UTC, but it's possible to specify a custom time zone like so:
-
-```python
-cron_eastern_time = flyte.Trigger(
-    "eastern_time",
-    CRON_TZ=America/New_York 30 2 * * *,
-)
-```
-The above schedule will run every day at 2:30AM in US Eastern time (America/New_York).
-
-When Daylight Savings Time (DST) begins and ends, it can impact when the scheduled execution begins.
-
-### Spring Forward
-On the day DST begins, time jumps from 2:00AM to 3:00AM, which means the time of 2:30AM won't exist. In this case, the trigger will be invoked at 3:30AM (the same amout of wall time after the previous invocation as if there were no spring forward).
-
-### Fall Back
-On the day DST ends, the hour from 1:00AM to 2:00AM repeats, which means the time of 1:30AM will exist twice. If the schedule above was instead set for 1:30AM, it would only run once, on the first occurrence of 1:30AM.
-
-
 You can also override many other fields in the trigger definition that will be used in the triggered task:
 ```python
 custom_cron_trigger = flyte.Trigger(
@@ -212,3 +192,22 @@ In the Union UI we display:
 * `Last Run` - when was the last run created by this trigger.
 
 For development and debugging purposes, you can adjust and deploy individual triggers from the UI.
+
+## Schedule time zones and Daylight Savings Time
+Cron expressions are by default in UTC, but it's possible to specify a custom time zone like so:
+
+```python
+cron_eastern_time = flyte.Trigger(
+    "eastern_time",
+    CRON_TZ=America/New_York 30 2 * * *,
+)
+```
+The above schedule will run every day at 2:30AM in US Eastern time (America/New_York).
+
+When Daylight Savings Time (DST) begins and ends, it can impact when the scheduled execution begins.
+
+### Spring Forward
+On the day DST begins, time jumps from 2:00AM to 3:00AM, which means the time of 2:30AM won't exist. In this case, the trigger will be invoked at 3:30AM (the same amout of wall time after the previous invocation as if there were no spring forward).
+
+### Fall Back
+On the day DST ends, the hour from 1:00AM to 2:00AM repeats, which means the time of 1:30AM will exist twice. If the schedule above was instead set for 1:30AM, it would only run once, on the first occurrence of 1:30AM.
