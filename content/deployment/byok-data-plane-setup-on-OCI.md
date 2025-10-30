@@ -108,4 +108,3 @@ uctl validate snacks --project=union-health-monitoring --domain=development
  ---------------------- ----------------------------------- ---------- -------------------------------- -------------- ----------- ---------------
 1 rows
 ```
-Also you can run v2 executions following this guide: [Running v2 executions](https://www.union.ai/docs/v2/byoc/user-guide/getting-started/running/)
