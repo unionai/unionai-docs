@@ -9,9 +9,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Concurrency control allows you to limit the number of concurrently running workflow executions for a specific launch plan, identified by its unique `project`, `domain`, and `name`. This control is applied across all versions of that launch plan.
 
-```{note}
-To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
-```
+> [!NOTE]
+> To clone and run the example code on this page, see the [Flytesnacks repo][flytesnacks].
 
 ## How It Works
 
