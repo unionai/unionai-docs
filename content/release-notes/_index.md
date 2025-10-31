@@ -20,9 +20,7 @@ You can use these summary views (as well as the action status filter) to spot ch
 
 ![50k Fanout Visualization](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_50k_fanout.gif)
 
-This is a big milestone on our way to supporting million-task fanouts.
-
-### :cloud: Remote debugging for Ray head nodes
+### :computer: Remote debugging for Ray head nodes
 Rather than locally reproducing errors, sometimes you just want to zoom into the remote execution and see what's happening.
 We directly enable this with the debug button.
 When you click "Debug action" from an action in a run, we spin up that action's environment, code, and input data, and attach a live VS Code debugger.
@@ -40,20 +38,19 @@ def example_task(trigger_time: datetime, x: int = 1) -> str:
     return f"Task executed at {trigger_time.isoformat()} with x={x}"
 ```
 
-Upon deploy, it's possible to see all the triggers which are associated with a task:
+Once you deploy, it's possible to see all the triggers which are associated with a task:
 
 ![Triggers for a Task](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_triggers_for_task.png)
 
 We also maintain an audit history of every deploy, activation, and deactivation event, so you can get a sense of who's touched an automation.
 
-[Triggers Activity Log](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_trigger_activity_log.gif)
+![Triggers Activity Log](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_trigger_activity_log.gif)
 
 ### :arrow_up: Deployed tasks and input passing
 
 You can see the runs, task spec, and triggers associated with any deployed task, and launch it from the UI. We've converted the launch forms to a convenient JSON Schema syntax, so you can easily copy-paste the inputs from a previous run into a new run for any task.
 
-[Deployed Tasks and Input Passing](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_tasks_and_input_passing.gif)
-
+![Deployed Tasks and Input Passing](https://raw.githubusercontent.com/unionai/unionai-docs-static/refs/heads/main/images/release-notes/2025-10_tasks_and_input_passing.gif)
 
 {{< /markdown >}}
 {{< /variant >}}

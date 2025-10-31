@@ -1,5 +1,4 @@
 baseURL = '/docs/serverless/'
-enableEmoji = true
 
 [params]
 _merge = "deep"
