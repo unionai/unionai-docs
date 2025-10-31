@@ -207,7 +207,7 @@ The above schedule will run every day at 2:30AM in US Eastern time (America/New_
 When Daylight Savings Time (DST) begins and ends, it can impact when the scheduled execution begins.
 
 ### Spring Forward
-On the day DST begins, time jumps from 2:00AM to 3:00AM, which means the time of 2:30AM won't exist. In this case, the trigger will be invoked at 3:30AM (the same amout of wall time after the previous invocation as if there were no spring forward).
+On the day DST begins, time jumps from 2:00AM to 3:00AM, which means the time of 2:30AM won't exist. In this case, the trigger will not fire until the next 2:30AM, which is the next day.
 
 ### Fall Back
 On the day DST ends, the hour from 1:00AM to 2:00AM repeats, which means the time of 1:30AM will exist twice. If the schedule above was instead set for 1:30AM, it would only run once, on the first occurrence of 1:30AM.
