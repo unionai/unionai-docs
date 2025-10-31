@@ -1,7 +1,7 @@
 ---
 title: Release Notes
 weight: 6
-variants: +serverless +byoc +selfmanaged
+variants: +serverless +byoc +selfmanaged -flyte
 top_menu: true
 sidebar_expanded: true
 ---
