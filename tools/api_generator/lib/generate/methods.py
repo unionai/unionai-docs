@@ -16,13 +16,14 @@ def generate_method_decl(
     # Filter out 'self' parameter
     filtered_params = [param for param in method["params"] if param["name"] != "self"]
 
-    if method["framework"] == "synchronicity":
+    if method["framework"] == "syncify":
+        qual_name = f"{method["parent_name"]}.{name}" if method["parent_name"] else name
         output.write(
             f"""
 > [!NOTE] This method can be called both synchronously or asynchronously.
-> By default, it will be called synchronously.
-> To call it asynchronously, use the function `.aio()` on the result:
-> `result = await {name}.aio()`.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await {qual_name}.aio()`.
 """
         )
 

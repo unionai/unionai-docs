@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 2.0.0b25
+version: 2.0.0b26
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,6 +40,11 @@ Get the current report. This is a dummy report if not in a task context.
 
 #### flush()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await flush.aio()`.
 ```python
 def flush()
 ```
@@ -65,6 +70,11 @@ Get a tab by name. If the tab does not exist, create it.
 
 #### log()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await log.aio()`.
 ```python
 def log(
     content: str,
@@ -83,6 +93,11 @@ Log content to the main tab. The content should be a valid HTML string, but not 
 
 #### replace()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await replace.aio()`.
 ```python
 def replace(
     content: str,

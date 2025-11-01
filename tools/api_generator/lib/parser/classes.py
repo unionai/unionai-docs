@@ -84,7 +84,7 @@ def get_class_details(class_path: str) -> Optional[ClassDetails]:
                 continue
 
             # Methods
-            method_info = parse_method(name, member)
+            method_info = parse_method(name, member, class_name)
             if method_info:
                 class_info["methods"].append(method_info)
 
