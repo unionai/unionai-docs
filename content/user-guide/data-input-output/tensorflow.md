@@ -80,7 +80,7 @@ def training_workflow(x: tf.Tensor, y: tf.Tensor) -> float:
 The `TensorFlowRecordFileTransformer` enables you to work with single TFRecord files, making it easy to read and write data in TensorFlow's TFRecord format.
 
 ```python
-@{{< key kit_as >}}.task((container_image=custom_image))
+@{{< key kit_as >}}.task(container_image=custom_image)
 def process_tfrecord(file: TFRecordFile) -> int:
     count = 0
     for record in tf.data.TFRecordDataset(file):
