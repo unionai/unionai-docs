@@ -30,67 +30,61 @@ helm repo add unionai https://unionai.github.io/helm-charts/
 helm repo update
 ```
 
-2. Use the `uctl create admin-oauth-app` command to generate a new client and client secret for communicating with your Union control plane:
+2. Use the `uctl selfserve provision-dataplane-resources` command to generate a new client and client secret for communicating with your Union control plane, provision authz permissions for the app to operate on the union cluster name you have selected, generate values file to install dataplane in your kubernetes cluster and provide followup instructions:
 ```shell
 uctl config init --host=<YOUR_UNION_CONTROL_PLANE_URL>
-uctl create admin-oauth-app
+uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTERNAME>  --provider metal
 ```
-* The output will emit the ID, name, and a secret that will be used by the union services to communicate with your control plane.
+* The output will emit the ID, name, and a secret that will be used by the union services to communicate with your control plane and it also generate values file based on the passed in provider
 ```shell
- --------------- ---------------- ------------------------------------------------------------------
-| CLIENT ID     | CLIENT NAME    | SECRET                                                           |
- --------------- ---------------- ------------------------------------------------------------------
-| xxxxxxxxxxxxx | xxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
- --------------- ---------------- ------------------------------------------------------------------
+  -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ---------- 
+| ORGANIZATION | HOST                               | CLUSTER                    | CLUSTERAUTHCLIENTID                             | CLUSTERAUTHCLIENTSECRET                                          | PROVIDER |
+ -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ---------- 
+| xxxxxxxxxxx  | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxx    |
+ -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ---------- 
 1 rows
-```
-* Save the secret that is displayed. Union does not store the credentials and it cannot be retrieved later.
 
-3.  Create a values file that include, at a minimum, the following fields:
+✅ Generated <ORGNAME>-values.yaml
+======================================================================
+Installation Instructions
+======================================================================
 
-```yaml
-host: <YOUR_UNION_CONTROL_PLANE_URL>  # Should not include the `https://`.
-clusterName: <MY_CLUSTER> #unique cluster identifier
-orgName: <MY_ORG> #Name of your {{< key product_name >}} organization
-provider: metal #The cloud provider your cluster is running in.  Acceptable values include `aws`, `gcp`, `azure`, `oci`, and `metal` (for self-managed or on-prem clusters).
-storage:
-  provider: "compat"
-  endpoint: <STORAGE_ENDPOINT> #This is the S3 API endpoint provided by your cloud vendor.
-  accessKey: <S3_ACCESS_KEY>
-  secretKey: <S3_SECRET_KEY>
-  bucketName: <S3_BUCKET_NAME>
-  fastRegistrationBucketName: <S3_BUCKET_NAME> #This can be the same as bucketName
-  region: <CLOUD_REGION> #region where your S3 bucket is configured
-secrets:
-  admin:
-    create: true
-    clientId: <UNION_CLIENT_ID> # Generated in the previous step
-    clientSecret: <UNION_CLIENT_SECRET> # Generated in the previous step
-fluentbit:
-  env:
-    - name: AWS_ACCESS_KEY_ID
-      value: <S3_ACCESS_KEY>        # Use the same <S3_ACCESS_KEY> as in storage section
-    - name: AWS_SECRET_ACCESS_KEY
-      value: <S3_SECRET_KEY>        # Use the same <S3_SECRET_KEY> as in storage section
+Step 1: Prepare your Kubernetes cluster.
+
+Step 2: Clone and navigate to helm-charts repository
+  git clone https://github.com/unionai/helm-charts && cd helm-charts
+
+Step 3: Configure your S3-compatible storage endpoint & credentials in the values file
+
+Step 4: Install the data plane CRDs
+  helm upgrade --install unionai-dataplane-crds charts/dataplane-crds
+
+Step 5: Install the data plane
+  helm upgrade --install unionai-dataplane charts/dataplane \
+    --namespace union \
+    --values <ORGNAME>-values.yaml
+
+Step 6: Verify installation
+  kubectl get pods -n union
+
+Step 7: Once you have your dataplane up and running, create API keys for your organization. If you have already just call the same command again to propogate the keys to new cluster:
+  uctl create apikey --keyName EAGER_API_KEY --org <your-org-name>
+Step 8: You can now trigger v2 executions on this dataplane.
 ```
+* Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the Oauth Apps provider.
+* Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
+
+3.  Update the values file correctly:
+    eg  `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations.md#iam)
 
 4. Optionally configure the resource `limits` and `requests` for the different services.  By default these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
-    * `clusterresourcesync.resources`
-    * `flytepropeller.resources`
-    * `flytepropellerwebhook.resources`
-    * `operator.resources`
-    * `proxy.resources`
+   * `clusterresourcesync.resources`
+   * `flytepropeller.resources`
+   * `flytepropellerwebhook.resources`
+   * `operator.resources`
+   * `proxy.resources`
 
-5. Install the {{< key product_name >}} operator and CRDs:
-```shell
-helm upgrade --install unionai-dataplane-crds unionai/dataplane-crds
-helm upgrade --install unionai-dataplane unionai/dataplane \
-    --create-namespace \
-    --namespace union \
-    --values <YOUR_VALUES_FILE>
-```
-
-6. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
+5. Once deployed you can check to see if the cluster has been successfully registered to the control plane:
 
 ```shell
 uctl get cluster
@@ -101,7 +95,8 @@ uctl get cluster
  ----------- ------- --------------- -----------
 1 rows
 ```
-7. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
+
+6. You can then register and run some example workflows through your cluster to ensure that it is working correctly.
 
 ```shell
 uctl register examples --project=union-health-monitoring --domain=development
