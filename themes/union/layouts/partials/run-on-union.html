@@ -10,7 +10,8 @@
     {{- if .Params.source_location -}}
         {{- $text = replace $text "@@source_location@@" .Params.source_location -}}
     {{- else -}}
-        {{- $text = replace $text "@@source_location@@" "https://github.com/unionai/unionai-examples/tree/main/v1" -}}
+        {{- $source_location := replace .Params.example_file "/external/unionai-examples/" "https://www.github.com/unionai/unionai-examples/tree/main/" -}}
+        {{- $text = replace $text "@@source_location@@" $source_location -}}
     {{- end -}}
     {{ page.RenderString $text }}
   </sl-details>
