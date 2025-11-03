@@ -60,7 +60,7 @@ lp_combined = {{< key kit_as >}}.LaunchPlan.get_or_create(
 ## Scheduled Execution
 
 ```python
-import {{< key kit_as >}}
+import {{< key kit_import >}}
 from datetime import timedelta
 from flytekit.core.schedule import CronSchedule, FixedRate
 
@@ -91,7 +91,7 @@ fixed_rate_lp = {{< key kit_as >}}.LaunchPlan.get_or_create(
 Labels and annotations help with organization and can be used for filtering or adding metadata.
 
 ```python
-import {{< key kit_as >}}
+import {{< key kit_import >}}
 from flytekit.models.common import Labels, Annotations
 
 # Adding labels and annotations
@@ -107,7 +107,7 @@ lp_with_metadata = {{< key kit_as >}}.LaunchPlan.get_or_create(
 ## Execution Parameters
 
 ```python
-import {{< key kit_as >}}
+import {{< key kit_import >}}
 
 # Setting max parallelism to limit concurrent task execution
 lp_with_parallelism = {{< key kit_as >}}.LaunchPlan.get_or_create(
@@ -139,7 +139,7 @@ lp_auto_activate = {{< key kit_as >}}.LaunchPlan.get_or_create(
 We can also override the auth role (either an iam role or a kubernetes service account) used to execute a launch plan.
 
 ```python
-import {{< key kit_as >}}
+import {{< key kit_import >}}
 from flytekit.models.common import AuthRole
 from flytekit import SecurityContext
 
