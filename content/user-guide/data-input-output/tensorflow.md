@@ -46,7 +46,7 @@ The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remo
 {{< /variant >}}
 
 ```python
-@{{< key kit_as >}}.task
+@{{< key kit_as >}}.task(container_image=custom_image)
 def train_model() -> tf.keras.Model:
     model = tf.keras.Sequential(
         [tf.keras.layers.Dense(128, activation="relu"), tf.keras.layers.Dense(10, activation="softmax")]
@@ -55,7 +55,7 @@ def train_model() -> tf.keras.Model:
     return model
 
 
-@{{< key kit_as >}}.task
+@{{< key kit_as >}}.task(container_image=custom_image)
 def evaluate_model(model: tf.keras.Model, x: tf.Tensor, y: tf.Tensor) -> float:
     loss, accuracy = model.evaluate(x, y)
     return accuracy
@@ -80,7 +80,7 @@ def training_workflow(x: tf.Tensor, y: tf.Tensor) -> float:
 The `TensorFlowRecordFileTransformer` enables you to work with single TFRecord files, making it easy to read and write data in TensorFlow's TFRecord format.
 
 ```python
-@{{< key kit_as >}}.task
+@{{< key kit_as >}}.task((container_image=custom_image))
 def process_tfrecord(file: TFRecordFile) -> int:
     count = 0
     for record in tf.data.TFRecordDataset(file):
@@ -108,7 +108,7 @@ The `TensorFlowRecordsDirTransformer` allows you to work with directories of TFR
 
 #### Example
 ```python
-@{{< key kit_as >}}.task
+@{{< key kit_as >}}.task(container_image=custom_image)
 def process_tfrecords_dir(dir: TFRecordsDirectory) -> int:
     count = 0
     for record in tf.data.TFRecordDataset(dir.path):
