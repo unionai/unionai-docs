@@ -40,7 +40,7 @@ The `TensorFlowModelTransformer` allows you to save a TensorFlow model to a remo
 
 <!-- TODO: Remove mention of flytesnacks -->
 > [!NOTE]
-> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/tensorflow_type.py).
+> To clone and run the example code on this page, see the [Flytesnacks repo](https://github.com/flyteorg/flytesnacks/tree/master/examples/data_types_and_io/data_types_and_io/tensorflow_type.py).
 
 {{< /markdown >}}
 {{< /variant >}}
