@@ -3,7 +3,7 @@ title: How to trigger the Feast workflow using FlyteRemote
 weight: 1
 variants: +flyte -serverless -byoc -selfmanaged
 jupyter_notebook: /external/unionai-examples/v1/flyte-tutorials/feast_integration/feast_integration/feast_flyte_remote.ipynb
-content_hash: 2b296a9470b53436bf3b49ad8420a79de0945ca4dd3e1ae5017312e41ee0f089 # hash managed by Makefile.jupyter (do not edit)
+content_hash: 31f842f6f6cf1882c9053752df732909e5b5b34d2dd401ab33688e527a245275 # hash managed by Makefile.jupyter (do not edit)
 ---
 
 <!--
@@ -40,9 +40,9 @@ os.environ["FLYTE_AWS_SECRET_ACCESS_KEY"] = os.environ["AWS_SECRET_ACCESS_KEY"] 
 
 ## 01. Register the code
 
-The actual workflow code is auto-documented and rendered using sphinx [here](../feast-integration/). We've used [Flytekit](../../../api-reference/flytekit-sdk) to express the pipeline in pure Python.
+We've used Flytekit to express the pipeline in pure Python.
 
-You can use [FlyteConsole](https://github.com/flyteorg/flyteconsole) to launch, monitor, and introspect Flyte executions. However here, let's use [flytekit.remote](../../../api-reference/flytekit-sdk/packages/flytekit.remote.remote) to interact with the Flyte backend.
+You can use [FlyteConsole](https://github.com/flyteorg/flyteconsole) to launch, monitor, and introspect Flyte executions. However here, let's use `flytekit.remote` to interact with the Flyte backend.
 
 
 ```python
@@ -126,6 +126,7 @@ print(f"Execution {synced_execution.id.name} is in {WorkflowExecutionPhase.enum_
 
     Execution f218aba055ba34a3fb75 is in SUCCEEDED phase
 
+
 ## 04. Retrieve the output
 
 Fetch the model and the model prediction.
@@ -198,6 +199,7 @@ inference_point
      'packed cell volume': [43.0],
      'outcome': ['1'],
      'abdominal distension': [4.0]}
+
 
 
 ### Generate a prediction

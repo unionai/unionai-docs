@@ -1,7 +1,6 @@
 ---
 title: Development cycle
 weight: 5
-sidebar_expanded: true
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
