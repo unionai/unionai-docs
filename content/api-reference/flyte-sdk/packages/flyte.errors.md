@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b25
+version: 2.0.0b26
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

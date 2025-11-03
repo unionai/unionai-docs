@@ -86,6 +86,9 @@ def get_functions(info: PackageInfo, pkg: ModuleType) -> List[MethodInfo]:
             method_info = parse_syncify_method(name, member)
         if should_include(name, member, pkg, inspect.isfunction):
             method_info = parse_method(name, member)
+        # TODO Handle the case in which the member is a class, then methods of the class
+        # should be shown, if it has a __call__ method, then show that as the regular method
+        # Example is flyte.map
         if method_info:
             result.append(method_info)
     return result

@@ -4,14 +4,21 @@ from lib.parser.docstring import parse_docstring
 from lib.ptypes import MethodInfo, PropertyInfo, VariableInfo, FrameworkType, ParamInfo
 
 
-def parse_method(name: str, member: object) -> Optional[MethodInfo]:
-    if not (inspect.isfunction(member) or inspect.ismethod(member)):
+def parse_method(name: str, member: object, parent_name: str | None = None) -> Optional[MethodInfo]:
+    from lib.parser.syncify import is_syncify_method
+    framework: FrameworkType = "python"
+    if is_syncify_method(name, member):
+        framework = "syncify"
+        if parent_name and inspect.isfunction(getattr(member, "fn")):
+            parent_name = f"<{parent_name} instance>"
+    elif not (inspect.isfunction(member) or inspect.ismethod(member)):
         return None
 
-    return do_parse_method(name, member, "python")
+    return do_parse_method(name, member, framework, parent_name)
 
 
-def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optional[MethodInfo]:
+def do_parse_method(name: str, member: Any, framework: FrameworkType,
+                    parent_name: str | None = None) -> Optional[MethodInfo]:
     doc_info = parse_docstring(inspect.getdoc(member), source=member)
     docstr = doc_info["docstring"] if doc_info else None
     params_docs = doc_info["params"] if doc_info else None
@@ -55,6 +62,7 @@ def do_parse_method(name: str, member: Any, framework: FrameworkType) -> Optiona
         return_type=str(return_type),
         return_doc=return_doc,
         framework=framework,
+        parent_name=parent_name
     )
     return method_info
 
