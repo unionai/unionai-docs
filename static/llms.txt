@@ -54,6 +54,7 @@ Important notes:
 
 - [Flyte SDK](https://www.union.ai/docs/v2/flyte/api-reference/flyte-sdk/): Complete Python API reference for the Flyte SDK including TaskEnvironment, decorators, types, and utilities.
 - [Flyte CLI](https://www.union.ai/docs/v2/flyte/api-reference/flyte-cli/): Command-line interface reference for flyte run, flyte deploy, flyte create config, and other CLI commands.
+- [Flyte LLM context](https://www.union.ai/docs/v2/flyte/api-reference/flyte-context/): LLM context document for AI-based IDEs and assistants to help them better understand Flyte 2 development.
 
 ## Integrations
 
