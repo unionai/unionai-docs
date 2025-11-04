@@ -1,11 +1,10 @@
 ---
-title: "Flyte LLM context"
+title: Flyte LLM context
 variants: +flyte +byoc +selfmanaged +serverless
-weight: 6
 ---
 
 # Flyte LLM context
-`
+
 The following document provides comprehensive LLM context for authoring and running Flyte workflows.
 It serves as a reference for LLM-based AI assistants to understand how to properly write, configure, and execute Flyte workflows.
 
