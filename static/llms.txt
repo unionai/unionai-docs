@@ -4,61 +4,68 @@
 
 Important notes:
 
-- Flyte 2.0 (currently in beta) represents a fundamental shift in how AI workflows are written and executed, with pure Python execution, a simplified API, and fine-grained reproducibility
-- The Flyte SDK uses Python 3.10+ and integrates with the `uv` package manager
-- Tasks are defined within `TaskEnvironment` objects, which encapsulate the context and resources needed for execution
-- There is no `@workflow` decorator in Flyte 2—"workflows" are authored through a pattern of tasks calling tasks
-- Union.ai provides commercial variants with additional features like reusable containers and multi-cluster support
+- Flyte 2.0 (currently in beta) represents a fundamental shift in how AI workflows are written and executed, with pure Python execution, a simplified API, and fine-grained reproducibility.
+- The Flyte SDK uses Python 3.10+ and integrates with the `uv` package manager.
+- Tasks are defined within `TaskEnvironment` objects, which encapsulate the context and resources needed for execution.
+- There is no `@workflow` decorator in Flyte 2—"workflows" are authored through a pattern of tasks calling tasks.
+- Union.ai provides commercial variants with additional features like reusable containers and multi-cluster support.
 
 ## Getting Started
 
-- [Getting started](https://www.union.ai/docs/flyte/user-guide/getting-started/): Install Flyte 2, configure your IDE, create and run your first task in minutes
-- [Flyte 2 introduction](https://www.union.ai/docs/flyte/user-guide/flyte-2/): Learn about pure Python execution, simplified API, improved remote functionality, and native notebook support
+- [Getting started](https://www.union.ai/docs/v2/flyte/user-guide/getting-started/): Install Flyte 2, configure your IDE, create and run your first task in minutes.
+- [Flyte 2 introduction](https://www.union.ai/docs/v2/flyte/user-guide/flyte-2/): Learn about pure Python execution, simplified API, improved remote functionality, and native notebook support.
 
 ## User Guide - Task Configuration
 
-- [Task configuration overview](https://www.union.ai/docs/flyte/user-guide/task-configuration/): Understanding TaskEnvironment, decorator, and invocation-level configuration parameters
-- [Container images](https://www.union.ai/docs/flyte/user-guide/task-configuration/container-images/): Specifying Docker images for task containers
-- [Resources](https://www.union.ai/docs/flyte/user-guide/task-configuration/resources/): Configuring CPU, memory, and GPU requirements
-- [Caching](https://www.union.ai/docs/flyte/user-guide/task-configuration/caching/): Using task-level caching for reproducibility and efficiency
-- [Secrets](https://www.union.ai/docs/flyte/user-guide/task-configuration/secrets/): Managing sensitive data like API keys and credentials
-- [Retries and timeouts](https://www.union.ai/docs/flyte/user-guide/task-configuration/retries-and-timeouts/): Configuring retry strategies and timeout policies
-- [Triggers](https://www.union.ai/docs/flyte/user-guide/task-configuration/triggers/): Setting up event-based and scheduled workflow execution
-- [Pod templates](https://www.union.ai/docs/flyte/user-guide/task-configuration/pod-templates/): Customizing Kubernetes pod configurations
-- [Reusable containers](https://www.union.ai/docs/flyte/user-guide/task-configuration/reusable-containers/): Achieving millisecond-level execution with container reuse (Union.ai feature)
-- [Multiple environments](https://www.union.ai/docs/flyte/user-guide/task-configuration/multiple-environments/): Managing multiple TaskEnvironments in a single workflow
+- [Task configuration overview](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/): Understanding TaskEnvironment, decorator, and invocation-level configuration parameters.
+- [Container images](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/container-images/): Specifying Docker images for task containers.
+- [Resources](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/resources/): Configuring CPU, memory, and GPU requirements.
+- [Caching](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/caching/): Using task-level caching for reproducibility and efficiency.
+- [Secrets](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/secrets/): Managing sensitive data like API keys and credentials.
+- [Retries and timeouts](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/retries-and-timeouts/): Configuring retry strategies and timeout policies.
+- [Triggers](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/triggers/): Setting up event-based and scheduled workflow execution.
+- [Pod templates](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/pod-templates/): Customizing Kubernetes pod configurations.
+- [Reusable containers](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/reusable-containers/): Achieving millisecond-level execution with container reuse (Union.ai feature).
+- [Multiple environments](https://www.union.ai/docs/v2/flyte/user-guide/task-configuration/multiple-environments/): Managing multiple TaskEnvironments in a single workflow.
 
 ## User Guide - Task Programming
 
-- [Task programming overview](https://www.union.ai/docs/flyte/user-guide/task-programming/): Essential programming patterns for building robust Flyte workflows
-- [Files and directories](https://www.union.ai/docs/flyte/user-guide/task-programming/files-and-directories/): Working with large datasets using flyte.File and flyte.Dir
-- [Dataframes](https://www.union.ai/docs/flyte/user-guide/task-programming/dataframes/): Using pandas, Polars, and other dataframe libraries
-- [Dataclasses and structures](https://www.union.ai/docs/flyte/user-guide/task-programming/dataclasses-and-structures/): Type-safe workflows with Python dataclasses and Pydantic models
-- [Fanout](https://www.union.ai/docs/flyte/user-guide/task-programming/fanout/): Parallel execution patterns with asyncio.gather for processing multiple items
-- [Grouping actions](https://www.union.ai/docs/flyte/user-guide/task-programming/grouping-actions/): Organizing task executions into logical groups
-- [Notebooks](https://www.union.ai/docs/flyte/user-guide/task-programming/notebooks/): Authoring and running workflows directly in Jupyter notebooks
-- [Reports](https://www.union.ai/docs/flyte/user-guide/task-programming/reports/): Generating custom HTML reports for visualization in the UI
-- [Traces](https://www.union.ai/docs/flyte/user-guide/task-programming/traces/): Fine-grained observability and checkpointing with @flyte.trace
-- [Error handling](https://www.union.ai/docs/flyte/user-guide/task-programming/error-handling/): Robust error recovery with Python try-except and resource scaling
+- [Task programming overview](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/): Essential programming patterns for building robust Flyte workflows.
+- [Files and directories](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/files-and-directories/): Working with large datasets using flyte.File and flyte.Dir.
+- [Dataframes](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/dataframes/): Using pandas, Polars, and other dataframe libraries.
+- [Dataclasses and structures](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/dataclasses-and-structures/): Type-safe workflows with Python dataclasses and Pydantic models.
+- [Fanout](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/fanout/): Parallel execution patterns with asyncio.gather for processing multiple items.
+- [Grouping actions](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/grouping-actions/): Organizing task executions into logical groups.
+- [Notebooks](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/notebooks/): Authoring and running workflows directly in Jupyter notebooks.
+- [Reports](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/reports/): Generating custom HTML reports for visualization in the UI.
+- [Traces](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/traces/): Fine-grained observability and checkpointing with @flyte.trace.
+- [Error handling](https://www.union.ai/docs/v2/flyte/user-guide/task-programming/error-handling/): Robust error recovery with Python try-except and resource scaling.
 
 ## Tutorials
 
-- [Multi-agent trading simulation](https://www.union.ai/docs/flyte/tutorials/trading-agents/): A multi-agent trading simulation modeling how agents within a firm interact, strategize, and make trades collaboratively
-- [Code agent](https://www.union.ai/docs/flyte/tutorials/code-agent/): Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic
-- [Deep research](https://www.union.ai/docs/flyte/tutorials/deep-research/): Build an agentic workflow for deep research with multi-step reasoning and evaluation
-- [Hyperparameter optimization](https://www.union.ai/docs/flyte/tutorials/hpo/): Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery
-- [Automatic prompt engineering](https://www.union.ai/docs/flyte/tutorials/auto_prompt_engineering/): Easily run prompt optimization with real-time observability, traceability, and automatic recovery
-- [Text-to-SQL](https://www.union.ai/docs/flyte/tutorials/text_to_sql/): Learn how to turn natural language questions into SQL queries with Flyte and LlamaIndex
+- [Multi-agent trading simulation](https://www.union.ai/docs/v2/flyte/tutorials/trading-agents/): A multi-agent trading simulation modeling how agents within a firm interact, strategize, and make trades collaboratively.
+- [Code agent](https://www.union.ai/docs/v2/flyte/tutorials/code-agent/): Securely execute and iterate on LLM-generated code using a code agent with error reflection and retry logic.
+- [Deep research](https://www.union.ai/docs/v2/flyte/tutorials/deep-research/): Build an agentic workflow for deep research with multi-step reasoning and evaluation.
+- [Hyperparameter optimization](https://www.union.ai/docs/v2/flyte/tutorials/hpo/): Run large-scale HPO experiments with zero manual tracking, deterministic results, and automatic recovery.
+- [Automatic prompt engineering](https://www.union.ai/docs/v2/flyte/tutorials/auto_prompt_engineering/): Easily run prompt optimization with real-time observability, traceability, and automatic recovery.
+- [Text-to-SQL](https://www.union.ai/docs/v2/flyte/tutorials/text_to_sql/): Learn how to turn natural language questions into SQL queries with Flyte and LlamaIndex.
 
 ## API Reference
 
-- [Flyte SDK](https://www.union.ai/docs/flyte/api-reference/flyte-sdk/): Complete Python API reference for the Flyte SDK including TaskEnvironment, decorators, types, and utilities
-- [Flyte CLI](https://www.union.ai/docs/flyte/api-reference/flyte-cli/): Command-line interface reference for flyte run, flyte deploy, flyte create config, and other CLI commands
+- [Flyte SDK](https://www.union.ai/docs/v2/flyte/api-reference/flyte-sdk/): Complete Python API reference for the Flyte SDK including TaskEnvironment, decorators, types, and utilities.
+- [Flyte CLI](https://www.union.ai/docs/v2/flyte/api-reference/flyte-cli/): Command-line interface reference for flyte run, flyte deploy, flyte create config, and other CLI commands.
 
-## Optional
+## Integrations
 
-- [Community](https://www.union.ai/docs/flyte/community/): Information about the Flyte open source community and how to get involved
-- [Contributing code](https://www.union.ai/docs/flyte/community/contributing-code/): Guidelines for contributing to the Flyte codebase
-- [Contributing docs](https://www.union.ai/docs/flyte/community/contributing-docs/): Guidelines for contributing to documentation and examples
-- [Joining the community](https://www.union.ai/docs/flyte/community/joining-the-community/): How to connect with the Flyte community via Slack, GitHub, and community calls
-- [Integrations](https://www.union.ai/docs/flyte/integrations/): Flyte plugins and third-party integrations
+- [Integrations](https://www.union.ai/docs/v2/flyte/integrations/): Flyte plugins and third-party integrations.
+- [Flyte plugins](https://www.union.ai/docs/v2/flyte/integrations/flyte-plugins/): Flyte plugins for Ray, Spark, and OpenAI.
+- [OpenAI](https://www.union.ai/docs/v2/flyte/integrations/flyte-plugins/openai/): Integration with OpenAI's SDKs to build LLM-powered workflows and agentic applications on Flyte.
+- [Ray](https://www.union.ai/docs/v2/flyte/integrations/flyte-plugins/ray/): Run Ray jobs from within Flyte workflows.
+- [Spark](https://www.union.ai/docs/v2/flyte/integrations/flyte-plugins/spark/): Run Spark jobs from within Flyte workflows.
+
+## Community
+
+- [Community](https://www.union.ai/docs/v2/flyte/community/): Information about the Flyte open source community and how to get involved
+- [Contributing code](https://www.union.ai/docs/v2/flyte/community/contributing-code/): Guidelines for contributing to the Flyte codebase
+- [Contributing docs](https://www.union.ai/docs/v2/flyte/community/contributing-docs/): Guidelines for contributing to documentation and examples
+- [Joining the community](https://www.union.ai/docs/v2/flyte/community/joining-the-community/): How to connect with the Flyte community via Slack, GitHub, and community calls
