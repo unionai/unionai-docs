@@ -1,487 +1,672 @@
-# Flyte v2 Workflow Authoring and Execution Context
+# Flyte v1 Workflow Authoring and Execution Context
 
-This document provides comprehensive context for authoring and running Flyte v2 workflows based on Union.ai's official documentation. It serves as a reference for AI assistants to understand how to properly write, configure, and execute Flyte v2 workflows.
+This document provides comprehensive context for authoring and running Flyte v1 workflows based on Union.ai's official documentation. It serves as a reference for AI assistants to understand how to properly write, configure, and execute Flyte v1 workflows.
 
 ## Overview
 
-Flyte v2 is a workflow orchestrator focused on AI development teams to rapidly ship high-quality code to production. Key characteristics:
+Flyte v1 is an open-source platform for orchestrating AI workflows with focus on reliability, scalability, and reproducibility. Key characteristics:
 
-- **Pure Python**: Workflow orchestration using native Python syntax
-- **Asynchronous Model**: Built for modern async/await paradigms
-- **Performance & Scale**: Optimized for complex AI workloads
-- **Beta Status**: Currently in 2.0 beta with active development
+- **Reusable, immutable tasks and workflows**: Versioned entities that ensure reproducibility
+- **Declarative resource provisioning**: Task-level resource management
+- **GitOps-style versioning**: Version control integration
+- **Strongly-typed interfaces**: Type safety between tasks
+- **Caching and checkpointing**: Performance optimization
+- **Task parallelism**: Concurrent execution capabilities
+- **Dynamic workflow creation**: Runtime workflow generation
+
+## Deployment Options
+
+1. **Union.ai Serverless**: Fully managed cloud environment with zero infrastructure management
+2. **Union.ai BYOC (Bring Your Own Cloud)**: Managed by Union.ai on your infrastructure
+3. **Union.ai Self-managed**: Full control of data, code, and infrastructure
 
 ## Getting Started
 
 ### Prerequisites and Setup
 
-**Required Tools:**
-- `uv` tool (Python package manager)
-- `flyte` Python package
+**System Requirements:**
+- Python: `>=3.9,<3.13` (recommended: 3.12)
+- `uv` package manager
 
-**Configuration Methods:**
-1. **Configuration File** (`config.yaml`)
-2. **Inline Configuration** (CLI flags)
-3. **Environment Variables**
-
-**Creating Configuration:**
+**Installation Steps:**
 ```bash
-flyte create config  # Generates config.yaml
+# Install uv (package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install Python
+uv python install 3.12
+
+# Install Union CLI
+uv tool install union
+
+# Configure cluster connection
+union create login --host <union-host-url>
+
+# Verify configuration
+union info
 ```
 
-**Configuration Structure:**
-```yaml
-admin:
-  endpoint: "https://your-union-instance.com"
-image:
-  builder: "local"  # or "remote"
-task:
-  domain: "development"
-  org: "your_org"
-  project: "your_project"
-```
+**Configuration:**
+- Default config location: `~/.union/config.yaml`
+- Can override with `UNION_CONFIG` environment variable or `--config` flag
+- Remove deprecated `~/.unionai/` directory to avoid conflicts
 
-**Configuration File Locations:**
-- `./config.yaml` (current directory)
-- `~/.union/config.yaml`
-- `~/.flyte/config.yaml`
+### First Project Setup
 
-**Verification:**
+**Create Project in UI:**
+1. Click "All projects"
+2. Select "New Project"
+3. Name the project
+
+**Initialize Local Project:**
 ```bash
-flyte get config  # Check current configuration
+union init --template union-simple my-project
 ```
 
-### Running Workflows
-
-**Remote Execution:**
-```bash
-# Command line
-flyte run hello.py main
-
-# Python
-flyte.init_from_config()
-flyte.run(main, name="Ada")
+**Generated Project Structure:**
+```
+├── LICENSE
+├── README.md
+├── hello_world.py
+├── pyproject.toml
+└── uv.lock
 ```
 
-**Local Execution (Testing/Debugging):**
-```bash
-# Command line
-flyte run --local hello.py main
+## Core Concepts
 
-# Python
-flyte.init_from_config()
-flyte.with_runcontext(mode="local").run(main)
-```
+### Tasks
 
-## Task Configuration
+Tasks are fundamental computational units with these characteristics:
 
-### Container Images
+**Key Features:**
+- **Independently Executable**: Can run in isolation and be unit tested locally
+- **Strongly Typed**: Input/output validation at deployment using Python type annotations
+- **Containerized**: Run in independent Kubernetes pods with custom dependencies
+- **Versioned and Immutable**: Named with project, domain, and name; updating creates new version
 
-**Direct Image Reference:**
+**Task Types:**
+- Standard Python tasks
+- Map tasks (for parallel processing)
+- Raw container tasks
+- Plugin tasks
+
+**Basic Task Definition:**
 ```python
-env = flyte.TaskEnvironment(
-    name="my_task_env",
-    image="docker.io/myorg/myimage"
+from union import task, ImageSpec
+from union.types import Resources
+
+# Define container image
+image_spec = ImageSpec(
+    name="my-image",
+    requirements="requirements.txt",
+    registry="ghcr.io/myorg"
 )
+
+@task(
+    container_image=image_spec,
+    requests=Resources(cpu="1", mem="1Gi"),
+    limits=Resources(cpu="2", mem="2Gi"),
+    cache=True
+)
+def my_task(x: int, y: str) -> str:
+    return f"Processing {x}: {y}"
 ```
 
-**Using flyte.Image Object:**
+### Workflows
+
+Workflows compile tasks into directed acyclic graphs (DAGs):
+
+**Workflow Types:**
+1. **Standard Workflows**: Basic workflow composition
+2. **Subworkflows**: Nested within other workflows for modularity
+3. **Dynamic Workflows**: Flexible runtime workflow generation
+4. **Imperative Workflows**: Programmatic workflow construction
+
+**Basic Workflow Definition:**
 ```python
-image = flyte.Image.from_debian_base() \
-    .with_apt_packages(["git"]) \
-    .with_pip_packages(["pandas", "numpy"]) \
-    .with_env_vars({"MY_VAR": "value"})
+from union import workflow
 
-env = flyte.TaskEnvironment(
-    name="my_env",
-    image=image
-)
+@workflow
+def my_workflow(name: str = "world") -> str:
+    greeting = say_hello(name=name)
+    processed = process_greeting(greeting=greeting)
+    return processed
 ```
 
-**Image Builder Configuration:**
-- `local`: Requires Docker login
-- `remote`: Uses Union ImageBuilder service
+**Important Conventions:**
+- Use keyword arguments when invoking tasks/workflows
+- Type hints are mandatory
+- Tasks/workflows must be defined at top-level module scope
+
+### Launch Plans
+
+Launch plans are workflow templates that include:
+- A specific workflow
+- Partial or complete workflow inputs
+- Optional notifications and schedules
+
+**Characteristics:**
+- Every workflow has a default launch plan
+- Launch plans are versioned
+- Multiple launch plans per workflow allowed
+- Can be registered via CLI or programmatically
+
+### Actors
+
+Actors enable container reuse between tasks to reduce startup overhead:
+
+```python
+from union import ActorEnvironment, Resources
+
+actor = ActorEnvironment(
+    name="my-actor",
+    replica_count=1,
+    ttl_seconds=30,
+    requests=Resources(cpu="2", mem="300Mi")
+)
+
+@actor.task
+def actor_task() -> str:
+    return "hello from actor"
+```
+
+**Benefits:**
+- Minimize startup costs for complex initialization
+- Maintain persistent environment across executions
+- Support for `@actor_cache` decorator
+
+### Artifacts
+
+Artifacts are intermediate outputs with unique identifiers:
+
+**Features:**
+- Up to 10 partition keys for metadata
+- Optional `time_partition` for execution timestamp
+- Queryable to find recent versions
+- Lineage tracking in UI
+- Semantic indexing of outputs
 
 ### Caching
 
-**Cache Modes:**
+**Configuration Levels:**
+- Task level: `@task(cache=True)`
+- Workflow level
+- Launch plan level
+
+**Cache Configuration:**
 ```python
-# Auto caching (recommended for most cases)
-@env.task(cache="auto")
-def my_task():
-    pass
+from union import Cache
 
-# Manual cache version control
-@env.task(cache="override", cache_version="v1.2")
-def my_task():
-    pass
-
-# Disable caching (default)
-@env.task(cache="disable")
-def my_task():
-    pass
+@task(cache=Cache(version="1.0", serialize=True))
+def cached_task(x: int) -> int:
+    return expensive_computation(x)
 ```
 
 **Cache Key Components:**
-- Final inputs
-- Task name
-- Interface hash
+- Project
+- Domain
 - Cache version
+- Node signature
+- Input values
+
+**Cache Features:**
+- `ignored_inputs`: Exclude specific inputs from cache key
+- `serialize`: Ensure only one instance runs concurrently
+- Custom hash methods for complex objects
+
+### Workspaces
+
+VSCode development environments for Union.ai:
+
+**Features:**
+- Develop and debug tasks/workflows
+- Production-like environment
+- Persistent file storage
+- Custom container images
+- Resource specification (CPU, memory, GPU)
+- Secrets integration
+
+## Authentication
+
+**Three Authentication Methods:**
+
+1. **PKCE (Default)**: For local machines with browser access
+2. **DeviceFlow**: For remote machines without browser (SSH sessions)
+3. **ClientSecret**: For CI/CD and automation using `UNION_API_KEY`
+
+**Configuration:**
+- Config location: `~/.union/config.yaml`
+- Override with `UNION_CONFIG` environment variable
+- Use `--config` flag for commands
+
+## Project Structure
+
+**Recommended Directory Layout:**
+```
+├── .github/workflows/        # CI/CD workflows
+├── .gitignore
+├── docs/
+├── src/
+│   ├── core/                # Business logic
+│   ├── tasks/               # Individual tasks
+│   ├── workflows/           # Workflow definitions
+│   └── orchestration/       # Helper constructs
+├── uv.lock
+└── pyproject.toml
+```
+
+**Key Principles:**
+- Include `__init__.py` files for proper imports
+- Separate concerns into different directories
+- Store each task in its own file/module
+- Use docstrings for Union.ai UI context
+
+## Running Workflows
+
+### Local Execution
+```bash
+# Set up environment
+uv sync
+source .venv/bin/activate
+
+# Run locally for testing
+union run hello_world.py hello_world_wf --name="everybody"
+```
+
+### Remote Execution
+```bash
+# Register and run on Union.ai
+union run --remote --project my-project --domain development
+
+# Registration only (no immediate execution)
+union register --project my-project --domain development .
+```
+
+### Execution Interface
+- Navigate to Workflows in UI
+- Search and select workflow
+- Click "Launch Workflow"
+- Configure execution parameters
+- Monitor workflow status and graph
+
+## Data Input/Output
+
+### Files and Directories
+
+Flyte v1 uses special types for efficient data handling:
+- `FlyteFile`: Individual files
+- `FlyteDirectory`: Directory structures
+- `StructuredDataset`: Structured data (DataFrames)
+
+### Dataclasses
+
+**Full Support for Complex Data Structures:**
+```python
+from dataclasses import dataclass
+from union import task
+
+@dataclass
+class ProcessingRequest:
+    model_name: str
+    input_data: List[str]
+    batch_size: int = 32
+
+@task
+def process_batch(request: ProcessingRequest) -> dict:
+    # Process the request
+    return {"status": "completed", "items": len(request.input_data)}
+```
+
+**Key Features:**
+- All variables must be type-annotated
+- Support for nested dataclasses
+- Can include Flyte-specific types
+- JSON input support for CLI execution
+
+### Enums
+
+**String-only Enums:**
+```python
+from enum import Enum
+
+class Coffee(Enum):
+    ESPRESSO = "espresso"
+    AMERICANO = "americano"
+    LATTE = "latte"
+
+@task
+def prepare_coffee(order: Coffee) -> str:
+    return f"Preparing {order.value}"
+```
+
+**Characteristics:**
+- Only string values supported
+- First value used as default
+- Cannot be optional
+- Automatically converted by Union.ai
+
+### Framework Integrations
+
+**PyTorch Support:**
+- Native PyTorch tensor passing
+- `PyTorchCheckpoint` for model serialization
+- Automatic device conversion (GPU/CPU)
+- Support for hyperparameters, optimizer state
+
+**TensorFlow Support:**
+- `tf.keras.Model` serialization
+- `TFRecordFile` and `TFRecordsDirectory` types
+- Configurable compression and buffer settings
+
+## Programming Patterns
+
+### Chaining Entities
+
+**Sequential Execution with `>>` Operator:**
+```python
+@workflow
+def chain_tasks_wf():
+    t0_promise = task_0()
+    t1_promise = task_1()
+    t2_promise = task_2()
+
+    t0_promise >> t1_promise >> t2_promise
+```
+
+**Note**: Not supported in local Python environments
+
+### Conditionals
+
+**Dynamic Branching:**
+```python
+from union import conditional
+
+@workflow
+def conditional_wf(x: int) -> str:
+    return (
+        conditional("branch_logic")
+        .if_(x > 10)
+        .then(large_number_task(x=x))
+        .elif_(x > 0)
+        .then(small_number_task(x=x))
+        .else_()
+        .then(zero_or_negative_task(x=x))
+    )
+```
+
+**Features:**
+- Uses bitwise operators (`&`, `|`) instead of logical
+- Supports `.if_()`, `.elif_()`, `.else_()` methods
+- Nested conditionals allowed
+- Boolean method checks (`.is_true()`, `.is_false()`)
+
+## Workflow Building Best Practices
+
+### Task Decomposition Strategy
+
+**Consider These Factors:**
+1. **Runtime Requirements**: Separate tasks with different computational needs
+2. **Caching Performance**: Fine-grained checkpoints minimize redundant work
+3. **Interruptible Tasks**: Enable cheaper spot instances
+
+### Parallelization
+
+**Map Tasks and Dynamic Workflows:**
+```python
+from union import map_task
+
+@task
+def process_item(item: str) -> str:
+    return f"processed: {item}"
+
+@workflow
+def parallel_workflow(items: List[str]) -> List[str]:
+    return map_task(process_item)(items)
+```
+
+**Key Principles:**
+- "Parallelize early and often"
+- Consider task overhead for very short operations
+- Use Actors to reduce task startup costs
+
+### Caching Strategy
 
 **Best Practices:**
-- Use "auto" caching for development and most production scenarios
-- Avoid caching functions with side effects
-- Use "override" for explicit cache control
-- Consider performance and storage implications
+- Enable caching after functionality stabilizes
+- Add explicit cache keys for control
+- Useful during development and resource-constrained production
+- Use `overwrite-cache` flag to force re-execution
+
+## Resource Management
+
+### Task-Level Resource Configuration
+
+```python
+from union import Resources
+
+@task(
+    requests=Resources(cpu="1", mem="1Gi", gpu="1"),
+    limits=Resources(cpu="2", mem="2Gi", gpu="1")
+)
+def resource_intensive_task():
+    pass
+```
+
+### Resource Monitoring
+
+**Resources Dashboard Features:**
+- Workflow and task execution insights
+- Resource consumption tracking
+- Filtering by project, domain, time period
+- Quota management using Kubernetes namespaces
+
+### Cost Allocation
+
+**Cost Tracking:**
+- Total cost estimation (memory, CPU, GPU, unused compute)
+- Resource utilization metrics
+- Breakdowns by project, domain, workflow/task
+- 60-day lookback period
+- Stacked bar charts for cost visualization
+
+**Cost Components:**
+- Allocated cost (direct resource usage)
+- Overhead cost (infrastructure costs)
+- Proportional allocation methodology
+
+## Administration
+
+### User Management
+
+**Role-Based Access Control:**
+
+**Built-in Policies:**
+- **Admin**: Full permissions across organization
+- **Contributor**: Register and execute workflows, tasks, launch plans
+- **Viewer**: View workflows, tasks, launch plans, executions
+
+**Actions Available:**
+- `administer_project`: Manage project resources
+- `manage_permissions`: Manage user/application policies
+- `create_flyte_executions`: Launch new executions
+- `register_flyte_inventory`: Register workflows, tasks, launch plans
+- `view_flyte_executions`: View execution history
+- `view_flyte_inventory`: View registered entities
+
+**Management Features:**
+- Custom roles via `uctl` CLI
+- Organization, project, or domain level policies
+- Multiple policies per user with combined permissions
 
 ### Secrets Management
 
 **Creating Secrets:**
 ```bash
-flyte create secret MY_SECRET_KEY my_secret_value
-# Optional scoping: --project project_name --domain domain_name
+# Command line creation
+union create secret my_secret_name
+
+# From file
+union create secret my_secret -f /path/to/secret_file
+
+# With scoping
+union create secret my_secret --project proj --domain dev
 ```
 
-**Using Secrets in Tasks:**
+**Using Secrets in Code:**
 ```python
-env = flyte.TaskEnvironment(
-    secrets=[
-        flyte.Secret(key="MY_SECRET_KEY", as_env_var="MY_SECRET_ENV_VAR")
-    ]
-)
+from union import Secret, current_context
 
-@env.task
+@task(secret_requests=[Secret(key="my_secret")])
 def secure_task():
-    secret_value = os.getenv("MY_SECRET_ENV_VAR")
-    # Use secret_value safely
+    secret_value = current_context().secrets.get(key="my_secret")
+    # Use secret safely
+
+# Mount as file
+@task(secret_requests=[
+    Secret(key="my_secret", mount_requirement=Secret.MountType.FILE)
+])
+def file_secret_task():
+    pass
 ```
 
-**Important:**
-- Secrets are scoped at organization, project, or domain levels
-- Never return secret values from tasks
-- Always access via environment variables
+**Secret Operations:**
+```bash
+union get secret      # List secrets
+union update secret   # Update existing secret
+union delete secret   # Remove secret
+```
 
-### Reusable Containers
+**Best Practices:**
+- Do not return secret values from tasks
+- Use `env_var` for libraries expecting specific names
+- Secrets only accessible within defined scope
 
-**Configuration:**
+## Common Workflow Patterns
+
+### Basic Workflow Structure
 ```python
-env = flyte.TaskEnvironment(
-    reusable=flyte.ReusePolicy(
-        replicas=2,        # Number of container instances
-        idle_ttl=300       # 5 minutes idle timeout
-    )
+import union
+from union import ImageSpec, Resources
+
+# Define container environment
+image_spec = ImageSpec(
+    name="my-workflow",
+    requirements="requirements.txt",
+    registry="ghcr.io/myorg"
 )
+
+@union.task(container_image=image_spec)
+def data_preprocessing(raw_data: str) -> str:
+    """Preprocess raw data."""
+    return clean_data(raw_data)
+
+@union.task(
+    container_image=image_spec,
+    requests=Resources(cpu="2", mem="4Gi")
+)
+def model_training(processed_data: str) -> str:
+    """Train ML model."""
+    return train_model(processed_data)
+
+@union.workflow
+def ml_pipeline(input_data: str) -> str:
+    """Complete ML training pipeline."""
+    processed = data_preprocessing(raw_data=input_data)
+    model = model_training(processed_data=processed)
+    return model
 ```
 
-**Best Use Cases:**
-- Frequent, short-duration tasks
-- Tasks with expensive initialization
-- Batch processing
-- Development/testing scenarios
-
-**Avoid When:**
-- Long-running tasks
-- Large memory consumption without cleanup
-- Tasks modifying global state
-
-## Task Programming
-
-### Files and Directories
-
-**Special Data Types:**
-- `flyte.io.File`: For individual files
-- `flyte.io.Dir`: For directories
-- `flyte.io.DataFrame`: For structured data
-
-**Key Features:**
-- Offloaded data types (store references, not data)
-- Efficient handling of large files
-- Support for both sync and async methods
-
-**Example Usage:**
+### Advanced Parallel Processing
 ```python
-@env.task
-def process_file(input_file: flyte.io.File) -> flyte.io.File:
-    # Read file content
-    content = input_file.read()
+from union import map_task, workflow
 
-    # Process content
-    result = process_data(content)
+@union.task
+def process_batch(batch: List[str]) -> List[str]:
+    return [item.upper() for item in batch]
 
-    # Create output file
-    return flyte.io.File.from_string(result, "output.txt")
+@workflow
+def batch_processing_workflow(all_items: List[str]) -> List[str]:
+    # Split into batches
+    batch_size = 100
+    batches = [all_items[i:i+batch_size]
+              for i in range(0, len(all_items), batch_size)]
 
-@env.task
-def upload_local():
-    # Upload local file
-    return flyte.io.File.from_local("./local_file.txt")
+    # Process batches in parallel using map_task
+    results = map_task(process_batch)(batches)
+
+    # Flatten results
+    return [item for batch in results for item in batch]
 ```
 
-### Dataclasses and Structures
-
-**Supported Types:**
-- Python dataclasses
-- Pydantic models
-- Nested structures
-- Lists of dataclasses
-
-**Example:**
+### Dynamic Workflow Example
 ```python
-@dataclass
-class InferenceRequest:
-    model_name: str
-    input_data: List[str]
-    batch_size: int = 32
-
-@env.task
-def batch_inference(requests: List[InferenceRequest]) -> List[dict]:
+@union.dynamic
+def dynamic_workflow(num_tasks: int) -> List[str]:
     results = []
-    for request in requests:
-        # Process each request
-        result = run_inference(request.model_name, request.input_data)
+    for i in range(num_tasks):
+        result = dynamic_task(index=i)
         results.append(result)
     return results
 ```
 
-**Key Considerations:**
-- Fields must be serializable
-- Data is serialized/deserialized between tasks
-- Can include Flyte's offloaded types as fields
-
-### Reports
-
-**Basic Report Usage:**
+### Error Handling and Retries
 ```python
-@env.task(report=True)
-def generate_report():
-    flyte.report.log("<h1>Processing Started</h1>")
+from union import task
+from union.types import Retries
 
-    # Do work
-    process_data()
-
-    flyte.report.log("<p>Processing completed successfully</p>")
-    flyte.report.flush()  # Send to UI
-```
-
-**Advanced Reports:**
-```python
-@env.task(report=True)
-def streaming_report():
-    tab = flyte.report.get_tab("Progress")
-
-    for i in range(100):
-        tab.replace(f"<div>Progress: {i}%</div>")
-        flyte.report.flush()
-        time.sleep(0.1)
-```
-
-### Error Handling
-
-**Pattern:**
-```python
-@env.task
-async def resilient_workflow():
+@task(
+    retries=Retries(retries=3),
+    cache=True,
+    timeout=timedelta(minutes=10)
+)
+def robust_task(data: str) -> str:
+    """Task with retry logic and timeout."""
     try:
-        result = await potentially_failing_task()
-        return result
-    except flyte.errors.OOMError:
-        # Retry with more resources
-        return await retry_with_more_memory()
-    finally:
-        # Cleanup tasks always run
-        await cleanup_task()
+        return process_data(data)
+    except Exception as e:
+        # Log error and re-raise for retry
+        print(f"Task failed: {e}")
+        raise
 ```
 
-**Philosophy:**
-- Treat certain errors as "expected and acceptable"
-- Leverage Python's native error handling
-- Support dynamic resource adjustment
+## Troubleshooting and FAQ
 
-### Traces
+### Common Issues
 
-**Purpose:**
-- Fine-grained observability of helper functions
-- Checkpoint creation for workflow resumption
-- Track execution time, inputs, outputs
+**Authentication Problems:**
+- Remove deprecated `~/.unionai/` directory
+- Install `keyring` service on Linux
+- Avoid committing API keys to version control
+- Use appropriate auth method for environment (PKCE/DeviceFlow/ClientSecret)
 
-**Usage:**
-```python
-@flyte.trace
-async def expensive_api_call(query: str) -> dict:
-    """External API call with tracing."""
-    result = await api_client.query(query)
-    return result
+**Performance Optimization:**
+- Use caching strategically after functionality stabilizes
+- Consider Actors for tasks with expensive initialization
+- Implement fine-grained task decomposition for checkpoints
+- Use interruptible tasks with spot instances
 
-@env.task
-async def main_task(topic: str):
-    # This call will be traced
-    data = await expensive_api_call(f"research {topic}")
-    return process_data(data)
-```
+**Resource Management:**
+- Default limit: 10,000 concurrent executions per cluster
+- Control parallelism with `max_parallelism` and `concurrency`
+- Monitor resource utilization via dashboard
+- Set appropriate resource requests and limits
 
-**Best For:**
-- External API calls
-- Expensive computations
-- LLM interactions
-- Non-deterministic operations
+**Import Resolution:**
+- Use `--copy-all` flag for complex dependencies
+- Use `union register` instead of direct imports
+- Ensure proper `__init__.py` files in directories
 
-### Grouping Actions
+### Data Storage and Security
 
-**Visual Organization:**
-```python
-@env.task
-async def complex_workflow():
-    with flyte.group("data-validation"):
-        validated_data = await validate_schema(raw_data)
-        validated_data = await check_data_quality(validated_data)
+**Data Handling:**
+- Data stored in Union.ai's internal object store within data plane
+- Users can change raw data storage location
+- Support for custom blob store integration
+- Raw data remains in user's data plane for security
 
-    with flyte.group("model-training"):
-        model = await train_model(validated_data)
-        metrics = await evaluate_model(model)
+**Machine Configuration:**
+- Machine types can be changed via Node Group Configuration form
+- Resource requirements specified at task level
+- Support for GPU, memory, and CPU customization
 
-    return model, metrics
-```
-
-**Purpose:**
-- Logical clustering of task invocations
-- Improved UI visualization
-- No impact on execution behavior
-
-### Fanout Patterns
-
-**Parallel Execution:**
-```python
-@env.task
-async def parallel_processing(items: List[str]):
-    # Create task invocations
-    tasks = [process_item(item) for item in items]
-
-    # Execute in parallel
-    results = await asyncio.gather(*tasks)
-    return results
-```
-
-**Batched Processing:**
-```python
-@env.task
-async def batched_fanout(large_dataset: List[dict]):
-    batch_size = 100
-    batches = [large_dataset[i:i+batch_size]
-              for i in range(0, len(large_dataset), batch_size)]
-
-    # Process batches in parallel
-    batch_tasks = [process_batch(batch) for batch in batches]
-    batch_results = await asyncio.gather(*batch_tasks)
-
-    # Combine results
-    return [item for batch in batch_results for item in batch]
-```
-
-### Notebooks Integration
-
-**Initialization:**
-```python
-import flyte
-
-flyte.init(
-    endpoint="https://union.example.com",
-    org="example_org",
-    project="example_project",
-    domain="development",
-)
-```
-
-**Remote Interaction:**
-```python
-# Access existing runs
-remote = flyte.remote()
-runs = remote.list_runs()
-
-# Download logs
-run = remote.get_run(run_id)
-logs = run.download_logs()
-```
-
-## Important Considerations
-
-### Non-deterministic Behavior
-- **Problem**: Randomness breaks task recovery and replay
-- **Solution**: Use `@flyte.trace` decorator for checkpointing
-
-### Type Safety
-- **Note**: Not automatically guaranteed at workflow level (unlike v1)
-- **Recommendation**: Use Python type hints and `mypy`
-
-### Global State
-- **Limitation**: No global state preservation across containers
-- **Requirement**: State must be reconstructable through deterministic execution
-
-### Driver Pod Sizing
-- **Consideration**: Parent tasks orchestrating downstream tasks need appropriate resources
-- **Avoid**: CPU-intensive operations in driver pods
-
-### Memory Management
-- **Risk**: Large data structures can cause OOM errors
-- **Solution**: Use `flyte.io.File`, `flyte.io.Dir`, and `flyte.io.DataFrame` for lower memory footprint
-
-## Common Workflow Patterns
-
-### Basic Task Definition
-```python
-import flyte
-
-# Create environment
-env = flyte.TaskEnvironment(
-    name="my_environment",
-    image="ghcr.io/unionai-oss/flyte:latest"
-)
-
-@env.task
-def simple_task(x: int) -> int:
-    return x * 2
-
-@env.task
-async def async_task(data: str) -> dict:
-    result = await process_data_async(data)
-    return result
-```
-
-### Workflow Composition
-```python
-@env.task
-async def data_pipeline(input_data: List[str]) -> dict:
-    # Parallel preprocessing
-    preprocessed = await asyncio.gather(
-        *[preprocess_item(item) for item in input_data]
-    )
-
-    # Sequential training steps
-    with flyte.group("model-training"):
-        features = await extract_features(preprocessed)
-        model = await train_model(features)
-        metrics = await evaluate_model(model)
-
-    return {"model": model, "metrics": metrics}
-```
-
-### File Processing Pipeline
-```python
-@env.task
-def process_dataset(input_dir: flyte.io.Dir) -> flyte.io.File:
-    results = []
-
-    # Process files in directory
-    for file_path in input_dir.walk():
-        if file_path.endswith('.csv'):
-            data = pd.read_csv(file_path)
-            processed = process_dataframe(data)
-            results.append(processed)
-
-    # Combine results
-    combined = pd.concat(results)
-
-    # Return as Flyte file
-    return flyte.io.File.from_dataframe(combined, "processed_data.parquet")
-```
-
-This context provides comprehensive guidance for authoring and executing Flyte v2 workflows, covering all major concepts, patterns, and best practices from the official Union.ai documentation.
+This comprehensive context provides detailed guidance for authoring, configuring, and executing Flyte v1 workflows, covering all major concepts, patterns, and best practices from the official Union.ai documentation.
