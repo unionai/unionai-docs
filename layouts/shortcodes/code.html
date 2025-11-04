@@ -81,10 +81,19 @@
   {{- $content = print $content $line "\n" -}}
 {{- end -}}
 
-{{/* Add highlighting information as a data attribute if provided */}}
-{{- $highlightAttr := "" -}}
-{{- if $highlight -}}
-  {{- $highlightAttr = printf " data-line=\"%s\"" $highlight -}}
-{{- end -}}
+{{/* Handle markdown files with Hugo's highlight function to avoid backtick conflicts */}}
+{{- if or (eq $lang "markdown") (eq $lang "md") -}}
+  {{- $highlightOptions := "linenos=false" -}}
+  {{- if $highlight -}}
+    {{- $highlightOptions = printf "linenos=false,hl_lines=%s" $highlight -}}
+  {{- end -}}
+  {{- highlight $content "markdown" $highlightOptions -}}
+{{- else -}}
+  {{/* Add highlighting information as a data attribute if provided */}}
+  {{- $highlightAttr := "" -}}
+  {{- if $highlight -}}
+    {{- $highlightAttr = printf " data-line=\"%s\"" $highlight -}}
+  {{- end -}}
 
-{{- page.RenderString (printf "```%s%s\n%s```" $lang $highlightAttr $content) -}}
+  {{- page.RenderString (printf "```%s%s\n%s```" $lang $highlightAttr $content) -}}
+{{- end -}}
