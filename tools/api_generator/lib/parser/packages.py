@@ -9,6 +9,7 @@ from lib.ptypes import MethodInfo, PackageInfo, VariableInfo
 from lib.parser.methods import parse_method, parse_variable
 from lib.parser.synchronicity import is_synchronicity_method, parse_synchronicity_method
 from lib.parser.syncify import is_syncify_method, parse_syncify_method
+from lib.parser.callable import is_callable, parse_callable
 
 
 def get_package(name: str) -> Optional[Tuple[PackageInfo, ModuleType]]:
@@ -86,9 +87,8 @@ def get_functions(info: PackageInfo, pkg: ModuleType) -> List[MethodInfo]:
             method_info = parse_syncify_method(name, member)
         if should_include(name, member, pkg, inspect.isfunction):
             method_info = parse_method(name, member)
-        # TODO Handle the case in which the member is a class, then methods of the class
-        # should be shown, if it has a __call__ method, then show that as the regular method
-        # Example is flyte.map
+        if is_callable(name, member, pkg.__name__):
+            method_info = parse_callable(name, member, pkg.__name__)
         if method_info:
             result.append(method_info)
     return result

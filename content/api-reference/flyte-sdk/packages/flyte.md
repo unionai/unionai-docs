@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b26
+version: 2.0.0b28
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -56,6 +56,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
+| [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
 | [`version()`](#version) | Returns the version of the Flyte SDK. |
@@ -430,6 +431,34 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `images` | `tuple[str, ...] \| None` |
 | `sync_local_sys_paths` | `bool` |
 
+#### map()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await flyte.map.aio()`.
+```python
+def map(
+    func: typing.Union[flyte._task.AsyncFunctionTaskTemplate[~P, ~R, ~F], functools.partial[~R]],
+    args: *args,
+    group_name: str | None,
+    concurrency: int,
+    return_exceptions: bool,
+) -> typing.Iterator[typing.Union[~R, Exception]]
+```
+Map a function over the provided arguments with concurrent execution.
+
+
+
+| Parameter | Type |
+|-|-|
+| `func` | `typing.Union[flyte._task.AsyncFunctionTaskTemplate[~P, ~R, ~F], functools.partial[~R]]` |
+| `args` | `*args` |
+| `group_name` | `str \| None` |
+| `concurrency` | `int` |
+| `return_exceptions` | `bool` |
+
 #### run()
 
 
@@ -675,11 +704,19 @@ my_trigger = Trigger(
 ```python
 class Cron(
     expression: str,
+    timezone: Timezone,
 )
 ```
 | Parameter | Type |
 |-|-|
 | `expression` | `str` |
+| `timezone` | `Timezone` |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `timezone_expression` | `None` |  |
 
 ## flyte.Device
 
