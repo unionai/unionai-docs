@@ -193,7 +193,34 @@ In the Union UI we display:
 
 For development and debugging purposes, you can adjust and deploy individual triggers from the UI.
 
-## Schedule time zones and Daylight Savings Time
+## Schedule time zones
+
+### Setting time zone for a Cron schedule
+
+Cron expressions are by default in UTC, but it's possible to specify custom time zones like so:
+
+```python
+sf_trigger = flyte.Trigger(
+    "sf_tz",
+    flyte.Cron(
+        "0 9 * * *", timezone="America/Los_Angeles"
+    ), # Every day at 9 AM PT
+    inputs={"start_time": flyte.TriggerTime, "x": 1},
+)
+
+nyc_trigger = flyte.Trigger(
+    "nyc_tz",
+    flyte.Cron(
+        "1 12 * * *", timezone="America/New_York"
+    ), # Every day at 12:01 PM ET
+    inputs={"start_time": flyte.TriggerTime, "x": 1},
+)
+```
+
+The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET respectively.
+
+### Daylight Savings Time behavior
+
 Cron expressions are by default in UTC, but it's possible to specify a custom time zone like so:
 
 ```python
