@@ -182,7 +182,7 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-The value of the `registry_secret` parameter must be the name of a Flyte secret of type `image_pull` that contains the credentials needed to access the private registry. It must match the name specifed in the `secrets` parameter of the `TaskEnvironment` so that Flyte can use it to pull the image at runtime.
+The value of the `registry_secret` parameter must be the name of a Flyte secret of type `image_pull` that contains the credentials needed to access the private registry. It must match the name specified in the `secrets` parameter of the `TaskEnvironment` so that Flyte can use it to pull the image at runtime.
 
 To create an `image_pull` secret for the remote builder and the task environment, run the following command:
 
