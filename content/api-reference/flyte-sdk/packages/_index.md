@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 2.0.0b25
+version: 2.0.0b28
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -12,6 +12,8 @@ sidebar_expanded: true
 |-|-|
 | [`flyte`](flyte) | Flyte SDK for authoring compound AI applications, services and workflows. |
 | [`flyte.config`](flyte.config) |  |
+| [`flyte.connectors`](flyte.connectors) |  |
+| [`flyte.connectors.utils`](flyte.connectors.utils) |  |
 | [`flyte.errors`](flyte.errors) | Exceptions raised by Union. |
 | [`flyte.extend`](flyte.extend) |  |
 | [`flyte.extras`](flyte.extras) |  |
