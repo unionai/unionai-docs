@@ -34,7 +34,7 @@ You start building your image with on of the `from_` methods:
 
 * [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte#from_base): Start from a specified Dockerfile.
 * [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte#from_debian_base): Start from the Flyte default image
-* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Start from an [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
+* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Start from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
 You can then layer on additional components using the `with_` methods:
 
@@ -144,20 +144,24 @@ You must ensure that:
 
 ### Remote `ImageBuilder`
 
+`ImageBuilder` is a service provided by Union that builds container images on Union's infrastructure and provides an internal container registry for storing the built images.
+
 When `image.builder` in the `config.yaml` is set to `remote` (and you are running Union.ai), `flyte.run()` does the following:
 
-* Builds the Docker image on you Union instance with `ImageBuilder`, installing the dependencies specified in the `uv` inline script metadata.
-* Pushes the image to the internal container registry of your Union instance.
+* Builds the Docker image on your Union instance with `ImageBuilder`.
+* Pushes the image to a registry
+  * If you did not specify a `registry` in the `Image` definition, it pushes to the internal registry in your Union instance.
+  * If you did specify a `registry`, it pushes to that registry. Be sure to also set the `registry_secret` parameter in the `Image` definition to enable `ImageBuilder` to authenticate to that registry (see [below](#imagebuilder-with-external-registries)).
 * Deploys your code to the backend.
 * Kicks off the execution of your workflow.
-* Before the task that uses your custom image is executed, the backend pulls the image from the internal registry to set up the container.
+* Before the task that uses your custom image is executed, the backend pulls the image from the registry to set up the container.
 
-There is no set up of Docker nor any access control configuration required on your part.
+There is no set up of Docker nor any other local configuration required on your part.
 
-#### Handling image pull and push operations between the Union remote builder and a private registry
+#### ImageBuilder with external registries
 
-If you are want to push your images to a private registry, you can do this by setting the `registry` parameter in the `Image` object.
-You also need to set the `registry_secret` parameter to provide the secret needed to pull and push images to the private registry.
+If you are want to push the images built by `ImageBuilder` to an external registry, you can do this by setting the `registry` parameter in the `Image` object.
+You will also need to set the `registry_secret` parameter to provide the secret needed to push and pull images to the private registry.
 For example:
 
 ```python
@@ -178,7 +182,9 @@ env = flyte.TaskEnvironment(
 )
 ```
 
-To create an image pull secret for the remote builder and the task environment. Run the following command:
+The value of the `registry_secret` parameter must be the name of a Flyte secret of type `image_pull` that contains the credentials needed to access the private registry. It must match the name specifed in the `secrets` parameter of the `TaskEnvironment` so that Flyte can use it to pull the image at runtime.
+
+To create an `image_pull` secret for the remote builder and the task environment, run the following command:
 
 ```shell
 $ flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
@@ -195,13 +201,16 @@ The format of this secret matches the standard Kubernetes [image pull secret](ht
   }
 }
 ```
-> [!NOTE]
-> The auth field contains the base64-encoded credentials for your registry (username and password or token).
 
-### Install private pypi packages
+> [!NOTE]
+> The `auth` field contains the base64-encoded credentials for your registry (username and password or token).
+
+### Install private PyPI packages
+
 To install Python packages from a private PyPI index (for example, from GitHub), you can mount a secret to the image layer.
 This allows your build to authenticate securely during dependency installation.
 For example:
+
 ```python
 private_package = "git+https://$GITHUB_PAT@github.com/pingsutw/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
 image = (
