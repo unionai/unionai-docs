@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b25
+version: 2.0.0b28
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -100,6 +100,11 @@ Uploads a directory to a remote location and returns the remote URI.
 
 #### upload_file()
 
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await upload_file.aio()`.
 ```python
 def upload_file(
     fp: pathlib._local.Path,
@@ -137,6 +142,9 @@ class Action(
 |-|-|
 | [`details()`](#details) | Get the details of the action. |
 | [`done()`](#done) | Check if the action is done. |
+| [`get()`](#get) | Get a run by its ID or name. |
+| [`listall()`](#listall) | Get all actions for a given run. |
+| [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the action with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
@@ -159,6 +167,82 @@ def done()
 ```
 Check if the action is done.
 
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Action.get.aio()`.
+```python
+def get(
+    cls,
+    uri: str | None,
+    run_name: str | None,
+    name: str | None,
+) -> Action
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `uri` | `str \| None` |
+| `run_name` | `str \| None` |
+| `name` | `str \| None` |
+
+#### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Action.listall.aio()`.
+```python
+def listall(
+    cls,
+    for_run_name: str,
+    filters: str | None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
+) -> Union[Iterator[Action], AsyncIterator[Action]]
+```
+Get all actions for a given run.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `for_run_name` | `str` |
+| `filters` | `str \| None` |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
+
+#### show_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Action instance>.show_logs.aio()`.
+```python
+def show_logs(
+    attempt: int | None,
+    max_lines: int,
+    show_ts: bool,
+    raw: bool,
+    filter_system: bool,
+)
+```
+| Parameter | Type |
+|-|-|
+| `attempt` | `int \| None` |
+| `max_lines` | `int` |
+| `show_ts` | `bool` |
+| `raw` | `bool` |
+| `filter_system` | `bool` |
 
 #### sync()
 
@@ -263,11 +347,14 @@ class ActionDetails(
 | Method | Description |
 |-|-|
 | [`done()`](#done) | Check if the action is in a terminal state (completed or failed). |
+| [`get()`](#get) | Get a run by its ID or name. |
+| [`get_details()`](#get_details) | Get the details of the action. |
 | [`inputs()`](#inputs) | Placeholder for inputs. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
 | [`outputs()`](#outputs) | Placeholder for outputs. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`watch()`](#watch) | Watch the action for updates. |
 | [`watch_updates()`](#watch_updates) |  |
 
 
@@ -279,6 +366,53 @@ def done()
 Check if the action is in a terminal state (completed or failed). This is a placeholder for checking the
 action state.
 
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ActionDetails.get.aio()`.
+```python
+def get(
+    cls,
+    uri: str | None,
+    run_name: str | None,
+    name: str | None,
+) -> ActionDetails
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `uri` | `str \| None` |
+| `run_name` | `str \| None` |
+| `name` | `str \| None` |
+
+#### get_details()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ActionDetails.get_details.aio()`.
+```python
+def get_details(
+    cls,
+    action_id: identifier_pb2.ActionIdentifier,
+) -> ActionDetails
+```
+Get the details of the action. This is a placeholder for getting the action details.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `action_id` | `identifier_pb2.ActionIdentifier` |
 
 #### inputs()
 
@@ -332,6 +466,27 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
+
+#### watch()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ActionDetails.watch.aio()`.
+```python
+def watch(
+    cls,
+    action_id: identifier_pb2.ActionIdentifier,
+) -> AsyncIterator[ActionDetails]
+```
+Watch the action for updates. This is a placeholder for watching the action.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `action_id` | `identifier_pb2.ActionIdentifier` |
 
 #### watch_updates()
 
@@ -538,7 +693,7 @@ def update(
 )
 ```
 D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
-If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
+If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
 If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 In either case, this is followed by: for k, v in F.items(): D[k] = v
 
@@ -621,9 +776,59 @@ class Project(
 
 | Method | Description |
 |-|-|
+| [`get()`](#get) | Get a run by its ID or name. |
+| [`listall()`](#listall) | Get a run by its ID or name. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Project.get.aio()`.
+```python
+def get(
+    cls,
+    name: str,
+    org: str | None,
+) -> Project
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+| `org` | `str \| None` |
+
+#### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Project.listall.aio()`.
+```python
+def listall(
+    cls,
+    filters: str | None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
+) -> Union[AsyncIterator[Project], Iterator[Project]]
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `filters` | `str \| None` |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
 
 #### to_dict()
 
@@ -668,11 +873,45 @@ class Run(
 
 | Method | Description |
 |-|-|
+| [`abort()`](#abort) | Aborts / Terminates the run. |
+| [`details()`](#details) | Get the details of the run. |
 | [`done()`](#done) | Check if the run is done. |
+| [`get()`](#get) | Get the current run. |
+| [`inputs()`](#inputs) | Get the inputs of the run. |
+| [`listall()`](#listall) | Get all runs for the current project and domain. |
+| [`outputs()`](#outputs) | Get the outputs of the run. |
+| [`show_logs()`](#show_logs) |  |
 | [`sync()`](#sync) | Sync the run with the remote server. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
 | [`watch()`](#watch) | Get the details of the run. |
+
+
+#### abort()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.abort.aio()`.
+```python
+def abort()
+```
+Aborts / Terminates the run.
+
+
+#### details()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.details.aio()`.
+```python
+def details()
+```
+Get the details of the run. This is a placeholder for getting the run details.
 
 
 #### done()
@@ -682,6 +921,107 @@ def done()
 ```
 Check if the run is done.
 
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Run.get.aio()`.
+```python
+def get(
+    cls,
+    name: str,
+) -> Run
+```
+Get the current run.
+
+:return: The current run.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+
+#### inputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.inputs.aio()`.
+```python
+def inputs()
+```
+Get the inputs of the run. This is a placeholder for getting the run inputs.
+
+
+#### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Run.listall.aio()`.
+```python
+def listall(
+    cls,
+    in_phase: Tuple[Phase] | None,
+    created_by_subject: str | None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
+    limit: int,
+) -> AsyncIterator[Run]
+```
+Get all runs for the current project and domain.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `in_phase` | `Tuple[Phase] \| None` |
+| `created_by_subject` | `str \| None` |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
+| `limit` | `int` |
+
+#### outputs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.outputs.aio()`.
+```python
+def outputs()
+```
+Get the outputs of the run. This is a placeholder for getting the run outputs.
+
+
+#### show_logs()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.show_logs.aio()`.
+```python
+def show_logs(
+    attempt: int | None,
+    max_lines: int,
+    show_ts: bool,
+    raw: bool,
+    filter_system: bool,
+)
+```
+| Parameter | Type |
+|-|-|
+| `attempt` | `int \| None` |
+| `max_lines` | `int` |
+| `show_ts` | `bool` |
+| `raw` | `bool` |
+| `filter_system` | `bool` |
 
 #### sync()
 
@@ -712,6 +1052,28 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
+
+#### wait()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await <Run instance>.wait.aio()`.
+```python
+def wait(
+    quiet: bool,
+    wait_for: Literal['terminal', 'running'],
+)
+```
+Wait for the run to complete, displaying a rich progress panel with status transitions,
+time elapsed, and error details in case of failure.
+
+
+| Parameter | Type |
+|-|-|
+| `quiet` | `bool` |
+| `wait_for` | `Literal['terminal', 'running']` |
 
 #### watch()
 
@@ -760,6 +1122,8 @@ class RunDetails(
 | Method | Description |
 |-|-|
 | [`done()`](#done) | Check if the run is in a terminal state (completed or failed). |
+| [`get()`](#get) | Get a run by its ID or name. |
+| [`get_details()`](#get_details) | Get the details of the run. |
 | [`inputs()`](#inputs) | Placeholder for inputs. |
 | [`outputs()`](#outputs) | Placeholder for outputs. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
@@ -774,6 +1138,49 @@ def done()
 Check if the run is in a terminal state (completed or failed). This is a placeholder for checking the
 run state.
 
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await RunDetails.get.aio()`.
+```python
+def get(
+    cls,
+    name: str | None,
+) -> RunDetails
+```
+Get a run by its ID or name. If both are provided, the ID will take precedence.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str \| None` |
+
+#### get_details()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await RunDetails.get_details.aio()`.
+```python
+def get_details(
+    cls,
+    run_id: identifier_pb2.RunIdentifier,
+) -> RunDetails
+```
+Get the details of the run. This is a placeholder for getting the run details.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `run_id` | `identifier_pb2.RunIdentifier` |
 
 #### inputs()
 
@@ -839,9 +1246,89 @@ class Secret(
 
 | Method | Description |
 |-|-|
+| [`create()`](#create) |  |
+| [`delete()`](#delete) |  |
+| [`get()`](#get) |  |
+| [`listall()`](#listall) |  |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
+
+#### create()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Secret.create.aio()`.
+```python
+def create(
+    cls,
+    name: str,
+    value: Union[str, bytes],
+    type: SecretTypes,
+)
+```
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+| `value` | `Union[str, bytes]` |
+| `type` | `SecretTypes` |
+
+#### delete()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Secret.delete.aio()`.
+```python
+def delete(
+    cls,
+    name,
+)
+```
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` |  |
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Secret.get.aio()`.
+```python
+def get(
+    cls,
+    name: str,
+) -> Secret
+```
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+
+#### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Secret.listall.aio()`.
+```python
+def listall(
+    cls,
+    limit: int,
+) -> AsyncIterator[Secret]
+```
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `limit` | `int` |
 
 #### to_dict()
 
@@ -888,6 +1375,7 @@ class Task(
 | Method | Description |
 |-|-|
 | [`get()`](#get) | Get a task by its ID or name. |
+| [`listall()`](#listall) | Get all runs for the current project and domain. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
@@ -916,6 +1404,38 @@ Either version or auto_version are required parameters.
 | `domain` | `str \| None` |
 | `version` | `str \| None` |
 | `auto_version` | `AutoVersioning \| None` |
+
+#### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Task.listall.aio()`.
+```python
+def listall(
+    cls,
+    by_task_name: str | None,
+    by_task_env: str | None,
+    project: str | None,
+    domain: str | None,
+    sort_by: Tuple[str, Literal['asc', 'desc']] | None,
+    limit: int,
+) -> Union[AsyncIterator[Task], Iterator[Task]]
+```
+Get all runs for the current project and domain.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `by_task_name` | `str \| None` |
+| `by_task_env` | `str \| None` |
+| `project` | `str \| None` |
+| `domain` | `str \| None` |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
+| `limit` | `int` |
 
 #### to_dict()
 
@@ -965,10 +1485,87 @@ class Trigger(
 
 | Method | Description |
 |-|-|
+| [`create()`](#create) | Create a new trigger in the Flyte platform. |
+| [`delete()`](#delete) | Delete a trigger by its name. |
+| [`get()`](#get) | Retrieve a trigger by its name and associated task name. |
 | [`get_details()`](#get_details) | Get detailed information about this trigger. |
+| [`listall()`](#listall) | List all triggers associated with a specific task or all tasks if no task name is provided. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
+| [`update()`](#update) | Pause a trigger by its name and associated task name. |
 
+
+#### create()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Trigger.create.aio()`.
+```python
+def create(
+    cls,
+    trigger: flyte.Trigger,
+    task_name: str,
+    task_version: str | None,
+) -> Trigger
+```
+Create a new trigger in the Flyte platform.
+
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `trigger` | `flyte.Trigger` |
+| `task_name` | `str` |
+| `task_version` | `str \| None` |
+
+#### delete()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Trigger.delete.aio()`.
+```python
+def delete(
+    cls,
+    name: str,
+    task_name: str,
+)
+```
+Delete a trigger by its name.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+| `task_name` | `str` |
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Trigger.get.aio()`.
+```python
+def get(
+    cls,
+    name: str,
+    task_name: str,
+) -> TriggerDetails
+```
+Retrieve a trigger by its name and associated task name.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+| `task_name` | `str` |
 
 #### get_details()
 
@@ -977,6 +1574,31 @@ def get_details()
 ```
 Get detailed information about this trigger.
 
+
+#### listall()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Trigger.listall.aio()`.
+```python
+def listall(
+    cls,
+    task_name: str | None,
+    task_version: str | None,
+    limit: int,
+) -> AsyncIterator[Trigger]
+```
+List all triggers associated with a specific task or all tasks if no task name is provided.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `task_name` | `str \| None` |
+| `task_version` | `str \| None` |
+| `limit` | `int` |
 
 #### to_dict()
 
@@ -999,6 +1621,31 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
+
+#### update()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await Trigger.update.aio()`.
+```python
+def update(
+    cls,
+    name: str,
+    task_name: str,
+    active: bool,
+)
+```
+Pause a trigger by its name and associated task name.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `name` | `str` |
+| `task_name` | `str` |
+| `active` | `bool` |
 
 ### Properties
 
@@ -1025,11 +1672,32 @@ class User(
 
 | Method | Description |
 |-|-|
+| [`get()`](#get) | Fetches information about the currently logged in user. |
 | [`name()`](#name) |  |
 | [`subject()`](#subject) |  |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
+
+#### get()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await User.get.aio()`.
+```python
+def get(
+    cls,
+) -> User
+```
+Fetches information about the currently logged in user.
+Returns: A User object containing details about the user.
+
+
+| Parameter | Type |
+|-|-|
+| `cls` |  |
 
 #### name()
 

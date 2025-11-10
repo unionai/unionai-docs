@@ -47,6 +47,7 @@ You can then layer on additional components using the `with_` methods:
 * [`Image.with_source_file()`](../../api-reference/flyte-sdk/packages/flyte#with_source_file): Specify a source file to include in the image.
 * [`Image.with_source_folder()`](../../api-reference/flyte-sdk/packages/flyte#with_source_folder): Specify a source folder to include in the image.
 * [`Image.with_uv_project()`](../../api-reference/flyte-sdk/packages/flyte#with_uv_project): Use the `uv` script metadata in the source file to specify the image.
+* [`Image.with_poetry_project()`](../../api-reference/flyte-sdk/packages/flyte#with_poetry_project): Create a new image with the specified `pyproject.toml`
 * [`Image.with_workdir()`](../../api-reference/flyte-sdk/packages/flyte#with_workdir): Specify the working directory for the image.
 
 You can also specify an image in one shot (with no possibility of layering) with:
