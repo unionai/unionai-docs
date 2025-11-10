@@ -191,6 +191,39 @@ def train_model(epochs: int) -> flyte.io.File:
 
 ```
 
+## Build Connector Docker Image
+Build the custom image when you're ready to deploy your connector to your cluster.
+To build the Docker image for your connector, run the following script:
+
+```python
+import asyncio
+from flyte import Image
+from flyte.extend import ImageBuildEngine
+
+
+async def build_flyte_connector_image(
+    registry: str, name: str, builder: str = "local"
+):
+    """
+    Build the SDK default connector image, optionally overriding
+    the container registry and image name.
+
+    Args:
+        registry: e.g. "ghcr.io/my-org" or "123456789012.dkr.ecr.us-west-2.amazonaws.com".
+        name:     e.g. "my-connector".
+        builder:  e.g. "local" or "remote".
+    """
+
+    default_image = Image.from_debian_base(registry=registry, name=name).with_pip_packages(
+        "flyteplugins-connectors[bigquery]", pre=True
+    )
+    await ImageBuildEngine.build(default_image, builder=builder)
+
+if __name__ == "__main__":
+    print("Building connector image...")
+    asyncio.run(build_flyte_connector_image(registry="<YOUR_REGISTRY>", name="flyte-connectors", builder="local"))
+```
+
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}
 
