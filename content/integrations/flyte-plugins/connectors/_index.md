@@ -50,6 +50,11 @@ To implement a new async connector, extend `AsyncConnector` and implement the fo
 | `get`    | Fetch current job state (return job status or output)       |
 | `delete` | Delete / cancel the external job                            |
 
+To test the connector locally, the connector task should inherit from
+[AsyncConnectorExecutorMixin](https://github.com/flyteorg/flyte-sdk/blob/1d49299294cd5e15385fe8c48089b3454b7a4cd1/src/flyte/connectors/_connector.py#L206).
+This mixin simulates how the Flyte system executes asynchronous connector tasks, making it easier to validate your connector implementation before deploying it.
+
+
 ```python
 from dataclasses import dataclass
 from flyte.connectors import AsyncConnector, Resource, ResourceMeta
