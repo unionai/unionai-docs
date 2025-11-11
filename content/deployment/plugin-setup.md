@@ -12,7 +12,7 @@ variants: -flyte -serverless +byoc +selfmanaged
 
 [Dask](https://www.dask.org/) is a flexible parallel computing library for analytics. The Dask plugin enables you to run distributed Dask workloads in your {{< key product_name >}} cluster.
 
-For detailed information on using Dask in your workflows, see the [Dask plugin documentation]({{< relref "/integrations/native-backend-plugins/k8s-dask-plugin" >}}).
+For detailed information on using Dask in your workflows, see the [Dask plugin documentation](../integrations/flyte-plugins/dask/_index.md).
 
 ### Installing the Dask Operator
 
@@ -112,7 +112,7 @@ task_logs:
 
 [Ray](https://www.ray.io/) is a unified framework for scaling AI and Python applications. The Ray plugin enables you to run distributed Ray workloads in your {{< key product_name >}} cluster.
 
-For detailed information on using Ray in your workflows, see the [Ray plugin documentation]({{< relref "/integrations/native-backend-plugins/ray-plugin" >}}).
+For detailed information on using Ray in your workflows, see the [Ray plugin documentation](../integrations/flyte-plugins/ray/_index.md).
 
 ### Installing the Ray Operator
 
