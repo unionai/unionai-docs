@@ -75,6 +75,12 @@ For example:
 > The `registry` parameter is only needed if you are building the image locally. It is not required when using the Union backend `ImageBuilder`.
 > See [Image building](#image-building) for more details.
 
+> [!NOTE]
+> Images built with `flyte.Image.from_debian_base()` do not include CA certificates by default, which can cause TLS
+> validation errors and block access to HTTPS-based storage such as Amazon S3. Libraries like Polars (e.g., `polars.scan_parquet()`) are particularly affected.
+> **Solution:** Add `"ca-certificates"` using `.with_apt_packages()` in your image definition.
+
+
 ## Example: Defining an image based on uv script metadata
 
 Another common technique for defining an image is to use [`uv` inline script metadata](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies) to specify your dependencies right in your Python file and then use the `flyte.Image.from_uv_script()` method to create a `flyte.Image` object.
