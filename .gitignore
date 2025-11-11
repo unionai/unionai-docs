@@ -35,3 +35,4 @@ pyproject.toml
 main.py
 .python-version
 uv.lock
+.claude/
