@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b25
+version: 2.0.0b28
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,6 +24,10 @@ layout: py_api
 | [`flyte.Timeout`](../packages/flyte#flytetimeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte#flytetrigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
 | [`flyte.config.Config`](../packages/flyte.config#flyteconfigconfig) |This the parent configuration object and holds all the underlying configuration object types. |
+| [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors#flyteconnectorsasyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors#flyteconnectorsconnectorregistry) |This is the registry for all connectors. |
+| [`flyte.connectors.Resource`](../packages/flyte.connectors#flyteconnectorsresource) |This is the output resource of the job. |
+| [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors#flyteconnectorsresourcemeta) |This is the metadata for the job. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors#flyteerrorsactionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors#flyteerrorsbaseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors#flyteerrorscustomerror) |This error is raised when the user raises a custom error. |

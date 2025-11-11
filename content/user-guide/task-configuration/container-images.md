@@ -34,7 +34,7 @@ You start building your image with on of the `from_` methods:
 
 * [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte#from_base): Start from a specified Dockerfile.
 * [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte#from_debian_base): Start from the Flyte default image
-* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Starte from
+* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Start from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
 You can then layer on additional components using the `with_` methods:
 
@@ -47,6 +47,7 @@ You can then layer on additional components using the `with_` methods:
 * [`Image.with_source_file()`](../../api-reference/flyte-sdk/packages/flyte#with_source_file): Specify a source file to include in the image.
 * [`Image.with_source_folder()`](../../api-reference/flyte-sdk/packages/flyte#with_source_folder): Specify a source folder to include in the image.
 * [`Image.with_uv_project()`](../../api-reference/flyte-sdk/packages/flyte#with_uv_project): Use the `uv` script metadata in the source file to specify the image.
+* [`Image.with_poetry_project()`](../../api-reference/flyte-sdk/packages/flyte#with_poetry_project): Create a new image with the specified `pyproject.toml`
 * [`Image.with_workdir()`](../../api-reference/flyte-sdk/packages/flyte#with_workdir): Specify the working directory for the image.
 
 You can also specify an image in one shot (with no possibility of layering) with:
@@ -103,7 +104,7 @@ There are two ways that the image can be built:
 
 ### Configuring the `builder`
 
-In [Earlier](../getting-started/local-setup#image-section), we discussed the `image.builder` property in the `config.yaml`.
+[Earlier](../getting-started/local-setup), we discussed the `image.builder` property in the `config.yaml`.
 
 For Flyte OSS instances, this property must be set to `local`.
 
@@ -143,12 +144,78 @@ You must ensure that:
 
 ### Remote `ImageBuilder`
 
+`ImageBuilder` is a service provided by Union that builds container images on Union's infrastructure and provides an internal container registry for storing the built images.
+
 When `image.builder` in the `config.yaml` is set to `remote` (and you are running Union.ai), `flyte.run()` does the following:
 
-* Builds the Docker image on you Union instance with `ImageBuilder`, installing the dependencies specified in the `uv` inline script metadata.
-* Pushes the image to the internal container registry of your Union instance.
+* Builds the Docker image on your Union instance with `ImageBuilder`.
+* Pushes the image to a registry
+  * If you did not specify a `registry` in the `Image` definition, it pushes to the internal registry in your Union instance.
+  * If you did specify a `registry`, it pushes to that registry. Be sure to also set the `registry_secret` parameter in the `Image` definition to enable `ImageBuilder` to authenticate to that registry (see [below](#imagebuilder-with-external-registries)).
 * Deploys your code to the backend.
 * Kicks off the execution of your workflow.
-* Before the task that uses your custom image is executed, the backend pulls the image from the internal registry to set up the container.
+* Before the task that uses your custom image is executed, the backend pulls the image from the registry to set up the container.
 
-There is no set up of Docker nor any access control configuration required on your part.
+There is no set up of Docker nor any other local configuration required on your part.
+
+#### ImageBuilder with external registries
+
+If you are want to push the images built by `ImageBuilder` to an external registry, you can do this by setting the `registry` parameter in the `Image` object.
+You will also need to set the `registry_secret` parameter to provide the secret needed to push and pull images to the private registry.
+For example:
+
+```python
+# Add registry credentials so the Union remote builder can pull the base image
+# and push the resulting image to your private registry.
+image=flyte.Image.from_debian_base(
+    name="my-image",
+    base_image="registry.example.com/my-org/my-private-image:latest",
+    registry="registry.example.com/my-org"
+    registry_secret="my-secret"
+)
+
+# Reference the same secret in the TaskEnvironment so Flyte can pull the image at runtime.
+env = flyte.TaskEnvironment(
+    name="my_task_env",
+    image=image,
+    secrets="my-secret"
+)
+```
+
+The value of the `registry_secret` parameter must be the name of a Flyte secret of type `image_pull` that contains the credentials needed to access the private registry. It must match the name specified in the `secrets` parameter of the `TaskEnvironment` so that Flyte can use it to pull the image at runtime.
+
+To create an `image_pull` secret for the remote builder and the task environment, run the following command:
+
+```shell
+$ flyte create secret --type image_pull my-secret --from-file ~/.docker/config.json
+```
+
+The format of this secret matches the standard Kubernetes [image pull secret](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker-hub), and should look like this:
+
+```json
+{
+  "auths": {
+    "registry.example.com": {
+      "auth": "base64-encoded-auth"
+    }
+  }
+}
+```
+
+> [!NOTE]
+> The `auth` field contains the base64-encoded credentials for your registry (username and password or token).
+
+### Install private PyPI packages
+
+To install Python packages from a private PyPI index (for example, from GitHub), you can mount a secret to the image layer.
+This allows your build to authenticate securely during dependency installation.
+For example:
+
+```python
+private_package = "git+https://$GITHUB_PAT@github.com/pingsutw/flytex.git@2e20a2acebfc3877d84af643fdd768edea41d533"
+image = (
+    Image.from_debian_base()
+    .with_apt_packages("git")
+    .with_pip_packages(private_package, pre=True, secret_mounts=Secret("GITHUB_PAT"))
+)
+```
