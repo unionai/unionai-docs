@@ -1,10 +1,10 @@
 ---
-title: Plugins
+title: Plugin setup
 weight: 6
 variants: -flyte -serverless +byoc +selfmanaged
 ---
 
-# Plugins
+# Plugin setup
 
 {{< key product_name >}} supports various distributed computing plugins that extend the platform's capabilities for running specialized workloads. This guide covers how to install and configure the Dask and Ray plugins in your cluster.
 
