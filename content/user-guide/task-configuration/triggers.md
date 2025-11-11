@@ -6,18 +6,19 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Triggers
 
-Triggers allow you to automate (i.e. schedule) and parameterize (i.e. override inputs) for your executions.
+Triggers allow you to automate and parameterize an execution by scheduling its kick-off time and providing overrides for its task inputs.
 
-Currently, we support:
-* Schedule triggers - run tasks based on a cron expression or fixed rate schedule.
+Currently, we support only **schedule trigger**. These run tasks based on a cron expression or a fixed rate schedule.
 
-In the future, we will add support for:
-* Webhook triggers - hit an API endpoint to run your task.
-* Artifact triggers - run a task when a certain artifact is produced.
+Support is coming for other trigger types, such as:
 
+* Webhook triggers: Hit an API endpoint to run your task.
+* Artifact triggers: Run a task when a certain artifact is produced.
+
+## Triggers are
 ## Schedules
 
-You can define a task with a trigger using the Python SDK like so:
+You can define a task with a trigger like so:
 
 ```python
 import flyte
@@ -31,6 +32,7 @@ def example_task(trigger_time: datetime, x: int = 1) -> str:
 ```
 
 It is possible to define triggers with a custom cron expression or a fixed rate interval, and to specify inputs which will be used for triggered executions:
+
 ```python
 custom_cron_trigger = flyte.Trigger(
     "custom_cron",
@@ -50,9 +52,9 @@ def custom_task(start_time: datetime, x: int) -> str:
     return f"Custom task executed at {start_time.isoformat()} with x={x}"
 ```
 
-
 It's possible to pass the trigger invocation timestamp to the task.
 In the above example, we specified `"start_time": flyte.TriggerTime` in the trigger inputs.
+
 > [!NOTE]
 > If your task has other arguments which don't have default values,
 > you must provide values for those in the trigger inputs.
@@ -98,8 +100,7 @@ Upon deploy, all triggers that are associated with the task will be automaticall
 
 ## Activating and deactivating triggers
 
-When you deploy a task definition like those above, the corresponding triggers will be active immediately
-after deploy and will create runs as soon as the next scheduled time comes.
+When you deploy a task definition like those above, the corresponding triggers will be active immediately after deploy and will create runs as soon as the next scheduled time comes.
 It is possible to define triggers that are not immediately active:
 
 ```python
@@ -134,9 +135,12 @@ You can also view and manage your deployed triggers in the Union UI.
 
 If you define a trigger with a cron expression, you can tell when it will run in the future by looking at the cron expression.
 For example:
-* `0 0 * * *` it will run next day at 0:00,
-* `*/15 14 * * 1-5` it will run every 15th minute past hour 14 on every day-of-week from Monday through Friday.
-For example, if today is Tuesday 17:35, it will run next day on Wednesday at 14:00.
+
+* `0 0 * * *` it will run next day at 0:00
+
+* `*/15 14 * * 1-5` it will run every 15th minute past hour 14 on every day-of-week from
+  Monday through Friday.
+  For example, if today is Tuesday 17:35, it will run next day on Wednesday at 14:00.
 
 If you define a fixed rate trigger like so:
 ```python

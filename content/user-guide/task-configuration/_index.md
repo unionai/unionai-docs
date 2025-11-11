@@ -68,6 +68,7 @@ Here is an overview of all task configuration parameters available at each level
 | **max_inline_io_bytes** | ❌ No | ✅ Yes | ✅ Yes |
 | **retries** | ❌ No | ✅ Yes | ✅ Yes |
 | **timeout** | ❌ No | ✅ Yes | ✅ Yes |
+| **triggers** | ❌ No | ✅ Yes | ❌ No |
 | **docs** | ❌ No | ✅ Yes | ❌ No |
 
 ## Task configuration parameters
