@@ -6,7 +6,7 @@ sidebar_expanded: false
 ---
 # Pytorch
 
-Flyte can execute Pytorch jobs natively on a Kubernetes Cluster,
+Flyte can execute distributed PyTorch jobs (which is similar to Running a torchrun script) natively on a Kubernetes Cluster,
 which manages a cluster’s lifecycle, spin-up, and tear down.
 It leverages the open-sourced Kubeflow Operator.
 This is like running a transient Pytorch cluster — a type of cluster
