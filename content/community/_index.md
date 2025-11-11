@@ -1,6 +1,6 @@
 ---
 title: Community
-weight: 5
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 top_menu: true
 sidebar_expanded: true
