@@ -14,24 +14,6 @@ Although they normally run inside the control plane, you can also run connectors
 
 Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute *outside* of the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.
 
-
-This section covers all currently available connectors:
-
-{{< variant flyte >}}
-{{< markdown >}}
-
-* [BigQuery connector](./bigquery-connector/_index)
-
-{{< /markdown >}}
-{{< /variant >}}
-{{< variant byoc selfmanaged >}}
-{{< markdown >}}
-
-* [BigQuery connector](./bigquery-connector/_index)
-
-{{< /markdown >}}
-{{< /variant >}}
-
 ## Creating a new connector
 
 If none of the existing connectors meet your needs, you can build your own.
@@ -131,8 +113,6 @@ class ModelTrainingConnector(AsyncConnector):
         async with httpx.AsyncClient() as client:
             await client.delete(f"{resource_meta.endpoint}/{resource_meta.job_id}")
 ```
-For a reference implementation, see the [BigQuery connector code](https://github.com/flyteorg/flyte-sdk/blob/main/plugins/connectors/src/flyteplugins/connectors/bigquery/connector.py).
-
 
 To actually use this connector, you must also define a task whose `task_type` matches the connector.
 
