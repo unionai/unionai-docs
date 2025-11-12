@@ -15,10 +15,10 @@ Support is coming for other trigger types, such as:
 * Webhook triggers: Hit an API endpoint to run your task.
 * Artifact triggers: Run a task when a certain artifact is produced.
 
-## Triggers are
-## Schedules
+## Triggers are set in the task decorator
 
-You can define a task with a trigger like so:
+You set a trigger in the task decorator, when you define the task.
+For example:
 
 ```python
 import flyte
@@ -31,7 +31,12 @@ def example_task(trigger_time: datetime, x: int = 1) -> str:
     return f"Task executed at {trigger_time.isoformat()} with x={x}"
 ```
 
-It is possible to define triggers with a custom cron expression or a fixed rate interval, and to specify inputs which will be used for triggered executions:
+## Schedules
+
+Schedule triggers (currently the only type available) can be set using:
+* A fixed rate interval (in minutes)
+* A predefined schedule (hourly, daily, weekly, monthly)
+* A custom Cron expression
 
 ```python
 custom_cron_trigger = flyte.Trigger(
