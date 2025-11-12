@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Triggers allow you to automate and parameterize an execution by scheduling its kick-off time and providing overrides for its task inputs.
 
-Currently, we support only **schedule trigger**. These run tasks based on a cron expression or a fixed rate schedule.
+Currently, we support only **schedule triggers**. This type of trigger runs a task based on a cron expression or a fixed rate schedule.
 
 Support is coming for other trigger types, such as:
 
@@ -31,12 +31,30 @@ def example_task(trigger_time: datetime, x: int = 1) -> str:
     return f"Task executed at {trigger_time.isoformat()} with x={x}"
 ```
 
+You cannot set a trigger in any other way (neither in the `TaskEnvironment` definition nor the `override` method)
+
 ## Schedules
 
 Schedule triggers (currently the only type available) can be set using:
-* A fixed rate interval (in minutes)
-* A predefined schedule (hourly, daily, weekly, monthly)
-* A custom Cron expression
+* A fixed rate interval (in minutes).
+* A predefined schedule (hourly, daily, weekly, monthly).
+* A custom Cron expression.
+
+### Fixed rate trigger
+
+```python
+fixed_rate_schedule = flyte.Trigger(
+    "fixed_rate",
+    flyte.FixedRate(90),  # Every 90 minutes
+    inputs={"start_time": flyte.TriggerTime, "x": 1},
+)
+
+# You can attach multiple triggers to the same task
+@env.task(triggers=fixed_rate_schedule)
+def custom_task(start_time: datetime, x: int) -> str:
+    return f"Custom task executed at {start_time.isoformat()} with x={x}"For example:
+
+
 
 ```python
 custom_cron_trigger = flyte.Trigger(
@@ -45,16 +63,7 @@ custom_cron_trigger = flyte.Trigger(
     inputs={"start_time": flyte.TriggerTime, "x": 1},
 )
 
-custom_rate_trigger = flyte.Trigger(
-    "custom_rate",
-    flyte.FixedRate(90),  # Runs every 90 minutes
-    inputs={"start_time": flyte.TriggerTime, "x": 1},
-)
 
-# You can attach multiple triggers to the same task
-@env.task(triggers=(custom_cron_trigger, custom_rate_trigger))
-def custom_task(start_time: datetime, x: int) -> str:
-    return f"Custom task executed at {start_time.isoformat()} with x={x}"
 ```
 
 It's possible to pass the trigger invocation timestamp to the task.
