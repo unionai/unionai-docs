@@ -189,7 +189,7 @@ See [Pod templates](./pod-templates).
 > [!NOTE]
 > The `reusable` setting controls the [**reusable containers** feature](./reusable-containers).
 > This feature is only available when running your Flyte code on a Union.ai backend.
-> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2>}}/user-guide/reusable-containers) for details.
+> See [one of the Union.ai product variants of this page]({{< docs_home byoc v2 >}}/user-guide/reusable-containers) for details.
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -233,7 +233,7 @@ See [Pod templates](./pod-templates).
   or the `task.override()` invocation level.
 
 <!--
-* See [Descriptions](./descriptions).
+* See [Description](./description).
 -->
 
 ### `plugin_config`
@@ -295,11 +295,9 @@ See [Pod templates](./pod-templates).
 * The timeout for the task, either as a `timedelta` object or an integer representing seconds.
   If set to `0`, no timeout will be applied.
 
-<!-- TODO: Add when available
-See [Timeout](./timeouts).
--->
-
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
+
+* See [Retries and timeouts](./retries-and-timeouts).
 
 ### `triggers`
 
