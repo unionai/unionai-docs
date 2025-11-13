@@ -232,6 +232,10 @@ See [Pod templates](./pod-templates).
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
 
+<!--
+* See [Descriptions](./descriptions).
+-->
+
 ### `plugin_config`
 
 * Type: `Optional[Any]`
@@ -241,6 +245,10 @@ See [Pod templates](./pod-templates).
 
 * Can only be set at the `TaskEnvironment` level, not at the `@env.task` decorator level
   or the `task.override()` invocation level.
+
+<!--
+* See [Plugin configuration](./plugin-configuration).
+-->
 
 ### `report`
 
@@ -266,7 +274,7 @@ See [Pod templates](./pod-templates).
   If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 100 MiB).
 
 <!-- TODO: Add when available
-* See [Retries and timeouts](./retries-and-timeouts).
+* See [Maximum inline IO bytes](./maximum-inline-io-bytes).
 -->
 
 ### `retries`
@@ -288,7 +296,7 @@ See [Pod templates](./pod-templates).
   If set to `0`, no timeout will be applied.
 
 <!-- TODO: Add when available
-See [Timeouts](./timeouts).
+See [Timeout](./timeouts).
 -->
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
@@ -298,7 +306,6 @@ See [Timeouts](./timeouts).
 * Type: `Tuple[Trigger, ...] | Trigger`
 
 * A trigger or tuple of triggers that define when the task should be executed.
-
 
 * Can only be set at the `@env.task` decorator level. It cannot be overridden.
 
@@ -343,4 +350,4 @@ See [Timeouts](./timeouts).
 
 <!-- TODO: Add when available
   See [docs](./docs).
-  -->
+-->
