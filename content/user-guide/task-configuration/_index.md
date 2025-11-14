@@ -94,7 +94,7 @@ The full set of parameters available for configuring a task environment, task de
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
 
 <!-- TODO: Add when available
-* See [TaskEnvironment names](./name).
+* See [TaskEnvironment names](./task-environment-names).
 -->
 
 ### `short_name`
@@ -109,7 +109,7 @@ The full set of parameters available for configuring a task environment, task de
   Overriding it does not change the fully qualified name of the task.
 
 <!-- TODO: Add when available
-* See [Task and action names](./short-name).
+* See [Task names](./task-names).
 -->
 
 ### `image`
@@ -178,7 +178,7 @@ The full set of parameters available for configuring a task environment, task de
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and the `task.override()` invocation level.
 
 <!-- TODO: Add when available
-See [Pod templates](./pod-templates).
+* See [Pod templates](./pod-templates).
 -->
 
 ### `reusable`
@@ -267,7 +267,7 @@ See [Pod templates](./pod-templates).
 * Type: `int`
 
 * Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task
-  (e.g., primitives, strings, dicts).
+  (e.g., primitives, strings, dictionaries).
   Does not apply to [`flyte.File`, `flyte.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
@@ -316,11 +316,11 @@ See [Pod templates](./pod-templates).
 * Specifies whether the task is interruptible.
   If set to `True`, the task can be scheduled on a spot instance, otherwise it can only be scheduled on on-demand instances.
 
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level.
+
 <!-- TODO: Add when available
 * See [Interruptible tasks](./interruptible-tasks).
 -->
-
-* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and at the `task.override()` invocation level.
 
 ### `queue`
 
@@ -331,12 +331,12 @@ See [Pod templates](./pod-templates).
   Queues serve to point to a specific partitions of your compute infrastructure (for example, a specific cluster in multi-cluster setup).
   They are configured as part of your Union/Flyte deployment.
 
+* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level
+  and at the `task.override()` invocation level.
+
 <!-- TODO: Add when available
 * See [Queues](./queues).
 -->
-
-* Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level
-  and at the `task.override()` invocation level.
 
 ### `docs`
 
@@ -347,5 +347,5 @@ See [Pod templates](./pod-templates).
 * Can only be set at the `@env.task` decorator level. It cannot be overridden.
 
 <!-- TODO: Add when available
-  See [docs](./docs).
+* See [docs](./docs).
 -->
