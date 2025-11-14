@@ -641,7 +641,7 @@ nyc_trigger = flyte.Trigger(
 
 The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET respectively.
 
-### Trigger time is always in UTC
+### `flyte.TriggerTime` is always in UTC
 
 The `flyte.TriggerTime` value is always in UTC. For timezone-aware logic, convert as needed:
 
@@ -653,7 +653,7 @@ def timezone_aware_task(utc_trigger_time: datetime = flyte.TriggerTime) -> str:
     return f"Daily task fired at {utc_trigger_time} UTC ({local_time} local)"
 ```
 
-### Daylight savings time behavior
+### Daylight Savings Time behavior
 
 When Daylight Savings Time (DST) begins and ends, it can impact when the scheduled execution begins.
 
