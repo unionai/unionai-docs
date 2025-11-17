@@ -39,8 +39,8 @@ import {{< key kit_import >}}
 # If you are using `ghcr.io` as your registry, make sure the image is public.
 image = union.ImageSpec(
     name="streamlit-app",
-    packages=["streamlit==1.41.1", "union-runtime>=0.1.10", "pandas==2.2.3", "numpy==2.2.3"],
-    registry=os.getenv("REGISTRY"),
+    packages=["streamlit==1.51.0", "union-runtime>=0.1.18", "pandas==2.2.3", "numpy==2.2.3"],
+    builder="union"
 )
 
 # The `App` declaration.

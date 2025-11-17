@@ -40,12 +40,11 @@ import os
 # The `ImageSpec` for the container that will run the `App`.
 # `union-runtime` must be declared as a dependency,
 # in addition to any other dependencies needed by the app code.
-# Set the environment variable `REGISTRY` to be the URI for your container registry.
-# If you are using `ghcr.io` as your registry, make sure the image is public.
+# Use Union remote Image builder to build the app container image
 image = union.ImageSpec(
     name="streamlit-app",
-    packages=["union-runtime>=0.1.11", "streamlit==1.41.1"],
-    registry=os.getenv("REGISTRY"),
+    packages=["union-runtime>=0.1.18", "streamlit==1.51.0"],
+    builder="union"
 )
 
 # The `App` declaration.
