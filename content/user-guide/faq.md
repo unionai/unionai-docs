@@ -211,3 +211,11 @@ If parallelism is too high, tasks can time out before resources can be allocated
 
 When interpreting parallelism in the UI, it is important to note that dynamic workflows will immediately list all planned executions, even if the number exceeds `max_parallelism`.
 However, this does not mean that all the executions are running. By toggling any embedded tasks or subworkflows, you should see an UNKNOWN status for any tasks that have not yet been processes due to the limitations of `max_parallelism`.
+
+## Union & Flyte
+### What are Union only features?
+Flyte is a battle-tested, open-source workflow orchestrator that powers production AI and data workloads at scale. It provides the reliability, flexibility, and community support you’d expect from a modern orchestrator.
+
+Union builds directly on top of Flyte and extends it into a complete end-to-end AI platform. With Union, you don’t just get a workflow engine — you get the surrounding infrastructure, security, integrations, and productivity features that make running AI/ML workloads seamless across teams and environments.
+
+In this section, we’ll highlight the Union-only features that transform Flyte into a managed, enterprise-ready platform — while still giving you all the strengths of Flyte at its core.
