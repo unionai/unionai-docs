@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b28
+version: 2.0.0b31
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,7 +25,9 @@ layout: py_api
 | [`flyte.Trigger`](../packages/flyte#flytetrigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
 | [`flyte.config.Config`](../packages/flyte.config#flyteconfigconfig) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors#flyteconnectorsasyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors#flyteconnectorsasyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
 | [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors#flyteconnectorsconnectorregistry) |This is the registry for all connectors. |
+| [`flyte.connectors.ConnectorService`](../packages/flyte.connectors#flyteconnectorsconnectorservice) | |
 | [`flyte.connectors.Resource`](../packages/flyte.connectors#flyteconnectorsresource) |This is the output resource of the job. |
 | [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors#flyteconnectorsresourcemeta) |This is the metadata for the job. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors#flyteerrorsactionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
@@ -55,6 +57,8 @@ layout: py_api
 | [`flyte.errors.TaskTimeoutError`](../packages/flyte.errors#flyteerrorstasktimeouterror) |This error is raised when the underlying task execution runs for longer than the specified timeout. |
 | [`flyte.errors.UnionRpcError`](../packages/flyte.errors#flyteerrorsunionrpcerror) |This error is raised when communication with the Union server fails. |
 | [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend#flyteextendasyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
+| [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend#flyteextendimagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`flyte.extend.TaskTemplate`](../packages/flyte.extend#flyteextendtasktemplate) |Task template is a template for a task that can be executed. |
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras#flyteextrascontainertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
 | [`flyte.io.DataFrame`](../packages/flyte.io#flyteiodataframe) |This is the user facing DataFrame class. |
 | [`flyte.io.DataFrameDecoder`](../packages/flyte.io#flyteiodataframedecoder) |Helper class that provides a standard way to create an ABC using. |

@@ -1,6 +1,6 @@
 ---
 title: flyte.connectors.utils
-version: 2.0.0b28
+version: 2.0.0b31
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,6 +15,7 @@ layout: py_api
 |-|-|
 | [`convert_to_flyte_phase()`](#convert_to_flyte_phase) | Convert the state from the connector to the phase in flyte. |
 | [`is_terminal_phase()`](#is_terminal_phase) | Return true if the phase is terminal. |
+| [`print_metadata()`](#print_metadata) |  |
 
 
 ## Methods
@@ -24,7 +25,7 @@ layout: py_api
 ```python
 def convert_to_flyte_phase(
     state: str,
-) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ca18950>
+) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>
 ```
 Convert the state from the connector to the phase in flyte.
 
@@ -37,7 +38,7 @@ Convert the state from the connector to the phase in flyte.
 
 ```python
 def is_terminal_phase(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ca18950>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>,
 ) -> bool
 ```
 Return true if the phase is terminal.
@@ -45,5 +46,10 @@ Return true if the phase is terminal.
 
 | Parameter | Type |
 |-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ca18950>` |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>` |
 
+#### print_metadata()
+
+```python
+def print_metadata()
+```

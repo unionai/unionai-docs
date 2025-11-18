@@ -1,6 +1,6 @@
 ---
 title: flyte.connectors
-version: 2.0.0b28
+version: 2.0.0b31
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,7 +14,9 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`AsyncConnector`](.././flyte.connectors#flyteconnectorsasyncconnector) | This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`AsyncConnectorExecutorMixin`](.././flyte.connectors#flyteconnectorsasyncconnectorexecutormixin) | This mixin class is used to run the connector task locally, and it's only used for local execution. |
 | [`ConnectorRegistry`](.././flyte.connectors#flyteconnectorsconnectorregistry) | This is the registry for all connectors. |
+| [`ConnectorService`](.././flyte.connectors#flyteconnectorsconnectorservice) |  |
 | [`Resource`](.././flyte.connectors#flyteconnectorsresource) | This is the output resource of the job. |
 | [`ResourceMeta`](.././flyte.connectors#flyteconnectorsresourcemeta) | This is the metadata for the job. |
 
@@ -127,6 +129,30 @@ Return the metrics for the task.
 | `resource_meta` | `flyte.connectors._connector.ResourceMeta` |
 | `kwargs` | `**kwargs` |
 
+## flyte.connectors.AsyncConnectorExecutorMixin
+
+This mixin class is used to run the connector task locally, and it's only used for local execution.
+Task should inherit from this class if the task can be run in the connector.
+
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`execute()`](#execute) |  |
+
+
+#### execute()
+
+```python
+def execute(
+    kwargs,
+) -> typing.Any
+```
+| Parameter | Type |
+|-|-|
+| `kwargs` | `**kwargs` |
+
 ## flyte.connectors.ConnectorRegistry
 
 This is the registry for all connectors.
@@ -138,8 +164,6 @@ The connector service will look up the connector registry based on the task type
 | Method | Description |
 |-|-|
 | [`get_connector()`](#get_connector) |  |
-| [`get_connector_metadata()`](#get_connector_metadata) |  |
-| [`list_connectors()`](#list_connectors) |  |
 | [`register()`](#register) |  |
 
 
@@ -156,22 +180,6 @@ def get_connector(
 | `task_type_name` | `str` |
 | `task_type_version` | `int` |
 
-#### get_connector_metadata()
-
-```python
-def get_connector_metadata(
-    name: str,
-) -> flyteidl2.plugins.connector_pb2.Connector
-```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-
-#### list_connectors()
-
-```python
-def list_connectors()
-```
 #### register()
 
 ```python
@@ -184,6 +192,41 @@ def register(
 |-|-|
 | `connector` | `flyte.connectors._connector.AsyncConnector` |
 | `override` | `bool` |
+
+## flyte.connectors.ConnectorService
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`run()`](#run) |  |
+
+
+#### run()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await ConnectorService.run.aio()`.
+```python
+def run(
+    cls,
+    port: int,
+    prometheus_port: int,
+    worker: int,
+    timeout: int | None,
+    modules: typing.Optional[typing.List[str]],
+)
+```
+| Parameter | Type |
+|-|-|
+| `cls` |  |
+| `port` | `int` |
+| `prometheus_port` | `int` |
+| `worker` | `int` |
+| `timeout` | `int \| None` |
+| `modules` | `typing.Optional[typing.List[str]]` |
 
 ## flyte.connectors.Resource
 
@@ -205,7 +248,7 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ca18950>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]],
     outputs: typing.Optional[typing.Dict[str, typing.Any]],
@@ -214,7 +257,7 @@ class Resource(
 ```
 | Parameter | Type |
 |-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ca18950>` |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>` |
 | `message` | `typing.Optional[str]` |
 | `log_links` | `typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]]` |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |

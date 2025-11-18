@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b28
+version: 2.0.0b31
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,6 +14,8 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`AsyncFunctionTaskTemplate`](.././flyte.extend#flyteextendasyncfunctiontasktemplate) | A task template that wraps an asynchronous functions. |
+| [`ImageBuildEngine`](.././flyte.extend#flyteextendimagebuildengine) | ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`TaskTemplate`](.././flyte.extend#flyteextendtasktemplate) | Task template is a template for a task that can be executed. |
 
 ### Methods
 
@@ -395,4 +397,347 @@ configure the task execution environment at runtime. This is usually used by plu
 | `native_interface` | `None` |  |
 | `source_file` | `None` | {{< multiline >}}Returns the source file of the function, if available. This is useful for debugging and tracing.
 {{< /multiline >}} |
+
+## flyte.extend.ImageBuildEngine
+
+ImageBuildEngine contains a list of builders that can be used to build an ImageSpec.
+
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`build()`](#build) | Build the image. |
+
+
+#### build()
+
+```python
+def build(
+    image: Image,
+    builder: ImageBuildEngine.ImageBuilderType | None,
+    dry_run: bool,
+    force: bool,
+) -> str
+```
+Build the image. Images to be tagged with latest will always be built. Otherwise, this engine will check the
+registry to see if the manifest exists.
+
+
+
+| Parameter | Type |
+|-|-|
+| `image` | `Image` |
+| `builder` | `ImageBuildEngine.ImageBuilderType \| None` |
+| `dry_run` | `bool` |
+| `force` | `bool` |
+
+## flyte.extend.TaskTemplate
+
+Task template is a template for a task that can be executed. It defines various parameters for the task, which
+can be defined statically at the time of task definition or dynamically at the time of task invocation using
+the override method.
+
+Example usage:
+```python
+@task(name="my_task", image="my_image", resources=Resources(cpu="1", memory="1Gi"))
+def my_task():
+    pass
+```
+
+
+
+```python
+class TaskTemplate(
+    name: str,
+    interface: NativeInterface,
+    short_name: str,
+    task_type: str,
+    task_type_version: int,
+    image: Union[str, Image, Literal['auto']],
+    resources: Optional[Resources],
+    cache: CacheRequest,
+    interruptible: bool,
+    retries: Union[int, RetryStrategy],
+    reusable: Union[ReusePolicy, None],
+    docs: Optional[Documentation],
+    env_vars: Optional[Dict[str, str]],
+    secrets: Optional[SecretRequest],
+    timeout: Optional[TimeoutType],
+    pod_template: Optional[Union[str, PodTemplate]],
+    report: bool,
+    queue: Optional[str],
+    debuggable: bool,
+    parent_env: Optional[weakref.ReferenceType[TaskEnvironment]],
+    parent_env_name: Optional[str],
+    max_inline_io_bytes: int,
+    triggers: Tuple[Trigger, ...],
+    _call_as_synchronous: bool,
+)
+```
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
+| `interface` | `NativeInterface` |
+| `short_name` | `str` |
+| `task_type` | `str` |
+| `task_type_version` | `int` |
+| `image` | `Union[str, Image, Literal['auto']]` |
+| `resources` | `Optional[Resources]` |
+| `cache` | `CacheRequest` |
+| `interruptible` | `bool` |
+| `retries` | `Union[int, RetryStrategy]` |
+| `reusable` | `Union[ReusePolicy, None]` |
+| `docs` | `Optional[Documentation]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
+| `secrets` | `Optional[SecretRequest]` |
+| `timeout` | `Optional[TimeoutType]` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
+| `report` | `bool` |
+| `queue` | `Optional[str]` |
+| `debuggable` | `bool` |
+| `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` |
+| `parent_env_name` | `Optional[str]` |
+| `max_inline_io_bytes` | `int` |
+| `triggers` | `Tuple[Trigger, ...]` |
+| `_call_as_synchronous` | `bool` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`aio()`](#aio) | The aio function allows executing "sync" tasks, in an async context. |
+| [`config()`](#config) | Returns additional configuration for the task. |
+| [`container_args()`](#container_args) | Returns the container args for the task. |
+| [`custom_config()`](#custom_config) | Returns additional configuration for the task. |
+| [`data_loading_config()`](#data_loading_config) | This configuration allows executing raw containers in Flyte using the Flyte CoPilot system. |
+| [`execute()`](#execute) | This is the pure python function that will be executed when the task is called. |
+| [`forward()`](#forward) | Think of this as a local execute method for your task. |
+| [`override()`](#override) | Override various parameters of the task template. |
+| [`post()`](#post) | This is the postexecute function that will be. |
+| [`pre()`](#pre) | This is the preexecute function that will be. |
+| [`sql()`](#sql) | Returns the SQL for the task. |
+
+
+#### aio()
+
+```python
+def aio(
+    args: *args,
+    kwargs: **kwargs,
+) -> Coroutine[Any, Any, R] | R
+```
+The aio function allows executing "sync" tasks, in an async context. This helps with migrating v1 defined sync
+tasks to be used within an asyncio parent task.
+This function will also re-raise exceptions from the underlying task.
+
+Example:
+```python
+@env.task
+def my_legacy_task(x: int) -> int:
+    return x
+
+@env.task
+async def my_new_parent_task(n: int) -> List[int]:
+    collect = []
+    for x in range(n):
+        collect.append(my_legacy_task.aio(x))
+    return asyncio.gather(*collect)
+```
+
+
+| Parameter | Type |
+|-|-|
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
+
+#### config()
+
+```python
+def config(
+    sctx: SerializationContext,
+) -> Dict[str, str]
+```
+Returns additional configuration for the task. This is a set of key-value pairs that can be used to
+configure the task execution environment at runtime. This is usually used by plugins.
+
+
+| Parameter | Type |
+|-|-|
+| `sctx` | `SerializationContext` |
+
+#### container_args()
+
+```python
+def container_args(
+    sctx: SerializationContext,
+) -> List[str]
+```
+Returns the container args for the task. This is a set of key-value pairs that can be used to
+configure the task execution environment at runtime. This is usually used by plugins.
+
+
+| Parameter | Type |
+|-|-|
+| `sctx` | `SerializationContext` |
+
+#### custom_config()
+
+```python
+def custom_config(
+    sctx: SerializationContext,
+) -> Dict[str, str]
+```
+Returns additional configuration for the task. This is a set of key-value pairs that can be used to
+configure the task execution environment at runtime. This is usually used by plugins.
+
+
+| Parameter | Type |
+|-|-|
+| `sctx` | `SerializationContext` |
+
+#### data_loading_config()
+
+```python
+def data_loading_config(
+    sctx: SerializationContext,
+) -> DataLoadingConfig
+```
+This configuration allows executing raw containers in Flyte using the Flyte CoPilot system
+Flyte CoPilot, eliminates the needs of sdk inside the container. Any inputs required by the users container
+are side-loaded in the input_path
+Any outputs generated by the user container - within output_path are automatically uploaded
+
+
+| Parameter | Type |
+|-|-|
+| `sctx` | `SerializationContext` |
+
+#### execute()
+
+```python
+def execute(
+    args,
+    kwargs,
+) -> Any
+```
+This is the pure python function that will be executed when the task is called.
+
+
+| Parameter | Type |
+|-|-|
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
+
+#### forward()
+
+```python
+def forward(
+    args: *args,
+    kwargs: **kwargs,
+) -> Coroutine[Any, Any, R] | R
+```
+Think of this as a local execute method for your task. This function will be invoked by the __call__ method
+when not in a Flyte task execution context.  See the implementation below for an example.
+
+
+
+| Parameter | Type |
+|-|-|
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
+
+#### override()
+
+```python
+def override(
+    short_name: Optional[str],
+    resources: Optional[Resources],
+    cache: Optional[CacheRequest],
+    retries: Union[int, RetryStrategy],
+    timeout: Optional[TimeoutType],
+    reusable: Union[ReusePolicy, Literal['off'], None],
+    env_vars: Optional[Dict[str, str]],
+    secrets: Optional[SecretRequest],
+    max_inline_io_bytes: int | None,
+    pod_template: Optional[Union[str, PodTemplate]],
+    queue: Optional[str],
+    interruptible: Optional[bool],
+    kwargs: **kwargs,
+) -> TaskTemplate
+```
+Override various parameters of the task template. This allows for dynamic configuration of the task
+when it is called, such as changing the image, resources, cache policy, etc.
+
+
+
+| Parameter | Type |
+|-|-|
+| `short_name` | `Optional[str]` |
+| `resources` | `Optional[Resources]` |
+| `cache` | `Optional[CacheRequest]` |
+| `retries` | `Union[int, RetryStrategy]` |
+| `timeout` | `Optional[TimeoutType]` |
+| `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
+| `secrets` | `Optional[SecretRequest]` |
+| `max_inline_io_bytes` | `int \| None` |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` |
+| `queue` | `Optional[str]` |
+| `interruptible` | `Optional[bool]` |
+| `kwargs` | `**kwargs` |
+
+#### post()
+
+```python
+def post(
+    return_vals: Any,
+) -> Any
+```
+This is the postexecute function that will be
+called after the task is executed
+
+
+| Parameter | Type |
+|-|-|
+| `return_vals` | `Any` |
+
+#### pre()
+
+```python
+def pre(
+    args,
+    kwargs,
+) -> Dict[str, Any]
+```
+This is the preexecute function that will be
+called before the task is executed
+
+
+| Parameter | Type |
+|-|-|
+| `args` | `*args` |
+| `kwargs` | `**kwargs` |
+
+#### sql()
+
+```python
+def sql(
+    sctx: SerializationContext,
+) -> Optional[str]
+```
+Returns the SQL for the task. This is a set of key-value pairs that can be used to
+configure the task execution environment at runtime. This is usually used by plugins.
+
+
+| Parameter | Type |
+|-|-|
+| `sctx` | `SerializationContext` |
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `native_interface` | `None` |  |
+| `source_file` | `None` |  |
 

@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b28
+version: 2.0.0b31
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -345,6 +345,7 @@ def init(
     domain: str | None,
     root_dir: Path | None,
     log_level: int | None,
+    log_format: LogFormat | None,
     endpoint: str | None,
     headless: bool,
     insecure: bool,
@@ -365,6 +366,7 @@ def init(
     images: typing.Dict[str, str] | None,
     source_config_path: Optional[Path],
     sync_local_sys_paths: bool,
+    load_plugin_type_transformers: bool,
 )
 ```
 Initialize the Flyte system with the given configuration. This method should be called before any other Flyte
@@ -379,6 +381,7 @@ remote API methods are called. Thread-safe implementation.
 | `domain` | `str \| None` |
 | `root_dir` | `Path \| None` |
 | `log_level` | `int \| None` |
+| `log_format` | `LogFormat \| None` |
 | `endpoint` | `str \| None` |
 | `headless` | `bool` |
 | `insecure` | `bool` |
@@ -399,6 +402,7 @@ remote API methods are called. Thread-safe implementation.
 | `images` | `typing.Dict[str, str] \| None` |
 | `source_config_path` | `Optional[Path]` |
 | `sync_local_sys_paths` | `bool` |
+| `load_plugin_type_transformers` | `bool` |
 
 #### init_from_config()
 
@@ -412,6 +416,7 @@ def init_from_config(
     path_or_config: str | Path | Config | None,
     root_dir: Path | None,
     log_level: int | None,
+    log_format: LogFormat,
     storage: Storage | None,
     images: tuple[str, ...] | None,
     sync_local_sys_paths: bool,
@@ -427,6 +432,7 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `path_or_config` | `str \| Path \| Config \| None` |
 | `root_dir` | `Path \| None` |
 | `log_level` | `int \| None` |
+| `log_format` | `LogFormat` |
 | `storage` | `Storage \| None` |
 | `images` | `tuple[str, ...] \| None` |
 | `sync_local_sys_paths` | `bool` |
@@ -527,6 +533,7 @@ def with_runcontext(
     annotations: Dict[str, str] | None,
     interruptible: bool | None,
     log_level: int | None,
+    log_format: LogFormat,
     disable_run_cache: bool,
     queue: Optional[str],
     custom_context: Dict[str, str] | None,
@@ -569,6 +576,7 @@ if __name__ == "__main__":
 | `annotations` | `Dict[str, str] \| None` |
 | `interruptible` | `bool \| None` |
 | `log_level` | `int \| None` |
+| `log_format` | `LogFormat` |
 | `disable_run_cache` | `bool` |
 | `queue` | `Optional[str]` |
 | `custom_context` | `Dict[str, str] \| None` |
@@ -1197,6 +1205,7 @@ def with_poetry_project(
     poetry_lock: Path | None,
     extra_args: Optional[str],
     secret_mounts: Optional[SecretRequest],
+    project_install_mode: typing.Literal['dependencies_only', 'install_project'],
 )
 ```
 Use this method to create a new image with the specified pyproject.toml layered on top of the current image.
@@ -1218,6 +1227,7 @@ into the image.
 | `poetry_lock` | `Path \| None` |
 | `extra_args` | `Optional[str]` |
 | `secret_mounts` | `Optional[SecretRequest]` |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` |
 
 #### with_requirements()
 
