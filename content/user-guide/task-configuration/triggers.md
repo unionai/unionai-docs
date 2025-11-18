@@ -173,13 +173,6 @@ These are convenient shortcuts for frequently used scheduling patterns.
 ### Available Predefined Triggers
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="predefined-available" lang="python">}}
-```python
-minutely_trigger = flyte.Trigger.minutely()    # Every minute
-hourly_trigger = flyte.Trigger.hourly()        # Every hour
-daily_trigger = flyte.Trigger.daily()          # Every day at midnight
-weekly_trigger = flyte.Trigger.weekly()        # Every week (Sundays at midnight)
-monthly_trigger = flyte.Trigger.monthly()      # Every month (1st day at midnight)
-```
 
 For reference, here's what each predefined trigger is equivalent to:
 
@@ -197,21 +190,6 @@ For reference, here's what each predefined trigger is equivalent to:
 All predefined trigger methods (`minutely()`, `hourly()`, `daily()`, `weekly()`, `monthly()`) accept the same set of parameters:
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="predefined-parameters" lang="python">}}
-```python
-flyte.Trigger.daily(
-    trigger_time_input_key="trigger_time",
-    name="daily",
-    description="A trigger that runs daily at midnight",
-    auto_activate=True,
-    inputs=None,
-    env_vars=None,
-    interruptible=None,
-    overwrite_cache=False,
-    queue=None,
-    labels=None,
-    annotations=None
-)
-```
 
 #### Core Parameters
 
@@ -264,47 +242,12 @@ For predefined triggers, you can customize the parameter name that receives the 
 ### Predefined trigger examples
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="predefined-examples" lang="python">}}
-```python
-# Simple predefined schedule trigger in task decorator
-@env.task(triggers=flyte.Trigger.hourly())
-def hourly_data_sync(trigger_time: datetime, x: int = 11) -> str:
-    return f"Hourly sync completed at {trigger_time} with x={x}"
-
-# Customized predefined schedule trigger
-daily_batch_trigger = flyte.Trigger.daily(
-    trigger_time_input_key="batch_date",   # Custom trigger time parameter name
-    name="daily_batch_trigger",            # Custom trigger name
-    inputs={                               # Custom task inputs
-        "environment": "production",
-        "max_records": 10000
-    },
-    env_vars={"PROCESSING_MODE": "batch"}, # Override environment variables
-    overwrite_cache=True                   # Bypass cache for triggered runs
-)
-
-@env.task(triggers=daily_batch_trigger)
-def process_batch(batch_date: datetime, environment: str, max_records: int) -> str:
-    return f"Processed {max_records} records for {batch_date.date()} in {environment}"
-```
 
 ## Multiple triggers per task
 
 You can attach multiple triggers to a single task by providing a list of triggers. This allows you to run the same task on different schedules or with different configurations:
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="multiple-triggers" lang="python">}}
-```python
-@env.task(triggers=[
-    flyte.Trigger.hourly(),  # Predefined trigger
-    flyte.Trigger.daily(),   # Another predefined trigger
-    flyte.Trigger("custom", flyte.Cron("0 */6 * * *"))  # Custom trigger every 6 hours
-])
-def multi_trigger_task(trigger_time: datetime = flyte.TriggerTime) -> str:
-    # Different logic based on execution timing
-    if trigger_time.hour == 0:  # Daily run at midnight
-        return f"Daily comprehensive processing at {trigger_time}"
-    else:  # Hourly or custom runs
-        return f"Regular processing at {trigger_time.strftime('%H:%M')}"
-```
 
 You can mix and match trigger types, combining predefined triggers with those that use `flyte.Cron`, and `flyte.FixedRate` automations (see below for explanations of these concepts).
 
@@ -331,17 +274,6 @@ flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 Or in Python::
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="deploying" lang="python">}}
-```python
-env = flyte.TaskEnvironment(name="my_task_env")
-
-@env.task(triggers=flyte.Trigger.hourly())  # Every hour
-def example_task(trigger_time: datetime, x: int = 1) -> str:
-    return f"Task executed at {trigger_time.isoformat()} with x={x}"
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    flyte.deploy(env)
-```
 
 Upon deploy, all triggers that are associated with the task will be automatically switched to the latest task version. Triggers which are defined elsewhere (i.e. in the UI) will be deleted unless they have been referenced in the task definition.
 
@@ -352,19 +284,6 @@ Alternatively, you can set `auto_activate=False` to deploy inactive triggers.
 An inactive trigger will not create runs until activated.
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="auto-activate-false" lang="python">}}
-```python
-env = flyte.TaskEnvironment(name="my_task_env")
-
-custom_cron_trigger = flyte.Trigger(
-    "custom_cron",
-    flyte.Cron("0 0 * * *"),
-    auto_activate=False # Dont create runs yet
-)
-
-@env.task(triggers=custom_cron_trigger)
-def custom_task() -> str:
-    return "Hello, world!"
-```
 
 This trigger won't create runs until it is explicitly activated.
 You can activate a trigger via the Flyte CLI:
@@ -399,26 +318,20 @@ For Cron-based triggers, the first run will be created at the next scheduled tim
 
 If no `start_time` is specified, then the first run will be created after the specified interval from the time of activation. No run will be created immediately upon activation, but the activation time will be used as the reference point for future runs.
 
-##### Fixed-rate without `start_time` and with automatic activation
+##### No `start_time`, auto_activate: True
 
 Let's say you define a fixed rate trigger with automatic activation like this:
 
-{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-without-start-time-with-auto-activate" lang="python">}}
-```python
-my_trigger = flyte.Trigger("my_trigger", flyte.FixedRate(60))
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-true" lang="python">}}
 
 In this case, the first run will occur 60 minutes after the successful deployment of the trigger.
 So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and so on thereafter
 
-##### Fixed-rate without `start_time` and without automatic activation
+##### No `start_time`, auto_activate: False
 
 On the other hand, let's say you define a fixed rate trigger without automatic activation like this:
 
-{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-without-start-time-without-auto-activate" lang="python">}}
-```python
-my_trigger = flyte.Trigger("my_trigger", flyte.FixedRate(60), auto_activate=False)
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-false" lang="python">}}
 
 Then you activate it after about 3 hours. In this case the first run will kick off 60 minutes after trigger activation.
 If you deployed the trigger at 13:15 and activated it at 16:07, the first run will occur at 17:07.
@@ -431,13 +344,7 @@ If a `start_time` is specified, and the trigger is active at `start_time` then t
 For example:
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-active" lang="python">}}
-```python
-my_trigger = flyte.Trigger(
-    "my_trigger",
-    # Runs every 60 minutes starting from October 26th, 2025, 10:00am
-    flyte.FixedRate(60, start_time=datetime(2025, 10, 26, 10, 0, 0)),
-)
-```
+
 If you deploy this trigger on October 24th, 2025, the trigger will wait until October 26th 10:00am and will create the first run at exactly 10:00am.
 
 ##### Fixed-rate with `start_time` while inactive
@@ -446,14 +353,7 @@ If a start time is specified, but the trigger is activated after `start_time`, t
 For example:
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-inactive" lang="python">}}
-```python
-custom_rate_trigger = flyte.Trigger(
-    "custom_rate",
-    # Runs every 60 minutes starting from October 26th, 2025, 10:00am
-    flyte.FixedRate(60, start_time=datetime(2025, 10, 26, 10, 0, 0)),
-    auto_activate=False
-)
-```
+
 If activated later than the `start_time`, say on October 28th 12:35pm for example, the first run will be created at October 28th at 1:00pm.
 
 ## Deleting triggers
@@ -473,23 +373,6 @@ flyte delete trigger custom_cron my_task_env.custom_task --project <project> --d
 Cron expressions are by default in UTC, but it's possible to specify custom time zones like so:
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="timezone" lang="python">}}
-```python
-sf_trigger = flyte.Trigger(
-    "sf_tz",
-    flyte.Cron(
-        "0 9 * * *", timezone="America/Los_Angeles"
-    ), # Every day at 9 AM PT
-    inputs={"start_time": flyte.TriggerTime, "x": 1},
-)
-
-nyc_trigger = flyte.Trigger(
-    "nyc_tz",
-    flyte.Cron(
-        "1 12 * * *", timezone="America/New_York"
-    ), # Every day at 12:01 PM ET
-    inputs={"start_time": flyte.TriggerTime, "x": 1},
-)
-```
 
 The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET respectively.
 
@@ -498,13 +381,6 @@ The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET res
 The `flyte.TriggerTime` value is always in UTC. For timezone-aware logic, convert as needed:
 
 {{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-utc" lang="python">}}
-```python
-@env.task(triggers=flyte.Trigger.daily())
-def timezone_aware_task(utc_trigger_time: datetime = flyte.TriggerTime) -> str:
-    from datetime import timezone
-    local_time = utc_trigger_time.replace(tzinfo=timezone.utc).astimezone()
-    return f"Daily task fired at {utc_trigger_time} UTC ({local_time} local)"
-```
 
 ### Daylight Savings Time behavior
 
