@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Triggers
 
-Triggers allow you to automate and parameterize an execution by scheduling its kick-off time and providing overrides for its task inputs.
+Triggers allow you to automate and parameterize an execution by scheduling its start time and providing overrides for its task inputs.
 
 Currently, only **schedule triggers** are supported.
 This type of trigger runs a task based on a Cron expression or a fixed-rate schedule.
@@ -22,61 +22,18 @@ A trigger is created by setting the `triggers` parameter in the task decorator t
 
 Here is a simple example:
 
-```python
-import flyte
-from datetime import datetime
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="simple" lang="python">}}
 
-env = flyte.TaskEnvironment(name="my_task_env")
-
-@env.task(triggers=flyte.Trigger.hourly())  # Every hour
-def example_task(trigger_time: datetime, x: int = 1) -> str:
-    return f"Task executed at {trigger_time.isoformat()} with x={x}"
-```
-
-Here we use a predefined hourly trigger to run the `example_task` every hour.
+Here we use a predefined schedule trigger to run the `example_task` every minute.
 Other predefined triggers can be used similarly (see [Predefined schedule triggers](#predefined-schedule-triggers) below).
 
-However, if you want full control over the trigger behavior, you can define a trigger using the `flyte.Trigger` class directly.
-
-## Multiple triggers per task
-
-You can attach multiple triggers to a single task by providing a list of triggers. This allows you to run the same task on different schedules or with different configurations:
-
-```python
-@env.task(triggers=[
-    flyte.Trigger.hourly(),  # Predefined trigger
-    flyte.Trigger.daily(),   # Another predefined trigger
-    flyte.Trigger("custom", flyte.Cron("0 */6 * * *"))  # Custom trigger every 6 hours
-])
-def multi_trigger_task(trigger_time: datetime = flyte.TriggerTime) -> str:
-    # Different logic based on execution timing
-    if trigger_time.hour == 0:  # Daily run at midnight
-        return f"Daily comprehensive processing at {trigger_time}"
-    else:  # Hourly or custom runs
-        return f"Regular processing at {trigger_time.strftime('%H:%M')}"
-```
-
-You can mix and match trigger types, combining predefined triggers with those that use `flyte.Cron`, and `flyte.FixedRate` automations (see below for explanations of these concepts).
+If you want full control over the trigger behavior, you can define a trigger using the `flyte.Trigger` class directly.
 
 ## `flyte.Trigger`
 
 The `Trigger` class allows you to define custom triggers with full control over scheduling and execution behavior. It has the following signature:
 
-```python
-flyte.Trigger(
-    name,
-    automation,
-    description="",
-    auto_activate=True,
-    inputs=None,
-    env_vars=None,
-    interruptible=None,
-    overwrite_cache=False,
-    queue=None,
-    labels=None,
-    annotations=None
-)
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="dummy-trigger" lang="python">}}
 
 ### Core Parameters
 
@@ -121,48 +78,15 @@ Additional metadata, often used by infrastructure tools for compliance, monitori
 
 Here's a comprehensive example showing all parameters:
 
-```python
-comprehensive_trigger = flyte.Trigger(
-    name="monthly_financial_report",
-    automation=flyte.Cron("0 6 1 * *", timezone="America/New_York"),
-    description="Monthly financial report generation for executive team",
-    auto_activate=True,
-    inputs={
-        "report_date": flyte.TriggerTime,
-        "report_type": "executive_summary",
-        "include_forecasts": True
-    },
-    env_vars={
-        "REPORT_OUTPUT_FORMAT": "PDF",
-        "EMAIL_NOTIFICATIONS": "true"
-    },
-    interruptible=False,  # Critical report, use dedicated resources
-    overwrite_cache=True,  # Always fresh data
-    queue="financial-reports",
-    labels={
-        "team": "finance",
-        "criticality": "high",
-        "automation": "scheduled"
-    },
-    annotations={
-        "compliance.company.com/sox-required": "true",
-        "backup.company.com/retain-days": "2555"  # 7 years
-    }
-)
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="comprehensive-trigger" lang="python">}}
 
-## `flyte.FixedRate`
+## The `automation` parameter with `flyte.FixedRate`
 
-You can define a fixed-rate schedule trigger by setting the `automation` parameter to an instance of `flyte.FixedRate`.
+You can define a fixed-rate schedule trigger by setting the `automation` parameter of the `flyte.Trigger` to an instance of `flyte.FixedRate`.
 
 The `flyte.FixedRate` has the following signature:
 
-```python
-flyte.FixedRate(
-    interval_minutes,
-    start_time=None
-)
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="dummy-fixed-rate" lang="python">}}
 
 ### Parameters
 
@@ -174,36 +98,15 @@ When to start the fixed rate schedule. If not specified, starts when the trigger
 
 ### Examples
 
-```python
-# Every 90 minutes, starting when deployed
-every_90_min = flyte.Trigger(
-    "data_processing",
-    flyte.FixedRate(interval_minutes=90)
-)
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-examples" lang="python">}}
 
-# Every 6 hours (360 minutes), starting at a specific time
-from datetime import datetime
-specific_start = flyte.Trigger(
-    "batch_job",
-    flyte.FixedRate(
-        interval_minutes=360,  # 6 hours
-        start_time=datetime(2025, 12, 1, 9, 0, 0)  # Start Dec 1st at 9 AM
-    )
-)
-```
-
-## `flyte.Cron`
+## The `automation` parameter with `flyte.Cron`
 
 You can define a Cron-based schedule trigger by setting the `automation` parameter to an instance of `flyte.Cron`.
 
 The `flyte.Cron` has the following signature:
 
-```python
-flyte.Cron(
-    cron_expression,
-    timezone=None
-)
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="dummy-cron" lang="python">}}
 
 ### Parameters
 
@@ -215,21 +118,9 @@ The timezone for the cron expression. If not specified, it defaults to UTC. Uses
 
 ### Examples
 
-```python
-# Every day at 6 AM UTC
-daily_trigger = flyte.Trigger(
-    "daily_report",
-    flyte.Cron("0 6 * * *")
-)
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="cron-examples" lang="python">}}
 
-# Every weekday at 9:30 AM Eastern Time
-weekday_trigger = flyte.Trigger(
-    "business_hours_task",
-    flyte.Cron("30 9 * * 1-5", timezone="America/New_York")
-)
-```
-
-### Cron Expressions
+#### Cron Expressions
 
 Here are some common cron expressions you can use:
 
@@ -253,96 +144,26 @@ This is essential for parameterizing your automated executions and passing trigg
 
 ### Basic Usage
 
-```python
-trigger_with_inputs = flyte.Trigger(
-    "data_processing",
-    flyte.Cron("0 6 * * *"),  # Daily at 6 AM
-    inputs={
-        "batch_size": 1000,
-        "environment": "production",
-        "debug_mode": False
-    }
-)
-
-@env.task(triggers=trigger_with_inputs)
-def process_data(batch_size: int, environment: str, debug_mode: bool = True) -> str:
-    return f"Processing {batch_size} items in {environment} mode"
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="inputs-basic-usage" lang="python">}}
 
 ### Using `flyte.TriggerTime`
 
 The special `flyte.TriggerTime` value injects the trigger execution timestamp into your task:
 
-```python
-timestamp_trigger = flyte.Trigger(
-    "daily_report",
-    flyte.Cron("0 0 * * *"),  # Daily at midnight
-    inputs={
-        "report_date": flyte.TriggerTime,  # Receives trigger execution time
-        "report_type": "daily_summary"
-    }
-)
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="inputs-trigger-time" lang="python">}}
 
-@env.task(triggers=timestamp_trigger)
-def generate_report(report_date: datetime, report_type: str) -> str:
-    return f"Generated {report_type} for {report_date.strftime('%Y-%m-%d')}"
-```
-
-### Required vs Optional Parameters
+### Required vs optional parameters
 
 > [!IMPORTANT]
 > If your task has parameters without default values, you **must** provide values for them in the trigger inputs, otherwise the trigger will fail to execute.
 
-```python
-# ❌ This will fail - missing required parameter 'data_source'
-@env.task(triggers=flyte.Trigger("bad_trigger", flyte.Cron("0 0 * * *")))
-def process_data(data_source: str, batch_size: int = 100) -> str:
-    return f"Processing from {data_source}"
-
-# ✅ This works - all required parameters provided
-good_trigger = flyte.Trigger(
-    "good_trigger",
-    flyte.Cron("0 0 * * *"),
-    inputs={
-        "data_source": "prod_database",  # Required parameter
-        "batch_size": 500  # Override default
-    }
-)
-
-@env.task(triggers=good_trigger)
-def process_data(data_source: str, batch_size: int = 100) -> str:
-    return f"Processing from {data_source} with batch size {batch_size}"
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="inputs-required-optional" lang="python">}}
 
 ### Complex input types
 
 You can pass various data types through trigger inputs:
 
-```python
-complex_trigger = flyte.Trigger(
-    "ml_training",
-    flyte.Cron("0 2 * * 1"),  # Weekly on Monday at 2 AM
-    inputs={
-        "model_config": {
-            "learning_rate": 0.01,
-            "batch_size": 32,
-            "epochs": 100
-        },
-        "feature_columns": ["age", "income", "location"],
-        "validation_split": 0.2,
-        "training_date": flyte.TriggerTime
-    }
-)
-
-@env.task(triggers=complex_trigger)
-def train_model(
-    model_config: dict,
-    feature_columns: list[str],
-    validation_split: float,
-    training_date: datetime
-) -> str:
-    return f"Training model with {len(feature_columns)} features on {training_date}"
-```
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="inputs-complex" lang="python">}}
 
 ## Predefined schedule triggers
 
@@ -351,6 +172,7 @@ These are convenient shortcuts for frequently used scheduling patterns.
 
 ### Available Predefined Triggers
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="predefined-available" lang="python">}}
 ```python
 minutely_trigger = flyte.Trigger.minutely()    # Every minute
 hourly_trigger = flyte.Trigger.hourly()        # Every hour
@@ -364,16 +186,17 @@ For reference, here's what each predefined trigger is equivalent to:
 ```python
 # These are functionally identical:
 # flyte.Trigger.minutely() == flyte.Trigger("minutely", flyte.Cron("* * * * *"))
-# flyte.Trigger.hourly()   == flyte.Trigger("hourly", flyte.Cron("0 * * * *"))
-# flyte.Trigger.daily()    == flyte.Trigger("daily", flyte.Cron("0 0 * * *"))
-# flyte.Trigger.weekly()   == flyte.Trigger("weekly", flyte.Cron("0 0 * * 0"))
-# flyte.Trigger.monthly()  == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
+# flyte.Trigger.hourly() == flyte.Trigger("hourly", flyte.Cron("0 * * * *"))
+# flyte.Trigger.daily() == flyte.Trigger("daily", flyte.Cron("0 0 * * *"))
+# flyte.Trigger.weekly() == flyte.Trigger("weekly", flyte.Cron("0 0 * * 0"))
+# flyte.Trigger.monthly() == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
 ```
 
 ### Predefined Trigger Parameters
 
 All predefined trigger methods (`minutely()`, `hourly()`, `daily()`, `weekly()`, `monthly()`) accept the same set of parameters:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="predefined-parameters" lang="python">}}
 ```python
 flyte.Trigger.daily(
     trigger_time_input_key="trigger_time",
@@ -440,6 +263,7 @@ For predefined triggers, you can customize the parameter name that receives the 
 
 ### Predefined trigger examples
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="predefined-examples" lang="python">}}
 ```python
 # Simple predefined schedule trigger in task decorator
 @env.task(triggers=flyte.Trigger.hourly())
@@ -463,6 +287,27 @@ def process_batch(batch_date: datetime, environment: str, max_records: int) -> s
     return f"Processed {max_records} records for {batch_date.date()} in {environment}"
 ```
 
+## Multiple triggers per task
+
+You can attach multiple triggers to a single task by providing a list of triggers. This allows you to run the same task on different schedules or with different configurations:
+
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="multiple-triggers" lang="python">}}
+```python
+@env.task(triggers=[
+    flyte.Trigger.hourly(),  # Predefined trigger
+    flyte.Trigger.daily(),   # Another predefined trigger
+    flyte.Trigger("custom", flyte.Cron("0 */6 * * *"))  # Custom trigger every 6 hours
+])
+def multi_trigger_task(trigger_time: datetime = flyte.TriggerTime) -> str:
+    # Different logic based on execution timing
+    if trigger_time.hour == 0:  # Daily run at midnight
+        return f"Daily comprehensive processing at {trigger_time}"
+    else:  # Hourly or custom runs
+        return f"Regular processing at {trigger_time.strftime('%H:%M')}"
+```
+
+You can mix and match trigger types, combining predefined triggers with those that use `flyte.Cron`, and `flyte.FixedRate` automations (see below for explanations of these concepts).
+
 ## Deploying a task with triggers
 
 We recommend that you define your triggers in code together with your tasks and deploy them together.
@@ -485,6 +330,7 @@ flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 
 Or in Python::
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="deploying" lang="python">}}
 ```python
 env = flyte.TaskEnvironment(name="my_task_env")
 
@@ -501,11 +347,11 @@ Upon deploy, all triggers that are associated with the task will be automaticall
 
 ## Activating and deactivating triggers
 
-
 By default, triggers are automatically activated upon deployment (`auto_activate=True`).
 Alternatively, you can set `auto_activate=False` to deploy inactive triggers.
 An inactive trigger will not create runs until activated.
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="auto-activate-false" lang="python">}}
 ```python
 env = flyte.TaskEnvironment(name="my_task_env")
 
@@ -528,6 +374,7 @@ flyte update trigger custom_cron my_task_env.custom_task --activate --project <p
 ```
 
 If you want to stop your trigger from creating new runs, you can deactivate it:
+
 ```shell
 flyte update trigger custom_cron my_task_env.custom_task --deactivate --project <project> --domain <domain>
 ```
@@ -556,6 +403,7 @@ If no `start_time` is specified, then the first run will be created after the sp
 
 Let's say you define a fixed rate trigger with automatic activation like this:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-without-start-time-with-auto-activate" lang="python">}}
 ```python
 my_trigger = flyte.Trigger("my_trigger", flyte.FixedRate(60))
 ```
@@ -567,6 +415,7 @@ So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and
 
 On the other hand, let's say you define a fixed rate trigger without automatic activation like this:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-without-start-time-without-auto-activate" lang="python">}}
 ```python
 my_trigger = flyte.Trigger("my_trigger", flyte.FixedRate(60), auto_activate=False)
 ```
@@ -581,6 +430,7 @@ If you deployed the trigger at 13:15 and activated it at 16:07, the first run wi
 If a `start_time` is specified, and the trigger is active at `start_time` then the first run will occur at `start_time` and then at the specified interval thereafter.
 For example:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-active" lang="python">}}
 ```python
 my_trigger = flyte.Trigger(
     "my_trigger",
@@ -595,6 +445,7 @@ If you deploy this trigger on October 24th, 2025, the trigger will wait until Oc
 If a start time is specified, but the trigger is activated after `start_time`, then the first run will be created when the next time point occurs that aligns with the recurring trigger interval using `start_time` as the initial reference point.
 For example:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="fixed-rate-with-start-time-while-inactive" lang="python">}}
 ```python
 custom_rate_trigger = flyte.Trigger(
     "custom_rate",
@@ -621,6 +472,7 @@ flyte delete trigger custom_cron my_task_env.custom_task --project <project> --d
 
 Cron expressions are by default in UTC, but it's possible to specify custom time zones like so:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="timezone" lang="python">}}
 ```python
 sf_trigger = flyte.Trigger(
     "sf_tz",
@@ -645,6 +497,7 @@ The above two schedules will fire 1 minute apart, at 9 AM PT and 12:01 PM ET res
 
 The `flyte.TriggerTime` value is always in UTC. For timezone-aware logic, convert as needed:
 
+{{< code file="user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-utc" lang="python">}}
 ```python
 @env.task(triggers=flyte.Trigger.daily())
 def timezone_aware_task(utc_trigger_time: datetime = flyte.TriggerTime) -> str:
