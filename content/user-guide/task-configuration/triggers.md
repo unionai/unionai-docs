@@ -262,7 +262,9 @@ Additional metadata, often used by infrastructure tools for compliance, monitori
 By default, predefined triggers assume the existence of the parameter called `trigger_time` (of type `datetime`) on the triggered task and pass the trigger execution timestamp to that parameter.
 This differs from custom triggers where you need to explicitly set the `flyte.TriggerTime` in the `inputs` dictionary.
 
-For predefined triggers, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter.
+For predefined triggers, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter:
+
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-input-key" lang="python">}}
 
 ## Multiple triggers per task
 
