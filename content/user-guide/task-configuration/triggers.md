@@ -203,11 +203,11 @@ For reference, here's what each predefined trigger is equivalent to:
 
 ```python
 # These are functionally identical:
-# flyte.Trigger.minutely() == flyte.Trigger("minutely", flyte.Cron("* * * * *"))
-# flyte.Trigger.hourly() == flyte.Trigger("hourly", flyte.Cron("0 * * * *"))
-# flyte.Trigger.daily() == flyte.Trigger("daily", flyte.Cron("0 0 * * *"))
-# flyte.Trigger.weekly() == flyte.Trigger("weekly", flyte.Cron("0 0 * * 0"))
-# flyte.Trigger.monthly() == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
+flyte.Trigger.minutely() == flyte.Trigger("minutely", flyte.Cron("* * * * *"))
+flyte.Trigger.hourly() == flyte.Trigger("hourly", flyte.Cron("0 * * * *"))
+flyte.Trigger.daily() == flyte.Trigger("daily", flyte.Cron("0 0 * * *"))
+flyte.Trigger.weekly() == flyte.Trigger("weekly", flyte.Cron("0 0 * * 0"))
+flyte.Trigger.monthly() == flyte.Trigger("monthly", flyte.Cron("0 0 1 * *"))
 ```
 
 ### Predefined Trigger Parameters
@@ -339,13 +339,11 @@ For Cron-based triggers, the first run will be created at the next scheduled tim
 
 * `*/15 14 * * 1-5` if today is Tuesday at 17:00, the trigger will fire the next day (Wednesday) at 14:00, 14:15, 14:30, and 14:45 and then the same for every subsequent weekday thereafter.
 
-### Fixed-rate triggers
-
-#### Fixed-rate without `start_time`
+### Fixed-rate triggers without `start_time`
 
 If no `start_time` is specified, then the first run will be created after the specified interval from the time of activation. No run will be created immediately upon activation, but the activation time will be used as the reference point for future runs.
 
-##### No `start_time`, auto_activate: True
+#### No `start_time`, auto_activate: True
 
 Let's say you define a fixed rate trigger with automatic activation like this:
 
@@ -354,7 +352,7 @@ Let's say you define a fixed rate trigger with automatic activation like this:
 In this case, the first run will occur 60 minutes after the successful deployment of the trigger.
 So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and so on thereafter
 
-##### No `start_time`, auto_activate: False
+#### No `start_time`, auto_activate: False
 
 On the other hand, let's say you define a fixed rate trigger without automatic activation like this:
 
@@ -363,9 +361,11 @@ On the other hand, let's say you define a fixed rate trigger without automatic a
 Then you activate it after about 3 hours. In this case the first run will kick off 60 minutes after trigger activation.
 If you deployed the trigger at 13:15 and activated it at 16:07, the first run will occur at 17:07.
 
-#### Fixed-rate with `start_time`
+### Fixed-rate triggers with `start_time`
 
-##### Fixed-rate with `start_time` while active
+If a `start_time` is specified, the timing of the first run depends on whether the trigger is active at `start_time` or not.
+
+#### Fixed-rate with `start_time` while active
 
 If a `start_time` is specified, and the trigger is active at `start_time` then the first run will occur at `start_time` and then at the specified interval thereafter.
 For example:
@@ -374,7 +374,7 @@ For example:
 
 If you deploy this trigger on October 24th, 2025, the trigger will wait until October 26th 10:00am and will create the first run at exactly 10:00am.
 
-##### Fixed-rate with `start_time` while inactive
+#### Fixed-rate with `start_time` while inactive
 
 If a start time is specified, but the trigger is activated after `start_time`, then the first run will be created when the next time point occurs that aligns with the recurring trigger interval using `start_time` as the initial reference point.
 For example:
