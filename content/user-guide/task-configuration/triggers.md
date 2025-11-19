@@ -22,9 +22,9 @@ A trigger is created by setting the `triggers` parameter in the task decorator t
 
 Here is a simple example:
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="minutely" lang="python" >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="hourly" lang="python" >}}
 
-Here we use a predefined schedule trigger to run the `minutely_example` task every minute.
+Here we use a predefined schedule trigger to run the `hourly_task` every hour.
 Other predefined triggers can be used similarly (see [Predefined schedule triggers](#predefined-schedule-triggers) below).
 
 If you want full control over the trigger behavior, you can define a trigger using the `flyte.Trigger` class directly.
@@ -157,7 +157,32 @@ The special `flyte.TriggerTime` value injects the trigger execution timestamp in
 > [!IMPORTANT]
 > If your task has parameters without default values, you **must** provide values for them in the trigger inputs, otherwise the trigger will fail to execute.
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-required-optional" lang="python">}}
+```python
+# ❌ This will fail - missing required parameter 'data_source'
+bad_trigger = flyte.Trigger(
+    "bad_trigger",
+    flyte.Cron("0 0 * * *")
+    # Missing inputs for required parameter 'data_source'
+)
+
+@env.task(triggers=bad_trigger)
+def bad_trigger_taska(data_source: str, batch_size: int = 100) -> str:
+    return f"Processing from {data_source} with batch size {batch_size}"
+
+# ✅ This works - all required parameters provided
+good_trigger = flyte.Trigger(
+    "good_trigger",
+    flyte.Cron("0 0 * * *"),
+    inputs={
+        "data_source": "prod_database",  # Required parameter
+        "batch_size": 500  # Override default
+    }
+)
+
+@env.task(triggers=good_trigger)
+def good_trigger_task(data_source: str, batch_size: int = 100) -> str:
+    return f"Processing from {data_source} with batch size {batch_size}"
+```
 
 ### Complex input types
 
@@ -239,10 +264,6 @@ This differs from custom triggers where you need to explicitly set the `flyte.Tr
 
 For predefined triggers, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter.
 
-### Predefined trigger examples
-
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="predefined-examples" lang="python">}}
-
 ## Multiple triggers per task
 
 You can attach multiple triggers to a single task by providing a list of triggers. This allows you to run the same task on different schedules or with different configurations:
@@ -273,9 +294,15 @@ flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 
 Or in Python::
 
-{{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="deploying" lang="python">}}
+```python
+flyte.deploy(env)
+```
 
-Upon deploy, all triggers that are associated with the task will be automatically switched to the latest task version. Triggers which are defined elsewhere (i.e. in the UI) will be deleted unless they have been referenced in the task definition.
+Upon deploy, all triggers that are associated with a given task `T` will be automatically switched to apply to the latest version of that task. Triggers on task `T` which are defined elsewhere (i.e. in the UI) will be deleted unless they have been referenced in the task definition of `T`
+
+<!-- TODO
+Add link to workflow deployment docs when available.
+-->
 
 ## Activating and deactivating triggers
 
