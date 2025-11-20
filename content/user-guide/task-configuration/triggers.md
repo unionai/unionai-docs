@@ -38,47 +38,43 @@ The `Trigger` class allows you to define custom triggers with full control over 
 ### Core Parameters
 
 **`name: str`** (required)
-* The unique identifier for the trigger within your project/domain.
+The unique identifier for the trigger within your project/domain.
 
 **`automation: Union[Cron, FixedRate]`** (required)
-* Defines when the trigger fires.
-* Use `flyte.Cron("expression")` for Cron-based scheduling or `flyte.FixedRate(interval_minutes, start_time=start_time)` for fixed intervals.
+Defines when the trigger fires. Use `flyte.Cron("expression")` for Cron-based scheduling or `flyte.FixedRate(interval_minutes, start_time=start_time)` for fixed intervals.
 
 ### Configuration Parameters
 
 **`description: str = ""`**
-* Human-readable description of the trigger's purpose.
+Human-readable description of the trigger's purpose.
 
 **`auto_activate: bool = True`**
-* Whether the trigger should be automatically activated when deployed.
-* Set to `False` to deploy inactive triggers that require manual activation.
+Whether the trigger should be automatically activated when deployed. Set to `False` to deploy inactive triggers that require manual activation.
 
 **`inputs: Dict[str, Any] | None = None`**
-* Default parameter values for the task when triggered.
-* Use `flyte.TriggerTime` as a value to inject the trigger execution timestamp into that parameter.
+Default parameter values for the task when triggered. Use `flyte.TriggerTime` as a value to inject the trigger execution timestamp into that parameter.
 
 ### Runtime Override Parameters
 
 **`env_vars: Dict[str, str] | None = None`**
-* Environment variables to set for triggered executions, overriding the task's default environment variables.
+Environment variables to set for triggered executions, overriding the task's default environment variables.
 
 **`interruptible: bool | None = None`**
-* Whether triggered executions can be interrupted (useful for cost optimization with spot/preemptible instances).
-* Overrides the task's interruptible setting.
+Whether triggered executions can be interrupted (useful for cost optimization with spot/preemptible instances). Overrides the task's interruptible setting.
 
 **`overwrite_cache: bool = False`**
 Whether to bypass/overwrite task cache for triggered executions, ensuring fresh computation.
 
 **`queue: str | None = None`**
-* Specific execution queue for triggered runs, overriding the task's default queue.
+Specific execution queue for triggered runs, overriding the task's default queue.
 
 ### Metadata Parameters
 
 **`labels: Mapping[str, str] | None = None`**
-* Key-value labels for organizing and filtering triggers (e.g., team, component, priority).
+Key-value labels for organizing and filtering triggers (e.g., team, component, priority).
 
 **`annotations: Mapping[str, str] | None = None`**
-* Additional metadata, often used by infrastructure tools for compliance, monitoring, or cost tracking.
+Additional metadata, often used by infrastructure tools for compliance, monitoring, or cost tracking.
 
 Here's a comprehensive example showing all parameters:
 
@@ -95,11 +91,10 @@ The `flyte.FixedRate` has the following signature:
 ### Parameters
 
 **`interval_minutes: int`** (required)
-* The interval between trigger executions in minutes.
+The interval between trigger executions in minutes.
 
 **`start_time: datetime | None`**
-* When to start the fixed rate schedule.
-* If not specified, starts when the trigger is deployed and activated.
+When to start the fixed rate schedule. If not specified, starts when the trigger is deployed and activated.
 
 ### Examples
 
@@ -116,13 +111,10 @@ The `flyte.Cron` has the following signature:
 ### Parameters
 
 **`cron_expression: str`** (required)
-* The cron expression defining when the trigger should fire.
-* Uses standard Unix cron format with five fields: minute, hour, day of month, month, and day of week.
+The cron expression defining when the trigger should fire. Uses standard Unix cron format with five fields: minute, hour, day of month, month, and day of week.
 
 **`timezone: str | None`**
-* The timezone for the cron expression.
-* If not specified, it defaults to UTC.
-* Uses standard timezone names like "America/New_York" or "Europe/London".
+The timezone for the cron expression. If not specified, it defaults to UTC. Uses standard timezone names like "America/New_York" or "Europe/London".
 
 ### Examples
 
@@ -227,50 +219,46 @@ All predefined trigger methods (`minutely()`, `hourly()`, `daily()`, `weekly()`,
 #### Core Parameters
 
 **`trigger_time_input_key: str = "trigger_time"`**
-* The name of the task parameter that will receive the execution timestamp.
-* If no `trigger_time_input_key` is provided, the default is `trigger_time`.
-* In this case, if the task does not have a parameter named `trigger_time`, the task will still be executed, but, obviously, the timestamp will not be passed.
-* However, if you do specify a `trigger_time_input_key`, but your task does not actually have the specified parameter, an error will be raised at trigger deployment time.
+The name of the task parameter that will receive the execution timestamp.
+If no `trigger_time_input_key` is provided, the default is `trigger_time`.
+In this case, if the task does not have a parameter named `trigger_time`, the task will still be executed, but, obviously, the timestamp will not be passed.
+However, if you do specify a `trigger_time_input_key`, but your task does not actually have the specified parameter, an error will be raised at trigger deployment time.
 
 **`name: str`**
-* The unique identifier for the trigger.
-* Defaults to the method name (`"daily"`, `"hourly"`, etc.).
+The unique identifier for the trigger. Defaults to the method name (`"daily"`, `"hourly"`, etc.).
 
 **`description: str`**
-* Human-readable description of the trigger's purpose.
+Human-readable description of the trigger's purpose. Each method has a sensible default.
 
 #### Configuration Parameters
 
 **`auto_activate: bool = True`**
-:* Whether the trigger should be automatically activated when deployed.
-* Set to `False` to deploy inactive triggers that require manual activation.
+Whether the trigger should be automatically activated when deployed. Set to `False` to deploy inactive triggers that require manual activation.
 
 **`inputs: Dict[str, Any] | None = None`**
-* Additional parameter values for your task when triggered.
-* The `trigger_time_input_key` parameter is implicitly included with `flyte.TriggerTime` as its value.
-* You need only add other parameters you wish to set.
+Additional parameter values for your task when triggered. The `trigger_time_input_key` parameter is automatically included with `flyte.TriggerTime` as its value.
 
 #### Runtime Override Parameters
 
 **`env_vars: Dict[str, str] | None = None`**
-* Environment variables to set for triggered executions, overriding the task's default environment variables.
+Environment variables to set for triggered executions, overriding the task's default environment variables.
 
 **`interruptible: bool | None = None`**
-* Whether triggered executions can be interrupted (useful for cost optimization with spot/preemptible instances). Overrides the task's interruptible setting.
+Whether triggered executions can be interrupted (useful for cost optimization with spot/preemptible instances). Overrides the task's interruptible setting.
 
 **`overwrite_cache: bool = False`**
-* Whether to bypass/overwrite task cache for triggered executions, ensuring fresh computation.
+Whether to bypass/overwrite task cache for triggered executions, ensuring fresh computation.
 
 **`queue: str | None = None`**
-* Specific execution queue for triggered runs, overriding the task's default queue.
+Specific execution queue for triggered runs, overriding the task's default queue.
 
 #### Metadata Parameters
 
 **`labels: Mapping[str, str] | None = None`**
-* Key-value labels for organizing and filtering triggers (e.g., team, component, priority).
+Key-value labels for organizing and filtering triggers (e.g., team, component, priority).
 
 **`annotations: Mapping[str, str] | None = None`**
-* Additional metadata, often used by infrastructure tools for compliance, monitoring, or cost tracking.
+Additional metadata, often used by infrastructure tools for compliance, monitoring, or cost tracking.
 
 ### Trigger time in predefined triggers
 
