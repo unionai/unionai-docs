@@ -17,14 +17,20 @@ The Union architecture is described on the [Architecture](../architecture) page.
 
 TEST
 
-* [byok-data-plane-setup-on-AWS](byok-data-plane-setup-on-aws)
-* [byok-data-plane-setup-on-AWS.md](byok-data-plane-setup-on-aws.md)
-* [./byok-data-plane-setup-on-AWS](./byok-data-plane-setup-on-aws)
-* [../byok-data-plane-setup-on-AWS](../byok-data-plane-setup-on-aws)
-* [./byok-data-plane-setup-on-AWS.md](./byok-data-plane-setup-on-aws.md)
+* [byok-data-plane-setup-on-aws](byok-data-plane-setup-on-aws)
+* [byok-data-plane-setup-on-aws.md](byok-data-plane-setup-on-aws.md)
+* [./byok-data-plane-setup-on-aws](./byok-data-plane-setup-on-aws)
+* [../byok-data-plane-setup-on-aws](../byok-data-plane-setup-on-aws)
+* [./byok-data-plane-setup-on-aws.md](./byok-data-plane-setup-on-aws.md)
 * [../architecture](../architecture)
 * [./architecture](./architecture)
 * [architecture](architecture)
+* [../architecture/_index.md](../architecture/_index.md)
+* [./architecture/_index.md](./architecture/_index.md)
+* [architecture/_index.md](architecture/_index.md)
+* [../architecture/_index](../architecture/_index)
+* [./architecture/_index](./architecture/_index)
+* [architecture/_index](architecture/_index)
 
 ## Assumptions
 
