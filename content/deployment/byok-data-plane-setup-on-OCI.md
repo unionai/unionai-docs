@@ -36,11 +36,11 @@ uctl selfserve provision-dataplane-resources --clusterName <YOUR_SELECTED_CLUSTE
 ```
 * The output will emit the ID, name, and a secret that will be used by the union services to communicate with your control plane and it also generate values file based on the passed in provider
 ```shell
-  -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ---------- 
+  -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
 | ORGANIZATION | HOST                               | CLUSTER                    | CLUSTERAUTHCLIENTID                             | CLUSTERAUTHCLIENTSECRET                                          | PROVIDER |
- -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ---------- 
+ -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
 | xxxxxxxxxxx  | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | xxxxx    |
- -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ---------- 
+ -------------- ------------------------------------ ---------------------------- ------------------------------------------------- ------------------------------------------------------------------ ----------
 1 rows
 
 ✅ Generated <ORGNAME>-values.yaml
@@ -74,7 +74,7 @@ Step 8: You can now trigger v2 executions on this dataplane.
 * Create the `EAGER_API_KEY` as instructed in Step 7 of the command output. This step is required for every dataplane you plan to use for V2 executions.
 
 3.  Update the values file correctly:
-    eg  `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations.md#iam)
+    eg  `<UNION_FLYTE_ROLE_ARN>` is the ARN of the new IAM role created in the [AWS Cluster Recommendations](./cluster-recommendations#iam)
 
 4. Optionally configure the resource `limits` and `requests` for the different services.  By default these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
    * `clusterresourcesync.resources`

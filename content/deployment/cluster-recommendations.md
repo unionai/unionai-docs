@@ -42,7 +42,7 @@ in the [Configuring Node Pools](./configuration/node-pools) section.
 ## S3
 
 Each data plane uses an object store (an AWS S3 bucket, GCS bucket or ABS container) that is used to store data used in the execution of workflows.
-As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane (learn more [about the different types of data categories](./data-retention-policy.md#data-categories) stored by the data plane.)
+As a {{< key product_name >}} administrator, you can specify retention policies for this data when setting up your data plane (learn more [about the different types of data categories](./data-retention-policy#data-categories) stored by the data plane.)
 
 Union recommends the use of two S3 buckets:
 
@@ -53,7 +53,7 @@ Note: You can choose to use a single bucket in your dataplane
 
 ### Data Retention
 
-Union recommends using Lifecycle Policy on these buckets to manage the storage costs. See [Data retention policy](./data-retention-policy.md#data-retention-policy) for more information.
+Union recommends using Lifecycle Policy on these buckets to manage the storage costs. See [Data retention policy](./data-retention-policy#data-retention-policy) for more information.
 
 ## IAM
 
