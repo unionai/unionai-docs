@@ -16,10 +16,10 @@ The Union architecture is described on the [Architecture](../architecture) page.
 
 > [!NOTE]
 > TEST
-> [byok-data-plane-setup-on-AWS](byok-data-plane-setup-on-AWS)
-> [byok-data-plane-setup-on-AWS.md](byok-data-plane-setup-on-AWS.md)
-> [./byok-data-plane-setup-on-AWS](./byok-data-plane-setup-on-AWS)
-> [./byok-data-plane-setup-on-AWS.md](./byok-data-plane-setup-on-AWS.md)
+> * [byok-data-plane-setup-on-AWS](byok-data-plane-setup-on-AWS)
+> * [byok-data-plane-setup-on-AWS.md](byok-data-plane-setup-on-AWS.md)
+> * [./byok-data-plane-setup-on-AWS](./byok-data-plane-setup-on-AWS)
+> * [./byok-data-plane-setup-on-AWS.md](./byok-data-plane-setup-on-AWS.md)
 
 ## Assumptions
 
