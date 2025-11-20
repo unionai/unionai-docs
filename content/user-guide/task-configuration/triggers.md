@@ -148,7 +148,7 @@ This is essential for parameterizing your automated executions and passing trigg
 
 ### Using `flyte.TriggerTime`
 
-The special `flyte.TriggerTime` value injects the trigger execution timestamp into your task:
+The special `flyte.TriggerTime` value is used in the `inputs` to indicate the task parameter into which Flyte will inject the trigger execution timestamp:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="inputs-trigger-time" lang="python">}}
 
@@ -219,7 +219,10 @@ All predefined trigger methods (`minutely()`, `hourly()`, `daily()`, `weekly()`,
 #### Core Parameters
 
 **`trigger_time_input_key: str = "trigger_time"`**
-The parameter name that will receive the `flyte.TriggerTime` value in your task. This allows you to customize which parameter gets the execution timestamp.
+The parameter name that will receive the `flyte.TriggerTime` value in your task.
+This allows you to customize which parameter gets the execution timestamp.
+If no custom name is provided, the default is `trigger_time`.  In this case, if the task does not have a parameter named `trigger_time`, the task will still be executed, but, obviously, the timestamp will not be passed.
+However, if you do specify a custom parameter, but your task does not actually have that parameter, an error will be raised at trigger deployment time.
 
 **`name: str`**
 The unique identifier for the trigger. Defaults to the method name (`"daily"`, `"hourly"`, etc.).
@@ -259,10 +262,10 @@ Additional metadata, often used by infrastructure tools for compliance, monitori
 
 ### Trigger time in predefined triggers
 
-By default, predefined triggers assume the existence of the parameter called `trigger_time` (of type `datetime`) on the triggered task and pass the trigger execution timestamp to that parameter.
-This differs from custom triggers where you need to explicitly set the `flyte.TriggerTime` in the `inputs` dictionary.
+By default, predefined triggers will pass the execution time to the parameter `trigger_time` of type `datetime`,if that parameter exists on the task.
+If no such parameter exists, the task will still be executed without error.
 
-For predefined triggers, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter:
+Optionally, you can customize the parameter name that receives the trigger execution timestamp by setting the `trigger_time_input_key` parameter (in this case the absence of this custom parameter on the task will raise an error at trigger deployment time):
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="trigger-time-input-key" lang="python">}}
 
