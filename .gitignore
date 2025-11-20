@@ -6,6 +6,11 @@ config/_default
 /dist/
 .hugo.build.toml
 
+# Build artifacts
+/final_dist/
+/current_dist/
+/pr_dist/
+
 # Developer overrides
 hugo.local.toml
 
