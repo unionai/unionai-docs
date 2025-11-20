@@ -21,7 +21,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
 ## Prerequisites
 
-* Install [Helm 3](https://helm.sh/docs/intro/install/)
+* Install [Helm 3](https://helm.sh/docs/intro/install/).
 * Install [union](../api-reference/union-cli) and [uctl](../api-reference/uctl-cli).
 
 ## Deploy the {{< key product_name >}} operator
@@ -77,6 +77,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
    Step 7: Once you have your dataplane up and running, create API keys for your organization. If you have already just call the same command again to propogate the keys to new cluster:
      uctl create apikey --keyName EAGER_API_KEY --org <your-org-name>
+
    Step 8: You can now trigger v2 executions on this dataplane.
    ```
 
@@ -88,6 +89,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
+
    * `clusterresourcesync.resources`
    * `flytepropeller.resources`
    * `flytepropellerwebhook.resources`

@@ -76,6 +76,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
    Step 7: Once you have your dataplane up and running, create API keys for your organization. If you have already just call the same command again to propogate the keys to new cluster:
      uctl create apikey --keyName EAGER_API_KEY --org <your-org-name>
+
    Step 8: You can now trigger v2 executions on this dataplane.
    ```
    * Save the secret that is displayed. Union does not store the credentials, rerunning the same command can be used to show same secret later which stream through the OAuth Apps provider.
@@ -86,6 +87,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 
 4. Optionally configure the resource `limits` and `requests` for the different services.
    By default, these will be set minimally, will vary depending on usage, and follow the Kubernetes `ResourceRequirements` specification.
+
    * `clusterresourcesync.resources`
    * `flytepropeller.resources`
    * `flytepropellerwebhook.resources`

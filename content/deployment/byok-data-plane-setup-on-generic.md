@@ -12,25 +12,7 @@ All communication is encrypted.
 The Union architecture is described on the [Architecture](../architecture) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
-> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](byok-data-plane-setup-on-aws), [Azure](./byok-data-plane-setup-on-azure), [OCI](byok-data-plane-setup-on-oci.md).
-
-
-TEST
-
-* [byok-data-plane-setup-on-aws](byok-data-plane-setup-on-aws)
-* [byok-data-plane-setup-on-aws.md](byok-data-plane-setup-on-aws.md)
-* [./byok-data-plane-setup-on-aws](./byok-data-plane-setup-on-aws)
-* [../byok-data-plane-setup-on-aws](../byok-data-plane-setup-on-aws)
-* [./byok-data-plane-setup-on-aws.md](./byok-data-plane-setup-on-aws.md)
-* [../architecture](../architecture)
-* [./architecture](./architecture)
-* [architecture](architecture)
-* [../architecture/_index.md](../architecture/_index.md)
-* [./architecture/_index.md](./architecture/_index.md)
-* [architecture/_index.md](architecture/_index.md)
-* [../architecture/_index](../architecture/_index)
-* [./architecture/_index](./architecture/_index)
-* [architecture/_index](architecture/_index)
+> If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./byok-data-plane-setup-on-aws), [Azure](./byok-data-plane-setup-on-azure), [OCI](./byok-data-plane-setup-on-oci).
 
 ## Assumptions
 
