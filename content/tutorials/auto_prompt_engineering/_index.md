@@ -158,7 +158,7 @@ Most prompt engineering pipelines start as quick scripts or notebooks. They're f
 
 With Flyte 2, we get a more reliable setup:
 
-- Run many evaluations in parallel with [async Python](../../user-guide/flyte-2/async.md#true-parallelism-for-all-workloads) or [native DSL](../../user-guide/flyte-2/async.md#the-flytemap-function-familiar-patterns).
+- Run many evaluations in parallel with [async Python](../../user-guide/flyte-2/async#true-parallelism-for-all-workloads) or [native DSL](../../user-guide/flyte-2/async#the-flytemap-function-familiar-patterns).
 - Watch accuracy improve in real time and link results back to the exact dataset, prompt, and model config used.
 - Resume cleanly after failures without rerunning everything from scratch.
 - Reuse the same pattern to tune other parameters like temperature, retrieval depth, or agent strategies, not just prompts.
