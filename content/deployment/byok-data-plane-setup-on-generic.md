@@ -21,6 +21,11 @@ The Union architecture is described on the [Architecture](../architecture) page.
 > * [./byok-data-plane-setup-on-AWS](./byok-data-plane-setup-on-AWS)
 > * [./byok-data-plane-setup-on-AWS.md](./byok-data-plane-setup-on-AWS.md)
 
+* [byok-data-plane-setup-on-AWS](byok-data-plane-setup-on-AWS)
+* [byok-data-plane-setup-on-AWS.md](byok-data-plane-setup-on-AWS.md)
+* [./byok-data-plane-setup-on-AWS](./byok-data-plane-setup-on-AWS)
+* [./byok-data-plane-setup-on-AWS.md](./byok-data-plane-setup-on-AWS.md)
+
 ## Assumptions
 
 * You have a {{< key product_name >}} organization, and you know the control plane URL for your organization. (e.g. https://your-org-name.us-east-2.unionai.cloud).
