@@ -219,10 +219,10 @@ All predefined trigger methods (`minutely()`, `hourly()`, `daily()`, `weekly()`,
 #### Core Parameters
 
 **`trigger_time_input_key: str = "trigger_time"`**
-The parameter name that will receive the `flyte.TriggerTime` value in your task.
-This allows you to customize which parameter gets the execution timestamp.
-If no custom name is provided, the default is `trigger_time`.  In this case, if the task does not have a parameter named `trigger_time`, the task will still be executed, but, obviously, the timestamp will not be passed.
-However, if you do specify a custom parameter, but your task does not actually have that parameter, an error will be raised at trigger deployment time.
+The name of the task parameter that will receive the execution timestamp.
+If no `trigger_time_input_key` is provided, the default is `trigger_time`.
+In this case, if the task does not have a parameter named `trigger_time`, the task will still be executed, but, obviously, the timestamp will not be passed.
+However, if you do specify a `trigger_time_input_key`, but your task does not actually have the specified parameter, an error will be raised at trigger deployment time.
 
 **`name: str`**
 The unique identifier for the trigger. Defaults to the method name (`"daily"`, `"hourly"`, etc.).
