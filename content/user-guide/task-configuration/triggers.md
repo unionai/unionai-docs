@@ -297,7 +297,7 @@ To deploy a task with its triggers, you can either use Flyte CLI:
 flyte deploy -p <project> -d <domain> <file_with_tasks_and_triggers.py> env
 ```
 
-Or in Python::
+Or in Python:
 
 ```python
 flyte.deploy(env)
@@ -355,7 +355,7 @@ Let's say you define a fixed rate trigger with automatic activation like this:
 {{< code file="/external/unionai-examples/v2/user-guide/task-configuration/triggers/triggers.py" fragment="no-start-time-auto-activate-true" lang="python">}}
 
 In this case, the first run will occur 60 minutes after the successful deployment of the trigger.
-So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and so on thereafter
+So, if you deployed this trigger at 13:15, the first run will occur at 14:15 and so on thereafter.
 
 #### No `start_time`, auto_activate: False
 
