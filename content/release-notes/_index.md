@@ -1,6 +1,6 @@
 ---
 title: Release Notes
-weight: 6
+weight: 7
 variants: +serverless +byoc +selfmanaged -flyte
 top_menu: true
 sidebar_expanded: true
@@ -14,7 +14,7 @@ sidebar_expanded: true
 ## October 2025
 
 ### :infinity: Larger fanouts
-You can now run up to 50,000 actions within a run and up to 1,000 actions concurrently. 
+You can now run up to 50,000 actions within a run and up to 1,000 actions concurrently.
 To enable observability across so many actions, we added group and sub-actions UI views, which show summary statistics about the actions which were spawned within a group or action.
 You can use these summary views (as well as the action status filter) to spot check long-running or failed actions.
 
