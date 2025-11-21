@@ -61,26 +61,7 @@ Both are legitimate and complementary. The important behavioral rules to underst
 
 Set base metadata once when starting the run:
 
-```python
-import flyte
-
-env = flyte.TaskEnvironment("hello_world")
-
-@env.task
-async def leaf_task():
-    # Reads run-level context
-    print("leaf sees:", flyte.ctx().custom_context)
-    return flyte.ctx().custom_context.get("trace_id")
-
-@env.task
-async def root():
-    return await leaf_task()
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    # Base context for the entire run
-    flyte.with_runcontext(custom_context={"trace_id": "root-abc", "experiment": "v1"}).run(root)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/custom-context/run_context.py" fragment="run-context" lang="python" >}}
 
 Output (every task sees the base keys unless overridden):
 
@@ -92,24 +73,7 @@ leaf sees: {"trace_id": "root-abc", "experiment": "v1"}
 
 Use `flyte.custom_context(...)` inside a task to override or add keys for downstream calls:
 
-```python
-@env.task
-async def downstream():
-    print("downstream sees:", flyte.ctx().custom_context)
-    return flyte.ctx().custom_context.get("trace_id")
-
-@env.task
-async def parent():
-    print("parent initial:", flyte.ctx().custom_context)
-
-    # Override the trace_id for the nested call(s)
-    with flyte.custom_context(trace_id="child-override"):
-        val = await downstream()     # downstream sees trace_id="child-override"
-
-    # After the context block, run-level values are back
-    print("parent after:", flyte.ctx().custom_context)
-    return val
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-programming/custom-context/override_context.py" fragment="override-context" lang="python" >}}
 
 If the run was started with `{"trace_id": "root-abc"}`, this prints:
 
