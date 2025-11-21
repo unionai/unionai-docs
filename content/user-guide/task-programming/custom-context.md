@@ -12,7 +12,9 @@ Think of custom context as **execution-scoped metadata** that automatically flow
 
 ## Overview
 
-Custom context is an implicit key–value configuration map that is automatically available in every Flyte task during execution. It is accessed via:
+Custom context is an implicit key–value configuration map that is automatically available to tasks during execution. It is stored in the blob store of your Union/Flyte instance together with the task’s inputs, making it available across tasks without needing to pass it explicitly.
+
+You can access it in a Flyte task via:
 
 ```python
 flyte.ctx().custom_context
