@@ -11,46 +11,18 @@ In many cases, you will want to automate this process through a CI/CD system.
 In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on {{< key product_name >}}.
 We will use GitHub Actions as the example CI/CD system.
 
-## Create a {{< key product_name >}} app
+## Create a {{< key product_name >}} Api Key
 
-An app is an connector registered in your {{< key product_name >}} data plane that enables external systems to perform actions in the system.
-To enable your CI/CD system to authenticate with {{< key product_name >}}, you need to create a {{< key product_name >}} app.
-See [Applications](../administration/applications).
-
-First, create a specification file called `app.yaml` (for example) with the following contents (you can adjust the `clientId` and `clientName` to your requirements):
-
-```yaml
-clientId: example-operator
-clientName: Example Operator
-grantTypes:
-- CLIENT_CREDENTIALS
-- AUTHORIZATION_CODE
-redirectUris:
-- http://localhost:8080/authorization-code/callback
-responseTypes:
-- CODE
-tokenEndpointAuthMethod: CLIENT_SECRET_BASIC
-```
-
-Now, create the app using the specification file:
+An api key is registered in your {{< key product_name >}} control plane that enables external systems to perform actions on your behalf.
+To enable your CI/CD system to authenticate with {{< key product_name >}}, you need to create a {{< key product_name >}} api key.
+See [Managing API keys](./managing-api-keys.md).
 
 ```shell
-$ {{< key ctl >}} create app --appSpecFile app.yaml
+$ {{< key cli >}} create api-key admin --name my-cicd-key
 ```
 
-The response should look something like this:
-
-```shell
- ------------------ ------------------- ------------- ---------
-| NAME             | CLIENT NAME       | SECRET      | CREATED |
- ------------------ ------------------- ------------- ---------
-| example-operator |  Example Operator | <AppSecret> |         |
- ------------------ ------------------- ------------- ---------
-```
-
-Copy the `<AppSecret>` to an editor for later use.
+Copy the `UNION_API_KEY` to an editor for later use.
 This is the only time that the secret will be displayed.
-The secret is not stored by {{< key product_name >}}.
 
 ## Store the secret in your CI/CD secrets store
 
@@ -59,32 +31,9 @@ In GitHub, from the repository page:
 
 1. Select **Settings > Secrets and variables > Actions**.
 2. Select the **Secrets** tab and click **New repository secret**.
-3. Give a meaningful name to the secret, like `{{< key env_prefix >}}_APP_SECRET`.
+3. Give a meaningful name to the secret, like `{{< key env_prefix >}}_CICD_API_KEY`.
 4. Paste in the string from above as the value.
 5. Click **Add secret**.
-
-## Create a {{< key product_name >}} configuration file
-
-Until now the configuration file we have used has been local (`~/.{{< key product >}}/config.yaml`, for example).
-For the CI/CD system you need to create one right in the same repository that holds your workflow code.
-
-Create `example-project/ci-config.yaml`:
-
-```yaml
-admin:
-  endpoint: dns:///<{{< key product >}}-host-url>
-  clientId: example-operator
-  clientSecretEnvVar: {{< key env_prefix >}}_APP_SECRET
-  insecure: false
-logger:
-  show-source: true
-  level: 1
-```
-
-> [!NOTE]
-> Note that the value of`clientSecretEnvVar`(in his case, `{{< key env_prefix >}}_APP_SECRET`) is the name of the variable that will be used by `{{< key ctl >}}` within the CI/CD run environment.
->
-> It is also usually good practice to make this the same as the name under which the secret is stored within the CI/CD secret store, as shown above.
 
 ## Set up your CI/CD configuration file
 
