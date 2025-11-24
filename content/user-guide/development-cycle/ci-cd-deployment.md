@@ -11,18 +11,17 @@ In many cases, you will want to automate this process through a CI/CD system.
 In this section, we explain how to set up a CI/CD system to register, execute and promote workflows on {{< key product_name >}}.
 We will use GitHub Actions as the example CI/CD system.
 
-## Create a {{< key product_name >}} Api Key
+## Create a {{< key product_name >}} API key
 
-An api key is registered in your {{< key product_name >}} control plane that enables external systems to perform actions on your behalf.
-To enable your CI/CD system to authenticate with {{< key product_name >}}, you need to create a {{< key product_name >}} api key.
-See [Managing API keys](./managing-api-keys.md).
+An API key is registered in your {{< key product_name >}} control plane to enable external systems to perform actions on your behalf.
+To allow your CI/CD system to authenticate with {{< key product_name >}}, create a {{< key product_name >}} API key.
+See [Managing API keys](./managing-api-keys.md) for details.
 
 ```shell
 $ {{< key cli >}} create api-key admin --name my-cicd-key
 ```
 
-Copy the `UNION_API_KEY` to an editor for later use.
-This is the only time that the secret will be displayed.
+Copy the `UNION_API_KEY` value for later use; this is the only time the secret is displayed.
 
 ## Store the secret in your CI/CD secrets store
 
@@ -35,9 +34,9 @@ In GitHub, from the repository page:
 4. Paste in the string from above as the value.
 5. Click **Add secret**.
 
-## Set up your CI/CD configuration file
+## Configure your CI/CD workflow file
 
-Finally, you need to set up the CI/CD configuration file. For GitHub Actions you might create the file `example-project/.github/workflows/deploy.yaml` that looks like this:
+Create the CI/CD workflow file. For GitHub Actions, you might add `example-project/.github/workflows/deploy.yaml` similar to:
 
 {{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
@@ -80,8 +79,7 @@ jobs:
 ```
 {{< /markdown >}}
 > [!NOTE]
-> Note the `Register to Union` command, where we register all launchplans and other flyte entities associated with it in the `launchplans` directory. In addition to the project, domain & automatic activation of launchplans, we also set the version to the given git commit sha to enable tracability to all registered flyte entities. 
-See {{< key cli >}} [register](../../api-reference/union-cli.md#register) for more options to specify.
+> The `Register to Union` step registers the launch plans and related Flyte entities in the `launchplans` directory. It sets the project and domain, activates launch plans automatically, and pins the version to the Git commit SHA for traceability across all registered Flyte entities. See {{< key cli >}} [register](../../api-reference/union-cli.md#register) for additional options.
 {{< /variant >}}
 {{< variant  flyte >}}
 {{< markdown >}}
@@ -154,13 +152,13 @@ jobs:
 >     {{< key env_prefix >}}_APP_SECRET: ${{ secrets.{{< key env_prefix >}}_APP_SECRET }}
 > ```
 >
-> The first instance of the name`{{< key env_prefix >}}_APP_SECRET`must be the same as that specified in the `ci-config.yaml` file as the value of `clientSecretEnvVar`.
+> The first instance of `{{< key env_prefix >}}_APP_SECRET` must match the value specified in `ci-config.yaml` for `clientSecretEnvVar`.
 >
-> Because we have followed the practice of using the same name for the secret stored in the CI/CD secret store, the value being retrieved here has the same name, `secrets.{{< key env_prefix >}}_APP_SECRET.`
+> Because the CI/CD secret uses the same name, the retrieved value is `secrets.{{< key env_prefix >}}_APP_SECRET.`
 >
 > You will also see other secrets and environment variables accessed in this configuration file.
 > These are related to the container build process, project name and so forth.
 > For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
 {{< /variant >}}
 
-Once this is set up, every push to the main branch in you repository will build and deploy your project to {{< key product_name >}}.
+Once this is set up, every push to the main branch in your repository will build and deploy your project to {{< key product_name >}}.
