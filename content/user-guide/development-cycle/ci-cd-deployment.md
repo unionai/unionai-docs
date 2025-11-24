@@ -77,9 +77,10 @@ jobs:
           union register --version ${{ github.sha }} -p ${{ env.PROJECT }} \
           -d ${{ env.DOMAIN }} --activate-launchplans ./launchplans
 ```
-{{< /markdown >}}
+
 > [!NOTE]
 > The `Register to Union` step registers the launch plans and related Flyte entities in the `launchplans` directory. It sets the project and domain, activates launch plans automatically, and pins the version to the Git commit SHA for traceability across all registered Flyte entities. See {{< key cli >}} [register](../../api-reference/union-cli.md#register) for additional options.
+{{< /markdown >}}
 {{< /variant >}}
 {{< variant  flyte >}}
 {{< markdown >}}
