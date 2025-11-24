@@ -72,14 +72,16 @@ jobs:
         run: uv sync
       - name: Register to Union
         env:
-          UNION_API_KEY: ${{ secrets.UNION_CICD_API_KEY }}
+          UNION_API_KEY: ${{ secrets.CICD_API_KEY }}
         run: |
           source .venv/bin/activate
-          union register \
-            -p ${{ env.PROJECT }} -d ${{ env.DOMAIN }} ./launchplans
-      
+          union register --version ${{ github.sha }} -p ${{ env.PROJECT }} \
+          -d ${{ env.DOMAIN }} --activate-launchplans ./launchplans
 ```
 {{< /markdown >}}
+> [!NOTE]
+> Note the `Register to Union` command, where we register all launchplans and other flyte entities associated with it in the `launchplans` directory. In addition to the project, domain & automatic activation of launchplans, we also set the version to the given git commit sha to enable tracability to all registered flyte entities. 
+See {{< key cli >}} [register](../../api-reference/union-cli.md#register) for more options to specify.
 {{< /variant >}}
 {{< variant  flyte >}}
 {{< markdown >}}
@@ -143,7 +145,6 @@ jobs:
             --version ${{ github.sha }}
 ```
 {{< /markdown >}}
-{{< /variant >}}
 > [!NOTE]
 > Note this section:
 >
@@ -160,5 +161,6 @@ jobs:
 > You will also see other secrets and environment variables accessed in this configuration file.
 > These are related to the container build process, project name and so forth.
 > For details, have a look at the GitHub docs and the docs for the tool used above, `whoan/docker-build-with-cache-action`.
+{{< /variant >}}
 
 Once this is set up, every push to the main branch in you repository will build and deploy your project to {{< key product_name >}}.
