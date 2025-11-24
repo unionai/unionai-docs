@@ -1,19 +1,68 @@
 ---
-title: Deploying workflows
+title: Task deployment and run
 weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Deploying workflows
+# Task deployment and run
 
-This guide covers how to deploy environments, run tasks, and execute workflows in Flyte v2. In Flyte v2, tasks are organized into **Task Environments** which define the execution context, dependencies, and configuration for groups of related tasks.
+You have seen how to configure and build the tasks that compose your project.
+In this section we will explain how to deploy those tasks to the Flyte or Union backend and execute them.
 
-## Core concepts
+## Running tasks immediately
+
+As we saw in [Getting started](../getting-started/) you can use the CLI to deploy and run your code in one step with `flyte run`:
+
+```bash
+flyte run <source_file_path> <task_name> --<input_1> <value_1> --<input_2> <value_2>
+```
+
+Here is a concrete example:
+
+```bash
+flyte run workflows/data_pipeline.py process_data --input_path "/data/raw" --batch_size 100
+```
+
+The programmatic equivalent of this is `flyte.run()`:
+
+```python
+import flyte
+flyte.init_from_config()
+result = flyte.run(<task_function>, <input_1>=<value_1>, <input_2>=<value_2>)
+print(f"Task URL: {result.url}")
+print(f"Run name: {result.name}")
+```
+
+Under the hood, the run command actually does a lot of work automatically. They:
+* They deploy all task environments in the Specified python file Deploy the necessary task environments if they are not already deployed, and then execute the specified task on the backend.
+But to fully leverage Flyte's capabilities, you will typically want to deploy your task environments explicitly and then run tasks or workflows as needed.
+
+Let's explore how to do that in the sections below.
+
+## Under the hood
+
+
+
+To move your code from your local machine to a Flyte/Union backend, you must deploy the `TaskEnvironment`s that contain your tasks.
+
+From there you can run theose tasks
+
+The simplest
+
+
+ covers how to deploy environments, run tasks, and execute workflows in Flyte 2.
+
+In Flyte 2, tasks are organized into **Task Environments** which define the execution context, dependencies, and configuration for groups of related tasks.
+
+## Terminology
+
+You hav
 
 ### Task Environments
 
-A **Task Environment** (`flyte.TaskEnvironment`) is the fundamental organizational unit in Flyte v2. It groups related tasks together and defines their shared configuration including:
+A **Task Environment** (`flyte.TaskEnvironment`) is the fundamental organizational unit in Flyte 2.
+It groups related tasks together and defines their shared configuration including:
 
 - **Container images** and dependencies
 - **Resource requirements** (CPU, memory, GPU)
@@ -31,6 +80,8 @@ env = flyte.TaskEnvironment(
     env_vars={"LOG_LEVEL": "INFO"}
 )
 ```
+
+See [Task configuration](../task-configuration/) for more details on task environments.
 
 ### Tasks
 
@@ -50,7 +101,9 @@ def compute_metrics(data: str) -> dict:
 
 ### Workflows
 
-**Workflows** in Flyte v2 are simply tasks that call other tasks. There's no separate workflow decorator - any task that orchestrates other tasks becomes a workflow:
+**Workflows** in Flyte 2 are simply tasks that call other tasks.
+There's no separate workflow syntax.
+Any task that orchestrates other tasks becomes a workflow:
 
 ```python
 @env.task
