@@ -50,8 +50,8 @@ on:
       - main
 
 env:
-  REGISTRY: ghcr.io
-  PROJECT: onboarding
+  PROJECT: flytesnacks
+  DOMAIN: production
 
 jobs:
   build_and_register:
@@ -64,41 +64,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build & Push Docker Image to Github Registry
-        uses: whoan/docker-build-with-cache-action@v5
-        with:
-          # https://docs.github.com/en/packages/learn-github-packages/publishing-a-package
-          username: ${{ secrets.{{< key env_prefix >}}_BOT_USERNAME }}
-          password: ${{ secrets.{{< key env_prefix >}}_BOT_PASSWORD }}
-          image_name: ${{ github.repository }}
-          image_tag: ${{ env.PROJECT }}-${{ github.sha }},${{ env.PROJECT }}-latest
-          registry: ${{ env.REGISTRY }}
-          context: ./${{ env.PROJECT }}
-          dockerfile: Dockerfile
-
-      - name: Setup union
+      - name: Install python & uv 
         run: |
           sudo apt-get install python3
-          pip install -r ${{ env.PROJECT }}/requirements.txt
-      - name: Setup uctl
-        run: |
-          curl -sL https://raw.githubusercontent.com/unionai/uctl/main/install.sh | bash
-      - name: Package
-        working-directory: ./${{ env.PROJECT }}
-        run: |
-          {{< key cli >}} --pkgs workflows package \
-            --output ./flyte-package.tgz \
-            --image ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ github.repository }}:${{ env.PROJECT }}-latest
-      - name: Register
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Install dependencies
+        run: uv sync
+      - name: Register to Union
         env:
-          {{< key env_prefix >}}_APP_SECRET: ${{ secrets.{{< key env_prefix >}}_APP_SECRET }}
+          UNION_API_KEY: ${{ secrets.UNION_CICD_API_KEY }}
         run: |
-          bin/uctl --config ./ci-config.yaml \
-            register files \
-            --project onboarding \
-            --domain production \
-            --archive ./${{ env.PROJECT }}/flyte-package.tgz \
-            --version ${{ github.sha }}
+          source .venv/bin/activate
+          union register \
+            -p ${{ env.PROJECT }} -d ${{ env.DOMAIN }} ./launchplans
+      
 ```
 {{< /markdown >}}
 {{< /variant >}}
