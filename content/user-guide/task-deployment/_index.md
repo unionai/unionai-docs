@@ -10,9 +10,165 @@ sidebar_expanded: true
 You have seen how to configure and build the tasks that compose your project.
 In this section we will explain how to deploy those tasks to the Flyte or Union backend and execute them.
 
-## Running tasks immediately
+In Flyte, the fundamental unit of deployment is the **task environment** ([`TaskEnvironment`]()). When you deploy a task environment, all tasks attached to it (via the `@env.task` decorator) are automatically registered with the backend.
 
-As we saw in [Getting started](../getting-started/) you can use the CLI to deploy and run your code in one step with `flyte run`:
+There are two core operations related to task execution:
+
+- **Deploy**: Takes a task environment and registers it with the Flyte backend, building the associated container image and registering all tasks decorated with `@env.task` within that environment. This makes the tasks available for execution. This functionality is provided by the CLI command `flyte deploy` and the SDK function `flyte.deploy()`.
+
+- **Run**: Executes a specific task on the backend, either immediately (with automatic deployment of its task environment) or from previously deployed environments. This functionality is provided by the CLI command `flyte run` and the SDK function `flyte.run()`.
+
+## flyte run
+
+In [Getting started](../getting-started/) we introduced the [`flyte run` CLI command]() and its [SDK equivalent `flyte.run()`]().
+Here we will take a closer look at how they work.
+
+The `run` command runs a specified task. It can do this in three ways: locally, by deploying and running, or by running a previously deployed task.
+
+### Local run
+
+You can run a task on your local machine without deploying it to the backend.
+On the command line, use the `--local` flag:
+
+```bash
+flyte run
+    --local
+    <source_file_path>
+    <task_function>
+    [ --<argument_1> <value_1>]
+    [...]
+    [--<argument_n> <value_n>]
+```
+
+In Python, local execution is determined by the absence of a configured client or by explicitly using `with_runcontext(mode="local")`:
+
+If you do not have a configured Flyte client, `flyte.run()` defaults to local execution:
+
+```python
+# No flyte.init_from_config() (or similar)
+r = flyte.run(
+        <task_function>,
+        <argument_1>=<value_1>,
+        ...
+        <argument_2>=<value_2>,
+    )
+```
+
+If a Flyte client is configured, you can still force local execution using `with_runcontext(mode="local")`:
+
+```python
+flyte.init_from_config()
+flyte.with_runcontext(mode="local")
+    .run(
+        <task_function>,
+        <argument_1>=<value_1>,
+        ...
+        <argument_2>=<value_2>,
+    )
+```
+
+### Deploy and run in one step
+
+For a task that has not yet been deployed, `flyte run` automatically deploys the necessary task environment and then runs the specified task:
+
+```bash
+flyte run
+    <source_file_path>
+    <task_name>
+    [ --<argument_1> <value_1>]
+    [...]
+    [--<argument_n> <value_n>]
+```
+
+The programmatic equivalent of this is `flyte.run()`:
+
+```python
+r = flyte.run(
+        <task_function>,
+        <argument_1>=<value_1>,
+        <argument_2>=<value_2>
+    )
+
+```
+
+### Run a previously deployed task
+
+For a task that has already been deployed, you can use the `flyte run` CLI command with the `deployed-task` sub-command to run the specified task directly:
+
+```bash
+flyte run
+    deployed-task
+    <task_name>
+    [ --<argument_1> <value_1>]
+    [...]
+    [--<argument_n> <value_n>]
+```
+
+In Python, you can run a previously deployed task by obtaining a reference to it using `flyte.remote.Task.get()` and then invoking it with `flyte.run()`:
+
+[TODO: simplify the example below and refer to a more detailed section elsewhere on rtemote funcionality]
+]
+```python
+import flyte
+
+# Initialize your Flyte client
+flyte.init_from_config()
+
+# Get a reference to a deployed task by name and version
+deployed_task = flyte.remote.Task.get(
+    "my_env.my_task",
+    version="v1.0.0"
+)
+
+# Or get the latest version
+deployed_task = flyte.remote.Task.get(
+    "my_env.my_task",
+    auto_version="latest"
+)
+
+# Run the deployed task
+result = flyte.run(
+    deployed_task,
+    arg1="value1",
+    arg2="value2"
+)
+
+print(f"Task URL: {result.url}")
+print(f"Run name: {result.name}")
+
+# Wait for completion
+result.wait()
+```
+
+### Additonal CLI flags
+
+When using the `flyte run` command, you can specify additional flags:
+
+
+
+If your [configuration specifies default
+project and domain values](), you can omit the > `--project` and `--domain` flags.
+
+* For a task that have already been deployed (it already exists on the backend), it simply runs the task directly.
+
+```bash
+flyte run
+    --project <project-name>
+    --domain development
+    hello.py
+    my_task
+    --arg1 value1
+    --arg2 value2
+```
+
+
+* For tasks that have not yet been deployed, it automatically deploys the necessary task environments and then runs the specified task.
+
+
+allows you to quickly deploy and execute a specific task or workflow from your local machine without needing to manually deploy the task environments first.
+
+
+you can use the CLI to deploy and run your code in one step with `flyte run`
 
 ```bash
 flyte run <source_file_path> <task_name> --<input_1> <value_1> --<input_2> <value_2>
