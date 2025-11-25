@@ -106,7 +106,7 @@ flyte run
 
 In Python, you can run a previously deployed task by obtaining a reference to it using `flyte.remote.Task.get()` and then invoking it with `flyte.run()`:
 
-[TODO: simplify the example below and refer to a more detailed section elsewhere on rtemote funcionality]
+[TODO: simplify the example below and refer to a more detailed section elsewhere on rtemote funcionality]()
 ]
 ```python
 import flyte
