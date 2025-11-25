@@ -15,7 +15,7 @@ sidebar_expanded: true
 
 ### :globe_with_meridians: Apps (beta)
 
-You can now deploy and serve long-running applications in Union 2.0. Apps let you host ML models, Streamlit dashboards, FastAPI services, and other interactive applications alongside your workflows. Simply define your app, deploy it, and Union will handle the infrastructure, routing, and lifecycle management. You can even call apps from your tasks to build end-to-end workflows that combine batch processing with real-time serving.
+You can now deploy apps in Union 2.0. Apps let you host ML models, Streamlit dashboards, FastAPI services, and other interactive applications alongside your workflows. Simply define your app, deploy it, and Union will handle the infrastructure, routing, and lifecycle management. You can even call apps from your tasks to build end-to-end workflows that combine batch processing with real-time serving.
 
 To create an app, import `flyte` and use either `FastAPIAppEnvironment` for FastAPI applications or the generic `AppEnvironment` for other frameworks. Here's a simple FastAPI example:
 
@@ -54,7 +54,7 @@ app_env = flyte.app.AppEnvironment(
 )
 ```
 
-You can call apps from tasks by using `depends_on` and making HTTP requests to the app's endpoint. Please refer to the example in the [SDK repo](https://github.com/flyteorg/flyte-sdk/blob/main/examples/apps/call_apps_in_tasks/app.py). Similarly, you can call apps from other apps ([example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/apps/app_calling_app/app.py)).
+You can call apps from tasks by using `depends_on` and making HTTP requests to the app's endpoint. Please refer to the example in the [SDK repo](https://github.com/flyteorg/flyte-sdk/blob/main/examples/apps/call_apps_in_tasks/app.py). Similarly, you can call apps from other apps (see this [example](https://github.com/flyteorg/flyte-sdk/blob/main/examples/apps/app_calling_app/app.py)).
 
 ### :label: Custom context
 
@@ -85,8 +85,8 @@ if __name__ == "__main__":
 ```
 
 
-### :fast-forward: Grouped Runs
-We redesigned the Executions/Runs experience to scale seamlessly to millions of runs. Historically, large projects produced so many runs that flat listings became difficult to navigate, with some teams generating hundreds of thousands of executions per month. The new design groups Runs by their root task or workflow—leveraging the fact that while there may be millions of runs, there are typically only dozens or hundreds of deployed tasks. This grouped view, combined with enhanced filtering (status, owner, duration, and more coming soon), makes it dramatically faster and easier to locate the exact executions users are looking for, even in the largest deployments.
+### :fast_forward: Grouped Runs
+We redesigned the Runs page to better support large numbers of runs. Historically, large projects produced so many runs that flat listings became difficult to navigate. The new design groups Runs by their root task - leveraging the fact that while there may be millions of runs, there are typically only dozens or hundreds of deployed tasks. This grouped view, combined with enhanced filtering (by status, owner, duration, and more coming soon), makes it dramatically faster and easier to locate the exact runs users are looking for, even in the largest deployments.
 
 ![Grouped Runs View](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/release-notes/2025-11_grouped_runs.gif)
 
