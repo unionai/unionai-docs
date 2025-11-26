@@ -8,22 +8,247 @@ sidebar_expanded: true
 # Task deployment and run
 
 You have seen how to configure and build the tasks that compose your project.
-In this section we will explain how to deploy those tasks to the Flyte or Union backend and execute them.
-
-In Flyte, the fundamental unit of deployment is the **task environment** ([`TaskEnvironment`]()). When you deploy a task environment, all tasks attached to it (via the `@env.task` decorator) are automatically registered with the backend.
+In this section we will explain how to deploy those tasks to the Flyte backend and execute them.
 
 There are two core operations related to task execution:
 
-- **Deploy**: Takes a task environment and registers it with the Flyte backend, building the associated container image and registering all tasks decorated with `@env.task` within that environment. This makes the tasks available for execution. This functionality is provided by the CLI command `flyte deploy` and the SDK function `flyte.deploy()`.
+- **Deploy**: Takes a task environment and installs it on the Flyte backend, building the associated container image and registering all tasks decorated with `@env.task` within that environment.
+This makes the tasks available for execution.
+This functionality is provided by the CLI command `flyte deploy` and the SDK function `flyte.deploy()`.
 
-- **Run**: Executes a specific task on the backend, either immediately (with automatic deployment of its task environment) or from previously deployed environments. This functionality is provided by the CLI command `flyte run` and the SDK function `flyte.run()`.
+- **Run**: Executes a specific task on the backend.
+If a local source file and task name are specified, then the task environment of that task is first deployed (see above) and the task is run on the backend (this is a shortcut for deploying and running in one step).
+Alternatively, you can run a previously deployed task directly on the backend (without redeploying).
+These functionalities are provided by the CLI command `flyte run` and the SDK function `flyte.run()`.
+
+Previously, in [Getting started](../getting-started/) we used the `flyte run` command to both deploy and run our example task.
+In this section we will take a closer look at both deployment and run, starting with deployment.
+
+## Deployment
+
+In Flyte, the fundamental unit of deployment is the **task environment** ([`TaskEnvironment`]()). When you run `flyte deploy my_example.py env` on your local machine, the task environment itself is what gets deployed to the backend. Here's what happens step by step:
+
+### 1. Code Analysis & Bundling
+
+The Flyte CLI scans your Python file (`my_example.py`) to identify all tasks decorated with `@env.task`. Your Python source code is then bundled and uploaded to the backend's **artifact store** (such as S3, GCS, or other cloud storage).
+
+### 2. Container Image Building
+
+The container image for the task environment is built and pushed to the configured container registry (or retrieved from cache if it already exists). **Importantly**, the container image includes:
+- Python runtime environment.
+- Flyte SDK and dependencies.
+- All dependencies specified in the environment (Python packages, system packages, etc.).
+- **But NOT the task code itself**. Your actual Python functions remain separate in the artifact store.
+
+### 3. Task Registration
+
+For each `@env.task` function found in your file, Flyte creates a **TaskTemplate** and registers it with the backend. This includes:
+- Task metadata (name, interface, parameter types).
+- Reference to the container image.
+- Reference to the code bundle location in the artifact store.
+- Resource specifications (CPU, memory, GPU requirements).
+- Execution policies (retries, timeouts, caching, etc.).
+
+### 4. Backend Registration
+
+All of these entities are registered in the Flyte backend database, making the task environment and its individual tasks available for execution. The backend now knows:
+- What container image to use for each task.
+- Where to find your task code (artifact store location).
+- How to execute each task with the proper configuration.
+- Task interfaces and dependencies.
+
+### 5. Runtime Execution
+
+When a task is later executed via `flyte.run()`:
+
+- The **container image** is used to spin up a Kubernetes pod.
+- The **resource specification** is used to assign the container to the correct hardware and allocate appropriate resources.
+- The **Flyte agent** downloads your task code bundle from the artifact store and injects it into the running container.
+- Your Python function executes with the `TaskTemplate` configuration.
+
+> [!NOTE]
+> If the task environment is [reusable](), then a new container will not be spun up on each task invocation,
+> instead, the task code bundle is injected into an existing container instance.
+
+#### About "fast registration"
+
+The injection of the task code into the pre-built container at runtime is a key design feature of Flyte.
+It is sometimes referred to as "fast registration". It allows for rapid iteration and deployment of tasks without needing to rebuild container images for every code change.
+This separation of container images and task code enables:
+- Code updates without rebuilding images.
+- Running different versions of code with the same base image.
+- Sharing images across multiple projects.
+- Optimized caching and resource usage.
+
+However, you can also choose to bake your code directly into the container image if desired. See [XXX]() for details.
+
+### flyte deploy
+
+#### CLI
+
+You can deploy a task environment from the command line using the `flyte deploy` command:
+
+```bash
+flyte deploy <source_file_path> <variable_of_task_environment>
+```
+
+For example, let's say you have a file `my_example.py` that defines a task environment and assigns it to the variable `env`, like this:
+
+```python
+# my_example.py
+import flyte
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task
+async def my_task(name: str) -> str:
+    return f"Hello, {name}!"
+```
+
+You can deploy the `my_env` task environment using:
+
+```bash
+flyte deploy my_example.py env
+```
+
+Note that you specify the variable name of the task environment (`env`), not the task name (`my_env`).
+
+#### SDK
+
+You can also deploy a task environment programmatically using the `flyte.deploy()` function:
+
+```python
+# my_example.py
+import flyte
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task
+async def my_task(name: str) -> str:
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    deployment = flyte.deploy(env)
+    print(deployment[0].summary_repr())
+```
+
+
+[DONE TO HERE]()
+
+
+### Basic deployment
+
+Deploy a task environment using `flyte.deploy()`:
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="my_workflow")
+
+@env.task
+async def hello_world(name: str) -> str:
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    deployment = flyte.deploy(env)
+    print(deployment[0].summary_repr())
+```
+
+### Command-line deployment
+
+Deploy from the command line using the `flyte deploy` command:
+
+```bash
+# Deploy a specific environment from a Python file
+flyte deploy my_workflow.py env
+
+# Deploy with a specific version
+flyte deploy --version "v1.0.0" my_workflow.py env
+
+# Dry run to see what would be deployed
+flyte deploy --dryrun my_workflow.py env
+```
+
+### Deployment options
+
+The `flyte.deploy()` function accepts several parameters:
+
+```python
+deployment = flyte.deploy(
+    env,                          # Environment to deploy
+    dryrun=False,                # Set to True for dry run
+    version="v1.0.0",            # Specific version tag
+    copy_style="loaded_modules"   # How to copy dependencies
+)
+```
+
+**Copy styles:**
+- `"loaded_modules"` (default): Copy only loaded Python modules
+- `"all"`: Copy all files in the project directory
+
+
+
+
+
+
+
+
+
+
+
 
 ## flyte run
 
 In [Getting started](../getting-started/) we introduced the [`flyte run` CLI command]() and its [SDK equivalent `flyte.run()`]().
 Here we will take a closer look at how they work.
 
-The `run` command runs a specified task. It can do this in three ways: locally, by deploying and running, or by running a previously deployed task.
+The `run` command runs a specified task. It can do this in three ways: by deploying to the backen and running there, by running locally, or by running a previously deployed task on the backend.
+
+### Deploy and run in one step
+
+#### CLI
+
+For a task that has not yet been deployed, `flyte run` automatically deploys the necessary task environment and then runs the specified task
+
+```bash
+flyte run
+    <source_file_path>
+    <task_name>
+    [--<argument_1> <value_1> ...]
+```
+
+* `source_file_path`: Path to the Python file containing the task definition.
+* `task_name`: Name of the task function to run.
+* `[--<argument_1> <value_1> ...]`: Argument list. The names of the arguments match the task function parameters, with a `--` prefix.
+
+Concretely, this might look like:
+
+```bash
+flyte run workflows/data_pipeline.py process_data --input_path "/data/raw" --batch_size 100
+```
+
+#### SDK
+
+The programmatic equivalent of this is `flyte.run()`:
+
+```python
+r = flyte.run(
+        task_name,          # Name of the task function
+        argument_1=value_1, # Argument list
+        ...
+)
+# Returns Union[R, Run]
+```
+
+More concretely:
+
+```python
+r = flyte.run(
+    process_data,
+    input_path="/data/raw",
+    batch_size=100
+)
+```
 
 ### Local run
 
@@ -35,23 +260,32 @@ flyte run
     --local
     <source_file_path>
     <task_function>
-    [ --<argument_1> <value_1>]
-    [...]
-    [--<argument_n> <value_n>]
+    [ --<argument_1> <value_1>][...]
+```
+
+Concretely, this might look like:
+
+```bash
+flyte run --local workflows/data_pipeline.py process_data --input_path "/data/raw" --batch_size 100
 ```
 
 In Python, local execution is determined by the absence of a configured client or by explicitly using `with_runcontext(mode="local")`:
 
-If you do not have a configured Flyte client, `flyte.run()` defaults to local execution:
+If you do not have a configured Flyte client, `flyte.run()` defaults to local execution. For example:
 
 ```python
 # No flyte.init_from_config() (or similar)
 r = flyte.run(
         <task_function>,
-        <argument_1>=<value_1>,
-        ...
-        <argument_2>=<value_2>,
+        <argument_1>=<value_1>,[...],
     )
+```
+
+More concretely:
+
+```python
+# No flyte.init_from_config() (or similar)
+r = flyte.with_runcontext(mode="local").run(my_task, name="World")
 ```
 
 If a Flyte client is configured, you can still force local execution using `with_runcontext(mode="local")`:
@@ -61,35 +295,20 @@ flyte.init_from_config()
 flyte.with_runcontext(mode="local")
     .run(
         <task_function>,
-        <argument_1>=<value_1>,
-        ...
-        <argument_2>=<value_2>,
+        <argument_1>=<value_1>, ...
     )
 ```
 
-### Deploy and run in one step
-
-For a task that has not yet been deployed, `flyte run` automatically deploys the necessary task environment and then runs the specified task:
-
-```bash
-flyte run
-    <source_file_path>
-    <task_name>
-    [ --<argument_1> <value_1>]
-    [...]
-    [--<argument_n> <value_n>]
-```
-
-The programmatic equivalent of this is `flyte.run()`:
+More concretely:
 
 ```python
-r = flyte.run(
-        <task_function>,
-        <argument_1>=<value_1>,
-        <argument_2>=<value_2>
-    )
-
+flyte.init_from_config()
+r = flyte.with_runcontext(mode="local").run(my_task, name="World")
 ```
+
+
+
+
 
 ### Run a previously deployed task
 
@@ -211,6 +430,12 @@ The simplest
 
 In Flyte 2, tasks are organized into **Task Environments** which define the execution context, dependencies, and configuration for groups of related tasks.
 
+
+
+
+
+
+
 ## Terminology
 
 You hav
@@ -272,56 +497,7 @@ async def data_pipeline(input_path: str) -> dict:
 
 ## Deploying environments
 
-### Basic deployment
 
-Deploy a task environment using `flyte.deploy()`:
-
-```python
-import flyte
-
-env = flyte.TaskEnvironment(name="my_workflow")
-
-@env.task
-async def hello_world(name: str) -> str:
-    return f"Hello, {name}!"
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    deployment = flyte.deploy(env)
-    print(deployment[0].summary_repr())
-```
-
-### Command-line deployment
-
-Deploy from the command line using the `flyte deploy` command:
-
-```bash
-# Deploy a specific environment from a Python file
-flyte deploy my_workflow.py env
-
-# Deploy with a specific version
-flyte deploy --version "v1.0.0" my_workflow.py env
-
-# Dry run to see what would be deployed
-flyte deploy --dryrun my_workflow.py env
-```
-
-### Deployment options
-
-The `flyte.deploy()` function accepts several parameters:
-
-```python
-deployment = flyte.deploy(
-    env,                          # Environment to deploy
-    dryrun=False,                # Set to True for dry run
-    version="v1.0.0",            # Specific version tag
-    copy_style="loaded_modules"   # How to copy dependencies
-)
-```
-
-**Copy styles:**
-- `"loaded_modules"` (default): Copy only loaded Python modules
-- `"all"`: Copy all files in the project directory
 
 ## Running tasks and workflows
 
