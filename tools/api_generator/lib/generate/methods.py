@@ -113,6 +113,12 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
         # Clean up the doc string - replace newlines with spaces and escape markdown table characters and HTML
         if doc:
             doc = doc.replace("\n", " ").replace("|", "\\|").replace("<", "&lt;").replace(">", "&gt;").strip()
+            
+            # Remove redundant type information from the beginning of descriptions
+            # Pattern: "(type) description..." where type matches what's already in the Type column
+            import re
+            doc = re.sub(r'^\([^)]+\)\s*', '', doc)
+            
             output.write(f"| `{param['name']}` | {typeOutput} | {doc} |\n")
         else:
             output.write(f"| `{param['name']}` | {typeOutput} | |\n")
