@@ -150,7 +150,9 @@ def generate_class_details(
     info: ClassDetails, output: io.TextIOWrapper, doc_level: int
 ):
     if info["doc"]:
-        output.write(f"{info['doc']}\n\n")
+        # Escape HTML characters in class documentation
+        doc = info["doc"].replace("<", "&lt;").replace(">", "&gt;")
+        output.write(f"{doc}\n\n")
 
     # Find the __init__ method if it exists
     init_method = next(
@@ -167,7 +169,9 @@ def generate_class_details(
             is_protocol=info["parent"] == ProtocolBaseClass,
         )
         if init_method["doc"]:
-            output.write(f"{init_method['doc']}\n\n")
+            # Escape HTML characters in __init__ method documentation
+            doc = init_method["doc"].replace("<", "&lt;").replace(">", "&gt;")
+            output.write(f"{doc}\n\n")
         if info["parent"] != ProtocolBaseClass:
             generate_params(init_method, output)
 

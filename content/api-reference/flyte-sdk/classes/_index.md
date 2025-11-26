@@ -1,0 +1,114 @@
+---
+title: Classes & Protocols
+version: 2.0.0b33
+variants: +flyte +byoc +selfmanaged +serverless
+layout: py_api
+sidebar_expanded: true
+---
+
+# Classes
+
+| Class | Description |
+|-|-|
+| [`flyte.Cache`](../packages/flyte/cache) |Cache configuration for a task. |
+| [`flyte.Cron`](../packages/flyte/cron) |This class defines a Cron automation that can be associated with a Trigger in Flyte. |
+| [`flyte.Device`](../packages/flyte/device) |Represents a device type, its quantity and partition if applicable. |
+| [`flyte.Environment`](../packages/flyte/environment) | |
+| [`flyte.FixedRate`](../packages/flyte/fixedrate) |This class defines a FixedRate automation that can be associated with a Trigger in Flyte. |
+| [`flyte.Image`](../packages/flyte/image) |This is a representation of Container Images, which can be used to create layered images programmatically. |
+| [`flyte.PodTemplate`](../packages/flyte/podtemplate) |Custom PodTemplate specification for a Task. |
+| [`flyte.Resources`](../packages/flyte/resources) |Resources such as CPU, Memory, and GPU that can be allocated to a task. |
+| [`flyte.RetryStrategy`](../packages/flyte/retrystrategy) |Retry strategy for the task or task environment. |
+| [`flyte.ReusePolicy`](../packages/flyte/reusepolicy) |ReusePolicy can be used to configure a task to reuse the environment. |
+| [`flyte.Secret`](../packages/flyte/secret) |Secrets are used to inject sensitive information into tasks or image build context. |
+| [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Environment class to define a new environment for a set of tasks. |
+| [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
+| [`flyte.Trigger`](../packages/flyte/trigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
+| [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) | |
+| [`flyte.app.Domain`](../packages/flyte.app/domain) | |
+| [`flyte.app.Input`](../packages/flyte.app/input) |Input for application. |
+| [`flyte.app.Link`](../packages/flyte.app/link) | |
+| [`flyte.app.Port`](../packages/flyte.app/port) | |
+| [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
+| [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
+| [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
+| [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
+| [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors/connectorregistry) |This is the registry for all connectors. |
+| [`flyte.connectors.ConnectorService`](../packages/flyte.connectors/connectorservice) | |
+| [`flyte.connectors.Resource`](../packages/flyte.connectors/resource) |This is the output resource of the job. |
+| [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors/resourcemeta) |This is the metadata for the job. |
+| [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
+| [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
+| [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
+| [`flyte.errors.DeploymentError`](../packages/flyte.errors/deploymenterror) |This error is raised when the deployment of a task fails, or some preconditions for deployment are not met. |
+| [`flyte.errors.ImageBuildError`](../packages/flyte.errors/imagebuilderror) |This error is raised when the image build fails. |
+| [`flyte.errors.ImagePullBackOffError`](../packages/flyte.errors/imagepullbackofferror) |This error is raised when the image cannot be pulled. |
+| [`flyte.errors.InitializationError`](../packages/flyte.errors/initializationerror) |This error is raised when the Union system is tried to access without being initialized. |
+| [`flyte.errors.InlineIOMaxBytesBreached`](../packages/flyte.errors/inlineiomaxbytesbreached) |This error is raised when the inline IO max bytes limit is breached. |
+| [`flyte.errors.InvalidImageNameError`](../packages/flyte.errors/invalidimagenameerror) |This error is raised when the image name is invalid. |
+| [`flyte.errors.LogsNotYetAvailableError`](../packages/flyte.errors/logsnotyetavailableerror) |This error is raised when the logs are not yet available for a task. |
+| [`flyte.errors.ModuleLoadError`](../packages/flyte.errors/moduleloaderror) |This error is raised when the module cannot be loaded, either because it does not exist or because of a. |
+| [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
+| [`flyte.errors.OOMError`](../packages/flyte.errors/oomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
+| [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
+| [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors/primarycontainernotfounderror) |This error is raised when the primary container is not found. |
+| [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors/referencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors/retriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
+| [`flyte.errors.RunAbortedError`](../packages/flyte.errors/runabortederror) |This error is raised when the run is aborted by the user. |
+| [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors/runtimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
+| [`flyte.errors.RuntimeSystemError`](../packages/flyte.errors/runtimesystemerror) |This error is raised when the underlying task execution fails because of a system error. |
+| [`flyte.errors.RuntimeUnknownError`](../packages/flyte.errors/runtimeunknownerror) |This error is raised when the underlying task execution fails because of an unknown error. |
+| [`flyte.errors.RuntimeUserError`](../packages/flyte.errors/runtimeusererror) |This error is raised when the underlying task execution fails because of an error in the user's code. |
+| [`flyte.errors.SlowDownError`](../packages/flyte.errors/slowdownerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
+| [`flyte.errors.TaskInterruptedError`](../packages/flyte.errors/taskinterruptederror) |This error is raised when the underlying task execution is interrupted. |
+| [`flyte.errors.TaskTimeoutError`](../packages/flyte.errors/tasktimeouterror) |This error is raised when the underlying task execution runs for longer than the specified timeout. |
+| [`flyte.errors.UnionRpcError`](../packages/flyte.errors/unionrpcerror) |This error is raised when communication with the Union server fails. |
+| [`flyte.extend.AsyncFunctionTaskTemplate`](../packages/flyte.extend/asyncfunctiontasktemplate) |A task template that wraps an asynchronous functions. |
+| [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend/imagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
+| [`flyte.extend.TaskTemplate`](../packages/flyte.extend/tasktemplate) |Task template is a template for a task that can be executed. |
+| [`flyte.extras.ContainerTask`](../packages/flyte.extras/containertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
+| [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |This is the user facing DataFrame class. |
+| [`flyte.io.DataFrameDecoder`](../packages/flyte.io/dataframedecoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.DataFrameEncoder`](../packages/flyte.io/dataframeencoder) |Helper class that provides a standard way to create an ABC using. |
+| [`flyte.io.DataFrameTransformerEngine`](../packages/flyte.io/dataframetransformerengine) |Think of this transformer as a higher-level meta transformer that is used for all the dataframe types. |
+| [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
+| [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
+| [`flyte.models.ActionID`](../packages/flyte.models/actionid) |A class representing the ID of an Action, nested within a Run. |
+| [`flyte.models.Checkpoints`](../packages/flyte.models/checkpoints) |A class representing the checkpoints for a task. |
+| [`flyte.models.CodeBundle`](../packages/flyte.models/codebundle) |A class representing a code bundle for a task. |
+| [`flyte.models.GroupData`](../packages/flyte.models/groupdata) | |
+| [`flyte.models.NativeInterface`](../packages/flyte.models/nativeinterface) |A class representing the native interface for a task. |
+| [`flyte.models.PathRewrite`](../packages/flyte.models/pathrewrite) |Configuration for rewriting paths during input loading. |
+| [`flyte.models.RawDataPath`](../packages/flyte.models/rawdatapath) |A class representing the raw data path for a task. |
+| [`flyte.models.SerializationContext`](../packages/flyte.models/serializationcontext) |This object holds serialization time contextual information, that can be used when serializing the task and. |
+| [`flyte.models.TaskContext`](../packages/flyte.models/taskcontext) |A context class to hold the current task executions context. |
+| [`flyte.remote.Action`](../packages/flyte.remote/action) |A class representing an action. |
+| [`flyte.remote.ActionDetails`](../packages/flyte.remote/actiondetails) |A class representing an action. |
+| [`flyte.remote.ActionInputs`](../packages/flyte.remote/actioninputs) |A class representing the inputs of an action. |
+| [`flyte.remote.ActionOutputs`](../packages/flyte.remote/actionoutputs) |A class representing the outputs of an action. |
+| [`flyte.remote.App`](../packages/flyte.remote/app) |A mixin class that provides a method to convert an object to a JSON-serializable dictionary. |
+| [`flyte.remote.Project`](../packages/flyte.remote/project) |A class representing a project in the Union API. |
+| [`flyte.remote.Run`](../packages/flyte.remote/run) |A class representing a run of a task. |
+| [`flyte.remote.RunDetails`](../packages/flyte.remote/rundetails) |A class representing a run of a task. |
+| [`flyte.remote.Secret`](../packages/flyte.remote/secret) | |
+| [`flyte.remote.Task`](../packages/flyte.remote/task) | |
+| [`flyte.remote.TaskDetails`](../packages/flyte.remote/taskdetails) | |
+| [`flyte.remote.Trigger`](../packages/flyte.remote/trigger) | |
+| [`flyte.remote.User`](../packages/flyte.remote/user) | |
+| [`flyte.report.Report`](../packages/flyte.report/report) | |
+| [`flyte.storage.ABFS`](../packages/flyte.storage/abfs) |Any Azure Blob Storage specific configuration. |
+| [`flyte.storage.GCS`](../packages/flyte.storage/gcs) |Any GCS specific configuration. |
+| [`flyte.storage.S3`](../packages/flyte.storage/s3) |S3 specific configuration. |
+| [`flyte.storage.Storage`](../packages/flyte.storage/storage) |Data storage configuration that applies across any provider. |
+| [`flyte.syncify.Syncify`](../packages/flyte.syncify/syncify) |A decorator to convert asynchronous functions or methods into synchronous ones. |
+| [`flyte.types.FlytePickle`](../packages/flyte.types/flytepickle) |This type is only used by flytekit internally. |
+| [`flyte.types.TypeEngine`](../packages/flyte.types/typeengine) |Core Extensible TypeEngine of Flytekit. |
+| [`flyte.types.TypeTransformer`](../packages/flyte.types/typetransformer) |Base transformer type that should be implemented for every python native type that can be handled by flytekit. |
+| [`flyte.types.TypeTransformerFailedError`](../packages/flyte.types/typetransformerfailederror) |Inappropriate argument type. |
+# Protocols
+
+| Protocol | Description |
+|-|-|
+| [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Base class for protocol classes. |
+| [`flyte.types.Renderable`](../packages/flyte.types/renderable) |Base class for protocol classes. |
