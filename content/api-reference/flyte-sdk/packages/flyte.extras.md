@@ -1,6 +1,6 @@
 ---
 title: flyte.extras
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,16 +40,36 @@ class ContainerTask(
 ```
 | Parameter | Type |
 |-|-|
-| `name` | `str` |
-| `image` | `typing.Union[str, flyte._image.Image]` |
-| `command` | `typing.List[str]` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `arguments` | `typing.Optional[typing.List[str]]` |
-| `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `input_data_dir` | `str \| pathlib._local.Path` |
-| `output_data_dir` | `str \| pathlib._local.Path` |
-| `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` |
-| `local_logs` | `bool` |
+| `name` | {{< multiline >}}`str`
+doc: Name of the task
+{{< /multiline >}} |
+| `image` | {{< multiline >}}`typing.Union[str, flyte._image.Image]`
+doc: The container image to use for the task. This can be a string or an Image object.
+{{< /multiline >}} |
+| `command` | {{< multiline >}}`typing.List[str]`
+doc: The command to run in the container. This can be a list of strings or a single string.
+{{< /multiline >}} |
+| `inputs` | {{< multiline >}}`typing.Optional[typing.Dict[str, typing.Type]]`
+doc: The inputs to the task. This is a dictionary of input names to types.
+{{< /multiline >}} |
+| `arguments` | {{< multiline >}}`typing.Optional[typing.List[str]]`
+doc: The arguments to pass to the command. This is a list of strings.
+{{< /multiline >}} |
+| `outputs` | {{< multiline >}}`typing.Optional[typing.Dict[str, typing.Type]]`
+doc: The outputs of the task. This is a dictionary of output names to types.
+{{< /multiline >}} |
+| `input_data_dir` | {{< multiline >}}`str \| pathlib._local.Path`
+doc: The directory where the input data is stored. This is a string or a Path object.
+{{< /multiline >}} |
+| `output_data_dir` | {{< multiline >}}`str \| pathlib._local.Path`
+doc: The directory where the output data is stored. This is a string or a Path object.
+{{< /multiline >}} |
+| `metadata_format` | {{< multiline >}}`typing.Literal['JSON', 'YAML', 'PROTO']`
+doc: The format of the output file. This can be "JSON", "YAML", or "PROTO".
+{{< /multiline >}} |
+| `local_logs` | {{< multiline >}}`bool`
+doc: If True, logs will be printed to the console in the local execution.
+{{< /multiline >}} |
 | `kwargs` | `**kwargs` |
 
 ### Methods
@@ -99,7 +119,10 @@ async def my_new_parent_task(n: int) -> List[int]:
 | Parameter | Type |
 |-|-|
 | `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: 
+:return:
+{{< /multiline >}} |
 
 #### config()
 
@@ -193,7 +216,10 @@ when not in a Flyte task execution context.  See the implementation below for an
 | Parameter | Type |
 |-|-|
 | `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: 
+:return:
+{{< /multiline >}} |
 
 #### override()
 
@@ -221,19 +247,47 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
-| `short_name` | `Optional[str]` |
-| `resources` | `Optional[Resources]` |
-| `cache` | `Optional[CacheRequest]` |
-| `retries` | `Union[int, RetryStrategy]` |
-| `timeout` | `Optional[TimeoutType]` |
-| `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[SecretRequest]` |
-| `max_inline_io_bytes` | `int \| None` |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` |
-| `queue` | `Optional[str]` |
+| `short_name` | {{< multiline >}}`Optional[str]`
+doc: Optional override for the short name of the task.
+{{< /multiline >}} |
+| `resources` | {{< multiline >}}`Optional[Resources]`
+doc: Optional override for the resources to use for the task.
+{{< /multiline >}} |
+| `cache` | {{< multiline >}}`Optional[CacheRequest]`
+doc: Optional override for the cache policy for the task.
+{{< /multiline >}} |
+| `retries` | {{< multiline >}}`Union[int, RetryStrategy]`
+doc: Optional override for the number of retries for the task.
+{{< /multiline >}} |
+| `timeout` | {{< multiline >}}`Optional[TimeoutType]`
+doc: Optional override for the timeout for the task.
+{{< /multiline >}} |
+| `reusable` | {{< multiline >}}`Union[ReusePolicy, Literal['off'], None]`
+doc: Optional override for the reusability policy for the task.
+{{< /multiline >}} |
+| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
+doc: Optional override for the environment variables to set for the task.
+{{< /multiline >}} |
+| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
+doc: Optional override for the secrets that will be injected into the task at runtime.
+{{< /multiline >}} |
+| `max_inline_io_bytes` | {{< multiline >}}`int \| None`
+doc: Optional override for the maximum allowed size (in bytes) for all inputs and outputs
+passed directly to the task.
+{{< /multiline >}} |
+| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
+doc: Optional override for the pod template to use for the task.
+{{< /multiline >}} |
+| `queue` | {{< multiline >}}`Optional[str]`
+doc: Optional override for the queue to use for the task.
+{{< /multiline >}} |
 | `interruptible` | `Optional[bool]` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional keyword arguments for further overrides. Some fields like name, image, docs,
+and interface cannot be overridden.
+
+:return: A new TaskTemplate instance with the overridden parameters.
+{{< /multiline >}} |
 
 #### post()
 

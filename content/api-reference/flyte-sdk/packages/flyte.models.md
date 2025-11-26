@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -152,11 +152,22 @@ class CodeBundle(
 ```
 | Parameter | Type |
 |-|-|
-| `computed_version` | `str` |
-| `destination` | `str` |
-| `tgz` | `str \| None` |
-| `pkl` | `str \| None` |
-| `downloaded_path` | `pathlib.Path \| None` |
+| `computed_version` | {{< multiline >}}`str`
+doc: The version of the code bundle. This is the hash of the code.
+{{< /multiline >}} |
+| `destination` | {{< multiline >}}`str`
+doc: The destination path for the code bundle to be inflated to.
+{{< /multiline >}} |
+| `tgz` | {{< multiline >}}`str \| None`
+doc: Optional path to the tgz file.
+{{< /multiline >}} |
+| `pkl` | {{< multiline >}}`str \| None`
+doc: Optional path to the pkl file.
+{{< /multiline >}} |
+| `downloaded_path` | {{< multiline >}}`pathlib.Path \| None`
+doc: The path to the downloaded code bundle. This is only available during runtime, when
+the code bundle has been downloaded and inflated.
+{{< /multiline >}} |
 
 ### Methods
 
@@ -269,9 +280,16 @@ Create a new NativeInterface from the given types. This is used to create a nati
 
 | Parameter | Type |
 |-|-|
-| `inputs` | `Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]` |
-| `outputs` | `Dict[str, Type]` |
-| `default_inputs` | `Optional[Dict[str, literals_pb2.Literal]]` |
+| `inputs` | {{< multiline >}}`Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]`
+doc: A dictionary of input names and their types and a value indicating if they have a default value.
+{{< /multiline >}} |
+| `outputs` | {{< multiline >}}`Dict[str, Type]`
+doc: A dictionary of output names and their types.
+{{< /multiline >}} |
+| `default_inputs` | {{< multiline >}}`Optional[Dict[str, literals_pb2.Literal]]`
+doc: Optional dictionary of default inputs for remote tasks.
+:return: A NativeInterface object with the given inputs and outputs.
+{{< /multiline >}} |
 
 #### get_input_types()
 
@@ -398,7 +416,10 @@ Returns a random path for uploading a file/directory to. This file/folder will n
 
 | Parameter | Type |
 |-|-|
-| `file_name` | `Optional[str]` |
+| `file_name` | {{< multiline >}}`Optional[str]`
+doc: If given, will be joined after a randomly generated portion.
+:return:
+{{< /multiline >}} |
 
 ## flyte.models.SerializationContext
 
@@ -424,13 +445,22 @@ class SerializationContext(
 ```
 | Parameter | Type |
 |-|-|
-| `version` | `str` |
+| `version` | {{< multiline >}}`str`
+doc: The version of the task
+{{< /multiline >}} |
 | `project` | `str \| None` |
 | `domain` | `str \| None` |
 | `org` | `str \| None` |
-| `code_bundle` | `Optional[CodeBundle]` |
-| `input_path` | `str` |
-| `output_path` | `str` |
+| `code_bundle` | {{< multiline >}}`Optional[CodeBundle]`
+doc: The code bundle for the task. This is used to package the code and the inflation path.
+{{< /multiline >}} |
+| `input_path` | {{< multiline >}}`str`
+doc: The path to the inputs for the task. This is used to determine where the inputs will be located
+{{< /multiline >}} |
+| `output_path` | {{< multiline >}}`str`
+doc: The path to the outputs for the task. This is used to determine where the outputs will be
+located
+{{< /multiline >}} |
 | `interpreter_path` | `str` |
 | `image_cache` | `ImageCache \| None` |
 | `root_dir` | `Optional[pathlib.Path]` |
@@ -454,7 +484,9 @@ Get the entrypoint path for the task. This is used to determine the entrypoint f
 
 | Parameter | Type |
 |-|-|
-| `interpreter_path` | `Optional[str]` |
+| `interpreter_path` | {{< multiline >}}`Optional[str]`
+doc: The path to the interpreter (python)
+{{< /multiline >}} |
 
 ## flyte.models.TaskContext
 
@@ -484,8 +516,13 @@ class TaskContext(
 ```
 | Parameter | Type |
 |-|-|
-| `action` | `ActionID` |
-| `version` | `str` |
+| `action` | {{< multiline >}}`ActionID`
+doc: The action ID of the current execution. This is always set, within a run.
+{{< /multiline >}} |
+| `version` | {{< multiline >}}`str`
+doc: The version of the executed task. This is set when the task is executed by an action and will be
+set on all sub-actions.
+{{< /multiline >}} |
 | `raw_data_path` | `RawDataPath` |
 | `input_path` | `str \| None` |
 | `output_path` | `str` |
@@ -498,7 +535,10 @@ class TaskContext(
 | `data` | `Dict[str, Any]` |
 | `mode` | `Literal['local', 'remote', 'hybrid']` |
 | `interactive_mode` | `bool` |
-| `custom_context` | `Dict[str, str]` |
+| `custom_context` | {{< multiline >}}`Dict[str, str]`
+doc: Context metadata for the action. If an action receives context, it'll automatically pass it
+to any actions it spawns. Context will not be used for cache key computation.
+{{< /multiline >}} |
 
 ### Methods
 

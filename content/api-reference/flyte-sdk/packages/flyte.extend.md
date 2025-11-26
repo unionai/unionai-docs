@@ -1,6 +1,6 @@
 ---
 title: flyte.extend
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -48,7 +48,10 @@ Downloads the code bundle if it is not already downloaded.
 
 | Parameter | Type |
 |-|-|
-| `code_bundle` | `flyte.models.CodeBundle` |
+| `code_bundle` | {{< multiline >}}`flyte.models.CodeBundle`
+doc: The code bundle to download.
+:return: The code bundle with the downloaded path.
+{{< /multiline >}} |
 
 #### get_proto_resources()
 
@@ -63,7 +66,10 @@ Get main resources IDL representation from the resources object
 
 | Parameter | Type |
 |-|-|
-| `resources` | `flyte._resources.Resources \| None` |
+| `resources` | {{< multiline >}}`flyte._resources.Resources \| None`
+doc: User facing Resources object containing potentially both requests and limits
+:return: The given resources as requests and limits
+{{< /multiline >}} |
 
 #### is_initialized()
 
@@ -204,7 +210,10 @@ async def my_new_parent_task(n: int) -> List[int]:
 | Parameter | Type |
 |-|-|
 | `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: 
+:return:
+{{< /multiline >}} |
 
 #### config()
 
@@ -301,7 +310,10 @@ when not in a Flyte task execution context.  See the implementation below for an
 | Parameter | Type |
 |-|-|
 | `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: 
+:return:
+{{< /multiline >}} |
 
 #### override()
 
@@ -329,19 +341,47 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
-| `short_name` | `Optional[str]` |
-| `resources` | `Optional[Resources]` |
-| `cache` | `Optional[CacheRequest]` |
-| `retries` | `Union[int, RetryStrategy]` |
-| `timeout` | `Optional[TimeoutType]` |
-| `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[SecretRequest]` |
-| `max_inline_io_bytes` | `int \| None` |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` |
-| `queue` | `Optional[str]` |
+| `short_name` | {{< multiline >}}`Optional[str]`
+doc: Optional override for the short name of the task.
+{{< /multiline >}} |
+| `resources` | {{< multiline >}}`Optional[Resources]`
+doc: Optional override for the resources to use for the task.
+{{< /multiline >}} |
+| `cache` | {{< multiline >}}`Optional[CacheRequest]`
+doc: Optional override for the cache policy for the task.
+{{< /multiline >}} |
+| `retries` | {{< multiline >}}`Union[int, RetryStrategy]`
+doc: Optional override for the number of retries for the task.
+{{< /multiline >}} |
+| `timeout` | {{< multiline >}}`Optional[TimeoutType]`
+doc: Optional override for the timeout for the task.
+{{< /multiline >}} |
+| `reusable` | {{< multiline >}}`Union[ReusePolicy, Literal['off'], None]`
+doc: Optional override for the reusability policy for the task.
+{{< /multiline >}} |
+| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
+doc: Optional override for the environment variables to set for the task.
+{{< /multiline >}} |
+| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
+doc: Optional override for the secrets that will be injected into the task at runtime.
+{{< /multiline >}} |
+| `max_inline_io_bytes` | {{< multiline >}}`int \| None`
+doc: Optional override for the maximum allowed size (in bytes) for all inputs and outputs
+passed directly to the task.
+{{< /multiline >}} |
+| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
+doc: Optional override for the pod template to use for the task.
+{{< /multiline >}} |
+| `queue` | {{< multiline >}}`Optional[str]`
+doc: Optional override for the queue to use for the task.
+{{< /multiline >}} |
 | `interruptible` | `Optional[bool]` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional keyword arguments for further overrides. Some fields like name, image, docs,
+and interface cannot be overridden.
+
+:return: A new TaskTemplate instance with the overridden parameters.
+{{< /multiline >}} |
 
 #### post()
 
@@ -429,8 +469,13 @@ registry to see if the manifest exists.
 |-|-|
 | `image` | `Image` |
 | `builder` | `ImageBuildEngine.ImageBuilderType \| None` |
-| `dry_run` | `bool` |
-| `force` | `bool` |
+| `dry_run` | {{< multiline >}}`bool`
+doc: Tell the builder to not actually build. Different builders will have different behaviors.
+{{< /multiline >}} |
+| `force` | {{< multiline >}}`bool`
+doc: Skip the existence check. Normally if the image already exists we won't build it.
+:return:
+{{< /multiline >}} |
 
 ## flyte.extend.TaskTemplate
 
@@ -477,28 +522,68 @@ class TaskTemplate(
 ```
 | Parameter | Type |
 |-|-|
-| `name` | `str` |
+| `name` | {{< multiline >}}`str`
+doc: Optional The name of the task (defaults to the function name)
+{{< /multiline >}} |
 | `interface` | `NativeInterface` |
 | `short_name` | `str` |
-| `task_type` | `str` |
+| `task_type` | {{< multiline >}}`str`
+doc: Router type for the task, this is used to determine how the task will be executed.
+This is usually set to match with th execution plugin.
+{{< /multiline >}} |
 | `task_type_version` | `int` |
-| `image` | `Union[str, Image, Literal['auto']]` |
-| `resources` | `Optional[Resources]` |
-| `cache` | `CacheRequest` |
-| `interruptible` | `bool` |
-| `retries` | `Union[int, RetryStrategy]` |
-| `reusable` | `Union[ReusePolicy, None]` |
-| `docs` | `Optional[Documentation]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[SecretRequest]` |
-| `timeout` | `Optional[TimeoutType]` |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` |
-| `report` | `bool` |
-| `queue` | `Optional[str]` |
-| `debuggable` | `bool` |
+| `image` | {{< multiline >}}`Union[str, Image, Literal['auto']]`
+doc: Optional The image to use for the task, if set to "auto" will use the default image for the python
+version with flyte installed
+{{< /multiline >}} |
+| `resources` | {{< multiline >}}`Optional[Resources]`
+doc: Optional The resources to use for the task
+{{< /multiline >}} |
+| `cache` | {{< multiline >}}`CacheRequest`
+doc: Optional The cache policy for the task, defaults to auto, which will cache the results of the task.
+{{< /multiline >}} |
+| `interruptible` | {{< multiline >}}`bool`
+doc: Optional The interruptible policy for the task, defaults to False, which means the task
+will not be scheduled on interruptible nodes. If set to True, the task will be scheduled on interruptible nodes,
+and the code should handle interruptions and resumptions.
+{{< /multiline >}} |
+| `retries` | {{< multiline >}}`Union[int, RetryStrategy]`
+doc: Optional The number of retries for the task, defaults to 0, which means no retries.
+{{< /multiline >}} |
+| `reusable` | {{< multiline >}}`Union[ReusePolicy, None]`
+doc: Optional The reusability policy for the task, defaults to None, which means the task environment
+will not be reused across task invocations.
+{{< /multiline >}} |
+| `docs` | {{< multiline >}}`Optional[Documentation]`
+doc: Optional The documentation for the task, if not provided the function docstring will be used.
+{{< /multiline >}} |
+| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
+doc: Optional The environment variables to set for the task.
+{{< /multiline >}} |
+| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
+doc: Optional The secrets that will be injected into the task at runtime.
+{{< /multiline >}} |
+| `timeout` | {{< multiline >}}`Optional[TimeoutType]`
+doc: Optional The timeout for the task.
+{{< /multiline >}} |
+| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
+doc: Optional The pod template to use for the task.
+{{< /multiline >}} |
+| `report` | {{< multiline >}}`bool`
+doc: Optional Whether to report the task execution to the Flyte console, defaults to False.
+{{< /multiline >}} |
+| `queue` | {{< multiline >}}`Optional[str]`
+doc: Optional The queue to use for the task. If not provided, the default queue will be used.
+{{< /multiline >}} |
+| `debuggable` | {{< multiline >}}`bool`
+doc: Optional Whether the task supports debugging capabilities, defaults to False.
+{{< /multiline >}} |
 | `parent_env` | `Optional[weakref.ReferenceType[TaskEnvironment]]` |
 | `parent_env_name` | `Optional[str]` |
-| `max_inline_io_bytes` | `int` |
+| `max_inline_io_bytes` | {{< multiline >}}`int`
+doc: Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task
+(e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes.
+{{< /multiline >}} |
 | `triggers` | `Tuple[Trigger, ...]` |
 | `_call_as_synchronous` | `bool` |
 
@@ -549,7 +634,10 @@ async def my_new_parent_task(n: int) -> List[int]:
 | Parameter | Type |
 |-|-|
 | `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: 
+:return:
+{{< /multiline >}} |
 
 #### config()
 
@@ -645,7 +733,10 @@ when not in a Flyte task execution context.  See the implementation below for an
 | Parameter | Type |
 |-|-|
 | `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: 
+:return:
+{{< /multiline >}} |
 
 #### override()
 
@@ -673,19 +764,47 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 | Parameter | Type |
 |-|-|
-| `short_name` | `Optional[str]` |
-| `resources` | `Optional[Resources]` |
-| `cache` | `Optional[CacheRequest]` |
-| `retries` | `Union[int, RetryStrategy]` |
-| `timeout` | `Optional[TimeoutType]` |
-| `reusable` | `Union[ReusePolicy, Literal['off'], None]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[SecretRequest]` |
-| `max_inline_io_bytes` | `int \| None` |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` |
-| `queue` | `Optional[str]` |
+| `short_name` | {{< multiline >}}`Optional[str]`
+doc: Optional override for the short name of the task.
+{{< /multiline >}} |
+| `resources` | {{< multiline >}}`Optional[Resources]`
+doc: Optional override for the resources to use for the task.
+{{< /multiline >}} |
+| `cache` | {{< multiline >}}`Optional[CacheRequest]`
+doc: Optional override for the cache policy for the task.
+{{< /multiline >}} |
+| `retries` | {{< multiline >}}`Union[int, RetryStrategy]`
+doc: Optional override for the number of retries for the task.
+{{< /multiline >}} |
+| `timeout` | {{< multiline >}}`Optional[TimeoutType]`
+doc: Optional override for the timeout for the task.
+{{< /multiline >}} |
+| `reusable` | {{< multiline >}}`Union[ReusePolicy, Literal['off'], None]`
+doc: Optional override for the reusability policy for the task.
+{{< /multiline >}} |
+| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
+doc: Optional override for the environment variables to set for the task.
+{{< /multiline >}} |
+| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
+doc: Optional override for the secrets that will be injected into the task at runtime.
+{{< /multiline >}} |
+| `max_inline_io_bytes` | {{< multiline >}}`int \| None`
+doc: Optional override for the maximum allowed size (in bytes) for all inputs and outputs
+passed directly to the task.
+{{< /multiline >}} |
+| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
+doc: Optional override for the pod template to use for the task.
+{{< /multiline >}} |
+| `queue` | {{< multiline >}}`Optional[str]`
+doc: Optional override for the queue to use for the task.
+{{< /multiline >}} |
 | `interruptible` | `Optional[bool]` |
-| `kwargs` | `**kwargs` |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional keyword arguments for further overrides. Some fields like name, image, docs,
+and interface cannot be overridden.
+
+:return: A new TaskTemplate instance with the overridden parameters.
+{{< /multiline >}} |
 
 #### post()
 

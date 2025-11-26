@@ -105,7 +105,14 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
         typeOutput = format_type(
             param["name"], param["type"] if "type" in param else "", escape_or=True
         )
-        doc = param["doc"] if "doc" in param else ""
+        
+        # Look for documentation in params_doc field first, then fallback to param doc
+        doc = ""
+        if "params_doc" in method and method["params_doc"] and param["name"] in method["params_doc"]:
+            doc = method["params_doc"][param["name"]]["doc"] or ""
+        elif "doc" in param:
+            doc = param["doc"] or ""
+            
         if doc:
             output.write(
                 f"| `{param['name']}` | {multiline_start}{typeOutput}\ndoc: {doc}\n{multiline_end} |\n"

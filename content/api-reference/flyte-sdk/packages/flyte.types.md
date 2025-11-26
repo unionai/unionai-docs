@@ -1,6 +1,6 @@
 ---
 title: flyte.types
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -604,9 +604,15 @@ what was the mismatch
 
 | Parameter | Type |
 |-|-|
-| `python_val` | `T` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| `python_val` | {{< multiline >}}`T`
+doc: The actual value to be transformed
+{{< /multiline >}} |
+| `python_type` | {{< multiline >}}`Type[T]`
+doc: The assumed type of the value (this matches the declared type on the function)
+{{< /multiline >}} |
+| `expected` | {{< multiline >}}`LiteralType`
+doc: Expected Literal Type
+{{< /multiline >}} |
 
 #### to_python_value()
 
@@ -621,8 +627,12 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 
 | Parameter | Type |
 |-|-|
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| `lv` | {{< multiline >}}`Literal`
+doc: The received literal Value
+{{< /multiline >}} |
+| `expected_python_type` | {{< multiline >}}`Type[T]`
+doc: Expected native python type that should be returned
+{{< /multiline >}} |
 
 ### Properties
 

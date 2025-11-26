@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,6 +23,13 @@ layout: py_api
 | [`flyte.TaskEnvironment`](../packages/flyte#flytetaskenvironment) |Environment class to define a new environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte#flytetimeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte#flytetrigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
+| [`flyte.app.AppEnvironment`](../packages/flyte.app#flyteappappenvironment) | |
+| [`flyte.app.Domain`](../packages/flyte.app#flyteappdomain) | |
+| [`flyte.app.Input`](../packages/flyte.app#flyteappinput) |Input for application. |
+| [`flyte.app.Link`](../packages/flyte.app#flyteapplink) | |
+| [`flyte.app.Port`](../packages/flyte.app#flyteappport) | |
+| [`flyte.app.Scaling`](../packages/flyte.app#flyteappscaling) | |
+| [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras#flyteappextrasfastapiappenvironment) | |
 | [`flyte.config.Config`](../packages/flyte.config#flyteconfigconfig) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors#flyteconnectorsasyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
 | [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors#flyteconnectorsasyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
@@ -79,11 +86,13 @@ layout: py_api
 | [`flyte.remote.ActionDetails`](../packages/flyte.remote#flyteremoteactiondetails) |A class representing an action. |
 | [`flyte.remote.ActionInputs`](../packages/flyte.remote#flyteremoteactioninputs) |A class representing the inputs of an action. |
 | [`flyte.remote.ActionOutputs`](../packages/flyte.remote#flyteremoteactionoutputs) |A class representing the outputs of an action. |
+| [`flyte.remote.App`](../packages/flyte.remote#flyteremoteapp) |A mixin class that provides a method to convert an object to a JSON-serializable dictionary. |
 | [`flyte.remote.Project`](../packages/flyte.remote#flyteremoteproject) |A class representing a project in the Union API. |
 | [`flyte.remote.Run`](../packages/flyte.remote#flyteremoterun) |A class representing a run of a task. |
 | [`flyte.remote.RunDetails`](../packages/flyte.remote#flyteremoterundetails) |A class representing a run of a task. |
 | [`flyte.remote.Secret`](../packages/flyte.remote#flyteremotesecret) | |
 | [`flyte.remote.Task`](../packages/flyte.remote#flyteremotetask) | |
+| [`flyte.remote.TaskDetails`](../packages/flyte.remote#flyteremotetaskdetails) | |
 | [`flyte.remote.Trigger`](../packages/flyte.remote#flyteremotetrigger) | |
 | [`flyte.remote.User`](../packages/flyte.remote#flyteremoteuser) | |
 | [`flyte.report.Report`](../packages/flyte.report#flytereportreport) | |

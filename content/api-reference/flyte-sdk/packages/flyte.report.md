@@ -1,6 +1,6 @@
 ---
 title: flyte.report
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -65,8 +65,13 @@ Get a tab by name. If the tab does not exist, create it.
 
 | Parameter | Type |
 |-|-|
-| `name` | `str` |
-| `create_if_missing` | `bool` |
+| `name` | {{< multiline >}}`str`
+doc: The name of the tab.
+{{< /multiline >}} |
+| `create_if_missing` | {{< multiline >}}`bool`
+doc: Whether to create the tab if it does not exist.
+:return: The tab.
+{{< /multiline >}} |
 
 #### log()
 
@@ -88,8 +93,12 @@ Log content to the main tab. The content should be a valid HTML string, but not 
 
 | Parameter | Type |
 |-|-|
-| `content` | `str` |
-| `do_flush` | `bool` |
+| `content` | {{< multiline >}}`str`
+doc: The content to log.
+{{< /multiline >}} |
+| `do_flush` | {{< multiline >}}`bool`
+doc: flush the report after logging.
+{{< /multiline >}} |
 
 #### replace()
 
@@ -161,6 +170,11 @@ Get a tab by name. If the tab does not exist, create it.
 
 | Parameter | Type |
 |-|-|
-| `name` | `str` |
-| `create_if_missing` | `bool` |
+| `name` | {{< multiline >}}`str`
+doc: The name of the tab.
+{{< /multiline >}} |
+| `create_if_missing` | {{< multiline >}}`bool`
+doc: Whether to create the tab if it does not exist.
+:return: The tab.
+{{< /multiline >}} |
 

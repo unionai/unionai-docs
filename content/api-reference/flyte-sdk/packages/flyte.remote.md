@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,11 +20,13 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 | [`ActionDetails`](.././flyte.remote#flyteremoteactiondetails) | A class representing an action. |
 | [`ActionInputs`](.././flyte.remote#flyteremoteactioninputs) | A class representing the inputs of an action. |
 | [`ActionOutputs`](.././flyte.remote#flyteremoteactionoutputs) | A class representing the outputs of an action. |
+| [`App`](.././flyte.remote#flyteremoteapp) | A mixin class that provides a method to convert an object to a JSON-serializable dictionary. |
 | [`Project`](.././flyte.remote#flyteremoteproject) | A class representing a project in the Union API. |
 | [`Run`](.././flyte.remote#flyteremoterun) | A class representing a run of a task. |
 | [`RunDetails`](.././flyte.remote#flyteremoterundetails) | A class representing a run of a task. |
 | [`Secret`](.././flyte.remote#flyteremotesecret) |  |
 | [`Task`](.././flyte.remote#flyteremotetask) |  |
+| [`TaskDetails`](.././flyte.remote#flyteremotetaskdetails) |  |
 | [`Trigger`](.././flyte.remote#flyteremotetrigger) |  |
 | [`User`](.././flyte.remote#flyteremoteuser) |  |
 
@@ -69,17 +71,67 @@ and create authentication interceptors that perform async operations.
 
 | Parameter | Type |
 |-|-|
-| `endpoint` | `str \| None` |
-| `api_key` | `str \| None` |
-| `insecure` | `typing.Optional[bool]` |
-| `insecure_skip_verify` | `typing.Optional[bool]` |
-| `ca_cert_file_path` | `typing.Optional[str]` |
-| `ssl_credentials` | `typing.Optional[ssl_channel_credentials]` |
-| `grpc_options` | `typing.Optional[typing.Sequence[typing.Tuple[str, typing.Any]]]` |
-| `compression` | `typing.Optional[grpc.Compression]` |
-| `http_session` | `httpx.AsyncClient \| None` |
-| `proxy_command` | `typing.Optional[typing.List[str]]` |
-| `kwargs` | `**kwargs` |
+| `endpoint` | {{< multiline >}}`str \| None`
+doc: The endpoint URL for the gRPC channel
+{{< /multiline >}} |
+| `api_key` | {{< multiline >}}`str \| None`
+doc: API key for authentication; if provided, it will be used to detect the endpoint and credentials.
+{{< /multiline >}} |
+| `insecure` | {{< multiline >}}`typing.Optional[bool]`
+doc: Whether to use an insecure channel (no SSL)
+{{< /multiline >}} |
+| `insecure_skip_verify` | {{< multiline >}}`typing.Optional[bool]`
+doc: Whether to skip SSL certificate verification
+{{< /multiline >}} |
+| `ca_cert_file_path` | {{< multiline >}}`typing.Optional[str]`
+doc: Path to CA certificate file for SSL verification
+{{< /multiline >}} |
+| `ssl_credentials` | {{< multiline >}}`typing.Optional[ssl_channel_credentials]`
+doc: Pre-configured SSL credentials for the channel
+{{< /multiline >}} |
+| `grpc_options` | {{< multiline >}}`typing.Optional[typing.Sequence[typing.Tuple[str, typing.Any]]]`
+doc: Additional gRPC channel options
+{{< /multiline >}} |
+| `compression` | {{< multiline >}}`typing.Optional[grpc.Compression]`
+doc: Compression method for the channel
+{{< /multiline >}} |
+| `http_session` | {{< multiline >}}`httpx.AsyncClient \| None`
+doc: Pre-configured HTTP session to use for requests
+{{< /multiline >}} |
+| `proxy_command` | {{< multiline >}}`typing.Optional[typing.List[str]]`
+doc: List of strings for proxy command configuration
+{{< /multiline >}} |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional arguments passed to various functions
+- For grpc.aio.insecure_channel/secure_channel:
+- root_certificates: Root certificates for SSL credentials
+- private_key: Private key for SSL credentials
+- certificate_chain: Certificate chain for SSL credentials
+- options: gRPC channel options
+- compression: gRPC compression method
+- For proxy configuration:
+- proxy_env: Dict of environment variables for proxy
+- proxy_timeout: Timeout for proxy connection
+- For authentication interceptors (passed to create_auth_interceptors and create_proxy_auth_interceptors):
+- auth_type: The authentication type to use ("Pkce", "ClientSecret", "ExternalCommand", "DeviceFlow")
+- command: Command to execute for ExternalCommand authentication
+- client_id: Client ID for ClientSecret authentication
+- client_secret: Client secret for ClientSecret authentication
+- client_credentials_secret: Client secret for ClientSecret authentication (alias)
+- scopes: List of scopes to request during authentication
+- audience: Audience for the token
+- http_proxy_url: HTTP proxy URL
+- verify: Whether to verify SSL certificates
+- ca_cert_path: Optional path to CA certificate file
+- header_key: Header key to use for authentication
+- redirect_uri: OAuth2 redirect URI for PKCE authentication
+- add_request_auth_code_params_to_request_access_token_params: Whether to add auth code params to token
+request
+- request_auth_code_params: Parameters to add to login URI opened in browser
+- request_access_token_params: Parameters to add when exchanging auth code for access token
+- refresh_access_token_params: Parameters to add when refreshing access token
+:return: grpc.aio.Channel with authentication interceptors configured
+{{< /multiline >}} |
 
 #### upload_dir()
 
@@ -95,8 +147,13 @@ Uploads a directory to a remote location and returns the remote URI.
 
 | Parameter | Type |
 |-|-|
-| `dir_path` | `pathlib._local.Path` |
-| `verify` | `bool` |
+| `dir_path` | {{< multiline >}}`pathlib._local.Path`
+doc: The directory path to upload.
+{{< /multiline >}} |
+| `verify` | {{< multiline >}}`bool`
+doc: Whether to verify the certificate for HTTPS requests.
+:return: The remote URI of the uploaded directory.
+{{< /multiline >}} |
 
 #### upload_file()
 
@@ -117,8 +174,13 @@ Uploads a file to a remote location and returns the remote URI.
 
 | Parameter | Type |
 |-|-|
-| `fp` | `pathlib._local.Path` |
-| `verify` | `bool` |
+| `fp` | {{< multiline >}}`pathlib._local.Path`
+doc: The file path to upload.
+{{< /multiline >}} |
+| `verify` | {{< multiline >}}`bool`
+doc: Whether to verify the certificate for HTTPS requests.
+:return: A tuple containing the MD5 digest and the remote URI.
+{{< /multiline >}} |
 
 ## flyte.remote.Action
 
@@ -190,9 +252,15 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `uri` | `str \| None` |
-| `run_name` | `str \| None` |
-| `name` | `str \| None` |
+| `uri` | {{< multiline >}}`str \| None`
+doc: The URI of the action.
+{{< /multiline >}} |
+| `run_name` | {{< multiline >}}`str \| None`
+doc: The name of the action.
+{{< /multiline >}} |
+| `name` | {{< multiline >}}`str \| None`
+doc: The name of the action.
+{{< /multiline >}} |
 
 #### listall()
 
@@ -216,9 +284,16 @@ Get all actions for a given run.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `for_run_name` | `str` |
-| `filters` | `str \| None` |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
+| `for_run_name` | {{< multiline >}}`str`
+doc: The name of the run.
+{{< /multiline >}} |
+| `filters` | {{< multiline >}}`str \| None`
+doc: The filters to apply to the project list.
+{{< /multiline >}} |
+| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
+doc: The sorting criteria for the project list, in the format (field, order).
+:return: An iterator of projects.
+{{< /multiline >}} |
 
 #### show_logs()
 
@@ -389,9 +464,15 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `uri` | `str \| None` |
-| `run_name` | `str \| None` |
-| `name` | `str \| None` |
+| `uri` | {{< multiline >}}`str \| None`
+doc: The URI of the action.
+{{< /multiline >}} |
+| `run_name` | {{< multiline >}}`str \| None`
+doc: The name of the run.
+{{< /multiline >}} |
+| `name` | {{< multiline >}}`str \| None`
+doc: The name of the action.
+{{< /multiline >}} |
 
 #### get_details()
 
@@ -758,6 +839,85 @@ Returns:
     str: A JSON string representation of the object.
 
 
+## flyte.remote.App
+
+A mixin class that provides a method to convert an object to a JSON-serializable dictionary.
+
+
+```python
+class App(
+    pb2: app_definition_pb2.App,
+)
+```
+| Parameter | Type |
+|-|-|
+| `pb2` | `app_definition_pb2.App` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`get()`](#get) | Get an app by name. |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### get()
+
+```python
+def get(
+    name: str,
+    project: str | None,
+    domain: str | None,
+) -> App
+```
+Get an app by name.
+
+
+
+| Parameter | Type |
+|-|-|
+| `name` | {{< multiline >}}`str`
+doc: The name of the app.
+{{< /multiline >}} |
+| `project` | {{< multiline >}}`str \| None`
+doc: The project of the app.
+{{< /multiline >}} |
+| `domain` | {{< multiline >}}`str \| None`
+doc: The domain of the app.
+:return: The app remote object.
+{{< /multiline >}} |
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `None` |  |
+| `name` | `None` |  |
+| `revision` | `None` |  |
+
 ## flyte.remote.Project
 
 A class representing a project in the Union API.
@@ -803,8 +963,12 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `name` | `str` |
-| `org` | `str \| None` |
+| `name` | {{< multiline >}}`str`
+doc: The name of the project.
+{{< /multiline >}} |
+| `org` | {{< multiline >}}`str \| None`
+doc: The organization of the project (if applicable).
+{{< /multiline >}} |
 
 #### listall()
 
@@ -827,8 +991,13 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `filters` | `str \| None` |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
+| `filters` | {{< multiline >}}`str \| None`
+doc: The filters to apply to the project list.
+{{< /multiline >}} |
+| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
+doc: The sorting criteria for the project list, in the format (field, order).
+:return: An iterator of projects.
+{{< /multiline >}} |
 
 #### to_dict()
 
@@ -981,10 +1150,19 @@ Get all runs for the current project and domain.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `in_phase` | `Tuple[Phase] \| None` |
-| `created_by_subject` | `str \| None` |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
-| `limit` | `int` |
+| `in_phase` | {{< multiline >}}`Tuple[Phase] \| None`
+doc: Filter runs by one or more phases.
+{{< /multiline >}} |
+| `created_by_subject` | {{< multiline >}}`str \| None`
+doc: Filter runs by the subject that created them. (this is not username, but the subject)
+{{< /multiline >}} |
+| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
+doc: The sorting criteria for the project list, in the format (field, order).
+{{< /multiline >}} |
+| `limit` | {{< multiline >}}`int`
+doc: The maximum number of runs to return.
+:return: An iterator of runs.
+{{< /multiline >}} |
 
 #### outputs()
 
@@ -1159,7 +1337,9 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `name` | `str \| None` |
+| `name` | {{< multiline >}}`str \| None`
+doc: The name of the run.
+{{< /multiline >}} |
 
 #### get_details()
 
@@ -1399,11 +1579,24 @@ Either version or auto_version are required parameters.
 
 | Parameter | Type |
 |-|-|
-| `name` | `str` |
-| `project` | `str \| None` |
-| `domain` | `str \| None` |
-| `version` | `str \| None` |
-| `auto_version` | `AutoVersioning \| None` |
+| `name` | {{< multiline >}}`str`
+doc: The name of the task.
+{{< /multiline >}} |
+| `project` | {{< multiline >}}`str \| None`
+doc: The project of the task.
+{{< /multiline >}} |
+| `domain` | {{< multiline >}}`str \| None`
+doc: The domain of the task.
+{{< /multiline >}} |
+| `version` | {{< multiline >}}`str \| None`
+doc: The version of the task.
+{{< /multiline >}} |
+| `auto_version` | {{< multiline >}}`AutoVersioning \| None`
+doc: If set to "latest", the latest-by-time ordered from now, version of the task will be used.
+If set to "current", the version will be derived from the callee tasks context. This is useful if you are
+deploying all environments with the same version. If auto_version is current, you can only access the task from
+within a task context.
+{{< /multiline >}} |
 
 #### listall()
 
@@ -1430,12 +1623,25 @@ Get all runs for the current project and domain.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `by_task_name` | `str \| None` |
-| `by_task_env` | `str \| None` |
-| `project` | `str \| None` |
-| `domain` | `str \| None` |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` |
-| `limit` | `int` |
+| `by_task_name` | {{< multiline >}}`str \| None`
+doc: If provided, only tasks with this name will be returned.
+{{< /multiline >}} |
+| `by_task_env` | {{< multiline >}}`str \| None`
+doc: If provided, only tasks with this environment prefix will be returned.
+{{< /multiline >}} |
+| `project` | {{< multiline >}}`str \| None`
+doc: The project to filter tasks by. If None, the current project will be used.
+{{< /multiline >}} |
+| `domain` | {{< multiline >}}`str \| None`
+doc: The domain to filter tasks by. If None, the current domain will be used.
+{{< /multiline >}} |
+| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
+doc: The sorting criteria for the project list, in the format (field, order).
+{{< /multiline >}} |
+| `limit` | {{< multiline >}}`int`
+doc: The maximum number of tasks to return.
+:return: An iterator of runs.
+{{< /multiline >}} |
 
 #### to_dict()
 
@@ -1464,6 +1670,163 @@ Returns:
 | Property | Type | Description |
 |-|-|-|
 | `name` | `None` | {{< multiline >}}The name of the task.
+{{< /multiline >}} |
+| `version` | `None` | {{< multiline >}}The version of the task.
+{{< /multiline >}} |
+
+## flyte.remote.TaskDetails
+
+```python
+class TaskDetails(
+    pb2: task_definition_pb2.TaskDetails,
+    max_inline_io_bytes: int,
+    overriden_queue: Optional[str],
+)
+```
+| Parameter | Type |
+|-|-|
+| `pb2` | `task_definition_pb2.TaskDetails` |
+| `max_inline_io_bytes` | `int` |
+| `overriden_queue` | `Optional[str]` |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`fetch()`](#fetch) |  |
+| [`get()`](#get) | Get a task by its ID or name. |
+| [`override()`](#override) |  |
+| [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
+| [`to_json()`](#to_json) | Convert the object to a JSON string. |
+
+
+#### fetch()
+
+```python
+def fetch(
+    name: str,
+    project: str | None,
+    domain: str | None,
+    version: str | None,
+    auto_version: AutoVersioning | None,
+) -> TaskDetails
+```
+| Parameter | Type |
+|-|-|
+| `name` | `str` |
+| `project` | `str \| None` |
+| `domain` | `str \| None` |
+| `version` | `str \| None` |
+| `auto_version` | `AutoVersioning \| None` |
+
+#### get()
+
+```python
+def get(
+    name: str,
+    project: str | None,
+    domain: str | None,
+    version: str | None,
+    auto_version: AutoVersioning | None,
+) -> LazyEntity
+```
+Get a task by its ID or name. If both are provided, the ID will take precedence.
+
+Either version or auto_version are required parameters.
+
+
+
+| Parameter | Type |
+|-|-|
+| `name` | {{< multiline >}}`str`
+doc: The name of the task.
+{{< /multiline >}} |
+| `project` | {{< multiline >}}`str \| None`
+doc: The project of the task.
+{{< /multiline >}} |
+| `domain` | {{< multiline >}}`str \| None`
+doc: The domain of the task.
+{{< /multiline >}} |
+| `version` | {{< multiline >}}`str \| None`
+doc: The version of the task.
+{{< /multiline >}} |
+| `auto_version` | {{< multiline >}}`AutoVersioning \| None`
+doc: If set to "latest", the latest-by-time ordered from now, version of the task will be used.
+If set to "current", the version will be derived from the callee tasks context. This is useful if you are
+deploying all environments with the same version. If auto_version is current, you can only access the task from
+within a task context.
+{{< /multiline >}} |
+
+#### override()
+
+```python
+def override(
+    short_name: Optional[str],
+    resources: Optional[flyte.Resources],
+    retries: Union[int, flyte.RetryStrategy],
+    timeout: Optional[flyte.TimeoutType],
+    env_vars: Optional[Dict[str, str]],
+    secrets: Optional[flyte.SecretRequest],
+    max_inline_io_bytes: Optional[int],
+    cache: Optional[flyte.Cache],
+    queue: Optional[str],
+    kwargs: **kwargs,
+) -> TaskDetails
+```
+| Parameter | Type |
+|-|-|
+| `short_name` | `Optional[str]` |
+| `resources` | `Optional[flyte.Resources]` |
+| `retries` | `Union[int, flyte.RetryStrategy]` |
+| `timeout` | `Optional[flyte.TimeoutType]` |
+| `env_vars` | `Optional[Dict[str, str]]` |
+| `secrets` | `Optional[flyte.SecretRequest]` |
+| `max_inline_io_bytes` | `Optional[int]` |
+| `cache` | `Optional[flyte.Cache]` |
+| `queue` | `Optional[str]` |
+| `kwargs` | `**kwargs` |
+
+#### to_dict()
+
+```python
+def to_dict()
+```
+Convert the object to a JSON-serializable dictionary.
+
+Returns:
+    dict: A dictionary representation of the object.
+
+
+#### to_json()
+
+```python
+def to_json()
+```
+Convert the object to a JSON string.
+
+Returns:
+    str: A JSON string representation of the object.
+
+
+### Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cache` | `None` | {{< multiline >}}The cache policy of the task.
+{{< /multiline >}} |
+| `default_input_args` | `None` | {{< multiline >}}The default input arguments of the task.
+{{< /multiline >}} |
+| `name` | `None` | {{< multiline >}}The name of the task.
+{{< /multiline >}} |
+| `queue` | `None` | {{< multiline >}}The queue to use for the task.
+{{< /multiline >}} |
+| `required_args` | `None` | {{< multiline >}}The required input arguments of the task.
+{{< /multiline >}} |
+| `resources` | `None` | {{< multiline >}}The resources of the task.
+{{< /multiline >}} |
+| `secrets` | `None` | {{< multiline >}}The secrets of the task.
+{{< /multiline >}} |
+| `task_type` | `None` | {{< multiline >}}The type of the task.
 {{< /multiline >}} |
 | `version` | `None` | {{< multiline >}}The version of the task.
 {{< /multiline >}} |
@@ -1517,8 +1880,12 @@ Create a new trigger in the Flyte platform.
 | Parameter | Type |
 |-|-|
 | `cls` |  |
-| `trigger` | `flyte.Trigger` |
-| `task_name` | `str` |
+| `trigger` | {{< multiline >}}`flyte.Trigger`
+doc: The flyte.Trigger object containing the trigger definition.
+{{< /multiline >}} |
+| `task_name` | {{< multiline >}}`str`
+doc: Optional name of the task to associate with the trigger.
+{{< /multiline >}} |
 | `task_version` | `str \| None` |
 
 #### delete()

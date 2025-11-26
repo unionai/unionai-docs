@@ -1,6 +1,6 @@
 ---
 title: flyte.config
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -49,7 +49,10 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type |
 |-|-|
-| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` |
+| `config_file` | {{< multiline >}}`typing.Union[str, pathlib.Path, ConfigFile, None]`
+doc: file path to read the config from, if not specified default locations are searched
+:return: Config
+{{< /multiline >}} |
 
 #### set_if_exists()
 
@@ -119,7 +122,10 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 | Parameter | Type |
 |-|-|
-| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` |
+| `config_file` | {{< multiline >}}`typing.Union[str, pathlib.Path, ConfigFile, None]`
+doc: file path to read the config from, if not specified default locations are searched
+:return: Config
+{{< /multiline >}} |
 
 #### with_params()
 

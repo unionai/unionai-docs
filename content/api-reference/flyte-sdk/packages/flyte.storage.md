@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -53,8 +53,13 @@ Check if a path exists.
 
 | Parameter | Type |
 |-|-|
-| `path` | `str` |
-| `kwargs` | `**kwargs` |
+| `path` | {{< multiline >}}`str`
+doc: Path to be checked.
+{{< /multiline >}} |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional arguments to be passed to the underlying filesystem.
+:return: True if the path exists, False otherwise.
+{{< /multiline >}} |
 
 #### exists_sync()
 
@@ -144,9 +149,16 @@ async for chunk in storage.get_stream(path="s3://my_bucket/my_file.txt"):
 
 | Parameter | Type |
 |-|-|
-| `path` | `str` |
-| `chunk_size` |  |
-| `kwargs` | `**kwargs` |
+| `path` | {{< multiline >}}`str`
+doc: Path to the remote location where the data will be downloaded.
+{{< /multiline >}} |
+| `chunk_size` | {{< multiline >}}
+doc: Size of each chunk to be read from the file.
+:return: An async iterator that yields chunks of bytes.
+{{< /multiline >}} |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional arguments to be passed to the underlying filesystem.
+{{< /multiline >}} |
 
 #### get_underlying_filesystem()
 
@@ -193,7 +205,9 @@ Join multiple paths together. This is a wrapper around os.path.join.
 
 | Parameter | Type |
 |-|-|
-| `paths` | `str` |
+| `paths` | {{< multiline >}}`str`
+doc: Paths to be joined.
+{{< /multiline >}} |
 
 #### open()
 
@@ -258,10 +272,20 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 
 | Parameter | Type |
 |-|-|
-| `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` |
-| `name` | `str \| None` |
-| `to_path` | `str \| None` |
-| `kwargs` | `**kwargs` |
+| `data_iterable` | {{< multiline >}}`typing.AsyncIterable[bytes] \| bytes`
+doc: Iterable of bytes to be streamed.
+{{< /multiline >}} |
+| `name` | {{< multiline >}}`str \| None`
+doc: Name of the file to be created. If not provided, a random name will be generated.
+{{< /multiline >}} |
+| `to_path` | {{< multiline >}}`str \| None`
+doc: Path to the remote location where the data will be stored.
+{{< /multiline >}} |
+| `kwargs` | {{< multiline >}}`**kwargs`
+doc: Additional arguments to be passed to the underlying filesystem.
+:rtype: str
+:return: The path to the remote location where the data was stored.
+{{< /multiline >}} |
 
 ## flyte.storage.ABFS
 

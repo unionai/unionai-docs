@@ -1,6 +1,6 @@
 ---
 title: flyte.connectors
-version: 2.0.0b31
+version: 2.0.0b33
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -248,7 +248,7 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]],
     outputs: typing.Optional[typing.Dict[str, typing.Any]],
@@ -257,7 +257,7 @@ class Resource(
 ```
 | Parameter | Type |
 |-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x1044a42f0>` |
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>` |
 | `message` | `typing.Optional[str]` |
 | `log_links` | `typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]]` |
 | `outputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
