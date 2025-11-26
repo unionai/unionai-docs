@@ -77,7 +77,7 @@ Example::
 syncer = Syncify()
 
 @syncer
-async def async_function(x: str) -> str:
+async def async_function(x: str) -&gt; str:
     return f"Hello, Async World {x}!"
 
 
@@ -98,7 +98,7 @@ class Syncify(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 

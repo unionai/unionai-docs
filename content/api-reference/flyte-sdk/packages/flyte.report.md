@@ -63,15 +63,10 @@ Get a tab by name. If the tab does not exist, create it.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the tab.
-{{< /multiline >}} |
-| `create_if_missing` | {{< multiline >}}`bool`
-doc: Whether to create the tab if it does not exist.
-:return: The tab.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the tab. |
+| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. :return: The tab. |
 
 #### log()
 
@@ -91,14 +86,10 @@ Log content to the main tab. The content should be a valid HTML string, but not 
 
 
 
-| Parameter | Type |
-|-|-|
-| `content` | {{< multiline >}}`str`
-doc: The content to log.
-{{< /multiline >}} |
-| `do_flush` | {{< multiline >}}`bool`
-doc: flush the report after logging.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `content` | `str` | The content to log. |
+| `do_flush` | `bool` | flush the report after logging. |
 
 #### replace()
 
@@ -118,10 +109,10 @@ Get the report. Replaces the content of the main tab.
 :return: The report.
 
 
-| Parameter | Type |
-|-|-|
-| `content` | `str` |
-| `do_flush` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `content` | `str` | |
+| `do_flush` | `bool` | |
 
 ## flyte.report.Report
 
@@ -132,11 +123,11 @@ class Report(
     template_path: pathlib._local.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `tabs` | `typing.Dict[str, flyte.report._report.Tab]` |
-| `template_path` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `tabs` | `typing.Dict[str, flyte.report._report.Tab]` | |
+| `template_path` | `pathlib._local.Path` | |
 
 ### Methods
 
@@ -168,13 +159,8 @@ Get a tab by name. If the tab does not exist, create it.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the tab.
-{{< /multiline >}} |
-| `create_if_missing` | {{< multiline >}}`bool`
-doc: Whether to create the tab if it does not exist.
-:return: The tab.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the tab. |
+| `create_if_missing` | `bool` | Whether to create the tab if it does not exist. :return: The tab. |
 

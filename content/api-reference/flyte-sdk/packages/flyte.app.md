@@ -46,41 +46,28 @@ class AppEnvironment(
     cluster_pool: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: Name of the environment
-{{< /multiline >}} |
-| `depends_on` | {{< multiline >}}`List[Environment]`
-doc: Environment dependencies to hint, so when you deploy the environment, the dependencies are
-also deployed. This is useful when you have a set of environments that depend on each other.
-{{< /multiline >}} |
-| `pod_template` | `Optional[Union[str, PodTemplate]]` |
-| `description` | `Optional[str]` |
-| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
-doc: Secrets to inject into the environment.
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
-doc: Environment variables to set for the environment.
-{{< /multiline >}} |
-| `resources` | {{< multiline >}}`Optional[Resources]`
-doc: Resources to allocate for the environment.
-{{< /multiline >}} |
-| `interruptible` | `bool` |
-| `image` | {{< multiline >}}`Union[str, Image, Literal['auto']]`
-doc: Docker image to use for the environment. If set to "auto", will use the default image.
-{{< /multiline >}} |
-| `type` | `typing.Optional[str]` |
-| `port` | `int \| flyte.app._types.Port` |
-| `args` | `*args` |
-| `command` | `typing.Union[typing.List[str], str, NoneType]` |
-| `requires_auth` | `bool` |
-| `scaling` | `flyte.app._types.Scaling` |
-| `domain` | `flyte.app._types.Domain \| None` |
-| `links` | `typing.List[flyte.app._types.Link]` |
-| `include` | `typing.List[str]` |
-| `inputs` | `typing.List[flyte.app._input.Input]` |
-| `cluster_pool` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | Name of the environment |
+| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | |
+| `description` | `Optional[str]` | |
+| `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
+| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
+| `interruptible` | `bool` | |
+| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
+| `type` | `typing.Optional[str]` | |
+| `port` | `int \| flyte.app._types.Port` | |
+| `args` | `*args` | |
+| `command` | `typing.Union[typing.List[str], str, NoneType]` | |
+| `requires_auth` | `bool` | |
+| `scaling` | `flyte.app._types.Scaling` | |
+| `domain` | `flyte.app._types.Domain \| None` | |
+| `links` | `typing.List[flyte.app._types.Link]` | |
+| `include` | `typing.List[str]` | |
+| `inputs` | `typing.List[flyte.app._input.Input]` | |
+| `cluster_pool` | `str` | |
 
 ### Methods
 
@@ -103,9 +90,9 @@ def add_dependency(
 Add a dependency to the environment.
 
 
-| Parameter | Type |
-|-|-|
-| `env` | `Environment` |
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `Environment` | |
 
 #### clone_with()
 
@@ -121,16 +108,16 @@ def clone_with(
     kwargs: **kwargs,
 ) -> Environment
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `image` | `Optional[Union[str, Image, Literal['auto']]]` |
-| `resources` | `Optional[Resources]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[SecretRequest]` |
-| `depends_on` | `Optional[List[Environment]]` |
-| `description` | `Optional[str]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `image` | `Optional[Union[str, Image, Literal['auto']]]` | |
+| `resources` | `Optional[Resources]` | |
+| `env_vars` | `Optional[Dict[str, str]]` | |
+| `secrets` | `Optional[SecretRequest]` | |
+| `depends_on` | `Optional[List[Environment]]` | |
+| `description` | `Optional[str]` | |
+| `kwargs` | `**kwargs` | |
 
 #### container_args()
 
@@ -139,9 +126,9 @@ def container_args(
     serialize_context: flyte.models.SerializationContext,
 ) -> typing.List[str]
 ```
-| Parameter | Type |
-|-|-|
-| `serialize_context` | `flyte.models.SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `serialize_context` | `flyte.models.SerializationContext` | |
 
 #### container_cmd()
 
@@ -150,9 +137,9 @@ def container_cmd(
     serialize_context: flyte.models.SerializationContext,
 ) -> typing.List[str]
 ```
-| Parameter | Type |
-|-|-|
-| `serialize_context` | `flyte.models.SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `serialize_context` | `flyte.models.SerializationContext` | |
 
 #### get_port()
 
@@ -173,10 +160,10 @@ class Domain(
     custom_domain: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `subdomain` | `typing.Optional[str]` |
-| `custom_domain` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `subdomain` | `typing.Optional[str]` | |
+| `custom_domain` | `typing.Optional[str]` | |
 
 ## flyte.app.Input
 
@@ -194,30 +181,14 @@ class Input(
     ignore_patterns: list[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `value` | {{< multiline >}}`str \| flyte.io.File \| flyte.io.Dir`
-doc: Value for input.
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`Optional[str]`
-doc: Name of input.
-{{< /multiline >}} |
-| `env_var` | {{< multiline >}}`Optional[str]`
-doc: Environment name to set the value in the serving environment.
-{{< /multiline >}} |
-| `download` | {{< multiline >}}`bool`
-doc: When True, the input will be automatically downloaded. This
-only works if the value refers to an item in a object store. i.e. `s3://...`
-{{< /multiline >}} |
-| `mount` | {{< multiline >}}`Optional[str]`
-doc: If `value` is a directory, then the directory will be available
-at `mount`. If `value` is a file, then the file will be downloaded into the
-`mount` directory.
-{{< /multiline >}} |
-| `ignore_patterns` | {{< multiline >}}`list[str]`
-doc: If `value` is a directory, then this is a list of glob
-patterns to ignore.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `str \| flyte.io.File \| flyte.io.Dir` | Value for input. |
+| `name` | `Optional[str]` | Name of input. |
+| `env_var` | `Optional[str]` | Environment name to set the value in the serving environment. |
+| `download` | `bool` | When True, the input will be automatically downloaded. This only works if the value refers to an item in a object store. i.e. `s3://...` |
+| `mount` | `Optional[str]` | If `value` is a directory, then the directory will be available at `mount`. If `value` is a file, then the file will be downloaded into the `mount` directory. |
+| `ignore_patterns` | `list[str]` | If `value` is a directory, then this is a list of glob patterns to ignore. |
 
 ## flyte.app.Link
 
@@ -228,11 +199,11 @@ class Link(
     is_relative: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `title` | `str` |
-| `is_relative` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `title` | `str` | |
+| `is_relative` | `bool` | |
 
 ## flyte.app.Port
 
@@ -242,10 +213,10 @@ class Port(
     name: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `port` | `int` |
-| `name` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `port` | `int` | |
+| `name` | `typing.Optional[str]` | |
 
 ## flyte.app.Scaling
 
@@ -256,11 +227,11 @@ class Scaling(
     scaledown_after: int | datetime.timedelta | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `replicas` | `typing.Union[int, typing.Tuple[int, int]]` |
-| `metric` | `typing.Union[flyte.app._types.Scaling.Concurrency, flyte.app._types.Scaling.RequestRate, NoneType]` |
-| `scaledown_after` | `int \| datetime.timedelta \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `replicas` | `typing.Union[int, typing.Tuple[int, int]]` | |
+| `metric` | `typing.Union[flyte.app._types.Scaling.Concurrency, flyte.app._types.Scaling.RequestRate, NoneType]` | |
+| `scaledown_after` | `int \| datetime.timedelta \| None` | |
 
 ### Methods
 

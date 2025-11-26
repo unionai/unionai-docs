@@ -66,10 +66,10 @@ def silence_grpc_polling_error(
 Suppress specific gRPC polling errors in the event loop.
 
 
-| Parameter | Type |
-|-|-|
-| `loop` |  |
-| `context` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `loop` |  | |
+| `context` |  | |
 
 ## flyte.errors.ActionNotFoundError
 
@@ -90,12 +90,12 @@ class BaseRuntimeError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `kind` | `typing.Literal['system', 'unknown', 'user']` |
-| `root_cause_message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `kind` | `typing.Literal['system', 'unknown', 'user']` | |
+| `root_cause_message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.CustomError
 
@@ -108,10 +108,10 @@ class CustomError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
 
 ### Methods
 
@@ -131,9 +131,9 @@ Create a CustomError from an exception. The exception's class name is used as th
 message is used as the error message.
 
 
-| Parameter | Type |
-|-|-|
-| `e` | `Exception` |
+| Parameter | Type | Description |
+|-|-|-|
+| `e` | `Exception` | |
 
 ## flyte.errors.DeploymentError
 
@@ -145,9 +145,9 @@ class DeploymentError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.ImageBuildError
 
@@ -159,9 +159,9 @@ class ImageBuildError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.ImagePullBackOffError
 
@@ -175,11 +175,11 @@ class ImagePullBackOffError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.InitializationError
 
@@ -194,12 +194,12 @@ class InitializationError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `kind` | `typing.Literal['system', 'unknown', 'user']` |
-| `root_cause_message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `kind` | `typing.Literal['system', 'unknown', 'user']` | |
+| `root_cause_message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.InlineIOMaxBytesBreached
 
@@ -212,9 +212,9 @@ class InlineIOMaxBytesBreached(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.InvalidImageNameError
 
@@ -228,11 +228,11 @@ class InvalidImageNameError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.LogsNotYetAvailableError
 
@@ -244,9 +244,9 @@ class LogsNotYetAvailableError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.ModuleLoadError
 
@@ -259,9 +259,9 @@ class ModuleLoadError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.NotInTaskContextError
 
@@ -275,11 +275,11 @@ class NotInTaskContextError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.OOMError
 
@@ -293,11 +293,11 @@ class OOMError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.OnlyAsyncIOSupportedError
 
@@ -309,9 +309,9 @@ class OnlyAsyncIOSupportedError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.PrimaryContainerNotFoundError
 
@@ -325,11 +325,11 @@ class PrimaryContainerNotFoundError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.ReferenceTaskError
 
@@ -341,9 +341,9 @@ class ReferenceTaskError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.RetriesExhaustedError
 
@@ -357,11 +357,11 @@ class RetriesExhaustedError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.RunAbortedError
 
@@ -373,9 +373,9 @@ class RunAbortedError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.RuntimeDataValidationError
 
@@ -389,11 +389,11 @@ class RuntimeDataValidationError(
     task_name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `var` | `str` |
-| `e` | `Exception \| str` |
-| `task_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `var` | `str` | |
+| `e` | `Exception \| str` | |
+| `task_name` | `str` | |
 
 ## flyte.errors.RuntimeSystemError
 
@@ -408,11 +408,11 @@ class RuntimeSystemError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.RuntimeUnknownError
 
@@ -426,11 +426,11 @@ class RuntimeUnknownError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.RuntimeUserError
 
@@ -444,11 +444,11 @@ class RuntimeUserError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.SlowDownError
 
@@ -460,9 +460,9 @@ class SlowDownError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.TaskInterruptedError
 
@@ -476,11 +476,11 @@ class TaskInterruptedError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 
 ## flyte.errors.TaskTimeoutError
 
@@ -492,9 +492,9 @@ class TaskTimeoutError(
     message: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `message` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `message` | `str` | |
 
 ## flyte.errors.UnionRpcError
 
@@ -508,9 +508,9 @@ class UnionRpcError(
     worker: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `worker` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `worker` | `str \| None` | |
 

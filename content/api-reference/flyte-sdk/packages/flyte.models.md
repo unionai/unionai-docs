@@ -62,13 +62,13 @@ class ActionID(
     org: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `run_name` | `str \| None` |
-| `project` | `str \| None` |
-| `domain` | `str \| None` |
-| `org` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `run_name` | `str \| None` | |
+| `project` | `str \| None` | |
+| `domain` | `str \| None` | |
+| `org` | `str \| None` | |
 
 ### Methods
 
@@ -94,9 +94,9 @@ def new_sub_action(
 Create a new sub-run with the given name. If  name is None, a random name will be generated.
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str \| None` | |
 
 #### new_sub_action_from()
 
@@ -111,12 +111,12 @@ def new_sub_action_from(
 Make a deterministic name
 
 
-| Parameter | Type |
-|-|-|
-| `task_call_seq` | `int` |
-| `task_hash` | `str` |
-| `input_hash` | `str` |
-| `group` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_call_seq` | `int` | |
+| `task_hash` | `str` | |
+| `input_hash` | `str` | |
+| `group` | `str \| None` | |
 
 ## flyte.models.Checkpoints
 
@@ -129,10 +129,10 @@ class Checkpoints(
     checkpoint_path: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `prev_checkpoint_path` | `str \| None` |
-| `checkpoint_path` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `prev_checkpoint_path` | `str \| None` | |
+| `checkpoint_path` | `str \| None` | |
 
 ## flyte.models.CodeBundle
 
@@ -150,24 +150,13 @@ class CodeBundle(
     downloaded_path: pathlib.Path | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `computed_version` | {{< multiline >}}`str`
-doc: The version of the code bundle. This is the hash of the code.
-{{< /multiline >}} |
-| `destination` | {{< multiline >}}`str`
-doc: The destination path for the code bundle to be inflated to.
-{{< /multiline >}} |
-| `tgz` | {{< multiline >}}`str \| None`
-doc: Optional path to the tgz file.
-{{< /multiline >}} |
-| `pkl` | {{< multiline >}}`str \| None`
-doc: Optional path to the pkl file.
-{{< /multiline >}} |
-| `downloaded_path` | {{< multiline >}}`pathlib.Path \| None`
-doc: The path to the downloaded code bundle. This is only available during runtime, when
-the code bundle has been downloaded and inflated.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `computed_version` | `str` | The version of the code bundle. This is the hash of the code. |
+| `destination` | `str` | The destination path for the code bundle to be inflated to. |
+| `tgz` | `str \| None` | Optional path to the tgz file. |
+| `pkl` | `str \| None` | Optional path to the pkl file. |
+| `downloaded_path` | `pathlib.Path \| None` | The path to the downloaded code bundle. This is only available during runtime, when the code bundle has been downloaded and inflated. |
 
 ### Methods
 
@@ -186,9 +175,9 @@ def with_downloaded_path(
 Create a new CodeBundle with the given downloaded path.
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `pathlib.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `pathlib.Path` | |
 
 ## flyte.models.GroupData
 
@@ -197,9 +186,9 @@ class GroupData(
     name: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 
 ## flyte.models.NativeInterface
 
@@ -215,12 +204,12 @@ class NativeInterface(
     _remote_defaults: Optional[Dict[str, literals_pb2.Literal]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `inputs` | `Dict[str, Tuple[Type, Any]]` |
-| `outputs` | `Dict[str, Type]` |
-| `docstring` | `Optional[Docstring]` |
-| `_remote_defaults` | `Optional[Dict[str, literals_pb2.Literal]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` | `Dict[str, Tuple[Type, Any]]` | |
+| `outputs` | `Dict[str, Type]` | |
+| `docstring` | `Optional[Docstring]` | |
+| `_remote_defaults` | `Optional[Dict[str, literals_pb2.Literal]]` | |
 
 ### Methods
 
@@ -247,10 +236,10 @@ Convert the given arguments to keyword arguments based on the native interface. 
 arguments to the correct types for the task execution.
 
 
-| Parameter | Type |
-|-|-|
-| `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### from_callable()
 
@@ -262,9 +251,9 @@ def from_callable(
 Extract the native interface from the given function. This is used to create a native interface for the task.
 
 
-| Parameter | Type |
-|-|-|
-| `func` | `Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `Callable` | |
 
 #### from_types()
 
@@ -278,18 +267,11 @@ def from_types(
 Create a new NativeInterface from the given types. This is used to create a native interface for the task.
 
 
-| Parameter | Type |
-|-|-|
-| `inputs` | {{< multiline >}}`Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]`
-doc: A dictionary of input names and their types and a value indicating if they have a default value.
-{{< /multiline >}} |
-| `outputs` | {{< multiline >}}`Dict[str, Type]`
-doc: A dictionary of output names and their types.
-{{< /multiline >}} |
-| `default_inputs` | {{< multiline >}}`Optional[Dict[str, literals_pb2.Literal]]`
-doc: Optional dictionary of default inputs for remote tasks.
-:return: A NativeInterface object with the given inputs and outputs.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` | `Dict[str, Tuple[Type, Type[_has_default] \| Type[inspect._empty]]]` | A dictionary of input names and their types and a value indicating if they have a default value. |
+| `outputs` | `Dict[str, Type]` | A dictionary of output names and their types. |
+| `default_inputs` | `Optional[Dict[str, literals_pb2.Literal]]` | Optional dictionary of default inputs for remote tasks. :return: A NativeInterface object with the given inputs and outputs. |
 
 #### get_input_types()
 
@@ -337,10 +319,10 @@ class PathRewrite(
     new_prefix: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `old_prefix` | `str` |
-| `new_prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `old_prefix` | `str` | |
+| `new_prefix` | `str` | |
 
 ### Methods
 
@@ -356,12 +338,12 @@ def from_str(
     pattern: str,
 ) -> PathRewrite
 ```
-Create a PathRewrite from a string pattern of the form `old_prefix->new_prefix`.
+Create a PathRewrite from a string pattern of the form `old_prefix-&gt;new_prefix`.
 
 
-| Parameter | Type |
-|-|-|
-| `pattern` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pattern` | `str` | |
 
 ## flyte.models.RawDataPath
 
@@ -375,10 +357,10 @@ class RawDataPath(
     path_rewrite: Optional[PathRewrite],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `path_rewrite` | `Optional[PathRewrite]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `path_rewrite` | `Optional[PathRewrite]` | |
 
 ### Methods
 
@@ -399,9 +381,9 @@ Create a new context attribute object, with local path given. Will be created if
 :return: Path to the temporary directory
 
 
-| Parameter | Type |
-|-|-|
-| `local_folder` | `str \| pathlib.Path \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_folder` | `str \| pathlib.Path \| None` | |
 
 #### get_random_remote_path()
 
@@ -414,12 +396,9 @@ Returns a random path for uploading a file/directory to. This file/folder will n
 
 
 
-| Parameter | Type |
-|-|-|
-| `file_name` | {{< multiline >}}`Optional[str]`
-doc: If given, will be joined after a randomly generated portion.
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_name` | `Optional[str]` | If given, will be joined after a randomly generated portion. :return: |
 
 ## flyte.models.SerializationContext
 
@@ -443,27 +422,18 @@ class SerializationContext(
     root_dir: Optional[pathlib.Path],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `version` | {{< multiline >}}`str`
-doc: The version of the task
-{{< /multiline >}} |
-| `project` | `str \| None` |
-| `domain` | `str \| None` |
-| `org` | `str \| None` |
-| `code_bundle` | {{< multiline >}}`Optional[CodeBundle]`
-doc: The code bundle for the task. This is used to package the code and the inflation path.
-{{< /multiline >}} |
-| `input_path` | {{< multiline >}}`str`
-doc: The path to the inputs for the task. This is used to determine where the inputs will be located
-{{< /multiline >}} |
-| `output_path` | {{< multiline >}}`str`
-doc: The path to the outputs for the task. This is used to determine where the outputs will be
-located
-{{< /multiline >}} |
-| `interpreter_path` | `str` |
-| `image_cache` | `ImageCache \| None` |
-| `root_dir` | `Optional[pathlib.Path]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `version` | `str` | The version of the task |
+| `project` | `str \| None` | |
+| `domain` | `str \| None` | |
+| `org` | `str \| None` | |
+| `code_bundle` | `Optional[CodeBundle]` | The code bundle for the task. This is used to package the code and the inflation path. |
+| `input_path` | `str` | The path to the inputs for the task. This is used to determine where the inputs will be located |
+| `output_path` | `str` | The path to the outputs for the task. This is used to determine where the outputs will be located |
+| `interpreter_path` | `str` | |
+| `image_cache` | `ImageCache \| None` | |
+| `root_dir` | `Optional[pathlib.Path]` | |
 
 ### Methods
 
@@ -482,11 +452,9 @@ def get_entrypoint_path(
 Get the entrypoint path for the task. This is used to determine the entrypoint for the task execution.
 
 
-| Parameter | Type |
-|-|-|
-| `interpreter_path` | {{< multiline >}}`Optional[str]`
-doc: The path to the interpreter (python)
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `interpreter_path` | `Optional[str]` | The path to the interpreter (python) |
 
 ## flyte.models.TaskContext
 
@@ -514,31 +482,23 @@ class TaskContext(
     custom_context: Dict[str, str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `action` | {{< multiline >}}`ActionID`
-doc: The action ID of the current execution. This is always set, within a run.
-{{< /multiline >}} |
-| `version` | {{< multiline >}}`str`
-doc: The version of the executed task. This is set when the task is executed by an action and will be
-set on all sub-actions.
-{{< /multiline >}} |
-| `raw_data_path` | `RawDataPath` |
-| `input_path` | `str \| None` |
-| `output_path` | `str` |
-| `run_base_dir` | `str` |
-| `report` | `Report` |
-| `group_data` | `GroupData \| None` |
-| `checkpoints` | `Checkpoints \| None` |
-| `code_bundle` | `CodeBundle \| None` |
-| `compiled_image_cache` | `ImageCache \| None` |
-| `data` | `Dict[str, Any]` |
-| `mode` | `Literal['local', 'remote', 'hybrid']` |
-| `interactive_mode` | `bool` |
-| `custom_context` | {{< multiline >}}`Dict[str, str]`
-doc: Context metadata for the action. If an action receives context, it'll automatically pass it
-to any actions it spawns. Context will not be used for cache key computation.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `action` | `ActionID` | The action ID of the current execution. This is always set, within a run. |
+| `version` | `str` | The version of the executed task. This is set when the task is executed by an action and will be set on all sub-actions. |
+| `raw_data_path` | `RawDataPath` | |
+| `input_path` | `str \| None` | |
+| `output_path` | `str` | |
+| `run_base_dir` | `str` | |
+| `report` | `Report` | |
+| `group_data` | `GroupData \| None` | |
+| `checkpoints` | `Checkpoints \| None` | |
+| `code_bundle` | `CodeBundle \| None` | |
+| `compiled_image_cache` | `ImageCache \| None` | |
+| `data` | `Dict[str, Any]` | |
+| `mode` | `Literal['local', 'remote', 'hybrid']` | |
+| `interactive_mode` | `bool` | |
+| `custom_context` | `Dict[str, str]` | Context metadata for the action. If an action receives context, it'll automatically pass it to any actions it spawns. Context will not be used for cache key computation. |
 
 ### Methods
 
@@ -564,7 +524,7 @@ def replace(
     kwargs,
 ) -> TaskContext
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 

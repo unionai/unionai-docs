@@ -66,9 +66,9 @@ validated to form a valid model.
 `self` is explicitly positional-only to allow `self` as a field name.
 
 
-| Parameter | Type |
-|-|-|
-| `data` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `Any` | |
 
 ### Methods
 
@@ -132,10 +132,10 @@ def construct(
     values: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `_fields_set` | `set[str] \| None` |
-| `values` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_fields_set` | `set[str] \| None` | |
+| `values` | `Any` | |
 
 #### copy()
 
@@ -149,8 +149,8 @@ def copy(
 ```
 Returns a copy of the model.
 
-> [!WARNING] Deprecated
-> This method is now deprecated; use `model_copy` instead.
+&gt; [!WARNING] Deprecated
+&gt; This method is now deprecated; use `model_copy` instead.
 
 If you need `include` or `exclude`, use:
 
@@ -162,20 +162,12 @@ copied = self.model_validate(data)
 
 
 
-| Parameter | Type |
-|-|-|
-| `include` | {{< multiline >}}`AbstractSetIntStr \| MappingIntStrAny \| None`
-doc:  Optional set or mapping specifying which fields to include in the copied model.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`AbstractSetIntStr \| MappingIntStrAny \| None`
-doc:  Optional set or mapping specifying which fields to exclude in the copied model.
-{{< /multiline >}} |
-| `update` | {{< multiline >}}`Dict[str, Any] \| None`
-doc:  Optional dictionary of field-value pairs to override field values in the copied model.
-{{< /multiline >}} |
-| `deep` | {{< multiline >}}`bool`
-doc:  If True, the values of fields that are Pydantic models will be deep-copied.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `AbstractSetIntStr \| MappingIntStrAny \| None` | Optional set or mapping specifying which fields to include in the copied model. |
+| `exclude` | `AbstractSetIntStr \| MappingIntStrAny \| None` | Optional set or mapping specifying which fields to exclude in the copied model. |
+| `update` | `Dict[str, Any] \| None` | Optional dictionary of field-value pairs to override field values in the copied model. |
+| `deep` | `bool` | If True, the values of fields that are Pydantic models will be deep-copied. |
 
 #### deserialize_dataframe()
 
@@ -184,9 +176,9 @@ def deserialize_dataframe(
     info,
 ) -> DataFrame
 ```
-| Parameter | Type |
-|-|-|
-| `info` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` |  | |
 
 #### dict()
 
@@ -200,14 +192,14 @@ def dict(
     exclude_none: bool,
 ) -> Dict[str, Any]
 ```
-| Parameter | Type |
-|-|-|
-| `include` | `IncEx \| None` |
-| `exclude` | `IncEx \| None` |
-| `by_alias` | `bool` |
-| `exclude_unset` | `bool` |
-| `exclude_defaults` | `bool` |
-| `exclude_none` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `IncEx \| None` | |
+| `exclude` | `IncEx \| None` | |
+| `by_alias` | `bool` | |
+| `exclude_unset` | `bool` | |
+| `exclude_defaults` | `bool` | |
+| `exclude_none` | `bool` | |
 
 #### from_df()
 
@@ -223,10 +215,10 @@ the type engine and the encoders is because there's too much information in the 
 signature of the task that we don't want the user to have to replicate.
 
 
-| Parameter | Type |
-|-|-|
-| `val` | `typing.Optional[typing.Any]` |
-| `uri` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` | `typing.Optional[typing.Any]` | |
+| `uri` | `typing.Optional[str]` | |
 
 #### from_existing_remote()
 
@@ -241,15 +233,11 @@ Create a DataFrame reference from an existing remote dataframe.
 
 
 
-| Parameter | Type |
-|-|-|
-| `remote_path` | {{< multiline >}}`str`
-doc:  The remote path to the existing dataframe
-{{< /multiline >}} |
-| `format` | {{< multiline >}}`typing.Optional[str]`
-doc:  Format of the stored dataframe
-{{< /multiline >}} |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | The remote path to the existing dataframe |
+| `format` | `typing.Optional[str]` | Format of the stored dataframe |
+| `kwargs` | `**kwargs` | |
 
 #### from_orm()
 
@@ -258,9 +246,9 @@ def from_orm(
     obj: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | |
 
 #### iter()
 
@@ -282,17 +270,17 @@ def json(
     dumps_kwargs: Any,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `include` | `IncEx \| None` |
-| `exclude` | `IncEx \| None` |
-| `by_alias` | `bool` |
-| `exclude_unset` | `bool` |
-| `exclude_defaults` | `bool` |
-| `exclude_none` | `bool` |
-| `encoder` | `Callable[[Any], Any] \| None` |
-| `models_as_dict` | `bool` |
-| `dumps_kwargs` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `IncEx \| None` | |
+| `exclude` | `IncEx \| None` | |
+| `by_alias` | `bool` | |
+| `exclude_unset` | `bool` | |
+| `exclude_defaults` | `bool` | |
+| `exclude_none` | `bool` | |
+| `encoder` | `Callable[[Any], Any] \| None` | |
+| `models_as_dict` | `bool` | |
+| `dumps_kwargs` | `Any` | |
 
 #### model_construct()
 
@@ -307,25 +295,19 @@ Creates a new instance of the `Model` class with validated data.
 Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 
-> [!NOTE]
-> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
-> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
-> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
-> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
-> an error if extra values are passed, but they will be ignored.
+&gt; [!NOTE]
+&gt; `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+&gt; That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+&gt; and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+&gt; Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+&gt; an error if extra values are passed, but they will be ignored.
 
 
 
-| Parameter | Type |
-|-|-|
-| `_fields_set` | {{< multiline >}}`set[str] \| None`
-doc:  A set of field names that were originally explicitly set during instantiation. If provided,
-this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute.
-Otherwise, the field names from the `values` argument will be used.
-{{< /multiline >}} |
-| `values` | {{< multiline >}}`Any`
-doc:  Trusted or pre-validated data dictionary.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `_fields_set` | `set[str] \| None` | A set of field names that were originally explicitly set during instantiation. If provided, this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute. Otherwise, the field names from the `values` argument will be used. |
+| `values` | `Any` | Trusted or pre-validated data dictionary. |
 
 #### model_copy()
 
@@ -340,19 +322,17 @@ def model_copy(
 
 Returns a copy of the model.
 
-> [!NOTE]
-> The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
-> might have unexpected side effects if you store anything in it, on top of the model
-> fields (e.g. the value of [cached properties][functools.cached_property]).
+&gt; [!NOTE]
+&gt; The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
+&gt; might have unexpected side effects if you store anything in it, on top of the model
+&gt; fields (e.g. the value of [cached properties][functools.cached_property]).
 
 
 
-| Parameter | Type |
-|-|-|
-| `update` | `Mapping[str, Any] \| None` |
-| `deep` | {{< multiline >}}`bool`
-doc:  Set to `True` to make a deep copy of the model.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `update` | `Mapping[str, Any] \| None` | |
+| `deep` | `bool` | Set to `True` to make a deep copy of the model. |
 
 #### model_dump()
 
@@ -380,53 +360,21 @@ Generate a dictionary representation of the model, optionally specifying which f
 
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | {{< multiline >}}`Literal['json', 'python'] \| str`
-doc:  The mode in which `to_python` should run.
-If mode is 'json', the output will only contain JSON serializable types.
-If mode is 'python', the output may contain non-JSON-serializable Python objects.
-{{< /multiline >}} |
-| `include` | {{< multiline >}}`IncEx \| None`
-doc:  A set of fields to include in the output.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`IncEx \| None`
-doc:  A set of fields to exclude from the output.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the serializer.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias in the dictionary key if defined.
-{{< /multiline >}} |
-| `exclude_unset` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have not been explicitly set.
-{{< /multiline >}} |
-| `exclude_defaults` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that are set to their default value.
-{{< /multiline >}} |
-| `exclude_none` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have a value of `None`.
-{{< /multiline >}} |
-| `exclude_computed_fields` | {{< multiline >}}`bool`
-doc:  Whether to exclude computed fields.
-While this can be useful for round-tripping, it is usually recommended to use the dedicated
-`round_trip` parameter instead.
-{{< /multiline >}} |
-| `round_trip` | {{< multiline >}}`bool`
-doc:  If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-{{< /multiline >}} |
-| `warnings` | {{< multiline >}}`bool \| Literal['none', 'warn', 'error']`
-doc:  How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-"error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-{{< /multiline >}} |
-| `fallback` | {{< multiline >}}`Callable[[Any], Any] \| None`
-doc:  A function to call when an unknown value is encountered. If not provided,
-a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
-{{< /multiline >}} |
-| `serialize_as_any` | {{< multiline >}}`bool`
-doc:  Whether to serialize fields with duck-typing serialization behavior.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `Literal['json', 'python'] \| str` | The mode in which `to_python` should run. If mode is 'json', the output will only contain JSON serializable types. If mode is 'python', the output may contain non-JSON-serializable Python objects. |
+| `include` | `IncEx \| None` | A set of fields to include in the output. |
+| `exclude` | `IncEx \| None` | A set of fields to exclude from the output. |
+| `context` | `Any \| None` | Additional context to pass to the serializer. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias in the dictionary key if defined. |
+| `exclude_unset` | `bool` | Whether to exclude fields that have not been explicitly set. |
+| `exclude_defaults` | `bool` | Whether to exclude fields that are set to their default value. |
+| `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
+| `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
+| `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 #### model_dump_json()
 
@@ -455,55 +403,22 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 
 
 
-| Parameter | Type |
-|-|-|
-| `indent` | {{< multiline >}}`int \| None`
-doc:  Indentation to use in the JSON output. If None is passed, the output will be compact.
-{{< /multiline >}} |
-| `ensure_ascii` | {{< multiline >}}`bool`
-doc:  If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped.
-If `False` (the default), these characters will be output as-is.
-{{< /multiline >}} |
-| `include` | {{< multiline >}}`IncEx \| None`
-doc:  Field(s) to include in the JSON output.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`IncEx \| None`
-doc:  Field(s) to exclude from the JSON output.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the serializer.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to serialize using field aliases.
-{{< /multiline >}} |
-| `exclude_unset` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have not been explicitly set.
-{{< /multiline >}} |
-| `exclude_defaults` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that are set to their default value.
-{{< /multiline >}} |
-| `exclude_none` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have a value of `None`.
-{{< /multiline >}} |
-| `exclude_computed_fields` | {{< multiline >}}`bool`
-doc:  Whether to exclude computed fields.
-While this can be useful for round-tripping, it is usually recommended to use the dedicated
-`round_trip` parameter instead.
-{{< /multiline >}} |
-| `round_trip` | {{< multiline >}}`bool`
-doc:  If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-{{< /multiline >}} |
-| `warnings` | {{< multiline >}}`bool \| Literal['none', 'warn', 'error']`
-doc:  How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-"error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-{{< /multiline >}} |
-| `fallback` | {{< multiline >}}`Callable[[Any], Any] \| None`
-doc:  A function to call when an unknown value is encountered. If not provided,
-a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
-{{< /multiline >}} |
-| `serialize_as_any` | {{< multiline >}}`bool`
-doc:  Whether to serialize fields with duck-typing serialization behavior.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `indent` | `int \| None` | Indentation to use in the JSON output. If None is passed, the output will be compact. |
+| `ensure_ascii` | `bool` | If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped. If `False` (the default), these characters will be output as-is. |
+| `include` | `IncEx \| None` | Field(s) to include in the JSON output. |
+| `exclude` | `IncEx \| None` | Field(s) to exclude from the JSON output. |
+| `context` | `Any \| None` | Additional context to pass to the serializer. |
+| `by_alias` | `bool \| None` | Whether to serialize using field aliases. |
+| `exclude_unset` | `bool` | Whether to exclude fields that have not been explicitly set. |
+| `exclude_defaults` | `bool` | Whether to exclude fields that are set to their default value. |
+| `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
+| `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
+| `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 #### model_json_schema()
 
@@ -520,28 +435,13 @@ Generates a JSON schema for a model class.
 
 
 
-| Parameter | Type |
-|-|-|
-| `by_alias` | {{< multiline >}}`bool`
-doc:  Whether to use attribute aliases or not.
-{{< /multiline >}} |
-| `ref_template` | {{< multiline >}}`str`
-doc:  The reference template.
-- `'any_of'`: Use the [`anyOf`](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)
-keyword to combine schemas (the default).
-- `'primitive_type_array'`: Use the [`type`](https://json-schema.org/understanding-json-schema/reference/type)
-keyword as an array of strings, containing each type of the combination. If any of the schemas is not a primitive
-type (`string`, `boolean`, `null`, `integer` or `number`) or contains constraints/metadata, falls back to
-`any_of`.
-{{< /multiline >}} |
-| `schema_generator` | {{< multiline >}}`type[GenerateJsonSchema]`
-doc:  To override the logic used to generate the JSON schema, as a subclass of
-`GenerateJsonSchema` with your desired modifications
-{{< /multiline >}} |
-| `mode` | {{< multiline >}}`JsonSchemaMode`
-doc:  The mode in which to generate the schema.
-{{< /multiline >}} |
-| `union_format` | `Literal['any_of', 'primitive_type_array']` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | Whether to use attribute aliases or not. |
+| `ref_template` | `str` | The reference template. - `'any_of'`: Use the [`anyOf`](https://json-schema.org/understanding-json-schema/reference/combining#anyOf) keyword to combine schemas (the default). - `'primitive_type_array'`: Use the [`type`](https://json-schema.org/understanding-json-schema/reference/type) keyword as an array of strings, containing each type of the combination. If any of the schemas is not a primitive type (`string`, `boolean`, `null`, `integer` or `number`) or contains constraints/metadata, falls back to `any_of`. |
+| `schema_generator` | `type[GenerateJsonSchema]` | To override the logic used to generate the JSON schema, as a subclass of `GenerateJsonSchema` with your desired modifications |
+| `mode` | `JsonSchemaMode` | The mode in which to generate the schema. |
+| `union_format` | `Literal['any_of', 'primitive_type_array']` | |
 
 #### model_parametrized_name()
 
@@ -556,13 +456,9 @@ This method can be overridden to achieve a custom naming scheme for generic Base
 
 
 
-| Parameter | Type |
-|-|-|
-| `params` | {{< multiline >}}`tuple[type[Any], ...]`
-doc:  Tuple of types of the class. Given a generic class
-`Model` with 2 type variables and a concrete model `Model[str, int]`,
-the value `(str, int)` would be passed to `params`.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `params` | `tuple[type[Any], ...]` | Tuple of types of the class. Given a generic class `Model` with 2 type variables and a concrete model `Model[str, int]`, the value `(str, int)` would be passed to `params`. |
 
 #### model_post_init()
 
@@ -577,11 +473,9 @@ It takes context as an argument since that's what pydantic-core passes when call
 
 
 
-| Parameter | Type |
-|-|-|
-| `context` | {{< multiline >}}`Any`
-doc:  The context.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `context` | `Any` | The context. |
 
 #### model_rebuild()
 
@@ -600,20 +494,12 @@ the initial attempt to build the schema, and automatic rebuilding fails.
 
 
 
-| Parameter | Type |
-|-|-|
-| `force` | {{< multiline >}}`bool`
-doc:  Whether to force the rebuilding of the model schema, defaults to `False`.
-{{< /multiline >}} |
-| `raise_errors` | {{< multiline >}}`bool`
-doc:  Whether to raise errors, defaults to `True`.
-{{< /multiline >}} |
-| `_parent_namespace_depth` | {{< multiline >}}`int`
-doc:  The depth level of the parent namespace, defaults to 2.
-{{< /multiline >}} |
-| `_types_namespace` | {{< multiline >}}`MappingNamespace \| None`
-doc:  The types namespace, defaults to `None`.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `force` | `bool` | Whether to force the rebuilding of the model schema, defaults to `False`. |
+| `raise_errors` | `bool` | Whether to raise errors, defaults to `True`. |
+| `_parent_namespace_depth` | `int` | The depth level of the parent namespace, defaults to 2. |
+| `_types_namespace` | `MappingNamespace \| None` | The types namespace, defaults to `None`. |
 
 #### model_validate()
 
@@ -632,30 +518,15 @@ Validate a pydantic model instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | {{< multiline >}}`Any`
-doc:  The object to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `from_attributes` | {{< multiline >}}`bool \| None`
-doc:  Whether to extract data from object attributes.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | The object to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `from_attributes` | `bool \| None` | Whether to extract data from object attributes. |
+| `context` | `Any \| None` | Additional context to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### model_validate_json()
 
@@ -676,27 +547,14 @@ Validate the given JSON data against the Pydantic model.
 
 
 
-| Parameter | Type |
-|-|-|
-| `json_data` | {{< multiline >}}`str \| bytes \| bytearray`
-doc:  The JSON data to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Extra variables to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `json_data` | `str \| bytes \| bytearray` | The JSON data to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `context` | `Any \| None` | Extra variables to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### model_validate_strings()
 
@@ -714,27 +572,14 @@ Validate the given object with string data against the Pydantic model.
 
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | {{< multiline >}}`Any`
-doc:  The object containing string data to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Extra variables to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | The object containing string data to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `context` | `Any \| None` | Extra variables to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### open()
 
@@ -752,9 +597,9 @@ def t1(df: DataFrame):
 pandas is imported inside the task, so panda handler won't be loaded during deserialization in type engine.
 
 
-| Parameter | Type |
-|-|-|
-| `dataframe_type` | `Type[DF]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataframe_type` | `Type[DF]` | |
 
 #### parse_file()
 
@@ -767,13 +612,13 @@ def parse_file(
     allow_pickle: bool,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str \| Path` |
-| `content_type` | `str \| None` |
-| `encoding` | `str` |
-| `proto` | `DeprecatedParseProtocol \| None` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str \| Path` | |
+| `content_type` | `str \| None` | |
+| `encoding` | `str` | |
+| `proto` | `DeprecatedParseProtocol \| None` | |
+| `allow_pickle` | `bool` | |
 
 #### parse_obj()
 
@@ -782,9 +627,9 @@ def parse_obj(
     obj: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | |
 
 #### parse_raw()
 
@@ -797,13 +642,13 @@ def parse_raw(
     allow_pickle: bool,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `b` | `str \| bytes` |
-| `content_type` | `str \| None` |
-| `encoding` | `str` |
-| `proto` | `DeprecatedParseProtocol \| None` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `b` | `str \| bytes` | |
+| `content_type` | `str \| None` | |
+| `encoding` | `str` | |
+| `proto` | `DeprecatedParseProtocol \| None` | |
+| `allow_pickle` | `bool` | |
 
 #### schema()
 
@@ -813,10 +658,10 @@ def schema(
     ref_template: str,
 ) -> Dict[str, Any]
 ```
-| Parameter | Type |
-|-|-|
-| `by_alias` | `bool` |
-| `ref_template` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | |
+| `ref_template` | `str` | |
 
 #### schema_json()
 
@@ -827,11 +672,11 @@ def schema_json(
     dumps_kwargs: Any,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `by_alias` | `bool` |
-| `ref_template` | `str` |
-| `dumps_kwargs` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | |
+| `ref_template` | `str` | |
+| `dumps_kwargs` | `Any` | |
 
 #### serialize_dataframe()
 
@@ -850,9 +695,9 @@ A public wrapper method to set the DataFrame Literal.
 This method provides external access to the internal _set_literal method.
 
 
-| Parameter | Type |
-|-|-|
-| `expected` | `types_pb2.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expected` | `types_pb2.LiteralType` | |
 
 #### update_forward_refs()
 
@@ -861,9 +706,9 @@ def update_forward_refs(
     localns: Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `localns` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `localns` | `Any` | |
 
 #### validate()
 
@@ -872,9 +717,9 @@ def validate(
     value: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `Any` | |
 
 ### Properties
 
@@ -882,17 +727,8 @@ def validate(
 |-|-|-|
 | `literal` | `None` |  |
 | `metadata` | `None` |  |
-| `model_extra` | `None` | {{< multiline >}}Get extra fields set during validation.
-
-Returns:
-    A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`.
-{{< /multiline >}} |
-| `model_fields_set` | `None` | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
-
-Returns:
-    A set of strings representing the fields that have been set,
-        i.e. that were not filled from defaults.
-{{< /multiline >}} |
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 | `val` | `None` |  |
 
 ## flyte.io.DataFrameDecoder
@@ -916,23 +752,12 @@ and we have to get a Python value out of it. For the other way, see the DataFram
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | {{< multiline >}}`Type[DF]`
-doc: The dataframe class in question that you want to register this decoder with
-{{< /multiline >}} |
-| `protocol` | {{< multiline >}}`Optional[str]`
-doc: A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either
-"s3" or "s3://". They are the same since the "://" will just be stripped by the constructor.
-If None, this decoder will be registered with all protocols that flytekit's data persistence layer
-is capable of handling.
-{{< /multiline >}} |
-| `supported_format` | {{< multiline >}}`Optional[str]`
-doc: Arbitrary string representing the format. If not supplied then an empty string
-will be used. An empty string implies that the decoder works with any format. If the format being asked
-for does not exist, the transformer enginer will look for the "" decoder instead and write a warning.
-{{< /multiline >}} |
-| `additional_protocols` | `Optional[List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type[DF]` | The dataframe class in question that you want to register this decoder with |
+| `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this decoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
+| `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the decoder works with any format. If the format being asked for does not exist, the transformer enginer will look for the "" decoder instead and write a warning. |
+| `additional_protocols` | `Optional[List[str]]` | |
 
 ### Methods
 
@@ -954,19 +779,10 @@ value into a Python instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_value` | {{< multiline >}}`literals_pb2.StructuredDataset`
-doc: This will be a Flyte IDL DataFrame Literal - do not confuse this with the
-DataFrame class defined also in this module.
-{{< /multiline >}} |
-| `current_task_metadata` | {{< multiline >}}`literals_pb2.StructuredDatasetMetadata`
-doc: Metadata object containing the type (and columns if any) for the currently
-executing task. This type may have more or less information than the type information bundled
-inside the incoming flyte_value.
-:return: This function can either return an instance of the dataframe that this decoder handles, or an iterator
-of those dataframes.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_value` | `literals_pb2.StructuredDataset` | This will be a Flyte IDL DataFrame Literal - do not confuse this with the DataFrame class defined also in this module. |
+| `current_task_metadata` | `literals_pb2.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
 
 ### Properties
 
@@ -997,22 +813,11 @@ the DataFrameEncoder
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_type` | {{< multiline >}}`Type[T]`
-doc: The dataframe class in question that you want to register this encoder with
-{{< /multiline >}} |
-| `protocol` | {{< multiline >}}`Optional[str]`
-doc: A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either
-"s3" or "s3://". They are the same since the "://" will just be stripped by the constructor.
-If None, this encoder will be registered with all protocols that flytekit's data persistence layer
-is capable of handling.
-{{< /multiline >}} |
-| `supported_format` | {{< multiline >}}`Optional[str]`
-doc: Arbitrary string representing the format. If not supplied then an empty string
-will be used. An empty string implies that the encoder works with any format. If the format being asked
-for does not exist, the transformer engine will look for the "" encoder instead and write a warning.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type[T]` | The dataframe class in question that you want to register this encoder with |
+| `protocol` | `Optional[str]` | A prefix representing the storage driver (e.g. 's3, 'gs', 'bq', etc.). You can use either "s3" or "s3://". They are the same since the "://" will just be stripped by the constructor. If None, this encoder will be registered with all protocols that flytekit's data persistence layer is capable of handling. |
+| `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the encoder works with any format. If the format being asked for does not exist, the transformer engine will look for the "" encoder instead and write a warning. |
 
 ### Methods
 
@@ -1037,21 +842,10 @@ the
 
 
 
-| Parameter | Type |
-|-|-|
-| `dataframe` | {{< multiline >}}`DataFrame`
-doc: This is a DataFrame wrapper object. See more info above.
-{{< /multiline >}} |
-| `structured_dataset_type` | {{< multiline >}}`types_pb2.StructuredDatasetType`
-doc: This the DataFrameType, as found in the LiteralType of the interface
-of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders
-can include it in the returned literals.DataFrame. See the IDL for more information on why this
-literal in particular carries the type information along with it. If the encoder doesn't supply it, it will
-also be filled in after the encoder runs by the transformer engine.
-:return: This function should return a DataFrame literal object. Do not confuse this with the
-DataFrame wrapper class used as input to this function - that is the user facing Python class.
-This function needs to return the IDL DataFrame.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataframe` | `DataFrame` | This is a DataFrame wrapper object. See more info above. |
+| `structured_dataset_type` | `types_pb2.StructuredDatasetType` | This the DataFrameType, as found in the LiteralType of the interface of the task that invoked this encoding call. It is passed along to encoders so that authors of encoders can include it in the returned literals.DataFrame. See the IDL for more information on why this literal in particular carries the type information along with it. If the encoder doesn't supply it, it will also be filled in after the encoder runs by the transformer engine. :return: This function should return a DataFrame literal object. Do not confuse this with the DataFrame wrapper class used as input to this function - that is the user facing Python class. This function needs to return the IDL DataFrame. |
 
 ### Properties
 
@@ -1101,10 +895,10 @@ def assert_type(
     v: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[DataFrame]` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[DataFrame]` | |
+| `v` | `typing.Any` | |
 
 #### encode()
 
@@ -1117,13 +911,13 @@ def encode(
     structured_literal_type: types_pb2.StructuredDatasetType,
 ) -> literals_pb2.Literal
 ```
-| Parameter | Type |
-|-|-|
-| `df` | `DataFrame` |
-| `df_type` | `Type` |
-| `protocol` | `str` |
-| `format` | `str` |
-| `structured_literal_type` | `types_pb2.StructuredDatasetType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `DataFrame` | |
+| `df_type` | `Type` | |
+| `protocol` | `str` | |
+| `format` | `str` | |
+| `structured_literal_type` | `types_pb2.StructuredDatasetType` | |
 
 #### from_binary_idl()
 
@@ -1138,20 +932,20 @@ This function primarily handles deserialization for untyped dicts, dataclasses, 
 
 For untyped dict, dataclass, and pydantic basemodel:
 Life Cycle (Untyped Dict as example):
-    python val -> msgpack bytes -> binary literal scalar -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; msgpack bytes -&gt; python val
                   (to_literal)                             (from_binary_idl)
 
 For attribute access:
 Life Cycle:
-    python val -> msgpack bytes -> binary literal scalar -> resolved golang value -> binary literal scalar
-     -> msgpack bytes -> python val
+    python val -&gt; msgpack bytes -&gt; binary literal scalar -&gt; resolved golang value -&gt; binary literal scalar
+     -&gt; msgpack bytes -&gt; python val
                   (to_literal)      (propeller attribute access)     (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_decoder()
 
@@ -1162,11 +956,11 @@ def get_decoder(
     format: str,
 ) -> DataFrameDecoder
 ```
-| Parameter | Type |
-|-|-|
-| `df_type` | `Type` |
-| `protocol` | `str` |
-| `format` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df_type` | `Type` | |
+| `protocol` | `str` | |
+| `format` | `str` | |
 
 #### get_encoder()
 
@@ -1177,11 +971,11 @@ def get_encoder(
     format: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `df_type` | `Type` |
-| `protocol` | `str` |
-| `format` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df_type` | `Type` | |
+| `protocol` | `str` | |
+| `format` | `str` | |
 
 #### get_literal_type()
 
@@ -1196,11 +990,9 @@ The other aspects of it - columns, external schema type, etc. can be read from a
 
 
 
-| Parameter | Type |
-|-|-|
-| `t` | {{< multiline >}}`typing.Union[Type[DataFrame], typing.Any]`
-doc: The python dataframe type, which is mostly ignored.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Union[Type[DataFrame], typing.Any]` | The python dataframe type, which is mostly ignored. |
 
 #### guess_python_type()
 
@@ -1212,9 +1004,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `types_pb2.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `types_pb2.LiteralType` | |
 
 #### isinstance_generic()
 
@@ -1224,10 +1016,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### iter_as()
 
@@ -1238,11 +1030,11 @@ def iter_as(
     updated_metadata: literals_pb2.StructuredDatasetMetadata,
 ) -> typing.AsyncIterator[DF]
 ```
-| Parameter | Type |
-|-|-|
-| `sd` | `literals_pb2.StructuredDataset` |
-| `df_type` | `Type[DF]` |
-| `updated_metadata` | `literals_pb2.StructuredDatasetMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sd` | `literals_pb2.StructuredDataset` | |
+| `df_type` | `Type[DF]` | |
+| `updated_metadata` | `literals_pb2.StructuredDatasetMetadata` | |
 
 #### open_as()
 
@@ -1253,14 +1045,11 @@ def open_as(
     updated_metadata: literals_pb2.StructuredDatasetMetadata,
 ) -> DF
 ```
-| Parameter | Type |
-|-|-|
-| `sd` | `literals_pb2.StructuredDataset` |
-| `df_type` | `Type[DF]` |
-| `updated_metadata` | {{< multiline >}}`literals_pb2.StructuredDatasetMetadata`
-doc: New metadata type, since it might be different from the metadata in the literal.
-:return: dataframe. It could be pandas dataframe or arrow table, etc.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `sd` | `literals_pb2.StructuredDataset` | |
+| `df_type` | `Type[DF]` | |
+| `updated_metadata` | `literals_pb2.StructuredDatasetMetadata` | New metadata type, since it might be different from the metadata in the literal. :return: dataframe. It could be pandas dataframe or arrow table, etc. |
 
 #### register()
 
@@ -1278,31 +1067,13 @@ specify a protocol (e.g. s3, gs, etc.) field, then
 
 
 
-| Parameter | Type |
-|-|-|
-| `h` | {{< multiline >}}`Handlers`
-doc: The DataFrameEncoder or DataFrameDecoder you wish to register with this transformer.
-{{< /multiline >}} |
-| `default_for_type` | {{< multiline >}}`bool`
-doc: If set, when a user returns from a task an instance of the dataframe the handler
-handles, e.g. ``return pd.DataFrame(...)``, not wrapped around the ``StructuredDataset`` object, we will
-use this handler's protocol and format as the default, effectively saying that this handler will be called.
-Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler
-is capable of handling all the different storage protocols that flytekit's data persistence layer is aware of.
-In these cases, the protocol is determined by the raw output data prefix set in the active context.
-{{< /multiline >}} |
-| `override` | {{< multiline >}}`bool`
-doc: Override any previous registrations. If default_for_type is also set, this will also override
-the default.
-{{< /multiline >}} |
-| `default_format_for_type` | {{< multiline >}}`bool`
-doc: Unlike the default_for_type arg that will set this handler's format and storage
-as the default, this will only set the format. Error if already set, unless override is specified.
-{{< /multiline >}} |
-| `default_storage_for_type` | {{< multiline >}}`bool`
-doc: Same as above but only for the storage format. Error if already set,
-unless override is specified.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `h` | `Handlers` | The DataFrameEncoder or DataFrameDecoder you wish to register with this transformer. |
+| `default_for_type` | `bool` | If set, when a user returns from a task an instance of the dataframe the handler handles, e.g. ``return pd.DataFrame(...)``, not wrapped around the ``StructuredDataset`` object, we will use this handler's protocol and format as the default, effectively saying that this handler will be called. Note that this shouldn't be set if your handler's protocol is None, because that implies that your handler is capable of handling all the different storage protocols that flytekit's data persistence layer is aware of. In these cases, the protocol is determined by the raw output data prefix set in the active context. |
+| `override` | `bool` | Override any previous registrations. If default_for_type is also set, this will also override the default. |
+| `default_format_for_type` | `bool` | Unlike the default_for_type arg that will set this handler's format and storage as the default, this will only set the format. Error if already set, unless override is specified. |
+| `default_storage_for_type` | `bool` | Same as above but only for the storage format. Error if already set, unless override is specified. |
 
 #### register_for_protocol()
 
@@ -1319,14 +1090,14 @@ def register_for_protocol(
 See the main register function instead.
 
 
-| Parameter | Type |
-|-|-|
-| `h` | `Handlers` |
-| `protocol` | `str` |
-| `default_for_type` | `bool` |
-| `override` | `bool` |
-| `default_format_for_type` | `bool` |
-| `default_storage_for_type` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `h` | `Handlers` | |
+| `protocol` | `str` | |
+| `default_for_type` | `bool` | |
+| `override` | `bool` | |
+| `default_format_for_type` | `bool` | |
+| `default_storage_for_type` | `bool` | |
 
 #### register_renderer()
 
@@ -1336,10 +1107,10 @@ def register_renderer(
     renderer: Renderable,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `python_type` | `Type` |
-| `renderer` | `Renderable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_type` | `Type` | |
+| `renderer` | `Renderable` | |
 
 #### to_html()
 
@@ -1352,10 +1123,10 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `python_val` | `typing.Any` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_val` | `typing.Any` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -1372,17 +1143,11 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `python_val` | {{< multiline >}}`Union[DataFrame, typing.Any]`
-doc: The actual value to be transformed
-{{< /multiline >}} |
-| `python_type` | {{< multiline >}}`Union[Type[DataFrame], Type]`
-doc: The assumed type of the value (this matches the declared type on the function)
-{{< /multiline >}} |
-| `expected` | {{< multiline >}}`types_pb2.LiteralType`
-doc: Expected Literal Type
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_val` | `Union[DataFrame, typing.Any]` | The actual value to be transformed |
+| `python_type` | `Union[Type[DataFrame], Type]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `types_pb2.LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -1395,7 +1160,7 @@ def to_python_value(
 The only tricky thing with converting a Literal (say the output of an earlier task), to a Python value at
 the start of a task execution, is the column subsetting behavior. For example, if you have,
 
-def t1() -> Annotated[StructuredDataset, kwtypes(col_a=int, col_b=float)]: ...
+def t1() -&gt; Annotated[StructuredDataset, kwtypes(col_a=int, col_b=float)]: ...
 def t2(in_a: Annotated[StructuredDataset, kwtypes(col_b=float)]): ...
 
 where t2(in_a=t1()), when t2 does in_a.open(pd.DataFrame).all(), it should get a DataFrame
@@ -1422,20 +1187,18 @@ with only one column.
 +-----------------------------+-----------------------------------------+--------------------------------------+
 
 
-| Parameter | Type |
-|-|-|
-| `lv` | `literals_pb2.Literal` |
-| `expected_python_type` | `Type[T] \| DataFrame` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lv` | `literals_pb2.Literal` | |
+| `expected_python_type` | `Type[T] \| DataFrame` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `name` | `None` |  |
-| `python_type` | `None` | {{< multiline >}}This returns the python type
-{{< /multiline >}} |
-| `type_assertions_enabled` | `None` | {{< multiline >}}Indicates if the transformer wants type assertions to be enabled at the core type engine layer
-{{< /multiline >}} |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 
 ## flyte.io.Dir
 
@@ -1469,7 +1232,7 @@ Example: Walk through directory files recursively (Async).
 
 ```python
 @env.task
-async def process_all_files(d: Dir) -> int:
+async def process_all_files(d: Dir) -&gt; int:
     file_count = 0
     async for file in d.walk(recursive=True):
         async with file.open("rb") as f:
@@ -1483,7 +1246,7 @@ Example: Walk through directory files recursively (Sync).
 
 ```python
 @env.task
-def process_all_files_sync(d: Dir) -> int:
+def process_all_files_sync(d: Dir) -&gt; int:
     file_count = 0
     for file in d.walk_sync(recursive=True):
         with file.open_sync("rb") as f:
@@ -1497,7 +1260,7 @@ Example: List files in directory (Async).
 
 ```python
 @env.task
-async def count_files(d: Dir) -> int:
+async def count_files(d: Dir) -&gt; int:
     files = await d.list_files()
     return len(files)
 ```
@@ -1506,7 +1269,7 @@ Example: List files in directory (Sync).
 
 ```python
 @env.task
-def count_files_sync(d: Dir) -> int:
+def count_files_sync(d: Dir) -&gt; int:
     files = d.list_files_sync()
     return len(files)
 ```
@@ -1515,7 +1278,7 @@ Example: Get a specific file from directory (Async).
 
 ```python
 @env.task
-async def read_config_file(d: Dir) -> str:
+async def read_config_file(d: Dir) -&gt; str:
     config_file = await d.get_file("config.json")
     if config_file:
         async with config_file.open("rb") as f:
@@ -1527,7 +1290,7 @@ Example: Get a specific file from directory (Sync).
 
 ```python
 @env.task
-def read_config_file_sync(d: Dir) -> str:
+def read_config_file_sync(d: Dir) -&gt; str:
     config_file = d.get_file_sync("config.json")
     if config_file:
         with config_file.open_sync("rb") as f:
@@ -1539,7 +1302,7 @@ Example: Upload a local directory to remote storage (Async).
 
 ```python
 @env.task
-async def upload_directory() -> Dir:
+async def upload_directory() -&gt; Dir:
     # Create local directory with files
     os.makedirs("/tmp/my_data", exist_ok=True)
     with open("/tmp/my_data/file1.txt", "w") as f:
@@ -1552,7 +1315,7 @@ Example: Upload a local directory to remote storage (Sync).
 
 ```python
 @env.task
-def upload_directory_sync() -> Dir:
+def upload_directory_sync() -&gt; Dir:
     # Create local directory with files
     os.makedirs("/tmp/my_data", exist_ok=True)
     with open("/tmp/my_data/file1.txt", "w") as f:
@@ -1565,7 +1328,7 @@ Example: Download a directory to local storage (Async).
 
 ```python
 @env.task
-async def download_directory(d: Dir) -> str:
+async def download_directory(d: Dir) -&gt; str:
     local_path = await d.download()
     # Process files in local directory
     return local_path
@@ -1575,7 +1338,7 @@ Example: Download a directory to local storage (Sync).
 
 ```python
 @env.task
-def download_directory_sync(d: Dir) -> str:
+def download_directory_sync(d: Dir) -&gt; str:
     local_path = d.download_sync()
     # Process files in local directory
     return local_path
@@ -1585,7 +1348,7 @@ Example: Reference an existing remote directory.
 
 ```python
 @env.task
-async def process_existing_dir() -> int:
+async def process_existing_dir() -&gt; int:
     d = Dir.from_existing_remote("s3://my-bucket/data/")
     files = await d.list_files()
     return len(files)
@@ -1595,7 +1358,7 @@ Example: Check if directory exists (Async).
 
 ```python
 @env.task
-async def check_directory(d: Dir) -> bool:
+async def check_directory(d: Dir) -&gt; bool:
     return await d.exists()
 ```
 
@@ -1603,7 +1366,7 @@ Example: Check if directory exists (Sync).
 
 ```python
 @env.task
-def check_directory_sync(d: Dir) -> bool:
+def check_directory_sync(d: Dir) -&gt; bool:
     return d.exists_sync()
 ```
 
@@ -1622,9 +1385,9 @@ validated to form a valid model.
 `self` is explicitly positional-only to allow `self` as a field name.
 
 
-| Parameter | Type |
-|-|-|
-| `data` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `Any` | |
 
 ### Methods
 
@@ -1678,10 +1441,10 @@ def construct(
     values: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `_fields_set` | `set[str] \| None` |
-| `values` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_fields_set` | `set[str] \| None` | |
+| `values` | `Any` | |
 
 #### copy()
 
@@ -1695,8 +1458,8 @@ def copy(
 ```
 Returns a copy of the model.
 
-> [!WARNING] Deprecated
-> This method is now deprecated; use `model_copy` instead.
+&gt; [!WARNING] Deprecated
+&gt; This method is now deprecated; use `model_copy` instead.
 
 If you need `include` or `exclude`, use:
 
@@ -1708,20 +1471,12 @@ copied = self.model_validate(data)
 
 
 
-| Parameter | Type |
-|-|-|
-| `include` | {{< multiline >}}`AbstractSetIntStr \| MappingIntStrAny \| None`
-doc:  Optional set or mapping specifying which fields to include in the copied model.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`AbstractSetIntStr \| MappingIntStrAny \| None`
-doc:  Optional set or mapping specifying which fields to exclude in the copied model.
-{{< /multiline >}} |
-| `update` | {{< multiline >}}`Dict[str, Any] \| None`
-doc:  Optional dictionary of field-value pairs to override field values in the copied model.
-{{< /multiline >}} |
-| `deep` | {{< multiline >}}`bool`
-doc:  If True, the values of fields that are Pydantic models will be deep-copied.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `AbstractSetIntStr \| MappingIntStrAny \| None` | Optional set or mapping specifying which fields to include in the copied model. |
+| `exclude` | `AbstractSetIntStr \| MappingIntStrAny \| None` | Optional set or mapping specifying which fields to exclude in the copied model. |
+| `update` | `Dict[str, Any] \| None` | Optional dictionary of field-value pairs to override field values in the copied model. |
+| `deep` | `bool` | If True, the values of fields that are Pydantic models will be deep-copied. |
 
 #### dict()
 
@@ -1735,14 +1490,14 @@ def dict(
     exclude_none: bool,
 ) -> Dict[str, Any]
 ```
-| Parameter | Type |
-|-|-|
-| `include` | `IncEx \| None` |
-| `exclude` | `IncEx \| None` |
-| `by_alias` | `bool` |
-| `exclude_unset` | `bool` |
-| `exclude_defaults` | `bool` |
-| `exclude_none` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `IncEx \| None` | |
+| `exclude` | `IncEx \| None` | |
+| `by_alias` | `bool` | |
+| `exclude_unset` | `bool` | |
+| `exclude_defaults` | `bool` | |
+| `exclude_none` | `bool` | |
 
 #### download()
 
@@ -1759,7 +1514,7 @@ Example (Async):
 
 ```python
 @env.task
-async def download_directory(d: Dir) -> str:
+async def download_directory(d: Dir) -&gt; str:
     local_dir = await d.download()
     # Process files in the local directory
     return local_dir
@@ -1769,19 +1524,16 @@ Example (Async - Download to specific path):
 
 ```python
 @env.task
-async def download_to_path(d: Dir) -> str:
+async def download_to_path(d: Dir) -&gt; str:
     local_dir = await d.download("/tmp/my_data/")
     return local_dir
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Optional[Union[str, Path]]`
-doc:  The local path to download the directory to. If None, a temporary
-directory will be used and a path will be generated.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the directory to. If None, a temporary directory will be used and a path will be generated. |
 
 #### download_sync()
 
@@ -1798,7 +1550,7 @@ Example (Sync):
 
 ```python
 @env.task
-def download_directory_sync(d: Dir) -> str:
+def download_directory_sync(d: Dir) -&gt; str:
     local_dir = d.download_sync()
     # Process files in the local directory
     return local_dir
@@ -1808,18 +1560,15 @@ Example (Sync - Download to specific path):
 
 ```python
 @env.task
-def download_to_path_sync(d: Dir) -> str:
+def download_to_path_sync(d: Dir) -&gt; str:
     local_dir = d.download_sync("/tmp/my_data/")
     return local_dir
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Optional[Union[str, Path]]`
-doc:  The local path to download the directory to. If None, a temporary
-directory will be used and a path will be generated.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the directory to. If None, a temporary directory will be used and a path will be generated. |
 
 #### exists()
 
@@ -1835,7 +1584,7 @@ Example (Async):
 
 ```python
 @env.task
-async def check_directory(d: Dir) -> bool:
+async def check_directory(d: Dir) -&gt; bool:
     if await d.exists():
         print("Directory exists!")
         return True
@@ -1859,7 +1608,7 @@ Example (Sync):
 
 ```python
 @env.task
-def check_directory_sync(d: Dir) -> bool:
+def check_directory_sync(d: Dir) -&gt; bool:
     if d.exists_sync():
         print("Directory exists!")
         return True
@@ -1883,7 +1632,7 @@ Example:
 
 ```python
 @env.task
-async def process_existing_directory() -> int:
+async def process_existing_directory() -&gt; int:
     d = Dir.from_existing_remote("s3://my-bucket/data/")
     files = await d.list_files()
     return len(files)
@@ -1893,7 +1642,7 @@ Example (With cache key):
 
 ```python
 @env.task
-async def process_with_cache_key() -> int:
+async def process_with_cache_key() -&gt; int:
     d = Dir.from_existing_remote("s3://my-bucket/data/", dir_cache_key="abc123")
     files = await d.list_files()
     return len(files)
@@ -1901,15 +1650,10 @@ async def process_with_cache_key() -> int:
 
 
 
-| Parameter | Type |
-|-|-|
-| `remote_path` | {{< multiline >}}`str`
-doc:  The remote path to the existing directory
-{{< /multiline >}} |
-| `dir_cache_key` | {{< multiline >}}`Optional[str]`
-doc:  Optional hash value to use for cache key computation. If not specified,
-the cache key will be computed based on the directory's attributes.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | The remote path to the existing directory |
+| `dir_cache_key` | `Optional[str]` | Optional hash value to use for cache key computation. If not specified, the cache key will be computed based on the directory's attributes. |
 
 #### from_local()
 
@@ -1928,7 +1672,7 @@ Example (Async):
 
 ```python
 @env.task
-async def upload_local_directory() -> Dir:
+async def upload_local_directory() -&gt; Dir:
     # Create a local directory with files
     os.makedirs("/tmp/data_dir", exist_ok=True)
     with open("/tmp/data_dir/file1.txt", "w") as f:
@@ -1943,7 +1687,7 @@ Example (Async - With specific destination):
 
 ```python
 @env.task
-async def upload_to_specific_path() -> Dir:
+async def upload_to_specific_path() -&gt; Dir:
     remote_dir = await Dir.from_local("/tmp/data_dir/", "s3://my-bucket/data/")
     return remote_dir
 ```
@@ -1952,26 +1696,17 @@ Example (Async - With cache key):
 
 ```python
 @env.task
-async def upload_with_cache_key() -> Dir:
+async def upload_with_cache_key() -&gt; Dir:
     remote_dir = await Dir.from_local("/tmp/data_dir/", dir_cache_key="my_cache_key_123")
     return remote_dir
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Union[str, Path]`
-doc:  Path to the local directory
-{{< /multiline >}} |
-| `remote_destination` | {{< multiline >}}`Optional[str]`
-doc:  Optional remote path to store the directory. If None, a path will be automatically
-generated.
-{{< /multiline >}} |
-| `dir_cache_key` | {{< multiline >}}`Optional[str]`
-doc:  Optional precomputed hash value to use for cache key computation when this Dir is used
-as an input to discoverable tasks. If not specified, the cache key will be based on
-directory attributes.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Union[str, Path]` | Path to the local directory |
+| `remote_destination` | `Optional[str]` | Optional remote path to store the directory. If None, a path will be automatically generated. |
+| `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
 
 #### from_local_sync()
 
@@ -1990,7 +1725,7 @@ Example (Sync):
 
 ```python
 @env.task
-def upload_local_directory_sync() -> Dir:
+def upload_local_directory_sync() -&gt; Dir:
     # Create a local directory with files
     os.makedirs("/tmp/data_dir", exist_ok=True)
     with open("/tmp/data_dir/file1.txt", "w") as f:
@@ -2005,7 +1740,7 @@ Example (Sync - With specific destination):
 
 ```python
 @env.task
-def upload_to_specific_path_sync() -> Dir:
+def upload_to_specific_path_sync() -&gt; Dir:
     remote_dir = Dir.from_local_sync("/tmp/data_dir/", "s3://my-bucket/data/")
     return remote_dir
 ```
@@ -2014,27 +1749,18 @@ Example (Sync - With cache key):
 
 ```python
 @env.task
-def upload_with_cache_key_sync() -> Dir:
+def upload_with_cache_key_sync() -&gt; Dir:
     remote_dir = Dir.from_local_sync("/tmp/data_dir/", dir_cache_key="my_cache_key_123")
     return remote_dir
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Union[str, Path]`
-doc:  Path to the local directory
-{{< /multiline >}} |
-| `remote_destination` | {{< multiline >}}`Optional[str]`
-doc:  Optional remote path to store the directory. If None, a path will be automatically
-generated.
-{{< /multiline >}} |
-| `dir_cache_key` | {{< multiline >}}`Optional[str]`
-doc:  Optional precomputed hash value to use for cache key computation when this Dir is used
-as an input to discoverable tasks. If not specified, the cache key will be based on
-directory attributes.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Union[str, Path]` | Path to the local directory |
+| `remote_destination` | `Optional[str]` | Optional remote path to store the directory. If None, a path will be automatically generated. |
+| `dir_cache_key` | `Optional[str]` | Optional precomputed hash value to use for cache key computation when this Dir is used as an input to discoverable tasks. If not specified, the cache key will be based on directory attributes. |
 
 #### from_orm()
 
@@ -2043,9 +1769,9 @@ def from_orm(
     obj: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | |
 
 #### get_file()
 
@@ -2062,7 +1788,7 @@ Example (Async):
 
 ```python
 @env.task
-async def read_specific_file(d: Dir) -> str:
+async def read_specific_file(d: Dir) -&gt; str:
     file = await d.get_file("data.csv")
     if file:
         async with file.open("rb") as f:
@@ -2073,11 +1799,9 @@ async def read_specific_file(d: Dir) -> str:
 
 
 
-| Parameter | Type |
-|-|-|
-| `file_name` | {{< multiline >}}`str`
-doc:  The name of the file to get
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_name` | `str` | The name of the file to get |
 
 #### get_file_sync()
 
@@ -2094,7 +1818,7 @@ Example (Sync):
 
 ```python
 @env.task
-def read_specific_file_sync(d: Dir) -> str:
+def read_specific_file_sync(d: Dir) -&gt; str:
     file = d.get_file_sync("data.csv")
     if file:
         with file.open_sync("rb") as f:
@@ -2105,11 +1829,9 @@ def read_specific_file_sync(d: Dir) -> str:
 
 
 
-| Parameter | Type |
-|-|-|
-| `file_name` | {{< multiline >}}`str`
-doc:  The name of the file to get
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_name` | `str` | The name of the file to get |
 
 #### json()
 
@@ -2126,17 +1848,17 @@ def json(
     dumps_kwargs: Any,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `include` | `IncEx \| None` |
-| `exclude` | `IncEx \| None` |
-| `by_alias` | `bool` |
-| `exclude_unset` | `bool` |
-| `exclude_defaults` | `bool` |
-| `exclude_none` | `bool` |
-| `encoder` | `Callable[[Any], Any] \| None` |
-| `models_as_dict` | `bool` |
-| `dumps_kwargs` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `IncEx \| None` | |
+| `exclude` | `IncEx \| None` | |
+| `by_alias` | `bool` | |
+| `exclude_unset` | `bool` | |
+| `exclude_defaults` | `bool` | |
+| `exclude_none` | `bool` | |
+| `encoder` | `Callable[[Any], Any] \| None` | |
+| `models_as_dict` | `bool` | |
+| `dumps_kwargs` | `Any` | |
 
 #### list_files()
 
@@ -2154,7 +1876,7 @@ Example (Async):
 
 ```python
 @env.task
-async def count_files(d: Dir) -> int:
+async def count_files(d: Dir) -&gt; int:
     files = await d.list_files()
     return len(files)
 ```
@@ -2163,7 +1885,7 @@ Example (Async - Process files):
 
 ```python
 @env.task
-async def process_all_files(d: Dir) -> list[str]:
+async def process_all_files(d: Dir) -&gt; list[str]:
     files = await d.list_files()
     contents = []
     for file in files:
@@ -2190,7 +1912,7 @@ Example (Sync):
 
 ```python
 @env.task
-def count_files_sync(d: Dir) -> int:
+def count_files_sync(d: Dir) -&gt; int:
     files = d.list_files_sync()
     return len(files)
 ```
@@ -2199,7 +1921,7 @@ Example (Sync - Process files):
 
 ```python
 @env.task
-def process_all_files_sync(d: Dir) -> list[str]:
+def process_all_files_sync(d: Dir) -&gt; list[str]:
     files = d.list_files_sync()
     contents = []
     for file in files:
@@ -2223,25 +1945,19 @@ Creates a new instance of the `Model` class with validated data.
 Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 
-> [!NOTE]
-> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
-> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
-> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
-> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
-> an error if extra values are passed, but they will be ignored.
+&gt; [!NOTE]
+&gt; `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+&gt; That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+&gt; and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+&gt; Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+&gt; an error if extra values are passed, but they will be ignored.
 
 
 
-| Parameter | Type |
-|-|-|
-| `_fields_set` | {{< multiline >}}`set[str] \| None`
-doc:  A set of field names that were originally explicitly set during instantiation. If provided,
-this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute.
-Otherwise, the field names from the `values` argument will be used.
-{{< /multiline >}} |
-| `values` | {{< multiline >}}`Any`
-doc:  Trusted or pre-validated data dictionary.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `_fields_set` | `set[str] \| None` | A set of field names that were originally explicitly set during instantiation. If provided, this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute. Otherwise, the field names from the `values` argument will be used. |
+| `values` | `Any` | Trusted or pre-validated data dictionary. |
 
 #### model_copy()
 
@@ -2256,19 +1972,17 @@ def model_copy(
 
 Returns a copy of the model.
 
-> [!NOTE]
-> The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
-> might have unexpected side effects if you store anything in it, on top of the model
-> fields (e.g. the value of [cached properties][functools.cached_property]).
+&gt; [!NOTE]
+&gt; The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
+&gt; might have unexpected side effects if you store anything in it, on top of the model
+&gt; fields (e.g. the value of [cached properties][functools.cached_property]).
 
 
 
-| Parameter | Type |
-|-|-|
-| `update` | `Mapping[str, Any] \| None` |
-| `deep` | {{< multiline >}}`bool`
-doc:  Set to `True` to make a deep copy of the model.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `update` | `Mapping[str, Any] \| None` | |
+| `deep` | `bool` | Set to `True` to make a deep copy of the model. |
 
 #### model_dump()
 
@@ -2296,53 +2010,21 @@ Generate a dictionary representation of the model, optionally specifying which f
 
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | {{< multiline >}}`Literal['json', 'python'] \| str`
-doc:  The mode in which `to_python` should run.
-If mode is 'json', the output will only contain JSON serializable types.
-If mode is 'python', the output may contain non-JSON-serializable Python objects.
-{{< /multiline >}} |
-| `include` | {{< multiline >}}`IncEx \| None`
-doc:  A set of fields to include in the output.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`IncEx \| None`
-doc:  A set of fields to exclude from the output.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the serializer.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias in the dictionary key if defined.
-{{< /multiline >}} |
-| `exclude_unset` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have not been explicitly set.
-{{< /multiline >}} |
-| `exclude_defaults` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that are set to their default value.
-{{< /multiline >}} |
-| `exclude_none` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have a value of `None`.
-{{< /multiline >}} |
-| `exclude_computed_fields` | {{< multiline >}}`bool`
-doc:  Whether to exclude computed fields.
-While this can be useful for round-tripping, it is usually recommended to use the dedicated
-`round_trip` parameter instead.
-{{< /multiline >}} |
-| `round_trip` | {{< multiline >}}`bool`
-doc:  If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-{{< /multiline >}} |
-| `warnings` | {{< multiline >}}`bool \| Literal['none', 'warn', 'error']`
-doc:  How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-"error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-{{< /multiline >}} |
-| `fallback` | {{< multiline >}}`Callable[[Any], Any] \| None`
-doc:  A function to call when an unknown value is encountered. If not provided,
-a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
-{{< /multiline >}} |
-| `serialize_as_any` | {{< multiline >}}`bool`
-doc:  Whether to serialize fields with duck-typing serialization behavior.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `Literal['json', 'python'] \| str` | The mode in which `to_python` should run. If mode is 'json', the output will only contain JSON serializable types. If mode is 'python', the output may contain non-JSON-serializable Python objects. |
+| `include` | `IncEx \| None` | A set of fields to include in the output. |
+| `exclude` | `IncEx \| None` | A set of fields to exclude from the output. |
+| `context` | `Any \| None` | Additional context to pass to the serializer. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias in the dictionary key if defined. |
+| `exclude_unset` | `bool` | Whether to exclude fields that have not been explicitly set. |
+| `exclude_defaults` | `bool` | Whether to exclude fields that are set to their default value. |
+| `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
+| `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
+| `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 #### model_dump_json()
 
@@ -2371,55 +2053,22 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 
 
 
-| Parameter | Type |
-|-|-|
-| `indent` | {{< multiline >}}`int \| None`
-doc:  Indentation to use in the JSON output. If None is passed, the output will be compact.
-{{< /multiline >}} |
-| `ensure_ascii` | {{< multiline >}}`bool`
-doc:  If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped.
-If `False` (the default), these characters will be output as-is.
-{{< /multiline >}} |
-| `include` | {{< multiline >}}`IncEx \| None`
-doc:  Field(s) to include in the JSON output.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`IncEx \| None`
-doc:  Field(s) to exclude from the JSON output.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the serializer.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to serialize using field aliases.
-{{< /multiline >}} |
-| `exclude_unset` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have not been explicitly set.
-{{< /multiline >}} |
-| `exclude_defaults` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that are set to their default value.
-{{< /multiline >}} |
-| `exclude_none` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have a value of `None`.
-{{< /multiline >}} |
-| `exclude_computed_fields` | {{< multiline >}}`bool`
-doc:  Whether to exclude computed fields.
-While this can be useful for round-tripping, it is usually recommended to use the dedicated
-`round_trip` parameter instead.
-{{< /multiline >}} |
-| `round_trip` | {{< multiline >}}`bool`
-doc:  If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-{{< /multiline >}} |
-| `warnings` | {{< multiline >}}`bool \| Literal['none', 'warn', 'error']`
-doc:  How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-"error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-{{< /multiline >}} |
-| `fallback` | {{< multiline >}}`Callable[[Any], Any] \| None`
-doc:  A function to call when an unknown value is encountered. If not provided,
-a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
-{{< /multiline >}} |
-| `serialize_as_any` | {{< multiline >}}`bool`
-doc:  Whether to serialize fields with duck-typing serialization behavior.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `indent` | `int \| None` | Indentation to use in the JSON output. If None is passed, the output will be compact. |
+| `ensure_ascii` | `bool` | If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped. If `False` (the default), these characters will be output as-is. |
+| `include` | `IncEx \| None` | Field(s) to include in the JSON output. |
+| `exclude` | `IncEx \| None` | Field(s) to exclude from the JSON output. |
+| `context` | `Any \| None` | Additional context to pass to the serializer. |
+| `by_alias` | `bool \| None` | Whether to serialize using field aliases. |
+| `exclude_unset` | `bool` | Whether to exclude fields that have not been explicitly set. |
+| `exclude_defaults` | `bool` | Whether to exclude fields that are set to their default value. |
+| `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
+| `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
+| `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 #### model_json_schema()
 
@@ -2436,28 +2085,13 @@ Generates a JSON schema for a model class.
 
 
 
-| Parameter | Type |
-|-|-|
-| `by_alias` | {{< multiline >}}`bool`
-doc:  Whether to use attribute aliases or not.
-{{< /multiline >}} |
-| `ref_template` | {{< multiline >}}`str`
-doc:  The reference template.
-- `'any_of'`: Use the [`anyOf`](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)
-keyword to combine schemas (the default).
-- `'primitive_type_array'`: Use the [`type`](https://json-schema.org/understanding-json-schema/reference/type)
-keyword as an array of strings, containing each type of the combination. If any of the schemas is not a primitive
-type (`string`, `boolean`, `null`, `integer` or `number`) or contains constraints/metadata, falls back to
-`any_of`.
-{{< /multiline >}} |
-| `schema_generator` | {{< multiline >}}`type[GenerateJsonSchema]`
-doc:  To override the logic used to generate the JSON schema, as a subclass of
-`GenerateJsonSchema` with your desired modifications
-{{< /multiline >}} |
-| `mode` | {{< multiline >}}`JsonSchemaMode`
-doc:  The mode in which to generate the schema.
-{{< /multiline >}} |
-| `union_format` | `Literal['any_of', 'primitive_type_array']` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | Whether to use attribute aliases or not. |
+| `ref_template` | `str` | The reference template. - `'any_of'`: Use the [`anyOf`](https://json-schema.org/understanding-json-schema/reference/combining#anyOf) keyword to combine schemas (the default). - `'primitive_type_array'`: Use the [`type`](https://json-schema.org/understanding-json-schema/reference/type) keyword as an array of strings, containing each type of the combination. If any of the schemas is not a primitive type (`string`, `boolean`, `null`, `integer` or `number`) or contains constraints/metadata, falls back to `any_of`. |
+| `schema_generator` | `type[GenerateJsonSchema]` | To override the logic used to generate the JSON schema, as a subclass of `GenerateJsonSchema` with your desired modifications |
+| `mode` | `JsonSchemaMode` | The mode in which to generate the schema. |
+| `union_format` | `Literal['any_of', 'primitive_type_array']` | |
 
 #### model_parametrized_name()
 
@@ -2472,13 +2106,9 @@ This method can be overridden to achieve a custom naming scheme for generic Base
 
 
 
-| Parameter | Type |
-|-|-|
-| `params` | {{< multiline >}}`tuple[type[Any], ...]`
-doc:  Tuple of types of the class. Given a generic class
-`Model` with 2 type variables and a concrete model `Model[str, int]`,
-the value `(str, int)` would be passed to `params`.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `params` | `tuple[type[Any], ...]` | Tuple of types of the class. Given a generic class `Model` with 2 type variables and a concrete model `Model[str, int]`, the value `(str, int)` would be passed to `params`. |
 
 #### model_post_init()
 
@@ -2491,9 +2121,9 @@ Override this method to perform additional initialization after `__init__` and `
 This is useful if you want to do some validation that requires the entire model to be initialized.
 
 
-| Parameter | Type |
-|-|-|
-| `context` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `context` | `Any` | |
 
 #### model_rebuild()
 
@@ -2512,20 +2142,12 @@ the initial attempt to build the schema, and automatic rebuilding fails.
 
 
 
-| Parameter | Type |
-|-|-|
-| `force` | {{< multiline >}}`bool`
-doc:  Whether to force the rebuilding of the model schema, defaults to `False`.
-{{< /multiline >}} |
-| `raise_errors` | {{< multiline >}}`bool`
-doc:  Whether to raise errors, defaults to `True`.
-{{< /multiline >}} |
-| `_parent_namespace_depth` | {{< multiline >}}`int`
-doc:  The depth level of the parent namespace, defaults to 2.
-{{< /multiline >}} |
-| `_types_namespace` | {{< multiline >}}`MappingNamespace \| None`
-doc:  The types namespace, defaults to `None`.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `force` | `bool` | Whether to force the rebuilding of the model schema, defaults to `False`. |
+| `raise_errors` | `bool` | Whether to raise errors, defaults to `True`. |
+| `_parent_namespace_depth` | `int` | The depth level of the parent namespace, defaults to 2. |
+| `_types_namespace` | `MappingNamespace \| None` | The types namespace, defaults to `None`. |
 
 #### model_validate()
 
@@ -2544,30 +2166,15 @@ Validate a pydantic model instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | {{< multiline >}}`Any`
-doc:  The object to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `from_attributes` | {{< multiline >}}`bool \| None`
-doc:  Whether to extract data from object attributes.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | The object to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `from_attributes` | `bool \| None` | Whether to extract data from object attributes. |
+| `context` | `Any \| None` | Additional context to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### model_validate_json()
 
@@ -2588,27 +2195,14 @@ Validate the given JSON data against the Pydantic model.
 
 
 
-| Parameter | Type |
-|-|-|
-| `json_data` | {{< multiline >}}`str \| bytes \| bytearray`
-doc:  The JSON data to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Extra variables to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `json_data` | `str \| bytes \| bytearray` | The JSON data to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `context` | `Any \| None` | Extra variables to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### model_validate_strings()
 
@@ -2626,27 +2220,14 @@ Validate the given object with string data against the Pydantic model.
 
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | {{< multiline >}}`Any`
-doc:  The object containing string data to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Extra variables to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | The object containing string data to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `context` | `Any \| None` | Extra variables to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### parse_file()
 
@@ -2659,13 +2240,13 @@ def parse_file(
     allow_pickle: bool,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str \| Path` |
-| `content_type` | `str \| None` |
-| `encoding` | `str` |
-| `proto` | `DeprecatedParseProtocol \| None` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str \| Path` | |
+| `content_type` | `str \| None` | |
+| `encoding` | `str` | |
+| `proto` | `DeprecatedParseProtocol \| None` | |
+| `allow_pickle` | `bool` | |
 
 #### parse_obj()
 
@@ -2674,9 +2255,9 @@ def parse_obj(
     obj: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | |
 
 #### parse_raw()
 
@@ -2689,13 +2270,13 @@ def parse_raw(
     allow_pickle: bool,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `b` | `str \| bytes` |
-| `content_type` | `str \| None` |
-| `encoding` | `str` |
-| `proto` | `DeprecatedParseProtocol \| None` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `b` | `str \| bytes` | |
+| `content_type` | `str \| None` | |
+| `encoding` | `str` | |
+| `proto` | `DeprecatedParseProtocol \| None` | |
+| `allow_pickle` | `bool` | |
 
 #### pre_init()
 
@@ -2707,9 +2288,9 @@ def pre_init(
 Internal: Pydantic validator to set default name from path. Not intended for direct use.
 
 
-| Parameter | Type |
-|-|-|
-| `data` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` |  | |
 
 #### schema()
 
@@ -2719,10 +2300,10 @@ def schema(
     ref_template: str,
 ) -> Dict[str, Any]
 ```
-| Parameter | Type |
-|-|-|
-| `by_alias` | `bool` |
-| `ref_template` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | |
+| `ref_template` | `str` | |
 
 #### schema_json()
 
@@ -2733,11 +2314,11 @@ def schema_json(
     dumps_kwargs: Any,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `by_alias` | `bool` |
-| `ref_template` | `str` |
-| `dumps_kwargs` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | |
+| `ref_template` | `str` | |
+| `dumps_kwargs` | `Any` | |
 
 #### schema_match()
 
@@ -2749,9 +2330,9 @@ def schema_match(
 Internal: Check if incoming schema matches Dir schema. Not intended for direct use.
 
 
-| Parameter | Type |
-|-|-|
-| `incoming` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `incoming` | `dict` | |
 
 #### update_forward_refs()
 
@@ -2760,9 +2341,9 @@ def update_forward_refs(
     localns: Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `localns` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `localns` | `Any` | |
 
 #### validate()
 
@@ -2771,9 +2352,9 @@ def validate(
     value: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `Any` | |
 
 #### walk()
 
@@ -2792,7 +2373,7 @@ Example (Async - Recursive):
 
 ```python
 @env.task
-async def list_all_files(d: Dir) -> list[str]:
+async def list_all_files(d: Dir) -&gt; list[str]:
     file_names = []
     async for file in d.walk(recursive=True):
         file_names.append(file.name)
@@ -2803,7 +2384,7 @@ Example (Async - Non-recursive):
 
 ```python
 @env.task
-async def list_top_level_files(d: Dir) -> list[str]:
+async def list_top_level_files(d: Dir) -&gt; list[str]:
     file_names = []
     async for file in d.walk(recursive=False):
         file_names.append(file.name)
@@ -2814,7 +2395,7 @@ Example (Async - With max depth):
 
 ```python
 @env.task
-async def list_files_max_depth(d: Dir) -> list[str]:
+async def list_files_max_depth(d: Dir) -&gt; list[str]:
     file_names = []
     async for file in d.walk(recursive=True, max_depth=2):
         file_names.append(file.name)
@@ -2823,14 +2404,10 @@ async def list_files_max_depth(d: Dir) -> list[str]:
 
 
 
-| Parameter | Type |
-|-|-|
-| `recursive` | {{< multiline >}}`bool`
-doc:  If True, recursively walk subdirectories. If False, only list files in the top-level directory.
-{{< /multiline >}} |
-| `max_depth` | {{< multiline >}}`Optional[int]`
-doc:  Maximum depth for recursive walking. If None, walk through all subdirectories.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `recursive` | `bool` | If True, recursively walk subdirectories. If False, only list files in the top-level directory. |
+| `max_depth` | `Optional[int]` | Maximum depth for recursive walking. If None, walk through all subdirectories. |
 
 #### walk_sync()
 
@@ -2849,7 +2426,7 @@ Example (Sync - Recursive):
 
 ```python
 @env.task
-def list_all_files_sync(d: Dir) -> list[str]:
+def list_all_files_sync(d: Dir) -&gt; list[str]:
     file_names = []
     for file in d.walk_sync(recursive=True):
         file_names.append(file.name)
@@ -2860,7 +2437,7 @@ Example (Sync - With file pattern):
 
 ```python
 @env.task
-def list_text_files(d: Dir) -> list[str]:
+def list_text_files(d: Dir) -&gt; list[str]:
     file_names = []
     for file in d.walk_sync(recursive=True, file_pattern="*.txt"):
         file_names.append(file.name)
@@ -2871,7 +2448,7 @@ Example (Sync - Non-recursive with max depth):
 
 ```python
 @env.task
-def list_files_limited(d: Dir) -> list[str]:
+def list_files_limited(d: Dir) -&gt; list[str]:
     file_names = []
     for file in d.walk_sync(recursive=True, max_depth=2):
         file_names.append(file.name)
@@ -2880,33 +2457,18 @@ def list_files_limited(d: Dir) -> list[str]:
 
 
 
-| Parameter | Type |
-|-|-|
-| `recursive` | {{< multiline >}}`bool`
-doc:  If True, recursively walk subdirectories. If False, only list files in the top-level directory.
-{{< /multiline >}} |
-| `file_pattern` | {{< multiline >}}`str`
-doc:  Glob pattern to filter files (e.g., "*.txt", "*.csv"). Default is "*" (all files).
-{{< /multiline >}} |
-| `max_depth` | {{< multiline >}}`Optional[int]`
-doc:  Maximum depth for recursive walking. If None, walk through all subdirectories.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `recursive` | `bool` | If True, recursively walk subdirectories. If False, only list files in the top-level directory. |
+| `file_pattern` | `str` | Glob pattern to filter files (e.g., "*.txt", "*.csv"). Default is "*" (all files). |
+| `max_depth` | `Optional[int]` | Maximum depth for recursive walking. If None, walk through all subdirectories. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `model_extra` | `None` | {{< multiline >}}Get extra fields set during validation.
-
-Returns:
-    A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`.
-{{< /multiline >}} |
-| `model_fields_set` | `None` | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
-
-Returns:
-    A set of strings representing the fields that have been set,
-        i.e. that were not filled from defaults.
-{{< /multiline >}} |
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 
 ## flyte.io.File
 
@@ -2938,7 +2500,7 @@ Example: Read a file input in a Task (Async).
 
 ```python
 @env.task
-async def read_file(file: File) -> str:
+async def read_file(file: File) -&gt; str:
     async with file.open("rb") as f:
         content = bytes(await f.read())
         return content.decode("utf-8")
@@ -2948,7 +2510,7 @@ Example: Read a file input in a Task (Sync).
 
 ```python
 @env.task
-def read_file_sync(file: File) -> str:
+def read_file_sync(file: File) -&gt; str:
     with file.open_sync("rb") as f:
         content = f.read()
         return content.decode("utf-8")
@@ -2958,7 +2520,7 @@ Example: Write a file by streaming it directly to blob storage (Async).
 
 ```python
 @env.task
-async def write_file() -> File:
+async def write_file() -&gt; File:
     file = File.new_remote()
     async with file.open("wb") as f:
         await f.write(b"Hello, World!")
@@ -2969,7 +2531,7 @@ Example: Upload a local file to remote storage (Async).
 
 ```python
 @env.task
-async def upload_file() -> File:
+async def upload_file() -&gt; File:
     # Write to local file first
     with open("/tmp/data.csv", "w") as f:
         f.write("col1,col2\n1,2\n3,4\n")
@@ -2981,7 +2543,7 @@ Example: Upload a local file to remote storage (Sync).
 
 ```python
 @env.task
-def upload_file_sync() -> File:
+def upload_file_sync() -&gt; File:
     # Write to local file first
     with open("/tmp/data.csv", "w") as f:
         f.write("col1,col2\n1,2\n3,4\n")
@@ -2993,7 +2555,7 @@ Example: Download a file to local storage (Async).
 
 ```python
 @env.task
-async def download_file(file: File) -> str:
+async def download_file(file: File) -&gt; str:
     local_path = await file.download()
     # Process the local file
     with open(local_path, "r") as f:
@@ -3004,7 +2566,7 @@ Example: Download a file to local storage (Sync).
 
 ```python
 @env.task
-def download_file_sync(file: File) -> str:
+def download_file_sync(file: File) -&gt; str:
     local_path = file.download_sync()
     # Process the local file
     with open(local_path, "r") as f:
@@ -3015,7 +2577,7 @@ Example: Reference an existing remote file.
 
 ```python
 @env.task
-async def process_existing_file() -> str:
+async def process_existing_file() -&gt; str:
     file = File.from_existing_remote("s3://my-bucket/data.csv")
     async with file.open("rb") as f:
         content = await f.read()
@@ -3026,7 +2588,7 @@ Example: Check if a file exists (Async).
 
 ```python
 @env.task
-async def check_file(file: File) -> bool:
+async def check_file(file: File) -&gt; bool:
     return await file.exists()
 ```
 
@@ -3034,7 +2596,7 @@ Example: Check if a file exists (Sync).
 
 ```python
 @env.task
-def check_file_sync(file: File) -> bool:
+def check_file_sync(file: File) -&gt; bool:
     return file.exists_sync()
 ```
 
@@ -3042,7 +2604,7 @@ Example: Pass through a file without copying.
 
 ```python
 @env.task
-async def pass_through(file: File) -> File:
+async def pass_through(file: File) -&gt; File:
     # No copy occurs - just passes the reference
     return file
 ```
@@ -3062,9 +2624,9 @@ validated to form a valid model.
 `self` is explicitly positional-only to allow `self` as a field name.
 
 
-| Parameter | Type |
-|-|-|
-| `data` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `Any` | |
 
 ### Methods
 
@@ -3115,10 +2677,10 @@ def construct(
     values: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `_fields_set` | `set[str] \| None` |
-| `values` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_fields_set` | `set[str] \| None` | |
+| `values` | `Any` | |
 
 #### copy()
 
@@ -3132,8 +2694,8 @@ def copy(
 ```
 Returns a copy of the model.
 
-> [!WARNING] Deprecated
-> This method is now deprecated; use `model_copy` instead.
+&gt; [!WARNING] Deprecated
+&gt; This method is now deprecated; use `model_copy` instead.
 
 If you need `include` or `exclude`, use:
 
@@ -3145,20 +2707,12 @@ copied = self.model_validate(data)
 
 
 
-| Parameter | Type |
-|-|-|
-| `include` | {{< multiline >}}`AbstractSetIntStr \| MappingIntStrAny \| None`
-doc:  Optional set or mapping specifying which fields to include in the copied model.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`AbstractSetIntStr \| MappingIntStrAny \| None`
-doc:  Optional set or mapping specifying which fields to exclude in the copied model.
-{{< /multiline >}} |
-| `update` | {{< multiline >}}`Dict[str, Any] \| None`
-doc:  Optional dictionary of field-value pairs to override field values in the copied model.
-{{< /multiline >}} |
-| `deep` | {{< multiline >}}`bool`
-doc:  If True, the values of fields that are Pydantic models will be deep-copied.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `AbstractSetIntStr \| MappingIntStrAny \| None` | Optional set or mapping specifying which fields to include in the copied model. |
+| `exclude` | `AbstractSetIntStr \| MappingIntStrAny \| None` | Optional set or mapping specifying which fields to exclude in the copied model. |
+| `update` | `Dict[str, Any] \| None` | Optional dictionary of field-value pairs to override field values in the copied model. |
+| `deep` | `bool` | If True, the values of fields that are Pydantic models will be deep-copied. |
 
 #### dict()
 
@@ -3172,14 +2726,14 @@ def dict(
     exclude_none: bool,
 ) -> Dict[str, Any]
 ```
-| Parameter | Type |
-|-|-|
-| `include` | `IncEx \| None` |
-| `exclude` | `IncEx \| None` |
-| `by_alias` | `bool` |
-| `exclude_unset` | `bool` |
-| `exclude_defaults` | `bool` |
-| `exclude_none` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `IncEx \| None` | |
+| `exclude` | `IncEx \| None` | |
+| `by_alias` | `bool` | |
+| `exclude_unset` | `bool` | |
+| `exclude_defaults` | `bool` | |
+| `exclude_none` | `bool` | |
 
 #### download()
 
@@ -3196,7 +2750,7 @@ Example (Async):
 
 ```python
 @env.task
-async def download_and_process(f: File) -> str:
+async def download_and_process(f: File) -&gt; str:
     local_path = await f.download()
     # Now process the local file
     with open(local_path, "r") as fh:
@@ -3207,19 +2761,16 @@ Example (Download to specific path):
 
 ```python
 @env.task
-async def download_to_path(f: File) -> str:
+async def download_to_path(f: File) -&gt; str:
     local_path = await f.download("/tmp/myfile.csv")
     return local_path
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Optional[Union[str, Path]]`
-doc:  The local path to download the file to. If None, a temporary
-directory will be used and a path will be generated.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
 
 #### download_sync()
 
@@ -3236,7 +2787,7 @@ Example (Sync):
 
 ```python
 @env.task
-def download_and_process_sync(f: File) -> str:
+def download_and_process_sync(f: File) -&gt; str:
     local_path = f.download_sync()
     # Now process the local file
     with open(local_path, "r") as fh:
@@ -3247,19 +2798,16 @@ Example (Download to specific path):
 
 ```python
 @env.task
-def download_to_path_sync(f: File) -> str:
+def download_to_path_sync(f: File) -&gt; str:
     local_path = f.download_sync("/tmp/myfile.csv")
     return local_path
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Optional[Union[str, Path]]`
-doc:  The local path to download the file to. If None, a temporary
-directory will be used and a path will be generated.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
 
 #### exists()
 
@@ -3272,7 +2820,7 @@ Example (Async):
 
 ```python
 @env.task
-async def check_file(f: File) -> bool:
+async def check_file(f: File) -&gt; bool:
     if await f.exists():
         print("File exists!")
         return True
@@ -3296,7 +2844,7 @@ Example (Sync):
 
 ```python
 @env.task
-def check_file_sync(f: File) -> bool:
+def check_file_sync(f: File) -&gt; bool:
     if f.exists_sync():
         print("File exists!")
         return True
@@ -3323,7 +2871,7 @@ Example:
 
 ```python
 @env.task
-async def process_existing_file() -> str:
+async def process_existing_file() -&gt; str:
     file = File.from_existing_remote("s3://my-bucket/data.csv")
     async with file.open("rb") as f:
         content = await f.read()
@@ -3332,15 +2880,10 @@ async def process_existing_file() -> str:
 
 
 
-| Parameter | Type |
-|-|-|
-| `remote_path` | {{< multiline >}}`str`
-doc:  The remote path to the existing file
-{{< /multiline >}} |
-| `file_cache_key` | {{< multiline >}}`Optional[str]`
-doc:  Optional hash value to use for cache key computation. If not specified, the cache key
-will be computed based on the file's attributes (path, name, format).
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote_path` | `str` | The remote path to the existing file |
+| `file_cache_key` | `Optional[str]` | Optional hash value to use for cache key computation. If not specified, the cache key will be computed based on the file's attributes (path, name, format). |
 
 #### from_local()
 
@@ -3359,7 +2902,7 @@ Example (Async):
 
 ```python
 @env.task
-async def upload_local_file() -> File:
+async def upload_local_file() -&gt; File:
     # Create a local file
     async with aiofiles.open("/tmp/data.csv", "w") as f:
         await f.write("col1,col2
@@ -3376,26 +2919,18 @@ Example (With specific destination):
 
 ```python
 @env.task
-async def upload_to_specific_path() -> File:
+async def upload_to_specific_path() -&gt; File:
     remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
     return remote_file
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Union[str, Path]`
-doc:  Path to the local file
-{{< /multiline >}} |
-| `remote_destination` | {{< multiline >}}`Optional[str]`
-doc:  Optional remote path to store the file. If None, a path will be automatically generated.
-{{< /multiline >}} |
-| `hash_method` | {{< multiline >}}`Optional[HashMethod \| str]`
-doc:  Optional HashMethod or string to use for cache key computation. If a string is provided,
-it will be used as a precomputed cache key. If a HashMethod is provided, it will compute
-the hash during upload. If not specified, the cache key will be based on file attributes.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Union[str, Path]` | Path to the local file |
+| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
+| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
 
 #### from_local_sync()
 
@@ -3414,7 +2949,7 @@ Example (Sync):
 
 ```python
 @env.task
-def upload_local_file_sync() -> File:
+def upload_local_file_sync() -&gt; File:
     # Create a local file
     with open("/tmp/data.csv", "w") as f:
         f.write("col1,col2
@@ -3431,26 +2966,18 @@ Example (With specific destination):
 
 ```python
 @env.task
-def upload_to_specific_path() -> File:
+def upload_to_specific_path() -&gt; File:
     remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
     return remote_file
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | {{< multiline >}}`Union[str, Path]`
-doc:  Path to the local file
-{{< /multiline >}} |
-| `remote_destination` | {{< multiline >}}`Optional[str]`
-doc:  Optional remote path to store the file. If None, a path will be automatically generated.
-{{< /multiline >}} |
-| `hash_method` | {{< multiline >}}`Optional[HashMethod \| str]`
-doc:  Optional HashMethod or string to use for cache key computation. If a string is provided,
-it will be used as a precomputed cache key. If a HashMethod is provided, it will compute
-the hash during upload. If not specified, the cache key will be based on file attributes.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `Union[str, Path]` | Path to the local file |
+| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
+| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
 
 #### from_orm()
 
@@ -3459,9 +2986,9 @@ def from_orm(
     obj: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | |
 
 #### json()
 
@@ -3478,17 +3005,17 @@ def json(
     dumps_kwargs: Any,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `include` | `IncEx \| None` |
-| `exclude` | `IncEx \| None` |
-| `by_alias` | `bool` |
-| `exclude_unset` | `bool` |
-| `exclude_defaults` | `bool` |
-| `exclude_none` | `bool` |
-| `encoder` | `Callable[[Any], Any] \| None` |
-| `models_as_dict` | `bool` |
-| `dumps_kwargs` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include` | `IncEx \| None` | |
+| `exclude` | `IncEx \| None` | |
+| `by_alias` | `bool` | |
+| `exclude_unset` | `bool` | |
+| `exclude_defaults` | `bool` | |
+| `exclude_none` | `bool` | |
+| `encoder` | `Callable[[Any], Any] \| None` | |
+| `models_as_dict` | `bool` | |
+| `dumps_kwargs` | `Any` | |
 
 #### model_construct()
 
@@ -3503,25 +3030,19 @@ Creates a new instance of the `Model` class with validated data.
 Creates a new model setting `__dict__` and `__pydantic_fields_set__` from trusted or pre-validated data.
 Default values are respected, but no other validation is performed.
 
-> [!NOTE]
-> `model_construct()` generally respects the `model_config.extra` setting on the provided model.
-> That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
-> and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
-> Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
-> an error if extra values are passed, but they will be ignored.
+&gt; [!NOTE]
+&gt; `model_construct()` generally respects the `model_config.extra` setting on the provided model.
+&gt; That is, if `model_config.extra == 'allow'`, then all extra passed values are added to the model instance's `__dict__`
+&gt; and `__pydantic_extra__` fields. If `model_config.extra == 'ignore'` (the default), then all extra passed values are ignored.
+&gt; Because no validation is performed with a call to `model_construct()`, having `model_config.extra == 'forbid'` does not result in
+&gt; an error if extra values are passed, but they will be ignored.
 
 
 
-| Parameter | Type |
-|-|-|
-| `_fields_set` | {{< multiline >}}`set[str] \| None`
-doc:  A set of field names that were originally explicitly set during instantiation. If provided,
-this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute.
-Otherwise, the field names from the `values` argument will be used.
-{{< /multiline >}} |
-| `values` | {{< multiline >}}`Any`
-doc:  Trusted or pre-validated data dictionary.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `_fields_set` | `set[str] \| None` | A set of field names that were originally explicitly set during instantiation. If provided, this is directly used for the [`model_fields_set`][pydantic.BaseModel.model_fields_set] attribute. Otherwise, the field names from the `values` argument will be used. |
+| `values` | `Any` | Trusted or pre-validated data dictionary. |
 
 #### model_copy()
 
@@ -3536,19 +3057,17 @@ def model_copy(
 
 Returns a copy of the model.
 
-> [!NOTE]
-> The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
-> might have unexpected side effects if you store anything in it, on top of the model
-> fields (e.g. the value of [cached properties][functools.cached_property]).
+&gt; [!NOTE]
+&gt; The underlying instance's [`__dict__`][object.__dict__] attribute is copied. This
+&gt; might have unexpected side effects if you store anything in it, on top of the model
+&gt; fields (e.g. the value of [cached properties][functools.cached_property]).
 
 
 
-| Parameter | Type |
-|-|-|
-| `update` | `Mapping[str, Any] \| None` |
-| `deep` | {{< multiline >}}`bool`
-doc:  Set to `True` to make a deep copy of the model.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `update` | `Mapping[str, Any] \| None` | |
+| `deep` | `bool` | Set to `True` to make a deep copy of the model. |
 
 #### model_dump()
 
@@ -3576,53 +3095,21 @@ Generate a dictionary representation of the model, optionally specifying which f
 
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | {{< multiline >}}`Literal['json', 'python'] \| str`
-doc:  The mode in which `to_python` should run.
-If mode is 'json', the output will only contain JSON serializable types.
-If mode is 'python', the output may contain non-JSON-serializable Python objects.
-{{< /multiline >}} |
-| `include` | {{< multiline >}}`IncEx \| None`
-doc:  A set of fields to include in the output.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`IncEx \| None`
-doc:  A set of fields to exclude from the output.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the serializer.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias in the dictionary key if defined.
-{{< /multiline >}} |
-| `exclude_unset` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have not been explicitly set.
-{{< /multiline >}} |
-| `exclude_defaults` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that are set to their default value.
-{{< /multiline >}} |
-| `exclude_none` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have a value of `None`.
-{{< /multiline >}} |
-| `exclude_computed_fields` | {{< multiline >}}`bool`
-doc:  Whether to exclude computed fields.
-While this can be useful for round-tripping, it is usually recommended to use the dedicated
-`round_trip` parameter instead.
-{{< /multiline >}} |
-| `round_trip` | {{< multiline >}}`bool`
-doc:  If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-{{< /multiline >}} |
-| `warnings` | {{< multiline >}}`bool \| Literal['none', 'warn', 'error']`
-doc:  How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-"error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-{{< /multiline >}} |
-| `fallback` | {{< multiline >}}`Callable[[Any], Any] \| None`
-doc:  A function to call when an unknown value is encountered. If not provided,
-a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
-{{< /multiline >}} |
-| `serialize_as_any` | {{< multiline >}}`bool`
-doc:  Whether to serialize fields with duck-typing serialization behavior.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `Literal['json', 'python'] \| str` | The mode in which `to_python` should run. If mode is 'json', the output will only contain JSON serializable types. If mode is 'python', the output may contain non-JSON-serializable Python objects. |
+| `include` | `IncEx \| None` | A set of fields to include in the output. |
+| `exclude` | `IncEx \| None` | A set of fields to exclude from the output. |
+| `context` | `Any \| None` | Additional context to pass to the serializer. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias in the dictionary key if defined. |
+| `exclude_unset` | `bool` | Whether to exclude fields that have not been explicitly set. |
+| `exclude_defaults` | `bool` | Whether to exclude fields that are set to their default value. |
+| `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
+| `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
+| `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 #### model_dump_json()
 
@@ -3651,55 +3138,22 @@ Generates a JSON representation of the model using Pydantic's `to_json` method.
 
 
 
-| Parameter | Type |
-|-|-|
-| `indent` | {{< multiline >}}`int \| None`
-doc:  Indentation to use in the JSON output. If None is passed, the output will be compact.
-{{< /multiline >}} |
-| `ensure_ascii` | {{< multiline >}}`bool`
-doc:  If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped.
-If `False` (the default), these characters will be output as-is.
-{{< /multiline >}} |
-| `include` | {{< multiline >}}`IncEx \| None`
-doc:  Field(s) to include in the JSON output.
-{{< /multiline >}} |
-| `exclude` | {{< multiline >}}`IncEx \| None`
-doc:  Field(s) to exclude from the JSON output.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the serializer.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to serialize using field aliases.
-{{< /multiline >}} |
-| `exclude_unset` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have not been explicitly set.
-{{< /multiline >}} |
-| `exclude_defaults` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that are set to their default value.
-{{< /multiline >}} |
-| `exclude_none` | {{< multiline >}}`bool`
-doc:  Whether to exclude fields that have a value of `None`.
-{{< /multiline >}} |
-| `exclude_computed_fields` | {{< multiline >}}`bool`
-doc:  Whether to exclude computed fields.
-While this can be useful for round-tripping, it is usually recommended to use the dedicated
-`round_trip` parameter instead.
-{{< /multiline >}} |
-| `round_trip` | {{< multiline >}}`bool`
-doc:  If True, dumped values should be valid as input for non-idempotent types such as Json[T].
-{{< /multiline >}} |
-| `warnings` | {{< multiline >}}`bool \| Literal['none', 'warn', 'error']`
-doc:  How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
-"error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
-{{< /multiline >}} |
-| `fallback` | {{< multiline >}}`Callable[[Any], Any] \| None`
-doc:  A function to call when an unknown value is encountered. If not provided,
-a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
-{{< /multiline >}} |
-| `serialize_as_any` | {{< multiline >}}`bool`
-doc:  Whether to serialize fields with duck-typing serialization behavior.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `indent` | `int \| None` | Indentation to use in the JSON output. If None is passed, the output will be compact. |
+| `ensure_ascii` | `bool` | If `True`, the output is guaranteed to have all incoming non-ASCII characters escaped. If `False` (the default), these characters will be output as-is. |
+| `include` | `IncEx \| None` | Field(s) to include in the JSON output. |
+| `exclude` | `IncEx \| None` | Field(s) to exclude from the JSON output. |
+| `context` | `Any \| None` | Additional context to pass to the serializer. |
+| `by_alias` | `bool \| None` | Whether to serialize using field aliases. |
+| `exclude_unset` | `bool` | Whether to exclude fields that have not been explicitly set. |
+| `exclude_defaults` | `bool` | Whether to exclude fields that are set to their default value. |
+| `exclude_none` | `bool` | Whether to exclude fields that have a value of `None`. |
+| `exclude_computed_fields` | `bool` | Whether to exclude computed fields. While this can be useful for round-tripping, it is usually recommended to use the dedicated `round_trip` parameter instead. |
+| `round_trip` | `bool` | If True, dumped values should be valid as input for non-idempotent types such as Json[T]. |
+| `warnings` | `bool \| Literal['none', 'warn', 'error']` | How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors, "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError]. |
+| `fallback` | `Callable[[Any], Any] \| None` | A function to call when an unknown value is encountered. If not provided, a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised. |
+| `serialize_as_any` | `bool` | Whether to serialize fields with duck-typing serialization behavior. |
 
 #### model_json_schema()
 
@@ -3716,28 +3170,13 @@ Generates a JSON schema for a model class.
 
 
 
-| Parameter | Type |
-|-|-|
-| `by_alias` | {{< multiline >}}`bool`
-doc:  Whether to use attribute aliases or not.
-{{< /multiline >}} |
-| `ref_template` | {{< multiline >}}`str`
-doc:  The reference template.
-- `'any_of'`: Use the [`anyOf`](https://json-schema.org/understanding-json-schema/reference/combining#anyOf)
-keyword to combine schemas (the default).
-- `'primitive_type_array'`: Use the [`type`](https://json-schema.org/understanding-json-schema/reference/type)
-keyword as an array of strings, containing each type of the combination. If any of the schemas is not a primitive
-type (`string`, `boolean`, `null`, `integer` or `number`) or contains constraints/metadata, falls back to
-`any_of`.
-{{< /multiline >}} |
-| `schema_generator` | {{< multiline >}}`type[GenerateJsonSchema]`
-doc:  To override the logic used to generate the JSON schema, as a subclass of
-`GenerateJsonSchema` with your desired modifications
-{{< /multiline >}} |
-| `mode` | {{< multiline >}}`JsonSchemaMode`
-doc:  The mode in which to generate the schema.
-{{< /multiline >}} |
-| `union_format` | `Literal['any_of', 'primitive_type_array']` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | Whether to use attribute aliases or not. |
+| `ref_template` | `str` | The reference template. - `'any_of'`: Use the [`anyOf`](https://json-schema.org/understanding-json-schema/reference/combining#anyOf) keyword to combine schemas (the default). - `'primitive_type_array'`: Use the [`type`](https://json-schema.org/understanding-json-schema/reference/type) keyword as an array of strings, containing each type of the combination. If any of the schemas is not a primitive type (`string`, `boolean`, `null`, `integer` or `number`) or contains constraints/metadata, falls back to `any_of`. |
+| `schema_generator` | `type[GenerateJsonSchema]` | To override the logic used to generate the JSON schema, as a subclass of `GenerateJsonSchema` with your desired modifications |
+| `mode` | `JsonSchemaMode` | The mode in which to generate the schema. |
+| `union_format` | `Literal['any_of', 'primitive_type_array']` | |
 
 #### model_parametrized_name()
 
@@ -3752,13 +3191,9 @@ This method can be overridden to achieve a custom naming scheme for generic Base
 
 
 
-| Parameter | Type |
-|-|-|
-| `params` | {{< multiline >}}`tuple[type[Any], ...]`
-doc:  Tuple of types of the class. Given a generic class
-`Model` with 2 type variables and a concrete model `Model[str, int]`,
-the value `(str, int)` would be passed to `params`.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `params` | `tuple[type[Any], ...]` | Tuple of types of the class. Given a generic class `Model` with 2 type variables and a concrete model `Model[str, int]`, the value `(str, int)` would be passed to `params`. |
 
 #### model_post_init()
 
@@ -3771,9 +3206,9 @@ Override this method to perform additional initialization after `__init__` and `
 This is useful if you want to do some validation that requires the entire model to be initialized.
 
 
-| Parameter | Type |
-|-|-|
-| `context` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `context` | `Any` | |
 
 #### model_rebuild()
 
@@ -3792,20 +3227,12 @@ the initial attempt to build the schema, and automatic rebuilding fails.
 
 
 
-| Parameter | Type |
-|-|-|
-| `force` | {{< multiline >}}`bool`
-doc:  Whether to force the rebuilding of the model schema, defaults to `False`.
-{{< /multiline >}} |
-| `raise_errors` | {{< multiline >}}`bool`
-doc:  Whether to raise errors, defaults to `True`.
-{{< /multiline >}} |
-| `_parent_namespace_depth` | {{< multiline >}}`int`
-doc:  The depth level of the parent namespace, defaults to 2.
-{{< /multiline >}} |
-| `_types_namespace` | {{< multiline >}}`MappingNamespace \| None`
-doc:  The types namespace, defaults to `None`.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `force` | `bool` | Whether to force the rebuilding of the model schema, defaults to `False`. |
+| `raise_errors` | `bool` | Whether to raise errors, defaults to `True`. |
+| `_parent_namespace_depth` | `int` | The depth level of the parent namespace, defaults to 2. |
+| `_types_namespace` | `MappingNamespace \| None` | The types namespace, defaults to `None`. |
 
 #### model_validate()
 
@@ -3824,30 +3251,15 @@ Validate a pydantic model instance.
 
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | {{< multiline >}}`Any`
-doc:  The object to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `from_attributes` | {{< multiline >}}`bool \| None`
-doc:  Whether to extract data from object attributes.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Additional context to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | The object to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `from_attributes` | `bool \| None` | Whether to extract data from object attributes. |
+| `context` | `Any \| None` | Additional context to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### model_validate_json()
 
@@ -3868,27 +3280,14 @@ Validate the given JSON data against the Pydantic model.
 
 
 
-| Parameter | Type |
-|-|-|
-| `json_data` | {{< multiline >}}`str \| bytes \| bytearray`
-doc:  The JSON data to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Extra variables to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `json_data` | `str \| bytes \| bytearray` | The JSON data to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `context` | `Any \| None` | Extra variables to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### model_validate_strings()
 
@@ -3906,27 +3305,14 @@ Validate the given object with string data against the Pydantic model.
 
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | {{< multiline >}}`Any`
-doc:  The object containing string data to validate.
-{{< /multiline >}} |
-| `strict` | {{< multiline >}}`bool \| None`
-doc:  Whether to enforce types strictly.
-{{< /multiline >}} |
-| `extra` | {{< multiline >}}`ExtraValues \| None`
-doc:  Whether to ignore, allow, or forbid extra data during model validation.
-See the [`extra` configuration value][pydantic.ConfigDict.extra] for details.
-{{< /multiline >}} |
-| `context` | {{< multiline >}}`Any \| None`
-doc:  Extra variables to pass to the validator.
-{{< /multiline >}} |
-| `by_alias` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's alias when validating against the provided input data.
-{{< /multiline >}} |
-| `by_name` | {{< multiline >}}`bool \| None`
-doc:  Whether to use the field's name when validating against the provided input data.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | The object containing string data to validate. |
+| `strict` | `bool \| None` | Whether to enforce types strictly. |
+| `extra` | `ExtraValues \| None` | Whether to ignore, allow, or forbid extra data during model validation. See the [`extra` configuration value][pydantic.ConfigDict.extra] for details. |
+| `context` | `Any \| None` | Extra variables to pass to the validator. |
+| `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
+| `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
 #### new_remote()
 
@@ -3944,7 +3330,7 @@ Example (Async):
 
 ```python
 @env.task
-async def create_csv() -> File:
+async def create_csv() -&gt; File:
     df = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
     file = File.new_remote()
     async with file.open("wb") as f:
@@ -3954,17 +3340,10 @@ async def create_csv() -> File:
 
 
 
-| Parameter | Type |
-|-|-|
-| `file_name` | {{< multiline >}}`Optional[str]`
-doc:  Optional string specifying a remote file name. If not set,
-a generated file name will be returned.
-{{< /multiline >}} |
-| `hash_method` | {{< multiline >}}`Optional[HashMethod \| str]`
-doc:  Optional HashMethod or string to use for cache key computation. If a string is provided,
-it will be used as a precomputed cache key. If a HashMethod is provided, it will be used
-to compute the hash as data is written.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_name` | `Optional[str]` | Optional string specifying a remote file name. If not set, a generated file name will be returned. |
+| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will be used to compute the hash as data is written. |
 
 #### open()
 
@@ -3986,7 +3365,7 @@ Example (Async Read):
 
 ```python
 @env.task
-async def read_file(f: File) -> str:
+async def read_file(f: File) -&gt; str:
     async with f.open("rb") as fh:
         content = bytes(await fh.read())
         return content.decode("utf-8")
@@ -3996,7 +3375,7 @@ Example (Async Write):
 
 ```python
 @env.task
-async def write_file() -> File:
+async def write_file() -&gt; File:
     f = File.new_remote()
     async with f.open("wb") as fh:
         await fh.write(b"Hello, World!")
@@ -4007,7 +3386,7 @@ Example (Streaming Read):
 
 ```python
 @env.task
-async def stream_read(f: File) -> str:
+async def stream_read(f: File) -&gt; str:
     content_parts = []
     async with f.open("rb", block_size=1024) as fh:
         while True:
@@ -4020,22 +3399,14 @@ async def stream_read(f: File) -> str:
 
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | `str` |
-| `block_size` | {{< multiline >}}`Optional[int]`
-doc:  Size of blocks for reading in bytes. Useful for streaming large files.
-{{< /multiline >}} |
-| `cache_type` | {{< multiline >}}`str`
-doc:  Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none')
-{{< /multiline >}} |
-| `cache_options` | {{< multiline >}}`Optional[dict]`
-doc:  Dictionary of options for the cache
-{{< /multiline >}} |
-| `compression` | {{< multiline >}}`Optional[str]`
-doc:  Compression format or None for auto-detection
-{{< /multiline >}} |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `str` | |
+| `block_size` | `Optional[int]` | Size of blocks for reading in bytes. Useful for streaming large files. |
+| `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
+| `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
+| `compression` | `Optional[str]` | Compression format or None for auto-detection |
+| `kwargs` | `**kwargs` | |
 
 #### open_sync()
 
@@ -4057,7 +3428,7 @@ Example (Sync Read):
 
 ```python
 @env.task
-def read_file_sync(f: File) -> str:
+def read_file_sync(f: File) -&gt; str:
     with f.open_sync("rb") as fh:
         content = fh.read()
         return content.decode("utf-8")
@@ -4067,7 +3438,7 @@ Example (Sync Write):
 
 ```python
 @env.task
-def write_file_sync() -> File:
+def write_file_sync() -&gt; File:
     f = File.new_remote()
     with f.open_sync("wb") as fh:
         fh.write(b"Hello, World!")
@@ -4076,22 +3447,14 @@ def write_file_sync() -> File:
 
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | `str` |
-| `block_size` | {{< multiline >}}`Optional[int]`
-doc:  Size of blocks for reading in bytes. Useful for streaming large files.
-{{< /multiline >}} |
-| `cache_type` | {{< multiline >}}`str`
-doc:  Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none')
-{{< /multiline >}} |
-| `cache_options` | {{< multiline >}}`Optional[dict]`
-doc:  Dictionary of options for the cache
-{{< /multiline >}} |
-| `compression` | {{< multiline >}}`Optional[str]`
-doc:  Compression format or None for auto-detection
-{{< /multiline >}} |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `str` | |
+| `block_size` | `Optional[int]` | Size of blocks for reading in bytes. Useful for streaming large files. |
+| `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
+| `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
+| `compression` | `Optional[str]` | Compression format or None for auto-detection |
+| `kwargs` | `**kwargs` | |
 
 #### parse_file()
 
@@ -4104,13 +3467,13 @@ def parse_file(
     allow_pickle: bool,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str \| Path` |
-| `content_type` | `str \| None` |
-| `encoding` | `str` |
-| `proto` | `DeprecatedParseProtocol \| None` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str \| Path` | |
+| `content_type` | `str \| None` | |
+| `encoding` | `str` | |
+| `proto` | `DeprecatedParseProtocol \| None` | |
+| `allow_pickle` | `bool` | |
 
 #### parse_obj()
 
@@ -4119,9 +3482,9 @@ def parse_obj(
     obj: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `obj` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `Any` | |
 
 #### parse_raw()
 
@@ -4134,13 +3497,13 @@ def parse_raw(
     allow_pickle: bool,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `b` | `str \| bytes` |
-| `content_type` | `str \| None` |
-| `encoding` | `str` |
-| `proto` | `DeprecatedParseProtocol \| None` |
-| `allow_pickle` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `b` | `str \| bytes` | |
+| `content_type` | `str \| None` | |
+| `encoding` | `str` | |
+| `proto` | `DeprecatedParseProtocol \| None` | |
+| `allow_pickle` | `bool` | |
 
 #### pre_init()
 
@@ -4152,9 +3515,9 @@ def pre_init(
 Internal: Pydantic validator to set default name from path. Not intended for direct use.
 
 
-| Parameter | Type |
-|-|-|
-| `data` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` |  | |
 
 #### schema()
 
@@ -4164,10 +3527,10 @@ def schema(
     ref_template: str,
 ) -> Dict[str, Any]
 ```
-| Parameter | Type |
-|-|-|
-| `by_alias` | `bool` |
-| `ref_template` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | |
+| `ref_template` | `str` | |
 
 #### schema_json()
 
@@ -4178,11 +3541,11 @@ def schema_json(
     dumps_kwargs: Any,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `by_alias` | `bool` |
-| `ref_template` | `str` |
-| `dumps_kwargs` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `by_alias` | `bool` | |
+| `ref_template` | `str` | |
+| `dumps_kwargs` | `Any` | |
 
 #### schema_match()
 
@@ -4194,9 +3557,9 @@ def schema_match(
 Internal: Check if incoming schema matches File schema. Not intended for direct use.
 
 
-| Parameter | Type |
-|-|-|
-| `incoming` | `dict` |
+| Parameter | Type | Description |
+|-|-|-|
+| `incoming` | `dict` | |
 
 #### update_forward_refs()
 
@@ -4205,9 +3568,9 @@ def update_forward_refs(
     localns: Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `localns` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `localns` | `Any` | |
 
 #### validate()
 
@@ -4216,23 +3579,14 @@ def validate(
     value: Any,
 ) -> Self
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `Any` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `model_extra` | `None` | {{< multiline >}}Get extra fields set during validation.
-
-Returns:
-    A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`.
-{{< /multiline >}} |
-| `model_fields_set` | `None` | {{< multiline >}}Returns the set of fields that have been explicitly set on this model instance.
-
-Returns:
-    A set of strings representing the fields that have been set,
-        i.e. that were not filled from defaults.
-{{< /multiline >}} |
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 

@@ -37,7 +37,7 @@ Automatically constructs the Config Object. The order of precedence is as follow
   2. If not specified, the config file is searched in the default locations.
         a. ./config.yaml if it exists  (current working directory)
         b. ./.flyte/config.yaml if it exists (current working directory)
-        c. <git_root>/.flyte/config.yaml if it exists
+        c. &lt;git_root&gt;/.flyte/config.yaml if it exists
         d. `UCTL_CONFIG` environment variable
         e. `FLYTECTL_CONFIG` environment variable
         f. ~/.union/config.yaml if it exists
@@ -47,12 +47,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | {{< multiline >}}`typing.Union[str, pathlib.Path, ConfigFile, None]`
-doc: file path to read the config from, if not specified default locations are searched
-:return: Config
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
 
 #### set_if_exists()
 
@@ -67,11 +64,11 @@ Given a dict ``d`` sets the key ``k`` with value of config ``v``, if the config 
 and return the updated dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `d` | `dict` |
-| `k` | `str` |
-| `val` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` | `dict` | |
+| `k` | `str` | |
+| `val` | `typing.Any` | |
 
 ## flyte.config.Config
 
@@ -91,12 +88,12 @@ class Config(
     source: pathlib.Path | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `platform` | `PlatformConfig` |
-| `task` | `TaskConfig` |
-| `image` | `ImageConfig` |
-| `source` | `pathlib.Path \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `platform` | `PlatformConfig` | |
+| `task` | `TaskConfig` | |
+| `image` | `ImageConfig` | |
+| `source` | `pathlib.Path \| None` | |
 
 ### Methods
 
@@ -120,12 +117,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | {{< multiline >}}`typing.Union[str, pathlib.Path, ConfigFile, None]`
-doc: file path to read the config from, if not specified default locations are searched
-:return: Config
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, pathlib.Path, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
 
 #### with_params()
 
@@ -136,9 +130,9 @@ def with_params(
     image: ImageConfig | None,
 ) -> 'Config'
 ```
-| Parameter | Type |
-|-|-|
-| `platform` | `PlatformConfig \| None` |
-| `task` | `TaskConfig \| None` |
-| `image` | `ImageConfig \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `platform` | `PlatformConfig \| None` | |
+| `task` | `TaskConfig \| None` | |
+| `image` | `ImageConfig \| None` | |
 

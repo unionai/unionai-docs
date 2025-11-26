@@ -25,28 +25,28 @@ layout: py_api
 ```python
 def convert_to_flyte_phase(
     state: str,
-) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>
+) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d28a090>
 ```
 Convert the state from the connector to the phase in flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `state` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `state` | `str` | |
 
 #### is_terminal_phase()
 
 ```python
 def is_terminal_phase(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d28a090>,
 ) -> bool
 ```
 Return true if the phase is terminal.
 
 
-| Parameter | Type |
-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d28a090>` | |
 
 #### print_metadata()
 

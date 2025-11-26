@@ -69,69 +69,19 @@ and create authentication interceptors that perform async operations.
 
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | {{< multiline >}}`str \| None`
-doc: The endpoint URL for the gRPC channel
-{{< /multiline >}} |
-| `api_key` | {{< multiline >}}`str \| None`
-doc: API key for authentication; if provided, it will be used to detect the endpoint and credentials.
-{{< /multiline >}} |
-| `insecure` | {{< multiline >}}`typing.Optional[bool]`
-doc: Whether to use an insecure channel (no SSL)
-{{< /multiline >}} |
-| `insecure_skip_verify` | {{< multiline >}}`typing.Optional[bool]`
-doc: Whether to skip SSL certificate verification
-{{< /multiline >}} |
-| `ca_cert_file_path` | {{< multiline >}}`typing.Optional[str]`
-doc: Path to CA certificate file for SSL verification
-{{< /multiline >}} |
-| `ssl_credentials` | {{< multiline >}}`typing.Optional[ssl_channel_credentials]`
-doc: Pre-configured SSL credentials for the channel
-{{< /multiline >}} |
-| `grpc_options` | {{< multiline >}}`typing.Optional[typing.Sequence[typing.Tuple[str, typing.Any]]]`
-doc: Additional gRPC channel options
-{{< /multiline >}} |
-| `compression` | {{< multiline >}}`typing.Optional[grpc.Compression]`
-doc: Compression method for the channel
-{{< /multiline >}} |
-| `http_session` | {{< multiline >}}`httpx.AsyncClient \| None`
-doc: Pre-configured HTTP session to use for requests
-{{< /multiline >}} |
-| `proxy_command` | {{< multiline >}}`typing.Optional[typing.List[str]]`
-doc: List of strings for proxy command configuration
-{{< /multiline >}} |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: Additional arguments passed to various functions
-- For grpc.aio.insecure_channel/secure_channel:
-- root_certificates: Root certificates for SSL credentials
-- private_key: Private key for SSL credentials
-- certificate_chain: Certificate chain for SSL credentials
-- options: gRPC channel options
-- compression: gRPC compression method
-- For proxy configuration:
-- proxy_env: Dict of environment variables for proxy
-- proxy_timeout: Timeout for proxy connection
-- For authentication interceptors (passed to create_auth_interceptors and create_proxy_auth_interceptors):
-- auth_type: The authentication type to use ("Pkce", "ClientSecret", "ExternalCommand", "DeviceFlow")
-- command: Command to execute for ExternalCommand authentication
-- client_id: Client ID for ClientSecret authentication
-- client_secret: Client secret for ClientSecret authentication
-- client_credentials_secret: Client secret for ClientSecret authentication (alias)
-- scopes: List of scopes to request during authentication
-- audience: Audience for the token
-- http_proxy_url: HTTP proxy URL
-- verify: Whether to verify SSL certificates
-- ca_cert_path: Optional path to CA certificate file
-- header_key: Header key to use for authentication
-- redirect_uri: OAuth2 redirect URI for PKCE authentication
-- add_request_auth_code_params_to_request_access_token_params: Whether to add auth code params to token
-request
-- request_auth_code_params: Parameters to add to login URI opened in browser
-- request_access_token_params: Parameters to add when exchanging auth code for access token
-- refresh_access_token_params: Parameters to add when refreshing access token
-:return: grpc.aio.Channel with authentication interceptors configured
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str \| None` | The endpoint URL for the gRPC channel |
+| `api_key` | `str \| None` | API key for authentication; if provided, it will be used to detect the endpoint and credentials. |
+| `insecure` | `typing.Optional[bool]` | Whether to use an insecure channel (no SSL) |
+| `insecure_skip_verify` | `typing.Optional[bool]` | Whether to skip SSL certificate verification |
+| `ca_cert_file_path` | `typing.Optional[str]` | Path to CA certificate file for SSL verification |
+| `ssl_credentials` | `typing.Optional[ssl_channel_credentials]` | Pre-configured SSL credentials for the channel |
+| `grpc_options` | `typing.Optional[typing.Sequence[typing.Tuple[str, typing.Any]]]` | Additional gRPC channel options |
+| `compression` | `typing.Optional[grpc.Compression]` | Compression method for the channel |
+| `http_session` | `httpx.AsyncClient \| None` | Pre-configured HTTP session to use for requests |
+| `proxy_command` | `typing.Optional[typing.List[str]]` | List of strings for proxy command configuration |
+| `kwargs` | `**kwargs` | Additional arguments passed to various functions - For grpc.aio.insecure_channel/secure_channel: - root_certificates: Root certificates for SSL credentials - private_key: Private key for SSL credentials - certificate_chain: Certificate chain for SSL credentials - options: gRPC channel options - compression: gRPC compression method - For proxy configuration: - proxy_env: Dict of environment variables for proxy - proxy_timeout: Timeout for proxy connection - For authentication interceptors (passed to create_auth_interceptors and create_proxy_auth_interceptors): - auth_type: The authentication type to use ("Pkce", "ClientSecret", "ExternalCommand", "DeviceFlow") - command: Command to execute for ExternalCommand authentication - client_id: Client ID for ClientSecret authentication - client_secret: Client secret for ClientSecret authentication - client_credentials_secret: Client secret for ClientSecret authentication (alias) - scopes: List of scopes to request during authentication - audience: Audience for the token - http_proxy_url: HTTP proxy URL - verify: Whether to verify SSL certificates - ca_cert_path: Optional path to CA certificate file - header_key: Header key to use for authentication - redirect_uri: OAuth2 redirect URI for PKCE authentication - add_request_auth_code_params_to_request_access_token_params: Whether to add auth code params to token request - request_auth_code_params: Parameters to add to login URI opened in browser - request_access_token_params: Parameters to add when exchanging auth code for access token - refresh_access_token_params: Parameters to add when refreshing access token :return: grpc.aio.Channel with authentication interceptors configured |
 
 #### upload_dir()
 
@@ -145,15 +95,10 @@ Uploads a directory to a remote location and returns the remote URI.
 
 
 
-| Parameter | Type |
-|-|-|
-| `dir_path` | {{< multiline >}}`pathlib._local.Path`
-doc: The directory path to upload.
-{{< /multiline >}} |
-| `verify` | {{< multiline >}}`bool`
-doc: Whether to verify the certificate for HTTPS requests.
-:return: The remote URI of the uploaded directory.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `dir_path` | `pathlib._local.Path` | The directory path to upload. |
+| `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: The remote URI of the uploaded directory. |
 
 #### upload_file()
 
@@ -172,15 +117,10 @@ Uploads a file to a remote location and returns the remote URI.
 
 
 
-| Parameter | Type |
-|-|-|
-| `fp` | {{< multiline >}}`pathlib._local.Path`
-doc: The file path to upload.
-{{< /multiline >}} |
-| `verify` | {{< multiline >}}`bool`
-doc: Whether to verify the certificate for HTTPS requests.
-:return: A tuple containing the MD5 digest and the remote URI.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `fp` | `pathlib._local.Path` | The file path to upload. |
+| `verify` | `bool` | Whether to verify the certificate for HTTPS requests. :return: A tuple containing the MD5 digest and the remote URI. |
 
 ## flyte.remote.Action
 
@@ -193,10 +133,10 @@ class Action(
     _details: ActionDetails | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `run_definition_pb2.Action` |
-| `_details` | `ActionDetails \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.Action` | |
+| `_details` | `ActionDetails \| None` | |
 
 ### Methods
 
@@ -249,18 +189,12 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `uri` | {{< multiline >}}`str \| None`
-doc: The URI of the action.
-{{< /multiline >}} |
-| `run_name` | {{< multiline >}}`str \| None`
-doc: The name of the action.
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`str \| None`
-doc: The name of the action.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `uri` | `str \| None` | The URI of the action. |
+| `run_name` | `str \| None` | The name of the action. |
+| `name` | `str \| None` | The name of the action. |
 
 #### listall()
 
@@ -281,19 +215,12 @@ Get all actions for a given run.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `for_run_name` | {{< multiline >}}`str`
-doc: The name of the run.
-{{< /multiline >}} |
-| `filters` | {{< multiline >}}`str \| None`
-doc: The filters to apply to the project list.
-{{< /multiline >}} |
-| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
-doc: The sorting criteria for the project list, in the format (field, order).
-:return: An iterator of projects.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `for_run_name` | `str` | The name of the run. |
+| `filters` | `str \| None` | The filters to apply to the project list. |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). :return: An iterator of projects. |
 
 #### show_logs()
 
@@ -311,13 +238,13 @@ def show_logs(
     filter_system: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `attempt` | `int \| None` |
-| `max_lines` | `int` |
-| `show_ts` | `bool` |
-| `raw` | `bool` |
-| `filter_system` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | |
+| `max_lines` | `int` | |
+| `show_ts` | `bool` | |
+| `raw` | `bool` | |
+| `filter_system` | `bool` | |
 
 #### sync()
 
@@ -361,10 +288,10 @@ Wait for the run to complete, displaying a rich progress panel with status trans
 time elapsed, and error details in case of failure.
 
 
-| Parameter | Type |
-|-|-|
-| `quiet` | `bool` |
-| `wait_for` | `WaitFor` |
+| Parameter | Type | Description |
+|-|-|-|
+| `quiet` | `bool` | |
+| `wait_for` | `WaitFor` | |
 
 #### watch()
 
@@ -377,27 +304,21 @@ def watch(
 Watch the action for updates. This is a placeholder for watching the action.
 
 
-| Parameter | Type |
-|-|-|
-| `cache_data_on_done` | `bool` |
-| `wait_for` | `WaitFor` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_data_on_done` | `bool` | |
+| `wait_for` | `WaitFor` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `action_id` | `None` | {{< multiline >}}Get the action ID.
-{{< /multiline >}} |
-| `name` | `None` | {{< multiline >}}Get the name of the action.
-{{< /multiline >}} |
-| `phase` | `None` | {{< multiline >}}Get the phase of the action.
-{{< /multiline >}} |
-| `raw_phase` | `None` | {{< multiline >}}Get the raw phase of the action.
-{{< /multiline >}} |
-| `run_name` | `None` | {{< multiline >}}Get the name of the run.
-{{< /multiline >}} |
-| `task_name` | `None` | {{< multiline >}}Get the name of the task.
-{{< /multiline >}} |
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `phase` | `None` | Get the phase of the action. |
+| `raw_phase` | `None` | Get the raw phase of the action. |
+| `run_name` | `None` | Get the name of the run. |
+| `task_name` | `None` | Get the name of the task. |
 
 ## flyte.remote.ActionDetails
 
@@ -411,11 +332,11 @@ class ActionDetails(
     _outputs: ActionOutputs | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `run_definition_pb2.ActionDetails` |
-| `_inputs` | `ActionInputs \| None` |
-| `_outputs` | `ActionOutputs \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.ActionDetails` | |
+| `_inputs` | `ActionInputs \| None` | |
+| `_outputs` | `ActionOutputs \| None` | |
 
 ### Methods
 
@@ -461,18 +382,12 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `uri` | {{< multiline >}}`str \| None`
-doc: The URI of the action.
-{{< /multiline >}} |
-| `run_name` | {{< multiline >}}`str \| None`
-doc: The name of the run.
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`str \| None`
-doc: The name of the action.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `uri` | `str \| None` | The URI of the action. |
+| `run_name` | `str \| None` | The name of the run. |
+| `name` | `str \| None` | The name of the action. |
 
 #### get_details()
 
@@ -490,10 +405,10 @@ def get_details(
 Get the details of the action. This is a placeholder for getting the action details.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `action_id` | `identifier_pb2.ActionIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `action_id` | `identifier_pb2.ActionIdentifier` | |
 
 #### inputs()
 
@@ -514,9 +429,9 @@ Check if logs are available for the action, optionally for a specific attempt.
 If attempt is None, it checks for the latest attempt.
 
 
-| Parameter | Type |
-|-|-|
-| `attempt` | `int \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | |
 
 #### outputs()
 
@@ -564,10 +479,10 @@ def watch(
 Watch the action for updates. This is a placeholder for watching the action.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `action_id` | `identifier_pb2.ActionIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `action_id` | `identifier_pb2.ActionIdentifier` | |
 
 #### watch_updates()
 
@@ -576,36 +491,27 @@ def watch_updates(
     cache_data_on_done: bool,
 ) -> AsyncGenerator[ActionDetails, None]
 ```
-| Parameter | Type |
-|-|-|
-| `cache_data_on_done` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_data_on_done` | `bool` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
 | `abort_info` | `None` |  |
-| `action_id` | `None` | {{< multiline >}}Get the action ID.
-{{< /multiline >}} |
-| `attempts` | `None` | {{< multiline >}}Get the number of attempts of the action.
-{{< /multiline >}} |
+| `action_id` | `None` | Get the action ID. |
+| `attempts` | `None` | Get the number of attempts of the action. |
 | `error_info` | `None` |  |
-| `is_running` | `None` | {{< multiline >}}Check if the action is currently running.
-{{< /multiline >}} |
+| `is_running` | `None` | Check if the action is currently running. |
 | `metadata` | `None` |  |
-| `name` | `None` | {{< multiline >}}Get the name of the action.
-{{< /multiline >}} |
-| `phase` | `None` | {{< multiline >}}Get the phase of the action.
-{{< /multiline >}} |
-| `raw_phase` | `None` | {{< multiline >}}Get the raw phase of the action.
-{{< /multiline >}} |
-| `run_name` | `None` | {{< multiline >}}Get the name of the run.
-{{< /multiline >}} |
-| `runtime` | `None` | {{< multiline >}}Get the runtime of the action.
-{{< /multiline >}} |
+| `name` | `None` | Get the name of the action. |
+| `phase` | `None` | Get the phase of the action. |
+| `raw_phase` | `None` | Get the raw phase of the action. |
+| `run_name` | `None` | Get the name of the run. |
+| `runtime` | `None` | Get the runtime of the action. |
 | `status` | `None` |  |
-| `task_name` | `None` | {{< multiline >}}Get the name of the task.
-{{< /multiline >}} |
+| `task_name` | `None` | Get the name of the task. |
 
 ## flyte.remote.ActionInputs
 
@@ -619,10 +525,10 @@ class ActionInputs(
     data: Dict[str, Any],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `common_pb2.Inputs` |
-| `data` | `Dict[str, Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `common_pb2.Inputs` | |
+| `data` | `Dict[str, Any]` | |
 
 ### Methods
 
@@ -648,7 +554,7 @@ class ActionInputs(
 ```python
 def clear()
 ```
-D.clear() -> None.  Remove all items from D.
+D.clear() -&gt; None.  Remove all items from D.
 
 
 #### copy()
@@ -664,10 +570,10 @@ def fromkeys(
     value,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `iterable` |  |
-| `value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `iterable` |  | |
+| `value` |  | |
 
 #### get()
 
@@ -677,20 +583,20 @@ def get(
     default,
 )
 ```
-D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
+D.get(k[,d]) -&gt; D[k] if k in D, else d.  d defaults to None.
 
 
-| Parameter | Type |
-|-|-|
-| `key` |  |
-| `default` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
+| `default` |  | |
 
 #### items()
 
 ```python
 def items()
 ```
-D.items() -> a set-like object providing a view on D's items
+D.items() -&gt; a set-like object providing a view on D's items
 
 
 #### keys()
@@ -698,7 +604,7 @@ D.items() -> a set-like object providing a view on D's items
 ```python
 def keys()
 ```
-D.keys() -> a set-like object providing a view on D's keys
+D.keys() -&gt; a set-like object providing a view on D's keys
 
 
 #### pop()
@@ -709,21 +615,21 @@ def pop(
     default,
 )
 ```
-D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
+D.pop(k[,d]) -&gt; v, remove specified key and return the corresponding value.
 If key is not found, d is returned if given, otherwise KeyError is raised.
 
 
-| Parameter | Type |
-|-|-|
-| `key` |  |
-| `default` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
+| `default` |  | |
 
 #### popitem()
 
 ```python
 def popitem()
 ```
-D.popitem() -> (k, v), remove and return some (key, value) pair
+D.popitem() -&gt; (k, v), remove and return some (key, value) pair
 as a 2-tuple; but raise KeyError if D is empty.
 
 
@@ -735,13 +641,13 @@ def setdefault(
     default,
 )
 ```
-D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D
+D.setdefault(k[,d]) -&gt; D.get(k,d), also set D[k]=d if k not in D
 
 
-| Parameter | Type |
-|-|-|
-| `key` |  |
-| `default` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` |  | |
+| `default` |  | |
 
 #### to_dict()
 
@@ -773,23 +679,23 @@ def update(
     kwds,
 )
 ```
-D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
+D.update([E, ]**F) -&gt; None.  Update D from mapping/iterable E and F.
 If E present and has a .keys() method, does:     for k in E.keys(): D[k] = E[k]
 If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 In either case, this is followed by: for k, v in F.items(): D[k] = v
 
 
-| Parameter | Type |
-|-|-|
-| `other` |  |
-| `kwds` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `other` |  | |
+| `kwds` |  | |
 
 #### values()
 
 ```python
 def values()
 ```
-D.values() -> an object providing a view on D's values
+D.values() -&gt; an object providing a view on D's values
 
 
 ## flyte.remote.ActionOutputs
@@ -804,10 +710,10 @@ class ActionOutputs(
     data: Tuple[Any, ...],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `common_pb2.Outputs` |
-| `data` | `Tuple[Any, ...]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `common_pb2.Outputs` | |
+| `data` | `Tuple[Any, ...]` | |
 
 ### Methods
 
@@ -849,9 +755,9 @@ class App(
     pb2: app_definition_pb2.App,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `app_definition_pb2.App` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `app_definition_pb2.App` | |
 
 ### Methods
 
@@ -875,18 +781,11 @@ Get an app by name.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the app.
-{{< /multiline >}} |
-| `project` | {{< multiline >}}`str \| None`
-doc: The project of the app.
-{{< /multiline >}} |
-| `domain` | {{< multiline >}}`str \| None`
-doc: The domain of the app.
-:return: The app remote object.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the app. |
+| `project` | `str \| None` | The project of the app. |
+| `domain` | `str \| None` | The domain of the app. :return: The app remote object. |
 
 #### to_dict()
 
@@ -928,9 +827,9 @@ class Project(
     pb2: project_pb2.Project,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `project_pb2.Project` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `project_pb2.Project` | |
 
 ### Methods
 
@@ -960,15 +859,11 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | {{< multiline >}}`str`
-doc: The name of the project.
-{{< /multiline >}} |
-| `org` | {{< multiline >}}`str \| None`
-doc: The organization of the project (if applicable).
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | The name of the project. |
+| `org` | `str \| None` | The organization of the project (if applicable). |
 
 #### listall()
 
@@ -988,16 +883,11 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `filters` | {{< multiline >}}`str \| None`
-doc: The filters to apply to the project list.
-{{< /multiline >}} |
-| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
-doc: The sorting criteria for the project list, in the format (field, order).
-:return: An iterator of projects.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `filters` | `str \| None` | The filters to apply to the project list. |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). :return: An iterator of projects. |
 
 #### to_dict()
 
@@ -1033,10 +923,10 @@ class Run(
     _details: RunDetails | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `run_definition_pb2.Run` |
-| `_details` | `RunDetails \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.Run` | |
+| `_details` | `RunDetails \| None` | |
 
 ### Methods
 
@@ -1109,10 +999,10 @@ Get the current run.
 :return: The current run.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
 
 #### inputs()
 
@@ -1147,22 +1037,13 @@ Get all runs for the current project and domain.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `in_phase` | {{< multiline >}}`Tuple[Phase] \| None`
-doc: Filter runs by one or more phases.
-{{< /multiline >}} |
-| `created_by_subject` | {{< multiline >}}`str \| None`
-doc: Filter runs by the subject that created them. (this is not username, but the subject)
-{{< /multiline >}} |
-| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
-doc: The sorting criteria for the project list, in the format (field, order).
-{{< /multiline >}} |
-| `limit` | {{< multiline >}}`int`
-doc: The maximum number of runs to return.
-:return: An iterator of runs.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `in_phase` | `Tuple[Phase] \| None` | Filter runs by one or more phases. |
+| `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |
 
 #### outputs()
 
@@ -1193,13 +1074,13 @@ def show_logs(
     filter_system: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `attempt` | `int \| None` |
-| `max_lines` | `int` |
-| `show_ts` | `bool` |
-| `raw` | `bool` |
-| `filter_system` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `attempt` | `int \| None` | |
+| `max_lines` | `int` | |
+| `show_ts` | `bool` | |
+| `raw` | `bool` | |
+| `filter_system` | `bool` | |
 
 #### sync()
 
@@ -1248,10 +1129,10 @@ Wait for the run to complete, displaying a rich progress panel with status trans
 time elapsed, and error details in case of failure.
 
 
-| Parameter | Type |
-|-|-|
-| `quiet` | `bool` |
-| `wait_for` | `Literal['terminal', 'running']` |
+| Parameter | Type | Description |
+|-|-|-|
+| `quiet` | `bool` | |
+| `wait_for` | `Literal['terminal', 'running']` | |
 
 #### watch()
 
@@ -1263,22 +1144,18 @@ def watch(
 Get the details of the run. This is a placeholder for getting the run details.
 
 
-| Parameter | Type |
-|-|-|
-| `cache_data_on_done` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_data_on_done` | `bool` | |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` | {{< multiline >}}Get the name of the run.
-{{< /multiline >}} |
-| `phase` | `None` | {{< multiline >}}Get the phase of the run.
-{{< /multiline >}} |
-| `raw_phase` | `None` | {{< multiline >}}Get the raw phase of the run.
-{{< /multiline >}} |
-| `url` | `None` | {{< multiline >}}Get the URL of the run.
-{{< /multiline >}} |
+| `name` | `None` | Get the name of the run. |
+| `phase` | `None` | Get the phase of the run. |
+| `raw_phase` | `None` | Get the raw phase of the run. |
+| `url` | `None` | Get the URL of the run. |
 
 ## flyte.remote.RunDetails
 
@@ -1291,9 +1168,9 @@ class RunDetails(
     pb2: run_definition_pb2.RunDetails,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `run_definition_pb2.RunDetails` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `run_definition_pb2.RunDetails` | |
 
 ### Methods
 
@@ -1334,12 +1211,10 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | {{< multiline >}}`str \| None`
-doc: The name of the run.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str \| None` | The name of the run. |
 
 #### get_details()
 
@@ -1357,10 +1232,10 @@ def get_details(
 Get the details of the run. This is a placeholder for getting the run details.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `run_id` | `identifier_pb2.RunIdentifier` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `run_id` | `identifier_pb2.RunIdentifier` | |
 
 #### inputs()
 
@@ -1404,12 +1279,9 @@ Returns:
 
 | Property | Type | Description |
 |-|-|-|
-| `action_id` | `None` | {{< multiline >}}Get the action ID.
-{{< /multiline >}} |
-| `name` | `None` | {{< multiline >}}Get the name of the action.
-{{< /multiline >}} |
-| `task_name` | `None` | {{< multiline >}}Get the name of the task.
-{{< /multiline >}} |
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `task_name` | `None` | Get the name of the task. |
 
 ## flyte.remote.Secret
 
@@ -1418,9 +1290,9 @@ class Secret(
     pb2: definition_pb2.Secret,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `definition_pb2.Secret` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `definition_pb2.Secret` | |
 
 ### Methods
 
@@ -1449,12 +1321,12 @@ def create(
     type: SecretTypes,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | `str` |
-| `value` | `Union[str, bytes]` |
-| `type` | `SecretTypes` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
+| `value` | `Union[str, bytes]` | |
+| `type` | `SecretTypes` | |
 
 #### delete()
 
@@ -1469,10 +1341,10 @@ def delete(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` |  | |
 
 #### get()
 
@@ -1487,10 +1359,10 @@ def get(
     name: str,
 ) -> Secret
 ```
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
 
 #### listall()
 
@@ -1505,10 +1377,10 @@ def listall(
     limit: int,
 ) -> AsyncIterator[Secret]
 ```
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `limit` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `limit` | `int` | |
 
 #### to_dict()
 
@@ -1546,9 +1418,9 @@ class Task(
     pb2: task_definition_pb2.Task,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `task_definition_pb2.Task` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `task_definition_pb2.Task` | |
 
 ### Methods
 
@@ -1577,26 +1449,13 @@ Either version or auto_version are required parameters.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the task.
-{{< /multiline >}} |
-| `project` | {{< multiline >}}`str \| None`
-doc: The project of the task.
-{{< /multiline >}} |
-| `domain` | {{< multiline >}}`str \| None`
-doc: The domain of the task.
-{{< /multiline >}} |
-| `version` | {{< multiline >}}`str \| None`
-doc: The version of the task.
-{{< /multiline >}} |
-| `auto_version` | {{< multiline >}}`AutoVersioning \| None`
-doc: If set to "latest", the latest-by-time ordered from now, version of the task will be used.
-If set to "current", the version will be derived from the callee tasks context. This is useful if you are
-deploying all environments with the same version. If auto_version is current, you can only access the task from
-within a task context.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the task. |
+| `project` | `str \| None` | The project of the task. |
+| `domain` | `str \| None` | The domain of the task. |
+| `version` | `str \| None` | The version of the task. |
+| `auto_version` | `AutoVersioning \| None` | If set to "latest", the latest-by-time ordered from now, version of the task will be used. If set to "current", the version will be derived from the callee tasks context. This is useful if you are deploying all environments with the same version. If auto_version is current, you can only access the task from within a task context. |
 
 #### listall()
 
@@ -1620,28 +1479,15 @@ Get all runs for the current project and domain.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `by_task_name` | {{< multiline >}}`str \| None`
-doc: If provided, only tasks with this name will be returned.
-{{< /multiline >}} |
-| `by_task_env` | {{< multiline >}}`str \| None`
-doc: If provided, only tasks with this environment prefix will be returned.
-{{< /multiline >}} |
-| `project` | {{< multiline >}}`str \| None`
-doc: The project to filter tasks by. If None, the current project will be used.
-{{< /multiline >}} |
-| `domain` | {{< multiline >}}`str \| None`
-doc: The domain to filter tasks by. If None, the current domain will be used.
-{{< /multiline >}} |
-| `sort_by` | {{< multiline >}}`Tuple[str, Literal['asc', 'desc']] \| None`
-doc: The sorting criteria for the project list, in the format (field, order).
-{{< /multiline >}} |
-| `limit` | {{< multiline >}}`int`
-doc: The maximum number of tasks to return.
-:return: An iterator of runs.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `by_task_name` | `str \| None` | If provided, only tasks with this name will be returned. |
+| `by_task_env` | `str \| None` | If provided, only tasks with this environment prefix will be returned. |
+| `project` | `str \| None` | The project to filter tasks by. If None, the current project will be used. |
+| `domain` | `str \| None` | The domain to filter tasks by. If None, the current domain will be used. |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `limit` | `int` | The maximum number of tasks to return. :return: An iterator of runs. |
 
 #### to_dict()
 
@@ -1669,10 +1515,8 @@ Returns:
 
 | Property | Type | Description |
 |-|-|-|
-| `name` | `None` | {{< multiline >}}The name of the task.
-{{< /multiline >}} |
-| `version` | `None` | {{< multiline >}}The version of the task.
-{{< /multiline >}} |
+| `name` | `None` | The name of the task. |
+| `version` | `None` | The version of the task. |
 
 ## flyte.remote.TaskDetails
 
@@ -1683,11 +1527,11 @@ class TaskDetails(
     overriden_queue: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `task_definition_pb2.TaskDetails` |
-| `max_inline_io_bytes` | `int` |
-| `overriden_queue` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `task_definition_pb2.TaskDetails` | |
+| `max_inline_io_bytes` | `int` | |
+| `overriden_queue` | `Optional[str]` | |
 
 ### Methods
 
@@ -1711,13 +1555,13 @@ def fetch(
     auto_version: AutoVersioning | None,
 ) -> TaskDetails
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `project` | `str \| None` |
-| `domain` | `str \| None` |
-| `version` | `str \| None` |
-| `auto_version` | `AutoVersioning \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `project` | `str \| None` | |
+| `domain` | `str \| None` | |
+| `version` | `str \| None` | |
+| `auto_version` | `AutoVersioning \| None` | |
 
 #### get()
 
@@ -1736,26 +1580,13 @@ Either version or auto_version are required parameters.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the task.
-{{< /multiline >}} |
-| `project` | {{< multiline >}}`str \| None`
-doc: The project of the task.
-{{< /multiline >}} |
-| `domain` | {{< multiline >}}`str \| None`
-doc: The domain of the task.
-{{< /multiline >}} |
-| `version` | {{< multiline >}}`str \| None`
-doc: The version of the task.
-{{< /multiline >}} |
-| `auto_version` | {{< multiline >}}`AutoVersioning \| None`
-doc: If set to "latest", the latest-by-time ordered from now, version of the task will be used.
-If set to "current", the version will be derived from the callee tasks context. This is useful if you are
-deploying all environments with the same version. If auto_version is current, you can only access the task from
-within a task context.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the task. |
+| `project` | `str \| None` | The project of the task. |
+| `domain` | `str \| None` | The domain of the task. |
+| `version` | `str \| None` | The version of the task. |
+| `auto_version` | `AutoVersioning \| None` | If set to "latest", the latest-by-time ordered from now, version of the task will be used. If set to "current", the version will be derived from the callee tasks context. This is useful if you are deploying all environments with the same version. If auto_version is current, you can only access the task from within a task context. |
 
 #### override()
 
@@ -1773,18 +1604,18 @@ def override(
     kwargs: **kwargs,
 ) -> TaskDetails
 ```
-| Parameter | Type |
-|-|-|
-| `short_name` | `Optional[str]` |
-| `resources` | `Optional[flyte.Resources]` |
-| `retries` | `Union[int, flyte.RetryStrategy]` |
-| `timeout` | `Optional[flyte.TimeoutType]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[flyte.SecretRequest]` |
-| `max_inline_io_bytes` | `Optional[int]` |
-| `cache` | `Optional[flyte.Cache]` |
-| `queue` | `Optional[str]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `short_name` | `Optional[str]` | |
+| `resources` | `Optional[flyte.Resources]` | |
+| `retries` | `Union[int, flyte.RetryStrategy]` | |
+| `timeout` | `Optional[flyte.TimeoutType]` | |
+| `env_vars` | `Optional[Dict[str, str]]` | |
+| `secrets` | `Optional[flyte.SecretRequest]` | |
+| `max_inline_io_bytes` | `Optional[int]` | |
+| `cache` | `Optional[flyte.Cache]` | |
+| `queue` | `Optional[str]` | |
+| `kwargs` | `**kwargs` | |
 
 #### to_dict()
 
@@ -1812,24 +1643,15 @@ Returns:
 
 | Property | Type | Description |
 |-|-|-|
-| `cache` | `None` | {{< multiline >}}The cache policy of the task.
-{{< /multiline >}} |
-| `default_input_args` | `None` | {{< multiline >}}The default input arguments of the task.
-{{< /multiline >}} |
-| `name` | `None` | {{< multiline >}}The name of the task.
-{{< /multiline >}} |
-| `queue` | `None` | {{< multiline >}}The queue to use for the task.
-{{< /multiline >}} |
-| `required_args` | `None` | {{< multiline >}}The required input arguments of the task.
-{{< /multiline >}} |
-| `resources` | `None` | {{< multiline >}}The resources of the task.
-{{< /multiline >}} |
-| `secrets` | `None` | {{< multiline >}}The secrets of the task.
-{{< /multiline >}} |
-| `task_type` | `None` | {{< multiline >}}The type of the task.
-{{< /multiline >}} |
-| `version` | `None` | {{< multiline >}}The version of the task.
-{{< /multiline >}} |
+| `cache` | `None` | The cache policy of the task. |
+| `default_input_args` | `None` | The default input arguments of the task. |
+| `name` | `None` | The name of the task. |
+| `queue` | `None` | The queue to use for the task. |
+| `required_args` | `None` | The required input arguments of the task. |
+| `resources` | `None` | The resources of the task. |
+| `secrets` | `None` | The secrets of the task. |
+| `task_type` | `None` | The type of the task. |
+| `version` | `None` | The version of the task. |
 
 ## flyte.remote.Trigger
 
@@ -1839,10 +1661,10 @@ class Trigger(
     details: TriggerDetails | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `trigger_definition_pb2.Trigger` |
-| `details` | `TriggerDetails \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `trigger_definition_pb2.Trigger` | |
+| `details` | `TriggerDetails \| None` | |
 
 ### Methods
 
@@ -1877,16 +1699,12 @@ Create a new trigger in the Flyte platform.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `trigger` | {{< multiline >}}`flyte.Trigger`
-doc: The flyte.Trigger object containing the trigger definition.
-{{< /multiline >}} |
-| `task_name` | {{< multiline >}}`str`
-doc: Optional name of the task to associate with the trigger.
-{{< /multiline >}} |
-| `task_version` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `trigger` | `flyte.Trigger` | The flyte.Trigger object containing the trigger definition. |
+| `task_name` | `str` | Optional name of the task to associate with the trigger. |
+| `task_version` | `str \| None` | |
 
 #### delete()
 
@@ -1905,11 +1723,11 @@ def delete(
 Delete a trigger by its name.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | `str` |
-| `task_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
+| `task_name` | `str` | |
 
 #### get()
 
@@ -1928,11 +1746,11 @@ def get(
 Retrieve a trigger by its name and associated task name.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | `str` |
-| `task_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
+| `task_name` | `str` | |
 
 #### get_details()
 
@@ -1960,12 +1778,12 @@ def listall(
 List all triggers associated with a specific task or all tasks if no task name is provided.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `task_name` | `str \| None` |
-| `task_version` | `str \| None` |
-| `limit` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `task_name` | `str \| None` | |
+| `task_version` | `str \| None` | |
+| `limit` | `int` | |
 
 #### to_dict()
 
@@ -2007,12 +1825,12 @@ def update(
 Pause a trigger by its name and associated task name.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `name` | `str` |
-| `task_name` | `str` |
-| `active` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `name` | `str` | |
+| `task_name` | `str` | |
+| `active` | `bool` | |
 
 ### Properties
 
@@ -2031,9 +1849,9 @@ class User(
     pb2: UserInfoResponse,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pb2` | `UserInfoResponse` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2` | `UserInfoResponse` | |
 
 ### Methods
 
@@ -2062,9 +1880,9 @@ Fetches information about the currently logged in user.
 Returns: A User object containing details about the user.
 
 
-| Parameter | Type |
-|-|-|
-| `cls` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
 
 #### name()
 

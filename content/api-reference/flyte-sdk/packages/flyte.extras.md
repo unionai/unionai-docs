@@ -38,39 +38,19 @@ class ContainerTask(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: Name of the task
-{{< /multiline >}} |
-| `image` | {{< multiline >}}`typing.Union[str, flyte._image.Image]`
-doc: The container image to use for the task. This can be a string or an Image object.
-{{< /multiline >}} |
-| `command` | {{< multiline >}}`typing.List[str]`
-doc: The command to run in the container. This can be a list of strings or a single string.
-{{< /multiline >}} |
-| `inputs` | {{< multiline >}}`typing.Optional[typing.Dict[str, typing.Type]]`
-doc: The inputs to the task. This is a dictionary of input names to types.
-{{< /multiline >}} |
-| `arguments` | {{< multiline >}}`typing.Optional[typing.List[str]]`
-doc: The arguments to pass to the command. This is a list of strings.
-{{< /multiline >}} |
-| `outputs` | {{< multiline >}}`typing.Optional[typing.Dict[str, typing.Type]]`
-doc: The outputs of the task. This is a dictionary of output names to types.
-{{< /multiline >}} |
-| `input_data_dir` | {{< multiline >}}`str \| pathlib._local.Path`
-doc: The directory where the input data is stored. This is a string or a Path object.
-{{< /multiline >}} |
-| `output_data_dir` | {{< multiline >}}`str \| pathlib._local.Path`
-doc: The directory where the output data is stored. This is a string or a Path object.
-{{< /multiline >}} |
-| `metadata_format` | {{< multiline >}}`typing.Literal['JSON', 'YAML', 'PROTO']`
-doc: The format of the output file. This can be "JSON", "YAML", or "PROTO".
-{{< /multiline >}} |
-| `local_logs` | {{< multiline >}}`bool`
-doc: If True, logs will be printed to the console in the local execution.
-{{< /multiline >}} |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | Name of the task |
+| `image` | `typing.Union[str, flyte._image.Image]` | The container image to use for the task. This can be a string or an Image object. |
+| `command` | `typing.List[str]` | The command to run in the container. This can be a list of strings or a single string. |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The inputs to the task. This is a dictionary of input names to types. |
+| `arguments` | `typing.Optional[typing.List[str]]` | The arguments to pass to the command. This is a list of strings. |
+| `outputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | The outputs of the task. This is a dictionary of output names to types. |
+| `input_data_dir` | `str \| pathlib._local.Path` | The directory where the input data is stored. This is a string or a Path object. |
+| `output_data_dir` | `str \| pathlib._local.Path` | The directory where the output data is stored. This is a string or a Path object. |
+| `metadata_format` | `typing.Literal['JSON', 'YAML', 'PROTO']` | The format of the output file. This can be "JSON", "YAML", or "PROTO". |
+| `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -104,11 +84,11 @@ This function will also re-raise exceptions from the underlying task.
 Example:
 ```python
 @env.task
-def my_legacy_task(x: int) -> int:
+def my_legacy_task(x: int) -&gt; int:
     return x
 
 @env.task
-async def my_new_parent_task(n: int) -> List[int]:
+async def my_new_parent_task(n: int) -&gt; List[int]:
     collect = []
     for x in range(n):
         collect.append(my_legacy_task.aio(x))
@@ -116,13 +96,10 @@ async def my_new_parent_task(n: int) -> List[int]:
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `args` | `*args` |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: 
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | :return: |
 
 #### config()
 
@@ -135,9 +112,9 @@ Returns additional configuration for the task. This is a set of key-value pairs 
 configure the task execution environment at runtime. This is usually used by plugins.
 
 
-| Parameter | Type |
-|-|-|
-| `sctx` | `SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sctx` | `SerializationContext` | |
 
 #### container_args()
 
@@ -150,9 +127,9 @@ Returns the container args for the task. This is a set of key-value pairs that c
 configure the task execution environment at runtime. This is usually used by plugins.
 
 
-| Parameter | Type |
-|-|-|
-| `sctx` | `flyte.models.SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sctx` | `flyte.models.SerializationContext` | |
 
 #### custom_config()
 
@@ -165,9 +142,9 @@ Returns additional configuration for the task. This is a set of key-value pairs 
 configure the task execution environment at runtime. This is usually used by plugins.
 
 
-| Parameter | Type |
-|-|-|
-| `sctx` | `SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sctx` | `SerializationContext` | |
 
 #### data_loading_config()
 
@@ -182,9 +159,9 @@ are side-loaded in the input_path
 Any outputs generated by the user container - within output_path are automatically uploaded
 
 
-| Parameter | Type |
-|-|-|
-| `sctx` | `flyte.models.SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sctx` | `flyte.models.SerializationContext` | |
 
 #### execute()
 
@@ -196,9 +173,9 @@ def execute(
 This is the pure python function that will be executed when the task is called.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### forward()
 
@@ -213,13 +190,10 @@ when not in a Flyte task execution context.  See the implementation below for an
 
 
 
-| Parameter | Type |
-|-|-|
-| `args` | `*args` |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: 
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | :return: |
 
 #### override()
 
@@ -245,49 +219,21 @@ when it is called, such as changing the image, resources, cache policy, etc.
 
 
 
-| Parameter | Type |
-|-|-|
-| `short_name` | {{< multiline >}}`Optional[str]`
-doc: Optional override for the short name of the task.
-{{< /multiline >}} |
-| `resources` | {{< multiline >}}`Optional[Resources]`
-doc: Optional override for the resources to use for the task.
-{{< /multiline >}} |
-| `cache` | {{< multiline >}}`Optional[CacheRequest]`
-doc: Optional override for the cache policy for the task.
-{{< /multiline >}} |
-| `retries` | {{< multiline >}}`Union[int, RetryStrategy]`
-doc: Optional override for the number of retries for the task.
-{{< /multiline >}} |
-| `timeout` | {{< multiline >}}`Optional[TimeoutType]`
-doc: Optional override for the timeout for the task.
-{{< /multiline >}} |
-| `reusable` | {{< multiline >}}`Union[ReusePolicy, Literal['off'], None]`
-doc: Optional override for the reusability policy for the task.
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
-doc: Optional override for the environment variables to set for the task.
-{{< /multiline >}} |
-| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
-doc: Optional override for the secrets that will be injected into the task at runtime.
-{{< /multiline >}} |
-| `max_inline_io_bytes` | {{< multiline >}}`int \| None`
-doc: Optional override for the maximum allowed size (in bytes) for all inputs and outputs
-passed directly to the task.
-{{< /multiline >}} |
-| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
-doc: Optional override for the pod template to use for the task.
-{{< /multiline >}} |
-| `queue` | {{< multiline >}}`Optional[str]`
-doc: Optional override for the queue to use for the task.
-{{< /multiline >}} |
-| `interruptible` | `Optional[bool]` |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: Additional keyword arguments for further overrides. Some fields like name, image, docs,
-and interface cannot be overridden.
-
-:return: A new TaskTemplate instance with the overridden parameters.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `short_name` | `Optional[str]` | Optional override for the short name of the task. |
+| `resources` | `Optional[Resources]` | Optional override for the resources to use for the task. |
+| `cache` | `Optional[CacheRequest]` | Optional override for the cache policy for the task. |
+| `retries` | `Union[int, RetryStrategy]` | Optional override for the number of retries for the task. |
+| `timeout` | `Optional[TimeoutType]` | Optional override for the timeout for the task. |
+| `reusable` | `Union[ReusePolicy, Literal['off'], None]` | Optional override for the reusability policy for the task. |
+| `env_vars` | `Optional[Dict[str, str]]` | Optional override for the environment variables to set for the task. |
+| `secrets` | `Optional[SecretRequest]` | Optional override for the secrets that will be injected into the task at runtime. |
+| `max_inline_io_bytes` | `int \| None` | Optional override for the maximum allowed size (in bytes) for all inputs and outputs passed directly to the task. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
+| `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
+| `interruptible` | `Optional[bool]` | |
+| `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden.  :return: A new TaskTemplate instance with the overridden parameters. |
 
 #### post()
 
@@ -300,9 +246,9 @@ This is the postexecute function that will be
 called after the task is executed
 
 
-| Parameter | Type |
-|-|-|
-| `return_vals` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `return_vals` | `Any` | |
 
 #### pre()
 
@@ -316,10 +262,10 @@ This is the preexecute function that will be
 called before the task is executed
 
 
-| Parameter | Type |
-|-|-|
-| `args` | `*args` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### sql()
 
@@ -332,9 +278,9 @@ Returns the SQL for the task. This is a set of key-value pairs that can be used 
 configure the task execution environment at runtime. This is usually used by plugins.
 
 
-| Parameter | Type |
-|-|-|
-| `sctx` | `SerializationContext` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sctx` | `SerializationContext` | |
 
 ### Properties
 

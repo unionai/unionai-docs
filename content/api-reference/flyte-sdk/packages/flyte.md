@@ -85,13 +85,9 @@ def AMD_GPU(
 Create an AMD GPU device instance.
 
 
-| Parameter | Type |
-|-|-|
-| `device` | {{< multiline >}}`typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X']`
-doc: Device type (e.g., "MI100", "MI210", "MI250", "MI250X", "MI300A", "MI300X", "MI325X", "MI350X",
-"MI355X").
-:return: Device instance.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `typing.Literal['MI100', 'MI210', 'MI250', 'MI250X', 'MI300A', 'MI300X', 'MI325X', 'MI350X', 'MI355X']` | Device type (e.g., "MI100", "MI210", "MI250", "MI250X", "MI300A", "MI300X", "MI325X", "MI350X", "MI355X"). :return: Device instance. |
 
 #### GPU()
 
@@ -105,18 +101,11 @@ def GPU(
 Create a GPU device instance.
 
 
-| Parameter | Type |
-|-|-|
-| `device` | {{< multiline >}}`typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']`
-doc: The type of GPU (e.g., "T4", "A100").
-{{< /multiline >}} |
-| `quantity` | {{< multiline >}}`typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]`
-doc: The number of GPUs of this type.
-{{< /multiline >}} |
-| `partition` | {{< multiline >}}`typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], NoneType]`
-doc: The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus).
-:return: Device instance.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']` | The type of GPU (e.g., "T4", "A100"). |
+| `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
+| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
 
 #### HABANA_GAUDI()
 
@@ -128,12 +117,9 @@ def HABANA_GAUDI(
 Create a Habana Gaudi device instance.
 
 
-| Parameter | Type |
-|-|-|
-| `device` | {{< multiline >}}`typing.Literal['Gaudi1']`
-doc: Device type (e.g., "DL1").
-:return: Device instance.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `typing.Literal['Gaudi1']` | Device type (e.g., "DL1"). :return: Device instance. |
 
 #### Neuron()
 
@@ -145,11 +131,9 @@ def Neuron(
 Create a Neuron device instance.
 
 
-| Parameter | Type |
-|-|-|
-| `device` | {{< multiline >}}`typing.Literal['Inf1', 'Inf2', 'Trn1', 'Trn1n', 'Trn2', 'Trn2u']`
-doc: Device type (e.g., "Inf1", "Inf2", "Trn1", "Trn1n", "Trn2", "Trn2u").
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `typing.Literal['Inf1', 'Inf2', 'Trn1', 'Trn1n', 'Trn2', 'Trn2u']` | Device type (e.g., "Inf1", "Inf2", "Trn1", "Trn1n", "Trn2", "Trn2u"). |
 
 #### TPU()
 
@@ -162,15 +146,10 @@ def TPU(
 Create a TPU device instance.
 
 
-| Parameter | Type |
-|-|-|
-| `device` | {{< multiline >}}`typing.Literal['V5P', 'V6E']`
-doc: Device type (e.g., "V5P", "V6E").
-{{< /multiline >}} |
-| `partition` | {{< multiline >}}`typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType]`
-doc: Partition of the TPU (e.g., "1x1", "2x2", ...).
-:return: Device instance.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `typing.Literal['V5P', 'V6E']` | Device type (e.g., "V5P", "V6E"). |
+| `partition` | `typing.Union[typing.Literal['2x2x1', '2x2x2', '2x4x4', '4x4x4', '4x4x8', '4x8x8', '8x8x8', '8x8x16', '8x16x16', '16x16x16', '16x16x24'], typing.Literal['1x1', '2x2', '2x4', '4x4', '4x8', '8x8', '8x16', '16x16'], NoneType]` | Partition of the TPU (e.g., "1x1", "2x2", ...). :return: Device instance. |
 
 #### build()
 
@@ -196,12 +175,9 @@ if __name__ == "__main__":
 
 
 
-| Parameter | Type |
-|-|-|
-| `image` | {{< multiline >}}`Image`
-doc: The image(s) to build.
-:return: The image URI.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `Image` | The image(s) to build. :return: The image URI. |
 
 #### build_images()
 
@@ -218,12 +194,9 @@ def build_images(
 Build the images for the given environments.
 
 
-| Parameter | Type |
-|-|-|
-| `envs` | {{< multiline >}}`Environment`
-doc: Environment to build images for.
-:return: ImageCache containing the built images.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `envs` | `Environment` | Environment to build images for. :return: ImageCache containing the built images. |
 
 #### ctx()
 
@@ -277,11 +250,9 @@ def main():
 
 
 
-| Parameter | Type |
-|-|-|
-| `context` | {{< multiline >}}`str`
-doc: Key-value pairs to set as input context
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `context` | `str` | Key-value pairs to set as input context |
 
 #### deploy()
 
@@ -302,28 +273,13 @@ def deploy(
 Deploy the given environment or list of environments.
 
 
-| Parameter | Type |
-|-|-|
-| `envs` | {{< multiline >}}`Environment`
-doc: Environment or list of environments to deploy.
-{{< /multiline >}} |
-| `dryrun` | {{< multiline >}}`bool`
-doc: dryrun mode, if True, the deployment will not be applied to the control plane.
-{{< /multiline >}} |
-| `version` | {{< multiline >}}`str \| None`
-doc: version of the deployment, if None, the version will be computed from the code bundle.
-TODO: Support for interactive_mode
-{{< /multiline >}} |
-| `interactive_mode` | {{< multiline >}}`bool \| None`
-doc: Optional, can be forced to True or False.
-If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered
-interactive mode, while scripts are not. This is used to determine how the code bundle is created.
-{{< /multiline >}} |
-| `copy_style` | {{< multiline >}}`CopyFiles`
-doc: Copy style to use when running the task
-
-:return: Deployment object containing the deployed environments and tasks.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `envs` | `Environment` | Environment or list of environments to deploy. |
+| `dryrun` | `bool` | dryrun mode, if True, the deployment will not be applied to the control plane. |
+| `version` | `str \| None` | version of the deployment, if None, the version will be computed from the code bundle. TODO: Support for interactive_mode |
+| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. |
+| `copy_style` | `CopyFiles` | Copy style to use when running the task  :return: Deployment object containing the deployed environments and tasks. |
 
 #### get_custom_context()
 
@@ -372,11 +328,9 @@ async def my_task():
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the group
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the group |
 
 #### init()
 
@@ -421,99 +375,35 @@ remote API methods are called. Thread-safe implementation.
 
 
 
-| Parameter | Type |
-|-|-|
-| `org` | {{< multiline >}}`str \| None`
-doc: Optional organization override for the client. Should be set by auth instead.
-{{< /multiline >}} |
-| `project` | {{< multiline >}}`str \| None`
-doc: Optional project name (not used in this implementation)
-{{< /multiline >}} |
-| `domain` | {{< multiline >}}`str \| None`
-doc: Optional domain name (not used in this implementation)
-{{< /multiline >}} |
-| `root_dir` | {{< multiline >}}`Path \| None`
-doc: Optional root directory from which to determine how to load files, and find paths to files.
-This is useful for determining the root directory for the current project, and for locating files like config etc.
-also use to determine all the code that needs to be copied to the remote location.
-defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd.
-{{< /multiline >}} |
-| `log_level` | {{< multiline >}}`int \| None`
-doc: Optional logging level for the logger, default is set using the default initialization policies
-{{< /multiline >}} |
-| `log_format` | {{< multiline >}}`LogFormat \| None`
-doc: Optional logging format for the logger, default is "console"
-{{< /multiline >}} |
-| `endpoint` | {{< multiline >}}`str \| None`
-doc: Optional API endpoint URL
-{{< /multiline >}} |
-| `headless` | {{< multiline >}}`bool`
-doc: Optional Whether to run in headless mode
-{{< /multiline >}} |
-| `insecure` | {{< multiline >}}`bool`
-doc: insecure flag for the client
-{{< /multiline >}} |
-| `insecure_skip_verify` | {{< multiline >}}`bool`
-doc: Whether to skip SSL certificate verification
-{{< /multiline >}} |
-| `ca_cert_file_path` | {{< multiline >}}`str \| None`
-doc: [optional] str Root Cert to be loaded and used to verify admin
-{{< /multiline >}} |
-| `auth_type` | {{< multiline >}}`AuthType`
-doc: The authentication type to use (Pkce, ClientSecret, ExternalCommand, DeviceFlow)
-{{< /multiline >}} |
-| `command` | {{< multiline >}}`List[str] \| None`
-doc: This command is executed to return a token using an external process
-{{< /multiline >}} |
-| `proxy_command` | {{< multiline >}}`List[str] \| None`
-doc: This command is executed to return a token for proxy authorization using an external process
-{{< /multiline >}} |
-| `api_key` | {{< multiline >}}`str \| None`
-doc: Optional API key for authentication
-{{< /multiline >}} |
-| `client_id` | {{< multiline >}}`str \| None`
-doc: This is the public identifier for the app which handles authorization for a Flyte deployment.
-More details here: https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/.
-{{< /multiline >}} |
-| `client_credentials_secret` | {{< multiline >}}`str \| None`
-doc: Used for service auth, which is automatically called during pyflyte. This will
-allow the Flyte engine to read the password directly from the environment variable. Note that this is
-less secure! Please only use this if mounting the secret as a file is impossible
-{{< /multiline >}} |
-| `auth_client_config` | {{< multiline >}}`ClientConfig \| None`
-doc: Optional client configuration for authentication
-{{< /multiline >}} |
-| `rpc_retries` | {{< multiline >}}`int`
-doc: [optional] int Number of times to retry the platform calls
-{{< /multiline >}} |
-| `http_proxy_url` | {{< multiline >}}`str \| None`
-doc: [optional] HTTP Proxy to be used for OAuth requests
-{{< /multiline >}} |
-| `storage` | {{< multiline >}}`Storage \| None`
-doc: Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio)
-{{< /multiline >}} |
-| `batch_size` | {{< multiline >}}`int`
-doc: Optional batch size for operations that use listings, defaults to 1000, so limit larger than
-batch_size will be split into multiple requests.
-{{< /multiline >}} |
-| `image_builder` | {{< multiline >}}`ImageBuildEngine.ImageBuilderType`
-doc: Optional image builder configuration, if not provided, the default image builder will be used.
-{{< /multiline >}} |
-| `images` | {{< multiline >}}`typing.Dict[str, str] \| None`
-doc: Optional dict of images that can be used by referencing the image name.
-{{< /multiline >}} |
-| `source_config_path` | {{< multiline >}}`Optional[Path]`
-doc: Optional path to the source configuration file (This is only used for documentation)
-{{< /multiline >}} |
-| `sync_local_sys_paths` | {{< multiline >}}`bool`
-doc: Whether to include and synchronize local sys.path entries under the root directory
-into the remote container (default: True).
-{{< /multiline >}} |
-| `load_plugin_type_transformers` | {{< multiline >}}`bool`
-doc: If enabled (default True), load the type transformer plugins registered under
-the "flyte.plugins.types" entry point group.
-:return: None
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `org` | `str \| None` | Optional organization override for the client. Should be set by auth instead. |
+| `project` | `str \| None` | Optional project name (not used in this implementation) |
+| `domain` | `str \| None` | Optional domain name (not used in this implementation) |
+| `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. This is useful for determining the root directory for the current project, and for locating files like config etc. also use to determine all the code that needs to be copied to the remote location. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
+| `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
+| `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
+| `endpoint` | `str \| None` | Optional API endpoint URL |
+| `headless` | `bool` | Optional Whether to run in headless mode |
+| `insecure` | `bool` | insecure flag for the client |
+| `insecure_skip_verify` | `bool` | Whether to skip SSL certificate verification |
+| `ca_cert_file_path` | `str \| None` | [optional] str Root Cert to be loaded and used to verify admin |
+| `auth_type` | `AuthType` | The authentication type to use (Pkce, ClientSecret, ExternalCommand, DeviceFlow) |
+| `command` | `List[str] \| None` | This command is executed to return a token using an external process |
+| `proxy_command` | `List[str] \| None` | This command is executed to return a token for proxy authorization using an external process |
+| `api_key` | `str \| None` | Optional API key for authentication |
+| `client_id` | `str \| None` | This is the public identifier for the app which handles authorization for a Flyte deployment. More details here: https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/. |
+| `client_credentials_secret` | `str \| None` | Used for service auth, which is automatically called during pyflyte. This will allow the Flyte engine to read the password directly from the environment variable. Note that this is less secure! Please only use this if mounting the secret as a file is impossible |
+| `auth_client_config` | `ClientConfig \| None` | Optional client configuration for authentication |
+| `rpc_retries` | `int` | [optional] int Number of times to retry the platform calls |
+| `http_proxy_url` | `str \| None` | [optional] HTTP Proxy to be used for OAuth requests |
+| `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
+| `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000, so limit larger than batch_size will be split into multiple requests. |
+| `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration, if not provided, the default image builder will be used. |
+| `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name. |
+| `source_config_path` | `Optional[Path]` | Optional path to the source configuration file (This is only used for documentation) |
+| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
+| `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. :return: None |
 
 #### init_from_config()
 
@@ -538,35 +428,15 @@ other Flyte remote API methods are called. Thread-safe implementation.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path_or_config` | {{< multiline >}}`str \| Path \| Config \| None`
-doc: Path to the configuration file or Config object
-{{< /multiline >}} |
-| `root_dir` | {{< multiline >}}`Path \| None`
-doc: Optional root directory from which to determine how to load files, and find paths to
-files like config etc. For example if one uses the copy-style=="all", it is essential to determine the
-root directory for the current project. If not provided, it defaults to the editable install directory or
-if not available, the current working directory.
-{{< /multiline >}} |
-| `log_level` | {{< multiline >}}`int \| None`
-doc: Optional logging level for the framework logger,
-default is set using the default initialization policies
-{{< /multiline >}} |
-| `log_format` | {{< multiline >}}`LogFormat`
-doc: Optional logging format for the logger, default is "console"
-{{< /multiline >}} |
-| `storage` | {{< multiline >}}`Storage \| None`
-doc: Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio)
-{{< /multiline >}} |
-| `images` | {{< multiline >}}`tuple[str, ...] \| None`
-doc: List of image strings in format "imagename=imageuri" or just "imageuri".
-{{< /multiline >}} |
-| `sync_local_sys_paths` | {{< multiline >}}`bool`
-doc: Whether to include and synchronize local sys.path entries under the root directory
-into the remote container (default: True).
-:return: None
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `path_or_config` | `str \| Path \| Config \| None` | Path to the configuration file or Config object |
+| `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files like config etc. For example if one uses the copy-style=="all", it is essential to determine the root directory for the current project. If not provided, it defaults to the editable install directory or if not available, the current working directory. |
+| `log_level` | `int \| None` | Optional logging level for the framework logger, default is set using the default initialization policies |
+| `log_format` | `LogFormat` | Optional logging format for the logger, default is "console" |
+| `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
+| `images` | `tuple[str, ...] \| None` | List of image strings in format "imagename=imageuri" or just "imageuri". |
+| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). :return: None |
 
 #### init_in_cluster()
 
@@ -585,14 +455,14 @@ def init_in_cluster(
     insecure: bool,
 ) -> dict[str, typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `org` | `str \| None` |
-| `project` | `str \| None` |
-| `domain` | `str \| None` |
-| `api_key` | `str \| None` |
-| `endpoint` | `str \| None` |
-| `insecure` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `org` | `str \| None` | |
+| `project` | `str \| None` | |
+| `domain` | `str \| None` | |
+| `api_key` | `str \| None` | |
+| `endpoint` | `str \| None` | |
+| `insecure` | `bool` | |
 
 #### map()
 
@@ -614,24 +484,13 @@ Map a function over the provided arguments with concurrent execution.
 
 
 
-| Parameter | Type |
-|-|-|
-| `func` | {{< multiline >}}`typing.Union[flyte._task.AsyncFunctionTaskTemplate[~P, ~R, ~F], functools.partial[~R]]`
-doc: The async function to map.
-{{< /multiline >}} |
-| `args` | {{< multiline >}}`*args`
-doc: Positional arguments to pass to the function (iterables that will be zipped).
-{{< /multiline >}} |
-| `group_name` | {{< multiline >}}`str \| None`
-doc: The name of the group for the mapped tasks.
-{{< /multiline >}} |
-| `concurrency` | {{< multiline >}}`int`
-doc: The maximum number of concurrent tasks to run. If 0, run all tasks concurrently.
-{{< /multiline >}} |
-| `return_exceptions` | {{< multiline >}}`bool`
-doc: If True, yield exceptions instead of raising them.
-:return: AsyncIterator yielding results in order.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Union[flyte._task.AsyncFunctionTaskTemplate[~P, ~R, ~F], functools.partial[~R]]` | The async function to map. |
+| `args` | `*args` | Positional arguments to pass to the function (iterables that will be zipped). |
+| `group_name` | `str \| None` | The name of the group for the mapped tasks. |
+| `concurrency` | `int` | The maximum number of concurrent tasks to run. If 0, run all tasks concurrently. |
+| `return_exceptions` | `bool` | If True, yield exceptions instead of raising them. :return: AsyncIterator yielding results in order. |
 
 #### run()
 
@@ -650,18 +509,11 @@ def run(
 Run a task with the given parameters
 
 
-| Parameter | Type |
-|-|-|
-| `task` | {{< multiline >}}`TaskTemplate[P, R, F]`
-doc: task to run
-{{< /multiline >}} |
-| `args` | {{< multiline >}}`*args`
-doc: args to pass to the task
-{{< /multiline >}} |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: kwargs to pass to the task
-:return: Run | Result of the task
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `task` | `TaskTemplate[P, R, F]` | task to run |
+| `args` | `*args` | args to pass to the task |
+| `kwargs` | `**kwargs` | kwargs to pass to the task :return: Run \| Result of the task |
 
 #### trace()
 
@@ -674,9 +526,9 @@ A decorator that traces function execution with timing information.
 Works with regular functions, async functions, and async generators/iterators.
 
 
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable[..., ~T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable[..., ~T]` | |
 
 #### version()
 
@@ -723,7 +575,7 @@ import flyte
 env = flyte.TaskEnvironment("example")
 
 @env.task
-async def example_task(x: int, y: str) -> str:
+async def example_task(x: int, y: str) -&gt; str:
     return f"{x} {y}"
 
 if __name__ == "__main__":
@@ -732,89 +584,31 @@ if __name__ == "__main__":
 
 
 
-| Parameter | Type |
-|-|-|
-| `mode` | {{< multiline >}}`Mode \| None`
-doc: Optional The mode to use for the run, if not provided, it will be computed from flyte.init
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`Optional[str]`
-doc: Optional The name to use for the run
-{{< /multiline >}} |
-| `service_account` | {{< multiline >}}`Optional[str]`
-doc: Optional The service account to use for the run context
-{{< /multiline >}} |
-| `version` | {{< multiline >}}`Optional[str]`
-doc: Optional The version to use for the run, if not provided, it will be computed from the code bundle
-{{< /multiline >}} |
-| `copy_style` | {{< multiline >}}`CopyFiles`
-doc: Optional The copy style to use for the run context
-{{< /multiline >}} |
-| `dry_run` | {{< multiline >}}`bool`
-doc: Optional If true, the run will not be executed, but the bundle will be created
-{{< /multiline >}} |
-| `copy_bundle_to` | {{< multiline >}}`pathlib.Path \| None`
-doc: When dry_run is True, the bundle will be copied to this location if specified
-{{< /multiline >}} |
-| `interactive_mode` | {{< multiline >}}`bool \| None`
-doc: Optional, can be forced to True or False.
-If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered
-interactive mode, while scripts are not. This is used to determine how the code bundle is created.
-{{< /multiline >}} |
-| `raw_data_path` | {{< multiline >}}`str \| None`
-doc: Use this path to store the raw data for the run for local and remote, and can be used to
-store raw data in specific locations.
-{{< /multiline >}} |
-| `run_base_dir` | {{< multiline >}}`str \| None`
-doc: Optional The base directory to use for the run. This is used to store the metadata for the run,
-that is passed between tasks.
-{{< /multiline >}} |
-| `overwrite_cache` | {{< multiline >}}`bool`
-doc: Optional If true, the cache will be overwritten for the run
-{{< /multiline >}} |
-| `project` | {{< multiline >}}`str \| None`
-doc: Optional The project to use for the run
-{{< /multiline >}} |
-| `domain` | {{< multiline >}}`str \| None`
-doc: Optional The domain to use for the run
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Dict[str, str] \| None`
-doc: Optional Environment variables to set for the run
-{{< /multiline >}} |
-| `labels` | {{< multiline >}}`Dict[str, str] \| None`
-doc: Optional Labels to set for the run
-{{< /multiline >}} |
-| `annotations` | {{< multiline >}}`Dict[str, str] \| None`
-doc: Optional Annotations to set for the run
-{{< /multiline >}} |
-| `interruptible` | {{< multiline >}}`bool \| None`
-doc: Optional If true, the run can be scheduled on interruptible instances and false implies
-that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the
-original setting on all tasks is retained.
-{{< /multiline >}} |
-| `log_level` | {{< multiline >}}`int \| None`
-doc: Optional Log level to set for the run. If not provided, it will be set to the default log level
-set using `flyte.init()`
-{{< /multiline >}} |
-| `log_format` | {{< multiline >}}`LogFormat`
-doc: Optional Log format to set for the run. If not provided, it will be set to the default log format
-{{< /multiline >}} |
-| `disable_run_cache` | {{< multiline >}}`bool`
-doc: Optional If true, the run cache will be disabled. This is useful for testing purposes.
-{{< /multiline >}} |
-| `queue` | {{< multiline >}}`Optional[str]`
-doc: Optional The queue to use for the run. This is used to specify the cluster to use for the run.
-{{< /multiline >}} |
-| `custom_context` | {{< multiline >}}`Dict[str, str] \| None`
-doc: Optional global input context to pass to the task. This will be available via
-get_custom_context() within the task and will automatically propagate to sub-tasks.
-Acts as base/default values that can be overridden by context managers in the code.
-{{< /multiline >}} |
-| `cache_lookup_scope` | {{< multiline >}}`CacheLookupScope`
-doc: Optional Scope to use for the run. This is used to specify the scope to use for cache
-lookups. If not specified, it will be set to the default scope (global unless overridden at the system level).
-
-:return: runner
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `Mode \| None` | Optional The mode to use for the run, if not provided, it will be computed from flyte.init |
+| `name` | `Optional[str]` | Optional The name to use for the run |
+| `service_account` | `Optional[str]` | Optional The service account to use for the run context |
+| `version` | `Optional[str]` | Optional The version to use for the run, if not provided, it will be computed from the code bundle |
+| `copy_style` | `CopyFiles` | Optional The copy style to use for the run context |
+| `dry_run` | `bool` | Optional If true, the run will not be executed, but the bundle will be created |
+| `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
+| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. |
+| `raw_data_path` | `str \| None` | Use this path to store the raw data for the run for local and remote, and can be used to store raw data in specific locations. |
+| `run_base_dir` | `str \| None` | Optional The base directory to use for the run. This is used to store the metadata for the run, that is passed between tasks. |
+| `overwrite_cache` | `bool` | Optional If true, the cache will be overwritten for the run |
+| `project` | `str \| None` | Optional The project to use for the run |
+| `domain` | `str \| None` | Optional The domain to use for the run |
+| `env_vars` | `Dict[str, str] \| None` | Optional Environment variables to set for the run |
+| `labels` | `Dict[str, str] \| None` | Optional Labels to set for the run |
+| `annotations` | `Dict[str, str] \| None` | Optional Annotations to set for the run |
+| `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
+| `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
+| `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
+| `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
+| `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
+| `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
+| `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level).  :return: runner |
 
 ## flyte.Cache
 
@@ -831,34 +625,14 @@ class Cache(
     policies: typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `behavior` | {{< multiline >}}`typing.Literal['auto', 'override', 'disable']`
-doc: The behavior of the cache. Can be "auto", "override" or "disable".
-{{< /multiline >}} |
-| `version_override` | {{< multiline >}}`typing.Optional[str]`
-doc: The version of the cache. If not provided, the version will be
-generated based on the cache policies
-:type version_override: Optional[str]
-{{< /multiline >}} |
-| `serialize` | {{< multiline >}}`bool`
-doc: Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in
-serial when caching is enabled. This means that given multiple concurrent executions over identical inputs,
-only a single instance executes and the rest wait to reuse the cached results.
-:type serialize: bool
-{{< /multiline >}} |
-| `ignored_inputs` | {{< multiline >}}`typing.Union[typing.Tuple[str, ...], str]`
-doc: A tuple of input names to ignore when generating the version hash.
-:type ignored_inputs: Union[Tuple[str, ...], str]
-{{< /multiline >}} |
-| `salt` | {{< multiline >}}`str`
-doc: A salt used in the hash generation.
-:type salt: str
-{{< /multiline >}} |
-| `policies` | {{< multiline >}}`typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType]`
-doc: A list of cache policies to generate the version hash.
-:type policies: Optional[Union[List[CachePolicy], CachePolicy]]
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `behavior` | `typing.Literal['auto', 'override', 'disable']` | The behavior of the cache. Can be "auto", "override" or "disable". |
+| `version_override` | `typing.Optional[str]` | The version of the cache. If not provided, the version will be generated based on the cache policies :type version_override: Optional[str] |
+| `serialize` | `bool` | Boolean that indicates if identical (ie. same inputs) instances of this task should be executed in serial when caching is enabled. This means that given multiple concurrent executions over identical inputs, only a single instance executes and the rest wait to reuse the cached results. :type serialize: bool |
+| `ignored_inputs` | `typing.Union[typing.Tuple[str, ...], str]` | A tuple of input names to ignore when generating the version hash. :type ignored_inputs: Union[Tuple[str, ...], str] |
+| `salt` | `str` | A salt used in the hash generation. :type salt: str |
+| `policies` | `typing.Union[typing.List[flyte._cache.cache.CachePolicy], flyte._cache.cache.CachePolicy, NoneType]` | A list of cache policies to generate the version hash. :type policies: Optional[Union[List[CachePolicy], CachePolicy]] |
 
 ### Methods
 
@@ -881,9 +655,9 @@ def get_version(
     params: typing.Optional[flyte._cache.cache.VersionParameters],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `params` | `typing.Optional[flyte._cache.cache.VersionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `params` | `typing.Optional[flyte._cache.cache.VersionParameters]` | |
 
 #### is_enabled()
 
@@ -900,7 +674,7 @@ Base class for protocol classes.
 Protocol classes are defined as::
 
     class Proto(Protocol):
-        def meth(self) -> int:
+        def meth(self) -&gt; int:
             ...
 
 Such classes are primarily used with static type checkers that recognize
@@ -909,10 +683,10 @@ structural subtyping (static duck-typing).
 For example::
 
     class C:
-        def meth(self) -> int:
+        def meth(self) -&gt; int:
             return 0
 
-    def func(x: Proto) -> int:
+    def func(x: Proto) -&gt; int:
         return x.meth()
 
     func(C())  # Passes static type check
@@ -923,7 +697,7 @@ only the presence of given attributes, ignoring their type signatures.
 Protocol classes can be generic, they are defined as::
 
     class GenProto[T](Protocol):
-        def meth(self) -> T:
+        def meth(self) -&gt; T:
             ...
 
 
@@ -945,10 +719,10 @@ def get_version(
     params: flyte._cache.cache.VersionParameters,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `salt` | `str` |
-| `params` | `flyte._cache.cache.VersionParameters` |
+| Parameter | Type | Description |
+|-|-|-|
+| `salt` | `str` | |
+| `params` | `flyte._cache.cache.VersionParameters` | |
 
 ## flyte.Cron
 
@@ -970,10 +744,10 @@ class Cron(
     timezone: Timezone,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `expression` | `str` |
-| `timezone` | `Timezone` |
+| Parameter | Type | Description |
+|-|-|-|
+| `expression` | `str` | |
+| `timezone` | `Timezone` | |
 
 ### Properties
 
@@ -997,12 +771,12 @@ class Device(
     partition: str | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `quantity` | `int` |
-| `device_class` | `typing.Literal['GPU', 'TPU', 'NEURON', 'AMD_GPU', 'HABANA_GAUDI']` |
-| `device` | `str \| None` |
-| `partition` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `quantity` | `int` | |
+| `device_class` | `typing.Literal['GPU', 'TPU', 'NEURON', 'AMD_GPU', 'HABANA_GAUDI']` | |
+| `device` | `str \| None` | |
+| `partition` | `str \| None` | |
 
 ## flyte.Environment
 
@@ -1019,36 +793,17 @@ class Environment(
     image: Union[str, Image, Literal['auto']],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: Name of the environment
-{{< /multiline >}} |
-| `depends_on` | {{< multiline >}}`List[Environment]`
-doc: Environment dependencies to hint, so when you deploy the environment, the dependencies are
-also deployed. This is useful when you have a set of environments that depend on each other.
-{{< /multiline >}} |
-| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
-doc: Pod template to use for the environment.
-{{< /multiline >}} |
-| `description` | {{< multiline >}}`Optional[str]`
-doc: Description of the environment.
-{{< /multiline >}} |
-| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
-doc: Secrets to inject into the environment.
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
-doc: Environment variables to set for the environment.
-{{< /multiline >}} |
-| `resources` | {{< multiline >}}`Optional[Resources]`
-doc: Resources to allocate for the environment.
-{{< /multiline >}} |
-| `interruptible` | {{< multiline >}}`bool`
-doc: Whether the environment is interruptible and can be scheduled on spot/preemptible instances
-{{< /multiline >}} |
-| `image` | {{< multiline >}}`Union[str, Image, Literal['auto']]`
-doc: Docker image to use for the environment. If set to "auto", will use the default image.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | Name of the environment |
+| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Pod template to use for the environment. |
+| `description` | `Optional[str]` | Description of the environment. |
+| `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
+| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
+| `interruptible` | `bool` | Whether the environment is interruptible and can be scheduled on spot/preemptible instances |
+| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
 
 ### Methods
 
@@ -1068,9 +823,9 @@ def add_dependency(
 Add a dependency to the environment.
 
 
-| Parameter | Type |
-|-|-|
-| `env` | `Environment` |
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `Environment` | |
 
 #### clone_with()
 
@@ -1086,16 +841,16 @@ def clone_with(
     kwargs: **kwargs,
 ) -> Environment
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `image` | `Optional[Union[str, Image, Literal['auto']]]` |
-| `resources` | `Optional[Resources]` |
-| `env_vars` | `Optional[Dict[str, str]]` |
-| `secrets` | `Optional[SecretRequest]` |
-| `depends_on` | `Optional[List[Environment]]` |
-| `description` | `Optional[str]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `image` | `Optional[Union[str, Image, Literal['auto']]]` | |
+| `resources` | `Optional[Resources]` | |
+| `env_vars` | `Optional[Dict[str, str]]` | |
+| `secrets` | `Optional[SecretRequest]` | |
+| `depends_on` | `Optional[List[Environment]]` | |
+| `description` | `Optional[str]` | |
+| `kwargs` | `**kwargs` | |
 
 ## flyte.FixedRate
 
@@ -1117,10 +872,10 @@ class FixedRate(
     start_time: datetime | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `interval_minutes` | `int` |
-| `start_time` | `datetime \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `interval_minutes` | `int` | |
+| `start_time` | `datetime \| None` | |
 
 ## flyte.Image
 
@@ -1150,17 +905,17 @@ class Image(
     _image_registry_secret: Optional[Secret],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `base_image` | `Optional[str]` |
-| `dockerfile` | `Optional[Path]` |
-| `registry` | `Optional[str]` |
-| `name` | `Optional[str]` |
-| `platform` | `Tuple[Architecture, ...]` |
-| `python_version` | `Tuple[int, int]` |
-| `_ref_name` | `Optional[str]` |
-| `_layers` | `Tuple[Layer, ...]` |
-| `_image_registry_secret` | `Optional[Secret]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `base_image` | `Optional[str]` | |
+| `dockerfile` | `Optional[Path]` | |
+| `registry` | `Optional[str]` | |
+| `name` | `Optional[str]` | |
+| `platform` | `Tuple[Architecture, ...]` | |
+| `python_version` | `Tuple[int, int]` | |
+| `_ref_name` | `Optional[str]` | |
+| `_layers` | `Tuple[Layer, ...]` | |
+| `_image_registry_secret` | `Optional[Secret]` | |
 
 ### Methods
 
@@ -1203,25 +958,14 @@ Use this method to clone the current image and change the registry and name
 
 
 
-| Parameter | Type |
-|-|-|
-| `registry` | {{< multiline >}}`Optional[str]`
-doc: Registry to use for the image
-{{< /multiline >}} |
-| `registry_secret` | {{< multiline >}}`Optional[str \| Secret]`
-doc: Secret to use to pull/push the private image.
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`Optional[str]`
-doc: Name of the image
-{{< /multiline >}} |
-| `base_image` | `Optional[str]` |
-| `python_version` | {{< multiline >}}`Optional[Tuple[int, int]]`
-doc: Python version for the image, if not specified, will use the current Python version
-{{< /multiline >}} |
-| `addl_layer` | {{< multiline >}}`Optional[Layer]`
-doc: Additional layer to add to the image. This will be added to the end of the layers.
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `registry` | `Optional[str]` | Registry to use for the image |
+| `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
+| `name` | `Optional[str]` | Name of the image |
+| `base_image` | `Optional[str]` | |
+| `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
+| `addl_layer` | `Optional[Layer]` | Additional layer to add to the image. This will be added to the end of the layers. :return: |
 
 #### from_base()
 
@@ -1234,12 +978,9 @@ Use this method to start with a pre-built base image. This image must already ex
 
 
 
-| Parameter | Type |
-|-|-|
-| `image_uri` | {{< multiline >}}`str`
-doc: The full URI of the image, in the format <registry>/<name>
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_uri` | `str` | The full URI of the image, in the format &lt;registry&gt;/&lt;name&gt; :return: |
 
 #### from_debian_base()
 
@@ -1259,32 +1000,15 @@ Default images are multi-arch amd/arm64
 
 
 
-| Parameter | Type |
-|-|-|
-| `python_version` | {{< multiline >}}`Optional[Tuple[int, int]]`
-doc: If not specified, will use the current Python version
-{{< /multiline >}} |
-| `flyte_version` | {{< multiline >}}`Optional[str]`
-doc: Union version to use
-{{< /multiline >}} |
-| `install_flyte` | {{< multiline >}}`bool`
-doc: If True, will install the flyte library in the image
-{{< /multiline >}} |
-| `registry` | {{< multiline >}}`Optional[str]`
-doc: Registry to use for the image
-{{< /multiline >}} |
-| `registry_secret` | {{< multiline >}}`Optional[str \| Secret]`
-doc: Secret to use to pull/push the private image.
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`Optional[str]`
-doc: Name of the image if you want to override the default name
-{{< /multiline >}} |
-| `platform` | {{< multiline >}}`Optional[Tuple[Architecture, ...]]`
-doc: Platform to use for the image, default is linux/amd64, use tuple for multiple values
-Example: ("linux/amd64", "linux/arm64")
-
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_version` | `Optional[Tuple[int, int]]` | If not specified, will use the current Python version |
+| `flyte_version` | `Optional[str]` | Union version to use |
+| `install_flyte` | `bool` | If True, will install the flyte library in the image |
+| `registry` | `Optional[str]` | Registry to use for the image |
+| `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
+| `name` | `Optional[str]` | Name of the image if you want to override the default name |
+| `platform` | `Optional[Tuple[Architecture, ...]]` | Platform to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64")  :return: Image |
 
 #### from_dockerfile()
 
@@ -1305,23 +1029,12 @@ context for the builder will be the directory where the dockerfile is located.
 
 
 
-| Parameter | Type |
-|-|-|
-| `file` | {{< multiline >}}`Path`
-doc: path to the dockerfile
-{{< /multiline >}} |
-| `registry` | {{< multiline >}}`str`
-doc: registry to use for the image
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`str`
-doc: name of the image
-{{< /multiline >}} |
-| `platform` | {{< multiline >}}`Union[Architecture, Tuple[Architecture, ...], None]`
-doc: architecture to use for the image, default is linux/amd64, use tuple for multiple values
-Example: ("linux/amd64", "linux/arm64")
-
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `file` | `Path` | path to the dockerfile |
+| `registry` | `str` | registry to use for the image |
+| `name` | `str` | name of the image |
+| `platform` | `Union[Architecture, Tuple[Architecture, ...], None]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values Example: ("linux/amd64", "linux/arm64")  :return: |
 
 #### from_ref_name()
 
@@ -1330,9 +1043,9 @@ def from_ref_name(
     name: str,
 ) -> Image
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 
 #### from_uv_script()
 
@@ -1360,7 +1073,7 @@ Example:
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.12"
+# requires-python = "&gt;=3.12"
 # dependencies = ["httpx"]
 # ///
 ```
@@ -1370,39 +1083,19 @@ For more information on the uv script format, see the documentation:
 
 
 
-| Parameter | Type |
-|-|-|
-| `script` | {{< multiline >}}`Path \| str`
-doc: path to the uv script
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`str`
-doc: name of the image
-{{< /multiline >}} |
-| `registry` | {{< multiline >}}`str \| None`
-doc: registry to use for the image
-{{< /multiline >}} |
-| `registry_secret` | {{< multiline >}}`Optional[str \| Secret]`
-doc: Secret to use to pull/push the private image.
-{{< /multiline >}} |
-| `python_version` | {{< multiline >}}`Optional[Tuple[int, int]]`
-doc: Python version for the image, if not specified, will use the current Python version
-{{< /multiline >}} |
-| `index_url` | {{< multiline >}}`Optional[str]`
-doc: index url to use for pip install, default is None
-{{< /multiline >}} |
-| `extra_index_urls` | {{< multiline >}}`Union[str, List[str], Tuple[str, ...], None]`
-doc: extra index urls to use for pip install, default is None
-{{< /multiline >}} |
-| `pre` | {{< multiline >}}`bool`
-doc: whether to allow pre-release versions, default is False
-{{< /multiline >}} |
-| `extra_args` | {{< multiline >}}`Optional[str]`
-doc: extra arguments to pass to pip install, default is None
-{{< /multiline >}} |
-| `platform` | {{< multiline >}}`Optional[Tuple[Architecture, ...]]`
-doc: architecture to use for the image, default is linux/amd64, use tuple for multiple values
-{{< /multiline >}} |
-| `secret_mounts` | `Optional[SecretRequest]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `script` | `Path \| str` | path to the uv script |
+| `name` | `str` | name of the image |
+| `registry` | `str \| None` | registry to use for the image |
+| `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
+| `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
+| `index_url` | `Optional[str]` | index url to use for pip install, default is None |
+| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
+| `pre` | `bool` | whether to allow pre-release versions, default is False |
+| `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
+| `platform` | `Optional[Tuple[Architecture, ...]]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values |
+| `secret_mounts` | `Optional[SecretRequest]` | |
 
 #### validate()
 
@@ -1421,15 +1114,10 @@ Use this method to create a new image with the specified apt packages layered on
 
 
 
-| Parameter | Type |
-|-|-|
-| `packages` | {{< multiline >}}`str`
-doc: list of apt packages to install
-{{< /multiline >}} |
-| `secret_mounts` | {{< multiline >}}`Optional[SecretRequest]`
-doc: list of secret mounts to use for the build process.
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `packages` | `str` | list of apt packages to install |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. :return: Image |
 
 #### with_commands()
 
@@ -1444,15 +1132,10 @@ Be sure not to use RUN in your command.
 
 
 
-| Parameter | Type |
-|-|-|
-| `commands` | {{< multiline >}}`List[str]`
-doc: list of commands to run
-{{< /multiline >}} |
-| `secret_mounts` | {{< multiline >}}`Optional[SecretRequest]`
-doc: list of secret mounts to use for the build process.
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `commands` | `List[str]` | list of commands to run |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. :return: Image |
 
 #### with_dockerignore()
 
@@ -1461,9 +1144,9 @@ def with_dockerignore(
     path: Path,
 ) -> Image
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `Path` | |
 
 #### with_env_vars()
 
@@ -1477,12 +1160,9 @@ the current image. Cannot be used in conjunction with conda
 
 
 
-| Parameter | Type |
-|-|-|
-| `env_vars` | {{< multiline >}}`Dict[str, str]`
-doc: dictionary of environment variables to set
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `env_vars` | `Dict[str, str]` | dictionary of environment variables to set :return: Image |
 
 #### with_local_v2()
 
@@ -1513,7 +1193,7 @@ Cannot be used in conjunction with conda
 Example:
 ```python
 @flyte.task(image=(flyte.Image.from_debian_base().with_pip_packages("requests", "numpy")))
-def my_task(x: int) -> int:
+def my_task(x: int) -&gt; int:
     import numpy as np
     return np.sum([x, 1])
 ```
@@ -1530,34 +1210,21 @@ private_package = "git+https://$GITHUB_PAT@github.com/flyteorg/flytex.git@2e20a2
         .with_pip_packages("private_package", secret_mounts=[Secret(key="GITHUB_PAT")])
         .with_apt_packages("git", secret_mounts=[Secret(key="apt-secret", mount="/etc/apt/apt-secret")])
 )
-def my_task(x: int) -> int:
+def my_task(x: int) -&gt; int:
     import numpy as np
     return np.sum([x, 1])
 ```
 
 
 
-| Parameter | Type |
-|-|-|
-| `packages` | {{< multiline >}}`str`
-doc: list of pip packages to install, follows pip install syntax
-{{< /multiline >}} |
-| `index_url` | {{< multiline >}}`Optional[str]`
-doc: index url to use for pip install, default is None
-{{< /multiline >}} |
-| `extra_index_urls` | {{< multiline >}}`Union[str, List[str], Tuple[str, ...], None]`
-doc: extra index urls to use for pip install, default is None
-{{< /multiline >}} |
-| `pre` | {{< multiline >}}`bool`
-doc: whether to allow pre-release versions, default is False
-{{< /multiline >}} |
-| `extra_args` | {{< multiline >}}`Optional[str]`
-doc: extra arguments to pass to pip install, default is None
-{{< /multiline >}} |
-| `secret_mounts` | {{< multiline >}}`Optional[SecretRequest]`
-doc: list of secret to mount for the build process.
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `packages` | `str` | list of pip packages to install, follows pip install syntax |
+| `index_url` | `Optional[str]` | index url to use for pip install, default is None |
+| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
+| `pre` | `bool` | whether to allow pre-release versions, default is False |
+| `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. :return: Image |
 
 #### with_poetry_project()
 
@@ -1583,27 +1250,13 @@ into the image.
 
 
 
-| Parameter | Type |
-|-|-|
-| `pyproject_file` | {{< multiline >}}`str \| Path`
-doc: Path to the pyproject.toml file. A poetry.lock file must exist in the same directory
-unless `poetry_lock` is explicitly provided.
-{{< /multiline >}} |
-| `poetry_lock` | {{< multiline >}}`Path \| None`
-doc: Path to the poetry.lock file. If not specified, the default is the file named
-'poetry.lock' in the same directory as `pyproject_file` (pyproject.parent / "poetry.lock").
-{{< /multiline >}} |
-| `extra_args` | {{< multiline >}}`Optional[str]`
-doc: Extra arguments to pass through to the package installer/resolver, default is None.
-{{< /multiline >}} |
-| `secret_mounts` | {{< multiline >}}`Optional[SecretRequest]`
-doc: Secrets to make available during dependency resolution/build (e.g., private indexes).
-{{< /multiline >}} |
-| `project_install_mode` | {{< multiline >}}`typing.Literal['dependencies_only', 'install_project']`
-doc: whether to install the project as a package or
-only dependencies, default is "dependencies_only"
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `pyproject_file` | `str \| Path` | Path to the pyproject.toml file. A poetry.lock file must exist in the same directory unless `poetry_lock` is explicitly provided. |
+| `poetry_lock` | `Path \| None` | Path to the poetry.lock file. If not specified, the default is the file named 'poetry.lock' in the same directory as `pyproject_file` (pyproject.parent / "poetry.lock"). |
+| `extra_args` | `Optional[str]` | Extra arguments to pass through to the package installer/resolver, default is None. |
+| `secret_mounts` | `Optional[SecretRequest]` | Secrets to make available during dependency resolution/build (e.g., private indexes). |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to install the project as a package or only dependencies, default is "dependencies_only" :return: Image |
 
 #### with_requirements()
 
@@ -1618,15 +1271,10 @@ Cannot be used in conjunction with conda
 
 
 
-| Parameter | Type |
-|-|-|
-| `file` | {{< multiline >}}`str \| Path`
-doc: path to the requirements file, must be a .txt file
-{{< /multiline >}} |
-| `secret_mounts` | {{< multiline >}}`Optional[SecretRequest]`
-doc: list of secret to mount for the build process.
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `file` | `str \| Path` | path to the requirements file, must be a .txt file |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret to mount for the build process. :return: |
 
 #### with_source_file()
 
@@ -1641,15 +1289,10 @@ If dest is not specified, it will be copied to the working directory of the imag
 
 
 
-| Parameter | Type |
-|-|-|
-| `src` | {{< multiline >}}`Path`
-doc: root folder of the source code from the build context to be copied
-{{< /multiline >}} |
-| `dst` | {{< multiline >}}`str`
-doc: destination folder in the image
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `src` | `Path` | root folder of the source code from the build context to be copied |
+| `dst` | `str` | destination folder in the image :return: Image |
 
 #### with_source_folder()
 
@@ -1665,19 +1308,11 @@ If dest is not specified, it will be copied to the working directory of the imag
 
 
 
-| Parameter | Type |
-|-|-|
-| `src` | {{< multiline >}}`Path`
-doc: root folder of the source code from the build context to be copied
-{{< /multiline >}} |
-| `dst` | {{< multiline >}}`str`
-doc: destination folder in the image
-{{< /multiline >}} |
-| `copy_contents_only` | {{< multiline >}}`bool`
-doc: If True, will copy the contents of the source folder to the destination folder,
-instead of the folder itself. Default is False.
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `src` | `Path` | root folder of the source code from the build context to be copied |
+| `dst` | `str` | destination folder in the image |
+| `copy_contents_only` | `bool` | If True, will copy the contents of the source folder to the destination folder, instead of the folder itself. Default is False. :return: Image |
 
 #### with_uv_project()
 
@@ -1704,35 +1339,16 @@ If `project_install_mode` is "install_project", it will also copy directory
 
 
 
-| Parameter | Type |
-|-|-|
-| `pyproject_file` | {{< multiline >}}`str \| Path`
-doc: path to the pyproject.toml file, needs to have a corresponding uv.lock file
-{{< /multiline >}} |
-| `uvlock` | {{< multiline >}}`Path \| None`
-doc: path to the uv.lock file, if not specified, will use the default uv.lock file in the same
-directory as the pyproject.toml file. (pyproject.parent / uv.lock)
-{{< /multiline >}} |
-| `index_url` | {{< multiline >}}`Optional[str]`
-doc: index url to use for pip install, default is None
-{{< /multiline >}} |
-| `extra_index_urls` | {{< multiline >}}`Union[List[str], Tuple[str, ...], None]`
-doc: extra index urls to use for pip install, default is None
-{{< /multiline >}} |
-| `pre` | {{< multiline >}}`bool`
-doc: whether to allow pre-release versions, default is False
-{{< /multiline >}} |
-| `extra_args` | {{< multiline >}}`Optional[str]`
-doc: extra arguments to pass to pip install, default is None
-{{< /multiline >}} |
-| `secret_mounts` | {{< multiline >}}`Optional[SecretRequest]`
-doc: list of secret mounts to use for the build process.
-{{< /multiline >}} |
-| `project_install_mode` | {{< multiline >}}`typing.Literal['dependencies_only', 'install_project']`
-doc: whether to install the project as a package or
-only dependencies, default is "dependencies_only"
-:return: Image
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `pyproject_file` | `str \| Path` | path to the pyproject.toml file, needs to have a corresponding uv.lock file |
+| `uvlock` | `Path \| None` | path to the uv.lock file, if not specified, will use the default uv.lock file in the same directory as the pyproject.toml file. (pyproject.parent / uv.lock) |
+| `index_url` | `Optional[str]` | index url to use for pip install, default is None |
+| `extra_index_urls` | `Union[List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
+| `pre` | `bool` | whether to allow pre-release versions, default is False |
+| `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
+| `secret_mounts` | `Optional[SecretRequest]` | list of secret mounts to use for the build process. |
+| `project_install_mode` | `typing.Literal['dependencies_only', 'install_project']` | whether to install the project as a package or only dependencies, default is "dependencies_only" :return: Image |
 
 #### with_workdir()
 
@@ -1746,12 +1362,9 @@ This will override any existing working directory
 
 
 
-| Parameter | Type |
-|-|-|
-| `workdir` | {{< multiline >}}`str`
-doc: working directory to use
-:return:
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `workdir` | `str` | working directory to use :return: |
 
 ## flyte.PodTemplate
 
@@ -1766,12 +1379,12 @@ class PodTemplate(
     annotations: typing.Optional[typing.Dict[str, str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `pod_spec` | `typing.Optional[ForwardRef('V1PodSpec')]` |
-| `primary_container_name` | `str` |
-| `labels` | `typing.Optional[typing.Dict[str, str]]` |
-| `annotations` | `typing.Optional[typing.Dict[str, str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pod_spec` | `typing.Optional[ForwardRef('V1PodSpec')]` | |
+| `primary_container_name` | `str` | |
+| `labels` | `typing.Optional[typing.Dict[str, str]]` | |
+| `annotations` | `typing.Optional[typing.Dict[str, str]]` | |
 
 ### Methods
 
@@ -1793,13 +1406,13 @@ Example:
 - Single CPU, 1GiB of memory, and 1 T4 GPU:
 ```python
 @task(resources=Resources(cpu=1, memory="1GiB", gpu="T4:1"))
-def my_task() -> int:
+def my_task() -&gt; int:
     return 42
 ```
 - 1CPU with limit upto 2CPU, 2GiB of memory, and 8 A100 GPUs and 10GiB of disk:
 ```python
 @task(resources=Resources(cpu=(1, 2), memory="2GiB", gpu="A100:8", disk="10GiB"))
-def my_task() -> int:
+def my_task() -&gt; int:
     return 42
 ```
 
@@ -1814,23 +1427,13 @@ class Resources(
     shm: typing.Union[str, typing.Literal['auto'], NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cpu` | {{< multiline >}}`typing.Union[int, float, str, typing.Tuple[int \| float \| str, int \| float \| str], NoneType]`
-doc: The amount of CPU to allocate to the task. This can be a string, int, float, list of ints or strings,
-or a tuple of two ints or strings.
-{{< /multiline >}} |
-| `memory` | {{< multiline >}}`typing.Union[str, typing.Tuple[str, str], NoneType]`
-doc: The amount of memory to allocate to the task. This can be a string, int, float, list of ints or
-strings, or a tuple of two ints or strings.
-{{< /multiline >}} |
-| `gpu` | {{< multiline >}}`typing.Union[typing.Literal['A10:1', 'A10:2', 'A10:3', 'A10:4', 'A10:5', 'A10:6', 'A10:7', 'A10:8', 'A10G:1', 'A10G:2', 'A10G:3', 'A10G:4', 'A10G:5', 'A10G:6', 'A10G:7', 'A10G:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'B200:1', 'B200:2', 'B200:3', 'B200:4', 'B200:5', 'B200:6', 'B200:7', 'B200:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8', 'H200:1', 'H200:2', 'H200:3', 'H200:4', 'H200:5', 'H200:6', 'H200:7', 'H200:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'V100:1', 'V100:2', 'V100:3', 'V100:4', 'V100:5', 'V100:6', 'V100:7', 'V100:8', 'RTX PRO 6000:1', 'T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'Trn1:1', 'Trn1:4', 'Trn1:8', 'Trn1:16', 'Trn1n:1', 'Trn1n:4', 'Trn1n:8', 'Trn1n:16', 'Trn2:1', 'Trn2:4', 'Trn2:8', 'Trn2:16', 'Trn2u:1', 'Trn2u:4', 'Trn2u:8', 'Trn2u:16', 'Inf1:1', 'Inf1:2', 'Inf1:3', 'Inf1:4', 'Inf1:5', 'Inf1:6', 'Inf1:7', 'Inf1:8', 'Inf1:9', 'Inf1:10', 'Inf1:11', 'Inf1:12', 'Inf1:13', 'Inf1:14', 'Inf1:15', 'Inf1:16', 'Inf2:1', 'Inf2:2', 'Inf2:3', 'Inf2:4', 'Inf2:5', 'Inf2:6', 'Inf2:7', 'Inf2:8', 'Inf2:9', 'Inf2:10', 'Inf2:11', 'Inf2:12', 'MI100:1', 'MI210:1', 'MI250:1', 'MI250X:1', 'MI300A:1', 'MI300X:1', 'MI325X:1', 'MI350X:1', 'MI355X:1', 'Gaudi1:1'], int, flyte._resources.Device, NoneType]`
-doc: The amount of GPU to allocate to the task. This can be an Accelerators enum, an int, or None.
-{{< /multiline >}} |
-| `disk` | {{< multiline >}}`typing.Optional[str]`
-doc: The amount of disk to allocate to the task. This is a string of the form "10GiB".
-{{< /multiline >}} |
-| `shm` | `typing.Union[str, typing.Literal['auto'], NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cpu` | `typing.Union[int, float, str, typing.Tuple[int \| float \| str, int \| float \| str], NoneType]` | The amount of CPU to allocate to the task. This can be a string, int, float, list of ints or strings, or a tuple of two ints or strings. |
+| `memory` | `typing.Union[str, typing.Tuple[str, str], NoneType]` | The amount of memory to allocate to the task. This can be a string, int, float, list of ints or strings, or a tuple of two ints or strings. |
+| `gpu` | `typing.Union[typing.Literal['A10:1', 'A10:2', 'A10:3', 'A10:4', 'A10:5', 'A10:6', 'A10:7', 'A10:8', 'A10G:1', 'A10G:2', 'A10G:3', 'A10G:4', 'A10G:5', 'A10G:6', 'A10G:7', 'A10G:8', 'A100:1', 'A100:2', 'A100:3', 'A100:4', 'A100:5', 'A100:6', 'A100:7', 'A100:8', 'A100 80G:1', 'A100 80G:2', 'A100 80G:3', 'A100 80G:4', 'A100 80G:5', 'A100 80G:6', 'A100 80G:7', 'A100 80G:8', 'B200:1', 'B200:2', 'B200:3', 'B200:4', 'B200:5', 'B200:6', 'B200:7', 'B200:8', 'H100:1', 'H100:2', 'H100:3', 'H100:4', 'H100:5', 'H100:6', 'H100:7', 'H100:8', 'H200:1', 'H200:2', 'H200:3', 'H200:4', 'H200:5', 'H200:6', 'H200:7', 'H200:8', 'L4:1', 'L4:2', 'L4:3', 'L4:4', 'L4:5', 'L4:6', 'L4:7', 'L4:8', 'L40s:1', 'L40s:2', 'L40s:3', 'L40s:4', 'L40s:5', 'L40s:6', 'L40s:7', 'L40s:8', 'V100:1', 'V100:2', 'V100:3', 'V100:4', 'V100:5', 'V100:6', 'V100:7', 'V100:8', 'RTX PRO 6000:1', 'T4:1', 'T4:2', 'T4:3', 'T4:4', 'T4:5', 'T4:6', 'T4:7', 'T4:8', 'Trn1:1', 'Trn1:4', 'Trn1:8', 'Trn1:16', 'Trn1n:1', 'Trn1n:4', 'Trn1n:8', 'Trn1n:16', 'Trn2:1', 'Trn2:4', 'Trn2:8', 'Trn2:16', 'Trn2u:1', 'Trn2u:4', 'Trn2u:8', 'Trn2u:16', 'Inf1:1', 'Inf1:2', 'Inf1:3', 'Inf1:4', 'Inf1:5', 'Inf1:6', 'Inf1:7', 'Inf1:8', 'Inf1:9', 'Inf1:10', 'Inf1:11', 'Inf1:12', 'Inf1:13', 'Inf1:14', 'Inf1:15', 'Inf1:16', 'Inf2:1', 'Inf2:2', 'Inf2:3', 'Inf2:4', 'Inf2:5', 'Inf2:6', 'Inf2:7', 'Inf2:8', 'Inf2:9', 'Inf2:10', 'Inf2:11', 'Inf2:12', 'MI100:1', 'MI210:1', 'MI250:1', 'MI250X:1', 'MI300A:1', 'MI300X:1', 'MI325X:1', 'MI350X:1', 'MI355X:1', 'Gaudi1:1'], int, flyte._resources.Device, NoneType]` | The amount of GPU to allocate to the task. This can be an Accelerators enum, an int, or None. |
+| `disk` | `typing.Optional[str]` | The amount of disk to allocate to the task. This is a string of the form "10GiB". |
+| `shm` | `typing.Union[str, typing.Literal['auto'], NoneType]` | |
 
 ### Methods
 
@@ -1888,15 +1491,11 @@ class RetryStrategy(
     backoff_factor: typing.Union[int, float, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `count` | {{< multiline >}}`int`
-doc: The number of retries.
-{{< /multiline >}} |
-| `backoff` | {{< multiline >}}`typing.Union[float, datetime.timedelta, NoneType]`
-doc: The backoff exponential factor. This can be an integer or a float.
-{{< /multiline >}} |
-| `backoff_factor` | `typing.Union[int, float, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `count` | `int` | The number of retries. |
+| `backoff` | `typing.Union[float, datetime.timedelta, NoneType]` | The backoff exponential factor. This can be an integer or a float. |
+| `backoff_factor` | `typing.Union[int, float, NoneType]` | |
 
 ## flyte.ReusePolicy
 
@@ -1917,28 +1516,12 @@ class ReusePolicy(
     scaledown_ttl: typing.Union[int, datetime.timedelta],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `replicas` | {{< multiline >}}`typing.Union[int, typing.Tuple[int, int]]`
-doc: Either a single int representing number of replicas or a tuple of two ints representing
-the min and max.
-{{< /multiline >}} |
-| `idle_ttl` | {{< multiline >}}`typing.Union[int, datetime.timedelta]`
-doc: The maximum idle duration for an environment, specified as either seconds (int) or a
-timedelta, after which all replicas in the environment are shutdown.
-If not set, the default is configured in the backend (can be as low as 90s).
-When a replica remains idle — meaning no tasks are running — for this duration, it will be automatically
-terminated, also referred to as environment idle timeout.
-{{< /multiline >}} |
-| `concurrency` | {{< multiline >}}`int`
-doc: The maximum number of tasks that can run concurrently in one instance of the environment.
-Concurrency of greater than 1 is only supported for `async` tasks.
-{{< /multiline >}} |
-| `scaledown_ttl` | {{< multiline >}}`typing.Union[int, datetime.timedelta]`
-doc: The minimum time to wait before scaling down each replica, specified as either seconds (int)
-or a timedelta. This is useful to prevent rapid scaling down of replicas when tasks are running
-frequently. If not set, the default is configured in the backend.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `replicas` | `typing.Union[int, typing.Tuple[int, int]]` | Either a single int representing number of replicas or a tuple of two ints representing the min and max. |
+| `idle_ttl` | `typing.Union[int, datetime.timedelta]` | The maximum idle duration for an environment, specified as either seconds (int) or a timedelta, after which all replicas in the environment are shutdown. If not set, the default is configured in the backend (can be as low as 90s). When a replica remains idle — meaning no tasks are running — for this duration, it will be automatically terminated, also referred to as environment idle timeout. |
+| `concurrency` | `int` | The maximum number of tasks that can run concurrently in one instance of the environment. Concurrency of greater than 1 is only supported for `async` tasks. |
+| `scaledown_ttl` | `typing.Union[int, datetime.timedelta]` | The minimum time to wait before scaling down each replica, specified as either seconds (int) or a timedelta. This is useful to prevent rapid scaling down of replicas when tasks are running frequently. If not set, the default is configured in the backend. |
 
 ### Methods
 
@@ -1959,12 +1542,9 @@ Returns the scaledown TTL as a timedelta. If scaledown_ttl is not set, returns N
 
 | Property | Type | Description |
 |-|-|-|
-| `max_replicas` | `None` | {{< multiline >}}Returns the maximum number of replicas.
-{{< /multiline >}} |
-| `min_replicas` | `None` | {{< multiline >}}Returns the minimum number of replicas.
-{{< /multiline >}} |
-| `ttl` | `None` | {{< multiline >}}Returns the idle TTL as a timedelta. If idle_ttl is not set, returns the global default.
-{{< /multiline >}} |
+| `max_replicas` | `None` | Returns the maximum number of replicas. |
+| `min_replicas` | `None` | Returns the minimum number of replicas. |
+| `ttl` | `None` | Returns the idle TTL as a timedelta. If idle_ttl is not set, returns the global default. |
 
 ## flyte.Secret
 
@@ -2000,21 +1580,12 @@ class Secret(
     as_env_var: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `key` | {{< multiline >}}`str`
-doc: The name of the secret in the secret store.
-{{< /multiline >}} |
-| `group` | {{< multiline >}}`typing.Optional[str]`
-doc: The group of the secret in the secret store.
-{{< /multiline >}} |
-| `mount` | {{< multiline >}}`pathlib._local.Path \| None`
-doc: Use this to specify the path where the secret should be mounted.
-TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported
-{{< /multiline >}} |
-| `as_env_var` | {{< multiline >}}`typing.Optional[str]`
-doc: The name of the environment variable that the secret should be mounted as.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `key` | `str` | The name of the secret in the secret store. |
+| `group` | `typing.Optional[str]` | The group of the secret in the secret store. |
+| `mount` | `pathlib._local.Path \| None` | Use this to specify the path where the secret should be mounted. TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
+| `as_env_var` | `typing.Optional[str]` | The name of the environment variable that the secret should be mounted as. |
 
 ### Methods
 
@@ -2063,48 +1634,21 @@ class TaskEnvironment(
     queue: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: Name of the environment
-{{< /multiline >}} |
-| `depends_on` | {{< multiline >}}`List[Environment]`
-doc: Environment dependencies to hint, so when you deploy the environment,
-the dependencies are also deployed. This is useful when you have a set of environments
-that depend on each other.
-{{< /multiline >}} |
-| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
-doc: Optional pod template to use for tasks in this environment.
-If not set, the default pod template will be used.
-{{< /multiline >}} |
-| `description` | `Optional[str]` |
-| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
-doc: Secrets to inject into the environment.
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
-doc: Environment variables to set for the environment.
-{{< /multiline >}} |
-| `resources` | {{< multiline >}}`Optional[Resources]`
-doc: Resources to allocate for the environment.
-{{< /multiline >}} |
-| `interruptible` | `bool` |
-| `image` | {{< multiline >}}`Union[str, Image, Literal['auto']]`
-doc: Docker image to use for the environment. If set to "auto", will use the default image.
-{{< /multiline >}} |
-| `cache` | {{< multiline >}}`CacheRequest`
-doc: Cache policy for the environment.
-{{< /multiline >}} |
-| `reusable` | {{< multiline >}}`ReusePolicy \| None`
-doc: Reuse policy for the environment, if set, a python process may be reused for multiple tasks.
-{{< /multiline >}} |
-| `plugin_config` | {{< multiline >}}`Optional[Any]`
-doc: Optional plugin configuration for custom task types.
-If set, all tasks in this environment will use the specified plugin configuration.
-{{< /multiline >}} |
-| `queue` | {{< multiline >}}`Optional[str]`
-doc: Optional queue name to use for tasks in this environment.
-If not set, the default queue will be used.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | Name of the environment |
+| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional pod template to use for tasks in this environment. If not set, the default pod template will be used. |
+| `description` | `Optional[str]` | |
+| `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
+| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
+| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
+| `interruptible` | `bool` | |
+| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
+| `cache` | `CacheRequest` | Cache policy for the environment. |
+| `reusable` | `ReusePolicy \| None` | Reuse policy for the environment, if set, a python process may be reused for multiple tasks. |
+| `plugin_config` | `Optional[Any]` | Optional plugin configuration for custom task types. If set, all tasks in this environment will use the specified plugin configuration. |
+| `queue` | `Optional[str]` | Optional queue name to use for tasks in this environment. If not set, the default queue will be used. |
 
 ### Methods
 
@@ -2126,9 +1670,9 @@ def add_dependency(
 Add a dependency to the environment.
 
 
-| Parameter | Type |
-|-|-|
-| `env` | `Environment` |
+| Parameter | Type | Description |
+|-|-|-|
+| `env` | `Environment` | |
 
 #### clone_with()
 
@@ -2151,38 +1695,17 @@ Besides the base environment parameters, you can override kwargs like `cache`, `
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the environment.
-{{< /multiline >}} |
-| `image` | {{< multiline >}}`Optional[Union[str, Image, Literal['auto']]]`
-doc: The image to use for the environment.
-{{< /multiline >}} |
-| `resources` | {{< multiline >}}`Optional[Resources]`
-doc: The resources to allocate for the environment.
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Optional[Dict[str, str]]`
-doc: The environment variables to set for the environment.
-{{< /multiline >}} |
-| `secrets` | {{< multiline >}}`Optional[SecretRequest]`
-doc: The secrets to inject into the environment.
-{{< /multiline >}} |
-| `depends_on` | {{< multiline >}}`Optional[List[Environment]]`
-doc: The environment dependencies to hint, so when you deploy the environment,
-the dependencies are also deployed. This is useful when you have a set of environments
-that depend on each other.
-{{< /multiline >}} |
-| `description` | {{< multiline >}}`Optional[str]`
-doc: The description of the environment.
-{{< /multiline >}} |
-| `interruptible` | {{< multiline >}}`Optional[bool]`
-doc: Whether the environment is interruptible and can be scheduled on spot/preemptible
-instances.
-{{< /multiline >}} |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: Additional parameters to override the environment (e.g., cache, reusable, plugin_config).
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the environment. |
+| `image` | `Optional[Union[str, Image, Literal['auto']]]` | The image to use for the environment. |
+| `resources` | `Optional[Resources]` | The resources to allocate for the environment. |
+| `env_vars` | `Optional[Dict[str, str]]` | The environment variables to set for the environment. |
+| `secrets` | `Optional[SecretRequest]` | The secrets to inject into the environment. |
+| `depends_on` | `Optional[List[Environment]]` | The environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
+| `description` | `Optional[str]` | The description of the environment. |
+| `interruptible` | `Optional[bool]` | Whether the environment is interruptible and can be scheduled on spot/preemptible instances. |
+| `kwargs` | `**kwargs` | Additional parameters to override the environment (e.g., cache, reusable, plugin_config). |
 
 #### from_task()
 
@@ -2202,17 +1725,10 @@ attribute of the other TaskEnvironment.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: The name of the environment.
-{{< /multiline >}} |
-| `tasks` | {{< multiline >}}`TaskTemplate`
-doc: The list of tasks to create the environment from.
-
-:raises ValueError: If tasks are assigned to multiple environments or have different images.
-:return: The created TaskEnvironment.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | The name of the environment. |
+| `tasks` | `TaskTemplate` | The list of tasks to create the environment from.  :raises ValueError: If tasks are assigned to multiple environments or have different images. :return: The created TaskEnvironment. |
 
 #### task()
 
@@ -2236,58 +1752,26 @@ Decorate a function to be a task.
 
 
 
-| Parameter | Type |
-|-|-|
-| `_func` | {{< multiline >}}`F \| None`
-doc: Optional The function to decorate. If not provided, the decorator will return a callable that
-accepts a function to be decorated.
-{{< /multiline >}} |
-| `short_name` | {{< multiline >}}`Optional[str]`
-doc: Optional A friendly name for the task (defaults to the function name)
-{{< /multiline >}} |
-| `cache` | {{< multiline >}}`CacheRequest \| None`
-doc: Optional The cache policy for the task, defaults to auto, which will cache the results of the
-task.
-{{< /multiline >}} |
-| `retries` | {{< multiline >}}`Union[int, RetryStrategy]`
-doc: Optional The number of retries for the task, defaults to 0, which means no retries.
-{{< /multiline >}} |
-| `timeout` | {{< multiline >}}`Union[timedelta, int]`
-doc: Optional The timeout for the task.
-{{< /multiline >}} |
-| `docs` | {{< multiline >}}`Optional[Documentation]`
-doc: Optional The documentation for the task, if not provided the function docstring will be used.
-{{< /multiline >}} |
-| `pod_template` | {{< multiline >}}`Optional[Union[str, PodTemplate]]`
-doc: Optional The pod template for the task, if not provided the default pod template will be
-used.
-{{< /multiline >}} |
-| `report` | {{< multiline >}}`bool`
-doc: Optional Whether to generate the html report for the task, defaults to False.
-{{< /multiline >}} |
-| `interruptible` | {{< multiline >}}`bool \| None`
-doc: Optional Whether the task is interruptible, defaults to environment setting.
-{{< /multiline >}} |
-| `max_inline_io_bytes` | {{< multiline >}}`int`
-doc: Maximum allowed size (in bytes) for all inputs and outputs passed directly to the
-task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes.
-{{< /multiline >}} |
-| `queue` | {{< multiline >}}`Optional[str]`
-doc: Optional queue name to use for this task. If not set, the environment's queue will be used.
-
-:return: A TaskTemplate that can be used to deploy the task.
-{{< /multiline >}} |
-| `triggers` | {{< multiline >}}`Tuple[Trigger, ...] \| Trigger`
-doc: Optional A tuple of triggers to associate with the task. This allows the task to be run on a
-schedule or in response to events. Triggers can be defined using the `flyte.trigger` module.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `_func` | `F \| None` | Optional The function to decorate. If not provided, the decorator will return a callable that accepts a function to be decorated. |
+| `short_name` | `Optional[str]` | Optional A friendly name for the task (defaults to the function name) |
+| `cache` | `CacheRequest \| None` | Optional The cache policy for the task, defaults to auto, which will cache the results of the task. |
+| `retries` | `Union[int, RetryStrategy]` | Optional The number of retries for the task, defaults to 0, which means no retries. |
+| `timeout` | `Union[timedelta, int]` | Optional The timeout for the task. |
+| `docs` | `Optional[Documentation]` | Optional The documentation for the task, if not provided the function docstring will be used. |
+| `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional The pod template for the task, if not provided the default pod template will be used. |
+| `report` | `bool` | Optional Whether to generate the html report for the task, defaults to False. |
+| `interruptible` | `bool \| None` | Optional Whether the task is interruptible, defaults to environment setting. |
+| `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
+| `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used.  :return: A TaskTemplate that can be used to deploy the task. |
+| `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 
 ### Properties
 
 | Property | Type | Description |
 |-|-|-|
-| `tasks` | `None` | {{< multiline >}}Get all tasks defined in the environment.
-{{< /multiline >}} |
+| `tasks` | `None` | Get all tasks defined in the environment. |
 
 ## flyte.Timeout
 
@@ -2311,16 +1795,10 @@ class Timeout(
     max_queued_time: datetime.timedelta | int | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `max_runtime` | {{< multiline >}}`datetime.timedelta \| int`
-doc: timedelta or int - Maximum runtime for the task. If specified int, it will be converted to
-timedelta as seconds.
-{{< /multiline >}} |
-| `max_queued_time` | {{< multiline >}}`datetime.timedelta \| int \| None`
-doc: optional, timedelta or int - Maximum queued time for the task. If specified int,
-it will be converted to timedelta as seconds. Defaults to None.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `max_runtime` | `datetime.timedelta \| int` | timedelta or int - Maximum runtime for the task. If specified int, it will be converted to timedelta as seconds. |
+| `max_queued_time` | `datetime.timedelta \| int \| None` | optional, timedelta or int - Maximum queued time for the task. If specified int, it will be converted to timedelta as seconds. Defaults to None. |
 
 ## flyte.Trigger
 
@@ -2358,45 +1836,19 @@ class Trigger(
     annotations: Mapping[str, str] | None,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | {{< multiline >}}`str`
-doc: (str) The name of the trigger.
-{{< /multiline >}} |
-| `automation` | {{< multiline >}}`Union[Cron, FixedRate]`
-doc: (AutomationType) The automation type, currently only supports Cron.
-{{< /multiline >}} |
-| `description` | {{< multiline >}}`str`
-doc: (str) A description of the trigger, default is an empty string.
-{{< /multiline >}} |
-| `auto_activate` | {{< multiline >}}`bool`
-doc: (bool) Whether the trigger should be automatically activated, default is True.
-{{< /multiline >}} |
-| `inputs` | {{< multiline >}}`Dict[str, Any] \| None`
-doc: (Dict[str, Any]) Optional inputs for the trigger, default is None. If provided, will replace the
-values for inputs to these defaults.
-{{< /multiline >}} |
-| `env_vars` | {{< multiline >}}`Dict[str, str] \| None`
-doc: (Dict[str, str]) Optional environment variables for the trigger, default is None. If provided, will
-replace the environment variables set in the config of the task.
-{{< /multiline >}} |
-| `interruptible` | {{< multiline >}}`bool \| None`
-doc: (bool) Whether the trigger run is interruptible,
-default is None (maintains the configured behavior). If provided, it overrides whatever is set in the config
-of the task.
-{{< /multiline >}} |
-| `overwrite_cache` | {{< multiline >}}`bool`
-doc: (bool) Whether to overwrite the cache, default is False.
-{{< /multiline >}} |
-| `queue` | {{< multiline >}}`str \| None`
-doc: (str) Optional queue to run the trigger in, default is None.
-{{< /multiline >}} |
-| `labels` | {{< multiline >}}`Mapping[str, str] \| None`
-doc: (Mapping[str, str]) Optional labels to attach to the trigger, default is None.
-{{< /multiline >}} |
-| `annotations` | {{< multiline >}}`Mapping[str, str] \| None`
-doc: (Mapping[str, str]) Optional annotations to attach to the trigger, default is None.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | (str) The name of the trigger. |
+| `automation` | `Union[Cron, FixedRate]` | (AutomationType) The automation type, currently only supports Cron. |
+| `description` | `str` | (str) A description of the trigger, default is an empty string. |
+| `auto_activate` | `bool` | (bool) Whether the trigger should be automatically activated, default is True. |
+| `inputs` | `Dict[str, Any] \| None` | (Dict[str, Any]) Optional inputs for the trigger, default is None. If provided, will replace the values for inputs to these defaults. |
+| `env_vars` | `Dict[str, str] \| None` | (Dict[str, str]) Optional environment variables for the trigger, default is None. If provided, will replace the environment variables set in the config of the task. |
+| `interruptible` | `bool \| None` | (bool) Whether the trigger run is interruptible, default is None (maintains the configured behavior). If provided, it overrides whatever is set in the config of the task. |
+| `overwrite_cache` | `bool` | (bool) Whether to overwrite the cache, default is False. |
+| `queue` | `str \| None` | (str) Optional queue to run the trigger in, default is None. |
+| `labels` | `Mapping[str, str] \| None` | (Mapping[str, str]) Optional labels to attach to the trigger, default is None. |
+| `annotations` | `Mapping[str, str] \| None` | (Mapping[str, str]) Optional annotations to attach to the trigger, default is None. |
 
 ### Methods
 
@@ -2430,19 +1882,19 @@ Creates a Cron trigger that runs daily at midnight.
 
 
 
-| Parameter | Type |
-|-|-|
-| `trigger_time_input_key` | `str \| None` |
-| `name` | `str` |
-| `description` | `str` |
-| `auto_activate` | `bool` |
-| `inputs` | `Dict[str, Any] \| None` |
-| `env_vars` | `Dict[str, str] \| None` |
-| `interruptible` | `bool \| None` |
-| `overwrite_cache` | `bool` |
-| `queue` | `str \| None` |
-| `labels` | `Mapping[str, str] \| None` |
-| `annotations` | `Mapping[str, str] \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `trigger_time_input_key` | `str \| None` | |
+| `name` | `str` | |
+| `description` | `str` | |
+| `auto_activate` | `bool` | |
+| `inputs` | `Dict[str, Any] \| None` | |
+| `env_vars` | `Dict[str, str] \| None` | |
+| `interruptible` | `bool \| None` | |
+| `overwrite_cache` | `bool` | |
+| `queue` | `str \| None` | |
+| `labels` | `Mapping[str, str] \| None` | |
+| `annotations` | `Mapping[str, str] \| None` | |
 
 #### hourly()
 
@@ -2465,19 +1917,19 @@ Creates a Cron trigger that runs every hour.
 
 
 
-| Parameter | Type |
-|-|-|
-| `trigger_time_input_key` | `str \| None` |
-| `name` | `str` |
-| `description` | `str` |
-| `auto_activate` | `bool` |
-| `inputs` | `Dict[str, Any] \| None` |
-| `env_vars` | `Dict[str, str] \| None` |
-| `interruptible` | `bool \| None` |
-| `overwrite_cache` | `bool` |
-| `queue` | `str \| None` |
-| `labels` | `Mapping[str, str] \| None` |
-| `annotations` | `Mapping[str, str] \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `trigger_time_input_key` | `str \| None` | |
+| `name` | `str` | |
+| `description` | `str` | |
+| `auto_activate` | `bool` | |
+| `inputs` | `Dict[str, Any] \| None` | |
+| `env_vars` | `Dict[str, str] \| None` | |
+| `interruptible` | `bool \| None` | |
+| `overwrite_cache` | `bool` | |
+| `queue` | `str \| None` | |
+| `labels` | `Mapping[str, str] \| None` | |
+| `annotations` | `Mapping[str, str] \| None` | |
 
 #### minutely()
 
@@ -2500,19 +1952,19 @@ Creates a Cron trigger that runs every minute.
 
 
 
-| Parameter | Type |
-|-|-|
-| `trigger_time_input_key` | `str \| None` |
-| `name` | `str` |
-| `description` | `str` |
-| `auto_activate` | `bool` |
-| `inputs` | `Dict[str, Any] \| None` |
-| `env_vars` | `Dict[str, str] \| None` |
-| `interruptible` | `bool \| None` |
-| `overwrite_cache` | `bool` |
-| `queue` | `str \| None` |
-| `labels` | `Mapping[str, str] \| None` |
-| `annotations` | `Mapping[str, str] \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `trigger_time_input_key` | `str \| None` | |
+| `name` | `str` | |
+| `description` | `str` | |
+| `auto_activate` | `bool` | |
+| `inputs` | `Dict[str, Any] \| None` | |
+| `env_vars` | `Dict[str, str] \| None` | |
+| `interruptible` | `bool \| None` | |
+| `overwrite_cache` | `bool` | |
+| `queue` | `str \| None` | |
+| `labels` | `Mapping[str, str] \| None` | |
+| `annotations` | `Mapping[str, str] \| None` | |
 
 #### monthly()
 
@@ -2535,19 +1987,19 @@ Creates a Cron trigger that runs monthly on the 1st at midnight.
 
 
 
-| Parameter | Type |
-|-|-|
-| `trigger_time_input_key` | `str \| None` |
-| `name` | `str` |
-| `description` | `str` |
-| `auto_activate` | `bool` |
-| `inputs` | `Dict[str, Any] \| None` |
-| `env_vars` | `Dict[str, str] \| None` |
-| `interruptible` | `bool \| None` |
-| `overwrite_cache` | `bool` |
-| `queue` | `str \| None` |
-| `labels` | `Mapping[str, str] \| None` |
-| `annotations` | `Mapping[str, str] \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `trigger_time_input_key` | `str \| None` | |
+| `name` | `str` | |
+| `description` | `str` | |
+| `auto_activate` | `bool` | |
+| `inputs` | `Dict[str, Any] \| None` | |
+| `env_vars` | `Dict[str, str] \| None` | |
+| `interruptible` | `bool \| None` | |
+| `overwrite_cache` | `bool` | |
+| `queue` | `str \| None` | |
+| `labels` | `Mapping[str, str] \| None` | |
+| `annotations` | `Mapping[str, str] \| None` | |
 
 #### weekly()
 
@@ -2570,17 +2022,17 @@ Creates a Cron trigger that runs weekly on Sundays at midnight.
 
 
 
-| Parameter | Type |
-|-|-|
-| `trigger_time_input_key` | `str \| None` |
-| `name` | `str` |
-| `description` | `str` |
-| `auto_activate` | `bool` |
-| `inputs` | `Dict[str, Any] \| None` |
-| `env_vars` | `Dict[str, str] \| None` |
-| `interruptible` | `bool \| None` |
-| `overwrite_cache` | `bool` |
-| `queue` | `str \| None` |
-| `labels` | `Mapping[str, str] \| None` |
-| `annotations` | `Mapping[str, str] \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `trigger_time_input_key` | `str \| None` | |
+| `name` | `str` | |
+| `description` | `str` | |
+| `auto_activate` | `bool` | |
+| `inputs` | `Dict[str, Any] \| None` | |
+| `env_vars` | `Dict[str, str] \| None` | |
+| `interruptible` | `bool \| None` | |
+| `overwrite_cache` | `bool` | |
+| `queue` | `str \| None` | |
+| `labels` | `Mapping[str, str] \| None` | |
+| `annotations` | `Mapping[str, str] \| None` | |
 

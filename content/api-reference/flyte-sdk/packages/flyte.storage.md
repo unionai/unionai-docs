@@ -51,15 +51,10 @@ Check if a path exists.
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | {{< multiline >}}`str`
-doc: Path to be checked.
-{{< /multiline >}} |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: Additional arguments to be passed to the underlying filesystem.
-:return: True if the path exists, False otherwise.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | Path to be checked. |
+| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. :return: True if the path exists, False otherwise. |
 
 #### exists_sync()
 
@@ -69,10 +64,10 @@ def exists_sync(
     kwargs,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 #### get()
 
@@ -84,12 +79,12 @@ def get(
     kwargs,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `to_path` | `Optional[str \| pathlib.Path]` |
-| `recursive` | `bool` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `to_path` | `Optional[str \| pathlib.Path]` | |
+| `recursive` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_configured_fsspec_kwargs()
 
@@ -99,10 +94,10 @@ def get_configured_fsspec_kwargs(
     anonymous: bool,
 ) -> typing.Dict[str, typing.Any]
 ```
-| Parameter | Type |
-|-|-|
-| `protocol` | `typing.Optional[str]` |
-| `anonymous` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `protocol` | `typing.Optional[str]` | |
+| `anonymous` | `bool` | |
 
 #### get_random_local_directory()
 
@@ -123,9 +118,9 @@ def get_random_local_path(
 Use file_path_or_file_name, when you want a random directory, but want to preserve the leaf file name
 
 
-| Parameter | Type |
-|-|-|
-| `file_path_or_file_name` | `pathlib.Path \| str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `file_path_or_file_name` | `pathlib.Path \| str \| None` | |
 
 #### get_stream()
 
@@ -147,18 +142,11 @@ async for chunk in storage.get_stream(path="s3://my_bucket/my_file.txt"):
 
 
 
-| Parameter | Type |
-|-|-|
-| `path` | {{< multiline >}}`str`
-doc: Path to the remote location where the data will be downloaded.
-{{< /multiline >}} |
-| `chunk_size` | {{< multiline >}}
-doc: Size of each chunk to be read from the file.
-:return: An async iterator that yields chunks of bytes.
-{{< /multiline >}} |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: Additional arguments to be passed to the underlying filesystem.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | Path to the remote location where the data will be downloaded. |
+| `chunk_size` |  | Size of each chunk to be read from the file. :return: An async iterator that yields chunks of bytes. |
+| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. |
 
 #### get_underlying_filesystem()
 
@@ -170,12 +158,12 @@ def get_underlying_filesystem(
     kwargs,
 ) -> fsspec.AbstractFileSystem
 ```
-| Parameter | Type |
-|-|-|
-| `protocol` | `typing.Optional[str]` |
-| `anonymous` | `bool` |
-| `path` | `typing.Optional[str]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `protocol` | `typing.Optional[str]` | |
+| `anonymous` | `bool` | |
+| `path` | `typing.Optional[str]` | |
+| `kwargs` | `**kwargs` | |
 
 #### is_remote()
 
@@ -187,9 +175,9 @@ def is_remote(
 Let's find a replacement
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[pathlib.Path \| str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[pathlib.Path \| str]` | |
 
 #### join()
 
@@ -203,11 +191,9 @@ Join multiple paths together. This is a wrapper around os.path.join.
 
 
 
-| Parameter | Type |
-|-|-|
-| `paths` | {{< multiline >}}`str`
-doc: Paths to be joined.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `paths` | `str` | Paths to be joined. |
 
 #### open()
 
@@ -226,11 +212,11 @@ the standard _open function which uses AsyncFileSystem.
 It will raise NotImplementedError if neither obstore nor AsyncFileSystem is supported.
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `mode` | `str` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `mode` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 #### put()
 
@@ -242,12 +228,12 @@ def put(
     kwargs,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `to_path` | `Optional[str]` |
-| `recursive` | `bool` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `to_path` | `Optional[str]` | |
+| `recursive` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### put_stream()
 
@@ -270,22 +256,12 @@ storage.put_stream(iter([b'hello']), to_path="s3://my_bucket/my_file.txt")
 
 
 
-| Parameter | Type |
-|-|-|
-| `data_iterable` | {{< multiline >}}`typing.AsyncIterable[bytes] \| bytes`
-doc: Iterable of bytes to be streamed.
-{{< /multiline >}} |
-| `name` | {{< multiline >}}`str \| None`
-doc: Name of the file to be created. If not provided, a random name will be generated.
-{{< /multiline >}} |
-| `to_path` | {{< multiline >}}`str \| None`
-doc: Path to the remote location where the data will be stored.
-{{< /multiline >}} |
-| `kwargs` | {{< multiline >}}`**kwargs`
-doc: Additional arguments to be passed to the underlying filesystem.
-:rtype: str
-:return: The path to the remote location where the data was stored.
-{{< /multiline >}} |
+| Parameter | Type | Description |
+|-|-|-|
+| `data_iterable` | `typing.AsyncIterable[bytes] \| bytes` | Iterable of bytes to be streamed. |
+| `name` | `str \| None` | Name of the file to be created. If not provided, a random name will be generated. |
+| `to_path` | `str \| None` | Path to the remote location where the data will be stored. |
+| `kwargs` | `**kwargs` | Additional arguments to be passed to the underlying filesystem. :rtype: str :return: The path to the remote location where the data was stored. |
 
 ## flyte.storage.ABFS
 
@@ -305,17 +281,17 @@ class ABFS(
     client_secret: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `retries` | `int` |
-| `backoff` | `datetime.timedelta` |
-| `enable_debug` | `bool` |
-| `attach_execution_metadata` | `bool` |
-| `account_name` | `typing.Optional[str]` |
-| `account_key` | `typing.Optional[str]` |
-| `tenant_id` | `typing.Optional[str]` |
-| `client_id` | `typing.Optional[str]` |
-| `client_secret` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `retries` | `int` | |
+| `backoff` | `datetime.timedelta` | |
+| `enable_debug` | `bool` | |
+| `attach_execution_metadata` | `bool` | |
+| `account_name` | `typing.Optional[str]` | |
+| `account_key` | `typing.Optional[str]` | |
+| `tenant_id` | `typing.Optional[str]` | |
+| `client_id` | `typing.Optional[str]` | |
+| `client_secret` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -344,10 +320,10 @@ def get_fsspec_kwargs(
 Returns the configuration as kwargs for constructing an fsspec filesystem.
 
 
-| Parameter | Type |
-|-|-|
-| `anonymous` | `bool` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 ## flyte.storage.GCS
 
@@ -363,13 +339,13 @@ class GCS(
     gsutil_parallelism: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `retries` | `int` |
-| `backoff` | `datetime.timedelta` |
-| `enable_debug` | `bool` |
-| `attach_execution_metadata` | `bool` |
-| `gsutil_parallelism` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `retries` | `int` | |
+| `backoff` | `datetime.timedelta` | |
+| `enable_debug` | `bool` | |
+| `attach_execution_metadata` | `bool` | |
+| `gsutil_parallelism` | `bool` | |
 
 ### Methods
 
@@ -398,10 +374,10 @@ def get_fsspec_kwargs(
 Returns the configuration as kwargs for constructing an fsspec filesystem.
 
 
-| Parameter | Type |
-|-|-|
-| `anonymous` | `bool` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 ## flyte.storage.S3
 
@@ -420,16 +396,16 @@ class S3(
     region: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `retries` | `int` |
-| `backoff` | `datetime.timedelta` |
-| `enable_debug` | `bool` |
-| `attach_execution_metadata` | `bool` |
-| `endpoint` | `typing.Optional[str]` |
-| `access_key_id` | `typing.Optional[str]` |
-| `secret_access_key` | `typing.Optional[str]` |
-| `region` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `retries` | `int` | |
+| `backoff` | `datetime.timedelta` | |
+| `enable_debug` | `bool` | |
+| `attach_execution_metadata` | `bool` | |
+| `endpoint` | `typing.Optional[str]` | |
+| `access_key_id` | `typing.Optional[str]` | |
+| `secret_access_key` | `typing.Optional[str]` | |
+| `region` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -450,9 +426,9 @@ def auto(
 :return: Config
 
 
-| Parameter | Type |
-|-|-|
-| `region` | `str \| None` |
+| Parameter | Type | Description |
+|-|-|-|
+| `region` | `str \| None` | |
 
 #### for_sandbox()
 
@@ -473,10 +449,10 @@ def get_fsspec_kwargs(
 Returns the configuration as kwargs for constructing an fsspec filesystem.
 
 
-| Parameter | Type |
-|-|-|
-| `anonymous` | `bool` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 ## flyte.storage.Storage
 
@@ -491,12 +467,12 @@ class Storage(
     attach_execution_metadata: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `retries` | `int` |
-| `backoff` | `datetime.timedelta` |
-| `enable_debug` | `bool` |
-| `attach_execution_metadata` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `retries` | `int` | |
+| `backoff` | `datetime.timedelta` | |
+| `enable_debug` | `bool` | |
+| `attach_execution_metadata` | `bool` | |
 
 ### Methods
 
@@ -525,8 +501,8 @@ def get_fsspec_kwargs(
 Returns the configuration as kwargs for constructing an fsspec filesystem.
 
 
-| Parameter | Type |
-|-|-|
-| `anonymous` | `bool` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `anonymous` | `bool` | |
+| `kwargs` | `**kwargs` | |
 

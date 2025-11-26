@@ -30,7 +30,7 @@ Get the config file from the git root directory.
 By default, the config file is expected to be in `.flyte/config.yaml` in the git root directory.
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `pathlib._local.Path \| str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `pathlib._local.Path \| str` | |
 

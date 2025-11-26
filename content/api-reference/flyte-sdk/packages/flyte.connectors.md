@@ -55,13 +55,13 @@ def create(
 Return a resource meta that can be used to get the status of the task.
 
 
-| Parameter | Type |
-|-|-|
-| `task_template` | `flyteidl2.core.tasks_pb2.TaskTemplate` |
-| `output_prefix` | `str` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
-| `task_execution_metadata` | `typing.Optional[flyteidl2.plugins.connector_pb2.TaskExecutionMetadata]` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_template` | `flyteidl2.core.tasks_pb2.TaskTemplate` | |
+| `output_prefix` | `str` | |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `task_execution_metadata` | `typing.Optional[flyteidl2.plugins.connector_pb2.TaskExecutionMetadata]` | |
+| `kwargs` | `**kwargs` | |
 
 #### delete()
 
@@ -74,10 +74,10 @@ def delete(
 Delete the task. This call should be idempotent. It should raise an error if fails to delete the task.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flyte.connectors._connector.ResourceMeta` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flyte.connectors._connector.ResourceMeta` | |
+| `kwargs` | `**kwargs` | |
 
 #### get()
 
@@ -92,10 +92,10 @@ can't write the structured dataset to the output location, so it returns the out
 and the propeller will write the structured dataset to the blob store.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flyte.connectors._connector.ResourceMeta` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flyte.connectors._connector.ResourceMeta` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_logs()
 
@@ -108,10 +108,10 @@ def get_logs(
 Return the metrics for the task.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flyte.connectors._connector.ResourceMeta` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flyte.connectors._connector.ResourceMeta` | |
+| `kwargs` | `**kwargs` | |
 
 #### get_metrics()
 
@@ -124,10 +124,10 @@ def get_metrics(
 Return the metrics for the task.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flyte.connectors._connector.ResourceMeta` |
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flyte.connectors._connector.ResourceMeta` | |
+| `kwargs` | `**kwargs` | |
 
 ## flyte.connectors.AsyncConnectorExecutorMixin
 
@@ -149,9 +149,9 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | `**kwargs` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 ## flyte.connectors.ConnectorRegistry
 
@@ -175,10 +175,10 @@ def get_connector(
     task_type_version: int,
 ) -> flyte.connectors._connector.AsyncConnector
 ```
-| Parameter | Type |
-|-|-|
-| `task_type_name` | `str` |
-| `task_type_version` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_type_name` | `str` | |
+| `task_type_version` | `int` | |
 
 #### register()
 
@@ -188,10 +188,10 @@ def register(
     override: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `connector` | `flyte.connectors._connector.AsyncConnector` |
-| `override` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `connector` | `flyte.connectors._connector.AsyncConnector` | |
+| `override` | `bool` | |
 
 ## flyte.connectors.ConnectorService
 
@@ -219,14 +219,14 @@ def run(
     modules: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cls` |  |
-| `port` | `int` |
-| `prometheus_port` | `int` |
-| `worker` | `int` |
-| `timeout` | `int \| None` |
-| `modules` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cls` |  | |
+| `port` | `int` | |
+| `prometheus_port` | `int` | |
+| `worker` | `int` | |
+| `timeout` | `int \| None` | |
+| `modules` | `typing.Optional[typing.List[str]]` | |
 
 ## flyte.connectors.Resource
 
@@ -248,20 +248,20 @@ Attributes
 
 ```python
 class Resource(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d28a090>,
     message: typing.Optional[str],
     log_links: typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]],
     outputs: typing.Optional[typing.Dict[str, typing.Any]],
     custom_info: typing.Optional[typing.Dict[str, typing.Any]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d14e030>` |
-| `message` | `typing.Optional[str]` |
-| `log_links` | `typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]]` |
-| `outputs` | `typing.Optional[typing.Dict[str, typing.Any]]` |
-| `custom_info` | `typing.Optional[typing.Dict[str, typing.Any]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10d28a090>` | |
+| `message` | `typing.Optional[str]` | |
+| `log_links` | `typing.Optional[typing.List[flyteidl2.core.execution_pb2.TaskLog]]` | |
+| `outputs` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
+| `custom_info` | `typing.Optional[typing.Dict[str, typing.Any]]` | |
 
 ## flyte.connectors.ResourceMeta
 
@@ -289,9 +289,9 @@ def decode(
 Decode the resource meta from bytes.
 
 
-| Parameter | Type |
-|-|-|
-| `data` | `bytes` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `bytes` | |
 
 #### encode()
 
