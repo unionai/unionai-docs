@@ -45,17 +45,17 @@ class Trigger(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | (str) The name of the trigger. |
-| `automation` | `Union[Cron, FixedRate]` | (AutomationType) The automation type, currently only supports Cron. |
-| `description` | `str` | (str) A description of the trigger, default is an empty string. |
-| `auto_activate` | `bool` | (bool) Whether the trigger should be automatically activated, default is True. |
-| `inputs` | `Dict[str, Any] \| None` | (Dict[str, Any]) Optional inputs for the trigger, default is None. If provided, will replace the values for inputs to these defaults. |
-| `env_vars` | `Dict[str, str] \| None` | (Dict[str, str]) Optional environment variables for the trigger, default is None. If provided, will replace the environment variables set in the config of the task. |
-| `interruptible` | `bool \| None` | (bool) Whether the trigger run is interruptible, default is None (maintains the configured behavior). If provided, it overrides whatever is set in the config of the task. |
-| `overwrite_cache` | `bool` | (bool) Whether to overwrite the cache, default is False. |
-| `queue` | `str \| None` | (str) Optional queue to run the trigger in, default is None. |
-| `labels` | `Mapping[str, str] \| None` | (Mapping[str, str]) Optional labels to attach to the trigger, default is None. |
-| `annotations` | `Mapping[str, str] \| None` | (Mapping[str, str]) Optional annotations to attach to the trigger, default is None. |
+| `name` | `str` | The name of the trigger. |
+| `automation` | `Union[Cron, FixedRate]` | The automation type, currently only supports Cron. |
+| `description` | `str` | A description of the trigger, default is an empty string. |
+| `auto_activate` | `bool` | Whether the trigger should be automatically activated, default is True. |
+| `inputs` | `Dict[str, Any] \| None` | Optional inputs for the trigger, default is None. If provided, will replace the values for inputs to these defaults. |
+| `env_vars` | `Dict[str, str] \| None` | Optional environment variables for the trigger, default is None. If provided, will replace the environment variables set in the config of the task. |
+| `interruptible` | `bool \| None` | Whether the trigger run is interruptible, default is None (maintains the configured behavior). If provided, it overrides whatever is set in the config of the task. |
+| `overwrite_cache` | `bool` | Whether to overwrite the cache, default is False. |
+| `queue` | `str \| None` | Optional queue to run the trigger in, default is None. |
+| `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger, default is None. |
+| `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger, default is None. |
 
 ## Methods
 
