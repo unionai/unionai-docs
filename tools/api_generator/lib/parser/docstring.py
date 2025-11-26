@@ -83,11 +83,23 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 param_parts = line.split(":")
                 if len(param_parts) != 2:
                     continue
-                current_param = param_parts[0]
+                param_name_and_type = param_parts[0].strip()
+                param_description = param_parts[1].strip()
+
+                # Extract type information from format: param_name (type)
+                param_type = None
+                if "(" in param_name_and_type and param_name_and_type.endswith(")"):
+                    # Find the last opening parenthesis to handle cases like "param_name (Dict[str, int])"
+                    type_start = param_name_and_type.rfind("(")
+                    current_param = param_name_and_type[:type_start].strip()
+                    param_type = param_name_and_type[type_start+1:-1].strip()
+                else:
+                    current_param = param_name_and_type
+
                 param = ParamInfo(
                     name=current_param,
-                    doc=param_parts[1],
-                    type=None,
+                    doc=param_description,
+                    type=param_type,
                     default=None,
                     kind=None,
                 )

@@ -91,17 +91,17 @@ Creates a Cron trigger that runs daily at midnight.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `trigger_time_input_key` | `str \| None` | |
-| `name` | `str` | |
-| `description` | `str` | |
-| `auto_activate` | `bool` | |
-| `inputs` | `Dict[str, Any] \| None` | |
-| `env_vars` | `Dict[str, str] \| None` | |
-| `interruptible` | `bool \| None` | |
-| `overwrite_cache` | `bool` | |
-| `queue` | `str \| None` | |
-| `labels` | `Mapping[str, str] \| None` | |
-| `annotations` | `Mapping[str, str] \| None` | |
+| `trigger_time_input_key` | `str \| None` | The input key for the trigger time. If None, no trigger time input is added. |
+| `name` | `str` | The name of the trigger, default is "daily". |
+| `description` | `str` | A description of the trigger. |
+| `auto_activate` | `bool` | Whether the trigger should be automatically activated. |
+| `inputs` | `Dict[str, Any] \| None` | Optional inputs for the trigger. |
+| `env_vars` | `Dict[str, str] \| None` | Optional environment variables. |
+| `interruptible` | `bool \| None` | Whether the triggered run is interruptible. |
+| `overwrite_cache` | `bool` | Whether to overwrite the cache. |
+| `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
+| `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
 ### hourly()
 
@@ -126,17 +126,17 @@ Creates a Cron trigger that runs every hour.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `trigger_time_input_key` | `str \| None` | |
-| `name` | `str` | |
-| `description` | `str` | |
-| `auto_activate` | `bool` | |
-| `inputs` | `Dict[str, Any] \| None` | |
-| `env_vars` | `Dict[str, str] \| None` | |
-| `interruptible` | `bool \| None` | |
-| `overwrite_cache` | `bool` | |
-| `queue` | `str \| None` | |
-| `labels` | `Mapping[str, str] \| None` | |
-| `annotations` | `Mapping[str, str] \| None` | |
+| `trigger_time_input_key` | `str \| None` | The input parameter for the trigger time. If None, no trigger time input is added. |
+| `name` | `str` | The name of the trigger, default is "hourly". |
+| `description` | `str` | A description of the trigger. |
+| `auto_activate` | `bool` | Whether the trigger should be automatically activated. |
+| `inputs` | `Dict[str, Any] \| None` | Optional inputs for the trigger. |
+| `env_vars` | `Dict[str, str] \| None` | Optional environment variables. |
+| `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
+| `overwrite_cache` | `bool` | Whether to overwrite the cache. |
+| `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
+| `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
 ### minutely()
 
@@ -161,17 +161,17 @@ Creates a Cron trigger that runs every minute.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `trigger_time_input_key` | `str \| None` | |
-| `name` | `str` | |
-| `description` | `str` | |
-| `auto_activate` | `bool` | |
-| `inputs` | `Dict[str, Any] \| None` | |
-| `env_vars` | `Dict[str, str] \| None` | |
-| `interruptible` | `bool \| None` | |
-| `overwrite_cache` | `bool` | |
-| `queue` | `str \| None` | |
-| `labels` | `Mapping[str, str] \| None` | |
-| `annotations` | `Mapping[str, str] \| None` | |
+| `trigger_time_input_key` | `str \| None` | The input parameter for the trigger time. If None, no trigger time input is added. |
+| `name` | `str` | The name of the trigger, default is "every_minute". |
+| `description` | `str` | A description of the trigger. |
+| `auto_activate` | `bool` | Whether the trigger should be automatically activated. |
+| `inputs` | `Dict[str, Any] \| None` | Optional inputs for the trigger. |
+| `env_vars` | `Dict[str, str] \| None` | Optional environment variables. |
+| `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
+| `overwrite_cache` | `bool` | Whether to overwrite the cache. |
+| `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
+| `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
 ### monthly()
 
@@ -196,17 +196,17 @@ Creates a Cron trigger that runs monthly on the 1st at midnight.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `trigger_time_input_key` | `str \| None` | |
-| `name` | `str` | |
-| `description` | `str` | |
-| `auto_activate` | `bool` | |
-| `inputs` | `Dict[str, Any] \| None` | |
-| `env_vars` | `Dict[str, str] \| None` | |
-| `interruptible` | `bool \| None` | |
-| `overwrite_cache` | `bool` | |
-| `queue` | `str \| None` | |
-| `labels` | `Mapping[str, str] \| None` | |
-| `annotations` | `Mapping[str, str] \| None` | |
+| `trigger_time_input_key` | `str \| None` | The input parameter for the trigger time. If None, no trigger time input is added. |
+| `name` | `str` | The name of the trigger, default is "monthly". |
+| `description` | `str` | A description of the trigger. |
+| `auto_activate` | `bool` | Whether the trigger should be automatically activated. |
+| `inputs` | `Dict[str, Any] \| None` | Optional inputs for the trigger. |
+| `env_vars` | `Dict[str, str] \| None` | Optional environment variables. |
+| `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
+| `overwrite_cache` | `bool` | Whether to overwrite the cache. |
+| `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
+| `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
 ### weekly()
 
@@ -231,15 +231,15 @@ Creates a Cron trigger that runs weekly on Sundays at midnight.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `trigger_time_input_key` | `str \| None` | |
-| `name` | `str` | |
-| `description` | `str` | |
-| `auto_activate` | `bool` | |
-| `inputs` | `Dict[str, Any] \| None` | |
-| `env_vars` | `Dict[str, str] \| None` | |
-| `interruptible` | `bool \| None` | |
-| `overwrite_cache` | `bool` | |
-| `queue` | `str \| None` | |
-| `labels` | `Mapping[str, str] \| None` | |
-| `annotations` | `Mapping[str, str] \| None` | |
+| `trigger_time_input_key` | `str \| None` | The input parameter for the trigger time. If None, no trigger time input is added. |
+| `name` | `str` | The name of the trigger, default is "weekly". |
+| `description` | `str` | A description of the trigger. |
+| `auto_activate` | `bool` | Whether the trigger should be automatically activated. |
+| `inputs` | `Dict[str, Any] \| None` | Optional inputs for the trigger. |
+| `env_vars` | `Dict[str, str] \| None` | Optional environment variables. |
+| `interruptible` | `bool \| None` | Whether the trigger is interruptible. |
+| `overwrite_cache` | `bool` | Whether to overwrite the cache. |
+| `queue` | `str \| None` | Optional queue to run the trigger in. |
+| `labels` | `Mapping[str, str] \| None` | Optional labels to attach to the trigger. |
+| `annotations` | `Mapping[str, str] \| None` | Optional annotations to attach to the trigger. |
 
