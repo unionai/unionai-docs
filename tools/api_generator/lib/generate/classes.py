@@ -21,7 +21,7 @@ ProtocolBaseClass = "Protocol"
 
 def generate_class_filename(fullname: str, pkg_root: str) -> str:
     nameParts = fullname.split(".")
-    return os.path.join(pkg_root, ".".join(nameParts[0:-1]), f"{nameParts[-1]}.md")
+    return os.path.join(pkg_root, ".".join(nameParts[0:-1]), f"{nameParts[-1].lower()}.md")
 
 
 def sift_class_and_errors(classes: ClassMap) -> Tuple[List[str], List[str]]:
@@ -46,8 +46,8 @@ def generate_class_link(
         return result
     else:
         result = os.path.join(
-            pkg_base, ".".join(nameParts[0:-1]), nameParts[-1]
-        ).lower()
+            pkg_base, ".".join(nameParts[0:-1]), nameParts[-1].lower()
+        )
         return result
 
 
