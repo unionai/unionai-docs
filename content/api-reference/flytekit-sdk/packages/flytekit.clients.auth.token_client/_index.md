@@ -1,0 +1,142 @@
+---
+title: flytekit.clients.auth.token_client
+version: 1.16.10
+variants: +flyte +byoc +selfmanaged +serverless
+layout: py_api
+---
+
+# flytekit.clients.auth.token_client
+
+## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`DeviceCodeResponse`](../flytekit.clients.auth.token_client/devicecoderesponse) | Response from device auth flow endpoint. |
+| [`GrantType`](../flytekit.clients.auth.token_client/granttype) | str(object='') -> str. |
+
+### Methods
+
+| Method | Description |
+|-|-|
+| [`get_basic_authorization_header()`](#get_basic_authorization_header) | This function transforms the client id and the client secret into a header that conforms with http basic auth. |
+| [`get_device_code()`](#get_device_code) | Retrieves the device Authentication code that can be done to authenticate the request using a browser on a. |
+| [`get_token()`](#get_token) | :rtype: (Text,Text,Int) The first element is the access token retrieved from the IDP, the second is the refresh token. |
+| [`poll_token_endpoint()`](#poll_token_endpoint) |  |
+
+
+### Variables
+
+| Property | Type | Description |
+|-|-|-|
+| `error_auth_pending` | `str` |  |
+| `error_slow_down` | `str` |  |
+| `utf_8` | `str` |  |
+
+## Methods
+
+#### get_basic_authorization_header()
+
+```python
+def get_basic_authorization_header(
+    client_id: str,
+    client_secret: str,
+) -> str
+```
+This function transforms the client id and the client secret into a header that conforms with http basic auth.
+It joins the id and the secret with a : then base64 encodes it, then adds the appropriate text. Secrets are
+first URL encoded to escape illegal characters.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `client_id` | `str` | str |
+| `client_secret` | `str` | str :rtype: str |
+
+#### get_device_code()
+
+```python
+def get_device_code(
+    device_auth_endpoint: str,
+    client_id: str,
+    audience: typing.Optional[str],
+    scope: typing.Optional[typing.List[str]],
+    http_proxy_url: typing.Optional[str],
+    verify: typing.Union[bool, str, NoneType],
+    session: typing.Optional[requests.sessions.Session],
+) -> flytekit.clients.auth.token_client.DeviceCodeResponse
+```
+Retrieves the device Authentication code that can be done to authenticate the request using a browser on a
+separate device
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `device_auth_endpoint` | `str` | |
+| `client_id` | `str` | |
+| `audience` | `typing.Optional[str]` | |
+| `scope` | `typing.Optional[typing.List[str]]` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
+
+#### get_token()
+
+```python
+def get_token(
+    token_endpoint: str,
+    scopes: typing.Optional[typing.List[str]],
+    authorization_header: typing.Optional[str],
+    client_id: typing.Optional[str],
+    device_code: typing.Optional[str],
+    audience: typing.Optional[str],
+    grant_type: <enum 'GrantType'>,
+    http_proxy_url: typing.Optional[str],
+    verify: typing.Union[bool, str, NoneType],
+    session: typing.Optional[requests.sessions.Session],
+    refresh_token: typing.Optional[str],
+) -> typing.Tuple[str, str, int]
+```
+:rtype: (Text,Text,Int) The first element is the access token retrieved from the IDP, the second is the refresh token
+retrieved from the IDP, the third is the expiration in seconds
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `token_endpoint` | `str` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `authorization_header` | `typing.Optional[str]` | |
+| `client_id` | `typing.Optional[str]` | |
+| `device_code` | `typing.Optional[str]` | |
+| `audience` | `typing.Optional[str]` | |
+| `grant_type` | `<enum 'GrantType'>` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
+| `refresh_token` | `typing.Optional[str]` | |
+
+#### poll_token_endpoint()
+
+```python
+def poll_token_endpoint(
+    resp: flytekit.clients.auth.token_client.DeviceCodeResponse,
+    token_endpoint: str,
+    client_id: str,
+    audience: typing.Optional[str],
+    scopes: typing.Optional[typing.List[str]],
+    http_proxy_url: typing.Optional[str],
+    verify: typing.Union[bool, str, NoneType],
+) -> typing.Tuple[str, str, int]
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `resp` | `flytekit.clients.auth.token_client.DeviceCodeResponse` | |
+| `token_endpoint` | `str` | |
+| `client_id` | `str` | |
+| `audience` | `typing.Optional[str]` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+

@@ -16,12 +16,13 @@ generate: clean_output_folder
 		--title "Flytekit SDK" \
 		--api "${API_DATA}" \
 		--include include/api.flytekit.md \
+		--no-flatten true \
 		--variants \
 			+flyte \
 			+byoc \
 			+selfmanaged \
 			+serverless \
-		--output "${OUTPUT_FOLDER}" \
+		--output_dir "${OUTPUT_FOLDER}" \
 		--ignore_types \
 			flytekit.models.common.closing \
 			flytekit.remote.remote_fs.FlyteFS \

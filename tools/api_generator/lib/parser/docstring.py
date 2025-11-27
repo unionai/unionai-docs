@@ -84,11 +84,25 @@ def parse_docstring(docstring: str | None, source) -> Optional[DocstringInfo]:
                 param_parts = line.split(":")
                 if len(param_parts) != 2:
                     continue
-                current_param = param_parts[0]
+
+                # Extract parameter name and type from Args: format
+                param_name_and_type = param_parts[0].strip()
+                param_doc = param_parts[1].strip()
+
+                # Check if format is "param_name (type)" to extract type info
+                import re
+                match = re.match(r'^(\w+)\s*\(([^)]+)\)\s*$', param_name_and_type)
+                if match:
+                    current_param = match.group(1)
+                    param_type = match.group(2).strip()
+                else:
+                    current_param = param_name_and_type
+                    param_type = None
+
                 param = ParamInfo(
                     name=current_param,
-                    doc=param_parts[1],
-                    type=None,
+                    doc=param_doc,
+                    type=param_type,
                     default=None,
                     kind=None,
                 )

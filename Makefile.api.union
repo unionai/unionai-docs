@@ -16,8 +16,9 @@ generate: clean_output_folder
 		--title "Union SDK" \
 		--api "${API_DATA}" \
 		--include include/api.union.md \
+		--no-flatten true \
 		--variants='+byoc +selfmanaged +serverless -flyte' \
-		--output "${OUTPUT_FOLDER}"
+		--output_dir "${OUTPUT_FOLDER}"
 
 .PHONY: clean_output_folder
 clean_output_folder:
