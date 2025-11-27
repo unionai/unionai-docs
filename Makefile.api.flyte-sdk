@@ -14,7 +14,7 @@ generate: clean_output_folder
 		--title "Flyte SDK" \
 		--api "${API_DATA}" \
 		--include include/api.flyte-sdk.md \
-		--weight 1 \
+		--weight 2 \
 		--expanded true \
 		--no-flatten true \
 		--variants \
