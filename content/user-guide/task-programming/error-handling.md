@@ -29,6 +29,6 @@ In this code, we do the following:
 * Define the main task (the top level workflow task) that will handle the failure recovery logic.
 
 The top `try...catch` block attempts to run the `oomer` task with a parameter that is likely to cause an OOM error.
-If the error occurs, it catches the [`flyte.errors.OOMError`](../../api-reference/flyte-sdk/packages/flyte.errors#flyteerrorsoomerror) and attempts to run the `oomer` task again with increased resources.
+If the error occurs, it catches the [`flyte.errors.OOMError`](../../api-reference/flyte-sdk/packages/flyte.errors/oomerror) and attempts to run the `oomer` task again with increased resources.
 
 This type of dynamic error handling allows you to gracefully recover from user-level errors in your workflows.
