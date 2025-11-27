@@ -45,9 +45,7 @@ This is the command line interface for Flyte.
 
 ## flyte
 
-```
-Usage: flyte [OPTIONS] COMMAND [ARGS]...
-```
+**`flyte [OPTIONS] COMMAND [ARGS]...`**
 
 The Flyte CLI is the command line interface for working with the Flyte SDK and backend.
 
@@ -100,17 +98,13 @@ $ flyte --config /path/to/config.yaml run ...
 
 ### flyte abort
 
-```
-Usage: flyte abort COMMAND [ARGS]...
-```
+**`flyte abort COMMAND [ARGS]...`**
 
 Abort an ongoing process.
 
 #### flyte abort run
 
-```
-Usage: flyte abort run [OPTIONS] RUN_NAME
-```
+**`flyte abort run [OPTIONS] RUN_NAME`**
 
 Abort a run.
 
@@ -124,9 +118,7 @@ Abort a run.
 
 ### flyte build
 
-```
-Usage: flyte build [OPTIONS] COMMAND [ARGS]...
-```
+**`flyte build [OPTIONS] COMMAND [ARGS]...`**
 
 Build the environments defined in a python file or directory. This will build the images associated with the
 environments.
@@ -138,17 +130,13 @@ environments.
 
 ### flyte create
 
-```
-Usage: flyte create COMMAND [ARGS]...
-```
+**`flyte create COMMAND [ARGS]...`**
 
 Create resources in a Flyte deployment.
 
 #### flyte create config
 
-```
-Usage: flyte create config [OPTIONS]
-```
+**`flyte create config [OPTIONS]`**
 
 Creates a configuration file for Flyte CLI.
 If the `--output` option is not specified, it will create a file named `config.yaml` in the current directory.
@@ -173,9 +161,7 @@ If the file already exists, it will raise an error unless the `--force` option i
 
 #### flyte create secret
 
-```
-Usage: flyte create secret [OPTIONS] NAME
-```
+**`flyte create secret [OPTIONS] NAME`**
 
 Create a new secret. The name of the secret is required. For example:
 
@@ -241,9 +227,7 @@ $ flyte create secret my_secret --type image_pull --from-docker-config --registr
 
 #### flyte create trigger
 
-```
-Usage: flyte create trigger [OPTIONS] TASK_NAME NAME
-```
+**`flyte create trigger [OPTIONS] TASK_NAME NAME`**
 
 Create a new trigger for a task. The task name and trigger name are required.
 
@@ -269,17 +253,13 @@ This will create a trigger that runs every day at midnight.
 
 ### flyte delete
 
-```
-Usage: flyte delete COMMAND [ARGS]...
-```
+**`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
 
 #### flyte delete secret
 
-```
-Usage: flyte delete secret [OPTIONS] NAME
-```
+**`flyte delete secret [OPTIONS] NAME`**
 
 Delete a secret. The name of the secret is required.
 
@@ -293,9 +273,7 @@ Delete a secret. The name of the secret is required.
 
 #### flyte delete trigger
 
-```
-Usage: flyte delete trigger [OPTIONS] NAME TASK_NAME
-```
+**`flyte delete trigger [OPTIONS] NAME TASK_NAME`**
 
 Delete a trigger. The name of the trigger is required.
 
@@ -309,9 +287,7 @@ Delete a trigger. The name of the trigger is required.
 
 ### flyte deploy
 
-```
-Usage: flyte deploy [OPTIONS] COMMAND [ARGS]...
-```
+**`flyte deploy [OPTIONS] COMMAND [ARGS]...`**
 
 Deploy one or more environments from a python file.
 
@@ -427,17 +403,13 @@ flyte deploy hello.py --help
 
 ### flyte gen
 
-```
-Usage: flyte gen COMMAND [ARGS]...
-```
+**`flyte gen COMMAND [ARGS]...`**
 
 Generate documentation.
 
 #### flyte gen docs
 
-```
-Usage: flyte gen docs [OPTIONS]
-```
+**`flyte gen docs [OPTIONS]`**
 
 Generate documentation.
 
@@ -452,9 +424,7 @@ Generate documentation.
 
 ### flyte get
 
-```
-Usage: flyte get COMMAND [ARGS]...
-```
+**`flyte get COMMAND [ARGS]...`**
 
 Retrieve resources from a Flyte deployment.
 
@@ -476,9 +446,7 @@ For example:
 
 #### flyte get action
 
-```
-Usage: flyte get action [OPTIONS] RUN_NAME [ACTION_NAME]
-```
+**`flyte get action [OPTIONS] RUN_NAME [ACTION_NAME]`**
 
 Get all actions for a run or details for a specific action.
 
@@ -492,9 +460,7 @@ Get all actions for a run or details for a specific action.
 
 #### flyte get config
 
-```
-Usage: flyte get config
-```
+**`flyte get config`**
 
 Shows the automatically detected configuration to connect with the remote backend.
 
@@ -502,9 +468,7 @@ The configuration will include the endpoint, organization, and other settings th
 
 #### flyte get io
 
-```
-Usage: flyte get io [OPTIONS] RUN_NAME [ACTION_NAME]
-```
+**`flyte get io [OPTIONS] RUN_NAME [ACTION_NAME]`**
 
 Get the inputs and outputs of a run or action.
 If only the run name is provided, it will show the inputs and outputs of the root action of that run.
@@ -535,9 +499,7 @@ $ flyte get io my_run my_action
 
 #### flyte get logs
 
-```
-Usage: flyte get logs [OPTIONS] RUN_NAME [ACTION_NAME]
-```
+**`flyte get logs [OPTIONS] RUN_NAME [ACTION_NAME]`**
 
 Stream logs for the provided run or action.
 If only the run is provided, only the logs for the parent action will be streamed:
@@ -576,9 +538,7 @@ $ flyte get logs my_run my_action --pretty --lines 50
 
 #### flyte get project
 
-```
-Usage: flyte get project [NAME]
-```
+**`flyte get project [NAME]`**
 
 Get a list of all projects, or details of a specific project by name.
 
@@ -588,9 +548,7 @@ Get a list of all projects, or details of a specific project by name.
 
 #### flyte get run
 
-```
-Usage: flyte get run [OPTIONS] [NAME]
-```
+**`flyte get run [OPTIONS] [NAME]`**
 
 Get a list of all runs, or details of a specific run by name.
 
@@ -611,9 +569,7 @@ If you want to see the actions for a run, use `get action <run_name>`.
 
 #### flyte get secret
 
-```
-Usage: flyte get secret [OPTIONS] [NAME]
-```
+**`flyte get secret [OPTIONS] [NAME]`**
 
 Get a list of all secrets, or details of a specific secret by name.
 
@@ -627,9 +583,7 @@ Get a list of all secrets, or details of a specific secret by name.
 
 #### flyte get task
 
-```
-Usage: flyte get task [OPTIONS] [NAME] [VERSION]
-```
+**`flyte get task [OPTIONS] [NAME] [VERSION]`**
 
 Retrieve a list of all tasks, or details of a specific task by name and version.
 
@@ -646,9 +600,7 @@ Currently, both `name` and `version` are required to get a specific task.
 
 #### flyte get trigger
 
-```
-Usage: flyte get trigger [OPTIONS] [TASK_NAME] [NAME]
-```
+**`flyte get trigger [OPTIONS] [TASK_NAME] [NAME]`**
 
 Get a list of all triggers, or details of a specific trigger by name.
 
@@ -663,9 +615,7 @@ Get a list of all triggers, or details of a specific trigger by name.
 
 ### flyte run
 
-```
-Usage: flyte run [OPTIONS] COMMAND [ARGS]...
-```
+**`flyte run [OPTIONS] COMMAND [ARGS]...`**
 
 Run a task from a python file or deployed task.
 
@@ -765,9 +715,7 @@ flyte run hello.py my_task --help
 
 #### flyte run deployed-task
 
-```
-Usage: flyte run deployed-task [OPTIONS] COMMAND [ARGS]...
-```
+**`flyte run deployed-task [OPTIONS] COMMAND [ARGS]...`**
 
 Run reference task from the Flyte backend
 
@@ -781,9 +729,7 @@ Run reference task from the Flyte backend
 
 ### flyte serve
 
-```
-Usage: flyte serve COMMAND [ARGS]...
-```
+**`flyte serve COMMAND [ARGS]...`**
 
 Start the specific service. For example:
 
@@ -793,9 +739,7 @@ flyte serve connector
 
 #### flyte serve connector
 
-```
-Usage: flyte serve connector [OPTIONS]
-```
+**`flyte serve connector [OPTIONS]`**
 
 Start a grpc server for the connector service.
 
@@ -810,17 +754,13 @@ Start a grpc server for the connector service.
 
 ### flyte update
 
-```
-Usage: flyte update COMMAND [ARGS]...
-```
+**`flyte update COMMAND [ARGS]...`**
 
 Update various flyte entities.
 
 #### flyte update trigger
 
-```
-Usage: flyte update trigger [OPTIONS] NAME TASK_NAME
-```
+**`flyte update trigger [OPTIONS] NAME TASK_NAME`**
 
 Update a trigger.
 
@@ -844,8 +784,6 @@ flyte update trigger <trigger_name> <task_name> --activate | --deactivate
 
 ### flyte whoami
 
-```
-Usage: flyte whoami
-```
+**`flyte whoami`**
 
 Display the current user information.
