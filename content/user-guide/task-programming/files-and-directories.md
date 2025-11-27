@@ -6,8 +6,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Files and directories
 
-Flyte provides the [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiofile) and
-[`flyte.io.Dir`](../../api-reference/flyte-sdk/packages/flyte.io#flyteiodir) types to represent files and directories, respectively.
+Flyte provides the [`flyte.io.File`](../../api-reference/flyte-sdk/packages/flyte.io/file) and
+[`flyte.io.Dir`](../../api-reference/flyte-sdk/packages/flyte.io/dir) types to represent files and directories, respectively.
 Together with [`flyte.io.DataFrame`](./dataframes) they constitute the *offloaded data types* - unlike [materialized types](./dataclasses-and-structures) like dataclasses, these pass references rather than full data content.
 
 A variable of an offloaded type does not contain its actual data, but rather a reference to the data.
@@ -27,8 +27,8 @@ The examples below show the basic use-cases of uploading files and directories c
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/files-and-directories/file_and_dir.py" fragment="write-file" lang="python" >}}
 
-The upload happens when the [`from_local`](../../api-reference/flyte-sdk/packages/flyte.io#from_local) command is called.
-Because the upload would otherwise block execution, `from_local` is implemented as an `async` function.
+The upload happens when the [`File.from_local`](../../api-reference/flyte-sdk/packages/flyte.io/file#from_local) command is called.
+Because the upload would otherwise block execution, `File.from_local` is implemented as an `async` function.
 The Flyte SDK frequently uses this class constructor pattern, so you will see it with other types as well.
 
 This is a slightly more complicated task that calls the task above to produce `File` objects.

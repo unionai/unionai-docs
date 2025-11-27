@@ -117,7 +117,7 @@ The full set of parameters available for configuring a task environment, task de
 * Type: `Union[str, Image, Literal['auto']]`
 
 * Specifies the Docker image to use for the task container.
-  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte#flyteimage), or the string `auto`.
+  Can be a URL reference to a Docker image, an [`Image` object](../../api-reference/flyte-sdk/packages/flyte/image), or the string `auto`.
   If set to `auto`, or if this parameter is not set, the [default image]() will be used.
 
 * Only settable at the `TaskEnvironment` level.
@@ -129,7 +129,7 @@ The full set of parameters available for configuring a task environment, task de
 * Type: `Optional[Resources]`
 
 * Specifies the compute resources, such as CPU and Memory, required by the task environment using a
-  [`Resources`](../../api-reference/flyte-sdk/packages/flyte#flyteresources) object.
+  [`Resources`](../../api-reference/flyte-sdk/packages/flyte/resources) object.
 
 * Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level
   (but only if `reuseable` is not in effect).
@@ -155,7 +155,7 @@ The full set of parameters available for configuring a task environment, task de
 
 * Can be set at the `TaskEnvironment` level and overridden at the `task.override()` invocation level, but only if `reuseable` is not in effect.
 
-* See [Secrets](./secrets) and the API docs for the [`Secret` object](../../api-reference/flyte-sdk/packages/flyte#flytesecret).
+* See [Secrets](./secrets) and the API docs for the [`Secret` object](../../api-reference/flyte-sdk/packages/flyte/secret).
 
 ### `cache`
 
@@ -203,7 +203,7 @@ The full set of parameters available for configuring a task environment, task de
   if accompanied by an explicit `reusable="off"` in the same `task.override()` invocation.
   Additionally, `secrets` can only be overridden at the `@env.task` decorator level if the `TaskEnvironment` (`env`) does not have `reusable` set.
 
-* See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte#flytereusepolicy).
+* See [Reusable containers](./reusable-containers) and the API docs for the [`ReusePolicy` object](../../api-reference/flyte-sdk/packages/flyte/reusepolicy).
 
 {{< /markdown >}}
 {{< /variant >}}
@@ -212,7 +212,7 @@ The full set of parameters available for configuring a task environment, task de
 
 * Type: `List[Environment]`
 
-* A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte#flyteenvironment) objects that this `TaskEnvironment` depends on.
+* A list of [`Environment`](../../api-reference/flyte-sdk/packages/flyte/environment) objects that this `TaskEnvironment` depends on.
    When deploying this `TaskEnvironment`, the system will ensure that any dependencies of the listed `Environment`s are also available.
    This is useful when you have a set of task environments that depend on each other.
 

@@ -16,6 +16,7 @@ generate: clean_output_folder
 		--include include/api.flyte-sdk.md \
 		--weight 1 \
 		--expanded true \
+		--no-flatten true \
 		--variants \
 			+flyte \
 			+byoc \

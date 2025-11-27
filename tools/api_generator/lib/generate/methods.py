@@ -96,22 +96,32 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
         # output.write("No parameters\n")
         return
 
-    multiline_start = "{{< multiline >}}"
-    multiline_end = "{{< /multiline >}}"
-
-    output.write("| Parameter | Type |\n")
-    output.write("|-|-|\n")
+    output.write("| Parameter | Type | Description |\n")
+    output.write("|-|-|-|\n")
     for param in filtered_params:
         typeOutput = format_type(
             param["name"], param["type"] if "type" in param else "", escape_or=True
         )
-        doc = param["doc"] if "doc" in param else ""
+
+        # Look for documentation in params_doc field first, then fallback to param doc
+        doc = ""
+        if "params_doc" in method and method["params_doc"] and param["name"] in method["params_doc"]:
+            doc = method["params_doc"][param["name"]]["doc"] or ""
+        elif "doc" in param:
+            doc = param["doc"] or ""
+
+        # Clean up the doc string - replace newlines with spaces and escape markdown table characters and HTML
         if doc:
-            output.write(
-                f"| `{param['name']}` | {multiline_start}{typeOutput}\ndoc: {doc}\n{multiline_end} |\n"
-            )
+            doc = doc.replace("\n", " ").replace("|", "\\|").replace("<", "&lt;").replace(">", "&gt;").strip()
+            
+            # Remove redundant type information from the beginning of descriptions
+            # Pattern: "(type) description..." where type matches what's already in the Type column
+            import re
+            doc = re.sub(r'^\([^)]+\)\s*', '', doc)
+            
+            output.write(f"| `{param['name']}` | {typeOutput} | {doc} |\n")
         else:
-            output.write(f"| `{param['name']}` | {typeOutput} |\n")
+            output.write(f"| `{param['name']}` | {typeOutput} | |\n")
     output.write("\n")
 
 
@@ -165,5 +175,7 @@ def generate_method(method: MethodInfo, output: io.TextIOWrapper, doc_level: int
     output.write(f"{'#' * (doc_level+1)} {method['name']}()\n\n")
     generate_method_decl(method["name"], method, output)
     if method["doc"]:
-        output.write(f"{method['doc']}\n\n")
+        # Escape HTML characters in method documentation
+        doc = method["doc"].replace("<", "&lt;").replace(">", "&gt;")
+        output.write(f"{doc}\n\n")
     generate_params(method, output)
