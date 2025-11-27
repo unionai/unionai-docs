@@ -91,7 +91,7 @@ flyte create config \
 {{< /variant >}}
 
 {{< markdown >}}
-See the [API reference](../../api-reference/flyte-cli#flyte-create-config) for details on the available parameters.
+See the [Reference](../../api-reference/flyte-cli#flyte-create-config) section for details on the available parameters.
 {{< /markdown >}}
 
 {{< /dropdown >}}
