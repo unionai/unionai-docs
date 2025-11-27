@@ -22,6 +22,8 @@ This is the command line interface for Flyte.
 | `logs` | [`get`](#flyte-get-logs)  |
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
+| `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+| `connector` | [`serve`](#flyte-serve-connector)  |
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
@@ -33,7 +35,8 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
-| [`run`](#flyte-run) | - |
+| `run` | [`deployed-task`](#flyte-run-deployed-task)  |
+| `serve` | [`connector`](#flyte-serve-connector)  |
 | `update` | [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
@@ -41,6 +44,10 @@ This is the command line interface for Flyte.
 
 
 ## flyte
+
+```
+Usage: flyte [OPTIONS] COMMAND [ARGS]...
+```
 
 The Flyte CLI is the command line interface for working with the Flyte SDK and backend.
 
@@ -77,6 +84,7 @@ $ flyte --config /path/to/config.yaml run ...
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--version` | `boolean` | `False` | Show the version and exit. |
 | `--endpoint` | `text` | `Sentinel.UNSET` | The endpoint to connect to. This will override any configuration file and simply use `pkce` to connect. |
 | `--insecure` | `boolean` |  | Use an insecure connection to the endpoint. If not specified, the CLI will use TLS. |
 | `--auth-type` | `choice` |  | Authentication type to use for the Flyte backend. Defaults to 'pkce'. |
@@ -87,13 +95,22 @@ $ flyte --config /path/to/config.yaml run ...
 `--config`{{< /multiline >}} | `path` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
+| `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
 
+```
+Usage: flyte abort COMMAND [ARGS]...
+```
+
 Abort an ongoing process.
 
 #### flyte abort run
+
+```
+Usage: flyte abort run [OPTIONS] RUN_NAME
+```
 
 Abort a run.
 
@@ -107,6 +124,10 @@ Abort a run.
 
 ### flyte build
 
+```
+Usage: flyte build [OPTIONS] COMMAND [ARGS]...
+```
+
 Build the environments defined in a python file or directory. This will build the images associated with the
 environments.
 
@@ -117,9 +138,17 @@ environments.
 
 ### flyte create
 
+```
+Usage: flyte create COMMAND [ARGS]...
+```
+
 Create resources in a Flyte deployment.
 
 #### flyte create config
+
+```
+Usage: flyte create config [OPTIONS]
+```
 
 Creates a configuration file for Flyte CLI.
 If the `--output` option is not specified, it will create a file named `config.yaml` in the current directory.
@@ -143,6 +172,10 @@ If the file already exists, it will raise an error unless the `--force` option i
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create secret
+
+```
+Usage: flyte create secret [OPTIONS] NAME
+```
 
 Create a new secret. The name of the secret is required. For example:
 
@@ -170,15 +203,36 @@ Secrets intended to access container images should be specified as `image_pull`.
 Other secrets should be specified as `regular`.
 If no type is specified, `regular` is assumed.
 
+For image pull secrets, you have several options:
+
+1. Interactive mode (prompts for registry, username, password):
 ```bash
 $ flyte create secret my_secret --type image_pull
 ```
 
+2. With explicit credentials:
+```bash
+$ flyte create secret my_secret --type image_pull --registry ghcr.io --username myuser
+```
+
+3. Lastly, you can create a secret from your existing Docker installation (i.e., you've run `docker login` in
+the past) and you just want to pull from those credentials. Since you may have logged in to multiple registries,
+you can specify which registries to include. If no registries are specified, all registries are added.
+```bash
+$ flyte create secret my_secret --type image_pull --from-docker-config --registries ghcr.io,docker.io
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--value` | `text` | `Sentinel.UNSET` | Secret value Mutually exclusive with from_file. |
-| `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value. |
+| `--value` | `text` | `Sentinel.UNSET` | Secret value Mutually exclusive with from_file, from_docker_config, registry. |
+| `--from-file` | `path` | `Sentinel.UNSET` | Path to the file with the binary secret. Mutually exclusive with value, from_docker_config, registry. |
 | `--type` | `choice` | `regular` | Type of the secret. |
+| `--from-docker-config` | `boolean` | `False` | Create image pull secret from Docker config file (only for --type image_pull). Mutually exclusive with value, from_file, registry, username, password. |
+| `--docker-config-path` | `path` | `Sentinel.UNSET` | Path to Docker config file (defaults to ~/.docker/config.json or $DOCKER_CONFIG). |
+| `--registries` | `text` | `Sentinel.UNSET` | Comma-separated list of registries to include (only with --from-docker-config). |
+| `--registry` | `text` | `Sentinel.UNSET` | Registry hostname (e.g., ghcr.io, docker.io) for explicit credentials (only for --type image_pull). Mutually exclusive with value, from_file, from_docker_config. |
+| `--username` | `text` | `Sentinel.UNSET` | Username for the registry (only with --registry). |
+| `--password` | `text` | `Sentinel.UNSET` | Password for the registry (only with --registry). If not provided, will prompt. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -186,6 +240,10 @@ $ flyte create secret my_secret --type image_pull
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create trigger
+
+```
+Usage: flyte create trigger [OPTIONS] TASK_NAME NAME
+```
 
 Create a new trigger for a task. The task name and trigger name are required.
 
@@ -211,9 +269,17 @@ This will create a trigger that runs every day at midnight.
 
 ### flyte delete
 
+```
+Usage: flyte delete COMMAND [ARGS]...
+```
+
 Remove resources from a Flyte deployment.
 
 #### flyte delete secret
+
+```
+Usage: flyte delete secret [OPTIONS] NAME
+```
 
 Delete a secret. The name of the secret is required.
 
@@ -227,6 +293,10 @@ Delete a secret. The name of the secret is required.
 
 #### flyte delete trigger
 
+```
+Usage: flyte delete trigger [OPTIONS] NAME TASK_NAME
+```
+
 Delete a trigger. The name of the trigger is required.
 
 | Option | Type | Default | Description |
@@ -239,8 +309,101 @@ Delete a trigger. The name of the trigger is required.
 
 ### flyte deploy
 
+```
+Usage: flyte deploy [OPTIONS] COMMAND [ARGS]...
+```
+
 Deploy one or more environments from a python file.
-This command will create or update environments in the Flyte system.
+
+This command will create or update environments in the Flyte system, registering
+all tasks and their dependencies.
+
+Example usage:
+
+```bash
+flyte deploy hello.py my_env
+```
+
+Arguments to the deploy command are provided right after the `deploy` command and before the file name.
+
+To deploy all environments in a file, use the `--all` flag:
+
+```bash
+flyte deploy --all hello.py
+```
+
+To recursively deploy all environments in a directory and its subdirectories, use the `--recursive` flag:
+
+```bash
+flyte deploy --recursive ./src
+```
+
+You can combine `--all` and `--recursive` to deploy everything:
+
+```bash
+flyte deploy --all --recursive ./src
+```
+
+You can provide image mappings with `--image` flag. This allows you to specify
+the image URI for the task environment during CLI execution without changing
+the code. Any images defined with `Image.from_ref_name("name")` will resolve to the
+corresponding URIs you specify here.
+
+```bash
+flyte deploy --image my_image=ghcr.io/myorg/my-image:v1.0 hello.py my_env
+```
+
+If the image name is not provided, it is regarded as a default image and will
+be used when no image is specified in TaskEnvironment:
+
+```bash
+flyte deploy --image ghcr.io/myorg/default-image:latest hello.py my_env
+```
+
+You can specify multiple image arguments:
+
+```bash
+flyte deploy --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0 hello.py my_env
+```
+
+To deploy a specific version, use the `--version` flag:
+
+```bash
+flyte deploy --version v1.0.0 hello.py my_env
+```
+
+To preview what would be deployed without actually deploying, use the `--dry-run` flag:
+
+```bash
+flyte deploy --dry-run hello.py my_env
+```
+
+You can specify the `--config` flag to point to a specific Flyte cluster:
+
+```bash
+flyte deploy --config my-config.yaml hello.py my_env
+```
+
+You can override the default configured project and domain:
+
+```bash
+flyte deploy --project my-project --domain development hello.py my_env
+```
+
+If loading some files fails during recursive deployment, you can use the `--ignore-load-errors` flag
+to continue deploying the environments that loaded successfully:
+
+```bash
+flyte deploy --recursive --ignore-load-errors ./src
+```
+
+Other arguments to the deploy command are listed below.
+
+To see the environments available in a file, use `--help` after the file name:
+
+```bash
+flyte deploy hello.py --help
+```
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -258,13 +421,23 @@ This command will create or update environments in the Flyte system.
 | `--all` | `boolean` | `False` | Deploy all environments in the current directory, ignoring the file name |
 | {{< multiline >}}`--ignore-load-errors`
 `-i`{{< /multiline >}} | `boolean` | `False` | Ignore errors when loading environments especially when using --recursive or --all. |
+| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte gen
 
+```
+Usage: flyte gen COMMAND [ARGS]...
+```
+
 Generate documentation.
 
 #### flyte gen docs
+
+```
+Usage: flyte gen docs [OPTIONS]
+```
 
 Generate documentation.
 
@@ -278,6 +451,10 @@ Generate documentation.
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte get
+
+```
+Usage: flyte get COMMAND [ARGS]...
+```
 
 Retrieve resources from a Flyte deployment.
 
@@ -299,6 +476,10 @@ For example:
 
 #### flyte get action
 
+```
+Usage: flyte get action [OPTIONS] RUN_NAME [ACTION_NAME]
+```
+
 Get all actions for a run or details for a specific action.
 
 | Option | Type | Default | Description |
@@ -311,11 +492,19 @@ Get all actions for a run or details for a specific action.
 
 #### flyte get config
 
+```
+Usage: flyte get config
+```
+
 Shows the automatically detected configuration to connect with the remote backend.
 
 The configuration will include the endpoint, organization, and other settings that are used by the CLI.
 
 #### flyte get io
+
+```
+Usage: flyte get io [OPTIONS] RUN_NAME [ACTION_NAME]
+```
 
 Get the inputs and outputs of a run or action.
 If only the run name is provided, it will show the inputs and outputs of the root action of that run.
@@ -345,6 +534,10 @@ $ flyte get io my_run my_action
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get logs
+
+```
+Usage: flyte get logs [OPTIONS] RUN_NAME [ACTION_NAME]
+```
 
 Stream logs for the provided run or action.
 If only the run is provided, only the logs for the parent action will be streamed:
@@ -383,6 +576,10 @@ $ flyte get logs my_run my_action --pretty --lines 50
 
 #### flyte get project
 
+```
+Usage: flyte get project [NAME]
+```
+
 Get a list of all projects, or details of a specific project by name.
 
 | Option | Type | Default | Description |
@@ -390,6 +587,10 @@ Get a list of all projects, or details of a specific project by name.
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get run
+
+```
+Usage: flyte get run [OPTIONS] [NAME]
+```
 
 Get a list of all runs, or details of a specific run by name.
 
@@ -410,6 +611,10 @@ If you want to see the actions for a run, use `get action <run_name>`.
 
 #### flyte get secret
 
+```
+Usage: flyte get secret [OPTIONS] [NAME]
+```
+
 Get a list of all secrets, or details of a specific secret by name.
 
 | Option | Type | Default | Description |
@@ -421,6 +626,10 @@ Get a list of all secrets, or details of a specific secret by name.
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get task
+
+```
+Usage: flyte get task [OPTIONS] [NAME] [VERSION]
+```
 
 Retrieve a list of all tasks, or details of a specific task by name and version.
 
@@ -437,6 +646,10 @@ Currently, both `name` and `version` are required to get a specific task.
 
 #### flyte get trigger
 
+```
+Usage: flyte get trigger [OPTIONS] [TASK_NAME] [NAME]
+```
+
 Get a list of all triggers, or details of a specific trigger by name.
 
 | Option | Type | Default | Description |
@@ -450,18 +663,20 @@ Get a list of all triggers, or details of a specific trigger by name.
 
 ### flyte run
 
-Run a task from a python file or deployed task.
+```
+Usage: flyte run [OPTIONS] COMMAND [ARGS]...
+```
 
-To run a remote task that already exists in Flyte, use the deployed-task command:
+Run a task from a python file or deployed task.
 
 Example usage:
 
 ```bash
-flyte run --project my-project --domain development hello.py my_task --arg1 value1 --arg2 value2
+flyte run hello.py my_task --arg1 value1 --arg2 value2
 ```
 
 Arguments to the run command are provided right after the `run` command and before the file name.
-For example, the command above specifies the project and domain.
+Arguments for the task itself are provided after the task name.
 
 To run a task locally, use the `--local` flag. This will run the task in the local environment instead of the remote
 Flyte environment:
@@ -476,20 +691,20 @@ the code. Any images defined with `Image.from_ref_name("name")` will resolve to 
 corresponding URIs you specify here.
 
 ```bash
-flyte run hello.py my_task --image my_image=ghcr.io/myorg/my-image:v1.0
+flyte run --image my_image=ghcr.io/myorg/my-image:v1.0 hello.py my_task
 ```
 
 If the image name is not provided, it is regarded as a default image and will
 be used when no image is specified in TaskEnvironment:
 
 ```bash
-flyte run hello.py my_task --image ghcr.io/myorg/default-image:latest
+flyte run --image ghcr.io/myorg/default-image:latest hello.py my_task
 ```
 
 You can specify multiple image arguments:
 
 ```bash
-flyte run hello.py my_task --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0
+flyte run --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0 hello.py my_task
 ```
 
 To run tasks that you've already deployed to Flyte, use the deployed-task command:
@@ -508,6 +723,12 @@ You can specify the `--config` flag to point to a specific Flyte cluster:
 
 ```bash
 flyte run --config my-config.yaml deployed-task ...
+```
+
+You can override the default configured project and domain:
+
+```bash
+flyte run --project my-project --domain development hello.py my_task
 ```
 
 You can discover what deployed tasks are available by running:
@@ -533,17 +754,73 @@ flyte run hello.py my_task --help
 | `--local` | `boolean` | `False` | Run the task locally |
 | `--copy-style` | `choice` | `loaded_modules` | Copy style to use when running the task |
 | `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
+| `--raw-data-path` | `text` | `Sentinel.UNSET` | Override the output prefix used to store offloaded data types. e.g. s3://bucket/ |
+| `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
 | `--name` | `text` | `Sentinel.UNSET` | Name of the run. If not provided, a random name will be generated. |
 | {{< multiline >}}`--follow`
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
+| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte run deployed-task
+
+```
+Usage: flyte run deployed-task [OPTIONS] COMMAND [ARGS]...
+```
+
+Run reference task from the Flyte backend
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte serve
+
+```
+Usage: flyte serve COMMAND [ARGS]...
+```
+
+Start the specific service. For example:
+
+```bash
+flyte serve connector
+```
+
+#### flyte serve connector
+
+```
+Usage: flyte serve connector [OPTIONS]
+```
+
+Start a grpc server for the connector service.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--port` | `integer` | `8000` | Grpc port for the connector service |
+| `--prometheus_port` | `integer` | `9090` | Prometheus port for the connector service |
+| `--worker` | `integer` | `10` | Number of workers for the grpc server |
+| `--timeout` | `integer` |  | It will wait for the specified number of seconds before shutting down grpc server. It should only be used for testing. |
+| `--modules` | `text` | `Sentinel.UNSET` | List of additional files or module that defines the connector |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte update
 
+```
+Usage: flyte update COMMAND [ARGS]...
+```
+
 Update various flyte entities.
 
 #### flyte update trigger
+
+```
+Usage: flyte update trigger [OPTIONS] NAME TASK_NAME
+```
 
 Update a trigger.
 
@@ -566,5 +843,9 @@ flyte update trigger <trigger_name> <task_name> --activate | --deactivate
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte whoami
+
+```
+Usage: flyte whoami
+```
 
 Display the current user information.
