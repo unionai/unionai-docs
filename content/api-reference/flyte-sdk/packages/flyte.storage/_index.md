@@ -1,6 +1,6 @@
 ---
 title: flyte.storage
-version: 2.0.0b32.dev0+g54ab96db3.d20251127
+version: 2.0.0b34.dev10+g162555e05
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
