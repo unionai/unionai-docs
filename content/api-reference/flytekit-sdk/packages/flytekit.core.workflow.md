@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.workflow
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,6 +17,7 @@ layout: py_api
 | [`PythonFunctionWorkflow`](.././flytekit.core.workflow#flytekitcoreworkflowpythonfunctionworkflow) | Please read :std:ref:`flyte:divedeep-workflows` first for a high-level understanding of what workflows are in Flyte. |
 | [`ReferenceWorkflow`](.././flytekit.core.workflow#flytekitcoreworkflowreferenceworkflow) | A reference workflow is a pointer to a workflow that already exists on your Flyte installation. |
 | [`WorkflowBase`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowbase) |  |
+| [`WorkflowFailurePolicy`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowfailurepolicy) | Defines the behavior for a workflow execution in the case of an observed node execution failure. |
 | [`WorkflowMetadata`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowmetadata) |  |
 | [`WorkflowMetadataDefaults`](.././flytekit.core.workflow#flytekitcoreworkflowworkflowmetadatadefaults) | This class is similarly named to the one above. |
 
@@ -48,9 +49,9 @@ def construct_input_promises(
     inputs: List[str],
 ) -> Dict[str, Promise]
 ```
-| Parameter | Type |
-|-|-|
-| `inputs` | `List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` | `List[str]` | |
 
 #### get_promise()
 
@@ -64,10 +65,10 @@ This is a helper function that will turn a binding into a Promise object, using 
 get_promise_map for the rest of the details.
 
 
-| Parameter | Type |
-|-|-|
-| `binding_data` | `_literal_models.BindingData` |
-| `outputs_cache` | `Dict[Node, Dict[str, Promise]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binding_data` | `_literal_models.BindingData` | |
+| `outputs_cache` | `Dict[Node, Dict[str, Promise]]` | |
 
 #### get_promise_map()
 
@@ -83,10 +84,10 @@ Basically this takes the place of propeller in resolving bindings, pulling in ou
 nodes and filling in the necessary inputs.
 
 
-| Parameter | Type |
-|-|-|
-| `bindings` | `List[_literal_models.Binding]` |
-| `outputs_cache` | `Dict[Node, Dict[str, Promise]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `bindings` | `List[_literal_models.Binding]` | |
+| `outputs_cache` | `Dict[Node, Dict[str, Promise]]` | |
 
 #### reference_workflow()
 
@@ -116,12 +117,12 @@ def ref_wf1(a: int) -> typing.Tuple[str, str]:
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 #### workflow()
 
@@ -682,15 +683,15 @@ Please see the :ref:`user guide <cookbook:workflow>` for more usage examples.
 
 
 
-| Parameter | Type |
-|-|-|
-| `_workflow_function` | `Optional[Callable[P, FuncOut]]` |
-| `failure_policy` | `Optional[WorkflowFailurePolicy]` |
-| `interruptible` | `bool` |
-| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |
-| `docs` | `Optional[Documentation]` |
-| `pickle_untyped` | `bool` |
-| `default_options` | `Optional[Options]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_workflow_function` | `Optional[Callable[P, FuncOut]]` | This argument is implicitly passed and represents the decorated function. |
+| `failure_policy` | `Optional[WorkflowFailurePolicy]` | Use the options in flytekit.WorkflowFailurePolicy |
+| `interruptible` | `bool` | Whether or not tasks launched from this workflow are by default interruptible |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` | Invoke this workflow or task on failure. The Workflow / task has to match the signature of the current workflow, with an additional parameter called `error` Error |
+| `docs` | `Optional[Documentation]` | Description entity for the workflow |
+| `pickle_untyped` | `bool` | This is a flag that allows users to bypass the type-checking that Flytekit does when constructing the workflow. This is not recommended for general use. |
+| `default_options` | `Optional[Options]` | Default options for the workflow when creating a default launch plan. Currently only the labels and annotations are allowed to be set as defaults. |
 
 ## flytekit.core.workflow.ImperativeWorkflow
 
@@ -769,11 +770,11 @@ class ImperativeWorkflow(
     interruptible: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `failure_policy` | `Optional[WorkflowFailurePolicy]` |
-| `interruptible` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `failure_policy` | `Optional[WorkflowFailurePolicy]` | |
+| `interruptible` | `bool` | |
 
 ### Methods
 
@@ -806,10 +807,10 @@ def add_entity(
 Anytime you add an entity, all the inputs to the entity must be bound.
 
 
-| Parameter | Type |
-|-|-|
-| `entity` | `Union[PythonTask, _annotated_launch_plan.LaunchPlan, WorkflowBase]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` | `Union[PythonTask, _annotated_launch_plan.LaunchPlan, WorkflowBase]` | |
+| `kwargs` | `**kwargs` | |
 
 #### add_launch_plan()
 
@@ -819,10 +820,10 @@ def add_launch_plan(
     kwargs,
 ) -> Node
 ```
-| Parameter | Type |
-|-|-|
-| `launch_plan` | `_annotated_launch_plan.LaunchPlan` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `launch_plan` | `_annotated_launch_plan.LaunchPlan` | |
+| `kwargs` | `**kwargs` | |
 
 #### add_on_failure_handler()
 
@@ -836,9 +837,9 @@ to add the failure node. Failure nodes are special because we don't want
 them to be part of the main workflow.
 
 
-| Parameter | Type |
-|-|-|
-| `entity` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `entity` |  | |
 
 #### add_subwf()
 
@@ -848,10 +849,10 @@ def add_subwf(
     kwargs,
 ) -> Node
 ```
-| Parameter | Type |
-|-|-|
-| `sub_wf` | `WorkflowBase` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sub_wf` | `WorkflowBase` | |
+| `kwargs` | `**kwargs` | |
 
 #### add_task()
 
@@ -861,10 +862,10 @@ def add_task(
     kwargs,
 ) -> Node
 ```
-| Parameter | Type |
-|-|-|
-| `task` | `PythonTask` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task` | `PythonTask` | |
+| `kwargs` | `**kwargs` | |
 
 #### add_workflow_input()
 
@@ -877,10 +878,10 @@ def add_workflow_input(
 Adds an input to the workflow.
 
 
-| Parameter | Type |
-|-|-|
-| `input_name` | `str` |
-| `python_type` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `input_name` | `str` | |
+| `python_type` | `Type` | |
 
 #### add_workflow_output()
 
@@ -894,11 +895,11 @@ def add_workflow_output(
 Add an output with the given name from the given node output.
 
 
-| Parameter | Type |
-|-|-|
-| `output_name` | `str` |
-| `p` | `Union[Promise, List[Promise], Dict[str, Promise]]` |
-| `python_type` | `Optional[Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `output_name` | `str` | |
+| `p` | `Union[Promise, List[Promise], Dict[str, Promise]]` | |
+| `python_type` | `Optional[Type]` | |
 
 #### compile()
 
@@ -907,9 +908,9 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -923,9 +924,9 @@ def create_conditional(
     name: str,
 ) -> ConditionalSection
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
 
 #### execute()
 
@@ -943,9 +944,9 @@ in this map.
 After all nodes are run, we fill in workflow level outputs the same way as any other previous node.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -955,10 +956,10 @@ def local_execute(
     kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, None]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -1020,16 +1021,16 @@ class PythonFunctionWorkflow(
     default_options: Optional[Options],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `workflow_function` | `Callable` |
-| `metadata` | `WorkflowMetadata` |
-| `default_metadata` | `WorkflowMetadataDefaults` |
-| `docstring` | `Optional[Docstring]` |
-| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |
-| `docs` | `Optional[Documentation]` |
-| `pickle_untyped` | `bool` |
-| `default_options` | `Optional[Options]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `workflow_function` | `Callable` | |
+| `metadata` | `WorkflowMetadata` | |
+| `default_metadata` | `WorkflowMetadataDefaults` | |
+| `docstring` | `Optional[Docstring]` | |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` | |
+| `docs` | `Optional[Documentation]` | |
+| `pickle_untyped` | `bool` | |
+| `default_options` | `Optional[Options]` | |
 
 ### Methods
 
@@ -1055,9 +1056,9 @@ def add(
     t: flytekit.core.python_auto_container.PythonAutoContainerTask,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### compile()
 
@@ -1070,9 +1071,9 @@ Supply static Python native values in the kwargs if you want them to be used in 
 a 'closure' in the traditional sense of the word.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -1091,9 +1092,9 @@ call execute from dispatch_execute which is in local_execute, workflows should a
 local_execute. This makes mocking cleaner.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -1118,9 +1119,9 @@ def load_task(
 Given the set of identifier keys, should return one Python Task or raise an error if not found
 
 
-| Parameter | Type |
-|-|-|
-| `loader_args` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `loader_args` | `typing.List[str]` | |
 
 #### loader_args()
 
@@ -1133,10 +1134,10 @@ def loader_args(
 This is responsible for turning an instance of a task into args that the load_task function can reconstitute.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### local_execute()
 
@@ -1146,10 +1147,10 @@ def local_execute(
     kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, None]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -1166,9 +1167,9 @@ def task_name(
 Overridable function that can optionally return a custom name for a given task
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `PythonAutoContainerTask` | |
 
 ### Properties
 
@@ -1208,14 +1209,14 @@ class ReferenceWorkflow(
     outputs: Dict[str, Type],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
-| `inputs` | `Dict[str, Type]` |
-| `outputs` | `Dict[str, Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
+| `inputs` | `Dict[str, Type]` | |
+| `outputs` | `Dict[str, Type]` | |
 
 ### Methods
 
@@ -1242,9 +1243,9 @@ def add(
     t: flytekit.core.python_auto_container.PythonAutoContainerTask,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### compile()
 
@@ -1255,11 +1256,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -1273,9 +1274,9 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -1300,9 +1301,9 @@ def load_task(
 Given the set of identifier keys, should return one Python Task or raise an error if not found
 
 
-| Parameter | Type |
-|-|-|
-| `loader_args` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `loader_args` | `typing.List[str]` | |
 
 #### loader_args()
 
@@ -1315,10 +1316,10 @@ def loader_args(
 This is responsible for turning an instance of a task into args that the load_task function can reconstitute.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### local_execute()
 
@@ -1331,10 +1332,10 @@ def local_execute(
 Please see the local_execute comments in the main task.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -1351,9 +1352,9 @@ def task_name(
 Overridable function that can optionally return a custom name for a given task
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `PythonAutoContainerTask` | |
 
 #### unwrap_literal_map_and_execute()
 
@@ -1366,10 +1367,10 @@ def unwrap_literal_map_and_execute(
 Please see the implementation of the dispatch_execute function in the real task.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 ### Properties
 
@@ -1408,16 +1409,16 @@ class WorkflowBase(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `workflow_metadata` | `WorkflowMetadata` |
-| `workflow_metadata_defaults` | `WorkflowMetadataDefaults` |
-| `python_interface` | `Interface` |
-| `on_failure` | `Optional[Union[WorkflowBase, Task]]` |
-| `docs` | `Optional[Documentation]` |
-| `default_options` | `Optional[Options]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `workflow_metadata` | `WorkflowMetadata` | |
+| `workflow_metadata_defaults` | `WorkflowMetadataDefaults` | |
+| `python_interface` | `Interface` | |
+| `on_failure` | `Optional[Union[WorkflowBase, Task]]` | |
+| `docs` | `Optional[Documentation]` | |
+| `default_options` | `Optional[Options]` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -1437,9 +1438,9 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -1453,9 +1454,9 @@ def execute(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -1465,10 +1466,10 @@ def local_execute(
     kwargs,
 ) -> Union[Tuple[Promise], Promise, VoidPromise, None]
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -1492,6 +1493,12 @@ def local_execution_mode()
 | `workflow_metadata` |  |  |
 | `workflow_metadata_defaults` |  |  |
 
+## flytekit.core.workflow.WorkflowFailurePolicy
+
+Defines the behavior for a workflow execution in the case of an observed node execution failure. By default, a
+workflow execution will immediately enter a failed state if a component node fails.
+
+
 ## flytekit.core.workflow.WorkflowMetadata
 
 ```python
@@ -1499,9 +1506,9 @@ class WorkflowMetadata(
     on_failure: WorkflowFailurePolicy,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `on_failure` | `WorkflowFailurePolicy` |
+| Parameter | Type | Description |
+|-|-|-|
+| `on_failure` | `WorkflowFailurePolicy` | |
 
 ### Methods
 
@@ -1527,9 +1534,9 @@ class WorkflowMetadataDefaults(
     interruptible: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `interruptible` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `interruptible` | `bool` | |
 
 ### Methods
 

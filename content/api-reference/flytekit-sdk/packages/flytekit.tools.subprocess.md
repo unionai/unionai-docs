@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.subprocess
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,8 +26,8 @@ def check_call(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cmd_args` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cmd_args` |  | |
+| `kwargs` | `**kwargs` | |
 

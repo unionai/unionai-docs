@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.sqlite3.task
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -38,10 +38,10 @@ Unarchive given archive and returns the unarchived file name. It is expected tha
 More than one file or 0 files will result in a ``RuntimeError``
 
 
-| Parameter | Type |
-|-|-|
-| `local_path` | `str` |
-| `to_dir` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `str` | |
+| `to_dir` | `str` | |
 
 ## flytekit.extras.sqlite3.task.SQLite3Config
 
@@ -60,10 +60,10 @@ class SQLite3Config(
     compressed: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `uri` | `str` |
-| `compressed` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `uri` | `str` | |
+| `compressed` | `bool` | |
 
 ## flytekit.extras.sqlite3.task.SQLite3Task
 
@@ -109,15 +109,15 @@ class SQLite3Task(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `query_template` | `str` |
-| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` |
-| `task_config` | `typing.Optional[flytekit.extras.sqlite3.task.SQLite3Config]` |
-| `output_schema_type` | `typing.Optional[typing.Type[ForwardRef('FlyteSchema')]]` |
-| `container_image` | `typing.Optional[str]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | unique name for the task, usually the function's module and name. |
+| `query_template` | `str` | |
+| `inputs` | `typing.Optional[typing.Dict[str, typing.Type]]` | |
+| `task_config` | `typing.Optional[flytekit.extras.sqlite3.task.SQLite3Config]` | Configuration object for Task. Should be a unique type for that specific Task |
+| `output_schema_type` | `typing.Optional[typing.Type[ForwardRef('FlyteSchema')]]` | |
+| `container_image` | `typing.Optional[str]` | This is the external container image the task should run at platform-run-time. |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -161,11 +161,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -188,10 +188,10 @@ interface before executing. Also, we refer to ``self.task_template`` rather than
 classes that derive from the base ``PythonTask``.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `input_literal_map` | `_literal_models.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `input_literal_map` | `_literal_models.LiteralMap` | |
 
 #### execute()
 
@@ -203,9 +203,9 @@ def execute(
 Rather than running here, send everything to the executor.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -219,9 +219,9 @@ def get_command(
     settings: SerializationSettings,
 ) -> List[str]
 ```
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_config()
 
@@ -234,9 +234,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_container()
 
@@ -248,9 +248,9 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_custom()
 
@@ -262,9 +262,9 @@ def get_custom(
 Return additional plugin-specific custom data (if any) as a serializable dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -276,9 +276,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_image()
 
@@ -287,9 +287,9 @@ def get_image(
     settings: SerializationSettings,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_input_types()
 
@@ -309,9 +309,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_query()
 
@@ -320,9 +320,9 @@ def get_query(
     kwargs,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### get_sql()
 
@@ -334,9 +334,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -349,10 +349,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -365,10 +365,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### interpolate_query()
 
@@ -382,10 +382,10 @@ This function will fill in the query template with the provided kwargs and retur
 Please note that when SQL tasks run in Flyte, this step is done by the task executor.
 
 
-| Parameter | Type |
-|-|-|
-| `query_template` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `query_template` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -400,10 +400,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -421,10 +421,10 @@ def post_execute(
 This function is a stub, just here to keep dispatch_execute compatibility between this class and PythonTask.
 
 
-| Parameter | Type |
-|-|-|
-| `_` | `Optional[ExecutionParameters]` |
-| `rval` | `Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` | `Optional[ExecutionParameters]` | |
+| `rval` | `Any` | |
 
 #### pre_execute()
 
@@ -436,9 +436,9 @@ def pre_execute(
 This function is a stub, just here to keep dispatch_execute compatibility between this class and PythonTask.
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `Optional[ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `Optional[ExecutionParameters]` | |
 
 #### sandbox_execute()
 
@@ -451,10 +451,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### serialize_to_model()
 
@@ -463,9 +463,9 @@ def serialize_to_model(
     settings: SerializationSettings,
 ) -> _task_model.TaskTemplate
 ```
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 ### Properties
 
@@ -522,10 +522,10 @@ class SQLite3TaskExecutor(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -541,7 +541,7 @@ class SQLite3TaskExecutor(
 def execute_from_model(
     tt: flytekit.models.task.TaskTemplate,
     kwargs,
-) -> n: Python native output values from the task.
+) -> typing.Any
 ```
 This function must be overridden and is where all the business logic for running a task should live. Keep in
 mind that you're only working with the ``TaskTemplate``. You won't have access to any information in the task
@@ -549,10 +549,10 @@ that wasn't serialized into the template.
 
 
 
-| Parameter | Type |
-|-|-|
-| `tt` | `flytekit.models.task.TaskTemplate` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tt` | `flytekit.models.task.TaskTemplate` | This is the template, the serialized form of the task. |
+| `kwargs` | `**kwargs` | These are the Python native input values to the task. :return: Python native output values from the task. |
 
 #### find_lhs()
 

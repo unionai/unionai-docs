@@ -1,6 +1,6 @@
 ---
 title: flytekit.clis.sdk_in_container.serialize
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,6 +8,12 @@ layout: py_api
 # flytekit.clis.sdk_in_container.serialize
 
 ## Directory
+
+### Classes
+
+| Class | Description |
+|-|-|
+| [`SerializationMode`](.././flytekit.clis.sdk_in_container.serialize#flytekitclissdk_in_containerserializeserializationmode) | Create a collection of name/value pairs. |
 
 ### Methods
 
@@ -60,15 +66,55 @@ See {{< py_class_ref flytekit.models.core.identifier.ResourceType >}}   to match
 entity type.
 
 
-| Parameter | Type |
-|-|-|
-| `pkgs` | `typing.List[str]` |
-| `local_source_root` | `typing.Optional[str]` |
-| `folder` | `typing.Optional[str]` |
-| `mode` | `typing.Optional[flytekit.clis.sdk_in_container.serialize.SerializationMode]` |
-| `image_config` | `typing.Optional[flytekit.configuration.ImageConfig]` |
-| `flytekit_virtualenv_root` | `typing.Optional[str]` |
-| `python_interpreter` | `typing.Optional[str]` |
-| `config_file` | `typing.Optional[str]` |
-| `env` | `typing.Optional[typing.Dict[str, str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pkgs` | `typing.List[str]` | Dot-delimited Python packages/subpackages to look into for serialization. |
+| `local_source_root` | `typing.Optional[str]` | Where to start looking for the code. |
+| `folder` | `typing.Optional[str]` | Where to write the output protobuf files |
+| `mode` | `typing.Optional[flytekit.clis.sdk_in_container.serialize.SerializationMode]` | Regular vs fast |
+| `image_config` | `typing.Optional[flytekit.configuration.ImageConfig]` | ImageConfig object to use |
+| `flytekit_virtualenv_root` | `typing.Optional[str]` | The full path of the virtual env in the container. |
+| `python_interpreter` | `typing.Optional[str]` | |
+| `config_file` | `typing.Optional[str]` | |
+| `env` | `typing.Optional[typing.Dict[str, str]]` | |
+
+## flytekit.clis.sdk_in_container.serialize.SerializationMode
+
+Create a collection of name/value pairs.
+
+Example enumeration:
+
+>>> class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+
+Access them by:
+
+- attribute access:
+
+  >>> Color.RED
+  <Color.RED: 1>
+
+- value lookup:
+
+  >>> Color(1)
+  <Color.RED: 1>
+
+- name lookup:
+
+  >>> Color['RED']
+  <Color.RED: 1>
+
+Enumerations can be iterated over, and know how many members they have:
+
+>>> len(Color)
+3
+
+>>> list(Color)
+[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
+
+Methods can be added to enumerations, and members can have their own
+attributes -- see the documentation for details.
+
 

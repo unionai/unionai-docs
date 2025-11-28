@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.notification
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,17 +11,10 @@ layout: py_api
 Notifications are primarily used when defining Launch Plans (also can be used when launching executions) and will trigger
 the Flyte platform to send emails when a workflow run reaches certain stages (fails or succeeds, etc.).
 
-> [!NOTE]
-> Notifications require some setup and configuration on the Flyte platform side. Please contact your Flyte platform
-    admins to get this feature enabled. See :std:ref:`cookbook:setting up workflow notifications`
-
 Each notification type takes a list of {{< py_class_ref flytekit.models.core.execution.WorkflowExecutionPhase >}} and a list of
 emails. Even though there are different notification classes in this module, they all just send email. The differentiation
 offers semantic meaning to the end-user but do not functionally behave differently. Successful integration with Slack
 and Pagerduty is incumbent on those email API being set-up correctly.
-
-.. autoclass:: flytekit.core.notification.Notification
-
 
 ## Directory
 
@@ -51,10 +44,10 @@ class Email(
     recipients_email: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phases` | `typing.List[int]` |
-| `recipients_email` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phases` | `typing.List[int]` | |
+| `recipients_email` | `typing.List[str]` | |
 
 ### Methods
 
@@ -64,7 +57,6 @@ class Email(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -72,11 +64,11 @@ class Email(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Notification
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -97,14 +89,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Notification
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -132,12 +116,12 @@ class Notification(
     slack: flytekit.models.common.SlackNotification,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phases` | `typing.List[int]` |
-| `email` | `flytekit.models.common.EmailNotification` |
-| `pager_duty` | `flytekit.models.common.PagerDutyNotification` |
-| `slack` | `flytekit.models.common.SlackNotification` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phases` | `typing.List[int]` | |
+| `email` | `flytekit.models.common.EmailNotification` | |
+| `pager_duty` | `flytekit.models.common.PagerDutyNotification` | |
+| `slack` | `flytekit.models.common.SlackNotification` | |
 
 ### Methods
 
@@ -147,7 +131,6 @@ class Notification(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -155,11 +138,11 @@ class Notification(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Notification
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -180,14 +163,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Notification
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -222,10 +197,10 @@ class PagerDuty(
     recipients_email: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phases` | `typing.List[int]` |
-| `recipients_email` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phases` | `typing.List[int]` | |
+| `recipients_email` | `typing.List[str]` | |
 
 ### Methods
 
@@ -235,7 +210,6 @@ class PagerDuty(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -243,11 +217,11 @@ class PagerDuty(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Notification
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -268,14 +242,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Notification
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -310,10 +276,10 @@ class Slack(
     recipients_email: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phases` | `typing.List[int]` |
-| `recipients_email` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phases` | `typing.List[int]` | |
+| `recipients_email` | `typing.List[str]` | |
 
 ### Methods
 
@@ -323,7 +289,6 @@ class Slack(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -331,11 +296,11 @@ class Slack(
 ```python
 def from_flyte_idl(
     p,
-) -> e: Notification
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -356,14 +321,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.common_pb2.Notification
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

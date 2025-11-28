@@ -1,6 +1,6 @@
 ---
 title: flytekit.extend.backend.utils
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,14 +28,14 @@ layout: py_api
 ```python
 def convert_to_flyte_phase(
     state: str,
-) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107beec80>
+) -> <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>
 ```
 Convert the state from the connector to the phase in flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `state` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `state` | `str` | |
 
 #### get_agent_secret()
 
@@ -44,9 +44,9 @@ def get_agent_secret(
     secret_key: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `secret_key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `secret_key` | `str` | |
 
 #### get_connector_secret()
 
@@ -55,23 +55,23 @@ def get_connector_secret(
     secret_key: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `secret_key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `secret_key` | `str` | |
 
 #### is_terminal_phase()
 
 ```python
 def is_terminal_phase(
-    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107beec80>,
+    phase: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>,
 ) -> bool
 ```
 Return true if the phase is terminal.
 
 
-| Parameter | Type |
-|-|-|
-| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x107beec80>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10ccd3710>` | |
 
 #### mirror_async_methods()
 
@@ -81,10 +81,10 @@ def mirror_async_methods(
     kwargs,
 ) -> typing.Coroutine
 ```
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
+| `kwargs` | `**kwargs` | |
 
 #### render_task_template()
 
@@ -94,8 +94,8 @@ def render_task_template(
     file_prefix: str,
 ) -> flytekit.models.task.TaskTemplate
 ```
-| Parameter | Type |
-|-|-|
-| `tt` | `flytekit.models.task.TaskTemplate` |
-| `file_prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tt` | `flytekit.models.task.TaskTemplate` | |
+| `file_prefix` | `str` | |
 

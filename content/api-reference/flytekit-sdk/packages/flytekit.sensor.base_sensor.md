@@ -1,6 +1,6 @@
 ---
 title: flytekit.sensor.base_sensor
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -14,8 +14,13 @@ layout: py_api
 | Class | Description |
 |-|-|
 | [`BaseSensor`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorbasesensor) | Base class for all sensors. |
-| [`SensorConfig`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) | Base class for protocol classes. |
 | [`SensorMetadata`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensormetadata) |  |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
+| [`SensorConfig`](.././flytekit.sensor.base_sensor#flytekitsensorbase_sensorsensorconfig) | Base class for protocol classes. |
 
 ### Variables
 
@@ -39,13 +44,13 @@ class BaseSensor(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
-| `sensor_config` | `typing.Optional[~T]` |
-| `task_type` | `str` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
+| `sensor_config` | `typing.Optional[~T]` | |
+| `task_type` | `str` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -86,11 +91,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### connector_signal_handler()
 
@@ -101,11 +106,11 @@ def connector_signal_handler(
     frame: frame,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` |
-| `signum` | `int` |
-| `frame` | `frame` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_meta` | `flytekit.extend.backend.base_connector.ResourceMeta` | |
+| `signum` | `int` | |
+| `frame` | `frame` | |
 
 #### construct_node_metadata()
 
@@ -132,10 +137,10 @@ This method is also invoked during runtime.
 * ``DynamicJobSpec`` is returned when a dynamic workflow is executed
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### execute()
 
@@ -144,9 +149,9 @@ def execute(
     kwargs,
 ) -> flytekit.models.literals.LiteralMap
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -164,9 +169,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_container()
 
@@ -178,9 +183,9 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_custom()
 
@@ -192,9 +197,9 @@ def get_custom(
 Return additional plugin-specific custom data (if any) as a serializable dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -206,9 +211,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_input_types()
 
@@ -228,9 +233,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_sql()
 
@@ -242,9 +247,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -257,10 +262,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -273,10 +278,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### local_execute()
 
@@ -291,10 +296,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -312,9 +317,9 @@ This method should be overridden by the user to implement the actual sensor logi
 ``True`` if the sensor condition is met, else ``False``.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### post_execute()
 
@@ -329,10 +334,10 @@ or alter the outputs to match the intended tasks outputs. If not overridden, the
 
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
-| `rval` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | are the modified user params as created during the pre_execute step |
+| `rval` | `typing.Any` | |
 
 #### pre_execute()
 
@@ -349,9 +354,9 @@ setup before the type transformers are called
 This should return either the same context of the mutated context
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | |
 
 #### sandbox_execute()
 
@@ -364,10 +369,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 ### Properties
 
@@ -431,16 +436,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class SensorConfig(
-    args,
-    kwargs,
-)
+protocol SensorConfig()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -459,9 +456,9 @@ def from_dict(
 Deserialize the sensor config from a dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `d` | `typing.Dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` | `typing.Dict[str, typing.Any]` | |
 
 #### to_dict()
 
@@ -481,12 +478,12 @@ class SensorMetadata(
     inputs: typing.Optional[dict],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `sensor_module` | `str` |
-| `sensor_name` | `str` |
-| `sensor_config` | `typing.Optional[dict]` |
-| `inputs` | `typing.Optional[dict]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `sensor_module` | `str` | |
+| `sensor_name` | `str` | |
+| `sensor_config` | `typing.Optional[dict]` | |
+| `inputs` | `typing.Optional[dict]` | |
 
 ### Methods
 
@@ -506,9 +503,9 @@ def decode(
 Decode the resource meta from bytes.
 
 
-| Parameter | Type |
-|-|-|
-| `data` | `bytes` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `bytes` | |
 
 #### encode()
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.extras.accelerators
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -86,13 +86,17 @@ def my_task() -> None:
 | `A100` | `_A100` |  |
 | `A100_80GB` | `_A100_80GB` |  |
 | `A10G` | `GPUAccelerator` |  |
+| `H100` | `GPUAccelerator` |  |
+| `H200` | `GPUAccelerator` |  |
 | `K80` | `GPUAccelerator` |  |
 | `L4` | `GPUAccelerator` |  |
+| `L40S` | `GPUAccelerator` |  |
 | `L4_VWS` | `GPUAccelerator` |  |
 | `M60` | `GPUAccelerator` |  |
 | `MIG` | `TypeVar` |  |
 | `P100` | `GPUAccelerator` |  |
 | `P4` | `GPUAccelerator` |  |
+| `RTX_PRO_6000` | `GPUAccelerator` |  |
 | `T` | `TypeVar` |  |
 | `T4` | `GPUAccelerator` |  |
 | `V100` | `GPUAccelerator` |  |
@@ -129,9 +133,9 @@ class GPUAccelerator(
     device: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `device` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `device` | `str` | |
 
 ### Methods
 
@@ -167,9 +171,9 @@ def partitioned(
     partition_size: str,
 ) -> ~MIG
 ```
-| Parameter | Type |
-|-|-|
-| `partition_size` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `partition_size` | `str` | |
 
 #### to_flyte_idl()
 

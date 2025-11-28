@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth.authenticator
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,13 +36,13 @@ class Authenticator(
     verify: typing.Union[bool, str, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `header_key` | `str` |
-| `credentials` | `flytekit.clients.auth.keyring.Credentials` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `header_key` | `str` | |
+| `credentials` | `flytekit.clients.auth.keyring.Credentials` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
 
 ### Methods
 
@@ -85,16 +85,16 @@ class ClientConfig(
     audience: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `token_endpoint` | `str` |
-| `authorization_endpoint` | `str` |
-| `redirect_uri` | `str` |
-| `client_id` | `str` |
-| `device_authorization_endpoint` | `typing.Optional[str]` |
-| `scopes` | `typing.List[str]` |
-| `header_key` | `str` |
-| `audience` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `token_endpoint` | `str` | |
+| `authorization_endpoint` | `str` | |
+| `redirect_uri` | `str` | |
+| `client_id` | `str` | |
+| `device_authorization_endpoint` | `typing.Optional[str]` | |
+| `scopes` | `typing.List[str]` | |
+| `header_key` | `str` | |
+| `audience` | `typing.Optional[str]` | |
 
 ## flytekit.clients.auth.authenticator.ClientConfigStore
 
@@ -132,18 +132,18 @@ class ClientCredentialsAuthenticator(
     session: typing.Optional[requests.sessions.Session],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `client_id` | `str` |
-| `client_secret` | `str` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
-| `header_key` | `typing.Optional[str]` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-| `audience` | `typing.Optional[str]` |
-| `session` | `typing.Optional[requests.sessions.Session]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `client_id` | `str` | |
+| `client_secret` | `str` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
+| `header_key` | `typing.Optional[str]` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `audience` | `typing.Optional[str]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
 
 ### Methods
 
@@ -186,10 +186,10 @@ class CommandAuthenticator(
     header_key: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `command` | `typing.List[str]` |
-| `header_key` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `command` | `typing.List[str]` | |
+| `header_key` | `str` | |
 
 ### Methods
 
@@ -240,16 +240,16 @@ class DeviceCodeAuthenticator(
     session: typing.Optional[requests.sessions.Session],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
-| `header_key` | `typing.Optional[str]` |
-| `audience` | `typing.Optional[str]` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `http_proxy_url` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-| `session` | `typing.Optional[requests.sessions.Session]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
+| `header_key` | `typing.Optional[str]` | |
+| `audience` | `typing.Optional[str]` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
 
 ### Methods
 
@@ -299,14 +299,14 @@ class PKCEAuthenticator(
 Initialize with default creds from KeyStore using the endpoint name
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
-| `scopes` | `typing.Optional[typing.List[str]]` |
-| `header_key` | `typing.Optional[str]` |
-| `verify` | `typing.Union[bool, str, NoneType]` |
-| `session` | `typing.Optional[requests.sessions.Session]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
+| `scopes` | `typing.Optional[typing.List[str]]` | |
+| `header_key` | `typing.Optional[str]` | |
+| `verify` | `typing.Union[bool, str, NoneType]` | |
+| `session` | `typing.Optional[requests.sessions.Session]` | |
 
 ### Methods
 
@@ -342,9 +342,9 @@ class StaticClientConfigStore(
     cfg: flytekit.clients.auth.authenticator.ClientConfig,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.clients.auth.authenticator.ClientConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.clients.auth.authenticator.ClientConfig` | |
 
 ### Methods
 

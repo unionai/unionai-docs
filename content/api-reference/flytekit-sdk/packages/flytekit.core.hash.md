@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.hash
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,9 +32,9 @@ class HashMethod(
     function: typing.Callable[[~T], str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `function` | `typing.Callable[[~T], str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `function` | `typing.Callable[[~T], str]` | |
 
 ### Methods
 
@@ -53,9 +53,9 @@ def calculate(
 Calculate hash for `obj`.
 
 
-| Parameter | Type |
-|-|-|
-| `obj` | `~T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` | `~T` | |
 
 ## flytekit.core.hash.HashOnReferenceMixin
 

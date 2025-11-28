@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.execution
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,12 +29,12 @@ class ExecutionError(
     kind: int,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `error_uri` | `str` |
-| `kind` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | |
+| `message` | `str` | |
+| `error_uri` | `str` | |
+| `kind` | `int` | |
 
 ### Methods
 
@@ -44,7 +44,6 @@ class ExecutionError(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -52,11 +51,11 @@ class ExecutionError(
 ```python
 def from_flyte_idl(
     p,
-) -> e: ExecutionError
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -77,14 +76,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.execution_pb2.ExecutionError
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -115,11 +106,11 @@ def verbose_string()
 ```python
 def enum_to_string(
     int_value,
-) -> e: Text
+)
 ```
-| Parameter | Type |
-|-|-|
-| `int_value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `int_value` |  | :rtype: Text |
 
 ## flytekit.models.core.execution.TaskExecutionPhase
 
@@ -135,11 +126,11 @@ def enum_to_string(
 ```python
 def enum_to_string(
     int_value,
-) -> e: Text
+)
 ```
-| Parameter | Type |
-|-|-|
-| `int_value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `int_value` |  | :rtype: Text |
 
 ## flytekit.models.core.execution.TaskLog
 
@@ -151,12 +142,12 @@ class TaskLog(
     ttl: typing.Optional[datetime.timedelta],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `uri` | `str` |
-| `name` | `str` |
-| `message_format` | `typing.Optional[flytekit.models.core.execution.TaskLog.MessageFormat]` |
-| `ttl` | `typing.Optional[datetime.timedelta]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `uri` | `str` | |
+| `name` | `str` | |
+| `message_format` | `typing.Optional[flytekit.models.core.execution.TaskLog.MessageFormat]` | |
+| `ttl` | `typing.Optional[datetime.timedelta]` | |
 
 ### Methods
 
@@ -166,7 +157,6 @@ class TaskLog(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -174,11 +164,11 @@ class TaskLog(
 ```python
 def from_flyte_idl(
     p,
-) -> e: TaskLog
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -199,14 +189,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.execution_pb2.TaskLog
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -242,9 +224,9 @@ for sample usage.
 ```python
 def enum_to_string(
     int_value,
-) -> e: Text
+)
 ```
-| Parameter | Type |
-|-|-|
-| `int_value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `int_value` |  | :rtype: Text |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.tools.ignore
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,9 +36,9 @@ class DockerIgnore(
     root: pathlib._local.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib._local.Path` | |
 
 ### Methods
 
@@ -55,9 +55,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -66,9 +66,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.FlyteIgnore
 
@@ -80,9 +80,9 @@ class FlyteIgnore(
     root: pathlib._local.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib._local.Path` | |
 
 ### Methods
 
@@ -99,9 +99,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -110,9 +110,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.GitIgnore
 
@@ -124,9 +124,9 @@ class GitIgnore(
     root: pathlib._local.Path,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib._local.Path` | |
 
 ### Methods
 
@@ -143,9 +143,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -154,9 +154,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.Ignore
 
@@ -168,9 +168,9 @@ class Ignore(
     root: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `str` | |
 
 ### Methods
 
@@ -187,9 +187,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -198,9 +198,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.IgnoreGroup
 
@@ -214,10 +214,10 @@ class IgnoreGroup(
     ignores: typing.List[typing.Type[flytekit.tools.ignore.Ignore]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `str` |
-| `ignores` | `typing.List[typing.Type[flytekit.tools.ignore.Ignore]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `str` | |
+| `ignores` | `typing.List[typing.Type[flytekit.tools.ignore.Ignore]]` | |
 
 ### Methods
 
@@ -235,9 +235,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### list_ignored()
 
@@ -251,9 +251,9 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 
 ## flytekit.tools.ignore.StandardIgnore
 
@@ -267,10 +267,10 @@ class StandardIgnore(
     patterns: typing.Optional[typing.List[str]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `root` | `pathlib._local.Path` |
-| `patterns` | `typing.Optional[typing.List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` | `pathlib._local.Path` | |
+| `patterns` | `typing.Optional[typing.List[str]]` | |
 
 ### Methods
 
@@ -287,9 +287,9 @@ def is_ignored(
     path: str,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
 
 #### tar_filter()
 
@@ -298,7 +298,7 @@ def tar_filter(
     tarinfo: tarfile.TarInfo,
 ) -> typing.Optional[tarfile.TarInfo]
 ```
-| Parameter | Type |
-|-|-|
-| `tarinfo` | `tarfile.TarInfo` |
+| Parameter | Type | Description |
+|-|-|-|
+| `tarinfo` | `tarfile.TarInfo` | |
 

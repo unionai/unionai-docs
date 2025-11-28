@@ -1,6 +1,6 @@
 ---
 title: Packages
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,6 +41,7 @@ layout: py_api
 | [`flytekit.configuration.file`](flytekit.configuration.file) |  |
 | [`flytekit.configuration.internal`](flytekit.configuration.internal) |  |
 | [`flytekit.configuration.plugin`](flytekit.configuration.plugin) | Defines a plugin API allowing other libraries to modify the behavior of flytekit. |
+| [`flytekit.constants`](flytekit.constants) |  |
 | [`flytekit.core.annotation`](flytekit.core.annotation) |  |
 | [`flytekit.core.array_node`](flytekit.core.array_node) |  |
 | [`flytekit.core.array_node_map_task`](flytekit.core.array_node_map_task) |  |
@@ -54,7 +55,7 @@ layout: py_api
 | [`flytekit.core.condition`](flytekit.core.condition) |  |
 | [`flytekit.core.constants`](flytekit.core.constants) |  |
 | [`flytekit.core.container_task`](flytekit.core.container_task) |  |
-| [`flytekit.core.context_manager`](flytekit.core.context_manager) |  |
+| [`flytekit.core.context_manager`](flytekit.core.context_manager) | These classes provide functionality related context management. |
 | [`flytekit.core.data_persistence`](flytekit.core.data_persistence) | The Data persistence module is used by core flytekit and most of the core TypeTransformers to manage data fetch & store,. |
 | [`flytekit.core.docstring`](flytekit.core.docstring) |  |
 | [`flytekit.core.environment`](flytekit.core.environment) |  |
@@ -78,7 +79,7 @@ layout: py_api
 | [`flytekit.core.reference`](flytekit.core.reference) |  |
 | [`flytekit.core.reference_entity`](flytekit.core.reference_entity) |  |
 | [`flytekit.core.resources`](flytekit.core.resources) |  |
-| [`flytekit.core.schedule`](flytekit.core.schedule) |  |
+| [`flytekit.core.schedule`](flytekit.core.schedule) | These classes provide functionality related to schedules. |
 | [`flytekit.core.shim_task`](flytekit.core.shim_task) |  |
 | [`flytekit.core.task`](flytekit.core.task) |  |
 | [`flytekit.core.testing`](flytekit.core.testing) |  |
@@ -100,19 +101,30 @@ layout: py_api
 | [`flytekit.exceptions.utils`](flytekit.exceptions.utils) |  |
 | [`flytekit.experimental.eager_function`](flytekit.experimental.eager_function) |  |
 | [`flytekit.extend.backend.base_connector`](flytekit.extend.backend.base_connector) |  |
+| [`flytekit.extend.backend.connector_service`](flytekit.extend.backend.connector_service) |  |
 | [`flytekit.extend.backend.utils`](flytekit.extend.backend.utils) |  |
 | [`flytekit.extras.accelerators`](flytekit.extras.accelerators) | ## Specifying Accelerators. |
 | [`flytekit.extras.cloud_pickle_resolver`](flytekit.extras.cloud_pickle_resolver) |  |
-| [`flytekit.extras.pydantic_transformer.decorator`](flytekit.extras.pydantic_transformer.decorator) |  |
+| [`flytekit.extras.pydantic_transformer.transformer`](flytekit.extras.pydantic_transformer.transformer) |  |
+| [`flytekit.extras.pytorch.checkpoint`](flytekit.extras.pytorch.checkpoint) |  |
+| [`flytekit.extras.pytorch.native`](flytekit.extras.pytorch.native) |  |
+| [`flytekit.extras.sklearn.native`](flytekit.extras.sklearn.native) |  |
 | [`flytekit.extras.sqlite3.task`](flytekit.extras.sqlite3.task) |  |
 | [`flytekit.extras.tasks.shell`](flytekit.extras.tasks.shell) |  |
+| [`flytekit.extras.tensorflow.model`](flytekit.extras.tensorflow.model) |  |
+| [`flytekit.extras.tensorflow.record`](flytekit.extras.tensorflow.record) |  |
+| [`flytekit.extras.webhook`](flytekit.extras.webhook) |  |
+| [`flytekit.extras.webhook.connector`](flytekit.extras.webhook.connector) |  |
+| [`flytekit.extras.webhook.constants`](flytekit.extras.webhook.constants) |  |
+| [`flytekit.extras.webhook.task`](flytekit.extras.webhook.task) |  |
 | [`flytekit.image_spec.default_builder`](flytekit.image_spec.default_builder) |  |
 | [`flytekit.image_spec.image_spec`](flytekit.image_spec.image_spec) |  |
+| [`flytekit.image_spec.noop_builder`](flytekit.image_spec.noop_builder) |  |
 | [`flytekit.interaction.click_types`](flytekit.interaction.click_types) |  |
 | [`flytekit.interaction.parse_stdin`](flytekit.interaction.parse_stdin) |  |
 | [`flytekit.interaction.rich_utils`](flytekit.interaction.rich_utils) |  |
 | [`flytekit.interaction.string_literals`](flytekit.interaction.string_literals) |  |
-| [`flytekit.interactive`](flytekit.interactive) |  |
+| [`flytekit.interactive`](flytekit.interactive) | This module provides functionality related to Flytekit Interactive. |
 | [`flytekit.interactive.constants`](flytekit.interactive.constants) |  |
 | [`flytekit.interactive.utils`](flytekit.interactive.utils) |  |
 | [`flytekit.interactive.vscode_lib.config`](flytekit.interactive.vscode_lib.config) |  |
@@ -130,6 +142,7 @@ layout: py_api
 | [`flytekit.models.annotation`](flytekit.models.annotation) |  |
 | [`flytekit.models.array_job`](flytekit.models.array_job) |  |
 | [`flytekit.models.common`](flytekit.models.common) |  |
+| [`flytekit.models.concurrency`](flytekit.models.concurrency) |  |
 | [`flytekit.models.core.catalog`](flytekit.models.core.catalog) |  |
 | [`flytekit.models.core.compiler`](flytekit.models.core.compiler) |  |
 | [`flytekit.models.core.condition`](flytekit.models.core.condition) |  |
@@ -183,8 +196,9 @@ layout: py_api
 | [`flytekit.types.directory`](flytekit.types.directory) | Similar to {{< py_class_ref flytekit.types.file.FlyteFile >}} there are some 'preformatted' directory types. |
 | [`flytekit.types.directory.types`](flytekit.types.directory.types) |  |
 | [`flytekit.types.error.error`](flytekit.types.error.error) |  |
-| [`flytekit.types.file`](flytekit.types.file) | Flytekit File Type. |
+| [`flytekit.types.file`](flytekit.types.file) | This module provides functionality related to FlyteFile. |
 | [`flytekit.types.file.file`](flytekit.types.file.file) |  |
+| [`flytekit.types.file.image`](flytekit.types.file.image) |  |
 | [`flytekit.types.iterator.iterator`](flytekit.types.iterator.iterator) |  |
 | [`flytekit.types.iterator.json_iterator`](flytekit.types.iterator.json_iterator) |  |
 | [`flytekit.types.numpy.ndarray`](flytekit.types.numpy.ndarray) |  |
@@ -193,6 +207,8 @@ layout: py_api
 | [`flytekit.types.schema.types_pandas`](flytekit.types.schema.types_pandas) |  |
 | [`flytekit.types.structured`](flytekit.types.structured) |  |
 | [`flytekit.types.structured.basic_dfs`](flytekit.types.structured.basic_dfs) |  |
+| [`flytekit.types.structured.bigquery`](flytekit.types.structured.bigquery) |  |
+| [`flytekit.types.structured.snowflake`](flytekit.types.structured.snowflake) |  |
 | [`flytekit.types.structured.structured_dataset`](flytekit.types.structured.structured_dataset) |  |
 | [`flytekit.utils.asyn`](flytekit.utils.asyn) | Manages an async event loop on another thread. |
 | [`flytekit.utils.dict_formatter`](flytekit.utils.dict_formatter) |  |

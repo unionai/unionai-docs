@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.auth_helper
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -44,9 +44,9 @@ def bootstrap_creds_from_server(
 Retrieves the SSL cert from the remote and uses that. should be used only if insecure-skip-verify
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 #### get_authenticated_channel()
 
@@ -58,9 +58,9 @@ def get_authenticated_channel(
 Returns a new channel for the given config that is authenticated
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | |
 
 #### get_authenticator()
 
@@ -73,10 +73,10 @@ def get_authenticator(
 Returns a new authenticator based on the platform config.
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | |
+| `cfg_store` | `flytekit.clients.auth.authenticator.ClientConfigStore` | |
 
 #### get_channel()
 
@@ -84,7 +84,7 @@ Returns a new authenticator based on the platform config.
 def get_channel(
     cfg: flytekit.configuration.PlatformConfig,
     kwargs,
-) -> n: grpc.Channel (secure / insecure)
+) -> grpc.Channel
 ```
 Creates a new grpc.Channel given a platformConfig.
 It is possible to pass additional options to the underlying channel. Examples for various options are as below
@@ -111,10 +111,10 @@ get_channel(cfg=PlatformConfig(insecure=False,...), credentials=...)
 
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
+| `kwargs` | `**kwargs` | Optional arguments to be passed to channel method. Refer to usage example above :return: grpc.Channel (secure / insecure) |
 
 #### get_proxy_authenticator()
 
@@ -123,9 +123,9 @@ def get_proxy_authenticator(
     cfg: flytekit.configuration.PlatformConfig,
 ) -> flytekit.clients.auth.authenticator.Authenticator
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | |
 
 #### get_session()
 
@@ -138,10 +138,10 @@ def get_session(
 Return a new session for the given platform config.
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | |
+| `kwargs` | `**kwargs` | |
 
 #### upgrade_channel_to_authenticated()
 
@@ -149,16 +149,16 @@ Return a new session for the given platform config.
 def upgrade_channel_to_authenticated(
     cfg: flytekit.configuration.PlatformConfig,
     in_channel: grpc.Channel,
-) -> n: grpc.Channel. New composite channel
+) -> grpc.Channel
 ```
 Given a grpc.Channel, preferably a secure channel, it returns a composed channel that uses Interceptor to
 perform an Oauth2.0 Auth flow
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `in_channel` | `grpc.Channel` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
+| `in_channel` | `grpc.Channel` | grpc.Channel Precreated channel :return: grpc.Channel. New composite channel |
 
 #### upgrade_channel_to_proxy_authenticated()
 
@@ -166,17 +166,17 @@ perform an Oauth2.0 Auth flow
 def upgrade_channel_to_proxy_authenticated(
     cfg: flytekit.configuration.PlatformConfig,
     in_channel: grpc.Channel,
-) -> n: grpc.Channel. New composite channel
+) -> grpc.Channel
 ```
 If activated in the platform config, given a grpc.Channel, preferably a secure channel, it returns a composed
 channel that uses Interceptor to perform authentication with a proxy in front of Flyte
 
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `in_channel` | `grpc.Channel` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
+| `in_channel` | `grpc.Channel` | grpc.Channel Precreated channel :return: grpc.Channel. New composite channel |
 
 #### upgrade_session_to_proxy_authenticated()
 
@@ -184,17 +184,17 @@ channel that uses Interceptor to perform authentication with a proxy in front of
 def upgrade_session_to_proxy_authenticated(
     cfg: flytekit.configuration.PlatformConfig,
     session: requests.sessions.Session,
-) -> n: requests.Session. New session with custom HTTPAdapter mounted
+) -> requests.sessions.Session
 ```
 Given a requests.Session, it returns a new session that uses a custom HTTPAdapter to
 perform authentication with a proxy in front of Flyte
 
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `session` | `requests.sessions.Session` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
+| `session` | `requests.sessions.Session` | requests.Session Precreated session :return: requests.Session. New session with custom HTTPAdapter mounted |
 
 #### wrap_exceptions_channel()
 
@@ -202,7 +202,7 @@ perform authentication with a proxy in front of Flyte
 def wrap_exceptions_channel(
     cfg: flytekit.configuration.PlatformConfig,
     in_channel: grpc.Channel,
-) -> n: grpc.Channel
+) -> grpc.Channel
 ```
 Wraps the input channel with RetryExceptionWrapperInterceptor. This wrapper will cover all
 exceptions and raise Exception from the Family flytekit.exceptions
@@ -212,10 +212,10 @@ exceptions and raise Exception from the Family flytekit.exceptions
 
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `flytekit.configuration.PlatformConfig` |
-| `in_channel` | `grpc.Channel` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `flytekit.configuration.PlatformConfig` | PlatformConfig |
+| `in_channel` | `grpc.Channel` | grpc.Channel :return: grpc.Channel |
 
 ## flytekit.clients.auth_helper.AuthenticationHTTPAdapter
 
@@ -229,11 +229,11 @@ class AuthenticationHTTPAdapter(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `authenticator` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `authenticator` |  | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -264,9 +264,9 @@ def add_auth_header(
 Adds authentication headers to the request.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | The request object to add headers to. |
 
 #### add_headers()
 
@@ -286,10 +286,10 @@ when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | The |
+| `kwargs` | `**kwargs` | The keyword arguments from the call to send(). |
 
 #### build_connection_pool_key_attributes()
 
@@ -316,7 +316,7 @@ dictionary:
   ``"cert_reqs"`` will be set
 * If ``verify`` is a string, (i.e., it is a user-specified trust bundle)
   ``"ca_certs"`` will be set if the string is not a directory recognized
-  by :py:func:`os.path.isdir`, otherwise ``"ca_certs_dir"`` will be
+  by :py:func:`os.path.isdir`, otherwise ``"ca_cert_dir"`` will be
   set.
 * If ``"cert"`` is specified, ``"cert_file"`` will always be set. If
   ``"cert"`` is a tuple with a second item, ``"key_file"`` will also
@@ -330,11 +330,11 @@ alter the other keys to ensure the desired behaviour.
 
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `verify` |  |
-| `cert` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | The PreparedReqest being sent over the connection. :type request: :class:`~requests.models.PreparedRequest` |
+| `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
+| `cert` |  | Any user-provided SSL certificate for client authentication (a.k.a., mTLS). This may be a string (i.e., just the path to a file which holds both certificate and key) or a tuple of length 2 with the certificate file path and key file path. :returns: A tuple of two dictionaries. The first is the "host parameters" portion of the Pool Key including scheme, hostname, and port. The second is a dictionary of SSLContext related parameters. |
 
 #### build_response()
 
@@ -342,7 +342,7 @@ alter the other keys to ensure the desired behaviour.
 def build_response(
     req,
     resp,
-) -> e: requests.Response
+)
 ```
 Builds a :class:`Response <requests.Response>` object from a urllib3
 response. This should not be called from user code, and is only exposed
@@ -351,10 +351,10 @@ for use when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `req` |  |
-| `resp` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `req` |  | The |
+| `resp` |  | The urllib3 response object. :rtype: requests.Response |
 
 #### cert_verify()
 
@@ -372,12 +372,12 @@ code, and is only exposed for use when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `conn` |  |
-| `url` |  |
-| `verify` |  |
-| `cert` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `conn` |  | The urllib3 connection object associated with the cert. |
+| `url` |  | The requested URL. |
+| `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use |
+| `cert` |  | The SSL certificate to verify. |
 
 #### close()
 
@@ -396,7 +396,7 @@ which closes any pooled connections.
 def get_connection(
     url,
     proxies,
-) -> e: urllib3.ConnectionPool
+)
 ```
 DEPRECATED: Users should move to `get_connection_with_tls_context`
 for all subclasses of HTTPAdapter using Requests>=2.32.2.
@@ -407,10 +407,10 @@ called from user code, and is only exposed for use when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `url` |  |
-| `proxies` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `url` |  | The URL to connect to. |
+| `proxies` |  | A Requests-style dictionary of proxies used on this request. :rtype: urllib3.ConnectionPool |
 
 #### get_connection_with_tls_context()
 
@@ -420,7 +420,7 @@ def get_connection_with_tls_context(
     verify,
     proxies,
     cert,
-) -> e:
+)
 ```
 Returns a urllib3 connection for the given request and TLS settings.
 This should not be called from user code, and is only exposed for use
@@ -428,12 +428,12 @@ when subclassing the :class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
 
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `verify` |  |
-| `proxies` |  |
-| `cert` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | The :class:`PreparedRequest &lt;PreparedRequest&gt;` object to be sent over the connection. |
+| `verify` |  | Either a boolean, in which case it controls whether we verify the server's TLS certificate, or a string, in which case it must be a path to a CA bundle to use. |
+| `proxies` |  | The proxies dictionary to apply to the request. |
+| `cert` |  | Any user-provided SSL certificate to be used for client authentication (a.k.a., mTLS). :rtype: urllib3.ConnectionPool |
 
 #### init_poolmanager()
 
@@ -453,19 +453,19 @@ exposed for use when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `connections` |  |
-| `maxsize` |  |
-| `block` |  |
-| `pool_kwargs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `connections` |  | The number of urllib3 connection pools to cache. |
+| `maxsize` |  | The maximum number of connections to save in the pool. |
+| `block` |  | Block when no free connections are available. |
+| `pool_kwargs` |  | Extra keyword arguments used to initialize the Pool Manager. |
 
 #### proxy_headers()
 
 ```python
 def proxy_headers(
     proxy,
-) -> e: dict
+)
 ```
 Returns a dictionary of the headers to add to any request sent
 through a proxy. This works with urllib3 magic to ensure that they are
@@ -478,9 +478,9 @@ when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `proxy` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proxy` |  | The url of the proxy being used for this request. :rtype: dict |
 
 #### proxy_manager_for()
 
@@ -488,7 +488,7 @@ when subclassing the
 def proxy_manager_for(
     proxy,
     proxy_kwargs,
-) -> e: urllib3.ProxyManager
+)
 ```
 Return urllib3 ProxyManager for the given proxy.
 
@@ -498,10 +498,10 @@ exposed for use when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `proxy` |  |
-| `proxy_kwargs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proxy` |  | The proxy to return a urllib3 ProxyManager for. |
+| `proxy_kwargs` |  | Extra keyword arguments used to configure the Proxy Manager. :returns: ProxyManager :rtype: urllib3.ProxyManager |
 
 #### request_url()
 
@@ -509,7 +509,7 @@ exposed for use when subclassing the
 def request_url(
     request,
     proxies,
-) -> e: str
+)
 ```
 Obtain the url to use when making the final request.
 
@@ -522,10 +522,10 @@ when subclassing the
 
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `proxies` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | The |
+| `proxies` |  | A dictionary of schemes or schemes and hosts to proxy URLs. :rtype: str |
 
 #### send()
 
@@ -534,17 +534,17 @@ def send(
     request,
     args,
     kwargs,
-) -> n: The response object.
+)
 ```
 Sends the request with added authentication headers.
 If the response returns a 401 status code, refreshes the credentials and retries the request.
 
 
-| Parameter | Type |
-|-|-|
-| `request` |  |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `request` |  | The request object to send. :return: The response object. |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ## flytekit.clients.auth_helper.RemoteClientConfigStore
 
@@ -556,9 +556,9 @@ class RemoteClientConfigStore(
     secure_channel: grpc.Channel,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `secure_channel` | `grpc.Channel` |
+| Parameter | Type | Description |
+|-|-|-|
+| `secure_channel` | `grpc.Channel` | |
 
 ### Methods
 

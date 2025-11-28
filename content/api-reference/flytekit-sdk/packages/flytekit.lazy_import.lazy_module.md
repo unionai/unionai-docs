@@ -1,6 +1,6 @@
 ---
 title: flytekit.lazy_import.lazy_module
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,9 +30,9 @@ This function is used to check if a module has been imported by the regular impo
 Return false if module is lazy imported and not used yet.
 
 
-| Parameter | Type |
-|-|-|
-| `module_name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `module_name` |  | |
 
 #### lazy_module()
 
@@ -49,7 +49,7 @@ sklearn.svm.SVC()
 ```
 
 
-| Parameter | Type |
-|-|-|
-| `fullname` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `fullname` |  | |
 

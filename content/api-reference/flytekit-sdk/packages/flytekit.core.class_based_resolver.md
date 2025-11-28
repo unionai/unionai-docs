@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.class_based_resolver
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,10 +27,10 @@ class ClassStorageTaskResolver(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -52,9 +52,9 @@ def add(
     t: flytekit.core.python_auto_container.PythonAutoContainerTask,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### find_lhs()
 
@@ -79,9 +79,9 @@ def load_task(
 Given the set of identifier keys, should return one Python Task or raise an error if not found
 
 
-| Parameter | Type |
-|-|-|
-| `loader_args` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `loader_args` | `typing.List[str]` | |
 
 #### loader_args()
 
@@ -94,10 +94,10 @@ def loader_args(
 This is responsible for turning an instance of a task into args that the load_task function can reconstitute.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
-| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
+| `t` | `flytekit.core.python_auto_container.PythonAutoContainerTask` | |
 
 #### name()
 
@@ -114,9 +114,9 @@ def task_name(
 Overridable function that can optionally return a custom name for a given task
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.base_task.Task` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `flytekit.core.base_task.Task` | |
 
 ### Properties
 

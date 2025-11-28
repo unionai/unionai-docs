@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.reference_entity
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,12 +34,12 @@ class LaunchPlanReference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
@@ -58,12 +58,12 @@ class Reference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
@@ -81,11 +81,11 @@ class ReferenceEntity(
     outputs: typing.Dict[str, typing.Type],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `reference` | `typing.Union[flytekit.core.reference_entity.WorkflowReference, flytekit.core.reference_entity.TaskReference, flytekit.core.reference_entity.LaunchPlanReference]` |
-| `inputs` | `typing.Dict[str, typing.Type]` |
-| `outputs` | `typing.Dict[str, typing.Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `reference` | `typing.Union[flytekit.core.reference_entity.WorkflowReference, flytekit.core.reference_entity.TaskReference, flytekit.core.reference_entity.LaunchPlanReference]` | |
+| `inputs` | `typing.Dict[str, typing.Type]` | |
+| `outputs` | `typing.Dict[str, typing.Type]` | |
 
 ### Methods
 
@@ -108,11 +108,11 @@ def compile(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -126,9 +126,9 @@ def execute(
     kwargs,
 ) -> typing.Any
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### local_execute()
 
@@ -141,10 +141,10 @@ def local_execute(
 Please see the local_execute comments in the main task.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -162,10 +162,10 @@ def unwrap_literal_map_and_execute(
 Please see the implementation of the dispatch_execute function in the real task.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 ### Properties
 
@@ -184,9 +184,9 @@ class ReferenceSpec(
     template: flytekit.core.reference_entity.ReferenceTemplate,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `template` | `flytekit.core.reference_entity.ReferenceTemplate` |
+| Parameter | Type | Description |
+|-|-|-|
+| `template` | `flytekit.core.reference_entity.ReferenceTemplate` | |
 
 ### Properties
 
@@ -208,10 +208,10 @@ workflows or dynamic tasks.
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` | `flytekit.models.core.identifier.Identifier` |
-| `resource_type` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` | `flytekit.models.core.identifier.Identifier` | |
+| `resource_type` | `int` | |
 
 ### Properties
 
@@ -237,12 +237,12 @@ class TaskReference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 
@@ -264,12 +264,12 @@ class WorkflowReference(
     version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `domain` | `str` | |
+| `name` | `str` | |
+| `version` | `str` | |
 
 ### Properties
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.annotation
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -41,9 +41,9 @@ class FlyteAnnotation(
     data: typing.Dict[str, typing.Any],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Dict[str, typing.Any]` | |
 
 ### Properties
 

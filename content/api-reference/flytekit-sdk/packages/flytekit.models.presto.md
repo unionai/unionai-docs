@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.presto
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,12 +33,12 @@ Initializes a new PrestoQuery.
 
 
 
-| Parameter | Type |
-|-|-|
-| `routing_group` |  |
-| `catalog` |  |
-| `schema` |  |
-| `statement` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `routing_group` |  | |
+| `catalog` |  | |
+| `schema` |  | |
+| `statement` |  | |
 
 ### Methods
 
@@ -48,7 +48,6 @@ Initializes a new PrestoQuery.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _presto. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -56,11 +55,11 @@ Initializes a new PrestoQuery.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> n: PrestoQuery
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -81,14 +80,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: _presto.PrestoQuery
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

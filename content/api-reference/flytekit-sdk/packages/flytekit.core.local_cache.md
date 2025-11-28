@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.local_cache
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -51,12 +51,12 @@ def get(
     cache_ignore_input_vars: typing.Tuple[str, ...],
 ) -> typing.Optional[flytekit.models.literals.LiteralMap]
 ```
-| Parameter | Type |
-|-|-|
-| `task_name` | `str` |
-| `cache_version` | `str` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
-| `cache_ignore_input_vars` | `typing.Tuple[str, ...]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_name` | `str` | |
+| `cache_version` | `str` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
+| `cache_ignore_input_vars` | `typing.Tuple[str, ...]` | |
 
 #### initialize()
 
@@ -74,11 +74,11 @@ def set(
     value: flytekit.models.literals.LiteralMap,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `task_name` | `str` |
-| `cache_version` | `str` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
-| `cache_ignore_input_vars` | `typing.Tuple[str, ...]` |
-| `value` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_name` | `str` | |
+| `cache_version` | `str` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
+| `cache_ignore_input_vars` | `typing.Tuple[str, ...]` | |
+| `value` | `flytekit.models.literals.LiteralMap` | |
 

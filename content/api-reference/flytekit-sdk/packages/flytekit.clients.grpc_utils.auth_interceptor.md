@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.grpc_utils.auth_interceptor
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -26,9 +26,9 @@ class AuthUnaryInterceptor(
     get_authenticator: typing.Callable[[], flytekit.clients.auth.authenticator.Authenticator],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `get_authenticator` | `typing.Callable[[], flytekit.clients.auth.authenticator.Authenticator]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `get_authenticator` | `typing.Callable[[], flytekit.clients.auth.authenticator.Authenticator]` | |
 
 ### Methods
 
@@ -50,11 +50,11 @@ def intercept_unary_stream(
 Handles a stream call and adds authentication metadata if needed
 
 
-| Parameter | Type |
-|-|-|
-| `continuation` |  |
-| `client_call_details` |  |
-| `request` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `continuation` |  | |
+| `client_call_details` |  | |
+| `request` |  | |
 
 #### intercept_unary_unary()
 
@@ -69,11 +69,11 @@ Intercepts unary calls and adds auth metadata if available. On Unauthenticated, 
 and then retries with the new token
 
 
-| Parameter | Type |
-|-|-|
-| `continuation` | `typing.Callable` |
-| `client_call_details` | `grpc.ClientCallDetails` |
-| `request` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `continuation` | `typing.Callable` | |
+| `client_call_details` | `grpc.ClientCallDetails` | |
+| `request` | `typing.Any` | |
 
 ### Properties
 

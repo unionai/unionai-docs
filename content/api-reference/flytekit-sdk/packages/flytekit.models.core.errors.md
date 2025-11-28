@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.errors
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,14 +28,14 @@ class ContainerError(
     worker: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `code` | `str` |
-| `message` | `str` |
-| `kind` | `int` |
-| `origin` | `int` |
-| `timestamp` | `google.protobuf.timestamp_pb2.Timestamp` |
-| `worker` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `code` | `str` | A succinct code about the error |
+| `message` | `str` | Whatever message you want to surface about the error |
+| `kind` | `int` | A value from the ContainerError.Kind enum. |
+| `origin` | `int` | A value from ExecutionError.ErrorKind. Don't confuse this with error kind, even though both are called kind. |
+| `timestamp` | `google.protobuf.timestamp_pb2.Timestamp` | |
+| `worker` | `str` | |
 
 ### Methods
 
@@ -45,7 +45,6 @@ class ContainerError(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -53,11 +52,11 @@ class ContainerError(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: ContainerError
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### serialize_to_string()
 
@@ -78,14 +77,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.errors_pb2.ContainerError
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -113,9 +104,9 @@ class ErrorDocument(
     error,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `error` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `error` |  | |
 
 ### Methods
 
@@ -125,7 +116,6 @@ class ErrorDocument(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -133,11 +123,11 @@ class ErrorDocument(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: ErrorDocument
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### serialize_to_string()
 
@@ -158,14 +148,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.errors_pb2.ErrorDocument
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

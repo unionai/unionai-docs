@@ -1,6 +1,6 @@
 ---
 title: flytekit.interaction.rich_utils
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -42,10 +42,10 @@ class RichCallback(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `rich_kwargs` | `typing.Optional[typing.Dict]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rich_kwargs` | `typing.Optional[typing.Dict]` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -80,9 +80,9 @@ Parameters
 value: int
 
 
-| Parameter | Type |
-|-|-|
-| `value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` |  | |
 
 #### as_callback()
 
@@ -98,9 +98,9 @@ For the special value of ``None``, return the global instance of
 ``callback=DEFAULT_CALLBACK`` directly in a method signature.
 
 
-| Parameter | Type |
-|-|-|
-| `maybe_callback` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `maybe_callback` |  | |
 
 #### branch()
 
@@ -131,11 +131,11 @@ Returns
 -------
 
 
-| Parameter | Type |
-|-|-|
-| `path_1` |  |
-| `path_2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path_1` |  | |
+| `path_2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### branch_coro()
 
@@ -147,9 +147,9 @@ def branch_coro(
 Wraps a coroutine, and pass a new child callback to it.
 
 
-| Parameter | Type |
-|-|-|
-| `fn` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` |  | |
 
 #### branched()
 
@@ -188,11 +188,11 @@ callback: Callback
     A callback instance to be passed to the child method
 
 
-| Parameter | Type |
-|-|-|
-| `path_1` |  |
-| `path_2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path_1` |  | |
+| `path_2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### call()
 
@@ -213,10 +213,10 @@ hook_name: str or None
 kwargs: passed on to (all) hook(s)
 
 
-| Parameter | Type |
-|-|-|
-| `hook_name` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `hook_name` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### close()
 
@@ -234,10 +234,10 @@ def no_op(
     __,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `_` |  |
-| `__` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` |  | |
+| `__` |  | |
 
 #### relative_update()
 
@@ -255,9 +255,9 @@ Parameters
 inc: int
 
 
-| Parameter | Type |
-|-|-|
-| `inc` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inc` |  | |
 
 #### set_size()
 
@@ -276,9 +276,9 @@ Parameters
 size: int
 
 
-| Parameter | Type |
-|-|-|
-| `size` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `size` |  | |
 
 #### wrap()
 
@@ -295,7 +295,7 @@ iterable: Iterable
     The iterable that is being wrapped
 
 
-| Parameter | Type |
-|-|-|
-| `iterable` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `iterable` |  | |
 

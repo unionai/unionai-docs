@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.domain
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,10 +27,10 @@ class Domain(
     name,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `name` |  | |
 
 ### Methods
 
@@ -40,7 +40,6 @@ class Domain(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -48,11 +47,11 @@ class Domain(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: Domain
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -73,14 +72,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.project_pb2.Domain
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

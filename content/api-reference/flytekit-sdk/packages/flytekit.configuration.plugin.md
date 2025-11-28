@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration.plugin
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -33,6 +33,11 @@ my_plugin = "my_module:MyCustomPlugin"
 | Class | Description |
 |-|-|
 | [`FlytekitPlugin`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitplugin) |  |
+
+### Protocols
+
+| Protocol | Description |
+|-|-|
 | [`FlytekitPluginProtocol`](.././flytekit.configuration.plugin#flytekitconfigurationpluginflytekitpluginprotocol) | Base class for protocol classes. |
 
 ### Methods
@@ -76,9 +81,9 @@ def configure_pyflyte_cli(
 Configure pyflyte's CLI.
 
 
-| Parameter | Type |
-|-|-|
-| `main` | `click.core.Group` |
+| Parameter | Type | Description |
+|-|-|-|
+| `main` | `click.core.Group` | |
 
 #### get_auth_success_html()
 
@@ -90,9 +95,9 @@ def get_auth_success_html(
 Get default success html. Return None to use flytekit's default success html.
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 #### get_default_cache_policies()
 
@@ -123,12 +128,12 @@ def get_remote(
 Get FlyteRemote object for CLI session.
 
 
-| Parameter | Type |
-|-|-|
-| `config` | `typing.Optional[str]` |
-| `project` | `str` |
-| `domain` | `str` |
-| `data_upload_location` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config` | `typing.Optional[str]` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `data_upload_location` | `typing.Optional[str]` | |
 
 #### secret_requires_group()
 
@@ -173,16 +178,8 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-class FlytekitPluginProtocol(
-    args,
-    kwargs,
-)
+protocol FlytekitPluginProtocol()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 ### Methods
 
 | Method | Description |
@@ -205,9 +202,9 @@ def configure_pyflyte_cli(
 Configure pyflyte's CLI.
 
 
-| Parameter | Type |
-|-|-|
-| `main` | `click.core.Group` |
+| Parameter | Type | Description |
+|-|-|-|
+| `main` | `click.core.Group` | |
 
 #### get_auth_success_html()
 
@@ -219,9 +216,9 @@ def get_auth_success_html(
 Get default success html for auth. Return None to use flytekit's default success html.
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 #### get_default_cache_policies()
 
@@ -252,12 +249,12 @@ def get_remote(
 Get FlyteRemote object for CLI session.
 
 
-| Parameter | Type |
-|-|-|
-| `config` | `typing.Optional[str]` |
-| `project` | `str` |
-| `domain` | `str` |
-| `data_upload_location` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config` | `typing.Optional[str]` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `data_upload_location` | `typing.Optional[str]` | |
 
 #### secret_requires_group()
 

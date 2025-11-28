@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.options
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,16 +36,16 @@ class Options(
     overwrite_cache: typing.Optional[bool],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `labels` | `typing.Optional[flytekit.models.common.Labels]` |
-| `annotations` | `typing.Optional[flytekit.models.common.Annotations]` |
-| `raw_output_data_config` | `typing.Optional[flytekit.models.common.RawOutputDataConfig]` |
-| `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` |
-| `max_parallelism` | `typing.Optional[int]` |
-| `notifications` | `typing.Optional[typing.List[flytekit.models.common.Notification]]` |
-| `disable_notifications` | `typing.Optional[bool]` |
-| `overwrite_cache` | `typing.Optional[bool]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `labels` | `typing.Optional[flytekit.models.common.Labels]` | |
+| `annotations` | `typing.Optional[flytekit.models.common.Annotations]` | |
+| `raw_output_data_config` | `typing.Optional[flytekit.models.common.RawOutputDataConfig]` | |
+| `security_context` | `typing.Optional[flytekit.models.security.SecurityContext]` | |
+| `max_parallelism` | `typing.Optional[int]` | |
+| `notifications` | `typing.Optional[typing.List[flytekit.models.common.Notification]]` | |
+| `disable_notifications` | `typing.Optional[bool]` | |
+| `overwrite_cache` | `typing.Optional[bool]` | |
 
 ### Methods
 
@@ -62,8 +62,8 @@ def default_from(
     raw_data_prefix: typing.Optional[str],
 ) -> Options
 ```
-| Parameter | Type |
-|-|-|
-| `k8s_service_account` | `typing.Optional[str]` |
-| `raw_data_prefix` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k8s_service_account` | `typing.Optional[str]` | |
+| `raw_data_prefix` | `typing.Optional[str]` | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.dynamic_job
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,13 +30,13 @@ Initializes a new FutureTaskDocument.
 
 
 
-| Parameter | Type |
-|-|-|
-| `tasks` |  |
-| `nodes` |  |
-| `min_successes` |  |
-| `outputs` |  |
-| `subworkflows` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `tasks` |  | |
+| `nodes` |  | |
+| `min_successes` |  | |
+| `outputs` |  | |
+| `subworkflows` |  | |
 
 ### Methods
 
@@ -46,7 +46,6 @@ Initializes a new FutureTaskDocument.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -54,11 +53,11 @@ Initializes a new FutureTaskDocument.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> n: DynamicJobSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -79,14 +78,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.dynamic_job.DynamicJobSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

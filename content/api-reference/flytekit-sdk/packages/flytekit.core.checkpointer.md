@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.checkpointer
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -62,9 +62,9 @@ If download is successful the downloaded path is returned
   previously downloaded path.
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[pathlib._local.Path, str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[pathlib._local.Path, str]` | |
 
 #### save()
 
@@ -73,9 +73,9 @@ def save(
     cp: typing.Union[pathlib._local.Path, str, _io.BufferedReader],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
 
 #### write()
 
@@ -87,9 +87,9 @@ def write(
 This will overwrite the checkpoint. It can be retrieved using read or restore
 
 
-| Parameter | Type |
-|-|-|
-| `b` | `bytes` |
+| Parameter | Type | Description |
+|-|-|-|
+| `b` | `bytes` | |
 
 ## flytekit.core.checkpointer.SyncCheckpoint
 
@@ -106,10 +106,10 @@ class SyncCheckpoint(
     checkpoint_src: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `checkpoint_dest` | `str` |
-| `checkpoint_src` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `checkpoint_dest` | `str` | Location where the new checkpoint should be copied to |
+| `checkpoint_src` | `typing.Optional[str]` | If a previous checkpoint should exist, this path should be set to the folder that contains the checkpoint information |
 
 ### Methods
 
@@ -151,9 +151,9 @@ If download is successful the downloaded path is returned
   previously downloaded path.
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `typing.Union[pathlib._local.Path, str, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `typing.Union[pathlib._local.Path, str, NoneType]` | |
 
 #### save()
 
@@ -162,9 +162,9 @@ def save(
     cp: typing.Union[pathlib._local.Path, str, _io.BufferedReader],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cp` | `typing.Union[pathlib._local.Path, str, _io.BufferedReader]` | Checkpoint file (path, str path or a io.BufferedReader) |
 
 #### write()
 
@@ -176,7 +176,7 @@ def write(
 This will overwrite the checkpoint. It can be retrieved using read or restore
 
 
-| Parameter | Type |
-|-|-|
-| `b` | `bytes` |
+| Parameter | Type | Description |
+|-|-|-|
+| `b` | `bytes` | |
 

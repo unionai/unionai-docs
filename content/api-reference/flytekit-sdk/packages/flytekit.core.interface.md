@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.interface
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -51,9 +51,9 @@ def default_output_name(
     index: int,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `index` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `index` | `int` | |
 
 #### detect_artifact()
 
@@ -66,9 +66,9 @@ If the user wishes to control how Artifacts are created (i.e. naming them, etc.)
 store it in the interface.
 
 
-| Parameter | Type |
-|-|-|
-| `ts` | `typing.Tuple[typing.Any, ...]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ts` | `typing.Tuple[typing.Any, ...]` | |
 
 #### extract_return_annotation()
 
@@ -107,9 +107,9 @@ Note that Options 1 and 2 are identical, just syntactic sugar. In the NamedTuple
 definition. In all other cases, we'll automatically generate output names, indexed starting at 0.
 
 
-| Parameter | Type |
-|-|-|
-| `return_annotation` | `Union[Type, Tuple, None]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `return_annotation` | `Union[Type, Tuple, None]` | |
 
 #### output_name_generator()
 
@@ -118,9 +118,9 @@ def output_name_generator(
     length: int,
 ) -> Generator[str, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `length` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `length` | `int` | |
 
 #### remap_shared_output_descriptions()
 
@@ -128,15 +128,15 @@ def output_name_generator(
 def remap_shared_output_descriptions(
     output_descriptions: Dict[str, str],
     outputs: Dict[str, Type],
-) -> n: Dict of output variable names mapping to shared output description
+) -> Dict[str, str]
 ```
 Deals with mixed styles of return value descriptions used in docstrings. If the docstring contains a single entry of return value description, that output description is shared by each output variable.
 
 
-| Parameter | Type |
-|-|-|
-| `output_descriptions` | `Dict[str, str]` |
-| `outputs` | `Dict[str, Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `output_descriptions` | `Dict[str, str]` | Dict of output variable names mapping to output description |
+| `outputs` | `Dict[str, Type]` | Interface outputs :return: Dict of output variable names mapping to shared output description |
 
 #### repr_kv()
 
@@ -146,10 +146,10 @@ def repr_kv(
     v: Union[Type, Tuple[Type, Any]],
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `Union[Type, Tuple[Type, Any]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `Union[Type, Tuple[Type, Any]]` | |
 
 #### repr_type_signature()
 
@@ -161,9 +161,9 @@ def repr_type_signature(
 Converts an inputs and outputs to a type signature
 
 
-| Parameter | Type |
-|-|-|
-| `io` | `Union[Dict[str, Tuple[Type, Any]], Dict[str, Type]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `io` | `Union[Dict[str, Tuple[Type, Any]], Dict[str, Type]]` | |
 
 #### transform_function_to_interface()
 
@@ -181,12 +181,12 @@ for each output parameter, construct the TypedInterface object
 For now the fancy object, maybe in the future a dumb object.
 
 
-| Parameter | Type |
-|-|-|
-| `fn` | `typing.Callable` |
-| `docstring` | `Optional[Docstring]` |
-| `is_reference_entity` | `bool` |
-| `pickle_untyped` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `typing.Callable` | |
+| `docstring` | `Optional[Docstring]` | |
+| `is_reference_entity` | `bool` | |
+| `pickle_untyped` | `bool` | |
 
 #### transform_inputs_to_parameters()
 
@@ -199,10 +199,10 @@ def transform_inputs_to_parameters(
 Transforms the given interface (with inputs) to a Parameter Map with defaults set
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `context_manager.FlyteContext` |
-| `interface` | `Interface` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `context_manager.FlyteContext` | context |
+| `interface` | `Interface` | the interface object |
 
 #### transform_interface_to_list_interface()
 
@@ -218,12 +218,12 @@ Takes a single task interface and interpolates it to an array interface - to all
 like functions
 
 
-| Parameter | Type |
-|-|-|
-| `interface` | `Interface` |
-| `bound_inputs` | `typing.Set[str]` |
-| `excluded_inputs` | `typing.Set[str]` |
-| `optional_outputs` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `interface` | `Interface` | Interface to be upgraded to a list interface |
+| `bound_inputs` | `typing.Set[str]` | fixed inputs that should not be updated to a list and will be maintained as is |
+| `excluded_inputs` | `typing.Set[str]` | inputs that should be excluded from the interface such as fixed_inputs in a launch_plan |
+| `optional_outputs` | `bool` | |
 
 #### transform_interface_to_typed_interface()
 
@@ -236,10 +236,10 @@ def transform_interface_to_typed_interface(
 Transform the given simple python native interface to FlyteIDL's interface
 
 
-| Parameter | Type |
-|-|-|
-| `interface` | `typing.Optional[Interface]` |
-| `allow_partial_artifact_id_binding` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `interface` | `typing.Optional[Interface]` | |
+| `allow_partial_artifact_id_binding` | `bool` | |
 
 #### transform_type()
 
@@ -249,10 +249,10 @@ def transform_type(
     description: Optional[str],
 ) -> _interface_models.Variable
 ```
-| Parameter | Type |
-|-|-|
-| `x` | `type` |
-| `description` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `x` | `type` | |
+| `description` | `Optional[str]` | |
 
 #### transform_types_to_list_of_type()
 
@@ -267,11 +267,11 @@ Converts unbound inputs into the equivalent (optional) collections. This is usef
 It will create a collection of types even if any one these types is not a collection type.
 
 
-| Parameter | Type |
-|-|-|
-| `m` | `Dict[str, type]` |
-| `bound_inputs` | `typing.Set[str]` |
-| `list_as_optional` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `m` | `Dict[str, type]` | |
+| `bound_inputs` | `typing.Set[str]` | |
+| `list_as_optional` | `bool` | |
 
 #### transform_variable_map()
 
@@ -285,10 +285,10 @@ Given a map of str (names of inputs for instance) to their Python native types, 
 Flyte Variable object with that type.
 
 
-| Parameter | Type |
-|-|-|
-| `variable_map` | `Dict[str, type]` |
-| `descriptions` | `Optional[Dict[str, str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `variable_map` | `Dict[str, type]` | |
+| `descriptions` | `Optional[Dict[str, str]]` | |
 
 #### verify_outputs_artifact_bindings()
 
@@ -299,11 +299,11 @@ def verify_outputs_artifact_bindings(
     allow_partial_artifact_id_binding: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `inputs` | `Dict[str, type]` |
-| `outputs` | `Dict[str, _interface_models.Variable]` |
-| `allow_partial_artifact_id_binding` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` | `Dict[str, type]` | |
+| `outputs` | `Dict[str, _interface_models.Variable]` | |
+| `allow_partial_artifact_id_binding` | `bool` | |
 
 ## flytekit.core.interface.Interface
 
@@ -318,12 +318,12 @@ class Interface(
     docstring: Optional[Docstring],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `inputs` | `Union[Optional[Dict[str, Type]], Optional[Dict[str, Tuple[Type, Any]]]]` |
-| `outputs` | `Union[Optional[Dict[str, Type]], Optional[Dict[str, Optional[Type]]]]` |
-| `output_tuple_name` | `Optional[str]` |
-| `docstring` | `Optional[Docstring]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` | `Union[Optional[Dict[str, Type]], Optional[Dict[str, Tuple[Type, Any]]]]` | Map of input name to either a tuple where the first element is the python type, and the second value is the default, or just a single value which is the python type. The latter case is used by tasks for which perhaps a default value does not make sense. For consistency, we turn it into a tuple. |
+| `outputs` | `Union[Optional[Dict[str, Type]], Optional[Dict[str, Optional[Type]]]]` | Output variables and their types as a dictionary |
+| `output_tuple_name` | `Optional[str]` | This is used to store the name of a typing.NamedTuple when the task or workflow returns one. This is also used as a proxy for better or for worse for the presence of a tuple return type, primarily used when handling one-element NamedTuples. |
+| `docstring` | `Optional[Docstring]` | Docstring of the annotated @task or @workflow from which the interface derives from. |
 
 ### Methods
 
@@ -346,9 +346,9 @@ implicit local only inputs or will be supplied by the library at runtime. For ex
 It creates a new instance of interface with the requested variables removed
 
 
-| Parameter | Type |
-|-|-|
-| `vars` | `Optional[List[str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `vars` | `Optional[List[str]]` | |
 
 #### with_inputs()
 
@@ -361,9 +361,9 @@ Use this to add additional inputs to the interface. This is useful for adding ad
 are added without the user requesting for them
 
 
-| Parameter | Type |
-|-|-|
-| `extra_inputs` | `Dict[str, Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `extra_inputs` | `Dict[str, Type]` | |
 
 #### with_outputs()
 
@@ -375,9 +375,9 @@ def with_outputs(
 This method allows addition of extra outputs are expected from a task specification
 
 
-| Parameter | Type |
-|-|-|
-| `extra_outputs` | `Dict[str, Type]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `extra_outputs` | `Dict[str, Type]` | |
 
 ### Properties
 

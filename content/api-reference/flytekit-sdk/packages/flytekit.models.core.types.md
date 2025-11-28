@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.core.types
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,10 +27,10 @@ class BlobType(
     dimensionality,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `format` |  |
-| `dimensionality` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `format` |  | |
+| `dimensionality` |  | |
 
 ### Methods
 
@@ -40,7 +40,6 @@ class BlobType(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -48,11 +47,11 @@ class BlobType(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: BlobType
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### serialize_to_string()
 
@@ -73,14 +72,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.core.types_pb2.BlobType
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -105,9 +96,9 @@ class EnumType(
     values: typing.List[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `values` | `typing.List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `values` | `typing.List[str]` | |
 
 ### Methods
 
@@ -117,7 +108,6 @@ class EnumType(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -127,9 +117,9 @@ def from_flyte_idl(
     proto: _types_pb2.EnumType,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `proto` | `_types_pb2.EnumType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` | `_types_pb2.EnumType` | |
 
 #### serialize_to_string()
 
@@ -149,14 +139,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |

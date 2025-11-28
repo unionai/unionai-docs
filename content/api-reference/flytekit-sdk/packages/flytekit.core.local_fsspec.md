@@ -1,15 +1,11 @@
 ---
 title: flytekit.core.local_fsspec
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
 # flytekit.core.local_fsspec
-
-
-
-
 
 ## Directory
 
@@ -54,10 +50,10 @@ asynchronous: bool
 loop: asyncio-compatible IOLoop or None
 
 
-| Parameter | Type |
-|-|-|
-| `auto_mkdir` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `auto_mkdir` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -104,7 +100,7 @@ loop: asyncio-compatible IOLoop or None
 | [`mkdirs()`](#mkdirs) | Alias of `AbstractFileSystem. |
 | [`modified()`](#modified) | Return the modified timestamp of a file as a datetime. |
 | [`move()`](#move) | Alias of `AbstractFileSystem. |
-| [`mv()`](#mv) | Move file(s) from one location to another. |
+| [`mv()`](#mv) | Move files/directories. |
 | [`open()`](#open) | Return a file-like object from the filesystem. |
 | [`pipe()`](#pipe) | Put value into path. |
 | [`pipe_file()`](#pipe_file) | Set the bytes of given file. |
@@ -167,12 +163,12 @@ dict of {path: contents} if there are multiple paths
 or the path has been otherwise expanded
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `recursive` |  |
-| `on_error` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `recursive` |  | |
+| `on_error` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### cat_file()
 
@@ -196,12 +192,12 @@ start, end: int
 kwargs: passed to ``open()``.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `start` |  |
-| `end` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `start` |  | |
+| `end` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### cat_ranges()
 
@@ -220,20 +216,20 @@ Get the contents of byte ranges from one or more files
 Parameters
 ----------
 paths: list
-    A list of filepaths on this filesystems
+    A list of of filepaths on this filesystems
 starts, ends: int or list
     Bytes limits of the read. If using a single int, the same value will be
     used to read all the specified files.
 
 
-| Parameter | Type |
-|-|-|
-| `paths` |  |
-| `starts` |  |
-| `ends` |  |
-| `max_gap` |  |
-| `on_error` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `paths` |  | |
+| `starts` |  | |
+| `ends` |  | |
+| `max_gap` |  | |
+| `on_error` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### checksum()
 
@@ -253,9 +249,9 @@ creation/modification timestamp (which would be good) or maybe
 access timestamp (which would be bad)
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### chmod()
 
@@ -265,10 +261,10 @@ def chmod(
     mode,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `mode` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `mode` |  | |
 
 #### clear_instance_cache()
 
@@ -306,14 +302,14 @@ on_error : "raise", "ignore"
     raise unless recursive is true, where the default is ignore
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `recursive` |  |
-| `maxdepth` |  |
-| `on_error` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `recursive` |  | |
+| `maxdepth` |  | |
+| `on_error` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### cp()
 
@@ -327,11 +323,11 @@ def cp(
 Alias of `AbstractFileSystem.copy`.
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### cp_file()
 
@@ -342,11 +338,11 @@ def cp_file(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### created()
 
@@ -358,9 +354,9 @@ def created(
 Return the created timestamp of a file as a datetime.datetime
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### current()
 
@@ -384,11 +380,11 @@ def delete(
 Alias of `AbstractFileSystem.rm`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `recursive` |  |
-| `maxdepth` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `recursive` |  | |
+| `maxdepth` |  | |
 
 #### disk_usage()
 
@@ -403,12 +399,12 @@ def disk_usage(
 Alias of `AbstractFileSystem.du`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `total` |  |
-| `maxdepth` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `total` |  | |
+| `maxdepth` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### download()
 
@@ -423,12 +419,12 @@ def download(
 Alias of `AbstractFileSystem.get`.
 
 
-| Parameter | Type |
-|-|-|
-| `rpath` |  |
-| `lpath` |  |
-| `recursive` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rpath` |  | |
+| `lpath` |  | |
+| `recursive` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### du()
 
@@ -462,13 +458,13 @@ Dict of {path: size} if total=False, or int otherwise, where numbers
 refer to bytes used.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `total` |  |
-| `maxdepth` |  |
-| `withdirs` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `total` |  | |
+| `maxdepth` |  | |
+| `withdirs` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### end_transaction()
 
@@ -489,10 +485,10 @@ def exists(
 Is there a file at the given path
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### expand_path()
 
@@ -510,12 +506,12 @@ to files or directories.
 kwargs are passed to ``glob`` or ``find``, which may in turn call ``ls``
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `recursive` |  |
-| `maxdepth` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `recursive` |  | |
+| `maxdepth` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### find()
 
@@ -543,13 +539,13 @@ withdirs: bool
 kwargs are passed to ``ls``.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `maxdepth` |  |
-| `withdirs` |  |
-| `detail` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `maxdepth` |  | |
+| `withdirs` |  | |
+| `detail` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### from_dict()
 
@@ -577,9 +573,9 @@ Make sure you haven't installed any modules that may execute malicious code
 at import time.
 
 
-| Parameter | Type |
-|-|-|
-| `dct` | `dict[str, Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dct` | `dict[str, Any]` | |
 
 #### from_json()
 
@@ -607,9 +603,9 @@ Make sure you haven't installed any modules that may execute malicious code
 at import time.
 
 
-| Parameter | Type |
-|-|-|
-| `blob` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `blob` | `str` | |
 
 #### get()
 
@@ -633,14 +629,14 @@ and will be expanded.
 Calls get_file for each source.
 
 
-| Parameter | Type |
-|-|-|
-| `rpath` |  |
-| `lpath` |  |
-| `recursive` |  |
-| `callback` |  |
-| `maxdepth` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `rpath` |  | |
+| `lpath` |  | |
+| `recursive` |  | |
+| `callback` |  | |
+| `maxdepth` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### get_file()
 
@@ -655,12 +651,12 @@ def get_file(
 Copy single remote file to local
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `callback` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `callback` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### get_mapper()
 
@@ -678,12 +674,12 @@ Makes a MutableMapping interface to the FS at the given root path.
 See ``fsspec.mapping.FSMap`` for further details.
 
 
-| Parameter | Type |
-|-|-|
-| `root` |  |
-| `check` |  |
-| `create` |  |
-| `missing_exceptions` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `root` |  | |
+| `check` |  | |
+| `create` |  | |
+| `missing_exceptions` |  | |
 
 #### glob()
 
@@ -696,21 +692,50 @@ def glob(
 ```
 Find files by glob-matching.
 
-If the path ends with '/', only folders are returned.
+Pattern matching capabilities for finding files that match the given pattern.
 
-We support ``"**"``,
-``"?"`` and ``"[..]"``. We do not support ^ for pattern negation.
+Parameters
+----------
+path: str
+    The glob pattern to match against
+maxdepth: int or None
+    Maximum depth for ``'**'`` patterns. Applied on the first ``'**'`` found.
+    Must be at least 1 if provided.
+kwargs:
+    Additional arguments passed to ``find`` (e.g., detail=True)
 
-The `maxdepth` option is applied on the first `**` found in the path.
+Returns
+-------
+List of matched paths, or dict of paths and their info if detail=True
 
-kwargs are passed to ``ls``.
+Notes
+-----
+Supported patterns:
+- '*': Matches any sequence of characters within a single directory level
+- ``'**'``: Matches any number of directory levels (must be an entire path component)
+- '?': Matches exactly one character
+- '[abc]': Matches any character in the set
+- '[a-z]': Matches any character in the range
+- '[!abc]': Matches any character NOT in the set
+
+Special behaviors:
+- If the path ends with '/', only folders are returned
+- Consecutive '*' characters are compressed into a single '*'
+- Empty brackets '[]' never match anything
+- Negated empty brackets '[!]' match any single character
+- Special characters in character classes are escaped properly
+
+Limitations:
+- ``'**'`` must be a complete path component (e.g., ``'a/**/b'``, not ``'a**b'``)
+- No brace expansion ('{a,b}.txt')
+- No extended glob patterns ('+(pattern)', '!(pattern)')
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `maxdepth` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `maxdepth` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### head()
 
@@ -723,10 +748,10 @@ def head(
 Get the first ``size`` bytes from file
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `size` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `size` |  | |
 
 #### info()
 
@@ -753,10 +778,10 @@ dict with keys: name (full path in the FS), size (in bytes), type (file,
 directory, or something else) and other FS-specific keys.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### invalidate_cache()
 
@@ -774,9 +799,9 @@ path: string or None
     path.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### isdir()
 
@@ -788,9 +813,9 @@ def isdir(
 Is this entry directory-like?
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### isfile()
 
@@ -802,9 +827,9 @@ def isfile(
 Is this entry file-like?
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### islink()
 
@@ -813,9 +838,9 @@ def islink(
     path,
 ) -> bool
 ```
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### lexists()
 
@@ -829,10 +854,10 @@ If there is a file at the given path (including
 broken links)
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### link()
 
@@ -843,11 +868,11 @@ def link(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `src` |  |
-| `dst` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `src` |  | |
+| `dst` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### listdir()
 
@@ -861,11 +886,11 @@ def listdir(
 Alias of `AbstractFileSystem.ls`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `detail` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `detail` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### ls()
 
@@ -915,11 +940,11 @@ List of strings if detail is False, or list of directory information
 dicts if detail is True.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `detail` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `detail` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### makedir()
 
@@ -933,11 +958,11 @@ def makedir(
 Alias of `AbstractFileSystem.mkdir`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `create_parents` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `create_parents` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### makedirs()
 
@@ -961,10 +986,10 @@ exist_ok: bool (False)
     If False, will error if the target already exists
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `exist_ok` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `exist_ok` |  | |
 
 #### mkdir()
 
@@ -990,11 +1015,11 @@ kwargs:
     may be permissions, etc.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `create_parents` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `create_parents` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### mkdirs()
 
@@ -1007,10 +1032,10 @@ def mkdirs(
 Alias of `AbstractFileSystem.makedirs`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `exist_ok` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `exist_ok` |  | |
 
 #### modified()
 
@@ -1022,9 +1047,9 @@ def modified(
 Return the modified timestamp of a file as a datetime.datetime
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### move()
 
@@ -1038,11 +1063,11 @@ def move(
 Alias of `AbstractFileSystem.mv`.
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### mv()
 
@@ -1050,17 +1075,21 @@ Alias of `AbstractFileSystem.mv`.
 def mv(
     path1,
     path2,
+    recursive: bool,
     kwargs,
 )
 ```
-Move file(s) from one location to another
+Move files/directories
+For the specific case of local, all ops on directories are recursive and
+the recursive= kwarg is ignored.
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `recursive` | `bool` | |
+| `kwargs` | `**kwargs` | |
 
 #### open()
 
@@ -1099,14 +1128,14 @@ compression: string or None
 encoding, errors, newline: passed on to TextIOWrapper for text mode
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `mode` |  |
-| `block_size` |  |
-| `cache_options` |  |
-| `compression` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `mode` |  | |
+| `block_size` |  | |
+| `cache_options` |  | |
+| `compression` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### pipe()
 
@@ -1131,11 +1160,11 @@ value: bytes, optional
     ``path`` is a dict
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `value` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `value` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### pipe_file()
 
@@ -1150,12 +1179,12 @@ def pipe_file(
 Set the bytes of given file
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `value` |  |
-| `mode` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `value` |  | |
+| `mode` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### put()
 
@@ -1178,14 +1207,14 @@ will go within.
 Calls put_file for each source.
 
 
-| Parameter | Type |
-|-|-|
-| `lpath` |  |
-| `rpath` |  |
-| `recursive` |  |
-| `callback` |  |
-| `maxdepth` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lpath` |  | |
+| `rpath` |  | |
+| `recursive` |  | |
+| `callback` |  | |
+| `maxdepth` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### put_file()
 
@@ -1200,12 +1229,12 @@ def put_file(
 Copy single file to remote
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `callback` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `callback` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### read_block()
 
@@ -1254,12 +1283,12 @@ See Also
 :func:`fsspec.utils.read_block`
 
 
-| Parameter | Type |
-|-|-|
-| `fn` |  |
-| `offset` |  |
-| `length` |  |
-| `delimiter` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` |  | |
+| `offset` |  | |
+| `length` |  | |
+| `delimiter` |  | |
 
 #### read_bytes()
 
@@ -1274,12 +1303,12 @@ def read_bytes(
 Alias of `AbstractFileSystem.cat_file`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `start` |  |
-| `end` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `start` |  | |
+| `end` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### read_text()
 
@@ -1301,13 +1330,13 @@ path: str
 encoding, errors, newline: same as `open`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `encoding` |  |
-| `errors` |  |
-| `newline` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `encoding` |  | |
+| `errors` |  | |
+| `newline` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### rename()
 
@@ -1321,11 +1350,11 @@ def rename(
 Alias of `AbstractFileSystem.mv`.
 
 
-| Parameter | Type |
-|-|-|
-| `path1` |  |
-| `path2` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path1` |  | |
+| `path2` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### rm()
 
@@ -1351,11 +1380,11 @@ maxdepth: int or None
     possible.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `recursive` |  |
-| `maxdepth` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `recursive` |  | |
+| `maxdepth` |  | |
 
 #### rm_file()
 
@@ -1367,9 +1396,9 @@ def rm_file(
 Delete a file
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### rmdir()
 
@@ -1381,9 +1410,9 @@ def rmdir(
 Remove a directory, if empty
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### sign()
 
@@ -1416,11 +1445,11 @@ Raises
 NotImplementedError : if method is not implemented for a filesystem
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `expiration` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `expiration` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### size()
 
@@ -1432,9 +1461,9 @@ def size(
 Size in bytes of file
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### sizes()
 
@@ -1446,9 +1475,9 @@ def sizes(
 Size in bytes of each file in a list of paths
 
 
-| Parameter | Type |
-|-|-|
-| `paths` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `paths` |  | |
 
 #### start_transaction()
 
@@ -1469,10 +1498,10 @@ def stat(
 Alias of `AbstractFileSystem.info`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### symlink()
 
@@ -1483,11 +1512,11 @@ def symlink(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `src` |  |
-| `dst` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `src` |  | |
+| `dst` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### tail()
 
@@ -1500,10 +1529,10 @@ def tail(
 Get the last ``size`` bytes from file
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `size` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `size` |  | |
 
 #### to_dict()
 
@@ -1533,9 +1562,9 @@ passed to the constructor, such as passwords and tokens. Make sure you
 store and send them in a secure environment!
 
 
-| Parameter | Type |
-|-|-|
-| `include_password` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include_password` | `bool` | |
 
 #### to_json()
 
@@ -1565,9 +1594,9 @@ passed to the constructor, such as passwords and tokens. Make sure you
 store and send them in a secure environment!
 
 
-| Parameter | Type |
-|-|-|
-| `include_password` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `include_password` | `bool` | |
 
 #### touch()
 
@@ -1589,11 +1618,11 @@ truncate: bool
     leave file unchanged, if backend allows this
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `truncate` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `truncate` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### tree()
 
@@ -1635,16 +1664,16 @@ Example
     >>> print(tree)
 
 
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `recursion_limit` | `int` |
-| `max_display` | `int` |
-| `display_size` | `bool` |
-| `prefix` | `str` |
-| `is_last` | `bool` |
-| `first` | `bool` |
-| `indent_size` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `recursion_limit` | `int` | |
+| `max_display` | `int` | |
+| `display_size` | `bool` | |
+| `prefix` | `str` | |
+| `is_last` | `bool` | |
+| `first` | `bool` | |
+| `indent_size` | `int` | |
 
 #### ukey()
 
@@ -1656,9 +1685,9 @@ def ukey(
 Hash of file properties, to tell if it has changed
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
 
 #### unstrip_protocol()
 
@@ -1670,9 +1699,9 @@ def unstrip_protocol(
 Format FS-specific path to generic, including protocol
 
 
-| Parameter | Type |
-|-|-|
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
 
 #### upload()
 
@@ -1687,12 +1716,12 @@ def upload(
 Alias of `AbstractFileSystem.put`.
 
 
-| Parameter | Type |
-|-|-|
-| `lpath` |  |
-| `rpath` |  |
-| `recursive` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `lpath` |  | |
+| `rpath` |  | |
+| `recursive` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### walk()
 
@@ -1738,13 +1767,13 @@ on_error: "omit", "raise", a callable
 kwargs: passed to ``ls``
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `maxdepth` |  |
-| `topdown` |  |
-| `on_error` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `maxdepth` |  | |
+| `topdown` |  | |
+| `on_error` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### write_bytes()
 
@@ -1758,11 +1787,11 @@ def write_bytes(
 Alias of `AbstractFileSystem.pipe_file`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `value` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `value` |  | |
+| `kwargs` | `**kwargs` | |
 
 #### write_text()
 
@@ -1789,14 +1818,14 @@ value: str
 encoding, errors, newline: same as `open`.
 
 
-| Parameter | Type |
-|-|-|
-| `path` |  |
-| `value` |  |
-| `encoding` |  |
-| `errors` |  |
-| `newline` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` |  | |
+| `value` |  | |
+| `encoding` |  | |
+| `errors` |  | |
+| `newline` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 

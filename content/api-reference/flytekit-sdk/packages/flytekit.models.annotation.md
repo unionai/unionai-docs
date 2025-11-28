@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.annotation
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -25,9 +25,9 @@ class TypeAnnotation(
     annotations: typing.Dict[str, typing.Any],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `annotations` | `typing.Dict[str, typing.Any]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `annotations` | `typing.Dict[str, typing.Any]` | |
 
 ### Methods
 
@@ -43,11 +43,11 @@ class TypeAnnotation(
 ```python
 def from_flyte_idl(
     proto,
-) -> e: TypeAnnotation
+)
 ```
-| Parameter | Type |
-|-|-|
-| `proto` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `proto` |  | |
 
 #### merge_annotations()
 
@@ -55,16 +55,16 @@ def from_flyte_idl(
 def merge_annotations(
     annotation: TypeAnnotation,
     other_annotation: TypeAnnotation,
-) -> e: TypeAnnotation
+) -> TypeAnnotation
 ```
 Merges two annotations together. If the same key exists in both annotations, the value in the other annotation
 will be used.
 
 
-| Parameter | Type |
-|-|-|
-| `annotation` | `TypeAnnotation` |
-| `other_annotation` | `TypeAnnotation` |
+| Parameter | Type | Description |
+|-|-|-|
+| `annotation` | `TypeAnnotation` | |
+| `other_annotation` | `TypeAnnotation` | |
 
 #### to_flyte_idl()
 

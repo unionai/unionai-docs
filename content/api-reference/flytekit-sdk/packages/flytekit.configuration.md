@@ -1,6 +1,6 @@
 ---
 title: flytekit.configuration
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -30,7 +30,8 @@ Users can specify these at compile time, but when your task is run, Flyte Propel
 A configuration file that contains settings for both `flytectl` and `flytekit`. This is the recommended configuration file format. Invoke the `flytectl config init` command to create a boilerplate `~/.flyte/config.yaml` file, and `flytectl --help` to learn about all of the configuration yaml options.
 
 Example `config.yaml` file:
-```yaml
+
+```YAML
 # Sample config file
 
 admin:
@@ -60,7 +61,7 @@ storage:
       region: us-east-1
       disable_ssl: true
       addressing_style: "path"
-
+```
 
 ### INI Format Configuration File
 A configuration file for `flytekit`. By default, `flytekit` will look for a file in two places:
@@ -69,6 +70,7 @@ A configuration file for `flytekit`. By default, `flytekit` will look for a file
 2. A file in `~/.flyte/config` in the home directory as detected by Python.
 
 Example `flytekit.config` file:
+
 ```ini
 [sdk]
 workflow_packages=my_cool_workflows, other_workflows
@@ -120,8 +122,9 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 
 | Class | Description |
 |-|-|
+| [`AuthType`](.././flytekit.configuration#flytekitconfigurationauthtype) | Create a collection of name/value pairs. |
 | [`AzureBlobStorageConfig`](.././flytekit.configuration#flytekitconfigurationazureblobstorageconfig) | Any Azure Blob Storage specific configuration. |
-| [`Config`](flytekit.configuration#flytekitconfigurationconfig) | This the parent configuration object and holds all the underlying configuration object types. |
+| [`Config`](.././flytekit.configuration#flytekitconfigurationconfig) | This the parent configuration object and holds all the underlying configuration object types. |
 | [`DataConfig`](.././flytekit.configuration#flytekitconfigurationdataconfig) | Any data storage specific configuration. |
 | [`EntrypointSettings`](.././flytekit.configuration#flytekitconfigurationentrypointsettings) | This object carries information about the path of the entrypoint command that will be invoked at runtime. |
 | [`FastSerializationSettings`](.././flytekit.configuration#flytekitconfigurationfastserializationsettings) | This object hold information about settings necessary to serialize an object so that it can be fast-registered. |
@@ -135,6 +138,7 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 | [`SecretsConfig`](.././flytekit.configuration#flytekitconfigurationsecretsconfig) | Configuration for secrets. |
 | [`SerializationSettings`](.././flytekit.configuration#flytekitconfigurationserializationsettings) | These settings are provided while serializing a workflow and task, before registration. |
 | [`StatsConfig`](.././flytekit.configuration#flytekitconfigurationstatsconfig) | Configuration for sending statsd. |
+| [`TaskConfig`](.././flytekit.configuration#flytekitconfigurationtaskconfig) | Any Project/Domain/Org configuration. |
 
 ### Variables
 
@@ -148,6 +152,46 @@ Users typically shouldn't be concerned with these configurations, as they are ty
 | `PROJECT_PLACEHOLDER` | `str` |  |
 | `SERIALIZED_CONTEXT_ENV_VAR` | `str` |  |
 | `VERSION_PLACEHOLDER` | `str` |  |
+
+## flytekit.configuration.AuthType
+
+Create a collection of name/value pairs.
+
+Example enumeration:
+
+>>> class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+
+Access them by:
+
+- attribute access:
+
+  >>> Color.RED
+  <Color.RED: 1>
+
+- value lookup:
+
+  >>> Color(1)
+  <Color.RED: 1>
+
+- name lookup:
+
+  >>> Color['RED']
+  <Color.RED: 1>
+
+Enumerations can be iterated over, and know how many members they have:
+
+>>> len(Color)
+3
+
+>>> list(Color)
+[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
+
+Methods can be added to enumerations, and members can have their own
+attributes -- see the documentation for details.
+
 
 ## flytekit.configuration.AzureBlobStorageConfig
 
@@ -163,13 +207,13 @@ class AzureBlobStorageConfig(
     client_secret: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `account_name` | `typing.Optional[str]` |
-| `account_key` | `typing.Optional[str]` |
-| `tenant_id` | `typing.Optional[str]` |
-| `client_id` | `typing.Optional[str]` |
-| `client_secret` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `account_name` | `typing.Optional[str]` | |
+| `account_key` | `typing.Optional[str]` | |
+| `tenant_id` | `typing.Optional[str]` | |
+| `client_id` | `typing.Optional[str]` | |
+| `client_secret` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -185,9 +229,9 @@ def auto(
     config_file: typing.Union[str, ConfigFile],
 ) -> GCSConfig
 ```
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.Config
 
@@ -198,6 +242,12 @@ this object holds all the config necessary to
 2. Some parts are required for Serialization, for example Platform Config is not required
 3. Runtime of a task
 
+Attributes:
+    platform (PlatformConfig): Settings to connect to a Flyte backend.
+    secrets (SecretsConfig): Configuration for secrets management.
+    stats (StatsConfig): Configuration for statsd metrics.
+    data_config (DataConfig): Data storage configuration.
+    local_sandbox_path (str): Path for local sandbox runs.
 
 
 ```python
@@ -209,13 +259,13 @@ class Config(
     local_sandbox_path: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `platform` | `PlatformConfig` |
-| `secrets` | `SecretsConfig` |
-| `stats` | `StatsConfig` |
-| `data_config` | `DataConfig` |
-| `local_sandbox_path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `platform` | `PlatformConfig` | |
+| `secrets` | `SecretsConfig` | |
+| `stats` | `StatsConfig` | |
+| `data_config` | `DataConfig` | |
+| `local_sandbox_path` | `str` | |
 
 ### Methods
 
@@ -232,7 +282,7 @@ class Config(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile, None],
-) -> n: Config
+) -> Config
 ```
 Automatically constructs the Config Object. The order of precedence is as follows
   1. first try to find any env vars that match the config vars specified in the FLYTE_CONFIG format.
@@ -241,9 +291,9 @@ Automatically constructs the Config Object. The order of precedence is as follow
 
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile, None]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile, None]` | file path to read the config from, if not specified default locations are searched :return: Config |
 
 #### for_endpoint()
 
@@ -253,7 +303,7 @@ def for_endpoint(
     insecure: bool,
     data_config: typing.Optional[DataConfig],
     config_file: typing.Union[str, ConfigFile],
-) -> n: Config
+) -> Config
 ```
 Creates an automatic config for the given endpoint and uses the config_file or environment variable for default.
 Refer to `Config.auto()` to understand the default bootstrap behavior.
@@ -263,12 +313,12 @@ But, for permissions to a specific backend just use Cloud providers reqcommendat
 refer to fsspec documentation
 
 
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `insecure` | `bool` |
-| `data_config` | `typing.Optional[DataConfig]` |
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | -&gt; Endpoint where Flyte admin is available |
+| `insecure` | `bool` | -&gt; if the connection should be insecure, default is secure (SSL ON) |
+| `data_config` | `typing.Optional[DataConfig]` | -&gt; Data config, if using specialized connection params like minio etc |
+| `config_file` | `typing.Union[str, ConfigFile]` | -&gt; Optional config file in the flytekit config format. :return: Config |
 
 #### for_sandbox()
 
@@ -291,13 +341,13 @@ def with_params(
     local_sandbox_path: str,
 ) -> Config
 ```
-| Parameter | Type |
-|-|-|
-| `platform` | `PlatformConfig` |
-| `secrets` | `SecretsConfig` |
-| `stats` | `StatsConfig` |
-| `data_config` | `DataConfig` |
-| `local_sandbox_path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `platform` | `PlatformConfig` | |
+| `secrets` | `SecretsConfig` | |
+| `stats` | `StatsConfig` | |
+| `data_config` | `DataConfig` | |
+| `local_sandbox_path` | `str` | |
 
 ## flytekit.configuration.DataConfig
 
@@ -314,12 +364,12 @@ class DataConfig(
     generic: GenericPersistenceConfig,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `s3` | `S3Config` |
-| `gcs` | `GCSConfig` |
-| `azure` | `AzureBlobStorageConfig` |
-| `generic` | `GenericPersistenceConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `s3` | `S3Config` | |
+| `gcs` | `GCSConfig` | |
+| `azure` | `AzureBlobStorageConfig` | |
+| `generic` | `GenericPersistenceConfig` | |
 
 ### Methods
 
@@ -335,9 +385,9 @@ def auto(
     config_file: typing.Union[str, ConfigFile],
 ) -> DataConfig
 ```
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.EntrypointSettings
 
@@ -350,9 +400,9 @@ class EntrypointSettings(
     path: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `Optional[str]` | |
 
 ### Methods
 
@@ -373,10 +423,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -390,14 +440,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -414,17 +464,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -433,9 +483,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -452,17 +502,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekit.configuration.FastSerializationSettings
 
@@ -476,11 +526,11 @@ class FastSerializationSettings(
     distribution_location: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `enabled` | `bool` |
-| `destination_dir` | `Optional[str]` |
-| `distribution_location` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `enabled` | `bool` | |
+| `destination_dir` | `Optional[str]` | |
+| `distribution_location` | `Optional[str]` | |
 
 ### Methods
 
@@ -501,10 +551,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -518,14 +568,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -542,17 +592,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -561,9 +611,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -580,17 +630,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ## flytekit.configuration.GCSConfig
 
@@ -602,9 +652,9 @@ class GCSConfig(
     gsutil_parallelism: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `gsutil_parallelism` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `gsutil_parallelism` | `bool` | |
 
 ### Methods
 
@@ -620,9 +670,9 @@ def auto(
     config_file: typing.Union[str, ConfigFile],
 ) -> GCSConfig
 ```
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.GenericPersistenceConfig
 
@@ -634,9 +684,9 @@ class GenericPersistenceConfig(
     attach_execution_metadata: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `attach_execution_metadata` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `attach_execution_metadata` | `bool` | |
 
 ### Methods
 
@@ -652,9 +702,9 @@ def auto(
     config_file: typing.Union[str, ConfigFile],
 ) -> GCSConfig
 ```
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.Image
 
@@ -679,12 +729,12 @@ class Image(
     digest: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `fqn` | `str` |
-| `tag` | `Optional[str]` |
-| `digest` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `fqn` | `str` | |
+| `tag` | `Optional[str]` | |
+| `digest` | `Optional[str]` | |
 
 ### Methods
 
@@ -706,10 +756,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -723,14 +773,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### look_up_image_info()
 
@@ -739,7 +789,7 @@ def look_up_image_info(
     name: str,
     image_identifier: str,
     allow_no_tag_or_digest: bool,
-) -> e: Image
+) -> Image
 ```
 Creates an `Image` object from an image identifier string or a path to an ImageSpec yaml file.
 
@@ -751,11 +801,11 @@ the latest commit.
 
 
 
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `image_identifier` | `str` |
-| `allow_no_tag_or_digest` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `image_identifier` | `str` | Either the full image identifier string e.g. somedocker.com/myimage or a path to a file containing a `ImageSpec`. |
+| `allow_no_tag_or_digest` | `bool` | :rtype: Image |
 
 #### schema()
 
@@ -772,17 +822,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -791,9 +841,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -810,17 +860,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 ### Properties
 
@@ -853,10 +903,10 @@ class ImageConfig(
     images: Optional[List[Image]],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `default_image` | `Optional[Image]` |
-| `images` | `Optional[List[Image]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `default_image` | `Optional[Image]` | |
+| `images` | `Optional[List[Image]]` | |
 
 ### Methods
 
@@ -881,7 +931,7 @@ class ImageConfig(
 def auto(
     config_file: typing.Union[str, ConfigFile, None],
     img_name: Optional[str],
-) -> n:
+) -> ImageConfig
 ```
 Reads from config file or from img_name
 Note that this function does not take into account the flytekit default images (see the Dockerfiles at the
@@ -889,10 +939,10 @@ base of this repo). To pick those up, see the auto_default_image function..
 
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile, None]` |
-| `img_name` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile, None]` | |
+| `img_name` | `Optional[str]` | :return: |
 
 #### auto_default_image()
 
@@ -907,10 +957,10 @@ def create_from(
     other_images: typing.Optional[typing.List[Image]],
 ) -> ImageConfig
 ```
-| Parameter | Type |
-|-|-|
-| `default_image` | `Optional[Image]` |
-| `other_images` | `typing.Optional[typing.List[Image]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `default_image` | `Optional[Image]` | |
+| `other_images` | `typing.Optional[typing.List[Image]]` | |
 
 #### find_image()
 
@@ -922,9 +972,9 @@ def find_image(
 Return an image, by name, if it exists.
 
 
-| Parameter | Type |
-|-|-|
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` |  | |
 
 #### from_dict()
 
@@ -934,10 +984,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_images()
 
@@ -963,10 +1013,10 @@ ImageConfig.from_dict(
 urn:
 
 
-| Parameter | Type |
-|-|-|
-| `default_image` | `str` |
-| `m` | `typing.Optional[typing.Dict[str, str]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `default_image` | `str` | |
+| `m` | `typing.Optional[typing.Dict[str, str]]` | |
 
 #### from_json()
 
@@ -980,14 +1030,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### schema()
 
@@ -1004,17 +1054,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### to_dict()
 
@@ -1023,9 +1073,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -1042,17 +1092,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 #### validate_image()
 
@@ -1061,7 +1111,7 @@ def validate_image(
     _: typing.Any,
     param: str,
     values: tuple,
-) -> n:
+) -> ImageConfig
 ```
 Validates the image to match the standard format. Also validates that only one default image
 is provided. a default image, is one that is specified as ``default=<image_uri>`` or just ``<image_uri>``. All
@@ -1070,11 +1120,11 @@ CLI
 
 
 
-| Parameter | Type |
-|-|-|
-| `_` | `typing.Any` |
-| `param` | `str` |
-| `values` | `tuple` |
+| Parameter | Type | Description |
+|-|-|-|
+| `_` | `typing.Any` | click argument, ignored here. |
+| `param` | `str` | the click argument, here should be "image" |
+| `values` | `tuple` | user-supplied images :return: |
 
 ## flytekit.configuration.LocalConfig
 
@@ -1087,10 +1137,10 @@ class LocalConfig(
     cache_overwrite: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cache_enabled` | `bool` |
-| `cache_overwrite` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cache_enabled` | `bool` | |
+| `cache_overwrite` | `bool` | |
 
 ### Methods
 
@@ -1106,9 +1156,9 @@ def auto(
     config_file: typing.Union[str, ConfigFile],
 ) -> LocalConfig
 ```
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 
 ## flytekit.configuration.PlatformConfig
 
@@ -1134,22 +1184,22 @@ class PlatformConfig(
     http_proxy_url: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `insecure` | `bool` |
-| `insecure_skip_verify` | `bool` |
-| `ca_cert_file_path` | `typing.Optional[str]` |
-| `console_endpoint` | `typing.Optional[str]` |
-| `command` | `typing.Optional[typing.List[str]]` |
-| `proxy_command` | `typing.Optional[typing.List[str]]` |
-| `client_id` | `typing.Optional[str]` |
-| `client_credentials_secret` | `typing.Optional[str]` |
-| `scopes` | `List[str]` |
-| `auth_mode` | `AuthType` |
-| `audience` | `typing.Optional[str]` |
-| `rpc_retries` | `int` |
-| `http_proxy_url` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `insecure` | `bool` | |
+| `insecure_skip_verify` | `bool` | |
+| `ca_cert_file_path` | `typing.Optional[str]` | |
+| `console_endpoint` | `typing.Optional[str]` | |
+| `command` | `typing.Optional[typing.List[str]]` | |
+| `proxy_command` | `typing.Optional[typing.List[str]]` | |
+| `client_id` | `typing.Optional[str]` | |
+| `client_credentials_secret` | `typing.Optional[str]` | |
+| `scopes` | `List[str]` | |
+| `auth_mode` | `AuthType` | |
+| `audience` | `typing.Optional[str]` | |
+| `rpc_retries` | `int` | |
+| `http_proxy_url` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -1164,14 +1214,14 @@ class PlatformConfig(
 ```python
 def auto(
     config_file: typing.Optional[typing.Union[str, ConfigFile]],
-) -> n:
+) -> PlatformConfig
 ```
 Reads from Config file, and overrides from Environment variables. Refer to ConfigEntry for details
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Optional[typing.Union[str, ConfigFile]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Optional[typing.Union[str, ConfigFile]]` | :return: |
 
 #### for_endpoint()
 
@@ -1181,10 +1231,10 @@ def for_endpoint(
     insecure: bool,
 ) -> PlatformConfig
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `insecure` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `insecure` | `bool` | |
 
 ## flytekit.configuration.S3Config
 
@@ -1201,14 +1251,14 @@ class S3Config(
     secret_access_key: typing.Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `enable_debug` | `bool` |
-| `endpoint` | `typing.Optional[str]` |
-| `retries` | `int` |
-| `backoff` | `datetime.timedelta` |
-| `access_key_id` | `typing.Optional[str]` |
-| `secret_access_key` | `typing.Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `enable_debug` | `bool` | |
+| `endpoint` | `typing.Optional[str]` | |
+| `retries` | `int` | |
+| `backoff` | `datetime.timedelta` | |
+| `access_key_id` | `typing.Optional[str]` | |
+| `secret_access_key` | `typing.Optional[str]` | |
 
 ### Methods
 
@@ -1222,14 +1272,14 @@ class S3Config(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-) -> n: Config
+) -> S3Config
 ```
 Automatically configure
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | :return: Config |
 
 ## flytekit.configuration.SecretsConfig
 
@@ -1244,11 +1294,11 @@ class SecretsConfig(
     file_prefix: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `env_prefix` | `str` |
-| `default_dir` | `str` |
-| `file_prefix` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `env_prefix` | `str` | |
+| `default_dir` | `str` | |
+| `file_prefix` | `str` | |
 
 ### Methods
 
@@ -1262,14 +1312,14 @@ class SecretsConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-) -> n:
+) -> SecretsConfig
 ```
 Reads from environment variable or from config file
 
 
-| Parameter | Type |
-|-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | :return: |
 
 ## flytekit.configuration.SerializationSettings
 
@@ -1282,6 +1332,8 @@ Attributes:
     version (str): The version (if any) with which to register entities under.
     image_config (ImageConfig): The image config used to define task container images.
     env (Optional[Dict[str, str]]): Environment variables injected into task container definitions.
+    default_resources (Optional[ResourceSpec]): The resources to request for the task - this is useful
+        if users need to override the default resource spec of an entity at registration time.
     flytekit_virtualenv_root (Optional[str]):  During out of container serialize the absolute path of the flytekit
         virtualenv at serialization time won't match the in-container value at execution time. This optional value
         is used to provide the in-container virtualenv path
@@ -1302,6 +1354,7 @@ class SerializationSettings(
     domain: typing.Optional[str],
     version: typing.Optional[str],
     env: Optional[Dict[str, str]],
+    default_resources: Optional[ResourceSpec],
     git_repo: Optional[str],
     python_interpreter: str,
     flytekit_virtualenv_root: Optional[str],
@@ -1309,18 +1362,19 @@ class SerializationSettings(
     source_root: Optional[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `image_config` | `ImageConfig` |
-| `project` | `typing.Optional[str]` |
-| `domain` | `typing.Optional[str]` |
-| `version` | `typing.Optional[str]` |
-| `env` | `Optional[Dict[str, str]]` |
-| `git_repo` | `Optional[str]` |
-| `python_interpreter` | `str` |
-| `flytekit_virtualenv_root` | `Optional[str]` |
-| `fast_serialization_settings` | `Optional[FastSerializationSettings]` |
-| `source_root` | `Optional[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_config` | `ImageConfig` | |
+| `project` | `typing.Optional[str]` | |
+| `domain` | `typing.Optional[str]` | |
+| `version` | `typing.Optional[str]` | |
+| `env` | `Optional[Dict[str, str]]` | |
+| `default_resources` | `Optional[ResourceSpec]` | |
+| `git_repo` | `Optional[str]` | |
+| `python_interpreter` | `str` | |
+| `flytekit_virtualenv_root` | `Optional[str]` | |
+| `fast_serialization_settings` | `Optional[FastSerializationSettings]` | |
+| `source_root` | `Optional[str]` | |
 
 ### Methods
 
@@ -1350,9 +1404,9 @@ def default_entrypoint_settings(
 Assumes the entrypoint is installed in a virtual-environment where the interpreter is
 
 
-| Parameter | Type |
-|-|-|
-| `interpreter_path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `interpreter_path` | `str` | |
 
 #### for_image()
 
@@ -1365,13 +1419,13 @@ def for_image(
     python_interpreter_path: str,
 ) -> SerializationSettings
 ```
-| Parameter | Type |
-|-|-|
-| `image` | `str` |
-| `version` | `str` |
-| `project` | `str` |
-| `domain` | `str` |
-| `python_interpreter_path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image` | `str` | |
+| `version` | `str` | |
+| `project` | `str` | |
+| `domain` | `str` | |
+| `python_interpreter_path` | `str` | |
 
 #### from_dict()
 
@@ -1381,10 +1435,10 @@ def from_dict(
     infer_missing,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` |
-| `infer_missing` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `kvs` | `typing.Union[dict, list, str, int, float, bool, NoneType]` | |
+| `infer_missing` |  | |
 
 #### from_json()
 
@@ -1398,14 +1452,14 @@ def from_json(
     kw,
 ) -> ~A
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `typing.Union[str, bytes, bytearray]` |
-| `parse_float` |  |
-| `parse_int` |  |
-| `parse_constant` |  |
-| `infer_missing` |  |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `typing.Union[str, bytes, bytearray]` | |
+| `parse_float` |  | |
+| `parse_int` |  | |
+| `parse_constant` |  | |
+| `infer_missing` |  | |
+| `kw` |  | |
 
 #### from_transport()
 
@@ -1414,9 +1468,9 @@ def from_transport(
     s: str,
 ) -> SerializationSettings
 ```
-| Parameter | Type |
-|-|-|
-| `s` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `s` | `str` | |
 
 #### new_builder()
 
@@ -1442,17 +1496,17 @@ def schema(
     unknown,
 ) -> SchemaType[A]
 ```
-| Parameter | Type |
-|-|-|
-| `infer_missing` | `bool` |
-| `only` |  |
-| `exclude` |  |
-| `many` | `bool` |
-| `context` |  |
-| `load_only` |  |
-| `dump_only` |  |
-| `partial` | `bool` |
-| `unknown` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `infer_missing` | `bool` | |
+| `only` |  | |
+| `exclude` |  | |
+| `many` | `bool` | |
+| `context` |  | |
+| `load_only` |  | |
+| `dump_only` |  | |
+| `partial` | `bool` | |
+| `unknown` |  | |
 
 #### should_fast_serialize()
 
@@ -1469,9 +1523,9 @@ def to_dict(
     encode_json,
 ) -> typing.Dict[str, typing.Union[dict, list, str, int, float, bool, NoneType]]
 ```
-| Parameter | Type |
-|-|-|
-| `encode_json` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `encode_json` |  | |
 
 #### to_json()
 
@@ -1488,17 +1542,17 @@ def to_json(
     kw,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `skipkeys` | `bool` |
-| `ensure_ascii` | `bool` |
-| `check_circular` | `bool` |
-| `allow_nan` | `bool` |
-| `indent` | `typing.Union[int, str, NoneType]` |
-| `separators` | `typing.Tuple[str, str]` |
-| `default` | `typing.Callable` |
-| `sort_keys` | `bool` |
-| `kw` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `skipkeys` | `bool` | |
+| `ensure_ascii` | `bool` | |
+| `check_circular` | `bool` | |
+| `allow_nan` | `bool` | |
+| `indent` | `typing.Union[int, str, NoneType]` | |
+| `separators` | `typing.Tuple[str, str]` | |
+| `default` | `typing.Callable` | |
+| `sort_keys` | `bool` | |
+| `kw` |  | |
 
 #### venv_root_from_interpreter()
 
@@ -1511,9 +1565,9 @@ Computes the path of the virtual environment root, based on the passed in python
 for example /opt/venv/bin/python3 -> /opt/venv
 
 
-| Parameter | Type |
-|-|-|
-| `interpreter_path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `interpreter_path` | `str` | |
 
 #### with_serialized_context()
 
@@ -1548,12 +1602,12 @@ class StatsConfig(
     disabled_tags: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `host` | `str` |
-| `port` | `int` |
-| `disabled` | `bool` |
-| `disabled_tags` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `host` | `str` | |
+| `port` | `int` | |
+| `disabled` | `bool` | |
+| `disabled_tags` | `bool` | |
 
 ### Methods
 
@@ -1567,12 +1621,48 @@ class StatsConfig(
 ```python
 def auto(
     config_file: typing.Union[str, ConfigFile],
-) -> n:
+) -> StatsConfig
 ```
 Reads from environment variable, followed by ConfigFile provided
 
 
-| Parameter | Type |
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | :return: |
+
+## flytekit.configuration.TaskConfig
+
+Any Project/Domain/Org configuration.
+
+
+```python
+class TaskConfig(
+    project: Optional[str],
+    domain: Optional[str],
+    org: Optional[str],
+)
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `Optional[str]` | |
+| `domain` | `Optional[str]` | |
+| `org` | `Optional[str]` | |
+
+### Methods
+
+| Method | Description |
 |-|-|
-| `config_file` | `typing.Union[str, ConfigFile]` |
+| [`auto()`](#auto) |  |
+
+
+#### auto()
+
+```python
+def auto(
+    config_file: typing.Union[str, ConfigFile],
+) -> TaskConfig
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `config_file` | `typing.Union[str, ConfigFile]` | |
 

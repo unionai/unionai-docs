@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.python_auto_container
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -32,6 +32,7 @@ layout: py_api
 | Property | Type | Description |
 |-|-|-|
 | `PICKLE_FILE_PATH` | `str` |  |
+| `RUNTIME_PACKAGES_ENV_NAME` | `str` |  |
 | `T` | `TypeVar` |  |
 | `default_notebook_task_resolver` | `DefaultNotebookTaskResolver` |  |
 | `default_task_resolver` | `DefaultTaskResolver` |  |
@@ -44,7 +45,7 @@ layout: py_api
 def get_registerable_container_image(
     img: Optional[Union[str, ImageSpec]],
     cfg: ImageConfig,
-) -> n:
+) -> str
 ```
 Resolve the image to the real image name that should be used for registration.
 1. If img is a ImageSpec, it will be built and the image name will be returned
@@ -53,10 +54,10 @@ Resolve the image to the real image name that should be used for registration.
 
 
 
-| Parameter | Type |
-|-|-|
-| `img` | `Optional[Union[str, ImageSpec]]` |
-| `cfg` | `ImageConfig` |
+| Parameter | Type | Description |
+|-|-|-|
+| `img` | `Optional[Union[str, ImageSpec]]` | Configured image or image spec |
+| `cfg` | `ImageConfig` | Registration configuration :return: |
 
 #### update_image_spec_copy_handling()
 
@@ -75,10 +76,10 @@ build command (and it probably shouldn't be), the builder has no concept of whic
 from where. (or to where but that is hard-coded)
 
 
-| Parameter | Type |
-|-|-|
-| `image_spec` | `ImageSpec` |
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `image_spec` | `ImageSpec` | |
+| `settings` | `SerializationSettings` | |
 
 ## flytekit.core.python_auto_container.DefaultNotebookTaskResolver
 
@@ -91,10 +92,10 @@ class DefaultNotebookTaskResolver(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -131,9 +132,9 @@ def load_task(
 Given the set of identifier keys, should return one Python Task or raise an error if not found
 
 
-| Parameter | Type |
-|-|-|
-| `loader_args` | `List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `loader_args` | `List[str]` | |
 
 #### loader_args()
 
@@ -146,10 +147,10 @@ def loader_args(
 Return a list of strings that can help identify the parameter Task
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
-| `task` | `PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
+| `task` | `PythonAutoContainerTask` | |
 
 #### name()
 
@@ -166,9 +167,9 @@ def task_name(
 Overridable function that can optionally return a custom name for a given task
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.base_task.Task` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `flytekit.core.base_task.Task` | |
 
 ### Properties
 
@@ -189,10 +190,10 @@ class DefaultTaskResolver(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -229,9 +230,9 @@ def load_task(
 Given the set of identifier keys, should return one Python Task or raise an error if not found
 
 
-| Parameter | Type |
-|-|-|
-| `loader_args` | `List[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `loader_args` | `List[str]` | |
 
 #### loader_args()
 
@@ -244,10 +245,10 @@ def loader_args(
 Return a list of strings that can help identify the parameter Task
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
-| `task` | `PythonAutoContainerTask` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
+| `task` | `PythonAutoContainerTask` | |
 
 #### name()
 
@@ -264,9 +265,9 @@ def task_name(
 Overridable function that can optionally return a custom name for a given task
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `flytekit.core.base_task.Task` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `flytekit.core.base_task.Task` | |
 
 ### Properties
 
@@ -291,10 +292,10 @@ class PickledEntity(
     entities: Dict[str, PythonAutoContainerTask],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `metadata` | `PickledEntityMetadata` |
-| `entities` | `Dict[str, PythonAutoContainerTask]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `metadata` | `PickledEntityMetadata` | |
+| `entities` | `Dict[str, PythonAutoContainerTask]` | |
 
 ## flytekit.core.python_auto_container.PickledEntityMetadata
 
@@ -309,9 +310,9 @@ class PickledEntityMetadata(
     python_version: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `python_version` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `python_version` | `str` | |
 
 ## flytekit.core.python_auto_container.PythonAutoContainerTask
 
@@ -341,23 +342,23 @@ class PythonAutoContainerTask(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `task_config` | `T` |
-| `task_type` |  |
-| `container_image` | `Optional[Union[str, ImageSpec]]` |
-| `requests` | `Optional[Resources]` |
-| `limits` | `Optional[Resources]` |
-| `environment` | `Optional[Dict[str, str]]` |
-| `task_resolver` | `Optional[TaskResolverMixin]` |
-| `secret_requests` | `Optional[List[Secret]]` |
-| `pod_template` | `Optional[PodTemplate]` |
-| `pod_template_name` | `Optional[str]` |
-| `accelerator` | `Optional[BaseAccelerator]` |
-| `shared_memory` | `Optional[Union[L[True], str]]` |
-| `resources` | `Optional[Resources]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | unique name for the task, usually the function's module and name. |
+| `task_config` | `T` | Configuration object for Task. Should be a unique type for that specific Task. |
+| `task_type` |  | String task type to be associated with this Task |
+| `container_image` | `Optional[Union[str, ImageSpec]]` | String FQN for the image. |
+| `requests` | `Optional[Resources]` | custom resource request settings. |
+| `limits` | `Optional[Resources]` | custom resource limit settings. |
+| `environment` | `Optional[Dict[str, str]]` | Environment variables you want the task to have when run. |
+| `task_resolver` | `Optional[TaskResolverMixin]` | Custom resolver - will pick up the default resolver if empty, or the resolver set in the compilation context if one is set. |
+| `secret_requests` | `Optional[List[Secret]]` | |
+| `pod_template` | `Optional[PodTemplate]` | Custom PodTemplate for this task. |
+| `pod_template_name` | `Optional[str]` | The name of the existing PodTemplate resource which will be used in this task. |
+| `accelerator` | `Optional[BaseAccelerator]` | The accelerator to use for this task. |
+| `shared_memory` | `Optional[Union[L[True], str]]` | If True, then shared memory will be attached to the container where the size is equal to the allocated memory. If str, then the shared memory is set to that size. |
+| `resources` | `Optional[Resources]` | Specify both the request and the limit. When the value is set to a tuple or list, the first value is the request and the second value is the limit. If the value is a single value, then both the requests and limit is set to that value. For example, the `Resource(cpu=("1", "2"), mem="1Gi")` will set the cpu request to 1, cpu limit to 2, and mem request to 1Gi. |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -402,11 +403,11 @@ def compile(
 Generates a node that encapsulates this task in a workflow definition.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 #### construct_node_metadata()
 
@@ -433,10 +434,10 @@ This method is also invoked during runtime.
 * ``DynamicJobSpec`` is returned when a dynamic workflow is executed
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### execute()
 
@@ -448,9 +449,9 @@ def execute(
 This method will be invoked to execute the task.
 
 
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### find_lhs()
 
@@ -468,9 +469,9 @@ Returns the command which should be used in the container definition for the ser
 registered on a hosted Flyte platform.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_config()
 
@@ -483,9 +484,9 @@ Returns the task config as a serializable dictionary. This task config consists 
 defined for this task.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_container()
 
@@ -497,9 +498,9 @@ def get_container(
 Returns the container definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_custom()
 
@@ -511,9 +512,9 @@ def get_custom(
 Return additional plugin-specific custom data (if any) as a serializable dictionary.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_default_command()
 
@@ -525,9 +526,9 @@ def get_default_command(
 Returns the default pyflyte-execute command used to run this on hosted Flyte platforms.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_extended_resources()
 
@@ -539,9 +540,9 @@ def get_extended_resources(
 Returns the extended resources to allocate to the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_image()
 
@@ -553,9 +554,9 @@ def get_image(
 Update image spec based on fast registration usage, and return string representing the image
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_input_types()
 
@@ -575,9 +576,9 @@ def get_k8s_pod(
 Returns the kubernetes pod definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `SerializationSettings` | |
 
 #### get_sql()
 
@@ -589,9 +590,9 @@ def get_sql(
 Returns the Sql definition (if any) that is used to run the task on hosted Flyte.
 
 
-| Parameter | Type |
-|-|-|
-| `settings` | `flytekit.configuration.SerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `settings` | `flytekit.configuration.SerializationSettings` | |
 
 #### get_type_for_input_var()
 
@@ -604,10 +605,10 @@ def get_type_for_input_var(
 Returns the python type for an input variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### get_type_for_output_var()
 
@@ -620,10 +621,10 @@ def get_type_for_output_var(
 Returns the python type for the specified output variable by name.
 
 
-| Parameter | Type |
-|-|-|
-| `k` | `str` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `k` | `str` | |
+| `v` | `typing.Any` | |
 
 #### local_execute()
 
@@ -638,10 +639,10 @@ Use this function when calling a task with native values (or Promises containing
 Python native values).
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `kwargs` | `**kwargs` | |
 
 #### local_execution_mode()
 
@@ -661,10 +662,10 @@ or alter the outputs to match the intended tasks outputs. If not overridden, the
 
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
-| `rval` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | are the modified user params as created during the pre_execute step |
+| `rval` | `typing.Any` | |
 
 #### pre_execute()
 
@@ -681,9 +682,9 @@ setup before the type transformers are called
 This should return either the same context of the mutated context
 
 
-| Parameter | Type |
-|-|-|
-| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `user_params` | `typing.Optional[flytekit.core.context_manager.ExecutionParameters]` | |
 
 #### reset_command_fn()
 
@@ -705,10 +706,10 @@ def sandbox_execute(
 Call dispatch_execute, in the context of a local sandbox execution. Not invoked during runtime.
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `input_literal_map` | `flytekit.models.literals.LiteralMap` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `input_literal_map` | `flytekit.models.literals.LiteralMap` | |
 
 #### set_command_fn()
 
@@ -722,9 +723,9 @@ However, it can be useful to update the command with which the task is serialize
 running map tasks ("pyflyte-map-execute") or for fast-executed tasks.
 
 
-| Parameter | Type |
-|-|-|
-| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `get_command_fn` | `Optional[Callable[[SerializationSettings], List[str]]]` | |
 
 #### set_resolver()
 
@@ -737,9 +738,9 @@ By default, flytekit uses the DefaultTaskResolver to resolve the task. This meth
 task resolver. It can be useful to override the task resolver for specific cases like running tasks in the jupyter notebook.
 
 
-| Parameter | Type |
-|-|-|
-| `resolver` | `TaskResolverMixin` |
+| Parameter | Type | Description |
+|-|-|-|
+| `resolver` | `TaskResolverMixin` | |
 
 ### Properties
 

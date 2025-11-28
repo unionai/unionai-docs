@@ -1,6 +1,6 @@
 ---
 title: flytekit.clients.friendly
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -44,10 +44,10 @@ Initializes a gRPC channel to the given Flyte Admin service.
 
 
 
-| Parameter | Type |
-|-|-|
-| `cfg` | `PlatformConfig` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `PlatformConfig` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -112,9 +112,9 @@ def create_download_link(
     create_download_link_request: _dataproxy_pb2.CreateDownloadLinkRequest,
 ) -> _dataproxy_pb2.CreateDownloadLinkResponse
 ```
-| Parameter | Type |
-|-|-|
-| `create_download_link_request` | `_dataproxy_pb2.CreateDownloadLinkRequest` |
+| Parameter | Type | Description |
+|-|-|-|
+| `create_download_link_request` | `_dataproxy_pb2.CreateDownloadLinkRequest` | |
 
 #### create_download_location()
 
@@ -123,9 +123,9 @@ def create_download_location(
     create_download_location_request: _dataproxy_pb2.CreateDownloadLocationRequest,
 ) -> _dataproxy_pb2.CreateDownloadLocationResponse
 ```
-| Parameter | Type |
-|-|-|
-| `create_download_location_request` | `_dataproxy_pb2.CreateDownloadLocationRequest` |
+| Parameter | Type | Description |
+|-|-|-|
+| `create_download_location_request` | `_dataproxy_pb2.CreateDownloadLocationRequest` | |
 
 #### create_execution()
 
@@ -136,18 +136,18 @@ def create_execution(
     name,
     execution_spec,
     inputs,
-) -> e: flytekit.models.core.identifier.WorkflowExecutionIdentifier
+)
 ```
 This will create an execution for the given execution spec.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `name` |  |
-| `execution_spec` |  |
-| `inputs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `name` |  | |
+| `execution_spec` |  | |
+| `inputs` |  | |
 
 #### create_launch_plan()
 
@@ -167,10 +167,10 @@ retrieved via the client or viewed via the UI or command-line interfaces.
 
 
 
-| Parameter | Type |
-|-|-|
-| `launch_plan_identifer` |  |
-| `launch_plan_spec` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `launch_plan_identifer` |  | |
+| `launch_plan_spec` |  | |
 
 #### create_task()
 
@@ -190,24 +190,24 @@ retrieved via the client or viewed via the UI or command-line interfaces.
 
 
 
-| Parameter | Type |
-|-|-|
-| `task_identifer` |  |
-| `task_spec` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_identifer` |  | |
+| `task_spec` |  | |
 
 #### create_upload_location()
 
 ```python
 def create_upload_location(
     create_upload_location_request: _dataproxy_pb2.CreateUploadLocationRequest,
-) -> e: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
+) -> _dataproxy_pb2.CreateUploadLocationResponse
 ```
 Get a signed url to be used during fast registration
 
 
-| Parameter | Type |
-|-|-|
-| `create_upload_location_request` | `_dataproxy_pb2.CreateUploadLocationRequest` |
+| Parameter | Type | Description |
+|-|-|-|
+| `create_upload_location_request` | `_dataproxy_pb2.CreateUploadLocationRequest` | |
 
 #### create_workflow()
 
@@ -227,26 +227,26 @@ retrieved via the client or viewed via the UI or command-line interfaces.
 
 
 
-| Parameter | Type |
-|-|-|
-| `workflow_identifier` |  |
-| `workflow_spec` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `workflow_identifier` |  | |
+| `workflow_spec` |  | |
 
 #### get_active_launch_plan()
 
 ```python
 def get_active_launch_plan(
     identifier,
-) -> e: flytekit.models.launch_plan.LaunchPlan
+)
 ```
 Retrieves the active launch plan entity given a named entity identifier (project, domain, name).  Raises an
 error if no active launch plan exists.
 
 
 
-| Parameter | Type |
-|-|-|
-| `identifier` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `identifier` |  | |
 
 #### get_control_plane_version()
 
@@ -269,9 +269,9 @@ def get_data(
     flyte_uri: str,
 ) -> flyteidl.service.dataproxy_pb2.GetDataResponse
 ```
-| Parameter | Type |
-|-|-|
-| `flyte_uri` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_uri` | `str` | |
 
 #### get_domains()
 
@@ -291,22 +291,22 @@ def get_download_artifact_signed_url(
     project: str,
     domain: str,
     name: str,
-    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10775e250>,
+    artifact_type: <google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10c990ef0>,
     expires_in: datetime.timedelta,
-) -> e: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
+) -> flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse
 ```
 Get a signed url for an artifact.
 
 
 
-| Parameter | Type |
-|-|-|
-| `node_id` | `str` |
-| `project` | `str` |
-| `domain` | `str` |
-| `name` | `str` |
-| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10775e250>` |
-| `expires_in` | `datetime.timedelta` |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_id` | `str` | Node id associated with artifact |
+| `project` | `str` | Name of the project the resource belongs to |
+| `domain` | `str` | Name of the domain the resource belongs to |
+| `name` | `str` | User or system provided value for the resource |
+| `artifact_type` | `<google.protobuf.internal.enum_type_wrapper.EnumTypeWrapper object at 0x10c990ef0>` | ArtifactType of the artifact requested |
+| `expires_in` | `datetime.timedelta` | If provided this defines a requested expiration duration for the generated url :rtype: flyteidl.service.dataproxy_pb2.CreateDownloadLinkResponse |
 
 #### get_download_signed_url()
 
@@ -316,36 +316,36 @@ def get_download_signed_url(
     expires_in: datetime.timedelta,
 ) -> flyteidl.service.dataproxy_pb2.CreateDownloadLocationResponse
 ```
-| Parameter | Type |
-|-|-|
-| `native_url` | `str` |
-| `expires_in` | `datetime.timedelta` |
+| Parameter | Type | Description |
+|-|-|-|
+| `native_url` | `str` | |
+| `expires_in` | `datetime.timedelta` | |
 
 #### get_execution()
 
 ```python
 def get_execution(
     id,
-) -> e: flytekit.models.execution.Execution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### get_execution_data()
 
 ```python
 def get_execution_data(
     id,
-) -> e: flytekit.models.execution.WorkflowExecutionGetDataResponse
+)
 ```
 Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (when available).
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### get_execution_metrics()
 
@@ -353,27 +353,27 @@ Returns signed URLs to LiteralMap blobs for an execution's inputs and outputs (w
 def get_execution_metrics(
     id,
     depth,
-) -> e: flyteidl.admin.execution_pb2.WorkflowExecutionGetMetricsResponse
+)
 ```
 Returns metrics partitioning and categorizing the workflow execution time-series.
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `depth` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `depth` |  | |
 
 #### get_node_execution()
 
 ```python
 def get_node_execution(
     node_execution_identifier,
-) -> e: flytekit.models.node_execution.NodeExecution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `node_execution_identifier` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_execution_identifier` |  | |
 
 #### get_node_execution_data()
 
@@ -386,9 +386,9 @@ Returns signed URLs to LiteralMap blobs for a node execution's inputs and output
 
 
 
-| Parameter | Type |
-|-|-|
-| `node_execution_identifier` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_execution_identifier` |  | |
 
 #### get_project_domain_attributes()
 
@@ -397,42 +397,42 @@ def get_project_domain_attributes(
     project,
     domain,
     resource_type,
-) -> n:
+)
 ```
 Fetches the custom attributes set for a project and domain combination.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `resource_type` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `resource_type` |  | |
 
 #### get_task_execution()
 
 ```python
 def get_task_execution(
     id,
-) -> e: flytekit.models.admin.task_execution.TaskExecution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
 
 #### get_task_execution_data()
 
 ```python
 def get_task_execution_data(
     task_execution_identifier,
-) -> e: flytekit.models.execution.NodeExecutionGetDataResponse
+)
 ```
 Returns signed URLs to LiteralMap blobs for a node execution's inputs and outputs (when available).
 
 
 
-| Parameter | Type |
-|-|-|
-| `task_execution_identifier` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_execution_identifier` |  | |
 
 #### get_upload_signed_url()
 
@@ -445,21 +445,21 @@ def get_upload_signed_url(
     expires_in: typing.Optional[datetime.timedelta],
     filename_root: typing.Optional[str],
     add_content_md5_metadata: bool,
-) -> e: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
+) -> flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse
 ```
 Get a signed url to be used during fast registration
 
 
 
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `domain` | `str` |
-| `content_md5` | `typing.Optional[bytes]` |
-| `filename` | `typing.Optional[str]` |
-| `expires_in` | `typing.Optional[datetime.timedelta]` |
-| `filename_root` | `typing.Optional[str]` |
-| `add_content_md5_metadata` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | Project to create the upload location for |
+| `domain` | `str` | Domain to create the upload location for |
+| `content_md5` | `typing.Optional[bytes]` | ContentMD5 restricts the upload location to the specific MD5 provided. The content_md5 will also appear in the generated path. |
+| `filename` | `typing.Optional[str]` | If provided this specifies a desired suffix for the generated location |
+| `expires_in` | `typing.Optional[datetime.timedelta]` | If provided this defines a requested expiration duration for the generated url |
+| `filename_root` | `typing.Optional[str]` | If provided will be used as the root of the filename.  If not, Admin will use a hash This option is useful when uploading a series of files that you want to be grouped together. |
+| `add_content_md5_metadata` | `bool` | If true, the content md5 will be added to the metadata in signed URL :rtype: flyteidl.service.dataproxy_pb2.CreateUploadLocationResponse |
 
 #### get_workflow_attributes()
 
@@ -469,17 +469,17 @@ def get_workflow_attributes(
     domain,
     workflow,
     resource_type,
-) -> n:
+)
 ```
 Fetches the custom attributes set for a project, domain, and workflow combination.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `workflow` |  |
-| `resource_type` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `workflow` |  | |
+| `resource_type` |  | |
 
 #### list_active_launch_plans_paginated()
 
@@ -490,7 +490,7 @@ def list_active_launch_plans_paginated(
     limit,
     token,
     sort_by,
-) -> e: list[flytekit.models.launch_plan.LaunchPlan], str
+) -> typing.Tuple[typing.List[flytekit.models.launch_plan.LaunchPlan], str]
 ```
 This returns a page of currently active launch plan meta-information for launch plans in a given project and
 domain.
@@ -505,13 +505,13 @@ domain.
 
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `limit` |  |
-| `token` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `sort_by` |  | |
 
 #### list_executions_paginated()
 
@@ -523,7 +523,7 @@ def list_executions_paginated(
     token,
     filters,
     sort_by,
-) -> e: (list[flytekit.models.execution.Execution], Text)
+)
 ```
 This returns a page of executions in a given project and domain.
 
@@ -537,14 +537,14 @@ This returns a page of executions in a given project and domain.
 
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### list_launch_plan_ids_paginated()
 
@@ -555,7 +555,7 @@ def list_launch_plan_ids_paginated(
     limit,
     token,
     sort_by,
-) -> e: list[flytekit.models.common.NamedEntityIdentifier], Text
+)
 ```
 This returns a page of identifiers for the launch plans for a given project and domain. Filters can also be
 specified.
@@ -570,13 +570,13 @@ specified.
 
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `limit` |  |
-| `token` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `sort_by` |  | |
 
 #### list_launch_plans_paginated()
 
@@ -587,7 +587,7 @@ def list_launch_plans_paginated(
     token,
     filters,
     sort_by,
-) -> e: list[flytekit.models.launch_plan.LaunchPlan], str
+)
 ```
 This returns a page of launch plan meta-information for launch plans in a given project and domain.  Optionally,
 specifying a name will limit the results to only workflows with that name in the given project and domain.
@@ -602,27 +602,27 @@ specifying a name will limit the results to only workflows with that name in the
 
 
 
-| Parameter | Type |
-|-|-|
-| `identifier` |  |
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `identifier` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### list_matchable_attributes()
 
 ```python
 def list_matchable_attributes(
     resource_type,
-) -> n:
+)
 ```
 Fetches all custom attributes for a resource type.
 
 
-| Parameter | Type |
-|-|-|
-| `resource_type` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_type` |  | |
 
 #### list_node_executions()
 
@@ -634,20 +634,20 @@ def list_node_executions(
     filters: typing.List[flytekit.models.filters.Filter],
     sort_by: flytekit.models.admin.common.Sort,
     unique_parent_id: str,
-) -> e: list[flytekit.models.node_execution.NodeExecution], Text
+)
 ```
 Get node executions associated with a given workflow execution.
 
 
 
-| Parameter | Type |
-|-|-|
-| `workflow_execution_identifier` |  |
-| `limit` | `int` |
-| `token` | `typing.Optional[str]` |
-| `filters` | `typing.List[flytekit.models.filters.Filter]` |
-| `sort_by` | `flytekit.models.admin.common.Sort` |
-| `unique_parent_id` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `workflow_execution_identifier` |  | |
+| `limit` | `int` | Limit the number of items returned in the response. |
+| `token` | `typing.Optional[str]` | If specified, this specifies where in the rows of results to skip before reading. If you previously retrieved a page response with token="foo" and you want the next page, specify ``token="foo"``. |
+| `filters` | `typing.List[flytekit.models.filters.Filter]` | |
+| `sort_by` | `flytekit.models.admin.common.Sort` | |
+| `unique_parent_id` | `str` | If specified, returns the node executions for the ``unique_parent_id`` node id. :rtype: list[flytekit.models.node_execution.NodeExecution], Text |
 
 #### list_node_executions_for_task_paginated()
 
@@ -658,43 +658,43 @@ def list_node_executions_for_task_paginated(
     token,
     filters,
     sort_by,
-) -> e: list[flytekit.models.node_execution.NodeExecution], Text
+)
 ```
 This returns nodes spawned by a specific task execution.  This is generally from things like dynamic tasks.
 
 
-| Parameter | Type |
-|-|-|
-| `task_execution_identifier` |  |
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_execution_identifier` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### list_node_executions_paginated()
 
 ```python
 def list_node_executions_paginated(
     node_execution_list_request,
-) -> e: flyteidl.admin.node_execution_pb2.NodeExecutionList
+)
 ```
-| Parameter | Type |
-|-|-|
-| `node_execution_list_request` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_execution_list_request` |  | |
 
 #### list_projects()
 
 ```python
 def list_projects(
     project_list_request: typing.Optional[ProjectListRequest],
-) -> e: flyteidl.admin.project_pb2.Projects
+)
 ```
 This will return a list of the projects registered with the Flyte Admin Service
 
 
-| Parameter | Type |
-|-|-|
-| `project_list_request` | `typing.Optional[ProjectListRequest]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project_list_request` | `typing.Optional[ProjectListRequest]` | |
 
 #### list_projects_paginated()
 
@@ -704,7 +704,7 @@ def list_projects_paginated(
     token,
     filters,
     sort_by,
-) -> e: (list[flytekit.models.Project], Text)
+)
 ```
 This returns a page of projects.
 
@@ -718,12 +718,12 @@ This returns a page of projects.
 
 
 
-| Parameter | Type |
-|-|-|
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### list_signals()
 
@@ -735,9 +735,9 @@ def list_signals(
 This lists signals
 
 
-| Parameter | Type |
-|-|-|
-| `signal_list_request` | `SignalListRequest` |
+| Parameter | Type | Description |
+|-|-|-|
+| `signal_list_request` | `SignalListRequest` | |
 
 #### list_task_executions_paginated()
 
@@ -748,15 +748,15 @@ def list_task_executions_paginated(
     token,
     filters,
     sort_by,
-) -> e: (list[flytekit.models.admin.task_execution.TaskExecution], Text)
+)
 ```
-| Parameter | Type |
-|-|-|
-| `node_execution_identifier` |  |
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `node_execution_identifier` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### list_task_ids_paginated()
 
@@ -767,7 +767,7 @@ def list_task_ids_paginated(
     limit,
     token,
     sort_by,
-) -> e: list[flytekit.models.common.NamedEntityIdentifier], Text
+)
 ```
 This returns a page of identifiers for the tasks for a given project and domain. Filters can also be
 specified.
@@ -782,13 +782,13 @@ specified.
 
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `limit` |  |
-| `token` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `sort_by` |  | |
 
 #### list_tasks_paginated()
 
@@ -799,7 +799,7 @@ def list_tasks_paginated(
     token,
     filters,
     sort_by,
-) -> e: list[flytekit.models.task.Task], Text
+)
 ```
 This returns a page of task metadata for tasks in a given project and domain.  Optionally,
 specifying a name will limit the results to only tasks with that name in the given project and domain.
@@ -814,13 +814,13 @@ specifying a name will limit the results to only tasks with that name in the giv
 
 
 
-| Parameter | Type |
-|-|-|
-| `identifier` |  |
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `identifier` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### list_workflow_ids_paginated()
 
@@ -831,7 +831,7 @@ def list_workflow_ids_paginated(
     limit,
     token,
     sort_by,
-) -> e: list[flytekit.models.common.NamedEntityIdentifier], Text
+)
 ```
 This returns a page of identifiers for the workflows for a given project and domain. Filters can also be
 specified.
@@ -846,13 +846,13 @@ specified.
 
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `limit` |  |
-| `token` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `sort_by` |  | |
 
 #### list_workflows_paginated()
 
@@ -863,7 +863,7 @@ def list_workflows_paginated(
     token,
     filters,
     sort_by,
-) -> e: list[flytekit.models.admin.workflow.Workflow], Text
+)
 ```
 This returns a page of workflow meta-information for workflows in a given project and domain.  Optionally,
 specifying a name will limit the results to only workflows with that name in the given project and domain.
@@ -878,13 +878,13 @@ specifying a name will limit the results to only workflows with that name in the
 
 
 
-| Parameter | Type |
-|-|-|
-| `identifier` |  |
-| `limit` |  |
-| `token` |  |
-| `filters` |  |
-| `sort_by` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `identifier` |  | |
+| `limit` |  | |
+| `token` |  | |
+| `filters` |  | |
+| `sort_by` |  | |
 
 #### recover_execution()
 
@@ -892,29 +892,29 @@ specifying a name will limit the results to only workflows with that name in the
 def recover_execution(
     id,
     name: str,
-) -> e: flytekit.models.core.identifier.WorkflowExecutionIdentifier
+)
 ```
 Recreates a previously-run workflow execution that will only start executing from the last known failure point.
 
 
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `name` | `str` | |
 
 #### register_project()
 
 ```python
 def register_project(
     project,
-) -> e: flyteidl.admin.project_pb2.ProjectRegisterResponse
+)
 ```
 Registers a project.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
 
 #### relaunch_execution()
 
@@ -922,12 +922,12 @@ Registers a project.
 def relaunch_execution(
     id,
     name,
-) -> e: flytekit.models.core.identifier.WorkflowExecutionIdentifier
+)
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `name` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `name` |  | |
 
 #### set_signal()
 
@@ -939,9 +939,9 @@ def set_signal(
 This sets a signal
 
 
-| Parameter | Type |
-|-|-|
-| `signal_set_request` | `SignalSetRequest` |
+| Parameter | Type | Description |
+|-|-|-|
+| `signal_set_request` | `SignalSetRequest` | |
 
 #### terminate_execution()
 
@@ -951,10 +951,10 @@ def terminate_execution(
     cause,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `cause` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `cause` |  | |
 
 #### update_launch_plan()
 
@@ -971,10 +971,10 @@ INACTIVE in one transaction.
 
 
 
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `state` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `state` |  | |
 
 #### update_named_entity()
 
@@ -990,25 +990,25 @@ task or launch plan specified by {project, domain, name} across all versions of 
 
 
 
-| Parameter | Type |
-|-|-|
-| `resource_type` |  |
-| `id` |  |
-| `metadata` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `resource_type` |  | |
+| `id` |  | |
+| `metadata` |  | |
 
 #### update_project()
 
 ```python
 def update_project(
     project,
-) -> e: flyteidl.admin.project_pb2.ProjectUpdateResponse
+)
 ```
 Update an existing project specified by id.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
 
 #### update_project_domain_attributes()
 
@@ -1017,16 +1017,16 @@ def update_project_domain_attributes(
     project,
     domain,
     matching_attributes,
-) -> n:
+)
 ```
 Sets custom attributes for a project and domain combination.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `matching_attributes` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `matching_attributes` |  | |
 
 #### update_workflow_attributes()
 
@@ -1036,17 +1036,17 @@ def update_workflow_attributes(
     domain,
     workflow,
     matching_attributes,
-) -> n:
+)
 ```
 Sets custom attributes for a project, domain, and workflow combination.
 
 
-| Parameter | Type |
-|-|-|
-| `project` |  |
-| `domain` |  |
-| `workflow` |  |
-| `matching_attributes` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` |  | |
+| `domain` |  | |
+| `workflow` |  | |
+| `matching_attributes` |  | |
 
 #### with_root_certificate()
 
@@ -1056,10 +1056,10 @@ def with_root_certificate(
     root_cert_file: str,
 ) -> RawSynchronousFlyteClient
 ```
-| Parameter | Type |
-|-|-|
-| `cfg` | `PlatformConfig` |
-| `root_cert_file` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cfg` | `PlatformConfig` | |
+| `root_cert_file` | `str` | |
 
 ### Properties
 

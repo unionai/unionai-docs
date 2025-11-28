@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.execution
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,10 +34,10 @@ class AbortMetadata(
     principal: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cause` | `str` |
-| `principal` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `cause` | `str` | |
+| `principal` | `str` | |
 
 ### Methods
 
@@ -47,7 +47,6 @@ class AbortMetadata(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -57,9 +56,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.admin.execution_pb2.AbortMetadata,
 ) -> AbortMetadata
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.admin.execution_pb2.AbortMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.admin.execution_pb2.AbortMetadata` | |
 
 #### serialize_to_string()
 
@@ -79,14 +78,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -102,9 +93,9 @@ class ClusterAssignment(
     cluster_pool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `cluster_pool` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `cluster_pool` |  | |
 
 ### Methods
 
@@ -114,7 +105,6 @@ class ClusterAssignment(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -122,11 +112,11 @@ class ClusterAssignment(
 ```python
 def from_flyte_idl(
     p,
-) -> e: flyteidl.admin.ClusterAssignment
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -149,14 +139,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin._cluster_assignment_pb2.ClusterAssignment
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -174,11 +156,11 @@ class Execution(
     closure,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `id` |  |
-| `spec` |  |
-| `closure` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `id` |  | |
+| `spec` |  | |
+| `closure` |  | |
 
 ### Methods
 
@@ -188,7 +170,6 @@ class Execution(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -196,11 +177,11 @@ class Execution(
 ```python
 def from_flyte_idl(
     pb,
-) -> e: Execution
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` |  | |
 
 #### serialize_to_string()
 
@@ -221,14 +202,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.execution_pb2.Execution
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -257,16 +230,16 @@ class ExecutionClosure(
     updated_at: typing.Optional[datetime.datetime],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `phase` | `int` |
-| `started_at` | `datetime.datetime` |
-| `duration` | `datetime.timedelta` |
-| `error` | `typing.Optional[flytekit.models.core.execution.ExecutionError]` |
-| `outputs` | `typing.Optional[LiteralMapBlob]` |
-| `abort_metadata` | `typing.Optional[AbortMetadata]` |
-| `created_at` | `typing.Optional[datetime.datetime]` |
-| `updated_at` | `typing.Optional[datetime.datetime]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `phase` | `int` | From the flytekit.models.core.execution.WorkflowExecutionPhase enum |
+| `started_at` | `datetime.datetime` | |
+| `duration` | `datetime.timedelta` | Duration for which the execution has been running. |
+| `error` | `typing.Optional[flytekit.models.core.execution.ExecutionError]` | |
+| `outputs` | `typing.Optional[LiteralMapBlob]` | |
+| `abort_metadata` | `typing.Optional[AbortMetadata]` | Specifies metadata around an aborted workflow execution. |
+| `created_at` | `typing.Optional[datetime.datetime]` | |
+| `updated_at` | `typing.Optional[datetime.datetime]` | |
 
 ### Methods
 
@@ -276,7 +249,6 @@ class ExecutionClosure(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -284,11 +256,11 @@ class ExecutionClosure(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: ExecutionClosure
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -309,14 +281,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.execution_pb2.ExecutionClosure
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -347,15 +311,15 @@ class ExecutionMetadata(
     system_metadata: Optional[SystemMetadata],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `mode` | `int` |
-| `principal` | `str` |
-| `nesting` | `int` |
-| `scheduled_at` | `Optional[datetime.datetime]` |
-| `parent_node_execution` | `Optional[_identifier.NodeExecutionIdentifier]` |
-| `reference_execution` | `Optional[_identifier.WorkflowExecutionIdentifier]` |
-| `system_metadata` | `Optional[SystemMetadata]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mode` | `int` | An enum value from ExecutionMetadata.ExecutionMode which specifies how the job started. |
+| `principal` | `str` | The entity that triggered the execution |
+| `nesting` | `int` | An integer representing how deeply nested the workflow is (i.e. was it triggered by a parent workflow) |
+| `scheduled_at` | `Optional[datetime.datetime]` | For scheduled executions, the requested time for execution for this specific schedule invocation. |
+| `parent_node_execution` | `Optional[_identifier.NodeExecutionIdentifier]` | Which subworkflow node (if any) launched this execution |
+| `reference_execution` | `Optional[_identifier.WorkflowExecutionIdentifier]` | Optional, reference workflow execution related to this execution |
+| `system_metadata` | `Optional[SystemMetadata]` | Optional, platform-specific metadata about the execution. |
 
 ### Methods
 
@@ -365,7 +329,6 @@ class ExecutionMetadata(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -373,11 +336,11 @@ class ExecutionMetadata(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> n: ExecutionMetadata
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -398,14 +361,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.execution_pb2.ExecutionMetadata
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -450,24 +405,24 @@ class ExecutionSpec(
     execution_cluster_label: Optional[ExecutionClusterLabel],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `launch_plan` |  |
-| `metadata` |  |
-| `notifications` |  |
-| `disable_all` |  |
-| `labels` |  |
-| `annotations` |  |
-| `auth_role` |  |
-| `raw_output_data_config` |  |
-| `max_parallelism` | `Optional[int]` |
-| `security_context` | `Optional[security.SecurityContext]` |
-| `overwrite_cache` | `Optional[bool]` |
-| `interruptible` | `Optional[bool]` |
-| `envs` | `Optional[_common_models.Envs]` |
-| `tags` | `Optional[typing.List[str]]` |
-| `cluster_assignment` | `Optional[ClusterAssignment]` |
-| `execution_cluster_label` | `Optional[ExecutionClusterLabel]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `launch_plan` |  | |
+| `metadata` |  | |
+| `notifications` |  | |
+| `disable_all` |  | |
+| `labels` |  | |
+| `annotations` |  | |
+| `auth_role` |  | |
+| `raw_output_data_config` |  | Optional location of offloaded data for things like S3, etc. |
+| `max_parallelism` | `Optional[int]` | |
+| `security_context` | `Optional[security.SecurityContext]` | Optional security context to use for this execution. |
+| `overwrite_cache` | `Optional[bool]` | Optional flag to overwrite the cache for this execution. |
+| `interruptible` | `Optional[bool]` | Optional flag to override the default interruptible flag of the executed entity. |
+| `envs` | `Optional[_common_models.Envs]` | flytekit.models.common.Envs environment variables to set for this execution. |
+| `tags` | `Optional[typing.List[str]]` | Optional list of tags to apply to the execution. |
+| `cluster_assignment` | `Optional[ClusterAssignment]` | |
+| `execution_cluster_label` | `Optional[ExecutionClusterLabel]` | Optional execution cluster label to use for this execution. |
 
 ### Methods
 
@@ -477,7 +432,6 @@ class ExecutionSpec(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -485,11 +439,11 @@ class ExecutionSpec(
 ```python
 def from_flyte_idl(
     p,
-) -> n: ExecutionSpec
+)
 ```
-| Parameter | Type |
-|-|-|
-| `p` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `p` |  | |
 
 #### serialize_to_string()
 
@@ -510,14 +464,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.execution_pb2.ExecutionSpec
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -559,10 +505,10 @@ class LiteralMapBlob(
     uri,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `values` |  |
-| `uri` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `values` |  | |
+| `uri` |  | |
 
 ### Methods
 
@@ -572,7 +518,6 @@ class LiteralMapBlob(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -580,11 +525,11 @@ class LiteralMapBlob(
 ```python
 def from_flyte_idl(
     pb,
-) -> e: LiteralMapBlob
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` |  | |
 
 #### serialize_to_string()
 
@@ -605,14 +550,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.execution_pb2.LiteralMapBlob
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -638,11 +575,11 @@ class NodeExecutionGetDataResponse(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `dynamic_workflow` | `typing.Optional[DynamicWorkflowNodeMetadata]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `dynamic_workflow` | `typing.Optional[DynamicWorkflowNodeMetadata]` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 
@@ -652,7 +589,6 @@ class NodeExecutionGetDataResponse(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _node_execution_pb2. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -660,11 +596,11 @@ class NodeExecutionGetDataResponse(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: NodeExecutionGetDataResponse
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -685,14 +621,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: _node_execution_pb2.NodeExecutionGetDataResponse
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -717,9 +645,9 @@ class NotificationList(
     notifications,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `notifications` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `notifications` |  | |
 
 ### Methods
 
@@ -729,7 +657,6 @@ class NotificationList(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype:  flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -737,11 +664,11 @@ class NotificationList(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: NotificationList
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -764,14 +691,6 @@ def to_flyte_idl()
 :rtype:  flyteidl.admin.execution_pb2.NotificationList
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -787,9 +706,9 @@ class SystemMetadata(
     execution_cluster: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `execution_cluster` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `execution_cluster` | `str` | |
 
 ### Methods
 
@@ -799,7 +718,6 @@ class SystemMetadata(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) |  |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -809,9 +727,9 @@ def from_flyte_idl(
     pb2_object: flyteidl.admin.execution_pb2.SystemMetadata,
 ) -> SystemMetadata
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` | `flyteidl.admin.execution_pb2.SystemMetadata` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` | `flyteidl.admin.execution_pb2.SystemMetadata` | |
 
 #### serialize_to_string()
 
@@ -831,14 +749,6 @@ def short_string()
 ```python
 def to_flyte_idl()
 ```
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -860,12 +770,12 @@ class TaskExecutionGetDataResponse(
     full_outputs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `inputs` |  |
-| `outputs` |  |
-| `full_inputs` |  |
-| `full_outputs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` |  | |
+| `outputs` |  | |
+| `full_inputs` |  | |
+| `full_outputs` |  | |
 
 ### Methods
 
@@ -875,7 +785,6 @@ class TaskExecutionGetDataResponse(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _task_execution_pb2. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -883,11 +792,11 @@ class TaskExecutionGetDataResponse(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: TaskExecutionGetDataResponse
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -908,14 +817,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: _task_execution_pb2.TaskExecutionGetDataResponse
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -946,12 +847,12 @@ class WorkflowExecutionGetDataResponse(
     full_outputs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `inputs` |  |
-| `outputs` |  |
-| `full_inputs` |  |
-| `full_outputs` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `inputs` |  | |
+| `outputs` |  | |
+| `full_inputs` |  | |
+| `full_outputs` |  | |
 
 ### Methods
 
@@ -961,7 +862,6 @@ class WorkflowExecutionGetDataResponse(
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: _execution_pb2. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -969,11 +869,11 @@ class WorkflowExecutionGetDataResponse(
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: WorkflowExecutionGetDataResponse
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -994,14 +894,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: _execution_pb2.WorkflowExecutionGetDataResponse
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

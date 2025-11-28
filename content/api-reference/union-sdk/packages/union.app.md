@@ -1,6 +1,6 @@
 ---
 title: union.app
-version: 0.1.191
+version: 0.1.198
 variants: +byoc +selfmanaged +serverless -flyte
 layout: py_api
 ---
@@ -61,36 +61,36 @@ class App(
     request_timeout: typing.Union[datetime.timedelta, int, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate]` |
-| `port` | `typing.Union[int, union.app._models.App.Port, NoneType]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `secrets` | `typing.List[flytekit.models.security.Secret]` |
-| `args` | `*args` |
-| `command` | `typing.Union[typing.List[str], str, NoneType]` |
-| `min_replicas` | `int` |
-| `max_replicas` | `int` |
-| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` |
-| `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` |
-| `include` | `typing.List[str]` |
-| `inputs` | `typing.List[union.app._models.Input]` |
-| `env` | `dict` |
-| `cluster_pool` | `str` |
-| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` |
-| `requires_auth` | `bool` |
-| `type` | `typing.Optional[str]` |
-| `description` | `typing.Optional[str]` |
-| `framework_app` | `typing.Optional[typing.Any]` |
-| `dependencies` | `typing.List[ForwardRef('App')]` |
-| `config` | `typing.Optional[union.app._models.AppConfigProtocol]` |
-| `subdomain` | `typing.Optional[str]` |
-| `custom_domain` | `typing.Optional[str]` |
-| `links` | `typing.List[union.app._models.Link]` |
-| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
-| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate]` | |
+| `port` | `typing.Union[int, union.app._models.App.Port, NoneType]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `secrets` | `typing.List[flytekit.models.security.Secret]` | |
+| `args` | `*args` | |
+| `command` | `typing.Union[typing.List[str], str, NoneType]` | |
+| `min_replicas` | `int` | |
+| `max_replicas` | `int` | |
+| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` | |
+| `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` | |
+| `include` | `typing.List[str]` | |
+| `inputs` | `typing.List[union.app._models.Input]` | |
+| `env` | `dict` | |
+| `cluster_pool` | `str` | |
+| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` | |
+| `requires_auth` | `bool` | |
+| `type` | `typing.Optional[str]` | |
+| `description` | `typing.Optional[str]` | |
+| `framework_app` | `typing.Optional[typing.Any]` | |
+| `dependencies` | `typing.List[ForwardRef('App')]` | |
+| `config` | `typing.Optional[union.app._models.AppConfigProtocol]` | |
+| `subdomain` | `typing.Optional[str]` | |
+| `custom_domain` | `typing.Optional[str]` | |
+| `links` | `typing.List[union.app._models.Link]` | |
+| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
 
 ### Methods
 
@@ -110,9 +110,9 @@ Query for endpoint.
 
 
 
-| Parameter | Type |
-|-|-|
-| `public` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `public` | `bool` | Whether to return the public or internal endpoint. :returns: Object representing a URL query. |
 
 ### Properties
 
@@ -129,9 +129,9 @@ class ArizeConfig(
     endpoint: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
 
 ### Methods
 
@@ -151,10 +151,10 @@ def before_to_union_idl(
 Modify app in place at the beginning of `App._to_union_idl`.
 
 
-| Parameter | Type |
-|-|-|
-| `app` | `App` |
-| `settings` | `union.app._models.AppSerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `app` | `App` | |
+| `settings` | `union.app._models.AppSerializationSettings` | |
 
 ## union.app.FlyteConnectorApp
 
@@ -193,36 +193,36 @@ class FlyteConnectorApp(
     request_timeout: typing.Union[datetime.timedelta, int, NoneType],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate]` |
-| `port` | `typing.Union[int, union.app._models.App.Port]` |
-| `limits` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `requests` | `typing.Optional[flytekit.core.resources.Resources]` |
-| `secrets` | `typing.List[flytekit.models.security.Secret]` |
-| `args` | `*args` |
-| `command` | `typing.Union[typing.List[str], str, NoneType]` |
-| `min_replicas` | `int` |
-| `max_replicas` | `int` |
-| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` |
-| `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` |
-| `include` | `typing.List[str]` |
-| `inputs` | `typing.List[union.app._models.Input]` |
-| `env` | `dict` |
-| `cluster_pool` | `str` |
-| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` |
-| `requires_auth` | `bool` |
-| `type` | `str` |
-| `description` | `typing.Optional[str]` |
-| `framework_app` | `typing.Optional[typing.Any]` |
-| `dependencies` | `typing.List[ForwardRef('App')]` |
-| `config` | `typing.Optional[union.app._models.AppConfigProtocol]` |
-| `subdomain` | `typing.Optional[str]` |
-| `custom_domain` | `typing.Optional[str]` |
-| `links` | `typing.List[union.app._models.Link]` |
-| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` |
-| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `container_image` | `typing.Union[str, flytekit.image_spec.image_spec.ImageSpec, flytekit.core.pod_template.PodTemplate]` | |
+| `port` | `typing.Union[int, union.app._models.App.Port]` | |
+| `limits` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `requests` | `typing.Optional[flytekit.core.resources.Resources]` | |
+| `secrets` | `typing.List[flytekit.models.security.Secret]` | |
+| `args` | `*args` | |
+| `command` | `typing.Union[typing.List[str], str, NoneType]` | |
+| `min_replicas` | `int` | |
+| `max_replicas` | `int` | |
+| `scaledown_after` | `typing.Union[datetime.timedelta, int, NoneType]` | |
+| `scaling_metric` | `typing.Union[union.app._models.ScalingMetric.RequestRate, union.app._models.ScalingMetric.Concurrency, NoneType]` | |
+| `include` | `typing.List[str]` | |
+| `inputs` | `typing.List[union.app._models.Input]` | |
+| `env` | `dict` | |
+| `cluster_pool` | `str` | |
+| `accelerator` | `typing.Optional[flytekit.extras.accelerators.BaseAccelerator]` | |
+| `requires_auth` | `bool` | |
+| `type` | `str` | |
+| `description` | `typing.Optional[str]` | |
+| `framework_app` | `typing.Optional[typing.Any]` | |
+| `dependencies` | `typing.List[ForwardRef('App')]` | |
+| `config` | `typing.Optional[union.app._models.AppConfigProtocol]` | |
+| `subdomain` | `typing.Optional[str]` | |
+| `custom_domain` | `typing.Optional[str]` | |
+| `links` | `typing.List[union.app._models.Link]` | |
+| `shared_memory` | `typing.Union[typing.Literal[True], str, NoneType]` | |
+| `request_timeout` | `typing.Union[datetime.timedelta, int, NoneType]` | |
 
 ### Methods
 
@@ -242,9 +242,9 @@ Query for endpoint.
 
 
 
-| Parameter | Type |
-|-|-|
-| `public` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `public` | `bool` | Whether to return the public or internal endpoint. :returns: Object representing a URL query. |
 
 ### Properties
 
@@ -271,15 +271,15 @@ class Input(
     ignore_patterns: list[str],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `value` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery, union.app._models.URLQuery]` |
-| `name` | `typing.Optional[str]` |
-| `env_var` | `typing.Optional[str]` |
-| `type` | `typing.Optional[union.app._models.Input.Type]` |
-| `download` | `bool` |
-| `mount` | `typing.Optional[str]` |
-| `ignore_patterns` | `list[str]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` | `typing.Union[str, flytekit.core.artifact.ArtifactQuery, union.app._models.URLQuery]` | |
+| `name` | `typing.Optional[str]` | |
+| `env_var` | `typing.Optional[str]` | |
+| `type` | `typing.Optional[union.app._models.Input.Type]` | |
+| `download` | `bool` | |
+| `mount` | `typing.Optional[str]` | |
+| `ignore_patterns` | `list[str]` | |
 
 ## union.app.Link
 
@@ -290,11 +290,11 @@ class Link(
     is_relative: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `path` | `str` |
-| `title` | `str` |
-| `is_relative` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `path` | `str` | |
+| `title` | `str` | |
+| `is_relative` | `bool` | |
 
 ## union.app.PhoenixConfig
 
@@ -304,10 +304,10 @@ class PhoenixConfig(
     project: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `endpoint` | `str` |
-| `project` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | |
+| `project` | `str` | |
 
 ### Methods
 
@@ -327,10 +327,10 @@ def before_to_union_idl(
 Modify app in place at the beginning of `App._to_union_idl`.
 
 
-| Parameter | Type |
-|-|-|
-| `app` | `App` |
-| `settings` | `union.app._models.AppSerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `app` | `App` | |
+| `settings` | `union.app._models.AppSerializationSettings` | |
 
 ## union.app.ScalingMetric
 
@@ -342,10 +342,10 @@ class URLQuery(
     public: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `public` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `public` | `bool` | |
 
 ## union.app.WeaveConfig
 
@@ -357,12 +357,12 @@ class WeaveConfig(
     host: str,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `project` | `str` |
-| `entity` | `str` |
-| `api_host` | `str` |
-| `host` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `project` | `str` | |
+| `entity` | `str` | |
+| `api_host` | `str` | |
+| `host` | `str` | |
 
 ### Methods
 
@@ -382,8 +382,8 @@ def before_to_union_idl(
 Modify app in place at the beginning of `App._to_union_idl`.
 
 
-| Parameter | Type |
-|-|-|
-| `app` | `App` |
-| `settings` | `union.app._models.AppSerializationSettings` |
+| Parameter | Type | Description |
+|-|-|-|
+| `app` | `App` | |
+| `settings` | `union.app._models.AppSerializationSettings` | |
 

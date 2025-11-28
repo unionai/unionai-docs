@@ -1,6 +1,6 @@
 ---
 title: flytekit.models.matchable_resource
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -34,9 +34,9 @@ Dict values should be the custom values which get substituted during resource cr
 
 
 
-| Parameter | Type |
-|-|-|
-| `attributes` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `attributes` |  | |
 
 ### Methods
 
@@ -46,7 +46,6 @@ Dict values should be the custom values which get substituted during resource cr
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -54,11 +53,11 @@ Dict values should be the custom values which get substituted during resource cr
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: ClusterResourceAttributes
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -81,14 +80,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.matchable_resource_pb2.ClusterResourceAttributes
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -109,9 +100,9 @@ Label value to determine where the execution will be run
 
 
 
-| Parameter | Type |
-|-|-|
-| `value` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `value` |  | |
 
 ### Methods
 
@@ -121,7 +112,6 @@ Label value to determine where the execution will be run
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -129,11 +119,11 @@ Label value to determine where the execution will be run
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: ExecutionClusterLabel
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -156,14 +146,6 @@ def to_flyte_idl()
 :rtype: flyteidl.admin.matchable_resource_pb2.ExecutionClusterLabel
 
 
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
-
-
 ### Properties
 
 | Property | Type | Description |
@@ -183,9 +165,9 @@ Tags used for assigning execution queues for tasks matching a project, domain an
 
 
 
-| Parameter | Type |
-|-|-|
-| `tags` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `tags` |  | |
 
 ### Methods
 
@@ -195,7 +177,6 @@ Tags used for assigning execution queues for tasks matching a project, domain an
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -203,11 +184,11 @@ Tags used for assigning execution queues for tasks matching a project, domain an
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: ExecutionQueueAttributes
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -228,14 +209,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.matchable_resource_pb2.ExecutionQueueAttributes
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -261,22 +234,22 @@ def verbose_string()
 ```python
 def enum_to_string(
     val,
-) -> e: Text
+)
 ```
-| Parameter | Type |
-|-|-|
-| `val` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` |  | |
 
 #### string_to_enum()
 
 ```python
 def string_to_enum(
     val,
-) -> e: int
+)
 ```
-| Parameter | Type |
-|-|-|
-| `val` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` |  | |
 
 ## flytekit.models.matchable_resource.MatchingAttributes
 
@@ -292,12 +265,12 @@ At most one target from cluster_resource_attributes, execution_queue_attributes 
     can be set.
 
 
-| Parameter | Type |
-|-|-|
-| `cluster_resource_attributes` |  |
-| `execution_queue_attributes` |  |
-| `execution_cluster_label` |  |
-| `plugin_overrides` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `cluster_resource_attributes` |  | |
+| `execution_queue_attributes` |  | |
+| `execution_cluster_label` |  | |
+| `plugin_overrides` |  | |
 
 ### Methods
 
@@ -307,7 +280,6 @@ At most one target from cluster_resource_attributes, execution_queue_attributes 
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -315,11 +287,11 @@ At most one target from cluster_resource_attributes, execution_queue_attributes 
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: MatchingAttributes
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -340,14 +312,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.matchable_resource_pb2.MatchingAttributes
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -381,11 +345,11 @@ Alternate plugin implementations requested for a specific task type.
 
 
 
-| Parameter | Type |
-|-|-|
-| `task_type` |  |
-| `plugin_id` |  |
-| `missing_plugin_behavior` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `task_type` |  | |
+| `plugin_id` |  | |
+| `missing_plugin_behavior` |  | |
 
 ### Methods
 
@@ -396,7 +360,6 @@ Alternate plugin implementations requested for a specific task type.
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`string_to_enum()`](#string_to_enum) |  |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -404,11 +367,11 @@ Alternate plugin implementations requested for a specific task type.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: PluginOverride
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -428,11 +391,11 @@ def short_string()
 ```python
 def string_to_enum(
     val,
-) -> e: int
+)
 ```
-| Parameter | Type |
-|-|-|
-| `val` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `val` |  | |
 
 #### to_flyte_idl()
 
@@ -440,14 +403,6 @@ def string_to_enum(
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.matchable_resource_pb2.PluginOverride
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties
@@ -473,9 +428,9 @@ Alternate plugin implementations for designated task types.
 
 
 
-| Parameter | Type |
-|-|-|
-| `overrides` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `overrides` |  | |
 
 ### Methods
 
@@ -485,7 +440,6 @@ Alternate plugin implementations for designated task types.
 | [`serialize_to_string()`](#serialize_to_string) |  |
 | [`short_string()`](#short_string) | :rtype: Text. |
 | [`to_flyte_idl()`](#to_flyte_idl) | :rtype: flyteidl. |
-| [`verbose_string()`](#verbose_string) | :rtype: Text. |
 
 
 #### from_flyte_idl()
@@ -493,11 +447,11 @@ Alternate plugin implementations for designated task types.
 ```python
 def from_flyte_idl(
     pb2_object,
-) -> e: PluginOverrides
+)
 ```
-| Parameter | Type |
-|-|-|
-| `pb2_object` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb2_object` |  | |
 
 #### serialize_to_string()
 
@@ -518,14 +472,6 @@ def short_string()
 def to_flyte_idl()
 ```
 :rtype: flyteidl.admin.matchable_resource_pb2.PluginOverrides
-
-
-#### verbose_string()
-
-```python
-def verbose_string()
-```
-:rtype: Text
 
 
 ### Properties

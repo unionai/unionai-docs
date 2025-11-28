@@ -451,5 +451,3 @@ In the case where workflows are registered on each commit in your build pipeline
 
 * **Container Image Specification** : When managing multiple images across tasks within a workflow, use the `--image` flag during registration to specify which image to use.
   This avoids hardcoding the image within the task definition, promoting reusability and flexibility in workflows.
-
-

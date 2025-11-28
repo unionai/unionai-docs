@@ -1,6 +1,6 @@
 ---
 title: flytekit.remote.remote_fs
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,9 +37,9 @@ def get_flyte_fs(
     remote: FlyteRemote,
 ) -> typing.Type[FlyteFS]
 ```
-| Parameter | Type |
-|-|-|
-| `remote` | `FlyteRemote` |
+| Parameter | Type | Description |
+|-|-|-|
+| `remote` | `FlyteRemote` | |
 
 ## flytekit.remote.remote_fs.FlytePathResolver
 
@@ -62,10 +62,10 @@ def add_mapping(
 Thread safe method to dd a mapping from a flyte uri to a remote path
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_uri` | `str` |
-| `remote_path` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_uri` | `str` | |
+| `remote_path` | `str` | |
 
 #### resolve_remote_path()
 
@@ -77,7 +77,7 @@ def resolve_remote_path(
 Given a flyte uri, return the remote path if it exists or was created in current session, otherwise return None
 
 
-| Parameter | Type |
-|-|-|
-| `flyte_uri` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `flyte_uri` | `str` | |
 

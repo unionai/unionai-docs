@@ -1,6 +1,6 @@
 ---
 title: flytekit.utils.pbhash
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,9 +29,9 @@ def compute_hash(
 Computes a deterministic hash in bytes for the Protobuf object.
 
 
-| Parameter | Type |
-|-|-|
-| `pb` | `google.protobuf.message.Message` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` | `google.protobuf.message.Message` | |
 
 #### compute_hash_string()
 
@@ -43,7 +43,7 @@ def compute_hash_string(
 Computes a deterministic hash in base64 encoded string for the Protobuf object
 
 
-| Parameter | Type |
-|-|-|
-| `pb` | `google.protobuf.message.Message` |
+| Parameter | Type | Description |
+|-|-|-|
+| `pb` | `google.protobuf.message.Message` | |
 

@@ -1,6 +1,6 @@
 ---
 title: flytekit.interactive
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,21 +8,7 @@ layout: py_api
 # flytekit.interactive
 
 
-..
-currentmodule:: flytekit.interactive
-
-This package contains flyteinteractive plugin for Flytekit.
-
-.. autosummary::
-   :template: custom.rst
-   :toctree: generated/
-
-   vscode
-   VscodeConfig
-   DEFAULT_CODE_SERVER_DIR_NAME
-   DEFAULT_CODE_SERVER_REMOTE_PATH
-   DEFAULT_CODE_SERVER_EXTENSIONS
-   get_task_inputs
+This module provides functionality related to Flytekit Interactive
 
 ## Directory
 

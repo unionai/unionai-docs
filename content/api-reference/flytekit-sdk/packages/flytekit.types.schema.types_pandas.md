@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types_pandas
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -51,10 +51,10 @@ def assert_type(
     v: T,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[T]` |
-| `v` | `T` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[T]` | |
+| `v` | `T` | |
 
 #### async_to_literal()
 
@@ -72,12 +72,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `pandas.core.frame.DataFrame` |
-| `python_type` | `typing.Type[pandas.core.frame.DataFrame]` |
-| `expected` | `flytekit.models.types.LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `pandas.core.frame.DataFrame` | The actual value to be transformed |
+| `python_type` | `typing.Type[pandas.core.frame.DataFrame]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `flytekit.models.types.LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -91,11 +91,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `lv` | `flytekit.models.literals.Literal` |
-| `expected_python_type` | `typing.Type[pandas.core.frame.DataFrame]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | FlyteContext |
+| `lv` | `flytekit.models.literals.Literal` | The received literal Value |
+| `expected_python_type` | `typing.Type[pandas.core.frame.DataFrame]` | Expected native python type that should be returned |
 
 #### from_binary_idl()
 
@@ -118,10 +118,10 @@ Life Cycle:
                   (to_literal)                            (propeller attribute access)                       (from_binary_idl)
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### from_generic_idl()
 
@@ -138,10 +138,10 @@ Note:
 - This can be removed in the future when the Flyte Console support generate Binary IDL Scalar as input.
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### get_literal_type()
 
@@ -153,9 +153,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `typing.Type[pandas.core.frame.DataFrame]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `typing.Type[pandas.core.frame.DataFrame]` | |
 
 #### guess_python_type()
 
@@ -167,9 +167,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -179,10 +179,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -196,11 +196,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `flytekit.core.context_manager.FlyteContext` |
-| `python_val` | `pandas.core.frame.DataFrame` |
-| `expected_python_type` | `typing.Type[~T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `flytekit.core.context_manager.FlyteContext` | |
+| `python_val` | `pandas.core.frame.DataFrame` | |
+| `expected_python_type` | `typing.Type[~T]` | |
 
 #### to_literal()
 
@@ -218,12 +218,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -237,11 +237,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -267,11 +267,11 @@ class PandasSchemaReader(
     fmt: <enum 'SchemaFormat'>,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `local_dir` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `<enum 'SchemaFormat'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_dir` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `<enum 'SchemaFormat'>` | |
 
 ### Methods
 
@@ -288,9 +288,9 @@ def all(
     kwargs,
 ) -> T
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### iter()
 
@@ -299,9 +299,9 @@ def iter(
     kwargs,
 ) -> typing.Generator[T, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
@@ -342,11 +342,11 @@ class PandasSchemaWriter(
     fmt: <enum 'SchemaFormat'>,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `local_dir` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `<enum 'SchemaFormat'>` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_dir` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `<enum 'SchemaFormat'>` | |
 
 ### Methods
 
@@ -363,10 +363,10 @@ def write(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dfs` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dfs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
@@ -394,11 +394,11 @@ def read(
     kwargs,
 ) -> pandas.core.frame.DataFrame
 ```
-| Parameter | Type |
-|-|-|
-| `files` | `os.PathLike` |
-| `columns` | `typing.Optional[typing.List[str]]` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `files` | `os.PathLike` | |
+| `columns` | `typing.Optional[typing.List[str]]` | |
+| `kwargs` | `**kwargs` | |
 
 #### write()
 
@@ -414,11 +414,11 @@ def write(
 Writes data frame as a chunk to the local directory owned by the Schema object.  Will later be uploaded to s3.
 
 
-| Parameter | Type |
-|-|-|
-| `df` | `pandas.core.frame.DataFrame` |
-| `to_file` | `os.PathLike` |
-| `coerce_timestamps` | `str` |
-| `allow_truncated_timestamps` | `bool` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `df` | `pandas.core.frame.DataFrame` | data frame to write as parquet |
+| `to_file` | `os.PathLike` | Sink file to write the dataframe to |
+| `coerce_timestamps` | `str` | format to store timestamp in parquet. 'us', 'ms', 's' are allowed values. Note: if your timestamps will lose data due to the coercion, your write will fail!  Nanoseconds are problematic in the Parquet format and will not work. See allow_truncated_timestamps. |
+| `allow_truncated_timestamps` | `bool` | default False. Allow truncation when coercing timestamps to a coarser resolution. |
+| `kwargs` | `**kwargs` | |
 

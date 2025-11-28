@@ -1,6 +1,6 @@
 ---
 title: flytekit.exceptions.base
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -27,10 +27,10 @@ class FlyteException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 
@@ -50,10 +50,10 @@ class FlyteRecoverableException(
     timestamp: typing.Optional[float],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `timestamp` | `typing.Optional[float]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `timestamp` | `typing.Optional[float]` | |
 
 ### Properties
 

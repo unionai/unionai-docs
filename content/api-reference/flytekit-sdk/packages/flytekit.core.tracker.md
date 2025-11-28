@@ -1,6 +1,6 @@
 ---
 title: flytekit.core.tracker
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -36,14 +36,14 @@ layout: py_api
 ```python
 def extract_task_module(
     f: typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance],
-) -> n: [name to use: str, module_name: str, function_name: str, full_path: str]
+) -> typing.Tuple[str, str, str, str]
 ```
 Returns the task-name, absolute module and the string name of the callable.
 
 
-| Parameter | Type |
-|-|-|
-| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `f` | `typing.Union[typing.Callable, flytekit.core.tracker.TrackedInstance]` | A task or any other callable :return: [name to use: str, module_name: str, function_name: str, full_path: str] |
 
 #### get_full_module_path()
 
@@ -53,10 +53,10 @@ def get_full_module_path(
     mod_name: str,
 ) -> str
 ```
-| Parameter | Type |
-|-|-|
-| `mod` | `module` |
-| `mod_name` | `str` |
+| Parameter | Type | Description |
+|-|-|-|
+| `mod` | `module` | |
+| `mod_name` | `str` | |
 
 #### import_module_from_file()
 
@@ -66,10 +66,10 @@ def import_module_from_file(
     file,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `module_name` |  |
-| `file` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `module_name` |  | |
+| `file` |  | |
 
 #### is_functools_wrapped_module_level()
 
@@ -117,9 +117,9 @@ wrapped function. Since ``define_inner_wrapped_fn`` doesn't update the __qualnam
 function's __qualname__ won't match its __name__.
 
 
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
 
 #### is_ipython_or_pickle_exists()
 
@@ -159,9 +159,9 @@ def foo():
 In the above example `foo_inner` is the local function or a nested function.
 
 
-| Parameter | Type |
-|-|-|
-| `func` | `typing.Callable` |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` | `typing.Callable` | |
 
 #### istestfunction()
 
@@ -176,9 +176,9 @@ A test module has to have `test_` as the prefix or `_test` as the suffix.
 False in all other cases.
 
 
-| Parameter | Type |
-|-|-|
-| `func` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `func` |  | |
 
 ## flytekit.core.tracker.InstanceTrackingMeta
 
@@ -208,10 +208,10 @@ class TrackedInstance(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `args` | `*args` | |
+| `kwargs` | `**kwargs` | |
 
 ### Methods
 

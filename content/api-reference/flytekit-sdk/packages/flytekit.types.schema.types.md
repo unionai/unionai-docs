@@ -1,6 +1,6 @@
 ---
 title: flytekit.types.schema.types
-version: 0.1.dev2192+g7c539c3.d20250403
+version: 1.16.10
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -18,7 +18,9 @@ layout: py_api
 | [`LocalIOSchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
 | [`LocalIOSchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypeslocalioschemawriter) | Abstract base class for generic types. |
 | [`SchemaEngine`](.././flytekit.types.schema.types#flytekittypesschematypesschemaengine) | This is the core Engine that handles all schema sub-systems. |
+| [`SchemaFormat`](.././flytekit.types.schema.types#flytekittypesschematypesschemaformat) | Represents the schema storage format (at rest). |
 | [`SchemaHandler`](.././flytekit.types.schema.types#flytekittypesschematypesschemahandler) |  |
+| [`SchemaOpenMode`](.././flytekit.types.schema.types#flytekittypesschematypesschemaopenmode) | Create a collection of name/value pairs. |
 | [`SchemaReader`](.././flytekit.types.schema.types#flytekittypesschematypesschemareader) | Base SchemaReader to handle any readers (that can manage their own IO or otherwise). |
 | [`SchemaWriter`](.././flytekit.types.schema.types#flytekittypesschematypesschemawriter) | Abstract base class for generic types. |
 
@@ -46,10 +48,10 @@ def generate_ordered_files(
     n: int,
 ) -> typing.Generator[str, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `directory` | `os.PathLike` |
-| `n` | `int` |
+| Parameter | Type | Description |
+|-|-|-|
+| `directory` | `os.PathLike` | |
+| `n` | `int` | |
 
 ## flytekit.types.schema.types.FlyteSchema
 
@@ -61,12 +63,12 @@ class FlyteSchema(
     downloader: typing.Optional[typing.Callable],
 )
 ```
-| Parameter | Type |
-|-|-|
-| `local_path` | `typing.Optional[str]` |
-| `remote_path` | `typing.Optional[str]` |
-| `supported_mode` | `SchemaOpenMode` |
-| `downloader` | `typing.Optional[typing.Callable]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `local_path` | `typing.Optional[str]` | |
+| `remote_path` | `typing.Optional[str]` | |
+| `supported_mode` | `SchemaOpenMode` | |
+| `downloader` | `typing.Optional[typing.Callable]` | |
 
 ### Methods
 
@@ -104,14 +106,12 @@ def columns()
 
 ```python
 def deserialize_flyte_schema(
-    args,
-    kwargs,
-)
+    info,
+) -> FlyteSchema
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `info` |  | |
 
 #### format()
 
@@ -126,10 +126,10 @@ def from_dict(
     dialect,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `d` |  |
-| `dialect` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `d` |  | |
+| `dialect` |  | |
 
 #### from_json()
 
@@ -140,11 +140,11 @@ def from_json(
     from_dict_kwargs: typing.Any,
 ) -> ~T
 ```
-| Parameter | Type |
-|-|-|
-| `data` | `typing.Union[str, bytes, bytearray]` |
-| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` |
-| `from_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Union[str, bytes, bytearray]` | |
+| `decoder` | `collections.abc.Callable[[typing.Union[str, bytes, bytearray]], dict[typing.Any, typing.Any]]` | |
+| `from_dict_kwargs` | `typing.Any` | |
 
 #### open()
 
@@ -161,24 +161,16 @@ if the object was created in write-mode, a read is allowed.
 
 
 
-| Parameter | Type |
-|-|-|
-| `dataframe_fmt` | `typing.Optional[type]` |
-| `override_mode` | `typing.Optional[SchemaOpenMode]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dataframe_fmt` | `typing.Optional[type]` | Type of the dataframe for example pandas.DataFrame etc |
+| `override_mode` | `typing.Optional[SchemaOpenMode]` | overrides the default mode (Read, Write) SchemaOpenMode.READ, SchemaOpenMode.Write So if you have written to a schema and want to re-open it for reading, you can use this mode. A ReadOnly Schema object cannot be opened in write mode. |
 
 #### serialize_flyte_schema()
 
 ```python
-def serialize_flyte_schema(
-    args,
-    kwargs,
-)
+def serialize_flyte_schema()
 ```
-| Parameter | Type |
-|-|-|
-| `args` | ``*args`` |
-| `kwargs` | ``**kwargs`` |
-
 #### to_dict()
 
 ```python
@@ -192,10 +184,10 @@ def to_json(
     to_dict_kwargs: typing.Any,
 ) -> typing.Union[str, bytes, bytearray]
 ```
-| Parameter | Type |
-|-|-|
-| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` |
-| `to_dict_kwargs` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `encoder` | `collections.abc.Callable[[typing.Any], typing.Union[str, bytes, bytearray]]` | |
+| `to_dict_kwargs` | `typing.Any` | |
 
 ### Properties
 
@@ -238,10 +230,10 @@ def assert_type(
     v: typing.Any,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type[FlyteSchema]` |
-| `v` | `typing.Any` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[FlyteSchema]` | |
+| `v` | `typing.Any` | |
 
 #### async_to_literal()
 
@@ -259,12 +251,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `FlyteSchema` |
-| `python_type` | `Type[FlyteSchema]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `FlyteSchema` | The actual value to be transformed |
+| `python_type` | `Type[FlyteSchema]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### async_to_python_value()
 
@@ -278,11 +270,11 @@ def async_to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[FlyteSchema]` | Expected native python type that should be returned |
 
 #### dict_to_flyte_schema()
 
@@ -292,10 +284,10 @@ def dict_to_flyte_schema(
     expected_python_type: Type[FlyteSchema],
 ) -> FlyteSchema
 ```
-| Parameter | Type |
-|-|-|
-| `dict_obj` | `typing.Dict[str, str]` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dict_obj` | `typing.Dict[str, str]` | |
+| `expected_python_type` | `Type[FlyteSchema]` | |
 
 #### from_binary_idl()
 
@@ -329,10 +321,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `binary_idl_object` | `Binary` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `binary_idl_object` | `Binary` | |
+| `expected_python_type` | `Type[FlyteSchema]` | |
 
 #### from_generic_idl()
 
@@ -365,10 +357,10 @@ Related PR:
 - Link: https://github.com/flyteorg/flytekit/pull/2554
 
 
-| Parameter | Type |
-|-|-|
-| `generic` | `Struct` |
-| `expected_python_type` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `generic` | `Struct` | |
+| `expected_python_type` | `Type[FlyteSchema]` | |
 
 #### get_literal_type()
 
@@ -380,9 +372,9 @@ def get_literal_type(
 Converts the python type to a Flyte LiteralType
 
 
-| Parameter | Type |
-|-|-|
-| `t` | `Type[FlyteSchema]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type[FlyteSchema]` | |
 
 #### guess_python_type()
 
@@ -394,9 +386,9 @@ def guess_python_type(
 Converts the Flyte LiteralType to a python object type.
 
 
-| Parameter | Type |
-|-|-|
-| `literal_type` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `literal_type` | `LiteralType` | |
 
 #### isinstance_generic()
 
@@ -406,10 +398,10 @@ def isinstance_generic(
     generic_alias,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `obj` |  |
-| `generic_alias` |  |
+| Parameter | Type | Description |
+|-|-|-|
+| `obj` |  | |
+| `generic_alias` |  | |
 
 #### to_html()
 
@@ -423,11 +415,11 @@ def to_html(
 Converts any python val (dataframe, int, float) to a html string, and it will be wrapped in the HTML div
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `T` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | |
+| `python_val` | `T` | |
+| `expected_python_type` | `Type[T]` | |
 
 #### to_literal()
 
@@ -445,12 +437,12 @@ do not match (or are not allowed) the Transformer implementer should raise an As
 what was the mismatch
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `python_val` | `typing.Any` |
-| `python_type` | `Type[T]` |
-| `expected` | `LiteralType` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | A FlyteContext, useful in accessing the filesystem and other attributes |
+| `python_val` | `typing.Any` | The actual value to be transformed |
+| `python_type` | `Type[T]` | The assumed type of the value (this matches the declared type on the function) |
+| `expected` | `LiteralType` | Expected Literal Type |
 
 #### to_python_value()
 
@@ -464,11 +456,11 @@ def to_python_value(
 Converts the given Literal to a Python Type. If the conversion cannot be done an AssertionError should be raised
 
 
-| Parameter | Type |
-|-|-|
-| `ctx` | `FlyteContext` |
-| `lv` | `Literal` |
-| `expected_python_type` | `Type[T]` |
+| Parameter | Type | Description |
+|-|-|-|
+| `ctx` | `FlyteContext` | FlyteContext |
+| `lv` | `Literal` | The received literal Value |
+| `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
 
 ### Properties
 
@@ -494,11 +486,11 @@ class LocalIOSchemaReader(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
 
 ### Methods
 
@@ -515,9 +507,9 @@ def all(
     kwargs,
 ) -> T
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### iter()
 
@@ -526,9 +518,9 @@ def iter(
     kwargs,
 ) -> typing.Generator[T, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
@@ -569,11 +561,11 @@ class LocalIOSchemaWriter(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `to_local_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `to_local_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
 
 ### Methods
 
@@ -590,10 +582,10 @@ def write(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dfs` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dfs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
@@ -624,9 +616,9 @@ def get_handler(
     t: Type,
 ) -> SchemaHandler
 ```
-| Parameter | Type |
-|-|-|
-| `t` | `Type` |
+| Parameter | Type | Description |
+|-|-|-|
+| `t` | `Type` | |
 
 #### register_handler()
 
@@ -638,9 +630,15 @@ def register_handler(
 Register a new handler that can create a SchemaReader and SchemaWriter for the expected type.
 
 
-| Parameter | Type |
-|-|-|
-| `h` | `SchemaHandler` |
+| Parameter | Type | Description |
+|-|-|-|
+| `h` | `SchemaHandler` | |
+
+## flytekit.types.schema.types.SchemaFormat
+
+Represents the schema storage format (at rest).
+Currently only parquet is supported
+
 
 ## flytekit.types.schema.types.SchemaHandler
 
@@ -653,13 +651,53 @@ class SchemaHandler(
     handles_remote_io: bool,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `name` | `str` |
-| `object_type` | `Type` |
-| `reader` | `Type[SchemaReader]` |
-| `writer` | `Type[SchemaWriter]` |
-| `handles_remote_io` | `bool` |
+| Parameter | Type | Description |
+|-|-|-|
+| `name` | `str` | |
+| `object_type` | `Type` | |
+| `reader` | `Type[SchemaReader]` | |
+| `writer` | `Type[SchemaWriter]` | |
+| `handles_remote_io` | `bool` | |
+
+## flytekit.types.schema.types.SchemaOpenMode
+
+Create a collection of name/value pairs.
+
+Example enumeration:
+
+>>> class Color(Enum):
+...     RED = 1
+...     BLUE = 2
+...     GREEN = 3
+
+Access them by:
+
+- attribute access:
+
+  >>> Color.RED
+  <Color.RED: 1>
+
+- value lookup:
+
+  >>> Color(1)
+  <Color.RED: 1>
+
+- name lookup:
+
+  >>> Color['RED']
+  <Color.RED: 1>
+
+Enumerations can be iterated over, and know how many members they have:
+
+>>> len(Color)
+3
+
+>>> list(Color)
+[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]
+
+Methods can be added to enumerations, and members can have their own
+attributes -- see the documentation for details.
+
 
 ## flytekit.types.schema.types.SchemaReader
 
@@ -674,11 +712,11 @@ class SchemaReader(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `from_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `from_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
 
 ### Methods
 
@@ -695,9 +733,9 @@ def all(
     kwargs,
 ) -> T
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 #### iter()
 
@@ -706,9 +744,9 @@ def iter(
     kwargs,
 ) -> typing.Generator[T, None, None]
 ```
-| Parameter | Type |
-|-|-|
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
@@ -749,11 +787,11 @@ class SchemaWriter(
     fmt: SchemaFormat,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `to_path` | `str` |
-| `cols` | `typing.Optional[typing.Dict[str, type]]` |
-| `fmt` | `SchemaFormat` |
+| Parameter | Type | Description |
+|-|-|-|
+| `to_path` | `str` | |
+| `cols` | `typing.Optional[typing.Dict[str, type]]` | |
+| `fmt` | `SchemaFormat` | |
 
 ### Methods
 
@@ -770,10 +808,10 @@ def write(
     kwargs,
 )
 ```
-| Parameter | Type |
-|-|-|
-| `dfs` |  |
-| `kwargs` | ``**kwargs`` |
+| Parameter | Type | Description |
+|-|-|-|
+| `dfs` |  | |
+| `kwargs` | `**kwargs` | |
 
 ### Properties
 
