@@ -26,14 +26,11 @@ layout: py_api
 | [`flytekit.clients.raw`](flytekit.clients.raw) |  |
 | [`flytekit.clis.helpers`](flytekit.clis.helpers) |  |
 | [`flytekit.clis.sdk_in_container.backfill`](flytekit.clis.sdk_in_container.backfill) |  |
-| [`flytekit.clis.sdk_in_container.build`](flytekit.clis.sdk_in_container.build) |  |
 | [`flytekit.clis.sdk_in_container.constants`](flytekit.clis.sdk_in_container.constants) |  |
 | [`flytekit.clis.sdk_in_container.executions`](flytekit.clis.sdk_in_container.executions) |  |
 | [`flytekit.clis.sdk_in_container.helpers`](flytekit.clis.sdk_in_container.helpers) |  |
 | [`flytekit.clis.sdk_in_container.metrics`](flytekit.clis.sdk_in_container.metrics) |  |
 | [`flytekit.clis.sdk_in_container.package`](flytekit.clis.sdk_in_container.package) |  |
-| [`flytekit.clis.sdk_in_container.pyflyte`](flytekit.clis.sdk_in_container.pyflyte) |  |
-| [`flytekit.clis.sdk_in_container.run`](flytekit.clis.sdk_in_container.run) |  |
 | [`flytekit.clis.sdk_in_container.serialize`](flytekit.clis.sdk_in_container.serialize) |  |
 | [`flytekit.clis.sdk_in_container.serve`](flytekit.clis.sdk_in_container.serve) |  |
 | [`flytekit.clis.sdk_in_container.utils`](flytekit.clis.sdk_in_container.utils) |  |
@@ -104,12 +101,18 @@ layout: py_api
 | [`flytekit.exceptions.utils`](flytekit.exceptions.utils) |  |
 | [`flytekit.experimental.eager_function`](flytekit.experimental.eager_function) |  |
 | [`flytekit.extend.backend.base_connector`](flytekit.extend.backend.base_connector) |  |
+| [`flytekit.extend.backend.connector_service`](flytekit.extend.backend.connector_service) |  |
 | [`flytekit.extend.backend.utils`](flytekit.extend.backend.utils) |  |
 | [`flytekit.extras.accelerators`](flytekit.extras.accelerators) | ## Specifying Accelerators. |
 | [`flytekit.extras.cloud_pickle_resolver`](flytekit.extras.cloud_pickle_resolver) |  |
 | [`flytekit.extras.pydantic_transformer.transformer`](flytekit.extras.pydantic_transformer.transformer) |  |
+| [`flytekit.extras.pytorch.checkpoint`](flytekit.extras.pytorch.checkpoint) |  |
+| [`flytekit.extras.pytorch.native`](flytekit.extras.pytorch.native) |  |
+| [`flytekit.extras.sklearn.native`](flytekit.extras.sklearn.native) |  |
 | [`flytekit.extras.sqlite3.task`](flytekit.extras.sqlite3.task) |  |
 | [`flytekit.extras.tasks.shell`](flytekit.extras.tasks.shell) |  |
+| [`flytekit.extras.tensorflow.model`](flytekit.extras.tensorflow.model) |  |
+| [`flytekit.extras.tensorflow.record`](flytekit.extras.tensorflow.record) |  |
 | [`flytekit.extras.webhook`](flytekit.extras.webhook) |  |
 | [`flytekit.extras.webhook.connector`](flytekit.extras.webhook.connector) |  |
 | [`flytekit.extras.webhook.constants`](flytekit.extras.webhook.constants) |  |
@@ -204,6 +207,8 @@ layout: py_api
 | [`flytekit.types.schema.types_pandas`](flytekit.types.schema.types_pandas) |  |
 | [`flytekit.types.structured`](flytekit.types.structured) |  |
 | [`flytekit.types.structured.basic_dfs`](flytekit.types.structured.basic_dfs) |  |
+| [`flytekit.types.structured.bigquery`](flytekit.types.structured.bigquery) |  |
+| [`flytekit.types.structured.snowflake`](flytekit.types.structured.snowflake) |  |
 | [`flytekit.types.structured.structured_dataset`](flytekit.types.structured.structured_dataset) |  |
 | [`flytekit.utils.asyn`](flytekit.utils.asyn) | Manages an async event loop on another thread. |
 | [`flytekit.utils.dict_formatter`](flytekit.utils.dict_formatter) |  |
