@@ -10,23 +10,171 @@ sidebar_expanded: true
 You have seen how to configure and build the tasks that compose your project.
 In this section we will explain how to deploy those tasks to the Flyte backend and execute them.
 
-There are two core operations related to task execution:
-
-- **Deploy**: Takes a task environment and installs it on the Flyte backend, building the associated container image and registering all tasks decorated with `@env.task` within that environment.
-This makes the tasks available for execution.
-This functionality is provided by the CLI command `flyte deploy` and the SDK function `flyte.deploy()`.
-
-- **Run**: Executes a specific task on the backend.
-If a local source file and task name are specified, then the task environment of that task is first deployed (see above) and the task is run on the backend (this is a shortcut for deploying and running in one step).
-Alternatively, you can run a previously deployed task directly on the backend (without redeploying).
-These functionalities are provided by the CLI command `flyte run` and the SDK function `flyte.run()`.
-
-Previously, in [Getting started](../getting-started/) we used the `flyte run` command to both deploy and run our example task.
-In this section we will take a closer look at both deployment and run, starting with deployment.
-
 ## Deployment
 
-In Flyte, the fundamental unit of deployment is the **task environment** ([`TaskEnvironment`]()). When you run `flyte deploy my_example.py env` on your local machine, the task environment itself is what gets deployed to the backend. Here's what happens step by step:
+In Flyte, you move your code from your local machine to your Flyte backend by *deploying* the `TaskEnvironment`s that contain your tasks.
+
+For example, let's say you have the following task environment and task defined in a file called `my_example.py`:
+
+```python
+# my_example.py
+
+import flyte
+
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task
+async def my_task(name: str) -> str:
+    return f"Hello, {name}!"
+```
+
+Assuming you have a [valid Flyte configuration]() (a `config.yaml` that points to your Flyte backend and includes a default project and domain)
+and the [`flyte` package installed]() in your prevailing Python `venv`, then you can deploy your `my_env` task environment like this:
+
+```bash
+flyte deploy my_example.py env
+```
+
+This command triggers a sophisticated sequence of operations on your local machine before communicating with the Flyte backend. Here's exactly what happens locally:
+
+#### Local Processing Steps
+
+**1. CLI Command Processing and Module Loading**
+
+The Flyte CLI parses your command and loads your Python file as a module:
+
+```python
+# Internally, Flyte does something equivalent to:
+spec = importlib.util.spec_from_file_location("my_example", "my_example.py")
+module = importlib.util.module_from_spec(spec)
+sys.modules["my_example"] = module
+spec.loader.exec_module(module)  # This executes your Python code
+```
+
+Your `my_example.py` file is executed, which creates the `TaskEnvironment` and registers tasks with the `@env.task` decorator. The system then discovers all `Environment` objects in the loaded module and extracts the specific environment variable `env` from the module's namespace.
+
+**2. Environment and Task Analysis**
+
+The system performs comprehensive analysis:
+- Recursively discovers all environments and their dependencies
+- Identifies all tasks decorated with `@env.task`
+- Extracts task metadata: parameter types, return types, resource requirements
+- Builds dependency graphs between environments
+- Serializes each task into Flyte's protobuf format (`TaskTemplate`)
+
+**3. Code Bundle Creation**
+
+This is a critical step that packages your code for deployment:
+
+```python
+# Determines which files to include based on copy_style (default: "loaded_modules")
+files_to_bundle = []
+if copy_style == "loaded_modules":
+    # Scans sys.modules for modules loaded from your source directory
+    for module in sys.modules.values():
+        if module.__file__ and is_in_source_directory(module.__file__):
+            files_to_bundle.append(module.__file__)
+elif copy_style == "all":
+    # Includes all files in your project directory
+    files_to_bundle = glob.glob("**/*.py", recursive=True)
+```
+
+The process:
+- Creates a temporary directory
+- Copies all relevant Python files into the temporary directory
+- Creates a compressed tar.gz archive of your code
+- Computes an MD5 hash of the bundle for versioning
+
+**4. Image Building (if needed)**
+
+If your `TaskEnvironment` specifies custom images:
+- Docker images are built locally using your specified `Image` configuration
+- Images are tagged and pushed to the configured container registry
+- Image URIs are cached and referenced in task templates
+
+**5. Backend Communication and Data Transfer**
+
+Once local processing is complete, the CLI communicates with the backend:
+
+*Code Bundle Upload:*
+```python
+# Requests a signed upload URL from the Flyte backend
+resp = await client.dataproxy_service.CreateUploadLocation(
+    CreateUploadLocationRequest(
+        project=project,
+        domain=domain,
+        content_md5=md5_hash,
+        filename="code_bundle.tgz"
+    )
+)
+
+# Uploads your code bundle to cloud storage (S3, GCS, etc.)
+await upload_file_to_signed_url(bundle_path, resp.signed_url)
+```
+
+*Task Registration:*
+```python
+# Registers each task with the Flyte backend
+await client.task_service.DeployTask(
+    DeployTaskRequest(
+        task_spec=task_template,  # Your serialized task metadata
+        code_bundle_uri=uploaded_bundle_uri,
+        image_uri=built_image_uri
+    )
+)
+```
+
+#### What Gets Sent vs. What Stays Local
+
+**Uploaded to Backend:**
+- **Code Bundle**: Compressed tar.gz archive of your Python code
+- **Task Templates**: Serialized task metadata (interfaces, configurations)
+- **Container Images**: Pushed to configured container registry
+- **Resource Specifications**: CPU, memory, GPU requirements
+- **Environment Configuration**: Dependencies, secrets, environment variables
+
+**Processed Locally (Not Uploaded):**
+- Raw Python source file execution
+- Module loading and dependency discovery
+- Local environment state and temporary files
+- Build artifacts and intermediate files
+
+**Important**: Your Python functions are never directly transmitted as source code. Instead, they're packaged into bundles, uploaded to cloud storage, and referenced by the backend for later execution.
+
+#### Fast Registration Architecture
+
+The deployment uses Flyte's "fast registration" architecture:
+- Your Python code is uploaded as a bundle but **not baked into container images**
+- At runtime, a pre-built container image starts up
+- Your code bundle is downloaded from storage into the running container
+- The specific task function executes within that container context
+
+This separation enables rapid iteration without rebuilding Docker images for every code change, allowing for:
+- Code updates without image rebuilds
+- Running different code versions with the same base image
+- Sharing images across multiple projects
+- Optimized caching and resource usage
+
+
+
+
+
+
+### `flyte deploy`
+
+
+
+
+
+
+
+
+
+
+
+
+
+When you run `flyte deploy my_example.py env` on your local machine, the task environment itself is what gets deployed to the backend. Here's what happens step by step:
 
 ### 1. Code Analysis & Bundling
 
@@ -198,6 +346,18 @@ deployment = flyte.deploy(
 
 
 ## flyte run
+
+
+
+
+- **Run**: Executes a specific task on the backend.
+If a local source file and task name are specified, then the task environment of that task is first deployed (see above) and the task is run on the backend (this is a shortcut for deploying and running in one step).
+Alternatively, you can run a previously deployed task directly on the backend (without redeploying).
+These functionalities are provided by the CLI command `flyte run` and the SDK function `flyte.run()`.
+
+Previously, in [Getting started](../getting-started/) we used the `flyte run` command to both deploy and run our example task.
+In this section we will take a closer look at both deployment and run, starting with deployment.
+
 
 In [Getting started](../getting-started/) we introduced the [`flyte run` CLI command]() and its [SDK equivalent `flyte.run()`]().
 Here we will take a closer look at how they work.
