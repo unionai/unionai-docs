@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Container images
 
-The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte#flytetaskenvironment) is used to specify a container image.
+The `image` parameter of the [`TaskEnvironment`](../../api-reference/flyte-sdk/packages/flyte/taskenvironment) is used to specify a container image.
 Every task defined using that `TaskEnvironment` will run in a container based on that image.
 
 If a `TaskEnvironment` does not specify an `image`, it will use the default Flyte image ([`ghcr.io/flyteorg/flyte:py{python-version}-v{flyte_version}`](https://github.com/orgs/flyteorg/packages/container/package/flyte)).
@@ -32,33 +32,33 @@ The `flyte.Image` object provides a fluent interface for building container imag
 
 You start building your image with on of the `from_` methods:
 
-* [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte#from_base): Start from a specified Dockerfile.
-* [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte#from_debian_base): Start from the Flyte default image
-* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte#from_uv_script): Start from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
+* [`Image.from_base()`](../../api-reference/flyte-sdk/packages/flyte/image#from_base): Start from a specified Dockerfile.
+* [`Image.from_debian_base()`](../../api-reference/flyte-sdk/packages/flyte/image#from_debian_base): Start from the Flyte default image
+* [`Image.from_uv_script()`](../../api-reference/flyte-sdk/packages/flyte/image#from_uv_script): Start from a [uv script](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies)
 
 You can then layer on additional components using the `with_` methods:
 
-* [`Image.with_apt_packages()`](../../api-reference/flyte-sdk/packages/flyte#with_apt_packages): Add Debian packages to the image.
-* [`Image.with_commands()`](../../api-reference/flyte-sdk/packages/flyte#with_commands): Add commands to run in the image.
-* [`Image.with_dockerignore()`](../../api-reference/flyte-sdk/packages/flyte#with_dockerignore): Specify a `.dockerignore` file.
-* [`Image.with_env_vars()`](../../api-reference/flyte-sdk/packages/flyte#with_env_vars): Set environment variables in the image.
-* [`Image.with_pip_packages()`](../../api-reference/flyte-sdk/packages/flyte#with_pip_packages): Add Python packages to the image.
-* [`Image.with_requirements()`](../../api-reference/flyte-sdk/packages/flyte#with_requirements): Specify a requirements.txt file.
-* [`Image.with_source_file()`](../../api-reference/flyte-sdk/packages/flyte#with_source_file): Specify a source file to include in the image.
-* [`Image.with_source_folder()`](../../api-reference/flyte-sdk/packages/flyte#with_source_folder): Specify a source folder to include in the image.
-* [`Image.with_uv_project()`](../../api-reference/flyte-sdk/packages/flyte#with_uv_project): Use the `uv` script metadata in the source file to specify the image.
-* [`Image.with_poetry_project()`](../../api-reference/flyte-sdk/packages/flyte#with_poetry_project): Create a new image with the specified `pyproject.toml`
-* [`Image.with_workdir()`](../../api-reference/flyte-sdk/packages/flyte#with_workdir): Specify the working directory for the image.
+* [`Image.with_apt_packages()`](../../api-reference/flyte-sdk/packages/flyte/image#with_apt_packages): Add Debian packages to the image.
+* [`Image.with_commands()`](../../api-reference/flyte-sdk/packages/flyte/image#with_commands): Add commands to run in the image.
+* [`Image.with_dockerignore()`](../../api-reference/flyte-sdk/packages/flyte/image#with_dockerignore): Specify a `.dockerignore` file.
+* [`Image.with_env_vars()`](../../api-reference/flyte-sdk/packages/flyte/image#with_env_vars): Set environment variables in the image.
+* [`Image.with_pip_packages()`](../../api-reference/flyte-sdk/packages/flyte/image#with_pip_packages): Add Python packages to the image.
+* [`Image.with_requirements()`](../../api-reference/flyte-sdk/packages/flyte/image#with_requirements): Specify a requirements.txt file.
+* [`Image.with_source_file()`](../../api-reference/flyte-sdk/packages/flyte/image#with_source_file): Specify a source file to include in the image.
+* [`Image.with_source_folder()`](../../api-reference/flyte-sdk/packages/flyte/image#with_source_folder): Specify a source folder to include in the image.
+* [`Image.with_uv_project()`](../../api-reference/flyte-sdk/packages/flyte/image#with_uv_project): Use the `uv` script metadata in the source file to specify the image.
+* [`Image.with_poetry_project()`](../../api-reference/flyte-sdk/packages/flyte/image#with_poetry_project): Create a new image with the specified `pyproject.toml`
+* [`Image.with_workdir()`](../../api-reference/flyte-sdk/packages/flyte/image#with_workdir): Specify the working directory for the image.
 
 You can also specify an image in one shot (with no possibility of layering) with:
 
-* [`Image.from_dockerfile()`](../../api-reference/flyte-sdk/packages/flyte#from_dockerfile): Build the final image from a single Dockerfile.
+* [`Image.from_dockerfile()`](../../api-reference/flyte-sdk/packages/flyte/image#from_dockerfile): Build the final image from a single Dockerfile.
 
 Additionally, the `Image` class provides:
 
-* [`Image.clone()`](../../api-reference/flyte-sdk/packages/flyte#clone): Clone an existing image.
-* [`Image.validate()`](../../api-reference/flyte-sdk/packages/flyte#validate): Validate the image configuration.
-* [`Image.with_local_v2()`](../../api-reference/flyte-sdk/packages/flyte#with_local_v2): Does not add a layer, instead it overrides any existing builder configuration and builds the image locally. See [Image building](#image-building) for more details.
+* [`Image.clone()`](../../api-reference/flyte-sdk/packages/flyte/image#clone): Clone an existing image.
+* [`Image.validate()`](../../api-reference/flyte-sdk/packages/flyte/image#validate): Validate the image configuration.
+* [`Image.with_local_v2()`](../../api-reference/flyte-sdk/packages/flyte/image#with_local_v2): Does not add a layer, instead it overrides any existing builder configuration and builds the image locally. See [Image building](#image-building) for more details.
 
 Here are some examples of the most common patterns for building images with `flyte.Image`.
 
