@@ -95,6 +95,30 @@ Now you can view and create secrets directly from the UI. Secrets are stored sec
 
 ![Secrets Creation Flow](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/release-notes/2025-11_secrets_creation.gif)
 
+### Image Builds now run in the same project-domain
+The image build task is now executed within the same project and domain as the user task, rather than in system-production. This change improves isolation and is a key step toward supporting multi-dataplane clusters.
+
+### Support for secret mounts in Poetry and UV projects
+We added support for mounting secrets into both Poetry and UV-based projects. This enables secure access to private dependencies or credentials during image build.
+
+```python
+import pathlib
+
+import flyte
+
+env = flyte.TaskEnvironment(
+    name="uv_project_lib",
+    resources=flyte.Resources(memory="1000Mi"),
+    image=(
+        flyte.Image.from_debian_base().with_uv_project(
+            pyproject_file=pathlib.Path(__file__).parent / "pyproject.toml",
+            pre=True,
+            secret_mounts="my_secret",
+        )
+    ),
+)
+```
+
 
 ## October 2025
 
