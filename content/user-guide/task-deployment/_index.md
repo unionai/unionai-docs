@@ -72,7 +72,7 @@ python my_example.py
 
 The same deployment occurs: the `my_env` task environment is deployed to your Flyte backend, inccluding its task `my_task`.
 
-For a detailed explanation of what happens during deployment, see [How Deployment Works](/user-guide/task-deployment/comprehensive-deployment).
+For a detailed explanation of what happens during deployment, see [How Deployment Works](./how-task-deployment-works).
 
 ## Deploy and run in one step
 
@@ -153,4 +153,4 @@ if __name__ == "__main__":
 
 The `run` command is perfect for interactive development, while `deploy` is better for preparing code for production or collaborative use.
 
-For more details on how running works under the hood, see [How Run Works](/user-guide/task-deployment/comprehensive-run).
+For more details on how running works under the hood, see [How Run Works](./how-task-run-works).
