@@ -1,0 +1,272 @@
+---
+title: How task run works
+weight: 1
+variants: +flyte +serverless +byoc +selfmanaged
+sidebar_expanded: true
+---
+
+# How task run works
+
+When you run a task using the `flyte run` command or the `flyte.run()` SDK function, Flyte provides multiple execution modes to fit different development and production workflows. Understanding these modes helps you choose the right approach for your specific use case.
+
+## Overview of run modes
+
+The `flyte run` command and `flyte.run()` SDK function support three primary execution modes:
+
+1. **Deploy + Run**: Automatically deploy task environments and execute tasks (shortcut for separate deploy/run)
+2. **Run Deployed Tasks**: Execute already-deployed tasks without redeployment
+3. **Local Execution**: Run tasks on your local machine for development and testing
+
+Additionally, you can run deployed tasks through the Flyte/Union UI for interactive execution and monitoring.
+
+## Deploy + Run: The development shortcut
+
+The most common development pattern combines deployment and execution in a single command, automatically handling the deployment process when needed.
+
+### CLI: Automatic deployment and execution
+
+```bash
+# Basic deploy + run
+flyte run my_example.py my_task --name "World"
+
+# With explicit project and domain
+flyte run --project my-project --domain development my_example.py my_task --name "World"
+
+# With deployment options
+flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
+```
+
+**How it works:**
+1. **Environment Discovery**: Flyte loads the specified Python file and identifies task environments
+2. **Deployment Check**: Determines if the task environment needs to be deployed (new or changed code)
+3. **Automatic Deployment**: If needed, deploys the task environment using the same process as `flyte deploy`
+4. **Task Execution**: Immediately runs the specified task with provided arguments
+5. **Result Return**: Returns execution results and monitoring URL
+
+### SDK: Programmatic deploy + run
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task
+async def my_task(name: str) -> str:
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+
+    # Deploy and run in one step
+    result = flyte.run(my_task, name="World")
+    print(f"Result: {result}")
+    print(f"Execution URL: {result.url}")
+```
+
+**Benefits of deploy + run:**
+- **Development efficiency**: No separate deployment step required
+- **Always current**: Uses your latest code changes
+- **Automatic optimization**: Only redeploys when code changes
+- **Integrated workflow**: Single command for complete development cycle
+
+## Running deployed tasks
+
+For production workflows or when you want to use stable deployed versions, you can run tasks that have already been deployed without triggering redeployment.
+
+### CLI: Running deployed tasks
+
+```bash
+# Run a previously deployed task
+flyte run deployed-task my_env.my_task --name "World"
+
+# With specific project/domain
+flyte run --project prod --domain production deployed-task my_env.my_task --batch_size 1000
+```
+
+**Task reference format:** `{environment_name}.{task_name}`
+- `environment_name`: The `name` property of your `TaskEnvironment`
+- `task_name`: The function name of your task
+
+>[!NOTE]
+> Recall that when you deploy a task environment with `flyte deploy`, you specify the `TaskEnvironment` using the variable to which it is assigned.
+> In contrast, once it is deployed, you refer to the environment by its `name` property.
+
+### SDK: Running deployed tasks
+
+```python
+import flyte
+
+flyte.init_from_config()
+
+# Method 1: Direct reference by string
+result = flyte.run("my_env.my_task", name="World")
+
+# Method 2: Using remote task reference
+deployed_task = flyte.remote.Task.get("my_env.my_task", version="v1.0.0")
+result = flyte.run(deployed_task, name="World")
+
+# Method 3: Get latest version
+deployed_task = flyte.remote.Task.get("my_env.my_task", auto_version="latest")
+result = flyte.run(deployed_task, name="World")
+```
+
+**Benefits of running deployed tasks:**
+- **Performance**: No deployment overhead, faster execution startup
+- **Stability**: Uses tested, stable versions of your code
+- **Production safety**: Isolated from local development changes
+- **Version control**: Explicit control over which code version runs
+
+## Local execution
+
+For development, debugging, and testing, you can run tasks locally on your machine without any backend interaction.
+
+### CLI: Local execution
+
+```bash
+# Run locally with --local flag
+flyte run --local my_example.py my_task --name "World"
+
+# Local execution with development data
+flyte run --local data_pipeline.py process_data --input_path "/local/data" --debug true
+```
+
+### SDK: Local execution
+
+```python
+import flyte
+
+env = flyte.TaskEnvironment(name="my_env")
+
+@env.task
+async def my_task(name: str) -> str:
+    return f"Hello, {name}!"
+
+# Method 1: No client configured (defaults to local)
+result = flyte.run(my_task, name="World")
+
+# Method 2: Explicit local mode
+flyte.init_from_config()  # Client configured
+result = flyte.with_runcontext(mode="local").run(my_task, name="World")
+```
+
+**Benefits of local execution:**
+- **Rapid development**: Instant feedback without network latency
+- **Debugging**: Full access to local debugging tools
+- **Offline development**: Works without backend connectivity
+- **Resource efficiency**: Uses local compute resources
+
+## Running tasks through the UI
+
+The Flyte UI provides an interactive way to run deployed tasks with form-based input and real-time monitoring.
+
+### Accessing task execution in the UI
+
+1. **Navigate to Tasks**: Go to your project → domain → Tasks section
+2. **Select Task**: Choose the task environment and specific task
+3. **Launch Execution**: Click "Launch" to open the execution form
+4. **Provide Inputs**: Fill in task parameters through the web interface
+5. **Monitor Progress**: Watch real-time execution progress and logs
+
+**UI execution benefits:**
+- **User-friendly**: No command-line expertise required
+- **Visual monitoring**: Real-time progress visualization
+- **Input validation**: Built-in parameter validation and type checking
+- **Execution history**: Easy access to previous runs and results
+- **Sharing**: Shareable execution URLs for collaboration
+
+## Execution flow and architecture
+
+### Fast Registration Architecture
+
+Flyte v2 uses "fast registration" to enable rapid development cycles:
+
+#### How It Works
+
+1. **Container Images** contain the runtime environment and dependencies
+2. **Code Bundles** contain your Python source code (stored separately)
+3. **At Runtime**: Code bundles are downloaded and injected into running containers
+
+#### Benefits
+
+- **Rapid Iteration**: Update code without rebuilding images
+- **Resource Efficiency**: Share images across multiple deployments
+- **Version Flexibility**: Run different code versions with same base image
+- **Caching Optimization**: Separate caching for images vs. code
+
+#### When Code Gets Injected
+
+At task execution time, the fast registration process follows these steps:
+
+1. **Container starts** with the base image containing runtime environment and dependencies
+2. **Code bundle download**: The Flyte agent downloads your Python code bundle from storage
+3. **Code extraction**: The code bundle is extracted and mounted into the running container
+4. **Task execution**: Your task function executes with the injected code
+
+### Deployment decision logic
+
+When using deploy + run mode, Flyte determines whether deployment is needed:
+
+```mermaid
+graph TD
+    A[flyte run command] --> B{Task env exists?}
+    B -->|No| C[Deploy environment]
+    B -->|Yes| D{Code changed?}
+    D -->|Yes| C
+    D -->|No| E[Use existing deployment]
+    C --> F[Execute task]
+    E --> F
+```
+
+### Execution modes comparison
+
+| Mode | Deployment | Performance | Use Case | Code Version |
+|------|------------|-------------|-----------|--------------|
+| Deploy + Run | Automatic | Medium | Development, testing | Latest local |
+| Run Deployed | None | Fast | Production, stable runs | Deployed version |
+| Local | None | Variable | Development, debugging | Local |
+| UI | None | Fast | Interactive, collaboration | Deployed version |
+
+## Command options and configuration
+
+### Core run options
+
+Both CLI and SDK support extensive configuration options:
+
+#### CLI options
+
+```bash
+flyte run [OPTIONS] <SOURCE_FILE> <TASK_NAME> [TASK_ARGS...]
+flyte run [OPTIONS] deployed-task <TASK_REFERENCE> [TASK_ARGS...]
+```
+
+**Common options:**
+- `--project`, `--domain`: Target project and domain
+- `--local`: Force local execution
+- `--copy-style`: Code bundling strategy (loaded_modules, all, none)
+- `--version`: Explicit version for deployment
+- `--dry-run`: Preview deployment without executing
+- `--root-dir`: Override root directory for monorepos
+
+#### SDK options
+
+```python
+# Run context configuration
+result = flyte.with_runcontext(
+    mode="remote",              # "remote", "local"
+    copy_style="loaded_modules", # Code bundling strategy
+    version="v1.0.0",           # Deployment version
+    dry_run=False,              # Preview mode
+).run(my_task, name="World")
+```
+
+### Task argument passing
+
+Arguments are passed directly as function parameters:
+
+```bash
+# CLI: Arguments as flags
+flyte run my_file.py my_task --name "World" --count 5 --debug true
+
+# SDK: Arguments as function parameters
+result = flyte.run(my_task, name="World", count=5, debug=True)
+```
