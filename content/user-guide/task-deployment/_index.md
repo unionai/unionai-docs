@@ -137,20 +137,4 @@ if __name__ == "__main__":
     print(f"Result: {result}")
 ```
 
-### When to use `run` vs `deploy`
-
-**Use `flyte run` when:**
-- Developing and testing individual tasks
-- You want immediate feedback from task execution
-- Running ad-hoc analyses or experiments
-- Testing different input parameters quickly
-
-**Use `flyte deploy` when:**
-- Preparing tasks for production use
-- You want to deploy without executing
-- Setting up environments for others to use
-- Deploying multiple environments at once
-
-The `run` command is perfect for interactive development, while `deploy` is better for preparing code for production or collaborative use.
-
 For more details on how running works under the hood, see [How Run Works](./how-task-run-works).
