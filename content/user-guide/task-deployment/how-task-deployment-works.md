@@ -144,6 +144,30 @@ The `flyte deploy` command provides extensive configuration options:
 
 **`flyte deploy [OPTIONS] <PATH> [TASK_ENV_VARIABLE]`**
 
+| Option                      | Short | Type   | Default                   | Description |
+|-----------------------------|-------|--------|---------------------------|-------------|
+| `--project`                 | `-p`  | text   | *from config*             | Project to deploy to                              |
+| `--domain`                  | `-d`  | text   | *from config*             | Domain to deploy to                               |
+| `--config`                  | `-c`  | path   | *from default location*   | Path to configuration file                        |
+| `--version`                 |       | text   | *auto-generated*          | Explicit version tag for deployment               |
+| `--dry-run`/`--dryrun`      |       | flag   | `false`                   | Preview deployment without executing              |
+| `--all`                     |       | flag   | `false`                   | Deploy all environments in specified path         |
+| `--recursive`               | `-r`  | flag   | `false`                   | Deploy environments recursively in subdirectories |
+| `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                            |
+| `--root-dir`                |       | path   | *current dir*             | Override source root directory                    |
+| `--image`                   |       | text   |                           | Image URI mappings (format: `name=uri`)           |
+| `--ignore-load-errors`      | `-i`  | flag   | `false`                   | Continue deployment despite module load failures  |
+| `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable local `sys.path` synchronization          |
+
+### Copy Style Options
+
+| Value | Description | Use Cases |
+|-------|-------------|-----------|
+| `loaded_modules` | Bundle only imported Python modules from your project | **Default** - Optimal for most projects |
+| `all` | Bundle all files in project directory | Complex projects with dynamic imports or data files |
+| `none` | No code bundling (requires `--version`) | Pre-built container images with baked-in code |
+
+
 ### Core Options
 
 #### `--project`, `--domain`, `--config`
@@ -199,36 +223,6 @@ The `--dry-run` option allows you to preview what would be deployed without actu
 flyte deploy --dry-run my_app.py env
 ```
 
-### Code bundling options
-
-#### `--copy-style`
-
-**`flyte deploy --copy_style [loaded_modules|all|none] <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
-
-The `--copy-style` option controls what gets packaged:
-
-**Smart Bundling (Default):**
-```bash
-flyte deploy --copy-style loaded_modules my_app.py env
-```
-- **Includes**: Only imported Python modules from your project
-- **Excludes**: Site-packages, system modules, Flyte SDK
-- **Best for**: Most projects (optimal size and speed)
-
-**Comprehensive Bundling:**
-```bash
-flyte deploy --copy-style all my_app.py env
-```
-- **Includes**: All files in project directory
-- **Best for**: Projects with dynamic imports or data files
-
-**No Bundling:**
-```bash
-flyte deploy --copy-style none --version v1.0.0 my_app.py env
-```
-- **Requires**: Explicit version parameter
-- **Best for**: Pre-built container images with baked-in code
-
 ### Environment Discovery Options
 
 #### `--all` and `--recursive`
@@ -260,37 +254,35 @@ flyte deploy --recursive ./src
 flyte deploy --recursive --copy-style all ./project
 ```
 
-### Image Management Options
+### Code bundling options
 
-#### `--image`
+#### `--copy-style`
 
-**`flyte deploy --image <IMAGE_MAPPING> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
+**`flyte deploy --copy_style [loaded_modules|all|none] <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
-The `--image` option allows you to override image URIs at deployment time without modifying your code. Format: `imagename=imageuri`
+The `--copy-style` option controls what gets packaged:
 
-**Named Image Mappings:**
+**Smart Bundling (Default):**
 ```bash
-# Map specific image reference to URI
-flyte deploy --image base=ghcr.io/org/base:v1.0 my_app.py env
-
-# Multiple named image mappings
-flyte deploy \
-  --image base=ghcr.io/org/base:v1.0 \
-  --image gpu=ghcr.io/org/gpu:v2.0 \
-  my_app.py env
+flyte deploy --copy-style loaded_modules my_app.py env
 ```
+- **Includes**: Only imported Python modules from your project
+- **Excludes**: Site-packages, system modules, Flyte SDK
+- **Best for**: Most projects (optimal size and speed)
 
-**Default Image Mapping:**
+**Comprehensive Bundling:**
 ```bash
-# Override default image (used when no specific image is set)
-flyte deploy --image ghcr.io/org/default:latest my_app.py env
+flyte deploy --copy-style all my_app.py env
 ```
+- **Includes**: All files in project directory
+- **Best for**: Projects with dynamic imports or data files
 
-**How it works:**
-- Named mappings (e.g., `base=URI`) override images created with `Image.from_ref_name("base")`.
-- Unnamed mappings (e.g., just `URI`) override the default "auto" image.
-- Multiple `--image` flags can be specified.
-- Mappings are resolved during the image building phase of deployment.
+**No Bundling:**
+```bash
+flyte deploy --copy-style none --version v1.0.0 my_app.py env
+```
+- **Requires**: Explicit version parameter
+- **Best for**: Pre-built container images with baked-in code
 
 #### `--root-dir`
 
@@ -354,6 +346,38 @@ flyte deploy --root-dir ./my-project ./my-project/services/ml/workflows.py env
 
 This ensures that both `services/ml/` and `shared/` directories are included in the code bundle, allowing the workflow to successfully import `shared.utils` during remote execution.
 
+### Image Management Options
+
+#### `--image`
+
+**`flyte deploy --image <IMAGE_MAPPING> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
+
+The `--image` option allows you to override image URIs at deployment time without modifying your code. Format: `imagename=imageuri`
+
+**Named Image Mappings:**
+```bash
+# Map specific image reference to URI
+flyte deploy --image base=ghcr.io/org/base:v1.0 my_app.py env
+
+# Multiple named image mappings
+flyte deploy \
+  --image base=ghcr.io/org/base:v1.0 \
+  --image gpu=ghcr.io/org/gpu:v2.0 \
+  my_app.py env
+```
+
+**Default Image Mapping:**
+```bash
+# Override default image (used when no specific image is set)
+flyte deploy --image ghcr.io/org/default:latest my_app.py env
+```
+
+**How it works:**
+- Named mappings (e.g., `base=URI`) override images created with `Image.from_ref_name("base")`.
+- Unnamed mappings (e.g., just `URI`) override the default "auto" image.
+- Multiple `--image` flags can be specified.
+- Mappings are resolved during the image building phase of deployment.
+
 ### Error Handling Options
 
 #### `--ignore-load-errors`
@@ -396,11 +420,11 @@ flyte deploy --no-sync-local-sys-paths my_app.py env
 
 Most users should leave path synchronization enabled unless they have specific requirements for container path isolation or are using pre-configured container environments.
 
-## SDK Deployment Options
+## SDK deployment options
 
 The core deployment functionality is available programmatically through the `flyte.deploy()` function, though some CLI-specific options are not applicable:
 
-### Basic SDK Deployment
+### Basic SDK deployment
 
 ```python
 import flyte
@@ -414,20 +438,12 @@ async def process_data(data: str) -> str:
 if __name__ == "__main__":
     flyte.init_from_config()
 
-    # Basic deployment
-    deployment = flyte.deploy(env)
-```
-
-### SDK Deployment with Options
-
-```python
-# Comprehensive deployment configuration
-deployment = flyte.deploy(
-    env,                          # Environment to deploy
-    dryrun=False,                # Set to True for dry run
-    version="v1.2.0",            # Explicit version tag
-    copy_style="loaded_modules"   # Code bundling strategy
-)
-
-print(f"Deployment successful: {deployment[0].summary_repr()}")
+    # Comprehensive deployment configuration
+    deployment = flyte.deploy(
+        env,                          # Environment to deploy
+        dryrun=False,                 # Set to True for dry run
+        version="v1.2.0",             # Explicit version tag
+        copy_style="loaded_modules"   # Code bundling strategy
+    )
+    print(f"Deployment successful: {deployment[0].summary_repr()}")
 ```
