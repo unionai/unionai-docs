@@ -27,18 +27,18 @@ The most common development pattern combines deployment and execution in a singl
 flyte run my_example.py my_task --name "World"
 
 # With explicit project and domain
-flyte run --project my-project --domain development my_example.py my_task --name "World"
+flyte run --project my-project --domain development my_example.py my_task --name "World
 
 # With deployment options
 flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
 ```
 
 **How it works:**
-1. **Environment Discovery**: Flyte loads the specified Python file and identifies task environments
-2. **Deployment Check**: Determines if the task environment needs to be deployed (new or changed code)
-3. **Automatic Deployment**: If needed, deploys the task environment using the same process as `flyte deploy`
-4. **Task Execution**: Immediately runs the specified task with provided arguments
-5. **Result Return**: Returns execution results and monitoring URL
+1. **Environment discovery**: Flyte loads the specified Python file and identifies task environments
+2. **Deployment check**: Determines if the task environment needs to be deployed (new or changed code)
+3. **Automatic deployment**: If needed, deploys the task environment using the same process as `flyte deploy`
+4. **Task execution**: Immediately runs the specified task with provided arguments
+5. **Result return**: Returns execution results and monitoring URL
 
 ### SDK: Programmatic deploy + run
 
@@ -152,17 +152,17 @@ result = flyte.with_runcontext(mode="local").run(my_task, name="World")
 - **Offline development**: Works without backend connectivity
 - **Resource efficiency**: Uses local compute resources
 
-## Running tasks through the UI
+## Running tasks through the Union UI
 
-The Flyte UI provides an interactive way to run deployed tasks with form-based input and real-time monitoring.
+If you are running your Flyte code on a Union backend, the UI provides an interactive way to run deployed tasks with form-based input and real-time monitoring.
 
-### Accessing task execution in the UI
+### Accessing task execution in the Union UI
 
-1. **Navigate to Tasks**: Go to your project → domain → Tasks section
-2. **Select Task**: Choose the task environment and specific task
-3. **Launch Execution**: Click "Launch" to open the execution form
-4. **Provide Inputs**: Fill in task parameters through the web interface
-5. **Monitor Progress**: Watch real-time execution progress and logs
+1. **Navigate to tasks**: Go to your project → domain → Tasks section
+2. **Select task**: Choose the task environment and specific task
+3. **Launch execution**: Click "Launch" to open the execution form
+4. **Provide inputs**: Fill in task parameters through the web interface
+5. **Monitor progress**: Watch real-time execution progress and logs
 
 **UI execution benefits:**
 - **User-friendly**: No command-line expertise required
@@ -171,26 +171,30 @@ The Flyte UI provides an interactive way to run deployed tasks with form-based i
 - **Execution history**: Easy access to previous runs and results
 - **Sharing**: Shareable execution URLs for collaboration
 
+Here is a short video demonstrating task execution through the Union UI:
+
+{{< youtube id="dQw4w9WgXcQ" >}}
+
 ## Execution flow and architecture
 
-### Fast Registration Architecture
+### Fast registration architecture
 
 Flyte v2 uses "fast registration" to enable rapid development cycles:
 
-#### How It Works
+#### How it works
 
-1. **Container Images** contain the runtime environment and dependencies
-2. **Code Bundles** contain your Python source code (stored separately)
-3. **At Runtime**: Code bundles are downloaded and injected into running containers
+1. **Container images** contain the runtime environment and dependencies
+2. **Code bundles** contain your Python source code (stored separately)
+3. **At runtime**: Code bundles are downloaded and injected into running containers
 
 #### Benefits
 
-- **Rapid Iteration**: Update code without rebuilding images
-- **Resource Efficiency**: Share images across multiple deployments
-- **Version Flexibility**: Run different code versions with same base image
-- **Caching Optimization**: Separate caching for images vs. code
+- **Rapid iteration**: Update code without rebuilding images
+- **Resource efficiency**: Share images across multiple deployments
+- **Version flexibility**: Run different code versions with same base image
+- **Caching optimization**: Separate caching for images vs. code
 
-#### When Code Gets Injected
+#### When code gets injected
 
 At task execution time, the fast registration process follows these steps:
 
@@ -262,8 +266,19 @@ Arguments are passed directly as function parameters:
 
 ```bash
 # CLI: Arguments as flags
-flyte run my_file.py my_task --name "World" --count 5 --debug true
+flyte run my_example.py my_task --name "World" --count 5 --debug true
 
 # SDK: Arguments as function parameters
 result = flyte.run(my_task, name="World", count=5, debug=True)
 ```
+
+## Summary
+
+The `flyte run` command provides flexible execution options to support different development and production workflows:
+
+- **Deploy + Run**: Ideal for development with automatic deployment and execution
+- **Run Deployed Tasks**: Perfect for production use with stable, pre-deployed versions
+- **Local Execution**: Essential for rapid development, debugging, and offline work
+- **UI Execution**: Great for interactive use and collaboration
+
+Choose the execution mode that best fits your workflow stage and requirements. For detailed configuration options, see [Run Command Options](./run-command-options).

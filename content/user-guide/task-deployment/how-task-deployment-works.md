@@ -9,7 +9,7 @@ sidebar_expanded: true
 
 In this section, we will take a deep dive into how the `flyte deploy` command and the `flyte.deploy()` SDK function work under the hood to deploy tasks to your Flyte backend.
 
-When you run perform a deployment here's what happens:
+When you perform a deployment, here's what happens:
 
 ## 1. Module loading and task environment discovery
 
@@ -28,7 +28,7 @@ flyte deploy my_example.py env
 ### `--all` option
 
 ```bash
-flyte deploy --all my_app.py
+flyte deploy --all my_example.py
 ```
 - The file `my_example.py` is executed,
 - All declared `TaskEnvironment` objects in the file are instantiated and selected for deployment.
@@ -40,7 +40,7 @@ flyte deploy --all my_app.py
 flyte deploy --recursive ./directory
 ```
 
-- The directory is recursively traveresed and all Python files are executed and all `TaskEnvironment` objects are instantiated.
+- The directory is recursively traversed and all Python files are executed and all `TaskEnvironment` objects are instantiated.
 - All `TaskEnvironment` objects across all files are selected for deployment.
 
 ## 2. Task analysis and serialization
@@ -106,7 +106,7 @@ It results in the fastest deployment times but requires more complex image manag
 ### `--root-dir` option
 
 By default, Flyte uses your current working directory as the root for code bundling.
-You can override this with `--root-dir` to specify a different base directory - particularly useful for monorepos or when deploying from subdirectories. This affects all copy styles: `loaded_modules` will look for imported modules relative to the root directory, `all` will walk the directory tree starting from the root, and the root directory setting works with any copy style. See the [`--root-dir` option](#--root-dir) for detailed usage examples.
+You can override this with `--root-dir` to specify a different base directory - particularly useful for monorepos or when deploying from subdirectories. This affects all copy styles: `loaded_modules` will look for imported modules relative to the root directory, `all` will walk the directory tree starting from the root, and the root directory setting works with any copy style. See the [Deploy command options](./deploy-command-options#--root-dir) for detailed usage examples.
 
 After the code bundle is created (if applicable), it is uploaded to a cloud storage location (like S3 or GCS) accessible by your Flyte backend. It is now ready to be run.
 

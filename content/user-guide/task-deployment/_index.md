@@ -28,8 +28,8 @@ async def my_task(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-Assuming you have a [valid Flyte configuration]() (a `config.yaml` that points to your Flyte backend and includes a default project and domain)
-and the [`flyte` package installed]() in your prevailing Python `venv`, then you can deploy your `my_env` task environment like this:
+Assuming you have a [valid Flyte configuration](../getting-started/local-setup) (a `config.yaml` that points to your Flyte backend and includes a default project and domain)
+and the [`flyte` package installed](../getting-started/#install-the-flyte-package) in your prevailing Python `venv`, then you can deploy your `my_env` task environment like this:
 
 ```bash
 flyte deploy my_example.py env
@@ -70,7 +70,7 @@ Now you can deploy the `env` task environment by running the `my_example.py` as 
 python my_example.py
 ```
 
-The same deployment occurs: the `my_env` task environment is deployed to your Flyte backend, inccluding its task `my_task`.
+The same deployment occurs: the `my_env` task environment is deployed to your Flyte backend, including its task `my_task`.
 
 For a detailed explanation of what happens during deployment, see [How Deployment Works](./how-task-deployment-works).
 
