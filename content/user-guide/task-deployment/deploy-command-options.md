@@ -1,6 +1,6 @@
 ---
 title: Deploy command options
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -15,7 +15,6 @@ The `flyte deploy` command provides extensive configuration options:
 |-----------------------------|-------|--------|---------------------------|---------------------------------------------------|
 | `--project`                 | `-p`  | text   | *from config*             | Project to deploy to                              |
 | `--domain`                  | `-d`  | text   | *from config*             | Domain to deploy to                               |
-| `--config`                  | `-c`  | path   | *from default location*   | Path to configuration file                        |
 | `--version`                 |       | text   | *auto-generated*          | Explicit version tag for deployment               |
 | `--dry-run`/`--dryrun`      |       | flag   | `false`                   | Preview deployment without executing              |
 | `--all`                     |       | flag   | `false`                   | Deploy all environments in specified path         |
@@ -26,28 +25,22 @@ The `flyte deploy` command provides extensive configuration options:
 | `--ignore-load-errors`      | `-i`  | flag   | `false`                   | Continue deployment despite module load failures  |
 | `--no-sync-local-sys-paths` |       | flag   | `false`                   | Disable local `sys.path` synchronization          |
 
-## Common options
 
-### `--project`, `--domain`, `--config`
+## `--project`, `--domain`
 
 **`flyte deploy --domain <DOMAIN> --project <PROJECT> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
-**`flyte deploy --config <CONFIG_FILE> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
-
-As with all `flyte` CLI commands, you can specify `--project` and `--domain` or a new `--config` file which will override your default configuration:
+You can specify `--project` and `--domain` which will override any defaults defined in your `config.yaml`:
 
 ```bash
-# Use defaults from global configuration (default)
+# Use defaults from default config.yaml
 flyte deploy my_app.py env
 
 # Specify target project and domain
 flyte deploy --project my-project --domain development my_app.py env
-
-# Specify a specific config file
-flyte deploy --config custom-config.yaml my_app.py env
 ```
 
-### `--version`
+## `--version`
 
 **`flyte deploy --version <VERSION> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
@@ -64,13 +57,14 @@ flyte deploy --version v1.0.0 my_app.py env
 flyte deploy --copy-style none --version v1.0.0 my_app.py env
 ```
 
-**When versions are used:**
+### When versions are used
+
 - **Explicit versioning**: Provides human-readable task identification (e.g., `v1.0.0`, `prod-2024-12-01`)
 - **Auto-generated versions**: When no version is specified, Flyte creates an MD5 hash from the code bundle, environment configuration, and image cache
 - **Version requirement**: `copy-style none` mandates explicit versions since there's no code bundle to hash
 - **Task referencing**: Versions enable precise task references in `flyte run deployed-task` and workflow invocations
 
-### `--dry-run`
+## `--dry-run`
 
 **`flyte deploy --dry-run <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
@@ -81,9 +75,7 @@ The `--dry-run` option allows you to preview what would be deployed without actu
 flyte deploy --dry-run my_app.py env
 ```
 
-## TaskEnvironment discovery options
-
-### `--all` and `--recursive`
+## `--all` and `--recursive`
 
 **`flyte deploy --all <SOURCE_FILE>`**
 
@@ -112,15 +104,13 @@ flyte deploy --recursive ./src
 flyte deploy --recursive --copy-style all ./project
 ```
 
-## Code bundling options
-
-### `--copy-style`
+## `--copy-style`
 
 **`flyte deploy --copy_style [loaded_modules|all|none] <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
 The `--copy-style` option controls what gets packaged:
 
-**`--copy-style loaded_modules` (default):**
+### `--copy-style loaded_modules` (default)
 
 ```bash
 flyte deploy --copy-style loaded_modules my_app.py env
@@ -130,7 +120,7 @@ flyte deploy --copy-style loaded_modules my_app.py env
 - **Excludes**: Site-packages, system modules, Flyte SDK
 - **Best for**: Most projects (optimal size and speed)
 
-**`--copy-style all`:**
+### `--copy-style all`
 
 ```bash
 flyte deploy --copy-style all my_app.py env
@@ -139,7 +129,7 @@ flyte deploy --copy-style all my_app.py env
 - **Includes**: All files in project directory
 - **Best for**: Projects with dynamic imports or data files
 
-**`--copy-style none`:**
+### `--copy-style none`
 
 ```bash
 flyte deploy --copy-style none --version v1.0.0 my_app.py env
@@ -148,21 +138,21 @@ flyte deploy --copy-style none --version v1.0.0 my_app.py env
 - **Requires**: Explicit version parameter
 - **Best for**: Pre-built container images with baked-in code
 
-### `--root-dir`
+## `--root-dir`
 
 **`flyte deploy --root-dir <DIRECTORY> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
 The `--root-dir` option overrides the default source directory that Flyte uses as the base for code bundling and import resolution.
 This is particularly useful for monorepos and projects with complex directory structures.
 
-**Default Behavior (without `--root-dir`):**
+### Default Behavior (without `--root-dir`)
 - Flyte uses the current working directory as the root
 - Code bundling starts from this directory
 - Import paths are resolved relative to this location
 
-**Common Use Cases:**
+### Common Use Cases:
 
-**Monorepo Management:**
+**Monorepos:**
 ```bash
 # Deploy service from monorepo root
 flyte deploy --root-dir ./services/ml ./services/ml/app.py env
@@ -172,7 +162,7 @@ cd ./docs/
 flyte deploy --root-dir ../services/ml ../services/ml/app.py env
 ```
 
-**Cross-Directory Imports:**
+**Cross-directory imports:**
 ```bash
 # When workflow imports modules from sibling directories
 # Project structure: project/workflows/main.py imports project/src/utils.py
@@ -180,20 +170,20 @@ cd project/workflows/
 flyte deploy --root-dir .. main.py env  # Sets root to project/
 ```
 
-**Working Directory Independence:**
+**Working directory independence:**
 ```bash
 # Deploy from any location while maintaining consistent bundling
 flyte deploy --root-dir /path/to/project /path/to/project/main.py env
 ```
 
-**How it Works:**
+### How it works
 
-1. **Code Bundling**: Files are collected starting from `--root-dir` instead of the current working directory
-2. **Import Resolution**: Python imports are resolved relative to the specified root directory
-3. **Path Consistency**: Ensures the same directory structure in local and remote execution environments
-4. **Dependency Packaging**: Captures all necessary modules that may be located outside the workflow file's immediate directory
+1. **Code bundling**: Files are collected starting from `--root-dir` instead of the current working directory
+2. **Import resolution**: Python imports are resolved relative to the specified root directory
+3. **Path consistency**: Ensures the same directory structure in local and remote execution environments
+4. **Dependency packaging**: Captures all necessary modules that may be located outside the workflow file's immediate directory
 
-**Example with Complex Project Structure:**
+### Example with complex project structure
 ```
 my-project/
 ├── services/
@@ -211,15 +201,14 @@ flyte deploy --root-dir ./my-project ./my-project/services/ml/workflows.py env
 
 This ensures that both `services/ml/` and `shared/` directories are included in the code bundle, allowing the workflow to successfully import `shared.utils` during remote execution.
 
-### Image Management Options
-
-#### `--image`
+## `--image`
 
 **`flyte deploy --image <IMAGE_MAPPING> <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
 The `--image` option allows you to override image URIs at deployment time without modifying your code. Format: `imagename=imageuri`
 
-**Named Image Mappings:**
+### Named Image Mappings
+
 ```bash
 # Map specific image reference to URI
 flyte deploy --image base=ghcr.io/org/base:v1.0 my_app.py env
@@ -231,21 +220,21 @@ flyte deploy \
   my_app.py env
 ```
 
-**Default Image Mapping:**
+### Default Image Mapping
 ```bash
 # Override default image (used when no specific image is set)
 flyte deploy --image ghcr.io/org/default:latest my_app.py env
 ```
 
-**How it works:**
+### How it works
+
 - Named mappings (e.g., `base=URI`) override images created with `Image.from_ref_name("base")`.
 - Unnamed mappings (e.g., just `URI`) override the default "auto" image.
 - Multiple `--image` flags can be specified.
 - Mappings are resolved during the image building phase of deployment.
 
-### Error Handling Options
 
-#### `--ignore-load-errors`
+## `--ignore-load-errors`
 
 **`flyte deploy --ignore-load-errors <SOURCE_PATH> <TASK_ENV_VARIABLE>`**
 
@@ -256,30 +245,34 @@ The `--ignore-load-errors` option allows the deployment process to continue even
 flyte deploy --recursive --ignore-load-errors ./large-project
 ```
 
-#### `--no-sync-local-sys-paths`
+## `--no-sync-local-sys-paths`
 
 **`flyte deploy --no-sync-local-sys-paths <SOURCE_FILE> <TASK_ENV_VARIABLE>`**
 
 The `--no-sync-local-sys-paths` option disables the automatic synchronization of local `sys.path` entries to the remote container environment. This is an advanced option for specific deployment scenarios.
 
-**Default Behavior (path synchronization enabled):**
+### Default Behavior (path synchronization enabled)
+
 - Flyte captures local `sys.path` entries that are under the root directory
 - These paths are passed to the remote container via the `_F_SYS_PATH` environment variable
 - At runtime, the remote container adds these paths to its `sys.path`, maintaining the same import environment
 
-**When to disable path synchronization:**
+### When to disable path synchronization
+
 ```bash
 # Disable local sys.path sync (advanced use case)
 flyte deploy --no-sync-local-sys-paths my_app.py env
 ```
 
-**Use cases for disabling:**
+### Use cases for disabling
+
 - **Custom container images**: When your container already has the correct `sys.path` configuration
 - **Conflicting path structures**: When local development paths would interfere with container paths
 - **Security concerns**: When you don't want to expose local development directory structures
 - **Minimal environments**: When you want precise control over what gets added to the container's Python path
 
-**How it works:**
+### How it works
+
 - **Enabled (default)**: Local paths like `./my_project/utils` get synchronized and added to remote `sys.path`
 - **Disabled**: Only the container's native `sys.path` is used, along with the deployed code bundle
 

@@ -1,6 +1,6 @@
 ---
 title: How task run works
-weight: 1
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 mermaid: true
@@ -8,19 +8,15 @@ mermaid: true
 
 # How task run works
 
-When you run a task using the `flyte run` command or the `flyte.run()` SDK function, Flyte provides multiple execution modes to fit different development and production workflows. Understanding these modes helps you choose the right approach for your specific use case.
-
-## Overview of run modes
-
 The `flyte run` command and `flyte.run()` SDK function support three primary execution modes:
 
-1. **Deploy + Run**: Automatically deploy task environments and execute tasks (shortcut for separate deploy/run)
-2. **Run Deployed Tasks**: Execute already-deployed tasks without redeployment
-3. **Local Execution**: Run tasks on your local machine for development and testing
+1. **Deploy + run**: Automatically deploy task environments and execute tasks (shortcut for separate deploy/run)
+2. **Run deployed task**: Execute already-deployed tasks without redeployment
+3. **Local execution**: Run tasks on your local machine for development and testing
 
 Additionally, you can run deployed tasks through the Flyte/Union UI for interactive execution and monitoring.
 
-## Deploy + Run: The development shortcut
+## Deploy + run: The development shortcut
 
 The most common development pattern combines deployment and execution in a single command, automatically handling the deployment process when needed.
 
