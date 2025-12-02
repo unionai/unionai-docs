@@ -14,6 +14,9 @@ In this section we will explain how to deploy those tasks to the Flyte backend a
 
 In Flyte, you move your code from your local machine to your Flyte backend by *deploying* the `TaskEnvironment`s that contain your tasks.
 
+> [!IMPORTANT]
+> **Key distinction**: `flyte deploy` creates **permanent** deployments that remain in your backend and can be executed repeatedly. `flyte run` creates **ephemeral** deployments that exist only for the duration of a single execution and don't appear in your backend's task registry.
+
 ### With the `flyte deploy` CLI command
 
 For example, let's say you have the following task environment and task defined in a file called `my_example.py`:
@@ -76,22 +79,22 @@ For a detailed explanation of what happens during deployment, see [How Deploymen
 
 ## Deploy and run in one step
 
-While `flyte deploy` only deploys your task environments to the backend, `flyte run` can both deploy and execute tasks in a single command, making it ideal for development and testing workflows.
+While `flyte deploy` **permanently** deploys your task environments to the backend (where they remain available for future executions), `flyte run` performs **ephemeral deployment** and execution in a single command, making it ideal for development and testing workflows.
 
-### Running with automatic deployment
+### Running with ephemeral deployment
 
-You can run a task directly from your local code without explicitly deploying first:
+You can run a task directly from your local code without permanently deploying first:
 
 ```bash
 flyte run my_example.py my_task --name "World"
 ```
 
 This command:
-1. **Deploys** the task environment containing `my_task` (if not already deployed or if code has changed)
+1. **Temporarily prepares** the task environment containing `my_task` for execution
 2. **Executes** the `my_task` function with the provided arguments
 3. **Returns** the execution results
 
-The deployment happens automatically behind the scenes using the same process as `flyte deploy`, but then immediately launches an execution.
+The ephemeral deployment happens automatically behind the scenes using similar steps to `flyte deploy`, but the task environment is **not permanently stored** in the backend and immediately launches an execution.
 
 ### Running already deployed tasks
 
@@ -128,11 +131,11 @@ async def my_task(name: str) -> str:
 if __name__ == "__main__":
     flyte.init_from_config()
 
-    # Deploy and run in one step
+    # Ephemeral deployment and run in one step
     result = flyte.run(my_task, name="World")
     print(f"Result: {result}")
 
-    # Or run an already deployed task
+    # Or run a permanently deployed task
     result = flyte.run("my_env.my_task", name="World")
     print(f"Result: {result}")
 ```

@@ -13,8 +13,8 @@ The `flyte run` command provides the following options:
 
 | Option                      | Short | Type   | Default                   | Description                                            |
 |-----------------------------|-------|--------|---------------------------|--------------------------------------------------------|
-| `--project`                 | `-p`  | text   | *from config*             | Project to deploy to                                   |
-| `--domain`                  | `-d`  | text   | *from config*             | Domain to deploy to                                    |
+| `--project`                 | `-p`  | text   | *from config*             | Project to run tasks in                                |
+| `--domain`                  | `-d`  | text   | *from config*             | Domain to run tasks in                                 |
 | `--local`                   |       | flag   | `false`                   | Run the task locally                                   |
 | `--copy-style`              |       | choice | `loaded_modules|all|none` | Code bundling strategy                                 |
 | `--root-dir`                |       | path   | *current dir*             | Override source root directory                         |
@@ -65,7 +65,7 @@ flyte run my_example.py my_task --input "test_data"  # Runs on Flyte backend
 **`flyte run --copy-style [loaded_modules|all|none] <PATH> <TASK_NAME>`**
 
 The `--copy-style` option controls code bundling for remote execution.
-This applies to the deployment step of the `flyte run` command and works the same way as it does for `flyte deploy`:
+This applies to the ephemeral preparation step of the `flyte run` command and works similarly to `flyte deploy`:
 
 ```bash
 # Smart bundling (default) - includes only imported project modules
@@ -82,7 +82,7 @@ flyte run --copy-style none deployed_task my_deployed_task
 
 - **`loaded_modules` (default)**: Bundles only imported Python modules from your project
 - **`all`**: Includes all files in the project directory
-- **`none`**: No bundling; requires pre-deployed tasks
+- **`none`**: No bundling; requires permanently deployed tasks
 
 ## `--root-dir`
 
@@ -97,7 +97,7 @@ flyte run --root-dir ./services/ml ./services/ml/my_example.py my_task
 # Handle cross-directory imports
 flyte run --root-dir .. my_example.py my_workflow  # When my_example.py imports sibling directories
 ```
-This applies to the deployment step of the `flyte run` command.
+This applies to the ephemeral preparation step of the `flyte run` command.
 It works identically to the `flyte deploy` command's `--root-dir` option.
 
 ## `--raw-data-path`
@@ -185,7 +185,7 @@ flyte run --follow --name "training-session" my_example.py train_model
 
 **`flyte run --image <IMAGE_MAPPING> <PATH> <TASK_NAME>`**
 
-Override container images on deploy, same as the equivalent `flyte deploy` option:
+Override container images during ephemeral preparation, same as the equivalent `flyte deploy` option:
 
 ```bash
 # Override specific named image
@@ -211,7 +211,7 @@ flyte run \
 
 **`flyte run --no-sync-local-sys-paths <PATH> <TASK_NAME>`**
 
-Disable synchronization of local `sys.path` entries to the remote execution environment on deploy.
+Disable synchronization of local `sys.path` entries to the remote execution environment during ephemeral preparation.
 Identical to the `flyte deploy` command's `--no-sync-local-sys-paths` option:
 
 ```bash
@@ -245,7 +245,7 @@ The core `flyte run` functionality is also available programmatically through th
 result = flyte.with_runcontext(
     mode="remote",              # "remote", "local"
     copy_style="loaded_modules", # Code bundling strategy
-    version="v1.0.0",           # Deployment version
+    version="v1.0.0",           # Ephemeral preparation version
     dry_run=False,              # Preview mode
 ).run(my_task, name="World")
 ```

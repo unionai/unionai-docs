@@ -10,17 +10,17 @@ mermaid: true
 
 The `flyte run` command and `flyte.run()` SDK function support three primary execution modes:
 
-1. **Deploy + run**: Automatically deploy task environments and execute tasks (shortcut for separate deploy/run)
-2. **Run deployed task**: Execute already-deployed tasks without redeployment
+1. **Ephemeral deployment + run**: Automatically prepare task environments ephemerally and execute tasks (development shortcut)
+2. **Run deployed task**: Execute permanently deployed tasks without redeployment
 3. **Local execution**: Run tasks on your local machine for development and testing
 
 Additionally, you can run deployed tasks through the Flyte/Union UI for interactive execution and monitoring.
 
-## Deploy + run: The development shortcut
+## Ephemeral deployment + run: The development shortcut
 
-The most common development pattern combines deployment and execution in a single command, automatically handling the deployment process when needed.
+The most common development pattern combines ephemeral task preparation and execution in a single command, automatically handling the temporary deployment process when needed.
 
-### CLI: Automatic deployment and execution
+### CLI: Ephemeral deployment and execution
 
 ```bash
 # Basic deploy + run
@@ -35,12 +35,12 @@ flyte run --version v1.0.0 --copy-style all my_example.py my_task --name "World"
 
 **How it works:**
 1. **Environment discovery**: Flyte loads the specified Python file and identifies task environments
-2. **Deployment check**: Determines if the task environment needs to be deployed (new or changed code)
-3. **Automatic deployment**: If needed, deploys the task environment using the same process as `flyte deploy`
-4. **Task execution**: Immediately runs the specified task with provided arguments
-5. **Result return**: Returns execution results and monitoring URL
+2. **Ephemeral preparation**: Temporarily prepares the task environment for execution (similar to deployment but not persistent)
+3. **Task execution**: Immediately runs the specified task with provided arguments in the ephemeral environment
+4. **Result return**: Returns execution results and monitoring URL
+5. **Cleanup**: The ephemeral environment is not stored permanently in the backend
 
-### SDK: Programmatic deploy + run
+### SDK: Programmatic ephemeral deployment + run
 
 ```python
 import flyte
@@ -60,15 +60,15 @@ if __name__ == "__main__":
     print(f"Execution URL: {result.url}")
 ```
 
-**Benefits of deploy + run:**
-- **Development efficiency**: No separate deployment step required
-- **Always current**: Uses your latest code changes
-- **Automatic optimization**: Only redeploys when code changes
+**Benefits of ephemeral deployment + run:**
+- **Development efficiency**: No separate permanent deployment step required
+- **Always current**: Uses your latest code changes without polluting the backend
+- **Clean development**: Ephemeral environments don't clutter your task registry
 - **Integrated workflow**: Single command for complete development cycle
 
 ## Running deployed tasks
 
-For production workflows or when you want to use stable deployed versions, you can run tasks that have already been deployed without triggering redeployment.
+For production workflows or when you want to use stable deployed versions, you can run tasks that have been **permanently deployed** with `flyte deploy` without triggering any deployment process.
 
 ### CLI: Running deployed tasks
 
@@ -203,26 +203,25 @@ At task execution time, the fast registration process follows these steps:
 3. **Code extraction**: The code bundle is extracted and mounted into the running container
 4. **Task execution**: Your task function executes with the injected code
 
-### Deployment decision logic
+### Ephemeral preparation logic
 
-When using deploy + run mode, Flyte determines whether deployment is needed:
+When using ephemeral deploy + run mode, Flyte determines whether temporary preparation is needed:
 
 ```mermaid
 graph TD
-    A[flyte run command] --> B{Task env exists?}
-    B -->|No| C[Deploy environment]
-    B -->|Yes| D{Code changed?}
-    D -->|Yes| C
-    D -->|No| E[Use existing deployment]
-    C --> F[Execute task]
-    E --> F
+    A[flyte run command] --> B{Need preparation?}
+    B -->|Yes| C[Ephemeral preparation]
+    B -->|No| D[Use cached preparation]
+    C --> E[Execute task]
+    D --> E
+    E --> F[Cleanup ephemeral environment]
 ```
 
 ### Execution modes comparison
 
 | Mode | Deployment | Performance | Use Case | Code Version |
 |------|------------|-------------|-----------|--------------|
-| Deploy + Run | Automatic | Medium | Development, testing | Latest local |
-| Run Deployed | None | Fast | Production, stable runs | Deployed version |
+| Ephemeral Deploy + Run | Ephemeral (temporary) | Medium | Development, testing | Latest local |
+| Run Deployed | None (uses permanent deployment) | Fast | Production, stable runs | Deployed version |
 | Local | None | Variable | Development, debugging | Local |
 | UI | None | Fast | Interactive, collaboration | Deployed version |
