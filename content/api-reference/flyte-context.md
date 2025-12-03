@@ -1,7 +1,7 @@
 ---
 title: "Flyte LLM context"
 variants: +flyte +byoc +selfmanaged +serverless
-weight: 3
+weight: 1
 ---
 
 # Flyte LLM context
