@@ -1,7 +1,7 @@
 ---
 title: "Flyte CLI"
 variants: +flyte +byoc +selfmanaged +serverless
-weight: 1
+weight: 2
 ---
 
 # Flyte CLI
