@@ -94,7 +94,7 @@ The full set of parameters available for configuring a task environment, task de
   The `TaskEnvironment` name and fully qualified name of a task name are both fixed and cannot be overridden.
 
 <!-- TODO: Add when available
-* See [TaskEnvironment names](./task-environment-names).
+* See [Names and descriptions](./names-and-descriptions).
 -->
 
 ### `short_name`
@@ -109,7 +109,7 @@ The full set of parameters available for configuring a task environment, task de
   Overriding it does not change the fully qualified name of the task.
 
 <!-- TODO: Add when available
-* See [Task names](./task-names).
+* See [Names and descriptions](./names-and-descriptions).
 -->
 
 ### `image`
@@ -177,9 +177,7 @@ The full set of parameters available for configuring a task environment, task de
 
 * Can be set at the `TaskEnvironment` level and overridden at the `@env.task` decorator level and the `task.override()` invocation level.
 
-<!-- TODO: Add when available
 * See [Pod templates](./pod-templates).
--->
 
 ### `reusable`
 
@@ -233,7 +231,7 @@ The full set of parameters available for configuring a task environment, task de
   or the `task.override()` invocation level.
 
 <!--
-* See [Description](./description).
+* See [Names and descriptions](./names-and-descriptions).
 -->
 
 ### `plugin_config`
@@ -262,6 +260,10 @@ The full set of parameters available for configuring a task environment, task de
 
 * See [Reports](../task-programming/reports).
 
+<!--
+* See [Configuring reports](../task-configuration/configuring-reports) and [Reports](../task-programming/reports).
+-->
+
 ### `max_inline_io_bytes`
 
 * Type: `int`
@@ -274,7 +276,7 @@ The full set of parameters available for configuring a task environment, task de
   If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 100 MiB).
 
 <!-- TODO: Add when available
-* See [Maximum inline IO bytes](./maximum-inline-io-bytes).
+* See [Maximum inline I/O](./maximum-inline-io).
 -->
 
 ### `retries`
@@ -347,5 +349,5 @@ The full set of parameters available for configuring a task environment, task de
 * Can only be set at the `@env.task` decorator level. It cannot be overridden.
 
 <!-- TODO: Add when available
-* See [docs](./docs).
+* See [Names and descriptions](./names-and-descriptions).
 -->
