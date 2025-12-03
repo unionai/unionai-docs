@@ -32,7 +32,7 @@ The simplest deployment pattern involves defining both your tasks and task envir
 
 ### Example structure
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/simple_file.py simple-file >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/simple_file.py" fragment="simple-file" lang="python" >}}
 
 ### Deployment commands
 
@@ -62,9 +62,9 @@ When you need full control over the container environment, you can specify a cus
 
 ### Example structure
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile" lang="dockerfile" >}}
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/dockerfile_env.py dockerfile-env >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/dockerfile_env.py" fragment="dockerfile-env" lang="python" >}}
 
 ### Key considerations
 
@@ -113,13 +113,13 @@ pyproject_package/
 
 ### Key components
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/tasks/tasks.py pipeline >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/tasks/tasks.py" fragment="pipeline" lang="python" >}}
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/main.py pyproject-main >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/main.py" fragment="pyproject-main" lang="python" >}}
 
 ### Configuration
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/pyproject.toml >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/pyproject.toml" lang="toml" >}}
 
 ### When to use
 
@@ -134,7 +134,7 @@ When you need complete reproducibility and want to embed all code directly in th
 
 ### Key configuration
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/main.py full-build >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/main.py" fragment="full-build" lang="python" >}}
 
 ### Configuration options
 
@@ -168,9 +168,9 @@ pythonpath/
 
 ### Implementation
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/workflows/workflow.py pythonpath-workflow >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/workflows/workflow.py" fragment="pythonpath-workflow" lang="python" >}}
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/src/my_module.py pythonpath-module >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/src/my_module.py" fragment="pythonpath-module" lang="python" >}}
 
 ### Key considerations
 
@@ -192,7 +192,7 @@ For environments that need to change based on deployment context (development vs
 
 ### Implementation
 
-{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/environment_picker.py dynamic-env >}}
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/environment_picker.py" fragment="dynamic-env" lang="python" >}}
 
 ### Environment variations
 
