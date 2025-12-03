@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b34.dev10+g162555e05
+version: 2.0.0b34
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -25,19 +25,12 @@ sidebar_expanded: true
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) | |
-| [`flyte.app.Domain`](../packages/flyte.app/domain) | |
+| [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
 | [`flyte.app.Input`](../packages/flyte.app/input) |Input for application. |
-| [`flyte.app.Link`](../packages/flyte.app/link) | |
+| [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
-| [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
-| [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
-| [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
-| [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors/connectorregistry) |This is the registry for all connectors. |
-| [`flyte.connectors.ConnectorService`](../packages/flyte.connectors/connectorservice) | |
-| [`flyte.connectors.Resource`](../packages/flyte.connectors/resource) |This is the output resource of the job. |
-| [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors/resourcemeta) |This is the metadata for the job. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |

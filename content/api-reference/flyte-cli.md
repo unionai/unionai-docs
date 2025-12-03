@@ -18,12 +18,12 @@ This is the command line interface for Flyte.
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `action` | [`get`](#flyte-get-action)  |
+| `app` | [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
-| `connector` | [`serve`](#flyte-serve-connector)  |
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
@@ -34,10 +34,10 @@ This is the command line interface for Flyte.
 | `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
-| `serve` | [`connector`](#flyte-serve-connector)  |
-| `update` | [`trigger`](#flyte-update-trigger)  |
+| [`serve`](#flyte-serve) | - |
+| `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
 {{< /markdown >}}
 {{< /grid >}}
@@ -458,6 +458,24 @@ Get all actions for a run or details for a specific action.
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
+#### flyte get app
+
+**`flyte get app [OPTIONS] [NAME]`**
+
+Get a list of all apps, or details of a specific app by name.
+
+Apps are long-running services deployed on the Flyte platform.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of apps to fetch when listing. |
+| `--only-mine` | `boolean` | `False` | Show only apps created by the current user (you). |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
 #### flyte get config
 
 **`flyte get config`**
@@ -729,27 +747,85 @@ Run reference task from the Flyte backend
 
 ### flyte serve
 
-**`flyte serve COMMAND [ARGS]...`**
+**`flyte serve [OPTIONS] COMMAND [ARGS]...`**
 
-Start the specific service. For example:
+Serve an app from a Python file using flyte.serve().
+
+This command allows you to serve apps defined with `flyte.app.AppEnvironment`
+in your Python files. The serve command will deploy the app to the Flyte backend
+and start it, making it accessible via a URL.
+
+Example usage:
 
 ```bash
-flyte serve connector
+flyte serve examples/apps/basic_app.py app_env
 ```
 
-#### flyte serve connector
+Arguments to the serve command are provided right after the `serve` command and before the file name.
 
-**`flyte serve connector [OPTIONS]`**
+To follow the logs of the served app, use the `--follow` flag:
 
-Start a grpc server for the connector service.
+```bash
+flyte serve --follow examples/apps/basic_app.py app_env
+```
+
+Note: Log streaming is not yet fully implemented and will be added in a future release.
+
+You can provide image mappings with `--image` flag. This allows you to specify
+the image URI for the app environment during CLI execution without changing
+the code. Any images defined with `Image.from_ref_name("name")` will resolve to the
+corresponding URIs you specify here.
+
+```bash
+flyte serve --image my_image=ghcr.io/myorg/my-image:v1.0 examples/apps/basic_app.py app_env
+```
+
+If the image name is not provided, it is regarded as a default image and will
+be used when no image is specified in AppEnvironment:
+
+```bash
+flyte serve --image ghcr.io/myorg/default-image:latest examples/apps/basic_app.py app_env
+```
+
+You can specify multiple image arguments:
+
+```bash
+flyte serve --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0 examples/apps/basic_app.py app_env
+```
+
+You can specify the `--config` flag to point to a specific Flyte cluster:
+
+```bash
+flyte serve --config my-config.yaml examples/apps/basic_app.py app_env
+```
+
+You can override the default configured project and domain:
+
+```bash
+flyte serve --project my-project --domain development examples/apps/basic_app.py app_env
+```
+
+Other arguments to the serve command are listed below.
+
+Note: This pattern is primarily useful for serving apps defined in tasks.
+Serving deployed apps is not currently supported through this CLI command.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--port` | `integer` | `8000` | Grpc port for the connector service |
-| `--prometheus_port` | `integer` | `9090` | Prometheus port for the connector service |
-| `--worker` | `integer` | `10` | Number of workers for the grpc server |
-| `--timeout` | `integer` |  | It will wait for the specified number of seconds before shutting down grpc server. It should only be used for testing. |
-| `--modules` | `text` | `Sentinel.UNSET` | List of additional files or module that defines the connector |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when serving the app |
+| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
+| `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
+| `--name` | `text` | `Sentinel.UNSET` | Name of the app deployment. If not provided, the app environment name will be used. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the app. If not provided, the CLI will exit after successfully deploying the app with a link to the UI. |
+| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the serve. Format: imagename=imageuri. Can be specified multiple times. |
+| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| {{< multiline >}}`--env-var`
+`-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte update
@@ -757,6 +833,30 @@ Start a grpc server for the connector service.
 **`flyte update COMMAND [ARGS]...`**
 
 Update various flyte entities.
+
+#### flyte update app
+
+**`flyte update app [OPTIONS] NAME`**
+
+Update an app by starting or stopping it.
+
+
+Example usage:
+
+```bash
+flyte update app <app_name> --activate | --deactivate [--wait] [--project <project_name>] [--domain <domain_name>]
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--activate`
+`--deactivate`{{< /multiline >}} | `boolean` |  | Activate or deactivate app. |
+| `--wait` | `boolean` | `False` | Wait for the app to reach the desired state. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte update trigger
 
