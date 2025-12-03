@@ -32,21 +32,7 @@ The simplest deployment pattern involves defining both your tasks and task envir
 
 ### Example structure
 
-```python
-# my_example.py
-import flyte
-
-env = flyte.TaskEnvironment(name="simple_env")
-
-@env.task
-async def my_task(name: str) -> str:
-    return f"Hello, {name}!"
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    run = flyte.run(my_task, name="World")
-    print(run.url)
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/simple_file.py simple-file >}}
 
 ### Deployment commands
 
@@ -76,47 +62,9 @@ When you need full control over the container environment, you can specify a cus
 
 ### Example structure
 
-```dockerfile
-# Dockerfile
-FROM python:3.12-slim-bookworm
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile >}}
 
-USER root
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /root
-
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-```
-
-```python
-# dockerfile_env.py
-from pathlib import Path
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="docker_env",
-    image=flyte.Image.from_dockerfile(
-        Path(__file__).parent / "Dockerfile",
-        registry="ghcr.io/flyteorg",
-        name="docker_env_image",
-    ),
-)
-
-@env.task
-def main(x: int) -> int:
-    return x * 2
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    run = flyte.run(main, x=10)
-    print(run.url)
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/dockerfile_env.py dockerfile-env >}}
 
 ### Key considerations
 
@@ -165,63 +113,13 @@ pyproject_package/
 
 ### Key components
 
-```python
-# src/pyproject_package/tasks/tasks.py
-import flyte
-from pyproject_package.data.loader import fetch_data_from_api
-from pyproject_package.data.processor import clean_data, transform_data
-from pyproject_package.models.analyzer import analyze_results
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/tasks/tasks.py pipeline >}}
 
-env = flyte.TaskEnvironment(name="pyproject_env")
-
-@env.task
-async def pipeline(api_url: str) -> dict:
-    """Main pipeline orchestrating business logic"""
-    # Load data using business logic modules
-    raw_data = await fetch_data_from_api(api_url)
-
-    # Process data
-    clean_data_result = clean_data(raw_data)
-    transformed = transform_data(clean_data_result)
-
-    # Analyze results
-    return analyze_results(transformed)
-```
-
-```python
-# src/pyproject_package/main.py
-import pathlib
-import flyte
-from pyproject_package.tasks.tasks import pipeline
-
-def main():
-    # Initialize with proper root directory
-    flyte.init_from_config(root_dir=pathlib.Path(__file__).parent.parent)
-
-    run = flyte.run(pipeline, api_url="https://api.example.com/data")
-    print(f"Run URL: {run.url}")
-    run.wait()
-
-if __name__ == "__main__":
-    main()
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/main.py pyproject-main >}}
 
 ### Configuration
 
-```toml
-# pyproject.toml
-[project]
-name = "pyproject_package"
-version = "0.1.0"
-requires-python = ">=3.11"
-dependencies = [
-    "httpx>=0.24.0",
-    "pandas>=2.0.0",
-]
-
-[project.scripts]
-run-pipeline = "pyproject_package.main:main"
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/pyproject.toml >}}
 
 ### When to use
 
@@ -236,34 +134,7 @@ When you need complete reproducibility and want to embed all code directly in th
 
 ### Key configuration
 
-```python
-# main.py
-import pathlib
-import flyte
-
-env = flyte.TaskEnvironment(
-    name="full_build",
-    image=flyte.Image.from_debian_base().with_source_folder(
-        pathlib.Path(__file__).parent,
-        copy_contents_only=True
-    ),
-)
-
-@env.task
-def main(n: int) -> list[int]:
-    return list(range(n))
-
-if __name__ == "__main__":
-    flyte.init_from_config(root_dir=pathlib.Path(__file__).parent)
-
-    # Disable fast deployment, force full container build
-    run = flyte.with_runcontext(
-        copy_style="none",
-        version="v1.0"
-    ).run(main, n=10)
-
-    print(run.url)
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/main.py full-build >}}
 
 ### Configuration options
 
@@ -297,34 +168,9 @@ pythonpath/
 
 ### Implementation
 
-```python
-# workflows/workflow.py
-import pathlib
-import flyte
-from src.my_module import say_hello
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/workflows/workflow.py pythonpath-workflow >}}
 
-@flyte.task
-def greet(name: str) -> str:
-    return say_hello(name)
-
-if __name__ == "__main__":
-    current_dir = pathlib.Path(__file__).parent
-
-    # Set root_dir to project root for proper import resolution
-    flyte.init_from_config(
-        root_dir=current_dir.parent  # Points to pythonpath/
-    )
-
-    run = flyte.run(greet, name="World")
-    print(run.url)
-```
-
-```python
-# src/my_module.py
-def say_hello(name: str) -> str:
-    """Business logic with no Flyte dependencies"""
-    return f"Hello, {name}!"
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pythonpath/src/my_module.py pythonpath-module >}}
 
 ### Key considerations
 
@@ -346,36 +192,7 @@ For environments that need to change based on deployment context (development vs
 
 ### Implementation
 
-```python
-# environment_picker.py
-import os
-import flyte
-
-def create_env():
-    """Create environment based on deployment domain"""
-    if flyte.current_domain() == "development":
-        return flyte.TaskEnvironment(
-            name="dev",
-            image=flyte.Image.from_debian_base(),
-            env_vars={"MY_ENV": "dev"}
-        )
-    return flyte.TaskEnvironment(
-        name="prod",
-        image=flyte.Image.from_production_base(),
-        env_vars={"MY_ENV": "prod"}
-    )
-
-env = create_env()
-
-@env.task
-async def my_task(n: int) -> int:
-    print(f"Environment: {os.environ['MY_ENV']}")
-    return n + 1
-
-@env.task
-async def entrypoint(n: int) -> int:
-    return await my_task(n)
-```
+{{< code external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/environment_picker.py dynamic-env >}}
 
 ### Environment variations
 
