@@ -1,0 +1,99 @@
+{{- $rootPages := slice -}}
+
+{{- range .Site.Sections.ByWeight -}}
+  {{- if ne .Section "tags" -}}
+
+    {{- $relPath := strings.TrimPrefix "/" .RelPermalink -}}
+    {{- if eq $relPath "" -}}
+      {{- $relPath = "index.html" -}}
+    {{- else -}}
+      {{- $relPath = printf "%s/index.html" (strings.TrimSuffix "/" $relPath) -}}
+    {{- end -}}
+
+    {{- $sectionData := dict
+      "title" .Title
+      "path" .RelPermalink
+      "weight" (default 999999 .Weight)
+      "level" 0
+      "type" .Type
+      "kind" .Kind
+      "section" .Section
+      "html_file" $relPath
+      "is_section" .IsSection
+    -}}
+
+    {{- if .IsSection -}}
+      {{- $children := slice -}}
+
+      {{- range .Pages.ByWeight -}}
+        {{- $childRelPath := strings.TrimPrefix "/" .RelPermalink -}}
+        {{- if eq $childRelPath "" -}}
+          {{- $childRelPath = "index.html" -}}
+        {{- else -}}
+          {{- $childRelPath = printf "%s/index.html" (strings.TrimSuffix "/" $childRelPath) -}}
+        {{- end -}}
+
+        {{- $childData := dict
+          "title" .Title
+          "path" .RelPermalink
+          "weight" (default 999999 .Weight)
+          "level" 1
+          "type" .Type
+          "kind" .Kind
+          "section" .Section
+          "html_file" $childRelPath
+          "is_section" .IsSection
+        -}}
+
+        {{- if .IsSection -}}
+          {{- $grandchildren := slice -}}
+          {{- range .Pages.ByWeight -}}
+            {{- $grandchildRelPath := strings.TrimPrefix "/" .RelPermalink -}}
+            {{- if eq $grandchildRelPath "" -}}
+              {{- $grandchildRelPath = "index.html" -}}
+            {{- else -}}
+              {{- $grandchildRelPath = printf "%s/index.html" (strings.TrimSuffix "/" $grandchildRelPath) -}}
+            {{- end -}}
+
+            {{- $grandchildData := dict
+              "title" .Title
+              "path" .RelPermalink
+              "weight" (default 999999 .Weight)
+              "level" 2
+              "type" .Type
+              "kind" .Kind
+              "section" .Section
+              "html_file" $grandchildRelPath
+              "is_section" .IsSection
+            -}}
+            {{- $grandchildren = $grandchildren | append $grandchildData -}}
+          {{- end -}}
+
+          {{- if gt (len $grandchildren) 0 -}}
+            {{- $childData = merge $childData (dict "children" $grandchildren) -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- $children = $children | append $childData -}}
+      {{- end -}}
+
+      {{- if gt (len $children) 0 -}}
+        {{- $sectionData = merge $sectionData (dict "children" $children) -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- $rootPages = $rootPages | append $sectionData -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $metadata := dict
+  "site_title" .Site.Title
+  "base_url" .Site.BaseURL
+  "variant" (default "unknown" .Site.Params.variant)
+  "version" (default "unknown" .Site.Params.version)
+  "generated_at" (now.Format "2006-01-02T15:04:05Z")
+  "total_pages" (len .Site.AllPages)
+  "pages" $rootPages
+-}}
+
+{{- $metadata | jsonify (dict "indent" "  ") -}}

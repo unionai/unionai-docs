@@ -13,8 +13,8 @@ enableEmoji = true
 
 # Enable sitemap generation
 [outputs]
-  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
-  home = ["HTML", "RSS"]
+  # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers, 'JSON' for site metadata.
+  home = ["HTML", "RSS", "JSON"]
 
   # 'page': Individual content pages. Only 'HTML' is needed for standard page rendering.
   page = ["HTML"]

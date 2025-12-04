@@ -26,11 +26,14 @@ dist: base
 	# make variant VARIANT=serverless
 	make variant VARIANT=byoc
 	make variant VARIANT=selfmanaged
+	@echo "Generating LLM documentation files..."
+	@uv run llm-docs-gen.py
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
+	@if [ -f dist/${PREFIX}/${VARIANT}/index.json ]; then mv dist/${PREFIX}/${VARIANT}/index.json dist/${PREFIX}/${VARIANT}/site-metadata.json; echo "Generated metadata: dist/${PREFIX}/${VARIANT}/site-metadata.json"; fi
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
