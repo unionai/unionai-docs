@@ -90,7 +90,38 @@ class ShortcodeProcessor:
         # Process shortcodes recursively to handle nesting
         processed_content = self.process_shortcodes_recursive(content)
 
+        # Normalize vertical spacing
+        processed_content = self.normalize_vertical_spacing(processed_content)
+
         return processed_content
+
+    def normalize_vertical_spacing(self, content: str) -> str:
+        """Normalize vertical spacing to maximum one empty line between blocks."""
+        # Split content into lines
+        lines = content.split('\n')
+        normalized_lines = []
+        
+        # Track consecutive empty lines
+        empty_line_count = 0
+        
+        for line in lines:
+            if line.strip() == '':
+                empty_line_count += 1
+                # Only add empty line if we haven't exceeded our limit
+                if empty_line_count <= 1:
+                    normalized_lines.append(line)
+            else:
+                # Reset counter when we hit a non-empty line
+                empty_line_count = 0
+                normalized_lines.append(line)
+        
+        # Join lines back together and ensure we don't end with multiple empty lines
+        result = '\n'.join(normalized_lines)
+        
+        # Remove trailing whitespace and ensure single trailing newline
+        result = result.rstrip() + '\n'
+        
+        return result
 
     def process_shortcodes_recursive(self, content: str, max_depth: int = 10) -> str:
         """Recursively process shortcodes to handle arbitrary nesting depth."""
