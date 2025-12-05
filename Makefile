@@ -33,11 +33,19 @@ variant:
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 	@echo "Processing shortcodes in markdown files..."
 	@if [ -d "dist/docs/v2/${VARIANT}/md" ]; then \
-		uv run process_shortcodes.py \
-			--variant=${VARIANT} \
-			--input-dir=dist/docs/v2/${VARIANT}/md \
-			--output-dir=dist/docs/v2/${VARIANT}/md-processed \
-			--base-path=.; \
+		if command -v uv >/dev/null 2>&1; then \
+			uv run process_shortcodes.py \
+				--variant=${VARIANT} \
+				--input-dir=dist/docs/v2/${VARIANT}/md \
+				--output-dir=dist/docs/v2/${VARIANT}/md-processed \
+				--base-path=.; \
+		else \
+			python3 process_shortcodes.py \
+				--variant=${VARIANT} \
+				--input-dir=dist/docs/v2/${VARIANT}/md \
+				--output-dir=dist/docs/v2/${VARIANT}/md-processed \
+				--base-path=.; \
+		fi \
 	fi
 
 dev:
@@ -67,7 +75,11 @@ validate-urls:
 	@for variant in flyte byoc selfmanaged; do \
 		echo "Checking $$variant..."; \
 		if [ -d "dist/docs/v2/$$variant/md-processed" ]; then \
-			uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed; \
+			if command -v uv >/dev/null 2>&1; then \
+				uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed; \
+			else \
+				python3 validate_urls.py dist/docs/v2/$$variant/md-processed; \
+			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
 		fi \
@@ -78,7 +90,11 @@ url-stats:
 	@for variant in flyte byoc selfmanaged; do \
 		echo "=== $$variant ==="; \
 		if [ -d "dist/docs/v2/$$variant/md-processed" ]; then \
-			uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed --stats; \
+			if command -v uv >/dev/null 2>&1; then \
+				uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed --stats; \
+			else \
+				python3 validate_urls.py dist/docs/v2/$$variant/md-processed --stats; \
+			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
 		fi \
