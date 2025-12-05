@@ -16,17 +16,24 @@ enableEmoji = true
   # 'home': The main site homepage. 'HTML' for the page, 'RSS' for feed readers.
   home = ["HTML", "RSS"]
 
-  # 'page': Individual content pages. Only 'HTML' is needed for standard page rendering.
-  page = ["HTML"]
+  # 'page': Individual content pages. 'HTML' for the page, 'MD' for markdown processing.
+  page = ["HTML", "MD"]
 
-  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds.
-  section = ["HTML", "RSS"]
+  # 'section': Top-level content sections (e.g., docs, tutorials). 'HTML' for rendering, 'RSS' for section-specific feeds, 'MD' for markdown processing.
+  section = ["HTML", "RSS", "MD"]
 
   # 'taxonomy': Used for tag/category listing pages. 'HTML' for rendering, 'RSS' for taxonomy feeds.
   taxonomy = ["HTML", "RSS"]
 
   # 'robotsTXT': Generate robots.txt file for search engine crawling
   robotsTXT = ["ROBOTS"]
+
+[outputFormats]
+  [outputFormats.MD]
+    mediaType = "text/plain"
+    baseName = "index"
+    path = "md"
+    isPlainText = true
 
 [params]
 _merge = "deep"
