@@ -1,3 +1,4 @@
+{{ define "main" }}
 {{- /*
 Template for generating markdown versions of section/list pages.
 This renders section content and lists child pages in markdown format.
@@ -39,3 +40,4 @@ This renders section content and lists child pages in markdown format.
 {{- if .Date }}
 **Date**: {{ .Date.Format "2006-01-02" }}
 {{- end }}
+{{ end }}
