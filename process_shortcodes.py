@@ -96,23 +96,25 @@ class ShortcodeProcessor:
         return processed_content
 
     def normalize_vertical_spacing(self, content: str) -> str:
-        """Normalize vertical spacing to maximum one empty line between blocks."""
+        """Normalize vertical spacing to maximum one empty line between blocks and remove leading empty lines."""
         # Split content into lines
         lines = content.split('\n')
         normalized_lines = []
 
-        # Track consecutive empty lines
+        # Track consecutive empty lines and whether we've found content yet
         empty_line_count = 0
+        found_content = False
 
         for line in lines:
             if line.strip() == '':
                 empty_line_count += 1
-                # Only add empty line if we haven't exceeded our limit
-                if empty_line_count <= 1:
+                # Only add empty line if we've found content and haven't exceeded our limit
+                if found_content and empty_line_count <= 1:
                     normalized_lines.append(line)
             else:
                 # Reset counter when we hit a non-empty line
                 empty_line_count = 0
+                found_content = True
                 normalized_lines.append(line)
 
         # Join lines back together and ensure we don't end with multiple empty lines
@@ -121,9 +123,7 @@ class ShortcodeProcessor:
         # Remove trailing whitespace and ensure single trailing newline
         result = result.rstrip() + '\n'
 
-        return result
-
-    def process_shortcodes_recursive(self, content: str, max_depth: int = 10) -> str:
+        return result    def process_shortcodes_recursive(self, content: str, max_depth: int = 10) -> str:
         """Recursively process shortcodes to handle arbitrary nesting depth."""
         if max_depth <= 0:
             return content  # Prevent infinite recursion
@@ -719,7 +719,8 @@ def main():
 
 Welcome to the documentation.
 
-## Pages in this section
+## Subpages
+
 """
 
         for dir_name in top_level_dirs:
