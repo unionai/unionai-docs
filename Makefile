@@ -33,7 +33,7 @@ variant:
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 	@echo "Processing shortcodes in markdown files..."
 	@if [ -d "dist/docs/v2/${VARIANT}/md" ]; then \
-		uv run python3 process_shortcodes.py \
+		uv run process_shortcodes.py \
 			--variant=${VARIANT} \
 			--input-dir=dist/docs/v2/${VARIANT}/md \
 			--output-dir=dist/docs/v2/${VARIANT}/md-processed \
@@ -61,3 +61,25 @@ check-jupyter:
 
 check-images:
 	./scripts/check_images.sh
+
+validate-urls:
+	@echo "Validating URLs across all variants..."
+	@for variant in flyte byoc selfmanaged; do \
+		echo "Checking $$variant..."; \
+		if [ -d "dist/docs/v2/$$variant/md-processed" ]; then \
+			uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed; \
+		else \
+			echo "No processed markdown found for $$variant"; \
+		fi \
+	done
+
+url-stats:
+	@echo "URL statistics across all variants:"
+	@for variant in flyte byoc selfmanaged; do \
+		echo "=== $$variant ==="; \
+		if [ -d "dist/docs/v2/$$variant/md-processed" ]; then \
+			uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed --stats; \
+		else \
+			echo "No processed markdown found for $$variant"; \
+		fi \
+	done

@@ -19,7 +19,16 @@ This renders section content and lists child pages in markdown format.
 
 {{- range .Pages.ByWeight }}
 {{- if (partial "page-allowed.html" .).allowed }}
-- [{{ .Title }}]({{ .RelPermalink }}) {{- if .Params.description }} - {{ .Params.description }}{{ end }}
+{{- $section := "" }}
+{{- if eq .Kind "section" }}
+{{- /* For section pages (directories), get the directory name from File.Dir */}}
+{{- $section = strings.TrimSuffix "/" .File.Dir }}
+{{- $section = path.Base $section }}
+{{- else }}
+{{- /* For regular pages (files), use the file's base name */}}
+{{- $section = .File.BaseFileName }}
+{{- end }}
+- [{{ .Title }}]({{ $section }}/) {{- if .Params.description }} - {{ .Params.description }}{{ end }}
 {{- end }}
 {{- end }}
 {{- end }}
