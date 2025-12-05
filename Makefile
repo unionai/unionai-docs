@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples
+.PHONY: all dist variant dev update-examples sync-examples llm-docs
 
 all: usage
 
@@ -26,6 +26,7 @@ dist: base
 	make variant VARIANT=serverless
 	make variant VARIANT=byoc
 	make variant VARIANT=selfmanaged
+	make llm-docs
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
@@ -47,6 +48,14 @@ update-examples:
 
 init-examples:
 	git submodule update --init
+
+llm-docs:
+	@echo "Building LLM-optimized documentation..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run build_llm_docs.py --no-make-dist; \
+	else \
+		python3 build_llm_docs.py --no-make-dist; \
+	fi
 
 check-jupyter:
 	./tools/jupyter_generator/check_jupyter.sh
