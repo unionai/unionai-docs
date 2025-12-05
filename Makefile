@@ -32,6 +32,22 @@ variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
+	@echo "Processing shortcodes in markdown files..."
+	@if [ -d "dist/docs/v1/${VARIANT}/tmp-md" ]; then \
+		if command -v uv >/dev/null 2>&1; then \
+		uv run process_shortcodes.py \
+			--variant=${VARIANT} \
+			--input-dir=dist/docs/v1/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/v1/${VARIANT}/md \
+			--base-path=.; \
+		else \
+		python3 process_shortcodes.py \
+			--variant=${VARIANT} \
+			--input-dir=dist/docs/v1/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/v1/${VARIANT}/md \
+			--base-path=.; \
+		fi \
+	fi
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
