@@ -1,3 +1,4 @@
+{{ define "main" }}
 {{- /*
 Template for generating markdown versions of individual pages.
 This renders the content with shortcodes processed for markdown output.
@@ -22,3 +23,4 @@ This renders the content with shortcodes processed for markdown output.
 {{- if .Params.weight }}
 **Weight**: {{ .Params.weight }}
 {{- end }}
+{{ end }}
