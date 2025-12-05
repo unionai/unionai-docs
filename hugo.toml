@@ -6,7 +6,6 @@
 # For variant-specific settings, use config.<variant>.toml.
 
 languageCode = 'en-us'
-theme = 'union'
 disableKinds = ["RSS"]
 enableRobotsTXT = true
 enableEmoji = true
