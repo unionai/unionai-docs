@@ -123,7 +123,9 @@ class ShortcodeProcessor:
         # Remove trailing whitespace and ensure single trailing newline
         result = result.rstrip() + '\n'
 
-        return result    def process_shortcodes_recursive(self, content: str, max_depth: int = 10) -> str:
+        return result
+
+    def process_shortcodes_recursive(self, content: str, max_depth: int = 10) -> str:
         """Recursively process shortcodes to handle arbitrary nesting depth."""
         if max_depth <= 0:
             return content  # Prevent infinite recursion
@@ -711,8 +713,19 @@ def main():
             if item.is_dir() and not item.name.startswith('_') and item.name != '404':
                 top_level_dirs.append(item.name)
 
-        # Sort directories (you could implement custom ordering here based on weight)
-        top_level_dirs.sort()
+        # Sort directories by priority (User Guide first, Release Notes last)
+        def get_priority(dirname):
+            priority_map = {
+                'user-guide': 1,
+                'tutorials': 2,
+                'integrations': 3,
+                'api-reference': 4,
+                'community': 5,
+                'release-notes': 6
+            }
+            return priority_map.get(dirname, 999)  # Unknown sections go to end
+
+        top_level_dirs.sort(key=get_priority)
 
         # Create root index content
         root_content = f"""# Documentation

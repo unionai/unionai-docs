@@ -14,7 +14,8 @@ This renders section content and lists child pages in markdown format.
 
 ## Subpages
 
-{{- range .Pages.ByWeight }}
+{{- $sortedPages := .Pages.ByWeight }}
+{{- range $sortedPages }}
 {{- if (partial "page-allowed.html" .).allowed }}
 {{- $section := "" }}
 {{- if eq .Kind "section" }}
