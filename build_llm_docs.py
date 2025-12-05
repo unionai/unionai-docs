@@ -340,6 +340,55 @@ class LLMDocBuilder:
                 variants.append(item.name)
 
         return sorted(variants)
+    
+    def create_redirect_content(self, variant: str) -> str:
+        """Create content for the redirect llms.txt file."""
+        variant_names = {
+            'flyte': 'Flyte Open Source',
+            'byoc': 'Union.ai BYOC (Bring Your Own Cloud)',
+            'selfmanaged': 'Union.ai Self-managed',
+            'serverless': 'Union.ai Serverless'
+        }
+        
+        variant_display = variant_names.get(variant, variant.title())
+        
+        return f"""# {variant_display} Documentation (LLM-Optimized)
+
+This is the LLM-optimized documentation redirect for **{variant_display}** (version 2).
+
+## Full Documentation
+
+For the complete consolidated documentation optimized for Large Language Models, see:
+
+👉 **[llms-full.txt](llms-full.txt)**
+
+The `llms-full.txt` file contains:
+- Complete {variant_display} documentation in a single file
+- All internal links converted to hierarchical references (e.g., `**Getting started > Local setup**`)
+- Depth-first page organization following the documentation structure
+- Perfect format for LLM consumption, RAG systems, and vector databases
+
+## File Details
+
+- **Variant**: {variant}
+- **Version**: v2
+- **Format**: LLM-optimized consolidated markdown
+- **Size**: ~1.4MB+ of comprehensive documentation
+- **Update frequency**: Generated automatically from source documentation
+
+## Usage
+
+This consolidated documentation is ideal for:
+- Large Language Model context and training
+- RAG (Retrieval-Augmented Generation) systems  
+- Vector database ingestion
+- AI assistants and chatbots
+- Automated documentation analysis
+
+---
+
+*Generated automatically from the Union.ai documentation system.*
+"""
 
 def main():
     base_path = Path.cwd()
@@ -370,6 +419,15 @@ def main():
 
             file_size = len(consolidated_content)
             print(f"✅ Saved: {output_file} ({file_size:,} characters)")
+            
+            # Create redirect llms.txt file
+            redirect_file = base_path / 'dist' / 'docs' / 'v2' / variant / 'llms.txt'
+            redirect_content = builder.create_redirect_content(variant)
+            
+            with open(redirect_file, 'w', encoding='utf-8') as f:
+                f.write(redirect_content)
+                
+            print(f"✅ Created redirect: {redirect_file}")
         else:
             print(f"❌ No content generated for {variant}")
 

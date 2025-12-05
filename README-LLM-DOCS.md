@@ -117,17 +117,25 @@ This will:
 
 ### Output Files
 
-Generated files are located at:
-- `dist/docs/v2/flyte/llms-full.txt`
-- `dist/docs/v2/byoc/llms-full.txt`
-- `dist/docs/v2/selfmanaged/llms-full.txt`
-- `dist/docs/v2/serverless/llms-full.txt`
+Generated files are located at each variant directory:
+- `dist/docs/v2/flyte/llms-full.txt` + `llms.txt`
+- `dist/docs/v2/byoc/llms-full.txt` + `llms.txt`  
+- `dist/docs/v2/selfmanaged/llms-full.txt` + `llms.txt`
+- `dist/docs/v2/serverless/llms-full.txt` + `llms.txt`
 
-Each file contains:
-- **Complete documentation** for that variant in depth-first order
-- **Page delimiters**: `=== PAGE: path/to/file.md ===`
-- **Hierarchical internal links**: All `.md` and `#anchor` links converted to `**Page > Section**` format
-- **Preserved external links**: GitHub, cross-variant, and static file links unchanged
+**Two files per variant:**
+
+1. **`llms-full.txt`** - The complete consolidated documentation:
+   - **Complete documentation** for that variant in depth-first order
+   - **Page delimiters**: `=== PAGE: path/to/file.md ===`
+   - **Hierarchical internal links**: All `.md` and `#anchor` links converted to `**Page > Section**` format
+   - **Preserved external links**: GitHub, cross-variant, and static file links unchanged
+
+2. **`llms.txt`** - A redirect/discovery file:
+   - Brief explanation of the LLM documentation system
+   - Link to the corresponding `llms-full.txt` file
+   - Variant and version information
+   - Usage guidance for LLMs and RAG systems
 
 ## Key Implementation Details
 
