@@ -124,7 +124,7 @@ class LLMDocBuilder:
             file_part, anchor = url.split('#', 1)
         else:
             file_part, anchor = url, None
-        
+
         try:
             # Handle relative paths
             if file_part.startswith('../') or file_part.startswith('./'):
@@ -133,12 +133,12 @@ class LLMDocBuilder:
                 resolved = (current_file_path.parent / file_part).resolve()
             else:  # Just anchor, same file
                 resolved = current_file_path
-            
+
             # Convert to lookup key
             key = str(resolved.name)
             if anchor:
                 key = f"{key}#{anchor}"
-            
+
             return key
         except:
             return url
@@ -149,62 +149,62 @@ class LLMDocBuilder:
         title_match = re.search(r'^#\s+(.+?)\s*$', content, re.MULTILINE)
         if title_match:
             return title_match.group(1).strip()
-        
+
         # Fallback to filename
         name = file_path.stem
         if name == 'index':
             name = file_path.parent.name
         return name.replace('-', ' ').replace('_', ' ').title()
-    
+
     def parse_heading_hierarchy(self, content: str, file_path: Path, page_hierarchy: List[str]) -> dict[str, str]:
         """Parse all headings and build anchor lookup table."""
         anchor_map = {}
-        
+
         # Find all markdown headings
         heading_pattern = r'^(#{1,6})\s+(.+?)\s*$'
         headings = []
-        
+
         for match in re.finditer(heading_pattern, content, re.MULTILINE):
             level = len(match.group(1))  # Number of # characters
             title = match.group(2).strip()
             anchor = self.title_to_anchor(title)
             headings.append((level, title, anchor))
-        
+
         # Build hierarchical structure
         heading_stack = []  # Stack to track current hierarchy
-        
+
         for level, title, anchor in headings:
             # Skip the main page title (# heading) since it's already in page_hierarchy
             if level == 1:
                 heading_stack = [(level, title)]  # Reset stack with main title
                 # Don't add to anchor_map for level 1 headings since they duplicate page title
                 continue
-            
+
             # Pop headings that are at same or deeper level
             while heading_stack and heading_stack[-1][0] >= level:
                 heading_stack.pop()
-            
+
             # Add current heading to stack
             heading_stack.append((level, title))
-            
+
             # Build full hierarchical title - skip the first heading in stack (main title)
             heading_hierarchy = [h[1] for h in heading_stack[1:]]  # Skip first element
             full_hierarchy = page_hierarchy + heading_hierarchy
             hierarchical_title = ' > '.join(full_hierarchy)
-            
+
             # Store in anchor map (strip common prefix)
             clean_title = self.strip_common_prefix(hierarchical_title)
             anchor_map[anchor] = clean_title
-        
+
         return anchor_map
-    
+
     def title_to_anchor(self, title: str) -> str:
         """Convert heading title to URL anchor format."""
         # Convert to lowercase, replace spaces with hyphens, remove special chars
         anchor = re.sub(r'[^a-zA-Z0-9\s-]', '', title)
         anchor = re.sub(r'\s+', '-', anchor.strip().lower())
         return anchor
-    
+
     def extract_subpage_links(self, content: str) -> List[str]:
         """Extract links from ## Subpages section."""
         # Find the ## Subpages section
@@ -299,14 +299,14 @@ class LLMDocBuilder:
         # Store page in lookup table
         self.title_lookup[relative_from_md] = hierarchical_title
         self.title_lookup[file_path.name] = hierarchical_title  # Also store by filename
-        
+
         # Parse and store heading hierarchy for anchor links
         anchor_map = self.parse_heading_hierarchy(raw_content, file_path, current_hierarchy)
         for anchor, anchor_title in anchor_map.items():
             # Store with full file path + anchor
             anchor_key = f"{relative_from_md}#{anchor}"
             self.title_lookup[anchor_key] = anchor_title
-            
+
             # Also store with just filename + anchor for relative links
             filename_key = f"{file_path.name}#{anchor}"
             self.title_lookup[filename_key] = anchor_title
