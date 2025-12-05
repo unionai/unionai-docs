@@ -4,9 +4,13 @@ Template for generating markdown versions of section/list pages.
 This renders section content and lists child pages in markdown format.
 */ -}}
 {{- $title := .Title -}}
+{{- $content := .RawContent -}}
+{{- $hasH1 := strings.Contains $content (printf "# %s" $title) -}}
 
+{{- if not $hasH1 -}}
 # {{ $title }}
 
+{{- end -}}
 {{- if .Params.description }}
 
 {{ .Params.description }}
