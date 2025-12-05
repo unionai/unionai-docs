@@ -100,10 +100,10 @@ class ShortcodeProcessor:
         # Split content into lines
         lines = content.split('\n')
         normalized_lines = []
-        
+
         # Track consecutive empty lines
         empty_line_count = 0
-        
+
         for line in lines:
             if line.strip() == '':
                 empty_line_count += 1
@@ -114,13 +114,13 @@ class ShortcodeProcessor:
                 # Reset counter when we hit a non-empty line
                 empty_line_count = 0
                 normalized_lines.append(line)
-        
+
         # Join lines back together and ensure we don't end with multiple empty lines
         result = '\n'.join(normalized_lines)
-        
+
         # Remove trailing whitespace and ensure single trailing newline
         result = result.rstrip() + '\n'
-        
+
         return result
 
     def process_shortcodes_recursive(self, content: str, max_depth: int = 10) -> str:
