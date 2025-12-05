@@ -644,6 +644,11 @@ def main():
     for md_file in input_dir.rglob('*.txt'):  # Hugo outputs .txt for MD format
         # Calculate relative path to preserve directory structure
         rel_path = md_file.relative_to(input_dir)
+        
+        # Skip 404.md as it's not useful in markdown documentation context
+        if str(rel_path) == '404/index.txt' or rel_path.name == '404.txt':
+            continue
+            
         # Change .txt extension to .md for output
         output_rel_path = rel_path.with_suffix('.md')
         output_file = output_dir / output_rel_path
