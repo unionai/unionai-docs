@@ -340,7 +340,7 @@ class LLMDocBuilder:
                 variants.append(item.name)
 
         return sorted(variants)
-    
+
     def create_redirect_content(self, variant: str) -> str:
         """Create content for the redirect llms.txt file."""
         variant_names = {
@@ -349,9 +349,9 @@ class LLMDocBuilder:
             'selfmanaged': 'Union.ai Self-managed',
             'serverless': 'Union.ai Serverless'
         }
-        
+
         variant_display = variant_names.get(variant, variant.title())
-        
+
         return f"""# {variant_display} Documentation (LLM-Optimized)
 
 This is the LLM-optimized documentation redirect for **{variant_display}** (version 2).
@@ -380,7 +380,7 @@ The `llms-full.txt` file contains:
 
 This consolidated documentation is ideal for:
 - Large Language Model context and training
-- RAG (Retrieval-Augmented Generation) systems  
+- RAG (Retrieval-Augmented Generation) systems
 - Vector database ingestion
 - AI assistants and chatbots
 - Automated documentation analysis
@@ -390,12 +390,231 @@ This consolidated documentation is ideal for:
 *Generated automatically from the Union.ai documentation system.*
 """
 
+    def create_discovery_files(self, base_path: Path, variants: List[str]) -> None:
+        """Create hierarchical discovery files for LLM documentation."""
+
+        # Root level discovery file (/docs/llms.txt)
+        root_content = self.create_root_discovery_content(variants)
+        root_file = base_path / 'dist' / 'docs' / 'llms.txt'
+
+        with open(root_file, 'w', encoding='utf-8') as f:
+            f.write(root_content)
+        print(f"✅ Created root discovery: {root_file}")
+
+        # Version level discovery file (/docs/v2/llms.txt)
+        v2_content = self.create_version_discovery_content(variants, 'v2')
+        v2_file = base_path / 'dist' / 'docs' / 'v2' / 'llms.txt'
+
+        with open(v2_file, 'w', encoding='utf-8') as f:
+            f.write(v2_content)
+        print(f"✅ Created v2 discovery: {v2_file}")
+
+    def create_root_discovery_content(self, variants: List[str]) -> str:
+        """Create content for the root-level discovery file."""
+        variant_names = {
+            'flyte': 'Flyte Open Source',
+            'byoc': 'Union.ai BYOC (Bring Your Own Cloud)',
+            'selfmanaged': 'Union.ai Self-managed',
+            'serverless': 'Union.ai Serverless'
+        }
+
+        variant_descriptions = {
+            'flyte': 'Free and open source workflow orchestration platform',
+            'byoc': 'Commercial Union.ai product - bring your own cloud infrastructure',
+            'selfmanaged': 'Commercial Union.ai product - fully managed deployment',
+            'serverless': 'Commercial Union.ai product - serverless execution'
+        }
+
+        # All four variants for both versions
+        all_variants = ['byoc', 'flyte', 'selfmanaged', 'serverless']
+
+        # V2 variant links (current variants)
+        v2_variant_links = []
+        for variant in sorted(variants):
+            name = variant_names.get(variant, variant.title())
+            desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
+            v2_variant_links.append(f"  - **[{name}](v2/{variant}/llms-full.txt)** - {desc}")
+
+        # V1 variant links (all four variants)
+        v1_variant_links = []
+        for variant in sorted(all_variants):
+            name = variant_names.get(variant, variant.title())
+            desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
+            v1_variant_links.append(f"  - **[{name}](v1/{variant}/llms-full.txt)** - {desc}")
+
+        return f"""# Union.ai Documentation (LLM-Optimized)
+
+This is the root discovery file for LLM-optimized documentation across all Union.ai and Flyte products.
+
+## Available Documentation
+
+### Version 2 (Current)
+
+All documentation variants for **Version 2** (current):
+
+{chr(10).join(v2_variant_links)}
+
+**Version-level overview**: [v2/llms.txt](v2/llms.txt) - All v2 variants with detailed descriptions
+
+### Version 1 (Legacy)
+
+All documentation variants for **Version 1** (legacy):
+
+{chr(10).join(v1_variant_links)}
+
+**Version-level overview**: [v1/llms.txt](v1/llms.txt) - All v1 variants with detailed descriptions
+
+## Navigation Guide
+
+### For LLMs and RAG Systems
+1. **Direct access**: Use the direct links above to access specific variant documentation
+2. **Version browsing**: Use `v2/llms.txt` for detailed v2 variant information
+3. **Variant browsing**: Use `v2/{variant}/llms.txt` for specific variant details
+
+### Documentation Structure
+- **Root** (`/docs/llms.txt`) - This file, overview of all versions and variants
+- **Version** (`/docs/v2/llms.txt`) - All variants for version 2
+- **Variant** (`/docs/v2/{variant}/llms.txt`) - Redirect to specific consolidated documentation
+- **Content** (`/docs/v2/{variant}/llms-full.txt`) - Complete consolidated documentation
+
+## File Characteristics
+
+Each `llms-full.txt` file contains:
+- **Complete documentation** for that variant (~1.4MB+ each)
+- **Hierarchical internal links** - All `.md` and `#anchor` links converted to searchable references
+- **Depth-first organization** - Content follows logical navigation structure
+- **LLM-optimized format** - Perfect for RAG systems, vector databases, and AI assistants
+
+## Product Information
+
+- **Flyte**: Open source workflow orchestration platform maintained by Union.ai
+- **Union.ai Products**: Commercial offerings built on Flyte with additional enterprise features
+- **Version 2**: Current generation with pure Python execution and simplified API
+- **All variants**: Share core Flyte functionality with product-specific enhancements
+
+---
+
+*Generated automatically from the Union.ai documentation system.*
+*Last updated: {self.get_current_timestamp()}*
+"""
+
+    def create_version_discovery_content(self, variants: List[str], version: str) -> str:
+        """Create content for version-level discovery file."""
+        variant_names = {
+            'flyte': 'Flyte Open Source',
+            'byoc': 'Union.ai BYOC (Bring Your Own Cloud)',
+            'selfmanaged': 'Union.ai Self-managed',
+            'serverless': 'Union.ai Serverless'
+        }
+
+        variant_details = {
+            'flyte': {
+                'desc': 'Free and open source workflow orchestration platform',
+                'features': ['Pure Python execution', 'Local development', 'Self-hosted deployment', 'Community support'],
+                'audience': 'Developers, data scientists, ML engineers using open source tools'
+            },
+            'byoc': {
+                'desc': 'Commercial Union.ai product with your cloud infrastructure',
+                'features': ['All Flyte features', 'Reusable containers', 'Enterprise support', 'Multi-cluster management'],
+                'audience': 'Enterprises with existing cloud infrastructure and compliance requirements'
+            },
+            'selfmanaged': {
+                'desc': 'Commercial Union.ai product with managed infrastructure',
+                'features': ['All BYOC features', 'Fully managed deployment', 'Union.ai infrastructure', 'SLA guarantees'],
+                'audience': 'Teams wanting managed infrastructure without operational overhead'
+            },
+            'serverless': {
+                'desc': 'Commercial Union.ai product with serverless execution',
+                'features': ['All Union.ai features', 'Pay-per-execution', 'Zero infrastructure management', 'Auto-scaling'],
+                'audience': 'Teams with variable workloads and minimal infrastructure requirements'
+            }
+        }
+
+        variant_sections = []
+        for variant in sorted(variants):
+            name = variant_names.get(variant, variant.title())
+            details = variant_details.get(variant, {
+                'desc': f'{variant.title()} variant documentation',
+                'features': ['Core Flyte functionality'],
+                'audience': 'General users'
+            })
+
+            features_list = '\n'.join([f'  - {feature}' for feature in details['features']])
+
+            variant_sections.append(f"""### {name}
+
+**Description**: {details['desc']}
+
+**Key Features**:
+{features_list}
+
+**Target Audience**: {details['audience']}
+
+**Documentation**:
+- **[{variant}/llms.txt]({variant}/llms.txt)** - Variant-specific redirect and information
+- **[{variant}/llms-full.txt]({variant}/llms-full.txt)** - Complete consolidated documentation (~1.4MB+)""")
+
+        return f"""# Version {version.upper()} Documentation (LLM-Optimized)
+
+This is the version-level discovery file for all **Version {version.upper()}** documentation variants.
+
+## Available Variants
+
+{chr(10).join(variant_sections)}
+
+## Navigation
+
+- **[Root Documentation](../llms.txt)** - Overview of all versions and variants
+- **Individual Variants** - Use the links above to access specific variant documentation
+- **Direct Access** - Use `{variant}/llms-full.txt` URLs for direct LLM consumption
+
+## Version {version.upper()} Overview
+
+Version {version.upper()} represents the current generation of Flyte and Union.ai products, featuring:
+- **Pure Python execution** - No more YAML workflows or complex decorators
+- **Simplified API** - Intuitive task definition and execution patterns
+- **Enhanced local development** - Seamless transition from local to remote execution
+- **Native notebook support** - First-class Jupyter integration
+- **Improved observability** - Fine-grained tracing and monitoring
+
+## For LLMs and RAG Systems
+
+Each consolidated documentation file is specifically optimized for AI consumption:
+- **No broken links** - All internal references converted to hierarchical text
+- **Complete content** - Single file contains all documentation for that variant
+- **Searchable structure** - Hierarchical references like `**Getting started > Local setup**`
+- **Consistent format** - Standardized page delimiters and link processing
+
+## Usage Examples
+
+```
+# Access specific variant documentation
+GET /docs/v2/flyte/llms-full.txt
+GET /docs/v2/byoc/llms-full.txt
+
+# Get variant information and redirect
+GET /docs/v2/flyte/llms.txt
+GET /docs/v2/byoc/llms.txt
+```
+
+---
+
+*Generated automatically from the Union.ai documentation system.*
+*Last updated: {self.get_current_timestamp()}*
+"""
+
+    def get_current_timestamp(self) -> str:
+        """Get current timestamp for documentation."""
+        from datetime import datetime
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
+
 def main():
+    import sys
     base_path = Path.cwd()
     builder = LLMDocBuilder(base_path)
 
-    # Step 1: Regenerate documentation
-    if not builder.run_make_dist():
+    # Step 1: Regenerate documentation (skip if --no-make-dist is passed)
+    if '--no-make-dist' not in sys.argv and not builder.run_make_dist():
         return 1
 
     # Step 2: Find variants
@@ -419,17 +638,20 @@ def main():
 
             file_size = len(consolidated_content)
             print(f"✅ Saved: {output_file} ({file_size:,} characters)")
-            
+
             # Create redirect llms.txt file
             redirect_file = base_path / 'dist' / 'docs' / 'v2' / variant / 'llms.txt'
             redirect_content = builder.create_redirect_content(variant)
-            
+
             with open(redirect_file, 'w', encoding='utf-8') as f:
                 f.write(redirect_content)
-                
+
             print(f"✅ Created redirect: {redirect_file}")
         else:
             print(f"❌ No content generated for {variant}")
+
+    # Step 4: Create hierarchical discovery files
+    builder.create_discovery_files(base_path, variants)
 
     return 0
 

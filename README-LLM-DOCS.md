@@ -119,7 +119,7 @@ This will:
 
 Generated files are located at each variant directory:
 - `dist/docs/v2/flyte/llms-full.txt` + `llms.txt`
-- `dist/docs/v2/byoc/llms-full.txt` + `llms.txt`  
+- `dist/docs/v2/byoc/llms-full.txt` + `llms.txt`
 - `dist/docs/v2/selfmanaged/llms-full.txt` + `llms.txt`
 - `dist/docs/v2/serverless/llms-full.txt` + `llms.txt`
 
