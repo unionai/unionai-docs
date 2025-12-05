@@ -1,0 +1,15 @@
+[project]
+name = "unionai-docs-tools"
+version = "0.1.0"
+description = "Documentation build tools for Union.ai"
+requires-python = ">=3.8"
+dependencies = [
+    "toml>=0.10.2",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []

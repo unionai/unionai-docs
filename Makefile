@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples
+.PHONY: all dist variant dev update-examples sync-examples llm-docs
 
 all: usage
 
@@ -26,11 +26,28 @@ dist: base
 	# make variant VARIANT=serverless
 	make variant VARIANT=byoc
 	make variant VARIANT=selfmanaged
+	make llm-docs
 
 variant:
 	@if [ -z ${VARIANT} ]; then echo "VARIANT is not set"; exit 1; fi
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
+	@echo "Processing shortcodes in markdown files..."
+	@if [ -d "dist/docs/v2/${VARIANT}/tmp-md" ]; then \
+		if command -v uv >/dev/null 2>&1; then \
+		uv run process_shortcodes.py \
+			--variant=${VARIANT} \
+			--input-dir=dist/docs/v2/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/v2/${VARIANT}/md \
+			--base-path=.; \
+		else \
+		python3 process_shortcodes.py \
+			--variant=${VARIANT} \
+			--input-dir=dist/docs/v2/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/v2/${VARIANT}/md \
+			--base-path=.; \
+		fi \
+	fi
 
 dev:
 	@if ! ./scripts/pre-flight.sh; then exit 1; fi
@@ -53,3 +70,42 @@ check-jupyter:
 
 check-images:
 	./scripts/check_images.sh
+
+validate-urls:
+	@echo "Validating URLs across all variants..."
+	for variant in flyte byoc selfmanaged; do \
+		echo "Checking $$variant..."; \
+		if [ -d "dist/docs/v2/$$variant/md" ]; then \
+			if command -v uv >/dev/null 2>&1; then \
+				uv run python3 validate_urls.py dist/docs/v2/$$variant/md; \
+			else \
+				python3 validate_urls.py dist/docs/v2/$$variant/md; \
+			fi; \
+		else \
+			echo "No processed markdown found for $$variant"; \
+		fi \
+	done
+
+url-stats:
+	@echo "URL statistics across all variants:"
+	for variant in flyte byoc selfmanaged; do \
+		echo "=== $$variant ==="; \
+		if [ -d "dist/docs/v2/$$variant/md" ]; then \
+			if command -v uv >/dev/null 2>&1; then \
+				uv run python3 validate_urls.py dist/docs/v2/$$variant/md --stats; \
+			else \
+				python3 validate_urls.py dist/docs/v2/$$variant/md --stats; \
+			fi; \
+		else \
+			echo "No processed markdown found for $$variant"; \
+		fi \
+	done
+
+llm-docs:
+	@echo "Building LLM-optimized documentation..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run build_llm_docs.py --no-make-dist; \
+	else \
+		python3 build_llm_docs.py --no-make-dist; \
+	fi
+
