@@ -32,19 +32,19 @@ variant:
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 	@echo "Processing shortcodes in markdown files..."
-	@if [ -d "dist/docs/v2/${VARIANT}/md" ]; then \
+	@if [ -d "dist/docs/v2/${VARIANT}/tmp-md" ]; then \
 		if command -v uv >/dev/null 2>&1; then \
-			uv run process_shortcodes.py \
-				--variant=${VARIANT} \
-				--input-dir=dist/docs/v2/${VARIANT}/md \
-				--output-dir=dist/docs/v2/${VARIANT}/md-processed \
-				--base-path=.; \
+		uv run process_shortcodes.py \
+			--variant=${VARIANT} \
+			--input-dir=dist/docs/v2/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/v2/${VARIANT}/md \
+			--base-path=.; \
 		else \
-			python3 process_shortcodes.py \
-				--variant=${VARIANT} \
-				--input-dir=dist/docs/v2/${VARIANT}/md \
-				--output-dir=dist/docs/v2/${VARIANT}/md-processed \
-				--base-path=.; \
+		python3 process_shortcodes.py \
+			--variant=${VARIANT} \
+			--input-dir=dist/docs/v2/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/v2/${VARIANT}/md \
+			--base-path=.; \
 		fi \
 	fi
 
@@ -72,13 +72,13 @@ check-images:
 
 validate-urls:
 	@echo "Validating URLs across all variants..."
-	@for variant in flyte byoc selfmanaged; do \
+	for variant in flyte byoc selfmanaged; do \
 		echo "Checking $$variant..."; \
-		if [ -d "dist/docs/v2/$$variant/md-processed" ]; then \
+		if [ -d "dist/docs/v2/$$variant/md" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed; \
+				uv run python3 validate_urls.py dist/docs/v2/$$variant/md; \
 			else \
-				python3 validate_urls.py dist/docs/v2/$$variant/md-processed; \
+				python3 validate_urls.py dist/docs/v2/$$variant/md; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -87,13 +87,13 @@ validate-urls:
 
 url-stats:
 	@echo "URL statistics across all variants:"
-	@for variant in flyte byoc selfmanaged; do \
+	for variant in flyte byoc selfmanaged; do \
 		echo "=== $$variant ==="; \
-		if [ -d "dist/docs/v2/$$variant/md-processed" ]; then \
+		if [ -d "dist/docs/v2/$$variant/md" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/v2/$$variant/md-processed --stats; \
+				uv run python3 validate_urls.py dist/docs/v2/$$variant/md --stats; \
 			else \
-				python3 validate_urls.py dist/docs/v2/$$variant/md-processed --stats; \
+				python3 validate_urls.py dist/docs/v2/$$variant/md --stats; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \

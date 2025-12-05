@@ -6,7 +6,7 @@ This script post-processes Hugo-generated markdown files to convert shortcodes
 into clean markdown equivalents.
 
 Usage:
-    python process_shortcodes.py --variant=byoc --input-dir=dist/docs/v2/byoc/md --output-dir=dist/docs/v2/byoc/md-processed
+    python process_shortcodes.py --variant=byoc --input-dir=dist/docs/v2/byoc/tmp-md --output-dir=dist/docs/v2/byoc/md
 """
 
 import argparse
@@ -572,7 +572,7 @@ class ShortcodeProcessor:
             try:
                 if base_url.startswith('/'):
                     # Absolute path from site root - convert to relative
-                    site_root = Path('dist/docs/v2') / self.variant / 'md-processed'
+                    site_root = Path('dist/docs/v2') / self.variant / 'md'
                     target_path = site_root / base_url.lstrip('/')
                 else:
                     # Relative path from current file

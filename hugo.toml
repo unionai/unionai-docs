@@ -31,7 +31,7 @@ enableEmoji = true
   [outputFormats.MD]
     mediaType = "text/plain"
     baseName = "index"
-    path = "md"
+    path = "tmp-md"
     isPlainText = true
 
 [params]
