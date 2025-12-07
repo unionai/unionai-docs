@@ -65,42 +65,6 @@ update-examples:
 init-examples:
 	git submodule update --init
 
-check-jupyter:
-	./tools/jupyter_generator/check_jupyter.sh
-
-check-images:
-	./scripts/check_images.sh
-
-validate-urls:
-	@echo "Validating URLs across all variants..."
-	for variant in flyte byoc selfmanaged; do \
-		echo "Checking $$variant..."; \
-		if [ -d "dist/docs/v1/$$variant/md" ]; then \
-			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/v1/$$variant/md; \
-			else \
-				python3 validate_urls.py dist/docs/v1/$$variant/md; \
-			fi; \
-		else \
-			echo "No processed markdown found for $$variant"; \
-		fi \
-	done
-
-url-stats:
-	@echo "URL statistics across all variants:"
-	for variant in flyte byoc selfmanaged; do \
-		echo "=== $$variant ==="; \
-		if [ -d "dist/docs/v1/$$variant/md" ]; then \
-			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/v1/$$variant/md --stats; \
-			else \
-				python3 validate_urls.py dist/docs/v1/$$variant/md --stats; \
-			fi; \
-		else \
-			echo "No processed markdown found for $$variant"; \
-		fi \
-	done
-
 llm-docs:
 	@echo "Building LLM-optimized documentation..."
 	@if command -v uv >/dev/null 2>&1; then \
@@ -109,3 +73,8 @@ llm-docs:
 		python3 build_llm_docs.py --no-make-dist; \
 	fi
 
+check-jupyter:
+	./tools/jupyter_generator/check_jupyter.sh
+
+check-images:
+	./scripts/check_images.sh

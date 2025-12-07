@@ -229,8 +229,10 @@ class LLMDocBuilder:
 
         return links
 
-    def build_consolidated_doc(self, variant: str, version: str = 'v1') -> str:
+    def build_consolidated_doc(self, variant: str, version: str = None) -> str:
         """Build consolidated document by following subpage links depth-first."""
+        if version is None:
+            version = self.detect_version()
         md_dir = self.base_path / 'dist' / 'docs' / version / variant / 'md'
 
         if not md_dir.exists():
@@ -328,9 +330,31 @@ class LLMDocBuilder:
             current_dir = file_path.parent
             self.process_page_depth_first(current_dir, link, consolidated, md_root, current_hierarchy)
 
+    def detect_version(self) -> str:
+        """Detect if we're in a v1 or v2 repository structure."""
+        # Check for v1 indicators
+        if Path("config.serverless.toml").exists():
+            return "v1"
+        
+        # Check for v2 indicators
+        dist_path = Path("dist/docs")
+        if dist_path.exists():
+            # Look for version-specific subdirectories
+            v1_path = dist_path / "v1"
+            v2_path = dist_path / "v2"
+            if v2_path.exists():
+                return "v2"
+            elif v1_path.exists():
+                return "v1"
+        
+        # Default assumption
+        return "v1"
+
     def find_variants(self) -> List[str]:
         """Find available variants in the dist directory."""
-        dist_path = self.base_path / "dist" / "docs" / "v1"
+        version = self.detect_version()
+        dist_path = self.base_path / "dist" / "docs" / version
+        
         if not dist_path.exists():
             return []
 
@@ -354,7 +378,7 @@ class LLMDocBuilder:
 
         return f"""# {variant_display} Documentation (LLM-Optimized)
 
-This is the LLM-optimized documentation redirect for **{variant_display}** (version 1).
+This is the LLM-optimized documentation redirect for **{variant_display}** (version 2).
 
 ## Full Documentation
 
@@ -371,7 +395,7 @@ The `llms-full.txt` file contains:
 ## File Details
 
 - **Variant**: {variant}
-- **Version**: v1
+- **Version**: v2
 - **Format**: LLM-optimized consolidated markdown
 - **Size**: ~1.4MB+ of comprehensive documentation
 - **Update frequency**: Generated automatically from source documentation
@@ -390,26 +414,26 @@ This consolidated documentation is ideal for:
 *Generated automatically from the Union.ai documentation system.*
 """
 
-    def create_discovery_files(self, base_path: Path, variants: List[str]) -> None:
+    def create_discovery_files(self, base_path: Path, variants: List[str], version: str) -> None:
         """Create hierarchical discovery files for LLM documentation."""
 
         # Root level discovery file (/docs/llms.txt)
-        root_content = self.create_root_discovery_content(variants)
+        root_content = self.create_root_discovery_content(variants, version)
         root_file = base_path / 'dist' / 'docs' / 'llms.txt'
 
         with open(root_file, 'w', encoding='utf-8') as f:
             f.write(root_content)
         print(f"✅ Created root discovery: {root_file}")
 
-        # Version level discovery file (/docs/v1/llms.txt)
-        v1_content = self.create_version_discovery_content(variants, 'v1')
-        v1_file = base_path / 'dist' / 'docs' / 'v1' / 'llms.txt'
+        # Version level discovery file (/docs/v1/llms.txt or /docs/v2/llms.txt)
+        version_content = self.create_version_discovery_content(variants, version)
+        version_file = base_path / 'dist' / 'docs' / version / 'llms.txt'
 
-        with open(v1_file, 'w', encoding='utf-8') as f:
-            f.write(v1_content)
-        print(f"✅ Created v1 discovery: {v1_file}")
+        with open(version_file, 'w', encoding='utf-8') as f:
+            f.write(version_content)
+        print(f"✅ Created {version} discovery: {version_file}")
 
-    def create_root_discovery_content(self, variants: List[str]) -> str:
+    def create_root_discovery_content(self, variants: List[str], current_version: str) -> str:
         """Create content for the root-level discovery file."""
         variant_names = {
             'flyte': 'Flyte Open Source',
@@ -428,12 +452,12 @@ This consolidated documentation is ideal for:
         # All four variants for both versions
         all_variants = ['byoc', 'flyte', 'selfmanaged', 'serverless']
 
-        # V1 variant links (current variants)
-        v1_variant_links = []
+        # V2 variant links (current variants)
+        v2_variant_links = []
         for variant in sorted(variants):
             name = variant_names.get(variant, variant.title())
             desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
-            v1_variant_links.append(f"  - **[{name}](v1/{variant}/llms-full.txt)** - {desc}")
+            v2_variant_links.append(f"  - **[{name}](v2/{variant}/llms-full.txt)** - {desc}")
 
         # V1 variant links (all four variants)
         v1_variant_links = []
@@ -448,13 +472,13 @@ This is the root discovery file for LLM-optimized documentation across all Union
 
 ## Available Documentation
 
-### Version 1 (Current)
+### Version 2 (Current)
 
-All documentation variants for **Version 1** (current):
+All documentation variants for **Version 2** (current):
 
-{chr(10).join(v1_variant_links)}
+{chr(10).join(v2_variant_links)}
 
-**Version-level overview**: [v1/llms.txt](v1/llms.txt) - All v1 variants with detailed descriptions
+**Version-level overview**: [v2/llms.txt](v2/llms.txt) - All v2 variants with detailed descriptions
 
 ### Version 1 (Legacy)
 
@@ -617,21 +641,23 @@ def main():
     if '--no-make-dist' not in sys.argv and not builder.run_make_dist():
         return 1
 
-    # Step 2: Find variants
+    # Step 2: Detect version and find variants
+    version = builder.detect_version()
     variants = builder.find_variants()
     if not variants:
         print("❌ No variants found")
         return 1
 
+    print(f"📋 Detected {version} structure")
     print(f"📋 Found variants: {variants}")
 
     # Step 3: Build consolidated documents
     for variant in variants:
-        consolidated_content = builder.build_consolidated_doc(variant)
+        consolidated_content = builder.build_consolidated_doc(variant, version)
 
         if consolidated_content.strip():
             # Create output file
-            output_file = base_path / 'dist' / 'docs' / 'v1' / variant / 'llms-full.txt'
+            output_file = base_path / 'dist' / 'docs' / version / variant / 'llms-full.txt'
 
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(consolidated_content)
@@ -640,7 +666,7 @@ def main():
             print(f"✅ Saved: {output_file} ({file_size:,} characters)")
 
             # Create redirect llms.txt file
-            redirect_file = base_path / 'dist' / 'docs' / 'v1' / variant / 'llms.txt'
+            redirect_file = base_path / 'dist' / 'docs' / version / variant / 'llms.txt'
             redirect_content = builder.create_redirect_content(variant)
 
             with open(redirect_file, 'w', encoding='utf-8') as f:
@@ -651,7 +677,7 @@ def main():
             print(f"❌ No content generated for {variant}")
 
     # Step 4: Create hierarchical discovery files
-    builder.create_discovery_files(base_path, variants)
+    builder.create_discovery_files(base_path, variants, version)
 
     return 0
 

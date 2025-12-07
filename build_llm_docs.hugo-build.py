@@ -229,7 +229,7 @@ class LLMDocBuilder:
 
         return links
 
-    def build_consolidated_doc(self, variant: str, version: str = 'v1') -> str:
+    def build_consolidated_doc(self, variant: str, version: str = 'v2') -> str:
         """Build consolidated document by following subpage links depth-first."""
         md_dir = self.base_path / 'dist' / 'docs' / version / variant / 'md'
 
@@ -330,7 +330,7 @@ class LLMDocBuilder:
 
     def find_variants(self) -> List[str]:
         """Find available variants in the dist directory."""
-        dist_path = self.base_path / "dist" / "docs" / "v1"
+        dist_path = self.base_path / "dist" / "docs" / "v2"
         if not dist_path.exists():
             return []
 
@@ -354,7 +354,7 @@ class LLMDocBuilder:
 
         return f"""# {variant_display} Documentation (LLM-Optimized)
 
-This is the LLM-optimized documentation redirect for **{variant_display}** (version 1).
+This is the LLM-optimized documentation redirect for **{variant_display}** (version 2).
 
 ## Full Documentation
 
@@ -371,7 +371,7 @@ The `llms-full.txt` file contains:
 ## File Details
 
 - **Variant**: {variant}
-- **Version**: v1
+- **Version**: v2
 - **Format**: LLM-optimized consolidated markdown
 - **Size**: ~1.4MB+ of comprehensive documentation
 - **Update frequency**: Generated automatically from source documentation
@@ -401,13 +401,13 @@ This consolidated documentation is ideal for:
             f.write(root_content)
         print(f"✅ Created root discovery: {root_file}")
 
-        # Version level discovery file (/docs/v1/llms.txt)
-        v1_content = self.create_version_discovery_content(variants, 'v1')
-        v1_file = base_path / 'dist' / 'docs' / 'v1' / 'llms.txt'
+        # Version level discovery file (/docs/v2/llms.txt)
+        v2_content = self.create_version_discovery_content(variants, 'v2')
+        v2_file = base_path / 'dist' / 'docs' / 'v2' / 'llms.txt'
 
-        with open(v1_file, 'w', encoding='utf-8') as f:
-            f.write(v1_content)
-        print(f"✅ Created v1 discovery: {v1_file}")
+        with open(v2_file, 'w', encoding='utf-8') as f:
+            f.write(v2_content)
+        print(f"✅ Created v2 discovery: {v2_file}")
 
     def create_root_discovery_content(self, variants: List[str]) -> str:
         """Create content for the root-level discovery file."""
@@ -428,12 +428,12 @@ This consolidated documentation is ideal for:
         # All four variants for both versions
         all_variants = ['byoc', 'flyte', 'selfmanaged', 'serverless']
 
-        # V1 variant links (current variants)
-        v1_variant_links = []
+        # V2 variant links (current variants)
+        v2_variant_links = []
         for variant in sorted(variants):
             name = variant_names.get(variant, variant.title())
             desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
-            v1_variant_links.append(f"  - **[{name}](v1/{variant}/llms-full.txt)** - {desc}")
+            v2_variant_links.append(f"  - **[{name}](v2/{variant}/llms-full.txt)** - {desc}")
 
         # V1 variant links (all four variants)
         v1_variant_links = []
@@ -448,13 +448,13 @@ This is the root discovery file for LLM-optimized documentation across all Union
 
 ## Available Documentation
 
-### Version 1 (Current)
+### Version 2 (Current)
 
-All documentation variants for **Version 1** (current):
+All documentation variants for **Version 2** (current):
 
-{chr(10).join(v1_variant_links)}
+{chr(10).join(v2_variant_links)}
 
-**Version-level overview**: [v1/llms.txt](v1/llms.txt) - All v1 variants with detailed descriptions
+**Version-level overview**: [v2/llms.txt](v2/llms.txt) - All v2 variants with detailed descriptions
 
 ### Version 1 (Legacy)
 
@@ -631,7 +631,7 @@ def main():
 
         if consolidated_content.strip():
             # Create output file
-            output_file = base_path / 'dist' / 'docs' / 'v1' / variant / 'llms-full.txt'
+            output_file = base_path / 'dist' / 'docs' / 'v2' / variant / 'llms-full.txt'
 
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(consolidated_content)
@@ -640,7 +640,7 @@ def main():
             print(f"✅ Saved: {output_file} ({file_size:,} characters)")
 
             # Create redirect llms.txt file
-            redirect_file = base_path / 'dist' / 'docs' / 'v1' / variant / 'llms.txt'
+            redirect_file = base_path / 'dist' / 'docs' / 'v2' / variant / 'llms.txt'
             redirect_content = builder.create_redirect_content(variant)
 
             with open(redirect_file, 'w', encoding='utf-8') as f:
