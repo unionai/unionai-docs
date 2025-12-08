@@ -3,7 +3,7 @@ title: Flyte SDK
 version: 2.0.0b34
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
-weight: 3
+weight: 2
 sidebar_expanded: true
 ---
 

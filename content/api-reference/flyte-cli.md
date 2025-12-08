@@ -1,7 +1,7 @@
 ---
 title: "Flyte CLI"
 variants: +flyte +byoc +selfmanaged +serverless
-weight: 2
+weight: 1
 ---
 
 # Flyte CLI
@@ -13,6 +13,7 @@ This is the command line interface for Flyte.
 | Object | Action |
 | ------ | -- |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
@@ -24,21 +25,25 @@ This is the command line interface for Flyte.
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+
+**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
+
+**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< /grid >}}
 
@@ -133,6 +138,32 @@ environments.
 **`flyte create COMMAND [ARGS]...`**
 
 Create resources in a Flyte deployment.
+
+#### flyte create api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+
+**`flyte create api-key [OPTIONS]`**
+
+Create an API key for headless authentication.
+
+This creates OAuth application credentials that can be used to authenticate
+with Union without interactive login. The generated API key should be set
+as the FLYTE_API_KEY environment variable. Oauth applications should not be
+confused with Union Apps, which are a different construct entirely.
+
+Examples:
+
+    # Create an API key named "ci-pipeline"
+    $ flyte create api-key --name ci-pipeline
+
+    # The output will include an export command like:
+    # export FLYTE_API_KEY="<base64-encoded-credentials>"
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--name` | `text` | `Sentinel.UNSET` | Name for API key |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create config
 
@@ -256,6 +287,27 @@ This will create a trigger that runs every day at midnight.
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
+
+#### flyte delete api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+
+**`flyte delete api-key [OPTIONS] CLIENT_ID`**
+
+Delete an API key.
+
+Examples:
+
+    # Delete an API key (with confirmation)
+    $ flyte delete api-key my-client-id
+
+    # Delete without confirmation
+    $ flyte delete api-key my-client-id --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte delete secret
 
@@ -456,6 +508,33 @@ Get all actions for a run or details for a specific action.
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
 `--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+
+**`flyte get api-key [OPTIONS] [CLIENT_ID]`**
+
+Get or list API keys.
+
+If CLIENT-ID is provided, gets a specific API key.
+Otherwise, lists all API keys.
+
+Examples:
+
+    # List all API keys
+    $ flyte get api-key
+
+    # List with a limit
+    $ flyte get api-key --limit 10
+
+    # Get a specific API key
+    $ flyte get api-key my-client-id
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of keys to list |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get app
