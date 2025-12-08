@@ -17,6 +17,28 @@ class LLMDocBuilder:
         self.base_path = base_path
         self.visited_files: Set[str] = set()
         self.title_lookup: dict[str, str] = {}  # Maps file paths to hierarchical titles
+        self.version = self._detect_version()
+
+    def _detect_version(self) -> str:
+        """Detect version from environment or makefile.inc."""
+        # Check environment variable first (set by Makefile)
+        version = os.environ.get('VERSION')
+        if version:
+            return version
+
+        # Read from makefile.inc as fallback
+        makefile_inc = self.base_path / 'makefile.inc'
+        if makefile_inc.exists():
+            try:
+                with open(makefile_inc, 'r') as f:
+                    for line in f:
+                        if line.startswith('VERSION :='):
+                            return line.split(':=')[1].strip()
+            except Exception:
+                pass
+
+        # Default fallback
+        return 'v2'
 
     def run_make_dist(self) -> bool:
         """Run make dist to regenerate all documentation variants."""
@@ -134,8 +156,20 @@ class LLMDocBuilder:
             else:  # Just anchor, same file
                 resolved = current_file_path
 
-            # Convert to lookup key
-            key = str(resolved.name)
+            # Find the md root to get relative path
+            md_root = None
+            for parent in resolved.parents:
+                if parent.name == 'md':
+                    md_root = parent
+                    break
+
+            if md_root:
+                # Convert to relative path from md root (which matches our lookup table keys)
+                key = str(resolved.relative_to(md_root))
+            else:
+                # Fallback to filename only
+                key = str(resolved.name)
+
             if anchor:
                 key = f"{key}#{anchor}"
 
@@ -229,8 +263,9 @@ class LLMDocBuilder:
 
         return links
 
-    def build_consolidated_doc(self, variant: str, version: str = 'v2') -> str:
+    def build_consolidated_doc(self, variant: str, version: str = None) -> str:
         """Build consolidated document by following subpage links depth-first."""
+        version = version or self.version
         md_dir = self.base_path / 'dist' / 'docs' / version / variant / 'md'
 
         if not md_dir.exists():
@@ -238,17 +273,21 @@ class LLMDocBuilder:
             return ""
 
         print(f"📖 Building consolidated document for {variant}")
-        consolidated_content = []
 
-        # Start with index.md
+        # First pass: Build lookup tables for all pages
+        print("  📝 First pass: Building lookup tables...")
+        self.visited_files.clear()  # Reset for first pass
+        self.build_lookup_tables(md_dir, 'index.md', md_dir, [])
+
+        # Second pass: Process content with lookup tables populated
+        print("  📄 Second pass: Processing content...")
+        consolidated_content = []
         self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [])
 
         return '\n'.join(consolidated_content)
 
-    def process_page_depth_first(self, base_dir: Path, relative_path: str,
-                                consolidated: List[str], md_root: Path, hierarchy: List[str] = None):
-        """Process a page and its subpages in depth-first order."""
-
+    def build_lookup_tables(self, base_dir: Path, relative_path: str, md_root: Path, hierarchy: List[str] = None):
+        """Build lookup tables for all pages without processing content."""
         if hierarchy is None:
             hierarchy = []
 
@@ -268,7 +307,9 @@ class LLMDocBuilder:
                 print(f"⚠️  Could not find file for: {relative_path}")
                 return
         else:
-            file_path = base_dir / relative_path        # Avoid infinite loops
+            file_path = base_dir / relative_path
+
+        # Avoid infinite loops
         canonical_path = str(file_path.resolve())
         if canonical_path in self.visited_files:
             return
@@ -278,13 +319,11 @@ class LLMDocBuilder:
             print(f"⚠️  File not found: {file_path}")
             return
 
-        # Get relative path from md root for the delimiter
+        # Get relative path from md root for the lookup key
         try:
             relative_from_md = str(file_path.relative_to(md_root))
         except ValueError:
             relative_from_md = str(file_path)
-
-        print(f"  📄 Processing: {relative_from_md}")
 
         # Read the raw content
         raw_content = self.read_file_content(file_path)
@@ -311,10 +350,63 @@ class LLMDocBuilder:
             filename_key = f"{file_path.name}#{anchor}"
             self.title_lookup[filename_key] = anchor_title
 
-        # Extract subpages BEFORE processing links (so links don't break extraction)
+        # Extract subpages and recursively build lookup tables
+        subpage_links = self.extract_subpage_links(raw_content)
+        for link in subpage_links:
+            # Resolve relative to the current file's directory
+            current_dir = file_path.parent
+            self.build_lookup_tables(current_dir, link, md_root, current_hierarchy)
+
+    def process_page_depth_first(self, base_dir: Path, relative_path: str,
+                                consolidated: List[str], md_root: Path, hierarchy: List[str] = None):
+        """Process a page and its subpages in depth-first order."""
+
+        if hierarchy is None:
+            hierarchy = []
+
+        # Resolve the full path (same logic as build_lookup_tables)
+        if relative_path.endswith('/'):
+            file_path = base_dir / relative_path / 'index.md'
+            relative_path = relative_path + 'index.md'
+        elif not relative_path.endswith('.md'):
+            # Try both with and without .md extension
+            if (base_dir / f"{relative_path}.md").exists():
+                file_path = base_dir / f"{relative_path}.md"
+                relative_path = f"{relative_path}.md"
+            elif (base_dir / relative_path / 'index.md').exists():
+                file_path = base_dir / relative_path / 'index.md'
+                relative_path = f"{relative_path}/index.md"
+            else:
+                print(f"⚠️  Could not find file for: {relative_path}")
+                return
+        else:
+            file_path = base_dir / relative_path
+
+        if not file_path.exists():
+            print(f"⚠️  File not found: {file_path}")
+            return
+
+        # Get relative path from md root for the delimiter
+        try:
+            relative_from_md = str(file_path.relative_to(md_root))
+        except ValueError:
+            relative_from_md = str(file_path)
+
+        print(f"  📄 Processing: {relative_from_md}")
+
+        # Read the raw content
+        raw_content = self.read_file_content(file_path)
+        if not raw_content.strip():
+            return
+
+        # Extract page title and build hierarchy (for current processing)
+        page_title = self.extract_page_title(raw_content, file_path)
+        current_hierarchy = hierarchy + [page_title]
+
+        # Extract subpages BEFORE processing links
         subpage_links = self.extract_subpage_links(raw_content)
 
-        # NOW process internal links with hierarchy context
+        # Process internal links with lookup tables populated
         content = self.process_internal_links(raw_content, file_path, current_hierarchy)
 
         # Add page delimiter
@@ -330,7 +422,7 @@ class LLMDocBuilder:
 
     def find_variants(self) -> List[str]:
         """Find available variants in the dist directory."""
-        dist_path = self.base_path / "dist" / "docs" / "v2"
+        dist_path = self.base_path / "dist" / "docs" / self.version
         if not dist_path.exists():
             return []
 
@@ -354,7 +446,7 @@ class LLMDocBuilder:
 
         return f"""# {variant_display} Documentation (LLM-Optimized)
 
-This is the LLM-optimized documentation redirect for **{variant_display}** (version 2).
+This is the LLM-optimized documentation redirect for **{variant_display}** ({self.version}).
 
 ## Full Documentation
 
@@ -371,7 +463,7 @@ The `llms-full.txt` file contains:
 ## File Details
 
 - **Variant**: {variant}
-- **Version**: v2
+- **Version**: {self.version}
 - **Format**: LLM-optimized consolidated markdown
 - **Size**: ~1.4MB+ of comprehensive documentation
 - **Update frequency**: Generated automatically from source documentation
@@ -401,13 +493,13 @@ This consolidated documentation is ideal for:
             f.write(root_content)
         print(f"✅ Created root discovery: {root_file}")
 
-        # Version level discovery file (/docs/v2/llms.txt)
-        v2_content = self.create_version_discovery_content(variants, 'v2')
-        v2_file = base_path / 'dist' / 'docs' / 'v2' / 'llms.txt'
+        # Version level discovery file
+        version_content = self.create_version_discovery_content(variants, self.version)
+        version_file = base_path / 'dist' / 'docs' / self.version / 'llms.txt'
 
-        with open(v2_file, 'w', encoding='utf-8') as f:
-            f.write(v2_content)
-        print(f"✅ Created v2 discovery: {v2_file}")
+        with open(version_file, 'w', encoding='utf-8') as f:
+            f.write(version_content)
+        print(f"✅ Created {self.version} discovery: {version_file}")
 
     def create_root_discovery_content(self, variants: List[str]) -> str:
         """Create content for the root-level discovery file."""
@@ -428,12 +520,12 @@ This consolidated documentation is ideal for:
         # All four variants for both versions
         all_variants = ['byoc', 'flyte', 'selfmanaged', 'serverless']
 
-        # V2 variant links (current variants)
-        v2_variant_links = []
+        # Current version variant links
+        current_variant_links = []
         for variant in sorted(variants):
             name = variant_names.get(variant, variant.title())
             desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
-            v2_variant_links.append(f"  - **[{name}](v2/{variant}/llms-full.txt)** - {desc}")
+            current_variant_links.append(f"  - **[{name}]({self.version}/{variant}/llms-full.txt)** - {desc}")
 
         # V1 variant links (all four variants)
         v1_variant_links = []
@@ -448,13 +540,13 @@ This is the root discovery file for LLM-optimized documentation across all Union
 
 ## Available Documentation
 
-### Version 2 (Current)
+### {self.version.upper()} (Current)
 
-All documentation variants for **Version 2** (current):
+All documentation variants for **{self.version.upper()}** (current):
 
-{chr(10).join(v2_variant_links)}
+{chr(10).join(current_variant_links)}
 
-**Version-level overview**: [v2/llms.txt](v2/llms.txt) - All v2 variants with detailed descriptions
+**Version-level overview**: [{self.version}/llms.txt]({self.version}/llms.txt) - All {self.version} variants with detailed descriptions
 
 ### Version 1 (Legacy)
 
@@ -468,14 +560,14 @@ All documentation variants for **Version 1** (legacy):
 
 ### For LLMs and RAG Systems
 1. **Direct access**: Use the direct links above to access specific variant documentation
-2. **Version browsing**: Use `v2/llms.txt` for detailed v2 variant information
-3. **Variant browsing**: Use `v2/{variant}/llms.txt` for specific variant details
+2. **Version browsing**: Use `{self.version}/llms.txt` for detailed {self.version} variant information
+3. **Variant browsing**: Use `{self.version}/{{variant}}/llms.txt` for specific variant details
 
 ### Documentation Structure
 - **Root** (`/docs/llms.txt`) - This file, overview of all versions and variants
-- **Version** (`/docs/v2/llms.txt`) - All variants for version 2
-- **Variant** (`/docs/v2/{variant}/llms.txt`) - Redirect to specific consolidated documentation
-- **Content** (`/docs/v2/{variant}/llms-full.txt`) - Complete consolidated documentation
+- **Version** (`/docs/{self.version}/llms.txt`) - All variants for {self.version}
+- **Variant** (`/docs/{self.version}/{{variant}}/llms.txt`) - Redirect to specific consolidated documentation
+- **Content** (`/docs/{self.version}/{{variant}}/llms-full.txt`) - Complete consolidated documentation
 
 ## File Characteristics
 
@@ -631,7 +723,7 @@ def main():
 
         if consolidated_content.strip():
             # Create output file
-            output_file = base_path / 'dist' / 'docs' / 'v2' / variant / 'llms-full.txt'
+            output_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms-full.txt'
 
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(consolidated_content)
@@ -640,7 +732,7 @@ def main():
             print(f"✅ Saved: {output_file} ({file_size:,} characters)")
 
             # Create redirect llms.txt file
-            redirect_file = base_path / 'dist' / 'docs' / 'v2' / variant / 'llms.txt'
+            redirect_file = base_path / 'dist' / 'docs' / builder.version / variant / 'llms.txt'
             redirect_content = builder.create_redirect_content(variant)
 
             with open(redirect_file, 'w', encoding='utf-8') as f:

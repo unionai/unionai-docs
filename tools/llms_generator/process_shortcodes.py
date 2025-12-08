@@ -6,7 +6,7 @@ This script post-processes Hugo-generated markdown files to convert shortcodes
 into clean markdown equivalents.
 
 Usage:
-    python process_shortcodes.py --variant=byoc --input-dir=dist/docs/v2/byoc/tmp-md --output-dir=dist/docs/v2/byoc/md
+    python process_shortcodes.py --variant=byoc --version=v2 --input-dir=dist/docs/v2/byoc/tmp-md --output-dir=dist/docs/v2/byoc/md
 """
 
 import argparse
@@ -37,8 +37,9 @@ except ImportError:
 
 
 class ShortcodeProcessor:
-    def __init__(self, variant: str, base_path: str = "", input_dir: str = ""):
+    def __init__(self, variant: str, version: str = "v2", base_path: str = "", input_dir: str = ""):
         self.variant = variant
+        self.version = version
         self.base_path = Path(base_path) if base_path else Path.cwd()
         self.input_dir = Path(input_dir) if input_dir else Path.cwd()
         self.key_mappings = self._load_key_mappings()
@@ -493,7 +494,7 @@ class ShortcodeProcessor:
                 url = f"/docs/{version}/{variant}/"
             elif len(args) >= 1:
                 variant = args[0]
-                url = f"/docs/v2/{variant}/"
+                url = f"/docs/{self.version}/{variant}/"
             else:
                 url = "/docs/"
             return url
@@ -605,7 +606,7 @@ class ShortcodeProcessor:
             try:
                 if base_url.startswith('/'):
                     # Absolute path from site root - convert to relative
-                    site_root = Path('dist/docs/v2') / self.variant / 'md'
+                    site_root = Path('dist/docs') / self.version / self.variant / 'md'
                     target_path = site_root / base_url.lstrip('/')
                 else:
                     # Relative path from current file
@@ -652,6 +653,7 @@ class ShortcodeProcessor:
 def main():
     parser = argparse.ArgumentParser(description='Process Hugo shortcodes in markdown files')
     parser.add_argument('--variant', required=True, help='Site variant (e.g., byoc, flyte)')
+    parser.add_argument('--version', help='Documentation version (e.g., v1, v2)', default='v2')
     parser.add_argument('--input-dir', required=True, help='Input directory with markdown files')
     parser.add_argument('--output-dir', required=True, help='Output directory for processed files')
     parser.add_argument('--base-path', help='Base path for resolving file references', default='')
@@ -671,7 +673,7 @@ def main():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    processor = ShortcodeProcessor(args.variant, args.base_path, args.input_dir)
+    processor = ShortcodeProcessor(args.variant, args.version, args.base_path, args.input_dir)
 
     # Process all markdown files
     for md_file in input_dir.rglob('*.txt'):  # Hugo outputs .txt for MD format
@@ -751,7 +753,7 @@ Welcome to the documentation.
         root_content += f"""
 ---
 **Source**: _index.md
-**URL**: /docs/v2/{args.variant}/
+**URL**: /docs/{args.version}/{args.variant}/
 """
 
         with open(root_index, 'w', encoding='utf-8') as f:

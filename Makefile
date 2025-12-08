@@ -33,18 +33,20 @@ variant:
 	@VERSION=${VERSION} ./scripts/run_hugo.sh --config hugo.toml,hugo.site.toml,hugo.ver.toml,config.${VARIANT}.toml --destination dist/${VARIANT}
 	@VERSION=${VERSION} VARIANT=${VARIANT} PREFIX=${PREFIX} BUILD=${BUILD} ./scripts/gen_404.sh
 	@echo "Processing shortcodes in markdown files..."
-	@if [ -d "dist/docs/v2/${VARIANT}/tmp-md" ]; then \
+	@if [ -d "dist/docs/${VERSION}/${VARIANT}/tmp-md" ]; then \
 		if command -v uv >/dev/null 2>&1; then \
-		uv run process_shortcodes.py \
+		uv run tools/llms_generator/process_shortcodes.py \
 			--variant=${VARIANT} \
-			--input-dir=dist/docs/v2/${VARIANT}/tmp-md \
-			--output-dir=dist/docs/v2/${VARIANT}/md \
+			--version=${VERSION} \
+			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
 			--base-path=.; \
 		else \
-		python3 process_shortcodes.py \
+		python3 tools/llms_generator/process_shortcodes.py \
 			--variant=${VARIANT} \
-			--input-dir=dist/docs/v2/${VARIANT}/tmp-md \
-			--output-dir=dist/docs/v2/${VARIANT}/md \
+			--version=${VERSION} \
+			--input-dir=dist/docs/${VERSION}/${VARIANT}/tmp-md \
+			--output-dir=dist/docs/${VERSION}/${VARIANT}/md \
 			--base-path=.; \
 		fi \
 	fi
@@ -75,11 +77,11 @@ validate-urls:
 	@echo "Validating URLs across all variants..."
 	for variant in flyte byoc selfmanaged; do \
 		echo "Checking $$variant..."; \
-		if [ -d "dist/docs/v2/$$variant/md" ]; then \
+		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/v2/$$variant/md; \
+				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant/md; \
 			else \
-				python3 validate_urls.py dist/docs/v2/$$variant/md; \
+				python3 validate_urls.py dist/docs/${VERSION}/$$variant/md; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -90,11 +92,11 @@ url-stats:
 	@echo "URL statistics across all variants:"
 	for variant in flyte byoc selfmanaged; do \
 		echo "=== $$variant ==="; \
-		if [ -d "dist/docs/v2/$$variant/md" ]; then \
+		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
-				uv run python3 validate_urls.py dist/docs/v2/$$variant/md --stats; \
+				uv run python3 validate_urls.py dist/docs/${VERSION}/$$variant/md --stats; \
 			else \
-				python3 validate_urls.py dist/docs/v2/$$variant/md --stats; \
+				python3 validate_urls.py dist/docs/${VERSION}/$$variant/md --stats; \
 			fi; \
 		else \
 			echo "No processed markdown found for $$variant"; \
@@ -104,8 +106,8 @@ url-stats:
 llm-docs:
 	@echo "Building LLM-optimized documentation..."
 	@if command -v uv >/dev/null 2>&1; then \
-		uv run build_llm_docs.py --no-make-dist; \
+		VERSION=${VERSION} uv run tools/llms_generator/build_llm_docs.py --no-make-dist; \
 	else \
-		python3 build_llm_docs.py --no-make-dist; \
+		VERSION=${VERSION} python3 tools/llms_generator/build_llm_docs.py --no-make-dist; \
 	fi
 
