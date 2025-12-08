@@ -1,17 +1,18 @@
 ---
-title: Flyte LLM context
+title: LLM context documents
 variants: +flyte +byoc +selfmanaged +serverless
 weight: 1
 ---
 
-# Flyte LLM context
+# LLM context documents
 
-The following document provides comprehensive LLM context for authoring and running Flyte workflows.
-It serves as a reference for LLM-based AI assistants to understand how to properly write, configure, and execute Flyte workflows.
+The following documents provide a LLM context for authoring and running Flyte/Union workflows.
+They can serve as a reference for LLM-based AI assistants to understand how to properly write, configure, and execute Flyte/Union workflows.
 
-Download the document {{< download "/_static/public/flyte-context.txt" flyte-context.txt >}} or copy it directly from this page, below.
+* **Full documentation content**: The entire documentation (this site) for {{<key product_name >}} version 1.0 in a single text file.
+  * {{< download "/_static/public/llms-full.txt" llms-full.txt >}}
 
-You can then add it to the context window of your LLM-based AI assistant to help it better understand Flyte development.
+* **Concise context document**: A concise overview of Flyte 1.0 concepts.
+  * {{< download "/_static/public/llms-concise.txt" llms-concise.txt >}}
 
-{{< code file="/_static/public/flyte-context.txt" lang="markdown" >}}
-
+You can then add either or both to the context window of your LLM-based AI assistant to help it better understand Flyte/Union development.
