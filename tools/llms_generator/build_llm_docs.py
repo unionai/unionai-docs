@@ -65,7 +65,22 @@ class LLMDocBuilder:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
 
-            # Remove the footer metadata section
+            # Transform source file references to GitHub URLs
+            def transform_source_ref(match):
+                source_line = match.group(0)
+                # Replace /external/unionai-examples with GitHub URL
+                transformed = source_line.replace('/external/unionai-examples', 'https://github.com/unionai/unionai-examples/blob/main')
+                # Remove all asterisks and make it more explicit with parentheses
+                transformed = transformed.replace('*Source:', '(Source code for the above example:')
+                transformed = transformed.replace('*', ')')  # Replace trailing asterisk with closing parenthesis
+                return transformed
+
+            content = re.sub(r'\*Source: /external/unionai-examples[^\*]*\*', transform_source_ref, content)
+
+            # Move source references directly after code blocks (remove blank line between them)
+            content = re.sub(r'```\n\n\(Source code for the above example:', '```\n(Source code for the above example:', content)
+
+            # Remove any other footer metadata section that might remain
             content = re.sub(r'\n---\n\*\*Source\*\*:.*?(?=\n\n|\Z)', '', content, flags=re.DOTALL)
 
             # This will be updated in process_page_depth_first to pass hierarchy
@@ -282,7 +297,7 @@ class LLMDocBuilder:
         # Second pass: Process content with lookup tables populated
         print("  📄 Second pass: Processing content...")
         consolidated_content = []
-        self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [])
+        self.process_page_depth_first(md_dir, 'index.md', consolidated_content, md_dir, [], variant, version)
 
         return '\n'.join(consolidated_content)
 
@@ -358,7 +373,8 @@ class LLMDocBuilder:
             self.build_lookup_tables(current_dir, link, md_root, current_hierarchy)
 
     def process_page_depth_first(self, base_dir: Path, relative_path: str,
-                                consolidated: List[str], md_root: Path, hierarchy: List[str] = None):
+                                consolidated: List[str], md_root: Path, hierarchy: List[str] = None,
+                                variant: str = None, version: str = None):
         """Process a page and its subpages in depth-first order."""
 
         if hierarchy is None:
@@ -409,8 +425,19 @@ class LLMDocBuilder:
         # Process internal links with lookup tables populated
         content = self.process_internal_links(raw_content, file_path, current_hierarchy)
 
-        # Add page delimiter
-        consolidated.append(f"\n=== PAGE: {relative_from_md} ===\n")
+        # Add page delimiter with URL
+        if variant and version:
+            # Convert .md path to web path (remove .md and convert index.md to directory)
+            web_path = relative_from_md.replace('.md', '')
+            if web_path.endswith('/index'):
+                web_path = web_path[:-6]  # Remove '/index'
+            if web_path == 'index':
+                web_path = ''  # Root index becomes empty path
+
+            url = f"https://www.union.ai/docs/{version}/{variant}/{web_path}".rstrip('/')
+            consolidated.append(f"\n=== PAGE: {url} ===\n")
+        else:
+            consolidated.append(f"\n=== PAGE: {relative_from_md} ===\n")
         consolidated.append(content)
 
         # Process subpages depth-first
@@ -418,7 +445,7 @@ class LLMDocBuilder:
             print(f"    🔗 Following: {link}")
             # Resolve relative to the current file's directory
             current_dir = file_path.parent
-            self.process_page_depth_first(current_dir, link, consolidated, md_root, current_hierarchy)
+            self.process_page_depth_first(current_dir, link, consolidated, md_root, current_hierarchy, variant, version)
 
     def find_variants(self) -> List[str]:
         """Find available variants in the dist directory."""
@@ -503,71 +530,27 @@ This consolidated documentation is ideal for:
 
     def create_root_discovery_content(self, variants: List[str]) -> str:
         """Create content for the root-level discovery file."""
-        variant_names = {
-            'flyte': 'Flyte Open Source',
-            'byoc': 'Union.ai BYOC (Bring Your Own Cloud)',
-            'selfmanaged': 'Union.ai Self-managed',
-            'serverless': 'Union.ai Serverless'
-        }
-
-        variant_descriptions = {
-            'flyte': 'Free and open source workflow orchestration platform',
-            'byoc': 'Commercial Union.ai product - bring your own cloud infrastructure',
-            'selfmanaged': 'Commercial Union.ai product - fully managed deployment',
-            'serverless': 'Commercial Union.ai product - serverless execution'
-        }
-
-        # All four variants for both versions
-        all_variants = ['byoc', 'flyte', 'selfmanaged', 'serverless']
-
-        # Current version variant links
-        current_variant_links = []
-        for variant in sorted(variants):
-            name = variant_names.get(variant, variant.title())
-            desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
-            current_variant_links.append(f"  - **[{name}]({self.version}/{variant}/llms-full.txt)** - {desc}")
-
-        # V1 variant links (all four variants)
-        v1_variant_links = []
-        for variant in sorted(all_variants):
-            name = variant_names.get(variant, variant.title())
-            desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
-            v1_variant_links.append(f"  - **[{name}](v1/{variant}/llms-full.txt)** - {desc}")
-
         return f"""# Union.ai Documentation (LLM-Optimized)
 
 This is the root discovery file for LLM-optimized documentation across all Union.ai and Flyte products.
 
-## Available Documentation
+## Available Documentation Versions
 
-### {self.version.upper()} (Current)
-
-All documentation variants for **{self.version.upper()}** (current):
-
-{chr(10).join(current_variant_links)}
-
-**Version-level overview**: [{self.version}/llms.txt]({self.version}/llms.txt) - All {self.version} variants with detailed descriptions
-
-### Version 1 (Legacy)
-
-All documentation variants for **Version 1** (legacy):
-
-{chr(10).join(v1_variant_links)}
-
-**Version-level overview**: [v1/llms.txt](v1/llms.txt) - All v1 variants with detailed descriptions
+- **[Version 1 Documentation](v1/llms.txt)** - Legacy documentation with all v1 variants
+- **[Version 2 Documentation](v2/llms.txt)** - Current documentation with all v2 variants
 
 ## Navigation Guide
 
 ### For LLMs and RAG Systems
-1. **Direct access**: Use the direct links above to access specific variant documentation
-2. **Version browsing**: Use `{self.version}/llms.txt` for detailed {self.version} variant information
-3. **Variant browsing**: Use `{self.version}/{{variant}}/llms.txt` for specific variant details
+1. **Version browsing**: Use `v1/llms.txt` or `v2/llms.txt` for detailed version-specific variant information
+2. **Direct access**: Navigate through version-specific discovery files to access consolidated documentation
+3. **Variant browsing**: Use `{{version}}/{{variant}}/llms.txt` for specific variant details
 
 ### Documentation Structure
-- **Root** (`/docs/llms.txt`) - This file, overview of all versions and variants
-- **Version** (`/docs/{self.version}/llms.txt`) - All variants for {self.version}
-- **Variant** (`/docs/{self.version}/{{variant}}/llms.txt`) - Redirect to specific consolidated documentation
-- **Content** (`/docs/{self.version}/{{variant}}/llms-full.txt`) - Complete consolidated documentation
+- **Root** (`/docs/llms.txt`) - This file, overview of all versions
+- **Version** (`/docs/{{version}}/llms.txt`) - All variants for that version
+- **Variant** (`/docs/{{version}}/{{variant}}/llms.txt`) - Redirect to specific consolidated documentation
+- **Content** (`/docs/{{version}}/{{variant}}/llms-full.txt`) - Complete consolidated documentation
 
 ## File Characteristics
 
@@ -582,6 +565,7 @@ Each `llms-full.txt` file contains:
 - **Flyte**: Open source workflow orchestration platform maintained by Union.ai
 - **Union.ai Products**: Commercial offerings built on Flyte with additional enterprise features
 - **Version 2**: Current generation with pure Python execution and simplified API
+- **Version 1**: Legacy version with YAML-based workflows and decorators
 - **All variants**: Share core Flyte functionality with product-specific enhancements
 
 ---
@@ -599,94 +583,52 @@ Each `llms-full.txt` file contains:
             'serverless': 'Union.ai Serverless'
         }
 
-        variant_details = {
-            'flyte': {
-                'desc': 'Free and open source workflow orchestration platform',
-                'features': ['Pure Python execution', 'Local development', 'Self-hosted deployment', 'Community support'],
-                'audience': 'Developers, data scientists, ML engineers using open source tools'
-            },
-            'byoc': {
-                'desc': 'Commercial Union.ai product with your cloud infrastructure',
-                'features': ['All Flyte features', 'Reusable containers', 'Enterprise support', 'Multi-cluster management'],
-                'audience': 'Enterprises with existing cloud infrastructure and compliance requirements'
-            },
-            'selfmanaged': {
-                'desc': 'Commercial Union.ai product with managed infrastructure',
-                'features': ['All BYOC features', 'Fully managed deployment', 'Union.ai infrastructure', 'SLA guarantees'],
-                'audience': 'Teams wanting managed infrastructure without operational overhead'
-            },
-            'serverless': {
-                'desc': 'Commercial Union.ai product with serverless execution',
-                'features': ['All Union.ai features', 'Pay-per-execution', 'Zero infrastructure management', 'Auto-scaling'],
-                'audience': 'Teams with variable workloads and minimal infrastructure requirements'
-            }
+        variant_descriptions = {
+            'flyte': 'Free and open source workflow orchestration platform',
+            'byoc': 'Commercial Union.ai product - bring your own cloud infrastructure',
+            'selfmanaged': 'Commercial Union.ai product - fully managed deployment',
+            'serverless': 'Commercial Union.ai product - serverless execution'
         }
 
-        variant_sections = []
+        # Create direct links to consolidated documentation
+        variant_links = []
         for variant in sorted(variants):
             name = variant_names.get(variant, variant.title())
-            details = variant_details.get(variant, {
-                'desc': f'{variant.title()} variant documentation',
-                'features': ['Core Flyte functionality'],
-                'audience': 'General users'
-            })
-
-            features_list = '\n'.join([f'  - {feature}' for feature in details['features']])
-
-            variant_sections.append(f"""### {name}
-
-**Description**: {details['desc']}
-
-**Key Features**:
-{features_list}
-
-**Target Audience**: {details['audience']}
-
-**Documentation**:
-- **[{variant}/llms.txt]({variant}/llms.txt)** - Variant-specific redirect and information
-- **[{variant}/llms-full.txt]({variant}/llms-full.txt)** - Complete consolidated documentation (~1.4MB+)""")
+            desc = variant_descriptions.get(variant, f'{variant.title()} variant documentation')
+            variant_links.append(f"- **[{name}]({variant}/llms-full.txt)** - {desc}")
 
         return f"""# Version {version.upper()} Documentation (LLM-Optimized)
 
 This is the version-level discovery file for all **Version {version.upper()}** documentation variants.
 
-## Available Variants
+## Available Documentation
 
-{chr(10).join(variant_sections)}
+{chr(10).join(variant_links)}
 
 ## Navigation
 
 - **[Root Documentation](../llms.txt)** - Overview of all versions and variants
-- **Individual Variants** - Use the links above to access specific variant documentation
-- **Direct Access** - Use `{variant}/llms-full.txt` URLs for direct LLM consumption
+- **Direct Access** - Click the links above for complete consolidated documentation
+- **Variant Details** - Use `{{variant}}/llms.txt` for variant-specific information
 
-## Version {version.upper()} Overview
+## File Information
 
-Version {version.upper()} represents the current generation of Flyte and Union.ai products, featuring:
-- **Pure Python execution** - No more YAML workflows or complex decorators
-- **Simplified API** - Intuitive task definition and execution patterns
-- **Enhanced local development** - Seamless transition from local to remote execution
-- **Native notebook support** - First-class Jupyter integration
-- **Improved observability** - Fine-grained tracing and monitoring
-
-## For LLMs and RAG Systems
-
-Each consolidated documentation file is specifically optimized for AI consumption:
-- **No broken links** - All internal references converted to hierarchical text
-- **Complete content** - Single file contains all documentation for that variant
-- **Searchable structure** - Hierarchical references like `**Getting started > Local setup**`
-- **Consistent format** - Standardized page delimiters and link processing
+Each `llms-full.txt` file contains:
+- **Complete documentation** for that variant (~1.4MB+ each)
+- **Hierarchical internal links** - All `.md` and `#anchor` links converted to searchable references
+- **Depth-first organization** - Content follows logical navigation structure
+- **LLM-optimized format** - Perfect for RAG systems, vector databases, and AI assistants
 
 ## Usage Examples
 
 ```
-# Access specific variant documentation
-GET /docs/v2/flyte/llms-full.txt
-GET /docs/v2/byoc/llms-full.txt
+# Access complete variant documentation directly
+GET /docs/{version}/flyte/llms-full.txt
+GET /docs/{version}/byoc/llms-full.txt
 
 # Get variant information and redirect
-GET /docs/v2/flyte/llms.txt
-GET /docs/v2/byoc/llms.txt
+GET /docs/{version}/flyte/llms.txt
+GET /docs/{version}/byoc/llms.txt
 ```
 
 ---
