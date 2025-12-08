@@ -556,42 +556,6 @@
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
   {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/asyncconnector/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/asyncconnectorexecutormixin/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/connectorregistry/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/resource/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/resourcemeta/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors/connectorservice/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.app.extras/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.app.extras/fastapiappenvironment/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
     "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.storage/index.html",
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
@@ -609,10 +573,6 @@
   },
   {
     "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.storage/gcs/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/flyte/api-reference/flyte-sdk/packages/flyte.connectors.utils/index.html",
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
   {
@@ -1292,42 +1252,6 @@
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
   {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/asyncconnector/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/asyncconnectorexecutormixin/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/connectorregistry/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/resource/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/resourcemeta/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors/connectorservice/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.app.extras/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.app.extras/fastapiappenvironment/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
     "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.storage/index.html",
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
@@ -1345,10 +1269,6 @@
   },
   {
     "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.storage/gcs/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/byoc/api-reference/flyte-sdk/packages/flyte.connectors.utils/index.html",
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
   {
@@ -2024,42 +1944,6 @@
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
   {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/asyncconnector/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/asyncconnectorexecutormixin/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/connectorregistry/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/resource/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/resourcemeta/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors/connectorservice/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.app.extras/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.app.extras/fastapiappenvironment/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
     "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.storage/index.html",
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
@@ -2077,10 +1961,6 @@
   },
   {
     "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.storage/gcs/index.html",
-    "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
-  },
-  {
-    "file_path": "dist/docs/v2/selfmanaged/api-reference/flyte-sdk/packages/flyte.connectors.utils/index.html",
     "meta_description": "API reference documentation for Union.ai workflow orchestration and machine learning pipelines."
   },
   {
