@@ -3,10 +3,6 @@
 Template for generating markdown versions of section/list pages.
 This renders section content and lists child pages in markdown format.
 */ -}}
-{{- $title := .Title -}}
-
-# {{ $title }}
-
 {{- if .Params.description }}
 
 {{ .Params.description }}
@@ -16,9 +12,10 @@ This renders section content and lists child pages in markdown format.
 
 {{- if .Pages }}
 
-## Pages in this section
+## Subpages
 
-{{- range .Pages.ByWeight }}
+{{- $sortedPages := .Pages.ByWeight }}
+{{- range $sortedPages }}
 {{- if (partial "page-allowed.html" .).allowed }}
 {{- $section := "" }}
 {{- if eq .Kind "section" }}

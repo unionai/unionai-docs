@@ -3,10 +3,6 @@
 Template for generating markdown versions of individual pages.
 This renders the content with shortcodes processed for markdown output.
 */ -}}
-{{- $title := .Title -}}
-
-# {{ $title }}
-
 {{- if .Params.description }}
 
 {{ .Params.description }}
