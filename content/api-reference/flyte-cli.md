@@ -13,7 +13,7 @@ This is the command line interface for Flyte.
 | Object | Action |
 | ------ | -- |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
-| `api-key` | [`create`](#flyte-create-api-key), [`delete`](#flyte-delete-api-key), [`get`](#flyte-get-api-key)  |
+| `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
@@ -25,21 +25,25 @@ This is the command line interface for Flyte.
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
+
+**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`api-key`](#flyte-create-api-key), [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`api-key`](#flyte-delete-api-key), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`api-key`](#flyte-get-api-key), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
+
+**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< /grid >}}
 
@@ -136,6 +140,8 @@ environments.
 Create resources in a Flyte deployment.
 
 #### flyte create api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
 
 **`flyte create api-key [OPTIONS]`**
 
@@ -283,6 +289,8 @@ This will create a trigger that runs every day at midnight.
 Remove resources from a Flyte deployment.
 
 #### flyte delete api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
 
 **`flyte delete api-key [OPTIONS] CLIENT_ID`**
 
@@ -503,6 +511,8 @@ Get all actions for a run or details for a specific action.
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte get api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
 
 **`flyte get api-key [OPTIONS] [CLIENT_ID]`**
 
