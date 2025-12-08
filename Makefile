@@ -75,7 +75,7 @@ check-images:
 
 validate-urls:
 	@echo "Validating URLs across all variants..."
-	for variant in flyte byoc selfmanaged; do \
+	@for variant in flyte byoc serverless selfmanaged; do \
 		echo "Checking $$variant..."; \
 		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
@@ -90,7 +90,7 @@ validate-urls:
 
 url-stats:
 	@echo "URL statistics across all variants:"
-	for variant in flyte byoc selfmanaged; do \
+	@for variant in flyte byoc serverless selfmanaged; do \
 		echo "=== $$variant ==="; \
 		if [ -d "dist/docs/${VERSION}/$$variant/md" ]; then \
 			if command -v uv >/dev/null 2>&1; then \
@@ -110,4 +110,7 @@ llm-docs:
 	else \
 		VERSION=${VERSION} python3 tools/llms_generator/build_llm_docs.py --no-make-dist; \
 	fi
-
+	@for variant in flyte byoc selfmanaged serverless; do \
+		mkdir -p dist/docs/${VERSION}/$$variant/_static/public; \
+		cp dist/docs/${VERSION}/$$variant/llms-full.txt dist/docs/${VERSION}/$$variant/_static/public/llms-full.txt; \
+	done
