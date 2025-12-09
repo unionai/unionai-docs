@@ -14,9 +14,14 @@ Union supports three authentication modes to suit different environments and use
 For most users getting started with Union:
 
 1. Create a configuration file:
-```bash
-   flyte create config --endpoint dns:///your-union-endpoint
-```
+    ```bash
+      flyte create config --endpoint https://your-endpoint.unionai.cloud
+    ```
+
+    Optionally, you can also add a default project and domain.
+    ```bash
+      flyte create config --endpoint http://your-endpoint.unionai.cloud --project flytesnacks --domain development
+    ```
 
 2. Run any command to authenticate:
    ```bash
@@ -46,25 +51,16 @@ When you run any Flyte command, Union automatically:
 
 #### Configuration
 
-This is the default authentication type when you create a config:
-
-```bash
-flyte create config --endpoint dns:///your-union-endpoint
-```
-
-Your config file will contain:
+This is the default authentication type when you create a configuration from the `flyte create config` command.  The generated file has the effect of:
 
 ```yaml
 admin:
-  authType: pkce
-  endpoint: dns:///your-union-endpoint
-image:
-  builder: remote
-task:
-  domain: development
-  org: your-org
-  project: your-project
+  endpoint: dns:///your-endpoint.hosted.unionai.cloud
+  authType: Pkce
+  insecure: false
 ```
+
+though since the Pkce method is default, it's omitted from the generated file, as is disabling SSL.
 
 #### CLI Usage
 
@@ -80,14 +76,26 @@ flyte deploy app.py
 
 ```python
 import flyte
+import flyte.remote as remote
 
 # Initialize with PKCE authentication (default)
-flyte.init(endpoint="dns:///your-union-endpoint")
+flyte.init(endpoint="dns:///your-endpoint.hosted.unionai.cloud")
 
-# Your code here
-@flyte.task
-def my_task():
-    return "Hello Union!"
+print([t for t in remote.Task.listall(project="flytesnacks", domain="development")])
+```
+
+If your configuration file is accessible from , you can also initialize with `init_from_config`.  `.flyte/config.yaml`
+
+```python
+import flyte
+
+flyte.init_from_config("/path/to/config.yaml")
+```
+
+Or omitting if you just want to pick up from the default locations.
+
+```python
+flyte.init_from_config()
 ```
 
 ---
@@ -116,21 +124,15 @@ When you run a command, Union displays a URL and user code. You:
 Create or update your config to use device flow:
 
 ```bash
-flyte create config --endpoint dns:///your-union-endpoint --auth-type device-flow
+flyte create config --endpoint http://your-endpoint.unionai.cloud --auth-type headless
 ```
 
 Your config file will contain:
 
 ```yaml
 admin:
-  authType: device-flow
-  endpoint: dns:///your-union-endpoint
-image:
-  builder: remote
-task:
-  domain: development
-  org: your-org
-  project: your-project
+  authType: DeviceFlow
+  endpoint: dns:///your-endpoint.hosted.unionai.cloud
 ```
 
 #### CLI Usage
@@ -210,18 +212,13 @@ API keys are sensitive credentials. Treat them like passwords:
    pip install flyteplugins-union
    ```
 
-2. Create an API key:
+2. Ensure the API key is there:
 
    ```bash
-   flyte create api-key --name my-ci-key
+   flyte get api-key my-ci-key
    ```
 
-   This outputs an API key that looks like:
-   ```
-   union_api_key_abc123def456...
-   ```
-
-3. Store this key securely (e.g., in GitHub Secrets, environment variables, secret manager)
+3. Store this key securely (e.g., in GitHub Secrets, secret manager)
 
 #### Managing API Keys
 
@@ -235,21 +232,6 @@ Delete a key:
 flyte delete api-key my-ci-key
 ```
 
-#### CLI Usage
-
-Set the API key as an environment variable:
-
-```bash
-export FLYTE_API_KEY="union_api_key_abc123def456..."
-flyte deploy app.py
-```
-
-Or pass it directly:
-
-```bash
-flyte --api-key="union_api_key_abc123def456..." deploy app.py
-```
-
 #### Programmatic Usage
 
 ```python
@@ -259,42 +241,6 @@ import os
 # Initialize with API key - endpoint is embedded in the key
 api_key = os.getenv("FLYTE_API_KEY")
 flyte.init(api_key=api_key)
-
-# Your code here
-@flyte.task
-def my_task():
-    return "Hello Union!"
-```
-
-**Example: GitHub Actions**
-
-```yaml
-name: Deploy to Union
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip install flyte flyteplugins-union
-
-      - name: Deploy to Union
-        env:
-          FLYTE_API_KEY: ${{ secrets.UNION_API_KEY }}
-        run: |
-          flyte deploy app.py
 ```
 
 **Example: Automated Script**
@@ -337,17 +283,17 @@ You can switch authentication modes by updating your config file:
 
 ```bash
 # Switch to PKCE
-flyte create config --endpoint dns:///your-union-endpoint --auth-type pkce
+flyte create config --endpoint dns:///your-endpoint.hosted.unionai.cloud
 
 # Switch to device flow
-flyte create config --endpoint dns:///your-union-endpoint --auth-type device-flow
+flyte create config --endpoint dns:///your-endpoint.hosted.unionai.cloud --auth-type headless
 ```
 
 Or manually edit your `~/.flyte/config.yaml`:
 
 ```yaml
 admin:
-  authType: pkce  # or device-flow
+  authType: Pkce  # or DeviceFlow
   endpoint: dns:///your-union-endpoint
 ```
 
@@ -379,13 +325,6 @@ Verify your API key is set correctly:
 ```bash
 echo $FLYTE_API_KEY
 ```
-
-### Permission denied errors
-
-Your API key or user account may not have sufficient permissions. Contact your Union administrator to:
-- Check project/domain access
-- Verify role assignments
-- Confirm organization membership
 
 ## Best Practices
 
