@@ -1,6 +1,6 @@
 ---
 title: Run command options
-weight: 4
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
