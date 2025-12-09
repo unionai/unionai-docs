@@ -152,6 +152,7 @@ custom_device = flyte.Device(
 
 resources = flyte.Resources(gpu=custom_device)
 ```
+
 ### TPU resources
 
 For Google Cloud TPU workloads you can specify TPU resources using the `TPU` helper class:

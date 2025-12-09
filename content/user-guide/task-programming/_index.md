@@ -1,11 +1,11 @@
 ---
-title: Task programming
+title: Build tasks
 weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Task programming
+# Build tasks
 
 This section covers the essential programming patterns and techniques for developing robust Flyte workflows. Once you understand the basics of task configuration, these guides will help you build sophisticated, production-ready data pipelines and machine learning workflows.
 
