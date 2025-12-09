@@ -1,143 +1,205 @@
 ---
-title: Task deployment and run
+title: Run and deploy tasks
 weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Task deployment and run
+# Run and deploy tasks
 
 You have seen how to configure and build the tasks that compose your project.
-In this section we will explain how to deploy those tasks to the Flyte backend and execute them.
+Now you need to decide how to execute them on your Flyte backend.
 
-## Basic deployment
+Flyte offers two distinct approaches for getting your tasks onto the backend:
 
-In Flyte, you move your code from your local machine to your Flyte backend by *deploying* the `TaskEnvironment`s that contain your tasks.
+**Use `flyte run` when you're iterating and experimenting:**
+- Quickly test changes during development
+- Try different parameters or code modifications
+- Debug issues without creating permanent artifacts
+- Prototype new ideas rapidly
 
-> [!IMPORTANT]
-> **Key distinction**: `flyte deploy` creates **permanent** deployments that remain in your backend and can be executed repeatedly. `flyte run` creates **ephemeral** deployments that exist only for the duration of a single execution and don't appear in your backend's task registry.
+**Use `flyte deploy` when your project is ready to be formalized:**
+- Freeze a stable version of your tasks for repeated use
+- Share tasks with team members or across environments
+- Move from experimentation to a more structured workflow
+- Create a permanent reference point (not necessarily production-ready)
 
-### With the `flyte deploy` CLI command
+This section explains both approaches and when to use each one.
 
-For example, let's say you have the following task environment and task defined in a file called `my_example.py`:
+## Ephemeral deployment and immediate execution
 
-```python
-import flyte
+The `flyte run` CLI command and the `flyte.run()` SDK function are used to **ephemerally deploy** and **immediately execute** a task on the backend in a single step.
+The task can be re-run and its execution and outputs can be observed in the **Runs list** UI, but it is not permanently added to the **Tasks list** on the backend.
 
-env = flyte.TaskEnvironment(name="my_env")
-
-@env.task
-async def my_task(name: str) -> str:
-    return f"Hello, {name}!"
-```
-
-Assuming you have a [valid Flyte configuration](../getting-started/local-setup) (a `config.yaml` that points to your Flyte backend and includes a default project and domain)
-and the [`flyte` package installed](../getting-started/#install-the-flyte-package) in your prevailing Python `venv`, then you can deploy your `my_env` task environment like this:
-
-```bash
-flyte deploy my_example.py env
-```
-
-This command deploys the task environment *assigned to the variable `env`* in the `my_example.py` file to your Flyte backend.
-
-Notice that you must specify the *variable* to which the `TaskEnvironment` is assigned (`env` in this case), not the name of the environment itself (`my_env`).
-
-Deploying a task environment deploys all tasks defined within it. Here, that means all tasks decorated with `@env.task`. In this case there is just one: `my_task`.
-
-### With the `flyte.deploy()` SDK function
-
-You can also deploy a task environment programmatically using the `flyte.deploy()` function.
-
-Let's add some code to our `my_example.py` file to deploy the `env` task environment when the file is run as a script:
+Let's say you have the following file called `greeting.py`:
 
 ```python
-# my_example.py
+# greeting.py
 
 import flyte
 
-env = flyte.TaskEnvironment(name="my_env")
+env = flyte.TaskEnvironment(name="greeting_env")
 
 @env.task
-async def my_task(name: str) -> str:
-    return f"Hello, {name}!"
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    deployment = flyte.deploy(env)
-    print(deployment[0].summary_repr())
+async def greet(message: str) -> str:
+    return f"{message}!"
 ```
 
-Now you can deploy the `env` task environment by running the `my_example.py` as a script:
+### With the `flyte run` CLI command
+
+The general form of the command for running a task from a local file is:
 
 ```bash
-python my_example.py
+flyte run <file_path> <task_name> <args>
 ```
 
-The same deployment occurs: the `my_env` task environment is deployed to your Flyte backend, including its task `my_task`.
-
-For a detailed explanation of what happens during deployment, see [How Deployment Works](./how-task-deployment-works).
-
-## Deploy and run in one step
-
-While `flyte deploy` **permanently** deploys your task environments to the backend (where they remain available for future executions), `flyte run` performs **ephemeral deployment** and execution in a single command, making it ideal for development and testing workflows.
-
-### Running with ephemeral deployment
-
-You can run a task directly from your local code without permanently deploying first:
+So, to run the `greet` task defined in the `greeting.py` file, you would run:
 
 ```bash
-flyte run my_example.py my_task --name "World"
+flyte run greeting.py greet --message "Good morning!"
 ```
 
 This command:
-1. **Temporarily prepares** the task environment containing `my_task` for execution
-2. **Executes** the `my_task` function with the provided arguments
-3. **Returns** the execution results
+1. **Temporarily deploys** the task environment named `greeting_env` (held by the variable `env`) that contains the `greet` task.
+2. **Executes** the `greet` function with argument `message` set to `"Good morning!"`. Note that `message` is the actual parameter name defined in the function signature.
+3. **Returns** the execution results and displays them in the terminal.
 
-The ephemeral deployment happens automatically behind the scenes using similar steps to `flyte deploy`, but the task environment is **not permanently stored** in the backend and immediately launches an execution.
+### With the `flyte.run()` SDK function
 
-### Running already deployed tasks
-
-If you have already deployed your task environment, you can run tasks without redeploying by using the `deployed-task` syntax:
-
-```bash
-flyte run deployed-task my_env.my_task --name "World"
-```
-
-This approach:
-- **Skips deployment** entirely, using the already-deployed task
-- **Executes faster** since no deployment overhead is involved
-- **Uses the deployed version** of your code, not your local changes
-
-The task reference format is `{environment_name}.{task_name}` where:
-- `environment_name` is the `name` property of your `TaskEnvironment` (`"my_env"` in our example)
-- `task_name` is the function name of your task (`"my_task"` in our example)
-
-### SDK execution with `flyte.run()`
-
-You can also run tasks programmatically using the `flyte.run()` function:
+You can also do the same thing programmatically using the `flyte.run()` function:
 
 ```python
-# my_example.py
+# greeting.py
 
 import flyte
 
-env = flyte.TaskEnvironment(name="my_env")
+env = flyte.TaskEnvironment(name="greeting_env")
 
 @env.task
-async def my_task(name: str) -> str:
-    return f"Hello, {name}!"
+async def greet(message: str) -> str:
+    return f"{message}!"
 
 if __name__ == "__main__":
     flyte.init_from_config()
-
-    # Ephemeral deployment and run in one step
-    result = flyte.run(my_task, name="World")
-    print(f"Result: {result}")
-
-    # Or run a permanently deployed task
-    result = flyte.run("my_env.my_task", name="World")
+    result = flyte.run(greet, message="Good morning!")
     print(f"Result: {result}")
 ```
 
-For more details on how running works under the hood, see [How Run Works](./how-task-run-works).
+Here we add a `__main__` block to the `greeting.py` file that initializes the Flyte SDK from the configuration file and then calls `flyte.run()` with the `greet` task and its argument.
+Now you can run the `greet` task on the backend just by executing the `greeting.py` file locally as a script:
+
+```bash
+python greeting.py
+```
+
+For more details on how `flyte run` and `flyte.run()` work under the hood, see [How Run Works](./how-task-run-works).
+
+## Persistent deployment
+
+The `flyte deploy` CLI command and the `flyte.deploy()` SDK function are used to **persistently deploy** a task environment (and all its contained tasks) to the backend.
+The tasks within the deployed environment will appear in the **Tasks list** UI on the backend and can then be executed multiple times without needing to redeploy them.
+
+### With the `flyte deploy` CLI command
+
+The general form of the command for running a task from a local file is:
+
+```bash
+flyte deploy <file_path> <task_environment_variable>
+```
+
+So, using the same `greeting.py` file as before, you can deploy the `greeting_env` task environment like this:
+
+```bash
+flyte deploy greeting.py env
+```
+
+This command deploys the task environment *assigned to the variable `env`* in the `greeting.py` file, which is the `TaskEnvironment` named `greeting_env`.
+
+Notice that you must specify the *variable* to which the `TaskEnvironment` is assigned (`env` in this case), not the name of the environment itself (`greeting_env`).
+
+Deploying a task environment deploys all tasks defined within it. Here, that means all functions decorated with `@env.task`.
+In this case there is just one: `greet()`.
+
+### With the `flyte.deploy()` SDK function
+
+You can also do the same thing programmatically using the `flyte.deploy()` function:
+
+```python
+# greeting.py
+
+import flyte
+
+env = flyte.TaskEnvironment(name="greeting_env")
+
+@env.task
+async def greet(message: str) -> str:
+    return f"{message}!"
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    deployments = flyte.deploy(env)
+    print(deployments[0].summary_repr())
+```
+
+Now you can deploy the `greeting_env` task environment (and therefore the `greet()` task) just by executing the `greeting.py` file locally as a script.
+
+```bash
+python greeting.py
+```
+
+For more details on how `flyte deploy` and `flyte.deploy()` work under the hood, see [How Deployment Works](./how-task-deployment-works).
+
+## Running already deployed tasks
+
+If you have already deployed your task environment, you can run its tasks without redeploying by using the `flyte run` CLI command or the `flyte.run()` SDK function in a slightly different way. Alternatively, you can always initiate execution of a deployed task from the UI.
+
+### With the `flyte run` CLI command
+
+To run a permanently deployed task using the `flyte run` CLI command, use the special `deployed-task` keyword followed by the task reference in the format `{environment_name}.{task_name}`. For example, to run the previously deployed `greet` task from the `greeting_env` environment, you would run:
+
+```bash
+flyte run deployed-task greeting_env.greet --message "World"
+```
+
+Notice that now that the task environment is deployed, you use its name (`greeting_env`), not by the variable name to which it was assigned in source code (`env`).
+The task environment name plus the task name (`greet`) are combined with a dot (`.`) to form the full task reference: `greeting_env.greet`.
+The special `deployed-task` keyword tells the CLI that you are referring to a task that has already been deployed. In effect, it replaces the file path argument used for ephemeral runs.
+
+When executed, this command will run the already-deployed `greet` task with argument `message` set to `"World"`. You will see the result printed in the terminal. You can also, of course, observe the execution in the **Runs list** UI.
+
+### With the `flyte.run()` SDK function
+
+You can also run already-deployed tasks programmatically using the `flyte.run()` function.
+For example, to run the previously deployed `greet` task from the `greeting_env` environment, you would do:
+
+```python
+# greeting.py
+
+import flyte
+
+env = flyte.TaskEnvironment(name="greeting_env")
+
+@env.task
+async def greet(message: str) -> str:
+    return f"{message}!"
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    flyte.deploy(env)
+    task = flyte.remote.Task.get("greeting_env.greet", auto_version="latest")
+    result = flyte.run(task, message="Good morning!")
+    print(f"Result: {result}")
+```
+
+When you execute this script locally, it will:
+
+- Deploy the `greeting_env` task environment as before.
+- Retrieve the already-deployed `greet` task using `flyte.remote.Task.get()`, specifying its full task reference as a string: `"greeting_env.greet"`.
+- Call `flyte.run()` with the retrieved task and its argument.
+
+For more details on how running already-deployed tasks works, see [How task Run works > SDK: Running deployed tasks](./how-task-run-works#running-deployed-tasks).
+
+<!--
+TODO: Add link to Flyte remote documentation when available
+For details on Flyte remote functionality, see the [Flyte remote]().
+-->
