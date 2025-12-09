@@ -198,11 +198,12 @@ def process_data(data: str) -> str:
 
 Union encodes OAuth2 client credentials (client ID and client secret) into a single API key string. This key contains all information needed to connect to Union, including the endpoint.
 
-API keys are sensitive credentials. Treat them like passwords:
-- Store them in secret management systems (GitHub Secrets, AWS Secrets Manager, etc.)
-- Never commit them to version control
-- Rotate them regularly
-- Use different keys for different environments
+> [!NOTE]
+> **Security Note:** API keys are sensitive credentials. Treat them like passwords:
+> - Store them in secret management systems (GitHub Secrets, AWS Secrets Manager, etc.)
+> - Never commit them to version control
+> - Rotate them regularly
+> - Use different keys for different environments
 
 #### Setup
 
