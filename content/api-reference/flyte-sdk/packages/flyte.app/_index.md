@@ -1,6 +1,6 @@
 ---
 title: flyte.app
-version: 2.0.0b34
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -14,11 +14,13 @@ sidebar_expanded: true
 
 | Class | Description |
 |-|-|
+| [`AppEndpoint`](../flyte.app/appendpoint) | Embed an upstream app's endpoint as an app input. |
 | [`AppEnvironment`](../flyte.app/appenvironment) |  |
 | [`Domain`](../flyte.app/domain) | Subdomain to use for the domain. |
 | [`Input`](../flyte.app/input) | Input for application. |
 | [`Link`](../flyte.app/link) | Custom links to add to the app. |
 | [`Port`](../flyte.app/port) |  |
+| [`RunOutput`](../flyte.app/runoutput) | Use a run's output for app inputs. |
 | [`Scaling`](../flyte.app/scaling) |  |
 
 ### Methods

@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b34
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true

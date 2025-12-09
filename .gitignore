@@ -34,3 +34,4 @@ link_checker_output.json
 main.py
 .python-version
 uv.lock
+.claude/

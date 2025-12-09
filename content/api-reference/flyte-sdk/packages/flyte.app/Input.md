@@ -1,6 +1,6 @@
 ---
 title: Input
-version: 2.0.0b34
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -15,8 +15,8 @@ Input for application.
 
 ```python
 class Input(
-    value: str | flyte.io.File | flyte.io.Dir,
-    name: Optional[str],
+    name: str,
+    value: InputTypes | _DelayedValue,
     env_var: Optional[str],
     download: bool,
     mount: Optional[str],
@@ -25,8 +25,8 @@ class Input(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `value` | `str \| flyte.io.File \| flyte.io.Dir` | Value for input. |
-| `name` | `Optional[str]` | Name of input. |
+| `name` | `str` | Name of input. |
+| `value` | `InputTypes \| _DelayedValue` | Value for input. |
 | `env_var` | `Optional[str]` | Environment name to set the value in the serving environment. |
 | `download` | `bool` | When True, the input will be automatically downloaded. This only works if the value refers to an item in a object store. i.e. `s3://...` |
 | `mount` | `Optional[str]` | If `value` is a directory, then the directory will be available at `mount`. If `value` is a file, then the file will be downloaded into the `mount` directory. |
