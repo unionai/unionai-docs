@@ -1,155 +1,23 @@
 ---
-title: File
+title: AppEndpoint
 version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# File
+# AppEndpoint
 
-**Package:** `flyte.io`
+**Package:** `flyte.app`
 
-A generic file class representing a file with a specified format.
-Provides both async and sync interfaces for file operations. All methods without _sync suffix are async.
+Embed an upstream app's endpoint as an app input.
 
-The class should be instantiated using one of the class methods. The constructor should be used only to
-instantiate references to existing remote objects.
-
-The generic type T represents the format of the file.
-
-Important methods:
-- `from_existing_remote`: Create a File object from an existing remote file.
-- `new_remote`: Create a new File reference for a remote file that will be written to.
-
-**Asynchronous methods**:
-- `open`: Asynchronously open the file and return a file-like object.
-- `download`: Asynchronously download the file to a local path.
-- `from_local`: Asynchronously create a File object from a local file, uploading it to remote storage.
-- `exists`: Asynchronously check if the file exists.
-
-**Synchronous methods** (suffixed with `_sync`):
-- `open_sync`: Synchronously open the file and return a file-like object.
-- `download_sync`: Synchronously download the file to a local path.
-- `from_local_sync`: Synchronously create a File object from a local file, uploading it to remote storage.
-- `exists_sync`: Synchronously check if the file exists.
-
-Example: Read a file input in a Task (Async).
-
-```python
-@env.task
-async def read_file(file: File) -&gt; str:
-    async with file.open("rb") as f:
-        content = bytes(await f.read())
-        return content.decode("utf-8")
-```
-
-Example: Read a file input in a Task (Sync).
-
-```python
-@env.task
-def read_file_sync(file: File) -&gt; str:
-    with file.open_sync("rb") as f:
-        content = f.read()
-        return content.decode("utf-8")
-```
-
-Example: Write a file by streaming it directly to blob storage (Async).
-
-```python
-@env.task
-async def write_file() -&gt; File:
-    file = File.new_remote()
-    async with file.open("wb") as f:
-        await f.write(b"Hello, World!")
-    return file
-```
-
-Example: Upload a local file to remote storage (Async).
-
-```python
-@env.task
-async def upload_file() -&gt; File:
-    # Write to local file first
-    with open("/tmp/data.csv", "w") as f:
-        f.write("col1,col2\n1,2\n3,4\n")
-    # Upload to remote storage
-    return await File.from_local("/tmp/data.csv")
-```
-
-Example: Upload a local file to remote storage (Sync).
-
-```python
-@env.task
-def upload_file_sync() -&gt; File:
-    # Write to local file first
-    with open("/tmp/data.csv", "w") as f:
-        f.write("col1,col2\n1,2\n3,4\n")
-    # Upload to remote storage
-    return File.from_local_sync("/tmp/data.csv")
-```
-
-Example: Download a file to local storage (Async).
-
-```python
-@env.task
-async def download_file(file: File) -&gt; str:
-    local_path = await file.download()
-    # Process the local file
-    with open(local_path, "r") as f:
-        return f.read()
-```
-
-Example: Download a file to local storage (Sync).
-
-```python
-@env.task
-def download_file_sync(file: File) -&gt; str:
-    local_path = file.download_sync()
-    # Process the local file
-    with open(local_path, "r") as f:
-        return f.read()
-```
-
-Example: Reference an existing remote file.
-
-```python
-@env.task
-async def process_existing_file() -&gt; str:
-    file = File.from_existing_remote("s3://my-bucket/data.csv")
-    async with file.open("rb") as f:
-        content = await f.read()
-        return content.decode("utf-8")
-```
-
-Example: Check if a file exists (Async).
-
-```python
-@env.task
-async def check_file(file: File) -&gt; bool:
-    return await file.exists()
-```
-
-Example: Check if a file exists (Sync).
-
-```python
-@env.task
-def check_file_sync(file: File) -&gt; bool:
-    return file.exists_sync()
-```
-
-Example: Pass through a file without copying.
-
-```python
-@env.task
-async def pass_through(file: File) -&gt; File:
-    # No copy occurs - just passes the reference
-    return file
-```
-
+This enables the declaration of an app input dependency on a the endpoint of
+an upstream app, given by a specific app name. This gives the app access to
+the upstream app's endpoint as a public or private url.
 
 
 ```python
-class File(
+class AppEndpoint(
     data: Any,
 )
 ```
@@ -169,18 +37,14 @@ validated to form a valid model.
 
 | Method | Description |
 |-|-|
+| [`check_type()`](#check_type) |  |
 | [`construct()`](#construct) |  |
 | [`copy()`](#copy) | Returns a copy of the model. |
 | [`dict()`](#dict) |  |
-| [`download()`](#download) | Asynchronously download the file to a local path. |
-| [`download_sync()`](#download_sync) | Synchronously download the file to a local path. |
-| [`exists()`](#exists) | Asynchronously check if the file exists. |
-| [`exists_sync()`](#exists_sync) | Synchronously check if the file exists. |
-| [`from_existing_remote()`](#from_existing_remote) | Create a File reference from an existing remote file. |
-| [`from_local()`](#from_local) | Asynchronously create a new File object from a local file by uploading it to remote storage. |
-| [`from_local_sync()`](#from_local_sync) | Synchronously create a new File object from a local file by uploading it to remote storage. |
 | [`from_orm()`](#from_orm) |  |
+| [`get()`](#get) |  |
 | [`json()`](#json) |  |
+| [`materialize()`](#materialize) |  |
 | [`model_construct()`](#model_construct) | Creates a new instance of the `Model` class with validated data. |
 | [`model_copy()`](#model_copy) | !!! abstract "Usage Documentation". |
 | [`model_dump()`](#model_dump) | !!! abstract "Usage Documentation". |
@@ -192,19 +56,25 @@ validated to form a valid model.
 | [`model_validate()`](#model_validate) | Validate a pydantic model instance. |
 | [`model_validate_json()`](#model_validate_json) | !!! abstract "Usage Documentation". |
 | [`model_validate_strings()`](#model_validate_strings) | Validate the given object with string data against the Pydantic model. |
-| [`new_remote()`](#new_remote) | Create a new File reference for a remote file that will be written to. |
-| [`open()`](#open) | Asynchronously open the file and return a file-like object. |
-| [`open_sync()`](#open_sync) | Synchronously open the file and return a file-like object. |
 | [`parse_file()`](#parse_file) |  |
 | [`parse_obj()`](#parse_obj) |  |
 | [`parse_raw()`](#parse_raw) |  |
-| [`pre_init()`](#pre_init) | Internal: Pydantic validator to set default name from path. |
 | [`schema()`](#schema) |  |
 | [`schema_json()`](#schema_json) |  |
-| [`schema_match()`](#schema_match) | Internal: Check if incoming schema matches File schema. |
 | [`update_forward_refs()`](#update_forward_refs) |  |
 | [`validate()`](#validate) |  |
 
+
+### check_type()
+
+```python
+def check_type(
+    data: typing.Any,
+) -> typing.Any
+```
+| Parameter | Type | Description |
+|-|-|-|
+| `data` | `typing.Any` | |
 
 ### construct()
 
@@ -272,250 +142,6 @@ def dict(
 | `exclude_defaults` | `bool` | |
 | `exclude_none` | `bool` | |
 
-### download()
-
-```python
-def download(
-    local_path: Optional[Union[str, Path]],
-) -> str
-```
-Asynchronously download the file to a local path.
-
-Use this when you need to download a remote file to your local filesystem for processing.
-
-Example (Async):
-
-```python
-@env.task
-async def download_and_process(f: File) -&gt; str:
-    local_path = await f.download()
-    # Now process the local file
-    with open(local_path, "r") as fh:
-        return fh.read()
-```
-
-Example (Download to specific path):
-
-```python
-@env.task
-async def download_to_path(f: File) -&gt; str:
-    local_path = await f.download("/tmp/myfile.csv")
-    return local_path
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
-
-### download_sync()
-
-```python
-def download_sync(
-    local_path: Optional[Union[str, Path]],
-) -> str
-```
-Synchronously download the file to a local path.
-
-Use this in non-async tasks when you need to download a remote file to your local filesystem.
-
-Example (Sync):
-
-```python
-@env.task
-def download_and_process_sync(f: File) -&gt; str:
-    local_path = f.download_sync()
-    # Now process the local file
-    with open(local_path, "r") as fh:
-        return fh.read()
-```
-
-Example (Download to specific path):
-
-```python
-@env.task
-def download_to_path_sync(f: File) -&gt; str:
-    local_path = f.download_sync("/tmp/myfile.csv")
-    return local_path
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `local_path` | `Optional[Union[str, Path]]` | The local path to download the file to. If None, a temporary directory will be used and a path will be generated. |
-
-### exists()
-
-```python
-def exists()
-```
-Asynchronously check if the file exists.
-
-Example (Async):
-
-```python
-@env.task
-async def check_file(f: File) -&gt; bool:
-    if await f.exists():
-        print("File exists!")
-        return True
-    return False
-```
-
-Returns:
-    True if the file exists, False otherwise
-
-
-### exists_sync()
-
-```python
-def exists_sync()
-```
-Synchronously check if the file exists.
-
-Use this in non-async tasks or when you need synchronous file existence checking.
-
-Example (Sync):
-
-```python
-@env.task
-def check_file_sync(f: File) -&gt; bool:
-    if f.exists_sync():
-        print("File exists!")
-        return True
-    return False
-```
-
-Returns:
-    True if the file exists, False otherwise
-
-
-### from_existing_remote()
-
-```python
-def from_existing_remote(
-    remote_path: str,
-    file_cache_key: Optional[str],
-) -> File[T]
-```
-Create a File reference from an existing remote file.
-
-Use this when you want to reference a file that already exists in remote storage without uploading it.
-
-Example:
-
-```python
-@env.task
-async def process_existing_file() -&gt; str:
-    file = File.from_existing_remote("s3://my-bucket/data.csv")
-    async with file.open("rb") as f:
-        content = await f.read()
-    return content.decode("utf-8")
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `remote_path` | `str` | The remote path to the existing file |
-| `file_cache_key` | `Optional[str]` | Optional hash value to use for cache key computation. If not specified, the cache key will be computed based on the file's attributes (path, name, format). |
-
-### from_local()
-
-```python
-def from_local(
-    local_path: Union[str, Path],
-    remote_destination: Optional[str],
-    hash_method: Optional[HashMethod | str],
-) -> File[T]
-```
-Asynchronously create a new File object from a local file by uploading it to remote storage.
-
-Use this in async tasks when you have a local file that needs to be uploaded to remote storage.
-
-Example (Async):
-
-```python
-@env.task
-async def upload_local_file() -&gt; File:
-    # Create a local file
-    async with aiofiles.open("/tmp/data.csv", "w") as f:
-        await f.write("col1,col2
-
-
-
-
-    # Upload to remote storage
-    remote_file = await File.from_local("/tmp/data.csv")
-    return remote_file
-```
-
-Example (With specific destination):
-
-```python
-@env.task
-async def upload_to_specific_path() -&gt; File:
-    remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
-    return remote_file
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `local_path` | `Union[str, Path]` | Path to the local file |
-| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
-
-### from_local_sync()
-
-```python
-def from_local_sync(
-    local_path: Union[str, Path],
-    remote_destination: Optional[str],
-    hash_method: Optional[HashMethod | str],
-) -> File[T]
-```
-Synchronously create a new File object from a local file by uploading it to remote storage.
-
-Use this in non-async tasks when you have a local file that needs to be uploaded to remote storage.
-
-Example (Sync):
-
-```python
-@env.task
-def upload_local_file_sync() -&gt; File:
-    # Create a local file
-    with open("/tmp/data.csv", "w") as f:
-        f.write("col1,col2
-
-
-
-
-    # Upload to remote storage
-    remote_file = File.from_local_sync("/tmp/data.csv")
-    return remote_file
-```
-
-Example (With specific destination):
-
-```python
-@env.task
-def upload_to_specific_path() -&gt; File:
-    remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
-    return remote_file
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `local_path` | `Union[str, Path]` | Path to the local file |
-| `remote_destination` | `Optional[str]` | Optional remote path to store the file. If None, a path will be automatically generated. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will compute the hash during upload. If not specified, the cache key will be based on file attributes. |
-
 ### from_orm()
 
 ```python
@@ -527,6 +153,11 @@ def from_orm(
 |-|-|-|
 | `obj` | `Any` | |
 
+### get()
+
+```python
+def get()
+```
 ### json()
 
 ```python
@@ -554,6 +185,11 @@ def json(
 | `models_as_dict` | `bool` | |
 | `dumps_kwargs` | `Any` | |
 
+### materialize()
+
+```python
+def materialize()
+```
 ### model_construct()
 
 ```python
@@ -851,148 +487,6 @@ Validate the given object with string data against the Pydantic model.
 | `by_alias` | `bool \| None` | Whether to use the field's alias when validating against the provided input data. |
 | `by_name` | `bool \| None` | Whether to use the field's name when validating against the provided input data. |
 
-### new_remote()
-
-```python
-def new_remote(
-    file_name: Optional[str],
-    hash_method: Optional[HashMethod | str],
-) -> File[T]
-```
-Create a new File reference for a remote file that will be written to.
-
-Use this when you want to create a new file and write to it directly without creating a local file first.
-
-Example (Async):
-
-```python
-@env.task
-async def create_csv() -&gt; File:
-    df = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
-    file = File.new_remote()
-    async with file.open("wb") as f:
-        df.to_csv(f)
-    return file
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `file_name` | `Optional[str]` | Optional string specifying a remote file name. If not set, a generated file name will be returned. |
-| `hash_method` | `Optional[HashMethod \| str]` | Optional HashMethod or string to use for cache key computation. If a string is provided, it will be used as a precomputed cache key. If a HashMethod is provided, it will be used to compute the hash as data is written. |
-
-### open()
-
-```python
-def open(
-    mode: str,
-    block_size: Optional[int],
-    cache_type: str,
-    cache_options: Optional[dict],
-    compression: Optional[str],
-    kwargs,
-) -> AsyncGenerator[Union[AsyncWritableFile, AsyncReadableFile, 'HashingWriter'], None]
-```
-Asynchronously open the file and return a file-like object.
-
-Use this method in async tasks to read from or write to files directly.
-
-Example (Async Read):
-
-```python
-@env.task
-async def read_file(f: File) -&gt; str:
-    async with f.open("rb") as fh:
-        content = bytes(await fh.read())
-        return content.decode("utf-8")
-```
-
-Example (Async Write):
-
-```python
-@env.task
-async def write_file() -&gt; File:
-    f = File.new_remote()
-    async with f.open("wb") as fh:
-        await fh.write(b"Hello, World!")
-    return f
-```
-
-Example (Streaming Read):
-
-```python
-@env.task
-async def stream_read(f: File) -&gt; str:
-    content_parts = []
-    async with f.open("rb", block_size=1024) as fh:
-        while True:
-            chunk = await fh.read()
-            if not chunk:
-                break
-            content_parts.append(chunk)
-    return b"".join(content_parts).decode("utf-8")
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `mode` | `str` | |
-| `block_size` | `Optional[int]` | Size of blocks for reading in bytes. Useful for streaming large files. |
-| `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
-| `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
-| `compression` | `Optional[str]` | Compression format or None for auto-detection |
-| `kwargs` | `**kwargs` | |
-
-### open_sync()
-
-```python
-def open_sync(
-    mode: str,
-    block_size: Optional[int],
-    cache_type: str,
-    cache_options: Optional[dict],
-    compression: Optional[str],
-    kwargs,
-) -> Generator[IO[Any], None, None]
-```
-Synchronously open the file and return a file-like object.
-
-Use this method in non-async tasks to read from or write to files directly.
-
-Example (Sync Read):
-
-```python
-@env.task
-def read_file_sync(f: File) -&gt; str:
-    with f.open_sync("rb") as fh:
-        content = fh.read()
-        return content.decode("utf-8")
-```
-
-Example (Sync Write):
-
-```python
-@env.task
-def write_file_sync() -&gt; File:
-    f = File.new_remote()
-    with f.open_sync("wb") as fh:
-        fh.write(b"Hello, World!")
-    return f
-```
-
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `mode` | `str` | |
-| `block_size` | `Optional[int]` | Size of blocks for reading in bytes. Useful for streaming large files. |
-| `cache_type` | `str` | Caching mechanism to use ('readahead', 'mmap', 'bytes', 'none') |
-| `cache_options` | `Optional[dict]` | Dictionary of options for the cache |
-| `compression` | `Optional[str]` | Compression format or None for auto-detection |
-| `kwargs` | `**kwargs` | |
-
 ### parse_file()
 
 ```python
@@ -1042,20 +536,6 @@ def parse_raw(
 | `proto` | `DeprecatedParseProtocol \| None` | |
 | `allow_pickle` | `bool` | |
 
-### pre_init()
-
-```python
-def pre_init(
-    data,
-)
-```
-Internal: Pydantic validator to set default name from path. Not intended for direct use.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `data` |  | |
-
 ### schema()
 
 ```python
@@ -1083,20 +563,6 @@ def schema_json(
 | `by_alias` | `bool` | |
 | `ref_template` | `str` | |
 | `dumps_kwargs` | `Any` | |
-
-### schema_match()
-
-```python
-def schema_match(
-    incoming: dict,
-)
-```
-Internal: Check if incoming schema matches File schema. Not intended for direct use.
-
-
-| Parameter | Type | Description |
-|-|-|-|
-| `incoming` | `dict` | |
 
 ### update_forward_refs()
 

@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.0b34
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -35,7 +35,7 @@ class AppEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the environment |
+| `name` | `str` | Name of the app environment |
 | `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | |
 | `description` | `Optional[str]` | |
@@ -44,17 +44,17 @@ class AppEnvironment(
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
-| `type` | `typing.Optional[str]` | |
-| `port` | `int \| flyte.app._types.Port` | |
-| `args` | `*args` | |
-| `command` | `typing.Union[typing.List[str], str, NoneType]` | |
-| `requires_auth` | `bool` | |
-| `scaling` | `flyte.app._types.Scaling` | |
-| `domain` | `flyte.app._types.Domain \| None` | |
-| `links` | `typing.List[flyte.app._types.Link]` | |
-| `include` | `typing.List[str]` | |
-| `inputs` | `typing.List[flyte.app._input.Input]` | |
-| `cluster_pool` | `str` | |
+| `type` | `typing.Optional[str]` | Type of the environment. |
+| `port` | `int \| flyte.app._types.Port` | Port to use for the app server. |
+| `args` | `*args` | Arguments to pass to app. |
+| `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to run in the app. |
+| `requires_auth` | `bool` | Whether the app requires authentication. |
+| `scaling` | `flyte.app._types.Scaling` | Scaling configuration for the app environment. |
+| `domain` | `flyte.app._types.Domain \| None` | Domain to use for the app. |
+| `links` | `typing.List[flyte.app._types.Link]` | Links to other environments. |
+| `include` | `typing.List[str]` | Files to include in the environment to run the app. |
+| `inputs` | `typing.List[flyte.app._input.Input]` | Inputs to pass to the app environment. |
+| `cluster_pool` | `str` | Cluster pool to use for the app environment. |
 
 ## Methods
 
@@ -122,11 +122,13 @@ def container_args(
 ```python
 def container_cmd(
     serialize_context: flyte.models.SerializationContext,
+    input_overrides: list[flyte.app._input.Input] | None,
 ) -> typing.List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `serialize_context` | `flyte.models.SerializationContext` | |
+| `input_overrides` | `list[flyte.app._input.Input] \| None` | |
 
 ### get_port()
 
