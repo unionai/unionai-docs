@@ -1,7 +1,7 @@
 ---
 title: Authenticating
 weight: 1
-variants: +serverless +byoc +selfmanaged
+variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
