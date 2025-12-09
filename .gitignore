@@ -30,7 +30,6 @@ link_checker_output.json
 .idea
 
 # Do not save temporary uv settings
-pyproject.toml
 .venv/
 main.py
 .python-version
