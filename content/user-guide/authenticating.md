@@ -9,7 +9,7 @@ sidebar_expanded: true
 
 Union supports three authentication modes to suit different environments and use cases. This guide will help you choose the right authentication method and configure it correctly.
 
-## Quick Start
+## Quick start
 
 For most users getting started with Union:
 
@@ -30,19 +30,19 @@ For most users getting started with Union:
 
 This will automatically open your browser to complete authentication.
 
-## Authentication Modes
+## Authentication modes
 
-### PKCE Authentication (Browser-based) {#pkce}
+### PKCE authentication (browser-based) {#pkce}
 
 **Default mode** - Uses OAuth2 PKCE flow with automatic browser authentication.
 
-#### When to Use
+#### When to use
 
 - Interactive development on your laptop or workstation
 - Jupyter notebooks running locally or on machines with browser access
 - Any environment where you can open a web browser
 
-#### How It Works
+#### How it works
 
 When you run any Flyte command, Union automatically:
 1. Opens your default web browser
@@ -60,9 +60,9 @@ admin:
   insecure: false
 ```
 
-though since the Pkce method is default, it's omitted from the generated file, as is disabling SSL.
+Since the PKCE method is default, it's omitted from the generated file, as is disabling SSL.
 
-#### CLI Usage
+#### CLI usage
 
 Simply run any command - authentication happens automatically:
 
@@ -72,7 +72,7 @@ flyte run app.py main
 flyte deploy app.py
 ```
 
-#### Programmatic Usage
+#### Programmatic usage
 
 ```python
 import flyte
@@ -84,7 +84,7 @@ flyte.init(endpoint="dns:///your-endpoint.hosted.unionai.cloud")
 print([t for t in remote.Task.listall(project="flytesnacks", domain="development")])
 ```
 
-If your configuration file is accessible from , you can also initialize with `init_from_config`.  `.flyte/config.yaml`
+If your configuration file is accessible, you can also initialize with `init_from_config`:
 
 ```python
 import flyte
@@ -98,20 +98,18 @@ Or omitting if you just want to pick up from the default locations.
 flyte.init_from_config()
 ```
 
----
-
-### Device Flow Authentication {#device-flow}
+### Device flow authentication {#device-flow}
 
 **For headless or browser-restricted environments** - Uses OAuth2 device flow with code verification.
 
-#### When to Use
+#### When to use
 
 - Remote servers without GUI/browser access
 - Hosted notebook environments (Google Colab, AWS SageMaker, Azure ML)
 - SSH sessions or terminal-only environments
 - Docker containers where browser redirect isn't possible
 
-#### How It Works
+#### How it works
 
 When you run a command, Union displays a URL and user code. You:
 1. Open the URL on any browser (on any device)
@@ -135,7 +133,7 @@ admin:
   endpoint: dns:///your-endpoint.hosted.unionai.cloud
 ```
 
-#### CLI Usage
+#### CLI usage
 
 When you run a command, you'll see:
 
@@ -148,7 +146,7 @@ https://signin.hosted.unionai.cloud/activate?user_code=TKBJXFFW
 
 Open that URL on any device with a browser, enter the code, and authentication completes.
 
-#### Programmatic Usage
+#### Programmatic usage
 
 ```python
 import flyte
@@ -180,13 +178,11 @@ def process_data(data: str) -> str:
     return f"Processed: {data}"
 ```
 
----
-
-### API Key Authentication (OAuth2 App Credentials) {#api-key}
+### API key authentication (OAuth2 app credentials) {#api-key}
 
 **For automated and CI/CD environments** - Uses OAuth2 client credentials encoded as an API key.
 
-#### When to Use
+#### When to use
 
 - CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins)
 - Automated deployment scripts
@@ -194,7 +190,7 @@ def process_data(data: str) -> str:
 - Any non-interactive environment
 - Service-to-service authentication
 
-#### How It Works
+#### How it works
 
 Union encodes OAuth2 client credentials (client ID and client secret) into a single API key string. This key contains all information needed to connect to Union, including the endpoint.
 
@@ -221,7 +217,7 @@ Union encodes OAuth2 client credentials (client ID and client secret) into a sin
 
 3. Store this key securely (e.g., in GitHub Secrets, secret manager)
 
-#### Managing API Keys
+#### Managing API keys
 
 List existing keys:
 ```bash
@@ -233,7 +229,7 @@ Delete a key:
 flyte delete api-key my-ci-key
 ```
 
-#### Programmatic Usage
+#### Programmatic usage
 
 ```python
 import flyte
@@ -265,20 +261,18 @@ def automated_task():
     return "Deployed from automation"
 ```
 
----
-
-## Comparison Table
+## Comparison table
 
 | Feature | PKCE | Device Flow | API Key |
 |---------|------|-------------|---------|
 | **Environment** | Browser available | Headless/remote | Fully automated |
 | **Authentication** | Automatic browser | Manual code entry | Non-interactive |
-| **Token Refresh** | Automatic | Automatic | Automatic |
-| **Best For** | Local development | Remote notebooks | CI/CD, production |
-| **Setup Complexity** | Minimal | Minimal | Moderate (requires plugin) |
+| **Token refresh** | Automatic | Automatic | Automatic |
+| **Best for** | Local development | Remote notebooks | CI/CD, production |
+| **Setup complexity** | Minimal | Minimal | Moderate (requires plugin) |
 | **Security** | User credentials | User credentials | App credentials |
 
-## Switching Between Authentication Modes
+## Switching between authentication modes
 
 You can switch authentication modes by updating your config file:
 
@@ -327,15 +321,14 @@ Verify your API key is set correctly:
 echo $FLYTE_API_KEY
 ```
 
-## Best Practices
+## Best practices
 
-1. **Local Development**: Use PKCE authentication for the best experience
-2. **Remote Development**: Use device flow for hosted notebooks and SSH sessions
+1. **Local development**: Use PKCE authentication for the best experience
+2. **Remote development**: Use device flow for hosted notebooks and SSH sessions
 3. **Production/CI**: Always use API keys for automated environments
-4. **API Key Security**:
+4. **API key security**:
    - Store in secret managers (GitHub Secrets, AWS Secrets Manager, Vault)
    - Never commit to version control
    - Rotate regularly
    - Use different keys per environment (dev, staging, prod)
-5. **Config Management**: Keep your `~/.flyte/config.yaml` in source control (without secrets) to maintain consistent settings across your team
-
+5. **Config management**: Keep your `~/.flyte/config.yaml` in source control (without secrets) to maintain consistent settings across your team
