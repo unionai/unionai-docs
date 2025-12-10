@@ -13,32 +13,37 @@ This is the command line interface for Flyte.
 | Object | Action |
 | ------ | -- |
 | `run` | [`abort`](#flyte-abort-run), [`get`](#flyte-get-run)  |
+| `api-key` | [`create⁺`](#flyte-create-api-key), [`delete⁺`](#flyte-delete-api-key), [`get⁺`](#flyte-get-api-key)  |
 | `config` | [`create`](#flyte-create-config), [`get`](#flyte-get-config)  |
 | `secret` | [`create`](#flyte-create-secret), [`delete`](#flyte-delete-secret), [`get`](#flyte-get-secret)  |
 | `trigger` | [`create`](#flyte-create-trigger), [`delete`](#flyte-delete-trigger), [`get`](#flyte-get-trigger), [`update`](#flyte-update-trigger)  |
 | `docs` | [`gen`](#flyte-gen-docs)  |
 | `action` | [`get`](#flyte-get-action)  |
+| `app` | [`get`](#flyte-get-app), [`update`](#flyte-update-app)  |
 | `io` | [`get`](#flyte-get-io)  |
 | `logs` | [`get`](#flyte-get-logs)  |
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
-| `connector` | [`serve`](#flyte-serve-connector)  |
+
+**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< markdown >}}
 | Action | On |
 | ------ | -- |
 | `abort` | [`run`](#flyte-abort-run)  |
 | [`build`](#flyte-build) | - |
-| `create` | [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
-| `delete` | [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
+| `create` | [`api-key⁺`](#flyte-create-api-key), [`config`](#flyte-create-config), [`secret`](#flyte-create-secret), [`trigger`](#flyte-create-trigger)  |
+| `delete` | [`api-key⁺`](#flyte-delete-api-key), [`secret`](#flyte-delete-secret), [`trigger`](#flyte-delete-trigger)  |
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
-| `get` | [`action`](#flyte-get-action), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
-| `serve` | [`connector`](#flyte-serve-connector)  |
-| `update` | [`trigger`](#flyte-update-trigger)  |
+| [`serve`](#flyte-serve) | - |
+| `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
 | [`whoami`](#flyte-whoami) | - |
+
+**⁺** Plugin command - see command documentation for installation instructions
 {{< /markdown >}}
 {{< /grid >}}
 
@@ -133,6 +138,32 @@ environments.
 **`flyte create COMMAND [ARGS]...`**
 
 Create resources in a Flyte deployment.
+
+#### flyte create api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+
+**`flyte create api-key [OPTIONS]`**
+
+Create an API key for headless authentication.
+
+This creates OAuth application credentials that can be used to authenticate
+with Union without interactive login. The generated API key should be set
+as the FLYTE_API_KEY environment variable. Oauth applications should not be
+confused with Union Apps, which are a different construct entirely.
+
+Examples:
+
+    # Create an API key named "ci-pipeline"
+    $ flyte create api-key --name ci-pipeline
+
+    # The output will include an export command like:
+    # export FLYTE_API_KEY="<base64-encoded-credentials>"
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--name` | `text` | `Sentinel.UNSET` | Name for API key |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte create config
 
@@ -256,6 +287,27 @@ This will create a trigger that runs every day at midnight.
 **`flyte delete COMMAND [ARGS]...`**
 
 Remove resources from a Flyte deployment.
+
+#### flyte delete api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+
+**`flyte delete api-key [OPTIONS] CLIENT_ID`**
+
+Delete an API key.
+
+Examples:
+
+    # Delete an API key (with confirmation)
+    $ flyte delete api-key my-client-id
+
+    # Delete without confirmation
+    $ flyte delete api-key my-client-id --yes
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--yes` | `boolean` | `False` | Skip confirmation prompt |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte delete secret
 
@@ -452,6 +504,51 @@ Get all actions for a run or details for a specific action.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get api-key
+
+> **Note:** This command is provided by the `flyteplugins.union` plugin. See the plugin documentation for installation instructions.
+
+**`flyte get api-key [OPTIONS] [CLIENT_ID]`**
+
+Get or list API keys.
+
+If CLIENT-ID is provided, gets a specific API key.
+Otherwise, lists all API keys.
+
+Examples:
+
+    # List all API keys
+    $ flyte get api-key
+
+    # List with a limit
+    $ flyte get api-key --limit 10
+
+    # Get a specific API key
+    $ flyte get api-key my-client-id
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Maximum number of keys to list |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+#### flyte get app
+
+**`flyte get app [OPTIONS] [NAME]`**
+
+Get a list of all apps, or details of a specific app by name.
+
+Apps are long-running services deployed on the Flyte platform.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--limit` | `integer` | `100` | Limit the number of apps to fetch when listing. |
+| `--only-mine` | `boolean` | `False` | Show only apps created by the current user (you). |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -729,27 +826,85 @@ Run reference task from the Flyte backend
 
 ### flyte serve
 
-**`flyte serve COMMAND [ARGS]...`**
+**`flyte serve [OPTIONS] COMMAND [ARGS]...`**
 
-Start the specific service. For example:
+Serve an app from a Python file using flyte.serve().
+
+This command allows you to serve apps defined with `flyte.app.AppEnvironment`
+in your Python files. The serve command will deploy the app to the Flyte backend
+and start it, making it accessible via a URL.
+
+Example usage:
 
 ```bash
-flyte serve connector
+flyte serve examples/apps/basic_app.py app_env
 ```
 
-#### flyte serve connector
+Arguments to the serve command are provided right after the `serve` command and before the file name.
 
-**`flyte serve connector [OPTIONS]`**
+To follow the logs of the served app, use the `--follow` flag:
 
-Start a grpc server for the connector service.
+```bash
+flyte serve --follow examples/apps/basic_app.py app_env
+```
+
+Note: Log streaming is not yet fully implemented and will be added in a future release.
+
+You can provide image mappings with `--image` flag. This allows you to specify
+the image URI for the app environment during CLI execution without changing
+the code. Any images defined with `Image.from_ref_name("name")` will resolve to the
+corresponding URIs you specify here.
+
+```bash
+flyte serve --image my_image=ghcr.io/myorg/my-image:v1.0 examples/apps/basic_app.py app_env
+```
+
+If the image name is not provided, it is regarded as a default image and will
+be used when no image is specified in AppEnvironment:
+
+```bash
+flyte serve --image ghcr.io/myorg/default-image:latest examples/apps/basic_app.py app_env
+```
+
+You can specify multiple image arguments:
+
+```bash
+flyte serve --image ghcr.io/org/default:latest --image gpu=ghcr.io/org/gpu:v2.0 examples/apps/basic_app.py app_env
+```
+
+You can specify the `--config` flag to point to a specific Flyte cluster:
+
+```bash
+flyte serve --config my-config.yaml examples/apps/basic_app.py app_env
+```
+
+You can override the default configured project and domain:
+
+```bash
+flyte serve --project my-project --domain development examples/apps/basic_app.py app_env
+```
+
+Other arguments to the serve command are listed below.
+
+Note: This pattern is primarily useful for serving apps defined in tasks.
+Serving deployed apps is not currently supported through this CLI command.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `--port` | `integer` | `8000` | Grpc port for the connector service |
-| `--prometheus_port` | `integer` | `9090` | Prometheus port for the connector service |
-| `--worker` | `integer` | `10` | Number of workers for the grpc server |
-| `--timeout` | `integer` |  | It will wait for the specified number of seconds before shutting down grpc server. It should only be used for testing. |
-| `--modules` | `text` | `Sentinel.UNSET` | List of additional files or module that defines the connector |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--copy-style` | `choice` | `loaded_modules` | Copy style to use when serving the app |
+| `--root-dir` | `text` | `Sentinel.UNSET` | Override the root source directory, helpful when working with monorepos. |
+| `--service-account` | `text` | `Sentinel.UNSET` | Kubernetes service account. If not provided, the configured default will be used |
+| `--name` | `text` | `Sentinel.UNSET` | Name of the app deployment. If not provided, the app environment name will be used. |
+| {{< multiline >}}`--follow`
+`-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the app. If not provided, the CLI will exit after successfully deploying the app with a link to the UI. |
+| `--image` | `text` | `Sentinel.UNSET` | Image to be used in the serve. Format: imagename=imageuri. Can be specified multiple times. |
+| `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| {{< multiline >}}`--env-var`
+`-e`{{< /multiline >}} | `text` | `Sentinel.UNSET` | Environment variable to set in the app. Format: KEY=VALUE. Can be specified multiple times. Example: --env-var LOG_LEVEL=DEBUG --env-var DATABASE_URL=postgresql://... |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte update
@@ -757,6 +912,30 @@ Start a grpc server for the connector service.
 **`flyte update COMMAND [ARGS]...`**
 
 Update various flyte entities.
+
+#### flyte update app
+
+**`flyte update app [OPTIONS] NAME`**
+
+Update an app by starting or stopping it.
+
+
+Example usage:
+
+```bash
+flyte update app <app_name> --activate | --deactivate [--wait] [--project <project_name>] [--domain <domain_name>]
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| {{< multiline >}}`--activate`
+`--deactivate`{{< /multiline >}} | `boolean` |  | Activate or deactivate app. |
+| `--wait` | `boolean` | `False` | Wait for the app to reach the desired state. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte update trigger
 

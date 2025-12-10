@@ -1,6 +1,6 @@
 ---
 title: How task run works
-weight: 3
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 mermaid: true
@@ -95,14 +95,11 @@ import flyte
 
 flyte.init_from_config()
 
-# Method 1: Direct reference by string
-result = flyte.run("my_env.my_task", name="World")
-
-# Method 2: Using remote task reference
+# Method 1: Using remote task reference
 deployed_task = flyte.remote.Task.get("my_env.my_task", version="v1.0.0")
 result = flyte.run(deployed_task, name="World")
 
-# Method 3: Get latest version
+# Method 2: Get latest version
 deployed_task = flyte.remote.Task.get("my_env.my_task", auto_version="latest")
 result = flyte.run(deployed_task, name="World")
 ```
@@ -173,7 +170,7 @@ If you are running your Flyte code on a Union backend, the UI provides an intera
 
 Here is a short video demonstrating task execution through the Union UI:
 
-{{< youtube id="dQw4w9WgXcQ" >}}
+{{< youtube id="8jbau9yGoDg" >}}
 
 ## Execution flow and architecture
 

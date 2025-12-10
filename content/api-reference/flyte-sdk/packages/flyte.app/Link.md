@@ -1,6 +1,6 @@
 ---
 title: Link
-version: 2.0.0b34.dev10+g162555e05
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,6 +8,9 @@ layout: py_api
 # Link
 
 **Package:** `flyte.app`
+
+Custom links to add to the app
+
 
 ```python
 class Link(

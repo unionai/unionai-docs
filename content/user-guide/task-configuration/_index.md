@@ -1,11 +1,11 @@
 ---
-title: Task configuration
+title: Configure tasks
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Task configuration
+# Configure tasks
 
 As we saw in [**Getting started**](../getting-started), you can run any Python function as a task in Flyte just by decorating it with `@env.task`.
 

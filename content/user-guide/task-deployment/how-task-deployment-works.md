@@ -1,6 +1,6 @@
 ---
 title: How task deployment works
-weight: 1
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---

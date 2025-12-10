@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b34.dev10+g162555e05
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -60,9 +60,11 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`run()`](#run) | Run a task with the given parameters. |
+| [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
 | [`trace()`](#trace) | A decorator that traces function execution with timing information. |
 | [`version()`](#version) | Returns the version of the Flyte SDK. |
 | [`with_runcontext()`](#with_runcontext) | Launch a new run with the given parameters as the context. |
+| [`with_servecontext()`](#with_servecontext) | Create a serve context with custom configuration. |
 
 
 ### Variables
@@ -94,9 +96,9 @@ Create an AMD GPU device instance.
 
 ```python
 def GPU(
-    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000'],
+    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
-    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], NoneType],
+    partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType],
 ) -> flyte._resources.Device
 ```
 Create a GPU device instance.
@@ -104,9 +106,9 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']` | The type of GPU (e.g., "T4", "A100"). |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
-| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
+| `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
 
 #### HABANA_GAUDI()
 
@@ -505,7 +507,7 @@ def run(
     task: TaskTemplate[P, R, F],
     args: *args,
     kwargs: **kwargs,
-) -> Union[R, Run]
+) -> Run
 ```
 Run a task with the given parameters
 
@@ -515,6 +517,41 @@ Run a task with the given parameters
 | `task` | `TaskTemplate[P, R, F]` | task to run |
 | `args` | `*args` | args to pass to the task |
 | `kwargs` | `**kwargs` | kwargs to pass to the task :return: Run \| Result of the task |
+
+#### serve()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await serve.aio()`.
+```python
+def serve(
+    app_env: 'AppEnvironment',
+) -> 'App'
+```
+Serve a Flyte app using an AppEnvironment.
+
+This is the simple, direct way to serve an app. For more control over
+deployment settings (env vars, cluster pool, etc.), use with_servecontext().
+
+Example:
+```python
+import flyte
+from flyte.app.extras import FastAPIAppEnvironment
+
+env = FastAPIAppEnvironment(name="my-app", ...)
+
+# Simple serve
+app = flyte.serve(env)
+print(f"App URL: {app.url}")
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `app_env` | `'AppEnvironment'` | The app environment to serve |
 
 #### trace()
 
@@ -610,4 +647,61 @@ if __name__ == "__main__":
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
 | `cache_lookup_scope` | `CacheLookupScope` | Optional Scope to use for the run. This is used to specify the scope to use for cache lookups. If not specified, it will be set to the default scope (global unless overridden at the system level).  :return: runner |
+
+#### with_servecontext()
+
+```python
+def with_servecontext(
+    version: Optional[str],
+    copy_style: CopyFiles,
+    dry_run: bool,
+    project: str | None,
+    domain: str | None,
+    env_vars: dict[str, str] | None,
+    input_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None,
+    cluster_pool: str | None,
+    log_level: int | None,
+    log_format: LogFormat,
+) -> _Serve
+```
+Create a serve context with custom configuration.
+
+This function allows you to customize how an app is served, including
+overriding environment variables, cluster pool, logging, and other deployment settings.
+
+Example:
+```python
+import logging
+import flyte
+from flyte.app.extras import FastAPIAppEnvironment
+
+env = FastAPIAppEnvironment(name="my-app", ...)
+
+# Serve with custom env vars, logging, and cluster pool
+app = flyte.with_servecontext(
+    env_vars={"DATABASE_URL": "postgresql://..."},
+    log_level=logging.DEBUG,
+    log_format="json",
+    cluster_pool="gpu-pool",
+    project="my-project",
+    domain="development",
+).serve(env)
+
+print(f"App URL: {app.url}")
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `version` | `Optional[str]` | Optional version override for the app deployment |
+| `copy_style` | `CopyFiles` | |
+| `dry_run` | `bool` | |
+| `project` | `str \| None` | Optional project override |
+| `domain` | `str \| None` | Optional domain override |
+| `env_vars` | `dict[str, str] \| None` | Optional environment variables to inject/override in the app container |
+| `input_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional input values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of input names to values. |
+| `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
+| `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
+| `log_format` | `LogFormat` | |
 
