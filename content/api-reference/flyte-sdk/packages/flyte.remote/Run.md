@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b34.dev10+g162555e05
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -124,6 +124,8 @@ Get the inputs of the run. This is a placeholder for getting the run inputs.
 def listall(
     cls,
     in_phase: Tuple[Phase] | None,
+    task_name: str | None,
+    task_version: str | None,
     created_by_subject: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
     limit: int,
@@ -137,6 +139,8 @@ Get all runs for the current project and domain.
 |-|-|-|
 | `cls` |  | |
 | `in_phase` | `Tuple[Phase] \| None` | Filter runs by one or more phases. |
+| `task_name` | `str \| None` | Filter runs by task name. |
+| `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
 | `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
 | `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |

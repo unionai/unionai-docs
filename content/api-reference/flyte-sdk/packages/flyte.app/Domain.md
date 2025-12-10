@@ -1,6 +1,6 @@
 ---
 title: Domain
-version: 2.0.0b34.dev10+g162555e05
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,6 +8,9 @@ layout: py_api
 # Domain
 
 **Package:** `flyte.app`
+
+Subdomain to use for the domain. If not set, the default subdomain will be used.
+
 
 ```python
 class Domain(

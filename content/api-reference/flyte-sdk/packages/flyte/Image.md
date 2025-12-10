@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.0b34.dev10+g162555e05
+version: 2.0.0b35
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -133,7 +133,7 @@ Default images are multi-arch amd/arm64
 | Parameter | Type | Description |
 |-|-|-|
 | `python_version` | `Optional[Tuple[int, int]]` | If not specified, will use the current Python version |
-| `flyte_version` | `Optional[str]` | Union version to use |
+| `flyte_version` | `Optional[str]` | Flyte version to use |
 | `install_flyte` | `bool` | If True, will install the flyte library in the image |
 | `registry` | `Optional[str]` | Registry to use for the image |
 | `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
