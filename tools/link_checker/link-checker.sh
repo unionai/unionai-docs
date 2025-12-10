@@ -36,7 +36,7 @@ while [ 1 ]; do
       branch="$1"
       # Replace all slashes with hyphens in the branch name for URL compatibility
       branch_url=${branch//\//-}
-      target="https://${branch_url}.docs-builder.pages.dev/docs"
+      target="https://${branch_url}.docs-dog.pages.dev/docs"
       ;;
   esac
 
