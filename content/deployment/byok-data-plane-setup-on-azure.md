@@ -22,7 +22,7 @@ All communication is encrypted.  The Union architecture is described on the [Arc
 ## Prerequisites
 
 * Install [Helm 3](https://helm.sh/docs/intro/install/).
-* Install [union](../api-reference/union-cli) and [uctl](../api-reference/uctl-cli).
+* Install [uctl](../api-reference/uctl-cli).
 
 ## Deploy the {{< key product_name >}} operator
 
