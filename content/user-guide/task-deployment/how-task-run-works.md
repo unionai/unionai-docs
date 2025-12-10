@@ -95,14 +95,11 @@ import flyte
 
 flyte.init_from_config()
 
-# Method 1: Direct reference by string
-result = flyte.run("my_env.my_task", name="World")
-
-# Method 2: Using remote task reference
+# Method 1: Using remote task reference
 deployed_task = flyte.remote.Task.get("my_env.my_task", version="v1.0.0")
 result = flyte.run(deployed_task, name="World")
 
-# Method 3: Get latest version
+# Method 2: Get latest version
 deployed_task = flyte.remote.Task.get("my_env.my_task", auto_version="latest")
 result = flyte.run(deployed_task, name="World")
 ```
