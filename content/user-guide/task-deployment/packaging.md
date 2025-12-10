@@ -1,6 +1,6 @@
 ---
 title: Packaging
-weight: 1
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
