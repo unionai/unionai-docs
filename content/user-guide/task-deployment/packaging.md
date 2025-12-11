@@ -1,35 +1,35 @@
 ---
 title: Packaging
-weight: 1
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Code Packaging for Remote Execution
+# Code packaging for remote execution
 
 When you run Flyte tasks remotely, your code needs to be available in the execution environment. Flyte SDK provides two main approaches for packaging your code:
 
-1. **Code Bundling (Fast Registration)** - Bundle code dynamically at runtime
-2. **Container-based Deployment** - Embed code directly in container images
+1. **Code bundling** - Bundle code dynamically at runtime
+2. **Container-based deployment** - Embed code directly in container images
 
-## Quick Comparison
+## Quick comparison
 
-| Aspect | Code Bundling | Container-based |
+| Aspect | Code bundling | Container-based |
 |--------|---------------|-----------------|
 | **Speed** | Fast (no image rebuild) | Slower (requires image build) |
-| **Best For** | Rapid development, iteration | Production, immutable deployments |
-| **Code Changes** | Immediate effect | Requires image rebuild |
+| **Best for** | Rapid development, iteration | Production, immutable deployments |
+| **Code changes** | Immediate effect | Requires image rebuild |
 | **Setup** | Automatic by default | Manual configuration needed |
 | **Reproducibility** | Excellent (hash-based versioning) | Excellent (immutable images) |
 | **Rollback** | Requires version control | Tag-based, straightforward |
 
 ---
 
-## Code Bundling (Fast Registration)
+## Code bundling
 
 **Default approach** - Automatically bundles and uploads your code to remote storage at runtime.
 
-### How It Works
+### How it works
 
 When you run `flyte run` or call `flyte.run()`, Flyte automatically:
 
@@ -50,11 +50,11 @@ This process happens transparently - every container downloads and extracts the 
 >
 > **Reproducibility:** Flyte automatically versions code bundles based on content hash. The same code always produces the same hash, guaranteeing reproducibility without manual versioning. However, version control is still recommended for rollback capabilities.
 
-### Automatic Code Bundling
+### Automatic code bundling
 
 **Default behavior** - Bundles all loaded modules automatically.
 
-#### What Gets Bundled
+#### What gets bundled
 
 Flyte includes modules that are:
 - ✅ **Loaded when environment is parsed** (imported at module level)
@@ -63,7 +63,7 @@ Flyte includes modules that are:
 - ❌ **NOT lazily loaded** (imported inside functions)
 - ❌ **NOT system-installed packages** (e.g., from site-packages)
 
-#### Example: Basic Automatic Bundling
+#### Example: Basic automatic bundling
 
 ```python
 # app.py
@@ -98,7 +98,7 @@ Flyte automatically:
 3. Uploads to blob storage
 4. Makes it available in the remote container
 
-#### Project Structure Example
+#### Project structure example
 
 ```
 my_project/
@@ -133,11 +133,11 @@ if __name__ == "__main__":
 
 **All modules are bundled with their directory structure preserved.**
 
-### Manual Code Bundling
+### Manual code bundling
 
 Control exactly what gets bundled by configuring the copy style.
 
-#### Copy Styles
+#### Copy styles
 
 Three options available:
 
@@ -179,17 +179,17 @@ Skip code bundling (see [Container-based Deployment](#container-based-deployment
 run = flyte.with_runcontext(copy_style="none").run(my_task, x=10)
 ```
 
-### Controlling the Root Directory
+### Controlling the root directory
 
 The `root_dir` parameter controls which directory serves as the bundling root.
 
-#### Why Root Directory Matters
+#### Why root directory matters
 
 1. **Determines what gets bundled** - All code paths are relative to root_dir
 2. **Preserves import structure** - Python imports must match the bundle structure
 3. **Affects path resolution** - Files and modules are located relative to root_dir
 
-#### Setting Root Directory
+#### Setting root directory
 
 ##### Via CLI
 
@@ -208,9 +208,9 @@ flyte.init_from_config(
 )
 ```
 
-#### Root Directory Use Cases
+#### Root directory use cases
 
-##### Use Case 1: Multi-module Project
+##### Use case 1: Multi-module project
 
 ```
 project/
@@ -240,7 +240,7 @@ def my_task():
 
 **Root set to `project/` so imports like `from utils.helpers` work correctly.**
 
-##### Use Case 2: Shared Utilities
+##### Use case 2: Shared utilities
 
 ```
 workspace/
@@ -262,7 +262,7 @@ flyte.init_from_config(
 )
 ```
 
-##### Use Case 3: Monorepo
+##### Use case 3: Monorepo
 
 ```
 monorepo/
@@ -287,16 +287,16 @@ flyte.init_from_config(
 )
 ```
 
-#### Root Directory Best Practices
+#### Root directory best practices
 
 1. **Set root_dir at project initialization** before importing any task modules
 2. **Use absolute paths** with `pathlib.Path(__file__).parent` navigation
 3. **Match your import structure** - if imports are relative to project root, set root_dir to project root
 4. **Keep consistent** - use the same root_dir for both `flyte run` and `flyte.init()`
 
-### Code Bundling Examples
+### Code bundling examples
 
-#### Example: Standard Python Package
+#### Example: Standard Python package
 
 ```
 my_package/
@@ -359,7 +359,7 @@ cd my_package
 flyte run src/my_package/main.py analyze_task --data '[{"value": 1}]'
 ```
 
-#### Example: Dynamic Environment Based on Domain
+#### Example: Dynamic environment based on domain
 
 ```python
 # environment_picker.py
@@ -412,7 +412,7 @@ if __name__ == "__main__":
 > - ✅ Works in `if __name__ == "__main__"` after explicit `flyte.init()`
 > - ❌ Does NOT work at module level without initialization
 
-### When to Use Code Bundling
+### When to use code bundling
 
 ✅ **Use code bundling when:**
 - Rapid development and iteration
@@ -428,11 +428,11 @@ if __name__ == "__main__":
 
 ---
 
-## Container-based Deployment
+## Container-based deployment
 
 **Advanced approach** - Embed code directly in container images for immutable deployments.
 
-### How It Works
+### How it works
 
 Instead of bundling code at runtime:
 
@@ -486,9 +486,9 @@ flyte.init_from_config(
 )
 ```
 
-### Image Source Copying Methods
+### Image source copying methods
 
-#### `with_source_file()` - Copy Individual Files
+#### `with_source_file()` - Copy individual files
 
 Copy a single file into the container:
 
@@ -504,7 +504,7 @@ image = flyte.Image.from_debian_base().with_source_file(
 - Copying configuration files
 - Adding scripts to existing images
 
-#### `with_source_folder()` - Copy Directories
+#### `with_source_folder()` - Copy directories
 
 Copy entire directories into the container:
 
@@ -568,7 +568,7 @@ image = flyte.Image.from_debian_base().with_source_folder(
 flyte.init_from_config(root_dir=pathlib.Path(__file__).parent.parent)
 ```
 
-### Complete Container-based Example
+### Complete container-based example
 
 ```python
 # full_build.py
@@ -634,11 +634,11 @@ This will:
 3. Push to registry
 4. Execute remotely without code bundling
 
-### Using Externally Built Images
+### Using externally built images
 
 When containers are built outside of Flyte (e.g., in CI/CD), use `Image.from_ref_name()`:
 
-#### Step 1: Build Your Image Externally
+#### Step 1: Build your image externally
 
 ```dockerfile
 # Dockerfile
@@ -662,7 +662,7 @@ docker build -t myregistry.com/my-app:v1.2.3 .
 docker push myregistry.com/my-app:v1.2.3
 ```
 
-#### Step 2: Reference Image by Name
+#### Step 2: Reference image by name
 
 ```python
 # app.py
@@ -702,14 +702,14 @@ flyte deploy \
   app.py
 ```
 
-#### Why Use Reference Names?
+#### Why use reference names?
 
 1. **Decouples code from image URIs** - Change images without modifying code
 2. **Supports multiple environments** - Different images for dev/staging/prod
 3. **Integrates with CI/CD** - Build images in pipelines, reference in code
 4. **Enables image reuse** - Multiple tasks can reference the same image
 
-#### Example: Multi-environment Deployment
+#### Example: Multi-environment deployment
 
 ```python
 import flyte
@@ -743,7 +743,7 @@ if __name__ == "__main__":
     ).run(api_call, endpoint="/health")
 ```
 
-### Container-based Best Practices
+### Container-based best practices
 
 1. **Always set explicit versions** when using `copy_style="none"`:
    ```python
@@ -772,7 +772,7 @@ if __name__ == "__main__":
    python -c "import mymodule"  # Verify imports work
    ```
 
-### When to Use Container-based Deployment
+### When to use container-based deployment
 
 ✅ **Use container-based when:**
 - Deploying to production
@@ -790,9 +790,9 @@ if __name__ == "__main__":
 
 ---
 
-## Choosing the Right Approach
+## Choosing the right approach
 
-### Decision Tree
+### Decision tree
 
 ```
 Are you iterating quickly on code?
@@ -806,7 +806,7 @@ Are you iterating quickly on code?
                     (Code bundling is simpler, container-based for air-gapped)
 ```
 
-### Hybrid Approach
+### Hybrid approach
 
 You can use different approaches for different tasks:
 
@@ -857,7 +857,7 @@ if __name__ == "__main__":
 
 ## Troubleshooting
 
-### Import Errors
+### Import errors
 
 **Problem:** `ModuleNotFoundError` when task executes remotely
 
@@ -893,7 +893,7 @@ if __name__ == "__main__":
    flyte run --copy-style=all app.py my_task
    ```
 
-### Code Changes Not Reflected
+### Code changes not reflected
 
 **Problem:** Remote execution uses old code despite local changes
 
@@ -916,7 +916,7 @@ if __name__ == "__main__":
    ).run(my_task)
    ```
 
-### Files Missing in Container
+### Files missing in container
 
 **Problem:** Task can't find data files or configs
 
@@ -944,7 +944,7 @@ if __name__ == "__main__":
        data = flyte.io.File("s3://bucket/data.csv").open().read()
    ```
 
-### Container Build Failures
+### Container build failures
 
 **Problem:** Image build fails with `copy_style="none"`
 
@@ -970,7 +970,7 @@ if __name__ == "__main__":
    chmod -R +r project/
    ```
 
-### Version Conflicts
+### Version conflicts
 
 **Problem:** Multiple versions of same image causing confusion
 
@@ -996,7 +996,7 @@ if __name__ == "__main__":
 
 ---
 
-## Further Reading
+## Further reading
 
 - [Image API Reference](../api-reference/flyte-sdk/packages/flyte/Image.md) - Complete Image class documentation
 - [TaskEnvironment](../api-reference/flyte-sdk/packages/flyte/TaskEnvironment.md) - Environment configuration options
