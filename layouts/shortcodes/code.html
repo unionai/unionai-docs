@@ -106,6 +106,35 @@
     {{- $highlightOptions = printf "linenos=false,hl_lines=%s" $highlight -}}
 {{- end -}}
 
+{{/* Apply autolinking for Python code */}}
+{{- $autolinkResult := partial "autolink-python.html" (dict "code" $content "lang" $lang) -}}
+{{- $codeToHighlight := $autolinkResult.code -}}
+{{- $linkMap := $autolinkResult.linkMap -}}
+
+{{/* Highlight the code */}}
+{{- $highlighted := highlight $codeToHighlight $lang $highlightOptions -}}
+
+{{/* Replace markers with actual links if we did autolinking */}}
+{{- $processedHTML := $highlighted -}}
+{{- if gt (len $linkMap) 0 -}}
+    {{- $basePath := "" -}}
+    {{- with site.BaseURL -}}
+        {{- $parsed := urls.Parse . -}}
+        {{- $basePath = $parsed.Path -}}
+        {{- $basePath = strings.TrimSuffix "/" $basePath -}}
+    {{- end -}}
+    {{- range $marker, $data := $linkMap -}}
+        {{- $fullURL := printf "%s%s" $basePath $data.url -}}
+        {{- if $data.dotted -}}
+            {{- $link := printf `<a href="%s">%s</a>` $fullURL $data.text -}}
+            {{- $processedHTML = replace $processedHTML $marker $link -}}
+        {{- else -}}
+            {{- $link := printf `<a href="%s">%s</a>` $fullURL $data.text -}}
+            {{- $processedHTML = replace $processedHTML $marker $link -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+
 {{/* Generate the complete codeblock HTML structure */}}
 <div class="codeblock">
     {{/* Title bar with filename, GitHub link, and copy button */}}
@@ -125,6 +154,6 @@
         </div>
     </div>
     <div id="{{- $uniqueID -}}" class="code">
-        {{- highlight $content $lang $highlightOptions -}}
+        {{- $processedHTML | safeHTML -}}
     </div>
 </div>
