@@ -1,8 +1,175 @@
-{{- $result := transform.HighlightCodeBlock . -}}
-{{- $uniqueID := printf "code-%s-%d" (sha1 .Inner) .Ordinal -}}
-<div class="codeblock">
-    <div class="copy">
-        <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
+{{- /* For Python code, pre-process with markers before highlighting */ -}}
+{{- $codeToHighlight := .Inner -}}
+{{- $linkMap := dict -}}
+
+{{- if eq .Type "python" -}}
+    {{- $flyteapi := site.Data.flytesdk -}}
+
+    {{- /* First, protect strings by replacing them with markers */ -}}
+    {{- $stringMap := dict -}}
+    {{- $stringCounter := 0 -}}
+
+    {{- /* Replace triple-quoted strings first (they can span multiple lines) */ -}}
+    {{- range $match := findRE `"""[\s\S]*?"""` $codeToHighlight -}}
+        {{- $stringMarker := printf "___STRING_%d___" $stringCounter -}}
+        {{- $stringMap = merge $stringMap (dict $stringMarker $match) -}}
+        {{- $codeToHighlight = replace $codeToHighlight $match $stringMarker -}}
+        {{- $stringCounter = add $stringCounter 1 -}}
+    {{- end -}}
+    {{- range $match := findRE `'''[\s\S]*?'''` $codeToHighlight -}}
+        {{- $stringMarker := printf "___STRING_%d___" $stringCounter -}}
+        {{- $stringMap = merge $stringMap (dict $stringMarker $match) -}}
+        {{- $codeToHighlight = replace $codeToHighlight $match $stringMarker -}}
+        {{- $stringCounter = add $stringCounter 1 -}}
+    {{- end -}}
+
+    {{- /* Replace single-line strings */ -}}
+    {{- range $match := findRE `"[^"\n]*"` $codeToHighlight -}}
+        {{- $stringMarker := printf "___STRING_%d___" $stringCounter -}}
+        {{- $stringMap = merge $stringMap (dict $stringMarker $match) -}}
+        {{- $codeToHighlight = replace $codeToHighlight $match $stringMarker -}}
+        {{- $stringCounter = add $stringCounter 1 -}}
+    {{- end -}}
+    {{- range $match := findRE `'[^'\n]*'` $codeToHighlight -}}
+        {{- $stringMarker := printf "___STRING_%d___" $stringCounter -}}
+        {{- $stringMap = merge $stringMap (dict $stringMarker $match) -}}
+        {{- $codeToHighlight = replace $codeToHighlight $match $stringMarker -}}
+        {{- $stringCounter = add $stringCounter 1 -}}
+    {{- end -}}
+
+    {{- /* Build a combined list of all terms (identifiers + packages) with lengths */ -}}
+    {{- $allTerms := slice -}}
+
+    {{- range $identifier, $path := $flyteapi.identifiers -}}
+        {{- $allTerms = $allTerms | append (dict "term" $identifier "url" $path "len" (len $identifier) "type" "identifier") -}}
+    {{- end -}}
+
+    {{- range $package, $path := $flyteapi.packages -}}
+        {{- $allTerms = $allTerms | append (dict "term" $package "url" $path "len" (len $package) "type" "package") -}}
+    {{- end -}}
+
+    {{- range $method, $path := $flyteapi.methods -}}
+        {{- $allTerms = $allTerms | append (dict "term" $method "url" $path "len" (len $method) "type" "method") -}}
+    {{- end -}}
+
+    {{- /* Sort by length (longest first) to match more specific terms before general ones */ -}}
+    {{- $sortedTerms := sort $allTerms "len" "desc" -}}
+
+    {{- /* Replace terms with unique markers, processing longest first */ -}}
+    {{- $counter := 0 -}}
+    {{- range $sortedTerms -}}
+        {{- $term := .term -}}
+        {{- $url := .url -}}
+        {{- $termType := .type -}}
+
+        {{- $marker := printf "___LINK_%d___" $counter -}}
+        {{- $linkMap = merge $linkMap (dict $marker (dict "text" $term "url" $url)) -}}
+
+        {{- if eq $termType "identifier" -}}
+            {{- /* For identifiers like flyte.trigger.Trigger */ -}}
+            {{- $parts := split $term "." -}}
+
+            {{- if gt (len $parts) 1 -}}
+                {{- $lastPart := index $parts (sub (len $parts) 1) -}}
+                {{- $pkgPart := delimit (first (sub (len $parts) 1) $parts) "." -}}
+
+                {{- /* Check if this symbol is imported via "from <package> import <symbol>" */ -}}
+                {{- $escapedPkg := replace $pkgPart "." "\\." -}}
+                {{- $importCheckPattern := printf `from\s+%s\s+import\s+(?:[^,\n]+,\s*)*%s\b` $escapedPkg $lastPart -}}
+                {{- $hasImport := findRE $importCheckPattern $codeToHighlight 1 -}}
+
+                {{- if $hasImport -}}
+                    {{- /* Symbol is explicitly imported, so link it everywhere */ -}}
+                    {{- $symbolMarker := printf "___LINKSYM_%d___" $counter -}}
+                    {{- $linkMap = merge $linkMap (dict $symbolMarker (dict "text" $lastPart "url" $url)) -}}
+
+                    {{- /* Replace in the import statement */ -}}
+                    {{- $fromPattern := printf `(from\s+%s\s+import\s+(?:[^,\n]+,\s*)*)(%s)\b` $escapedPkg $lastPart -}}
+                    {{- $codeToHighlight = replaceRE $fromPattern (printf `${1}%s` $symbolMarker) $codeToHighlight -}}
+
+                    {{- /* Also replace standalone uses in the code body, but not in comments */ -}}
+                    {{- $standalonePattern := printf `(?m)^([^#\n]*)\b(%s)\b` $lastPart -}}
+                    {{- $codeToHighlight = replaceRE $standalonePattern (printf `${1}%s` $symbolMarker) $codeToHighlight -}}
+                {{- end -}}
+
+                {{- /* For dotted usage like flyte.FlyteFile, replace with linked version preserving dots, but not in comments */ -}}
+                {{- $escapedTerm := replace $term "." "\\." -}}
+                {{- $pattern := printf `(?m)^([^#\n]*)\b(%s)\b` $escapedTerm -}}
+                {{- $dottedMarker := printf "___LINKDOT_%d___" $counter -}}
+                {{- $linkMap = merge $linkMap (dict $dottedMarker (dict "text" $term "url" $url "dotted" true)) -}}
+                {{- $codeToHighlight = replaceRE $pattern (printf `${1}%s` $dottedMarker) $codeToHighlight -}}
+            {{- else -}}
+                {{- /* Single-part identifier, just match it, but not in comments */ -}}
+                {{- $pattern := printf `(?m)^([^#\n]*)\b(%s)\b` $term -}}
+                {{- $codeToHighlight = replaceRE $pattern (printf `${1}%s` $marker) $codeToHighlight -}}
+            {{- end -}}
+        {{- else if eq $termType "method" -}}
+            {{- /* For methods, match only when followed by ( and not in comments */ -}}
+            {{- $pattern := printf `(?m)^([^#\n]*)\b(%s)(\()` $term -}}
+            {{- $codeToHighlight = replaceRE $pattern (printf `${1}%s${3}` $marker) $codeToHighlight -}}
+        {{- else -}}
+            {{- /* For packages, match as whole word, but not in comments */ -}}
+            {{- $pattern := printf `(?m)^([^#\n]*)\b(%s)\b` $term -}}
+            {{- $codeToHighlight = replaceRE $pattern (printf `${1}%s` $marker) $codeToHighlight -}}
+        {{- end -}}
+
+        {{- $counter = add $counter 1 -}}
+    {{- end -}}
+
+    {{- /* Restore strings before highlighting */ -}}
+    {{- range $marker, $originalString := $stringMap -}}
+        {{- $codeToHighlight = replace $codeToHighlight $marker $originalString -}}
+    {{- end -}}
+{{- end -}}
+
+{{- /* Create a modified context for highlighting if we replaced anything */ -}}
+{{- $highlightContext := . -}}
+{{- if ne $codeToHighlight .Inner -}}
+    {{- /* We need to pass the modified code to the highlighter */ -}}
+    {{- /* Hugo doesn't allow modifying the context, so we use a workaround */ -}}
+    {{- $opts := dict "lang" .Type -}}
+    {{- $highlighted := transform.Highlight $codeToHighlight .Type $opts -}}
+    {{- $processedHTML := $highlighted -}}
+
+    {{- /* Replace markers with actual links */ -}}
+    {{- /* Extract base path from baseURL (e.g., http://localhost/dev/site/p/ -> /dev/site/p/) */ -}}
+    {{- $basePath := "" -}}
+    {{- with site.BaseURL -}}
+        {{- $parsed := urls.Parse . -}}
+        {{- $basePath = $parsed.Path -}}
+        {{- $basePath = strings.TrimSuffix "/" $basePath -}}
+    {{- end -}}
+    {{- range $marker, $data := $linkMap -}}
+        {{- /* Prepend base path to URL */ -}}
+        {{- $fullURL := printf "%s%s" $basePath $data.url -}}
+        {{- if $data.dotted -}}
+            {{- /* For dotted identifiers, we want to link the whole thing as one clickable unit */ -}}
+            {{- $link := printf `<a href="%s">%s</a>` $fullURL $data.text -}}
+            {{- $processedHTML = replace $processedHTML $marker $link -}}
+        {{- else -}}
+            {{- /* Simple replacement */ -}}
+            {{- $link := printf `<a href="%s">%s</a>` $fullURL $data.text -}}
+            {{- $processedHTML = replace $processedHTML $marker $link -}}
+        {{- end -}}
+    {{- end -}}
+
+    {{- $uniqueID := printf "code-%s-%d" (sha1 .Inner) .Ordinal -}}
+
+    <div class="codeblock">
+        <div class="copy">
+            <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
+        </div>
+        <div id="{{- $uniqueID -}}" class="code">{{ $processedHTML | safeHTML }}</div>
     </div>
-    <div id="{{- $uniqueID -}}" class="code">{{ $result.Wrapped }}</div>
-</div>
+{{- else -}}
+    {{- /* No modifications, use normal highlighting */ -}}
+    {{- $result := transform.HighlightCodeBlock . -}}
+    {{- $uniqueID := printf "code-%s-%d" (sha1 .Inner) .Ordinal -}}
+
+    <div class="codeblock">
+        <div class="copy">
+            <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
+        </div>
+        <div id="{{- $uniqueID -}}" class="code">{{ $result.Wrapped }}</div>
+    </div>
+{{- end -}}
