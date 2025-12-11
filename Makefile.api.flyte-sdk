@@ -11,6 +11,7 @@ parser:
 .PHONY: generate
 generate: clean_output_folder
 	tools/api_generator/generate \
+		--name flytesdk \
 		--title "Flyte SDK" \
 		--api "${API_DATA}" \
 		--include include/api.flyte-sdk.md \
