@@ -29,7 +29,7 @@ To enable access to a GCS bucket you have to add the `<UserFlyteGSA>` Google Ser
 * In the **Grant access** panel:
   * Under **Add principals**, paste the actual name (in email form) of the `<UserFlyteGSA>` into the **New principals** field.
   * Under **Assign roles** add as many roles as you need.
-    In the example below we add the roles enabling reading and writing: **Storage Object Viewer** and **Storage Object Creator**.
+    In the example below we add the roles enabling reading and writing: **Storage Object Viewer**, **Storage Object Creator**, and **Storage Legacy Bucket Reader**.
 
 ![](../../_static/images/user-guide/integrations/enabling-gcp-resources/enabling-google-cloud-storage/grant-access-to-bucket.png)
 
