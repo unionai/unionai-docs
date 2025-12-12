@@ -1,6 +1,6 @@
 ---
 title: Configure apps
-weight: 1
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -59,7 +59,7 @@ While `AppEnvironment` inherits from `Environment` (the same base class as `Task
 | `requires_auth` | ✅ | ❌ | Whether app requires authentication |
 | `scaling` | ✅ | ❌ | Autoscaling configuration |
 | `domain` | ✅ | ❌ | Custom domain/subdomain |
-| `links` | ✅ | ❌ | Links to other environments |
+| `links` | ✅ | ❌ | Links to include in the App UI page |
 | `include` | ✅ | ❌ | Files to include in app |
 | `inputs` | ✅ | ❌ | Inputs to pass to app |
 | `cluster_pool` | ✅ | ❌ | Cluster pool for deployment |
