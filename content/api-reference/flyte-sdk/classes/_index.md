@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b35
+version: 2.0.0b32
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -24,13 +24,11 @@ sidebar_expanded: true
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Environment class to define a new environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
-| [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app input. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) | |
-| [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
+| [`flyte.app.Domain`](../packages/flyte.app/domain) | |
 | [`flyte.app.Input`](../packages/flyte.app/input) |Input for application. |
-| [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
+| [`flyte.app.Link`](../packages/flyte.app/link) | |
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
-| [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app inputs. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
@@ -63,7 +61,6 @@ sidebar_expanded: true
 | [`flyte.extend.ImageBuildEngine`](../packages/flyte.extend/imagebuildengine) |ImageBuildEngine contains a list of builders that can be used to build an ImageSpec. |
 | [`flyte.extend.TaskTemplate`](../packages/flyte.extend/tasktemplate) |Task template is a template for a task that can be executed. |
 | [`flyte.extras.ContainerTask`](../packages/flyte.extras/containertask) |This is an intermediate class that represents Flyte Tasks that run a container at execution time. |
-| [`flyte.git.GitStatus`](../packages/flyte.git/gitstatus) |A class representing the status of a git repository. |
 | [`flyte.io.DataFrame`](../packages/flyte.io/dataframe) |This is the user facing DataFrame class. |
 | [`flyte.io.DataFrameDecoder`](../packages/flyte.io/dataframedecoder) |Helper class that provides a standard way to create an ABC using. |
 | [`flyte.io.DataFrameEncoder`](../packages/flyte.io/dataframeencoder) |Helper class that provides a standard way to create an ABC using. |
