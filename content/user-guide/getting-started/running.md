@@ -1,10 +1,10 @@
 ---
-title: Running
+title: Running tasks
 weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Running
+# Running tasks
 
 Flyte SDK lets you seamlessly switch between running your workflows locally on your machine and running them remotely on your Union/Flyte instance.
 
