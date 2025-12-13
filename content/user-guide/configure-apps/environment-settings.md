@@ -74,6 +74,34 @@ args="--option1 value1 --option2 value2"
 args=["--option1", "value1", "--option2", "value2"]
 ```
 
+#### Environment variable substitution
+
+Environment variables are automatically substituted in `args` strings when they start with the `$` character. This works for both:
+- Values from `env_vars`
+- Secrets that are specified as environment variables (via `as_env_var` in `flyte.Secret`)
+
+The `$VARIABLE_NAME` syntax will be replaced with the actual environment variable value at runtime:
+
+```python
+# Using env_vars
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    env_vars={"API_KEY": "secret-key-123"},
+    args="--api-key $API_KEY",  # $API_KEY will be replaced with "secret-key-123"
+    # ...
+)
+
+# Using secrets
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    secrets=flyte.Secret(key="AUTH_SECRET", as_env_var="AUTH_SECRET"),
+    args=["--api-key", "$AUTH_SECRET"],  # $AUTH_SECRET will be replaced with the secret value
+    # ...
+)
+```
+
+This is particularly useful for passing API keys or other sensitive values to command-line arguments without hardcoding them in your code. The substitution happens at runtime, ensuring secrets are never exposed in your code or configuration files.
+
 ### `command`
 
 The `command` parameter specifies the full command to run your app. If not specified, Flyte will use a default command that runs your app via `fserve`.

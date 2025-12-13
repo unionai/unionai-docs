@@ -1,6 +1,6 @@
 ---
 title: FastAPI app
-weight: 2
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

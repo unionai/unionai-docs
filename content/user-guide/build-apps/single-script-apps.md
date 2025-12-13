@@ -1,6 +1,6 @@
 ---
 title: Single-script apps
-weight: 0
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

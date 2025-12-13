@@ -1,6 +1,6 @@
 ---
 title: Webhook app
-weight: 8
+weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

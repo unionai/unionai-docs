@@ -1,6 +1,6 @@
 ---
 title: vLLM app
-weight: 3
+weight: 11
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

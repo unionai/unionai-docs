@@ -1,6 +1,6 @@
 ---
 title: SGLang app
-weight: 4
+weight: 12
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

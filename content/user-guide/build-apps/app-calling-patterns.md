@@ -1,6 +1,6 @@
 ---
 title: App calling patterns
-weight: 5
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

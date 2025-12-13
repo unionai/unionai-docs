@@ -1,6 +1,6 @@
 ---
 title: Passing inputs into apps
-weight: 6
+weight: 4
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

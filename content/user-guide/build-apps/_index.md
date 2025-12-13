@@ -23,6 +23,7 @@ Flyte supports various types of apps:
 - [**Single-script apps**](./single-script-apps): The simplest way to build and deploy apps in a single Python script
 - [**Streamlit app**](./streamlit-app): Build interactive Streamlit dashboards
 - [**FastAPI app**](./fastapi-app): Create REST APIs and backend services
+- [**Secret-based authentication**](./secret-based-authentication): Authenticate FastAPI apps using Flyte secrets
 - [**vLLM app**](./vllm-app): Serve large language models with vLLM
 - [**SGLang app**](./sglang-app): Serve LLMs with SGLang for structured generation
 - [**App calling patterns**](./app-calling-patterns): Call apps from tasks, tasks from apps, and apps from apps
