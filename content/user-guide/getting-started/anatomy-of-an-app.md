@@ -1,10 +1,10 @@
 ---
-title: Anatomy of a task
+title: Anatomy of an app
 weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Anatomy of a task
+# Anatomy of an app
 
 To understand how app serving works in Flyte 2, it helps to understand the key concepts and how they relate to tasks.
 
