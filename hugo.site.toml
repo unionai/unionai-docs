@@ -44,6 +44,7 @@ custom_js = [
   "sidebar.js",
   "theme.js",
   "tags.js",
+  "inline-code-linker.js",
 ]
 
 [params.variant_weights]

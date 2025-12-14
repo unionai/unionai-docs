@@ -1,10 +1,78 @@
 .codeblock {
     position: relative;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
+/* Copy button for regular markdown code blocks */
 .codeblock > .copy {
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;
     color: white;
+    z-index: 10;
+}
+
+.codeblock-header {
+    background: #3a3f47; /* Slightly lighter than code bg for subtle separation */
+    color: #c9d1d9; /* Light gray for good readability */
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator line */
+}
+
+.codeblock-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Copy button inside header for shortcode code blocks */
+.codeblock-header .copy {
+    position: static;
+    color: var(--pre-color);
+}
+
+.codeblock-filename {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 500;
+    color: inherit;
+}
+
+.codeblock-github-link {
+    color: var(--pre-color);
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.codeblock-github-link:hover {
+    opacity: 1;
+}
+
+/* Ensure the code block integrates seamlessly */
+.codeblock .code {
+    border-radius: 0 0 8px 8px; /* Only round bottom corners */
+    margin: 0;
+}
+
+.codeblock .code pre {
+    border-radius: 0 0 8px 8px; /* Only round bottom corners */
+    margin: 0;
+}
+
+.codeblock .highlight .language-python A {
+    /* color: dodgerblue; */
+    color: unset;
+    text-decoration: underline;
+}
+
+A > CODE {
+    text-decoration: underline;
 }
