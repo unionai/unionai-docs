@@ -9,7 +9,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 {{< key product_name >}}’s modular architecture allows for great flexibility and control.
 The customer can decide how many clusters to have, their shape, and who has access to what.
 All communication is encrypted.
-The Union architecture is described on the [Architecture](../architecture) page.
+The Union architecture is described on the [Architecture](./architecture) page.
 
 > [!NOTE] These instructions cover installing Union.ai in an on-premise Kubernetes cluster.
 > If you are installing at a cloud provider, use the cloud provider specific instructions: [AWS](./byok-data-plane-setup-on-aws), [Azure](./byok-data-plane-setup-on-azure), [OCI](./byok-data-plane-setup-on-oci).
