@@ -8,6 +8,15 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Apps support various input types that can be passed at deployment time. This includes primitive values, files, directories, and delayed values like `RunOutput` and `AppEndpoint`.
 
+## Input types overview
+
+Apps support several input types:
+
+- **Primitive values**: Strings, numbers, booleans
+- **Files**: `flyte.File` objects
+- **Directories**: `flyte.Dir` objects
+- **Delayed values**: `RunOutput` (from task runs) or `AppEndpoint` (from other apps)
+
 ## Basic input types
 
 {{< code file="/external/unionai-examples/v2/user-guide/build-apps/passing-inputs-examples.py" fragment=basic-input-types lang=python >}}
@@ -30,7 +39,9 @@ Use `AppEndpoint` to pass endpoints from other apps:
 
 The endpoint URL will be injected as the input value when the app starts.
 
-## Overriding inputs at serve time
+This is particularly useful when you want to chain apps together (for example, a frontend app calling a backend app), without hardcoding URLs.
+
+## Overriding inputs at serve or deploy time
 
 You can override input values when serving or deploying apps:
 
@@ -94,17 +105,17 @@ with open("/app/models/model.pkl", "rb") as f:
 
 ## Best practices
 
-1. **Use delayed inputs**: Leverage `RunOutput` and `AppEndpoint` to create app dependencies
-2. **Override for testing**: Use `input_values` parameter when serving to test different configurations
-3. **Mount paths clearly**: Use descriptive mount paths for file/directory inputs
-4. **Document inputs**: Make sure your app documentation explains what inputs it expects
-5. **Use environment variables**: For simple values, use `env_var` to inject as environment variables
-6. **Type safety**: Specify input types clearly in your app code
+1. **Use delayed inputs**: Leverage `RunOutput` and `AppEndpoint` to create app dependencies between tasks and apps, or app-to-app chains.
+2. **Override for testing**: Use the `input_values` parameter when serving or deploying to test different configurations without changing code.
+3. **Mount paths clearly**: Use descriptive mount paths for file/directory inputs so your app code is easy to understand.
+4. **Document inputs**: Make sure your app documentation explains what inputs it expects and how they’re used.
+5. **Use environment variables**: For simple values, use `env_var` to inject as environment variables.
+6. **Type safety**: Specify input types clearly in your app code.
 
 ## Limitations
 
-- Inputs are resolved at deployment time, not at request time
-- Large files/directories can slow down app startup
-- Input overrides are only available when using `flyte.serve()` or `flyte.deploy()` directly
-- Delayed inputs (`RunOutput`, `AppEndpoint`) must be resolved before the app can start
+- Inputs are resolved at deployment/serve time, not at request time.
+- Large files/directories can slow down app startup.
+- Input overrides are only available when using `flyte.serve()` or `flyte.deploy()` directly.
+- Delayed inputs (`RunOutput`, `AppEndpoint`) must be resolved before the app can start.
 

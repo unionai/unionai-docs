@@ -43,6 +43,92 @@ if __name__ == "__main__":
 
 `flyte.deploy()` returns a list of `DeployedEnvironment` objects, one for each environment deployed (including dependencies).
 
+### Deploy with input overrides
+
+You can override inputs at deploy time (though less common than with serve):
+
+```python
+deployments = flyte.deploy(
+    app_env,
+    input_values={
+        "app-name": {
+            "input_name": "input_value",
+        }
+    },
+)
+```
+
+Note: Input overrides at deploy time are less flexible than with serve. Consider using `flyte.serve()` for development where you need frequent input changes.
+
+### Using deployment context
+
+For more control, use deployment context (similar to serve context):
+
+```python
+from flyte import with_deploycontext
+
+with with_deploycontext(
+    version="v1.0.0",
+    project="my-project",
+    domain="production",
+    dry_run=False,
+) as ctx:
+    deployments = ctx.deploy(app_env)
+```
+
+### Deploy parameters
+
+#### `version`
+
+Version string for the deployment:
+
+```python
+deployments = flyte.deploy(app_env, version="v1.0.0")
+```
+
+If not specified, Flyte generates a version automatically based on code and configuration.
+
+#### `project` and `domain`
+
+Override project and domain:
+
+```python
+deployments = flyte.deploy(
+    app_env,
+    project="my-project",
+    domain="production",
+)
+```
+
+#### `input_values`
+
+Override app inputs at deploy time:
+
+```python
+deployments = flyte.deploy(
+    app_env,
+    input_values={
+        "app-name": {
+            "model_path": "s3://prod-bucket/models/model.pkl",
+        }
+    },
+)
+```
+
+#### `dry_run`
+
+Preview deployment without actually deploying:
+
+```python
+deployments = flyte.deploy(app_env, dry_run=True)
+```
+
+This is useful for:
+
+- Validating deployment configuration
+- Checking what would be deployed
+- Testing deployment logic
+
 ## Deployment plan
 
 Flyte automatically creates a deployment plan that includes:
@@ -89,9 +175,49 @@ With options:
 
 ```bash
 flyte deploy path/to/app.py app_name \
+    --version v1.0.0 \
     --project my-project \
     --domain production \
-    --version v1.0.0
+    --dry-run
+```
+
+## Example: Full deployment configuration
+
+```python
+import flyte
+import flyte.app
+
+app_env = flyte.app.AppEnvironment(
+    name="my-prod-app",
+    # ... configuration ...
+)
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    
+    deployments = flyte.deploy(
+        app_env,
+        version="v1.0.0",
+        project="my-project",
+        domain="production",
+        input_values={
+            "my-prod-app": {
+                "model_path": "s3://prod-bucket/models/v1-model.pkl",
+            }
+        },
+        dry_run=False,
+    )
+    
+    for deployment in deployments:
+        print(f"Deployed: {deployment.env.name}")
+        print(f"Version: {deployment.version}")
+        print(f"URL: {deployment.url}")
+        
+        # Activate the app
+        from flyte.remote import App
+        app = App.get(name=deployment.env.name)
+        app.activate()
+        print(f"Activated: {app.name}")
 ```
 
 ## What happens during deploy
@@ -117,25 +243,40 @@ flyte deploy path/to/app.py app_name \
 
 ## Best practices
 
-1. **Use for production**: Deploy is designed for production use
-2. **Version everything**: Always specify versions for reproducibility
-3. **Test first**: Test with serve before deploying to production
-4. **Manage dependencies**: Use `depends_on` to manage app dependencies
-5. **Activation strategy**: Have a strategy for activating/deactivating apps
-6. **Rollback plan**: Keep old versions available for rollback
+1. **Use for production**: Deploy is designed for production use.
+2. **Version everything**: Always specify versions for reproducibility.
+3. **Test first**: Test with serve before deploying to production.
+4. **Manage dependencies**: Use `depends_on` to manage app dependencies.
+5. **Activation strategy**: Have a strategy for activating/deactivating apps.
+6. **Rollback plan**: Keep old versions available for rollback.
+7. **Use dry-run**: Test deployments with `dry_run=True` first.
+8. **Separate environments**: Use different projects/domains for different environments.
+9. **Input management**: Consider using environment-specific input values.
 
-## Deployment status
+## Deployment status and return value
 
-Check deployment status:
+`flyte.deploy()` returns a list of `DeployedEnvironment` objects:
 
 ```python
 deployments = flyte.deploy(app_env)
 
 for deployment in deployments:
-    print(f"Environment: {deployment.env.name}")
-    print(f"Status: {deployment.status}")
+    # Access deployed environment
+    env = deployment.env
+    
+    # Access deployment info
+    print(f"Name: {env.name}")
+    print(f"Version: {deployment.version}")
     print(f"URL: {deployment.url}")
+    print(f"Status: {deployment.status}")
 ```
+
+Each `DeployedEnvironment` includes:
+
+- `env`: The `AppEnvironment` that was deployed
+- `version`: The version of the deployment
+- `url`: The app's URL
+- `status`: Current deployment status
 
 ## Troubleshooting
 
