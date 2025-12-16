@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -203,5 +203,6 @@ Watch the action for updates. This is a placeholder for watching the action.
 | `phase` | `None` | Get the phase of the action. |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
+| `start_time` | `None` | Get the start time of the action. |
 | `task_name` | `None` | Get the name of the task. |
 

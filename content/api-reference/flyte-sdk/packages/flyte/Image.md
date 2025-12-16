@@ -1,6 +1,6 @@
 ---
 title: Image
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -203,7 +203,7 @@ Example:
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = "&gt;=3.12"
+# requires-python = ">=3.12"
 # dependencies = ["httpx"]
 # ///
 ```
@@ -221,7 +221,7 @@ For more information on the uv script format, see the documentation:
 | `registry_secret` | `Optional[str \| Secret]` | Secret to use to pull/push the private image. |
 | `python_version` | `Optional[Tuple[int, int]]` | Python version for the image, if not specified, will use the current Python version |
 | `index_url` | `Optional[str]` | index url to use for pip install, default is None |
-| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is None |
+| `extra_index_urls` | `Union[str, List[str], Tuple[str, ...], None]` | extra index urls to use for pip install, default is True |
 | `pre` | `bool` | whether to allow pre-release versions, default is False |
 | `extra_args` | `Optional[str]` | extra arguments to pass to pip install, default is None |
 | `platform` | `Optional[Tuple[Architecture, ...]]` | architecture to use for the image, default is linux/amd64, use tuple for multiple values |
@@ -323,7 +323,7 @@ Cannot be used in conjunction with conda
 Example:
 ```python
 @flyte.task(image=(flyte.Image.from_debian_base().with_pip_packages("requests", "numpy")))
-def my_task(x: int) -&gt; int:
+def my_task(x: int) -> int:
     import numpy as np
     return np.sum([x, 1])
 ```
@@ -340,7 +340,7 @@ private_package = "git+https://$GITHUB_PAT@github.com/flyteorg/flytex.git@2e20a2
         .with_pip_packages("private_package", secret_mounts=[Secret(key="GITHUB_PAT")])
         .with_apt_packages("git", secret_mounts=[Secret(key="apt-secret", mount="/etc/apt/apt-secret")])
 )
-def my_task(x: int) -&gt; int:
+def my_task(x: int) -> int:
     import numpy as np
     return np.sum([x, 1])
 ```

@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -11,11 +11,38 @@ layout: py_api
 
 Use a run's output for app inputs.
 
-This enables the declaration of an app input dependency on a the output of
+This enables the declaration of an app input dependency on the output of
 a run, given by a specific run name, or a task name and version. If
 `task_auto_version == 'latest'`, the latest version of the task will be used.
 If `task_auto_version == 'current'`, the version will be derived from the callee
-app or task context.
+app or task context. To get the latest task run for ephemeral task runs, set
+`task_version` and `task_auto_version` should both be set to `None` (which is the default).
+
+Examples:
+
+Get the output of a specific run:
+
+```python
+run_output = RunOutput(type="directory", run_name="my-run-123")
+```
+
+Get the latest output of an ephemeral task run:
+
+```python
+run_output = RunOutput(type="file", task_name="env.my_task")
+```
+
+Get the latest output of a deployed task run:
+
+```python
+run_output = RunOutput(type="file", task_name="env.my_task", task_auto_version="latest")
+```
+
+Get the output of a specific task run:
+
+```python
+run_output = RunOutput(type="file", task_name="env.my_task", task_version="xyz")
+```
 
 
 ```python
