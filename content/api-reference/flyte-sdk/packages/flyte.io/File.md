@@ -1,6 +1,6 @@
 ---
 title: File
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -37,7 +37,7 @@ Example: Read a file input in a Task (Async).
 
 ```python
 @env.task
-async def read_file(file: File) -&gt; str:
+async def read_file(file: File) -> str:
     async with file.open("rb") as f:
         content = bytes(await f.read())
         return content.decode("utf-8")
@@ -47,7 +47,7 @@ Example: Read a file input in a Task (Sync).
 
 ```python
 @env.task
-def read_file_sync(file: File) -&gt; str:
+def read_file_sync(file: File) -> str:
     with file.open_sync("rb") as f:
         content = f.read()
         return content.decode("utf-8")
@@ -57,7 +57,7 @@ Example: Write a file by streaming it directly to blob storage (Async).
 
 ```python
 @env.task
-async def write_file() -&gt; File:
+async def write_file() -> File:
     file = File.new_remote()
     async with file.open("wb") as f:
         await f.write(b"Hello, World!")
@@ -68,7 +68,7 @@ Example: Upload a local file to remote storage (Async).
 
 ```python
 @env.task
-async def upload_file() -&gt; File:
+async def upload_file() -> File:
     # Write to local file first
     with open("/tmp/data.csv", "w") as f:
         f.write("col1,col2\n1,2\n3,4\n")
@@ -80,7 +80,7 @@ Example: Upload a local file to remote storage (Sync).
 
 ```python
 @env.task
-def upload_file_sync() -&gt; File:
+def upload_file_sync() -> File:
     # Write to local file first
     with open("/tmp/data.csv", "w") as f:
         f.write("col1,col2\n1,2\n3,4\n")
@@ -92,7 +92,7 @@ Example: Download a file to local storage (Async).
 
 ```python
 @env.task
-async def download_file(file: File) -&gt; str:
+async def download_file(file: File) -> str:
     local_path = await file.download()
     # Process the local file
     with open(local_path, "r") as f:
@@ -103,7 +103,7 @@ Example: Download a file to local storage (Sync).
 
 ```python
 @env.task
-def download_file_sync(file: File) -&gt; str:
+def download_file_sync(file: File) -> str:
     local_path = file.download_sync()
     # Process the local file
     with open(local_path, "r") as f:
@@ -114,7 +114,7 @@ Example: Reference an existing remote file.
 
 ```python
 @env.task
-async def process_existing_file() -&gt; str:
+async def process_existing_file() -> str:
     file = File.from_existing_remote("s3://my-bucket/data.csv")
     async with file.open("rb") as f:
         content = await f.read()
@@ -125,7 +125,7 @@ Example: Check if a file exists (Async).
 
 ```python
 @env.task
-async def check_file(file: File) -&gt; bool:
+async def check_file(file: File) -> bool:
     return await file.exists()
 ```
 
@@ -133,7 +133,7 @@ Example: Check if a file exists (Sync).
 
 ```python
 @env.task
-def check_file_sync(file: File) -&gt; bool:
+def check_file_sync(file: File) -> bool:
     return file.exists_sync()
 ```
 
@@ -141,7 +141,7 @@ Example: Pass through a file without copying.
 
 ```python
 @env.task
-async def pass_through(file: File) -&gt; File:
+async def pass_through(file: File) -> File:
     # No copy occurs - just passes the reference
     return file
 ```
@@ -287,7 +287,7 @@ Example (Async):
 
 ```python
 @env.task
-async def download_and_process(f: File) -&gt; str:
+async def download_and_process(f: File) -> str:
     local_path = await f.download()
     # Now process the local file
     with open(local_path, "r") as fh:
@@ -298,7 +298,7 @@ Example (Download to specific path):
 
 ```python
 @env.task
-async def download_to_path(f: File) -&gt; str:
+async def download_to_path(f: File) -> str:
     local_path = await f.download("/tmp/myfile.csv")
     return local_path
 ```
@@ -324,7 +324,7 @@ Example (Sync):
 
 ```python
 @env.task
-def download_and_process_sync(f: File) -&gt; str:
+def download_and_process_sync(f: File) -> str:
     local_path = f.download_sync()
     # Now process the local file
     with open(local_path, "r") as fh:
@@ -335,7 +335,7 @@ Example (Download to specific path):
 
 ```python
 @env.task
-def download_to_path_sync(f: File) -&gt; str:
+def download_to_path_sync(f: File) -> str:
     local_path = f.download_sync("/tmp/myfile.csv")
     return local_path
 ```
@@ -357,7 +357,7 @@ Example (Async):
 
 ```python
 @env.task
-async def check_file(f: File) -&gt; bool:
+async def check_file(f: File) -> bool:
     if await f.exists():
         print("File exists!")
         return True
@@ -381,7 +381,7 @@ Example (Sync):
 
 ```python
 @env.task
-def check_file_sync(f: File) -&gt; bool:
+def check_file_sync(f: File) -> bool:
     if f.exists_sync():
         print("File exists!")
         return True
@@ -408,7 +408,7 @@ Example:
 
 ```python
 @env.task
-async def process_existing_file() -&gt; str:
+async def process_existing_file() -> str:
     file = File.from_existing_remote("s3://my-bucket/data.csv")
     async with file.open("rb") as f:
         content = await f.read()
@@ -439,7 +439,7 @@ Example (Async):
 
 ```python
 @env.task
-async def upload_local_file() -&gt; File:
+async def upload_local_file() -> File:
     # Create a local file
     async with aiofiles.open("/tmp/data.csv", "w") as f:
         await f.write("col1,col2
@@ -456,7 +456,7 @@ Example (With specific destination):
 
 ```python
 @env.task
-async def upload_to_specific_path() -&gt; File:
+async def upload_to_specific_path() -> File:
     remote_file = await File.from_local("/tmp/data.csv", "s3://my-bucket/data.csv")
     return remote_file
 ```
@@ -486,7 +486,7 @@ Example (Sync):
 
 ```python
 @env.task
-def upload_local_file_sync() -&gt; File:
+def upload_local_file_sync() -> File:
     # Create a local file
     with open("/tmp/data.csv", "w") as f:
         f.write("col1,col2
@@ -503,7 +503,7 @@ Example (With specific destination):
 
 ```python
 @env.task
-def upload_to_specific_path() -&gt; File:
+def upload_to_specific_path() -> File:
     remote_file = File.from_local_sync("/tmp/data.csv", "s3://my-bucket/data.csv")
     return remote_file
 ```
@@ -867,7 +867,7 @@ Example (Async):
 
 ```python
 @env.task
-async def create_csv() -&gt; File:
+async def create_csv() -> File:
     df = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
     file = File.new_remote()
     async with file.open("wb") as f:
@@ -902,7 +902,7 @@ Example (Async Read):
 
 ```python
 @env.task
-async def read_file(f: File) -&gt; str:
+async def read_file(f: File) -> str:
     async with f.open("rb") as fh:
         content = bytes(await fh.read())
         return content.decode("utf-8")
@@ -912,7 +912,7 @@ Example (Async Write):
 
 ```python
 @env.task
-async def write_file() -&gt; File:
+async def write_file() -> File:
     f = File.new_remote()
     async with f.open("wb") as fh:
         await fh.write(b"Hello, World!")
@@ -923,7 +923,7 @@ Example (Streaming Read):
 
 ```python
 @env.task
-async def stream_read(f: File) -&gt; str:
+async def stream_read(f: File) -> str:
     content_parts = []
     async with f.open("rb", block_size=1024) as fh:
         while True:
@@ -965,7 +965,7 @@ Example (Sync Read):
 
 ```python
 @env.task
-def read_file_sync(f: File) -&gt; str:
+def read_file_sync(f: File) -> str:
     with f.open_sync("rb") as fh:
         content = fh.read()
         return content.decode("utf-8")
@@ -975,7 +975,7 @@ Example (Sync Write):
 
 ```python
 @env.task
-def write_file_sync() -&gt; File:
+def write_file_sync() -> File:
     f = File.new_remote()
     with f.open_sync("wb") as fh:
         fh.write(b"Hello, World!")

@@ -1,6 +1,6 @@
 ---
 title: Dir
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -39,7 +39,7 @@ Example: Walk through directory files recursively (Async).
 
 ```python
 @env.task
-async def process_all_files(d: Dir) -&gt; int:
+async def process_all_files(d: Dir) -> int:
     file_count = 0
     async for file in d.walk(recursive=True):
         async with file.open("rb") as f:
@@ -53,7 +53,7 @@ Example: Walk through directory files recursively (Sync).
 
 ```python
 @env.task
-def process_all_files_sync(d: Dir) -&gt; int:
+def process_all_files_sync(d: Dir) -> int:
     file_count = 0
     for file in d.walk_sync(recursive=True):
         with file.open_sync("rb") as f:
@@ -67,7 +67,7 @@ Example: List files in directory (Async).
 
 ```python
 @env.task
-async def count_files(d: Dir) -&gt; int:
+async def count_files(d: Dir) -> int:
     files = await d.list_files()
     return len(files)
 ```
@@ -76,7 +76,7 @@ Example: List files in directory (Sync).
 
 ```python
 @env.task
-def count_files_sync(d: Dir) -&gt; int:
+def count_files_sync(d: Dir) -> int:
     files = d.list_files_sync()
     return len(files)
 ```
@@ -85,7 +85,7 @@ Example: Get a specific file from directory (Async).
 
 ```python
 @env.task
-async def read_config_file(d: Dir) -&gt; str:
+async def read_config_file(d: Dir) -> str:
     config_file = await d.get_file("config.json")
     if config_file:
         async with config_file.open("rb") as f:
@@ -97,7 +97,7 @@ Example: Get a specific file from directory (Sync).
 
 ```python
 @env.task
-def read_config_file_sync(d: Dir) -&gt; str:
+def read_config_file_sync(d: Dir) -> str:
     config_file = d.get_file_sync("config.json")
     if config_file:
         with config_file.open_sync("rb") as f:
@@ -109,7 +109,7 @@ Example: Upload a local directory to remote storage (Async).
 
 ```python
 @env.task
-async def upload_directory() -&gt; Dir:
+async def upload_directory() -> Dir:
     # Create local directory with files
     os.makedirs("/tmp/my_data", exist_ok=True)
     with open("/tmp/my_data/file1.txt", "w") as f:
@@ -122,7 +122,7 @@ Example: Upload a local directory to remote storage (Sync).
 
 ```python
 @env.task
-def upload_directory_sync() -&gt; Dir:
+def upload_directory_sync() -> Dir:
     # Create local directory with files
     os.makedirs("/tmp/my_data", exist_ok=True)
     with open("/tmp/my_data/file1.txt", "w") as f:
@@ -135,7 +135,7 @@ Example: Download a directory to local storage (Async).
 
 ```python
 @env.task
-async def download_directory(d: Dir) -&gt; str:
+async def download_directory(d: Dir) -> str:
     local_path = await d.download()
     # Process files in local directory
     return local_path
@@ -145,7 +145,7 @@ Example: Download a directory to local storage (Sync).
 
 ```python
 @env.task
-def download_directory_sync(d: Dir) -&gt; str:
+def download_directory_sync(d: Dir) -> str:
     local_path = d.download_sync()
     # Process files in local directory
     return local_path
@@ -155,7 +155,7 @@ Example: Reference an existing remote directory.
 
 ```python
 @env.task
-async def process_existing_dir() -&gt; int:
+async def process_existing_dir() -> int:
     d = Dir.from_existing_remote("s3://my-bucket/data/")
     files = await d.list_files()
     return len(files)
@@ -165,7 +165,7 @@ Example: Check if directory exists (Async).
 
 ```python
 @env.task
-async def check_directory(d: Dir) -&gt; bool:
+async def check_directory(d: Dir) -> bool:
     return await d.exists()
 ```
 
@@ -173,7 +173,7 @@ Example: Check if directory exists (Sync).
 
 ```python
 @env.task
-def check_directory_sync(d: Dir) -&gt; bool:
+def check_directory_sync(d: Dir) -> bool:
     return d.exists_sync()
 ```
 
@@ -321,7 +321,7 @@ Example (Async):
 
 ```python
 @env.task
-async def download_directory(d: Dir) -&gt; str:
+async def download_directory(d: Dir) -> str:
     local_dir = await d.download()
     # Process files in the local directory
     return local_dir
@@ -331,7 +331,7 @@ Example (Async - Download to specific path):
 
 ```python
 @env.task
-async def download_to_path(d: Dir) -&gt; str:
+async def download_to_path(d: Dir) -> str:
     local_dir = await d.download("/tmp/my_data/")
     return local_dir
 ```
@@ -357,7 +357,7 @@ Example (Sync):
 
 ```python
 @env.task
-def download_directory_sync(d: Dir) -&gt; str:
+def download_directory_sync(d: Dir) -> str:
     local_dir = d.download_sync()
     # Process files in the local directory
     return local_dir
@@ -367,7 +367,7 @@ Example (Sync - Download to specific path):
 
 ```python
 @env.task
-def download_to_path_sync(d: Dir) -&gt; str:
+def download_to_path_sync(d: Dir) -> str:
     local_dir = d.download_sync("/tmp/my_data/")
     return local_dir
 ```
@@ -391,7 +391,7 @@ Example (Async):
 
 ```python
 @env.task
-async def check_directory(d: Dir) -&gt; bool:
+async def check_directory(d: Dir) -> bool:
     if await d.exists():
         print("Directory exists!")
         return True
@@ -415,7 +415,7 @@ Example (Sync):
 
 ```python
 @env.task
-def check_directory_sync(d: Dir) -&gt; bool:
+def check_directory_sync(d: Dir) -> bool:
     if d.exists_sync():
         print("Directory exists!")
         return True
@@ -439,7 +439,7 @@ Example:
 
 ```python
 @env.task
-async def process_existing_directory() -&gt; int:
+async def process_existing_directory() -> int:
     d = Dir.from_existing_remote("s3://my-bucket/data/")
     files = await d.list_files()
     return len(files)
@@ -449,7 +449,7 @@ Example (With cache key):
 
 ```python
 @env.task
-async def process_with_cache_key() -&gt; int:
+async def process_with_cache_key() -> int:
     d = Dir.from_existing_remote("s3://my-bucket/data/", dir_cache_key="abc123")
     files = await d.list_files()
     return len(files)
@@ -479,7 +479,7 @@ Example (Async):
 
 ```python
 @env.task
-async def upload_local_directory() -&gt; Dir:
+async def upload_local_directory() -> Dir:
     # Create a local directory with files
     os.makedirs("/tmp/data_dir", exist_ok=True)
     with open("/tmp/data_dir/file1.txt", "w") as f:
@@ -494,7 +494,7 @@ Example (Async - With specific destination):
 
 ```python
 @env.task
-async def upload_to_specific_path() -&gt; Dir:
+async def upload_to_specific_path() -> Dir:
     remote_dir = await Dir.from_local("/tmp/data_dir/", "s3://my-bucket/data/")
     return remote_dir
 ```
@@ -503,7 +503,7 @@ Example (Async - With cache key):
 
 ```python
 @env.task
-async def upload_with_cache_key() -&gt; Dir:
+async def upload_with_cache_key() -> Dir:
     remote_dir = await Dir.from_local("/tmp/data_dir/", dir_cache_key="my_cache_key_123")
     return remote_dir
 ```
@@ -532,7 +532,7 @@ Example (Sync):
 
 ```python
 @env.task
-def upload_local_directory_sync() -&gt; Dir:
+def upload_local_directory_sync() -> Dir:
     # Create a local directory with files
     os.makedirs("/tmp/data_dir", exist_ok=True)
     with open("/tmp/data_dir/file1.txt", "w") as f:
@@ -547,7 +547,7 @@ Example (Sync - With specific destination):
 
 ```python
 @env.task
-def upload_to_specific_path_sync() -&gt; Dir:
+def upload_to_specific_path_sync() -> Dir:
     remote_dir = Dir.from_local_sync("/tmp/data_dir/", "s3://my-bucket/data/")
     return remote_dir
 ```
@@ -556,7 +556,7 @@ Example (Sync - With cache key):
 
 ```python
 @env.task
-def upload_with_cache_key_sync() -&gt; Dir:
+def upload_with_cache_key_sync() -> Dir:
     remote_dir = Dir.from_local_sync("/tmp/data_dir/", dir_cache_key="my_cache_key_123")
     return remote_dir
 ```
@@ -595,7 +595,7 @@ Example (Async):
 
 ```python
 @env.task
-async def read_specific_file(d: Dir) -&gt; str:
+async def read_specific_file(d: Dir) -> str:
     file = await d.get_file("data.csv")
     if file:
         async with file.open("rb") as f:
@@ -625,7 +625,7 @@ Example (Sync):
 
 ```python
 @env.task
-def read_specific_file_sync(d: Dir) -&gt; str:
+def read_specific_file_sync(d: Dir) -> str:
     file = d.get_file_sync("data.csv")
     if file:
         with file.open_sync("rb") as f:
@@ -683,7 +683,7 @@ Example (Async):
 
 ```python
 @env.task
-async def count_files(d: Dir) -&gt; int:
+async def count_files(d: Dir) -> int:
     files = await d.list_files()
     return len(files)
 ```
@@ -692,7 +692,7 @@ Example (Async - Process files):
 
 ```python
 @env.task
-async def process_all_files(d: Dir) -&gt; list[str]:
+async def process_all_files(d: Dir) -> list[str]:
     files = await d.list_files()
     contents = []
     for file in files:
@@ -719,7 +719,7 @@ Example (Sync):
 
 ```python
 @env.task
-def count_files_sync(d: Dir) -&gt; int:
+def count_files_sync(d: Dir) -> int:
     files = d.list_files_sync()
     return len(files)
 ```
@@ -728,7 +728,7 @@ Example (Sync - Process files):
 
 ```python
 @env.task
-def process_all_files_sync(d: Dir) -&gt; list[str]:
+def process_all_files_sync(d: Dir) -> list[str]:
     files = d.list_files_sync()
     contents = []
     for file in files:
@@ -1180,7 +1180,7 @@ Example (Async - Recursive):
 
 ```python
 @env.task
-async def list_all_files(d: Dir) -&gt; list[str]:
+async def list_all_files(d: Dir) -> list[str]:
     file_names = []
     async for file in d.walk(recursive=True):
         file_names.append(file.name)
@@ -1191,7 +1191,7 @@ Example (Async - Non-recursive):
 
 ```python
 @env.task
-async def list_top_level_files(d: Dir) -&gt; list[str]:
+async def list_top_level_files(d: Dir) -> list[str]:
     file_names = []
     async for file in d.walk(recursive=False):
         file_names.append(file.name)
@@ -1202,7 +1202,7 @@ Example (Async - With max depth):
 
 ```python
 @env.task
-async def list_files_max_depth(d: Dir) -&gt; list[str]:
+async def list_files_max_depth(d: Dir) -> list[str]:
     file_names = []
     async for file in d.walk(recursive=True, max_depth=2):
         file_names.append(file.name)
@@ -1233,7 +1233,7 @@ Example (Sync - Recursive):
 
 ```python
 @env.task
-def list_all_files_sync(d: Dir) -&gt; list[str]:
+def list_all_files_sync(d: Dir) -> list[str]:
     file_names = []
     for file in d.walk_sync(recursive=True):
         file_names.append(file.name)
@@ -1244,7 +1244,7 @@ Example (Sync - With file pattern):
 
 ```python
 @env.task
-def list_text_files(d: Dir) -&gt; list[str]:
+def list_text_files(d: Dir) -> list[str]:
     file_names = []
     for file in d.walk_sync(recursive=True, file_pattern="*.txt"):
         file_names.append(file.name)
@@ -1255,7 +1255,7 @@ Example (Sync - Non-recursive with max depth):
 
 ```python
 @env.task
-def list_files_limited(d: Dir) -&gt; list[str]:
+def list_files_limited(d: Dir) -> list[str]:
     file_names = []
     for file in d.walk_sync(recursive=True, max_depth=2):
         file_names.append(file.name)
