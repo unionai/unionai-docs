@@ -1,9 +1,30 @@
 import io
+import re
 from typing import List, Optional
 
 from lib.ptypes import MethodInfo
 from lib.generate.docstring import docstring_summary
 from lib.generate.helper import generate_anchor_from_name
+
+
+def escape_html_preserve_code_blocks(text):
+    """Escape HTML characters in text while preserving code blocks."""
+    if not text:
+        return text
+
+    # Split on code block delimiters (```)
+    parts = re.split(r'(```.*?```)', text, flags=re.DOTALL)
+
+    result = []
+    for i, part in enumerate(parts):
+        # Even indices are regular text, odd indices are code blocks
+        if i % 2 == 0:  # Regular text - escape HTML
+            escaped_part = part.replace("<", "&lt;").replace(">", "&gt;")
+            result.append(escaped_part)
+        else:  # Code block - don't escape
+            result.append(part)
+
+    return ''.join(result)
 
 
 def generate_method_decl(
@@ -112,13 +133,13 @@ def generate_params(method: MethodInfo, output: io.TextIOWrapper):
 
         # Clean up the doc string - replace newlines with spaces and escape markdown table characters and HTML
         if doc:
-            doc = doc.replace("\n", " ").replace("|", "\\|").replace("<", "&lt;").replace(">", "&gt;").strip()
-            
+            # First escape HTML while preserving code blocks, then clean up for table format
+            doc = escape_html_preserve_code_blocks(doc)
+            doc = doc.replace("\n", " ").replace("|", "\\|").strip()
+
             # Remove redundant type information from the beginning of descriptions
             # Pattern: "(type) description..." where type matches what's already in the Type column
-            import re
             doc = re.sub(r'^\([^)]+\)\s*', '', doc)
-            
             output.write(f"| `{param['name']}` | {typeOutput} | {doc} |\n")
         else:
             output.write(f"| `{param['name']}` | {typeOutput} | |\n")
@@ -175,7 +196,7 @@ def generate_method(method: MethodInfo, output: io.TextIOWrapper, doc_level: int
     output.write(f"{'#' * (doc_level+1)} {method['name']}()\n\n")
     generate_method_decl(method["name"], method, output)
     if method["doc"]:
-        # Escape HTML characters in method documentation
-        doc = method["doc"].replace("<", "&lt;").replace(">", "&gt;")
+        # Escape HTML characters in method documentation while preserving code blocks
+        doc = escape_html_preserve_code_blocks(method["doc"])
         output.write(f"{doc}\n\n")
     generate_params(method, output)
