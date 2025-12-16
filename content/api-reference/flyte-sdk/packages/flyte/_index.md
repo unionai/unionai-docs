@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -56,6 +56,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`get_custom_context()`](#get_custom_context) | Get the current input context. |
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
+| [`init_from_api_key()`](#init_from_api_key) | Initialize the Flyte system using an API key for authentication. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
@@ -408,6 +409,49 @@ remote API methods are called. Thread-safe implementation.
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
 | `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. :return: None |
 
+#### init_from_api_key()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await init_from_api_key.aio()`.
+```python
+def init_from_api_key(
+    endpoint: str,
+    api_key: str | None,
+    project: str | None,
+    domain: str | None,
+    root_dir: Path | None,
+    log_level: int | None,
+    log_format: LogFormat | None,
+    storage: Storage | None,
+    batch_size: int,
+    image_builder: ImageBuildEngine.ImageBuilderType,
+    images: typing.Dict[str, str] | None,
+    sync_local_sys_paths: bool,
+)
+```
+Initialize the Flyte system using an API key for authentication. This is a convenience
+method for API key-based authentication. Thread-safe implementation.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | The Flyte API endpoint URL |
+| `api_key` | `str \| None` | Optional API key for authentication. If None, reads from FLYTE_API_KEY environment variable. |
+| `project` | `str \| None` | Optional project name |
+| `domain` | `str \| None` | Optional domain name |
+| `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
+| `log_level` | `int \| None` | Optional logging level for the logger |
+| `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
+| `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration |
+| `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000 |
+| `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration |
+| `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name |
+| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True) :return: None |
+
 #### init_from_config()
 
 
@@ -613,7 +657,7 @@ import flyte
 env = flyte.TaskEnvironment("example")
 
 @env.task
-async def example_task(x: int, y: str) -&gt; str:
+async def example_task(x: int, y: str) -> str:
     return f"{x} {y}"
 
 if __name__ == "__main__":

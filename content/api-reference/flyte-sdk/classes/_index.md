@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -32,7 +32,14 @@ sidebar_expanded: true
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
 | [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app inputs. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
+| [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
+| [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
+| [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
+| [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors/connectorregistry) |This is the registry for all connectors. |
+| [`flyte.connectors.ConnectorService`](../packages/flyte.connectors/connectorservice) | |
+| [`flyte.connectors.Resource`](../packages/flyte.connectors/resource) |This is the output resource of the job. |
+| [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors/resourcemeta) |This is the metadata for the job. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
@@ -79,6 +86,10 @@ sidebar_expanded: true
 | [`flyte.models.RawDataPath`](../packages/flyte.models/rawdatapath) |A class representing the raw data path for a task. |
 | [`flyte.models.SerializationContext`](../packages/flyte.models/serializationcontext) |This object holds serialization time contextual information, that can be used when serializing the task and. |
 | [`flyte.models.TaskContext`](../packages/flyte.models/taskcontext) |A context class to hold the current task executions context. |
+| [`flyte.prefetch.HuggingFaceModelInfo`](../packages/flyte.prefetch/huggingfacemodelinfo) |Information about a HuggingFace model to store. |
+| [`flyte.prefetch.ShardConfig`](../packages/flyte.prefetch/shardconfig) |Configuration for model sharding. |
+| [`flyte.prefetch.StoredModelInfo`](../packages/flyte.prefetch/storedmodelinfo) |Information about a stored model. |
+| [`flyte.prefetch.VLLMShardArgs`](../packages/flyte.prefetch/vllmshardargs) |Arguments for sharding a model using vLLM. |
 | [`flyte.remote.Action`](../packages/flyte.remote/action) |A class representing an action. |
 | [`flyte.remote.ActionDetails`](../packages/flyte.remote/actiondetails) |A class representing an action. |
 | [`flyte.remote.ActionInputs`](../packages/flyte.remote/actioninputs) |A class representing the inputs of an action. |

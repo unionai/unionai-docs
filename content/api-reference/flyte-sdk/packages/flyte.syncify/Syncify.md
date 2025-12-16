@@ -1,6 +1,6 @@
 ---
 title: Syncify
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,7 +19,7 @@ Example::
 syncer = Syncify()
 
 @syncer
-async def async_function(x: str) -&gt; str:
+async def async_function(x: str) -> str:
     return f"Hello, Async World {x}!"
 
 

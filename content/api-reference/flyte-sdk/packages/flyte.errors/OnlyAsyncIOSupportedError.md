@@ -1,6 +1,6 @@
 ---
 title: OnlyAsyncIOSupportedError
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

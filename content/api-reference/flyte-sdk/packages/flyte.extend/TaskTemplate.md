@@ -1,6 +1,6 @@
 ---
 title: TaskTemplate
-version: 2.0.0b35
+version: 2.0.0b38
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -109,11 +109,11 @@ This function will also re-raise exceptions from the underlying task.
 Example:
 ```python
 @env.task
-def my_legacy_task(x: int) -&gt; int:
+def my_legacy_task(x: int) -> int:
     return x
 
 @env.task
-async def my_new_parent_task(n: int) -&gt; List[int]:
+async def my_new_parent_task(n: int) -> List[int]:
     collect = []
     for x in range(n):
         collect.append(my_legacy_task.aio(x))

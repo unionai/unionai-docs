@@ -66,3 +66,13 @@
     border-radius: 0 0 8px 8px; /* Only round bottom corners */
     margin: 0;
 }
+
+.codeblock .highlight .language-python A {
+    /* color: dodgerblue; */
+    color: unset;
+    text-decoration: underline;
+}
+
+A > CODE {
+    text-decoration: underline;
+}
