@@ -33,20 +33,7 @@ The simplest deployment pattern involves defining both your tasks and task envir
 
 ### Example structure
 
-```python
-import flyte
-
-env = flyte.TaskEnvironment(name="simple_env")
-
-@env.task
-async def my_task(name: str) -> str:
-    return f"Hello, {name}!"
-
-if __name__ == "__main__":
-    flyte.init_from_config()
-    run = flyte.run(my_task, name="World")
-    print(run.url)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/simple_file.py" lang="python" >}}
 
 ### Deployment commands
 
@@ -79,6 +66,14 @@ When you need full control over the container environment, you can specify a cus
 {{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile" lang="dockerfile" >}}
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/dockerfile_env.py" lang="python" >}}
+
+### Alternative: Dockerfile in different directory
+
+You can also reference Dockerfiles from subdirectories:
+
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/src/docker_env_in_dir.py" lang="python" >}}
+
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dockerfile/Dockerfile.workdir" lang="dockerfile" >}}
 
 ### Key considerations
 
@@ -134,18 +129,21 @@ pyproject_package/
 
 The business logic is completely separate from Flyte and can be used independently:
 
-- **`data/loader.py`**: Async data fetching from APIs using `httpx`
-  - **No Flyte dependencies** - can be tested and used independently
-  - Proper async/await patterns with context managers
-  - Error handling with `response.raise_for_status()`
-- **`data/processor.py`**: Data cleaning, transformation, and aggregation
-  - **Pydantic models** for data validation (`DataItem` class)
-  - **Field validation** with custom validators and constraints
-  - Async aggregation with simulated processing delays
-- **`models/analyzer.py`**: Statistical analysis and report generation
-  - **NumPy integration** for statistical calculations
-  - **Comprehensive statistics** including percentiles and standard deviation
-  - **Formatted report generation** with structured output
+#### Data Loading (`data/loader.py`)
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/loader.py" lang="python" >}}
+
+#### Data Processing (`data/processor.py`)
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/data/processor.py" lang="python" >}}
+
+#### Analysis (`models/analyzer.py`)
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/pyproject_package/src/pyproject_package/models/analyzer.py" lang="python" >}}
+
+These modules demonstrate:
+- **No Flyte dependencies** - can be tested and used independently
+- **Pydantic models** for data validation with custom validators
+- **Async patterns** with proper context managers and error handling
+- **NumPy integration** for statistical calculations
+- **Professional error handling** with timeouts and validation
 
 ### Flyte orchestration layer
 
@@ -332,6 +330,12 @@ However, sometimes you need to **completely embed your code into the container i
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/main.py" lang="python" >}}
 
+### Local dependency example
+
+The main.py file imports from a local dependency that gets included in the build:
+
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/full_build/dep.py" lang="python" >}}
+
 ### Critical configuration components
 
 1. **Set `copy_style` to `"none"`**:
@@ -433,6 +437,8 @@ Avoid auto-generated versions to ensure reproducible deployments.
 - Use `docker run -it <image> /bin/bash` to inspect built images
 - Check Flyte logs for build errors and warnings
 - Verify that relative imports work correctly in the container context
+
+## Python path deployment
 
 For projects where workflows are separated from business logic across multiple directories, use the Python path pattern with proper `root_dir` configuration.
 
@@ -618,15 +624,7 @@ flyte deploy environment_picker.py
 
 For programmatic usage, ensure proper initialization:
 
-```python
-import flyte
-flyte.init_from_config()
-from environment_picker import entrypoint
-
-if __name__ == "__main__":
-    r = flyte.run(entrypoint, n=5)
-    print(r.url)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/task-deployment/deployment-patterns/dynamic_environments/main.py" lang="python" >}}
 
 ### When to use dynamic environments
 
