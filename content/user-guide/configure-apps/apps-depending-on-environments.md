@@ -1,10 +1,10 @@
 ---
-title: App depending on other environments
+title: Apps depending on other environments
 weight: 6
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# App depending on other environments
+# Apps depending on other environments
 
 The `depends_on` parameter allows you to specify that one app depends on another app (or task environment). When you deploy an app with `depends_on`, Flyte ensures that all dependencies are deployed first.
 

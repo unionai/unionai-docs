@@ -7,9 +7,9 @@ sidebar_expanded: true
 
 # Configure apps
 
-`AppEnvironment` allows you to configure the environment in which your app runs, including the container image, compute resources, secrets, domains, scaling behavior, and more.
+`[[AppEnvironment]]` allows you to configure the environment in which your app runs, including the container image, compute resources, secrets, domains, scaling behavior, and more.
 
-Similar to `TaskEnvironment`, configuration can be set when creating the `AppEnvironment` object. Unlike tasks, apps are long-running services, so they have additional configuration options specific to services:
+Similar to `[[TaskEnvironment]]`, configuration can be set when creating the `[[AppEnvironment]]` object. Unlike tasks, apps are long-running services, so they have additional configuration options specific to web services:
 
 - **Port configuration**: What port the app listens on
 - **Command and arguments**: How to start the app
@@ -39,12 +39,12 @@ Once deployed, your app will be accessible at the generated URL or your custom s
 
 Learn more about configuring apps:
 
-- [**Environment settings**](./environment-settings): Images, resources, secrets, and app-specific settings like `type`, `port`, `args`, `requires_auth`
-- [**App startup**](./app-startup): Understanding the difference between `args` and `command`
-- [**Including extra files**](./including-extra-files): How to include additional files needed by your app
-- [**App inputs**](./app-inputs): Pass inputs to your app at deployment time
-- [**Autoscaling apps**](./autoscaling-apps): Configure scaling up and down based on traffic with idle TTL
-- [**App depending on other environments**](./app-depending-on-environments): Use `depends_on` to deploy dependent apps together
+- [**Environment settings**](./app-environment-settings): Images, resources, secrets, and app-specific settings like `type`, `port`, `args`, `requires_auth`
+- [**App startup**](./app-environment-settings#app-startup): Understanding the difference between `args` and `command`
+- [**Including additional files**](./including-additional-files): How to include additional files needed by your app
+- [**App inputs**](./passing-inputs): Pass inputs to your app at deployment time
+- [**Autoscaling apps**](./app-environment-settings#autoscaling-apps): Configure scaling up and down based on traffic with idle TTL
+- [**App depending on other environments**](./apps-depending-on-environments): Use `depends_on` to deploy dependent apps together
 
 ## Differences from TaskEnvironment
 

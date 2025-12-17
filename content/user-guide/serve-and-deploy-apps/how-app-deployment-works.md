@@ -10,14 +10,12 @@ Deployment is the recommended way to deploy apps to production. It creates versi
 
 ## Overview
 
-When you deploy an app:
+When you deploy an app, the following happens:
 
-1. **Code bundling**: Your app code is bundled and versioned
-2. **Image building**: Container images are built and tagged
-3. **Deployment plan**: A deployment plan is created (including dependencies)
-4. **Deployment**: Apps are deployed to your Flyte cluster
-5. **Version creation**: Each deployment creates a new version
-6. **Activation**: Apps need to be explicitly activated (not automatic)
+1. **Code bundling**: Your app code is bundled and prepared
+2. **Image building**: Container images are built (if needed)
+3. **Deployment**: The app is deployed to your Flyte cluster
+4. **Activation**: The app is automatically activated and ready to use
 
 ## Using Python SDK
 
@@ -41,100 +39,15 @@ if __name__ == "__main__":
         print(f"URL: {deployment.url}")
 ```
 
-`flyte.deploy()` returns a list of `DeployedEnvironment` objects, one for each environment deployed (including dependencies).
+`flyte.deploy()` returns a list of `DeployedEnvironment` objects, one for each environment deployed (including environment dependencies).
 
-### Deploy with input overrides
-
-You can override inputs at deploy time (though less common than with serve):
-
-```python
-deployments = flyte.deploy(
-    app_env,
-    input_values={
-        "app-name": {
-            "input_name": "input_value",
-        }
-    },
-)
-```
-
-Note: Input overrides at deploy time are less flexible than with serve. Consider using `flyte.serve()` for development where you need frequent input changes.
-
-### Using deployment context
-
-For more control, use deployment context (similar to serve context):
-
-```python
-from flyte import with_deploycontext
-
-with with_deploycontext(
-    version="v1.0.0",
-    project="my-project",
-    domain="production",
-    dry_run=False,
-) as ctx:
-    deployments = ctx.deploy(app_env)
-```
-
-### Deploy parameters
-
-#### `version`
-
-Version string for the deployment:
-
-```python
-deployments = flyte.deploy(app_env, version="v1.0.0")
-```
-
-If not specified, Flyte generates a version automatically based on code and configuration.
-
-#### `project` and `domain`
-
-Override project and domain:
-
-```python
-deployments = flyte.deploy(
-    app_env,
-    project="my-project",
-    domain="production",
-)
-```
-
-#### `input_values`
-
-Override app inputs at deploy time:
-
-```python
-deployments = flyte.deploy(
-    app_env,
-    input_values={
-        "app-name": {
-            "model_path": "s3://prod-bucket/models/model.pkl",
-        }
-    },
-)
-```
-
-#### `dry_run`
-
-Preview deployment without actually deploying:
-
-```python
-deployments = flyte.deploy(app_env, dry_run=True)
-```
-
-This is useful for:
-
-- Validating deployment configuration
-- Checking what would be deployed
-- Testing deployment logic
 
 ## Deployment plan
 
 Flyte automatically creates a deployment plan that includes:
 
 - The app you're deploying
-- All dependencies (via `depends_on`)
+- All [app environment dependencies](../configure-apps/apps-depending-on-environments) (via `depends_on`)
 - Proper deployment order
 
 ```python
@@ -148,33 +61,39 @@ deployments = flyte.deploy(app2_env)
 assert len(deployments) == 2
 ```
 
-## Activation
+## Activation/deactivation
 
 Unlike serving, deployment does not automatically activate apps. You need to activate them explicitly:
 
 ```python
 deployments = flyte.deploy(app_env)
 
-# Activate the deployed app
 from flyte.remote import App
 app = App.get(name=app_env.name)
+
+# deactivate the app
+app.deactivate()
+
+# activate the app
 app.activate()
 ```
 
 See [Activating and deactivating apps](./activating-and-deactivating-apps) for more details.
 
-## Using CLI
+## Using the CLI
 
 Deploy from the command line:
 
 ```bash
-flyte deploy path/to/app.py app_name
+flyte deploy path/to/app.py app
 ```
 
-With options:
+Where `app` is the variable name of the `AppEnvironment` object.
+
+You can also specify the following options:
 
 ```bash
-flyte deploy path/to/app.py app_name \
+flyte deploy path/to/app.py app \
     --version v1.0.0 \
     --project my-project \
     --domain production \
@@ -197,15 +116,10 @@ if __name__ == "__main__":
     
     deployments = flyte.deploy(
         app_env,
+        dryrun=False,
         version="v1.0.0",
-        project="my-project",
-        domain="production",
-        input_values={
-            "my-prod-app": {
-                "model_path": "s3://prod-bucket/models/v1-model.pkl",
-            }
-        },
-        dry_run=False,
+        interactive_mode=False,
+        copy_style="loaded_modules",
     )
     
     for deployment in deployments:
@@ -219,27 +133,6 @@ if __name__ == "__main__":
         app.activate()
         print(f"Activated: {app.name}")
 ```
-
-## What happens during deploy
-
-1. **Code analysis**: Flyte analyzes your app code and dependencies
-2. **Version generation**: A version is generated (or you provide one)
-3. **Code bundling**: Necessary files are bundled and versioned
-4. **Image building**: Container images are built and tagged with the version
-5. **Deployment plan**: A plan is created including all dependencies
-6. **Sequential deployment**: Apps are deployed in the correct order
-7. **Status check**: Deployment status is reported
-
-## Differences from serve
-
-| Feature | Deploy | Serve |
-|---------|--------|-------|
-| **Purpose** | Production | Development |
-| **Input overrides** | ❌ Fixed at deploy time | ✅ Supported |
-| **Activation** | ❌ Manual | ✅ Automatic |
-| **Versioning** | ✅ Required | Optional |
-| **Reproducibility** | ✅ High | Lower |
-| **Dependencies** | ✅ Explicit handling | Automatic |
 
 ## Best practices
 

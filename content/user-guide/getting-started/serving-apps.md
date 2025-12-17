@@ -25,7 +25,7 @@ In the code above we do the following:
   - The `FastAPIAppEnvironment` automatically configures the app to run with uvicorn.
   - We specify the container image with required dependencies (FastAPI and uvicorn).
   - We set resource limits (CPU and memory).
-  - We disable authentication for this example (`requires_auth=False`).
+  - We disable authentication for this example (`requires_auth=False`) so you can easily access the app with a `curl` command.
 
 ## Serving the app
 
@@ -60,6 +60,5 @@ Click the link to go to your Union instance and see the app in the UI. You can a
 Now that you've served your first app, you can learn more about:
 
 - [**Configuring apps**](../configure-apps/): Learn how to configure app environments, including images, resources, ports, and more
-- [**Building apps**](../build-apps/): Explore different types of apps you can build (FastAPI, Streamlit, vLLM, SGLang)
 - [**Serving and deploying apps**](../serve-and-deploy-apps/): Understand the difference between serving (development) and deploying (production) apps
-
+- [**Building apps**](../build-apps/): Explore different types of apps you can build (FastAPI, Streamlit, vLLM, SGLang)

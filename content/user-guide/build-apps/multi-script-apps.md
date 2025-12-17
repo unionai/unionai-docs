@@ -188,30 +188,11 @@ app_env = FastAPIAppEnvironment(
     # Include all necessary files
     include=[
         "app.py",
-        "models/__init__.py",
-        "models/user.py",
-        "services/__init__.py",
-        "services/auth.py",
-        "utils/__init__.py",
-        "utils/helpers.py",
-    ],
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-)
-```
-
-Alternatively, you can include entire directories:
-
-```python
-app_env = FastAPIAppEnvironment(
-    name="complex-app",
-    app=app,
-    include=[
-        "app.py",
-        "models/",  # Include entire directory
+        "models/",
         "services/",
         "utils/",
     ],
-    # ...
+    resources=flyte.Resources(cpu=1, memory="512Mi"),
 )
 ```
 
@@ -220,9 +201,8 @@ app_env = FastAPIAppEnvironment(
 1. **Use explicit includes**: For Streamlit apps, explicitly list all files in `include`
 2. **Automatic discovery**: For FastAPI apps, `FastAPIAppEnvironment` handles most cases automatically
 3. **Organize modules**: Use proper Python package structure with `__init__.py` files
-4. **Document dependencies**: Make sure all imported modules are available
-5. **Test locally**: Test your multi-file app locally before deploying
-6. **Include all dependencies**: Include all files that your app imports
+4. **Test locally**: Test your multi-file app locally before deploying
+5. **Include all dependencies**: Include all files that your app imports
 
 ## Troubleshooting
 
@@ -240,4 +220,3 @@ app_env = FastAPIAppEnvironment(
 - Ensure all referenced files are included
 - Check mount paths for file/directory inputs
 - Verify file paths are relative to the app root directory
-

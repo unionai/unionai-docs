@@ -4,13 +4,13 @@ weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# App environments
+# App environment settings
 
-App environments control how your apps run in Flyte, including images, resources, secrets, startup behavior, and autoscaling. This page combines the previous **Environment settings**, **App startup**, and **Autoscaling apps** docs into a single guide.
+`[[AppEnvironment]]`s control how your apps run in Flyte, including images, resources, secrets, startup behavior, and autoscaling.
 
 ## Shared environment settings
 
-App environments share many configuration options with task environments:
+`[[AppEnvironment]]`s share many configuration options with `[[TaskEnvironment]]`s:
 
 - **Images**: See [Container images](../task-configuration/container-images/) for details on creating and using container images
 - **Resources**: See [Resources](../task-configuration/resources/) for CPU, memory, GPU, and storage configuration

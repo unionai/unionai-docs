@@ -24,12 +24,15 @@ Once deployed, you can:
 Here's an example of serving a scikit-learn model:
 
 ```python
-from fastapi import FastAPI
-from pydantic import BaseModel
-import pickle
 import os
+from contextlib import asynccontextmanager
+
+import joblib
 import flyte
+from fastapi import FastAPI
 from flyte.app.extras import FastAPIAppEnvironment
+from pydantic import BaseModel
+
 
 app = FastAPI(title="ML Model API")
 
@@ -46,15 +49,14 @@ class PredictionResponse(BaseModel):
 # Load model (you would typically load this from storage)
 model = None
 
-@router.on_event("startup")
-async def load_model():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     global model
-    model_path = os.getenv("MODEL_PATH", "/app/models/model.pkl")
+    model_path = os.getenv("MODEL_PATH", "/app/models/model.joblib")
     # In production, load from your storage
-    # with open(model_path, "rb") as f:
-    #     model = pickle.load(f)
-    # For demo, we'll use a dummy model
-    model = "dummy_model"
+    with open(model_path, "rb") as f:
+        model = joblib.load(f)
+    yield
 
 @app.post("/predict", response_model=PredictionResponse)
 async def predict(request: PredictionRequest):
@@ -78,7 +80,16 @@ env = FastAPIAppEnvironment(
         "uvicorn",
         "scikit-learn",
         "pydantic",
+        "joblib",
     ),
+    inputs=[
+        flyte.app.Input(
+            name="model_file",
+            value=flyte.File("s3://bucket/models/model.joblib"),
+            mount="/app/models",
+            env_var="MODEL_PATH",
+        ),
+    ]
     resources=flyte.Resources(cpu=2, memory="2Gi"),
     requires_auth=False,
 )
@@ -90,39 +101,6 @@ if __name__ == "__main__":
     print(f"Swagger docs: {app_deployment[0].url}/docs")
 ```
 
-## Using app inputs for model files
-
-You can pass model files as inputs:
-
-```python
-env = FastAPIAppEnvironment(
-    name="ml-model-api",
-    app=app,
-    inputs=[
-        flyte.app.Input(
-            name="model_file",
-            value=flyte.File("s3://bucket/models/model.pkl"),
-            mount="/app/models",
-            env_var="MODEL_PATH",
-        ),
-    ],
-    # ...
-)
-```
-
-Then in your FastAPI app:
-
-```python
-import os
-
-MODEL_PATH = os.getenv("MODEL_PATH", "/app/models/model.pkl")
-
-@app.on_event("startup")
-async def load_model():
-    global model
-    with open(MODEL_PATH, "rb") as f:
-        model = pickle.load(f)
-```
 
 ## Accessing Swagger documentation
 
@@ -229,8 +207,8 @@ FastAPI supports many features that work with Flyte:
 
 - **Dependencies**: Use FastAPI's dependency injection system
 - **Background tasks**: Run background tasks with BackgroundTasks
-- **WebSockets**: See [WebSocket apps](#) for details
-- **Authentication**: Add authentication middleware
+- **WebSockets**: See [WebSocket-based patterns](./app-usage-patterns#websocket-based-patterns) for details
+- **Authentication**: Add authentication middleware (see [secret-based authentication](./secret-based-authentication))
 - **CORS**: Configure CORS for cross-origin requests
 - **Rate limiting**: Add rate limiting middleware
 

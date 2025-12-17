@@ -21,7 +21,7 @@ The simplest possible app is a plain Python HTTP server using Python's built-in 
 
 {{< code file="/external/unionai-examples/v2/user-guide/build-apps/plain_python_server.py" lang=python >}}
 
-### Key points
+**Key points**
 
 - **No external dependencies**: Uses only Python's standard library
 - **Simple handler**: Define request handlers as Python classes
@@ -34,7 +34,7 @@ Streamlit makes it easy to build interactive web dashboards. Here's a complete s
 
 {{< code file="/external/unionai-examples/v2/user-guide/build-apps/streamlit_single_script.py" lang=python >}}
 
-### Key points
+**Key points**
 
 - **Interactive UI**: Streamlit provides widgets and visualizations out of the box
 - **Single file**: All UI logic and deployment code in one script
@@ -47,7 +47,7 @@ FastAPI is a modern, fast web framework for building APIs. Here's a minimal sing
 
 {{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi_single_script.py" lang=python >}}
 
-### Key points
+**Key points**
 
 - **FastAPIAppEnvironment**: Automatically configures uvicorn and FastAPI
 - **Type hints**: FastAPI uses Python type hints for automatic validation
@@ -59,7 +59,7 @@ FastAPI is a modern, fast web framework for building APIs. Here's a minimal sing
 To run any of these examples:
 
 1. **Save the script** to a file (e.g., `my_app.py`)
-2. **Ensure you have a config file** (`config.yaml` or `config.json`) in the same directory
+2. **Ensure you have a config file** (`./.flyte/config.yaml` or `./config.yaml`)
 3. **Run the script**:
 
 ```bash
@@ -80,11 +80,11 @@ The script will:
 ## When to use single-script apps
 
 **Use single-script apps when:**
-- ✅ Building prototypes or proof-of-concepts
-- ✅ Creating simple services with minimal logic
-- ✅ Learning how Flyte apps work
-- ✅ Sharing complete, runnable examples
-- ✅ Building demos or tutorials
+- Building prototypes or proof-of-concepts
+- Creating simple services with minimal logic
+- Learning how Flyte apps work
+- Sharing complete, runnable examples
+- Building demos or tutorials
 
 **Consider multi-script apps when:**
 - Your app grows beyond a few hundred lines
@@ -93,11 +93,3 @@ The script will:
 - You're building production applications
 
 See [**Multi-script apps**](./multi-script-apps) for examples of organizing apps across multiple files.
-
-## Next steps
-
-- [**Multi-script apps**](./multi-script-apps): Organize your app across multiple files
-- [**Streamlit app**](./streamlit-app): Learn more about building Streamlit dashboards
-- [**FastAPI app**](./fastapi-app): Explore FastAPI features and patterns
-- [**Configuring apps**](../configure-apps/): Customize app environments and resources
-

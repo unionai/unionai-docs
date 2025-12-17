@@ -1,6 +1,6 @@
 ---
 title: Secret-based authentication
-weight: 10
+weight: 5
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
@@ -8,7 +8,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 In this guide, we'll deploy a FastAPI app that uses API key authentication with Flyte secrets. This allows you to invoke the endpoint from the public internet in a secure manner without exposing API keys in your code.
 
-## Step 1: Create the secret
+## Create the secret
 
 Before defining and deploying the app, you need to create the `API_KEY` secret in Flyte. This secret will store your API key securely.
 
@@ -27,7 +27,7 @@ flyte create secret API_KEY my-secret-api-key-12345
 > [!NOTE]
 > The secret name `API_KEY` must match the key specified in the `flyte.Secret()` call in your code. The secret will be available to your app as the environment variable specified in `as_env_var`.
 
-## Step 2: Define the FastAPI app
+## Define the FastAPI app
 
 Here's a simple FastAPI app that uses `HTTPAuthorizationCredentials` to authenticate requests using a secret stored in Flyte:
 
@@ -44,7 +44,7 @@ As you can see, we:
 
 The key difference from using `env_vars` is that secrets are stored securely in Flyte's secret store and injected at runtime, rather than being passed as plain environment variables.
 
-## Step 3: Deploy the FastAPI app
+## Deploy the FastAPI app
 
 Once the secret is created, you can deploy the FastAPI app. Make sure your `config.yaml` file is in the same directory as your script, then run:
 
@@ -68,7 +68,7 @@ Deploying the application will stream the status to the console and display the 
 🚀 Deployed Endpoint: https://rough-meadow-97cf5.apps.<union-tenant>
 ```
 
-## Step 4: Invoke the endpoint
+## Invoke the endpoint
 
 Once deployed, you can invoke the authenticated endpoint using curl:
 
@@ -99,7 +99,7 @@ You should receive a response:
 
 Both vLLM and SGLang apps support API key authentication through their native `--api-key` argument. This allows you to secure your LLM endpoints while keeping them accessible from the public internet.
 
-### Step 1: Create the authentication secret
+### Create the authentication secret
 
 Create a secret to store your API key:
 
@@ -113,7 +113,7 @@ For example:
 flyte create secret AUTH_SECRET my-llm-api-key-12345
 ```
 
-### Step 2: Deploy vLLM app with authentication
+### Deploy vLLM app with authentication
 
 Here's how to deploy a vLLM app with API key authentication:
 
@@ -137,7 +137,7 @@ Or use the Flyte CLI:
 flyte serve vllm_with_auth.py
 ```
 
-### Step 3: Deploy SGLang app with authentication
+### Deploy SGLang app with authentication
 
 Here's how to deploy a SGLang app with API key authentication:
 
@@ -161,7 +161,7 @@ Or use the Flyte CLI:
 flyte serve sglang_with_auth.py
 ```
 
-### Step 4: Invoke authenticated LLM endpoints
+### Invoke authenticated LLM endpoints
 
 Once deployed, you can invoke the authenticated endpoints using the OpenAI-compatible API format. Both vLLM and SGLang expose OpenAI-compatible endpoints.
 
@@ -250,7 +250,6 @@ The Swagger UI will show an "Authorize" button where you can enter your Bearer t
 ## Next steps
 
 - Learn more about [managing secrets](../task-configuration/secrets) in Flyte
-- See [FastAPI authentication](./fastapi-authentication) for more authentication patterns
-- Check out [webhook apps](./webhook-app) for examples of authenticated webhooks
+- See [app usage patterns](./app-usage-patterns#call-task-from-app-webhooks--apis) for webhook examples and authentication patterns
 - Learn about [vLLM apps](./vllm-app) and [SGLang apps](./sglang-app) for serving LLMs
 

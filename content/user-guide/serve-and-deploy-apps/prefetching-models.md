@@ -6,7 +6,8 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # Prefetching models
 
-Prefetching allows you to download and prepare HuggingFace models (including sharding for multi-GPU inference) before deploying vLLM or SGLang apps. This speeds up deployment and ensures models are ready when your app starts.
+Prefetching allows you to download and prepare HuggingFace models (including sharding for multi-GPU inference) before
+deploying [vLLM](../build-apps/vllm-app) or [SGLang](../build-apps/sglang-app) apps. This speeds up deployment and ensures models are ready when your app starts.
 
 ## Why prefetch?
 
@@ -97,11 +98,17 @@ run = flyte.prefetch.hf_model(
 )
 ```
 
-Make sure you have a Flyte secret named `HF_TOKEN` containing your HuggingFace token.
+The default value for `hf_token_key` is `HF_TOKEN`, where `HF_TOKEN` is the name of the Flyte secret containing your
+HuggingFace token. If this secret doesn't exist, you can create a secret using the [flyte create secret CLI](../task-configuration/secrets).
 
 ### With resources
 
-Specify resources for the prefetch task:
+By default, the prefetch task uses minimal resources (2 CPUs, 8GB of memory, 50Gi of disk storage), using
+filestreaming logic to move the model weights from HuggingFace to your storage backend directly.
+
+In some cases, the HuggingFace model may not support filestreaming, in which case the prefetch task will fallback to
+downloading the model weights to the task pod's disk storage first, then uploading them to your storage backend. In this
+case, you can specify custom resources for the prefetch task to override the default resources.
 
 ```python
 run = flyte.prefetch.hf_model(
@@ -123,7 +130,7 @@ from flyte.prefetch import ShardConfig, VLLMShardArgs
 
 run = flyte.prefetch.hf_model(
     repo="meta-llama/Llama-2-70b-hf",
-    accelerator="L40s:4",  # Use 4 GPUs
+    resources=flyte.Resources(cpu="8", memory="32Gi", gpu="L40s:4"),
     shard_config=ShardConfig(
         engine="vllm",
         args=VLLMShardArgs(
@@ -138,32 +145,14 @@ run = flyte.prefetch.hf_model(
 run.wait()
 ```
 
-### SGLang sharding
+Currently, the `flyte.prefetch.hf_model` function only supports sharding models
+using the `vllm` engine. Once sharded, these models can be loaded with other
+frameworks such as `transformers`, `torch`, or `sglang`.
 
-Shard a model for SGLang:
+### Using shard config via CLI
 
-```python
-from flyte.prefetch import ShardConfig, SGLangShardArgs
-
-run = flyte.prefetch.hf_model(
-    repo="meta-llama/Llama-2-70b-hf",
-    accelerator="L40s:4",
-    shard_config=ShardConfig(
-        engine="sglang",
-        args=SGLangShardArgs(
-            tp=4,  # Tensor parallelism size
-            trust_remote_code=True,
-        ),
-    ),
-    hf_token_key="HF_TOKEN",
-)
-
-run.wait()
-```
-
-### Using shard config file
-
-You can also use a YAML file for sharding configuration:
+You can also use a YAML file for sharding configuration to use with the
+`flyte prefetch hf-model` CLI command:
 
 ```yaml
 # shard_config.yaml
@@ -174,20 +163,7 @@ args:
   trust_remote_code: true
 ```
 
-Then use it:
-
-```python
-from pathlib import Path
-
-run = flyte.prefetch.hf_model(
-    repo="meta-llama/Llama-2-70b-hf",
-    accelerator="L40s:8",
-    shard_config=Path("shard_config.yaml"),
-    hf_token_key="HF_TOKEN",
-)
-```
-
-Or with CLI:
+Then run the CLI command:
 
 ```bash
 flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
@@ -198,27 +174,14 @@ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
 
 ## Using prefetched sharded models
 
-After prefetching and sharding, use the model in your app:
+After prefetching and sharding, serve the model in your app:
 
 ```python
-# Prefetch with sharding
-run = flyte.prefetch.hf_model(
-    repo="meta-llama/Llama-2-70b-hf",
-    accelerator="L40s:4",
-    shard_config=ShardConfig(
-        engine="vllm",
-        args=VLLMShardArgs(tensor_parallel_size=4),
-    ),
-)
-run.wait()
-
 # Use in vLLM app
 vllm_app = VLLMAppEnvironment(
     name="multi-gpu-llm-app",
-    model_path=flyte.app.RunOutput(
-        type="directory",
-        run_name=run.name,
-    ),
+    # this will download the model from HuggingFace into the app container's filesystem
+    model_hf_path="Qwen/Qwen3-0.6B",
     model_id="llama-2-70b",
     resources=flyte.Resources(
         cpu="8",
@@ -228,8 +191,32 @@ vllm_app = VLLMAppEnvironment(
     extra_args=[
         "--tensor-parallel-size", "4",  # Match sharding config
     ],
-    stream_model=True,
 )
+
+if __name__ == "__main__":
+    # Prefetch with sharding
+    run = flyte.prefetch.hf_model(
+        repo="meta-llama/Llama-2-70b-hf",
+        accelerator="L40s:4",
+        shard_config=ShardConfig(
+            engine="vllm",
+            args=VLLMShardArgs(tensor_parallel_size=4),
+        ),
+    )
+    run.wait()
+
+    flyte.serve(
+        vllm_app.clone_with(
+            name=vllm_app.name,
+            # override the model path to use the prefetched model
+            model_path=flyte.app.RunOutput(type="directory", run_name=run.name),
+            # set the hf_model_path to None
+            hf_model_path=None,
+            # stream the model from flyte object store directly to the GPU
+            stream_model=True,
+        )
+    )
+
 ```
 
 ## CLI options
@@ -264,28 +251,12 @@ import flyte
 from flyteplugins.vllm import VLLMAppEnvironment
 from flyte.prefetch import ShardConfig, VLLMShardArgs
 
-# Step 1: Prefetch the model
-print("Prefetching model...")
-run = flyte.prefetch.hf_model(
-    repo="Qwen/Qwen3-0.6B",
-    artifact_name="qwen-0.6b",
-    cpu="4",
-    mem="16Gi",
-    ephemeral_storage="50Gi",
-)
 
-# Wait for completion
-print("Waiting for prefetch to complete...")
-run.wait()
-print(f"Model prefetched: {run.outputs()[0].path}")
-
-# Step 2: Use the prefetched model in vLLM app
+# define the app environment
 vllm_app = VLLMAppEnvironment(
     name="qwen-serving-app",
-    model_path=flyte.app.RunOutput(
-        type="directory",
-        run_name=run.name,
-    ),
+    # this will download the model from HuggingFace into the app container's filesystem
+    model_hf_path="Qwen/Qwen3-0.6B",
     model_id="qwen3-0.6b",
     resources=flyte.Resources(
         cpu="4",
@@ -293,7 +264,6 @@ vllm_app = VLLMAppEnvironment(
         gpu="L40s:1",
         disk="10Gi",
     ),
-    stream_model=True,
     scaling=flyte.app.Scaling(
         replicas=(0, 1),
         scaledown_after=600,
@@ -301,21 +271,42 @@ vllm_app = VLLMAppEnvironment(
     requires_auth=False,
 )
 
-# Step 3: Deploy the app
-print("Deploying app...")
-flyte.init_from_config()
-app = flyte.serve(vllm_app)
-print(f"App deployed: {app.url}")
+if __name__ == "__main__":
+    # prefetch the model
+    print("Prefetching model...")
+    run = flyte.prefetch.hf_model(
+        repo="Qwen/Qwen3-0.6B",
+        artifact_name="qwen-0.6b",
+        cpu="4",
+        mem="16Gi",
+        ephemeral_storage="50Gi",
+    )
+
+    # wait for completion
+    print("Waiting for prefetch to complete...")
+    run.wait()
+    print(f"Model prefetched: {run.outputs()[0].path}")
+
+    # deploy the app
+    print("Deploying app...")
+    flyte.init_from_config()
+    app = flyte.serve(
+        vllm_app.clone_with(
+            name=vllm_app.name,
+            model_path=flyte.app.RunOutput(type="directory", run_name=run.name),
+            hf_model_path=None,
+            stream_model=True,
+        )
+    )
+    print(f"App deployed: {app.url}")
 ```
 
 ## Best practices
 
 1. **Prefetch before deployment**: Prefetch models before deploying apps for faster startup
-2. **Version models**: Use meaningful artifact names to track model versions
-3. **Shard appropriately**: Shard models for the GPU configuration you'll use
-4. **Use secrets**: Store HuggingFace tokens in Flyte secrets
-5. **Monitor prefetch**: Check prefetch status and logs
-6. **Reuse prefetched models**: Once prefetched, reuse the same model path for multiple apps
+2. **Version models**: Use meaningful artifact names to easily identify the model in object store paths
+3. **Shard appropriately**: Shard models for the GPU configuration you'll use for inference
+4. **Cache prefetched models**: Once prefetched, models are cached in your storage backend for faster serving
 
 ## Troubleshooting
 
@@ -328,8 +319,8 @@ print(f"App deployed: {app.url}")
 **Sharding fails:**
 - Ensure accelerator matches shard config
 - Check GPU memory is sufficient
-- Verify tensor_parallel_size matches GPU count
-- Review sharding logs for errors
+- Verify `tensor_parallel_size` matches GPU count
+- Review prefetch task logs for sharding-related errors
 
 **Model not found in app:**
 - Verify RunOutput references correct run name

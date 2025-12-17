@@ -10,11 +10,11 @@ Apps and tasks can interact in various ways: calling each other via HTTP, webhoo
 
 ## Patterns overview
 
-1. **Call app from task**: A task makes HTTP requests to an app
-2. **Call task from app (webhooks / APIs)**: An app triggers task execution via the Flyte SDK
-3. **Call app from app**: One app makes HTTP requests to another app
-4. **WebSocket-based interaction**: Real-time, bidirectional communication
-5. **Browser → app**: Users access apps directly through the browser
+1. [Call app from task](#call-app-from-task): A task makes HTTP requests to an app
+2. [Call task from app (webhooks / APIs)](#call-task-from-app-webhooks--apis): An app triggers task execution via the Flyte SDK
+3. [Call app from app](#call-app-from-app): One app makes HTTP requests to another app
+4. [WebSocket-based interaction](#websocket-based-patterns): Real-time, bidirectional communication
+5. **Browser-based access**: Users access apps directly through the browser
 
 ## Call app from task
 
@@ -54,101 +54,13 @@ Apps can trigger task execution using the Flyte SDK. This is useful for:
 - APIs that need to run batch jobs
 - Services that need to execute tasks asynchronously
 
-### Example: Webhook app calling a task
-
-```python
-from fastapi import FastAPI
-import flyte
-from flyte.app.extras import FastAPIAppEnvironment
-import flyte.remote as remote
-
-app = FastAPI(title="Webhook Runner")
-
-env = FastAPIAppEnvironment(
-    name="webhook-runner",
-    app=app,
-    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-        "fastapi", "uvicorn"
-    ),
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-    requires_auth=False,
-)
-
-# Define a task environment for the task to be called
-task_env = flyte.TaskEnvironment(
-    name="processing-env",
-    image=flyte.Image.from_debian_base(python_version=(3, 12)),
-    resources=flyte.Resources(cpu=2, memory="4Gi"),
-)
-
-@task_env.task
-async def process_data(data: dict) -> dict:
-    """Task that processes data."""
-    # ... processing logic ...
-    return {"result": "processed"}
-
-@app.post("/run-task")
-async def run_task_webhook(data: dict):
-    """Webhook endpoint that triggers a task."""
-    # Initialize Flyte in the app
-    await flyte.init_in_cluster.aio()
-    
-    # Fetch the task
-    task = await remote.TaskDetails.fetch(
-        project="flytesnacks",
-        domain="development",
-        name="process_data",
-        version="v1",
-    )
-    
-    # Run the task
-    run = await flyte.run.aio(task, **data)
-    
-    return {
-        "run_id": run.id,
-        "url": run.url,
-        "status": "started",
-    }
-```
-
-### Using lifecycle initialization
-
-For apps that need to call tasks, initialize Flyte in the app's startup:
-
-```python
-from contextlib import asynccontextmanager
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Initialize Flyte before accepting requests."""
-    await flyte.init_in_cluster.aio()
-    yield
-    # Cleanup if needed
-
-app = FastAPI(
-    title="Task Runner API",
-    lifespan=lifespan,
-)
-
-@app.post("/execute")
-async def execute_task(task_input: dict):
-    """Execute a task from the app."""
-    task = await remote.TaskDetails.fetch(...)
-    run = await flyte.run.aio(task, **task_input)
-    return {"run_id": run.id, "url": run.url}
-```
-
-### Webhook usage and patterns
-
 Webhooks are HTTP endpoints that trigger actions in response to external events. Flyte apps can serve as webhook endpoints that trigger task runs, workflows, or other operations.
 
-#### Basic webhook app
+### Example: Basic webhook app
 
 Here's a simple webhook that triggers Flyte tasks:
 
 {{< code file="/external/unionai-examples/v2/user-guide/build-apps/webhook/basic_webhook.py" lang=python >}}
-
-#### Using the webhook
 
 Once deployed, you can trigger tasks via HTTP POST:
 
@@ -169,7 +81,7 @@ Response:
 }
 ```
 
-#### Advanced webhook patterns
+### Advanced webhook patterns
 
 **Webhook with validation**
 
@@ -257,7 +169,7 @@ Then access in your app:
 WEBHOOK_API_KEY = os.getenv("WEBHOOK_API_KEY")
 ```
 
-#### Webhook security and best practices
+### Webhook security and best practices
 
 - **Authentication**: Always secure webhooks with authentication (API keys, tokens, etc.).
 - **Input validation**: Validate webhook inputs using Pydantic models.
@@ -275,7 +187,7 @@ Security considerations:
 - Implement proper access control mechanisms.
 - Log all webhook invocations for security auditing.
 
-#### Example: GitHub webhook
+### Example: GitHub webhook
 
 Here's an example webhook that triggers tasks based on GitHub events:
 
@@ -390,6 +302,7 @@ env2 = FastAPIAppEnvironment(
         flyte.app.Input(
             name="backend_url",
             value=flyte.app.AppEndpoint(app_name="backend-api"),
+            env_var="BACKEND_URL",
         ),
     ],
     # ...
@@ -407,7 +320,7 @@ async def greeting_proxy(name: str):
 
 WebSockets enable bidirectional, real-time communication between clients and servers. Flyte apps can serve WebSocket endpoints for real-time applications like chat, live updates, or streaming data.
 
-### Basic WebSocket app
+### Example: Basic WebSocket app
 
 Here's a simple FastAPI app with WebSocket support:
 
@@ -587,9 +500,9 @@ To access a browser-based app:
 
 | Pattern | Use Case | Implementation |
 |---------|----------|----------------|
-| Task → App | Batch processing using services | HTTP requests from task |
+| Task → App | Batch processing using inference services | HTTP requests from task |
 | App → Task | Webhooks, APIs triggering workflows | Flyte SDK in app |
-| App → App | Microservices, proxies | HTTP requests between apps |
+| App → App | Microservices, proxies, agent routers, LLM routers | HTTP requests between apps |
 | Browser → App | User-facing dashboards | Direct browser access |
 
 Choose the pattern that best fits your architecture and requirements.

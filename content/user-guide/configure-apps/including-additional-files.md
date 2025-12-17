@@ -1,10 +1,10 @@
 ---
-title: Including extra files
+title: Including additional files
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Including extra files
+# Including additional files
 
 When your app needs additional files beyond the main script (like utility modules, configuration files, or data files), you can use the `include` parameter to specify which files to bundle with your app.
 
