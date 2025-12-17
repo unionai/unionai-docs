@@ -1,6 +1,6 @@
 ---
 title: Build apps
-weight: 8
+weight: 12
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
