@@ -174,18 +174,50 @@ Run the orchestration task directly (no deployment needed):
 if __name__ == "__main__":
     flyte.init_from_config()
 
-    result = flyte.run(
+    run = flyte.run(
         orchestrate_pipeline,
         data_path="s3://my-bucket/data.parquet"
     )
 
-    print(f"Pipeline result: {result.output}")
-    print(f"Execution URL: {result.url}")
+    print(f"Execution URL: {run.url}")
+    # You can wait for the execution
+    run.wait()
+    
+    # You can then retrieve the outputs
+    print(f"Pipeline result: {run.outputs()}")
 ```
 
 **Using CLI**:
 ```bash
 flyte run orchestration_env.py orchestrate_pipeline --data_path s3://my-bucket/data.parquet
+```
+
+## Invoke remote tasks in a script.
+
+You can also run any remote task directly using a script in a similar way
+```python
+import flyte
+import flyte.remote
+
+flyte.init_from_config()
+
+# Fetch the task
+remote_task = flyte.remote.Task.get("package-example.calculate_average", auto_version="latest")
+
+# Create a run, note keyword arguments are required currently. In the future this will accept positional args based on the declaration order, but, we still recommend to use keyword args.
+run = flyte.run(remote_task, numbers=[1.0, 2.0, 3.0])
+
+print(f"Execution URL: {run.url}")
+# you can view the phase
+
+print(f"Current Phase: {run.phase}")
+# You can wait for the execution
+run.wait()
+
+# Wait today does not automatically update the phase of the `run` object itself. We will soon add a sync method
+
+# You can then retrieve the outputs
+print(f"Pipeline result: {run.outputs()}")
 ```
 
 ## Why use remote tasks?
@@ -331,23 +363,6 @@ If you want to deploy the orchestration task as well (for scheduled runs or to b
 
 ```bash
 flyte deploy orchestration_env/
-```
-
-### 5. Test integration carefully
-
-Remote tasks introduce remote dependencies. Test thoroughly:
-
-```python
-@env.task
-async def integration_test() -> bool:
-    ref_task = flyte.remote.Task.get("other_team.task", auto_version="latest")
-
-    # Test with known inputs
-    result = await ref_task(test_input="validation_data")
-
-    # Verify expected outputs
-    assert result.status == "success"
-    return True
 ```
 
 ## Limitations
