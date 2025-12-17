@@ -30,7 +30,7 @@ uv python install 3.13
 uv python pin 3.13 --global
 ```
 
-### Create a Python virtual environment
+### Create and activate a Python virtual environment
 
 In your working directory, create a Python virtual environment and activate it:
 
@@ -118,20 +118,22 @@ In the code above we do the following:
 
 ## Running the code
 
-Make sure that your `config.yaml` file is in the same directory as your `hello.py` script.
+Assuming that your current directory looks like this:
 
-Now, run the script with:
-
-```shell
-uv run --prerelease allow hello.py
+```
+.
+├── hello.py
+└── .flyte
+    └── config.yaml
 ```
 
-The main guard section in the script performs a `flyte.init_from_config` to set up the connection with your Union/Flyte instance and a `flyte.run` to send your task code to that instance and execute it there.
+and your virtual environment is activated, you can run the script with:
 
-> [!NOTE]
-> The example scripts in this guide have a main guard that programmatically deploys and runs the tasks defined in the same file.
-> All you have to do is execute the script itself.
-> You can also deploy tasks using the `flyte` CLI instead. We will cover this in a later section.
+```shell
+flyte run hello.py main
+```
+
+This will package up the code and send it to your Flyte/Union instance for execution.
 
 ## Viewing the results
 
@@ -143,7 +145,7 @@ https://my-instance.example.com/v2/runs/project/my-project/domain/development/cg
 Run 'a0' completed successfully.
 ```
 
-Click the link to go to your Union instance and see the run in the UI:
+Click the link to go to your Flyte/Union instance and see the run in the UI:
 
 ![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 
