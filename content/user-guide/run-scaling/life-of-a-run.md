@@ -80,8 +80,8 @@ Once the code bundle is created:
 The `CreateRun` API is invoked:
 
 1. **Copy inputs**: Input data is copied to the object store.
-2. **Queue run**: The run is queued into the Queue Service.
-3. **Hand off to executor**: Queue Service hands the task to the Executor Service in your data plane.
+2. **En-queue a run**: The run is queued into the Union Control Plane.
+3. **Hand off to executor**: Union Control Plane hands the task to the Executor Service in your data plane.
 4. **Create action**: The parent task action (called `a0`) is created.
 
 ## Phase 6: Task execution in data plane
@@ -100,8 +100,8 @@ If the task invokes other tasks:
 
 1. **Controller thread**: A controller thread starts to communicate with the backend Queue Service.
 2. **Monitor status**: The controller monitors the status of downstream actions.
-3. **Crash recovery**: If the task crashes, the action identifier is deterministic, allowing the task to resurrect its state from Queue Service.
-4. **Replay**: The controller efficiently replays state (even at 100k scale) to find missing completions and resume monitoring.
+3. **Crash recovery**: If the task crashes, the action identifier is deterministic, allowing the task to resurrect its state from Union Control Plane.
+4. **Replay**: The controller efficiently replays state (even at large scale) to find missing completions and resume monitoring.
 
 ### Execution flow diagram
 
@@ -157,7 +157,7 @@ Flyte uses deterministic action identifiers to enable robust crash recovery:
 - **Consistent identifiers**: Action identifiers are consistently computed based on task and invocation context.
 - **Re-run identical**: In any re-run, the action identifier is identical for the same invocation.
 - **Multiple invocations**: Multiple invocations of the same task receive unique identifiers.
-- **Efficient resurrection**: On crash, the `a0` action resurrects its state from Queue Service efficiently, even with 100k actions.
+- **Efficient resurrection**: On crash, the `a0` action resurrects its state from Union Control Plane efficiently, even at large scale.
 - **Replay and resume**: The controller replays execution until it finds missing completions and starts watching them.
 
 ## Downstream task execution

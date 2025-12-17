@@ -212,7 +212,6 @@ async def process_workflow(urls: list[str]) -> list[dict]:
 The UI and system have limits on the number of actions per run:
 
 - **Current limit**: 50k actions per run
-- **Recommendation**: Target <40k actions for best performance
 - **Future**: Higher limits will be supported (contact the Union team if needed)
 
 **Example: Control fanout with batching**
