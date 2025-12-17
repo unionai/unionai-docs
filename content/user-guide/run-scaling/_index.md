@@ -13,14 +13,14 @@ This guide helps you understand and optimize the performance of your Flyte workf
 
 Before optimizing performance, it's important to understand how Flyte executes your workflows:
 
-- **[Data flow](data-flow)**: Learn how data moves between tasks, including inline vs. reference data types, caching mechanisms, and storage configuration.
-- **[Life of a run](life-of-a-run)**: Understand what happens when you invoke `flyte.run()`, from code analysis and image building to task execution and state management.
+- **[Data flow](./data-flow)**: Learn how data moves between tasks, including inline vs. reference data types, caching mechanisms, and storage configuration.
+- **[Life of a run](./life-of-a-run)**: Understand what happens when you invoke `flyte.run()`, from code analysis and image building to task execution and state management.
 
 ## Performance optimization
 
 Once you understand the fundamentals, dive into performance tuning:
 
-- **[Scale your workflows](performance)**: A comprehensive guide to optimizing workflow performance, covering latency vs. throughput, task overhead analysis, batching strategies, reusable containers, and more.
+- **[Scale your workflows](./scale-your-workflows)**: A comprehensive guide to optimizing workflow performance, covering latency vs. throughput, task overhead analysis, batching strategies, reusable containers, and more.
 
 ## Key concepts for scaling
 
@@ -33,4 +33,4 @@ When scaling your workflows, keep these principles in mind:
 5. **Limit fanout**: Keep the total number of actions per run below 50k (target 10k-20k for best performance).
 6. **Choose the right data types**: Use reference types (files, directories, dataframes) for large data and inline types for small data.
 
-For detailed guidance on each of these topics, see [Scale your workflows](performance).
+For detailed guidance on each of these topics, see [Scale your workflows](./scale-your-workflows).

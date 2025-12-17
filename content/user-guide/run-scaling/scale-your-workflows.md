@@ -266,7 +266,7 @@ async def process_metadata(metadata: dict) -> dict:
 - **> 10 MB**: Use reference types (File, Directory, DataFrame)
 - **Adjust**: Use `max_inline_io` in `TaskEnvironment` to change the threshold
 
-See [Data flow](data-flow) for details on data types and transport.
+See [Data flow](./data-flow) for details on data types and transport.
 
 ### 6. Leverage caching
 
