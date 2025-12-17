@@ -5,7 +5,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
 
-# Scaling your runs
+# Scale your runs
 
 This guide helps you understand and optimize the performance of your Flyte workflows. Whether you're building latency-sensitive applications or high-throughput data pipelines, these docs will help you make the right architectural choices.
 
