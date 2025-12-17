@@ -49,9 +49,8 @@ Primitive and structured types are serialized and passed inline:
 Flyte uses efficient MessagePack serialization for most types, providing compact binary representation with strong type safety.
 
 > [!NOTE]
-> If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, data less than 10KB is pickled inline, while larger data is automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
+> If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, picked objects smaller than 10KB are passed inline, while larger picked objects are automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
 
-For a comprehensive list of supported types and their transformers, see the [Flyte SDK type engine](https://github.com/unionai/flyte-sdk/blob/main/src/flyte/types/_type_engine.py).
 
 ## Task execution and data flow
 
@@ -123,7 +122,7 @@ When using [traces](../task-programming/traces), the data flow behavior is diffe
 
 1. **Full execution first**: The trace is fully executed before inputs and outputs are recorded.
 2. **Checkpoint behavior**: Recording happens like a checkpoint at the end of trace execution.
-3. **Streaming iterators**: The entire output is buffered and recorded after the stream completes. Buffering is pass-through, allowing callee functions to consume output while buffering.
+3. **Streaming iterators**: The entire output is buffered and recorded after the stream completes. Buffering is pass-through, allowing caller functions to consume output while buffering.
 4. **Chained traces**: All traces are recorded after the last one completes consumption.
 5. **Same process with asyncio**: Traces run within the same Python process and support asyncio parallelism, so failures can be retried, effectively re-running the trace.
 6. **Lightweight overhead**: Traces only have the overhead of data storage (no task orchestration overhead).

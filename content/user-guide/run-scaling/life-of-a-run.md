@@ -106,26 +106,48 @@ If the task invokes other tasks:
 ### Execution flow diagram
 
 ```mermaid
-graph TD
-    A[flyte.run invoked] --> B[Analyze code & discover environments]
-    B --> C[Build images if changed]
-    C --> D[Bundle code]
-    D --> E[Upload code bundle]
-    E --> F[CreateRun API]
-    F --> G[Copy inputs to object store]
-    G --> H[Queue to Queue Service]
-    H --> I[Executor Service creates action a0]
-    I --> J[Container starts in data plane]
-    J --> K[Download code bundle]
-    K --> L[Inflate task]
-    L --> M[Download inputs]
-    M --> N[Execute task]
-    N --> O{Invokes downstream tasks?}
-    O -->|Yes| P[Start controller thread]
-    O -->|No| Q[Upload outputs]
-    P --> R[Monitor downstream actions]
-    R --> Q
-    Q --> S[Complete]
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#e5e7eb', 'primaryBorderColor':'#6b7280', 'lineColor':'#9ca3af', 'secondaryColor':'#374151', 'tertiaryColor':'#1f2937', 'actorBorder':'#6b7280', 'actorTextColor':'#e5e7eb', 'signalColor':'#9ca3af', 'signalTextColor':'#e5e7eb'}}}%%
+sequenceDiagram
+    participant Client as SDK/Client
+    participant Control as Control Plane<br/>(Queue Service)
+    participant Data as Data Plane<br/>(Executor)
+    participant ObjStore as Object Store
+    participant Container as Task Container
+
+    Client->>Client: Analyze code & discover environments
+    Client->>Client: Build images (if changed)
+    Client->>Client: Bundle code
+    Client->>Control: Upload code bundle
+    Control->>Data: Store code bundle
+    Data->>ObjStore: Write code bundle
+    Client->>Control: CreateRun API with inputs
+    Control->>Data: Copy inputs
+    Data->>ObjStore: Write inputs
+    Control->>Data: Queue task (create action a0)
+    Data->>Container: Start container
+    Container->>Data: Request code bundle
+    Data->>ObjStore: Read code bundle
+    ObjStore-->>Data: Code bundle
+    Data-->>Container: Code bundle
+    Container->>Container: Inflate task
+    Container->>Data: Request inputs
+    Data->>ObjStore: Read inputs
+    ObjStore-->>Data: Inputs
+    Data-->>Container: Inputs
+    Container->>Container: Execute task
+
+    alt Invokes downstream tasks
+        Container->>Container: Start controller thread
+        Container->>Control: Submit downstream tasks
+        Control->>Data: Queue downstream actions
+        Container->>Control: Monitor downstream status
+        Control-->>Container: Status updates
+    end
+
+    Container->>Data: Upload outputs
+    Data->>ObjStore: Write outputs
+    Container->>Control: Complete
+    Control-->>Client: Run complete
 ```
 
 ## Action identifiers and crash recovery
@@ -160,19 +182,43 @@ When using [reusable containers](../task-configuration/reusable-containers), the
 ### Reusable container execution flow
 
 ```mermaid
-graph TD
-    A[Task submitted] --> B{Reusable containers?}
-    B -->|No| C[Create new container]
-    B -->|Yes| D{Available replica?}
-    D -->|Yes| E[Allocate to replica]
-    D -->|No| F{Can scale up?}
-    F -->|Yes| G[Create new replica]
-    F -->|No| H[Queue task]
-    G --> E
-    H --> E
-    C --> I[Execute task]
-    E --> I
-    I --> J[Return results]
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#1f2937', 'primaryTextColor':'#e5e7eb', 'primaryBorderColor':'#6b7280', 'lineColor':'#9ca3af', 'secondaryColor':'#374151', 'tertiaryColor':'#1f2937', 'actorBorder':'#6b7280', 'actorTextColor':'#e5e7eb', 'signalColor':'#9ca3af', 'signalTextColor':'#e5e7eb'}}}%%
+sequenceDiagram
+    participant Control as Queue Service
+    participant Executor as Executor Service
+    participant Pool as Container Pool
+    participant Replica as Container Replica
+
+    Control->>Executor: Submit task
+
+    alt Reusable containers enabled
+        Executor->>Pool: Request available replica
+
+        alt Replica available
+            Pool->>Replica: Allocate task
+            Replica->>Replica: Execute task
+            Replica->>Pool: Task complete (ready for next)
+        else No replica available
+            alt Can scale up
+                Executor->>Pool: Create new replica
+                Pool->>Replica: Spin up new container
+                Replica->>Replica: Execute task
+                Replica->>Pool: Task complete
+            else At max replicas
+                Executor->>Pool: Queue task
+                Pool-->>Executor: Wait for available replica
+                Pool->>Replica: Allocate when available
+                Replica->>Replica: Execute task
+                Replica->>Pool: Task complete
+            end
+        end
+    else No reusable containers
+        Executor->>Replica: Create new container
+        Replica->>Replica: Execute task
+        Replica->>Executor: Complete & terminate
+    end
+
+    Replica-->>Control: Return results
 ```
 
 ## State replication and visualization
