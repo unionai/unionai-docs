@@ -15,6 +15,8 @@ You will need to have the `uv` tool and the `flyte` Python package installed.
 
 In [Getting started](../getting-started) we used the `flyte create config` command to create a configuration file at `./.flyte/config.yaml`.
 
+{{< variant byoc selfmanaged serverless >}}
+{{< markdown >}}
 ```shell
 flyte create config \
     --endpoint my-org.my-company.com \
@@ -22,9 +24,21 @@ flyte create config \
     --domain development \
     --builder remote
 ```
+{{< /markdown >}}
+{{< /variant >}}
+{{< variant flyte >}}
+{{< markdown >}}
+```shell
+flyte create config \
+    --endpoint my-org.my-company.com \
+    --project my-project \
+    --domain development \
+    --builder local
+```
+{{< /markdown >}}
+{{< /variant >}}
 
-The result of the above command would be the creation of a file called `./flyte/config.yaml` in your current working directory
-with the following content:
+This command creates a file called `./flyte/config.yaml` in your current working directory:
 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
@@ -46,7 +60,7 @@ task:
 admin:
   endpoint: dns:///my-org.my-company.com
 image:
-  builder: remote
+  builder: local
 task:
   domain: development
   org: my-org
@@ -128,7 +142,6 @@ Domains are used to separate different environments, such as `development`, `sta
 <!-- TODO: add link to project creation when available -->
 {{< /markdown >}}
 {{< /dropdown >}}
-
 
 ## Using the configuration file
 
