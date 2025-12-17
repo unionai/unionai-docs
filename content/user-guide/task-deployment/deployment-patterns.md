@@ -84,7 +84,12 @@ You can also reference Dockerfiles from subdirectories:
   ```
 - **Registry configuration**: Specify a registry for image storage
 - **Build context**: The directory containing the Dockerfile becomes the build context
-- **Dependencies**: Include all requirements in the Dockerfile or requirements.txt
+- **Flyte installation**: Ensure Flyte is installed in the container and available on `$PATH`
+  ```dockerfile
+  # Install Flyte in your Dockerfile
+  RUN pip install flyte
+  ```
+- **Dependencies**: Include all application requirements in the Dockerfile or requirements.txt
 
 ### When to use
 
