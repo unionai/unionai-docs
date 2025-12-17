@@ -1,14 +1,16 @@
 ---
-title: Reference Tasks
+title: Remote tasks
 weight: 110
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-Reference tasks let you use tasks that have been deployed to the Flyte backend without importing their code or dependencies. This enables teams to share and reuse tasks without managing complex dependency chains or container images.
+# Remote tasks
+
+Remote tasks let you use previously deployed tasks without importing their code or dependencies. This enables teams to share and reuse tasks without managing complex dependency chains or container images.
 
 ## Prerequisites
 
-Reference tasks must be deployed before you can use them. See the [task deployment guide](../task-deployment) for details.
+Remote tasks must be deployed before you can use them. See the [task deployment guide](../task-deployment) for details.
 
 ## Basic usage
 
@@ -42,7 +44,7 @@ flyte run my_workflow.py my_task --data_path s3://my-bucket/data.parquet
 
 ## Complete example
 
-This example shows how different teams can collaborate using reference tasks.
+This example shows how different teams can collaborate using remote tasks.
 
 ### Team A: Spark environment
 
@@ -115,7 +117,7 @@ flyte deploy ml_env/
 
 ### Team C: Orchestration
 
-Team C builds a workflow using reference tasks from both teams without needing Spark or PyTorch dependencies:
+Team C builds a workflow using remote tasks from both teams without needing Spark or PyTorch dependencies:
 
 ```python
 # orchestration_env.py
@@ -186,19 +188,19 @@ if __name__ == "__main__":
 flyte run orchestration_env.py orchestrate_pipeline --data_path s3://my-bucket/data.parquet
 ```
 
-## Why use reference tasks?
+## Why use remote tasks?
 
-Reference tasks solve common collaboration and dependency management challenges:
+Remote tasks solve common collaboration and dependency management challenges:
 
-**Cross-team collaboration**: Team A has deployed a Spark task that analyzes large datasets. Team B needs this analysis for their ML pipeline but doesn't want to learn Spark internals, install Spark dependencies, or build Spark-enabled container images. With reference tasks, Team B simply references Team A's deployed task.
+**Cross-team collaboration**: Team A has deployed a Spark task that analyzes large datasets. Team B needs this analysis for their ML pipeline but doesn't want to learn Spark internals, install Spark dependencies, or build Spark-enabled container images. With remote tasks, Team B simply references Team A's deployed task.
 
 **Platform reusability**: Platform teams can create common, reusable tasks (data validation, feature engineering, model serving) that other teams can use without duplicating code or managing complex dependencies.
 
-**Microservices for data workflows**: Reference tasks work like microservices for long-running tasks or agents, enabling secure sharing while maintaining isolation.
+**Microservices for data workflows**: Remote tasks work like microservices for long-running tasks or agents, enabling secure sharing while maintaining isolation.
 
-## When to use reference tasks
+## When to use remote tasks
 
-Use reference tasks when you need to:
+Use remote tasks when you need to:
 
 - Use functionality from another team without their dependencies
 - Share common tasks across your organization
@@ -206,11 +208,11 @@ Use reference tasks when you need to:
 - Avoid dependency conflicts between different parts of your workflow
 - Create modular, maintainable data pipelines
 
-## How reference tasks work
+## How remote tasks work
 
 ### Security model
 
-Reference tasks run in the **caller's project and domain** using the caller's compute resources, but execute with the **callee's service accounts, IAM roles, and secrets**. This ensures:
+Remote tasks run in the **caller's project and domain** using the caller's compute resources, but execute with the **callee's service accounts, IAM roles, and secrets**. This ensures:
 
 - Tasks are secure from misuse
 - Resource usage is properly attributed
@@ -219,9 +221,9 @@ Reference tasks run in the **caller's project and domain** using the caller's co
 
 ### Type system
 
-Reference tasks use Flyte's default types as inputs and outputs. Flyte's type system seamlessly translates data between tasks without requiring the original dependencies:
+Remote tasks use Flyte's default types as inputs and outputs. Flyte's type system seamlessly translates data between tasks without requiring the original dependencies:
 
-| Reference Task Type | Flyte Type |
+| Remote Task Type | Flyte Type |
 |-------------------|------------|
 | DataFrames (`pandas`, `polars`, `spark`, etc.) | `flyte.io.DataFrame` |
 | Object store files | `flyte.io.File` |
@@ -237,6 +239,7 @@ For Pydantic models specifically, you don't need the exact model locally. Pass a
 Reference tasks support flexible versioning:
 
 **Specific version**:
+
 ```python
 task = flyte.remote.Task.get(
     "team_a.process_data",
@@ -245,6 +248,7 @@ task = flyte.remote.Task.get(
 ```
 
 **Latest version** (`auto_version="latest"`):
+
 ```python
 # Always use the most recently deployed version
 task = flyte.remote.Task.get(
@@ -254,6 +258,7 @@ task = flyte.remote.Task.get(
 ```
 
 **Current version** (`auto_version="current"`):
+
 ```python
 # Use the same version as the calling task's deployment
 # Useful when all environments deploy with the same version
@@ -268,7 +273,7 @@ task = flyte.remote.Task.get(
 
 ### 1. Use meaningful task names
 
-Reference tasks are accessed by name, so use clear, descriptive naming:
+Remote tasks are accessed by name, so use clear, descriptive naming:
 
 ```python
 # Good
@@ -280,7 +285,7 @@ task1 = flyte.remote.Task.get("team_a.task1")
 
 ### 2. Document task interfaces
 
-Since reference tasks abstract away implementation details, clear documentation of inputs, outputs, and behavior is essential:
+Since remote tasks abstract away implementation details, clear documentation of inputs, outputs, and behavior is essential:
 
 ```python
 @env.task
@@ -305,11 +310,11 @@ async def process_customer_data(
 
 - Use `auto_version="latest"` during development for rapid iteration
 - Use specific versions in production for stability and reproducibility
-- Use `auto_version="current"` when coordinating multi-environment deployments
+- Use `auto_version="current"` when coordinating multienvironment deployments
 
-### 4. Deploy referenced tasks first
+### 4. Deploy remote tasks first
 
-Always deploy the referenced tasks before using them. Tasks that reference them can be run directly without deployment:
+Always deploy the remote tasks before using them. Tasks that reference them can be run directly without deployment:
 
 ```bash
 # Deploy the Spark environment first
@@ -330,7 +335,7 @@ flyte deploy orchestration_env/
 
 ### 5. Test integration carefully
 
-Reference tasks introduce remote dependencies. Test thoroughly:
+Remote tasks introduce remote dependencies. Test thoroughly:
 
 ```python
 @env.task
