@@ -21,7 +21,7 @@ You will need the following:
 Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation). For example:
 
 ```shell
-pip install --no-cache --prerelease=allow --upgrade flyte
+pip install --pre flyte
 ```
 
 Check that installation succeeded (and that you have activated your virtual environment):
