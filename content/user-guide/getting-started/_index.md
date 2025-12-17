@@ -51,6 +51,22 @@ flyte create config \
     --project my-project
 ```
 
+### Ensure local Docker is working
+
+> [!NOTE]
+> We are using the `--builder local` option here to specify that we want to [build images](../task-configuration/container-images) locally.
+> If you were using a Union instance, you would typically use `--builder remote` instead to use Union's remote image builder.
+> With Flyte OSS instances, `local` is the only option available.
+
+To enable local image building, ensure that
+- You have Docker installed and running on your machine
+- You have permission to read from the public GitHub `ghcr.io` registry.
+- You have successfully logged into the `ghcr.io` registry using Docker:
+
+```shell
+docker login ghcr.io
+```
+
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc selfmanaged serverless >}}
