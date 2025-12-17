@@ -12,9 +12,9 @@ Understanding how data flows between tasks is critical for optimizing workflow p
 
 Flyte tasks are run to completion. Each task takes inputs and produces exactly one output. Even if multiple instances run concurrently (such as in retries), only one output will be accepted. This deterministic data flow model provides several key benefits:
 
-1. **Reduced boilerplate**: Automatic handling of files, dataframes, directories, custom types, dataclasses, pydantic models, and primitive types without manual serialization.
+1. **Reduced boilerplate**: Automatic handling of files, DataFrames, directories, custom types, data classes, Pydantic models, and primitive types without manual serialization.
 2. **Type safety**: Optional type annotations enable deeper type understanding, automatic UI form generation, and runtime type validation.
-3. **Efficient transport**: Data is passed by reference (files, directories, dataframes) or by value (primitives) based on type.
+3. **Efficient transport**: Data is passed by reference (files, directories, DataFrames) or by value (primitives) based on type.
 4. **Durable storage**: All data is stored durably and accessible through APIs and the UI.
 5. **Caching support**: Efficient caching using shallow immutable references for referenced data.
 
@@ -41,7 +41,7 @@ Primitive and structured types are serialized and passed inline:
 | **Primitives** | `int`, `float`, `str`, `bool`, `None` | MessagePack |
 | **Time types** | `datetime.datetime`, `datetime.date`, `datetime.timedelta` | MessagePack |
 | **Collections** | `list`, `dict`, `tuple` | MessagePack |
-| **Data structures** | `dataclasses`, Pydantic `BaseModel` | MessagePack |
+| **Data structures** | data classes, Pydantic `BaseModel` | MessagePack |
 | **Enums** | `enum.Enum` subclasses | MessagePack |
 | **Unions** | `Union[T1, T2]`, `Optional[T]` | MessagePack |
 | **Protobuf** | `google.protobuf.Message` | Binary |
@@ -124,11 +124,11 @@ When using [traces](../task-programming/traces), the data flow behavior is diffe
 2. **Checkpoint behavior**: Recording happens like a checkpoint at the end of trace execution.
 3. **Streaming iterators**: The entire output is buffered and recorded after the stream completes. Buffering is pass-through, allowing caller functions to consume output while buffering.
 4. **Chained traces**: All traces are recorded after the last one completes consumption.
-5. **Same process with asyncio**: Traces run within the same Python process and support asyncio parallelism, so failures can be retried, effectively re-running the trace.
+5. **Same process with `asyncio`**: Traces run within the same Python process and support `asyncio` parallelism, so failures can be retried, effectively re-running the trace.
 6. **Lightweight overhead**: Traces only have the overhead of data storage (no task orchestration overhead).
 
 > [!NOTE]
-> Traces are not a substitute for tasks if you need caching. Tasks provide full caching capabilities, while traces provide lightweight checkpointing with storage overhead. However, traces support concurrent execution using asyncio patterns within a single task.
+> Traces are not a substitute for tasks if you need caching. Tasks provide full caching capabilities, while traces provide lightweight checkpointing with storage overhead. However, traces support concurrent execution using `asyncio` patterns within a single task.
 
 ## Object stores and latency considerations
 
@@ -153,4 +153,4 @@ run = flyte.with_runcontext(
 ).run(my_task, input_data=data)
 ```
 
-This allows you to control where reference data (files, directories, dataframes) is stored for specific runs.
+This allows you to control where reference data (files, directories, DataFrames) is stored for specific runs.
