@@ -1,10 +1,10 @@
 ---
-title: Anatomy of a run
+title: Basic concepts
 weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
-# Anatomy of a run
+# Basic concepts
 
 To understand how Flyte 2 works, it helps to establish a few definitions and concepts.
 
