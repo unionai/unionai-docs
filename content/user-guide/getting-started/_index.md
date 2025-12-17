@@ -11,40 +11,23 @@ This section gives you a quick introduction to writing and running workflows on 
 
 ## Prerequisites
 
-### Install uv
-
-First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/).
-
-> [!NOTE]
-> You will need to use the [`uv` package manager](https://docs.astral.sh/uv/) to run the examples in this guide.
-> In particular, we leverage `uv`'s ability to [embed dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
-
-### Install Python 3.10 or later
-
-Flyte 2 requires Python 3.10 or later.
-Install the most recent version of Python (>= 3.10) compatible with your codebase and pin it.
-For example, to install and pin Python 3.13, do the following:
-
-```shell
-uv python install 3.13
-uv python pin 3.13 --global
-```
-
-### Create and activate a Python virtual environment
-
-In your working directory, create a Python virtual environment and activate it:
-
-```shell
-uv venv
-source .venv/bin/activate
-```
+You will need the following:
+- An active Python virtual environment with Python 3.10 or later.
+- The URL of you Union/Flyte instance.
+- An existing project set up on your Union/Flyte instance where you have permission to run workflows.
 
 ## Install the `flyte` package
 
-Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation):
+Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation). For example:
 
 ```shell
-uv pip install --no-cache --prerelease=allow --upgrade flyte
+pip install --no-cache --prerelease=allow --upgrade flyte
+```
+
+Check that installation succeeded (and that you have activated your virtual environment):
+
+```shell
+flyte --version
 ```
 
 ## Create a config.yaml
