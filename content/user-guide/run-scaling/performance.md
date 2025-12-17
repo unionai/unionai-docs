@@ -25,8 +25,8 @@ Performance optimization focuses on two key dimensions:
 **Recommended approach**:
 - Use tasks for orchestration and parallelism
 - Use [traces](../task-programming/traces) for fine-grained checkpointing
-- Model as much parallelism as needed
-- Leverage [reusable containers](../task-configuration/reusable-containers) to eliminate startup overhead
+- Model parallelism using asyncio and use things like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
+- Leverage [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead
 
 ### Throughput
 
