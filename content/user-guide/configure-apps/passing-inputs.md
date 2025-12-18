@@ -95,7 +95,7 @@ env = flyte.app.AppEnvironment(
         mount="/app/models/model.pkl",
         env_var="MODEL_PATH",
     ),
-    ...
+    # ...
 )
 
 # Access in the app via the environment variable

@@ -89,6 +89,7 @@ frontend_env = flyte.app.AppEnvironment(
 ```
 
 The `backend_url` input will be automatically set to the backend app's endpoint URL.
+You can get this value in your app code using `flyte.app.get_input("backend_url")`.
 
 ## Deployment behavior
 

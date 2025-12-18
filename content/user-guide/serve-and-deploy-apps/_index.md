@@ -26,13 +26,10 @@ Deployment is designed for production use:
 - **Immutable**: Apps are deployed with fixed configurations
 - **Production-ready**: Optimized for stability and reproducibility
 
-## Quick start
-
-### Using Python SDK
-
+## Using Python SDK
 
 {{< tabs "serve-vs-deploy" >}}
-{{< tab "Serve (Development)" >}}
+{{< tab "Serve" >}}
 
 {{< markdown >}}
 ```python
@@ -55,7 +52,7 @@ if __name__ == "__main__":
 {{< /markdown >}}
 {{< /tab >}}
 
-{{< tab "Deploy (Production)" >}}
+{{< tab "Deploy" >}}
 
 {{< markdown >}}
 ```python
@@ -81,15 +78,27 @@ if __name__ == "__main__":
 {{< /tab >}}
 {{< /tabs >}}
 
-### Using CLI
+## Using the CLI
 
+
+{{< tabs >}}
+{{< tab "Serve" >}}
+
+{{< markdown >}}
 ```bash
-# Serve
 flyte serve path/to/app.py app_env
+```
+{{< /markdown >}}
+{{< /tab >}}
+{{< tab "Deploy" >}}
 
-# Deploy
+{{< markdown >}}
+```bash
 flyte deploy path/to/app.py app_env
 ```
+{{< /markdown >}}
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Next steps
 
