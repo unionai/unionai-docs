@@ -11,7 +11,7 @@ Flyte SDK lets you serve apps on your Union/Flyte instance, making them accessib
 > [!TIP] Prerequisites
 > Make sure to run the [local setup](./local-setup) before going through this guide.
 
-First install fastapi in your virtual environment:
+First install FastAPI in your virtual environment:
 
 ```shell
 pip install fastapi
@@ -68,7 +68,7 @@ uses the main guard section in the script. It invokes `flyte.init_from_config()`
 In your terminal, you should see output like this:
 
 ```shell
-https://my-instance.example.com/v2/apps/project/my-project/domain/development/hello-app
+https://my-instance.flyte.com/v2/domain/development/project/flytesnacks/apps/hello-app
 App 'hello-app' is now serving.
 ```
 
