@@ -29,6 +29,7 @@ import flyte.app
 app_env = flyte.app.AppEnvironment(
     name="my-dev-app",
     inputs=[flyte.app.Input(name="model_path", value="s3://bucket/models/model.pkl")],
+    # ...
 )
 
 if __name__ == "__main__":

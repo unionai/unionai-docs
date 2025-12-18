@@ -32,20 +32,6 @@ Key points:
 - Access the app endpoint via `app_env.endpoint`
 - Use standard HTTP client libraries (like `httpx`) to make requests
 
-### Using AppEndpoint input
-
-For more dynamic scenarios, you can pass the app endpoint as an input:
-
-```python
-@task_env.task
-async def call_app_task(app_url: str, data: dict) -> dict:
-    """Task that calls an app with a dynamic endpoint."""
-    async with httpx.AsyncClient() as client:
-        response = await client.post(f"{app_url}/process", json=data)
-        response.raise_for_status()
-        return response.json()
-```
-
 ## Call task from app (webhooks / APIs)
 
 Apps can trigger task execution using the Flyte SDK. This is useful for:

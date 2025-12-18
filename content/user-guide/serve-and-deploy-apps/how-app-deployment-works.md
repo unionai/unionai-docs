@@ -27,7 +27,7 @@ import flyte.app
 
 app_env = flyte.app.AppEnvironment(
     name="my-prod-app",
-    # ... configuration ...
+    # ...
 )
 
 if __name__ == "__main__":

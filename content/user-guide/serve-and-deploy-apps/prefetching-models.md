@@ -76,6 +76,9 @@ vllm_app = VLLMAppEnvironment(
 app = flyte.serve(vllm_app)
 ```
 
+> [!TIP]
+> You can also use prefetched models as inputs to your generic `[[AppEnvironment]]`s or `FastAPIAppEnvironment`s.
+
 ## Prefetch options
 
 ### Custom artifact name

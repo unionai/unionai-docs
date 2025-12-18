@@ -30,23 +30,17 @@ You can use models prefetched with `flyte.prefetch`:
 
 ## Model streaming
 
-SGLang supports streaming models directly from blob storage to GPU memory:
+`SGLangAppEnvironment` supports streaming models directly from blob storage to GPU memory, reducing startup time.
+When `stream_model=True` and the `model_path` argument is provided with either a `flyte.io.Dir` or `RunOutput` pointing
+to a path in object store:
 
-```python
-sglang_app = SGLangAppEnvironment(
-    name="streaming-sglang-app",
-    model_hf_path="Qwen/Qwen3-0.6B",
-    model_id="qwen3-0.6b",
-    stream_model=True,  # Enable streaming
-    resources=flyte.Resources(cpu="4", memory="16Gi", gpu="L40s:1"),
-    # ...
-)
-```
-
-When `stream_model=True`:
 - Model weights stream directly from storage to GPU
 - Faster startup time (no full download required)
 - Lower disk space requirements
+
+> [!NOTE]
+> The contents of the model directory must be compatible with the SGLang-supported formats, e.g. the HuggingFace model
+> serialization format.
 
 ## Custom SGLang arguments
 
@@ -67,7 +61,7 @@ sglang_app = SGLangAppEnvironment(
 )
 ```
 
-See the [SGLang server arguments documentation](https://docs.sglang.ai/backend/server_arguments.html) for all available options.
+See the [SGLang server arguments documentation](https://docs.sglang.io/advanced_features/server_arguments.html) for all available options.
 
 ## Using the OpenAI-compatible API
 
@@ -78,7 +72,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="https://your-app-url/v1",  # SGLang endpoint
-    api_key="your-api-key",  # If requires_auth=True
+    api_key="your-api-key",  # If you passed an --api-key argument
 )
 
 response = client.chat.completions.create(
@@ -90,6 +84,10 @@ response = client.chat.completions.create(
 
 print(response.choices[0].message.content)
 ```
+
+> [!TIP]
+> If you passed an `--api-key` argument, you can use the `api_key` parameter to authenticate your requests.
+> See [here](./secret-based-authentication#deploy-sglang-app-with-authentication) for more details on how to pass auth secrets to your app.
 
 ## Multi-GPU inference (Tensor Parallelism)
 
@@ -127,9 +125,10 @@ run = flyte.prefetch.hf_model(
     repo="meta-llama/Llama-2-70b-hf",
     accelerator="L40s:4",
     shard_config=flyte.prefetch.ShardConfig(
-        engine="sglang",  # Use SGLang for sharding
-        args=flyte.prefetch.SGLangShardArgs(
-            tp=4,  # Tensor parallelism
+        engine="vllm",
+        args=flyte.prefetch.VLLMShardArgs(
+            tensor_parallel_size=4,
+            dtype="auto",
             trust_remote_code=True,
         ),
     ),
