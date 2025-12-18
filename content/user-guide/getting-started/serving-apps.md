@@ -46,6 +46,15 @@ Now, serve the app with:
 flyte serve hello_app.py env
 ```
 
+You can also serve it via `python`:
+
+```shell
+python hello_app.py
+```
+
+This will use the code in the `if __name__ == "__main__":` block to serve the app
+with the `flyte.serve()` function.
+
 You can also serve the app using `python hello_app.py`, which
 uses the main guard section in the script. It invokes `flyte.init_from_config()` to set up the connection with your Union/Flyte instance and `flyte.serve()` to deploy and serve your app on that instance.
 
