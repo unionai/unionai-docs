@@ -1,12 +1,12 @@
 ---
-title: Release Notes
+title: Release notes
 weight: 6
 variants: +serverless +byoc +selfmanaged -flyte
 top_menu: true
 sidebar_expanded: true
 ---
 
-# Release Notes
+# Release notes
 
 {{< variant serverless byoc selfmanaged >}}
 {{< markdown >}}
@@ -63,7 +63,7 @@ You can call apps from tasks by using `depends_on` and making HTTP requests to t
 
 ### :label: Custom context
 
-You can now pass configuration and metadata implicitly through your entire task execution hierarchy using custom context. This is ideal for cross-cutting concerns like tracing IDs, experiment metadata, environment information, or logging correlation keys—data that needs to be available everywhere but isn't logically part of your task's computation. 
+You can now pass configuration and metadata implicitly through your entire task execution hierarchy using custom context. This is ideal for cross-cutting concerns like tracing IDs, experiment metadata, environment information, or logging correlation keys—data that needs to be available everywhere but isn't logically part of your task's computation.
 
 Custom context is a string key-value map that automatically flows from parent to child tasks without adding parameters to every function signature. Set it once at the run level with `with_runcontext()`, or override values within tasks using the `flyte.custom_context()` context manager:
 
@@ -95,7 +95,7 @@ Now you can view and create secrets directly from the UI. Secrets are stored sec
 
 ![Secrets Creation Flow](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/release-notes/2025-11_secrets_creation.gif)
 
-### Image Builds now run in the same project-domain
+### Image builds now run in the same project-domain
 The image build task is now executed within the same project and domain as the user task, rather than in system-production. This change improves isolation and is a key step toward supporting multi-dataplane clusters.
 
 ### Support for secret mounts in Poetry and UV projects
@@ -123,7 +123,7 @@ env = flyte.TaskEnvironment(
 ## October 2025
 
 ### :infinity: Larger fanouts
-You can now run up to 50,000 actions within a run and up to 1,000 actions concurrently. 
+You can now run up to 50,000 actions within a run and up to 1,000 actions concurrently.
 To enable observability across so many actions, we added group and sub-actions UI views, which show summary statistics about the actions which were spawned within a group or action.
 You can use these summary views (as well as the action status filter) to spot check long-running or failed actions.
 
