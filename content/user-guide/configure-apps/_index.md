@@ -35,17 +35,6 @@ This example demonstrates:
 
 Once deployed, your app will be accessible at the generated URL or your custom subdomain.
 
-## Configuration topics
-
-Learn more about configuring apps:
-
-- [**Environment settings**](./app-environment-settings): Images, resources, secrets, and app-specific settings like `type`, `port`, `args`, `requires_auth`
-- [**App startup**](./app-environment-settings#app-startup): Understanding the difference between `args` and `command`
-- [**Including additional files**](./including-additional-files): How to include additional files needed by your app
-- [**App inputs**](./passing-inputs): Pass inputs to your app at deployment time
-- [**Autoscaling apps**](./app-environment-settings#autoscaling-apps): Configure scaling up and down based on traffic with idle TTL
-- [**App depending on other environments**](./apps-depending-on-environments): Use `depends_on` to deploy dependent apps together
-
 ## Differences from TaskEnvironment
 
 While `AppEnvironment` inherits from `Environment` (the same base class as `TaskEnvironment`), it has several app-specific parameters:
@@ -66,3 +55,14 @@ While `AppEnvironment` inherits from `Environment` (the same base class as `Task
 
 Parameters like `image`, `resources`, `secrets`, `env_vars`, and `depends_on` are shared between both environment types. See the [task configuration](../task-configuration/) docs for details on these shared parameters.
 
+
+## Configuration topics
+
+Learn more about configuring apps:
+
+- [**Environment settings**](./app-environment-settings): Images, resources, secrets, and app-specific settings like `type`, `port`, `args`, `requires_auth`
+- [**App startup**](./app-environment-settings#app-startup): Understanding the difference between `args` and `command`
+- [**Including additional files**](./including-additional-files): How to include additional files needed by your app
+- [**App inputs**](./passing-inputs): Pass inputs to your app at deployment time
+- [**Autoscaling apps**](./app-environment-settings#autoscaling-apps): Configure scaling up and down based on traffic with idle TTL
+- [**App depending on other environments**](./apps-depending-on-environments): Use `depends_on` to deploy dependent apps together
