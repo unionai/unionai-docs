@@ -7,16 +7,16 @@ sidebar_expanded: true
 
 # Configure apps
 
-`[[AppEnvironment]]` allows you to configure the environment in which your app runs, including the container image, compute resources, secrets, domains, scaling behavior, and more.
+`[[AppEnvironment]]`s allows you to configure the environment in which your app runs, including the container image, compute resources, secrets, domains, scaling behavior, and more.
 
 Similar to `[[TaskEnvironment]]`, configuration can be set when creating the `[[AppEnvironment]]` object. Unlike tasks, apps are long-running services, so they have additional configuration options specific to web services:
 
-- **Port configuration**: What port the app listens on
-- **Command and arguments**: How to start the app
-- **Scaling**: Autoscaling configuration for handling variable load
-- **Domains**: Custom domains and subdomains for your app
-- **Authentication**: Whether the app requires authentication to access
-- **App dependencies**: Apps that this app depends on (via `depends_on`)
+- `port`: What port the app listens on
+- `command` and `args`: How to start the app
+- `scaling`: Autoscaling configuration for handling variable load
+- `domain`: Custom domains and subdomains for your app
+- `requires_auth`: Whether the app requires authentication to access
+- `depends_on`: Other app or task environments that the app depends on
 
 ## Hello World example
 
@@ -27,7 +27,7 @@ Here's a complete example of deploying a simple Streamlit "hello world" app with
 This example demonstrates:
 
 - Creating a custom Docker image with Streamlit
-- Setting the command to run the Streamlit hello app
+- Setting the `args` to run the Streamlit hello app
 - Configuring the port
 - Setting resource limits
 - Disabling authentication (for public access)

@@ -8,6 +8,12 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 Flyte SDK lets you serve apps on your Union/Flyte instance, making them accessible via HTTP endpoints. Apps are long-running services that can be accessed by users or other services.
 
+First install fastapi in your virtual environment:
+
+```shell
+pip install fastapi
+```
+
 ## Hello world example
 
 Create a file called `hello_app.py` with the following content:
@@ -34,10 +40,11 @@ Make sure that your `config.yaml` file is in the same directory as your `hello_a
 Now, serve the app with:
 
 ```shell
-uv run --prerelease allow hello_app.py
+flyte serve hello_app.py env
 ```
 
-The main guard section in the script performs a `flyte.init_from_config` to set up the connection with your Union/Flyte instance and a `flyte.serve()` to deploy and serve your app on that instance.
+You can also serve the app using `python hello_app.py`, which
+uses the main guard section in the script. It invokes `flyte.init_from_config` to set up the connection with your Union/Flyte instance and a `flyte.serve()` to deploy and serve your app on that instance.
 
 > [!NOTE]
 > The example scripts in this guide have a main guard that programmatically serves the apps defined in the same file.
@@ -53,7 +60,8 @@ https://my-instance.example.com/v2/apps/project/my-project/domain/development/my
 App 'my-fastapi-app' is now serving.
 ```
 
-Click the link to go to your Union instance and see the app in the UI. You can also access the app directly at the URL to see the API response, or visit `/docs` for interactive API documentation.
+Click the link to go to your Union instance and see the app in the UI, where you can find
+the app URL, or visit `/docs` for the interactive Swagger UI API documentation.
 
 ## Next steps
 

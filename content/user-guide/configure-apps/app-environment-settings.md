@@ -107,9 +107,15 @@ app_env = flyte.app.AppEnvironment(
 
 This is particularly useful for passing API keys or other sensitive values to command-line arguments without hardcoding them in your code. The substitution happens at runtime, ensuring secrets are never exposed in your code or configuration files.
 
+> [!TIP]
+> For most `AppEnvironment`s, use `args` instead of `command` to specify the app startup command
+> in the container. This is because `args` will use the `fserve` command to run the app, which
+> unlocks features like local code bundling and file/directory mounting via input injection.
+
 ### `command`
 
-The `command` parameter specifies the full command to run your app. If not specified, Flyte will use a default command that runs your app via `fserve`.
+The `command` parameter specifies the full command to run your app. If not specified, Flyte will use a default command that runs your app via `fserve`, which is the Python executable provided
+by `flyte` to run apps.
 
 ```python
 # Explicit command
@@ -126,7 +132,9 @@ app_env = flyte.app.AppEnvironment(name="my-app", ...)  # command=None by defaul
 ```
 
 > [!TIP]
-> For most apps, especially when using specialized app environments like `FastAPIAppEnvironment`, you don't need to specify `command` as it's automatically configured.
+> For most apps, especially when using specialized app environments like `FastAPIAppEnvironment`, you don't need to specify `command` as it's automatically configured. Use `command` when you need
+> to specify the raw container command, e.g. when running a non-Python app or when you have all
+> of the dependencies and data used by the app available in the container.
 
 ### `requires_auth`
 
@@ -149,6 +157,101 @@ app_env = flyte.app.AppEnvironment(
 ```
 
 When `requires_auth=True`, users must authenticate with Flyte to access the app. When `requires_auth=False`, the app is publicly accessible (though it may still require API keys or other app-level authentication).
+
+### `domain`
+
+The `domain` parameter specifies a custom domain or subdomain for your app. Use `flyte.app.Domain` to configure a subdomain or custom domain.
+
+```python
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    domain=flyte.app.Domain(subdomain="myapp"),
+    # ...
+)
+```
+
+### `links`
+
+The `links` parameter adds links to the App UI page. Use `flyte.app.Link` objects to specify relative or absolute links with titles.
+
+```python
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    links=[
+        flyte.app.Link(path="/docs", title="API Documentation", is_relative=True),
+        flyte.app.Link(path="/health", title="Health Check", is_relative=True),
+    ],
+    # ...
+)
+```
+
+### `include`
+
+The `include` parameter specifies files and directories to include in the app bundle. Use glob patterns or explicit paths to include code files needed by your app.
+
+```python
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    include=["*.py", "models/", "utils/", "requirements.txt"],
+    # ...
+)
+```
+
+> [!NOTE]
+> Learn more about including additional files in your app deployment [here](./including-additional-files).
+
+### `inputs`
+
+The `inputs` parameter passes inputs to your app at deployment time. Inputs can be primitive values, files, directories, or delayed values like `RunOutput` or `AppEndpoint`.
+
+```python
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    inputs=[
+        flyte.app.Input(name="config", value="config.yaml", env_var="CONFIG_PATH"),
+        flyte.app.Input(name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
+    ],
+    # ...
+)
+```
+
+> [!NOTE]
+> Learn more about passing inputs to your app at deployment time [here](./passing-inputs).
+
+### `scaling`
+
+The `scaling` parameter configures autoscaling behavior for your app. Use `flyte.app.Scaling` to set replica ranges and idle TTL.
+
+```python
+app_env = flyte.app.AppEnvironment(
+    name="my-app",
+    scaling=flyte.app.Scaling(
+        replicas=(1, 5),
+        scaledown_after=300,  # Scale down after 5 minutes of idle time
+    ),
+    # ...
+)
+```
+
+> [!NOTE]
+> Learn more about autoscaling apps [here](./auto-scaling-apps).
+
+### `depends_on`
+
+The `depends_on` parameter specifies environment dependencies. When you deploy an app, all dependencies are deployed first.
+
+```python
+backend_env = flyte.app.AppEnvironment(name="backend-api", ...)
+
+frontend_env = flyte.app.AppEnvironment(
+    name="frontend-app",
+    depends_on=[backend_env],  # backend-api will be deployed first
+    # ...
+)
+```
+
+> [!NOTE]
+> Learn more about app environment dependencies [here](./apps-depending-on-environments).
 
 ## App startup
 
@@ -235,113 +338,6 @@ The `FastAPIAppEnvironment` automatically:
 4. **Always set `port`** to match what your app actually listens on.
 5. **Use `include`** with `args` to bundle your app code files.
 
-## Autoscaling apps
-
-Flyte apps support autoscaling, allowing them to scale up and down based on traffic. This helps optimize costs by scaling down when there's no traffic and scaling up when needed.
-
-### Scaling configuration
-
-The `scaling` parameter uses a `Scaling` object to configure autoscaling behavior:
-
-```python
-scaling=flyte.app.Scaling(
-    replicas=(min_replicas, max_replicas),
-    scaledown_after=idle_ttl_seconds,
-)
-```
-
-#### Parameters
-
-- **`replicas`**: A tuple `(min_replicas, max_replicas)` specifying the minimum and maximum number of replicas.
-- **`scaledown_after`**: Time in seconds to wait before scaling down when idle (idle TTL).
-
-### Basic scaling example
-
-Here's a simple example with scaling from 0 to 1 replica:
-
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=basic-scaling lang=python >}}
-
-This configuration:
-
-- Starts with 0 replicas (no running instances)
-- Scales up to 1 replica when there's traffic
-- Scales back down to 0 after 5 minutes (300 seconds) of no traffic
-
-### Scaling patterns
-
-#### Always-on app
-
-For apps that need to always be running:
-
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=always-on lang=python >}}
-
-#### Scale-to-zero app
-
-For apps that can scale to zero when idle:
-
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=scale-to-zero lang=python >}}
-
-#### High-availability app
-
-For apps that need multiple replicas for availability:
-
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=high-availability lang=python >}}
-
-#### Burstable app
-
-For apps with variable load:
-
-{{< code file="/external/unionai-examples/v2/user-guide/configure-apps/autoscaling-examples.py" fragment=burstable lang=python >}}
-
-### Idle TTL (Time To Live)
-
-The `scaledown_after` parameter (idle TTL) determines how long an app instance can be idle before it's scaled down. 
-
-#### Considerations
-
-- **Too short**: May cause frequent scale up/down cycles, leading to cold starts.
-- **Too long**: Keeps resources running unnecessarily, increasing costs.
-- **Optimal**: Balance between cost and user experience.
-
-#### Common idle TTL values
-
-- **Development/Testing**: 60-180 seconds (1-3 minutes) - quick scale down for cost savings.
-- **Production APIs**: 300-600 seconds (5-10 minutes) - balance cost and responsiveness.
-- **Batch processing**: 900-1800 seconds (15-30 minutes) - longer to handle bursts.
-- **Always-on**: Set `min_replicas > 0` - never scale down.
-
-### Autoscaling best practices
-
-1. **Start conservative**: Begin with longer idle TTL values and adjust based on usage.
-2. **Monitor cold starts**: Track how long it takes for your app to become ready after scaling up.
-3. **Consider costs**: Balance idle TTL between cost savings and user experience.
-4. **Use appropriate min replicas**: Set `min_replicas > 0` for critical apps that need to be always available.
-5. **Test scaling behavior**: Verify your app handles scale up/down correctly (for example, state management and connections).
-
-### Autoscaling limitations
-
-- Scaling is based on traffic/request patterns, not CPU/memory utilization.
-- Cold starts may occur when scaling from zero.
-- Stateful apps need careful design to handle scaling (use external state stores).
-- Maximum replicas are limited by your cluster capacity.
-
-### Autoscaling troubleshooting
-
-**App scales down too quickly:**
-
-- Increase `scaledown_after` value.
-- Set `min_replicas > 0` if the app needs to stay warm.
-
-**App doesn't scale up fast enough:**
-
-- Ensure your cluster has capacity.
-- Check if there are resource constraints.
-
-**Cold starts are too slow:**
-
-- Pre-warm with `min_replicas = 1`.
-- Optimize app startup time.
-- Consider using faster storage for model loading.
 
 ## Complete example
 
