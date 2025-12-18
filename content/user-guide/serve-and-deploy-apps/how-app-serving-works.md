@@ -42,14 +42,13 @@ if __name__ == "__main__":
 One key advantage of serving is the ability to override inputs dynamically:
 
 ```python
-app = flyte.serve(
-    app_env,
+app = flyte.with_servecontext(
     input_values={
         "my-dev-app": {
             "model_path": "s3://bucket/models/test-model.pkl",
         }
-    },
-)
+    }
+).serve(app_env)
 ```
 
 This is useful for:

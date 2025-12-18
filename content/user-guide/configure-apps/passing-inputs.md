@@ -45,21 +45,24 @@ The endpoint URL will be injected as the input value when the app starts.
 
 This is particularly useful when you want to chain apps together (for example, a frontend app calling a backend app), without hardcoding URLs.
 
-## Overriding inputs at serve or deploy time
+## Overriding inputs at serve time
 
-You can override input values when serving or deploying apps:
+You can override input values when serving apps (this is not supported for deployment):
 
 ```python
 # Override inputs when serving
-app = flyte.serve(app_env, input_values={"my-app": {"model_path": "s3://bucket/new-model.pkl"}})
-
-# Override inputs when deploying
-app = flyte.deploy(app_env, input_values={"my-app": {"model_path": "s3://bucket/new-model.pkl"}})
+app = flyte.with_servecontext(
+    input_values={"my-app": {"model_path": "s3://bucket/new-model.pkl"}}
+).serve(app_env)
 ```
 
+> [!NOTE]
+> Input overrides are only available when using `flyte.serve()` or `flyte.with_servecontext().serve()`. 
+> The `flyte.deploy()` function does not support input overrides - inputs must be specified in the `AppEnvironment` definition.
+
 This is useful for:
-- Testing different configurations
-- Using different models or data sources
+- Testing different configurations during development
+- Using different models or data sources for testing
 - A/B testing different app configurations
 
 ## Example: FastAPI app with configurable model
@@ -102,16 +105,17 @@ API_KEY = os.getenv("API_KEY")
 with open("/app/models/model.pkl", "rb") as f:
     model = pickle.load(f)
 
-# Access in the app via the Flyte SDK
-model = flyte.app.get_input("model_file")
+# Access in the app via the Flyte SDK (for string inputs)
+input_value = flyte.app.get_input("config")  # Returns string value
 ```
 
 ## Best practices
 
 1. **Use delayed inputs**: Leverage `RunOutput` and `AppEndpoint` to create app dependencies between tasks and apps, or app-to-app chains.
-2. **Override for testing**: Use the `input_values` parameter when serving or deploying to test different configurations without changing code.
+2. **Override for testing**: Use the `input_values` parameter when serving to test different configurations without changing code.
 3. **Mount paths clearly**: Use descriptive mount paths for file/directory inputs so your app code is easy to understand.
 4. **Use environment variables**: For simple constants that you can hard-code, use `env_var` to inject values as environment variables.
+5. **Production deployments**: For production, define inputs in the `AppEnvironment` rather than overriding them at deploy time.
 
 ## Limitations
 

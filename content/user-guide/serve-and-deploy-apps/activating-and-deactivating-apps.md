@@ -29,12 +29,12 @@ print(f"Activated app: {app.name}")
 print(f"URL: {app.url}")
 ```
 
-### Activate a specific version
+### Activate an app
 
-You can activate a specific version of an app:
+When you get an app by name, you get the current app instance:
 
 ```python
-app = App.get(name="my-app", version="v1.0.0")
+app = App.get(name="my-app")
 app.activate()
 ```
 
@@ -44,8 +44,8 @@ Check if an app is active:
 
 ```python
 app = App.get(name="my-app")
-print(f"Active: {app.is_active()}")
-print(f"Current version: {app.current_version}")
+    print(f"Active: {app.is_active()}")
+    print(f"Revision: {app.revision}")
 ```
 
 ## Deactivation
@@ -70,18 +70,14 @@ deployments = flyte.deploy(
     version="v2.0.0",
 )
 
-# 2. Test the new version (optional)
-new_app = App.get(name="my-app", version="v2.0.0")
-# Test endpoints, etc.
+    # 2. Get the deployed app
+    new_app = App.get(name="my-app")
+    # Test endpoints, etc.
 
-# 3. Deactivate old version
-old_app = App.get(name="my-app", version="v1.0.0")
-old_app.deactivate()
+    # 3. Activate the new version
+    new_app.activate()
 
-# 4. Activate new version
-new_app.activate()
-
-print(f"Upgraded from v1.0.0 to v2.0.0")
+    print(f"Deployed and activated version {new_app.revision}")
 ```
 
 ### Blue-green deployment
@@ -95,17 +91,15 @@ new_deployments = flyte.deploy(
     version="v2.0.0",
 )
 
-new_app = App.get(name="my-app", version="v2.0.0")
+    new_app = App.get(name="my-app")
 
-# Test new version
-# ... testing ...
+    # Test new version
+    # ... testing ...
 
-# Switch traffic to new version
-new_app.activate()
+    # Switch traffic to new version
+    new_app.activate()
 
-# Deactivate old version after switch
-old_app = App.get(name="my-app", version="v1.0.0")
-old_app.deactivate()
+    print(f"Activated revision {new_app.revision}")
 ```
 
 ### Rollback
@@ -113,15 +107,11 @@ old_app.deactivate()
 Roll back to a previous version:
 
 ```python
-# Deactivate current version
-current_app = App.get(name="my-app")
-current_app.deactivate()
+    # Deactivate current version
+    current_app = App.get(name="my-app")
+    current_app.deactivate()
 
-# Activate previous version
-previous_app = App.get(name="my-app", version="v1.0.0")
-previous_app.activate()
-
-print(f"Rolled back to v1.0.0")
+    print(f"Deactivated revision {current_app.revision}")
 ```
 
 ## Using CLI
@@ -129,19 +119,13 @@ print(f"Rolled back to v1.0.0")
 ### Activate
 
 ```bash
-flyte app activate my-app
-```
-
-Activate specific version:
-
-```bash
-flyte app activate my-app --version v1.0.0
+flyte update app --activate my-app
 ```
 
 ### Deactivate
 
 ```bash
-flyte app deactivate my-app
+flyte update app --deactivate my-app
 ```
 
 ### Check status
@@ -195,13 +179,13 @@ if __name__ == "__main__":
     )
     
     # Get the deployed app
-    app = App.get(name="my-prod-app", version="v1.0.0")
+    app = App.get(name="my-prod-app")
     
     # Activate
     app.activate()
     
     print(f"Deployed and activated: {app.name}")
-    print(f"Version: {app.current_version}")
+    print(f"Revision: {app.revision}")
     print(f"URL: {app.url}")
     print(f"Active: {app.is_active()}")
 ```

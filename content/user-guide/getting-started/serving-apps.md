@@ -44,7 +44,7 @@ flyte serve hello_app.py env
 ```
 
 You can also serve the app using `python hello_app.py`, which
-uses the main guard section in the script. It invokes `flyte.init_from_config` to set up the connection with your Union/Flyte instance and a `flyte.serve()` to deploy and serve your app on that instance.
+uses the main guard section in the script. It invokes `flyte.init_from_config()` to set up the connection with your Union/Flyte instance and `flyte.serve()` to deploy and serve your app on that instance.
 
 > [!NOTE]
 > The example scripts in this guide have a main guard that programmatically serves the apps defined in the same file.
@@ -56,8 +56,8 @@ uses the main guard section in the script. It invokes `flyte.init_from_config` t
 In your terminal, you should see output like this:
 
 ```shell
-https://my-instance.example.com/v2/apps/project/my-project/domain/development/my-fastapi-app
-App 'my-fastapi-app' is now serving.
+https://my-instance.example.com/v2/apps/project/my-project/domain/development/hello-app
+App 'hello-app' is now serving.
 ```
 
 Click the link to go to your Union instance and see the app in the UI, where you can find

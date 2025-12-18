@@ -17,7 +17,7 @@ When you deploy an app, the following happens:
 3. **Deployment**: The app is deployed to your Flyte cluster
 4. **Activation**: The app is automatically activated and ready to use
 
-## Using Python SDK
+## Using the Python SDK
 
 Deploy an app:
 
@@ -33,13 +33,15 @@ app_env = flyte.app.AppEnvironment(
 if __name__ == "__main__":
     flyte.init_from_config()
     deployments = flyte.deploy(app_env)
-    
+
+    # Access deployed apps from deployments
     for deployment in deployments:
-        print(f"Deployed: {deployment.env.name}")
-        print(f"URL: {deployment.url}")
+        for deployed_env in deployment.envs.values():
+            print(f"Deployed: {deployed_env.env.name}")
+            print(f"URL: {deployed_env.deployed_app.url}")
 ```
 
-`flyte.deploy()` returns a list of `DeployedEnvironment` objects, one for each environment deployed (including environment dependencies).
+`flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects (one for each environment deployed, including environment dependencies). For apps, the `DeployedEnvironment` is a `DeployedAppEnvironment` which has a `deployed_app` property of type `App`.
 
 
 ## Deployment plan
@@ -59,6 +61,25 @@ deployments = flyte.deploy(app2_env)
 
 # deployments contains both app1_env and app2_env
 assert len(deployments) == 2
+```
+
+## Overriding App configuration at deployment time
+
+If you need to override the app configuration at deployment time, you can use the `clone_with` method to create a new
+app environment with the desired overrides.
+
+```python
+app_env = flyte.app.AppEnvironment(name="my-app", ...)
+
+if __name__ == "__main__":
+    flyte.init_from_config()
+    deployments = flyte.deploy(
+        app_env.clone_with(app_env.name, resources=flyte.Resources(cpu="2", memory="2Gi"))
+    )
+    for deployment in deployments:
+        for deployed_env in deployment.envs.values():
+            print(f"Deployed: {deployed_env.env.name}")
+            print(f"URL: {deployed_env.deployed_app.url}")
 ```
 
 ## Activation/deactivation
@@ -122,16 +143,16 @@ if __name__ == "__main__":
         copy_style="loaded_modules",
     )
     
+    # Access deployed apps from deployments
     for deployment in deployments:
-        print(f"Deployed: {deployment.env.name}")
-        print(f"Version: {deployment.version}")
-        print(f"URL: {deployment.url}")
-        
-        # Activate the app
-        from flyte.remote import App
-        app = App.get(name=deployment.env.name)
-        app.activate()
-        print(f"Activated: {app.name}")
+        for deployed_env in deployment.envs.values():
+            app = deployed_env.deployed_app
+            print(f"Deployed: {deployed_env.env.name}")
+            print(f"URL: {app.url}")
+
+            # Activate the app
+            app.activate()
+            print(f"Activated: {app.name}")
 ```
 
 ## Best practices
@@ -148,28 +169,28 @@ if __name__ == "__main__":
 
 ## Deployment status and return value
 
-`flyte.deploy()` returns a list of `DeployedEnvironment` objects:
+`flyte.deploy()` returns a list of `Deployment` objects. Each `Deployment` contains a dictionary of `DeployedEnvironment` objects:
 
 ```python
 deployments = flyte.deploy(app_env)
 
 for deployment in deployments:
-    # Access deployed environment
-    env = deployment.env
-    
-    # Access deployment info
-    print(f"Name: {env.name}")
-    print(f"Version: {deployment.version}")
-    print(f"URL: {deployment.url}")
-    print(f"Status: {deployment.status}")
+    for deployed_env in deployment.envs.values():
+        if hasattr(deployed_env, 'deployed_app'):
+            # Access deployed environment
+            env = deployed_env.env
+            app = deployed_env.deployed_app
+
+            # Access deployment info
+            print(f"Name: {env.name}")
+            print(f"URL: {app.url}")
+            print(f"Status: {app.deployment_status}")
 ```
 
-Each `DeployedEnvironment` includes:
+For apps, each `DeployedAppEnvironment` includes:
 
 - `env`: The `AppEnvironment` that was deployed
-- `version`: The version of the deployment
-- `url`: The app's URL
-- `status`: Current deployment status
+- `deployed_app`: The `App` object with properties like `url`, `endpoint`, `name`, and `deployment_status`
 
 ## Troubleshooting
 
