@@ -18,7 +18,7 @@ To understand how Flyte 2 works, it helps to establish a few definitions and con
     * The software environment is specified by parameters that define the container image, including dependencies, required to run the task.
 
 * **Task**: A Python function.
-  * Tasks are defined using the [@env.task](../../api-reference/flyte-sdk/packages/flyte/taskenvironment/#task) decorator, where the `env` refers to a `TaskEnvironment` object.
+  * Tasks are defined using the `[[TaskEnvironment.task]]` decorator.
   * Tasks can involve invoking helper functions as well as other tasks and assembling outputs from those invocations.
 
 * **Run**: A `[[Run]]` is the execution of a task directly initiated by a user and all its descendant tasks, considered together.
