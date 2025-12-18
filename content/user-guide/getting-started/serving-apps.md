@@ -68,5 +68,5 @@ the app URL, or visit `/docs` for the interactive Swagger UI API documentation.
 Now that you've served your first app, you can learn more about:
 
 - [**Configuring apps**](../configure-apps/): Learn how to configure app environments, including images, resources, ports, and more
-- [**Serving and deploying apps**](../serve-and-deploy-apps/): Understand the difference between serving (development) and deploying (production) apps
 - [**Building apps**](../build-apps/): Explore different types of apps you can build (FastAPI, Streamlit, vLLM, SGLang)
+- [**Serving and deploying apps**](../serve-and-deploy-apps/): Understand the difference between serving (development) and deploying (production) apps

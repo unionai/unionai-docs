@@ -180,6 +180,7 @@ app_env = flyte.app.AppEnvironment(
     links=[
         flyte.app.Link(path="/docs", title="API Documentation", is_relative=True),
         flyte.app.Link(path="/health", title="Health Check", is_relative=True),
+        flyte.app.Link(path="https://www.example.com", title="External link", is_relative=False),
     ],
     # ...
 )
@@ -208,8 +209,9 @@ The `inputs` parameter passes inputs to your app at deployment time. Inputs can 
 app_env = flyte.app.AppEnvironment(
     name="my-app",
     inputs=[
-        flyte.app.Input(name="config", value="config.yaml", env_var="CONFIG_PATH"),
-        flyte.app.Input(name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
+        flyte.app.Input(type="string", name="config", value="foo", env_var="BAR"),
+        flyte.app.Input(type="file", name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
+        flyte.app.Input(type="directory", name="data", value=flyte.io.File(path="s3://bucket/data.pkl"), mount="/mnt/data"),
     ],
     # ...
 )
