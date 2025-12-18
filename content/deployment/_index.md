@@ -1,5 +1,5 @@
 ---
-title: Deployment
+title: Platform deployment
 weight: 4
 variants: +flyte -serverless +byoc +selfmanaged
 top_menu: true
@@ -7,7 +7,7 @@ mermaid: true
 sidebar_expanded: true
 ---
 
-# Deployment
+# Platform deployment
 
 {{< variant byoc selfmanaged >}}
 {{< markdown >}}

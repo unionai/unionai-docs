@@ -173,7 +173,7 @@ flyte run --copy-style=all app.py my_task --input-data sample.csv
 
 #### Using `copy_style="none"`
 
-Skip code bundling (see [Container-based Deployment](#container-based-deployment)):
+Skip code bundling (see [Container-based deployment](#container-based-deployment)):
 
 ```python
 run = flyte.with_runcontext(copy_style="none").run(my_task, x=10)
