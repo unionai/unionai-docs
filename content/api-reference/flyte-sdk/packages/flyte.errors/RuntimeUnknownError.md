@@ -1,6 +1,6 @@
 ---
 title: RuntimeUnknownError
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
