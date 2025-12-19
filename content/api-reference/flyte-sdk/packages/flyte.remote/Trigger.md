@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -195,4 +195,5 @@ Pause a trigger by its name and associated task name.
 | `is_active` | `None` |  |
 | `name` | `None` |  |
 | `task_name` | `None` |  |
+| `url` | `None` |  |
 
