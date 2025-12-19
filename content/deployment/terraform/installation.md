@@ -29,4 +29,11 @@ provider "unionai" {
 }
 ```
 
+## Version
+
+To choose the appropriate version of the provider (likely you should choose latest):
+
+1. Visit the Provider Registry site and observe the latest version number
+2. Use that version number in the provider declaration above
+
 For detailed installation instructions, please refer to the [Terraform Registry documentation](https://registry.terraform.io/providers/unionai/unionai/latest/docs).
