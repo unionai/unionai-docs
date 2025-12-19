@@ -197,6 +197,7 @@ flyte run orchestration_env.py orchestrate_pipeline --data_path s3://my-bucket/d
 You can also run any remote task directly using a script in a similar way
 ```python
 import flyte
+import flyte.models
 import flyte.remote
 
 flyte.init_from_config()
@@ -214,7 +215,12 @@ print(f"Current Phase: {run.phase}")
 # You can wait for the execution
 run.wait()
 
-# Wait today does not automatically update the phase of the `run` object itself. We will soon add a sync method
+# Only available after flyte >= 2.0.0b39
+print(f"Current phase: {run.phase}")
+
+# Phases can be compared to
+if run.phase == flyte.models.ActionPhase.SUCCEEDED:
+    print(f"Run completed!")
 
 # You can then retrieve the outputs
 print(f"Pipeline result: {run.outputs()}")
