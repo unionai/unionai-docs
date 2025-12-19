@@ -54,6 +54,25 @@
           // Strip trailing () for matching
           const textForMatching = innerText.endsWith('()') ? innerText.slice(0, -2) : innerText;
 
+          // Check if it's a ClassName.method pattern (for magic matching)
+          const classMethodMatch = textForMatching.match(/^([^.]+)\.(.+)$/);
+          if (classMethodMatch) {
+            const className = classMethodMatch[1];
+            const methodName = classMethodMatch[2];
+
+            // Try to find identifier ending with the class name
+            if (linkmap.identifiers) {
+              for (const [fullIdentifier, url] of Object.entries(linkmap.identifiers)) {
+                const lastPart = fullIdentifier.split('.').pop();
+                if (lastPart === className) {
+                  // Found the class, append #methodName to the URL
+                  wrapWithLink(codeEl, url + '#' + methodName, displayText);
+                  return;
+                }
+              }
+            }
+          }
+
           // Try to match by the last part after dots
           let matched = false;
 
@@ -90,6 +109,32 @@
         // Regular matching (no magic markers)
         // Strip trailing () for matching methods
         const textForMatching = text.endsWith('()') ? text.slice(0, -2) : text;
+
+        // Check if it's a ClassName.method or fully.qualified.ClassName.method pattern
+        const classMethodMatch = textForMatching.match(/^(.+)\.(.+)$/);
+        if (classMethodMatch) {
+          const classPart = classMethodMatch[1];
+          const methodName = classMethodMatch[2];
+
+          // Try exact match first (fully qualified)
+          if (linkmap.identifiers && linkmap.identifiers[classPart]) {
+            // Found the class, append #methodName to the URL
+            wrapWithLink(codeEl, linkmap.identifiers[classPart] + '#' + methodName, text);
+            return;
+          }
+
+          // Try to find identifier ending with the class name (for partial matches)
+          if (linkmap.identifiers) {
+            for (const [fullIdentifier, url] of Object.entries(linkmap.identifiers)) {
+              const lastPart = fullIdentifier.split('.').pop();
+              if (lastPart === classPart) {
+                // Found the class, append #methodName to the URL
+                wrapWithLink(codeEl, url + '#' + methodName, text);
+                return;
+              }
+            }
+          }
+        }
 
         // Check if it matches a method
         if (linkmap.methods && linkmap.methods[textForMatching]) {

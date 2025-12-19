@@ -270,7 +270,7 @@ The full set of parameters available for configuring a task environment, task de
 
 * Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task
   (e.g., primitives, strings, dictionaries).
-  Does not apply to [`flyte.File`, `flyte.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
+  Does not apply to [`flyte.io.File`, `flyte.io.Dir`](../task-programming/files-and-directories), or [`flyte.DataFrame`](../task-programming/dataclasses-and-structures) (since these are passed by reference).
 
 * Can be set at the `@env.task` decorator level and overridden at the `task.override()` invocation level.
   If not set, the default value is `MAX_INLINE_IO_BYTES` (which is 100 MiB).
