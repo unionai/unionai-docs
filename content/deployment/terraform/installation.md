@@ -29,7 +29,9 @@ provider "unionai" {
 }
 ```
 
-## Version
+> **Security Note:** Never hardcode API keys in your Terraform files. See [Security Best Practices](./security) for recommended approaches to securely manage your API keys.
+
+## Versioning
 
 To choose the appropriate version of the provider (likely you should choose latest):
 

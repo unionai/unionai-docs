@@ -46,6 +46,10 @@ Install and configure the Union Terraform provider
 Learn about available resources and data sources
 {{< /link-card >}}
 
+{{< link-card target="./security" icon="lock" title="Security Best Practices" >}}
+Securely manage API keys and credentials
+{{< /link-card >}}
+
 {{< /grid >}}
 
 ## Requirements
