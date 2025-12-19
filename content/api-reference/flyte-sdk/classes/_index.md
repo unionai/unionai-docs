@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -34,12 +34,6 @@ sidebar_expanded: true
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
-| [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
-| [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
-| [`flyte.connectors.ConnectorRegistry`](../packages/flyte.connectors/connectorregistry) |This is the registry for all connectors. |
-| [`flyte.connectors.ConnectorService`](../packages/flyte.connectors/connectorservice) | |
-| [`flyte.connectors.Resource`](../packages/flyte.connectors/resource) |This is the output resource of the job. |
-| [`flyte.connectors.ResourceMeta`](../packages/flyte.connectors/resourcemeta) |This is the metadata for the job. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
 | [`flyte.errors.CustomError`](../packages/flyte.errors/customerror) |This error is raised when the user raises a custom error. |
@@ -78,6 +72,7 @@ sidebar_expanded: true
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
 | [`flyte.models.ActionID`](../packages/flyte.models/actionid) |A class representing the ID of an Action, nested within a Run. |
+| [`flyte.models.ActionPhase`](../packages/flyte.models/actionphase) |Represents the execution phase of a Flyte action (run). |
 | [`flyte.models.Checkpoints`](../packages/flyte.models/checkpoints) |A class representing the checkpoints for a task. |
 | [`flyte.models.CodeBundle`](../packages/flyte.models/codebundle) |A class representing a code bundle for a task. |
 | [`flyte.models.GroupData`](../packages/flyte.models/groupdata) | |

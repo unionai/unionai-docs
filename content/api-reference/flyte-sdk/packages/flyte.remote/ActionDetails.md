@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -193,7 +193,7 @@ def watch_updates(
 | `is_running` | `None` | Check if the action is currently running. |
 | `metadata` | `None` |  |
 | `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action. |
+| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
 | `runtime` | `None` | Get the runtime of the action. |
