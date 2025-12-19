@@ -6,7 +6,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 
 # How app serving works
 
-Serving is the recommended way to deploy apps during development. It provides a faster feedback loop and allows you to dynamically modify inputs.
+Serving is the recommended way to deploy apps during development. It provides a faster feedback loop and allows you to dynamically modify parameters.
 
 ## Overview
 

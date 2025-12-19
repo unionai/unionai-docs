@@ -218,7 +218,7 @@ app_env = flyte.app.AppEnvironment(
 ```
 
 > [!NOTE]
-> Learn more about passing parameters to your app at deployment time [here](./passing-inputs).
+> Learn more about passing parameters to your app at deployment time [here](./passing-parameters).
 
 ### `scaling`
 
@@ -278,7 +278,7 @@ When you don't specify a `command`, Flyte generates a default command that uses 
 - Setting up the code bundle
 - Configuring the version
 - Setting up project/domain context
-- Injecting inputs if provided
+- Injecting parameters if provided
 
 The default command looks like:
 
