@@ -28,7 +28,7 @@ import flyte.app
 
 app_env = flyte.app.AppEnvironment(
     name="my-dev-app",
-    inputs=[flyte.app.Input(name="model_path", value="s3://bucket/models/model.pkl")],
+    parameters=[flyte.app.Parameter(name="model_path", value="s3://bucket/models/model.pkl")],
     # ...
 )
 
@@ -38,9 +38,9 @@ if __name__ == "__main__":
     print(f"App served at: {app.url}")
 ```
 
-## Overriding inputs
+## Overriding parameters
 
-One key advantage of serving is the ability to override inputs dynamically:
+One key advantage of serving is the ability to override parameters dynamically:
 
 ```python
 app = flyte.with_servecontext(
@@ -106,7 +106,7 @@ print(f"Status: {app.status}")
 ## Best practices
 
 1. **Use for development**: App serving is ideal for development and testing.
-2. **Override inputs**: Take advantage of input overrides for testing different configurations.
+2. **Override parameters**: Take advantage of parameter overrides for testing different configurations.
 3. **Quick iteration**: Use `serve` for rapid development cycles.
 4. **Switch to deploy**: Use [deploy](./how-app-deployment-works) for production deployments.
 
@@ -117,9 +117,9 @@ print(f"Status: {app.status}")
 - Verify app configuration is correct
 - Review container logs for errors
 
-**Input overrides not working:**
-- Verify input names match exactly
-- Check that inputs are defined in the app environment
+**Parameter overrides not working:**
+- Verify parameter names match exactly
+- Check that parameters are defined in the app environment
 - Ensure you're using the `input_values` parameter correctly
 
 **Slow serving:**
