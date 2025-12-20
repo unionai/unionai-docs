@@ -21,7 +21,7 @@ In order to support this functionality securely, your bucket must allow CORS acc
     deployed.
 4. Click on "Permissions" tab and scroll to "CORS Policy"
 5. Click on Edit and enter the policy below
-![Code Viewer](../../_static/images/deployment/configuration/code-viewer/s3.png)
+![S3 CORS Policy](../../_static/images/deployment/configuration/code-viewer/s3.png)
 ```
 [
     {
