@@ -8,7 +8,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 One of the powerful capabilities in the Union UI is the ability to view the exact code that ran a particular task. 
 Union Union implements a secure mechanism to transfer the [code bundle](../../user-guide/run-scaling/life-of-a-run.md/#phase-2-image-building) to the browser without passing through the control plane.
 
-![Code Viewer](../../_static/images/deployment/configuration/code-viewer/image.png)
+![Code Viewer](../../_static/images/deployment/configuration/code-viewer/demo.png)
 
 ## Enable CORS policy on your fast registration bucket
 In order to support this functionality securely, your bucket must allow CORS access for Union. Depending on which cloud the bucket is located in, these configurations vary.
