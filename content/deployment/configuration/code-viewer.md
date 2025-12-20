@@ -33,7 +33,6 @@ In order to support this functionality securely, your bucket must allow CORS acc
             "HEAD",
         ],
         "AllowedOrigins": [
-            "https://*.union.ai",
             "https://*.unionai.cloud"
         ],
         "ExposeHeaders": [
@@ -43,8 +42,50 @@ In order to support this functionality securely, your bucket must allow CORS acc
     }
 ]
 ```
+Further reference: [AWS Guide on S3 CORS Policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html)
 {{< /tab >}}
 {{< tab "Google GCS" >}}
-foo
+Google GCS does not allow changing the bucket policy through the console.
+1. Create a cors.json configuration file and paste the content below
+    ```json
+    [
+        {
+        "origin": ["https://*.unionai.cloud"],
+        "method": ["HEAD", "GET"],
+        "responseHeader": ["ETag"],
+        "maxAgeSeconds": 3600
+        }
+    ]
+    ```
+2. Apply the cors configuration:
+    ```bash
+    gcloud storage buckets update gs://<fast_registration_bucket> --cors-file=cors.json
+    ```
+3. View configuration to confirm:
+   ```bash
+   gcloud storage buckets describe gs://<fast_registration_bucket> --format="default(cors_config)"
+
+   cors_config:
+   - maxAgeSeconds: 3600
+     method:
+     - GET
+     - HEAD
+     origin:
+     - https://*.unionai.cloud
+     responseHeader:
+     - ETag
+   ```
+Further reference: [Google Guide on GCS CORS Policy](https://docs.cloud.google.com/storage/docs/using-cors#command-line)
+{{< /tab >}}
+{{< tab "Azure Storage" >}}
+Further reference: [Azure Guide on Storage CORS Policy](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services)
 {{< /tab >}}
 {{< /tabs >}}
+
+## Troubleshooting
+
+| Error Message | Cause | Fix |
+|---------------|-------|-----|
+| `Not available: No code available for this action.` | The underlying task doesn't have a code bundle, this could be because all code is already in the underlying docker image or the task isn't a code task. | Expected behavior for non-code-bundled tasks |
+| `Not Found: The code bundle file could not be found. This may be due to your organization's data retention policy.` | The task does use a code bundle but the underlying bundle isn't found in the bucket. | Check fast registration bucket retention policy |
+| `Error: Code download is blocked by your storage bucket's configuration. Please contact your administrator to enable access.` | CORS isn't properly configured on the bucket | Refer to the above guide to enable CORS. |
