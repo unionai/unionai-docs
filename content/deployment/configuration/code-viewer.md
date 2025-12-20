@@ -5,7 +5,7 @@ variants: -flyte -serverless -byoc +selfmanaged
 ---
 
 # Code Viewer
-One of the powerful capabilities in the Union UI is the ability to view the exact code that ran a particular task. 
+One of the powerful capabilities in the Union UI is the ability to view the exact code that ran a particular task.
 Union Union implements a secure mechanism to transfer the [code bundle](../../user-guide/run-scaling/life-of-a-run.md/#phase-2-image-building) to the browser without passing through the control plane.
 
 ![Code Viewer](../../_static/images/deployment/configuration/code-viewer/demo.png)
@@ -15,6 +15,7 @@ In order to support this functionality securely, your bucket must allow CORS acc
 
 {{< tabs "bucket-cors-policy" >}}
 {{< tab "AWS S3 Console" >}}
+{{< markdown >}}
 1. Access AWS Console
 2. Access S3 dashboard
 3. Choose the fast registration bucket. Unless configured differently, this is the same as the metadata bucket configured when you first
@@ -43,8 +44,10 @@ In order to support this functionality securely, your bucket must allow CORS acc
 ]
 ```
 Further reference: [AWS Guide on S3 CORS Policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html)
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Google GCS" >}}
+{{< markdown >}}
 Google GCS does not allow changing the bucket policy through the console.
 1. Create a cors.json configuration file and paste the content below
     ```json
@@ -76,9 +79,12 @@ Google GCS does not allow changing the bucket policy through the console.
      - ETag
    ```
 Further reference: [Google Guide on GCS CORS Policy](https://docs.cloud.google.com/storage/docs/using-cors#command-line)
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Azure Storage" >}}
+{{< markdown >}}
 Further reference: [Azure Guide on Storage CORS Policy](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services)
+{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
