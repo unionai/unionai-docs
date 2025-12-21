@@ -5,22 +5,20 @@ variants: -flyte -serverless -byoc +selfmanaged
 ---
 
 # Code Viewer
-One of the powerful capabilities in the Union UI is the ability to view the exact code that ran a particular task. 
-Union Union implements a secure mechanism to transfer the [code bundle](../../user-guide/run-scaling/life-of-a-run.md/#phase-2-image-building) to the browser without passing through the control plane.
+The Union UI allows you to view the exact code that executed a specific task. Union securely transfers the [code bundle](../../user-guide/run-scaling/life-of-a-run.md/#phase-2-image-building) directly to your browser without routing it through the control plane.
 
 ![Code Viewer](../../_static/images/deployment/configuration/code-viewer/demo.png)
 
 ## Enable CORS policy on your fast registration bucket
-In order to support this functionality securely, your bucket must allow CORS access for Union. Depending on which cloud the bucket is located in, these configurations vary.
+To support this feature securely, your bucket must allow CORS access from Union. The configuration steps vary depending on your cloud provider.
 
 {{< tabs "bucket-cors-policy" >}}
 {{< tab "AWS S3 Console" >}}
-1. Access AWS Console
-2. Access S3 dashboard
-3. Choose the fast registration bucket. Unless configured differently, this is the same as the metadata bucket configured when you first
-    deployed.
-4. Click on "Permissions" tab and scroll to "CORS Policy"
-5. Click on Edit and enter the policy below
+1. Open the AWS Console.
+2. Navigate to the S3 dashboard.
+3. Select your fast registration bucket. By default, this is the same as the metadata bucket configured during initial deployment.
+4. Click the **Permissions** tab and scroll to **Cross-origin resource sharing (CORS)**.
+5. Click **Edit** and enter the following policy:
 ![S3 CORS Policy](../../_static/images/deployment/configuration/code-viewer/s3.png)
 ```
 [
@@ -42,11 +40,12 @@ In order to support this functionality securely, your bucket must allow CORS acc
     }
 ]
 ```
-Further reference: [AWS Guide on S3 CORS Policy](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html)
+For more details, see the [AWS S3 CORS documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html).
 {{< /tab >}}
 {{< tab "Google GCS" >}}
-Google GCS does not allow changing the bucket policy through the console.
-1. Create a cors.json configuration file and paste the content below
+Google Cloud Storage requires CORS configuration via the command line.
+
+1. Create a `cors.json` file with the following content:
     ```json
     [
         {
@@ -57,11 +56,11 @@ Google GCS does not allow changing the bucket policy through the console.
         }
     ]
     ```
-2. Apply the cors configuration:
+2. Apply the CORS configuration to your bucket:
     ```bash
     gcloud storage buckets update gs://<fast_registration_bucket> --cors-file=cors.json
     ```
-3. View configuration to confirm:
+3. Verify the configuration was applied:
    ```bash
    gcloud storage buckets describe gs://<fast_registration_bucket> --format="default(cors_config)"
 
@@ -75,10 +74,10 @@ Google GCS does not allow changing the bucket policy through the console.
      responseHeader:
      - ETag
    ```
-Further reference: [Google Guide on GCS CORS Policy](https://docs.cloud.google.com/storage/docs/using-cors#command-line)
+For more details, see the [Google Cloud Storage CORS documentation](https://docs.cloud.google.com/storage/docs/using-cors#command-line).
 {{< /tab >}}
 {{< tab "Azure Storage" >}}
-Further reference: [Azure Guide on Storage CORS Policy](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services)
+For Azure Storage CORS configuration, see the [Azure Storage CORS documentation](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services).
 {{< /tab >}}
 {{< /tabs >}}
 
@@ -86,6 +85,6 @@ Further reference: [Azure Guide on Storage CORS Policy](https://learn.microsoft.
 
 | Error Message | Cause | Fix |
 |---------------|-------|-----|
-| `Not available: No code available for this action.` | The underlying task doesn't have a code bundle, this could be because all code is already in the underlying docker image or the task isn't a code task. | Expected behavior for non-code-bundled tasks |
-| `Not Found: The code bundle file could not be found. This may be due to your organization's data retention policy.` | The task does use a code bundle but the underlying bundle isn't found in the bucket. | Check fast registration bucket retention policy |
-| `Error: Code download is blocked by your storage bucket's configuration. Please contact your administrator to enable access.` | CORS isn't properly configured on the bucket | Refer to the above guide to enable CORS. |
+| `Not available: No code available for this action.` | The task does not have a code bundle. This occurs when the code is baked into the Docker image or the task is not a code-based task. | This is expected behavior for tasks without code bundles. |
+| `Not Found: The code bundle file could not be found. This may be due to your organization's data retention policy.` | The code bundle was deleted from the bucket, likely due to a retention policy. | Review your fast registration bucket's retention policy settings. |
+| `Error: Code download is blocked by your storage bucket's configuration. Please contact your administrator to enable access.` | CORS is not configured on the bucket. | Configure CORS on your bucket using the instructions above. |
