@@ -1,6 +1,6 @@
 ---
 title: Code Viewer
-weight: 1
+weight: 2
 variants: -flyte -serverless -byoc +selfmanaged
 ---
 
@@ -14,6 +14,7 @@ To support this feature securely, your bucket must allow CORS access from Union.
 
 {{< tabs "bucket-cors-policy" >}}
 {{< tab "AWS S3 Console" >}}
+{{< markdown >}}
 1. Open the AWS Console.
 2. Navigate to the S3 dashboard.
 3. Select your fast registration bucket. By default, this is the same as the metadata bucket configured during initial deployment.
@@ -41,8 +42,10 @@ To support this feature securely, your bucket must allow CORS access from Union.
 ]
 ```
 For more details, see the [AWS S3 CORS documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html).
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Google GCS" >}}
+{{< markdown >}}
 Google Cloud Storage requires CORS configuration via the command line.
 
 1. Create a `cors.json` file with the following content:
@@ -75,9 +78,12 @@ Google Cloud Storage requires CORS configuration via the command line.
      - ETag
    ```
 For more details, see the [Google Cloud Storage CORS documentation](https://docs.cloud.google.com/storage/docs/using-cors#command-line).
+{{< /markdown >}}
 {{< /tab >}}
 {{< tab "Azure Storage" >}}
+{{< markdown >}}
 For Azure Storage CORS configuration, see the [Azure Storage CORS documentation](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services).
+{{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
 
