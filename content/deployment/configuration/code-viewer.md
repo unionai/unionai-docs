@@ -1,7 +1,7 @@
 ---
 title: Code Viewer
 weight: 2
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -serverless +byoc +selfmanaged
 ---
 
 # Code Viewer
