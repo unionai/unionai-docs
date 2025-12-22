@@ -1,6 +1,6 @@
 ---
 title: Plugins
-weight: 3
+weight: 20
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

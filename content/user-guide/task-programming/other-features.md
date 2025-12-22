@@ -1,6 +1,6 @@
 ---
 title: Other features
-weight: 9
+weight: 200
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
