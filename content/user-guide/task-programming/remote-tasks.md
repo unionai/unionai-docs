@@ -42,6 +42,210 @@ You can run this directly without deploying it:
 flyte run my_workflow.py my_task --data_path s3://my-bucket/data.parquet
 ```
 
+## Understanding lazy loading
+
+Remote tasks use **lazy loading** to keep module imports fast and enable flexible client configuration. When you call `flyte.remote.Task.get()`, it returns a lazy reference that doesn't actually fetch the task from the server until the first invocation.
+
+### When tasks are fetched
+
+The remote task is fetched from the server only when:
+
+- You call `flyte.run()` with the task
+- You call `flyte.deploy()` with code that uses the task
+- You invoke the task with the `()` operator inside another task
+- You explicitly call `.fetch()` on the lazy reference
+
+```python
+import flyte.remote
+
+# This does NOT make a network call - returns a lazy reference
+data_processor = flyte.remote.Task.get(
+    "data_team.spark_analyzer",
+    auto_version="latest"
+)
+
+# The task is fetched here when you invoke it
+run = flyte.run(data_processor, input_path="s3://my-bucket/data.parquet")
+```
+
+### Benefits of lazy loading
+
+**Fast module loading**: Since no network calls are made during import, your Python modules load quickly even when referencing many remote tasks.
+
+**Late binding**: You can call `flyte.init()` after importing remote tasks, and the correct client will be bound when the task is actually invoked:
+
+```python
+import flyte
+import flyte.remote
+
+# Load remote task reference at module level
+data_processor = flyte.remote.Task.get(
+    "data_team.spark_analyzer",
+    auto_version="latest"
+)
+
+# Initialize the client later
+flyte.init_from_config()
+
+# The task uses the client configured above
+run = flyte.run(data_processor, input_path="s3://data.parquet")
+```
+
+### Error handling
+
+Because of lazy loading, if a referenced task doesn't exist, you won't get an error when calling `get()`. Instead, the error occurs during invocation, raising a `flyte.errors.ReferenceTaskError`:
+
+```python
+import flyte
+import flyte.remote
+import flyte.errors
+
+# This succeeds even if the task doesn't exist
+data_processor = flyte.remote.Task.get(
+    "nonexistent.task",
+    auto_version="latest"
+)
+
+try:
+    # Error occurs here during invocation
+    run = flyte.run(data_processor, input_path="s3://data.parquet")
+except flyte.errors.ReferenceTaskError as e:
+    print(f"Task not found or invocation failed: {e}")
+    # Handle the error - perhaps use a fallback task
+    # or notify the user that the task needs to be deployed
+```
+
+You can also catch errors when using remote tasks within other tasks:
+
+```python
+@env.task
+async def pipeline_with_fallback(data_path: str) -> dict:
+    try:
+        # Try to use the remote task
+        result = await data_processor(input_path=data_path)
+        return {"status": "success", "result": result}
+    except flyte.errors.ReferenceTaskError as e:
+        # Fallback to local processing
+        print(f"Remote task failed: {e}, using local fallback")
+        return {"status": "fallback", "result": local_process(data_path)}
+```
+
+### Eager fetching with `fetch()`
+
+While lazy loading is convenient, you can explicitly fetch a task upfront using the `fetch()` method. This is useful for:
+
+- **Catching errors early**: Validate that the task exists before execution starts
+- **Caching**: Avoid the network call on first invocation when running multiple times
+- **Service initialization**: Pre-load tasks when your service starts
+
+```python
+import flyte
+import flyte.remote
+import flyte.errors
+
+# Get the lazy reference
+data_processor = flyte.remote.Task.get(
+    "data_team.spark_analyzer",
+    auto_version="latest"
+)
+
+try:
+    # Eagerly fetch the task details
+    task_details = data_processor.fetch()
+
+    # Now the task is cached - subsequent calls won't hit the remote service
+    # You can pass either the original reference or task_details to flyte.run
+    run1 = flyte.run(data_processor, input_path="s3://data1.parquet")
+    run2 = flyte.run(task_details, input_path="s3://data2.parquet")
+
+except flyte.errors.ReferenceTaskError as e:
+    print(f"Task validation failed at startup: {e}")
+    # Handle the error before any execution attempts
+```
+
+For async contexts, use `await fetch.aio()`:
+
+```python
+import flyte.remote
+
+async def initialize_service():
+    processor_ref = flyte.remote.Task.get(
+        "data_team.spark_analyzer",
+        auto_version="latest"
+    )
+
+    try:
+        # Fetch asynchronously
+        task_details = await processor_ref.fetch.aio()
+        print(f"Task {task_details.name} loaded successfully")
+        return processor_ref  # Return the cached reference
+    except flyte.errors.ReferenceTaskError as e:
+        print(f"Failed to load task: {e}")
+        raise
+
+# Initialize once at service startup
+cached_processor = None
+
+async def startup():
+    global cached_processor
+    cached_processor = await initialize_service()
+
+# Later in your service
+async def process_request(data_path: str):
+    # The task is already cached from initialization
+    # No network call on first invocation
+    run = flyte.run(cached_processor, input_path=data_path)
+    return run
+```
+
+**When to use eager fetching**:
+
+- **Service startup**: Fetch all remote tasks during initialization to validate they exist and cache them
+- **Multiple invocations**: If you'll invoke the same task many times, fetch once to cache it
+- **Fail-fast validation**: Catch configuration errors before execution begins
+
+**When lazy loading is better**:
+
+- **Single-use tasks**: If you only invoke the task once, lazy loading is simpler
+- **Import-time overhead**: Keep imports fast by deferring network calls
+- **Conditional usage**: If the task may not be needed, don't fetch it upfront
+
+### Module-level vs dynamic loading
+
+**Module-level loading (recommended)**: Load remote tasks at the module level for cleaner, more maintainable code:
+
+```python
+import flyte.remote
+
+# Module-level - clear and maintainable
+data_processor = flyte.remote.Task.get(
+    "data_team.spark_analyzer",
+    auto_version="latest"
+)
+
+@env.task
+async def my_task(data_path: str):
+    return await data_processor(input_path=data_path)
+```
+
+**Dynamic loading**: You can also load remote tasks dynamically within a task if needed:
+
+```python
+@env.task
+async def dynamic_pipeline(task_name: str, data_path: str):
+    # Load the task based on runtime parameters
+    processor = flyte.remote.Task.get(
+        f"data_team.{task_name}",
+        auto_version="latest"
+    )
+
+    try:
+        result = await processor(input_path=data_path)
+        return result
+    except flyte.errors.ReferenceTaskError as e:
+        raise ValueError(f"Task {task_name} not found: {e}")
+```
+
 ## Complete example
 
 This example shows how different teams can collaborate using remote tasks.
@@ -307,6 +511,131 @@ task = flyte.remote.Task.get(
 )
 ```
 
+## Customizing remote tasks
+
+Remote tasks can be customized by overriding various properties without modifying the original deployed task. This allows you to adjust resource requirements, retry strategies, caching behavior, and more based on your specific use case.
+
+### Available overrides
+
+The `override()` method on remote tasks accepts the following parameters:
+
+- **short_name** (`str`): A short name for the task instance
+- **resources** (`flyte.Resources`): CPU, memory, GPU, and storage limits
+- **retries** (`int | flyte.RetryStrategy`): Number of retries or retry strategy
+- **timeout** (`flyte.TimeoutType`): Task execution timeout
+- **env_vars** (`Dict[str, str]`): Environment variables to set
+- **secrets** (`flyte.SecretRequest`): Secrets to inject
+- **max_inline_io_bytes** (`int`): Maximum size for inline IO in bytes
+- **cache** (`flyte.Cache`): Cache behavior and settings
+- **queue** (`str`): Execution queue to use
+
+### Override examples
+
+**Increase resources for a specific use case**:
+
+```python
+import flyte.remote
+
+# Get the base task
+data_processor = flyte.remote.Task.get(
+    "data_team.spark_analyzer",
+    auto_version="latest"
+)
+
+# Override with more resources for large dataset processing
+large_data_processor = data_processor.override(
+    resources=flyte.Resources(
+        cpu="16",
+        memory="64Gi",
+        storage="200Gi"
+    )
+)
+
+@env.task
+async def process_large_dataset(data_path: str):
+    # Use the customized version
+    return await large_data_processor(input_path=data_path)
+```
+
+**Add retries and timeout**:
+
+```python
+# Override with retries and timeout for unreliable operations
+reliable_processor = data_processor.override(
+    retries=3,
+    timeout="2h"
+)
+
+@env.task
+async def robust_pipeline(data_path: str):
+    return await reliable_processor(input_path=data_path)
+```
+
+**Configure caching**:
+
+```python
+# Override cache settings
+cached_processor = data_processor.override(
+    cache=flyte.Cache(
+        behavior="override",
+        version_override="v2",
+        serialize=True
+    )
+)
+```
+
+**Set environment variables and secrets**:
+
+```python
+# Override with custom environment and secrets
+custom_processor = data_processor.override(
+    env_vars={
+        "LOG_LEVEL": "DEBUG",
+        "REGION": "us-west-2"
+    },
+    secrets=flyte.SecretRequest(
+        secrets={"api_key": "my-secret-key"}
+    )
+)
+```
+
+**Multiple overrides**:
+
+```python
+# Combine multiple overrides
+production_processor = data_processor.override(
+    short_name="prod_spark_analyzer",
+    resources=flyte.Resources(cpu="8", memory="32Gi"),
+    retries=5,
+    timeout="4h",
+    env_vars={"ENV": "production"},
+    queue="high-priority"
+)
+
+@env.task
+async def production_pipeline(data_path: str):
+    return await production_processor(input_path=data_path)
+```
+
+### Chain overrides
+
+You can chain multiple `override()` calls to incrementally adjust settings:
+
+```python
+# Start with base task
+processor = flyte.remote.Task.get("data_team.analyzer", auto_version="latest")
+
+# Add resources
+processor = processor.override(resources=flyte.Resources(cpu="4", memory="16Gi"))
+
+# Add retries for production
+if is_production:
+    processor = processor.override(retries=5, timeout="2h")
+
+# Use the customized task
+result = await processor(input_path="s3://data.parquet")
+```
+
 ## Best practices
 
 ### 1. Use meaningful task names
@@ -344,13 +673,35 @@ async def process_customer_data(
     ...
 ```
 
-### 3. Handle versioning thoughtfully
+### 3. Prefer module-level loading
+
+Load remote tasks at the module level rather than inside functions for cleaner code:
+
+```python
+import flyte.remote
+
+# Good - module level
+data_processor = flyte.remote.Task.get("team.processor", auto_version="latest")
+
+@env.task
+async def my_task(data: str):
+    return await data_processor(input=data)
+```
+
+This approach:
+- Makes dependencies clear and discoverable
+- Reduces code duplication
+- Works well with lazy loading (no performance penalty)
+
+Dynamic loading within tasks is also supported when you need runtime flexibility.
+
+### 4. Handle versioning thoughtfully
 
 - Use `auto_version="latest"` during development for rapid iteration
 - Use specific versions in production for stability and reproducibility
 - Use `auto_version="current"` when coordinating multienvironment deployments
 
-### 4. Deploy remote tasks first
+### 5. Deploy remote tasks first
 
 Always deploy the remote tasks before using them. Tasks that reference them can be run directly without deployment:
 
@@ -373,13 +724,17 @@ flyte deploy orchestration_env/
 
 ## Limitations
 
-1. **Type fidelity**: While Flyte translates types seamlessly, you work with Flyte's representation of Pydantic models, not the exact original types
+1. **Lazy error detection**: Because of lazy loading, errors about missing or invalid tasks only occur during invocation, not when calling `get()`. You'll receive a `flyte.errors.ReferenceTaskError` if the task doesn't exist or can't be invoked.
 
-2. **Deployment order**: Referenced tasks must be deployed before tasks that reference them
+2. **Type fidelity**: While Flyte translates types seamlessly, you work with Flyte's representation of Pydantic models, not the exact original types
 
-3. **Context requirement**: Using `auto_version="current"` requires running within a task context
+3. **Deployment order**: Referenced tasks must be deployed before tasks that reference them can be invoked
 
-4. **Dictionary inputs**: Pydantic models must be passed as dictionaries, which loses compile-time type checking
+4. **Context requirement**: Using `auto_version="current"` requires running within a task context
+
+5. **Dictionary inputs**: Pydantic models must be passed as dictionaries, which loses compile-time type checking
+
+6. **No positional arguments**: Remote tasks currently only support keyword arguments (this may change in future versions)
 
 ## Next steps
 
