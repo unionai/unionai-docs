@@ -9,9 +9,6 @@ sidebar_expanded: true
 
 Connectors are stateless, long‑running services that receive execution requests via gRPC and then submit work to external (or internal) systems. Each connector runs as its own Kubernetes deployment, and is triggered when a Flyte task of the matching type is executed. For example: when a `BigQueryTask` is launched, the BigQuery connector receives the request and creates a BigQuery job.
 
-> [!NOTE]
-> The first connector for Flyte 2, the BigQuery connector (and the matching `BigQueryTask`), is in development and will be available soon.
-
 Although they normally run inside the control plane, you can also run connectors locally — as long as the required secrets/credentials are present — because connectors are just Python services that can be spawned in‑process.
 
 Connectors are designed to scale horizontally and reduce load on the core Flyte backend because they execute *outside* the core system. This decoupling makes connectors efficient, resilient, and easy to iterate on. You can even test them locally without modifying backend configuration, which reduces friction during development.

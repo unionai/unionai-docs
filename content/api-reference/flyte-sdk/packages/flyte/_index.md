@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -97,7 +97,7 @@ Create an AMD GPU device instance.
 
 ```python
 def GPU(
-    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000'],
+    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
     partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType],
 ) -> flyte._resources.Device
@@ -107,7 +107,7 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
 | `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
 
@@ -123,7 +123,7 @@ Create a Habana Gaudi device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['Gaudi1']` | Device type (e.g., "DL1"). :return: Device instance. |
+| `device` | `typing.Literal['Gaudi1']` | Device type (e.g., "Gaudi1"). :return: Device instance. |
 
 #### Neuron()
 
@@ -465,7 +465,11 @@ def init_from_config(
     root_dir: Path | None,
     log_level: int | None,
     log_format: LogFormat,
+    project: str | None,
+    domain: str | None,
     storage: Storage | None,
+    batch_size: int,
+    image_builder: ImageBuildEngine.ImageBuilderType | None,
     images: tuple[str, ...] | None,
     sync_local_sys_paths: bool,
 )
@@ -481,9 +485,13 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files like config etc. For example if one uses the copy-style=="all", it is essential to determine the root directory for the current project. If not provided, it defaults to the editable install directory or if not available, the current working directory. |
 | `log_level` | `int \| None` | Optional logging level for the framework logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat` | Optional logging format for the logger, default is "console" |
+| `project` | `str \| None` | Project name, this will override any project names in the configuration file |
+| `domain` | `str \| None` | Domain name, this will override any domain names in the configuration file |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
+| `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000 |
+| `image_builder` | `ImageBuildEngine.ImageBuilderType \| None` | Optional image builder configuration, if provided, will override any defaults set in the configuration. :return: None |
 | `images` | `tuple[str, ...] \| None` | List of image strings in format "imagename=imageuri" or just "imageuri". |
-| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). :return: None |
+| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
 
 #### init_in_cluster()
 

@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -40,7 +40,7 @@ class Run(
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
-| [`watch()`](#watch) | Get the details of the run. |
+| [`watch()`](#watch) | Watch the run for updates, updating the internal Run state with latest details. |
 
 
 ### abort()
@@ -123,7 +123,7 @@ Get the inputs of the run. This is a placeholder for getting the run inputs.
 ```python
 def listall(
     cls,
-    in_phase: Tuple[Phase] | None,
+    in_phase: Tuple[ActionPhase | str, ...] | None,
     task_name: str | None,
     task_version: str | None,
     created_by_subject: str | None,
@@ -138,7 +138,7 @@ Get all runs for the current project and domain.
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `in_phase` | `Tuple[Phase] \| None` | Filter runs by one or more phases. |
+| `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter runs by one or more phases. |
 | `task_name` | `str \| None` | Filter runs by task name. |
 | `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
@@ -228,6 +228,9 @@ def wait(
 Wait for the run to complete, displaying a rich progress panel with status transitions,
 time elapsed, and error details in case of failure.
 
+This method updates the Run's internal state, ensuring that properties like
+`run.action.phase` reflect the final state after waiting completes.
+
 
 | Parameter | Type | Description |
 |-|-|-|
@@ -241,7 +244,10 @@ def watch(
     cache_data_on_done: bool,
 ) -> AsyncGenerator[ActionDetails, None]
 ```
-Get the details of the run. This is a placeholder for getting the run details.
+Watch the run for updates, updating the internal Run state with latest details.
+
+This method updates the Run's action state, ensuring that properties like
+`run.action.phase` reflect the current state after watching.
 
 
 | Parameter | Type | Description |

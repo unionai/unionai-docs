@@ -11,40 +11,23 @@ This section gives you a quick introduction to writing and running workflows on 
 
 ## Prerequisites
 
-### Install uv
-
-First, [install the `uv` package manager](https://docs.astral.sh/uv/getting-started/installation/).
-
-> [!NOTE]
-> You will need to use the [`uv` package manager](https://docs.astral.sh/uv/) to run the examples in this guide.
-> In particular, we leverage `uv`'s ability to [embed dependencies directly in scripts](https://docs.astral.sh/uv/guides/scripts/#declaring-script-dependencies).
-
-### Install Python 3.10 or later
-
-Flyte 2 requires Python 3.10 or later.
-Install the most recent version of Python (>= 3.10) compatible with your codebase and pin it.
-For example, to install and pin Python 3.13, do the following:
-
-```shell
-uv python install 3.13
-uv python pin 3.13 --global
-```
-
-### Create a Python virtual environment
-
-In your working directory, create a Python virtual environment and activate it:
-
-```shell
-uv venv
-source .venv/bin/activate
-```
+You will need the following:
+- An active Python virtual environment with Python 3.10 or later.
+- The URL of you Union/Flyte instance.
+- An existing project set up on your Union/Flyte instance where you have permission to run workflows.
 
 ## Install the `flyte` package
 
-Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation):
+Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation). For example:
 
 ```shell
-uv pip install --no-cache --prerelease=allow --upgrade flyte
+pip install --pre flyte
+```
+
+Check that installation succeeded (and that you have activated your virtual environment):
+
+```shell
+flyte --version
 ```
 
 ## Create a config.yaml
@@ -66,6 +49,22 @@ flyte create config \
     --builder local \
     --domain development \
     --project my-project
+```
+
+### Ensure local Docker is working
+
+> [!NOTE]
+> We are using the `--builder local` option here to specify that we want to [build images](../task-configuration/container-images) locally.
+> If you were using a Union instance, you would typically use `--builder remote` instead to use Union's remote image builder.
+> With Flyte OSS instances, `local` is the only option available.
+
+To enable local image building, ensure that
+- You have Docker installed and running on your machine
+- You have permission to read from the public GitHub `ghcr.io` registry.
+- You have successfully logged into the `ghcr.io` registry using Docker:
+
+```shell
+docker login ghcr.io
 ```
 
 {{< /markdown >}}
@@ -118,20 +117,22 @@ In the code above we do the following:
 
 ## Running the code
 
-Make sure that your `config.yaml` file is in the same directory as your `hello.py` script.
+Assuming that your current directory looks like this:
 
-Now, run the script with:
-
-```shell
-uv run --prerelease allow hello.py
+```
+.
+├── hello.py
+└── .flyte
+    └── config.yaml
 ```
 
-The main guard section in the script performs a `flyte.init_from_config` to set up the connection with your Union/Flyte instance and a `flyte.run` to send your task code to that instance and execute it there.
+and your virtual environment is activated, you can run the script with:
 
-> [!NOTE]
-> The example scripts in this guide have a main guard that programmatically deploys and runs the tasks defined in the same file.
-> All you have to do is execute the script itself.
-> You can also deploy tasks using the `flyte` CLI instead. We will cover this in a later section.
+```shell
+flyte run hello.py main
+```
+
+This will package up the code and send it to your Flyte/Union instance for execution.
 
 ## Viewing the results
 
@@ -143,7 +144,7 @@ https://my-instance.example.com/v2/runs/project/my-project/domain/development/cg
 Run 'a0' completed successfully.
 ```
 
-Click the link to go to your Union instance and see the run in the UI:
+Click the link to go to your Flyte/Union instance and see the run in the UI:
 
 ![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 

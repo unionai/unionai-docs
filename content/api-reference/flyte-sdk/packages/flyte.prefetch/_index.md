@@ -1,6 +1,6 @@
 ---
 title: flyte.prefetch
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -39,7 +39,7 @@ such as HuggingFace models.
 ```python
 def hf_model(
     repo: str,
-    s3_path: str | None,
+    raw_data_path: str | None,
     artifact_name: str | None,
     architecture: str | None,
     task: str,
@@ -49,7 +49,7 @@ def hf_model(
     short_description: str | None,
     shard_config: ShardConfig | None,
     hf_token_key: str,
-    resources: Resources | None,
+    resources: Resources,
     force: int,
 ) -> Run
 ```
@@ -97,7 +97,7 @@ run.wait()
 | Parameter | Type | Description |
 |-|-|-|
 | `repo` | `str` | The HuggingFace repository ID (e.g., 'meta-llama/Llama-2-7b-hf'). |
-| `s3_path` | `str \| None` | |
+| `raw_data_path` | `str \| None` | |
 | `artifact_name` | `str \| None` | Optional name for the stored artifact. If not provided, the repo name will be used (with '.' replaced by '-'). |
 | `architecture` | `str \| None` | Model architecture from HuggingFace config.json. |
 | `task` | `str` | Model task (e.g., 'generate', 'classify', 'embed'). Default |
@@ -107,6 +107,6 @@ run.wait()
 | `short_description` | `str \| None` | Short description of the model. |
 | `shard_config` | `ShardConfig \| None` | Optional configuration for model sharding with vLLM. |
 | `hf_token_key` | `str` | Name of the secret containing the HuggingFace token. Default |
-| `resources` | `Resources \| None` | |
+| `resources` | `Resources` | |
 | `force` | `int` | Force re-prefetch. Increment to force a new prefetch. Default  :return: A Run object representing the prefetch task execution. |
 
