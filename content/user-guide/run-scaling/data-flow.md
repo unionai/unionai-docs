@@ -30,7 +30,7 @@ These types are not copied but passed as references to storage locations:
 - **Directories**: `flyte.io.Directory`
 - **Dataframes**: `flyte.io.DataFrame`, `pd.DataFrame`, `pl.DataFrame`, etc.
 
-Dataframes are automatically converted to Parquet format and read using Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars.
+Dataframes are automatically converted to Parquet format and read using Apache Arrow for zero-copy reads. Use `flyte.io.DataFrame` for lazy materialization to any supported type like pandas or polars. [Learn more about the Flyte Dataframe type](../../user-guide/task-programming/dataframes.md)
 
 ### Passed by value (inline I/O)
 
@@ -49,7 +49,7 @@ Primitive and structured types are serialized and passed inline:
 Flyte uses efficient MessagePack serialization for most types, providing compact binary representation with strong type safety.
 
 > [!NOTE]
-> If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, picked objects smaller than 10KB are passed inline, while larger picked objects are automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
+> If type annotations are not used, or if `typing.Any` or unrecognized types are used, data will be pickled. By default, pickled objects smaller than 10KB are passed inline, while larger pickled objects are automatically passed as a file. Pickling allows for progressive typing but should be used carefully.
 
 
 ## Task execution and data flow
