@@ -15,7 +15,7 @@ Flyte provides two main ways to deploy apps: **serve** (for development) and **d
 
 Serving is designed for development and iteration:
 
-- **Dynamic input modification**: You can override app inputs when serving
+- **Dynamic parameter modification**: You can override app parameters when serving
 - **Quick iteration**: Faster feedback loop for development
 - **Interactive**: Better suited for testing and experimentation
 

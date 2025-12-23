@@ -78,8 +78,8 @@ backend_env = flyte.app.AppEnvironment(name="backend-api", ...)
 frontend_env = flyte.app.AppEnvironment(
     name="frontend-app",
     depends_on=[backend_env],
-    inputs=[
-        flyte.app.Input(
+    parameters=[
+        flyte.app.Parameter(
             name="backend_url",
             value=flyte.app.AppEndpoint(app_name="backend-api"),
         ),
@@ -88,7 +88,7 @@ frontend_env = flyte.app.AppEnvironment(
 )
 ```
 
-The `backend_url` input will be automatically set to the backend app's endpoint URL.
+The `backend_url` parameter will be automatically set to the backend app's endpoint URL.
 You can get this value in your app code using `flyte.app.get_input("backend_url")`.
 
 ## Deployment behavior

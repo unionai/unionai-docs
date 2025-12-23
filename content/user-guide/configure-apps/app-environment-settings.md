@@ -110,7 +110,7 @@ This is particularly useful for passing API keys or other sensitive values to co
 > [!TIP]
 > For most `AppEnvironment`s, use `args` instead of `command` to specify the app startup command
 > in the container. This is because `args` will use the `fserve` command to run the app, which
-> unlocks features like local code bundling and file/directory mounting via input injection.
+> unlocks features like local code bundling and file/directory mounting via parameter injection.
 
 ### `command`
 
@@ -201,24 +201,24 @@ app_env = flyte.app.AppEnvironment(
 > [!NOTE]
 > Learn more about including additional files in your app deployment [here](./including-additional-files).
 
-### `inputs`
+### `parameters`
 
-The `inputs` parameter passes inputs to your app at deployment time. Inputs can be primitive values, files, directories, or delayed values like `RunOutput` or `AppEndpoint`.
+The `parameters` parameter passes parameters to your app at deployment time. Parameters can be primitive values, files, directories, or delayed values like `RunOutput` or `AppEndpoint`.
 
 ```python
 app_env = flyte.app.AppEnvironment(
     name="my-app",
-    inputs=[
-        flyte.app.Input(name="config", value="foo", env_var="BAR"),
-        flyte.app.Input(name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
-        flyte.app.Input(name="data", value=flyte.io.File(path="s3://bucket/data.pkl"), mount="/mnt/data"),
+    parameters=[
+        flyte.app.Parameter(name="config", value="foo", env_var="BAR"),
+        flyte.app.Parameter(name="model", value=flyte.io.File(path="s3://bucket/model.pkl"), mount="/mnt/model"),
+        flyte.app.Parameter(name="data", value=flyte.io.File(path="s3://bucket/data.pkl"), mount="/mnt/data"),
     ],
     # ...
 )
 ```
 
 > [!NOTE]
-> Learn more about passing inputs to your app at deployment time [here](./passing-inputs).
+> Learn more about passing parameters to your app at deployment time [here](./passing-parameters).
 
 ### `scaling`
 
@@ -278,7 +278,7 @@ When you don't specify a `command`, Flyte generates a default command that uses 
 - Setting up the code bundle
 - Configuring the version
 - Setting up project/domain context
-- Injecting inputs if provided
+- Injecting parameters if provided
 
 The default command looks like:
 
@@ -335,7 +335,7 @@ The `FastAPIAppEnvironment` automatically:
 ### Startup best practices
 
 1. **Use specialized app environments** when available (for example, `FastAPIAppEnvironment`) – they handle command setup automatically.
-2. **Use `args`** when you need code bundling and input injection.
+2. **Use `args`** when you need code bundling and parameter injection.
 3. **Use `command`** for simple, standalone apps that don't need code bundling.
 4. **Always set `port`** to match what your app actually listens on.
 5. **Use `include`** with `args` to bundle your app code files.

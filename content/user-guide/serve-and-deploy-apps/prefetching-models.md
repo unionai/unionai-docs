@@ -77,7 +77,7 @@ app = flyte.serve(vllm_app)
 ```
 
 > [!TIP]
-> You can also use prefetched models as inputs to your generic `[[AppEnvironment]]`s or `FastAPIAppEnvironment`s.
+> You can also use prefetched models as parameters to your generic `[[AppEnvironment]]`s or `FastAPIAppEnvironment`s.
 
 ## Prefetch options
 
