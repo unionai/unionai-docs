@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.0.0b38
+version: 2.0.0b40
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -112,5 +112,6 @@ Returns:
 | Property | Type | Description |
 |-|-|-|
 | `name` | `None` | The name of the task. |
+| `url` | `None` |  |
 | `version` | `None` | The version of the task. |
 

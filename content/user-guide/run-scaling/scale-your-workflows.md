@@ -20,13 +20,13 @@ Performance optimization focuses on two key dimensions:
 - Fast individual actions (milliseconds to seconds)
 - Total action count typically less than 1,000
 - Critical for interactive applications and real-time processing
-- Multi-step inference, with reusing model or data in memory (use reusable containers with @alru.cache)
+- Multi-step inference, with reusing model or data in memory (use reusable containers with [@alru.cache](https://pypi.org/project/async-lru/))
 
 **Recommended approach**:
 - Use tasks for orchestration and parallelism
 - Use [traces](../task-programming/traces) for fine-grained checkpointing
-- Model parallelism using asyncio and use things like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
-- Leverage [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead
+- Model parallelism using `asyncio` and use things methods like `asyncio.as_completed` or `asyncio.gather` to join the parallelism
+- Leverage [reusable containers](../task-configuration/reusable-containers) with concurrency to eliminate startup overhead and optimize resource utilization
 
 ### Throughput
 
@@ -35,7 +35,7 @@ Performance optimization focuses on two key dimensions:
 **Characteristics**:
 - Processing large datasets (millions of items)
 - High total action count (10k to 50k actions)
-- Batch processing, Large scale batch inference and ETL workflows
+- Batch processing, large-scale batch inference and ETL workflows
 
 **Recommended approach**:
 - Batch workloads to reduce overhead
