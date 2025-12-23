@@ -15,7 +15,7 @@ There are several input types:
 - **Primitive values**: Strings, numbers, booleans
 - **Files**: `flyte.io.File` objects
 - **Directories**: `flyte.io.Dir` objects
-- **Delayed values**: `RunOutput` (from task runs) or `AppEndpoint` ( apps)
+- **Delayed values**: `RunOutput` (from task runs) or `AppEndpoint` (inject endpoint urls of other apps)
 
 ## Basic input types
 
