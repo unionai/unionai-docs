@@ -82,8 +82,8 @@ env = FastAPIAppEnvironment(
         "pydantic",
         "joblib",
     ),
-    inputs=[
-        flyte.app.Input(
+    parameters=[
+        flyte.app.Parameter(
             name="model_file",
             value=flyte.io.File("s3://bucket/models/model.joblib"),
             mount="/app/models",

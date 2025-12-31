@@ -165,7 +165,7 @@ if __name__ == "__main__":
 6. **Rollback plan**: Keep old versions available for rollback.
 7. **Use dry-run**: Test deployments with `dry_run=True` first.
 8. **Separate environments**: Use different projects/domains for different environments.
-9. **Input management**: Consider using environment-specific input values.
+9. **Parameter management**: Consider using environment-specific parameter values.
 
 ## Deployment status and return value
 
