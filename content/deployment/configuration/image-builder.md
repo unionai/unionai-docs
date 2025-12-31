@@ -247,8 +247,7 @@ union create secret --type image-pull-secret --value-file <YOUR_JSON_CONFIG_FILE
 ```python
 env = flyte.TaskEnvironment(
     name="hello_v2",
-    image=flyte.Image.from_debian_base()
-        .clone(registry="<my registry url>", name="private", registry_secret="GTEngHabu")
+    image=flyte.Image.from_debian_base(registry="<my registry url>", name="private", registry_secret="<YOUR_SECRET_NAME>")
         .with_pip_packages("<package 1>", "<package 2>")
 )
 ```
