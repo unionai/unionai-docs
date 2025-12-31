@@ -276,16 +276,16 @@ Key points:
 - Access the app endpoint via `env1.endpoint`
 - Use HTTP clients (like `httpx`) to make requests between apps
 
-### Using AppEndpoint input
+### Using AppEndpoint parameter
 
-You can pass app endpoints as inputs for more flexibility:
+You can pass app endpoints as parameters for more flexibility:
 
 ```python
 env2 = FastAPIAppEnvironment(
     name="frontend-api",
     app=app2,
-    inputs=[
-        flyte.app.Input(
+    parameters=[
+        flyte.app.Parameter(
             name="backend_url",
             value=flyte.app.AppEndpoint(app_name="backend-api"),
             env_var="BACKEND_URL",
@@ -477,7 +477,7 @@ To access a browser-based app:
 2. **Handle errors**: Implement proper error handling for HTTP requests.
 3. **Use async clients**: Use async HTTP clients (`httpx.AsyncClient`) in async contexts.
 4. **Initialize Flyte**: For apps calling tasks, initialize Flyte in the app's startup.
-5. **Endpoint access**: Use `app_env.endpoint` or `AppEndpoint` input for accessing app URLs.
+5. **Endpoint access**: Use `app_env.endpoint` or `AppEndpoint` parameter for accessing app URLs.
 6. **Authentication**: Consider authentication when apps call each other (set `requires_auth=True` if needed).
 7. **Webhook security**: Secure webhooks with auth, validation, and HTTPS.
 8. **WebSocket robustness**: Implement connection management, heartbeats, and rate limiting.
