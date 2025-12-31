@@ -5,22 +5,26 @@ variants: -flyte -serverless -byoc +selfmanaged
 ---
 
 # Code Viewer
-The Union UI allows you to view the exact code that executed a specific task. Union securely transfers the [code bundle](../../user-guide/run-scaling/life-of-a-run.md/#phase-2-image-building) directly to your browser without routing it through the control plane.
+
+The Union UI allows you to view the exact code that executed a specific task. Union securely transfers the [code bundle](../../user-guide/run-scaling/life-of-a-run#phase-2-image-building) directly to your browser without routing it through the control plane.
 
 ![Code Viewer](../../_static/images/deployment/configuration/code-viewer/demo.png)
 
 ## Enable CORS policy on your fast registration bucket
+
 To support this feature securely, your bucket must allow CORS access from Union. The configuration steps vary depending on your cloud provider.
 
 {{< tabs "bucket-cors-policy" >}}
 {{< tab "AWS S3 Console" >}}
 {{< markdown >}}
+
 1. Open the AWS Console.
 2. Navigate to the S3 dashboard.
 3. Select your fast registration bucket. By default, this is the same as the metadata bucket configured during initial deployment.
 4. Click the **Permissions** tab and scroll to **Cross-origin resource sharing (CORS)**.
 5. Click **Edit** and enter the following policy:
 ![S3 CORS Policy](../../_static/images/deployment/configuration/code-viewer/s3.png)
+
 ```
 [
     {
@@ -41,11 +45,14 @@ To support this feature securely, your bucket must allow CORS access from Union.
     }
 ]
 ```
+
 For more details, see the [AWS S3 CORS documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cors.html).
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Google GCS" >}}
 {{< markdown >}}
+
 Google Cloud Storage requires CORS configuration via the command line.
 
 1. Create a `cors.json` file with the following content:
@@ -78,11 +85,14 @@ Google Cloud Storage requires CORS configuration via the command line.
      - ETag
    ```
 For more details, see the [Google Cloud Storage CORS documentation](https://docs.cloud.google.com/storage/docs/using-cors#command-line).
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< tab "Azure Storage" >}}
 {{< markdown >}}
+
 For Azure Storage CORS configuration, see the [Azure Storage CORS documentation](https://learn.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services).
+
 {{< /markdown >}}
 {{< /tab >}}
 {{< /tabs >}}
