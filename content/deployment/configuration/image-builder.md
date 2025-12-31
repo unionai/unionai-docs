@@ -18,7 +18,6 @@ Write custom [container images](../../user-guide/task-configuration/container-im
 env = flyte.TaskEnvironment(
     name="hello_v2",
     image=flyte.Image.from_debian_base()
-        .clone(registry="<my registry url>", name="private", registry_secret="GTEngHabu")
         .with_pip_packages("<package 1>", "<package 2>")
 )
 ```
