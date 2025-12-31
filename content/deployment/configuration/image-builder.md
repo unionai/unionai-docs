@@ -6,20 +6,28 @@ variants: -flyte -serverless -byoc +selfmanaged
 
 # Image Builder
 
-Union Image Builder supports the ability to build container images within the dataplane. Subsequently enabling the use of the `union` builder type within defined [ImageSpecs](../../user-guide/development-cycle/image-spec.md).
+Union Image Builder supports the ability to build container images within the dataplane. Subsequently enabling the use of the `remote` builder type for any defined [Container Image](../../user-guide/task-configuration/container-images.md).
 
+Configure the use of remote image builder:
+```bash
+flyte create config --builder=remote --endpoint...
+```
+
+Write custom [container images](../../user-guide/task-configuration/container-images.md):
 ```python
-image_spec = union.ImageSpec(
-    builder="union",
-    name="say-hello-image",
+env = flyte.TaskEnvironment(
+    name="hello_v2",
+    image=flyte.Image.from_debian_base()
+        .clone(registry="<my registry url>", name="private", registry_secret="GTEngHabu")
+        .with_pip_packages("<package 1>", "<package 2>")
 )
 ```
 
-> By default, Image Builder is disabled.
+> By default, Image Builder is disabled. And has to be enabled by configuring the builder type to `remote` in flyte config
 
 ## Requirements
 
-* Union requires that a `production` domain exists. The image building process runs in the `system` project by default.
+* The image building process runs in the target run's project and domain. Any image push secrets needed to push images to the registry will need to be accessible from the project & domain where the build happens.
 
 ## Configuration
 
@@ -220,10 +228,9 @@ echo -n "your-username:your-token" | base64
 ```json
 {
   "auths": {
-
-		"ghcr.io": {
-                        "auth": "<YOUR_ENCODED_TOKEN>",
-               }
+    "ghcr.io": {
+      "auth": "<YOUR_ENCODED_TOKEN>",
+    }
  } 
 }
 
@@ -235,25 +242,14 @@ union create secret --type image-pull-secret --value-file <YOUR_JSON_CONFIG_FILE
 ```
 > This secret will be available to all projects and domains in your tenant. If you want to scope it down add --project and --domain. [Learn more about Union Secrets](../../user-guide/development-cycle/managing-secrets.md)
 
-4. Reference this secret in the ImageSpec object:
+4. Reference this secret in the Image object:
 
 ```python
-image = ImageSpec(
-    builder="union",
-    name="private-image"
-    packages=["union"],
-    builder_options={
-        "imagepull_secret_name": "<YOUR_SECRET_NAME>",
-    }
+env = flyte.TaskEnvironment(
+    name="hello_v2",
+    image=flyte.Image.from_debian_base()
+        .clone(registry="<my registry url>", name="private", registry_secret="GTEngHabu")
+        .with_pip_packages("<package 1>", "<package 2>")
 )
-
 ```
 This will enable Image Builder to push images and layers to a private GHCR.
-
-5. Request the secret so the task can pull the image:
-
-```python
-@task(container_image=image, secret_requests=[union.Secret(key="<YOUR_SECRET_NAME>")])
-def my_task() -> int:
-  ...
-```
