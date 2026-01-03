@@ -1,6 +1,6 @@
 ---
 title: FastAPIAppEnvironment
-version: 2.0.0b40
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -28,10 +28,11 @@ class FastAPIAppEnvironment(
     domain: Domain | None,
     links: List[Link],
     include: List[str],
-    inputs: List[Input],
+    parameters: List[Parameter],
     cluster_pool: str,
     type: str,
     app: fastapi.FastAPI,
+    uvicorn_config: uvicorn.Config | None,
     _caller_frame: inspect.FrameInfo | None,
 )
 ```
@@ -54,10 +55,11 @@ class FastAPIAppEnvironment(
 | `domain` | `Domain \| None` | |
 | `links` | `List[Link]` | |
 | `include` | `List[str]` | |
-| `inputs` | `List[Input]` | |
+| `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
 | `type` | `str` | |
 | `app` | `fastapi.FastAPI` | |
+| `uvicorn_config` | `uvicorn.Config \| None` | |
 | `_caller_frame` | `inspect.FrameInfo \| None` | |
 
 ## Methods
@@ -66,10 +68,13 @@ class FastAPIAppEnvironment(
 |-|-|
 | [`add_dependency()`](#add_dependency) | Add a dependency to the environment. |
 | [`clone_with()`](#clone_with) |  |
-| [`container_args()`](#container_args) | Generate the container arguments for running the FastAPI app with uvicorn. |
+| [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
 | [`container_command()`](#container_command) |  |
 | [`get_port()`](#get_port) |  |
+| [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
+| [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
+| [`server()`](#server) | Decorator to define the server function for the app environment. |
 
 
 ### add_dependency()
@@ -117,49 +122,100 @@ def clone_with(
 
 ```python
 def container_args(
-    serialization_context: flyte.models.SerializationContext,
-) -> list[str]
+    serialize_context: SerializationContext,
+) -> List[str]
 ```
-Generate the container arguments for running the FastAPI app with uvicorn.
-
-Returns:
-    A list of command arguments in the format:
-    ["uvicorn", "&lt;module_name&gt;:&lt;app_var_name&gt;", "--port", "&lt;port&gt;"]
-
-
 | Parameter | Type | Description |
 |-|-|-|
-| `serialization_context` | `flyte.models.SerializationContext` | |
+| `serialize_context` | `SerializationContext` | |
 
 ### container_cmd()
 
 ```python
 def container_cmd(
     serialize_context: SerializationContext,
-    input_overrides: list[Input] | None,
+    parameter_overrides: list[Parameter] | None,
 ) -> List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `serialize_context` | `SerializationContext` | |
-| `input_overrides` | `list[Input] \| None` | |
+| `parameter_overrides` | `list[Parameter] \| None` | |
 
 ### container_command()
 
 ```python
 def container_command(
-    serialization_context: flyte.models.SerializationContext,
+    serialization_context: SerializationContext,
 ) -> list[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `serialization_context` | `flyte.models.SerializationContext` | |
+| `serialization_context` | `SerializationContext` | |
 
 ### get_port()
 
 ```python
 def get_port()
 ```
+### on_shutdown()
+
+```python
+def on_shutdown(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the shutdown function for the app environment.
+
+This function is called after the server function is called.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
+
+### on_startup()
+
+```python
+def on_startup(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the startup function for the app environment.
+
+This function is called before the server function is called.
+
+The decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
+
+### server()
+
+```python
+def server(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the server function for the app environment.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
+
 ## Properties
 
 | Property | Type | Description |

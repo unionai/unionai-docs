@@ -1,19 +1,19 @@
 ---
-title: SlowDownError
+title: RemoteTaskError
 version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# SlowDownError
+# RemoteTaskError
 
 **Package:** `flyte.errors`
 
-This error is raised when the user tries to access a resource that does not exist or is invalid.
+This error is raised when the user tries to access a task that does not exist.
 
 
 ```python
-class SlowDownError(
+class RemoteTaskError(
     message: str,
 )
 ```

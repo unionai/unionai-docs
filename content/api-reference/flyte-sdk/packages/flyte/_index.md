@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b40
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -37,6 +37,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Protocol | Description |
 |-|-|
 | [`CachePolicy`](../flyte/cachepolicy) | Base class for protocol classes. |
+| [`Link`](../flyte/link) | Base class for protocol classes. |
 
 ### Methods
 
@@ -351,6 +352,7 @@ def init(
     root_dir: Path | None,
     log_level: int | None,
     log_format: LogFormat | None,
+    reset_root_logger: bool,
     endpoint: str | None,
     headless: bool,
     insecure: bool,
@@ -387,6 +389,7 @@ remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. This is useful for determining the root directory for the current project, and for locating files like config etc. also use to determine all the code that needs to be copied to the remote location. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
+| `reset_root_logger` | `bool` | By default, we clear out root logger handlers and set up our own. |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
 | `insecure` | `bool` | insecure flag for the client |
@@ -651,6 +654,7 @@ def with_runcontext(
     interruptible: bool | None,
     log_level: int | None,
     log_format: LogFormat,
+    reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
     custom_context: Dict[str, str] | None,
@@ -695,6 +699,7 @@ if __name__ == "__main__":
 | `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
+| `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
@@ -710,10 +715,12 @@ def with_servecontext(
     project: str | None,
     domain: str | None,
     env_vars: dict[str, str] | None,
-    input_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None,
+    parameter_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None,
     cluster_pool: str | None,
     log_level: int | None,
     log_format: LogFormat,
+    interactive_mode: bool | None,
+    copy_bundle_to: pathlib.Path | None,
 ) -> _Serve
 ```
 Create a serve context with custom configuration.
@@ -752,8 +759,10 @@ print(f"App URL: {app.url}")
 | `project` | `str \| None` | Optional project override |
 | `domain` | `str \| None` | Optional domain override |
 | `env_vars` | `dict[str, str] \| None` | Optional environment variables to inject/override in the app container |
-| `input_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional input values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of input names to values. |
+| `parameter_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional parameter values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of parameter names to values. |
 | `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
 | `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
 | `log_format` | `LogFormat` | |
+| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. This is used to determine if the app should be served in interactive mode or not. |
+| `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
 

@@ -101,6 +101,7 @@ $ flyte --config /path/to/config.yaml run ...
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
+| `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
@@ -656,11 +657,20 @@ The run details will include information about the run, its status, but only the
 
 If you want to see the actions for a run, use `get action <run_name>`.
 
+You can filter runs by task name and optionally task version:
+
+```bash
+$ flyte get run --task-name my_task
+$ flyte get run --task-name my_task --task-version v1.0
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
 | `--in-phase` | `choice` | `Sentinel.UNSET` | Filter runs by their status. |
 | `--only-mine` | `boolean` | `False` | Show only runs created by the current user (you). |
+| `--task-name` | `text` |  | Filter runs by task name. |
+| `--task-version` | `text` |  | Filter runs by task version. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -891,13 +901,15 @@ flyte run hello.py my_task --help
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
+| `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task
 
 **`flyte run deployed-task [OPTIONS] COMMAND [ARGS]...`**
 
-Run reference task from the Flyte backend
+Run remote task from the Flyte backend
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

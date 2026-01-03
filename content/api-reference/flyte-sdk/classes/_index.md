@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b40
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -24,13 +24,14 @@ sidebar_expanded: true
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Environment class to define a new environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
-| [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app input. |
+| [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) | |
+| [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) | |
 | [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
-| [`flyte.app.Input`](../packages/flyte.app/input) |Input for application. |
 | [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
+| [`flyte.app.Parameter`](../packages/flyte.app/parameter) |Parameter for application. |
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
-| [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app inputs. |
+| [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
@@ -48,8 +49,11 @@ sidebar_expanded: true
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](../packages/flyte.errors/oomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
+| [`flyte.errors.ParameterMaterializationError`](../packages/flyte.errors/parametermaterializationerror) |This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors/primarycontainernotfounderror) |This error is raised when the primary container is not found. |
 | [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors/referencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RemoteTaskError`](../packages/flyte.errors/remotetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RestrictedTypeError`](../packages/flyte.errors/restrictedtypeerror) |This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors/retriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`flyte.errors.RunAbortedError`](../packages/flyte.errors/runabortederror) |This error is raised when the run is aborted by the user. |
 | [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors/runtimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
@@ -113,4 +117,5 @@ sidebar_expanded: true
 | Protocol | Description |
 |-|-|
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Base class for protocol classes. |
+| [`flyte.Link`](../packages/flyte/link) |Base class for protocol classes. |
 | [`flyte.types.Renderable`](../packages/flyte.types/renderable) |Base class for protocol classes. |
