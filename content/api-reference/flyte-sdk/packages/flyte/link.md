@@ -1,13 +1,13 @@
 ---
-title: Renderable
+title: Link
 version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# Renderable
+# Link
 
-**Package:** `flyte.types`
+**Package:** `flyte`
 
 Base class for protocol classes.
 
@@ -42,27 +42,39 @@ Protocol classes can be generic, they are defined as::
 
 
 ```python
-protocol Renderable()
+protocol Link()
 ```
 ## Methods
 
 | Method | Description |
 |-|-|
-| [`to_html()`](#to_html) | Convert an object(markdown, pandas. |
+| [`get_link()`](#get_link) | Returns a task log link given the action. |
 
 
-### to_html()
+### get_link()
 
 ```python
-def to_html(
-    python_value: typing.Any,
+def get_link(
+    run_name: str,
+    project: str,
+    domain: str,
+    context: typing.Dict[str, str],
+    parent_action_name: str,
+    action_name: str,
+    pod_name: str,
 ) -> str
 ```
-Convert an object(markdown, pandas.dataframe) to HTML and return HTML as a unicode string.
-Returns: An HTML document as a string.
+Returns a task log link given the action.
+Link can have template variables that are replaced by the backend.
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `python_value` | `typing.Any` | |
+| `run_name` | `str` | The name of the run. |
+| `project` | `str` | The project name. |
+| `domain` | `str` | The domain name. |
+| `context` | `typing.Dict[str, str]` | Additional context for generating the link. |
+| `parent_action_name` | `str` | The name of the parent action. |
+| `action_name` | `str` | The name of the action. |
+| `pod_name` | `str` | The name of the pod. :return: The generated link. |
 

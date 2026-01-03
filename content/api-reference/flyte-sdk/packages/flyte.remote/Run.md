@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b40
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -142,7 +142,7 @@ Get all runs for the current project and domain.
 | `task_name` | `str \| None` | Filter runs by task name. |
 | `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the Run list, in the format (field, order). |
 | `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |
 
 ### outputs()

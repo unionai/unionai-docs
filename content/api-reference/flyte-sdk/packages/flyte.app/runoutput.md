@@ -1,6 +1,6 @@
 ---
 title: RunOutput
-version: 2.0.0b40
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,9 +9,9 @@ layout: py_api
 
 **Package:** `flyte.app`
 
-Use a run's output for app inputs.
+Use a run's output for app parameters.
 
-This enables the declaration of an app input dependency on the output of
+This enables the declaration of an app parameter dependency on the output of
 a run, given by a specific run name, or a task name and version. If
 `task_auto_version == 'latest'`, the latest version of the task will be used.
 If `task_auto_version == 'current'`, the version will be derived from the callee
