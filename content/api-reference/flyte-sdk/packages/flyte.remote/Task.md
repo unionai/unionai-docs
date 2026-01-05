@@ -18,6 +18,14 @@ class Task(
 |-|-|-|
 | `pb2` | `task_definition_pb2.Task` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | The name of the task. |
+| `url` | `None` |  |
+| `version` | `None` | The version of the task. |
+
 ## Methods
 
 | Method | Description |
@@ -106,12 +114,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` | The name of the task. |
-| `url` | `None` |  |
-| `version` | `None` | The version of the task. |
 

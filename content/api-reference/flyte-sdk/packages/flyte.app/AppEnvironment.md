@@ -56,6 +56,12 @@ class AppEnvironment(
 | `parameters` | `List[Parameter]` | Parameters to pass to the app environment. |
 | `cluster_pool` | `str` | Cluster pool to use for the app environment. |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -197,10 +203,4 @@ definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `fn` | `Callable[..., None]` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `endpoint` | `None` |  |
 

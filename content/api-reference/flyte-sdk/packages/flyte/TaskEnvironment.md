@@ -55,6 +55,12 @@ class TaskEnvironment(
 | `plugin_config` | `Optional[Any]` | Optional plugin configuration for custom task types. If set, all tasks in this environment will use the specified plugin configuration. |
 | `queue` | `Optional[str]` | Optional queue name to use for tasks in this environment. If not set, the default queue will be used. |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `tasks` | `None` | Get all tasks defined in the environment. |
+
 ## Methods
 
 | Method | Description |
@@ -173,10 +179,4 @@ Decorate a function to be a task.
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used.  :return: A TaskTemplate that can be used to deploy the task. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
 | `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `tasks` | `None` | Get all tasks defined in the environment. |
 

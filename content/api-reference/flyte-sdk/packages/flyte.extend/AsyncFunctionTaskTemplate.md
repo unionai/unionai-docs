@@ -74,6 +74,13 @@ class AsyncFunctionTaskTemplate(
 | `func` | `F` | |
 | `plugin_config` | `Optional[Any]` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `native_interface` | `None` |  |
+| `source_file` | `None` | Returns the source file of the function, if available. This is useful for debugging and tracing. |
+
 ## Methods
 
 | Method | Description |
@@ -308,11 +315,4 @@ configure the task execution environment at runtime. This is usually used by plu
 | Parameter | Type | Description |
 |-|-|-|
 | `sctx` | `SerializationContext` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` | Returns the source file of the function, if available. This is useful for debugging and tracing. |
 

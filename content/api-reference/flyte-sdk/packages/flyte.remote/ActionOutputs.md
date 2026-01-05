@@ -24,6 +24,12 @@ class ActionOutputs(
 | `pb2` | `common_pb2.Outputs` | |
 | `data` | `Tuple[Any, ...]` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `named_outputs` | `None` |  |
+
 ## Methods
 
 | Method | Description |

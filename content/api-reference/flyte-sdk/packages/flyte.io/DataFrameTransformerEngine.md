@@ -17,6 +17,14 @@ registering with the main type engine, you should register with this transformer
 ```python
 def DataFrameTransformerEngine()
 ```
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ## Methods
 
 | Method | Description |
@@ -343,12 +351,4 @@ with only one column.
 |-|-|-|
 | `lv` | `literals_pb2.Literal` | |
 | `expected_python_type` | `Type[T] \| DataFrame` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 

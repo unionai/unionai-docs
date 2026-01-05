@@ -47,6 +47,12 @@ class Image(
 | `_layers` | `Tuple[Layer, ...]` | |
 | `_image_registry_secret` | `Optional[Secret]` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `uri` | `None` | Returns the URI of the image in the format &lt;registry&gt;/&lt;name&gt;:&lt;tag&gt; |
+
 ## Methods
 
 | Method | Description |

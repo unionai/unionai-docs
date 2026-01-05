@@ -56,6 +56,12 @@ class ConnectorEnvironment(
 | `parameters` | `List[Parameter]` | |
 | `cluster_pool` | `str` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -197,10 +203,4 @@ definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `fn` | `Callable[..., None]` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `endpoint` | `None` |  |
 

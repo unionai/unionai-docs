@@ -35,6 +35,14 @@ and we have to get a Python value out of it. For the other way, see the DataFram
 | `supported_format` | `Optional[str]` | Arbitrary string representing the format. If not supplied then an empty string will be used. An empty string implies that the decoder works with any format. If the format being asked for does not exist, the transformer enginer will look for the "" decoder instead and write a warning. |
 | `additional_protocols` | `Optional[List[str]]` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `protocol` | `None` |  |
+| `python_type` | `None` |  |
+| `supported_format` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -59,12 +67,4 @@ value into a Python instance.
 |-|-|-|
 | `flyte_value` | `literals_pb2.StructuredDataset` | This will be a Flyte IDL DataFrame Literal - do not confuse this with the DataFrame class defined also in this module. |
 | `current_task_metadata` | `literals_pb2.StructuredDatasetMetadata` | Metadata object containing the type (and columns if any) for the currently executing task. This type may have more or less information than the type information bundled inside the incoming flyte_value. :return: This function can either return an instance of the dataframe that this decoder handles, or an iterator of those dataframes. |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `protocol` | `None` |  |
-| `python_type` | `None` |  |
-| `supported_format` | `None` |  |
 

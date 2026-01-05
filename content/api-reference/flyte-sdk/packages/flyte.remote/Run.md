@@ -24,6 +24,15 @@ class Run(
 | `pb2` | `run_definition_pb2.Run` | |
 | `_details` | `RunDetails \| None` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | Get the name of the run. |
+| `phase` | `None` | Get the phase of the run. |
+| `raw_phase` | `None` | Get the raw phase of the run. |
+| `url` | `None` | Get the URL of the run. |
+
 ## Methods
 
 | Method | Description |
@@ -253,13 +262,4 @@ This method updates the Run's action state, ensuring that properties like
 | Parameter | Type | Description |
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` | Get the name of the run. |
-| `phase` | `None` | Get the phase of the run. |
-| `raw_phase` | `None` | Get the raw phase of the run. |
-| `url` | `None` | Get the URL of the run. |
 
