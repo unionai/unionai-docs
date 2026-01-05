@@ -22,6 +22,14 @@ class RunDetails(
 |-|-|-|
 | `pb2` | `run_definition_pb2.RunDetails` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `task_name` | `None` | Get the name of the task. |
+
 ## Methods
 
 | Method | Description |
@@ -124,12 +132,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `task_name` | `None` | Get the name of the task. |
 

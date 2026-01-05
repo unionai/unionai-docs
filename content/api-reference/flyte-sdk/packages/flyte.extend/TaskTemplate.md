@@ -79,6 +79,13 @@ class TaskTemplate(
 | `links` | `Tuple[Link, ...]` | |
 | `_call_as_synchronous` | `bool` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `native_interface` | `None` |  |
+| `source_file` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -312,11 +319,4 @@ configure the task execution environment at runtime. This is usually used by plu
 | Parameter | Type | Description |
 |-|-|-|
 | `sctx` | `SerializationContext` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
 

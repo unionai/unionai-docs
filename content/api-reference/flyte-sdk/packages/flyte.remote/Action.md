@@ -23,6 +23,18 @@ class Action(
 | `pb2` | `run_definition_pb2.Action` | |
 | `_details` | `ActionDetails \| None` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
+| `raw_phase` | `None` | Get the raw phase of the action. |
+| `run_name` | `None` | Get the name of the run. |
+| `start_time` | `None` | Get the start time of the action. |
+| `task_name` | `None` | Get the name of the task. |
+
 ## Methods
 
 | Method | Description |
@@ -198,16 +210,4 @@ ensuring that properties like `phase` reflect the current state.
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
 | `wait_for` | `WaitFor` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
-| `raw_phase` | `None` | Get the raw phase of the action. |
-| `run_name` | `None` | Get the name of the run. |
-| `start_time` | `None` | Get the start time of the action. |
-| `task_name` | `None` | Get the name of the task. |
 

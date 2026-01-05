@@ -196,6 +196,13 @@ validated to form a valid model.
 |-|-|-|
 | `data` | `Any` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
+
 ## Methods
 
 | Method | Description |
@@ -1269,11 +1276,4 @@ def list_files_limited(d: Dir) -> list[str]:
 | `recursive` | `bool` | If True, recursively walk subdirectories. If False, only list files in the top-level directory. |
 | `file_pattern` | `str` | Glob pattern to filter files (e.g., "*.txt", "*.csv"). Default is "*" (all files). |
 | `max_depth` | `Optional[int]` | Maximum depth for recursive walking. If None, walk through all subdirectories. |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
-| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 

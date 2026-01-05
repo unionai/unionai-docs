@@ -25,6 +25,14 @@ class TypeTransformer(
 | `t` | `Type[T]` | |
 | `enable_type_assertions` | `bool` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
+| `python_type` | `None` | This returns the python type |
+| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
+
 ## Methods
 
 | Method | Description |
@@ -173,12 +181,4 @@ Converts the given Literal to a Python Type. If the conversion cannot be done an
 |-|-|-|
 | `lv` | `Literal` | The received literal Value |
 | `expected_python_type` | `Type[T]` | Expected native python type that should be returned |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` |  |
-| `python_type` | `None` | This returns the python type |
-| `type_assertions_enabled` | `None` | Indicates if the transformer wants type assertions to be enabled at the core type engine layer |
 

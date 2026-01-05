@@ -196,17 +196,16 @@ def generate_class_details(
         if info["parent"] != ProtocolBaseClass:
             generate_params(init_method, output)
 
-    methods = [method for method in info["methods"] if method["name"] != "__init__"]
+    if info["properties"]:
+        output.write(f"{'#' * (doc_level)} Properties\n\n")
+        generate_props(info["properties"], output)
 
+    methods = [method for method in info["methods"] if method["name"] != "__init__"]
     if methods:
         generate_method_list(methods, output, doc_level)
 
         for method in methods:
             generate_method(method, output, doc_level)
-
-    if info["properties"]:
-        output.write(f"{'#' * (doc_level)} Properties\n\n")
-        generate_props(info["properties"], output)
 
 
 def generate_classes(classes: ClassPackageMap, pkg_root: str, ignore_types: List[str]):

@@ -18,6 +18,13 @@ class Secret(
 |-|-|-|
 | `pb2` | `definition_pb2.Secret` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
+| `type` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -127,11 +134,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` |  |
-| `type` | `None` |  |
 

@@ -62,6 +62,12 @@ class FastAPIAppEnvironment(
 | `uvicorn_config` | `uvicorn.Config \| None` | |
 | `_caller_frame` | `inspect.FrameInfo \| None` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -215,10 +221,4 @@ definition.
 | Parameter | Type | Description |
 |-|-|-|
 | `fn` | `Callable[..., None]` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `endpoint` | `None` |  |
 

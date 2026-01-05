@@ -44,6 +44,13 @@ class ContainerTask(
 | `local_logs` | `bool` | If True, logs will be printed to the console in the local execution. |
 | `kwargs` | `**kwargs` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `native_interface` | `None` |  |
+| `source_file` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -275,11 +282,4 @@ configure the task execution environment at runtime. This is usually used by plu
 | Parameter | Type | Description |
 |-|-|-|
 | `sctx` | `SerializationContext` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
 

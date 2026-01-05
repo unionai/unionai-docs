@@ -30,6 +30,16 @@ validated to form a valid model.
 |-|-|-|
 | `data` | `Any` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `literal` | `None` |  |
+| `metadata` | `None` |  |
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
+| `val` | `None` |  |
+
 ## Methods
 
 | Method | Description |
@@ -680,14 +690,4 @@ def validate(
 | Parameter | Type | Description |
 |-|-|-|
 | `value` | `Any` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `literal` | `None` |  |
-| `metadata` | `None` |  |
-| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
-| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
-| `val` | `None` |  |
 
