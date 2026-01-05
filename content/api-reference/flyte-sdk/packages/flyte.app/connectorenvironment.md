@@ -1,16 +1,16 @@
 ---
-title: AppEnvironment
+title: ConnectorEnvironment
 version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# AppEnvironment
+# ConnectorEnvironment
 
 **Package:** `flyte.app`
 
 ```python
-class AppEnvironment(
+class ConnectorEnvironment(
     name: str,
     depends_on: List[Environment],
     pod_template: Optional[Union[str, PodTemplate]],
@@ -20,8 +20,8 @@ class AppEnvironment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto']],
-    type: Optional[str],
-    port: int | Port,
+    type: str,
+    port: int | flyte.app._types.Port,
     args: *args,
     command: Optional[Union[List[str], str]],
     requires_auth: bool,
@@ -35,26 +35,26 @@ class AppEnvironment(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of the app environment |
-| `depends_on` | `List[Environment]` | Environment dependencies to hint, so when you deploy the environment, the dependencies are also deployed. This is useful when you have a set of environments that depend on each other. |
+| `name` | `str` | |
+| `depends_on` | `List[Environment]` | |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | |
 | `description` | `Optional[str]` | |
-| `secrets` | `Optional[SecretRequest]` | Secrets to inject into the environment. |
-| `env_vars` | `Optional[Dict[str, str]]` | Environment variables to set for the environment. |
-| `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
+| `secrets` | `Optional[SecretRequest]` | |
+| `env_vars` | `Optional[Dict[str, str]]` | |
+| `resources` | `Optional[Resources]` | |
 | `interruptible` | `bool` | |
-| `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
-| `type` | `Optional[str]` | Type of the environment. |
-| `port` | `int \| Port` | Port to use for the app server. |
-| `args` | `*args` | Arguments to pass to app. |
-| `command` | `Optional[Union[List[str], str]]` | Command to run in the app. |
-| `requires_auth` | `bool` | Whether the app requires authentication. |
-| `scaling` | `Scaling` | Scaling configuration for the app environment. |
-| `domain` | `Domain \| None` | Domain to use for the app. |
-| `links` | `List[Link]` | Links to other environments. |
-| `include` | `List[str]` | Files to include in the environment to run the app. |
-| `parameters` | `List[Parameter]` | Parameters to pass to the app environment. |
-| `cluster_pool` | `str` | Cluster pool to use for the app environment. |
+| `image` | `Union[str, Image, Literal['auto']]` | |
+| `type` | `str` | |
+| `port` | `int \| flyte.app._types.Port` | |
+| `args` | `*args` | |
+| `command` | `Optional[Union[List[str], str]]` | |
+| `requires_auth` | `bool` | |
+| `scaling` | `Scaling` | |
+| `domain` | `Domain \| None` | |
+| `links` | `List[Link]` | |
+| `include` | `List[str]` | |
+| `parameters` | `List[Parameter]` | |
+| `cluster_pool` | `str` | |
 
 ## Methods
 
@@ -115,25 +115,25 @@ def clone_with(
 
 ```python
 def container_args(
-    serialize_context: SerializationContext,
-) -> List[str]
+    serialize_context: flyte.models.SerializationContext,
+) -> typing.List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `serialize_context` | `SerializationContext` | |
+| `serialize_context` | `flyte.models.SerializationContext` | |
 
 ### container_cmd()
 
 ```python
 def container_cmd(
-    serialize_context: SerializationContext,
-    parameter_overrides: list[Parameter] | None,
-) -> List[str]
+    serialize_context: flyte.models.SerializationContext,
+    parameter_overrides: list[flyte.app._parameter.Parameter] | None,
+) -> typing.List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `serialize_context` | `SerializationContext` | |
-| `parameter_overrides` | `list[Parameter] \| None` | |
+| `serialize_context` | `flyte.models.SerializationContext` | |
+| `parameter_overrides` | `list[flyte.app._parameter.Parameter] \| None` | |
 
 ### get_port()
 

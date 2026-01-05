@@ -1,22 +1,22 @@
 ---
-title: Input
-version: 2.0.0b40
+title: Parameter
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
-# Input
+# Parameter
 
 **Package:** `flyte.app`
 
-Input for application.
+Parameter for application.
 
 
 
 ```python
-class Input(
+class Parameter(
     name: str,
-    value: InputTypes | _DelayedValue,
+    value: ParameterTypes | _DelayedValue,
     env_var: Optional[str],
     download: bool,
     mount: Optional[str],
@@ -25,10 +25,10 @@ class Input(
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `name` | `str` | Name of input. |
-| `value` | `InputTypes \| _DelayedValue` | Value for input. |
+| `name` | `str` | Name of parameter. |
+| `value` | `ParameterTypes \| _DelayedValue` | Value for parameter. |
 | `env_var` | `Optional[str]` | Environment name to set the value in the serving environment. |
-| `download` | `bool` | When True, the input will be automatically downloaded. This only works if the value refers to an item in a object store. i.e. `s3://...` |
+| `download` | `bool` | When True, the parameter will be automatically downloaded. This only works if the value refers to an item in a object store. i.e. `s3://...` |
 | `mount` | `Optional[str]` | If `value` is a directory, then the directory will be available at `mount`. If `value` is a file, then the file will be downloaded into the `mount` directory. |
 | `ignore_patterns` | `list[str]` | If `value` is a directory, then this is a list of glob patterns to ignore. |
 
