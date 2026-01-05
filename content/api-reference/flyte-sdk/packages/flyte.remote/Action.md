@@ -1,6 +1,6 @@
 ---
 title: Action
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -23,6 +23,18 @@ class Action(
 | `pb2` | `run_definition_pb2.Action` | |
 | `_details` | `ActionDetails \| None` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
+| `raw_phase` | `None` | Get the raw phase of the action. |
+| `run_name` | `None` | Get the name of the run. |
+| `start_time` | `None` | Get the start time of the action. |
+| `task_name` | `None` | Get the name of the task. |
+
 ## Methods
 
 | Method | Description |
@@ -36,7 +48,7 @@ class Action(
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
-| [`watch()`](#watch) | Watch the action for updates. |
+| [`watch()`](#watch) | Watch the action for updates, updating the internal Action state with latest details. |
 
 
 ### details()
@@ -92,6 +104,7 @@ Get a run by its ID or name. If both are provided, the ID will take precedence.
 def listall(
     cls,
     for_run_name: str,
+    in_phase: Tuple[ActionPhase | str, ...] | None,
     filters: str | None,
     sort_by: Tuple[str, Literal['asc', 'desc']] | None,
 ) -> Union[Iterator[Action], AsyncIterator[Action]]
@@ -104,8 +117,9 @@ Get all actions for a given run.
 |-|-|-|
 | `cls` |  | |
 | `for_run_name` | `str` | The name of the run. |
+| `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter actions by one or more phases. |
 | `filters` | `str \| None` | The filters to apply to the project list. |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). :return: An iterator of projects. |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). :return: An iterator of actions. |
 
 ### show_logs()
 
@@ -186,22 +200,14 @@ def watch(
     wait_for: WaitFor,
 ) -> AsyncGenerator[ActionDetails, None]
 ```
-Watch the action for updates. This is a placeholder for watching the action.
+Watch the action for updates, updating the internal Action state with latest details.
+
+This method updates both the cached details and the protobuf representation,
+ensuring that properties like `phase` reflect the current state.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
 | `wait_for` | `WaitFor` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action. |
-| `raw_phase` | `None` | Get the raw phase of the action. |
-| `run_name` | `None` | Get the name of the run. |
-| `task_name` | `None` | Get the name of the task. |
 

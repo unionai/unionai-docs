@@ -1,5 +1,6 @@
 import io
 import os
+import re
 from typing import Dict, List, Tuple, Optional
 
 from lib.generate.docstring import docstring_summary
@@ -17,6 +18,26 @@ from lib.generate.helper import generate_anchor_from_name
 PackageTree = Dict[str, List[str]]
 
 ProtocolBaseClass = "Protocol"
+
+
+def escape_html_preserve_code_blocks(text):
+    """Escape HTML characters in text while preserving code blocks."""
+    if not text:
+        return text
+    
+    # Split on code block delimiters (```)
+    parts = re.split(r'(```.*?```)', text, flags=re.DOTALL)
+    
+    result = []
+    for i, part in enumerate(parts):
+        # Even indices are regular text, odd indices are code blocks
+        if i % 2 == 0:  # Regular text - escape HTML
+            escaped_part = part.replace("<", "&lt;").replace(">", "&gt;")
+            result.append(escaped_part)
+        else:  # Code block - don't escape
+            result.append(part)
+    
+    return ''.join(result)
 
 
 def generate_class_filename(fullname: str, pkg_root: str) -> str:
@@ -150,8 +171,8 @@ def generate_class_details(
     info: ClassDetails, output: io.TextIOWrapper, doc_level: int
 ):
     if info["doc"]:
-        # Escape HTML characters in class documentation
-        doc = info["doc"].replace("<", "&lt;").replace(">", "&gt;")
+        # Escape HTML characters in class documentation while preserving code blocks
+        doc = escape_html_preserve_code_blocks(info["doc"])
         output.write(f"{doc}\n\n")
 
     # Find the __init__ method if it exists
@@ -169,23 +190,22 @@ def generate_class_details(
             is_protocol=info["parent"] == ProtocolBaseClass,
         )
         if init_method["doc"]:
-            # Escape HTML characters in __init__ method documentation
-            doc = init_method["doc"].replace("<", "&lt;").replace(">", "&gt;")
+            # Escape HTML characters in __init__ method documentation while preserving code blocks
+            doc = escape_html_preserve_code_blocks(init_method["doc"])
             output.write(f"{doc}\n\n")
         if info["parent"] != ProtocolBaseClass:
             generate_params(init_method, output)
 
-    methods = [method for method in info["methods"] if method["name"] != "__init__"]
+    if info["properties"]:
+        output.write(f"{'#' * (doc_level)} Properties\n\n")
+        generate_props(info["properties"], output)
 
+    methods = [method for method in info["methods"] if method["name"] != "__init__"]
     if methods:
         generate_method_list(methods, output, doc_level)
 
         for method in methods:
             generate_method(method, output, doc_level)
-
-    if info["properties"]:
-        output.write(f"{'#' * (doc_level)} Properties\n\n")
-        generate_props(info["properties"], output)
 
 
 def generate_classes(classes: ClassPackageMap, pkg_root: str, ignore_types: List[str]):

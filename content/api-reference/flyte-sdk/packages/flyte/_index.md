@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -37,6 +37,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | Protocol | Description |
 |-|-|
 | [`CachePolicy`](../flyte/cachepolicy) | Base class for protocol classes. |
+| [`Link`](../flyte/link) | Base class for protocol classes. |
 
 ### Methods
 
@@ -56,6 +57,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`get_custom_context()`](#get_custom_context) | Get the current input context. |
 | [`group()`](#group) | Create a new group with the given name. |
 | [`init()`](#init) | Initialize the Flyte system with the given configuration. |
+| [`init_from_api_key()`](#init_from_api_key) | Initialize the Flyte system using an API key for authentication. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
@@ -96,7 +98,7 @@ Create an AMD GPU device instance.
 
 ```python
 def GPU(
-    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000'],
+    device: typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10'],
     quantity: typing.Literal[1, 2, 3, 4, 5, 6, 7, 8],
     partition: typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType],
 ) -> flyte._resources.Device
@@ -106,7 +108,7 @@ Create a GPU device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000']` | The type of GPU (e.g., "T4", "A100"). |
+| `device` | `typing.Literal['A10', 'A10G', 'A100', 'A100 80G', 'B200', 'H100', 'H200', 'L4', 'L40s', 'T4', 'V100', 'RTX PRO 6000', 'GB10']` | The type of GPU (e.g., "T4", "A100"). |
 | `quantity` | `typing.Literal[1, 2, 3, 4, 5, 6, 7, 8]` | The number of GPUs of this type. |
 | `partition` | `typing.Union[typing.Literal['1g.5gb', '2g.10gb', '3g.20gb', '4g.20gb', '7g.40gb'], typing.Literal['1g.10gb', '2g.20gb', '3g.40gb', '4g.40gb', '7g.80gb'], typing.Literal['1g.18gb', '1g.35gb', '2g.35gb', '3g.71gb', '4g.71gb', '7g.141gb'], NoneType]` | The partition of the GPU (e.g., "1g.5gb", "2g.10gb" for gpus) or ("1x1", ... for tpus). :return: Device instance. |
 
@@ -122,7 +124,7 @@ Create a Habana Gaudi device instance.
 
 | Parameter | Type | Description |
 |-|-|-|
-| `device` | `typing.Literal['Gaudi1']` | Device type (e.g., "DL1"). :return: Device instance. |
+| `device` | `typing.Literal['Gaudi1']` | Device type (e.g., "Gaudi1"). :return: Device instance. |
 
 #### Neuron()
 
@@ -350,6 +352,7 @@ def init(
     root_dir: Path | None,
     log_level: int | None,
     log_format: LogFormat | None,
+    reset_root_logger: bool,
     endpoint: str | None,
     headless: bool,
     insecure: bool,
@@ -386,6 +389,7 @@ remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. This is useful for determining the root directory for the current project, and for locating files like config etc. also use to determine all the code that needs to be copied to the remote location. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
 | `log_level` | `int \| None` | Optional logging level for the logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
+| `reset_root_logger` | `bool` | By default, we clear out root logger handlers and set up our own. |
 | `endpoint` | `str \| None` | Optional API endpoint URL |
 | `headless` | `bool` | Optional Whether to run in headless mode |
 | `insecure` | `bool` | insecure flag for the client |
@@ -408,6 +412,49 @@ remote API methods are called. Thread-safe implementation.
 | `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
 | `load_plugin_type_transformers` | `bool` | If enabled (default True), load the type transformer plugins registered under the "flyte.plugins.types" entry point group. :return: None |
 
+#### init_from_api_key()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await init_from_api_key.aio()`.
+```python
+def init_from_api_key(
+    endpoint: str,
+    api_key: str | None,
+    project: str | None,
+    domain: str | None,
+    root_dir: Path | None,
+    log_level: int | None,
+    log_format: LogFormat | None,
+    storage: Storage | None,
+    batch_size: int,
+    image_builder: ImageBuildEngine.ImageBuilderType,
+    images: typing.Dict[str, str] | None,
+    sync_local_sys_paths: bool,
+)
+```
+Initialize the Flyte system using an API key for authentication. This is a convenience
+method for API key-based authentication. Thread-safe implementation.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str` | The Flyte API endpoint URL |
+| `api_key` | `str \| None` | Optional API key for authentication. If None, reads from FLYTE_API_KEY environment variable. |
+| `project` | `str \| None` | Optional project name |
+| `domain` | `str \| None` | Optional domain name |
+| `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
+| `log_level` | `int \| None` | Optional logging level for the logger |
+| `log_format` | `LogFormat \| None` | Optional logging format for the logger, default is "console" |
+| `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration |
+| `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000 |
+| `image_builder` | `ImageBuildEngine.ImageBuilderType` | Optional image builder configuration |
+| `images` | `typing.Dict[str, str] \| None` | Optional dict of images that can be used by referencing the image name |
+| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True) :return: None |
+
 #### init_from_config()
 
 
@@ -421,7 +468,11 @@ def init_from_config(
     root_dir: Path | None,
     log_level: int | None,
     log_format: LogFormat,
+    project: str | None,
+    domain: str | None,
     storage: Storage | None,
+    batch_size: int,
+    image_builder: ImageBuildEngine.ImageBuilderType | None,
     images: tuple[str, ...] | None,
     sync_local_sys_paths: bool,
 )
@@ -437,9 +488,13 @@ other Flyte remote API methods are called. Thread-safe implementation.
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files like config etc. For example if one uses the copy-style=="all", it is essential to determine the root directory for the current project. If not provided, it defaults to the editable install directory or if not available, the current working directory. |
 | `log_level` | `int \| None` | Optional logging level for the framework logger, default is set using the default initialization policies |
 | `log_format` | `LogFormat` | Optional logging format for the logger, default is "console" |
+| `project` | `str \| None` | Project name, this will override any project names in the configuration file |
+| `domain` | `str \| None` | Domain name, this will override any domain names in the configuration file |
 | `storage` | `Storage \| None` | Optional blob store (S3, GCS, Azure) configuration if needed to access (i.e. using Minio) |
+| `batch_size` | `int` | Optional batch size for operations that use listings, defaults to 1000 |
+| `image_builder` | `ImageBuildEngine.ImageBuilderType \| None` | Optional image builder configuration, if provided, will override any defaults set in the configuration. :return: None |
 | `images` | `tuple[str, ...] \| None` | List of image strings in format "imagename=imageuri" or just "imageuri". |
-| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). :return: None |
+| `sync_local_sys_paths` | `bool` | Whether to include and synchronize local sys.path entries under the root directory into the remote container (default: True). |
 
 #### init_in_cluster()
 
@@ -599,6 +654,7 @@ def with_runcontext(
     interruptible: bool | None,
     log_level: int | None,
     log_format: LogFormat,
+    reset_root_logger: bool,
     disable_run_cache: bool,
     queue: Optional[str],
     custom_context: Dict[str, str] | None,
@@ -613,7 +669,7 @@ import flyte
 env = flyte.TaskEnvironment("example")
 
 @env.task
-async def example_task(x: int, y: str) -&gt; str:
+async def example_task(x: int, y: str) -> str:
     return f"{x} {y}"
 
 if __name__ == "__main__":
@@ -643,6 +699,7 @@ if __name__ == "__main__":
 | `interruptible` | `bool \| None` | Optional If true, the run can be scheduled on interruptible instances and false implies that all tasks in the run should only be scheduled on non-interruptible instances. If not specified the original setting on all tasks is retained. |
 | `log_level` | `int \| None` | Optional Log level to set for the run. If not provided, it will be set to the default log level set using `flyte.init()` |
 | `log_format` | `LogFormat` | Optional Log format to set for the run. If not provided, it will be set to the default log format |
+| `reset_root_logger` | `bool` | If true, the root logger will be preserved and not modified by Flyte. |
 | `disable_run_cache` | `bool` | Optional If true, the run cache will be disabled. This is useful for testing purposes. |
 | `queue` | `Optional[str]` | Optional The queue to use for the run. This is used to specify the cluster to use for the run. |
 | `custom_context` | `Dict[str, str] \| None` | Optional global input context to pass to the task. This will be available via get_custom_context() within the task and will automatically propagate to sub-tasks. Acts as base/default values that can be overridden by context managers in the code. |
@@ -658,10 +715,12 @@ def with_servecontext(
     project: str | None,
     domain: str | None,
     env_vars: dict[str, str] | None,
-    input_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None,
+    parameter_values: dict[str, dict[str, str | flyte.io.File | flyte.io.Dir]] | None,
     cluster_pool: str | None,
     log_level: int | None,
     log_format: LogFormat,
+    interactive_mode: bool | None,
+    copy_bundle_to: pathlib.Path | None,
 ) -> _Serve
 ```
 Create a serve context with custom configuration.
@@ -700,8 +759,10 @@ print(f"App URL: {app.url}")
 | `project` | `str \| None` | Optional project override |
 | `domain` | `str \| None` | Optional domain override |
 | `env_vars` | `dict[str, str] \| None` | Optional environment variables to inject/override in the app container |
-| `input_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional input values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of input names to values. |
+| `parameter_values` | `dict[str, dict[str, str \| flyte.io.File \| flyte.io.Dir]] \| None` | Optional parameter values to inject/override in the app container. Must be a dictionary that maps app environment names to a dictionary of parameter names to values. |
 | `cluster_pool` | `str \| None` | Optional cluster pool to deploy the app to |
 | `log_level` | `int \| None` | Optional log level (e.g., logging.DEBUG, logging.INFO). If not provided, uses init config or default |
 | `log_format` | `LogFormat` | |
+| `interactive_mode` | `bool \| None` | Optional, can be forced to True or False. If not provided, it will be set based on the current environment. For example Jupyter notebooks are considered interactive mode, while scripts are not. This is used to determine how the code bundle is created. This is used to determine if the app should be served in interactive mode or not. |
+| `copy_bundle_to` | `pathlib.Path \| None` | When dry_run is True, the bundle will be copied to this location if specified |
 

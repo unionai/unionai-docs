@@ -1,6 +1,6 @@
 ---
 title: CodeBundle
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,7 @@ class CodeBundle(
     tgz: str | None,
     pkl: str | None,
     downloaded_path: pathlib.Path | None,
+    files: List[str] | None,
 )
 ```
 | Parameter | Type | Description |
@@ -30,6 +31,7 @@ class CodeBundle(
 | `tgz` | `str \| None` | Optional path to the tgz file. |
 | `pkl` | `str \| None` | Optional path to the pkl file. |
 | `downloaded_path` | `pathlib.Path \| None` | The path to the downloaded code bundle. This is only available during runtime, when the code bundle has been downloaded and inflated. |
+| `files` | `List[str] \| None` | |
 
 ## Methods
 

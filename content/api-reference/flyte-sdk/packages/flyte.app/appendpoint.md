@@ -1,6 +1,6 @@
 ---
 title: AppEndpoint
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -9,9 +9,9 @@ layout: py_api
 
 **Package:** `flyte.app`
 
-Embed an upstream app's endpoint as an app input.
+Embed an upstream app's endpoint as an app parameter.
 
-This enables the declaration of an app input dependency on a the endpoint of
+This enables the declaration of an app parameter dependency on a the endpoint of
 an upstream app, given by a specific app name. This gives the app access to
 the upstream app's endpoint as a public or private url.
 
@@ -32,6 +32,13 @@ validated to form a valid model.
 | Parameter | Type | Description |
 |-|-|-|
 | `data` | `Any` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
+| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 
 ## Methods
 
@@ -585,11 +592,4 @@ def validate(
 | Parameter | Type | Description |
 |-|-|-|
 | `value` | `Any` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `model_extra` | `None` | Get extra fields set during validation.  Returns:     A dictionary of extra fields, or `None` if `config.extra` is not set to `"allow"`. |
-| `model_fields_set` | `None` | Returns the set of fields that have been explicitly set on this model instance.  Returns:     A set of strings representing the fields that have been set,         i.e. that were not filled from defaults. |
 

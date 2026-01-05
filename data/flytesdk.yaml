@@ -1,6 +1,7 @@
 packages:
   flyte: /api-reference/flyte-sdk/packages/flyte/
   flyte.app: /api-reference/flyte-sdk/packages/flyte.app/
+  flyte.app.extras: /api-reference/flyte-sdk/packages/flyte.app.extras/
   flyte.cli: /api-reference/flyte-sdk/packages/flyte.cli/
   flyte.cli.main: /api-reference/flyte-sdk/packages/flyte.cli.main/
   flyte.config: /api-reference/flyte-sdk/packages/flyte.config/
@@ -10,6 +11,7 @@ packages:
   flyte.git: /api-reference/flyte-sdk/packages/flyte.git/
   flyte.io: /api-reference/flyte-sdk/packages/flyte.io/
   flyte.models: /api-reference/flyte-sdk/packages/flyte.models/
+  flyte.prefetch: /api-reference/flyte-sdk/packages/flyte.prefetch/
   flyte.remote: /api-reference/flyte-sdk/packages/flyte.remote/
   flyte.report: /api-reference/flyte-sdk/packages/flyte.report/
   flyte.storage: /api-reference/flyte-sdk/packages/flyte.storage/
@@ -23,6 +25,7 @@ identifiers:
   flyte.Environment: /api-reference/flyte-sdk/packages/flyte/environment/
   flyte.FixedRate: /api-reference/flyte-sdk/packages/flyte/fixedrate/
   flyte.Image: /api-reference/flyte-sdk/packages/flyte/image/
+  flyte.Link: /api-reference/flyte-sdk/packages/flyte/link/
   flyte.PodTemplate: /api-reference/flyte-sdk/packages/flyte/podtemplate/
   flyte.Resources: /api-reference/flyte-sdk/packages/flyte/resources/
   flyte.RetryStrategy: /api-reference/flyte-sdk/packages/flyte/retrystrategy/
@@ -31,12 +34,16 @@ identifiers:
   flyte.TaskEnvironment: /api-reference/flyte-sdk/packages/flyte/taskenvironment/
   flyte.Timeout: /api-reference/flyte-sdk/packages/flyte/timeout/
   flyte.Trigger: /api-reference/flyte-sdk/packages/flyte/trigger/
+  flyte.app.AppEndpoint: /api-reference/flyte-sdk/packages/flyte.app/appendpoint/
   flyte.app.AppEnvironment: /api-reference/flyte-sdk/packages/flyte.app/appenvironment/
+  flyte.app.ConnectorEnvironment: /api-reference/flyte-sdk/packages/flyte.app/connectorenvironment/
   flyte.app.Domain: /api-reference/flyte-sdk/packages/flyte.app/domain/
-  flyte.app.Input: /api-reference/flyte-sdk/packages/flyte.app/input/
   flyte.app.Link: /api-reference/flyte-sdk/packages/flyte.app/link/
+  flyte.app.Parameter: /api-reference/flyte-sdk/packages/flyte.app/parameter/
   flyte.app.Port: /api-reference/flyte-sdk/packages/flyte.app/port/
+  flyte.app.RunOutput: /api-reference/flyte-sdk/packages/flyte.app/runoutput/
   flyte.app.Scaling: /api-reference/flyte-sdk/packages/flyte.app/scaling/
+  flyte.app.extras.FastAPIAppEnvironment: /api-reference/flyte-sdk/packages/flyte.app.extras/fastapiappenvironment/
   flyte.config.Config: /api-reference/flyte-sdk/packages/flyte.config/config/
   flyte.errors.ActionNotFoundError: /api-reference/flyte-sdk/packages/flyte.errors/actionnotfounderror/
   flyte.errors.BaseRuntimeError: /api-reference/flyte-sdk/packages/flyte.errors/baseruntimeerror/
@@ -52,8 +59,11 @@ identifiers:
   flyte.errors.NotInTaskContextError: /api-reference/flyte-sdk/packages/flyte.errors/notintaskcontexterror/
   flyte.errors.OOMError: /api-reference/flyte-sdk/packages/flyte.errors/oomerror/
   flyte.errors.OnlyAsyncIOSupportedError: /api-reference/flyte-sdk/packages/flyte.errors/onlyasynciosupportederror/
+  flyte.errors.ParameterMaterializationError: /api-reference/flyte-sdk/packages/flyte.errors/parametermaterializationerror/
   flyte.errors.PrimaryContainerNotFoundError: /api-reference/flyte-sdk/packages/flyte.errors/primarycontainernotfounderror/
   flyte.errors.ReferenceTaskError: /api-reference/flyte-sdk/packages/flyte.errors/referencetaskerror/
+  flyte.errors.RemoteTaskError: /api-reference/flyte-sdk/packages/flyte.errors/remotetaskerror/
+  flyte.errors.RestrictedTypeError: /api-reference/flyte-sdk/packages/flyte.errors/restrictedtypeerror/
   flyte.errors.RetriesExhaustedError: /api-reference/flyte-sdk/packages/flyte.errors/retriesexhaustederror/
   flyte.errors.RunAbortedError: /api-reference/flyte-sdk/packages/flyte.errors/runabortederror/
   flyte.errors.RuntimeDataValidationError: /api-reference/flyte-sdk/packages/flyte.errors/runtimedatavalidationerror/
@@ -68,6 +78,7 @@ identifiers:
   flyte.extend.ImageBuildEngine: /api-reference/flyte-sdk/packages/flyte.extend/imagebuildengine/
   flyte.extend.TaskTemplate: /api-reference/flyte-sdk/packages/flyte.extend/tasktemplate/
   flyte.extras.ContainerTask: /api-reference/flyte-sdk/packages/flyte.extras/containertask/
+  flyte.git.GitStatus: /api-reference/flyte-sdk/packages/flyte.git/gitstatus/
   flyte.io.DataFrame: /api-reference/flyte-sdk/packages/flyte.io/dataframe/
   flyte.io.DataFrameDecoder: /api-reference/flyte-sdk/packages/flyte.io/dataframedecoder/
   flyte.io.DataFrameEncoder: /api-reference/flyte-sdk/packages/flyte.io/dataframeencoder/
@@ -75,6 +86,7 @@ identifiers:
   flyte.io.Dir: /api-reference/flyte-sdk/packages/flyte.io/dir/
   flyte.io.File: /api-reference/flyte-sdk/packages/flyte.io/file/
   flyte.models.ActionID: /api-reference/flyte-sdk/packages/flyte.models/actionid/
+  flyte.models.ActionPhase: /api-reference/flyte-sdk/packages/flyte.models/actionphase/
   flyte.models.Checkpoints: /api-reference/flyte-sdk/packages/flyte.models/checkpoints/
   flyte.models.CodeBundle: /api-reference/flyte-sdk/packages/flyte.models/codebundle/
   flyte.models.GroupData: /api-reference/flyte-sdk/packages/flyte.models/groupdata/
@@ -83,6 +95,10 @@ identifiers:
   flyte.models.RawDataPath: /api-reference/flyte-sdk/packages/flyte.models/rawdatapath/
   flyte.models.SerializationContext: /api-reference/flyte-sdk/packages/flyte.models/serializationcontext/
   flyte.models.TaskContext: /api-reference/flyte-sdk/packages/flyte.models/taskcontext/
+  flyte.prefetch.HuggingFaceModelInfo: /api-reference/flyte-sdk/packages/flyte.prefetch/huggingfacemodelinfo/
+  flyte.prefetch.ShardConfig: /api-reference/flyte-sdk/packages/flyte.prefetch/shardconfig/
+  flyte.prefetch.StoredModelInfo: /api-reference/flyte-sdk/packages/flyte.prefetch/storedmodelinfo/
+  flyte.prefetch.VLLMShardArgs: /api-reference/flyte-sdk/packages/flyte.prefetch/vllmshardargs/
   flyte.remote.Action: /api-reference/flyte-sdk/packages/flyte.remote/action/
   flyte.remote.ActionDetails: /api-reference/flyte-sdk/packages/flyte.remote/actiondetails/
   flyte.remote.ActionInputs: /api-reference/flyte-sdk/packages/flyte.remote/actioninputs/
@@ -122,13 +138,17 @@ methods:
   flyte.get_custom_context: /api-reference/flyte-sdk/packages/flyte/#get_custom_context
   flyte.group: /api-reference/flyte-sdk/packages/flyte/#group
   flyte.init: /api-reference/flyte-sdk/packages/flyte/#init
+  flyte.init_from_api_key: /api-reference/flyte-sdk/packages/flyte/#init_from_api_key
   flyte.init_from_config: /api-reference/flyte-sdk/packages/flyte/#init_from_config
   flyte.init_in_cluster: /api-reference/flyte-sdk/packages/flyte/#init_in_cluster
   flyte.map: /api-reference/flyte-sdk/packages/flyte/#map
   flyte.run: /api-reference/flyte-sdk/packages/flyte/#run
+  flyte.serve: /api-reference/flyte-sdk/packages/flyte/#serve
   flyte.trace: /api-reference/flyte-sdk/packages/flyte/#trace
   flyte.version: /api-reference/flyte-sdk/packages/flyte/#version
   flyte.with_runcontext: /api-reference/flyte-sdk/packages/flyte/#with_runcontext
+  flyte.with_servecontext: /api-reference/flyte-sdk/packages/flyte/#with_servecontext
+  flyte.app.get_parameter: /api-reference/flyte-sdk/packages/flyte.app/#get_parameter
   flyte.config.auto: /api-reference/flyte-sdk/packages/flyte.config/#auto
   flyte.config.set_if_exists: /api-reference/flyte-sdk/packages/flyte.config/#set_if_exists
   flyte.errors.silence_grpc_polling_error: /api-reference/flyte-sdk/packages/flyte.errors/#silence_grpc_polling_error
@@ -139,6 +159,7 @@ methods:
   flyte.git.config_from_root: /api-reference/flyte-sdk/packages/flyte.git/#config_from_root
   flyte.io.lazy_import_dataframe_handler: /api-reference/flyte-sdk/packages/flyte.io/#lazy_import_dataframe_handler
   flyte.models.generate_random_name: /api-reference/flyte-sdk/packages/flyte.models/#generate_random_name
+  flyte.prefetch.hf_model: /api-reference/flyte-sdk/packages/flyte.prefetch/#hf_model
   flyte.remote.create_channel: /api-reference/flyte-sdk/packages/flyte.remote/#create_channel
   flyte.remote.upload_dir: /api-reference/flyte-sdk/packages/flyte.remote/#upload_dir
   flyte.remote.upload_file: /api-reference/flyte-sdk/packages/flyte.remote/#upload_file

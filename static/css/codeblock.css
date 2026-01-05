@@ -68,6 +68,11 @@
 }
 
 .codeblock .highlight .language-python A {
-    color: dodgerblue;
+    /* color: dodgerblue; */
+    color: unset;
+    text-decoration: underline;
+}
+
+A > CODE {
     text-decoration: underline;
 }

@@ -1,6 +1,6 @@
 ---
 title: RunDetails
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,14 @@ class RunDetails(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `run_definition_pb2.RunDetails` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `action_id` | `None` | Get the action ID. |
+| `name` | `None` | Get the name of the action. |
+| `task_name` | `None` | Get the name of the task. |
 
 ## Methods
 
@@ -124,12 +132,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `action_id` | `None` | Get the action ID. |
-| `name` | `None` | Get the name of the action. |
-| `task_name` | `None` | Get the name of the task. |
 

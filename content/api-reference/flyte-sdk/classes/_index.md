@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -24,14 +24,16 @@ sidebar_expanded: true
 | [`flyte.TaskEnvironment`](../packages/flyte/taskenvironment) |Environment class to define a new environment for a set of tasks. |
 | [`flyte.Timeout`](../packages/flyte/timeout) |Timeout class to define a timeout for a task. |
 | [`flyte.Trigger`](../packages/flyte/trigger) |This class defines specification of a Trigger, that can be associated with any Flyte V2 task. |
-| [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app input. |
+| [`flyte.app.AppEndpoint`](../packages/flyte.app/appendpoint) |Embed an upstream app's endpoint as an app parameter. |
 | [`flyte.app.AppEnvironment`](../packages/flyte.app/appenvironment) | |
+| [`flyte.app.ConnectorEnvironment`](../packages/flyte.app/connectorenvironment) | |
 | [`flyte.app.Domain`](../packages/flyte.app/domain) |Subdomain to use for the domain. |
-| [`flyte.app.Input`](../packages/flyte.app/input) |Input for application. |
 | [`flyte.app.Link`](../packages/flyte.app/link) |Custom links to add to the app. |
+| [`flyte.app.Parameter`](../packages/flyte.app/parameter) |Parameter for application. |
 | [`flyte.app.Port`](../packages/flyte.app/port) | |
-| [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app inputs. |
+| [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
+| [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.errors.ActionNotFoundError`](../packages/flyte.errors/actionnotfounderror) |This error is raised when the user tries to access an action that does not exist. |
 | [`flyte.errors.BaseRuntimeError`](../packages/flyte.errors/baseruntimeerror) |Base class for all Union runtime errors. |
@@ -47,8 +49,11 @@ sidebar_expanded: true
 | [`flyte.errors.NotInTaskContextError`](../packages/flyte.errors/notintaskcontexterror) |This error is raised when the user tries to access the task context outside of a task. |
 | [`flyte.errors.OOMError`](../packages/flyte.errors/oomerror) |This error is raised when the underlying task execution fails because of an out-of-memory error. |
 | [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
+| [`flyte.errors.ParameterMaterializationError`](../packages/flyte.errors/parametermaterializationerror) |This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors/primarycontainernotfounderror) |This error is raised when the primary container is not found. |
 | [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors/referencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RemoteTaskError`](../packages/flyte.errors/remotetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RestrictedTypeError`](../packages/flyte.errors/restrictedtypeerror) |This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors/retriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`flyte.errors.RunAbortedError`](../packages/flyte.errors/runabortederror) |This error is raised when the run is aborted by the user. |
 | [`flyte.errors.RuntimeDataValidationError`](../packages/flyte.errors/runtimedatavalidationerror) |This error is raised when the user tries to access a resource that does not exist or is invalid. |
@@ -71,6 +76,7 @@ sidebar_expanded: true
 | [`flyte.io.Dir`](../packages/flyte.io/dir) |A generic directory class representing a directory with files of a specified format. |
 | [`flyte.io.File`](../packages/flyte.io/file) |A generic file class representing a file with a specified format. |
 | [`flyte.models.ActionID`](../packages/flyte.models/actionid) |A class representing the ID of an Action, nested within a Run. |
+| [`flyte.models.ActionPhase`](../packages/flyte.models/actionphase) |Represents the execution phase of a Flyte action (run). |
 | [`flyte.models.Checkpoints`](../packages/flyte.models/checkpoints) |A class representing the checkpoints for a task. |
 | [`flyte.models.CodeBundle`](../packages/flyte.models/codebundle) |A class representing a code bundle for a task. |
 | [`flyte.models.GroupData`](../packages/flyte.models/groupdata) | |
@@ -79,6 +85,10 @@ sidebar_expanded: true
 | [`flyte.models.RawDataPath`](../packages/flyte.models/rawdatapath) |A class representing the raw data path for a task. |
 | [`flyte.models.SerializationContext`](../packages/flyte.models/serializationcontext) |This object holds serialization time contextual information, that can be used when serializing the task and. |
 | [`flyte.models.TaskContext`](../packages/flyte.models/taskcontext) |A context class to hold the current task executions context. |
+| [`flyte.prefetch.HuggingFaceModelInfo`](../packages/flyte.prefetch/huggingfacemodelinfo) |Information about a HuggingFace model to store. |
+| [`flyte.prefetch.ShardConfig`](../packages/flyte.prefetch/shardconfig) |Configuration for model sharding. |
+| [`flyte.prefetch.StoredModelInfo`](../packages/flyte.prefetch/storedmodelinfo) |Information about a stored model. |
+| [`flyte.prefetch.VLLMShardArgs`](../packages/flyte.prefetch/vllmshardargs) |Arguments for sharding a model using vLLM. |
 | [`flyte.remote.Action`](../packages/flyte.remote/action) |A class representing an action. |
 | [`flyte.remote.ActionDetails`](../packages/flyte.remote/actiondetails) |A class representing an action. |
 | [`flyte.remote.ActionInputs`](../packages/flyte.remote/actioninputs) |A class representing the inputs of an action. |
@@ -107,4 +117,5 @@ sidebar_expanded: true
 | Protocol | Description |
 |-|-|
 | [`flyte.CachePolicy`](../packages/flyte/cachepolicy) |Base class for protocol classes. |
+| [`flyte.Link`](../packages/flyte/link) |Base class for protocol classes. |
 | [`flyte.types.Renderable`](../packages/flyte.types/renderable) |Base class for protocol classes. |

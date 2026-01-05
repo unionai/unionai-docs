@@ -1,6 +1,6 @@
 ---
 title: Task
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,6 +17,14 @@ class Task(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `task_definition_pb2.Task` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | The name of the task. |
+| `url` | `None` |  |
+| `version` | `None` | The version of the task. |
 
 ## Methods
 
@@ -106,11 +114,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` | The name of the task. |
-| `version` | `None` | The version of the task. |
 

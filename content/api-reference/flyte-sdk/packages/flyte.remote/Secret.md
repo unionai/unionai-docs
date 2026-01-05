@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -17,6 +17,13 @@ class Secret(
 | Parameter | Type | Description |
 |-|-|-|
 | `pb2` | `definition_pb2.Secret` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` |  |
+| `type` | `None` |  |
 
 ## Methods
 
@@ -127,11 +134,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` |  |
-| `type` | `None` |  |
 

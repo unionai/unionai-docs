@@ -1,6 +1,6 @@
 ---
 title: flyte.app
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -14,32 +14,33 @@ sidebar_expanded: true
 
 | Class | Description |
 |-|-|
-| [`AppEndpoint`](../flyte.app/appendpoint) | Embed an upstream app's endpoint as an app input. |
+| [`AppEndpoint`](../flyte.app/appendpoint) | Embed an upstream app's endpoint as an app parameter. |
 | [`AppEnvironment`](../flyte.app/appenvironment) |  |
+| [`ConnectorEnvironment`](../flyte.app/connectorenvironment) |  |
 | [`Domain`](../flyte.app/domain) | Subdomain to use for the domain. |
-| [`Input`](../flyte.app/input) | Input for application. |
 | [`Link`](../flyte.app/link) | Custom links to add to the app. |
+| [`Parameter`](../flyte.app/parameter) | Parameter for application. |
 | [`Port`](../flyte.app/port) |  |
-| [`RunOutput`](../flyte.app/runoutput) | Use a run's output for app inputs. |
+| [`RunOutput`](../flyte.app/runoutput) | Use a run's output for app parameters. |
 | [`Scaling`](../flyte.app/scaling) |  |
 
 ### Methods
 
 | Method | Description |
 |-|-|
-| [`get_input()`](#get_input) | Get inputs for application or endpoint. |
+| [`get_parameter()`](#get_parameter) | Get parameters for application or endpoint. |
 
 
 ## Methods
 
-#### get_input()
+#### get_parameter()
 
 ```python
-def get_input(
+def get_parameter(
     name: str,
 ) -> str
 ```
-Get inputs for application or endpoint.
+Get parameters for application or endpoint.
 
 
 | Parameter | Type | Description |

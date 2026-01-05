@@ -18,7 +18,7 @@ For our example we will start by setting up our task environment with the requir
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="setup" lang="python" >}}
 
-## Create a raw dataframe
+## Create a raw DataFrame
 
 Now, let's create a task that returns a native Pandas DataFrame:
 
@@ -42,7 +42,7 @@ Alternatively you can also create a `flyte.io.DataFrame` object directly from a 
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="from-df" lang="python" >}}
 
-The `flyte.io.DataFrame` class creates a thin wrapper around objects of any standard DataFrame type. It serves as a generic "any dataframe type" (a concept that Python itself does not cxurrently offer).
+The `flyte.io.DataFrame` class creates a thin wrapper around objects of any standard DataFrame type. It serves as a generic "any DataFrame type" (a concept that Python itself does not currently offer).
 
 As with native DataFrame types, Flyte will automatically serialize and upload the data at task completion.
 
@@ -50,11 +50,11 @@ The advantage of the unified `flyte.io.DataFrame` wrapper is that you can be exp
 
 ## Automatically convert between types
 
-You can leverage Flyte to automatically download and convert the dataframe between types when needed:
+You can leverage Flyte to automatically download and convert the DataFrame between types when needed:
 
 {{< code file="/external/unionai-examples/v2/user-guide/task-programming/dataframes/dataframes.py" fragment="automatic" lang="python" >}}
 
-This task takes two dataframes as input. We'll pass one raw Pandas dataframe, and one `flyte.io.DataFrame`.
+This task takes two DataFrames as input. We'll pass one raw Pandas DataFrame, and one `flyte.io.DataFrame`.
 Flyte automatically converts the `flyte.io.DataFrame` to a Pandas DataFrame (since we declared that as the input type) before passing it to the task.
 The actual download and conversion happens only when we access the data, in this case, when we do the merge.
 

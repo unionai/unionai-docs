@@ -1,6 +1,6 @@
 ---
 title: Secret
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -12,9 +12,7 @@ layout: py_api
 Secrets are used to inject sensitive information into tasks or image build context.
 Secrets can be mounted as environment variables or files.
  The secret key is the name of the secret in the secret store. The group is optional and maybe used with some
-secret stores to organize secrets. The secret_mount is used to specify how the secret should be mounted. If the
-secret_mount is set to "env" the secret will be mounted as an environment variable. If the secret_mount is set to
-"file" the secret will be mounted as a file. The as_env_var is an optional parameter that can be used to specify the
+secret stores to organize secrets. The as_env_var is an optional parameter that can be used to specify the
 name of the environment variable that the secret should be mounted as.
 
 Example:
@@ -45,7 +43,7 @@ class Secret(
 |-|-|-|
 | `key` | `str` | The name of the secret in the secret store. |
 | `group` | `typing.Optional[str]` | The group of the secret in the secret store. |
-| `mount` | `pathlib._local.Path \| None` | Use this to specify the path where the secret should be mounted. TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
+| `mount` | `pathlib._local.Path \| None` | For now, the only supported mount path is "/etc/flyte/secrets". TODO: support arbitrary mount paths. Today only "/etc/flyte/secrets" is supported |
 | `as_env_var` | `typing.Optional[str]` | The name of the environment variable that the secret should be mounted as. |
 
 ## Methods

@@ -1,6 +1,6 @@
 ---
 title: AppEnvironment
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -20,16 +20,16 @@ class AppEnvironment(
     resources: Optional[Resources],
     interruptible: bool,
     image: Union[str, Image, Literal['auto']],
-    type: typing.Optional[str],
-    port: int | flyte.app._types.Port,
+    type: Optional[str],
+    port: int | Port,
     args: *args,
-    command: typing.Union[typing.List[str], str, NoneType],
+    command: Optional[Union[List[str], str]],
     requires_auth: bool,
-    scaling: flyte.app._types.Scaling,
-    domain: flyte.app._types.Domain | None,
-    links: typing.List[flyte.app._types.Link],
-    include: typing.List[str],
-    inputs: typing.List[flyte.app._input.Input],
+    scaling: Scaling,
+    domain: Domain | None,
+    links: List[Link],
+    include: List[str],
+    parameters: List[Parameter],
     cluster_pool: str,
 )
 ```
@@ -44,17 +44,23 @@ class AppEnvironment(
 | `resources` | `Optional[Resources]` | Resources to allocate for the environment. |
 | `interruptible` | `bool` | |
 | `image` | `Union[str, Image, Literal['auto']]` | Docker image to use for the environment. If set to "auto", will use the default image. |
-| `type` | `typing.Optional[str]` | Type of the environment. |
-| `port` | `int \| flyte.app._types.Port` | Port to use for the app server. |
+| `type` | `Optional[str]` | Type of the environment. |
+| `port` | `int \| Port` | Port to use for the app server. |
 | `args` | `*args` | Arguments to pass to app. |
-| `command` | `typing.Union[typing.List[str], str, NoneType]` | Command to run in the app. |
+| `command` | `Optional[Union[List[str], str]]` | Command to run in the app. |
 | `requires_auth` | `bool` | Whether the app requires authentication. |
-| `scaling` | `flyte.app._types.Scaling` | Scaling configuration for the app environment. |
-| `domain` | `flyte.app._types.Domain \| None` | Domain to use for the app. |
-| `links` | `typing.List[flyte.app._types.Link]` | Links to other environments. |
-| `include` | `typing.List[str]` | Files to include in the environment to run the app. |
-| `inputs` | `typing.List[flyte.app._input.Input]` | Inputs to pass to the app environment. |
+| `scaling` | `Scaling` | Scaling configuration for the app environment. |
+| `domain` | `Domain \| None` | Domain to use for the app. |
+| `links` | `List[Link]` | Links to other environments. |
+| `include` | `List[str]` | Files to include in the environment to run the app. |
+| `parameters` | `List[Parameter]` | Parameters to pass to the app environment. |
 | `cluster_pool` | `str` | Cluster pool to use for the app environment. |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `endpoint` | `None` |  |
 
 ## Methods
 
@@ -65,6 +71,9 @@ class AppEnvironment(
 | [`container_args()`](#container_args) |  |
 | [`container_cmd()`](#container_cmd) |  |
 | [`get_port()`](#get_port) |  |
+| [`on_shutdown()`](#on_shutdown) | Decorator to define the shutdown function for the app environment. |
+| [`on_startup()`](#on_startup) | Decorator to define the startup function for the app environment. |
+| [`server()`](#server) | Decorator to define the server function for the app environment. |
 
 
 ### add_dependency()
@@ -88,56 +97,110 @@ def clone_with(
     name: str,
     image: Optional[Union[str, Image, Literal['auto']]],
     resources: Optional[Resources],
-    env_vars: Optional[Dict[str, str]],
+    env_vars: Optional[dict[str, str]],
     secrets: Optional[SecretRequest],
     depends_on: Optional[List[Environment]],
     description: Optional[str],
+    interruptible: Optional[bool],
     kwargs: **kwargs,
-) -> Environment
+) -> AppEnvironment
 ```
 | Parameter | Type | Description |
 |-|-|-|
 | `name` | `str` | |
 | `image` | `Optional[Union[str, Image, Literal['auto']]]` | |
 | `resources` | `Optional[Resources]` | |
-| `env_vars` | `Optional[Dict[str, str]]` | |
+| `env_vars` | `Optional[dict[str, str]]` | |
 | `secrets` | `Optional[SecretRequest]` | |
 | `depends_on` | `Optional[List[Environment]]` | |
 | `description` | `Optional[str]` | |
+| `interruptible` | `Optional[bool]` | |
 | `kwargs` | `**kwargs` | |
 
 ### container_args()
 
 ```python
 def container_args(
-    serialize_context: flyte.models.SerializationContext,
-) -> typing.List[str]
+    serialize_context: SerializationContext,
+) -> List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `serialize_context` | `flyte.models.SerializationContext` | |
+| `serialize_context` | `SerializationContext` | |
 
 ### container_cmd()
 
 ```python
 def container_cmd(
-    serialize_context: flyte.models.SerializationContext,
-    input_overrides: list[flyte.app._input.Input] | None,
-) -> typing.List[str]
+    serialize_context: SerializationContext,
+    parameter_overrides: list[Parameter] | None,
+) -> List[str]
 ```
 | Parameter | Type | Description |
 |-|-|-|
-| `serialize_context` | `flyte.models.SerializationContext` | |
-| `input_overrides` | `list[flyte.app._input.Input] \| None` | |
+| `serialize_context` | `SerializationContext` | |
+| `parameter_overrides` | `list[Parameter] \| None` | |
 
 ### get_port()
 
 ```python
 def get_port()
 ```
-## Properties
+### on_shutdown()
 
-| Property | Type | Description |
+```python
+def on_shutdown(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the shutdown function for the app environment.
+
+This function is called after the server function is called.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
 |-|-|-|
-| `endpoint` | `None` |  |
+| `fn` | `Callable[..., None]` | |
+
+### on_startup()
+
+```python
+def on_startup(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the startup function for the app environment.
+
+This function is called before the server function is called.
+
+The decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
+
+### server()
+
+```python
+def server(
+    fn: Callable[..., None],
+) -> Callable[..., None]
+```
+Decorator to define the server function for the app environment.
+
+This decorated function can be a sync or async function, and accepts input
+parameters based on the Parameters defined in the AppEnvironment
+definition.
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `fn` | `Callable[..., None]` | |
 

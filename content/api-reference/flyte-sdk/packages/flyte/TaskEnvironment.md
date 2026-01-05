@@ -1,6 +1,6 @@
 ---
 title: TaskEnvironment
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -54,6 +54,12 @@ class TaskEnvironment(
 | `reusable` | `ReusePolicy \| None` | Reuse policy for the environment, if set, a python process may be reused for multiple tasks. |
 | `plugin_config` | `Optional[Any]` | Optional plugin configuration for custom task types. If set, all tasks in this environment will use the specified plugin configuration. |
 | `queue` | `Optional[str]` | Optional queue name to use for tasks in this environment. If not set, the default queue will be used. |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `tasks` | `None` | Get all tasks defined in the environment. |
 
 ## Methods
 
@@ -151,6 +157,7 @@ def task(
     max_inline_io_bytes: int,
     queue: Optional[str],
     triggers: Tuple[Trigger, ...] | Trigger,
+    links: Tuple[Link, ...] | Link,
 ) -> Callable[[F], AsyncFunctionTaskTemplate[P, R, F]] | AsyncFunctionTaskTemplate[P, R, F]
 ```
 Decorate a function to be a task.
@@ -171,10 +178,5 @@ Decorate a function to be a task.
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
 | `queue` | `Optional[str]` | Optional queue name to use for this task. If not set, the environment's queue will be used.  :return: A TaskTemplate that can be used to deploy the task. |
 | `triggers` | `Tuple[Trigger, ...] \| Trigger` | Optional A tuple of triggers to associate with the task. This allows the task to be run on a schedule or in response to events. Triggers can be defined using the `flyte.trigger` module. |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `tasks` | `None` | Get all tasks defined in the environment. |
+| `links` | `Tuple[Link, ...] \| Link` | Optional A tuple of links to associate with the task. Links can be used to provide additional context or information about the task. Links should implement the `flyte.Link` protocol |
 

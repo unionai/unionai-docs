@@ -1,6 +1,6 @@
 ---
 title: Authenticating
-weight: 6
+weight: 20
 variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
@@ -47,7 +47,10 @@ This will automatically open your browser to complete authentication.
 When you run any Flyte command, Union automatically:
 1. Opens your default web browser
 2. Prompts you to authenticate
-3. Stores credentials that auto-refresh every few hours
+3. Stores credentials securely in your system's keyring that auto-refresh every few hours
+
+> [!NOTE]
+> Tokens are stored securely in your system's native keyring (e.g., Keychain Access on macOS). On systems without keyring support, see the [Token storage and keyring](#token-storage) section.
 
 #### Configuration
 
@@ -116,6 +119,8 @@ When you run a command, Union displays a URL and user code. You:
 2. Enter the displayed code
 3. Complete authentication
 4. Return to your terminal - the session is now authenticated
+
+Tokens are stored securely in your system's keyring. On systems without keyring support (common in headless Linux environments), see the [Token storage and keyring](#token-storage) section.
 
 #### Configuration
 
@@ -291,6 +296,69 @@ admin:
   authType: Pkce  # or DeviceFlow
   endpoint: dns:///your-union-endpoint
 ```
+
+## Token storage and keyring {#token-storage}
+
+Flyte stores authentication tokens securely using your system's native keyring. This provides secure credential storage and allows you to stay authenticated across CLI commands and interactive sessions without re-authenticating.
+
+### How it works
+
+When you authenticate using PKCE or device flow, Flyte stores your OAuth tokens in:
+- **macOS**: Keychain Access
+- **Windows**: Windows Credential Manager
+- **Linux**: Secret Service API (GNOME Keyring, KWallet, etc.)
+
+These tokens are automatically refreshed as needed, providing a seamless experience across multiple commands and sessions.
+
+### Systems without keyring support
+
+Some environments, particularly headless Linux systems like remote desktops, Docker containers, or minimal server installations, may not have a keyring service available.
+
+**Symptoms:**
+- You are prompted to re-authenticate every time you run a Flyte command
+- You need to authenticate again each time you start a new interactive Python session
+- You see warnings about keyring access failures
+
+### Solution: Install keyrings.alt
+
+For systems without native keyring support, install the `keyrings.alt` package:
+
+```bash
+pip install keyrings.alt
+```
+
+This package provides an alternative keyring backend that stores credentials in an encrypted file on disk, allowing token persistence across sessions.
+
+**Installation in different environments:**
+
+```bash
+# Standard installation
+pip install keyrings.alt
+
+# With UV
+uv pip install keyrings.alt
+
+# In a Docker container (add to your Dockerfile)
+RUN pip install keyrings.alt
+```
+
+After installing `keyrings.alt`, Flyte will automatically use it to store tokens, eliminating the need for repeated authentication.
+
+> [!NOTE]
+> While `keyrings.alt` is less secure than native keyring systems, it's significantly better than re-authenticating for every command and is appropriate for headless development environments.
+
+### Verifying keyring functionality
+
+To check if keyring is working correctly:
+
+```python
+import keyring
+print(keyring.get_keyring())
+```
+
+You should see output indicating which keyring backend is active:
+- Native keyring: `keyring.backends.OS_X.Keyring` (macOS), `keyring.backends.Windows.WinVaultKeyring` (Windows), etc.
+- Alternative keyring: `keyrings.alt.file.PlaintextKeyring` or similar
 
 ## Troubleshooting
 

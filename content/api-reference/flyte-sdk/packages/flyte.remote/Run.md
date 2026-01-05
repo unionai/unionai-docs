@@ -1,6 +1,6 @@
 ---
 title: Run
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,6 +24,15 @@ class Run(
 | `pb2` | `run_definition_pb2.Run` | |
 | `_details` | `RunDetails \| None` | |
 
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `name` | `None` | Get the name of the run. |
+| `phase` | `None` | Get the phase of the run. |
+| `raw_phase` | `None` | Get the raw phase of the run. |
+| `url` | `None` | Get the URL of the run. |
+
 ## Methods
 
 | Method | Description |
@@ -40,7 +49,7 @@ class Run(
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`wait()`](#wait) | Wait for the run to complete, displaying a rich progress panel with status transitions,. |
-| [`watch()`](#watch) | Get the details of the run. |
+| [`watch()`](#watch) | Watch the run for updates, updating the internal Run state with latest details. |
 
 
 ### abort()
@@ -123,7 +132,7 @@ Get the inputs of the run. This is a placeholder for getting the run inputs.
 ```python
 def listall(
     cls,
-    in_phase: Tuple[Phase] | None,
+    in_phase: Tuple[ActionPhase | str, ...] | None,
     task_name: str | None,
     task_version: str | None,
     created_by_subject: str | None,
@@ -138,11 +147,11 @@ Get all runs for the current project and domain.
 | Parameter | Type | Description |
 |-|-|-|
 | `cls` |  | |
-| `in_phase` | `Tuple[Phase] \| None` | Filter runs by one or more phases. |
+| `in_phase` | `Tuple[ActionPhase \| str, ...] \| None` | Filter runs by one or more phases. |
 | `task_name` | `str \| None` | Filter runs by task name. |
 | `task_version` | `str \| None` | Filter runs by task version. |
 | `created_by_subject` | `str \| None` | Filter runs by the subject that created them. (this is not username, but the subject) |
-| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the project list, in the format (field, order). |
+| `sort_by` | `Tuple[str, Literal['asc', 'desc']] \| None` | The sorting criteria for the Run list, in the format (field, order). |
 | `limit` | `int` | The maximum number of runs to return. :return: An iterator of runs. |
 
 ### outputs()
@@ -228,6 +237,9 @@ def wait(
 Wait for the run to complete, displaying a rich progress panel with status transitions,
 time elapsed, and error details in case of failure.
 
+This method updates the Run's internal state, ensuring that properties like
+`run.action.phase` reflect the final state after waiting completes.
+
 
 | Parameter | Type | Description |
 |-|-|-|
@@ -241,19 +253,13 @@ def watch(
     cache_data_on_done: bool,
 ) -> AsyncGenerator[ActionDetails, None]
 ```
-Get the details of the run. This is a placeholder for getting the run details.
+Watch the run for updates, updating the internal Run state with latest details.
+
+This method updates the Run's action state, ensuring that properties like
+`run.action.phase` reflect the current state after watching.
 
 
 | Parameter | Type | Description |
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `name` | `None` | Get the name of the run. |
-| `phase` | `None` | Get the phase of the run. |
-| `raw_phase` | `None` | Get the raw phase of the run. |
-| `url` | `None` | Get the URL of the run. |
 

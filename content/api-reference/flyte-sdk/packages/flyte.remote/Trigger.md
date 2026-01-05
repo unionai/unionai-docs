@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,6 +19,17 @@ class Trigger(
 |-|-|-|
 | `pb2` | `trigger_definition_pb2.Trigger` | |
 | `details` | `TriggerDetails \| None` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `automation_spec` | `None` |  |
+| `id` | `None` |  |
+| `is_active` | `None` |  |
+| `name` | `None` |  |
+| `task_name` | `None` |  |
+| `url` | `None` |  |
 
 ## Methods
 
@@ -185,14 +196,4 @@ Pause a trigger by its name and associated task name.
 | `name` | `str` | |
 | `task_name` | `str` | |
 | `active` | `bool` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `automation_spec` | `None` |  |
-| `id` | `None` |  |
-| `is_active` | `None` |  |
-| `name` | `None` |  |
-| `task_name` | `None` |  |
 

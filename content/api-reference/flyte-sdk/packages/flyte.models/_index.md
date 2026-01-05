@@ -1,6 +1,6 @@
 ---
 title: flyte.models
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -15,6 +15,7 @@ sidebar_expanded: true
 | Class | Description |
 |-|-|
 | [`ActionID`](../flyte.models/actionid) | A class representing the ID of an Action, nested within a Run. |
+| [`ActionPhase`](../flyte.models/actionphase) | Represents the execution phase of a Flyte action (run). |
 | [`Checkpoints`](../flyte.models/checkpoints) | A class representing the checkpoints for a task. |
 | [`CodeBundle`](../flyte.models/codebundle) | A class representing a code bundle for a task. |
 | [`GroupData`](../flyte.models/groupdata) |  |

@@ -1,6 +1,6 @@
 ---
 title: TaskDetails
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -21,6 +21,21 @@ class TaskDetails(
 | `pb2` | `task_definition_pb2.TaskDetails` | |
 | `max_inline_io_bytes` | `int` | |
 | `overriden_queue` | `Optional[str]` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `cache` | `None` | The cache policy of the task. |
+| `default_input_args` | `None` | The default input arguments of the task. |
+| `interface` | `None` | The interface of the task. |
+| `name` | `None` | The name of the task. |
+| `queue` | `None` | The queue to use for the task. |
+| `required_args` | `None` | The required input arguments of the task. |
+| `resources` | `None` | The resources of the task. |
+| `secrets` | `None` | The secrets of the task. |
+| `task_type` | `None` | The type of the task. |
+| `version` | `None` | The version of the task. |
 
 ## Methods
 
@@ -127,18 +142,4 @@ Convert the object to a JSON string.
 Returns:
     str: A JSON string representation of the object.
 
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `cache` | `None` | The cache policy of the task. |
-| `default_input_args` | `None` | The default input arguments of the task. |
-| `name` | `None` | The name of the task. |
-| `queue` | `None` | The queue to use for the task. |
-| `required_args` | `None` | The required input arguments of the task. |
-| `resources` | `None` | The resources of the task. |
-| `secrets` | `None` | The secrets of the task. |
-| `task_type` | `None` | The type of the task. |
-| `version` | `None` | The version of the task. |
 

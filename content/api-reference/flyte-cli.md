@@ -24,6 +24,7 @@ This is the command line interface for Flyte.
 | `logs` | [`get`](#flyte-get-logs)  |
 | `project` | [`get`](#flyte-get-project)  |
 | `task` | [`get`](#flyte-get-task)  |
+| `hf-model` | [`prefetch`](#flyte-prefetch-hf-model)  |
 | `deployed-task` | [`run`](#flyte-run-deployed-task)  |
 
 **⁺** Plugin command - see command documentation for installation instructions
@@ -38,6 +39,7 @@ This is the command line interface for Flyte.
 | [`deploy`](#flyte-deploy) | - |
 | `gen` | [`docs`](#flyte-gen-docs)  |
 | `get` | [`action`](#flyte-get-action), [`api-key⁺`](#flyte-get-api-key), [`app`](#flyte-get-app), [`config`](#flyte-get-config), [`io`](#flyte-get-io), [`logs`](#flyte-get-logs), [`project`](#flyte-get-project), [`run`](#flyte-get-run), [`secret`](#flyte-get-secret), [`task`](#flyte-get-task), [`trigger`](#flyte-get-trigger)  |
+| `prefetch` | [`hf-model`](#flyte-prefetch-hf-model)  |
 | `run` | [`deployed-task`](#flyte-run-deployed-task)  |
 | [`serve`](#flyte-serve) | - |
 | `update` | [`app`](#flyte-update-app), [`trigger`](#flyte-update-trigger)  |
@@ -99,6 +101,7 @@ $ flyte --config /path/to/config.yaml run ...
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
+| `--reset-root-logger` | `boolean` | `False` | If set, the root logger will be reset to use Flyte logging style |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 ### flyte abort
@@ -409,7 +412,7 @@ flyte deploy --dry-run hello.py my_env
 You can specify the `--config` flag to point to a specific Flyte cluster:
 
 ```bash
-flyte deploy --config my-config.yaml hello.py my_env
+flyte --config my-config.yaml deploy hello.py my_env
 ```
 
 You can override the default configured project and domain:
@@ -504,6 +507,7 @@ Get all actions for a run or details for a specific action.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `--in-phase` | `choice` | `Sentinel.UNSET` | Filter actions by their phase. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -653,11 +657,20 @@ The run details will include information about the run, its status, but only the
 
 If you want to see the actions for a run, use `get action <run_name>`.
 
+You can filter runs by task name and optionally task version:
+
+```bash
+$ flyte get run --task-name my_task
+$ flyte get run --task-name my_task --task-version v1.0
+```
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of runs to fetch when listing. |
 | `--in-phase` | `choice` | `Sentinel.UNSET` | Filter runs by their status. |
 | `--only-mine` | `boolean` | `False` | Show only runs created by the current user (you). |
+| `--task-name` | `text` |  | Filter runs by task name. |
+| `--task-version` | `text` |  | Filter runs by task version. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -704,6 +717,86 @@ Get a list of all triggers, or details of a specific trigger by name.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `--limit` | `integer` | `100` | Limit the number of triggers to fetch. |
+| {{< multiline >}}`-p`
+`--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
+| {{< multiline >}}`-d`
+`--domain`{{< /multiline >}} | `text` |  | Domain to which this command applies. |
+| `--help` | `boolean` | `False` | Show this message and exit. |
+
+### flyte prefetch
+
+**`flyte prefetch COMMAND [ARGS]...`**
+
+Prefetch artifacts from remote registries.
+
+These commands help you download and prefetch artifacts like HuggingFace models
+to your Flyte storage for faster access during task execution.
+
+#### flyte prefetch hf-model
+
+**`flyte prefetch hf-model [OPTIONS] REPO`**
+
+Prefetch a HuggingFace model to Flyte storage.
+
+Downloads a model from the HuggingFace Hub and prefetches it to your configured
+Flyte storage backend. This is useful for:
+
+- Pre-fetching large models before running inference tasks
+- Sharding models for tensor-parallel inference
+- Avoiding repeated downloads during development
+
+**Basic Usage:**
+
+```bash
+$ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --hf-token-key HF_TOKEN
+```
+
+**With Sharding:**
+
+Create a shard config file (shard_config.yaml):
+
+```yaml
+engine: vllm
+args:
+  tensor_parallel_size: 8
+  dtype: auto
+  trust_remote_code: true
+```
+
+Then run:
+
+```bash
+$ flyte prefetch hf-model meta-llama/Llama-2-70b-hf \
+    --shard-config shard_config.yaml \
+    --accelerator A100:8 \
+    --hf-token-key HF_TOKEN
+```
+
+**Wait for Completion:**
+
+```bash
+$ flyte prefetch hf-model meta-llama/Llama-2-7b-hf --wait
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--raw-data-path` | `text` |  | Object store path to store the model. If not provided, the model will be stored using the default path generated by Flyte storage layer. |
+| `--artifact-name` | `text` |  | Artifact name to use for the stored model. Must only contain alphanumeric characters, underscores, and hyphens. If not provided, the repo name will be used (replacing '.' with '-'). |
+| `--architecture` | `text` | `Sentinel.UNSET` | Model architecture, as given in HuggingFace config.json. |
+| `--task` | `text` | `auto` | Model task, e.g., 'generate', 'classify', 'embed', 'score', etc. Refer to vLLM docs. 'auto' will try to discover this automatically. |
+| `--modality` | `text` | `('text',)` | Modalities supported by the model, e.g., 'text', 'image', 'audio', 'video'. Can be specified multiple times. |
+| `--format` | `text` | `Sentinel.UNSET` | Model serialization format, e.g., safetensors, onnx, torchscript, joblib, etc. |
+| `--model-type` | `text` | `Sentinel.UNSET` | Model type, e.g., 'transformer', 'xgboost', 'custom', etc. For HuggingFace models, this is auto-determined from config.json['model_type']. |
+| `--short-description` | `text` | `Sentinel.UNSET` | Short description of the model. |
+| `--force` | `integer` | `0` | Force store of the model. Increment value (--force=1, --force=2, ...) to force a new store. |
+| `--wait` | `boolean` | `False` | Wait for the model to be stored before returning. |
+| `--hf-token-key` | `text` | `HF_TOKEN` | Name of the Flyte secret containing your HuggingFace token. Note: This is not the HuggingFace token itself, but the name of the secret in the Flyte secret store. |
+| `--cpu` | `text` | `2` | CPU request for the prefetch task (e.g., '2', '4', '2,4' for 2-4 CPUs). |
+| `--mem` | `text` | `8Gi` | Memory request for the prefetch task (e.g., '16Gi', '64Gi', '16Gi,64Gi' for 16-64GB). |
+| `--gpu` | `choice` |  | The gpu to use for downloading and (optionally) sharding the model. Format: '{type}:{quantity}' (e.g., 'A100:8', 'L4:1'). |
+| `--disk` | `text` | `50Gi` | Disk storage request for the prefetch task (e.g., '100Gi', '500Gi'). |
+| `--shm` | `text` |  | Shared memory request for the prefetch task (e.g., '100Gi', 'auto'). |
+| `--shard-config` | `path` | `Sentinel.UNSET` | Path to a YAML file containing sharding configuration. The file should have 'engine' (currently only 'vllm') and 'args' keys. |
 | {{< multiline >}}`-p`
 `--project`{{< /multiline >}} | `text` |  | Project to which this command applies. |
 | {{< multiline >}}`-d`
@@ -808,13 +901,15 @@ flyte run hello.py my_task --help
 `-f`{{< /multiline >}} | `boolean` | `False` | Wait and watch logs for the parent action. If not provided, the CLI will exit after successfully launching a remote execution with a link to the UI. |
 | `--image` | `text` | `Sentinel.UNSET` | Image to be used in the run. Format: imagename=imageuri. Can be specified multiple times. |
 | `--no-sync-local-sys-paths` | `boolean` | `False` | Disable synchronization of local sys.path entries under the root directory to the remote container. |
+| `--run-project` | `text` |  | Run the remote task in this project, only applicable when using `deployed-task` subcommand. |
+| `--run-domain` | `text` |  | Run the remote task in this domain, only applicable when using `deployed-task` subcommand. |
 | `--help` | `boolean` | `False` | Show this message and exit. |
 
 #### flyte run deployed-task
 
 **`flyte run deployed-task [OPTIONS] COMMAND [ARGS]...`**
 
-Run reference task from the Flyte backend
+Run remote task from the Flyte backend
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|

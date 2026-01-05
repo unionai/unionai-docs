@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -24,6 +24,24 @@ class ActionDetails(
 | `pb2` | `run_definition_pb2.ActionDetails` | |
 | `_inputs` | `ActionInputs \| None` | |
 | `_outputs` | `ActionOutputs \| None` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `abort_info` | `None` |  |
+| `action_id` | `None` | Get the action ID. |
+| `attempts` | `None` | Get the number of attempts of the action. |
+| `error_info` | `None` |  |
+| `is_running` | `None` | Check if the action is currently running. |
+| `metadata` | `None` |  |
+| `name` | `None` | Get the name of the action. |
+| `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
+| `raw_phase` | `None` | Get the raw phase of the action. |
+| `run_name` | `None` | Get the name of the run. |
+| `runtime` | `None` | Get the runtime of the action. |
+| `status` | `None` |  |
+| `task_name` | `None` | Get the name of the task. |
 
 ## Methods
 
@@ -181,22 +199,4 @@ def watch_updates(
 | Parameter | Type | Description |
 |-|-|-|
 | `cache_data_on_done` | `bool` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `abort_info` | `None` |  |
-| `action_id` | `None` | Get the action ID. |
-| `attempts` | `None` | Get the number of attempts of the action. |
-| `error_info` | `None` |  |
-| `is_running` | `None` | Check if the action is currently running. |
-| `metadata` | `None` |  |
-| `name` | `None` | Get the name of the action. |
-| `phase` | `None` | Get the phase of the action. |
-| `raw_phase` | `None` | Get the raw phase of the action. |
-| `run_name` | `None` | Get the name of the run. |
-| `runtime` | `None` | Get the runtime of the action. |
-| `status` | `None` |  |
-| `task_name` | `None` | Get the name of the task. |
 

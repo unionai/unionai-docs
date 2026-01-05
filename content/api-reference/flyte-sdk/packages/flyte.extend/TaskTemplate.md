@@ -1,6 +1,6 @@
 ---
 title: TaskTemplate
-version: 2.0.0b35
+version: 2.0.0b43
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -47,6 +47,7 @@ class TaskTemplate(
     parent_env_name: Optional[str],
     max_inline_io_bytes: int,
     triggers: Tuple[Trigger, ...],
+    links: Tuple[Link, ...],
     _call_as_synchronous: bool,
 )
 ```
@@ -75,7 +76,15 @@ class TaskTemplate(
 | `parent_env_name` | `Optional[str]` | |
 | `max_inline_io_bytes` | `int` | Maximum allowed size (in bytes) for all inputs and outputs passed directly to the task (e.g., primitives, strings, dicts). Does not apply to files, directories, or dataframes. |
 | `triggers` | `Tuple[Trigger, ...]` | |
+| `links` | `Tuple[Link, ...]` | |
 | `_call_as_synchronous` | `bool` | |
+
+## Properties
+
+| Property | Type | Description |
+|-|-|-|
+| `native_interface` | `None` |  |
+| `source_file` | `None` |  |
 
 ## Methods
 
@@ -109,11 +118,11 @@ This function will also re-raise exceptions from the underlying task.
 Example:
 ```python
 @env.task
-def my_legacy_task(x: int) -&gt; int:
+def my_legacy_task(x: int) -> int:
     return x
 
 @env.task
-async def my_new_parent_task(n: int) -&gt; List[int]:
+async def my_new_parent_task(n: int) -> List[int]:
     collect = []
     for x in range(n):
         collect.append(my_legacy_task.aio(x))
@@ -238,6 +247,7 @@ def override(
     pod_template: Optional[Union[str, PodTemplate]],
     queue: Optional[str],
     interruptible: Optional[bool],
+    links: Tuple[Link, ...],
     kwargs: **kwargs,
 ) -> TaskTemplate
 ```
@@ -259,7 +269,8 @@ when it is called, such as changing the image, resources, cache policy, etc.
 | `max_inline_io_bytes` | `int \| None` | Optional override for the maximum allowed size (in bytes) for all inputs and outputs passed directly to the task. |
 | `pod_template` | `Optional[Union[str, PodTemplate]]` | Optional override for the pod template to use for the task. |
 | `queue` | `Optional[str]` | Optional override for the queue to use for the task. |
-| `interruptible` | `Optional[bool]` | |
+| `interruptible` | `Optional[bool]` | Optional override for the interruptible policy for the task. |
+| `links` | `Tuple[Link, ...]` | Optional override for the Links associated with the task. |
 | `kwargs` | `**kwargs` | Additional keyword arguments for further overrides. Some fields like name, image, docs, and interface cannot be overridden.  :return: A new TaskTemplate instance with the overridden parameters. |
 
 ### post()
@@ -308,11 +319,4 @@ configure the task execution environment at runtime. This is usually used by plu
 | Parameter | Type | Description |
 |-|-|-|
 | `sctx` | `SerializationContext` | |
-
-## Properties
-
-| Property | Type | Description |
-|-|-|-|
-| `native_interface` | `None` |  |
-| `source_file` | `None` |  |
 
