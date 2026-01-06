@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.0.0b43
+version: 2.0.0b44
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,6 +8,9 @@ layout: py_api
 # Trigger
 
 **Package:** `flyte.remote`
+
+Represents a trigger in the Flyte platform.
+
 
 ```python
 class Trigger(
@@ -24,12 +27,12 @@ class Trigger(
 
 | Property | Type | Description |
 |-|-|-|
-| `automation_spec` | `None` |  |
-| `id` | `None` |  |
-| `is_active` | `None` |  |
-| `name` | `None` |  |
-| `task_name` | `None` |  |
-| `url` | `None` |  |
+| `automation_spec` | `None` | Get the automation specification for the trigger. |
+| `id` | `None` | Get the unique identifier for the trigger. |
+| `is_active` | `None` | Check if the trigger is currently active. |
+| `name` | `None` | Get the name of the trigger. |
+| `task_name` | `None` | Get the name of the task associated with this trigger. |
+| `url` | `None` | Get the console URL for viewing the trigger. |
 
 ## Methods
 

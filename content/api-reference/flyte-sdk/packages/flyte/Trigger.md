@@ -1,6 +1,6 @@
 ---
 title: Trigger
-version: 2.0.0b43
+version: 2.0.0b44
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -19,10 +19,12 @@ You can associate the same Trigger object with multiple tasks.
 
 Example usage:
 ```python
-from flyte.trigger import Trigger
-my_trigger = Trigger(
+my_trigger = flyte.Trigger(
     name="my_trigger",
     description="A trigger that runs every hour",
+    inputs={"start_time": flyte.TriggerTime, "x": 1},  # Note how you can bind the `trigger time` to an input called
+                                                       # start_time
+    automation=flyte.FixedRate(60),  # Runs every hour
 )
 ```
 

@@ -1,13 +1,13 @@
 ---
 title: DataFrameEncoder
-version: 2.0.0b43
+version: 2.0.0b44
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
 # DataFrameEncoder
 
-**Package:** `flyte.io`
+**Package:** `flyte.io.extend`
 
 Helper class that provides a standard way to create an ABC using
 inheritance.

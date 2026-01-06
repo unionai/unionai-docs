@@ -1,6 +1,6 @@
 ---
 title: User
-version: 2.0.0b43
+version: 2.0.0b44
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -8,6 +8,9 @@ layout: py_api
 # User
 
 **Package:** `flyte.remote`
+
+Represents a user in the Flyte platform.
+
 
 ```python
 class User(
@@ -23,8 +26,8 @@ class User(
 | Method | Description |
 |-|-|
 | [`get()`](#get) | Fetches information about the currently logged in user. |
-| [`name()`](#name) |  |
-| [`subject()`](#subject) |  |
+| [`name()`](#name) | Get the name of the user. |
+| [`subject()`](#subject) | Get the subject identifier of the user. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 
@@ -54,11 +57,17 @@ Returns: A User object containing details about the user.
 ```python
 def name()
 ```
+Get the name of the user.
+
+
 ### subject()
 
 ```python
 def subject()
 ```
+Get the subject identifier of the user.
+
+
 ### to_dict()
 
 ```python

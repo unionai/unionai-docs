@@ -27,7 +27,6 @@ def write_front_matter(title: str, output: io.TextIOWrapper, extra: Optional[Fro
     output.write(f"variants: {variants}\n")
     output.write("layout: py_api\n")
     if extra:
-        print(f"title {title} has extra {extra}", file=stderr)
         if extra['weight']:
             output.write(f"weight: {extra['weight']}\n")
         if extra['expand_sidebar']:
