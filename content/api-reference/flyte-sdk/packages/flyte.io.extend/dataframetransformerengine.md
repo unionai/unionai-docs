@@ -1,13 +1,13 @@
 ---
 title: DataFrameTransformerEngine
-version: 2.0.0b43
+version: 2.0.0b44
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
 
 # DataFrameTransformerEngine
 
-**Package:** `flyte.io`
+**Package:** `flyte.io.extend`
 
 Think of this transformer as a higher-level meta transformer that is used for all the dataframe types.
 If you are bringing a custom data frame type, or any data frame type, to flytekit, instead of

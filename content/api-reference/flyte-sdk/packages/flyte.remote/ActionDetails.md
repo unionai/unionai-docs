@@ -1,6 +1,6 @@
 ---
 title: ActionDetails
-version: 2.0.0b43
+version: 2.0.0b44
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---
@@ -29,18 +29,18 @@ class ActionDetails(
 
 | Property | Type | Description |
 |-|-|-|
-| `abort_info` | `None` |  |
+| `abort_info` | `None` | Get the abort information if the action was aborted, otherwise returns None. |
 | `action_id` | `None` | Get the action ID. |
 | `attempts` | `None` | Get the number of attempts of the action. |
-| `error_info` | `None` |  |
+| `error_info` | `None` | Get the error information if the action failed, otherwise returns None. |
 | `is_running` | `None` | Check if the action is currently running. |
-| `metadata` | `None` |  |
+| `metadata` | `None` | Get the metadata of the action. |
 | `name` | `None` | Get the name of the action. |
 | `phase` | `None` | Get the phase of the action.  Returns:     The current execution phase as an ActionPhase enum |
 | `raw_phase` | `None` | Get the raw phase of the action. |
 | `run_name` | `None` | Get the name of the run. |
 | `runtime` | `None` | Get the runtime of the action. |
-| `status` | `None` |  |
+| `status` | `None` | Get the status of the action. |
 | `task_name` | `None` | Get the name of the task. |
 
 ## Methods
@@ -50,13 +50,13 @@ class ActionDetails(
 | [`done()`](#done) | Check if the action is in a terminal state (completed or failed). |
 | [`get()`](#get) | Get a run by its ID or name. |
 | [`get_details()`](#get_details) | Get the details of the action. |
-| [`inputs()`](#inputs) | Placeholder for inputs. |
+| [`inputs()`](#inputs) | Return the inputs of the action. |
 | [`logs_available()`](#logs_available) | Check if logs are available for the action, optionally for a specific attempt. |
-| [`outputs()`](#outputs) | Placeholder for outputs. |
+| [`outputs()`](#outputs) | Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and. |
 | [`to_dict()`](#to_dict) | Convert the object to a JSON-serializable dictionary. |
 | [`to_json()`](#to_json) | Convert the object to a JSON string. |
 | [`watch()`](#watch) | Watch the action for updates. |
-| [`watch_updates()`](#watch_updates) |  |
+| [`watch_updates()`](#watch_updates) | Watch for updates to the action details, yielding each update until the action is done. |
 
 
 ### done()
@@ -120,7 +120,8 @@ Get the details of the action. This is a placeholder for getting the action deta
 ```python
 def inputs()
 ```
-Placeholder for inputs. This can be extended to handle inputs from the run context.
+Return the inputs of the action.
+Will return instantly if inputs are available else will fetch and return.
 
 
 ### logs_available()
@@ -143,7 +144,10 @@ If attempt is None, it checks for the latest attempt.
 ```python
 def outputs()
 ```
-Placeholder for outputs. This can be extended to handle outputs from the run context.
+Returns the outputs of the action, returns instantly if outputs are already cached, else fetches them and
+returns. If Action is not in a terminal state, raise a RuntimeError.
+
+:return: ActionOutputs
 
 
 ### to_dict()
@@ -196,7 +200,11 @@ def watch_updates(
     cache_data_on_done: bool,
 ) -> AsyncGenerator[ActionDetails, None]
 ```
+Watch for updates to the action details, yielding each update until the action is done.
+
+
+
 | Parameter | Type | Description |
 |-|-|-|
-| `cache_data_on_done` | `bool` | |
+| `cache_data_on_done` | `bool` | If True, cache inputs and outputs when the action completes. |
 
