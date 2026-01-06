@@ -113,6 +113,12 @@
 
 {{/* Highlight the code */}}
 {{- $highlighted := highlight $codeToHighlight $lang $highlightOptions -}}
+{{- /* Rename language-* classes to syntax-* to prevent 1Password prism.js interference */ -}}
+{{- /* Handle both single class and multiple classes: class="language-python" or class="highlight language-python" */ -}}
+{{- $highlighted = replaceRE `class="([^"]*\s)?language-([^"]+)"` `class="$1syntax-$2"` $highlighted -}}
+{{- $highlighted = replaceRE `class="([^"]*\s)?lang-([^"]+)"` `class="$1syntax-$2"` $highlighted -}}
+{{- /* Also rename data-lang attributes */ -}}
+{{- $highlighted = replaceRE `data-lang="([^"]+)"` `data-syntax="$1"` $highlighted -}}
 
 {{/* Replace markers with actual links if we did autolinking */}}
 {{- $processedHTML := $highlighted -}}

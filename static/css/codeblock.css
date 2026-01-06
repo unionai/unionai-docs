@@ -67,8 +67,15 @@
     margin: 0;
 }
 
-.codeblock .highlight .language-python A {
+.codeblock .highlight .syntax-python A {
     /* color: dodgerblue; */
+    color: unset;
+    text-decoration: underline;
+}
+
+/* Support both old language-* and new syntax-* classes for compatibility */
+.codeblock .highlight [class*="language-"] A,
+.codeblock .highlight [class*="syntax-"] A {
     color: unset;
     text-decoration: underline;
 }
