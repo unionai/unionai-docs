@@ -39,11 +39,30 @@
 
       const linkmap = await response.json();
 
-      // Find all <code> elements that are NOT inside <pre> (inline code only)
-      const codeElements = document.querySelectorAll('code:not(pre code)');
+      // More specific selector to exclude code blocks and syntax-highlighted code
+      // Only target inline code that's not inside:
+      // 1. <pre> elements (code blocks)
+      // 2. Elements with syntax highlighting classes
+      // 3. Elements inside .codeblock containers
+      const codeElements = document.querySelectorAll('code:not(.codeblock code):not(.highlight code):not(pre code):not([class*="language-"]):not([class*="chroma"])');
 
       codeElements.forEach(codeEl => {
+        // Skip if this code element is inside a syntax-highlighted container
+        if (codeEl.closest('.highlight, .codeblock, pre, .chroma')) {
+          return;
+        }
+
+        // Skip if already processed (has a link parent)
+        if (codeEl.parentElement.tagName === 'A') {
+          return;
+        }
+
         const text = codeEl.textContent.trim();
+
+        // Skip empty or very short text
+        if (!text || text.length < 2) {
+          return;
+        }
 
         // Check for magic marker syntax [[...]]
         const magicMatch = text.match(/^\[\[(.+?)\]\]$/);
@@ -158,12 +177,18 @@
     const basePath = getBasePath();
     const fullURL = `${basePath}${url}`;
 
+    // Preserve any existing classes from the original code element
+    const existingClasses = codeEl.className;
+
     // Create link element
     const link = document.createElement('a');
     link.href = fullURL;
 
-    // Create new code element
+    // Create new code element with preserved classes
     const newCode = document.createElement('code');
+    if (existingClasses) {
+      newCode.className = existingClasses;
+    }
     newCode.textContent = text;
 
     // Wrap code in link
@@ -173,10 +198,46 @@
     codeEl.parentNode.replaceChild(link, codeEl);
   };
 
+  // Wait for syntax highlighting to complete before processing
+  const waitForSyntaxHighlighting = () => {
+    return new Promise((resolve) => {
+      // Use MutationObserver to wait for DOM changes to settle
+      let timeoutId;
+      const observer = new MutationObserver(() => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          observer.disconnect();
+          resolve();
+        }, 100);
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class']
+      });
+
+      // Fallback timeout in case no changes are detected
+      setTimeout(() => {
+        observer.disconnect();
+        resolve();
+      }, 1000);
+    });
+  };
+
+  // Initialize the linking process
+  const initialize = async () => {
+    // Wait for syntax highlighting to complete
+    await waitForSyntaxHighlighting();
+    // Then process inline code
+    await processInlineCode();
+  };
+
   // Run when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', processInlineCode);
+    document.addEventListener('DOMContentLoaded', initialize);
   } else {
-    processInlineCode();
+    initialize();
   }
 })();
