@@ -40,7 +40,7 @@
         <div class="copy">
             <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
         </div>
-        <div id="{{- $uniqueID -}}" class="code">{{ $processedHTML | safeHTML }}</div>
+        <div id="{{- $uniqueID -}}" class="code" data-1p-ignore="true" data-bwignore="true" data-lastpass-ignore="true" autocomplete="off" contenteditable="false">{{ $processedHTML | safeHTML }}</div>
     </div>
 {{- else -}}
     {{- /* No modifications, use normal highlighting */ -}}
@@ -51,6 +51,6 @@
         <div class="copy">
             <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
         </div>
-        <div id="{{- $uniqueID -}}" class="code">{{ $result.Wrapped }}</div>
+        <div id="{{- $uniqueID -}}" class="code" data-1p-ignore="true" data-bwignore="true" data-lastpass-ignore="true" autocomplete="off" contenteditable="false">{{ $result.Wrapped }}</div>
     </div>
 {{- end -}}
