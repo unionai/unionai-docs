@@ -1,6 +1,6 @@
 OUTPUT_FOLDER=content/api-reference/flyte-sdk
 API_DATA=/tmp/flyte-sdk.api.yaml
-VENV_DIR=.venv-flyte-api
+VENV_DIR=.venv
 SKIP_VENV_SETUP ?= false
 
 .PHONY: all
