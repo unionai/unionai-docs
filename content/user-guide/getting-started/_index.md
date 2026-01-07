@@ -92,7 +92,7 @@ flyte create config \
 {{< /variant >}}
 
 By default, this will create a `./.flyte/config.yaml` file in your current working directory.
-See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for details.
+See [Setting up a configuration file](../local-setup#setting-up-a-configuration-file) for details.
 
 {{< note >}}
 Run `flyte get config` to see the current configuration file being used by the `flyte` CLI.

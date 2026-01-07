@@ -117,7 +117,7 @@ The build process varies based on your configuration and backend type:
 
 ### Local image building
 
-When `image.builder` is set to `local` in [your `config.yaml`](../getting-started/local-setup), images are built on your local machine using Docker. This approach:
+When `image.builder` is set to `local` in [your `config.yaml`](../local-setup), images are built on your local machine using Docker. This approach:
 - Requires Docker to be installed and running on your development machine
 - Uses Docker BuildKit to build images from generated Dockerfiles or your custom Dockerfile
 - Pushes built images to the container registry specified in your `Image` configuration
@@ -125,7 +125,7 @@ When `image.builder` is set to `local` in [your `config.yaml`](../getting-starte
 
 ### Remote image building
 
-When `image.builder` is set to `remote` in [your `config.yaml`](../getting-started/local-setup), images are built on cloud infrastructure. This approach:
+When `image.builder` is set to `remote` in [your `config.yaml`](../local-setup), images are built on cloud infrastructure. This approach:
 - Builds images using Union's ImageBuilder service (currently only available for Union backends, not OSS Flyte)
 - Requires no local Docker installation or configuration
 - Can push to Union's internal registry or external registries you specify

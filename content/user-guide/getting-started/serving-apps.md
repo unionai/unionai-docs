@@ -9,7 +9,7 @@ variants: +flyte +serverless +byoc +selfmanaged
 Flyte SDK lets you serve apps on your Union/Flyte instance, making them accessible via HTTP endpoints. Apps are long-running services that can be accessed by users or other services.
 
 > [!TIP] Prerequisites
-> Make sure to run the [local setup](./local-setup) before going through this guide.
+> Make sure to run the [local setup](../local-setup) before going through this guide.
 
 First install FastAPI in your virtual environment:
 

@@ -1,19 +1,40 @@
 ---
 title: Local setup
-weight: 1
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
 # Local setup
 
-In this section we will explain the options for configuring the `flyte` CLI and SDK to connect to your Union/Flyte instance.
+In this section we will explain how to set up your local development environment and configure the `flyte` CLI and SDK to connect to your Union/Flyte instance.
 
-Before proceeding, make sure you have completed the steps in [Getting started](../getting-started).
-You will need to have the `uv` tool and the `flyte` Python package installed.
+## Prerequisites
+
+Before proceeding, make sure you have the following:
+
+* **Python 3.10 or later**
+* **uv** - A fast Python package installer. See the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for instructions.
+* An active Union/Flyte instance with the URL and a project where you have permission to run workflows.
+
+## Install the flyte package
+
+Once you have uv installed, create and activate a virtual environment, then install the `flyte` package:
+
+```shell
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install --prerelease=allow flyte
+```
+
+Check that installation succeeded:
+
+```shell
+flyte --version
+```
 
 ## Setting up a configuration file
 
-In [Getting started](../getting-started) we used the `flyte create config` command to create a configuration file at `./.flyte/config.yaml`.
+In [Getting started](./getting-started) we used the `flyte create config` command to create a configuration file at `./.flyte/config.yaml`.
 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
@@ -105,7 +126,7 @@ flyte create config \
 {{< /variant >}}
 
 {{< markdown >}}
-See the [Reference](../../api-reference/flyte-cli#flyte-create-config) section for details on the available parameters.
+See the [Reference](../api-reference/flyte-cli#flyte-create-config) section for details on the available parameters.
 {{< /markdown >}}
 
 {{< /dropdown >}}
@@ -165,7 +186,7 @@ flyte -c my-config.yaml run hello.py main
 
 When invoking flyte commands programmatically, you have to first initialize the Flyte SDK with the configuration file.
 
-To initialize with an explicitly specified configuration file, use [`flyte.init_from_config`](../../api-reference/flyte-sdk/packages/flyte#init_from_config):
+To initialize with an explicitly specified configuration file, use [`flyte.init_from_config`](../api-reference/flyte-sdk/packages/flyte#init_from_config):
 
 ```python
 flyte.init_from_config("my-config.yaml")
@@ -246,13 +267,13 @@ flyte \
     main
 ```
 
-See the [Flyte CLI reference](../../api-reference/flyte-cli) for details.
+See the [Flyte CLI reference](../api-reference/flyte-cli) for details.
 
-When using the Flyte SDK programmatically, you can use the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) function to specify the backend endpoint and other parameters directly in your code.
+When using the Flyte SDK programmatically, you can use the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) function to specify the backend endpoint and other parameters directly in your code.
 
 ### With `flyte` SDK
 
-To initialize the Flyte SDK with inline parameters, you can use the [`flyte.init`](../../api-reference/flyte-sdk/packages/flyte#init) function like this:
+To initialize the Flyte SDK with inline parameters, you can use the [`flyte.init`](../api-reference/flyte-sdk/packages/flyte#init) function like this:
 
 ```python
 flyte.init(
@@ -263,4 +284,4 @@ flyte.init(
 )
 ```
 
-See the [`flyte.init` reference](../../api-reference/flyte-sdk/packages/flyte#init) for details.
+See the [`flyte.init` reference](../api-reference/flyte-sdk/packages/flyte#init) for details.

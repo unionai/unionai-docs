@@ -20,7 +20,7 @@ To run your code on your Union/Flyte instance, you can use the `flyte run` comma
 flyte run hello.py main
 ```
 
-This deploys your code to the configured Union/Flyte instance and runs it immediately (Since no explicit `--config` is specified, the configuration found according to the [default configuration search](./local-setup#use-the-configuration-file-implicitly) will be used).
+This deploys your code to the configured Union/Flyte instance and runs it immediately (Since no explicit `--config` is specified, the configuration found according to the [default configuration search](../local-setup#use-the-configuration-file-implicitly) will be used).
 
 ### From Python
 
