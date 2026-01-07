@@ -13,12 +13,12 @@ In this section we will explain how to set up your local development environment
 Before proceeding, make sure you have the following:
 
 * **Python 3.10 or later**
-* **uv** - A fast Python package installer. See the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/) for instructions.
+* **`uv`** - A fast Python package installer. See the [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/) for instructions.
 * An active Union/Flyte instance with the URL and a project where you have permission to run workflows.
 
 ## Install the flyte package
 
-Once you have uv installed, create and activate a virtual environment, then install the `flyte` package:
+Once you have `uv` installed, create and activate a virtual environment, then install the `flyte` package:
 
 ```shell
 uv venv
