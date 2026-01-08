@@ -1,5 +1,5 @@
 ---
-title: Invoke Tasks via a webhook
+title: Running Tasks via Webhooks
 weight: 5
 variants: -flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
@@ -56,38 +56,7 @@ The `init_passthrough()` function configures the Flyte SDK to accept authenticat
 
 Once initialized, you need to provide the caller's authentication headers when making requests to the Flyte control plane. There are two approaches:
 
-#### Option 1: Using the `auth_metadata()` context manager
-
-The `flyte.remote.auth_metadata()` context manager allows you to explicitly set authentication headers for a block of code:
-
-```python
-import flyte.remote as remote
-
-@app.post("/run-task")
-async def run_task(request: Request):
-    # Extract authentication from the request
-    auth_header = request.headers.get("authorization")
-
-    # Use auth_metadata to forward the caller's credentials
-    with remote.auth_metadata(("authorization", auth_header)):
-        # Get and run the task with the caller's identity
-        task = remote.Task.get(project="my-project", domain="development", name="my_task")
-        run = await flyte.run.aio(task, x=42)
-        return {"run_url": run.url}
-```
-
-The `auth_metadata()` context manager accepts one or more tuples of `(header_name, header_value)`:
-
-```python
-with remote.auth_metadata(
-    ("authorization", auth_header),
-    ("cookie", cookie_header),
-):
-    # All Flyte API calls within this block use these headers
-    ...
-```
-
-#### Option 2: Using FastAPI middleware (recommended)
+#### Option 1: Using FastAPI middleware (recommended if using fastapi)
 
 For FastAPI applications, Flyte provides a convenient middleware that automatically extracts authentication headers from incoming requests and sets them in the Flyte context:
 
@@ -138,6 +107,39 @@ app.add_middleware(
     excluded_paths={"/health", "/metrics"},
 )
 ```
+
+#### Option 2: Using the `auth_metadata()` context manager (any script, web serving framework)
+
+The `flyte.remote.auth_metadata()` context manager allows you to explicitly set authentication headers for a block of code:
+
+```python
+import flyte.remote as remote
+
+@app.post("/run-task")
+async def run_task(request: Request):
+    # Extract authentication from the request
+    auth_header = request.headers.get("authorization")
+
+    # Use auth_metadata to forward the caller's credentials
+    with remote.auth_metadata(("authorization", auth_header)):
+        # Get and run the task with the caller's identity
+        task = remote.Task.get(project="my-project", domain="development", name="my_task")
+        run = await flyte.run.aio(task, x=42)
+        return {"run_url": run.url}
+```
+
+The `auth_metadata()` context manager accepts one or more tuples of `(header_name, header_value)`:
+
+```python
+with remote.auth_metadata(
+    ("authorization", auth_header),
+    ("cookie", cookie_header),
+):
+    # All Flyte API calls within this block use these headers
+    ...
+```
+
+
 
 ## Complete example
 
