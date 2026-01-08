@@ -71,8 +71,8 @@ identifiers:
   flyte.errors.OnlyAsyncIOSupportedError: /api-reference/flyte-sdk/packages/flyte.errors/onlyasynciosupportederror/
   flyte.errors.ParameterMaterializationError: /api-reference/flyte-sdk/packages/flyte.errors/parametermaterializationerror/
   flyte.errors.PrimaryContainerNotFoundError: /api-reference/flyte-sdk/packages/flyte.errors/primarycontainernotfounderror/
-  flyte.errors.ReferenceTaskError: /api-reference/flyte-sdk/packages/flyte.errors/referencetaskerror/
-  flyte.errors.RemoteTaskError: /api-reference/flyte-sdk/packages/flyte.errors/remotetaskerror/
+  flyte.errors.RemoteTaskNotFoundError: /api-reference/flyte-sdk/packages/flyte.errors/remotetasknotfounderror/
+  flyte.errors.RemoteTaskUsageError: /api-reference/flyte-sdk/packages/flyte.errors/remotetaskusageerror/
   flyte.errors.RestrictedTypeError: /api-reference/flyte-sdk/packages/flyte.errors/restrictedtypeerror/
   flyte.errors.RetriesExhaustedError: /api-reference/flyte-sdk/packages/flyte.errors/retriesexhaustederror/
   flyte.errors.RunAbortedError: /api-reference/flyte-sdk/packages/flyte.errors/runabortederror/

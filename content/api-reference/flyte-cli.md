@@ -92,7 +92,7 @@ $ flyte --config /path/to/config.yaml run ...
 `--verbose`{{< /multiline >}} | `integer` | `0` | Show verbose messages and exception traces. Repeating multiple times increases the verbosity (e.g., -vvv). |
 | `--org` | `text` | `Sentinel.UNSET` | The organization to which the command applies. |
 | {{< multiline >}}`-c`
-`--config`{{< /multiline >}} | `path` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
+`--config`{{< /multiline >}} | `file` | `Sentinel.UNSET` | Path to the configuration file to use. If not specified, the default configuration file is used. |
 | {{< multiline >}}`--output-format`
 `-of`{{< /multiline >}} | `choice` | `table` | Output format for commands that support it. Defaults to 'table'. |
 | `--log-format` | `choice` | `console` | Formatting for logs, defaults to 'console' which is meant to be human readable. 'json' is meant for machine parsing. |
