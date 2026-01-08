@@ -1,6 +1,6 @@
 ---
 title: ImageBuildEngine
-version: 2.0.0b44
+version: 2.0.0b46
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 ---

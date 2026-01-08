@@ -1,6 +1,6 @@
 ---
 title: flyte
-version: 2.0.0b44
+version: 2.0.0b46
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -60,6 +60,7 @@ Flyte SDK for authoring compound AI applications, services and workflows.
 | [`init_from_api_key()`](#init_from_api_key) | Initialize the Flyte system using an API key for authentication. |
 | [`init_from_config()`](#init_from_config) | Initialize the Flyte system using a configuration file or Config object. |
 | [`init_in_cluster()`](#init_in_cluster) |  |
+| [`init_passthrough()`](#init_passthrough) | Initialize the Flyte system with passthrough authentication. |
 | [`map()`](#map) | Map a function over the provided arguments with concurrent execution. |
 | [`run()`](#run) | Run a task with the given parameters. |
 | [`serve()`](#serve) | Serve a Flyte app using an AppEnvironment. |
@@ -421,7 +422,6 @@ remote API methods are called. Thread-safe implementation.
 > `result = await init_from_api_key.aio()`.
 ```python
 def init_from_api_key(
-    endpoint: str,
     api_key: str | None,
     project: str | None,
     domain: str | None,
@@ -438,12 +438,15 @@ def init_from_api_key(
 Initialize the Flyte system using an API key for authentication. This is a convenience
 method for API key-based authentication. Thread-safe implementation.
 
+The API key should be an encoded API key that contains the endpoint, client ID, client secret,
+and organization information. You can obtain this encoded API key from your Flyte administrator
+or cloud provider.
+
 
 
 | Parameter | Type | Description |
 |-|-|-|
-| `endpoint` | `str` | The Flyte API endpoint URL |
-| `api_key` | `str \| None` | Optional API key for authentication. If None, reads from FLYTE_API_KEY environment variable. |
+| `api_key` | `str \| None` | Optional encoded API key for authentication. If None, reads from FLYTE_API_KEY environment variable. The API key is a base64-encoded string containing endpoint, client_id, client_secret, and org information. |
 | `project` | `str \| None` | Optional project name |
 | `domain` | `str \| None` | Optional domain name |
 | `root_dir` | `Path \| None` | Optional root directory from which to determine how to load files, and find paths to files. defaults to the editable install directory if the cwd is in a Python editable install, else just the cwd. |
@@ -521,6 +524,37 @@ def init_in_cluster(
 | `api_key` | `str \| None` | |
 | `endpoint` | `str \| None` | |
 | `insecure` | `bool` | |
+
+#### init_passthrough()
+
+
+> [!NOTE] This method can be called both synchronously or asynchronously.
+> Default invocation is sync and will block.
+> To call it asynchronously, use the function `.aio()` on the method name itself, e.g.,:
+> `result = await init_passthrough.aio()`.
+```python
+def init_passthrough(
+    endpoint: str | None,
+    org: str | None,
+    project: str | None,
+    domain: str | None,
+    insecure: bool,
+) -> dict[str, typing.Any]
+```
+Initialize the Flyte system with passthrough authentication.
+
+This authentication mode allows you to pass custom authentication metadata
+using the `flyte.remote.auth_metadata()` context manager.
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `endpoint` | `str \| None` | Optional API endpoint URL |
+| `org` | `str \| None` | Optional organization name |
+| `project` | `str \| None` | Optional project name |
+| `domain` | `str \| None` | Optional domain name |
+| `insecure` | `bool` | Whether to use an insecure channel :return: Dictionary of remote kwargs used for initialization |
 
 #### map()
 
