@@ -153,6 +153,7 @@ from fastapi import FastAPI, HTTPException
 from starlette import status
 
 import flyte
+import flyte.errors
 import flyte.remote as remote
 from flyte.app.extras import FastAPIAppEnvironment, FastAPIPassthroughAuthMiddleware
 
@@ -233,11 +234,21 @@ async def run_task(
         run = await flyte.run.aio(task, **inputs)
 
         return {"url": run.url, "name": run.name}
-
-    except flyte.errors.RemoteTaskError:
+    
+    except flyte.errors.RemoteTaskNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Task not found",
+            detail=f"Task {name} with {version} in {project} and {domain} not found",
+        )
+    except flyte.errors.RemoteTaskUsageError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
         )
 
 
@@ -287,7 +298,7 @@ The task will execute with the permissions associated with the API key used in t
 
 4. **Set default project/domain**: If most requests target the same project/domain, set them during initialization to simplify your endpoint handlers
 
-5. **Handle errors gracefully**: Catch `RemoteTaskError` and other exceptions to return appropriate HTTP status codes
+5. **Handle errors gracefully**: Catch `flyte.errors.RemoteTaskNotFoundError` or `flyte.errors.RemoteTaskUsageError` and other exceptions to return appropriate HTTP status codes
 
 6. **Validate inputs**: Always validate task inputs before passing them to `flyte.run()`
 
