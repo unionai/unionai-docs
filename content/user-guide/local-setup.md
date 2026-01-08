@@ -59,7 +59,7 @@ flyte create config \
 {{< /markdown >}}
 {{< /variant >}}
 
-This command creates a file called `./flyte/config.yaml` in your current working directory:
+This command creates a file called `./.flyte/config.yaml` in your current working directory:
 
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
@@ -208,7 +208,7 @@ You can use the `flyte CLI` without an explicit `--config` like this:
 flyte run hello.py main
 ```
 
-You can also initializing the Flyte SDK programmatically without specifying a configuration file, like this:
+You can also initialize the Flyte SDK programmatically without specifying a configuration file, like this:
 
 ```python
 flyte.init_from_config()
@@ -217,7 +217,7 @@ flyte.init_from_config()
 In these cases, the SDK will search in the following order until it finds a configuration file:
 
 * `./config.yaml` (i.e., in the current working directory).
-* `./flyte/config.yaml` (i.e., in the `.flyte` directory in the current working directory).
+* `./.flyte/config.yaml` (i.e., in the `.flyte` directory in the current working directory).
 * `UCTL_CONFIG` (a file pointed to by this environment variable).
 * `FLYTECTL_CONFIG` (a file pointed to by this environment variable)
 * `~/.union/config.yaml`
@@ -262,7 +262,7 @@ flyte \
     --org my-org \
     run \
     --domain development \
-    --project my-project
+    --project my-project \
     hello.py \
     main
 ```
