@@ -1,6 +1,6 @@
 ---
 title: Configure apps
-weight: 8
+weight: 9
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
 ---
