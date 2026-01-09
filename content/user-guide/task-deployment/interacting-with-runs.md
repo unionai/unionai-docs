@@ -1,5 +1,5 @@
 ---
-title: Interact with Runs and Actions
+title: Interact with runs and actions
 weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 sidebar_expanded: true
@@ -8,21 +8,32 @@ mermaid: true
 
 # Interact with runs and actions
 
-Once you've launched a task using `flyte run` or `flyte.run()` (see [how task run works](how-task-run-works)), you can interact with the run to monitor progress, retrieve results, and access data. This guide explains how to work with runs and actions programmatically and through the CLI.
+When a task is launched, the resulting execution is called a **run**.
+Because tasks typically call other tasks, a run will almost always involve multiple sub-task executions. Each such execution is called an **action**.
+
+Through the Flyte SDK and CLI, you can interact with the run and its actions to monitor progress, retrieve results, and access data. This guide explains how to work with runs and actions programmatically and through the CLI.
 
 ## Understanding runs and actions
 
-A **run** represents the execution of a task. Each run contains one or more **actions**. The first action is the main action and is typically named `a0`.
+Runs are not declared explicitly in code.
+Instead, they are simply a result of task being invoked in a specific way: by a user, trigger, webhook or other external mechanism.
+When a task is invoked in this manner, it creates a run to represent the execution of that task and all its nested tasks, considered together.
+Each individual task execution within that run is called an **action*.
 
 ```mermaid
 graph TD
-    A[Run] --> B[Action a0 - Main Task]
-    B --> C[Action a1 - Nested Task]
-    B --> D[Action a2 - Nested Task]
-    D --> E[Action a3 - Deeply Nested]
+    A[Run] --> B[Action a0 - Main task]
+    B --> C[Action a1 - Nested task]
+    B --> D[Action a2 - Nested task]
+    D --> E[Action a3 - Deeply nested task]
 ```
 
-You can think of a run as a list of actions, where actions can be nested to represent complex execution hierarchies. Flyte is a durable execution engine, so every input, output, failure, and attempt is recorded for each action.
+Because what constitutes a run depends only on how a task is invoked, the same task can execute as a deeply nested action in one run and the main action in another run.
+Unlike Flyte 1, there is no explicit `@workflow` construct in Flyte 2; instead, "workflows" are defined implicitly by the structure of task composition and the entrypoint chosen at runtime.
+
+> [!NOTE]
+> Despite there being no explicit `@workflow` decorator, you'll often see the assemblage of tasks referred to as a "workflow" in documentation and discussions. The top-most task in a run is sometimes referred to as the "parent", "driver", or "entry point" task of the "workflow".
+> In these docs we will sometime use "workflow" informally to refer to the collection of tasks (considered statically) involved in a run.
 
 ### Key concepts
 
@@ -30,9 +41,9 @@ You can think of a run as a list of actions, where actions can be nested to repr
   - User-configured retries for handling transient failures
   - Automatic system retries for infrastructure issues
 
-- **Phases**: Both ruUns and actions progress through phases (e.g., QUEUED, RUNNING, SUCCEEDED, FAILED) until reaching a terminal state
+- **Phases**: Both runs and actions progress through phases (e.g., QUEUED, RUNNING, SUCCEEDED, FAILED) until reaching a terminal state
 
-- **Durability**: All data is persisted, allowing you to retrieve information about runs and actions even after completion
+- **Durability**: Flyte is a durable execution engine, so every input, output, failure, and attempt is recorded for each action. All data is persisted, allowing you to retrieve information about runs and actions even after completion
 
 ## Working with runs
 
