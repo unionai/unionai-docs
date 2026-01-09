@@ -40,6 +40,8 @@ Similarly, you can download the following notebook file and open it in your favo
 {{< download "/_static/public/remote.ipynb" "remote.ipynb" >}}
 -->
 
-In this example we use the [`flyte.remote`](../../api-reference/flyte-sdk/packages/flyte.remote) package to list existing runs, access them, and download their details and logs.
+In this example we use the `flyte.remote` package to list existing runs, access them, and download their details and logs.
+
+For a comprehensive guide on working with runs, actions, inputs, and outputs, see [Interact with runs and actions](../task-deployment/interacting-with-runs).
 
 
