@@ -36,7 +36,7 @@ flyte --version
 {{< markdown >}}
 
 Next, create a configuration file that points to your Flyte instance.
-Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
+Use the [`flyte create config`](../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
 - Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
   You can simply copy the domain part of the URL from your browser when logged into your backend instance.
@@ -54,7 +54,7 @@ flyte create config \
 ### Ensure local Docker is working
 
 > [!NOTE]
-> We are using the `--builder local` option here to specify that we want to [build images](../task-configuration/container-images) locally.
+> We are using the `--builder local` option here to specify that we want to [build images](./task-configuration/container-images) locally.
 > If you were using a Union instance, you would typically use `--builder remote` instead to use Union's remote image builder.
 > With Flyte OSS instances, `local` is the only option available.
 
@@ -73,7 +73,7 @@ docker login ghcr.io
 {{< markdown >}}
 
 Next, create a configuration file that points to your Union instance.
-Use the [`flyte create config`](../../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
+Use the [`flyte create config`](../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
 
 - Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
   You can simply copy the domain part of the URL from your browser when logged into your backend instance.
@@ -92,7 +92,7 @@ flyte create config \
 {{< /variant >}}
 
 By default, this will create a `./.flyte/config.yaml` file in your current working directory.
-See [Setting up a configuration file](../local-setup#setting-up-a-configuration-file) for details.
+See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for details.
 
 {{< note >}}
 Run `flyte get config` to see the current configuration file being used by the `flyte` CLI.
