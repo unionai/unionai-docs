@@ -1,7 +1,7 @@
 ---
 title: Security Best Practices
 weight: 3
-variants: -flyte -serverless -byoc +selfmanaged
+variants: -flyte -serverless +byoc +selfmanaged
 ---
 
 # Security Best Practices
