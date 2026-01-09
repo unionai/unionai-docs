@@ -1,6 +1,6 @@
 ---
 title: Pure Python
-weight: 10
+weight: 1
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

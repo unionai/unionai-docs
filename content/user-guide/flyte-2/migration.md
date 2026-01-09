@@ -1,6 +1,6 @@
 ---
 title: Migration
-weight: 30
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 
