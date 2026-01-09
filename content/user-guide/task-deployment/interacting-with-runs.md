@@ -15,10 +15,16 @@ Through the Flyte SDK and CLI, you can interact with the run and its actions to 
 
 ## Understanding runs and actions
 
-Runs are not declared explicitly in code.
-Instead, they are simply a result of task being invoked in a specific way: by a user, trigger, webhook or other external mechanism.
-When a task is invoked in this manner, it creates a run to represent the execution of that task and all its nested tasks, considered together.
-Each individual task execution within that run is called an **action*.
+Runs are not declared explicitly in the code of the entry point task.
+Instead, they are simply a result of the task being invoked in a specific way:
+* User with `flyte run`
+* User via the UI
+* Other code calling `flyte.run()`
+* [Trigger](../task-configuration/triggers)
+
+When a task is invoked in one of these ways, it creates a run to represent the execution of that task and all its nested tasks, considered together.
+Each task execution within that run is represented by an **action**.
+The entry point task execution is represented by the main action (usually called `a0`), and then every nested call of one task from another creates an additional action.
 
 ```mermaid
 graph TD
@@ -29,7 +35,7 @@ graph TD
 ```
 
 Because what constitutes a run depends only on how a task is invoked, the same task can execute as a deeply nested action in one run and the main action in another run.
-Unlike Flyte 1, there is no explicit `@workflow` construct in Flyte 2; instead, "workflows" are defined implicitly by the structure of task composition and the entrypoint chosen at runtime.
+Unlike Flyte 1, there is no explicit `@workflow` construct in Flyte 2; instead, "workflows" are defined implicitly by the structure of task composition and the entry point chosen at runtime.
 
 > [!NOTE]
 > Despite there being no explicit `@workflow` decorator, you'll often see the assemblage of tasks referred to as a "workflow" in documentation and discussions. The top-most task in a run is sometimes referred to as the "parent", "driver", or "entry point" task of the "workflow".
