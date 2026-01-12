@@ -73,68 +73,15 @@ Response:
 
 Use Pydantic for input validation:
 
-```python
-from pydantic import BaseModel
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_validation.py" fragment=validation-model lang=python >}}
 
-class TaskInput(BaseModel):
-    data: dict
-    priority: int = 0
-
-@app.post("/run-task/{project}/{domain}/{name}/{version}")
-async def run_task(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    inputs: TaskInput,  # Validated input
-    credentials: HTTPAuthorizationCredentials = Security(verify_token),
-):
-    task = await remote.TaskDetails.fetch(
-        project=project,
-        domain=domain,
-        name=name,
-        version=version,
-    )
-    
-    run = await flyte.run.aio(task, **inputs.dict())
-    
-    return {
-        "run_id": run.id,
-        "url": run.url,
-    }
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_validation.py" fragment=validated-webhook lang=python >}}
 
 **Webhook with response waiting**
 
 Wait for task completion:
 
-```python
-@app.post("/run-task-and-wait/{project}/{domain}/{name}/{version}")
-async def run_task_and_wait(
-    project: str,
-    domain: str,
-    name: str,
-    version: str,
-    inputs: dict,
-    credentials: HTTPAuthorizationCredentials = Security(verify_token),
-):
-    task = await remote.TaskDetails.fetch(
-        project=project,
-        domain=domain,
-        name=name,
-        version=version,
-    )
-    
-    run = await flyte.run.aio(task, **inputs)
-    run.wait()  # Wait for completion
-    
-    return {
-        "run_id": run.id,
-        "url": run.url,
-        "status": run.status,
-        "outputs": run.outputs(),
-    }
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/webhook_wait.py" fragment=wait-webhook lang=python >}}
 
 **Webhook with secret management**
 
@@ -177,45 +124,7 @@ Security considerations:
 
 Here's an example webhook that triggers tasks based on GitHub events:
 
-```python
-from fastapi import FastAPI, Request, Header
-import hmac
-import hashlib
-
-app = FastAPI(title="GitHub Webhook Handler")
-
-@app.post("/github-webhook")
-async def github_webhook(
-    request: Request,
-    x_hub_signature_256: str = Header(None),
-):
-    """Handle GitHub webhook events."""
-    body = await request.body()
-    
-    # Verify signature
-    secret = os.getenv("GITHUB_WEBHOOK_SECRET")
-    signature = hmac.new(
-        secret.encode(),
-        body,
-        hashlib.sha256
-    ).hexdigest()
-    
-    expected_signature = f"sha256={signature}"
-    if not hmac.compare_digest(x_hub_signature_256, expected_signature):
-        raise HTTPException(status_code=403, detail="Invalid signature")
-    
-    # Process webhook
-    event = await request.json()
-    event_type = request.headers.get("X-GitHub-Event")
-    
-    if event_type == "push":
-        # Trigger deployment task
-        task = await remote.TaskDetails.fetch(...)
-        run = await flyte.run.aio(task, commit=event["after"])
-        return {"run_id": run.id, "url": run.url}
-    
-    return {"status": "ignored"}
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/github_webhook.py" fragment=github-webhook lang=python >}}
 
 ## Call app from app
 
@@ -227,49 +136,7 @@ Apps can call other apps by making HTTP requests. This is useful for:
 
 ### Example: App calling another app
 
-```python
-import httpx
-from fastapi import FastAPI
-import flyte
-from flyte.app.extras import FastAPIAppEnvironment
-
-# Backend app
-app1 = FastAPI(title="Backend API")
-env1 = FastAPIAppEnvironment(
-    name="backend-api",
-    app=app1,
-    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-        "fastapi", "uvicorn", "httpx"
-    ),
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-    requires_auth=False,
-)
-
-@app1.get("/greeting/{name}")
-async def greeting(name: str) -> str:
-    return f"Hello, {name}!"
-
-# Frontend app that calls the backend
-app2 = FastAPI(title="Frontend API")
-env2 = FastAPIAppEnvironment(
-    name="frontend-api",
-    app=app2,
-    image=flyte.Image.from_debian_base(python_version=(3, 12)).with_pip_packages(
-        "fastapi", "uvicorn", "httpx"
-    ),
-    resources=flyte.Resources(cpu=1, memory="512Mi"),
-    requires_auth=False,
-    depends_on=[env1],  # Ensure backend is deployed first
-)
-
-@app2.get("/greeting/{name}")
-async def greeting_proxy(name: str):
-    """Proxy that calls the backend app."""
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"{env1.endpoint}/greeting/{name}")
-        response.raise_for_status()
-        return response.json()
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app.py" lang=python >}}
 
 Key points:
 - Use `depends_on=[env1]` to ensure dependencies are deployed first
@@ -280,27 +147,7 @@ Key points:
 
 You can pass app endpoints as parameters for more flexibility:
 
-```python
-env2 = FastAPIAppEnvironment(
-    name="frontend-api",
-    app=app2,
-    parameters=[
-        flyte.app.Parameter(
-            name="backend_url",
-            value=flyte.app.AppEndpoint(app_name="backend-api"),
-            env_var="BACKEND_URL",
-        ),
-    ],
-    # ...
-)
-
-@app2.get("/greeting/{name}")
-async def greeting_proxy(name: str):
-    backend_url = os.getenv("BACKEND_URL")
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"{backend_url}/greeting/{name}")
-        return response.json()
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/fastapi/app_calling_app_endpoint.py" fragment=using-app-endpoint lang=python >}}
 
 ## WebSocket-based patterns
 
@@ -316,129 +163,25 @@ Here's a simple FastAPI app with WebSocket support:
 
 **Echo server**
 
-```python
-@app.websocket("/echo")
-async def echo(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await websocket.send_text(f"Echo: {data}")
-    except WebSocketDisconnect:
-        pass
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=echo-server lang=python >}}
 
 **Broadcast server**
 
-```python
-@app.websocket("/broadcast")
-async def broadcast(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await manager.broadcast(data)
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=broadcast-server lang=python >}}
 
 **Real-time data streaming**
 
-```python
-@app.websocket("/stream")
-async def stream_data(websocket: WebSocket):
-    await websocket.accept()
-    try:
-        while True:
-            # Generate or fetch data
-            data = {"timestamp": datetime.now().isoformat(), "value": random.random()}
-            await websocket.send_json(data)
-            await asyncio.sleep(1)  # Send update every second
-    except WebSocketDisconnect:
-        pass
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=streaming-server lang=python >}}
 
 **Chat application**
 
-```python
-class ChatRoom:
-    def __init__(self, name: str):
-        self.name = name
-        self.connections: list[WebSocket] = []
-    
-    async def join(self, websocket: WebSocket):
-        self.connections.append(websocket)
-    
-    async def leave(self, websocket: WebSocket):
-        self.connections.remove(websocket)
-    
-    async def broadcast(self, message: str, sender: WebSocket):
-        for connection in self.connections:
-            if connection != sender:
-                await connection.send_text(message)
-
-rooms: dict[str, ChatRoom] = {}
-
-@app.websocket("/chat/{room_name}")
-async def chat(websocket: WebSocket, room_name: str):
-    await websocket.accept()
-    
-    if room_name not in rooms:
-        rooms[room_name] = ChatRoom(room_name)
-    
-    room = rooms[room_name]
-    await room.join(websocket)
-    
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await room.broadcast(data, websocket)
-    except WebSocketDisconnect:
-        await room.leave(websocket)
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/websocket_patterns.py" fragment=chat-room lang=python >}}
 
 ### Using WebSockets with Flyte tasks
 
 You can trigger Flyte tasks from WebSocket messages:
 
-```python
-@app.websocket("/task-runner")
-async def task_runner(websocket: WebSocket):
-    await websocket.accept()
-    
-    try:
-        while True:
-            # Receive task request
-            message = await websocket.receive_text()
-            request = json.loads(message)
-            
-            # Trigger Flyte task
-            task = await remote.TaskDetails.fetch(
-                project=request["project"],
-                domain=request["domain"],
-                name=request["task"],
-                version=request["version"],
-            )
-            
-            run = await flyte.run.aio(task, **request["inputs"])
-            
-            # Send run info back
-            await websocket.send_json({
-                "run_id": run.id,
-                "url": run.url,
-                "status": "started",
-            })
-            
-            # Optionally stream updates
-            async for update in run.stream():
-                await websocket.send_json({
-                    "status": update.status,
-                    "message": update.message,
-                })
-    
-    except WebSocketDisconnect:
-        pass
-```
+{{< code file="/external/unionai-examples/v2/user-guide/build-apps/websocket/task_runner_websocket.py" fragment=task-runner-websocket lang=python >}}
 
 ### WebSocket client example
 
