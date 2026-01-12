@@ -1,6 +1,6 @@
 ---
 title: Basic concepts
-weight: 1
+weight: 2
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

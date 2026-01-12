@@ -1,6 +1,6 @@
 ---
 title: Running tasks
-weight: 2
+weight: 3
 variants: +flyte +serverless +byoc +selfmanaged
 ---
 

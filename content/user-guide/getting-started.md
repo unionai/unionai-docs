@@ -7,41 +7,33 @@ sidebar_expanded: true
 
 # Getting started
 
-This section gives you a quick introduction to writing and running workflows on Union and Flyte 2.
+Let's get you up and running with your first workflow.
 
-## Prerequisites
+## What you'll need
 
-You will need the following:
-- An active Python virtual environment with Python 3.10 or later.
-- The URL of you Union/Flyte instance.
-- An existing project set up on your Union/Flyte instance where you have permission to run workflows.
+- Python 3.10+ in a virtual environment
+- Access to a Union/Flyte instance (you'll need the URL and a project where you can run workflows)
 
-## Install the `flyte` package
+## Install the SDK
 
-Install the latest `flyte` package in the virtual environment (we are currently in beta, so you will have to enable prerelease installation). For example:
+Install the `flyte` package (currently in beta, so prerelease flag required):
 
 ```shell
 pip install --pre flyte
 ```
 
-Check that installation succeeded (and that you have activated your virtual environment):
+Verify it worked:
 
 ```shell
 flyte --version
 ```
 
-## Create a config.yaml
+## Configure your connection
 
 {{< variant flyte >}}
 {{< markdown >}}
 
-Next, create a configuration file that points to your Flyte instance.
-Use the [`flyte create config`](../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
-
-- Replace `my-org.my-company.com` with the actual URL of your Flyte backend instance.
-  You can simply copy the domain part of the URL from your browser when logged into your backend instance.
-- Replace `my-project` with an actual project.
-  The project you specify must already exist on your Flyte backend instance.
+Create a config file pointing to your Flyte instance. Replace the placeholder values with your actual endpoint and project name:
 
 ```shell
 flyte create config \
@@ -51,34 +43,23 @@ flyte create config \
     --project my-project
 ```
 
-### Ensure local Docker is working
+### Set up local Docker
 
-> [!NOTE]
-> We are using the `--builder local` option here to specify that we want to [build images](./task-configuration/container-images) locally.
-> If you were using a Union instance, you would typically use `--builder remote` instead to use Union's remote image builder.
-> With Flyte OSS instances, `local` is the only option available.
-
-To enable local image building, ensure that
-- You have Docker installed and running on your machine
-- You have permission to read from the public GitHub `ghcr.io` registry.
-- You have successfully logged into the `ghcr.io` registry using Docker:
+Since Flyte OSS uses local image building, you'll need Docker running and logged into the GitHub registry:
 
 ```shell
 docker login ghcr.io
 ```
+
+> [!NOTE]
+> The `--builder local` option means images are [built locally](./task-configuration/container-images). Union instances can use `--builder remote` instead.
 
 {{< /markdown >}}
 {{< /variant >}}
 {{< variant byoc selfmanaged serverless >}}
 {{< markdown >}}
 
-Next, create a configuration file that points to your Union instance.
-Use the [`flyte create config`](../api-reference/flyte-cli#flyte-create-config) command, making the following changes:
-
-- Replace `my-org.my-company.com` with the actual URL of your Union backend instance.
-  You can simply copy the domain part of the URL from your browser when logged into your backend instance.
-- Replace `my-project` with an actual project.
-  The project you specify must already exist on your Union backend instance.
+Create a config file pointing to your Union instance. Replace the placeholder values with your actual endpoint and project name:
 
 ```shell
 flyte create config \
@@ -91,33 +72,27 @@ flyte create config \
 {{< /markdown >}}
 {{< /variant >}}
 
-By default, this will create a `./.flyte/config.yaml` file in your current working directory.
-See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for details.
+This creates `./.flyte/config.yaml` in your current directory. See [Setting up a configuration file](./local-setup#setting-up-a-configuration-file) for more options.
 
 {{< note >}}
-Run `flyte get config` to see the current configuration file being used by the `flyte` CLI.
+Run `flyte get config` to check which configuration is currently active.
 {{< /note >}}
 
-## Hello world example
+## Write your first workflow
 
-Create a file called `hello.py` with the following content:
+Create `hello.py`:
 
 {{< code file="/external/unionai-examples/v2/user-guide/getting-started/hello.py" lang="python" >}}
 
-## Understanding the code
+Here's what's happening:
 
-In the code above we do the following:
+- **`TaskEnvironment`** groups configuration for your tasks (container image, resources, etc.)
+- **`@env.task`** turns Python functions into tasks that run in their own containers
+- Both tasks share the same `env`, so they'll have identical container configurations
 
-- Import the `flyte` package.
-- Define a `TaskEnvironment` to group the configuration used by tasks.
-- Define two tasks using the `@env.task` decorator.
-  - Tasks are regular Python functions, but each runs in its own container.
-  - When deployed to your Union/Flyte instance, each task execution will run in its own separate container.
-  - Both tasks use the same `env` (the same `TaskEnvironment`) so, while each runs in its own container, those containers will be configured identically.
+## Run it
 
-## Running the code
-
-Assuming that your current directory looks like this:
+With your config file in place:
 
 ```
 .
@@ -126,17 +101,17 @@ Assuming that your current directory looks like this:
     └── config.yaml
 ```
 
-and your virtual environment is activated, you can run the script with:
+Run the workflow:
 
 ```shell
 flyte run hello.py main
 ```
 
-This will package up the code and send it to your Flyte/Union instance for execution.
+This packages your code and sends it to your Union/Flyte instance for execution.
 
-## Viewing the results
+## See the results
 
-In your terminal, you should see output like this:
+You'll see output like:
 
 ```shell
 cg9s54pksbjsdxlz2gmc
@@ -144,7 +119,7 @@ https://my-instance.example.com/v2/runs/project/my-project/domain/development/cg
 Run 'a0' completed successfully.
 ```
 
-Click the link to go to your Flyte/Union instance and see the run in the UI:
+Click the link to view your run in the UI:
 
 ![V2 UI](https://raw.githubusercontent.com/unionai/unionai-docs-static/main/images/user-guide/v2ui.png)
 
