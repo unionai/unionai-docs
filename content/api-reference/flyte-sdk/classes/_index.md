@@ -1,6 +1,6 @@
 ---
 title: Classes & Protocols
-version: 2.0.0b44
+version: 2.0.0b47
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -34,6 +34,7 @@ sidebar_expanded: true
 | [`flyte.app.RunOutput`](../packages/flyte.app/runoutput) |Use a run's output for app parameters. |
 | [`flyte.app.Scaling`](../packages/flyte.app/scaling) | |
 | [`flyte.app.extras.FastAPIAppEnvironment`](../packages/flyte.app.extras/fastapiappenvironment) | |
+| [`flyte.app.extras.FastAPIPassthroughAuthMiddleware`](../packages/flyte.app.extras/fastapipassthroughauthmiddleware) |FastAPI middleware that automatically sets Flyte auth metadata from request headers. |
 | [`flyte.config.Config`](../packages/flyte.config/config) |This the parent configuration object and holds all the underlying configuration object types. |
 | [`flyte.connectors.AsyncConnector`](../packages/flyte.connectors/asyncconnector) |This is the base class for all async connectors, and it defines the interface that all connectors must implement. |
 | [`flyte.connectors.AsyncConnectorExecutorMixin`](../packages/flyte.connectors/asyncconnectorexecutormixin) |This mixin class is used to run the connector task locally, and it's only used for local execution. |
@@ -57,8 +58,8 @@ sidebar_expanded: true
 | [`flyte.errors.OnlyAsyncIOSupportedError`](../packages/flyte.errors/onlyasynciosupportederror) |This error is raised when the user tries to use sync IO in an async task. |
 | [`flyte.errors.ParameterMaterializationError`](../packages/flyte.errors/parametermaterializationerror) |This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
 | [`flyte.errors.PrimaryContainerNotFoundError`](../packages/flyte.errors/primarycontainernotfounderror) |This error is raised when the primary container is not found. |
-| [`flyte.errors.ReferenceTaskError`](../packages/flyte.errors/referencetaskerror) |This error is raised when the user tries to access a task that does not exist. |
-| [`flyte.errors.RemoteTaskError`](../packages/flyte.errors/remotetaskerror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RemoteTaskNotFoundError`](../packages/flyte.errors/remotetasknotfounderror) |This error is raised when the user tries to access a task that does not exist. |
+| [`flyte.errors.RemoteTaskUsageError`](../packages/flyte.errors/remotetaskusageerror) |This error is raised when the user tries to access a task that does not exist. |
 | [`flyte.errors.RestrictedTypeError`](../packages/flyte.errors/restrictedtypeerror) |This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`flyte.errors.RetriesExhaustedError`](../packages/flyte.errors/retriesexhaustederror) |This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`flyte.errors.RunAbortedError`](../packages/flyte.errors/runabortederror) |This error is raised when the run is aborted by the user. |

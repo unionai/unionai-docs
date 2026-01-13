@@ -1,7 +1,7 @@
 ---
 title: Multi-cluster
 weight: 3
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Multi-cluster

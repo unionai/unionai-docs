@@ -1,6 +1,6 @@
 ---
 title: flyte.errors
-version: 2.0.0b44
+version: 2.0.0b47
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -36,8 +36,8 @@ unknown error.
 | [`OnlyAsyncIOSupportedError`](../flyte.errors/onlyasynciosupportederror) | This error is raised when the user tries to use sync IO in an async task. |
 | [`ParameterMaterializationError`](../flyte.errors/parametermaterializationerror) | This error is raised when the user tries to use a Parameter in an App, that has delayed Materialization,. |
 | [`PrimaryContainerNotFoundError`](../flyte.errors/primarycontainernotfounderror) | This error is raised when the primary container is not found. |
-| [`ReferenceTaskError`](../flyte.errors/referencetaskerror) | This error is raised when the user tries to access a task that does not exist. |
-| [`RemoteTaskError`](../flyte.errors/remotetaskerror) | This error is raised when the user tries to access a task that does not exist. |
+| [`RemoteTaskNotFoundError`](../flyte.errors/remotetasknotfounderror) | This error is raised when the user tries to access a task that does not exist. |
+| [`RemoteTaskUsageError`](../flyte.errors/remotetaskusageerror) | This error is raised when the user tries to access a task that does not exist. |
 | [`RestrictedTypeError`](../flyte.errors/restrictedtypeerror) | This error is raised when the user uses a restricted type, for example current a Tuple is not supported for one. |
 | [`RetriesExhaustedError`](../flyte.errors/retriesexhaustederror) | This error is raised when the underlying task execution fails after all retries have been exhausted. |
 | [`RunAbortedError`](../flyte.errors/runabortederror) | This error is raised when the run is aborted by the user. |
