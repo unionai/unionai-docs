@@ -1,7 +1,7 @@
 ---
 title: DGXC Lepton connector
 weight: 19
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # DGXC Lepton Connector
@@ -176,7 +176,7 @@ The DGXC Lepton connector requires specific credentials to authenticate with the
 The connector requires the following secrets to be configured:
 
 - `origin_url`: The base URL for the DGXC Lepton gateway (Base64 encoded)
-- `token`: Your DGXC Lepton API token (Base64 encoded)  
+- `token`: Your DGXC Lepton API token (Base64 encoded)
 - `workspace_id`: Your DGXC Lepton workspace identifier (Base64 encoded)
 
 ### Setup instructions
