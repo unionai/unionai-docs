@@ -62,6 +62,6 @@
         <div class="copy">
             <sl-copy-button from="{{- $uniqueID -}}"></sl-copy-button>
         </div>
-        <div id="{{- $uniqueID -}}" class="code" data-1p-ignore="true" data-bwignore="true" data-lastpass-ignore="true" autocomplete="off" contenteditable="false">{{ $wrapped }}</div>
+        <div id="{{- $uniqueID -}}" class="code" data-1p-ignore="true" data-bwignore="true" data-lastpass-ignore="true" autocomplete="off" contenteditable="false">{{ $wrapped | safeHTML }}</div>
     </div>
 {{- end -}}
