@@ -9,7 +9,7 @@
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;
-    color: white;
+    color: var(--pre-color); /* Theme-aware color */
     z-index: 10;
 }
 
@@ -67,12 +67,36 @@
     margin: 0;
 }
 
-.codeblock .highlight .language-python A {
+.codeblock .highlight .syntax-python A {
     /* color: dodgerblue; */
+    color: unset;
+    text-decoration: underline;
+}
+
+/* Support both old language-* and new syntax-* classes for compatibility */
+.codeblock .highlight [class*="language-"] A,
+.codeblock .highlight [class*="syntax-"] A {
     color: unset;
     text-decoration: underline;
 }
 
 A > CODE {
     text-decoration: underline;
+}
+
+/* Minimal protection: Prevent extensions from adding interactive styles */
+/* Don't override colors/backgrounds - preserve Hugo's inline styles */
+.codeblock .code [onclick] {
+    pointer-events: none !important;
+    cursor: text !important;
+}
+
+/* Prevent extension-added visual decorations without affecting colors */
+.codeblock .code [data-1p]:not([data-1p-ignore]),
+.codeblock .code [data-bw]:not([data-bwignore]),
+.codeblock .code [data-lastpass]:not([data-lastpass-ignore]) {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
 }

@@ -1,7 +1,7 @@
 ---
 title: Resource Manager
 weight: 11
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Flyte ResourceManager

@@ -1,6 +1,6 @@
 ---
 title: flyte.remote
-version: 2.0.0b44
+version: 2.0.0b47
 variants: +flyte +byoc +selfmanaged +serverless
 layout: py_api
 sidebar_expanded: true
@@ -35,12 +35,41 @@ Remote Entities that are accessible from the Union Server once deployed or creat
 
 | Method | Description |
 |-|-|
+| [`auth_metadata()`](#auth_metadata) | This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system. |
 | [`create_channel()`](#create_channel) | Creates a new gRPC channel with appropriate authentication interceptors. |
 | [`upload_dir()`](#upload_dir) | Uploads a directory to a remote location and returns the remote URI. |
 | [`upload_file()`](#upload_file) | Uploads a file to a remote location and returns the remote URI. |
 
 
 ## Methods
+
+#### auth_metadata()
+
+```python
+def auth_metadata(
+    kv: typing.Tuple[str, str],
+)
+```
+This context manager allows you to pass contextualized auth metadata downstream to the Flyte authentication system.
+
+This is only useful if flyte.init_passthrough() has been called.
+
+Example:
+```python
+
+flyte.init_passthrough("my-endpoint")
+
+...
+
+with auth_metadata((key1, value1), (key2, value2)):
+    ...
+```
+
+
+
+| Parameter | Type | Description |
+|-|-|-|
+| `kv` | `typing.Tuple[str, str]` | |
 
 #### create_channel()
 
