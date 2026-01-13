@@ -1,7 +1,7 @@
 ---
 title: Workflow notifications
 weight: 9
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Workflow notifications

@@ -1,7 +1,7 @@
 ---
 title: Kubernetes plugins
 weight: 1
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Kubernetes Plugins
@@ -125,7 +125,7 @@ To enable Volcano-scheduled PodTasks in Flyte, follow these steps:
 1. Install Volcano in your cluster by following the [instructions in the volcano repository](https://github.com/volcano-sh/volcano).
 
 2. Configure a Flyte PodTemplate to use the Volcano scheduler for your PodTasks:
-  
+
 ```yaml
 
 template:

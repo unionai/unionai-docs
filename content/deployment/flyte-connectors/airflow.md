@@ -1,7 +1,7 @@
 ---
 title: Airflow connector
 weight: 8
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # Airflow connector
