@@ -1,7 +1,7 @@
 ---
 title: ChatGPT connector
 weight: 10
-variants: +flyte -serverless -byoc -selfmanaged
+variants: -flyte -serverless -byoc -selfmanaged
 ---
 
 # ChatGPT connector
