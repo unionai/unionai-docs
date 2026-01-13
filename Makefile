@@ -4,7 +4,7 @@ PREFIX := $(if $(VERSION),docs/$(VERSION),docs)
 PORT := 9000
 BUILD := $(shell date +%s)
 
-.PHONY: all dist variant dev update-examples sync-examples llm-docs
+.PHONY: all dist variant dev update-examples sync-examples llm-docs visual-qa
 
 all: usage
 
@@ -72,6 +72,27 @@ check-jupyter:
 
 check-images:
 	./scripts/check_images.sh
+
+visual-qa:
+	@if [ ! -d dist ]; then echo "Run 'make dist' first"; exit 1; fi
+	@echo "Starting documentation server on port 9999..."
+	@cd dist && caddy file-server --listen :9999 &
+	@sleep 3
+	@echo "Running Visual QA..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run python -m tools.visual_qa.main \
+			--base-url http://localhost:9999 \
+			--config tools/visual_qa/pages.yaml \
+			--output-dir /tmp/visual-qa-results \
+			--fail-on critical; \
+	else \
+		python3 -m tools.visual_qa.main \
+			--base-url http://localhost:9999 \
+			--config tools/visual_qa/pages.yaml \
+			--output-dir /tmp/visual-qa-results \
+			--fail-on critical; \
+	fi
+	@pkill -f "caddy file-server --listen :9999" || true
 
 validate-urls:
 	@echo "Validating URLs across all variants..."
